@@ -1,0 +1,402 @@
+
+// Colors
+//
+// Grayscale and brand colors for use across Harmony.
+
+$black: rgba(0, 0, 0, 1);
+$gray: rgba(145, 145, 145, 1);
+$white: rgba(256, 256, 256, 1);
+$blue: rgba(40, 37, 96, 1);
+$bright-blue: rgba(39, 157, 216, 1);
+$red: rgba(209, 37, 43, 1);
+$green: rgba(121, 192, 67, 1);
+$yellow: rgba(242, 223, 0, 1);
+$orange: rgba(242, 175, 7, 1);
+
+//mixer colors
+$highlight: rgba(255, 255, 244, 1);
+$shadow: rgba(23, 19, 27, 1);
+
+//white pallet - cool grays
+$cool-gray-00: mix($shadow, $white, 5%);
+$cool-gray-01: mix($shadow, $white, 10%);
+$cool-gray-02: mix($shadow, $white, 20%);
+$cool-gray-03: mix($shadow, $white, 30%);
+$cool-gray-04: mix($shadow, $white, 40%);
+$cool-gray-05: mix($shadow, $white, 50%);
+$cool-gray-06: mix($shadow, $white, 55%);
+$cool-gray-07: mix($shadow, $white, 60%);
+$cool-gray-08: mix($shadow, $white, 65%);
+$cool-gray-09: mix($shadow, $white, 70%);
+//gray pallet - cool grays
+$cool-gray-10: mix($shadow, $gray, 50%);
+$cool-gray-11: mix($shadow, $gray, 55%);
+$cool-gray-12: mix($shadow, $gray, 65%);
+$cool-gray-13: mix($shadow, $gray, 75%);
+$cool-gray-14: mix($shadow, $gray, 85%);
+$cool-gray-15: mix($shadow, $gray, 95%);
+
+//gray pallet - warm grays
+$warm-gray-01: mix($highlight, $gray, 90%);
+$warm-gray-02: mix($highlight, $gray, 80%);
+$warm-gray-03: mix($highlight, $gray, 70%);
+$warm-gray-04: mix($highlight, $gray, 50%);
+$warm-gray-05: mix($highlight, $gray, 25%);
+$warm-gray-06: mix($highlight, $gray, 10%);
+//black pallet - warm grays
+$warm-gray-07: mix($highlight, $black, 50%);
+$warm-gray-08: mix($highlight, $black, 40%);
+$warm-gray-09: mix($highlight, $black, 30%);
+$warm-gray-10: mix($highlight, $black, 25%);
+$warm-gray-11: mix($highlight, $black, 21%);
+$warm-gray-12: mix($highlight, $black, 18%);
+$warm-gray-13: mix($highlight, $black, 15%);
+$warm-gray-14: mix($highlight, $black, 10%);
+$warm-gray-15: mix($highlight, $black, 5%);
+
+//blue pallet
+$blue: $blue;
+$blue-lighten-04: mix($highlight, $blue, 60%);
+$blue-lighten-03: mix($highlight, $blue, 45%);
+$blue-lighten-02: mix($highlight, $blue, 30%);
+$blue-lighten-01: mix($highlight, $blue, 15%);
+$blue-darken-01: mix($shadow, $blue, 15%);
+$blue-darken-02: mix($shadow, $blue, 30%);
+$blue-darken-03: mix($shadow, $blue, 45%);
+$blue-darken-04: mix($shadow, $blue, 60%);
+
+//bright blue pallet
+$bright-blue: $bright-blue;
+$bright-blue-lighten-04: mix($highlight, $bright-blue, 60%);
+$bright-blue-lighten-03: mix($highlight, $bright-blue, 45%);
+$bright-blue-lighten-02: mix($highlight, $bright-blue, 30%);
+$bright-blue-lighten-01: mix($highlight, $bright-blue, 15%);
+$bright-blue-darken-01: mix($shadow, $bright-blue, 15%);
+$bright-blue-darken-02: mix($shadow, $bright-blue, 30%);
+$bright-blue-darken-03: mix($shadow, $bright-blue, 45%);
+$bright-blue-darken-04: mix($shadow, $bright-blue, 60%);
+
+//red pallet
+$red: $red;
+$red-lighten-04: mix($highlight, $red, 60%);
+$red-lighten-03: mix($highlight, $red, 45%);
+$red-lighten-02: mix($highlight, $red, 30%);
+$red-lighten-01: mix($highlight, $red, 15%);
+$red-darken-01: mix($shadow, $red, 15%);
+$red-darken-02: mix($shadow, $red, 30%);
+$red-darken-03: mix($shadow, $red, 45%);
+$red-darken-04: mix($shadow, $red, 60%);
+
+//green pallet
+$green: $green;
+$green-lighten-04: mix($highlight, $green, 60%);
+$green-lighten-03: mix($highlight, $green, 45%);
+$green-lighten-02: mix($highlight, $green, 30%);
+$green-lighten-01: mix($highlight, $green, 15%);
+$green-darken-01: mix($shadow, $green, 15%);
+$green-darken-02: mix($shadow, $green, 30%);
+$green-darken-03: mix($shadow, $green, 45%);
+$green-darken-04: mix($shadow, $green, 60%);
+
+//yellow pallet
+$yellow: $yellow;
+$yellow-lighten-06: mix($highlight, $yellow, 90%);
+$yellow-lighten-05: mix($highlight, $yellow, 75%);
+$yellow-lighten-04: mix($highlight, $yellow, 60%);
+$yellow-lighten-03: mix($highlight, $yellow, 45%);
+$yellow-lighten-02: mix($highlight, $yellow, 30%);
+$yellow-lighten-01: mix($highlight, $yellow, 15%);
+$yellow-darken-01: mix($shadow, $yellow, 15%);
+$yellow-darken-02: mix($shadow, $yellow, 30%);
+$yellow-darken-03: mix($shadow, $yellow, 45%);
+$yellow-darken-04: mix($shadow, $yellow, 60%);
+
+//orange pallet
+$orange: $orange;
+$orange-lighten-04: mix($highlight, $orange, 60%);
+$orange-lighten-03: mix($highlight, $orange, 45%);
+$orange-lighten-02: mix($highlight, $orange, 30%);
+$orange-lighten-01: mix($highlight, $orange, 15%);
+$orange-darken-01: mix($shadow, $orange, 15%);
+$orange-darken-02: mix($shadow, $orange, 30%);
+$orange-darken-03: mix($shadow, $orange, 45%);
+$orange-darken-04: mix($shadow, $orange, 60%);
+
+.green {
+    background: $green;
+}
+.green-lighten-01 {
+    background: $green-lighten-01;
+}
+.green-lighten-02 {
+    background: $green-lighten-02;
+}
+.green-lighten-03 {
+    background: $green-lighten-03;
+}
+.green-lighten-04 {
+    background: $green-lighten-04;
+}
+.green-darken-01{
+    background: $green-darken-01;
+}
+.green-darken-02 {
+    background: $green-darken-02;
+}
+.green-darken-03 {
+    background: $green-darken-03;
+}
+.green-darken-04 {
+    background: $green-darken-04;
+}
+
+
+.bright-blue {
+    background: $bright-blue;
+}
+.bright-blue-lighten-01 {
+    background: $bright-blue-lighten-01;
+}
+.bright-blue-lighten-02 {
+    background: $bright-blue-lighten-02;
+}
+.bright-blue-lighten-03 {
+    background: $bright-blue-lighten-03;
+}
+.bright-blue-lighten-04 {
+    background: $bright-blue-lighten-04;
+}
+.bright-blue-darken-01{
+    background: $bright-blue-darken-01;
+}
+.bright-blue-darken-02 {
+    background: $bright-blue-darken-02;
+}
+.bright-blue-darken-03 {
+    background: $bright-blue-darken-03;
+}
+.bright-blue-darken-04 {
+    background: $bright-blue-darken-04;
+}
+
+
+.orange {
+    background: $orange;
+}
+.orange-lighten-01 {
+    background: $orange-lighten-01;
+}
+.orange-lighten-02 {
+    background: $orange-lighten-02;
+}
+.orange-lighten-03 {
+    background: $orange-lighten-03;
+}
+.orange-lighten-04 {
+    background: $orange-lighten-04;
+}
+.orange-darken-01{
+    background: $orange-darken-01;
+}
+.orange-darken-02 {
+    background: $orange-darken-02;
+}
+.orange-darken-03 {
+    background: $orange-darken-03;
+}
+.orange-darken-04 {
+    background: $orange-darken-04;
+}
+
+
+.yellow {
+    background: $yellow;
+}
+.yellow-lighten-01 {
+    background: $yellow-lighten-01;
+}
+.yellow-lighten-02 {
+    background: $yellow-lighten-02;
+}
+.yellow-lighten-03 {
+    background: $yellow-lighten-03;
+}
+.yellow-lighten-04 {
+    background: $yellow-lighten-04;
+}
+.yellow-darken-01{
+    background: $yellow-darken-01;
+}
+.yellow-darken-02 {
+    background: $yellow-darken-02;
+}
+.yellow-darken-03 {
+    background: $yellow-darken-03;
+}
+.yellow-darken-04 {
+    background: $yellow-darken-04;
+}
+
+
+.red {
+    background: $red;
+}
+.red-lighten-01 {
+    background: $red-lighten-01;
+}
+.red-lighten-02 {
+    background: $red-lighten-02;
+}
+.red-lighten-03 {
+    background: $red-lighten-03;
+}
+.red-lighten-04 {
+    background: $red-lighten-04;
+}
+.red-darken-01{
+    background: $red-darken-01;
+}
+.red-darken-02 {
+    background: $red-darken-02;
+}
+.red-darken-03 {
+    background: $red-darken-03;
+}
+.red-darken-04 {
+    background: $red-darken-04;
+}
+
+
+.red {
+    background: $red;
+}
+.red-lighten-01 {
+    background: $red-lighten-01;
+}
+.red-lighten-02 {
+    background: $red-lighten-02;
+}
+.red-darken-03 {
+    background: $red-lighten-03;
+}
+.red-lighten-04 {
+    background: $red-lighten-04;
+}
+.red-darken-01{
+    background: $red-darken-01;
+}
+.red-darken-02 {
+    background: $red-darken-02;
+}
+.red-darken-03 {
+    background: $red-darken-03;
+}
+.red-darken-04 {
+    background: $red-darken-04;
+}
+
+
+
+.warm-gray-01 {
+    background: $warm-gray-01;
+}
+.warm-gray-02 {
+    background: $warm-gray-02;
+}
+.warm-gray-03 {
+    background: $warm-gray-03;
+}
+.warm-gray-04 {
+    background: $warm-gray-04;
+}
+.warm-gray-05{
+    background: $warm-gray-05;
+}
+.warm-gray-06{
+    background: $warm-gray-06;
+}
+.warm-gray-07{
+    background: $warm-gray-07;
+}
+.warm-gray-08{
+    background: $warm-gray-08;
+}
+.warm-gray-09{
+    background: $warm-gray-09;
+}
+.warm-gray-10{
+    background: $warm-gray-10;
+}
+.warm-gray-11{
+    background: $warm-gray-11;
+}
+.warm-gray-12{
+    background: $warm-gray-12;
+}
+.warm-gray-13{
+    background: $warm-gray-13;
+}
+.warm-gray-14{
+    background: $warm-gray-14;
+}
+.warm-gray-15{
+    background: $warm-gray-15;
+}
+
+
+.cool-gray-00 {
+    background: $cool-gray-00;
+}
+.cool-gray-01 {
+    background: $cool-gray-01;
+}
+.cool-gray-02 {
+    background: $cool-gray-02;
+}
+.cool-gray-03 {
+    background: $cool-gray-03;
+}
+.cool-gray-04 {
+    background: $cool-gray-04;
+}
+.cool-gray-05{
+    background: $cool-gray-05;
+}
+.cool-gray-06{
+    background: $cool-gray-06;
+}
+.cool-gray-07{
+    background: $cool-gray-07;
+}
+.cool-gray-08{
+    background: $cool-gray-08;
+}
+.cool-gray-09{
+    background: $cool-gray-09;
+}
+.cool-gray-10{
+    background: $cool-gray-10;
+}
+.cool-gray-11{
+    background: $cool-gray-11;
+}
+.cool-gray-12{
+    background: $cool-gray-12;
+}
+.cool-gray-13{
+    background: $cool-gray-13;
+}
+.cool-gray-14{
+    background: $cool-gray-14;
+}
+.cool-gray-15{
+    background: $cool-gray-15;
+}
+
+.black {
+    background: $black;
+}
+
+.white {
+    background: $white;
+}

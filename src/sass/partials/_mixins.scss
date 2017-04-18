@@ -1,0 +1,54 @@
+
+// Toggles
+//
+// Used in conjunction with global variables to enable certain theme features.
+
+@mixin box-shadow($shadow...) {
+
+    box-shadow: $shadow;
+
+}
+
+@mixin transition($transition...) {
+
+    transition: $transition;
+
+}
+
+// Utilities
+//@import "mixins/breakpoints";
+//@import "mixins/hover";
+//@import "mixins/image";
+//@import "mixins/tag";
+//@import "mixins/reset-filter";
+//@import "mixins/resize";
+//@import "mixins/screen-reader";
+//@import "mixins/size";
+@import "mixins/_tab-focus";
+//@import "mixins/reset-text";
+//@import "mixins/text-emphasis";
+//@import "mixins/text-hide";
+//@import "mixins/text-truncate";
+
+// // Components
+//@import "mixins/alert";
+//@import "mixins/buttons";
+//@import "mixins/cards";
+//@import "mixins/pagination";
+//@import "mixins/lists";
+//@import "mixins/list-group";
+//@import "mixins/nav-divider";
+@import "mixins/_forms";
+//@import "mixins/progress";
+//@import "mixins/table-row";
+
+// // Skins
+//@import "mixins/background-variant";
+@import "mixins/_border-radius";
+//@import "mixins/gradients";
+
+// // Layout
+// @import "mixins/navbar-align";
+//@import "mixins/grid-framework";
+//@import "mixins/grid";
+//@import "mixins/float";

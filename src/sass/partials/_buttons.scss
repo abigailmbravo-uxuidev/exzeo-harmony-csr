@@ -1,0 +1,260 @@
+
+//
+// Base styles
+//
+
+.btn,
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-transform: uppercase;
+  border: $input-btn-border-width solid transparent;
+  font-weight: $btn-font-weight;
+  line-height: $btn-line-height;
+  @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $btn-border-radius);
+  @include transition(all .2s ease-in-out);
+  @include hover-focus {
+    text-decoration: none;
+  }
+
+  &,
+  &.active,
+  &:active {
+    &.focus,
+    &:focus {
+      @include tab-focus();
+    }
+  }
+
+  &.btn-sm {
+      font-size: $font-size-sm;
+  }
+
+  &.focus {
+    text-decoration: none;
+  }
+
+  &.active,
+  &:active {
+    outline: 0;
+    background-image: none;
+    @include box-shadow($btn-active-box-shadow);
+  }
+
+  &.disabled,
+  &:disabled {
+    cursor: $cursor-disabled;
+    opacity: 0.65;
+    @include box-shadow(none);
+  }
+
+  i {
+      margin-right: $padding;
+  }
+}
+//
+// Alternate buttons
+//
+
+,
+.btn-default,
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  @include button-variant($btn-default-color, $btn-default-bg, $btn-default-border);
+}
+
+.btn-primary {
+  @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+}
+
+.btn-secondary {
+  @include button-variant($btn-secondary-color, $btn-secondary-bg, $btn-secondary-border);
+}
+
+.btn-action {
+    @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+}
+
+.btn-info {
+  @include button-variant($btn-info-color, $btn-info-bg, $btn-info-border);
+}
+
+.btn-success {
+  @include button-variant($btn-success-color, $btn-success-bg, $btn-success-border);
+}
+
+.btn-warning {
+  @include button-variant($btn-warning-color, $btn-warning-bg, $btn-warning-border);
+}
+
+.btn-danger {
+  @include button-variant($btn-danger-color, $btn-danger-bg, $btn-danger-border);
+}
+
+.btn-link {
+  @include button-variant($btn-primary-bg, $btn-link-bg, $btn-link-border);
+
+  &:hover {
+      text-decoration: none;
+  }
+}
+// Remove all backgrounds
+
+.btn-outline-primary {
+  @include button-outline-variant($btn-primary-bg);
+}
+
+.btn-outline-secondary {
+  @include button-outline-variant($btn-secondary-border);
+}
+
+.btn-outline-info {
+  @include button-outline-variant($btn-info-bg);
+}
+
+.btn-outline-success {
+  @include button-outline-variant($btn-success-bg);
+}
+
+.btn-outline-warning {
+  @include button-outline-variant($btn-warning-bg);
+}
+
+.btn-outline-danger {
+  @include button-outline-variant($btn-danger-bg);
+}
+
+.btn-round {
+  display: flex;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  flex-basis: 2rem;
+  flex-shrink: 0;
+  flex-grow: 0;
+  justify-content: center;
+  align-items: center;
+
+  i {
+      margin: 0;
+      padding: 0;
+  }
+}
+
+.btn-send {
+  display: flex;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  flex-basis: 3rem;
+
+  i {
+    width: 1.25rem;
+    height: 1.25rem;
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.25;
+  }
+}
+//
+// Link buttons
+//
+// Make a button look and behave like a link
+
+.btn-link {
+  color: $link-color;
+  border-radius: 0;
+  font-weight: normal;
+  @include hover {
+    border-color: transparent;
+  }
+  @include hover-focus {
+    text-decoration: $link-hover-decoration;
+    color: $link-hover-color;
+    background-color: transparent;
+  }
+
+  &,
+  &.active,
+  &:active,
+  &:disabled {
+    background-color: transparent;
+    @include box-shadow(none);
+  }
+
+  &,
+  &:active,
+  &:focus {
+    border-color: transparent;
+  }
+
+  &:disabled {
+    @include hover-focus {
+      text-decoration: none;
+      color: $btn-link-disabled-color;
+    }
+  }
+}
+// Specificity overrides
+
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  &.btn-block {
+    width: 100%;
+  }
+}
+
+.file-upload {
+  position: relative;
+
+  &:before {
+    position: absolute;
+    top: 0.25rem;
+    bottom: 0.25rem;
+    left: 0.25rem;
+    display: inline-block;
+    content: 'Choose file';
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    border: $input-btn-border-width solid transparent;
+    font-weight: $btn-font-weight;
+    line-height: ($btn-line-height*0.4333);
+    @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+    @include button-size($btn-padding-y, ($btn-padding-x*.9), $font-size-base, $btn-border-radius);
+    @include transition(all .2s ease-in-out);
+  }
+
+  input[type="file"] {}
+}
+
+.btn-icon {
+    background: rgba($bright-blue, 0.1);
+    border-width: 0;
+    color: $body-color;
+    box-shadow: none;
+
+    &:hover {
+        background: rgba($bright-blue, 0.2);
+        border-width: 0;
+        color: $body-color;
+    }
+
+    i {
+        margin: 0;
+    }
+}

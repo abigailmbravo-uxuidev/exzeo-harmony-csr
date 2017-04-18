@@ -1,0 +1,110 @@
+
+//loader
+.loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .card {
+
+      -webkit-box-shadow: 0 0 40px 10px rgba(0,0,0,.25);
+      box-shadow: 0 0 40px 10px rgba(0,0,0,.25);
+
+        .card-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+
+            div {
+              -webkit-border-radius: 32px;
+              border-radius: 32px;
+              padding: 3px;
+              animation-name: spin-load;
+              animation-iteration-count: infinite;
+              -webkit-animation-timing-function: linear; /* Safari 4.0 - 8.0 */
+              animation-timing-function: linear;
+            }
+
+
+            .ring-5 {
+              border: 1px solid #AEAEAE;
+              border-bottom: 1px solid transparent;
+              animation-duration: 5s;
+              animation-direction: reverse;
+            }
+
+            .ring-4 {
+              border: 1px solid #999;
+              border-bottom: 1px solid transparent;
+              animation-duration: 3.75s;
+              animation-direction: normal;
+            }
+
+            .ring-3 {
+              border: 1px solid #AEAEAE;
+              border-bottom: 1px solid transparent;
+              animation-duration: 3s;
+              animation-direction: reverse;
+            }
+
+            .ring-2 {
+              border: 1px solid #999;
+              border-bottom: 1px solid transparent;
+              animation-duration: 1.75s;
+              animation-direction: normal;
+            }
+
+            .ring-1 {
+              border: 1px solid #AEAEAE;
+              border-bottom: 1px solid transparent;
+              height: 20px;
+              width: 20px;
+              padding: 0;
+              animation-duration: 1s;
+              animation-direction: reverse;
+            }
+
+            span {
+              display: block;
+              margin: 5px 0 0;
+              animation-name: text-flash;
+              animation-iteration-count: infinite;
+              -webkit-animation-timing-function: ease; /* Safari 4.0 - 8.0 */
+              animation-timing-function: ease;
+              animation-duration: 2s;
+              animation-direction: alternate;
+            }
+
+        }
+    }
+}
+
+
+@keyframes spin-load {
+    from {
+      -moz-transform: rotate(0deg);
+      -webkit-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    to {
+      -moz-transform: rotate(359deg);
+      -webkit-transform: rotate(359deg);
+      -o-transform: rotate(359deg);
+      -ms-transform: rotate(359deg);
+      transform: rotate(359deg);
+    }
+}
+
+
+@keyframes text-flash {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+}

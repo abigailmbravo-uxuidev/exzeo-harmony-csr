@@ -1,0 +1,139 @@
+
+//vertical tabs
+.side-panel {
+  nav {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid $warm-gray-01;
+
+    a {
+      margin-left: -$padding;
+      padding: $padding 0 $padding $padding;
+      color: $link-color;
+
+      &:focus,
+      &:hover {
+        text-decoration: none;
+      }
+
+      &.active {
+        color: $link-color;
+
+        &:focus,
+        &:hover {
+          color: lighten($link-color, 10%);
+        }
+      }
+
+      &.disabled {
+        color: $warm-gray-06;
+      }
+
+      &.selected {
+        cursor: default;
+        color: $cool-gray-14;
+        border-right: 5px solid $bright-blue;
+      }
+    }
+  }
+}
+
+.site-nav {
+  width: auto;
+  padding: $padding*2;
+  @include transition(all .05s ease-in-out);
+  @include for-phone-only {
+    width: 14rem;
+  }
+  @include for-tablet-portrait-up {}
+  @include for-tablet-landscape-up {
+    width: 12rem;
+  }
+  //main left navigation
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      display: flex;
+      margin: 0;
+      //background-color: rgba($white, .25
+      a {
+        display: flex;
+        height: 3rem;
+        cursor: pointer;
+        border-left: ($padding/2) solid rgba($white, 0);
+        color: $white;
+        align-items: center;
+        flex-grow: 1;
+        text-decoration: none;
+        margin: 0 (-$padding*2) 0 (-$padding);
+
+        &.active {
+          cursor: default;
+          border-left: ($padding/2) solid $bright-blue;
+          background-color: $white;
+          text-decoration: none;
+
+          i {
+            width: 4rem - ($padding/2);
+            text-decoration: none;
+          }
+
+          span {
+            color: $body-color;
+            text-decoration: none;
+          }
+          &:hover {
+              cursor: default;
+              border-left: ($padding/2) solid $bright-blue;
+              background-color: $white;
+              text-decoration: none;
+
+              i {
+                width: 4rem - ($padding/2);
+                text-decoration: none;
+              }
+
+              span {
+                color: $body-color;
+                text-decoration: none;
+              }
+          }
+        }
+        &:hover {
+            cursor: pointer;
+            border-left: ($padding/2) solid rgba($bright-blue, .2);
+            background-color: rgba($white, .1);
+            text-decoration: none;
+            span {
+              color: $white;
+              text-decoration: none;
+            }
+        }
+
+        i {
+          width: 4rem;
+          text-align: center;
+          text-decoration: none;
+          @include for-phone-only {
+            width: 3.5rem;
+            text-decoration: none;
+          }
+        }
+
+        span {
+          color: $white;
+          text-decoration: none;
+          @include for-tablet-portrait-up {
+            display: none;
+          }
+          @include for-tablet-landscape-up {
+            display: flex;
+          }
+        }
+      }
+    }
+  }
+}

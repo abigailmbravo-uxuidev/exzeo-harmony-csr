@@ -1,0 +1,112 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  margin-right: $card-deck-margin;
+  margin-bottom: 0; // Margin balancing
+  margin-left: $card-deck-margin;
+  border: $card-border-width solid $card-border-color;
+  border-radius: $card-border-radius;
+  background: $card-bg;
+  box-shadow: $card-box-shadow;
+
+  .card-header {
+    margin-bottom: 0; // Removes the default margin-bottom of <hN>
+    padding: $card-spacer-y $card-spacer-x;
+    border-bottom: $card-border-width solid $card-border-color;
+    background-color: $card-cap-bg;
+    flex-shrink: 0;
+    flex-grow: 0;
+
+    &:first-child {
+      @include border-radius($card-border-radius-inner $card-border-radius-inner 0 0);
+    }
+
+    &.image {
+      display: flex;
+      flex-direction: column;
+      height: 8rem;
+      background-color: $warm-gray-13;
+      background-image: url("../img/background.png");
+      background-size: cover;
+      justify-content: flex-end;
+
+      &.lg {
+        height: 12rem;
+      }
+
+      &.md {
+        height: 8rem;
+      }
+
+      &.sm {
+        height: 4rem;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        margin: 0 (-$padding*2.5) (-$padding*1.75);
+        padding: $padding;
+        color: $white;
+        flex-basis: auto;
+      }
+    }
+  }
+
+  .card-block {
+    overflow-y: auto;
+    padding: $card-spacer-x;
+    flex-grow: 1;
+    @include for-phone-only {
+      padding: $padding*1.5;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin-top: 0;
+    }
+  }
+
+  .card-footer {
+    display: flex;
+    padding: $card-spacer-y $card-spacer-x;
+    border-top: $card-border-width solid $card-border-color;
+    background-color: $card-cap-bg;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    flex-grow: 0;
+    flex-wrap: wrap;
+
+    a,
+    button {
+      margin-left: $padding*2;
+      align-self: center;
+    }
+
+    a {
+      height: 2rem;
+      line-height: $line-height-base;
+
+      &.btn {
+        height: auto;
+      }
+    }
+
+    .btn-group {
+        margin-top: $padding;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    &:last-child {
+      @include border-radius(0 0 $card-border-radius-inner $card-border-radius-inner);
+    }
+  }
+}

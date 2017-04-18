@@ -1,0 +1,148 @@
+
+//workflow
+
+.workflow, .error-page {
+  /*ul element*/
+  .workflow-header {
+    position: relative;
+    display: flex;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    justify-content: space-around;
+
+    .rule {
+      position: absolute;
+      z-index: 1;
+      top: 1.75rem;
+      width: 82%;
+      height: 1px;
+      background: $body-color;
+      @include for-phone-only {
+        top: 1rem;
+      }
+      @include for-big-desktop-up {
+        top: 1.75rem;
+      }
+    }
+    /*li element*/
+    li {
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      align-items: center;
+      flex: 1;
+
+      a {
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        padding: $padding;
+        cursor: pointer;
+        font-weight: $font-weight-bold;
+        flex: 1;
+        align-items: center;
+        @include for-phone-only {
+          padding: 0;
+        }
+
+        &:focus,
+        &:hover {
+          cursor: default;
+          text-decoration: none;
+        }
+
+        i {
+          width: 2rem;
+
+          &:before {
+              font-family: $font-family-icon;
+          }
+          @include for-phone-only {
+            font-size: $font-size-h4;
+          }
+          @include for-tablet-portrait-up {
+            font-size: $font-size-h3;
+          }
+          @include for-tablet-landscape-up {
+            font-size: $font-size-h3;
+          }
+          @include for-big-desktop-up {
+            width: 4rem;
+            font-size: $font-size-h3;
+          }
+        }
+
+        span {
+          font-weight: $font-weight-bold;
+          @include for-phone-only {
+            display: none;
+          }
+          @include for-tablet-portrait-up {
+            display: block;
+            font-size: $xsmall-font-size;
+          }
+          @include for-tablet-landscape-up {
+            display: block;
+            font-size: $font-size-h6;
+          }
+          @include for-big-desktop-up {
+            font-size: $font-size-h5;
+          }
+        }
+
+        &.active {
+          cursor: pointer;
+
+          &:focus,
+          &:hover {
+            text-decoration: none;
+          }
+        }
+
+        &.disabled {
+          cursor: default;
+        }
+
+        &.selected {
+          cursor: default;
+        }
+
+        &.complete {
+          cursor: pointer;
+
+          &:focus,
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+
+  .workflow-content {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+
+    aside {}
+
+    section {
+      flex-grow: 1;
+    }
+  }
+
+  .workflow-steps {
+    display: flex;
+    justify-content: flex-end;
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding: 0 ($padding*2) ($padding*2);
+
+    .btn {
+      margin-left: $padding;
+    }
+  }
+}
