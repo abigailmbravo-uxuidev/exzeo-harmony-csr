@@ -15,18 +15,10 @@ export const Base = props => (
     <Header />
     <main role="document">
       <aside className="content-panel-left">
-        <div className="user">
-          <label htmlFor="user">User</label>
-          <h5 className="user-name">
-            <span>TTIC20000@typtap.com</span>
-            <i className="fa fa-gear" />
-          </h5>
+        <div className="csr">
+          <h3>CSR Portal</h3>
         </div>
         <SideNav />
-        <button className="btn logout btn-action" type="button" onClick={() => handleLogout(props)}>
-          <i className="fa fa-sign-out" />
-          <span>Logout</span>
-        </button>
       </aside>
       <div className="content-wrapper">
         {props.children}

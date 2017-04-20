@@ -13,6 +13,8 @@
 @import "partials/_reset";
 /*Set base typography*/
 @import "partials/_type";
+/*Grid styles*/
+@import "partials/_grid";
 @import "partials/_workflow";
 @import "https://fonts.googleapis.com/css?family=Roboto:300,400"; //base
 //links
@@ -359,8 +361,8 @@ header {
 
         > .logo {
             display: block;
-            width: 7rem;
-            flex-basis: 7rem;
+            width: 10rem;
+            flex-basis: 10rem;
             flex-shrink: 0;
             @include for-phone-only {
                 margin-left: 3rem;
@@ -495,6 +497,28 @@ header {
                                 color: $bright-blue-lighten-02;
                             }
                         }
+                    }
+                }
+            }
+            .user-name {
+                margin: 0 ($padding/2) 0 ($padding*4);
+                font-size: $font-size-sm;
+                color: $bright-blue-darken-01;
+            }
+            >button {
+                i {
+                    @include transition(all .2s ease-in-out);
+                    margin: 0;
+                    color: $bright-blue-darken-01;
+                }
+                span {
+                    +i {
+                        margin: 0 0 0 $padding;
+                    }
+                }
+                &:hover {
+                    i {
+                        color: $bright-blue;
                     }
                 }
             }
@@ -854,6 +878,28 @@ main[role="document"] {
         ul {
             li {
                 a {
+                    i,
+                    span {
+                        color: $warm-gray-07;
+                    }
+
+                    &.active {
+                        border-left-color: $blue-darken-03;
+                        font-weight: $font-weight-bold;
+
+                        i {
+                            color: $blue-darken-03;
+                        }
+
+                        span {
+                            color: $blue-darken-03;
+                        }
+
+                        &:hover {
+                            text-decoration: none;
+                        }
+                    }
+
                     &.agent-dashboard {
                         i {
                             &:before {
@@ -909,14 +955,46 @@ main[role="document"] {
                             }
                         }
                     }
+
+                    &.csr-dashboard {
+                        i {
+                            &:before {
+                                content: "\f009";
+                            }
+                        }
+                    }
                 }
             }
+        }
+    }
+    .csr {
+        width: auto;
+        min-height: 4.75rem;
+        padding: ($padding) ($padding*2);
+        border-bottom: 2px solid $white;
+        background-color: $warm-gray-03;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        @include transition(all .2s ease-in-out);
+        @include for-tablet-portrait-up {
+            display: none;
+        }
+        @include for-tablet-landscape-up {
+            display: flex;
+            flex-direction: column;
+            width: 12rem;
+        }
+        h3 {
+            color: $warm-gray-04;
+            margin: 0;
         }
     }
 
     .user {
         width: auto;
-        min-height: 4.7rem;
+        min-height: 4.75rem;
         padding: ($padding) ($padding*2);
         border-bottom: 2px solid $white;
         background-color: $warm-gray-08;
