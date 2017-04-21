@@ -885,15 +885,15 @@ main[role="document"] {
                     }
 
                     &.active {
-                        border-left-color: $blue-darken-03;
+                        border-left-color: $bright-blue-darken-04;
                         font-weight: $font-weight-bold;
 
                         i {
-                            color: $blue-darken-03;
+                            color: $bright-blue-darken-04;
                         }
 
                         span {
-                            color: $blue-darken-03;
+                            color: $bright-blue-darken-04;
                         }
 
                         &:hover {
@@ -988,7 +988,7 @@ main[role="document"] {
             width: 12rem;
         }
         h3 {
-            color: $warm-gray-04;
+            color: $warm-gray-01;
             margin: 0;
         }
     }

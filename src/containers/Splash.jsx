@@ -29,13 +29,18 @@ const Splash = () => (
                     <SearchBar/>
                     <div className="survey-wrapper scroll">
                         <div className="results-wrapper">
-                            <nav className="tabs"><a href="" class="active">Recently Viewed</a><a href="">My Assigned Quotes</a><a href="">My Assigned Claims</a><a href="">Search Results</a></nav>
+                            <nav className="tabs">
+                              <a href="" className="btn selected">Recently Viewed</a>
+                              {/*<a href="">My Assigned Quotes</a>*/}
+                              {/*<a href="">My Assigned Claims</a>*/}
+                              <a href="" className="btn">Search Results</a>
+                            </nav>
                             <BootstrapTable data={ data } striped hover>
-                                <TableHeaderColumn isKey dataField='type'>Type / Number</TableHeaderColumn>
-                                <TableHeaderColumn dataField='policyHolder'>Policyholder</TableHeaderColumn>
-                                <TableHeaderColumn dataField='address'>Address</TableHeaderColumn>
-                                <TableHeaderColumn dataField='status'>Status</TableHeaderColumn>
-                                <TableHeaderColumn dataField='effectiveDate'>Effective Date</TableHeaderColumn>
+                                <TableHeaderColumn isKey dataField='type' dataSort={ true }>Type / Number</TableHeaderColumn>
+                                <TableHeaderColumn dataField='policyHolder' dataSort={ true }>Policyholder</TableHeaderColumn>
+                                <TableHeaderColumn dataField='address' dataSort={ true }>Address</TableHeaderColumn>
+                                <TableHeaderColumn dataField='status' dataSort={ true }>Status</TableHeaderColumn>
+                                <TableHeaderColumn dataField='effectiveDate' dataSort={ true }>Effective Date</TableHeaderColumn>
                             </BootstrapTable>
                         </div>
                     </div>

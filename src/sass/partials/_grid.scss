@@ -107,13 +107,12 @@ $screen-md-max:              ($screen-lg-min - 1) !default;
 .react-bs-table table td,
 .react-bs-table table th {
   overflow: hidden;
-
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 .react-bs-table {
-  margin: 5px 10px 5px 10px;
+  margin: 0 .5rem;
 }
 
 .react-bs-table-pagination {
