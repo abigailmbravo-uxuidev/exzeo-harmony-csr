@@ -1,0 +1,12 @@
+nav {
+    &.tabs {
+        border-bottom: 2px solid $warm-gray-08;
+        display: flex;
+        padding: $padding;
+        margin: 0 $padding;
+
+        a {
+            margin: 0 ($padding);
+        }
+    }
+}

@@ -27,9 +27,9 @@ const Splash = () => (
             <div className="route">
                 <div className="search route-content">
                     <SearchBar/>
-                    <nav class="fade-in"><a href="" class="active">Recently Viewed</a><a href="">My Assigned Quotes</a><a href="">My Assigned Claims</a><a href="">Search Results</a></nav>
                     <div className="survey-wrapper scroll">
                         <div className="results-wrapper">
+                            <nav className="tabs"><a href="" class="active">Recently Viewed</a><a href="">My Assigned Quotes</a><a href="">My Assigned Claims</a><a href="">Search Results</a></nav>
                             <BootstrapTable data={ data } striped hover>
                                 <TableHeaderColumn isKey dataField='type'>Type / Number</TableHeaderColumn>
                                 <TableHeaderColumn dataField='policyHolder'>Policyholder</TableHeaderColumn>

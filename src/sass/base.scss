@@ -15,8 +15,9 @@
 @import "partials/_type";
 /*Grid styles*/
 @import "partials/_grid";
+@import "partials/_tabs";
 @import "partials/_workflow";
-@import "https://fonts.googleapis.com/css?family=Roboto:300,400"; //base
+@import "https://fonts.googleapis.com/css?family=Roboto:100,300,500"; //base
 //links
 /*------------------------------------------------------------------------------------*/
 a {
@@ -509,7 +510,7 @@ header {
                 i {
                     @include transition(all .2s ease-in-out);
                     margin: 0;
-                    color: $bright-blue-darken-01;
+                    color: $bright-blue-darken-02;
                 }
                 span {
                     +i {
@@ -1108,7 +1109,6 @@ main[role="document"] {
     display: flex;
     width: 100%;
     height: auto;
-    //max-height: 4rem;
     margin-top: 0;
     margin-bottom: 0;
     transition: margin 0.5s;
@@ -1307,9 +1307,10 @@ main[role="document"] {
 
                     i {
                         background: $warm-gray-01;
+                        @include transition(all .2s ease-in-out);
 
                         &:before {
-                            content: "\f1db";
+
                         }
 
                         &.chooseAddress {
