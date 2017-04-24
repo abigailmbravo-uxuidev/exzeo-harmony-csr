@@ -33,16 +33,25 @@ const Splash = () => (
                     <SearchBar/>
                     <div className="survey-wrapper scroll">
                         <div className="results-wrapper">
-                            <nav className="tabs">
-                              <a href="" className="btn btn-link selected">Recently Viewed</a>
-                              {/*<a href="">My Assigned Quotes</a>*/}
-                              {/*<a href="">My Assigned Claims</a>*/}
-                              <a href="" className="btn btn-link">Search Results</a>
-                            </nav>
-                            <div className="filters">
-                                    <a href="" className="btn selected">All</a>
-                                    <a href="" className="btn">Quotes</a>
-                                    <a href="" className="btn">Policies</a>
+                            <div className="grid-controls">
+                                    <nav className="tabs">
+                                      <a href="" className="btn btn-link selected">Recently Viewed</a>
+                                      {/*<a href="">My Assigned Quotes</a>*/}
+                                      {/*<a href="">My Assigned Claims</a>*/}
+                                      <a href="" className="btn btn-link">Search Results</a>
+                                    </nav>
+                                    <div className="filters-wrapper">
+                                            <div className="filters">
+                                                    <a href="" className="btn btn-sm selected">All</a>
+                                                    <a href="" className="btn btn-sm">Quotes</a>
+                                                    <a href="" className="btn btn-sm">Policies</a>
+                                            </div>
+                                            <div className="filters">
+                                                    <a href="" className="btn btn-sm selected"><i className="fa fa-list-ul"></i></a>
+                                                    <a href="" className="btn btn-sm"><i className="fa fa-table"></i></a>
+
+                                            </div>
+                                    </div>
                             </div>
                             <div className="card-view">
                             <BootstrapTable className="results-grid" data={ data } striped hover>

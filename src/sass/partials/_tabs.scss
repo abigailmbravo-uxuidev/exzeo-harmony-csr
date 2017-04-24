@@ -1,29 +1,34 @@
 nav {
-    &.tabs {
-        margin: $padding;
-        border-bottom: 2px solid $bright-blue-darken-04;
+    margin: $padding;
 
-        a {
-            &.btn {
-                border-radius: 0;
-                text-transform: none;
-                font-weight: $font-weight-normal;
-                padding-bottom: $padding;
+    a {
+        &.btn {
+            border-radius: 0;
+            @include button-variant($warm-gray-12, $warm-gray-01, $warm-gray-01);
+            text-transform: none;
+            font-weight: $font-weight-normal;
+            margin-right: 2px;
+
+            &:hover {
+                @include button-variant($warm-gray-12, $warm-gray-02, $warm-gray-02);
+                cursor: pointer;
+                text-decoration: none;
+            }
+            &:first-child {
+                border-top-left-radius: $border-radius;
+                border-bottom-left-radius:  $border-radius;
+            }
+            &:last-child {
+                border-top-right-radius: $border-radius;
+                border-bottom-right-radius:  $border-radius;
+                margin-right: 0;
+            }
+            &.selected {
+                @include button-variant($white, $bright-blue-darken-04, $bright-blue-darken-04);
                 &:hover {
+                    @include button-variant($white, $bright-blue-darken-04, $bright-blue-darken-04);
+                    cursor: default;
                     text-decoration: none;
-                    cursor: pointer;
-                }
-                &.selected {
-                    border-bottom: 5px solid $bright-blue-darken-04;
-                    border-left-width: 0;
-                    border-right-width: 0;
-                    padding-bottom: $padding/2;
-                    color: $bright-blue-darken-04;
-                    &:hover {
-                        text-decoration: none;
-                        cursor: default;
-                        color: $bright-blue-darken-04;
-                    }
                 }
             }
         }
