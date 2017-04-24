@@ -2227,6 +2227,86 @@ ul.list-cards {
 #Assumptions {}
 //Additional Interests
 /*------------------------------------------------------------------------------------*/
+#AddAdditionalInterestPage {
+    .detail-wrapper {
+        flex-direction: column;
+    }
+
+    .button-group {
+        display: flex;
+
+        .btn {
+            margin: 0 $padding $padding 0;
+        }
+    }
+
+    .results-wrapper {
+        width: 100%;
+        margin-bottom: $padding*2;
+        padding-bottom: $paragraph-margin-bottom;
+        border-bottom: 1px dashed $warm-gray-02;
+
+        .result-cards {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+
+            li {
+                a {
+                    .card-icon {
+                        display: flex;
+                        flex-direction: column;
+                        width: 4rem;
+                        margin-right: $padding;
+                        align-items: center;
+
+                        label {
+                            text-align: center;
+                            font-size: $font-size-xs;
+                        }
+
+                        .fa {
+                            &.Mortgagee {
+                                &:before {
+                                    content: "\f19c";
+                                }
+                            }
+
+                            &.Lienholder {
+                                &:before {
+                                    content: "\F27E";
+                                }
+                            }
+
+                            &.Interest {
+                                &:before {
+                                    content: "\F2B5";
+                                }
+                            }
+
+                            &.Insured {
+                                &:before {
+                                    content: "\F234";
+                                }
+                            }
+
+                            &.Bill {
+                                &:before {
+                                    content: "\F0D6";
+                                }
+                            }
+                        }
+                    }
+
+                    .fa-pencil {
+                        font-size: $font-size-h4;
+                    }
+                }
+            }
+        }
+    }
+}
+
 #AdditionalPolicyHolder {
     .switch.inactive~.form-group {
         display: none;

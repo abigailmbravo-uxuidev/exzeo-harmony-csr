@@ -7,17 +7,23 @@ import ClearErrorConnect from '../components/Error/ClearError';
 import Footer from '../components/Common/Footer';
 
 var data = [{
-        type: 1,
+        type: "Quote",
+        number: "12-123456",
         Policyholder: "Product1",
-        address: 120,
-        status: 123,
-        effectiveDate: "01/01/01"
-    }, {
-        type: 2,
-        Policyholder: "Product2",
-        address: 80,
-        status: 123,
-        effectiveDate: "01/01/01"
+        address: "123 NE 132ND TER",
+        location: "GAINESVILLE, FL 32641",
+        status: "STATUS",
+        effectiveDate: "01/01/2018"
+
+    },
+    {
+    type: "Quote",
+    number: "12-123456",
+    Policyholder: "Product1",
+    address: "123 NE 132ND TER",
+    location: "GAINESVILLE, FL 32641",
+    status: "STATUS",
+    effectiveDate: "01/01/2018"
 }];
 
 const Splash = () => (
@@ -35,13 +41,16 @@ const Splash = () => (
                               {/*<a href="">My Assigned Claims</a>*/}
                               <a href="" className="btn">Search Results</a>
                             </nav>
+                            <div className="card-view">
                             <BootstrapTable data={ data } striped hover>
-                                <TableHeaderColumn isKey dataField='type' dataSort={ true }>Type / Number</TableHeaderColumn>
+                                <TableHeaderColumn isKey dataField='type' dataSort={ true }>Type</TableHeaderColumn>
+                                <TableHeaderColumn isKey dataField='number' dataSort={ true }>Number</TableHeaderColumn>
                                 <TableHeaderColumn dataField='policyHolder' dataSort={ true }>Policyholder</TableHeaderColumn>
                                 <TableHeaderColumn dataField='address' dataSort={ true }>Address</TableHeaderColumn>
                                 <TableHeaderColumn dataField='status' dataSort={ true }>Status</TableHeaderColumn>
                                 <TableHeaderColumn dataField='effectiveDate' dataSort={ true }>Effective Date</TableHeaderColumn>
                             </BootstrapTable>
+                            </div>
                         </div>
                     </div>
                     <Footer/>
