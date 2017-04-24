@@ -11,7 +11,7 @@ const handleLogout = (props) => {
 };
 
 export const Base = props => (
-  <div className="app-wrapper">
+  <div className="app-wrapper csr">
     <Header />
     <main role="document">
       <aside className="content-panel-left">

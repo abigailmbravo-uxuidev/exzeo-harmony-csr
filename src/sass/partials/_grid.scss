@@ -397,12 +397,12 @@ th {
     max-width: 100%;
     margin-bottom: $line-height-computed;
     // Cells
-     > tbody,
+     > tfoot,
      > thead,
-    > tfoot {
+    > tbody {
         > tr {
-             > td,
-            > th {
+             > th,
+            > td {
                 padding: $table-cell-padding;
                 vertical-align: top;
                 border-top: 1px solid $table-border-color;
@@ -416,12 +416,12 @@ th {
         border-bottom: 2px solid $table-border-color;
     }
     // Remove top border from thead by default
-     > colgroup + thead,
+     > caption + thead,
      > thead:first-child,
-    > caption + thead {
+    > colgroup + thead {
         > tr:first-child {
-             > td,
-            > th {
+             > th,
+            > td {
                 border-top: 0;
             }
         }
@@ -438,12 +438,12 @@ th {
 // Condensed table w/ half padding
 
 .table-condensed {
-     > tbody,
+     > tfoot,
      > thead,
-    > tfoot {
+    > tbody {
         > tr {
-             > td,
-            > th {
+             > th,
+            > td {
                 padding: $table-condensed-cell-padding;
             }
         }
@@ -456,20 +456,20 @@ th {
 .table-bordered {
     border: 1px solid $table-border-color;
 
-     > tbody,
+     > tfoot,
      > thead,
-    > tfoot {
+    > tbody {
         > tr {
-             > td,
-            > th {
+             > th,
+            > td {
                 border: 1px solid $table-border-color;
             }
         }
     }
 
     > thead > tr {
-         > td,
-        > th {
+         > th,
+        > td {
             border-bottom-width: 2px;
         }
     }
@@ -541,12 +541,12 @@ table {
         > .table {
             margin-bottom: 0;
             // Ensure the content doesn't wrap
-             > tbody,
+             > tfoot,
              > thead,
-            > tfoot {
+            > tbody {
                 > tr {
-                     > td,
-                    > th {
+                     > th,
+                    > td {
                         white-space: nowrap;
                     }
                 }
@@ -556,17 +556,17 @@ table {
         > .table-bordered {
             border: 0;
             // Nuke the appropriate borders so that the parent can handle them
-             > tbody,
+             > tfoot,
              > thead,
-            > tfoot {
+            > tbody {
                 > tr {
-                     > td:first-child,
-                    > th:first-child {
+                     > th:first-child,
+                    > td:first-child {
                         border-left: 0;
                     }
 
-                     > td:last-child,
-                    > th:last-child {
+                     > th:last-child,
+                    > td:last-child {
                         border-right: 0;
                     }
                 }
@@ -574,11 +574,11 @@ table {
             // Only nuke the last row's bottom-border in `tbody` and `tfoot` since
             // chances are there will be only one `tr` in a `thead` and that would
             // remove the border altogether.
-             > tfoot,
-            > tbody {
+             > tbody,
+            > tfoot {
                 > tr:last-child {
-                     > td,
-                    > th {
+                     > th,
+                    > td {
                         border-bottom: 0;
                     }
                 }
@@ -682,11 +682,13 @@ table {
                 justify-content: flex-start;
                 align-content: stretch;
                 align-items: flex-start;
+                flex-grow: 1;
+                flex-shrink: 0;
+                flex-basis: auto;
 
                 th {
                     width: auto;
                     order: 0;
-                    flex: 0 1 auto;
                     align-self: auto;
                 }
             }
@@ -709,6 +711,9 @@ table {
                 justify-content: flex-start;
                 align-content: stretch;
                 align-items: flex-start;
+                flex-grow: 1;
+                flex-shrink: 0;
+                flex-basis: auto;
 
                 td {
                     white-space: pre-line;
@@ -720,6 +725,101 @@ table {
 
             tr:nth-of-type(even) > td {
                 background-color: transparent;
+            }
+        }
+    }
+}
+//CSR splash page grid styles
+.csr {
+    .card-view {
+        .results-grid {
+            .react-bs-container-header {
+                .table-bordered {
+
+                }
+            }
+
+            .react-bs-container-body {
+                .table {
+                    td {
+                        padding: ($padding/2) $padding;
+                        align-self: center;
+                        &.icon {
+                            width: 3rem;
+                            flex-basis: 2rem;
+                            flex-grow: 0;
+                            height: 2rem;
+                            font-size: $font-size-h4;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            order:1;
+
+                            &:before {
+                                font-family: $font-family-icon;
+                                content: "\f111";
+
+                            }
+                        }
+                        &.number {
+                            order:2;
+                            flex-grow: 0;
+                            flex-basis: 7rem;
+                            padding-left: 0;
+                        }
+                        &.policyholder {order:3;}
+                        &.address {
+                            order:0;
+                            flex-basis: 100%;
+                            width: 100%;
+                            font-size: $font-size-h4;
+                            padding-bottom: 0;
+                        }
+                        &.status {
+                            order:4;
+                            flex-grow: 0;
+                            flex-basis: 7rem;
+                        }
+                        &.effectiveDate {
+                            order:5;
+                            flex-grow: 0;
+                            flex-basis: 7rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+.filters {
+    margin: $padding;
+
+    a {
+        &.btn {
+            border-radius: 0;
+            @include button-variant($warm-gray-12, $warm-gray-01, $warm-gray-01);
+            text-transform: none;
+            font-weight: $font-weight-normal;
+            margin-right: 2px;
+            &:hover {
+                @include button-variant($warm-gray-12, $warm-gray-02, $warm-gray-02);
+            }
+            &:first-child {
+                border-top-left-radius: $border-radius;
+                border-bottom-left-radius:  $border-radius;
+            }
+            &:last-child {
+                border-top-right-radius: $border-radius;
+                border-bottom-right-radius:  $border-radius;
+                margin-right: 0;
+            }
+            &.selected {
+                @include button-variant($white, $bright-blue-darken-04, $bright-blue-darken-04);
+                &:hover {
+                    @include button-variant($white, $bright-blue-darken-04, $bright-blue-darken-04);
+                }
             }
         }
     }

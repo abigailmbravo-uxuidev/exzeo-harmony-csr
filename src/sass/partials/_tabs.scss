@@ -1,30 +1,28 @@
 nav {
     &.tabs {
         margin: $padding;
+        border-bottom: 2px solid $bright-blue-darken-04;
 
         a {
             &.btn {
                 border-radius: 0;
-                @include button-variant($warm-gray-12, $warm-gray-01, $warm-gray-01);
                 text-transform: none;
                 font-weight: $font-weight-normal;
-                margin-right: 2px;
+                padding-bottom: $padding;
                 &:hover {
-                    @include button-variant($warm-gray-12, $warm-gray-02, $warm-gray-02);
-                }
-                &:first-child {
-                    border-top-left-radius: $border-radius;
-                    border-bottom-left-radius:  $border-radius;
-                }
-                &:last-child {
-                    border-top-right-radius: $border-radius;
-                    border-bottom-right-radius:  $border-radius;
-                    margin-right: 0;
+                    text-decoration: none;
+                    cursor: pointer;
                 }
                 &.selected {
-                    @include button-variant($white, $bright-blue-darken-04, $bright-blue-darken-04);
+                    border-bottom: 5px solid $bright-blue-darken-04;
+                    border-left-width: 0;
+                    border-right-width: 0;
+                    padding-bottom: $padding/2;
+                    color: $bright-blue-darken-04;
                     &:hover {
-                        @include button-variant($white, $bright-blue-darken-04, $bright-blue-darken-04);
+                        text-decoration: none;
+                        cursor: default;
+                        color: $bright-blue-darken-04;
                     }
                 }
             }
