@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-for */
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Form, change, propTypes } from 'redux-form';

@@ -1,12 +1,7 @@
-import React, {
-  PropTypes
-} from 'react';
-import {
-  bindActionCreators
-} from 'redux';
-import {
-  connect
-} from 'react-redux';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
