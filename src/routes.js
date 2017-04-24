@@ -29,8 +29,6 @@ class Routes extends Component { // eslint-disable-line
           <Helmet><title>Harmony Web - Agent HO3 Quote</title></Helmet>
           <Switch>
             <Route exact path="/" component={authHOC(Splash, '/', this.props)} />
-            <Route exact path="/quote" component={authHOC(Quote, '/quote', this.props)} />
-            <Route exact path="/quote/retrieve" component={authHOC(Quote, '/quote/retrieve', this.props)} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/error" component={AppError} />
             <Route component={NotFound} />

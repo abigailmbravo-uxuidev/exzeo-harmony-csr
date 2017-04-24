@@ -17,17 +17,6 @@ export const start = (modelName, workflowData) => {
   return stateObj;
 };
 
-// export const activeTask = (modelName, workflowData) => {
-//   const newWorkflowData = {};
-//   newWorkflowData[modelName] = {};
-//   newWorkflowData[modelName].data = workflowData;
-//   const stateObj = {
-//     type: types.CG_ACTIVE_TASK,
-//     workflowData: newWorkflowData
-//   };
-//   return stateObj;
-// };
-
 export const complete = (modelName, workflowData) => {
   const newWorkflowData = {};
   newWorkflowData[modelName] = {};
