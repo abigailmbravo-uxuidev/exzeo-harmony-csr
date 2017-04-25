@@ -10,7 +10,7 @@ nav {
             margin-right: 2px;
 
             &:hover {
-                @include button-variant($warm-gray-12, $warm-gray-02, $warm-gray-02);
+                @include button-variant($warm-gray-12, $warm-gray-04, $warm-gray-04);
                 cursor: pointer;
                 text-decoration: none;
             }

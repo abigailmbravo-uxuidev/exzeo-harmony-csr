@@ -293,15 +293,7 @@ header {
     justify-content: center;
     flex-shrink: 0;
     flex-basis: 3.375rem;
-    @include for-tablet-landscape-up {
-        max-width: 64rem;
-    }
-    @include for-desktop-up {
-        max-width: 84rem;
-    }
-    //@include for-big-desktop-up {
-    //max-width: 120rem;
-    //}
+
     div[role="banner"] {
         display: flex;
         width: 100%;
@@ -443,7 +435,7 @@ header {
                 }
                 @include for-tablet-landscape-up {
                     margin-left: 1rem;
-                    color: $bright-blue-lighten-04;
+                    color: $bright-blue;
                 }
 
                 &:hover {
@@ -504,13 +496,13 @@ header {
             .user-name {
                 margin: 0 ($padding/2) 0 ($padding*4);
                 font-size: $font-size-sm;
-                color: $bright-blue-darken-01;
+                color: rgba($white, .5);
             }
             >button {
                 i {
                     @include transition(all .2s ease-in-out);
                     margin: 0;
-                    color: $bright-blue-darken-02;
+                    color: $bright-blue;
                 }
                 span {
                     +i {
@@ -519,7 +511,7 @@ header {
                 }
                 &:hover {
                     i {
-                        color: $bright-blue;
+                        color: $bright-blue-lighten-01;
                     }
                 }
             }
@@ -540,12 +532,6 @@ main[role="document"] {
     flex-grow: 1;
     flex-shrink: 0;
     align-items: flex-start;
-    @include for-tablet-landscape-up {
-        max-width: 64rem;
-    }
-    @include for-desktop-up {
-        max-width: 84rem;
-    }
 
     .content-wrapper {
         display: flex;

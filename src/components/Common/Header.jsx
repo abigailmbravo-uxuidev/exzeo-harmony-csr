@@ -18,8 +18,8 @@ export const Header = props => (
       <button className="btn-icon btn-ellipsis-v"><i className="fa fa-ellipsis-v" /></button>
       <nav className="fade-in">
         <a href="" className="active">Policy Management</a>
-        <a href="">Agency Management</a>
-        <a href="">User Management</a>
+        {/*<a href="">Agency Management</a>
+        <a href="">User Management</a>*/}
         <div className="user-name">ttic20000@typtap.com</div>
         <button className="btn btn-action"><i className="fa fa-gear" /></button>
         <button className="btn logout btn-action" type="button" onClick={() => handleLogout(props)}><i className="fa fa-sign-out" /></button>
