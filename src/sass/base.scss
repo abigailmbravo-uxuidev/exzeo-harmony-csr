@@ -1052,6 +1052,7 @@ main[role="document"] {
         border-radius: 50%;
         align-items: center;
         justify-content: center;
+        @include button-variant($btn-primary-color, $warm-gray-05, $warm-gray-05);
         @include for-tablet-landscape-up {
             width: auto;
             height: auto;
@@ -1067,23 +1068,27 @@ main[role="document"] {
             border-radius: $btn-border-radius;
         }
 
-        i {
-            margin-right: 0;
-            @include for-tablet-landscape-up {
-                margin-right: $padding;
+        div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            i {
+                margin-right: 0;
+                @include for-tablet-landscape-up {
+                    margin-right: $padding;
+                }
+                @include for-phone-only {
+                    margin-right: $padding;
+                }
             }
-            @include for-phone-only {
-                margin-right: $padding;
-            }
-        }
-
-        span {
-            display: none;
-            @include for-tablet-landscape-up {
-                display: block;
-            }
-            @include for-phone-only {
-                display: block;
+            span {
+                display: none;
+                @include for-tablet-landscape-up {
+                    display: block;
+                }
+                @include for-phone-only {
+                    display: block;
+                }
             }
         }
     }

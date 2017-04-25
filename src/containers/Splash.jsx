@@ -53,7 +53,7 @@ const Splash = () => (
                                             </div>
                                     </div>
                             </div>
-                            <div className="card-view">
+                            <div className="table-view">
                             <BootstrapTable className="results-grid" data={ data } striped hover>
                                 <TableHeaderColumn isKey dataField='type' className="icon" columnClassName="icon" dataAlign='center' dataSort={ true }>Type</TableHeaderColumn>
                                 <TableHeaderColumn dataField='number' className="number" columnClassName="number" dataSort={ true }>Number</TableHeaderColumn>

@@ -19,12 +19,6 @@ export const Base = props => (
           <h3>CSR Portal</h3>
         </div>
         <SideNav />
-        <button className="btn logout btn-action" type="button" onClick={() => handleLogout(props)}>
-          <div>
-            <i className="fa fa-sign-out" />
-            <span>Logout</span>
-          </div>
-        </button>
       </aside>
       <div className="content-wrapper">
         {props.children}
