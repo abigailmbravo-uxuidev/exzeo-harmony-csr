@@ -773,75 +773,77 @@ table {
 .csr {
     //table view styles
     /*------------------------------------------------------------------------------------*/
-    .results-grid {
-        .react-bs-container-header {
-            .table-bordered {
-                tr {
-                    th {
+    .table-view {
+        .results-grid {
+            .react-bs-container-header {
+                .table-bordered {
+                    tr {
+                        th {
 
-                        &.icon {
-                            width: 5%;
-                        }
+                            &.icon {
+                                width: 5%;
+                            }
 
-                        &.number {
-                            width: 10%
-                        }
+                            &.number {
+                                width: 10%
+                            }
 
-                        &.policyholder {
-                            width: 15%;
-                        }
+                            &.policyholder {
+                                width: 15%;
+                            }
 
-                        &.address {
-                            width: 50%;
-                        }
+                            &.address {
+                                width: 50%;
+                            }
 
-                        &.status {
-                            width: 10%;
-                        }
+                            &.status {
+                                width: 10%;
+                            }
 
-                        &.effectiveDate {
-                            width: 10%;
+                            &.effectiveDate {
+                                width: 10%;
+                            }
                         }
                     }
                 }
             }
-        }
 
-        .react-bs-container-body {
-            .table {
-                tr {
-                    &:hover {
-                        cursor: pointer;
-                    }
-                    td {
+            .react-bs-container-body {
+                .table {
+                    tr {
+                        &:hover {
+                            cursor: pointer;
+                        }
+                        td {
 
-                        &.icon {
-                            width: 5%;
+                            &.icon {
+                                width: 5%;
 
-                            &:before {
-                                font-family: $font-family-icon;
-                                content: "\f111";
+                                &:before {
+                                    font-family: $font-family-icon;
+                                    content: "\f111";
+                                }
                             }
-                        }
 
-                        &.number {
-                            width: 10%
-                        }
+                            &.number {
+                                width: 10%
+                            }
 
-                        &.policyholder {
-                            width: 15%;
-                        }
+                            &.policyholder {
+                                width: 15%;
+                            }
 
-                        &.address {
-                            width: 50%;
-                        }
+                            &.address {
+                                width: 50%;
+                            }
 
-                        &.status {
-                            width: 10%;
-                        }
+                            &.status {
+                                width: 10%;
+                            }
 
-                        &.effectiveDate {
-                            width: 10%;
+                            &.effectiveDate {
+                                width: 10%;
+                            }
                         }
                     }
                 }
@@ -862,53 +864,62 @@ table {
                 }
             }
             .react-bs-container-body {
+                overflow: visible;
                 .table {
-                    td {
+                    tr {
+                        @include transition(all .2s ease-in-out);
+                        &:hover {
+                            z-index: 2;
+                            transform: scale(1.004);
+                            box-shadow: $card-box-shadow-hover;
+                        }
+                        td {
 
-                        &.icon {
-                            flex-grow: 0;
-                            font-size: $font-size-h4;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            order: 1;
-                            width: 2rem;
+                            &.icon {
+                                flex-grow: 0;
+                                font-size: $font-size-h4;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                order: 1;
+                                width: 2rem;
 
-                            &:before {
-                                font-family: $font-family-icon;
-                                content: "\f111";
+                                &:before {
+                                    font-family: $font-family-icon;
+                                    content: "\f111";
+                                }
                             }
-                        }
 
-                        &.number {
-                            order: 2;
-                            flex-grow: 0;
-                            flex-basis: 7rem;
-                            padding-left: 0;
-                        }
+                            &.number {
+                                order: 2;
+                                flex-grow: 0;
+                                flex-basis: 7rem;
+                                padding-left: 0;
+                            }
 
-                        &.policyholder {
-                            order: 3;
-                        }
+                            &.policyholder {
+                                order: 3;
+                            }
 
-                        &.address {
-                            order: 0;
-                            flex-basis: 100%;
-                            width: 100%;
-                            font-size: $font-size-h4;
-                            padding-bottom: 0;
-                        }
+                            &.address {
+                                order: 0;
+                                flex-basis: 100%;
+                                width: 100%;
+                                font-size: $font-size-h4;
+                                padding-bottom: 0;
+                            }
 
-                        &.status {
-                            order: 4;
-                            flex-grow: 0;
-                            flex-basis: 7rem;
-                        }
+                            &.status {
+                                order: 4;
+                                flex-grow: 0;
+                                flex-basis: 7rem;
+                            }
 
-                        &.effectiveDate {
-                            order: 5;
-                            flex-grow: 0;
-                            flex-basis: 7rem;
+                            &.effectiveDate {
+                                order: 5;
+                                flex-grow: 0;
+                                flex-basis: 7rem;
+                            }
                         }
                     }
                 }

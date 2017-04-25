@@ -24,6 +24,7 @@ var data = [{
     effectiveDate: "12/01/2017"
 }];
 
+
 const Splash = () => (
     <BaseConnect>
         <ClearErrorConnect/>
@@ -47,9 +48,8 @@ const Splash = () => (
                                                     <a href="" className="btn btn-sm">Policies</a>
                                             </div>
                                             <div className="filters">
-                                                    <a href="" className="btn btn-sm selected"><i className="fa fa-list-ul"></i></a>
-                                                    <a href="" className="btn btn-sm"><i className="fa fa-table"></i></a>
-
+                                                    <button ref="cardViewBtn" className="btn btn-sm selected"><i className="fa fa-list-ul"></i></button>
+                                                    <button ref="tableViewBtn" className="btn btn-sm"><i className="fa fa-table"></i></button>
                                             </div>
                                     </div>
                             </div>
