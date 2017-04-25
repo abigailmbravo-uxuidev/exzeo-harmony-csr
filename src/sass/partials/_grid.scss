@@ -813,9 +813,81 @@ table {
         }
     }
 }
+
+
 //CSR splash page grid styles
 
 .csr {
+    //table view styles
+    .results-grid {
+        .react-bs-container-header {
+            .table-bordered {
+                th {
+
+                    &.icon {
+                        width: 5%;
+                    }
+
+                    &.number {
+                        width: 10%
+                    }
+
+                    &.policyholder {
+                        width: 15%;
+                    }
+
+                    &.address {
+                        width: 50%;
+                    }
+
+                    &.status {
+                        width: 10%;
+                    }
+
+                    &.effectiveDate {
+                        width: 10%;
+                    }
+                }
+            }
+        }
+
+        .react-bs-container-body {
+            .table {
+                td {
+
+                    &.icon {
+                        width: 5%;
+
+                        &:before {
+                            font-family: $font-family-icon;
+                            content: "\f111";
+                        }
+                    }
+
+                    &.number {
+                        width: 10%
+                    }
+
+                    &.policyholder {
+                        width: 15%;
+                    }
+
+                    &.address {
+                        width: 50%;
+                    }
+
+                    &.status {
+                        width: 10%;
+                    }
+
+                    &.effectiveDate {
+                        width: 10%;
+                    }
+                }
+            }
+        }
+    }
+    //card view styles
     .card-view {
         .results-grid {
             .react-bs-container-header {
@@ -827,6 +899,7 @@ table {
                     td {
                         padding: ($padding/2) $padding;
                         align-self: center;
+                        width: 2rem;
 
                         &.icon {
                             flex-grow: 0;
