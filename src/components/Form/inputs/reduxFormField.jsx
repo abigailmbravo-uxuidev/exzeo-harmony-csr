@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { combineRules } from '../Rules';
 
@@ -46,7 +47,8 @@ export default function reduxFormField(fieldComponent) {
         'string',
         'tel',
         'text',
-        'currency'
+        'currency',
+        'selectBilling'
       ]),
 
       /**

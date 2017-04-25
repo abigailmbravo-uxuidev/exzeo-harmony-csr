@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import dependencyHelper from './dependencyHelper';
 import {
   CheckField,
@@ -8,7 +9,8 @@ import {
   RadioField,
   SelectField,
   SliderField,
-  TextField
+  TextField,
+  SelectFieldBilling
 } from './inputs';
 
 const FieldGenerator = ({
@@ -32,6 +34,8 @@ const FieldGenerator = ({
   if (inputProps.remove) inputProps.type = 'remove';
 
   switch (inputProps.type) {
+    case 'selectBilling':
+      return <SelectFieldBilling {...inputProps} />;
     case 'select':
       return <SelectField {...inputProps} />;
     case 'radio': {
