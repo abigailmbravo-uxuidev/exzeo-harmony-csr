@@ -59,13 +59,16 @@ export const Login = (props) => {
     <i className="fa fa-sign-out" /> You have been logged out
   </span></div>) : null;
 
-  const isAuthenticatedResult = (props.user.isAuthenticated) ?
-  (<Redirect to={props.redirectUrl} />) : null;
+  const isAuthenticatedResult = (props.user.isAuthenticated) 
+    ? (<Redirect to={ props.redirectUrl } />) 
+    : null;
 
   const { fieldValues, handleSubmit } = props;
+
   if (props.appState.data && props.appState.data.loginSubmitting) {
     return <Loader />;
   }
+
   return (<BaseConnect>
     <div className="login" role="article">
       <div className="card">
@@ -75,7 +78,7 @@ export const Login = (props) => {
         <Form
           className="card-block"
           id="Login"
-          onSubmit={handleSubmit(handleLoginSubmit)}
+          onSubmit={handleLoginSubmit}
           noValidate
         >
           { isAuthenticatedResult }
@@ -84,9 +87,9 @@ export const Login = (props) => {
 
           {formQuestions.map((question, index) =>
             <FieldGenerator
-              question={question}
-              values={fieldValues}
-              key={index}
+              question={ question }
+              values={ fieldValues }
+              key={ index }
             />
           )}
         </Form>

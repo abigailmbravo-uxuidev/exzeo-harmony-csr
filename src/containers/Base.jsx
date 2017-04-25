@@ -1,5 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -25,8 +24,10 @@ export const Base = props => (
         </div>
         <SideNav />
         <button className="btn logout btn-action" type="button" onClick={() => handleLogout(props)}>
-          <i className="fa fa-sign-out" />
-          <span>Logout</span>
+          <div>
+            <i className="fa fa-sign-out" />
+            <span>Logout</span>
+          </div>
         </button>
       </aside>
       <div className="content-wrapper">
