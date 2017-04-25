@@ -13,8 +13,11 @@
 @import "partials/_reset";
 /*Set base typography*/
 @import "partials/_type";
+/*Grid styles*/
+@import "partials/_grid";
+@import "partials/_tabs";
 @import "partials/_workflow";
-@import "https://fonts.googleapis.com/css?family=Roboto:300,400"; //base
+@import "https://fonts.googleapis.com/css?family=Roboto:100,300,500"; //base
 //links
 /*------------------------------------------------------------------------------------*/
 a {
@@ -290,15 +293,7 @@ header {
     justify-content: center;
     flex-shrink: 0;
     flex-basis: 3.375rem;
-    @include for-tablet-landscape-up {
-        max-width: 64rem;
-    }
-    @include for-desktop-up {
-        max-width: 84rem;
-    }
-    //@include for-big-desktop-up {
-    //max-width: 120rem;
-    //}
+
     div[role="banner"] {
         display: flex;
         width: 100%;
@@ -359,8 +354,8 @@ header {
 
         > .logo {
             display: block;
-            width: 7rem;
-            flex-basis: 7rem;
+            width: 10rem;
+            flex-basis: 10rem;
             flex-shrink: 0;
             @include for-phone-only {
                 margin-left: 3rem;
@@ -440,7 +435,7 @@ header {
                 }
                 @include for-tablet-landscape-up {
                     margin-left: 1rem;
-                    color: $bright-blue-lighten-04;
+                    color: $bright-blue;
                 }
 
                 &:hover {
@@ -498,6 +493,28 @@ header {
                     }
                 }
             }
+            .user-name {
+                margin: 0 ($padding/2) 0 ($padding*4);
+                font-size: $font-size-sm;
+                color: rgba($white, .5);
+            }
+            >button {
+                i {
+                    @include transition(all .2s ease-in-out);
+                    margin: 0;
+                    color: $bright-blue;
+                }
+                span {
+                    +i {
+                        margin: 0 0 0 $padding;
+                    }
+                }
+                &:hover {
+                    i {
+                        color: $bright-blue-lighten-01;
+                    }
+                }
+            }
         }
     }
 }
@@ -515,12 +532,6 @@ main[role="document"] {
     flex-grow: 1;
     flex-shrink: 0;
     align-items: flex-start;
-    @include for-tablet-landscape-up {
-        max-width: 64rem;
-    }
-    @include for-desktop-up {
-        max-width: 84rem;
-    }
 
     .content-wrapper {
         display: flex;
@@ -836,6 +847,8 @@ main[role="document"] {
     background: $warm-gray-02;
     flex-shrink: 0;
     flex-grow: 0;
+    flex-basis: 12rem;
+    width: 12rem;
     align-self: stretch;
     @include transition(all .2s ease-in-out);
     @include for-phone-only {
@@ -854,6 +867,28 @@ main[role="document"] {
         ul {
             li {
                 a {
+                    i,
+                    span {
+                        color: $warm-gray-07;
+                    }
+
+                    &.active {
+                        border-left-color: $bright-blue-darken-04;
+                        font-weight: $font-weight-bold;
+
+                        i {
+                            color: $bright-blue-darken-04;
+                        }
+
+                        span {
+                            color: $bright-blue-darken-04;
+                        }
+
+                        &:hover {
+                            text-decoration: none;
+                        }
+                    }
+
                     &.agent-dashboard {
                         i {
                             &:before {
@@ -909,14 +944,46 @@ main[role="document"] {
                             }
                         }
                     }
+
+                    &.csr-dashboard {
+                        i {
+                            &:before {
+                                content: "\f009";
+                            }
+                        }
+                    }
                 }
             }
+        }
+    }
+    .csr {
+        width: auto;
+        min-height: 4.75rem;
+        padding: ($padding) ($padding*2);
+        border-bottom: 2px solid $white;
+        background-color: $warm-gray-03;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        @include transition(all .2s ease-in-out);
+        @include for-tablet-portrait-up {
+            display: none;
+        }
+        @include for-tablet-landscape-up {
+            display: flex;
+            flex-direction: column;
+            width: 12rem;
+        }
+        h3 {
+            color: $warm-gray-01;
+            margin: 0;
         }
     }
 
     .user {
         width: auto;
-        min-height: 4.7rem;
+        min-height: 4.75rem;
         padding: ($padding) ($padding*2);
         border-bottom: 2px solid $white;
         background-color: $warm-gray-08;
@@ -1030,7 +1097,6 @@ main[role="document"] {
     display: flex;
     width: 100%;
     height: auto;
-    //max-height: 4rem;
     margin-top: 0;
     margin-bottom: 0;
     transition: margin 0.5s;
@@ -1229,9 +1295,10 @@ main[role="document"] {
 
                     i {
                         background: $warm-gray-01;
+                        @include transition(all .2s ease-in-out);
 
                         &:before {
-                            content: "\f1db";
+
                         }
 
                         &.chooseAddress {
@@ -2148,6 +2215,86 @@ ul.list-cards {
 #Assumptions {}
 //Additional Interests
 /*------------------------------------------------------------------------------------*/
+#AddAdditionalInterestPage {
+    .detail-wrapper {
+        flex-direction: column;
+    }
+
+    .button-group {
+        display: flex;
+
+        .btn {
+            margin: 0 $padding $padding 0;
+        }
+    }
+
+    .results-wrapper {
+        width: 100%;
+        margin-bottom: $padding*2;
+        padding-bottom: $paragraph-margin-bottom;
+        border-bottom: 1px dashed $warm-gray-02;
+
+        .result-cards {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+
+            li {
+                a {
+                    .card-icon {
+                        display: flex;
+                        flex-direction: column;
+                        width: 4rem;
+                        margin-right: $padding;
+                        align-items: center;
+
+                        label {
+                            text-align: center;
+                            font-size: $font-size-xs;
+                        }
+
+                        .fa {
+                            &.Mortgagee {
+                                &:before {
+                                    content: "\f19c";
+                                }
+                            }
+
+                            &.Lienholder {
+                                &:before {
+                                    content: "\F27E";
+                                }
+                            }
+
+                            &.Interest {
+                                &:before {
+                                    content: "\F2B5";
+                                }
+                            }
+
+                            &.Insured {
+                                &:before {
+                                    content: "\F234";
+                                }
+                            }
+
+                            &.Bill {
+                                &:before {
+                                    content: "\F0D6";
+                                }
+                            }
+                        }
+                    }
+
+                    .fa-pencil {
+                        font-size: $font-size-h4;
+                    }
+                }
+            }
+        }
+    }
+}
+
 #AdditionalPolicyHolder {
     .switch.inactive~.form-group {
         display: none;

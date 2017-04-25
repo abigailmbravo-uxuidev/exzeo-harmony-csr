@@ -16,16 +16,6 @@ const agentLinks = [{
   label: 'DASHBOARD',
   styleName: 'agent-dashboard',
   exact: true
-}, {
-  link: 'https://www.typtap.com/agency',
-  label: 'FLOOD QUOTE',
-  styleName: 'agent-flood label',
-  outside: true
-},
-{
-  link: '/quote',
-  label: 'HO3 QUOTE',
-  styleName: 'agent-homeowners label'
 }];
 
 const SideNav = () => (
@@ -34,7 +24,8 @@ const SideNav = () => (
       {agentLinks && agentLinks.length > 0 && agentLinks.map((agentLink, index) => (
         agentLink.outside ?
           <li key={index}>
-            <a className={agentLink.styleName} href={agentLink.link}>
+            {/*<a className={agentLink.styleName} href={agentLink.link}>*/}
+            <a className="csr-dashboard" href="/">
               <i className="fa" />
               <span>{agentLink.label}</span>
             </a>

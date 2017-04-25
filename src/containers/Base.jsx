@@ -11,16 +11,12 @@ const handleLogout = (props) => {
 };
 
 export const Base = props => (
-  <div className="app-wrapper">
+  <div className="app-wrapper csr">
     <Header />
     <main role="document">
       <aside className="content-panel-left">
-        <div className="user">
-          <label htmlFor="user">User</label>
-          <h5 className="user-name">
-            <span>TTIC20000@typtap.com</span>
-            <i className="fa fa-gear" />
-          </h5>
+        <div className="csr">
+          <h3>CSR Portal</h3>
         </div>
         <SideNav />
         <button className="btn logout btn-action" type="button" onClick={() => handleLogout(props)}>
