@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import BaseConnect from './Base';
 import ClearErrorConnect from '../components/Error/ClearError';
@@ -24,14 +23,12 @@ var data = [{
     effectiveDate: "12/01/2017"
 }];
 
-
 const Splash = () => (
     <BaseConnect>
         <ClearErrorConnect/>
         <div className="dashboard" role="article">
             <div className="route">
                 <div className="search route-content">
-
                     <div className="survey-wrapper scroll">
                         <div className="results-wrapper">
                             <div className="grid-controls">

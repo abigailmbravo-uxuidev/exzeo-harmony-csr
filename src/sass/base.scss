@@ -1052,7 +1052,6 @@ main[role="document"] {
         border-radius: 50%;
         align-items: center;
         justify-content: center;
-        @include button-variant($btn-primary-color, $warm-gray-05, $warm-gray-05);
         @include for-tablet-landscape-up {
             width: auto;
             height: auto;
