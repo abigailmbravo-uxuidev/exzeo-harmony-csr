@@ -8,121 +8,17 @@ $line-height-computed: floor(($font-size-base * $line-height-base)) !default; //
 //
 //## Customizes the `.table` component with basic values, each used across all table variations.
 //** Padding for `<th>`s and `<td>`s.
-$table-cell-padding: 8px !default; //** Padding for cells in `.table-condensed`.
+$table-cell-padding: $padding !default; //** Padding for cells in `.table-condensed`.
 $table-condensed-cell-padding: 5px !default; //** Default background color used for all tables.
 $table-bg: transparent !default; //** Background color used for `.table-striped`.
 $table-bg-accent: $white !default; //** Background color used for `.table-hover`.
-$table-bg-hover: #f5f5f5 !default;
+$table-bg-hover: $warm-gray-00 !default;
+$table-bg-hover-alt: $warm-gray-02 !default;
 $table-bg-active: $table-bg-hover !default; //** Border color for table and cell borders.
-$table-border-color: #ddd !default; //== Media queries breakpoints
-//
-//## Define the breakpoints at which your layout will change, adapting to different screen sizes.
-// Extra small screen / phone
-//** Deprecated `$screen-xs` as of v3.0.1
-$screen-xs: 480px !default; //** Deprecated `$screen-xs-min` as of v3.2.0
-$screen-xs-min: $screen-xs !default; //** Deprecated `$screen-phone` as of v3.0.1
-$screen-phone: $screen-xs-min !default; // Small screen / tablet
-//** Deprecated `$screen-sm` as of v3.0.1
-$screen-sm: 768px !default;
-$screen-sm-min: $screen-sm !default; //** Deprecated `$screen-tablet` as of v3.0.1
-$screen-tablet: $screen-sm-min !default; // Medium screen / desktop
-//** Deprecated `$screen-md` as of v3.0.1
-$screen-md: 992px !default;
-$screen-md-min: $screen-md !default; //** Deprecated `$screen-desktop` as of v3.0.1
-$screen-desktop: $screen-md-min !default; // Large screen / wide desktop
-//** Deprecated `$screen-lg` as of v3.0.1
-$screen-lg: 1200px !default;
-$screen-lg-min: $screen-lg !default; //** Deprecated `$screen-lg-desktop` as of v3.0.1
-$screen-lg-desktop: $screen-lg-min !default; // So media queries don't overlap when required, provide a maximum
-$screen-xs-max: ($screen-sm-min - 1) !default;
-$screen-sm-max: ($screen-md-min - 1) !default;
-$screen-md-max: ($screen-lg-min - 1) !default;
+$table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
 
 .react-bs-table-container .react-bs-table-search-form {
     margin-bottom: 0;
-}
-
-.react-bs-table-container {
-    .sort-column {
-        display: flex;
-        align-items: center;
-
-        .order {
-            margin: 0 0 0 .5rem;
-            color: $warm-gray-10;
-            display: inline-flex;
-            flex-direction: column;
-            flex-grow: 0;
-            flex-shrink: 0;
-            position: relative;
-            height: 1rem;
-            line-height: 1rem;
-
-            /*&:before {
-                content: "\f0d8";
-                font: normal normal normal 1rem $font-family-icon;
-                color: rgba($warm-gray-05, .5);
-            }
-            &:after {
-                content: "\f0d7";
-                font: normal normal normal 1rem $font-family-icon;
-                color: rgba($warm-gray-05, .5);
-            }*/
-
-            > .caret {
-                margin: 0 !important;
-                padding: 0 !important;
-                top: -.125rem;
-                &:before {
-                    content: "\f0d8";
-                    font: normal normal normal 1rem $font-family-icon;
-                    color: rgba($warm-gray-07, 1);
-                }
-            }
-
-            &.dropup {
-                > .caret {
-                    top: .375rem;
-                    &:before {
-                        content: "\f0d7";
-                        font: normal normal normal 1rem $font-family-icon;
-                        color: rgba($warm-gray-07, 1);
-                    }
-                }
-            }
-
-            > span {
-                line-height: 1;
-                margin: 0;
-                padding: 0;
-                width: auto;
-                text-align: center;
-                position: absolute;
-
-                &.dropdown {
-                    top: -.125rem;
-                    &:before {
-                        content: "\f0d8";
-                        font: normal normal normal 1rem $font-family-icon;
-                        color: rgba($warm-gray-07, .25);
-                    }
-                    .caret {
-                        margin: 0 !important;
-                        padding: 0 !important;
-                    }
-                }
-
-                &.dropup {
-                    top: .375rem;
-                    &:before {
-                        content: "\f0d7";
-                        font: normal normal normal 1rem $font-family-icon;
-                        color: rgba($warm-gray-07, .25);
-                    }
-                }
-            }
-        }
-    }
 }
 
 .react-bs-table {
@@ -206,8 +102,13 @@ $screen-md-max: ($screen-lg-min - 1) !default;
     outline: none !important;
 }
 
-.react-bs-table .table-bordered > tbody > tr:nth-of-type(even) > td {
-    background-color: $warm-gray-01;
+.react-bs-table .table-bordered > tbody > tr:nth-of-type(even) {
+    > td {
+        background-color: $warm-gray-01;
+    }
+    &:hover > td {
+        background-color: $table-bg-hover-alt;
+    }
 }
 
 .react-bs-table .table-bordered > tbody > tr > td.default-focus-cell {
@@ -565,6 +466,10 @@ th {
 .table-striped {
     > tbody > tr:nth-of-type(odd) {
         background-color: $table-bg-accent;
+
+        &:hover {
+            background-color: $table-bg-hover;
+        }
     }
 }
 // Hover effect
@@ -596,26 +501,20 @@ table {
         }
     }
 }
-// Table backgrounds
-//
-// Exact selectors below required to override `.table-striped` and prevent
-// inheritance to nested tables.
-// Generate the contextual variants
-//@include table-row-variant('active', $table-bg-active);
-//@include table-row-variant('success', $state-success-bg);
-//@include table-row-variant('info', $state-info-bg);
-//@include table-row-variant('warning', $state-warning-bg);
-//@include table-row-variant('danger', $state-danger-bg);
+
 // Responsive tables
 //
 // Wrap your tables in `.table-responsive` and we'll make them mobile friendly
 // by enabling horizontal scrolling. Only applies <768px. Everything above that
 // will display normally.
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+//NEED TO REWORK THIS TO BECOME CARDS ON MOBILE DEVICES
 .table-responsive {
     overflow-x: auto;
     min-height: 0.01%; // Workaround for IE9 bug (see https://github.com/twbs/bootstrap/issues/14837)
-    @media screen and (max-width: $screen-xs-max) {
+    @include for-phone-only {
         overflow-y: hidden;
         width: 100%;
         margin-bottom: ($line-height-computed * 0.75);
@@ -681,7 +580,6 @@ table {
     display: none;
 }
 //GLOBAL DEFAULTS
-
 .react-bs-table,
 .table-bordered > tbody > tr > td,
 .table-bordered > tbody > tr > th,
@@ -691,7 +589,6 @@ table {
 .table-bordered > thead > tr > th {
     border: 0;
 }
-
 .react-bs-table {
     .table .table {
         background: transparent;
@@ -752,100 +649,159 @@ table {
 }
 
 .file-list {}
-//card view
+//table view
 /*------------------------------------------------------------------------------------*/
-.card-view {
-    .react-bs-container-header {
-        .table-bordered {
-            table-layout: auto;
+.react-bs-container-header {
+    .table-bordered {
+        table-layout: auto;
 
-            tr {
-                display: flex;
-                flex-direction: row;
-                flex-wrap: nowrap;
-                justify-content: flex-start;
-                align-content: stretch;
-                align-items: flex-start;
-                flex-grow: 1;
-                flex-shrink: 0;
-                flex-basis: auto;
+        tr {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            align-content: stretch;
+            align-items: flex-start;
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: auto;
 
-                th {
-                    width: auto;
-                    order: 0;
-                    align-self: auto;
-                }
-            }
-        }
-    }
-
-    .react-bs-container-body {
-        .table {
-            table-layout: auto;
-
-            tr {
-                display: flex;
-                flex-direction: row;
-                margin-top: $padding;
-                border: $card-border-width solid $card-border-color;
-                border-radius: $card-border-radius;
-                background: $card-bg;
-                box-shadow: $card-box-shadow;
-                flex-wrap: wrap;
-                justify-content: flex-start;
-                align-content: stretch;
-                align-items: flex-start;
-                flex-grow: 1;
-                flex-shrink: 0;
-                flex-basis: auto;
-
-                td {
-                    white-space: pre-line;
-                    order: 0;
-                    flex: 1 1 auto;
-                    align-self: flex-start;
-                }
-            }
-
-            tr:nth-of-type(even) > td {
-                background-color: transparent;
+            th {
+                width: auto;
+                order: 0;
+                align-self: auto;
             }
         }
     }
 }
+.react-bs-container-body {
+    .table {
+        table-layout: auto;
 
+        tr {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-content: stretch;
+            align-items: flex-start;
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: auto;
 
-//CSR splash page grid styles
+            td {
+                white-space: pre-line;
+                order: 0;
+                flex: 1 1 auto;
+                align-self: flex-start;
+            }
+        }
 
+        tr:nth-of-type(even) > td {
+            background-color: transparent;
+        }
+    }
+}
+//card view
+/*------------------------------------------------------------------------------------*/
+.card-view {
+    .react-bs-table-container {
+        .react-bs-container-header {
+            .table-bordered {
+                table-layout: auto;
+
+                tr {
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: nowrap;
+                    justify-content: center;
+                    align-content: stretch;
+                    align-items: flex-start;
+                    flex-grow: 1;
+                    flex-shrink: 0;
+                    flex-basis: auto;
+
+                    th {
+                        width: auto;
+                        order: 0;
+                        align-self: auto;
+                    }
+                }
+            }
+        }
+        .react-bs-container-body {
+            .table {
+                table-layout: auto;
+
+                tr {
+                    display: flex;
+                    flex-direction: row;
+                    margin-top: $padding;
+                    border: $card-border-width solid $card-border-color;
+                    border-radius: $card-border-radius;
+                    background: $card-bg;
+                    box-shadow: $card-box-shadow;
+                    flex-wrap: wrap;
+                    justify-content: flex-start;
+                    align-content: stretch;
+                    align-items: flex-start;
+                    flex-grow: 1;
+                    flex-shrink: 0;
+                    flex-basis: auto;
+
+                    td {
+                        padding: ($padding/2) $padding;
+                        white-space: pre-line;
+                        order: 0;
+                        flex: 1 1 auto;
+                        align-self: center;
+                    }
+                }
+
+                tr:nth-of-type(even) {
+                    background-color: $white;
+                    > td {
+                        background-color: transparent;
+                    }
+                }
+            }
+        }
+    }
+}
+//CSR SPLASH PAGE TABLE
+/*------------------------------------------------------------------------------------*/
 .csr {
     //table view styles
+    /*------------------------------------------------------------------------------------*/
     .results-grid {
         .react-bs-container-header {
             .table-bordered {
-                th {
+                tr {
+                    th {
 
-                    &.icon {
-                        width: 5%;
-                    }
+                        &.icon {
+                            width: 5%;
+                        }
 
-                    &.number {
-                        width: 10%
-                    }
+                        &.number {
+                            width: 10%
+                        }
 
-                    &.policyholder {
-                        width: 15%;
-                    }
+                        &.policyholder {
+                            width: 15%;
+                        }
 
-                    &.address {
-                        width: 50%;
-                    }
+                        &.address {
+                            width: 50%;
+                        }
 
-                    &.status {
-                        width: 10%;
-                    }
+                        &.status {
+                            width: 10%;
+                        }
 
-                    &.effectiveDate {
-                        width: 10%;
+                        &.effectiveDate {
+                            width: 10%;
+                        }
                     }
                 }
             }
@@ -853,53 +809,61 @@ table {
 
         .react-bs-container-body {
             .table {
-                td {
+                tr {
+                    &:hover {
+                        cursor: pointer;
+                    }
+                    td {
 
-                    &.icon {
-                        width: 5%;
+                        &.icon {
+                            width: 5%;
 
-                        &:before {
-                            font-family: $font-family-icon;
-                            content: "\f111";
+                            &:before {
+                                font-family: $font-family-icon;
+                                content: "\f111";
+                            }
                         }
-                    }
 
-                    &.number {
-                        width: 10%
-                    }
+                        &.number {
+                            width: 10%
+                        }
 
-                    &.policyholder {
-                        width: 15%;
-                    }
+                        &.policyholder {
+                            width: 15%;
+                        }
 
-                    &.address {
-                        width: 50%;
-                    }
+                        &.address {
+                            width: 50%;
+                        }
 
-                    &.status {
-                        width: 10%;
-                    }
+                        &.status {
+                            width: 10%;
+                        }
 
-                    &.effectiveDate {
-                        width: 10%;
+                        &.effectiveDate {
+                            width: 10%;
+                        }
                     }
                 }
             }
         }
     }
     //card view styles
+    /*------------------------------------------------------------------------------------*/
     .card-view {
         .results-grid {
             .react-bs-container-header {
-                .table-bordered {}
+                .table-bordered {
+                    tr {
+                        th {
+                            width: auto;
+                        }
+                    }
+                }
             }
-
             .react-bs-container-body {
                 .table {
                     td {
-                        padding: ($padding/2) $padding;
-                        align-self: center;
-                        width: 2rem;
 
                         &.icon {
                             flex-grow: 0;
@@ -908,6 +872,7 @@ table {
                             align-items: center;
                             justify-content: center;
                             order: 1;
+                            width: 2rem;
 
                             &:before {
                                 font-family: $font-family-icon;
@@ -952,6 +917,8 @@ table {
     }
 }
 
+//grid filter buttons
+/*------------------------------------------------------------------------------------*/
 .grid-controls {
     display: flex;
     align-items: center;
@@ -1000,6 +967,83 @@ table {
                             margin: 0;
                             font-size: 0.875rem;
                         }
+                    }
+                }
+            }
+        }
+    }
+}
+//sortable column controls
+/*------------------------------------------------------------------------------------*/
+.react-bs-table-container {
+    .sort-column {
+        display: flex;
+        align-items: center;
+
+        .order {
+            margin: 0 0 0 .5rem;
+            color: $warm-gray-10;
+            display: inline-flex;
+            flex-direction: column;
+            flex-grow: 0;
+            flex-shrink: 0;
+            position: relative;
+            height: 1rem;
+            line-height: 1rem;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            > .caret {
+                margin: 0 !important;
+                padding: 0 !important;
+                top: -.125rem;
+                &:before {
+                    content: "\f0d8";
+                    font: normal normal normal 1rem $font-family-icon;
+                    color: rgba($warm-gray-07, 1);
+                }
+            }
+
+            &.dropup {
+                > .caret {
+                    top: .375rem;
+                    &:before {
+                        content: "\f0d7";
+                        font: normal normal normal 1rem $font-family-icon;
+                        color: rgba($warm-gray-07, 1);
+                    }
+                }
+            }
+
+            > span {
+                line-height: 1;
+                margin: 0;
+                padding: 0;
+                width: auto;
+                text-align: center;
+                position: absolute;
+
+                &.dropdown {
+                    top: -.125rem;
+                    &:before {
+                        content: "\f0d8";
+                        font: normal normal normal 1rem $font-family-icon;
+                        color: rgba($warm-gray-07, .25);
+                    }
+                    .caret {
+                        margin: 0 !important;
+                        padding: 0 !important;
+                    }
+                }
+
+                &.dropup {
+                    top: .375rem;
+                    &:before {
+                        content: "\f0d7";
+                        font: normal normal normal 1rem $font-family-icon;
+                        color: rgba($warm-gray-07, .25);
                     }
                 }
             }
