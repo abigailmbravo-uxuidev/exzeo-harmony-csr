@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import BaseConnect from './Base';
-import SearchBar from '../components/Search/SearchBar';
+
 import ClearErrorConnect from '../components/Error/ClearError';
 import Footer from '../components/Common/Footer';
 
@@ -32,7 +32,7 @@ const Splash = () => (
         <div className="dashboard" role="article">
             <div className="route">
                 <div className="search route-content">
-                    <SearchBar/>
+
                     <div className="survey-wrapper scroll">
                         <div className="results-wrapper">
                             <div className="grid-controls">
