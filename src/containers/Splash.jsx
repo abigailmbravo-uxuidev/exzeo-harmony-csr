@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import BaseConnect from './Base';
-
 import ClearErrorConnect from '../components/Error/ClearError';
 import Footer from '../components/Common/Footer';
 
@@ -49,14 +48,14 @@ const Splash = () => (
                                                     <a href="" className="btn btn-sm">Policies</a>
                                             </div>
                                             <div className="filters">
-                                                    <button ref="cardViewBtn" className="btn btn-sm selected"><i className="fa fa-list-ul"></i></button>
-                                                    <button ref="tableViewBtn" className="btn btn-sm"><i className="fa fa-table"></i></button>
+                                                    <a className="btn btn-sm selected"><i className="fa fa-list-ul"></i></a>
+                                                    <a className="btn btn-sm"><i className="fa fa-table"></i></a>
                                             </div>
                                     </div>
                             </div>
                             <div className="card-view">
                             <BootstrapTable className="results-grid" data={ data } striped hover>
-                                <TableHeaderColumn isKey dataField='type' className="icon" columnClassName="{type} icon" dataAlign='center' dataSort={ true }>Type</TableHeaderColumn>
+                                <TableHeaderColumn isKey dataField='type' className="icon" columnClassName="icon" dataAlign='center' dataSort={ true }>Type</TableHeaderColumn>
                                 <TableHeaderColumn dataField='number' className="number" columnClassName="number" dataSort={ true }>Number</TableHeaderColumn>
                                 <TableHeaderColumn dataField='policyHolder' className="policyholder" columnClassName="policyholder" dataSort={ true }>Policyholder</TableHeaderColumn>
                                 <TableHeaderColumn dataField='address' className="address" columnClassName="address" dataSort={ true }>Address</TableHeaderColumn>
