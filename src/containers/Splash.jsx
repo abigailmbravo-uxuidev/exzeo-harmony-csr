@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import BaseConnect from './Base';
-import SearchBar from '../components/Search/SearchBar';
 import ClearErrorConnect from '../components/Error/ClearError';
 import Footer from '../components/Common/Footer';
 
@@ -29,32 +28,30 @@ const Splash = () => (
     <div className="dashboard" role="article">
       <div className="route">
         <div className="search route-content">
-          <SearchBar/>
           <div className="survey-wrapper scroll">
             <div className="results-wrapper">
               <div className="grid-controls">
-                  <nav className="tabs">
-                    <a href="" className="btn btn-link selected">Recently Viewed</a>
-                    {/*<a href="">My Assigned Quotes</a>*/}
-                    {/*<a href="">My Assigned Claims</a>*/}
-                    <a href="" className="btn btn-link">Search Results</a>
-                  </nav>
-                  <div className="filters-wrapper">
-                      <div className="filters">
-                          <a href="" className="btn btn-sm selected">All</a>
-                          <a href="" className="btn btn-sm">Quotes</a>
-                          <a href="" className="btn btn-sm">Policies</a>
-                      </div>
-                      <div className="filters">
-                          <a href="" className="btn btn-sm selected"><i className="fa fa-list-ul"></i></a>
-                          <a href="" className="btn btn-sm"><i className="fa fa-table"></i></a>
-
-                      </div>
-                  </div>
+                <nav className="tabs">
+                  <a href="" className="btn btn-link selected">Recently Viewed</a>
+                  {/*<a href="">My Assigned Quotes</a>*/}
+                  {/*<a href="">My Assigned Claims</a>*/}
+                  <a href="" className="btn btn-link">Search Results</a>
+                </nav>
+                <div className="filters-wrapper">
+                    <div className="filters">
+                        <a href="" className="btn btn-sm selected">All</a>
+                        <a href="" className="btn btn-sm">Quotes</a>
+                        <a href="" className="btn btn-sm">Policies</a>
+                    </div>
+                    <div className="filters">
+                        <a className="btn btn-sm selected"><i className="fa fa-list-ul"></i></a>
+                        <a className="btn btn-sm"><i className="fa fa-table"></i></a>
+                    </div>
+                </div>
               </div>
-              <div className="card-view">
+              <div className="table-view">
               <BootstrapTable className="results-grid" data={ data } striped hover>
-                <TableHeaderColumn isKey dataField='type' className="icon" columnClassName="{type} icon" dataAlign='center' dataSort={ true }>Type</TableHeaderColumn>
+                <TableHeaderColumn isKey dataField='type' className="icon" columnClassName="icon" dataAlign='center' dataSort={ true }>Type</TableHeaderColumn>
                 <TableHeaderColumn dataField='number' className="number" columnClassName="number" dataSort={ true }>Number</TableHeaderColumn>
                 <TableHeaderColumn dataField='policyHolder' className="policyholder" columnClassName="policyholder" dataSort={ true }>Policyholder</TableHeaderColumn>
                 <TableHeaderColumn dataField='address' className="address" columnClassName="address" dataSort={ true }>Address</TableHeaderColumn>
@@ -68,6 +65,7 @@ const Splash = () => (
         </div>
       </div>
     </div>
+    <Footer/>
   </BaseConnect>
 );
 
