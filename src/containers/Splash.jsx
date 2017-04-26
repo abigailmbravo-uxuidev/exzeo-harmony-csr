@@ -5,6 +5,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import BaseConnect from './Base';
 import ClearErrorConnect from '../components/Error/ClearError';
 import Footer from '../components/Common/Footer';
+import NewNoteFileUploader from '../components/Common/NewNoteFileUploader';
 
 var data = [{
         type: "",
@@ -65,6 +66,7 @@ const Splash = () => (
                             </div>
                         </div>
                     </div>
+                    <NewNoteFileUploader />
                     <Footer/>
                 </div>
             </div>
