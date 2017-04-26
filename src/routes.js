@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import Login from './containers/Login';
 import Splash from './containers/Splash';
+import Quote from './containers/Quote';
 import AppError from './containers/AppError';
 import NotFound from './containers/NotFound';
 
@@ -28,6 +29,7 @@ class Routes extends Component { // eslint-disable-line
           <Helmet><title>Harmony - CSR Portal</title></Helmet>
           <Switch>
             <Route exact path="/" component={ authHOC(Splash, '/', this.props) } />
+            <Route exact path="/quote" component={ authHOC(Quote, '/quote', this.props) } />
             <Route exact path="/login" component={ Login } />
             <Route exact path="/error" component={ AppError } />
             <Route component={ NotFound } />
