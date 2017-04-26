@@ -1112,6 +1112,7 @@ main[role="document"] {
     .results,
     .results-wrapper {
         flex-grow: 1;
+        width: 100%;
 
         .survey-wrapper {
             padding: $padding*2;
@@ -2234,6 +2235,10 @@ ul.list-cards {
     }
 
     .results-wrapper {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        flex-shrink: 0;
         width: 100%;
         margin-bottom: $padding*2;
         padding-bottom: $paragraph-margin-bottom;

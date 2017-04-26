@@ -18,112 +18,120 @@ $table-bg-active: $table-bg-hover !default; //** Border color for table and cell
 $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
 
 .react-bs-table-container .react-bs-table-search-form {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .react-bs-table {
-    border: 1px solid #ddd;
-    border-radius: 0;
+  border: 1px solid #ddd;
+  border-radius: 0;
 }
 
 .react-bs-table table {
-    margin-bottom: 0;
-    table-layout: fixed;
-    color: $warm-gray-10;
-    background-color: transparent;
+  margin-bottom: 0;
+  table-layout: fixed;
+  color: $warm-gray-10;
+  background-color: transparent;
 }
 
 .react-bs-table table td,
 .react-bs-table table th {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .react-bs-table {
-    margin: 5px 10px;
+  margin: 5px 10px;
 }
 
 .react-bs-table-pagination {
-    margin: 10px;
+  margin: 10px;
 }
 
 .react-bs-table-tool-bar {
-    margin: 10px 10px 0;
+  margin: 10px 10px 0;
 }
 
 .react-bs-container-header {
-    overflow: hidden;
-    width: 100%;
+  overflow: hidden;
+  width: 100%;
 }
 
 .react-bs-container-body {
-    /*height: 154px;*/
-    overflow: auto;
-    width: 100%;
+  /*height: 154px;*/
+  overflow: auto;
+  width: 100%;
 }
 
 .react-bootstrap-table-page-btns-ul {
-    float: right;
-    /* override the margin-top defined in .pagination class in bootstrap. */
-    margin-top: 0;
+  float: right;
+  /* override the margin-top defined in .pagination class in bootstrap. */
+  margin-top: 0;
 }
 
 .react-bs-table .table-bordered {
-    border: 0;
-    outline: none !important;
+  border: 0;
+  outline: none !important;
 }
 
 .react-bs-table {
-    .table-bordered {
-        > thead {
-            > tr {
-                display: table-row;
-                background: $warm-gray-02;
-                > th {
-                    display: table-cell;
+  .table-bordered {
+    > thead {
+      > tr {
+        display: table-row;
+        background: $warm-gray-02;
 
-                    .order {}
-                }
-            }
+        > th {
+          display: table-cell;
+
+          .order {}
         }
+      }
     }
+  }
 }
 
 .react-bs-table .table-bordered > thead > tr > td,
 .react-bs-table .table-bordered > thead > tr > th {
-    color: $warm-gray-08;
-    border-bottom-width: 1px;
-    background: $warm-gray-02;
+  color: $warm-gray-08;
+  border-bottom-width: 1px;
+  background: $warm-gray-02;
 }
 
 .react-bs-table .table-bordered > tbody > tr > td {
-    color: $warm-gray-08;
-    outline: none !important;
+  color: $warm-gray-08;
+  outline: none !important;
 }
 
 .react-bs-table .table-bordered > tbody > tr:nth-of-type(even) {
+  background-color: $warm-gray-01;
+
+  > td {
+    background-color: $warm-gray-01;
+  }
+
+  &:hover {
+    background-color: $table-bg-hover-alt;
+
     > td {
-        background-color: $warm-gray-01;
+      background-color: $table-bg-hover-alt;
     }
-    &:hover > td {
-        background-color: $table-bg-hover-alt;
-    }
+  }
 }
 
 .react-bs-table .table-bordered > tbody > tr > td.default-focus-cell {
-    outline: 3px solid cornflowerblue !important;
-    outline-offset: -1px;
+  outline: 3px solid cornflowerblue !important;
+  outline-offset: -1px;
 }
 
 .react-bs-table .table-bordered > tfoot > tr > td,
 .react-bs-table .table-bordered > tfoot > tr > th {
-    border-top-width: 1px;
+  border-top-width: 1px;
 }
 
 .react-bs-table .table-bordered > tfoot > tr > td,
 .react-bs-table .table-bordered > tfoot > tr > th {
-    border-bottom-width: 0;
+  border-bottom-width: 0;
 }
 /*Esquerda*/
 .react-bs-table .table-bordered > tbody > tr > td:first-child,
@@ -132,7 +140,7 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
 .react-bs-table .table-bordered > tfoot > tr > th:first-child,
 .react-bs-table .table-bordered > thead > tr > td:first-child,
 .react-bs-table .table-bordered > thead > tr > th:first-child {
-    border-left-width: 0;
+  border-left-width: 0;
 }
 /*Direita*/
 .react-bs-table .table-bordered > tbody > tr > td:last-child,
@@ -141,220 +149,220 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
 .react-bs-table .table-bordered > tfoot > tr > th:last-child,
 .react-bs-table .table-bordered > thead > tr > td:last-child,
 .react-bs-table .table-bordered > thead > tr > th:last-child {
-    border-right-width: 0;
+  border-right-width: 0;
 }
 /*Topo*/
 .react-bs-table .table-bordered > thead > tr:first-child > td,
 .react-bs-table .table-bordered > thead > tr:first-child > th {
-    border-top-width: 0;
+  border-top-width: 0;
 }
 /*Baixo*/
 .react-bs-table .table-bordered > tfoot > tr:last-child > td,
 .react-bs-table .table-bordered > tfoot > tr:last-child > th {
-    border-bottom-width: 0;
+  border-bottom-width: 0;
 }
 
 .react-bs-table .react-bs-container-header > table > thead > tr > th {
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
 .react-bs-table .react-bs-container-header > table > thead > tr > th .filter {
-    font-weight: normal;
+  font-weight: normal;
 }
 
 .react-bs-table .react-bs-container-header > table > thead > tr > th .filter::-webkit-input-placeholder,
 .react-bs-table .react-bs-container-header > table > thead > tr > th .number-filter-input::-webkit-input-placeholder,
 .react-bs-table .react-bs-container-header > table > thead > tr > th .select-filter option[value=''],
 .react-bs-table .react-bs-container-header > table > thead > tr > th .select-filter.placeholder-selected {
-    color: lightgrey;
-    font-style: italic;
+  color: lightgrey;
+  font-style: italic;
 }
 
 .react-bs-table .react-bs-container-header > table > thead > tr > th .select-filter.placeholder-selected option:not([value='']) {
-    color: initial;
-    font-style: initial;
+  color: initial;
+  font-style: initial;
 }
 
 .react-bs-table .react-bs-container-header > table > thead > tr > th .date-filter,
 .react-bs-table .react-bs-container-header > table > thead > tr > th .number-filter {
-    display: flex;
+  display: flex;
 }
 
 .react-bs-table .react-bs-container-header > table > thead > tr > th .date-filter-input,
 .react-bs-table .react-bs-container-header > table > thead > tr > th .number-filter-input {
-    float: left;
-    width: calc(100% - 67px - 5px);
-    margin-left: 5px;
+  float: left;
+  width: calc(100% - 67px - 5px);
+  margin-left: 5px;
 }
 
 .react-bs-table .react-bs-container-header > table > thead > tr > th .date-filter-comparator,
 .react-bs-table .react-bs-container-header > table > thead > tr > th .number-filter-comparator {
-    float: left;
-    width: 67px;
+  float: left;
+  width: 67px;
 }
 
 .react-bs-table .react-bs-container-header .sort-column {
-    position: relative;
-    cursor: pointer;
+  position: relative;
+  cursor: pointer;
 }
 /*inline editor default style*/
 .react-bs-container .form-control.editor {
-    /*width:100%;
+  /*width:100%;
   top:0;
   left:0;*/
-    /*height: 100%;
+  /*height: 100%;
   position: absolute;*/
 }
 
 .react-bs-container .textarea-save-btn {
-    position: absolute;
-    z-index: 100;
-    top: -21px;
-    right: 0;
+  position: absolute;
+  z-index: 100;
+  top: -21px;
+  right: 0;
 }
 
 .react-bs-table-no-data {
-    text-align: center;
+  text-align: center;
 }
 
 .ReactModal__Overlay {
-    z-index: 101;
-    overflow-x: hidden;
-    overflow-y: auto;
-    opacity: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    -webkit-perspective: 600;
-    perspective: 600;
+  z-index: 101;
+  overflow-x: hidden;
+  overflow-y: auto;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  -webkit-perspective: 600;
+  perspective: 600;
 }
 
 .ReactModal__Overlay--after-open {
-    transition: opacity 150ms ease-out;
-    opacity: 1;
+  transition: opacity 150ms ease-out;
+  opacity: 1;
 }
 
 .ReactModal__Content {
-    -webkit-transform: scale(0.5) rotateX(-30deg);
-    transform: scale(0.5) rotateX(-30deg);
+  -webkit-transform: scale(0.5) rotateX(-30deg);
+  transform: scale(0.5) rotateX(-30deg);
 }
 
 .ReactModal__Content--after-open {
-    transition: all 150ms ease-in;
-    -webkit-transform: scale(1) rotateX(0deg);
-    transform: scale(1) rotateX(0deg);
+  transition: all 150ms ease-in;
+  -webkit-transform: scale(1) rotateX(0deg);
+  transform: scale(1) rotateX(0deg);
 }
 
 .ReactModal__Overlay--before-close {
-    opacity: 0;
+  opacity: 0;
 }
 
 .ReactModal__Content--before-close {
-    transition: all 150ms ease-in;
-    -webkit-transform: scale(0.5) rotateX(30deg);
-    transform: scale(0.5) rotateX(30deg);
+  transition: all 150ms ease-in;
+  -webkit-transform: scale(0.5) rotateX(30deg);
+  transform: scale(0.5) rotateX(30deg);
 }
 
 .ReactModal__Content.modal-dialog {
-    border: none;
-    background-color: transparent;
+  border: none;
+  background-color: transparent;
 }
 /*error tip style*/
 .animated {
-    animation-fill-mode: both;
+  animation-fill-mode: both;
 }
 
 .animated.bounceIn,
 .animated.bounceOut {
-    animation-duration: 0.75s;
+  animation-duration: 0.75s;
 }
 
 .animated.shake {
-    animation-duration: 0.3s;
+  animation-duration: 0.3s;
 }
 
 td.react-bs-table-expand-cell {
-    cursor: pointer;
+  cursor: pointer;
 }
 @keyframes shake {
-    from,
-    to {
-        transform: translate3d(0, 0, 0);
-    }
+  from,
+  to {
+    transform: translate3d(0, 0, 0);
+  }
 
-    10%,
-    50%,
-    90% {
-        transform: translate3d(-10px, 0, 0);
-    }
+  10%,
+  50%,
+  90% {
+    transform: translate3d(-10px, 0, 0);
+  }
 
-    30%,
-    70% {
-        transform: translate3d(10px, 0, 0);
-    }
+  30%,
+  70% {
+    transform: translate3d(10px, 0, 0);
+  }
 }
 
 .shake {
-    animation-name: shake;
+  animation-name: shake;
 }
 @keyframes bounceIn {
-    20%,
-    40%,
-    60%,
-    80%,
-    from,
-    to {
-        animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
-    }
+  20%,
+  40%,
+  60%,
+  80%,
+  from,
+  to {
+    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  }
 
-    0% {
-        transform: scale3d(.3, .3, .3);
-        opacity: 0;
-    }
+  0% {
+    transform: scale3d(.3, .3, .3);
+    opacity: 0;
+  }
 
-    20% {
-        transform: scale3d(1.1, 1.1, 1.1);
-    }
+  20% {
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
 
-    40% {
-        transform: scale3d(.9, .9, .9);
-    }
+  40% {
+    transform: scale3d(.9, .9, .9);
+  }
 
-    60% {
-        transform: scale3d(1.03, 1.03, 1.03);
-        opacity: 1;
-    }
+  60% {
+    transform: scale3d(1.03, 1.03, 1.03);
+    opacity: 1;
+  }
 
-    80% {
-        transform: scale3d(.97, .97, .97);
-    }
+  80% {
+    transform: scale3d(.97, .97, .97);
+  }
 
-    to {
-        transform: scale3d(1, 1, 1);
-        opacity: 1;
-    }
+  to {
+    transform: scale3d(1, 1, 1);
+    opacity: 1;
+  }
 }
 
 .bounceIn {
-    animation-name: bounceIn;
+  animation-name: bounceIn;
 }
 @keyframes bounceOut {
-    20% {
-        transform: scale3d(.9, .9, .9);
-    }
+  20% {
+    transform: scale3d(.9, .9, .9);
+  }
 
-    50%,
-    55% {
-        transform: scale3d(1.1, 1.1, 1.1);
-        opacity: 1;
-    }
+  50%,
+  55% {
+    transform: scale3d(1.1, 1.1, 1.1);
+    opacity: 1;
+  }
 
-    to {
-        transform: scale3d(.3, .3, .3);
-        opacity: 0;
-    }
+  to {
+    transform: scale3d(.3, .3, .3);
+    opacity: 0;
+  }
 }
 
 .bounceOut {
-    animation-name: bounceOut;
+  animation-name: bounceOut;
 }
 //bootstrap _tables.scss
 //
@@ -362,146 +370,145 @@ td.react-bs-table-expand-cell {
 // --------------------------------------------------
 
 table {
-    background-color: $table-bg;
+  background-color: $table-bg;
 }
 
 caption {
-    padding-top: $table-cell-padding;
-    padding-bottom: $table-cell-padding;
-    text-align: left;
-    color: $text-muted;
+  padding-top: $table-cell-padding;
+  padding-bottom: $table-cell-padding;
+  text-align: left;
+  color: $text-muted;
 }
 
 th {
-    text-align: left;
+  text-align: left;
 }
 // Baseline styles
 
 .table {
-    width: 100%;
-    max-width: 100%;
-    margin-bottom: $line-height-computed;
-    // Cells
-     > tbody,
-     > thead,
-    > tfoot {
-        > tr {
-             > td,
-            > th {
-                padding: $table-cell-padding;
-                vertical-align: top;
-                border-top: 1px solid $table-border-color;
-                line-height: $line-height-base;
-            }
-        }
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: $line-height-computed;
+  // Cells
+   > tfoot,
+   > thead,
+  > tbody {
+    > tr {
+       > th,
+      > td {
+        padding: $table-cell-padding;
+        vertical-align: top;
+        border-top: 1px solid $table-border-color;
+        line-height: $line-height-base;
+      }
     }
-    // Bottom align for column headings
-    > thead > tr > th {
-        vertical-align: bottom;
-        border-bottom: 2px solid $table-border-color;
+  }
+  // Bottom align for column headings
+  > thead > tr > th {
+    vertical-align: bottom;
+    border-bottom: 2px solid $table-border-color;
+  }
+  // Remove top border from thead by default
+   > caption + thead,
+   > thead:first-child,
+  > colgroup + thead {
+    > tr:first-child {
+       > th,
+      > td {
+        border-top: 0;
+      }
     }
-    // Remove top border from thead by default
-     > colgroup + thead,
-     > thead:first-child,
-    > caption + thead {
-        > tr:first-child {
-             > td,
-            > th {
-                border-top: 0;
-            }
-        }
-    }
-    // Account for multiple tbody instances
-    > tbody + tbody {
-        border-top: 2px solid $table-border-color;
-    }
-    // Nesting
-    .table {
-        background-color: $body-bg;
-    }
+  }
+  // Account for multiple tbody instances
+  > tbody + tbody {
+    border-top: 2px solid $table-border-color;
+  }
+  // Nesting
+  .table {
+    background-color: $body-bg;
+  }
 }
 // Condensed table w/ half padding
 
 .table-condensed {
-     > tbody,
-     > thead,
-    > tfoot {
-        > tr {
-             > td,
-            > th {
-                padding: $table-condensed-cell-padding;
-            }
-        }
+   > tfoot,
+   > thead,
+  > tbody {
+    > tr {
+       > th,
+      > td {
+        padding: $table-condensed-cell-padding;
+      }
     }
+  }
 }
 // Bordered version
 //
 // Add borders all around the table and between all the columns.
 
 .table-bordered {
-    border: 1px solid $table-border-color;
+  border: 1px solid $table-border-color;
 
-     > tbody,
-     > thead,
-    > tfoot {
-        > tr {
-             > td,
-            > th {
-                border: 1px solid $table-border-color;
-            }
-        }
+   > tfoot,
+   > thead,
+  > tbody {
+    > tr {
+       > th,
+      > td {
+        border: 1px solid $table-border-color;
+      }
     }
+  }
 
-    > thead > tr {
-         > td,
-        > th {
-            border-bottom-width: 2px;
-        }
+  > thead > tr {
+     > th,
+    > td {
+      border-bottom-width: 2px;
     }
+  }
 }
 // Zebra-striping
 //
 // Default zebra-stripe styles (alternating gray and transparent backgrounds)
 
 .table-striped {
-    > tbody > tr:nth-of-type(odd) {
-        background-color: $table-bg-accent;
+  > tbody > tr:nth-of-type(odd) {
+    background-color: $table-bg-accent;
 
-        &:hover {
-            background-color: $table-bg-hover;
-        }
+    &:hover {
+      background-color: $table-bg-hover;
     }
+  }
 }
 // Hover effect
 //
 // Placed here since it has to come after the potential zebra striping
 
 .table-hover {
-    > tbody > tr:hover {
-        background-color: $table-bg-hover;
-    }
+  > tbody > tr:hover {
+    background-color: $table-bg-hover;
+  }
 }
 // Table cell sizing
 //
 // Reset default table behavior
 
 table col[class*="col-"] {
-    position: static; // Prevent border hiding in Firefox and IE9-11 (see https://github.com/twbs/bootstrap/issues/11623)
-    display: table-column;
-    float: none;
+  position: static; // Prevent border hiding in Firefox and IE9-11 (see https://github.com/twbs/bootstrap/issues/11623)
+  display: table-column;
+  float: none;
 }
 
 table {
-    td,
-    th {
-        &[class*="col-"] {
-            position: static; // Prevent border hiding in Firefox and IE9-11 (see https://github.com/twbs/bootstrap/issues/11623)
-            display: table-cell;
-            float: none;
-        }
+  td,
+  th {
+    &[class*="col-"] {
+      position: static; // Prevent border hiding in Firefox and IE9-11 (see https://github.com/twbs/bootstrap/issues/11623)
+      display: table-cell;
+      float: none;
     }
+  }
 }
-
 // Responsive tables
 //
 // Wrap your tables in `.table-responsive` and we'll make them mobile friendly
@@ -511,63 +518,64 @@ table {
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
 //NEED TO REWORK THIS TO BECOME CARDS ON MOBILE DEVICES
-.table-responsive {
-    overflow-x: auto;
-    min-height: 0.01%; // Workaround for IE9 bug (see https://github.com/twbs/bootstrap/issues/14837)
-    @include for-phone-only {
-        overflow-y: hidden;
-        width: 100%;
-        margin-bottom: ($line-height-computed * 0.75);
-        border: 1px solid $table-border-color;
-        -ms-overflow-style: -ms-autohiding-scrollbar;
-        // Tighten up spacing
-        > .table {
-            margin-bottom: 0;
-            // Ensure the content doesn't wrap
-             > tbody,
-             > thead,
-            > tfoot {
-                > tr {
-                     > td,
-                    > th {
-                        white-space: nowrap;
-                    }
-                }
-            }
-        }
-        // Special overrides for the bordered tables
-        > .table-bordered {
-            border: 0;
-            // Nuke the appropriate borders so that the parent can handle them
-             > tbody,
-             > thead,
-            > tfoot {
-                > tr {
-                     > td:first-child,
-                    > th:first-child {
-                        border-left: 0;
-                    }
 
-                     > td:last-child,
-                    > th:last-child {
-                        border-right: 0;
-                    }
-                }
-            }
-            // Only nuke the last row's bottom-border in `tbody` and `tfoot` since
-            // chances are there will be only one `tr` in a `thead` and that would
-            // remove the border altogether.
-             > tfoot,
-            > tbody {
-                > tr:last-child {
-                     > td,
-                    > th {
-                        border-bottom: 0;
-                    }
-                }
-            }
+.table-responsive {
+  overflow-x: auto;
+  min-height: 0.01%; // Workaround for IE9 bug (see https://github.com/twbs/bootstrap/issues/14837)
+  @include for-phone-only {
+    overflow-y: hidden;
+    width: 100%;
+    margin-bottom: ($line-height-computed * 0.75);
+    border: 1px solid $table-border-color;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    // Tighten up spacing
+    > .table {
+      margin-bottom: 0;
+      // Ensure the content doesn't wrap
+       > tfoot,
+       > thead,
+      > tbody {
+        > tr {
+           > th,
+          > td {
+            white-space: nowrap;
+          }
         }
+      }
     }
+    // Special overrides for the bordered tables
+    > .table-bordered {
+      border: 0;
+      // Nuke the appropriate borders so that the parent can handle them
+       > tfoot,
+       > thead,
+      > tbody {
+        > tr {
+           > th:first-child,
+          > td:first-child {
+            border-left: 0;
+          }
+
+           > th:last-child,
+          > td:last-child {
+            border-right: 0;
+          }
+        }
+      }
+      // Only nuke the last row's bottom-border in `tbody` and `tfoot` since
+      // chances are there will be only one `tr` in a `thead` and that would
+      // remove the border altogether.
+       > tbody,
+      > tfoot {
+        > tr:last-child {
+           > th,
+          > td {
+            border-bottom: 0;
+          }
+        }
+      }
+    }
+  }
 }
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
@@ -577,9 +585,10 @@ table {
 // TEMP STYLE, NEEDS REMOVED
 
 .survey-wrapper {
-    display: none;
+  display: none;
 }
 //GLOBAL DEFAULTS
+
 .react-bs-table,
 .table-bordered > tbody > tr > td,
 .table-bordered > tbody > tr > th,
@@ -587,477 +596,549 @@ table {
 .table-bordered > tfoot > tr > th,
 .table-bordered > thead > tr > td,
 .table-bordered > thead > tr > th {
-    border: 0;
+  border: 0;
 }
+
 .react-bs-table {
-    .table .table {
-        background: transparent;
+  .table .table {
+    background: transparent;
+  }
+
+  .table-bordered {
+    tr {
+      background: transparent;
+      font-size: 14px;
+
+      th {
+        padding: 15px;
+        border: none;
+      }
+
+      td {
+        padding: 15px;
+        border: none;
+        font-size: 12px;
+      }
     }
-
-    .table-bordered {
-        tr {
-            background: transparent;
-            font-size: 14px;
-
-            th {
-                padding: 15px;
-                border: none;
-            }
-
-            td {
-                padding: 15px;
-                border: none;
-                font-size: 12px;
-            }
-        }
-    }
+  }
 }
 //NOTES LIST
 
 .notes-list {
-    .react-bs-table {
-        .table-bordered {
-            > tbody > tr:nth-of-type(even) > td {
-                background: transparent;
-            }
+  .react-bs-table {
+    .table-bordered {
+      > tbody > tr:nth-of-type(even) > td {
+        background: transparent;
+      }
 
-            tr {
-                td {
-                    thead > tr,
-                    thead > tr > th {
-                        background: transparent;
-                    }
+      tr {
+        td {
+          thead > tr,
+          thead > tr > th {
+            background: transparent;
+          }
 
-                    .react-bs-table-container {
-                        border: solid 2px $warm-gray-01;
-                    }
-                }
-            }
-
-            tr:nth-child(4n+3),
-            tr:nth-child(4n+4) {
-                background: $warm-gray-01;
-
-                td {
-                    .react-bs-table-container {
-                        border: solid 2px $white;
-                    }
-                }
-            }
+          .react-bs-table-container {
+            border: solid 2px $warm-gray-01;
+          }
         }
+      }
+
+      tr:nth-child(4n+3),
+      tr:nth-child(4n+4) {
+        background: $warm-gray-01;
+
+        td {
+          .react-bs-table-container {
+            border: solid 2px $white;
+          }
+        }
+      }
     }
+  }
 }
 
 .file-list {}
 //table view
 /*------------------------------------------------------------------------------------*/
 .react-bs-container-header {
-    .table-bordered {
-        table-layout: auto;
+  .table-bordered {
+    table-layout: auto;
 
-        tr {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            justify-content: flex-start;
-            align-content: stretch;
-            align-items: flex-start;
-            flex-grow: 1;
-            flex-shrink: 0;
-            flex-basis: auto;
+    tr {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-content: stretch;
+      align-items: flex-start;
+      flex-grow: 1;
+      flex-shrink: 0;
+      flex-basis: auto;
 
-            th {
-                width: auto;
-                order: 0;
-                align-self: auto;
-            }
-        }
+      th {
+        width: auto;
+        order: 0;
+        align-self: auto;
+      }
     }
+  }
 }
+
 .react-bs-container-body {
-    .table {
-        table-layout: auto;
+  .table {
+    table-layout: auto;
 
-        tr {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            justify-content: flex-start;
-            align-content: stretch;
-            align-items: flex-start;
-            flex-grow: 1;
-            flex-shrink: 0;
-            flex-basis: auto;
+    tr {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-content: stretch;
+      align-items: flex-start;
+      flex-grow: 1;
+      flex-shrink: 0;
+      flex-basis: auto;
 
-            td {
-                white-space: pre-line;
-                order: 0;
-                flex: 1 1 auto;
-                align-self: flex-start;
-            }
-        }
-
-        tr:nth-of-type(even) > td {
-            background-color: transparent;
-        }
+      td {
+        white-space: pre-line;
+        order: 0;
+        flex: 1 1 auto;
+        align-self: flex-start;
+      }
     }
+
+    tr:nth-of-type(even) > td {
+      background-color: transparent;
+    }
+  }
 }
 //card view
 /*------------------------------------------------------------------------------------*/
 .card-view {
-    .react-bs-table-container {
-        .react-bs-container-header {
-            .table-bordered {
-                table-layout: auto;
+  .react-bs-table-container {
+    .react-bs-container-header {
+      .table-bordered {
+        table-layout: auto;
 
-                tr {
-                    display: flex;
-                    flex-direction: row;
-                    flex-wrap: nowrap;
-                    justify-content: center;
-                    align-content: stretch;
-                    align-items: flex-start;
-                    flex-grow: 1;
-                    flex-shrink: 0;
-                    flex-basis: auto;
+        tr {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          justify-content: center;
+          align-content: stretch;
+          align-items: flex-start;
+          flex-grow: 1;
+          flex-shrink: 0;
+          flex-basis: auto;
 
-                    th {
-                        width: auto;
-                        order: 0;
-                        align-self: auto;
-                    }
-                }
-            }
+          th {
+            width: auto;
+            order: 0;
+            align-self: auto;
+          }
         }
-        .react-bs-container-body {
-            .table {
-                table-layout: auto;
-
-                tr {
-                    display: flex;
-                    flex-direction: row;
-                    margin-top: $padding;
-                    border: $card-border-width solid $card-border-color;
-                    border-radius: $card-border-radius;
-                    background: $card-bg;
-                    box-shadow: $card-box-shadow;
-                    flex-wrap: wrap;
-                    justify-content: flex-start;
-                    align-content: stretch;
-                    align-items: flex-start;
-                    flex-grow: 1;
-                    flex-shrink: 0;
-                    flex-basis: auto;
-
-                    td {
-                        padding: ($padding/2) $padding;
-                        white-space: pre-line;
-                        order: 0;
-                        flex: 1 1 auto;
-                        align-self: center;
-                    }
-                }
-
-                tr:nth-of-type(even) {
-                    background-color: $white;
-                    > td {
-                        background-color: transparent;
-                    }
-                }
-            }
-        }
+      }
     }
+
+    .react-bs-container-body {
+      .table {
+        table-layout: auto;
+
+        tr {
+          display: flex;
+          flex-direction: row;
+          margin-top: $padding;
+          border: $card-border-width solid $card-border-color;
+          border-radius: $card-border-radius;
+          background: $card-bg;
+          box-shadow: $card-box-shadow;
+          flex-wrap: wrap;
+          justify-content: flex-start;
+          align-content: stretch;
+          align-items: flex-start;
+          flex-grow: 1;
+          flex-shrink: 0;
+          flex-basis: auto;
+
+          td {
+            padding: ($padding/2) $padding;
+            white-space: pre-line;
+            order: 0;
+            flex: 1 1 auto;
+            align-self: center;
+          }
+        }
+
+        tr:nth-of-type(even) {
+          background-color: $white;
+
+          > td {
+            background-color: transparent;
+          }
+        }
+      }
+    }
+  }
 }
 //CSR SPLASH PAGE TABLE
 /*------------------------------------------------------------------------------------*/
 .csr {
+  .results-wrapper {
+      flex-basis: auto;
+      flex-shrink: 1;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     //table view styles
     /*------------------------------------------------------------------------------------*/
     .table-view {
-        .results-grid {
-            .react-bs-container-header {
-                .table-bordered {
-                    tr {
-                        th {
+      flex-basis: auto;
+      flex-shrink: 1;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
 
-                            &.icon {
-                                width: 5%;
-                            }
+      .results-grid {
+        flex-basis: auto;
+        flex-shrink: 1;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
 
-                            &.number {
-                                width: 10%
-                            }
+        .react-bs-table {
+          flex-basis: auto;
+          flex-shrink: 1;
+          flex-grow: 1;
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+          height: auto !important;
 
-                            &.policyholder {
-                                width: 15%;
-                            }
+          .react-bs-container-header {
+            flex-grow: 0;
+            flex-shrink: 0;
 
-                            &.address {
-                                width: 50%;
-                            }
+            .table-bordered {
+              tr {
+                th {
+                  line-height: 1;
 
-                            &.status {
-                                width: 10%;
-                            }
+                  &.type {
+                    width: 5%;
+                  }
 
-                            &.effectiveDate {
-                                width: 10%;
-                            }
-                        }
-                    }
+                  &.number {
+                    width: 10%;
+                  }
+
+                  &.policyholder {
+                    width: 15%;
+                  }
+
+                  &.address {
+                    width: 50%;
+                  }
+
+                  &.status {
+                    width: 10%;
+                  }
+
+                  &.effectiveDate {
+                    width: 10%;
+                  }
                 }
+              }
             }
+          }
 
-            .react-bs-container-body {
-                .table {
-                    tr {
-                        &:hover {
-                            cursor: pointer;
-                        }
-                        td {
+          .react-bs-container-body {
+            display: flex;
+            flex-direction: column;
+            overflow-y: scroll;
+            flex-grow: 1;
+            flex-shrink: 1;
 
-                            &.icon {
-                                width: 5%;
+            .table {
+              flex-grow: 0;
+              flex-shrink: 0;
 
-                                &:before {
-                                    font-family: $font-family-icon;
-                                    content: "\f111";
-                                }
-                            }
-
-                            &.number {
-                                width: 10%
-                            }
-
-                            &.policyholder {
-                                width: 15%;
-                            }
-
-                            &.address {
-                                width: 50%;
-                            }
-
-                            &.status {
-                                width: 10%;
-                            }
-
-                            &.effectiveDate {
-                                width: 10%;
-                            }
-                        }
-                    }
+              tr {
+                &:hover {
+                  cursor: pointer;
                 }
+
+                td {
+                  line-height: 1;
+
+                  &.type {
+                    font-size: 0;
+                    width: 5%;
+
+                    &:before {
+                      font-family: $font-family-icon;
+                      content: "\f111";
+                      font-size: $font-size-h6;
+                      line-height: 1;
+                    }
+                  }
+
+                  &.number {
+                    width: 10%;
+                  }
+
+                  &.policyholder {
+                    width: 15%;
+                  }
+
+                  &.address {
+                    width: 50%;
+                  }
+
+                  &.status {
+                    width: 10%;
+                  }
+
+                  &.effectiveDate {
+                    width: 10%;
+                  }
+                }
+              }
             }
+          }
         }
+      }
     }
     //card view styles
     /*------------------------------------------------------------------------------------*/
     .card-view {
-        .results-grid {
-            .react-bs-container-header {
-                .table-bordered {
-                    tr {
-                        th {
-                            width: auto;
-                        }
-                    }
-                }
+      .results-grid {
+        .react-bs-container-header {
+          .table-bordered {
+            tr {
+              th {
+                width: auto;
+              }
             }
-            .react-bs-container-body {
-                overflow: visible;
-                .table {
-                    tr {
-                        @include transition(all .2s ease-in-out);
-                        &:hover {
-                            z-index: 2;
-                            transform: scale(1.004);
-                            box-shadow: $card-box-shadow-hover;
-                        }
-                        td {
-
-                            &.icon {
-                                flex-grow: 0;
-                                font-size: $font-size-h4;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                order: 1;
-                                width: 2rem;
-
-                                &:before {
-                                    font-family: $font-family-icon;
-                                    content: "\f111";
-                                }
-                            }
-
-                            &.number {
-                                order: 2;
-                                flex-grow: 0;
-                                flex-basis: 7rem;
-                                padding-left: 0;
-                            }
-
-                            &.policyholder {
-                                order: 3;
-                            }
-
-                            &.address {
-                                order: 0;
-                                flex-basis: 100%;
-                                width: 100%;
-                                font-size: $font-size-h4;
-                                padding-bottom: 0;
-                            }
-
-                            &.status {
-                                order: 4;
-                                flex-grow: 0;
-                                flex-basis: 7rem;
-                            }
-
-                            &.effectiveDate {
-                                order: 5;
-                                flex-grow: 0;
-                                flex-basis: 7rem;
-                            }
-                        }
-                    }
-                }
-            }
+          }
         }
-    }
-}
 
+        .react-bs-container-body {
+          overflow: visible;
+
+          .table {
+            tr {
+              @include transition(all .2s ease-in-out);
+
+              &:hover {
+                z-index: 2;
+                transform: scale(1.004);
+                box-shadow: $card-box-shadow-hover;
+              }
+
+              td {
+                &.icon {
+                  flex-grow: 0;
+                  font-size: $font-size-h4;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  order: 1;
+                  width: 2rem;
+
+                  &:before {
+                    font-family: $font-family-icon;
+                    content: "\f111";
+                  }
+                }
+
+                &.number {
+                  order: 2;
+                  flex-grow: 0;
+                  flex-basis: 7rem;
+                  padding-left: 0;
+                }
+
+                &.policyholder {
+                  order: 3;
+                }
+
+                &.address {
+                  order: 0;
+                  flex-basis: 100%;
+                  width: 100%;
+                  font-size: $font-size-h4;
+                  padding-bottom: 0;
+                }
+
+                &.status {
+                  order: 4;
+                  flex-grow: 0;
+                  flex-basis: 7rem;
+                }
+
+                &.effectiveDate {
+                  order: 5;
+                  flex-grow: 0;
+                  flex-basis: 7rem;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
 //grid filter buttons
 /*------------------------------------------------------------------------------------*/
 .grid-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  flex-grow: 0;
+
+  .filters-wrapper {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
 
-    .filters-wrapper {
-        display: flex;
+    .filters {
+      margin: $padding;
 
-        .filters {
-            margin: $padding;
+      a {
+        &.btn {
+          border-radius: 0;
+          @include button-variant($warm-gray-12, $warm-gray-01, $warm-gray-01);
+          text-transform: none;
+          font-weight: $font-weight-normal;
+          margin-right: 2px;
 
-            a {
-                &.btn {
-                    border-radius: 0;
-                    @include button-variant($warm-gray-12, $warm-gray-01, $warm-gray-01);
-                    text-transform: none;
-                    font-weight: $font-weight-normal;
-                    margin-right: 2px;
+          &:hover {
+            @include button-variant($warm-gray-12, $warm-gray-04, $warm-gray-04);
+          }
 
-                    &:hover {
-                        @include button-variant($warm-gray-12, $warm-gray-04, $warm-gray-04);
-                    }
+          &:first-child {
+            border-top-left-radius: $border-radius;
+            border-bottom-left-radius: $border-radius;
+          }
 
-                    &:first-child {
-                        border-top-left-radius: $border-radius;
-                        border-bottom-left-radius: $border-radius;
-                    }
+          &:last-child {
+            border-top-right-radius: $border-radius;
+            border-bottom-right-radius: $border-radius;
+            margin-right: 0;
+          }
 
-                    &:last-child {
-                        border-top-right-radius: $border-radius;
-                        border-bottom-right-radius: $border-radius;
-                        margin-right: 0;
-                    }
+          &.selected {
+            @include button-variant($white, $bright-blue-darken-04, $bright-blue-darken-04);
 
-                    &.selected {
-                        @include button-variant($white, $bright-blue-darken-04, $bright-blue-darken-04);
-
-                        &:hover {
-                            @include button-variant($white, $bright-blue-darken-04, $bright-blue-darken-04);
-                            cursor: default;
-                        }
-                    }
-
-                    &.btn-sm {
-                        i {
-                            margin: 0;
-                            font-size: 0.875rem;
-                        }
-                    }
-                }
+            &:hover {
+              @include button-variant($white, $bright-blue-darken-04, $bright-blue-darken-04);
+              cursor: default;
             }
+          }
+
+          &.btn-sm {
+            i {
+              margin: 0;
+              font-size: 0.875rem;
+            }
+          }
         }
+      }
     }
+  }
+
+  .table-view {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    flex-grow: 1;
+  }
+
+  .card-view {}
 }
 //sortable column controls
 /*------------------------------------------------------------------------------------*/
 .react-bs-table-container {
-    .sort-column {
-        display: flex;
-        align-items: center;
+  .sort-column {
+    display: flex;
+    align-items: center;
 
-        .order {
-            margin: 0 0 0 .5rem;
-            color: $warm-gray-10;
-            display: inline-flex;
-            flex-direction: column;
-            flex-grow: 0;
-            flex-shrink: 0;
-            position: relative;
-            height: 1rem;
-            line-height: 1rem;
+    .order {
+      margin: 0 0 0 0.5rem;
+      color: $warm-gray-10;
+      display: inline-flex;
+      flex-direction: column;
+      flex-grow: 0;
+      flex-shrink: 0;
+      position: relative;
+      height: 1rem;
+      line-height: 1rem;
 
-            &:hover {
-                cursor: pointer;
-            }
+      &:hover {
+        cursor: pointer;
+      }
 
-            > .caret {
-                margin: 0 !important;
-                padding: 0 !important;
-                top: -.125rem;
-                &:before {
-                    content: "\f0d8";
-                    font: normal normal normal 1rem $font-family-icon;
-                    color: rgba($warm-gray-07, 1);
-                }
-            }
+      > .caret {
+        margin: 0 !important;
+        padding: 0 !important;
+        top: -.125rem;
 
-            &.dropup {
-                > .caret {
-                    top: .375rem;
-                    &:before {
-                        content: "\f0d7";
-                        font: normal normal normal 1rem $font-family-icon;
-                        color: rgba($warm-gray-07, 1);
-                    }
-                }
-            }
-
-            > span {
-                line-height: 1;
-                margin: 0;
-                padding: 0;
-                width: auto;
-                text-align: center;
-                position: absolute;
-
-                &.dropdown {
-                    top: -.125rem;
-                    &:before {
-                        content: "\f0d8";
-                        font: normal normal normal 1rem $font-family-icon;
-                        color: rgba($warm-gray-07, .25);
-                    }
-                    .caret {
-                        margin: 0 !important;
-                        padding: 0 !important;
-                    }
-                }
-
-                &.dropup {
-                    top: .375rem;
-                    &:before {
-                        content: "\f0d7";
-                        font: normal normal normal 1rem $font-family-icon;
-                        color: rgba($warm-gray-07, .25);
-                    }
-                }
-            }
+        &:before {
+          content: "\f0d8";
+          font: normal normal normal 1rem $font-family-icon;
+          color: rgba($warm-gray-07, 1);
         }
+      }
+
+      &.dropup {
+        > .caret {
+          top: 0.375rem;
+
+          &:before {
+            content: "\f0d7";
+            font: normal normal normal 1rem $font-family-icon;
+            color: rgba($warm-gray-07, 1);
+          }
+        }
+      }
+
+      > span {
+        line-height: 1;
+        margin: 0;
+        padding: 0;
+        width: auto;
+        text-align: center;
+        position: absolute;
+
+        &.dropdown {
+          top: -.125rem;
+
+          &:before {
+            content: "\f0d8";
+            font: normal normal normal 1rem $font-family-icon;
+            color: rgba($warm-gray-07, .25);
+          }
+
+          .caret {
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+        }
+
+        &.dropup {
+          top: 0.375rem;
+
+          &:before {
+            content: "\f0d7";
+            font: normal normal normal 1rem $font-family-icon;
+            color: rgba($warm-gray-07, .25);
+          }
+        }
+      }
     }
+  }
 }
