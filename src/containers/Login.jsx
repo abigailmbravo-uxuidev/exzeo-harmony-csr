@@ -78,7 +78,7 @@ export const Login = (props) => {
         <Form
           className="card-block"
           id="Login"
-          onSubmit={handleLoginSubmit}
+          onSubmit={ handleSubmit(handleLoginSubmit) }
           noValidate
         >
           { isAuthenticatedResult }
