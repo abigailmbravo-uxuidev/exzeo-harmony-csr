@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import QuoteHeader from '../components/Quote/QuoteHeader';
 import SideNav from '../components/Common/SideNav';
 import * as userActions from '../actions/userActions';
+import Footer from '../components/Common/Footer';
+import NewNoteFileUploader from '../components/Common/NewNoteFileUploader';
 
 /*
 const handleLogout = (props) => {
@@ -24,7 +26,10 @@ export const QuoteBase = props => (
       </aside>
       <div className="content-wrapper">
         {props.children}
+        <aside>test</aside>
       </div>
+      <NewNoteFileUploader />
+      <Footer />
     </main>
   </div>
 );

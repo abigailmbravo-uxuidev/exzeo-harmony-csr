@@ -2,25 +2,75 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import QuoteBaseConnect from './QuoteBase';
 import ClearErrorConnect from '../components/Error/ClearError';
-import Footer from '../components/Common/Footer';
-import NewNoteFileUploader from '../components/Common/NewNoteFileUploader';
+
 
 const Coverage = () => (
   <QuoteBaseConnect>
     <ClearErrorConnect />
-    <div className="dashboard" role="article">
+
       <div className="route">
-        <div className="search route-content">
-          <div className="results-wrapper">
-            <div className="grid-controls">
-    
-            </div>
+        <div className="detailHeader">
+      <section id="quoteDetails" className="quoteDetails">
+        <dl>
+          <div>
+            <dt className="fade">Quote Number</dt>
+            <dd className="fade">-</dd>
           </div>
-          <NewNoteFileUploader />
-          <Footer />
-        </div>
-      </div>
+        </dl>
+      </section>
+      <section id="propertyDetails" className="propertyDetails">
+        <dl>
+          <div>
+            <dt>Address</dt>
+            <dd className="fade">123 NE 132ND TER</dd>
+            <dd className="fade"></dd>
+            <dd className="fade"></dd>
+          </div>
+        </dl>
+      </section>
+      <section id="yearBuilt" className="yearBuilt">
+        <dl>
+          <div>
+            <dt className="fade">Year Built</dt>
+            <dd className="fade">1980</dd>
+          </div>
+        </dl>
+      </section>
+      <section id="coverageDetails" className="coverageDetails">
+        <dl>
+          <div>
+            <dt className="fade">Coverage A</dt>
+            <dd className="fade"></dd>
+          </div>
+        </dl>
+      </section>
+      <section id="premium" className="premium">
+        <dl>
+          <div>
+            <dt className="fade">Premium</dt>
+            <dd className="fade">
+
+
+              </dd>
+          </div>
+        </dl>
+      </section>
     </div>
+
+    <div className="route-content">
+          <form id="CustomerInfo" novalidate="">
+            <div className="scroll">
+                test monkey
+            </div>
+          </form>
+        </div>
+
+      </div>
+
+
+
+
+
   </QuoteBaseConnect>
 );
 
