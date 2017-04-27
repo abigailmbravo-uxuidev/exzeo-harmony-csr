@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import QuoteHeader from '../components/Quote/QuoteHeader';
-import SideNav from '../components/Common/SideNav';
+import QuoteSideNav from '../components/Quote/QuoteSideNav';
 import * as userActions from '../actions/userActions';
 import Footer from '../components/Common/Footer';
 import NewNoteFileUploader from '../components/Common/NewNoteFileUploader';
@@ -19,10 +19,11 @@ export const QuoteBase = props => (
     <QuoteHeader />
     <main role="document">
       <aside className="content-panel-left">
-        <div className="csr">
-          <h3>CSR Portal for Quote</h3>
+        <div className="user">
+          <label htmlFor="user">Policyholder</label>
+          <h5 className="user-name">Jane Doe</h5>
         </div>
-        <SideNav />
+        <QuoteSideNav />
       </aside>
       <div className="content-wrapper">
         {props.children}
