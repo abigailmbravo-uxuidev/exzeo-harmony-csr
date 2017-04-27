@@ -56,9 +56,7 @@ export const Coverage = (props) => {
           noValidate
         >
           <div className="scroll">
-            <div className="form-group" role="group">
-
-              <div className="form-group" role="group">
+            <div className="form-group survey-wrapper" role="group">
   <div className="demographics flex-parent">
     <div className="policy-holder flex-child">
       <h4>Name of Insured</h4>
@@ -107,9 +105,6 @@ export const Coverage = (props) => {
       <h4>&nbsp;</h4>
     </div>
   </div>
-</div>
-
-
             </div>
             <div className="workflow-steps">
               <button
@@ -119,7 +114,6 @@ export const Coverage = (props) => {
                 Update
               </button>
             </div>
-
             <div hidden>
               <TextField
                 validations={['required']}

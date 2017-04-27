@@ -39,6 +39,10 @@
                 .route-content {
                     .scroll {}
 
+                    .survey-wrapper {
+                        flex-direction: column;
+                    }
+
                     .form-group {
                         h4 {
                             font-weight: normal;

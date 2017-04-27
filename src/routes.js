@@ -8,6 +8,7 @@ import Splash from './containers/Splash';
 import AppError from './containers/AppError';
 import NotFound from './containers/NotFound';
 import Coverage from './containers/Coverage';
+import PolicyCoverage from './containers/PolicyCoverage';
 
 // A higher order component that allows for checking the routes authentication prefs.
 function authHOC(NavComponent, redirectUrl, props) {
@@ -30,6 +31,7 @@ class Routes extends Component { // eslint-disable-line
           <Switch>
             <Route exact path="/" component={authHOC(Splash, '/', this.props)} />
             <Route exact path="/quote" component={Coverage} />
+            <Route exact path="/policy" component={PolicyCoverage} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/error" component={AppError} />
             <Route component={NotFound} />

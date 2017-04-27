@@ -12,7 +12,7 @@ import { NavLink } from 'react-router-dom';
  * }
  */
 const csrLinks = [{
-  link: '/quote',
+  link: '/policy',
   label: 'Coverage & Rating',
   styleName: 'coverage',
   exact: true
