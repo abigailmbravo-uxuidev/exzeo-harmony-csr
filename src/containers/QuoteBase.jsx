@@ -25,11 +25,12 @@ export const QuoteBase = props => (
         <SideNav />
       </aside>
       <div className="content-wrapper">
-        {props.children}
-        <aside>test</aside>
+          {props.children}
+          <Footer />
       </div>
+      <aside className="underwriting-validation">test</aside>
       <NewNoteFileUploader />
-      <Footer />
+
     </main>
   </div>
 );

@@ -9,7 +9,7 @@ const Coverage = () => (
     <div className="route-content">
       <form>
         <div className="scroll">
-          <div className="form-group survey-wrapper" role="group">
+          <div className="form-group" role="group">
 
             <div className="demographics flex-parent">
                 <div className="policy-holder flex-child">
@@ -19,7 +19,10 @@ const Coverage = () => (
                       <label>Label</label>
                       <input type="text" name="" placeholder="placeholder" />
                     </div>
-
+                    <div className="flex-child">
+                      <label>Label</label>
+                      <input type="text" name="" placeholder="placeholder" />
+                    </div>
                   </div>
 
                 </div>
