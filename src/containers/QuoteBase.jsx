@@ -29,7 +29,32 @@ export const QuoteBase = props => (
           {props.children}
           <Footer />
       </div>
-      <aside className="underwriting-validation">test</aside>
+      <aside className="underwriting-validation">
+
+        <h4>Underwriting Validation</h4>
+
+        <h5><i className="fa fa-exclamation-triangle" aria-hidden="true"></i> Caution Messages</h5>
+
+      <ul>
+        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer efficitur elementum massa, id eleifend sem placerat gravida. Nulla semper dignissim leo eu viverra.</li>
+        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer efficitur elementum massa, id eleifend sem placerat gravida. Nulla semper dignissim leo eu viverra.</li>
+      </ul>
+
+      <h5><i className="fa fa-exclamation-circle" aria-hidden="true"></i> Error Messages</h5>
+
+        <ul>
+          <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer efficitur elementum massa, id eleifend sem placerat gravida. Nulla semper dignissim leo eu viverra.</li>
+          <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer efficitur elementum massa, id eleifend sem placerat gravida. Nulla semper dignissim leo eu viverra.</li>
+        </ul>
+
+    <h5><i className="fa fa-info-circle" aria-hidden="true"></i> Info Messages</h5>
+
+      <ul>
+        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer efficitur elementum massa, id eleifend sem placerat gravida. Nulla semper dignissim leo eu viverra.</li>
+        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer efficitur elementum massa, id eleifend sem placerat gravida. Nulla semper dignissim leo eu viverra.</li>
+      </ul>
+
+      </aside>
       <NewNoteFileUploader />
 
     </main>

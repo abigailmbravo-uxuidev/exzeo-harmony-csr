@@ -32,8 +32,9 @@
     main {
         .content-wrapper {
             flex-grow: 1;
-            flex-shrink: 0;
+            flex-shrink: 1;
             width: auto;
+            flex-wrap: nowrap;
 
 
                 .route-content {
@@ -130,6 +131,9 @@
         .underwriting-validation {
           width: 200px;
           border-left: dashed 1px $warm-gray-04;
+          flex-shrink: 0;
+          flex-basis: 200px;
+          padding: ($padding*2);
         }
     }
 }
