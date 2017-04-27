@@ -35,20 +35,30 @@
             flex-shrink: 1;
             width: auto;
             flex-wrap: nowrap;
+            overflow: hidden;
 
 
                 .route-content {
-                    .scroll {}
+                    display: flex;
+                    flex-shrink: 1;
+                    form {
+                        display: flex;
+                        flex-grow: 1;
+                        flex-shrink: 1;
+                    }
+                    .scroll {
+                        flex-grow: 1;
+                        flex-shrink: 0;
+                        overflow-y: auto;
+                    }
 
                     .survey-wrapper {
                       flex-direction: column;
                     }
-
                     .form-group {
                         h4 {
                             font-weight: normal;
                         }
-
                         .flex-parent {
                             display: -ms-flexbox;
                             display: -webkit-flex;
