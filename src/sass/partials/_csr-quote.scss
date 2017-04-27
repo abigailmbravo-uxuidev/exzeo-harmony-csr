@@ -26,4 +26,11 @@
             }
         }
     }
+    //content wrapper
+    main {
+        .content-wrapper {
+            flex-grow: 1;
+            flex-shrink: 0;
+        }
+    }
 }
