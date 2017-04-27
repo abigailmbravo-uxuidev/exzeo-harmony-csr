@@ -7,15 +7,16 @@ import Login from './containers/Login';
 import Splash from './containers/Splash';
 import AppError from './containers/AppError';
 import NotFound from './containers/NotFound';
+import Coverage from './containers/Coverage';
 
 // A higher order component that allows for checking the routes authentication prefs.
 function authHOC(NavComponent, redirectUrl, props) {
   return class AuthHOC extends React.Component { // eslint-disable-line
     render() {
       if (props.user.isAuthenticated) {
-        return <NavComponent { ...props } />;
+        return <NavComponent {...props} />;
       }
-      return <Login redirectUrl={ redirectUrl } />;
+      return <Login redirectUrl={redirectUrl} />;
     }
   };
 }
@@ -27,10 +28,11 @@ class Routes extends Component { // eslint-disable-line
         <div>
           <Helmet><title>Harmony - CSR Portal</title></Helmet>
           <Switch>
-            <Route exact path="/" component={ authHOC(Splash, '/', this.props) } />
-            <Route exact path="/login" component={ Login } />
-            <Route exact path="/error" component={ AppError } />
-            <Route component={ NotFound } />
+            <Route exact path="/" component={authHOC(Splash, '/', this.props)} />
+            <Route exact path="/quote" component={authHOC(Coverage, '/quote', this.props)} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/error" component={AppError} />
+            <Route component={NotFound} />
           </Switch>
         </div>
       </Router>

@@ -1,0 +1,29 @@
+.app-wrapper.csr.quote {
+    //header
+    header {
+        div[role="banner"] {
+            .tab-tag {
+                margin: (-$padding) ($padding*2) (-$padding)  (-$padding*2);
+                padding: 0 ($padding*2);
+                background: $green-darken-03;
+                color: $white;
+                height: 3.25rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .quote-description {
+                font-size: $font-size-h5;
+                display: flex;
+                flex-grow: 1;
+                flex-shrink: 0;
+                color: $white;
+                font-weight: $font-weight-bold;
+                label {
+                    font-weight: $font-weight-normal;
+                    color: $warm-gray-07;
+                }
+            }
+        }
+    }
+}
