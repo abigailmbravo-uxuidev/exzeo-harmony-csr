@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import FieldHint from './FieldHint';
 import reduxFormField from './reduxFormField';
 
-export const SelectField = ({
+export const SelectInput = ({
   answers,
   hint,
   input,
@@ -40,7 +40,7 @@ export const SelectField = ({
   );
 };
 
-SelectField.propTypes = {
+SelectInput.propTypes = {
 
   /**
    * Answers array used to generate options
@@ -77,10 +77,10 @@ SelectField.propTypes = {
   styleName: PropTypes.string
 };
 
-SelectField.defaultProps = {
+SelectInput.defaultProps = {
   input: {
     onChange: () => {}
   }
 };
 
-export default reduxFormField(SelectField);
+export default reduxFormField(SelectInput);
