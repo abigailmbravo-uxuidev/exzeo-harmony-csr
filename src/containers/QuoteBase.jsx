@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import Header from '../components/Common/Header';
+import QuoteHeader from '../components/Quote/QuoteHeader';
 import SideNav from '../components/Common/SideNav';
 import * as userActions from '../actions/userActions';
 
@@ -13,8 +13,8 @@ const handleLogout = (props) => {
 */
 
 export const QuoteBase = props => (
-  <div className="app-wrapper csr">
-    <Header />
+  <div className="app-wrapper csr quote">
+    <QuoteHeader />
     <main role="document">
       <aside className="content-panel-left">
         <div className="csr">

@@ -131,10 +131,10 @@ const Splash = () => (
           <div className="results-wrapper">
             <div className="grid-controls">
               <nav className="tabs">
-                <a href="" className="btn btn-link selected">Recently Viewed</a>
+                <a href="" className="btn btn-link">Recently Viewed</a>
                 {/* <a href="">My Assigned Quotes</a>*/}
                 {/* <a href="">My Assigned Claims</a>*/}
-                <a href="" className="btn btn-link">Search Results</a>
+                <a href="" className="btn btn-link selected">Search Results</a>
               </nav>
               <div className="filters-wrapper">
                 <div className="filters">
