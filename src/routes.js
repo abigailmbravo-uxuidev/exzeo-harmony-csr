@@ -29,7 +29,7 @@ class Routes extends Component { // eslint-disable-line
           <Helmet><title>Harmony - CSR Portal</title></Helmet>
           <Switch>
             <Route exact path="/" component={authHOC(Splash, '/', this.props)} />
-            <Route exact path="/quote" component={authHOC(Coverage, '/quote', this.props)} />
+            <Route exact path="/quote" component={Coverage} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/error" component={AppError} />
             <Route component={NotFound} />
