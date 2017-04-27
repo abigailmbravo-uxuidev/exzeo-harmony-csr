@@ -39,6 +39,10 @@
                 .route-content {
                     .scroll {}
 
+                    .survey-wrapper {
+                      flex-direction: column;
+                    }
+
                     .form-group {
                         h4 {
                             font-weight: normal;
@@ -125,6 +129,7 @@
 
         .underwriting-validation {
           width: 200px;
+          border-left: dashed 1px $warm-gray-04;
         }
     }
 }
