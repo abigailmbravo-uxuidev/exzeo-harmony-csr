@@ -18,8 +18,7 @@ export const SelectInput = ({
 
   return (
     <div className={formGroupStyles}>
-      <label htmlFor={name}>
-        {label} &nbsp; {Hint}
+      <label htmlFor={name}>{label} &nbsp; {Hint}</label>
         {answers && answers.length > 0 ? (
           <select
             value={value}
@@ -35,7 +34,6 @@ export const SelectInput = ({
             ))}
           </select>
         ) : null}
-      </label>
     </div>
   );
 };

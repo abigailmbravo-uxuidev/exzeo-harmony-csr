@@ -33,26 +33,34 @@ export const QuoteBase = props => (
 
         <h4>Underwriting Validation</h4>
 
-        <h5><i className="fa fa-exclamation-triangle" aria-hidden="true"></i> Caution Messages</h5>
+      <h5 className="msg-error"><i className="fa fa-exclamation-circle" aria-hidden="true"></i> Error Messages</h5>
 
-      <ul>
-        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer efficitur elementum massa, id eleifend sem placerat gravida. Nulla semper dignissim leo eu viverra.</li>
-        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer efficitur elementum massa, id eleifend sem placerat gravida. Nulla semper dignissim leo eu viverra.</li>
-      </ul>
-
-      <h5><i className="fa fa-exclamation-circle" aria-hidden="true"></i> Error Messages</h5>
-
+    <div>
         <ul>
-          <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer efficitur elementum massa, id eleifend sem placerat gravida. Nulla semper dignissim leo eu viverra.</li>
-          <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer efficitur elementum massa, id eleifend sem placerat gravida. Nulla semper dignissim leo eu viverra.</li>
+          <li>Please enter an effective date 30 days in the past and 90 days in the future.</li><li>Please enter an effective date 30 days in the past and 90 days in the future.</li>
+          <li>Please enter an effective date 30 days in the past and 90 days in the future.</li>
         </ul>
+      </div>
 
-    <h5><i className="fa fa-info-circle" aria-hidden="true"></i> Info Messages</h5>
+      <h5 className="msg-caution"><i className="fa fa-exclamation-triangle" aria-hidden="true"></i> Caution Messages</h5>
 
+    <div>
+    <ul>
+      <li>ZipCode is closed for this policy type.</li>
+      <li>ZipCode is closed for this policy type.</li>
+      <li>ZipCode is closed for this policy type.</li>
+    </ul>
+  </div>
+
+    <h5 className="msg-info"><i className="fa fa-info-circle" aria-hidden="true"></i> Info Messages</h5>
+
+<div>
       <ul>
-        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer efficitur elementum massa, id eleifend sem placerat gravida. Nulla semper dignissim leo eu viverra.</li>
-        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer efficitur elementum massa, id eleifend sem placerat gravida. Nulla semper dignissim leo eu viverra.</li>
+        <li>Due to the age of the home, a 4-point inspection completed in the last 3 years is requried.</li>
+        <li>Due to the age of the home, a 4-point inspection completed in the last 3 years is requried.</li>
+        <li>Due to the age of the home, a 4-point inspection completed in the last 3 years is requried.</li>
       </ul>
+</div>
 
       </aside>
       <NewNoteFileUploader />

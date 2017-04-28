@@ -21,10 +21,7 @@
                 flex-grow: 1;
                 flex-shrink: 0;
 
-                label {
-                    color: $warm-gray-07;
-                    font-weight: $font-weight-normal;
-                }
+
             }
         }
     }
@@ -50,6 +47,7 @@
                         flex-grow: 1;
                         flex-shrink: 0;
                         overflow-y: auto;
+                        width: 100%;
                     }
 
                     .survey-wrapper {
@@ -59,6 +57,21 @@
                         h4 {
                             font-weight: normal;
                         }
+
+                        label {
+
+                        }
+
+                        > section {
+                          margin-bottom: $padding*4;
+                          border-bottom: 1px dashed $warm-gray-01;
+                          padding-bottom: $padding*2;
+                        }
+
+                        > section:last-child {
+                          border: 0;
+                        }
+
                         .flex-parent {
                             display: -ms-flexbox;
                             display: -webkit-flex;
@@ -111,17 +124,40 @@
 
                             .property-details {
                                 width: 60%;
+
+                                .flex-parent {
+
+                                  .flex-child {
+                                    width: 25%;
+                                  }
+
+                                }
+
                             }
                         }
 
                         .coverage-options {
-                            .coverages {}
 
-                            .other-coverages {}
+                          > .flex-child {
+                                width: 25%;
+                          }
 
-                            .deductibles {}
 
-                            .discounts {}
+                            .coverages {
+                              width: 35%;
+                            }
+
+                            .other-coverages {
+                              width: 30%;
+                            }
+
+                            .deductibles {
+                              width: 20%
+                            }
+
+                            .discounts {
+                              width: 15%;
+                            }
                         }
 
                         .wind {
@@ -139,11 +175,62 @@
         }
 
         .underwriting-validation {
-          width: 200px;
+          width: 240px;
           border-left: dashed 1px $warm-gray-04;
           flex-shrink: 0;
-          flex-basis: 200px;
-          padding: ($padding*2);
+          flex-basis: 240px;
+          padding: 0 0 ($padding*2) ($padding*2);
+          overflow: scroll;
+          height: 100%;
+
+          h5 {
+            padding: ($padding*2);
+            color: #FFF;
+            font-size: 14px;
+
+          }
+
+          .msg-error {
+            background-color: $red;
+          }
+
+          .msg-caution {
+            background-color: $orange;
+          }
+
+          .msg-info {
+            background-color: $bright-blue;
+          }
+
+          div {
+
+            border: solid 1px $warm-gray-04;
+            margin: ($padding*2) ($padding*2) ($padding*4);
+            padding: 0;
+            border-radius: 5px;
+
+          ul {
+              padding: 0;
+              margin: 0;
+
+            li {
+              font-size: 12px;
+              margin: 0;
+              padding: ($padding*2);
+              border-bottom: solid 1px $warm-gray-04;
+              display: list-item;
+              list-style: none;
+            }
+
+            li:last-child {
+              border: 0;
+            }
+
+
+          }
+
+        }
+
         }
     }
 }
