@@ -17,11 +17,16 @@
                 display: flex;
                 color: $white;
                 font-size: $font-size-h5;
-                font-weight: $font-weight-bold;
                 flex-grow: 1;
                 flex-shrink: 0;
+                align-items: center;
 
-
+                label {
+                  color: $warm-gray-07;
+                  font-weight: $font-weight-normal;
+                  margin-bottom: 0;
+                  padding: 0 $padding 0 ($padding*4);
+                }
             }
         }
     }

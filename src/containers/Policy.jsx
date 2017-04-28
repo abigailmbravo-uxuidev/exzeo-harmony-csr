@@ -1,6 +1,6 @@
-import React, { PropTypes } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import React, {PropTypes} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
 import QuoteHeader from '../components/Policy/PolicyHeader';
 import QuoteSideNav from '../components/Policy/PolicySideNav';
@@ -16,32 +16,33 @@ const handleLogout = (props) => {
 
 export const Policy = props => (
   <div className="app-wrapper csr policy">
-    <QuoteHeader />
+    <NewNoteFileUploader/>
+    <QuoteHeader/>
     <main role="document">
       <aside className="content-panel-left">
         <div className="user">
           <label htmlFor="user">Policyholder</label>
           <h5 className="user-name">Jane Doe</h5>
         </div>
-        <QuoteSideNav />
+        <QuoteSideNav/>
       </aside>
       <div className="content-wrapper">
-          {props.children}
-          <Footer />
+        {props.children}
+        <Footer/>
       </div>
-      <NewNoteFileUploader />
+      <NewNoteFileUploader/>
     </main>
   </div>
 );
 
-
 Policy.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node])
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ])
 };
 
-const mapStateToProps = state => ({
-  user: state.user
-});
+const mapStateToProps = state => ({user: state.user});
 const mapDispatchToProps = dispatch => ({
   actions: {
     user: bindActionCreators(userActions, dispatch)

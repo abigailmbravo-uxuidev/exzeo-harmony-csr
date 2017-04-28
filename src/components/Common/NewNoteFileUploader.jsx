@@ -2,10 +2,6 @@ import React from 'react';
 
 const NewNoteFileUploader = () => (
 
-
-
-
-
     <div className="new-note-file">
         <div className="title-bar">
           <div className="title">Note</div>
@@ -16,7 +12,7 @@ const NewNoteFileUploader = () => (
           </div>
         </div>
         <div className="mainContainer">
-          <div className="content state-initial" hidden>
+          <div className="content state-initial">
               <div className="flex-contents">
                 <select>
                   <option value="">Select Type</option>
@@ -45,7 +41,7 @@ const NewNoteFileUploader = () => (
               <a href="#" className="btn btn-secondary">Cancel</a>
             </div>
           </div>
-          <div className="content state-finalize">
+          <div className="content state-finalize" hidden>
             <div className="flex-contents">
               <select>
                 <option value="">Select Type</option>
@@ -136,7 +132,6 @@ const NewNoteFileUploader = () => (
                     <i className="fa fa-times-circle" aria-hidden="true"></i>
                   </li>
                 </ul>
-
               </div>
             </div>
             <div className="buttons">
