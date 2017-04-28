@@ -2,8 +2,8 @@ import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import QuoteHeader from '../components/Quote/QuoteHeader';
-import QuoteSideNav from '../components/Quote/QuoteSideNav';
+import QuoteHeader from '../components/Policy/PolicyHeader';
+import QuoteSideNav from '../components/Policy/PolicySideNav';
 import * as userActions from '../actions/userActions';
 import Footer from '../components/Common/Footer';
 import NewNoteFileUploader from '../components/Common/NewNoteFileUploader';
@@ -14,8 +14,8 @@ const handleLogout = (props) => {
 };
 */
 
-export const QuoteBase = props => (
-  <div className="app-wrapper csr quote">
+export const Policy = props => (
+  <div className="app-wrapper csr policy">
     <QuoteHeader />
     <main role="document">
       <aside className="content-panel-left">
@@ -35,7 +35,7 @@ export const QuoteBase = props => (
 );
 
 
-QuoteBase.propTypes = {
+Policy.propTypes = {
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node])
 };
 
@@ -47,4 +47,4 @@ const mapDispatchToProps = dispatch => ({
     user: bindActionCreators(userActions, dispatch)
   }
 });
-export default connect(mapStateToProps, mapDispatchToProps)(QuoteBase);
+export default connect(mapStateToProps, mapDispatchToProps)(Policy);

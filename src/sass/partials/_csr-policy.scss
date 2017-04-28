@@ -1,0 +1,84 @@
+.app-wrapper.csr.policy {
+  //header
+  header {
+    div[role="banner"] {
+      .tab-tag {
+        display: flex;
+        height: 3.25rem;
+        margin: (-$padding) ($padding*2) (-$padding) (-$padding*2);
+        padding: 0 ($padding*2);
+        color: $white;
+        background: $bright-blue-darken-01;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .quote-description {
+        display: flex;
+        color: $white;
+        font-size: $font-size-h5;
+        font-weight: $font-weight-bold;
+        flex-grow: 1;
+        flex-shrink: 0;
+
+        label {
+          color: $warm-gray-07;
+          font-weight: $font-weight-normal;
+        }
+      }
+    }
+  }
+  //content wrapper
+  main {
+    .content-wrapper {
+      flex-grow: 1;
+      flex-shrink: 0;
+      width: auto;
+      flex-wrap: nowrap;
+      overflow: hidden;
+
+      .route-content {
+        display: flex;
+        flex-shrink: 1;
+
+        .scroll {
+          flex-grow: 1;
+          flex-shrink: 0;
+          overflow-y: auto;
+        }
+
+        .survey-wrapper {
+          flex-direction: column;
+        }
+
+        .form-group {
+          h4 {
+            font-weight: normal;
+          }
+          .property-info {
+              display: flex;
+
+              dl {
+                  div {
+                      margin-right: $padding*4;
+
+                      dt {
+                          font-size: $font-size-sm;
+                          color: $headline-color;
+                      }
+                      dd {
+
+                      }
+                  }
+              }
+          }
+        }
+      }
+    }
+
+    .underwriting-validation {
+      width: 200px;
+      border-left: dashed 1px $warm-gray-04;
+    }
+  }
+}

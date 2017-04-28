@@ -6,14 +6,9 @@ import {reduxForm, Form, propTypes} from 'redux-form';
 import Footer from '../components/Common/Footer';
 import * as cgActions from '../actions/cgActions';
 import * as appStateActions from '../actions/appStateActions';
-import QuoteBaseConnect from './QuoteBase';
+import PolicyConnect from './Policy';
 import ClearErrorConnect from '../components/Error/ClearError';
-import TextField from '../components/Form/inputs/TextField';
-import SelectField from '../components/Form/inputs/SelectField';
-import RadioField from '../components/Form/inputs/RadioField';
-import CheckField from '../components/Form/inputs/CheckField';
-import DisplayField from '../components/Form/inputs/DisplayField';
-import SliderField from '../components/Form/inputs/SliderField';
+import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 
 const handleFormSubmit = (data, dispatch, props) => {
   alert('submit');
@@ -31,6 +26,50 @@ const handleInitialize = (state) => {
   return formValues;
 };
 
+const claims = [
+  {
+    claimNumber: '12345',
+    lossID: '1234',
+    lossDate: '01/01/2000',
+    reportDate: '01/09/2000',
+    closedDate: '03/01/2000',
+    examiner: 'William Churchhill',
+    examinerPhone: '555-555-5555',
+    lossDescription: 'Desc: Noticed discoloration on floor.'
+  }, {
+    claimNumber: '67890',
+    lossID: '5678',
+    lossDate: '01/01/2002',
+    reportDate: '01/05/2002',
+    closedDate: '02/01/2002',
+    examiner: 'Bob McCann',
+    examinerPhone: '555-555-5523',
+    lossDescription: 'Desc: Noticed discoloration on wall.'
+  }
+];
+
+const cov1 = [
+  {
+    coverage: 'Building',
+    value: '$257,500'
+  }, {
+    coverage: 'Other Structures',
+    value: '$25,750'
+  }, {
+    coverage: 'Contents',
+    value: '$90,125'
+  }, {
+    coverage: 'Additional Living Expenses',
+    value: '$25,750'
+  }, {
+    coverage: 'Liability',
+    value: '$300,000'
+  }, {
+    coverage: 'Medical Payment',
+    value: '$2,000'
+  }
+];
+
 // ------------------------------------------------
 // The render is where all the data is being pulled
 //  from the props.
@@ -42,42 +81,83 @@ const handleInitialize = (state) => {
 export const Coverage = (props) => {
   const {handleSubmit} = props;
   return (
-    <QuoteBaseConnect>
+    <PolicyConnect>
       <ClearErrorConnect/>
       <div className="route-content">
-        <Form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
-          <div className="scroll">
-            <div className="form-group survey-wrapper" role="group">
-              <div className="demographics flex-parent">
-                <div className="policy-holder flex-child">
-                  <h4>Covreage &amp; Premium</h4>
-                  <div className="flex-parent">
-                    <div className="flex-child">
-                      <label>Label</label>
-                      input
+        <div className="scroll">
+          <div className="form-group survey-wrapper" role="group">
+            <h4>Covreage &amp; Premium</h4>
+            <div className="coverage-premium">
+                    <div>
+                            <div className="table-view">
+                              <BootstrapTable className="" data={cov1} striped hover>
+                                <TableHeaderColumn isKey dataField="coverage" className="coverage" columnClassName="coverage">Coverage</TableHeaderColumn>
+                                <TableHeaderColumn dataField="value" className="value" columnClassName="value">Value</TableHeaderColumn>
+                              </BootstrapTable>
+                            </div>
                     </div>
-                    <div className="flex-child">
-                      <label>Label</label>
-                      input
-                    </div>
-                  </div>
+
+            </div>
+            <h4>Property Info</h4>
+            <div className="property-info">
+              <dl>
+                <div>
+                  <dt>Year Built</dt>
+                  <dd>2001</dd>
+                  <dt>Year of Roof</dt>
+                  <dd>2001</dd>
                 </div>
-              </div>
-              <div className="property flex-parent">
-                <div className="property-address flex-child">
-                  <h4>Property Info</h4>
+              </dl>
+              <dl>
+                <div>
+                  <dt>Construction Type</dt>
+                  <dd>Masonry</dd>
+                  <dt>Territory</dt>
+                  <dd>Tampa, Hillsborough</dd>
                 </div>
-              </div>
-              <div className="coverage-options flex-parent">
-                <div className="coverages flex-child">
-                  <h4>Claims</h4>
+              </dl>
+              <dl>
+                <div>
+                  <dt>Square Footage</dt>
+                  <dd>2,124</dd>
+                  <dt>Number of Stories</dt>
+                  <dd>1</dd>
                 </div>
-              </div>
+              </dl>
+              <dl>
+                <div>
+                  <dt>Flood Zone</dt>
+                  <dd>X</dd>
+                  <dt>Iffy</dt>
+                  <dd>--</dd>
+                </div>
+              </dl>
+              <dl>
+                <div>
+                  <dt>Appraiser</dt>
+                  <dd>
+                    <a href="">appraiser-website.com</a>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+            <h4>Claims</h4>
+            <div className="table-view">
+              <BootstrapTable className="" data={claims} striped hover>
+                <TableHeaderColumn isKey dataField="claimNumber" className="claimNumber" columnClassName="claimNumber" dataSort>Claim No</TableHeaderColumn>
+                <TableHeaderColumn dataField="lossID" className="lossID" columnClassName="lossID" dataSort>Loss ID</TableHeaderColumn>
+                <TableHeaderColumn dataField="lossDate" className="lossDate" columnClassName="lossDate" dataSort>Loss Date</TableHeaderColumn>
+                <TableHeaderColumn dataField="reportDate" className="reportDate" columnClassName="reportDate" dataSort>Loss Date</TableHeaderColumn>
+                <TableHeaderColumn dataField="closedDate" className="closedDate" columnClassName="closedDate" dataSort>Closed Date</TableHeaderColumn>
+                <TableHeaderColumn dataField="examiner" className="examiner" columnClassName="examiner" dataSort>Examiner</TableHeaderColumn>
+                <TableHeaderColumn dataField="examinerPhone" className="examinerPhone" columnClassName="examinerPhone" dataSort>Examiner Ph</TableHeaderColumn>
+                <TableHeaderColumn dataField="lossDescription" className="lossDescription" columnClassName="lossDescription" dataSort>Loss Description</TableHeaderColumn>
+              </BootstrapTable>
             </div>
           </div>
-        </Form>
+        </div>
       </div>
-    </QuoteBaseConnect>
+    </PolicyConnect>
   );
 };
 
