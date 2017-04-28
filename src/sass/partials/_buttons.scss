@@ -258,3 +258,23 @@ input[type="submit"] {
         margin: 0;
     }
 }
+
+.btn-footer {
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    align-content: stretch;
+    align-items: flex-start;
+    margin-bottom: ($padding*2);
+
+  .btn {
+      align-self: flex-end;
+      margin-left: $padding;
+      order: 0;
+      flex: 0 1 auto;
+      align-self: auto;
+
+    }
+}
