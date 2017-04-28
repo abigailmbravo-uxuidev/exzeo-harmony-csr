@@ -3,17 +3,10 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import {reduxForm, Form, propTypes} from 'redux-form';
-import Footer from '../components/Common/Footer';
 import * as cgActions from '../actions/cgActions';
 import * as appStateActions from '../actions/appStateActions';
 import QuoteBaseConnect from './QuoteBase';
 import ClearErrorConnect from '../components/Error/ClearError';
-import TextField from '../components/Form/inputs/TextField';
-import SelectField from '../components/Form/inputs/SelectField';
-import RadioField from '../components/Form/inputs/RadioField';
-import CheckField from '../components/Form/inputs/CheckField';
-import DisplayField from '../components/Form/inputs/DisplayField';
-import SliderField from '../components/Form/inputs/SliderField';
 
 const handleFormSubmit = (data, dispatch, props) => {
   alert('submit');
@@ -31,14 +24,15 @@ const handleInitialize = (state) => {
   return formValues;
 };
 
-// ------------------------------------------------
-// The render is where all the data is being pulled
-//  from the props.
-// The quote data data comes from the previous task
-//  which is createQuote / singleQuote. This might
-//  not be the case in later calls, you may need
-//  to pull it from another place in the model
-// ------------------------------------------------
+/** 
+------------------------------------------------
+The render is where all the data is being pulled 
+from the props. The quote data data comes from the 
+previous task which is createQuote / singleQuote. 
+This might not be the case in later calls, you may 
+need to pull it from another place in the model
+------------------------------------------------
+*/
 export const Coverage = (props) => {
   const {handleSubmit} = props;
   return (
