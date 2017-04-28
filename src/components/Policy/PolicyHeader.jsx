@@ -18,7 +18,7 @@ export const PolicyHeader = props => (
       <div id="logo" className="logo">
         <img src={logo} alt="Harmony" />
       </div>
-      <div className="quote-description"><label>Type</label>HO3 Homeowners<label>Quote Number</label>12-123456-01</div>
+      <div className="policy-description"><label>Type</label>HO3 Homeowners<label>Quote Number</label>12-123456-01</div>
       <button className="btn-icon btn-ellipsis-v"><i className="fa fa-ellipsis-v" /></button>
       <nav className="fade-in">
         <div></div>

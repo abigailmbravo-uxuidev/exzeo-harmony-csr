@@ -2865,3 +2865,16 @@ ul.list-cards {
         }
     }
 }
+
+
+.csr {
+    .site-nav {
+        ul {
+            li {
+                a {
+                    padding-left: $padding;
+                }
+            }
+        }
+    }
+}

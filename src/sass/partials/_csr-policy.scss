@@ -13,17 +13,19 @@
         align-items: center;
       }
 
-      .quote-description {
+      .policy-description {
         display: flex;
         color: $white;
         font-size: $font-size-h5;
-        font-weight: $font-weight-bold;
         flex-grow: 1;
         flex-shrink: 0;
+        align-items: center;
 
         label {
           color: $warm-gray-07;
           font-weight: $font-weight-normal;
+          margin-bottom: 0;
+          padding: 0 $padding 0 ($padding*4);
         }
       }
     }
@@ -32,7 +34,7 @@
   main {
     .content-wrapper {
       flex-grow: 1;
-      flex-shrink: 0;
+      flex-shrink: 1;
       width: auto;
       flex-wrap: nowrap;
       overflow: hidden;
@@ -45,6 +47,7 @@
           flex-grow: 1;
           flex-shrink: 0;
           overflow-y: auto;
+          width: 100%;
         }
 
         .survey-wrapper {
@@ -52,25 +55,98 @@
         }
 
         .form-group {
-          h4 {
-            font-weight: normal;
-          }
-          .property-info {
+          section {
+            margin-bottom: $padding*4;
+            border-bottom: 1px dashed $warm-gray-01;
+            padding-bottom: $padding*2;
+
+            &:last-child {
+              border-bottom-width: 0;
+            }
+
+            h4 {
+              font-weight: normal;
+            }
+
+            .property-info {
               display: flex;
 
               dl {
-                  div {
-                      margin-right: $padding*4;
+                div {
+                  margin-right: $padding*4;
 
-                      dt {
-                          font-size: $font-size-sm;
-                          color: $headline-color;
-                      }
-                      dd {
-
-                      }
+                  dt {
+                    font-size: $font-size-sm;
+                    color: $headline-color;
                   }
+
+                  dd {}
+                }
               }
+            }
+
+            .table-striped>tbody>tr:nth-of-type(odd):hover {
+                background: $white;
+            }
+
+            .table-striped>tbody>tr:nth-of-type(even):hover {
+                background: $warm-gray-01;
+            }
+            .react-bs-table .table-bordered>tbody>tr:nth-of-type(even):hover>td {
+                background: $warm-gray-01;
+            }
+
+            .responsive-tables {
+              display: flex;
+              width: 100%;
+              flex-direction: row;
+              margin: 0 -10px ($padding*2);
+
+              .table-view {
+                width: 25%;
+
+                .deductible {
+                  thead tr th {
+                    background: rgba($orange-lighten-04, .3);
+                  }
+                  tbody tr:nth-of-type(even)>td {
+                      background: rgba($orange-lighten-04, .1);
+                  }
+                }
+
+                .premium {
+                    thead tr th {
+                      background: rgba($yellow-lighten-04, .3);
+                    }
+                    tbody tr:nth-of-type(even)>td {
+                        background: rgba($yellow-lighten-04, .1);
+                    }
+                }
+
+                .billing {
+                    thead tr th {
+                      background: rgba($green-lighten-04, .3);
+                    }
+                    tbody tr:nth-of-type(even)>td {
+                        background: rgba($green-lighten-04, .1);
+                    }
+                }
+
+                .coverage {
+                  width: 60%;
+                  padding: $padding 15px $padding $padding;
+                }
+
+                .value {
+                  width: 40%;
+                  padding: $padding $padding $padding 15px;
+                }
+              }
+            }
+
+            .table-view.claims {
+              margin: 0 -10px ($padding*2);
+            }
           }
         }
       }
