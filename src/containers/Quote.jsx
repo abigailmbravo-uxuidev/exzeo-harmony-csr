@@ -22,7 +22,7 @@ export const QuoteBase = props => (
       <aside className="content-panel-left">
         <div className="user">
           <label htmlFor="user">Policyholder</label>
-          <h5 className="user-name">Jane Doe</h5>
+          <p className="user-name">Jane Doe</p>
         </div>
         <QuoteSideNav/>
       </aside>

@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 
 import QuoteHeader from '../components/Policy/PolicyHeader';
 import QuoteSideNav from '../components/Policy/PolicySideNav';
+import DetailHeader from '../components/Policy/DetailHeader';
 import * as userActions from '../actions/userActions';
 import Footer from '../components/Common/Footer';
 import NewNoteFileUploader from '../components/Common/NewNoteFileUploader';
@@ -22,11 +23,12 @@ export const Policy = props => (
       <aside className="content-panel-left">
         <div className="user">
           <label htmlFor="user">Policyholder</label>
-          <h5 className="user-name">Jane Doe</h5>
+          <p className="user-name">Jane Doe</p>
         </div>
         <QuoteSideNav/>
       </aside>
       <div className="content-wrapper">
+              <DetailHeader />
         {props.children}
         <Footer/>
       </div>
