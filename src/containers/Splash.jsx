@@ -15,6 +15,7 @@ import SearchBar from '../components/Search/SearchBar';
 import SearchResults from '../components/Search/SearchResults';
 import NoResultsConnect from '../components/Search/NoResults';
 
+
 const data = [
   {
     type: 'quote',

@@ -83,6 +83,7 @@
       // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655.
       opacity: 1;
       background-color: $input-bg-disabled;
+      border-color: $warm-gray-02;
     }
 
     &:disabled,
@@ -850,9 +851,16 @@
     }
 
     &.error {
+        input, textarea, select {
+          border: solid 1px $red;
+        }
+
         span {
             color: $red;
+            font-size: 12px;
+            line-height: 18px;
         }
+
     }
 
     &.info {
