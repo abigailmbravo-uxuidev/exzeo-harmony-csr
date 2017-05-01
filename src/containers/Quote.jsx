@@ -37,38 +37,47 @@ export const QuoteBase = props => (
 
         <h4>Underwriting Validation</h4>
 
-        <h5 className="msg-error">
+      <section className="msg-error">
+        <h5>
           <i className="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;Error Messages</h5>
 
         <div>
-          <ul>
-            <li>Please enter an effective date 30 days in the past and 90 days in the future.</li>
-            <li>Please enter an effective date 30 days in the past and 90 days in the future.</li>
-            <li>Please enter an effective date 30 days in the past and 90 days in the future.</li>
+          <ul className="fa-ul">
+            <li><i className="fa-li fa fa-exclamation-circle" aria-hidden="true"></i>Please enter an effective date 30 days in the past and 90 days in the future.</li>
+            <li><i className="fa-li fa fa-exclamation-circle" aria-hidden="true"></i>Please enter an effective date 30 days in the past and 90 days in the future.</li>
+            <li><i className="fa-li fa fa-exclamation-circle" aria-hidden="true"></i>Please enter an effective date 30 days in the past and 90 days in the future.</li>
           </ul>
         </div>
+        </section>
 
-        <h5 className="msg-caution">
+        <section className="msg-caution">
+        <h5>
           <i className="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;Caution Messages</h5>
 
         <div>
-          <ul>
-            <li>ZipCode is closed for this policy type.</li>
-            <li>ZipCode is closed for this policy type.</li>
-            <li>ZipCode is closed for this policy type.</li>
+          <ul className="fa-ul">
+            <li><i className="fa-li fa fa-exclamation-triangle" aria-hidden="true"></i>ZipCode is closed for this policy type.</li>
+            <li><i className="fa-li fa fa-exclamation-triangle" aria-hidden="true"></i>ZipCode is closed for this policy type.</li>
+            <li><i className="fa-li fa fa-exclamation-triangle" aria-hidden="true"></i>ZipCode is closed for this policy type.</li>
           </ul>
         </div>
 
-        <h5 className="msg-info">
+        </section>
+
+        <section className="msg-info">
+
+        <h5>
           <i className="fa fa-info-circle" aria-hidden="true"></i>&nbsp;Info Messages</h5>
 
         <div>
-          <ul>
-            <li>Due to the age of the home, a 4-point inspection completed in the last 3 years is requried.</li>
-            <li>Due to the age of the home, a 4-point inspection completed in the last 3 years is requried.</li>
-            <li>Due to the age of the home, a 4-point inspection completed in the last 3 years is requried.</li>
+          <ul className="fa-ul">
+            <li><i className="fa-li fa fa-info-circle" aria-hidden="true"></i>Due to the age of the home, a 4-point inspection completed in the last 3 years is requried.</li>
+            <li><i className="fa-li fa fa-info-circle" aria-hidden="true"></i>Due to the age of the home, a 4-point inspection completed in the last 3 years is requried.</li>
+            <li><i className="fa-li fa fa-info-circle" aria-hidden="true"></i>Due to the age of the home, a 4-point inspection completed in the last 3 years is requried.</li>
           </ul>
         </div>
+
+        </section>
 
       </aside>
 
