@@ -1,18 +1,14 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
-import {reduxForm, Form, propTypes} from 'redux-form';
-import Footer from '../Common/Footer';
-import * as cgActions from '../../actions/cgActions';
-import * as appStateActions from '../../actions/appStateActions';
-import PolicyConnect from '../../containers/Policy';
-import ClearErrorConnect from '../Error/ClearError';
+import {reduxForm, propTypes} from 'redux-form';
+import * as cgActions from '../actions/cgActions';
+import * as appStateActions from '../actions/appStateActions';
+import PolicyConnect from './Policy';
+import ClearErrorConnect from '../components/Error/ClearError';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
-
-const handleFormSubmit = (data, dispatch, props) => {
-  alert('submit');
-};
 
 const handleInitialize = (state) => {
   const formValues = {
@@ -182,16 +178,17 @@ const bill = [
   }
 ];
 
-// ------------------------------------------------
-// The render is where all the data is being pulled
-//  from the props.
-// The quote data data comes from the previous task
-//  which is createQuote / singleQuote. This might
-//  not be the case in later calls, you may need
-//  to pull it from another place in the model
-// ------------------------------------------------
+/** 
+------------------------------------------------
+The render is where all the data is being pulled 
+from the props. The quote data data comes from the 
+previous task which is createQuote / singleQuote. 
+This might not be the case in later calls, you may 
+need to pull it from another place in the model
+------------------------------------------------
+*/
+
 export const Coverage = (props) => {
-  const {handleSubmit} = props;
   return (
     <PolicyConnect>
       <ClearErrorConnect/>
@@ -322,9 +319,11 @@ export const Coverage = (props) => {
   );
 };
 
-// ------------------------------------------------
-// Property type definitions
-// ------------------------------------------------
+/**
+------------------------------------------------
+Property type definitions
+------------------------------------------------
+*/
 Coverage.propTypes = {
   ...propTypes,
   tasks: PropTypes.shape(),
@@ -335,9 +334,11 @@ Coverage.propTypes = {
   })
 };
 
-// ------------------------------------------------
-// redux mapping
-// ------------------------------------------------
+/**
+------------------------------------------------
+redux mapping
+------------------------------------------------
+*/
 const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
@@ -352,7 +353,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-// ------------------------------------------------
-// wire up redux form with the redux connect
-// ------------------------------------------------
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({form: 'Coverage'})(Coverage));

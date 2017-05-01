@@ -209,7 +209,7 @@ export const Coverage = (props) => {
                                             <TextField validations={['required']} label={'Year Roof Built'} styleName={''} name={'textField1'}/>
                                         </div>
                                         <div className="flex-child">
-                                            <TextField validations={['required']} label={'Square Footage of Dwelling'} styleName={''} name={'textField1'}/>
+                                            <TextField validations={['required']} label={'Sq. Footage of Dwelling'} styleName={''} name={'textField1'}/>
                                         </div>
                                     </div>
 
