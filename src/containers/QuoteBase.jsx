@@ -54,13 +54,13 @@ export const QuoteBase = props => (
 
     <h5 className="msg-info"><i className="fa fa-info-circle" aria-hidden="true"></i> Info Messages</h5>
 
-<div>
-      <ul>
-        <li>Due to the age of the home, a 4-point inspection completed in the last 3 years is requried.</li>
-        <li>Due to the age of the home, a 4-point inspection completed in the last 3 years is requried.</li>
-        <li>Due to the age of the home, a 4-point inspection completed in the last 3 years is requried.</li>
-      </ul>
-</div>
+    <div>
+          <ul>
+            <li>Due to the age of the home, a 4-point inspection completed in the last 3 years is requried.</li>
+            <li>Due to the age of the home, a 4-point inspection completed in the last 3 years is requried.</li>
+            <li>Due to the age of the home, a 4-point inspection completed in the last 3 years is requried.</li>
+          </ul>
+    </div>
 
       </aside>
       <NewNoteFileUploader />
