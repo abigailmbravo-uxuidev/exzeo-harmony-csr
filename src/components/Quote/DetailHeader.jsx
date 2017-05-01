@@ -37,35 +37,27 @@ const DetailHeader = () =>
             </div>
           </dl>
         </section>
-        <section id="policyholderPhone" className="policyholderPhone">
+        <section id="applicantPhone" className="applicantPhone">
           <dl>
             <div>
-              <dt>Policyholder Phone</dt>
+              <dt>Applicant Phone</dt>
               <dd>(777) 777-7777</dd>
             </div>
           </dl>
         </section>
-        <section id="policyStatus" className="policyStatus">
+        <section id="quoteStatus" className="quoteStatus">
           <dl>
             <div>
-              <dt>Policy Status</dt>
+              <dt>Quote Status</dt>
               <dd>In Force</dd>
             </div>
           </dl>
         </section>
-        <section id="policyEffectiveDate" className="policyEffectiveDate">
+        <section id="quoteEffectiveDate" className="quoteEffectiveDate">
           <dl>
             <div>
               <dt>Effective Date</dt>
               <dd>03/01/2017</dd>
-            </div>
-          </dl>
-        </section>
-        <section id="cencellationDate" className="cencellationDate">
-          <dl>
-            <div>
-              <dt>Cancellation Date</dt>
-              <dd>03/01/2018</dd>
             </div>
           </dl>
         </section>

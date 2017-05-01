@@ -28,7 +28,7 @@ export const Policy = props => (
         <QuoteSideNav/>
       </aside>
       <div className="content-wrapper">
-              <DetailHeader />
+        <DetailHeader />
         {props.children}
         <Footer/>
       </div>

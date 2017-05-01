@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 
 import QuoteHeader from '../components/Quote/QuoteHeader';
 import QuoteSideNav from '../components/Quote/QuoteSideNav';
+import DetailHeader from '../components/Quote/DetailHeader';
 import * as userActions from '../actions/userActions';
 import Footer from '../components/Common/Footer';
 import NewNoteFileUploader from '../components/Common/NewNoteFileUploader';
@@ -28,6 +29,7 @@ export const QuoteBase = props => (
         <QuoteSideNav/>
       </aside>
       <div className="content-wrapper">
+        <DetailHeader />
         {props.children}
         <Footer/>
       </div>

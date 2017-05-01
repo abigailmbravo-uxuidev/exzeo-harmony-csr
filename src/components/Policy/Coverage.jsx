@@ -4,10 +4,10 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import {reduxForm, propTypes} from 'redux-form';
-import * as cgActions from '../actions/cgActions';
-import * as appStateActions from '../actions/appStateActions';
-import PolicyConnect from './Policy';
-import ClearErrorConnect from '../components/Error/ClearError';
+import * as cgActions from '../../actions/cgActions';
+import * as appStateActions from '../../actions/appStateActions';
+import PolicyConnect from '../../containers/Policy';
+import ClearErrorConnect from '../Error/ClearError';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 
 const handleInitialize = (state) => {
@@ -178,12 +178,12 @@ const bill = [
   }
 ];
 
-/** 
+/**
 ------------------------------------------------
-The render is where all the data is being pulled 
-from the props. The quote data data comes from the 
-previous task which is createQuote / singleQuote. 
-This might not be the case in later calls, you may 
+The render is where all the data is being pulled
+from the props. The quote data data comes from the
+previous task which is createQuote / singleQuote.
+This might not be the case in later calls, you may
 need to pull it from another place in the model
 ------------------------------------------------
 */

@@ -489,7 +489,7 @@ header {
                 i {
                     @include transition(all .2s ease-in-out);
                     margin: 0;
-                    color: $bright-blue;
+                    color: $white;
                 }
                 span {
                     +i {
@@ -2903,6 +2903,9 @@ ul.list-cards {
             }
 
             &.cencellationDate {
+                flex-grow: 1;
+            }
+            &.quoteEffectiveDate {
                 flex-grow: 1;
             }
             &.premium {
