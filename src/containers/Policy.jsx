@@ -30,7 +30,6 @@ export const Policy = props => (
         {props.children}
         <Footer/>
       </div>
-      <NewNoteFileUploader/>
     </main>
   </div>
 );
