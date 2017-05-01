@@ -2876,7 +2876,7 @@ ul.list-cards {
         flex-wrap: wrap;
         color: $white;
         padding: ($padding/2) ($padding*2);
-        min-height: 4.75rem;
+        height: 4.75rem;
         border-bottom: 2px solid $white;
 
         section {
@@ -2919,6 +2919,43 @@ ul.list-cards {
                 dd {
                     font-size: $font-size-h4;
                     text-align: right;
+                }
+            }
+        }
+    }
+    section {
+        margin-bottom: $padding;
+
+        .contact-title {
+            color: $warm-gray-08;
+            padding-bottom: $padding/2;
+            font-weight: $font-weight-bold;
+        }
+        h3 {
+            color: $warm-gray-08;
+        }
+        h4 {
+            color: $warm-gray-08;
+        }
+        p {
+            margin-bottom: 0;
+        }
+        .contact-methods {
+            display: flex;
+
+            p {
+                margin-right: $padding*2;
+                align-items: center;
+                display: flex;
+
+                small {
+                    margin-right: $padding/2;
+                    color: $bright-blue-darken-03;
+                }
+
+                i {
+                    margin-right: $padding;
+                    color: $bright-blue-darken-03;
                 }
             }
         }
