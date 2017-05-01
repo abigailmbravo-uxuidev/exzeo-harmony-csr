@@ -1,0 +1,1 @@
+#mongorestore --db harmony --drop --dir ./data/harmony_mongo_db

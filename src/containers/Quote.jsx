@@ -1,9 +1,11 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 import QuoteHeader from '../components/Quote/QuoteHeader';
 import QuoteSideNav from '../components/Quote/QuoteSideNav';
+import DetailHeader from '../components/Quote/DetailHeader';
 import * as userActions from '../actions/userActions';
 import Footer from '../components/Common/Footer';
 import NewNoteFileUploader from '../components/Common/NewNoteFileUploader';
@@ -22,11 +24,12 @@ export const QuoteBase = props => (
       <aside className="content-panel-left">
         <div className="user">
           <label htmlFor="user">Policyholder</label>
-          <h5 className="user-name">Jane Doe</h5>
+          <p className="user-name">Jane Doe</p>
         </div>
         <QuoteSideNav/>
       </aside>
       <div className="content-wrapper">
+        <DetailHeader />
         {props.children}
         <Footer/>
       </div>

@@ -4,10 +4,6 @@ import { connect } from 'react-redux';
 import logo from '../../img/Harmony.svg';
 import * as userActions from '../../actions/userActions';
 
-const handleLogout = (props) => {
-  props.actions.user.logout();
-};
-
 export const PolicyHeader = props => (
   <header>
     <div role="banner">

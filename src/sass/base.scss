@@ -489,7 +489,7 @@ header {
                 i {
                     @include transition(all .2s ease-in-out);
                     margin: 0;
-                    color: $bright-blue;
+                    color: $white;
                 }
                 span {
                     +i {
@@ -533,7 +533,7 @@ main[role="document"] {
         }
 
         > div {
-            overflow: hidden;
+            //overflow: hidden;
             width: 100%;
             height: auto;
             flex-grow: 1;
@@ -974,7 +974,7 @@ main[role="document"] {
     .user {
         width: auto;
         min-height: 4.75rem;
-        padding: ($padding) ($padding*2);
+        padding: ($padding/2) ($padding*2);
         border-bottom: 2px solid $white;
         background-color: $warm-gray-08;
         @include transition(all .2s ease-in-out);
@@ -990,7 +990,8 @@ main[role="document"] {
         label {
             margin: 0;
             color: $white;
-            font-size: $font-size-sm;
+            font-size: $font-size-xs;
+            letter-spacing: 0.07em;
         }
 
         .user-name {
@@ -1001,6 +1002,7 @@ main[role="document"] {
             flex-shrink: 0;
             flex-basis: auto;
             align-items: center;
+            font-size: $font-size-sm;
             @include for-phone-only {
                 max-width: 11rem;
             }
@@ -2860,6 +2862,63 @@ ul.list-cards {
             li {
                 a {
                     padding-left: $padding*2;
+                }
+            }
+        }
+    }
+    .detailHeader {
+        position: relative;
+        display: flex;
+        background: $warm-gray-08;
+        flex-grow: 0;
+        flex-shrink: 0;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        color: $white;
+        padding: ($padding/2) ($padding*2);
+        min-height: 4.75rem;
+        border-bottom: 2px solid $white;
+
+        section {
+            margin-right: $padding*2;
+            flex-grow: 0;
+            flex-shrink: 0;
+            flex-basis: auto;
+            dl {
+                margin-bottom: 0;
+                div {
+                    dt {
+                        font-size: $font-size-xs;
+                        letter-spacing: 0.07em;
+                    }
+                    dd {
+                        margin-bottom: 0;
+                        font-size: $font-size-sm;
+                        +dd {
+                            font-size: $font-size-xs;
+                            letter-spacing: 0.07em;
+                        }
+                    }
+                }
+            }
+
+            &.cencellationDate {
+                flex-grow: 1;
+            }
+            &.quoteEffectiveDate {
+                flex-grow: 1;
+            }
+            &.premium {
+                margin-right: 0;
+                background: $yellow-lighten-06;
+                color: $warm-gray-12;
+                margin: 0 (-$padding*1.5);
+                padding: ($padding/2) $padding;
+                align-self: flex-start;
+
+                dd {
+                    font-size: $font-size-h4;
+                    text-align: right;
                 }
             }
         }
