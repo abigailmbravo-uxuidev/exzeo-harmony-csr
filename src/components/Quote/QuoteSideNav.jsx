@@ -26,13 +26,11 @@ const SideNav = () => (
           <li key={index}>
             {/*<a className={agentLink.styleName} href={agentLink.link}>*/}
             <a className="csr-dashboard" href="/">
-              <i className="fa" />
               <span>{agentLink.label}</span>
             </a>
           </li> :
           <li key={index}>
             <NavLink exact={agentLink.exact} className={agentLink.styleName} to={agentLink.link} activeClassName="active">
-              <i className="fa" />
               <span>{agentLink.label}</span>
             </NavLink>
           </li>

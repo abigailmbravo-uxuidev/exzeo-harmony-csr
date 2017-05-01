@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import BaseConnect from './Base';
 import ClearErrorConnect from '../components/Error/ClearError';
 import Footer from '../components/Common/Footer';
-import NewNoteFileUploader from '../components/Common/NewNoteFileUploader';
 
 const data = [
   {
@@ -124,7 +123,7 @@ const data = [
 
 const Splash = () => (
   <BaseConnect>
-    <ClearErrorConnect />
+    <ClearErrorConnect/>
     <div className="dashboard" role="article">
       <div className="route">
         <div className="search route-content">
@@ -143,11 +142,9 @@ const Splash = () => (
                   <a href="/policy" className="btn btn-sm">Policies</a>
                 </div>
                 <div className="filters">
-                  <a className="btn btn-sm selected"><i className="fa fa-list-ul" /></a>
-                  <a className="btn btn-sm"><i className="fa fa-table" /></a>
+                  <a className="btn btn-sm selected"><i className="fa fa-list-ul"/></a>
+                  <a className="btn btn-sm"><i className="fa fa-table"/></a>
                 </div>
-                <NewNoteFileUploader />
-
               </div>
             </div>
             <div className="table-view">
@@ -161,7 +158,7 @@ const Splash = () => (
               </BootstrapTable>
             </div>
           </div>
-          <Footer />
+          <Footer/>
         </div>
       </div>
     </div>

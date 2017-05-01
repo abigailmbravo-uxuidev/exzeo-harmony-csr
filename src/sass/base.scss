@@ -19,6 +19,7 @@
 @import "partials/_workflow";
 @import "partials/_notes-files-add";
 @import "partials/_csr-quote";
+@import "partials/_csr-policy";
 @import "https://fonts.googleapis.com/css?family=Roboto:100,300,500"; //base
 //links
 /*------------------------------------------------------------------------------------*/
@@ -44,9 +45,7 @@ a {
 @import "partials/_nav"; //vertical tab partial
 //form elements
 /*------------------------------------------------------------------------------------*/
-label {
-    color: $bright-blue-darken-04;
-}
+
 //details & surveys
 /*------------------------------------------------------------------------------------*/
 .detail-wrapper,
@@ -113,21 +112,6 @@ label {
         ul {
             padding-left: $padding*2;
             list-style: circle;
-        }
-    }
-
-    .form-group {
-        padding-bottom: 3.052rem;
-        border-bottom: 1px dashed $warm-gray-02;
-        @include for-phone-only {
-            padding-bottom: 1.563rem;
-        }
-
-        label {
-            font-size: $font-size-h4;
-            @include for-phone-only {
-                font-size: $font-size-h5;
-            }
         }
     }
 
@@ -260,7 +244,8 @@ html {
                                     flex-shrink: 0;
 
                                     .btn {
-                                        align-self: flex-start;
+                                        align-self: flex-end;
+                                        margin-left: $padding;
                                     }
                                 }
                             }
@@ -981,6 +966,9 @@ main[role="document"] {
             color: $warm-gray-01;
             margin: 0;
         }
+
+        
+
     }
 
     .user {
@@ -2860,6 +2848,19 @@ ul.list-cards {
 
             div[class^="ring-"] {
                 border-bottom: 1px solid transparent;
+            }
+        }
+    }
+}
+
+
+.csr {
+    .site-nav {
+        ul {
+            li {
+                a {
+                    padding-left: $padding;
+                }
             }
         }
     }
