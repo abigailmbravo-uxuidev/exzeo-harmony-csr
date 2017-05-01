@@ -3,17 +3,17 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import {reduxForm, Form, propTypes} from 'redux-form';
-import Footer from '../components/Common/Footer';
-import * as cgActions from '../actions/cgActions';
-import * as appStateActions from '../actions/appStateActions';
-import QuoteBaseConnect from './QuoteBase';
-import ClearErrorConnect from '../components/Error/ClearError';
-import TextField from '../components/Form/inputs/TextField';
-import SelectField from '../components/Form/inputs/SelectField';
-import RadioField from '../components/Form/inputs/RadioField';
-import CheckField from '../components/Form/inputs/CheckField';
-import DisplayField from '../components/Form/inputs/DisplayField';
-import SliderField from '../components/Form/inputs/SliderField';
+import Footer from '../Common/Footer';
+import * as cgActions from '../../actions/cgActions';
+import * as appStateActions from '../../actions/appStateActions';
+import QuoteBaseConnect from '../../containers/Quote';
+import ClearErrorConnect from '../Error/ClearError';
+import TextField from '../Form/inputs/TextField';
+import SelectField from '../Form/inputs/SelectField';
+import RadioField from '../Form/inputs/RadioField';
+import CheckField from '../Form/inputs/CheckField';
+import DisplayField from '../Form/inputs/DisplayField';
+import SliderField from '../Form/inputs/SliderField';
 
 const handleFormSubmit = (data, dispatch, props) => {
     alert('submit');

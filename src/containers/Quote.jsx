@@ -35,8 +35,7 @@ export const QuoteBase = props => (
         <h4>Underwriting Validation</h4>
 
         <h5 className="msg-error">
-          <i className="fa fa-exclamation-circle" aria-hidden="true"></i>
-          Error Messages</h5>
+          <i className="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;Error Messages</h5>
 
         <div>
           <ul>
@@ -47,8 +46,7 @@ export const QuoteBase = props => (
         </div>
 
         <h5 className="msg-caution">
-          <i className="fa fa-exclamation-triangle" aria-hidden="true"></i>
-          Caution Messages</h5>
+          <i className="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;Caution Messages</h5>
 
         <div>
           <ul>
@@ -59,8 +57,7 @@ export const QuoteBase = props => (
         </div>
 
         <h5 className="msg-info">
-          <i className="fa fa-info-circle" aria-hidden="true"></i>
-          Info Messages</h5>
+          <i className="fa fa-info-circle" aria-hidden="true"></i>&nbsp;Info Messages</h5>
 
         <div>
           <ul>

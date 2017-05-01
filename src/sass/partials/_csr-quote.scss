@@ -167,7 +167,7 @@
           flex-shrink: 0;
           flex-basis: 240px;
           padding: 0 0 ($padding*2) ($padding*2);
-          overflow: scroll;
+          overflow-y: scroll;
           height: 100%;
 
           h5 {

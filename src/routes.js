@@ -7,8 +7,8 @@ import Login from './containers/Login';
 import Splash from './containers/Splash';
 import AppError from './containers/AppError';
 import NotFound from './containers/NotFound';
-import Coverage from './containers/Coverage';
-import PolicyCoverage from './containers/PolicyCoverage';
+import QuoteCoverage from './components/Quote/Coverage';
+import PolicyCoverage from './components/Policy/Coverage';
 
 // A higher order component that allows for checking the routes authentication prefs.
 function authHOC(NavComponent, redirectUrl, props) {
@@ -30,7 +30,7 @@ class Routes extends Component { // eslint-disable-line
           <Helmet><title>Harmony - CSR Portal</title></Helmet>
           <Switch>
             <Route exact path="/" component={authHOC(Splash, '/', this.props)} />
-            <Route exact path="/quote" component={Coverage} />
+            <Route exact path="/quote" component={QuoteCoverage} />
             <Route exact path="/policy" component={PolicyCoverage} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/error" component={AppError} />

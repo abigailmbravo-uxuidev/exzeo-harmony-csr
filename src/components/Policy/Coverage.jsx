@@ -3,11 +3,11 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import {reduxForm, Form, propTypes} from 'redux-form';
-import Footer from '../components/Common/Footer';
-import * as cgActions from '../actions/cgActions';
-import * as appStateActions from '../actions/appStateActions';
-import PolicyConnect from './Policy';
-import ClearErrorConnect from '../components/Error/ClearError';
+import Footer from '../Common/Footer';
+import * as cgActions from '../../actions/cgActions';
+import * as appStateActions from '../../actions/appStateActions';
+import PolicyConnect from '../../containers/Policy';
+import ClearErrorConnect from '../Error/ClearError';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 
 const handleFormSubmit = (data, dispatch, props) => {
