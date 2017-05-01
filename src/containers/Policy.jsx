@@ -1,9 +1,9 @@
-import React, { PropTypes } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import React, {PropTypes} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 
-import QuoteHeader from '../components/Quote/QuoteHeader';
-import QuoteSideNav from '../components/Quote/QuoteSideNav';
+import QuoteHeader from '../components/Policy/PolicyHeader';
+import QuoteSideNav from '../components/Policy/PolicySideNav';
 import * as userActions from '../actions/userActions';
 import Footer from '../components/Common/Footer';
 import NewNoteFileUploader from '../components/Common/NewNoteFileUploader';
@@ -14,37 +14,37 @@ const handleLogout = (props) => {
 };
 */
 
-export const QuoteBase = props => (
-  <div className="app-wrapper csr quote">
-    <QuoteHeader />
+export const Policy = props => (
+  <div className="app-wrapper csr policy">
+    <NewNoteFileUploader/>
+    <QuoteHeader/>
     <main role="document">
       <aside className="content-panel-left">
         <div className="user">
           <label htmlFor="user">Policyholder</label>
           <h5 className="user-name">Jane Doe</h5>
         </div>
-        <QuoteSideNav />
+        <QuoteSideNav/>
       </aside>
       <div className="content-wrapper">
-          {props.children}
-          <Footer />
+        {props.children}
+        <Footer/>
       </div>
-      <NewNoteFileUploader />
     </main>
   </div>
 );
 
-
-QuoteBase.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node])
+Policy.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ])
 };
 
-const mapStateToProps = state => ({
-  user: state.user
-});
+const mapStateToProps = state => ({user: state.user});
 const mapDispatchToProps = dispatch => ({
   actions: {
     user: bindActionCreators(userActions, dispatch)
   }
 });
-export default connect(mapStateToProps, mapDispatchToProps)(QuoteBase);
+export default connect(mapStateToProps, mapDispatchToProps)(Policy);

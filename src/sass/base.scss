@@ -19,6 +19,7 @@
 @import "partials/_workflow";
 @import "partials/_notes-files-add";
 @import "partials/_csr-quote";
+@import "partials/_csr-policy";
 @import "https://fonts.googleapis.com/css?family=Roboto:100,300,500"; //base
 //links
 /*------------------------------------------------------------------------------------*/
@@ -966,7 +967,7 @@ main[role="document"] {
             margin: 0;
         }
 
-        
+
 
     }
 
@@ -2847,6 +2848,19 @@ ul.list-cards {
 
             div[class^="ring-"] {
                 border-bottom: 1px solid transparent;
+            }
+        }
+    }
+}
+
+
+.csr {
+    .site-nav {
+        ul {
+            li {
+                a {
+                    padding-left: $padding*2;
+                }
             }
         }
     }
