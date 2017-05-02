@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-
+import { Helmet } from 'react-helmet';
 import QuoteHeader from '../components/Quote/QuoteHeader';
 import QuoteSideNav from '../components/Quote/QuoteSideNav';
 import DetailHeader from '../components/Quote/DetailHeader';
@@ -18,6 +18,8 @@ const handleLogout = (props) => {
 
 export const QuoteBase = props => (
   <div className="app-wrapper csr quote">
+    //TODO: dynamically add quote # to title
+    <Helmet><title>Policy 12-123456</title></Helmet>
     <NewNoteFileUploader/>
     <QuoteHeader/>
     <main role="document">
