@@ -36,18 +36,8 @@ const SearchResults = (props) => {
               </li>
             ))
             : null}
-              { props.appState.data.dontSeeAddress && <div className="card address-not-found pop-up-bubble">
-                <div className="card-block">
-                <p>If you don't see your address in the list provided, try entering less address information to see if that improves your search results. Please note, at this time we are only writing single family dwellings in the state of Florida.</p>
-                <p>If you still have problems finding an address, please <a href="tel:888-210-5235"><strong>call us</strong></a> and one of our representatives will be glad to help you.</p>
-                </div>
-              </div>
-              }
-              <div className="hint">
-               <button className="btn btn-link" onClick={() => didNotFindAddressHint(props)} className="btn btn-secondary btn-round"><i className="fa fa-question"></i></button>
-               <small>Don't see your address?</small>
-             </div>
-
+           <small><strong>TIP:</strong> If you don't see your address in the list provided, try entering less address information to see if that improves your search results. Please note, at this time we are only writing single family dwellings in the state of Florida.</small>
+           <small>If you still have problems finding an address, please <a href="tel:888-210-5235"><strong>call us</strong></a> and one of our representatives will be glad to help you.</small>
         </ul>
       </div>
     );
@@ -96,13 +86,13 @@ const SearchResults = (props) => {
                 </ul>
               </section>
             </div>
-          
+
           })
         }
       </div>
     );
   }
-  
+
   return <span />;
 };
 

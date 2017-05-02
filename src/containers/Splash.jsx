@@ -179,14 +179,15 @@ export class Splash extends Component {
         <div className="dashboard" role="article">
           <div className="route">
             <div className="search route-content">
-              <div className="results-wrapper">
-                <SearchBar />
-                <div className="grid-controls">
+                    <SearchBar />
+              <div className="survey-wrapper scroll">
+                      <div className="results-wrapper">
+                {/*<div className="grid-controls">
                   <nav className="tabs">
-                    <a href="" className="btn btn-link">Recently Viewed</a>
+                    <a href="" className="btn btn-link">Recently Viewed</a>*/}
                     {/* <a href="">My Assigned Quotes</a>*/}
                     {/* <a href="">My Assigned Claims</a>*/}
-                    <a href="" className="btn btn-link selected">Search Results</a>
+                    {/*<a href="" className="btn btn-link selected">Search Results</a>
                   </nav>
                   <div className="filters-wrapper">
                     <div className="filters">
@@ -199,21 +200,24 @@ export class Splash extends Component {
                       <a className="btn btn-sm"><i className="fa fa-table" /></a>
                     </div>
                   </div>
-                </div>
-                <div className="table-view">
-                  <NoResultsConnect />
-                  <SearchResults handleSelectAddress={this.handleSelectAddress} />
-                  {/* <BootstrapTable className="results-grid" data={data} striped hover>
+                </div>*/}
+                {/*<div className="table-view">
+
+                   <BootstrapTable className="results-grid" data={data} striped hover>
                     <TableHeaderColumn isKey dataField="type" className="type" columnClassName="type" dataSort>Type</TableHeaderColumn>
                     <TableHeaderColumn dataField="number" className="number" columnClassName="number" dataSort>Number</TableHeaderColumn>
                     <TableHeaderColumn dataField="policyHolder" className="policyholder" columnClassName="policyholder" dataSort>Policyholder</TableHeaderColumn>
                     <TableHeaderColumn dataField="address" className="address" columnClassName="address" dataSort>Address</TableHeaderColumn>
                     <TableHeaderColumn dataField="status" className="status" columnClassName="status" dataSort>Status</TableHeaderColumn>
                     <TableHeaderColumn dataField="effectiveDate" className="effectiveDate" columnClassName="effectiveDate" dataSort>Effective Date</TableHeaderColumn>
-                  </BootstrapTable> */}
+                  </BootstrapTable>
+                </div>*/}
+                <NoResultsConnect />
+                <SearchResults handleSelectAddress={this.handleSelectAddress} />
+
                 </div>
+                <Footer />
               </div>
-              <Footer />
             </div>
           </div>
         </div>
