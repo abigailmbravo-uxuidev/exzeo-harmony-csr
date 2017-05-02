@@ -174,6 +174,7 @@ export class Splash extends Component {
           <div className="route">
             <div className="search route-content">
               <div className="results-wrapper">
+                <SearchBar />
                 <div className="grid-controls">
                   <nav className="tabs">
                     <a href="" className="btn btn-link">Recently Viewed</a>
@@ -181,7 +182,6 @@ export class Splash extends Component {
                     {/* <a href="">My Assigned Claims</a>*/}
                     <a href="" className="btn btn-link selected">Search Results</a>
                   </nav>
-                  <SearchBar />
                   <div className="filters-wrapper">
                     <div className="filters">
                       <a href="/" className="btn btn-sm selected">All</a>
@@ -214,7 +214,6 @@ export class Splash extends Component {
       </BaseConnect>
     );
   }
-
 }
 
 Splash.contextTypes = {
