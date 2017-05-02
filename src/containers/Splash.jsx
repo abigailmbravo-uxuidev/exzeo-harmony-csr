@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import _ from 'lodash';
-import { Helmet } from 'react-helmet';
+import {Helmet} from 'react-helmet';
 import PropTypes from 'prop-types';
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import BaseConnect from './Base';
 import ClearErrorConnect from '../components/Error/ClearError';
 import Footer from '../components/Common/Footer';
@@ -15,7 +15,6 @@ import SearchBar from '../components/Search/SearchBar';
 import SearchResults from '../components/Search/SearchResults';
 import NoResultsConnect from '../components/Search/NoResults';
 
-
 const data = [
   {
     type: 'quote',
@@ -25,13 +24,6 @@ const data = [
     status: 'STATUS',
     effectiveDate: '01/01/2018'
   }, {
-    type: 'policy',
-    number: '12-123457-00',
-    policyHolder: 'William Donaldson',
-    address: '123 MAIN ST, GAINESVILLE, FL 32641',
-    status: 'STATUS',
-    effectiveDate: '12/03/2017'
-  }, {
     type: 'address',
     number: '--',
     policyHolder: '--',
@@ -45,95 +37,10 @@ const data = [
     address: '123 NE 9 AVE, DEERFIELD BEACH, FL 33441',
     status: 'STATUS',
     effectiveDate: '11/01/2017'
-  }, {
-    type: 'policy',
-    number: '12-123459-00',
-    policyHolder: 'Tracy Miller',
-    address: '123 NW 106 AVE, PLANTATION FL 33324',
-    status: 'STATUS',
-    effectiveDate: '10/01/2016'
-  }, {
-    type: 'policy',
-    number: '12-123450-00',
-    policyHolder: 'Fred Flintstone',
-    address: '123 VIRGINIA RD, WEST PARK, FL 33023',
-    status: 'STATUS',
-    effectiveDate: '09/01/2016'
-  }, {
-    type: 'policy',
-    number: '12-123457-00',
-    policyHolder: 'William Donaldson',
-    address: '123 MAIN ST, GAINESVILLE, FL 32641',
-    status: 'STATUS',
-    effectiveDate: '12/03/2017'
-  }, {
-    type: 'address',
-    number: '--',
-    policyHolder: '--',
-    address: '123 NE 17 AVE, FT. LAUDERDALE, FL 33301',
-    status: '--',
-    effectiveDate: '--'
-  }, {
-    type: 'quote',
-    number: '12-123458',
-    policyHolder: 'Michelle Kleinfelterson',
-    address: '123 NE 9 AVE, DEERFIELD BEACH, FL 33441',
-    status: 'STATUS',
-    effectiveDate: '11/01/2017'
-  }, {
-    type: 'policy',
-    number: '12-123459-00',
-    policyHolder: 'Tracy Miller',
-    address: '123 NW 106 AVE, PLANTATION FL 33324',
-    status: 'STATUS',
-    effectiveDate: '10/01/2016'
-  }, {
-    type: 'policy',
-    number: '12-123450-00',
-    policyHolder: 'Fred Flintstone',
-    address: '123 VIRGINIA RD, WEST PARK, FL 33023',
-    status: 'STATUS',
-    effectiveDate: '09/01/2016'
-  }, {
-    type: 'policy',
-    number: '12-123457-00',
-    policyHolder: 'William Donaldson',
-    address: '123 MAIN ST, GAINESVILLE, FL 32641',
-    status: 'STATUS',
-    effectiveDate: '12/03/2017'
-  }, {
-    type: 'address',
-    number: '--',
-    policyHolder: '--',
-    address: '123 NE 17 AVE, FT. LAUDERDALE, FL 33301',
-    status: '--',
-    effectiveDate: '--'
-  }, {
-    type: 'quote',
-    number: '12-123458',
-    policyHolder: 'Michelle Kleinfelterson',
-    address: '123 NE 9 AVE, DEERFIELD BEACH, FL 33441',
-    status: 'STATUS',
-    effectiveDate: '11/01/2017'
-  }, {
-    type: 'policy',
-    number: '12-123459-00',
-    policyHolder: 'Tracy Miller',
-    address: '123 NW 106 AVE, PLANTATION FL 33324',
-    status: 'STATUS',
-    effectiveDate: '10/01/2016'
-  }, {
-    type: 'policy',
-    number: '12-123450-00',
-    policyHolder: 'Fred Flintstone',
-    address: '123 VIRGINIA RD, WEST PARK, FL 33023',
-    status: 'STATUS',
-    effectiveDate: '09/01/2016'
   }
 ];
 
 const workflowModelName = 'csrQuote';
-
 
 export class Splash extends Component {
 
@@ -174,18 +81,23 @@ export class Splash extends Component {
   render() {
     return (
       <BaseConnect>
-        <Helmet><title>Harmony - CSR Portal</title></Helmet>
-        <ClearErrorConnect />
+        <Helmet>
+          <title>Harmony - CSR Portal</title>
+        </Helmet>
+        <ClearErrorConnect/>
         <div className="dashboard" role="article">
           <div className="route">
             <div className="search route-content">
-              <div className="results-wrapper">
-                <SearchBar />
+              <SearchBar/>
+              <div className="survey-wrapper scroll">
+                <div className="results-wrapper">
+                  <NoResultsConnect/>
+                  <SearchResults handleSelectAddress={this.handleSelectAddress}/>
+                </div>
+                {/*
                 <div className="grid-controls">
                   <nav className="tabs">
                     <a href="" className="btn btn-link">Recently Viewed</a>
-                    {/* <a href="">My Assigned Quotes</a>*/}
-                    {/* <a href="">My Assigned Claims</a>*/}
                     <a href="" className="btn btn-link selected">Search Results</a>
                   </nav>
                   <div className="filters-wrapper">
@@ -201,19 +113,18 @@ export class Splash extends Component {
                   </div>
                 </div>
                 <div className="table-view">
-                  <NoResultsConnect />
-                  <SearchResults handleSelectAddress={this.handleSelectAddress} />
-                  {/* <BootstrapTable className="results-grid" data={data} striped hover>
+                   <BootstrapTable className="results-grid" data={data} striped hover>
                     <TableHeaderColumn isKey dataField="type" className="type" columnClassName="type" dataSort>Type</TableHeaderColumn>
                     <TableHeaderColumn dataField="number" className="number" columnClassName="number" dataSort>Number</TableHeaderColumn>
                     <TableHeaderColumn dataField="policyHolder" className="policyholder" columnClassName="policyholder" dataSort>Policyholder</TableHeaderColumn>
                     <TableHeaderColumn dataField="address" className="address" columnClassName="address" dataSort>Address</TableHeaderColumn>
                     <TableHeaderColumn dataField="status" className="status" columnClassName="status" dataSort>Status</TableHeaderColumn>
                     <TableHeaderColumn dataField="effectiveDate" className="effectiveDate" columnClassName="effectiveDate" dataSort>Effective Date</TableHeaderColumn>
-                  </BootstrapTable> */}
+                  </BootstrapTable>
                 </div>
+                */}
+                <Footer/>
               </div>
-              <Footer />
             </div>
           </div>
         </div>
@@ -228,25 +139,13 @@ Splash.contextTypes = {
 
 Splash.propTypes = {
   actions: PropTypes.shape({
-    cgActions: PropTypes.shape({
-      startWorkflow: PropTypes.func,
-      activeTasks: PropTypes.func,
-      completeTask: PropTypes.func
-    }),
-    appStateActions: PropTypes.shape({
-      setAppState: PropTypes.func,
-      setAppStateError: PropTypes.func
-    })
+    cgActions: PropTypes.shape({startWorkflow: PropTypes.func, activeTasks: PropTypes.func, completeTask: PropTypes.func}),
+    appStateActions: PropTypes.shape({setAppState: PropTypes.func, setAppStateError: PropTypes.func})
   }),
-  tasks: PropTypes.shape({
-    activeTask: PropTypes.object
-  })
+  tasks: PropTypes.shape({activeTask: PropTypes.object})
 };
 
-const mapStateToProps = state => ({
-  tasks: state.cg,
-  appState: state.appState
-});
+const mapStateToProps = state => ({tasks: state.cg, appState: state.appState});
 
 const mapDispatchToProps = dispatch => ({
   actions: {
