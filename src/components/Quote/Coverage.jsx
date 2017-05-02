@@ -3,7 +3,6 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import {reduxForm, Form, propTypes} from 'redux-form';
-import Footer from '../Common/Footer';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
@@ -49,7 +48,7 @@ export const Coverage = (props) => {
                 <Form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
                     <div className="scroll">
                         <div className="form-group survey-wrapper" role="group">
-
+                          <h1>Coverage &amp; Rating</h1>
                           <section className="producer ">
                               <h4>Produced By</h4>
                                 <div className="flex-parent">
