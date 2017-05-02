@@ -60,6 +60,7 @@ const handleGetAgentDocs = (state) => {
 //  to pull it from another place in the model
 // ------------------------------------------------
 export const Coverage = (props) => {
+
   const { handleSubmit, agencyDocs, agentDocs } = props;
 
   console.log(props);
