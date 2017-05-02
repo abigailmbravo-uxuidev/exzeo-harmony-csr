@@ -167,7 +167,7 @@ export class Splash extends Component {
         // now update the workflow details so the recalculated rate shows
         props.actions.appStateActions.setAppState(props.appState.modelName,
           workflowId, { recalc: false, updateWorkflowDetails: true });
-        this.context.router.history.push('/quote');
+        this.context.router.history.push('/quote/coverage');
       });
   };
 
