@@ -47,10 +47,11 @@ const handleInitialize = (state) => {
   values.squareFeet = _.get(quoteData, 'property.squareFeet');
   values.yearBuilt = _.get(quoteData, 'property.yearBuilt');
   values.buildingCodeEffectivenessGrading = _.get(quoteData, 'property.buildingCodeEffectivenessGrading');
-  values.constructionType = _.get(quoteData, 'property.constructionType');
-  values.constructionType = _.get(quoteData, 'property.constructionType');
-  values.constructionType = _.get(quoteData, 'property.constructionType');
-  values.constructionType = _.get(quoteData, 'property.constructionType');
+  values.familyUnits = _.get(quoteData, 'property.familyUnits');
+  values.distanceToTidalWater = _.get(quoteData, 'property.distanceToTidalWater');
+  values.distanceToFireHydrant = _.get(quoteData, 'property.distanceToFireHydrant');
+  values.distanceToFireStation = _.get(quoteData, 'property.distanceToFireStation');
+  values.floodZone = _.get(quoteData, 'property.floodZone');
 
 
   return values;
@@ -437,15 +438,17 @@ export class Coverage extends Component {
                       </div>
                       <div className="flex-child">
                         <SelectField
-                          name="roofType" component="select" styleName={''} label="Roof Type" input={{
-                            disabled: true
+                          name="roofType" component="select" styleName={''} label="Residence Type" input={{
+                            name: 'residenceType',
+                            disabled: true,
+                            value: fieldValues.residenceType
                           }} onChange={function () {}} validations={['required']} answers={[
                             {
-                              answer: 'Shingle',
-                              label: 'Shingle'
+                              answer: 'Single Family',
+                              label: 'Single Family'
                             }, {
-                              answer: 'Tile',
-                              label: 'Tile'
+                              answer: 'Commercial',
+                              label: 'Commercial'
                             }
                           ]} validate={[value => (value
                                                     ? undefined
@@ -453,20 +456,12 @@ export class Coverage extends Component {
                         />
                       </div>
                       <div className="flex-child">
-                        <SelectField
-                          name="distanceTidalWater" component="select" styleName={''} label="Distance to Tidal Waters" input={{
-                            disabled: true
-                          }} onChange={function () {}} validations={['required']} answers={[
-                            {
-                              answer: 'More than 1500ft',
-                              label: 'More than 1500ft'
-                            }, {
-                              answer: 'Less than 1500ft',
-                              label: 'Less than 1500ft'
-                            }
-                          ]} validate={[value => (value
-                                                      ? undefined
-                                                      : 'Field Required')]}
+                        <TextField
+                          validations={['required']} label={'Distance to Tidal Waters'} styleName={''} input={{
+                            name: 'distanceToTidalWater',
+                            disabled: true,
+                            value: fieldValues.distanceToTidalWater
+                          }}
                         />
                       </div>
                     </div>
@@ -474,40 +469,55 @@ export class Coverage extends Component {
                     <div className="flex-parent">
                       <div className="flex-child">
                         <TextField
-                          validations={['required']} label={'Fire Units'} styleName={''} name={'fireUnits'} input={{
-                            disabled: true
+                          validations={['required']} label={'Distance to Fire Hydrant'} styleName={''} input={{
+                            name: 'distanceToFireHydrant',
+                            disabled: true,
+                            value: fieldValues.distanceToFireHydrant
                           }}
                         />
                       </div>
                       <div className="flex-child">
                         <TextField
-                          validations={['required']} label={'Number of Stories'} styleName={''} name={'numberStories'} input={{
-                            disabled: true
-                          }}
-                        />
-                      </div>
-                      <div className="flex-child">
-                        <TextField
-                          validations={['required']} label={'Family Units'} styleName={''} name={'familyUnits'} input={{
-                            disabled: true
+                          validations={['required']} label={'Distance to Fire Station'} styleName={''} input={{
+                            name: 'distanceToFireStation',
+                            disabled: true,
+                            value: fieldValues.distanceToFireStation
                           }}
                         />
                       </div>
                       <div className="flex-child">
                         <SelectField
-                          name="distanceHydrant" component="select" styleName={''} label="Distance to Hydrant" input={{
-                            disabled: true
+                          name="distanceHydrant" component="select" styleName={''} label="Family Units" input={{
+                            name: 'familyUnits',
+                            disabled: true,
+                            value: fieldValues.familyUnits
                           }} onChange={function () {}} validations={['required']} answers={[
                             {
-                              answer: 'More than 1500ft',
-                              label: 'More than 1500ft'
+                              answer: '1-2',
+                              label: '1-2'
                             }, {
-                              answer: 'Less than 1500ft',
-                              label: 'Less than 1500ft'
+                              answer: '3-4',
+                              label: '3-4'
+                            },
+                            {
+                              answer: '5-8',
+                              label: '5-8'
+                            }, {
+                              answer: '9+',
+                              label: '9+'
                             }
                           ]} validate={[value => (value
                                                       ? undefined
                                                       : 'Field Required')]}
+                        />
+                      </div>
+                      <div className="flex-child">
+                        <TextField
+                          validations={['required']} label={'Flood Zone'} styleName={''} input={{
+                            name: 'floodZone',
+                            disabled: true,
+                            value: fieldValues.floodZone
+                          }}
                         />
                       </div>
                     </div>
@@ -516,23 +526,6 @@ export class Coverage extends Component {
                       <div className="flex-child" />
                       <div className="flex-child" />
                       <div className="flex-child" />
-                      <div className="flex-child">
-                        <SelectField
-                          name="distanceFireDept" component="select" styleName={''} label="Distance to Fire Dept." input={{
-                            disabled: true
-                          }} onChange={function () {}} validations={['required']} answers={[
-                            {
-                              answer: 'More than 1500ft',
-                              label: 'More than 1500ft'
-                            }, {
-                              answer: 'Less than 1500ft',
-                              label: 'Less than 1500ft'
-                            }
-                          ]} validate={[value => (value
-                                                      ? undefined
-                                                      : 'Field Required')]}
-                        />
-                      </div>
                     </div>
 
                   </div>
