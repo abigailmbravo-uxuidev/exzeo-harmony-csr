@@ -31,7 +31,7 @@ export const SelectInputAgents = ({
             <option disabled value={''}>Please select...</option>
             {agents.map((agent, index) => (
               <option value={agent.agentCode} key={index}>
-                {agent.agentname}
+                {`${agent.firstName} ${agent.lastName}`}
               </option>
             ))}
           </select>
