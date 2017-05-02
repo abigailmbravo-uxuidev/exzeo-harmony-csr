@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Helmet } from 'react-helmet';
+
 import Login from './containers/Login';
 import Splash from './containers/Splash';
 import AppError from './containers/AppError';
@@ -28,7 +28,7 @@ class Routes extends Component { // eslint-disable-line
     return (
       <Router>
         <div>
-          <Helmet><title>Harmony - CSR Portal</title></Helmet>
+          
           <Switch>
             <Route exact path="/" component={authHOC(Splash, '/', this.props)} />
             <Route exact path="/quote" component={QuoteCoverage} />

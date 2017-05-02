@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-
+import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import BaseConnect from './Base';
@@ -169,6 +169,7 @@ export class Splash extends Component {
   render() {
     return (
       <BaseConnect>
+        <Helmet><title>Harmony - CSR Portal</title></Helmet>
         <ClearErrorConnect />
         <div className="dashboard" role="article">
           <div className="route">
