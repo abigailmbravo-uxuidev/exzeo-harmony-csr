@@ -149,12 +149,17 @@ export class Splash extends Component {
       stateCode: address.physicalAddress.state
     };
 
+    // const steps = [{
+    //   name: 'chooseAddress',
+    //   data: submitData
+    // }, {
+    //   name: 'moveTo',
+    //   data: { key: 'customerData' }
+    // }];
+
     const steps = [{
       name: 'chooseAddress',
       data: submitData
-    }, {
-      name: 'moveTo',
-      data: { key: 'customerData' }
     }];
 
     props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)

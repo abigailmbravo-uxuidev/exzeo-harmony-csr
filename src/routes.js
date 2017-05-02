@@ -29,10 +29,10 @@ class Routes extends Component { // eslint-disable-line
     return (
       <Router>
         <div>
-          
+
           <Switch>
             <Route exact path="/" component={authHOC(Splash, '/', this.props)} />
-            <Route exact path="/quote" component={QuoteUnderwriting} />
+            <Route exact path="/quote" component={authHOC(QuoteCoverage, '/', this.props)} />
             <Route exact path="/policy" component={PolicyholderAgent} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/error" component={AppError} />
