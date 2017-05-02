@@ -18,7 +18,7 @@ const handleLogout = (props) => {
 
 export const QuoteBase = props => (
   <div className="app-wrapper csr quote">
-    //TODO: dynamically add quote # to title
+    {/*TODO: dynamically add quote # to title*/}
     <Helmet><title>Policy 12-123456</title></Helmet>
     <NewNoteFileUploader/>
     <QuoteHeader/>
