@@ -195,6 +195,7 @@ export const Coverage = (props) => {
       <div className="route-content">
         <div className="scroll">
           <div className="form-group survey-wrapper" role="group">
+            <h1>Coverage &amp; Rating</h1>
             <section>
               <h4>Covreage &amp; Premium</h4>
               <div className="coverage-premium">
