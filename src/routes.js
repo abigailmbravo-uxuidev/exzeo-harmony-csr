@@ -36,7 +36,7 @@ class Routes extends Component { // eslint-disable-line
             <Route exact path="/" component={authHOC(Splash, '/', this.props)} />
             <Route exact path="/quote" component={QuoteMailingAddressBilling} />
             // test route to be removed
-            <Route exact path="/quoteNotesFiles" component={QuoteNotesFiles} />
+            <Route exact path="/quote/notes" component={QuoteNotesFiles} />
             <Route exact path="/quote/coverage" component={authHOC(QuoteCoverage, '/', this.props)} />
             <Route exact path="/quote/underwriting" component={authHOC(QuoteUnderwriting, '/', this.props)} />
             <Route exact path="/policy" component={PolicyholderAgent} />

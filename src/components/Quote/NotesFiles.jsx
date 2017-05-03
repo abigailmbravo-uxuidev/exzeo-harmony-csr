@@ -34,10 +34,12 @@ const handleInitialize = (state) => {
 var notes = [
   { id: 0, type: 'Agent', attachmentCount: 3, created: '03/20/2017', author: 'REGNA', term: 0, note: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus non pharetra erat. Maecenas egestas, est nec accumsan porta, felis erat facilisis velit, ac bibendum felis est id neque.', expand: [ { fileList: 'HTML list / data' } ]
 }, { id: 1, type: 'Agent', attachmentCount: 2, created: '03/18/2017', author: 'JSUTPHIN', term: 0, note: 'Maecenas egestas, est nec accumsan porta, felis erat facilisis velit, ac bibendum felis est id neque.', expand: [ { fileList: 'HTML list / data' } ]
- }, { id: 2, type: 'Policy Holder', attachmentCount: 1, created: '03/19/2017', author: 'REGNA', term: 0, note: 'hasellus non pharetra erat. Maecenas egestas, est nec accumsan porta, felis erat facilisis velit, ac bibendum felis est id neque.', expand: [ { fileList: 'HTML list / data' } ]
+ }, { id: 2, type: 'Policy Holder', attachmentCount: 1, created: '03/19/2017', author: 'REGNA', term: 0, note: 'Pharetra erat. Maecenas egestas, est nec accumsan porta, felis erat facilisis velit, ac bibendum felis est id neque.', expand: [ { fileList: 'HTML list / data' } ]
   },
-  { id: 3, type: 'Policy Holder', attachmentCount: 0, created: '03/19/2017', author: 'REGNA', term: 0, note: 'hasellus non pharetra erat. Maecenas egestas, est nec accumsan porta, felis erat facilisis velit, ac bibendum felis est id neque.', expand: []
-   }
+  { id: 3, type: 'Policy Holder', attachmentCount: 0, created: '03/19/2017', author: 'REGNA', term: 0, note: 'Hasellus non pharetra erat. Maecenas egestas, est nec accumsan porta, felis erat facilisis velit, ac bibendum felis est id neque.', expand: []
+  },
+  { id: 4, type: 'Policy Holder', attachmentCount: 7, created: '03/12/2017', author: 'JSUTPHIN', term: 0, note: 'Non pharetra erat. Maecenas egestas, est nec accumsan porta, felis erat facilisis velit, ac bibendum felis est id neque.', expand: [ { fileList: 'HTML list / data' } ]
+   },
 
 ]
 
@@ -82,10 +84,10 @@ class NoteList extends React.Component {
         search>
         <TableHeaderColumn dataField='id'isKey hidden>ID</TableHeaderColumn>
         <TableHeaderColumn dataField='type' dataSort={ true } width='15%'>Type</TableHeaderColumn>
-        <TableHeaderColumn dataField='attachmentCount' className="attachmentCount" dataSort={ true } width='7%'><i className="fa fa-paperclip" aria-hidden="true"></i></TableHeaderColumn>
+        <TableHeaderColumn dataField='attachmentCount' className="attachmentCount" dataSort={ true } dataAlign="center" width='7%'><i className="fa fa-paperclip" aria-hidden="true"></i></TableHeaderColumn>
         <TableHeaderColumn dataField='created' dataSort={ true } width='10%'>Created</TableHeaderColumn>
         <TableHeaderColumn dataField='author' dataSort={ true } width='13%'>Author</TableHeaderColumn>
-        <TableHeaderColumn dataField='term' dataSort={ true } width='10%'>Term</TableHeaderColumn>
+        <TableHeaderColumn dataField='term' dataSort={ true } dataAlign="center" width='10%'>Term</TableHeaderColumn>
         <TableHeaderColumn dataField='note' dataSort={ true } tdStyle={ { whiteSpace: 'normal' } } width='45%'>Note</TableHeaderColumn>
       </BootstrapTable>
 
@@ -116,27 +118,13 @@ export const MailingAddressBilling = (props) => {
 
                           <section>
 
-
                             <div className="notes-list">
                               <NoteList />
                             </div>
 
-
                           </section>
 
-
-
-
-
-                            <div className="btn-footer">
-                                <button className="btn btn-primary" type="submit" form="MailingAddressBilling">
-                                    Save
-                                </button>
-                            </div>
-
                         </div>
-
-
 
                     </div>
                 </Form>

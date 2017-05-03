@@ -328,9 +328,11 @@
   .react-bs-table {
 
     .table-bordered {
-        > tbody > tr:nth-of-type(even) > td {
-            background: transparent;
-        }
+        > tbody {
+
+          > tr:nth-of-type(even) {
+              background-color: transparent;
+          }
 
         tr {
 
@@ -348,9 +350,9 @@
             }
         }
 
-        tr:nth-child(4n+3),
-        tr:nth-child(4n+4) {
-            background: $warm-gray-01;
+        tr:nth-child(4n+4),
+        tr:nth-child(4n+3) {
+            background-color: $warm-gray-01;
 
             td {
                 .react-bs-table-container {
@@ -359,6 +361,7 @@
             }
         }
     }
+  }
   }
 
 }
