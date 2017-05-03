@@ -9,7 +9,6 @@ import AppError from './containers/AppError';
 import NotFound from './containers/NotFound';
 import QuoteCoverage from './components/Quote/Coverage';
 import QuoteUnderwriting from './components/Quote/Underwriting';
-import PolicyCoverage from './components/Policy/Coverage';
 import PolicyholderAgent from './components/Policy/PolicyholderAgent';
 
 // A higher order component that allows for checking the routes authentication prefs.

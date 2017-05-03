@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
 import { reduxForm, Form, propTypes } from 'redux-form';
-import Footer from '../Common/Footer';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
@@ -12,9 +11,6 @@ import ClearErrorConnect from '../Error/ClearError';
 import TextField from '../Form/inputs/TextField';
 import SelectField from '../Form/inputs/SelectField';
 import RadioField from '../Form/inputs/RadioField';
-import CheckField from '../Form/inputs/CheckField';
-import DisplayField from '../Form/inputs/DisplayField';
-import SliderField from '../Form/inputs/SliderField';
 import SelectFieldAgency from '../Form/inputs/SelectFieldAgency';
 import SelectFieldAgents from '../Form/inputs/SelectFieldAgents';
 
@@ -96,16 +92,11 @@ const handleInitialize = (state) => {
   return values;
 };
 
-const handleGetAgencyDocs = (state) => {
+const handleGetDocs = (state, name) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  const result = _.find(taskData.model.variables, { name: 'getAgencyDocument' }).value.result;
-  return _.concat([], [result]);
-};
-
-const handleGetAgentDocs = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  const result = _.find(taskData.model.variables, { name: 'getAgentDocument' }).value.result;
-  return _.concat([], [result]);
+  const result = _.find(taskData.model.variables, { name });
+  const doc = (result && result.value) ? [result.value.result] : [];
+  return _.concat([], doc);
 };
 
 // ------------------------------------------------
@@ -1071,8 +1062,8 @@ const mapStateToProps = state => ({
   appState: state.appState,
   fieldValues: _.get(state.form, 'Coverage.values', {}),
   initialValues: handleInitialize(state),
-  agencyDocs: handleGetAgencyDocs(state),
-  agentDocs: handleGetAgentDocs(state)
+  agencyDocs: handleGetDocs(state, 'getAgencyDocument'),
+  agentDocs: handleGetDocs(state, 'getAgentDocument'),
 });
 
 const mapDispatchToProps = dispatch => ({
