@@ -40,8 +40,8 @@ class Routes extends Component { // eslint-disable-line
             <Route exact path="/quote/coverage" component={authHOC(QuoteCoverage, '/', this.props)} />
             <Route exact path="/quote/underwriting" component={authHOC(QuoteUnderwriting, '/', this.props)} />
             <Route exact path="/policy/coverage" component={PolicyCoverage} />
-            <Route exact path="/policy/billing" component={PolicyPolicyholderAgent} />
-            <Route exact path="/policy/policyholder" component={PolicyMortgageBilling} />
+            <Route exact path="/policy/policyholder" component={PolicyPolicyholderAgent} />
+            <Route exact path="/policy/billing" component={PolicyMortgageBilling} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/error" component={AppError} />
             <Route component={NotFound} />
