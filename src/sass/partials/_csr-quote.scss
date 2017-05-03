@@ -43,7 +43,7 @@
                 .route-content {
                     display: flex;
                     flex-shrink: 1;
-
+                    flex-grow: 1;
                     .modal.quote-summary {
 
                         .card-footer {
@@ -333,7 +333,7 @@
         }
 
         tr {
-          
+
 
             td {
 
