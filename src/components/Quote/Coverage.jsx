@@ -24,8 +24,8 @@ const handleInitialize = (state) => {
   const quoteData = _.find(taskData.model.variables, { name: 'getQuote' }) ? _.find(taskData.model.variables, { name: 'getQuote' }).value.result : {};
   const values = {};
 
-  values.agency = _.get(quoteData, 'agencyCode');
-  values.agent = _.get(quoteData, 'agentCode');
+  values.agencyCode = _.get(quoteData, 'agencyCode');
+  values.agentCode = _.get(quoteData, 'agentCode');
   values.effectiveDate = moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD');
 
   values.pH1email = _.get(quoteData, 'policyholders[0].emailAddress');
@@ -130,8 +130,8 @@ export class Coverage extends Component {
 
     const submitData = data;
 
-    submitData.agency = String(data.agency);
-    submitData.agent = String(data.agent);
+    submitData.agencyCode = String(data.agencyCode);
+    submitData.agentCode = String(data.agentCode);
 
     const steps = [{
       name: 'askCustomerData',
@@ -173,7 +173,7 @@ export class Coverage extends Component {
 
                     <div className="flex-child">
                       <SelectFieldAgency
-                        name="agency"
+                        name="agencyCode"
                         label="Agency"
                         onChange={function () { }}
                         validations={['required']}
@@ -182,7 +182,7 @@ export class Coverage extends Component {
                     </div>
                     <div className="flex-child">
                       <SelectFieldAgents
-                        name="agent"
+                        name="agentCode"
                         label="Agent"
                         onChange={function () { }}
                         validations={['required']}
