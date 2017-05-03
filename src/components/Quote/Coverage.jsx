@@ -162,6 +162,7 @@ export class Coverage extends Component {
           <Form id="Coverage" onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
+                <h1>Coverage / Rating</h1>
 
                 <section className="producer ">
                   <h4>Produced By</h4>

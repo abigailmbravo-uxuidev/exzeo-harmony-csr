@@ -12,9 +12,24 @@ import { NavLink } from 'react-router-dom';
  * }
  */
 const csrLinks = [{
-  link: '/quote',
-  label: 'Coverage & Rating',
+  link: '/quote/coverage',
+  label: 'Coverage / Rating',
   styleName: 'coverage',
+  exact: true
+},{
+  link: '/quote/underwriting',
+  label: 'Underwriting',
+  styleName: 'underwriting',
+  exact: true
+},{
+  link: '/quote/billing',
+  label: 'Mailing Addr / Billing',
+  styleName: 'billing',
+  exact: true
+},{
+  link: '/quote/notes',
+  label: 'Notes / Files',
+  styleName: 'notes',
   exact: true
 }];
 
