@@ -9,7 +9,11 @@ import AppError from './containers/AppError';
 import NotFound from './containers/NotFound';
 import QuoteCoverage from './components/Quote/Coverage';
 import QuoteUnderwriting from './components/Quote/Underwriting';
-import PolicyholderAgent from './components/Policy/PolicyholderAgent';
+import QuoteMailingAddressBilling from './components/Quote/MailingAddressBilling';
+import QuoteNotesFiles from './components/Quote/NotesFiles';
+import PolicyCoverage from './components/Policy/Coverage';
+import PolicyPolicyholderAgent from './components/Policy/PolicyholderAgent';
+import PolicyMortgageBilling from './components/Policy/MortgageBilling';
 
 // A higher order component that allows for checking the routes authentication prefs.
 function authHOC(NavComponent, redirectUrl, props) {
@@ -30,9 +34,13 @@ class Routes extends Component { // eslint-disable-line
         <div>          
           <Switch>
             <Route exact path="/" component={authHOC(Splash, '/', this.props)} />
+            <Route exact path="/quote/billing" component={QuoteMailingAddressBilling} />
+            <Route exact path="/quote/notes" component={QuoteNotesFiles} />
             <Route exact path="/quote/coverage" component={authHOC(QuoteCoverage, '/', this.props)} />
             <Route exact path="/quote/underwriting" component={authHOC(QuoteUnderwriting, '/', this.props)} />
-            <Route exact path="/policy" component={PolicyholderAgent} />
+            <Route exact path="/policy/coverage" component={PolicyCoverage} />
+            <Route exact path="/policy/policyholder" component={PolicyPolicyholderAgent} />
+            <Route exact path="/policy/billing" component={PolicyMortgageBilling} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/error" component={AppError} />
             <Route component={NotFound} />

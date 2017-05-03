@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -99,14 +100,17 @@ const handleGetDocs = (state, name) => {
   return _.concat([], doc);
 };
 
-// ------------------------------------------------
-// The render is where all the data is being pulled
-//  from the props.
-// The quote data data comes from the previous task
-//  which is createQuote / singleQuote. This might
-//  not be the case in later calls, you may need
-//  to pull it from another place in the model
-// ------------------------------------------------
+/**
+------------------------------------------------
+ The render is where all the data is being pulled
+ from the props.
+ The quote data data comes from the previous task
+ which is createQuote / singleQuote. This might
+ not be the case in later calls, you may need
+ to pull it from another place in the model
+------------------------------------------------
+*/
+
 export class Coverage extends Component {
 
   componentDidMount() {
@@ -118,20 +122,14 @@ export class Coverage extends Component {
 
   handleFormSubmit = (data) => {
     const workflowId = this.props.appState.instanceId;
-
     const submitData = data;
 
     submitData.agency = String(data.agency);
     submitData.agent = String(data.agent);
 
-    const steps = [{
-      name: 'askCustomerData',
-      data: submitData
-    },
-    {
-      name: 'askToCustomizeDefaultQuote',
-      data: { shouldCustomizeQuote: 'No' }
-    }
+    const steps = [
+      { name: 'askCustomerData', data: submitData },
+      { name: 'askToCustomizeDefaultQuote', data: { shouldCustomizeQuote: 'No' } }
     ];
 
     this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)

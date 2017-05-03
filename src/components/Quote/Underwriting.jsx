@@ -1,8 +1,10 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { reduxForm, Form, propTypes } from 'redux-form';
+import { Redirect } from 'react-router';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
@@ -10,7 +12,14 @@ import ClearErrorConnect from '../Error/ClearError';
 import RadioField from '../Form/inputs/RadioField';
 
 const handleFormSubmit = (data, dispatch, props) => {
-  alert('submit');
+  const workflowId = props.appState.instanceId;
+  const submitData = { ...data };
+  props.actions.appStateActions.setAppState(
+    props.appState.modelName, 
+    workflowId, 
+    { submitting: true });
+  // props.actions.cgActions.completeTask(props.appState.modelName, workflowId, taskName, data);
+  props.setSubmitSucceeded();
 };
 
 const handleInitialize = (state) => {
@@ -26,26 +35,33 @@ const handleInitialize = (state) => {
   return formValues;
 };
 
-// ------------------------------------------------
-// The render is where all the data is being pulled
-//  from the props.
-// The quote data data comes from the previous task
-//  which is createQuote / singleQuote. This might
-//  not be the case in later calls, you may need
-//  to pull it from another place in the model
-// ------------------------------------------------
-export const Coverage = (props) => {
+/**
+------------------------------------------------
+ The render is where all the data is being pulled
+ from the props.
+ The quote data data comes from the previous task
+ which is createQuote / singleQuote. This might
+ not be the case in later calls, you may need
+ to pull it from another place in the model
+------------------------------------------------
+*/
+export const Underwriting = (props) => {
   const { handleSubmit } = props;
+
+  const redirect = (props.submitSucceeded) 
+    ? (<Redirect to={ '/' } />) 
+    : null;
+
   return (
     <QuoteBaseConnect>
       <ClearErrorConnect />
       <div className="route-content">
-        <Form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+        <Form id="Coverage" onSubmit={ handleSubmit(handleFormSubmit) } noValidate>
+          { redirect }
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
               <h1>Underwriting</h1>
               <section className="producer">
-
                 <RadioField
                   validations={['required']} name={'everRented'} styleName={''} label={'Is the home or any structures on the property ever rented?'} onChange={function () {}} segmented answers={[
                     {
@@ -60,7 +76,6 @@ export const Coverage = (props) => {
                         }
                   ]}
                 />
-
 
                 <RadioField
                   validations={['required']} name={'lastClaimFiled'} styleName={''} label={'When was the last claim filed?'} onChange={function () {}} segmented answers={[
@@ -82,7 +97,6 @@ export const Coverage = (props) => {
                             }
                   ]}
                 />
-
 
                 <RadioField
                   validations={['required']} name={'monthsYearOwnerLive'} styleName={''} label={'How many months a year does the owner live in the home?'} onChange={function () {}} segmented answers={[
@@ -127,10 +141,7 @@ export const Coverage = (props) => {
                       }
                   ]}
                 />
-
               </section>
-
-
               <div className="btn-footer">
                 <button className="btn btn-secondary" type="submit" form="Coverage">
                                   Reset
@@ -139,10 +150,7 @@ export const Coverage = (props) => {
                                     Save &amp; Re-Evaluate
                                 </button>
               </div>
-
             </div>
-
-
           </div>
         </Form>
       </div>
@@ -153,7 +161,7 @@ export const Coverage = (props) => {
 // ------------------------------------------------
 // Property type definitions
 // ------------------------------------------------
-Coverage.propTypes = {
+Underwriting.propTypes = {
   ...propTypes,
   tasks: PropTypes.shape(),
   appState: PropTypes.shape({
@@ -183,4 +191,4 @@ const mapDispatchToProps = dispatch => ({
 // ------------------------------------------------
 // wire up redux form with the redux connect
 // ------------------------------------------------
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Coverage' })(Coverage));
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Underwriting' })(Underwriting));
