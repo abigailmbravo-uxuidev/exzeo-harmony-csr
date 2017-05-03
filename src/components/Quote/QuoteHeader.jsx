@@ -16,7 +16,7 @@ export const QuoteHeader = props => (
       </div>
       <div className="quote-description"><label>Type</label>HO3 Homeowners<label>Quote Number</label>12-123456</div>
       <button className="btn-icon btn-ellipsis-v"><i className="fa fa-ellipsis-v" /></button>
-      <nav className="fade-in">
+      <nav>
         <button className="btn note btn-action" type="button"><i className="fa fa-plus" /> Note/File</button>
         <button className="btn close btn-action" type="button"><i className="fa fa-times" /></button>
       </nav>

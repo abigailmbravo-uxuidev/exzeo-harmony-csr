@@ -23,7 +23,7 @@ const csrLinks = [{
   exact: true
 },{
   link: '/quote/billing',
-  label: 'Mailing Addr / Billing',
+  label: 'Mailing / Billing',
   styleName: 'billing',
   exact: true
 },{
