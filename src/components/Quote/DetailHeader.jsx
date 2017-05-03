@@ -7,7 +7,7 @@ const DetailHeader = () =>
           <dl>
             <div>
               <dt>Quote Number</dt>
-              <dd>12-123456</dd>
+              <dd>[Quote Number]</dd>
             </div>
           </dl>
         </section>
@@ -15,9 +15,9 @@ const DetailHeader = () =>
           <dl>
             <div>
               <dt>Property Address</dt>
-              <dd>5085 East Waldorf Dr.</dd>
-              <dd>Address two here</dd>
-              <dd>Tampa,&nbsp;FL&nbsp;33333</dd>
+              <dd>[Address 1]</dd>
+              <dd>[Address 2]</dd>
+              <dd>[City],&nbsp;[ST]&nbsp;[Zip]</dd>
             </div>
           </dl>
         </section>
@@ -25,7 +25,7 @@ const DetailHeader = () =>
           <dl>
             <div>
               <dt>Property County</dt>
-              <dd>Hillsborough</dd>
+              <dd>[County]</dd>
             </div>
           </dl>
         </section>
@@ -33,15 +33,15 @@ const DetailHeader = () =>
           <dl>
             <div>
               <dt>Territory</dt>
-              <dd>80-1</dd>
+              <dd>[Territory]</dd>
             </div>
           </dl>
         </section>
         <section id="applicantPhone" className="applicantPhone">
           <dl>
             <div>
-              <dt>Applicant Phone</dt>
-              <dd>(777) 777-7777</dd>
+              <dt>Policyholder Phone</dt>
+              <dd>[Policyholder Phone]</dd>
             </div>
           </dl>
         </section>
@@ -49,7 +49,7 @@ const DetailHeader = () =>
           <dl>
             <div>
               <dt>Quote Status</dt>
-              <dd>In Force</dd>
+              <dd>[Quote Status]</dd>
             </div>
           </dl>
         </section>
@@ -57,7 +57,7 @@ const DetailHeader = () =>
           <dl>
             <div>
               <dt>Effective Date</dt>
-              <dd>03/01/2017</dd>
+              <dd>[Effective Date]</dd>
             </div>
           </dl>
         </section>
@@ -65,7 +65,7 @@ const DetailHeader = () =>
           <dl>
             <div>
               <dt>Current Premium</dt>
-              <dd>$ 3,422</dd>
+              <dd>$ [Premium]</dd>
             </div>
           </dl>
         </section>

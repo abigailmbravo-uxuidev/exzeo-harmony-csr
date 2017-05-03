@@ -14,7 +14,7 @@ export const QuoteHeader = props => (
       <div id="logo" className="logo">
         <img src={logo} alt="Harmony" />
       </div>
-      <div className="quote-description"><label>Type</label>HO3 Homeowners<label>Quote Number</label>12-123456</div>
+      <div className="quote-description"><label>Type</label>[Product]<label>Quote Number</label>[Quote Number]</div>
       <button className="btn-icon btn-ellipsis-v"><i className="fa fa-ellipsis-v" /></button>
       <nav>
         <button className="btn note btn-action" type="button"><i className="fa fa-plus" /> Note/File</button>
