@@ -64,21 +64,18 @@ export class Splash extends Component {
     //   data: { key: 'customerData' }
     // }];
 
-    const steps = [
-      {
-        name: 'chooseAddress',
-        data: submitData
-      }
-    ];
+    const steps = [{
+      name: 'chooseAddress',
+      data: submitData
+    }];
 
-    props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps).then(() => {
-      // now update the workflow details so the recalculated rate shows
-      props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, {
-        recalc: false,
-        updateWorkflowDetails: true
+    props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
+      .then(() => {
+        // now update the workflow details so the recalculated rate shows
+        props.actions.appStateActions.setAppState(props.appState.modelName,
+          workflowId, { recalc: false, updateWorkflowDetails: true });
+        this.context.router.history.push('/quote/coverage');
       });
-      this.context.router.history.push('/quote');
-    });
   };
 
   render() {
