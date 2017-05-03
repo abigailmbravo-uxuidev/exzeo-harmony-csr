@@ -22,7 +22,7 @@ export const PolicyholderAgent = () => {
             <h1>Mortgage / Billing</h1>
             <section className="payment-summary">
               <h4>Payment Summary</h4>
-              <div className="payment-summary-">
+              <div className="payment-summary">
                 <dl>
                   <div>
                     <dt>Bill To</dt>
@@ -38,13 +38,13 @@ export const PolicyholderAgent = () => {
                   </div>
                 </dl>
               </div>
-              <div className="payment-summary">
+              <div className="payment-summary grid">
                       <div className="table-view">
                         <BootstrapTable className="" data={payments} striped hover>
-                          <TableHeaderColumn isKey dataField="date" className="date" columnClassName="date" dataSort>Date</TableHeaderColumn>
+                          <TableHeaderColumn isKey dataField="date" className="date" columnClassName="date" width="100" dataSort>Date</TableHeaderColumn>
                           <TableHeaderColumn dataField="description" className="description" columnClassName="description" dataSort>Description</TableHeaderColumn>
-                          <TableHeaderColumn dataField="note" className="note" columnClassName="note" dataSort>Note</TableHeaderColumn>
-                          <TableHeaderColumn dataField="amount" className="amount" columnClassName="amount" dataSort>Amount</TableHeaderColumn>
+                          <TableHeaderColumn dataField="note" className="note" columnClassName="note" dataSort width="200" >Note</TableHeaderColumn>
+                          <TableHeaderColumn dataField="amount" className="amount" columnClassName="amount" width="150" dataSort dataAlign="right">Amount</TableHeaderColumn>
                         </BootstrapTable>
                       </div>
               </div>
@@ -57,7 +57,7 @@ export const PolicyholderAgent = () => {
                   <li>
                     <a>
                       <div className="card-icon">
-                        <i className="fa fa-circle Mortgagee"></i>
+                        <i className="fa fa-circle fa-bank Mortgagee"></i>
                         <label>Mortgagee 1</label>
                       </div>
                       <section>
