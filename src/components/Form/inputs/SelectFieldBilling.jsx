@@ -20,6 +20,7 @@ export const SelectFieldBilling = ({
     <div className={formGroupStyles}>
       <label htmlFor={name}>
         {label} &nbsp; {Hint}
+      </label>
         {answers && answers.length > 0 ? (
           <select
             value={value}
@@ -35,7 +36,6 @@ export const SelectFieldBilling = ({
             ))}
           </select>
         ) : null}
-      </label>
     </div>
   );
 };

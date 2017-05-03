@@ -25,7 +25,7 @@ export const Policy = props => (
       <aside className="content-panel-left">
         <div className="user">
           <label htmlFor="user">Policyholder</label>
-          <p className="user-name">Jane Doe</p>
+          <p className="user-name">[PH1 firstName PH1 lastName]</p>
         </div>
         <QuoteSideNav/>
       </aside>

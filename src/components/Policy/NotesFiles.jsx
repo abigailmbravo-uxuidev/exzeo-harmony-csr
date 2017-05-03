@@ -1,14 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, {PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import {reduxForm, Form, propTypes} from 'redux-form';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
-import QuoteBaseConnect from '../../containers/Quote';
+import PolicyBaseConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
+import RadioField from '../Form/inputs/RadioField';
+import TextField from '../Form/inputs/TextField';
+import SelectField from '../Form/inputs/SelectField';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
+import QuoteSummaryModal from '../../components/Common/QuoteSummaryModal';
 
 const handleFormSubmit = (data, dispatch, props) => {
     alert('submit');
@@ -54,6 +57,9 @@ class BSTable extends React.Component {
 }
 
 class NoteList extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
   isExpandableRow(row) {
     if (row.id < 2) return true;
@@ -102,7 +108,7 @@ class NoteList extends React.Component {
 export const MailingAddressBilling = (props) => {
     const {handleSubmit} = props;
     return (
-        <QuoteBaseConnect>
+        <PolicyBaseConnect>
             <ClearErrorConnect/>
             <div className="route-content">
                 <Form id="MailingAddressBilling" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
@@ -124,7 +130,7 @@ export const MailingAddressBilling = (props) => {
                 </Form>
 
             </div>
-        </QuoteBaseConnect>
+    </PolicyBaseConnect>
     );
 };
 

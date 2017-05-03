@@ -74,7 +74,24 @@
                         display: flex;
                         width: 100%;
                         flex-direction: row;
-                        margin: 0 -10px ($padding*2);
+                        margin: 0 0 ($padding*2);
+
+                        .table-view, .card-view {
+                            &:first-child {
+                                .react-bs-table-container {
+                                    .react-bs-table {
+                                        margin-left: 0;
+                                    }
+                                }
+                            }
+                            &:last-child {
+                                .react-bs-table-container {
+                                    .react-bs-table {
+                                        margin-right: 0;
+                                    }
+                                }
+                            }
+                        }
 
                         .table-view {
                           width: 33%;
@@ -199,8 +216,12 @@
           flex-shrink: 0;
           flex-basis: 240px;
           padding: 0 0 ($padding*2) ($padding*2);
-          overflow-y: scroll;
+          overflow-y: auto;
           height: 100%;
+
+          .uw-validation-header {
+              margin: ($padding*1.5) 0;
+          }
 
           section {
 
@@ -328,9 +349,11 @@
   .react-bs-table {
 
     .table-bordered {
-        > tbody > tr:nth-of-type(even) > td {
-            background: transparent;
-        }
+        > tbody {
+
+          > tr:nth-of-type(even) {
+              background-color: transparent;
+          }
 
         tr {
 
@@ -348,9 +371,9 @@
             }
         }
 
-        tr:nth-child(4n+3),
-        tr:nth-child(4n+4) {
-            background: $warm-gray-01;
+        tr:nth-child(4n+4),
+        tr:nth-child(4n+3) {
+            background-color: $warm-gray-01;
 
             td {
                 .react-bs-table-container {
@@ -359,6 +382,7 @@
             }
         }
     }
+  }
   }
 
 }

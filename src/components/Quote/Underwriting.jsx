@@ -12,25 +12,45 @@ import ClearErrorConnect from '../Error/ClearError';
 import RadioField from '../Form/inputs/RadioField';
 
 const handleFormSubmit = (data, dispatch, props) => {
-  const workflowId = props.appState.instanceId;
-  const submitData = { ...data };
-  props.actions.appStateActions.setAppState(
-    props.appState.modelName, 
-    workflowId, 
-    { submitting: true });
-  // props.actions.cgActions.completeTask(props.appState.modelName, workflowId, taskName, data);
-  props.setSubmitSucceeded();
+  const { appState, actions, fieldValues } = props;
+
+  const workflowId = appState.instanceId;
+  const steps = [
+    {
+      name: 'moveTo',
+      data: { key: 'underwriting' }
+    },
+    {
+      name: 'askUWAnswers',
+      data: fieldValues
+    },
+    {
+      name: 'moveTo',
+      data: { key: 'recalc' }
+    }
+  ];
+
+  actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
+    .then(() => {
+      // now update the workflow details so the recalculated rate shows
+      actions.appStateActions.setAppState(
+        appState.modelName,
+        workflowId, 
+        { updateWorkflowDetails: true }
+      );
+      props.setSubmitSucceeded();
+    });
 };
 
 const handleInitialize = (state) => {
+  // hardcoded values
   const formValues = {
-    textField1: '',
-    billTo: 'Mortgagee',
-    billPlan: 'Annual',
-    textField2: '5000',
-    isActive: true,
-    deductible: 200000,
-    disabled: true
+    rented: 'Never',
+    monthsOccupied: '10+',
+    previousClaims: '0',
+    fourPointUpdates: 'Yes',
+    floodPolicy: 'No',
+    business: 'No'
   };
   return formValues;
 };
@@ -49,7 +69,7 @@ export const Underwriting = (props) => {
   const { handleSubmit } = props;
 
   const redirect = (props.submitSucceeded) 
-    ? (<Redirect to={ '/' } />) 
+    ? (<Redirect to={ '/quote/billing' } />) 
     : null;
 
   return (
@@ -63,82 +83,82 @@ export const Underwriting = (props) => {
               <h1>Underwriting</h1>
               <section className="producer">
                 <RadioField
-                  validations={['required']} name={'everRented'} styleName={''} label={'Is the home or any structures on the property ever rented?'} onChange={function () {}} segmented answers={[
+                  validations={['required']} name={'rented'} styleName={''} label={'Is the home or any structures on the property ever rented?'} onChange={function () {}} segmented answers={[
                     {
                       answer: 'Yes',
                       label: 'Yes'
                     }, {
-                        answer: 'Occasionally',
-                        label: 'Occasionally'
-                      }, {
-                          answer: 'Never',
-                          label: 'Never'
-                        }
+                      answer: 'Occasionally',
+                      label: 'Occasionally'
+                    }, {
+                      answer: 'Never',
+                      label: 'Never'
+                    }
                   ]}
                 />
 
                 <RadioField
-                  validations={['required']} name={'lastClaimFiled'} styleName={''} label={'When was the last claim filed?'} onChange={function () {}} segmented answers={[
+                  validations={['required']} name={'previousClaims'} styleName={''} label={'When was the last claim filed?'} onChange={function () {}} segmented answers={[
                     {
-                      answer: 'No claims ever filed',
+                      answer: '0',
                       label: 'No claims ever filed'
                     }, {
-                        answer: 'Less than 3 Years',
-                        label: 'Less than 3 Years'
-                      }, {
-                          answer: '3-5 Years',
-                          label: '3-5 Years'
-                        }, {
-                            answer: 'Over 5 Years',
-                            label: 'Over 5 Years'
-                          }, {
-                              answer: 'Unknown',
-                              label: 'Unknown'
-                            }
+                      answer: '3',
+                      label: 'Less than 3 Years'
+                    }, {
+                      answer: '5',
+                      label: '3-5 Years'
+                    }, {
+                      answer: '5+',
+                      label: 'Over 5 Years'
+                    }, {
+                      answer: 'Unknown',
+                      label: 'Unknown'
+                    }
                   ]}
                 />
 
                 <RadioField
-                  validations={['required']} name={'monthsYearOwnerLive'} styleName={''} label={'How many months a year does the owner live in the home?'} onChange={function () {}} segmented answers={[
+                  validations={['required']} name={'monthsOccupied'} styleName={''} label={'How many months a year does the owner live in the home?'} onChange={function () {}} segmented answers={[
                     {
                       answer: '0-3',
                       label: '0-3'
                     }, {
-                        answer: '4-6',
-                        label: '4-6'
-                      }, {
-                          answer: '7-9',
-                          label: '7-9'
-                        }, {
-                            answer: '10+',
-                            label: '10+'
-                          }
+                      answer: '4-6',
+                      label: '4-6'
+                    }, {
+                      answer: '7-9',
+                      label: '7-9'
+                    }, {
+                      answer: '10+',
+                      label: '10+'
+                    }
                   ]}
                 />
 
                 <RadioField
-                  validations={['required']} name={'wiringPlumbingHVACupdate'} styleName={''} label={'Have the wiring, plumbing, and HVAC been updated in the last 35 years?'} onChange={function () {}} segmented answers={[
+                  validations={['required']} name={'fourPointUpdates'} styleName={''} label={'Have the wiring, plumbing, and HVAC been updated in the last 35 years?'} onChange={function () {}} segmented answers={[
                     {
                       answer: 'Yes',
                       label: 'Yes'
                     }, {
-                        answer: 'No',
-                        label: 'No'
-                      }, {
-                          answer: 'Unkown',
-                          label: 'Unknown'
-                        }
+                      answer: 'No',
+                      label: 'No'
+                    }, {
+                      answer: 'Unkown',
+                      label: 'Unknown'
+                    }
                   ]}
                 />
                 <RadioField
-                  validations={['required']} name={'businessProperty'} styleName={''} label={'Is a business conducted on the property?'} onChange={function () {}} segmented answers={[
+                  validations={['required']} name={'business'} styleName={''} label={'Is a business conducted on the property?'} onChange={function () {}} segmented answers={[
                     {
                       answer: 'Yes',
                       label: 'Yes'
                     }, {
-                        answer: 'No',
-                        label: 'No'
-                      }
+                      answer: 'No',
+                      label: 'No'
+                    }
                   ]}
                 />
               </section>

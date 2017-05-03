@@ -15,14 +15,19 @@ import RadioField from '../Form/inputs/RadioField';
 import SelectFieldAgency from '../Form/inputs/SelectFieldAgency';
 import SelectFieldAgents from '../Form/inputs/SelectFieldAgents';
 
-
-const handleInitialize = (state) => {
+const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   const quoteData = _.find(taskData.model.variables, { name: 'getQuote' }) ? _.find(taskData.model.variables, { name: 'getQuote' }).value.result : {};
+  return quoteData;
+};
+
+const handleInitialize = (state) => {
+  const quoteData = handleGetQuoteData(state);
+
   const values = {};
 
-  values.agency = _.get(quoteData, 'agencyCode');
-  values.agent = _.get(quoteData, 'agentCode');
+  values.agencyCode = _.get(quoteData, 'agencyCode');
+  values.agentCode = _.get(quoteData, 'agentCode');
   values.effectiveDate = moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD');
 
   values.pH1email = _.get(quoteData, 'policyholders[0].emailAddress');
@@ -118,14 +123,20 @@ export class Coverage extends Component {
     const taskName = 'moveTo';
     const taskData = { key: 'customerData' };
     this.props.actions.cgActions.completeTask(this.props.appState.modelName, workflowId, taskName, taskData);
+
+    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+      quote: this.props.quoteData,
+      updateWorkflowDetails: true,
+      hideYoChildren: false
+    });
   }
 
   handleFormSubmit = (data) => {
     const workflowId = this.props.appState.instanceId;
     const submitData = data;
 
-    submitData.agency = String(data.agency);
-    submitData.agent = String(data.agent);
+    submitData.agencyCode = String(data.agencyCode);
+    submitData.agentCode = String(data.agentCode);
 
     const steps = [
       { name: 'askCustomerData', data: submitData },
@@ -151,6 +162,7 @@ export class Coverage extends Component {
           <Form id="Coverage" onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
+                <h1>Coverage / Rating</h1>
 
                 <section className="producer ">
                   <h4>Produced By</h4>
@@ -161,7 +173,7 @@ export class Coverage extends Component {
 
                     <div className="flex-child">
                       <SelectFieldAgency
-                        name="agency"
+                        name="agencyCode"
                         label="Agency"
                         onChange={function () { }}
                         validations={['required']}
@@ -170,7 +182,7 @@ export class Coverage extends Component {
                     </div>
                     <div className="flex-child">
                       <SelectFieldAgents
-                        name="agent"
+                        name="agentCode"
                         label="Agent"
                         onChange={function () { }}
                         validations={['required']}
@@ -792,7 +804,7 @@ export class Coverage extends Component {
                   </div>
                 </section>
                 <section className="wind flex-parent">
-                  <div className="wind-col1">
+                  <div className="wind-col1 flex-child">
                     <h4>Wind Mitigation</h4>
                     <div className="flex-parent">
                       <div className="flex-child">
@@ -929,7 +941,7 @@ export class Coverage extends Component {
                     </div>
 
                   </div>
-                  <div className="wind-col2">
+                  <div className="wind-col2 flex-child">
                     <h4>&nbsp;</h4>
 
                     <div className="flex-parent">
@@ -1062,6 +1074,7 @@ const mapStateToProps = state => ({
   initialValues: handleInitialize(state),
   agencyDocs: handleGetDocs(state, 'getAgencyDocument'),
   agentDocs: handleGetDocs(state, 'getAgentDocument'),
+  quoteData: handleGetQuoteData(state)
 });
 
 const mapDispatchToProps = dispatch => ({

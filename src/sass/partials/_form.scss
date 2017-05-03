@@ -21,6 +21,7 @@
     background-clip: padding-box;
     font-size: $font-size-base;
     line-height: $input-line-height;
+    height: 2rem;
     @include box-shadow($input-box-shadow);
     @include transition(border-color ease-in-out .15s, box-shadow ease-in-out .15s);
     // Customize the `:focus` state to imitate native WebKit styles.
@@ -46,6 +47,12 @@
       box-shadow: none;
       line-height: 1;
     }
+
+    &[type="date"] {
+          @include for-phone-only {
+            width: 100%;
+          }
+      }
 
     &[type="file"] {
       width: 100%;
@@ -103,7 +110,6 @@
   select {
     //margin-top: $padding*.825;
     box-shadow: none;
-    height: 30px;
 
     /* &:not([size]):not([multiple]) {
       width: 100%;
@@ -195,13 +201,6 @@
     &.disabled.error {
       label {
         color: $warm-gray-06;
-      }
-    }
-
-    input[type="date"] {
-      padding: ($padding*.65) $padding;
-      @include for-phone-only {
-        width: 100%;
       }
     }
 
