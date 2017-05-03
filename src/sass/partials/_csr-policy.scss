@@ -22,10 +22,10 @@
         align-items: center;
 
         label {
-          color: $warm-gray-07;
-          font-weight: $font-weight-normal;
           margin-bottom: 0;
           padding: 0 $padding 0 ($padding*4);
+          color: $warm-gray-07;
+          font-weight: $font-weight-normal;
         }
       }
     }
@@ -33,21 +33,21 @@
   //content wrapper
   main {
     .content-wrapper {
+      overflow: hidden;
+      width: auto;
       flex-grow: 1;
       flex-shrink: 1;
-      width: auto;
       flex-wrap: nowrap;
-      overflow: hidden;
 
       .route-content {
         display: flex;
         flex-shrink: 1;
 
         .scroll {
-          flex-grow: 1;
-          flex-shrink: 0;
           overflow-y: auto;
           width: 100%;
+          flex-grow: 1;
+          flex-shrink: 0;
         }
 
         .survey-wrapper {
@@ -57,8 +57,8 @@
         .form-group {
           section {
             margin-bottom: $padding*4;
-            border-bottom: 1px dashed $warm-gray-01;
             padding-bottom: $padding*2;
+            border-bottom: 1px dashed $warm-gray-01;
 
             &:last-child {
               border-bottom-width: 0;
@@ -76,8 +76,8 @@
                   margin-right: $padding*4;
 
                   dt {
-                    font-size: $font-size-sm;
                     color: $headline-color;
+                    font-size: $font-size-sm;
                   }
 
                   dd {}
@@ -85,21 +85,22 @@
               }
             }
 
-            .table-striped>tbody>tr:nth-of-type(odd):hover {
-                background: $white;
+            .table-striped > tbody > tr:nth-of-type(odd):hover {
+              background: $white;
             }
 
-            .table-striped>tbody>tr:nth-of-type(even):hover {
-                background: $warm-gray-01;
+            .table-striped > tbody > tr:nth-of-type(even):hover {
+              background: $warm-gray-01;
             }
-            .react-bs-table .table-bordered>tbody>tr:nth-of-type(even):hover>td {
-                background: $warm-gray-01;
+
+            .react-bs-table .table-bordered > tbody > tr:nth-of-type(even):hover > td {
+              background: $warm-gray-01;
             }
 
             .responsive-tables {
               display: flex;
-              width: 100%;
               flex-direction: row;
+              width: 100%;
               margin: 0 -10px ($padding*2);
 
               .table-view {
@@ -109,27 +110,30 @@
                   thead tr th {
                     background: rgba($orange-lighten-04, .3);
                   }
-                  tbody tr:nth-of-type(even)>td {
-                      background: rgba($orange-lighten-04, .1);
+
+                  tbody tr:nth-of-type(even) > td {
+                    background: rgba($orange-lighten-04, .1);
                   }
                 }
 
                 .premium {
-                    thead tr th {
-                      background: rgba($yellow-lighten-04, .3);
-                    }
-                    tbody tr:nth-of-type(even)>td {
-                        background: rgba($yellow-lighten-04, .1);
-                    }
+                  thead tr th {
+                    background: rgba($yellow-lighten-04, .3);
+                  }
+
+                  tbody tr:nth-of-type(even) > td {
+                    background: rgba($yellow-lighten-04, .1);
+                  }
                 }
 
                 .billing {
-                    thead tr th {
-                      background: rgba($green-lighten-04, .3);
-                    }
-                    tbody tr:nth-of-type(even)>td {
-                        background: rgba($green-lighten-04, .1);
-                    }
+                  thead tr th {
+                    background: rgba($green-lighten-04, .3);
+                  }
+
+                  tbody tr:nth-of-type(even) > td {
+                    background: rgba($green-lighten-04, .1);
+                  }
                 }
 
                 .coverage {
@@ -155,6 +159,105 @@
     .underwriting-validation {
       width: 200px;
       border-left: dashed 1px $warm-gray-04;
+    }
+  }
+}
+
+section {
+  margin-bottom: $padding;
+
+  &.agency,
+  &.agent,
+  &.primary-policyholder,
+  &.secondary-policyholder {
+    .contact-title {
+      padding-bottom: $padding/2;
+      color: $warm-gray-08;
+      font-weight: $font-weight-bold;
+    }
+
+    h3 {
+      color: $warm-gray-08;
+    }
+
+    h4 {
+      color: $warm-gray-08;
+    }
+
+    p {
+      margin-bottom: 0;
+    }
+
+    .contact-methods {
+      display: flex;
+
+      p {
+        display: flex;
+        margin-right: $padding*2;
+        align-items: center;
+
+        small {
+          margin-right: $padding;
+          color: $white;
+          background: $bright-blue-darken-03;
+          border-radius: 2px;
+          padding: 0 .2rem;
+          font-size: 70%;
+
+          sup {
+              top:-.5em;
+              font-size: 50%;
+          }
+
+          i {
+              margin-left: .1rem;
+              margin-right: 0;
+              color: $white;
+          }
+        }
+
+        i {
+          margin-right: $padding;
+          color: $bright-blue-darken-03;
+
+          &.fa-phone-square {
+              font-size: 125%;
+          }
+        }
+      }
+    }
+
+    .additional-contacts {
+        ul {
+            list-style: none;
+            margin: 2rem 0 0 0;
+            padding: 0;
+
+            li {
+                padding: ($padding*2) 0;
+                display: flex;
+                align-items: center;
+                border-top: 1px dotted $warm-gray-01;
+
+                div {
+                    display: flex;
+                    align-items: center;
+                    margin-right: $padding*2;
+
+                    h5 {
+                        margin: 0  $padding 0 0;
+                        color: $warm-gray-08;
+                    }
+                    span {
+                        width: auto;
+                        white-space: nowrap;
+                    }
+                    i {
+                        color: $bright-blue-darken-04;
+                    }
+                }
+            }
+        }
     }
   }
 }

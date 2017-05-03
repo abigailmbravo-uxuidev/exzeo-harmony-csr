@@ -9,16 +9,16 @@ export const PolicyholderAgent = () => {
       <div className="route-content">
         <div className="scroll">
           <div className="form-group survey-wrapper" role="group">
-            <h1>Policyholder/Agent</h1>
+            <h1>Policyholder / Agent</h1>
             <section className="primary-policyholder">
               <div className="contact-title"><i className="fa fa-address-card-o"/>&nbsp;Primary Policyholder</div>
               <h3>Leroy Jenkins</h3>
               <h4>5085 EAST WALDORF DR., TAMPA, FL 33333, USA</h4>
               <div className="contact-methods">
-                <p className="primary-phone"><i className="fa fa-phone"/>
+                <p className="primary-phone"><i className="fa fa-phone-square"/>
                   <a href="tel: 9417777777">(941) 777-7777</a>
                 </p>
-                <p className="secondary-phone"><small>2ND</small><i className="fa fa-phone"/>
+                <p className="secondary-phone"><small>2<sup>ND</sup><i className="fa fa-phone"/></small>
                   <a href="tel: 9417777775">(941) 777-7775</a>
                 </p>
                 <p className="email"><i className="fa fa-envelope"/>
@@ -32,10 +32,10 @@ export const PolicyholderAgent = () => {
                 <h3>Susan Jenkins</h3>
                 <h4>5085 EAST WALDORF DR., TAMPA, FL 33333, USA</h4>
                 <div className="contact-methods">
-                  <p className="primary-phone"><i className="fa fa-phone"/>
+                  <p className="primary-phone"><i className="fa fa-phone-square"/>
                     <a href="tel: 9417777774">(941) 777-7774</a>
                   </p>
-                  <p className="secondary-phone"><small>2ND</small><i className="fa fa-phone"/>
+                  <p className="secondary-phone"><small>2<sup>ND</sup><i className="fa fa-phone"/></small>
                     <a href="tel: 9417777776">(941) 777-7776</a>
                   </p>
                   <p className="email"><i className="fa fa-envelope"/>
@@ -50,7 +50,7 @@ export const PolicyholderAgent = () => {
                   <a href="">13428</a>&nbsp;GREAT FLORIDA INS - PT CHARLOTTE | ALTERNATE NAME HERE</h3>
                 <h4>2762 Tamiami Trl Unit A, Port Charlotte, FL 33952</h4>
                 <div className="contact-methods">
-                  <p className="primary-phone"><i className="fa fa-phone"/>
+                  <p className="primary-phone"><i className="fa fa-phone-square"/>
                     <a href="tel: 9417777755">(941) 777-7755</a>
                   </p>
                   <p className="fax"><i className="fa fa-fax"/>
@@ -63,6 +63,13 @@ export const PolicyholderAgent = () => {
                     <a href="mailto: help@greatflorida.com">help@greatflorida.com</a>
                   </p>
                 </div>
+                <div className="additional-contacts">
+                        <ul>
+                                <li><div><h5>Laurie Cyr</h5><span>PI Manager</span></div><div><i className="fa fa-envelope" />&nbsp;<a href="mailto:">laurie.cyr@greatflorida.com</a></div></li>
+                                <li><div><h5>Wendy North</h5><span>Pricipal</span></div><div><i className="fa fa-envelope" />&nbsp;<a href="mailto:">wendy.north@greatflorida.com</a></div></li>
+                                <li><div><h5>Yanet Coursen</h5><span>Sales Manager</span></div></li>
+                        </ul>
+                </div>
             </section>
 
             <section className="agent">
@@ -71,10 +78,10 @@ export const PolicyholderAgent = () => {
                   <a href="">46129</a>&nbsp;LAURIE CYR</h3>
                 <h4>2762 Tamiami Trl Unit A, Port Charlotte, FL 33952</h4>
                 <div className="contact-methods">
-                  <p className="primary-phone"><i className="fa fa-phone"/>
+                  <p className="primary-phone"><i className="fa fa-phone-square"/>
                     <a href="tel: 9417777755">(941) 777-7755</a>
                   </p>
-                  <p className="secondary-phone"><small>2ND</small><i className="fa fa-phone"/>
+                  <p className="secondary-phone"><small>2<sup>ND</sup><i className="fa fa-phone"/></small>
                     <a href="tel: 9417777333">(941) 777-7333</a>
                   </p>
                   <p className="fax"><i className="fa fa-fax"/>
