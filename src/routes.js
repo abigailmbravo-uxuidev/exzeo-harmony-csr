@@ -9,6 +9,8 @@ import AppError from './containers/AppError';
 import NotFound from './containers/NotFound';
 import QuoteCoverage from './components/Quote/Coverage';
 import QuoteUnderwriting from './components/Quote/Underwriting';
+import QuoteMailingAddressBilling from './components/Quote/MailingAddressBilling';
+import QuoteNotesFiles from './components/Quote/NotesFiles';
 import PolicyCoverage from './components/Policy/Coverage';
 import PolicyholderAgent from './components/Policy/PolicyholderAgent';
 
@@ -29,10 +31,12 @@ class Routes extends Component { // eslint-disable-line
     return (
       <Router>
         <div>
-          
+
           <Switch>
             <Route exact path="/" component={authHOC(Splash, '/', this.props)} />
-            <Route exact path="/quote" component={QuoteUnderwriting} />
+            <Route exact path="/quote" component={QuoteMailingAddressBilling} />
+            // test route to be removed
+            <Route exact path="/quoteNotesFiles" component={QuoteNotesFiles} />
             <Route exact path="/policy" component={PolicyholderAgent} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/error" component={AppError} />

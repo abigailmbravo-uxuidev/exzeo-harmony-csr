@@ -34,17 +34,17 @@ const handleInitialize = (state) => {
 //  not be the case in later calls, you may need
 //  to pull it from another place in the model
 // ------------------------------------------------
-export const Coverage = (props) => {
+export const Underwriting = (props) => {
     const {handleSubmit} = props;
     return (
         <QuoteBaseConnect>
             <ClearErrorConnect/>
             <div className="route-content">
-                <Form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+                <Form id="Underwriting" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
                     <div className="scroll">
                         <div className="form-group survey-wrapper" role="group">
-                          <h1>Coverage &amp; Rating</h1>
-                          <section className="producer">
+                          <h1>Underwriting</h1>
+                          <section>
 
                                 <RadioField validations={['required']} name={'everRented'} styleName={''} label={'Is the home or any structures on the property ever rented?'} onChange={function() {}} segmented answers={[
                                       {
@@ -126,10 +126,10 @@ export const Coverage = (props) => {
 
 
                             <div className="btn-footer">
-                              <button className="btn btn-secondary" type="submit" form="Coverage">
+                              <button className="btn btn-secondary" type="submit" form="Underwriting">
                                   Reset
                               </button>
-                                <button className="btn btn-primary" type="submit" form="Coverage">
+                                <button className="btn btn-primary" type="submit" form="Underwriting">
                                     Save &amp; Re-Evaluate
                                 </button>
                             </div>
@@ -148,7 +148,7 @@ export const Coverage = (props) => {
 // ------------------------------------------------
 // Property type definitions
 // ------------------------------------------------
-Coverage.propTypes = {
+Underwriting.propTypes = {
     ...propTypes,
     tasks: PropTypes.shape(),
     appState: PropTypes.shape({
@@ -164,7 +164,7 @@ Coverage.propTypes = {
 const mapStateToProps = state => ({
     tasks: state.cg,
     appState: state.appState,
-    fieldValues: _.get(state.form, 'Coverage.values', {}),
+    fieldValues: _.get(state.form, 'Underwriting.values', {}),
     initialValues: handleInitialize(state)
 });
 
@@ -178,4 +178,4 @@ const mapDispatchToProps = dispatch => ({
 // ------------------------------------------------
 // wire up redux form with the redux connect
 // ------------------------------------------------
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({form: 'Coverage'})(Coverage));
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({form: 'Underwriting'})(Underwriting));
