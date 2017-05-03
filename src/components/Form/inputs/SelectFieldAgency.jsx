@@ -21,6 +21,7 @@ export const SelectInputAgency = ({
     <div className={formGroupStyles}>
       <label htmlFor={name}>
         {label} &nbsp; {Hint}
+     </label>
         {agencies && agencies.length > 0 ? (
           <select
             value={value}
@@ -36,7 +37,6 @@ export const SelectInputAgency = ({
             ))}
           </select>
         ) : null}
-      </label>
       { Error }
     </div>
   );
