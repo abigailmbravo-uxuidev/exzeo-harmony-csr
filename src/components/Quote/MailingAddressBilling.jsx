@@ -157,7 +157,7 @@ export class MailingAddressBilling extends Component {
           <Form id="MailingAddressBilling" onSubmit={handleSubmit(() => this.quoteSummaryModal(this.props))} noValidate>
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
-                <h1>Mailing Address / Billing</h1>
+                <h1>Mailing / Billing</h1>
 
                 <section>
                   <h2>Mailing Address</h2>
