@@ -18,6 +18,11 @@ const handleInitialize = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   const quoteData = _.find(taskData.model.variables, { name: 'getQuote' }) ? _.find(taskData.model.variables, { name: 'getQuote' }).value.result : {};
   const values = {};
+  values.address1 = '';
+  values.address2 = '';
+  values.city = '';
+  values.state = '';
+  values.zip = '';
 
   return values;
 };
@@ -64,16 +69,15 @@ const paymentAnnual = [
 
 export class MailingAddressBilling extends Component {
 
+  state = {
+    sameAsProperty: false
+  }
+
   componentDidMount() {
     const workflowId = this.props.appState.instanceId;
     const taskName = 'moveTo';
     const taskData = { key: 'mailing' };
     this.props.actions.cgActions.completeTask(this.props.appState.modelName, workflowId, taskName, taskData);
-  }
-
-  state = {
-    showQuoteSummaryModal: false,
-    sameAsProperty: false
   }
 
   fillMailForm = () => {
@@ -97,38 +101,50 @@ export class MailingAddressBilling extends Component {
     this.setState({ sameAsProperty: !this.state.sameAsProperty });
   };
 
+  handleFormSubmit = () => {
+    const { appState, tasks, actions, fieldValues } = this.props;
 
-  handleFormSubmit = (data) => {
-    const workflowId = this.props.appState.instanceId;
+    const workflowId = appState.instanceId;
+    const taskData = tasks[appState.modelName].data;
+    const quoteData = _.find(taskData.model.variables, { name: 'getQuote' }) ? _.find(taskData.model.variables, { name: 'getQuote' }).value.result : {};
 
-    const submitData = data;
+    const submitData = fieldValues;
 
-    submitData.agency = String(data.agency);
-    submitData.agent = String(data.agent);
+    submitData.billToId = _.get(quoteData, 'policyHolders[0]._id');
+    submitData.billToType = 'Policy Holder';
+    submitData.billPlan = 'Annual';
 
     const steps = [{
       name: 'askAdditionalCustomerData',
       data: submitData
+    },
+    {
+      name: 'moveTo',
+      data: { key: 'application' }
     }
     ];
 
-    this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
+    actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
         // now update the workflow details so the recalculated rate shows
-        this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-          workflowId, { recalc: false, updateWorkflowDetails: true });
-        this.context.router.history.push('/quote/congratulations');
+        actions.appStateActions.setAppState(appState.modelName,
+          workflowId, { updateWorkflowDetails: true });
       });
   };
 
+  quoteSummaryModal = (props) => {
+    const showQuoteSummaryModal = props.appState.data.showQuoteSummaryModal;
+    props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { showQuoteSummaryModal: !showQuoteSummaryModal });
+  };
+
   render() {
-    const { fieldValues, handleSubmit } = this.props;
+    const { appState, handleSubmit } = this.props;
 
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
         <div className="route-content">
-          <Form id="MailingAddressBilling" onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
+          <Form id="MailingAddressBilling" onSubmit={handleSubmit(() => this.quoteSummaryModal(this.props))} noValidate>
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
                 <h1>Mailing Address / Billing</h1>
@@ -190,23 +206,21 @@ export class MailingAddressBilling extends Component {
                     <div className="flex-child">
 
                       <SelectField
-                        name="billTO" component="select" styleName={''} label="Bill To" onChange={function () {}} validations={['required']} answers={[
+                        name="billToType" component="select" styleName={''} label="Bill To" onChange={function () {}} validations={['required']} answers={[
                           {
-                            answer: 'Bill to Insured',
-                            label: 'Bill to Insured'
-                          }, {
                             answer: 'Bill to Policy Holder',
                             label: 'Bill to Policy Holder'
-                          }
-                        ]} validate={[value => (value
-                                                                  ? undefined
-                                                                  : 'Field Required')]}
+                          }]}
                       />
                     </div>
                     <div className="flex-child">
 
                       <SelectField
-                        name="paymentSchedule" component="select" styleName={''} label="Payment Schedule" onChange={function () {}} validations={['required']} answers={[
+                        name="billPlan" component="select" styleName={''} label="Payment Schedule" onChange={function () {}} validations={['required']} answers={[
+                          {
+                            answer: 'Annual',
+                            label: 'Annual'
+                          },
                           {
                             answer: 'Quarterly',
                             label: 'Quarterly'
@@ -258,7 +272,7 @@ export class MailingAddressBilling extends Component {
 
             </div>
           </Form>
-          { this.state.showQuoteSummaryModal && <QuoteSummaryModal /> }
+          { appState.data.showQuoteSummaryModal && <QuoteSummaryModal verify={this.handleFormSubmit} showQuoteSummaryModal={() => this.quoteSummaryModal(this.props)} /> }
         </div>
       </QuoteBaseConnect>
     );
@@ -286,7 +300,8 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'MailingAddressBilling.values', {}),
-  initialValues: handleInitialize(state)
+  initialValues: handleInitialize(state),
+  showQuoteSummaryModal: state.appState.data.showQuoteSummaryModal
 });
 
 const mapDispatchToProps = dispatch => ({
