@@ -14,6 +14,7 @@ import QuoteNotesFiles from './components/Quote/NotesFiles';
 import PolicyCoverage from './components/Policy/Coverage';
 import PolicyPolicyholderAgent from './components/Policy/PolicyholderAgent';
 import PolicyMortgageBilling from './components/Policy/MortgageBilling';
+import PolicyNotesFiles from './components/Policy/NotesFiles';
 
 // A higher order component that allows for checking the routes authentication prefs.
 function authHOC(NavComponent, redirectUrl, props) {
@@ -42,6 +43,7 @@ class Routes extends Component { // eslint-disable-line
             <Route exact path="/policy/coverage" component={PolicyCoverage} />
             <Route exact path="/policy/policyholder" component={PolicyPolicyholderAgent} />
             <Route exact path="/policy/billing" component={PolicyMortgageBilling} />
+            <Route exact path="/policy/notes" component={PolicyNotesFiles} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/error" component={AppError} />
             <Route component={NotFound} />

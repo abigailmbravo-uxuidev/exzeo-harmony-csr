@@ -12,9 +12,24 @@ import { NavLink } from 'react-router-dom';
  * }
  */
 const csrLinks = [{
-  link: '/policy',
-  label: 'Coverage & Rating',
+  link: '/policy/coverage',
+  label: 'Coverage / Rating',
   styleName: 'coverage',
+  exact: true
+},{
+  link: '/policy/policyholder',
+  label: 'Policyholder / Agent',
+  styleName: 'policyholder',
+  exact: true
+},{
+  link: '/policy/billing',
+  label: 'Mortgage / Billing',
+  styleName: 'billing',
+  exact: true
+}, {
+  link: '/policy/notes',
+  label: 'Notes / Files',
+  styleName: 'notes',
   exact: true
 }];
 

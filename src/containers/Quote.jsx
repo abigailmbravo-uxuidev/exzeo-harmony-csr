@@ -37,7 +37,7 @@ export const QuoteBase = props => (
       </div>
       <aside className="underwriting-validation">
 
-        <h4>Underwriting Validation</h4>
+        <h4 className="uw-validation-header">Underwriting Validation</h4>
 
       <section className="msg-error">
         <h5>
