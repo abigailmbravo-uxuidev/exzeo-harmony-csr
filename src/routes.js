@@ -28,8 +28,7 @@ class Routes extends Component { // eslint-disable-line
   render() {
     return (
       <Router>
-        <div>
-          
+        <div>          
           <Switch>
             <Route exact path="/" component={authHOC(Splash, '/', this.props)} />
             <Route exact path="/quote" component={QuoteUnderwriting} />
