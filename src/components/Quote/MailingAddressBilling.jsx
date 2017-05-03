@@ -13,10 +13,14 @@ import SelectField from '../Form/inputs/SelectField';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import QuoteSummaryModal from '../../components/Common/QuoteSummaryModal';
 
-
-const handleInitialize = (state) => {
+const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   const quoteData = _.find(taskData.model.variables, { name: 'getQuote' }) ? _.find(taskData.model.variables, { name: 'getQuote' }).value.result : {};
+  return quoteData;
+};
+
+const handleInitialize = (state) => {
+  const quoteData = handleGetQuoteData(state);
   const values = {};
   values.address1 = '';
   values.address2 = '';
@@ -78,6 +82,12 @@ export class MailingAddressBilling extends Component {
     const taskName = 'moveTo';
     const taskData = { key: 'mailing' };
     this.props.actions.cgActions.completeTask(this.props.appState.modelName, workflowId, taskName, taskData);
+
+    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+      quote: this.props.quoteData,
+      updateWorkflowDetails: true,
+      hideYoChildren: false
+    });
   }
 
   fillMailForm = () => {
@@ -301,7 +311,8 @@ const mapStateToProps = state => ({
   appState: state.appState,
   fieldValues: _.get(state.form, 'MailingAddressBilling.values', {}),
   initialValues: handleInitialize(state),
-  showQuoteSummaryModal: state.appState.data.showQuoteSummaryModal
+  showQuoteSummaryModal: state.appState.data.showQuoteSummaryModal,
+  quoteData: handleGetQuoteData(state)
 });
 
 const mapDispatchToProps = dispatch => ({

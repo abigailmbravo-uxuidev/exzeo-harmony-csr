@@ -1,7 +1,9 @@
 import React from 'react';
 
-const DetailHeader = () =>
-<div>
+const DetailHeader = (data) => {
+  console.log('data', data);
+  return (
+    <div>
       <div className="detailHeader">
         <section id="quoteDetails" className="quoteDetails">
           <dl>
@@ -70,6 +72,7 @@ const DetailHeader = () =>
           </dl>
         </section>
       </div>
-    </div>
+    </div>);
+};
 
 export default DetailHeader;

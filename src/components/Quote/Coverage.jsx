@@ -18,10 +18,15 @@ import SliderField from '../Form/inputs/SliderField';
 import SelectFieldAgency from '../Form/inputs/SelectFieldAgency';
 import SelectFieldAgents from '../Form/inputs/SelectFieldAgents';
 
-
-const handleInitialize = (state) => {
+const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   const quoteData = _.find(taskData.model.variables, { name: 'getQuote' }) ? _.find(taskData.model.variables, { name: 'getQuote' }).value.result : {};
+  return quoteData;
+};
+
+const handleInitialize = (state) => {
+  const quoteData = handleGetQuoteData(state);
+
   const values = {};
 
   values.agencyCode = _.get(quoteData, 'agencyCode');
@@ -123,6 +128,12 @@ export class Coverage extends Component {
     const taskName = 'moveTo';
     const taskData = { key: 'customerData' };
     this.props.actions.cgActions.completeTask(this.props.appState.modelName, workflowId, taskName, taskData);
+
+    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+      quote: this.props.quoteData,
+      updateWorkflowDetails: true,
+      hideYoChildren: false
+    });
   }
 
   handleFormSubmit = (data) => {
@@ -1073,7 +1084,8 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'Coverage.values', {}),
   initialValues: handleInitialize(state),
   agencyDocs: handleGetAgencyDocs(state),
-  agentDocs: handleGetAgentDocs(state)
+  agentDocs: handleGetAgentDocs(state),
+  quoteData: handleGetQuoteData(state)
 });
 
 const mapDispatchToProps = dispatch => ({
