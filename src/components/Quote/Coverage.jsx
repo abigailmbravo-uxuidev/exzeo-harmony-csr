@@ -803,7 +803,7 @@ export class Coverage extends Component {
                   </div>
                 </section>
                 <section className="wind flex-parent">
-                  <div className="wind-col1">
+                  <div className="wind-col1 flex-child">
                     <h4>Wind Mitigation</h4>
                     <div className="flex-parent">
                       <div className="flex-child">
@@ -940,7 +940,7 @@ export class Coverage extends Component {
                     </div>
 
                   </div>
-                  <div className="wind-col2">
+                  <div className="wind-col2 flex-child">
                     <h4>&nbsp;</h4>
 
                     <div className="flex-parent">

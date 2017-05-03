@@ -74,7 +74,24 @@
                         display: flex;
                         width: 100%;
                         flex-direction: row;
-                        margin: 0 -10px ($padding*2);
+                        margin: 0 0 ($padding*2);
+
+                        .table-view, .card-view {
+                            &:first-child {
+                                .react-bs-table-container {
+                                    .react-bs-table {
+                                        margin-left: 0;
+                                    }
+                                }
+                            }
+                            &:last-child {
+                                .react-bs-table-container {
+                                    .react-bs-table {
+                                        margin-right: 0;
+                                    }
+                                }
+                            }
+                        }
 
                         .table-view {
                           width: 33%;
