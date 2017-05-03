@@ -1,10 +1,10 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
 import { reduxForm, Form, propTypes } from 'redux-form';
-import Footer from '../Common/Footer';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
@@ -12,9 +12,6 @@ import ClearErrorConnect from '../Error/ClearError';
 import TextField from '../Form/inputs/TextField';
 import SelectField from '../Form/inputs/SelectField';
 import RadioField from '../Form/inputs/RadioField';
-import CheckField from '../Form/inputs/CheckField';
-import DisplayField from '../Form/inputs/DisplayField';
-import SliderField from '../Form/inputs/SliderField';
 import SelectFieldAgency from '../Form/inputs/SelectFieldAgency';
 import SelectFieldAgents from '../Form/inputs/SelectFieldAgents';
 
@@ -101,26 +98,24 @@ const handleInitialize = (state) => {
   return values;
 };
 
-const handleGetAgencyDocs = (state) => {
+const handleGetDocs = (state, name) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  const result = _.find(taskData.model.variables, { name: 'getAgencyDocument' }).value.result;
-  return _.concat([], [result]);
+  const result = _.find(taskData.model.variables, { name });
+  const doc = (result && result.value) ? [result.value.result] : [];
+  return _.concat([], doc);
 };
 
-const handleGetAgentDocs = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  const result = _.find(taskData.model.variables, { name: 'getAgentDocument' }).value.result;
-  return _.concat([], [result]);
-};
+/**
+------------------------------------------------
+ The render is where all the data is being pulled
+ from the props.
+ The quote data data comes from the previous task
+ which is createQuote / singleQuote. This might
+ not be the case in later calls, you may need
+ to pull it from another place in the model
+------------------------------------------------
+*/
 
-// ------------------------------------------------
-// The render is where all the data is being pulled
-//  from the props.
-// The quote data data comes from the previous task
-//  which is createQuote / singleQuote. This might
-//  not be the case in later calls, you may need
-//  to pull it from another place in the model
-// ------------------------------------------------
 export class Coverage extends Component {
 
   componentDidMount() {
@@ -138,20 +133,14 @@ export class Coverage extends Component {
 
   handleFormSubmit = (data) => {
     const workflowId = this.props.appState.instanceId;
-
     const submitData = data;
 
     submitData.agencyCode = String(data.agencyCode);
     submitData.agentCode = String(data.agentCode);
 
-    const steps = [{
-      name: 'askCustomerData',
-      data: submitData
-    },
-    {
-      name: 'askToCustomizeDefaultQuote',
-      data: { shouldCustomizeQuote: 'No' }
-    }
+    const steps = [
+      { name: 'askCustomerData', data: submitData },
+      { name: 'askToCustomizeDefaultQuote', data: { shouldCustomizeQuote: 'No' } }
     ];
 
     this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
@@ -1083,8 +1072,8 @@ const mapStateToProps = state => ({
   appState: state.appState,
   fieldValues: _.get(state.form, 'Coverage.values', {}),
   initialValues: handleInitialize(state),
-  agencyDocs: handleGetAgencyDocs(state),
-  agentDocs: handleGetAgentDocs(state),
+  agencyDocs: handleGetDocs(state, 'getAgencyDocument'),
+  agentDocs: handleGetDocs(state, 'getAgentDocument'),
   quoteData: handleGetQuoteData(state)
 });
 
