@@ -42,12 +42,115 @@
       .route-content {
         display: flex;
         flex-shrink: 1;
+        flex-grow: 1;
 
         .scroll {
           overflow-y: auto;
           width: 100%;
           flex-grow: 1;
           flex-shrink: 0;
+
+          section {
+            margin-bottom: $padding;
+
+            &.agency,
+            &.agent,
+            &.primary-policyholder,
+            &.secondary-policyholder {
+              .contact-title {
+                padding-bottom: $padding/2;
+                color: $warm-gray-06;
+                font-weight: $font-weight-bold;
+              }
+
+              h3 {
+                color: $warm-gray-08;
+              }
+
+              h4 {
+                color: $warm-gray-08;
+                font-weight: $font-weight-lighter;
+              }
+
+              p {
+                margin-bottom: 0;
+              }
+
+              .contact-methods {
+                display: flex;
+
+                p {
+                  display: flex;
+                  margin-right: $padding*2;
+                  align-items: center;
+
+                  small {
+                    margin-right: $padding;
+                    padding: 0 0.2rem;
+                    color: $white;
+                    border-radius: 2px;
+                    background: $bright-blue-darken-03;
+                    font-size: 70%;
+
+                    sup {
+                      top: -.5em;
+                      font-size: 50%;
+                    }
+
+                    i {
+                      margin-right: 0;
+                      margin-left: 0.1rem;
+                      color: $white;
+                    }
+                  }
+
+                  i {
+                    margin-right: $padding;
+                    color: $bright-blue-darken-03;
+
+                    &.fa-phone-square {
+                      font-size: 125%;
+                    }
+                  }
+                }
+              }
+
+              .additional-contacts {
+                ul {
+                  margin: 2rem 0 0;
+                  padding: 0;
+                  list-style: none;
+
+                  li {
+                    display: flex;
+                    padding: ($padding*2) 0;
+                    border-top: 1px dotted $warm-gray-01;
+                    align-items: center;
+
+                    div {
+                      display: flex;
+                      margin-right: $padding*2;
+                      align-items: center;
+
+                      h5 {
+                        margin: 0 $padding 0 0;
+                        color: $warm-gray-08;
+                      }
+
+                      span {
+                        width: auto;
+                        white-space: nowrap;
+                      }
+
+                      i {
+                        color: $bright-blue-darken-04;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
 
         .survey-wrapper {
@@ -76,11 +179,14 @@
                   margin-right: $padding*4;
 
                   dt {
-                    color: $headline-color;
+                    color: $warm-gray-06;
                     font-size: $font-size-sm;
                   }
 
-                  dd {}
+                  dd {
+                    margin-bottom: $padding*2;
+                    color: $warm-gray-14;
+                  }
                 }
               }
             }
@@ -152,6 +258,31 @@
               margin: 0 -10px ($padding*2);
             }
           }
+
+          .results-wrapper {
+              ul {
+                  padding: 0;
+                  li {
+                      a {
+                          .card-icon {
+                              display: flex;
+                              flex-direction: column;
+                              align-items: center;
+
+                              i {
+
+                              }
+                          }
+
+                          section {
+                              margin: 0 0 0 ($padding*2);
+                              padding: 0;
+                              border-bottom-width: 0;
+                          }
+                      }
+                  }
+              }
+          }
         }
       }
     }
@@ -159,105 +290,6 @@
     .underwriting-validation {
       width: 200px;
       border-left: dashed 1px $warm-gray-04;
-    }
-  }
-}
-
-section {
-  margin-bottom: $padding;
-
-  &.agency,
-  &.agent,
-  &.primary-policyholder,
-  &.secondary-policyholder {
-    .contact-title {
-      padding-bottom: $padding/2;
-      color: $warm-gray-08;
-      font-weight: $font-weight-bold;
-    }
-
-    h3 {
-      color: $warm-gray-08;
-    }
-
-    h4 {
-      color: $warm-gray-08;
-    }
-
-    p {
-      margin-bottom: 0;
-    }
-
-    .contact-methods {
-      display: flex;
-
-      p {
-        display: flex;
-        margin-right: $padding*2;
-        align-items: center;
-
-        small {
-          margin-right: $padding;
-          color: $white;
-          background: $bright-blue-darken-03;
-          border-radius: 2px;
-          padding: 0 .2rem;
-          font-size: 70%;
-
-          sup {
-              top:-.5em;
-              font-size: 50%;
-          }
-
-          i {
-              margin-left: .1rem;
-              margin-right: 0;
-              color: $white;
-          }
-        }
-
-        i {
-          margin-right: $padding;
-          color: $bright-blue-darken-03;
-
-          &.fa-phone-square {
-              font-size: 125%;
-          }
-        }
-      }
-    }
-
-    .additional-contacts {
-        ul {
-            list-style: none;
-            margin: 2rem 0 0 0;
-            padding: 0;
-
-            li {
-                padding: ($padding*2) 0;
-                display: flex;
-                align-items: center;
-                border-top: 1px dotted $warm-gray-01;
-
-                div {
-                    display: flex;
-                    align-items: center;
-                    margin-right: $padding*2;
-
-                    h5 {
-                        margin: 0  $padding 0 0;
-                        color: $warm-gray-08;
-                    }
-                    span {
-                        width: auto;
-                        white-space: nowrap;
-                    }
-                    i {
-                        color: $bright-blue-darken-04;
-                    }
-                }
-            }
-        }
     }
   }
 }
