@@ -2934,6 +2934,7 @@ ul.list-cards {
                 margin: 0 (-$padding*1.5);
                 padding: ($padding/2) $padding;
                 align-self: flex-start;
+                min-width: 6rem;
 
                 dd {
                     font-size: $font-size-h4;
