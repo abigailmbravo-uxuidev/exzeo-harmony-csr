@@ -11,13 +11,20 @@ import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import RadioField from '../Form/inputs/RadioField';
 
+const handleGetQuoteData = (state) => {
+  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuote' }) ? _.find(taskData.model.variables, { name: 'getQuote' }).value.result : {};
+  return quoteData;
+};
+
+
 const handleFormSubmit = (data, dispatch, props) => {
-  const { appState, actions, fieldValues } = props;
+  const { appState, actions } = props;
 
   const workflowId = appState.instanceId;
   const steps = [
     { name: 'moveTo', data: { key: 'underwriting' } },
-    { name: 'askUWAnswers', data: fieldValues },
+    { name: 'askUWAnswers', data },
     { name: 'moveTo', data: { key: 'recalc' } }
   ];
 
@@ -26,10 +33,10 @@ const handleFormSubmit = (data, dispatch, props) => {
       // now update the workflow details so the recalculated rate shows
       actions.appStateActions.setAppState(
         appState.modelName,
-        workflowId, 
+        workflowId,
         { updateWorkflowDetails: true }
       );
-      props.setSubmitSucceeded();
+      props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { activateRedirect: true });
     });
 };
 
@@ -57,17 +64,17 @@ const handleInitialize = (state) => {
 ------------------------------------------------
 */
 export const Underwriting = (props) => {
-  const { handleSubmit } = props;
+  const { handleSubmit, actions, appState } = props;
 
-  const redirect = (props.submitSucceeded) 
-    ? (<Redirect to={ '/quote/billing' } />) 
+  const redirect = (props.activateRedirect)
+    ? (<Redirect to={'/quote/billing'} />)
     : null;
 
   return (
     <QuoteBaseConnect>
       <ClearErrorConnect />
       <div className="route-content">
-        <Form id="Coverage" onSubmit={ handleSubmit(handleFormSubmit) } noValidate>
+        <Form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
           { redirect }
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
@@ -189,7 +196,10 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'Coverage.values', {}),
-  initialValues: handleInitialize(state)
+  quoteData: handleGetQuoteData(state),
+  initialValues: handleInitialize(state),
+  activateRedirect: state.appState.data.activateRedirect
+
 });
 
 const mapDispatchToProps = dispatch => ({
