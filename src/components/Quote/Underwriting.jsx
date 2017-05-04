@@ -16,18 +16,9 @@ const handleFormSubmit = (data, dispatch, props) => {
 
   const workflowId = appState.instanceId;
   const steps = [
-    {
-      name: 'moveTo',
-      data: { key: 'underwriting' }
-    },
-    {
-      name: 'askUWAnswers',
-      data: fieldValues
-    },
-    {
-      name: 'moveTo',
-      data: { key: 'recalc' }
-    }
+    { name: 'moveTo', data: { key: 'underwriting' } },
+    { name: 'askUWAnswers', data: fieldValues },
+    { name: 'moveTo', data: { key: 'recalc' } }
   ];
 
   actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)

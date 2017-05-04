@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import QuoteHeader from '../components/Quote/QuoteHeader';
 import QuoteSideNav from '../components/Quote/QuoteSideNav';
-import WorkflowDetailsConnect from '../containers/WorkflowDetails';
 import QuoteDetailHeader from '../components/Quote/DetailHeader';
 import * as userActions from '../actions/userActions';
 import Footer from '../components/Common/Footer';

@@ -70,6 +70,7 @@ export const Login = (props) => {
   }
 
   return (<BaseConnect>
+    { isAuthenticatedResult }
     <div className="login" role="article">
       <div className="card">
         <div className="card-header">
@@ -81,7 +82,6 @@ export const Login = (props) => {
           onSubmit={ handleSubmit(handleLoginSubmit) }
           noValidate
         >
-          { isAuthenticatedResult }
           { errorResult }
           { loggedOutResult }
 

@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-
 import Login from './containers/Login';
 import Splash from './containers/Splash';
 import AppError from './containers/AppError';
@@ -20,10 +19,9 @@ import PolicyNotesFiles from './components/Policy/NotesFiles';
 function authHOC(NavComponent, redirectUrl, props) {
   return class AuthHOC extends React.Component { // eslint-disable-line
     render() {
-      if (props.user.isAuthenticated) {
-        return <NavComponent {...props} />;
-      }
-      return <Login redirectUrl={redirectUrl} />;
+      return props.user.isAuthenticated
+        ? <NavComponent {...props} />
+        : <Login redirectUrl={redirectUrl} />;
     }
   };
 }
@@ -34,7 +32,7 @@ class Routes extends Component { // eslint-disable-line
       <Router>
         <div>          
           <Switch>
-            <Route exact path="/" component={authHOC(Splash, '/', this.props)} />
+            <Route exact path="/" component={Splash} />
             <Route exact path="/quote/billing" component={authHOC(QuoteMailingAddressBilling, '/', this.props)} />
             <Route exact path="/quote/notes" component={QuoteNotesFiles} />
             <Route exact path="/quote/coverage" component={authHOC(QuoteCoverage, '/', this.props)} />

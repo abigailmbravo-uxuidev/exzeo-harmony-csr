@@ -20,7 +20,7 @@ const handleGetQuoteData = (state) => {
 };
 
 const handleInitialize = (state) => {
-  const quoteData = handleGetQuoteData(state);
+  // const quoteData = handleGetQuoteData(state);
   const values = {};
   values.address1 = '';
   values.address2 = '';
