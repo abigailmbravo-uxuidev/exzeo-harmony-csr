@@ -139,6 +139,7 @@ export class MailingAddressBilling extends Component {
         // now update the workflow details so the recalculated rate shows
         actions.appStateActions.setAppState(appState.modelName,
           workflowId, { updateWorkflowDetails: true });
+        this.context.router.history.push('/quote/coverage');
       });
   };
 
@@ -289,7 +290,9 @@ export class MailingAddressBilling extends Component {
   }
 
 }
-
+MailingAddressBilling.contextTypes = {
+  router: PropTypes.object
+};
 // ------------------------------------------------
 // Property type definitions
 // ------------------------------------------------

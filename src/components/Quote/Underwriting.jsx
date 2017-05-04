@@ -43,12 +43,12 @@ const handleFormSubmit = (data, dispatch, props) => {
 const handleInitialize = (state) => {
   // hardcoded values
   const formValues = {
-    rented: 'Never',
-    monthsOccupied: '10+',
-    previousClaims: '0',
-    fourPointUpdates: 'Yes',
-    floodPolicy: 'No',
-    business: 'No'
+    rented: '',
+    monthsOccupied: '',
+    previousClaims: '',
+    fourPointUpdates: '',
+    floodPolicy: '',
+    business: ''
   };
   return formValues;
 };
