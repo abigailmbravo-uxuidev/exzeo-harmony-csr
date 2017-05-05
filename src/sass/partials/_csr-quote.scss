@@ -341,10 +341,92 @@
 }
 
 
+.notes-list, .file-list {
+
+    .react-bs-table-tool-bar {
+      margin: 0 0 ($padding*2);
+
+
+      .toolbar {
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-content: stretch;
+        align-items: flex-start;
+
+    .input-group {
+      order: 0;
+      flex: 0 1 auto;
+      align-self: auto;
+      margin: 0 ($padding) 0 0;
+
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-content: stretch;
+      align-items: flex-start;
+
+
+        .btn {
+          order: 0;
+          flex: 0 1 auto;
+          align-self: auto;
+          margin: 0 2px 0 0;
+          @include button-variant($warm-gray-08, $warm-gray-02, $warm-gray-02);
+          border-radius: 0;
+          height: 38px;
+          line-height: 1.5;
+          text-transform: capitalize;
+          border: 0;
+
+        }
+
+        .btn:first-child {
+            border-radius: $border-radius 0 0 $border-radius;
+        }
+
+        .btn:last-child {
+            border-radius: 0 $border-radius $border-radius 0;
+        }
+
+
+
+    }
+
+    input {
+      height: 38px;
+      order: 0;
+      flex: 1 1 auto;
+      align-self: auto;
+    }
+
+
+
+}
+    }
+
+  }
+
 
 
 
 .notes-list {
+
+  .react-bs-table-tool-bar {
+
+    .toolbar {
+
+  .input-group {
+  .btn-notes {
+    color: $white;
+    background: $bright-blue-darken-04;
+  }
+}
+}
+}
 
   .react-bs-table {
 
@@ -389,13 +471,45 @@
 
 
 
+.file-list {
+
+  .react-bs-table-tool-bar {
+
+    .toolbar {
+
+  .input-group {
+
+  .btn-files {
+    color: $white;
+    background: $bright-blue-darken-04;
+  }
+}
+}
+}
+}
 
 
 
 
 
+.verify {
+
+  .workflow-steps {
+
+    .btn {
+        margin-top: 25px;
+        align-self: flex-start;
+        height: 36px;
+    }
+
+    input {
+      height: 36px;
+    }
+
+  }
 
 
+}
 
 
 
