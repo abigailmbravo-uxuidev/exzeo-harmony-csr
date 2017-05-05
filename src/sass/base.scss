@@ -972,22 +972,11 @@ main[role="document"] {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        @include transition(all .2s ease-in-out);
-        @include for-tablet-portrait-up {
-            display: none;
-        }
-        @include for-tablet-landscape-up {
-            display: flex;
-            flex-direction: column;
-            width: 12rem;
-        }
+
         h3 {
             color: $warm-gray-01;
             margin: 0;
         }
-
-
-
     }
 
     .user {
@@ -2874,77 +2863,115 @@ ul.list-cards {
     }
 }
 
+#root {
+    overflow-y: hidden;
 
-.csr {
-    .site-nav {
-        ul {
-            li {
-                a {
-                    padding-left: $padding*2;
-                }
-            }
+    .csr {
+        &.app-wrapper {
+            min-width: $csr-min-width;
+            overflow-y: hidden;
         }
-    }
-    .detailHeader {
-        position: relative;
-        display: flex;
-        background: $warm-gray-08;
-        flex-grow: 0;
-        flex-shrink: 0;
-        justify-content: flex-start;
-        flex-wrap: wrap;
-        color: $white;
-        padding: ($padding/2) ($padding*2);
-        height: 4.75rem;
-        border-bottom: 2px solid $white;
+        .site-nav {
+          @include for-phone-only {
+            width: 14rem;
+          }
+          @include for-tablet-portrait-up {
+              width: 14rem;
+          }
+          @include for-tablet-landscape-up {
+            width: 14rem;
+          }
+            ul {
+                li {
+                    a {
+                        padding-left: $padding*2;
 
-        section {
-            margin-right: $padding*2;
-            flex-grow: 0;
-            flex-shrink: 0;
-            flex-basis: auto;
-            dl {
-                margin-bottom: 0;
-                div {
-                    dt {
-                        font-size: $font-size-xs;
-                        letter-spacing: 0.07em;
-                    }
-                    dd {
-                        margin-bottom: 0;
-                        font-size: $font-size-sm;
-                        +dd {
-                            font-size: $font-size-xs;
-                            letter-spacing: 0.07em;
+                        span {
+                            @include for-phone-only {
+                              display: block;
+                            }
+                            @include for-tablet-portrait-up {
+                                display: block;
+                            }
+                            @include for-tablet-landscape-up {
+                              display: block;
+                            }
                         }
                     }
                 }
             }
+        }
+        .detailHeader {
+            position: relative;
+            display: flex;
+            background: $warm-gray-08;
+            flex-grow: 0;
+            flex-shrink: 0;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            color: $white;
+            padding: ($padding/2) ($padding*2);
+            height: 4.75rem;
+            border-bottom: 2px solid $white;
 
-            &.cencellationDate {
-                flex-grow: 1;
-            }
-            &.quoteEffectiveDate {
-                flex-grow: 1;
-            }
-            &.premium {
-                margin-right: 0;
-                background: $yellow-lighten-06;
-                color: $warm-gray-12;
-                margin: 0 (-$padding*1.5);
-                padding: ($padding/2) $padding;
-                align-self: flex-start;
-                min-width: 6rem;
+            section {
+                margin-right: $padding*2;
+                flex-grow: 0;
+                flex-shrink: 0;
+                flex-basis: auto;
+                dl {
+                    margin-bottom: 0;
+                    div {
+                        dt {
+                            font-size: $font-size-xs;
+                            letter-spacing: 0.07em;
+                        }
+                        dd {
+                            margin-bottom: 0;
+                            font-size: $font-size-sm;
+                            +dd {
+                                font-size: $font-size-xs;
+                                letter-spacing: 0.07em;
+                            }
+                        }
+                    }
+                }
 
-                dd {
-                    font-size: $font-size-h4;
-                    text-align: right;
+                &.cencellationDate {
+                    flex-grow: 1;
+                }
+                &.quoteEffectiveDate {
+                    flex-grow: 1;
+                }
+                &.premium {
+                    margin-right: 0;
+                    background: $yellow-lighten-06;
+                    color: $warm-gray-12;
+                    margin: 0 (-$padding*1.5);
+                    padding: ($padding/2) $padding;
+                    align-self: flex-start;
+                    min-width: 6rem;
+
+                    dd {
+                        font-size: $font-size-h4;
+                        text-align: right;
+                    }
+                }
+            }
+        }
+        main[role="document"] {
+            .content-panel-left {
+                @include for-phone-only {
+                    position: relative;
+                    z-index: 100;
+                    top: auto;
+                    bottom: auto;
+                    left: auto;
                 }
             }
         }
     }
 }
-
 
 
 
