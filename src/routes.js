@@ -33,7 +33,7 @@ class Routes extends Component { // eslint-disable-line
       <Router>
         <div>
           <Switch>
-            <Route exact path="/" component={Splash} />
+            <Route exact path="/" component={authHOC(Splash, '/', this.props)} />
             <Route exact path="/quote/billing" component={authHOC(QuoteMailingAddressBilling, '/', this.props)} />
             <Route exact path="/quote/notes" component={QuoteNotesFiles} />
             <Route exact path="/quote/summary" component={QuoteSummary} />
