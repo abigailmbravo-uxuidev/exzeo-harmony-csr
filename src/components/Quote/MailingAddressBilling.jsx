@@ -158,10 +158,10 @@ export class MailingAddressBilling extends Component {
           <Form id="MailingAddressBilling" onSubmit={handleSubmit(() => this.quoteSummaryModal(this.props))} noValidate>
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
-                <h1>Mailing / Billing</h1>
+                <h2>Mailing / Billing</h2>
 
                 <section>
-                  <h2>Mailing Address</h2>
+                  
 
                   <RadioField
                     name={'sameAsProperty'} label={'Is the mailing address the same as the property address?'} input={{
@@ -273,6 +273,9 @@ export class MailingAddressBilling extends Component {
 
 
                 <div className="btn-footer">
+                  <button className="btn btn-secondary" type="" form="MailingAddressBilling">
+                                      Cancel
+                                  </button>
                   <button className="btn btn-primary" type="submit" form="MailingAddressBilling">
                                       Save
                                   </button>

@@ -13,14 +13,8 @@
 @import "partials/_reset";
 /*Set base typography*/
 @import "partials/_type";
-/*Grid styles*/
-@import "partials/_grid";
-@import "partials/_tabs";
 @import "partials/_workflow";
-@import "partials/_notes-files-add";
-@import "partials/_csr-quote";
-@import "partials/_csr-policy";
-@import "https://fonts.googleapis.com/css?family=Roboto:100,300,500"; //base
+@import "https://fonts.googleapis.com/css?family=Roboto:300,400"; //base
 //links
 /*------------------------------------------------------------------------------------*/
 a {
@@ -45,7 +39,9 @@ a {
 @import "partials/_nav"; //vertical tab partial
 //form elements
 /*------------------------------------------------------------------------------------*/
-
+label {
+    color: $bright-blue-darken-04;
+}
 //details & surveys
 /*------------------------------------------------------------------------------------*/
 .detail-wrapper,
@@ -115,6 +111,21 @@ a {
         }
     }
 
+    .form-group {
+        padding-bottom: 3.052rem;
+        border-bottom: 1px dashed $warm-gray-02;
+        @include for-phone-only {
+            padding-bottom: 1.563rem;
+        }
+
+        label {
+            font-size: $font-size-h4;
+            @include for-phone-only {
+                font-size: $font-size-h5;
+            }
+        }
+    }
+
     .section-group-header {
         flex-grow: 1;
     }
@@ -160,16 +171,12 @@ a {
 /*------------------------------------------------------------------------------------*/
 .modal {
     position: absolute;
-    z-index: 999999;
+    z-index: 1;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
     background: rgba($black, .75);
-
-    align-items: center;
-    flex-direction: column;
-    display: flex;
 
     &.schedule-date-modal {
         .survey-wrapper {
@@ -179,21 +186,6 @@ a {
             align-items: center;
         }
     }
-
-    .card {
-      display: flex;
-      flex-direction: column;
-      flex-wrap: nowrap;
-      flex-shrink: 0;
-      flex-grow: 1;
-      align-content: flex-start;
-      margin: auto 20%;
-      width: 60%;
-    }
-
-
-
-
 }
 //APP SPECIFIC STYLES
 /*|||||||||||||||||||||||||||||||||||||||||||||||||
@@ -263,8 +255,7 @@ html {
                                     flex-shrink: 0;
 
                                     .btn {
-                                        align-self: flex-end;
-                                        margin-left: $padding;
+                                        align-self: flex-start;
                                     }
                                 }
                             }
@@ -299,7 +290,15 @@ header {
     justify-content: center;
     flex-shrink: 0;
     flex-basis: 3.375rem;
-
+    @include for-tablet-landscape-up {
+        max-width: 64rem;
+    }
+    @include for-desktop-up {
+        max-width: 84rem;
+    }
+    //@include for-big-desktop-up {
+    //max-width: 120rem;
+    //}
     div[role="banner"] {
         display: flex;
         width: 100%;
@@ -360,8 +359,8 @@ header {
 
         > .logo {
             display: block;
-            width: 10rem;
-            flex-basis: 10rem;
+            width: 7rem;
+            flex-basis: 7rem;
             flex-shrink: 0;
             @include for-phone-only {
                 margin-left: 3rem;
@@ -441,7 +440,7 @@ header {
                 }
                 @include for-tablet-landscape-up {
                     margin-left: 1rem;
-                    color: $bright-blue;
+                    color: $bright-blue-lighten-04;
                 }
 
                 &:hover {
@@ -499,28 +498,6 @@ header {
                     }
                 }
             }
-            .user-name {
-                margin: 0 ($padding/2) 0 ($padding*4);
-                font-size: $font-size-sm;
-                color: rgba($white, .5);
-            }
-            >button {
-                i {
-                    @include transition(all .2s ease-in-out);
-                    margin: 0;
-                    color: $white;
-                }
-                span {
-                    +i {
-                        margin: 0 0 0 $padding;
-                    }
-                }
-                &:hover {
-                    i {
-                        color: $bright-blue-lighten-01;
-                    }
-                }
-            }
         }
     }
 }
@@ -538,6 +515,12 @@ main[role="document"] {
     flex-grow: 1;
     flex-shrink: 0;
     align-items: flex-start;
+    @include for-tablet-landscape-up {
+        max-width: 64rem;
+    }
+    @include for-desktop-up {
+        max-width: 84rem;
+    }
 
     .content-wrapper {
         display: flex;
@@ -552,10 +535,10 @@ main[role="document"] {
         }
 
         > div {
-            //overflow: hidden;
+            overflow: hidden;
             width: 100%;
             height: auto;
-            //flex-grow: 1;
+            flex-grow: 1;
 
             &.login {
                 position: absolute;
@@ -572,7 +555,7 @@ main[role="document"] {
                 justify-content: center;
 
                 .card {
-                    z-index: 9999999;
+                    z-index: 30;
                 }
             }
 
@@ -853,8 +836,6 @@ main[role="document"] {
     background: $warm-gray-02;
     flex-shrink: 0;
     flex-grow: 0;
-    flex-basis: 12rem;
-    width: 12rem;
     align-self: stretch;
     @include transition(all .2s ease-in-out);
     @include for-phone-only {
@@ -873,28 +854,6 @@ main[role="document"] {
         ul {
             li {
                 a {
-                    i,
-                    span {
-                        color: $warm-gray-07;
-                    }
-
-                    &.active {
-                        border-left-color: $bright-blue-darken-04;
-                        font-weight: $font-weight-bold;
-
-                        i {
-                            color: $bright-blue-darken-04;
-                        }
-
-                        span {
-                            color: $bright-blue-darken-04;
-                        }
-
-                        &:hover {
-                            text-decoration: none;
-                        }
-                    }
-
                     &.agent-dashboard {
                         i {
                             &:before {
@@ -950,39 +909,15 @@ main[role="document"] {
                             }
                         }
                     }
-
-                    &.csr-dashboard {
-                        i {
-                            &:before {
-                                content: "\f009";
-                            }
-                        }
-                    }
                 }
             }
-        }
-    }
-    .csr {
-        width: auto;
-        min-height: 4.75rem;
-        padding: ($padding) ($padding*2);
-        border-bottom: 2px solid $white;
-        background-color: $warm-gray-04;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-
-        h3 {
-            color: $warm-gray-01;
-            margin: 0;
         }
     }
 
     .user {
         width: auto;
-        min-height: 4.75rem;
-        padding: ($padding/2) ($padding*2);
+        min-height: 4.7rem;
+        padding: ($padding) ($padding*2);
         border-bottom: 2px solid $white;
         background-color: $warm-gray-08;
         @include transition(all .2s ease-in-out);
@@ -998,8 +933,7 @@ main[role="document"] {
         label {
             margin: 0;
             color: $white;
-            font-size: $font-size-xs;
-            letter-spacing: 0.07em;
+            font-size: $font-size-sm;
         }
 
         .user-name {
@@ -1010,7 +944,6 @@ main[role="document"] {
             flex-shrink: 0;
             flex-basis: auto;
             align-items: center;
-            font-size: $font-size-sm;
             @include for-phone-only {
                 max-width: 11rem;
             }
@@ -1067,27 +1000,23 @@ main[role="document"] {
             border-radius: $btn-border-radius;
         }
 
-        div {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            i {
-                margin-right: 0;
-                @include for-tablet-landscape-up {
-                    margin-right: $padding;
-                }
-                @include for-phone-only {
-                    margin-right: $padding;
-                }
+        i {
+            margin-right: 0;
+            @include for-tablet-landscape-up {
+                margin-right: $padding;
             }
-            span {
-                display: none;
-                @include for-tablet-landscape-up {
-                    display: block;
-                }
-                @include for-phone-only {
-                    display: block;
-                }
+            @include for-phone-only {
+                margin-right: $padding;
+            }
+        }
+
+        span {
+            display: none;
+            @include for-tablet-landscape-up {
+                display: block;
+            }
+            @include for-phone-only {
+                display: block;
             }
         }
     }
@@ -1101,6 +1030,7 @@ main[role="document"] {
     display: flex;
     width: 100%;
     height: auto;
+    //max-height: 4rem;
     margin-top: 0;
     margin-bottom: 0;
     transition: margin 0.5s;
@@ -1111,7 +1041,6 @@ main[role="document"] {
     .results,
     .results-wrapper {
         flex-grow: 1;
-        width: 100%;
 
         .survey-wrapper {
             padding: $padding*2;
@@ -1300,10 +1229,9 @@ main[role="document"] {
 
                     i {
                         background: $warm-gray-01;
-                        @include transition(all .2s ease-in-out);
 
                         &:before {
-
+                            content: "\f1db";
                         }
 
                         &.chooseAddress {
@@ -2220,90 +2148,6 @@ ul.list-cards {
 #Assumptions {}
 //Additional Interests
 /*------------------------------------------------------------------------------------*/
-#AddAdditionalInterestPage {
-    .detail-wrapper {
-        flex-direction: column;
-    }
-
-    .button-group {
-        display: flex;
-
-        .btn {
-            margin: 0 $padding $padding 0;
-        }
-    }
-
-    .results-wrapper {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-        flex-shrink: 0;
-        width: 100%;
-        margin-bottom: $padding*2;
-        padding-bottom: $paragraph-margin-bottom;
-        border-bottom: 1px dashed $warm-gray-02;
-
-        .result-cards {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-
-            li {
-                a {
-                    .card-icon {
-                        display: flex;
-                        flex-direction: column;
-                        width: 4rem;
-                        margin-right: $padding;
-                        align-items: center;
-
-                        label {
-                            text-align: center;
-                            font-size: $font-size-xs;
-                        }
-
-                        .fa {
-                            &.Mortgagee {
-                                &:before {
-                                    content: "\f19c";
-                                }
-                            }
-
-                            &.Lienholder {
-                                &:before {
-                                    content: "\F27E";
-                                }
-                            }
-
-                            &.Interest {
-                                &:before {
-                                    content: "\F2B5";
-                                }
-                            }
-
-                            &.Insured {
-                                &:before {
-                                    content: "\F234";
-                                }
-                            }
-
-                            &.Bill {
-                                &:before {
-                                    content: "\F0D6";
-                                }
-                            }
-                        }
-                    }
-
-                    .fa-pencil {
-                        font-size: $font-size-h4;
-                    }
-                }
-            }
-        }
-    }
-}
-
 #AdditionalPolicyHolder {
     .switch.inactive~.form-group {
         display: none;
@@ -2861,142 +2705,4 @@ ul.list-cards {
             }
         }
     }
-}
-
-#root {
-    overflow-y: hidden;
-
-    .csr {
-        &.app-wrapper {
-            min-width: $csr-min-width;
-            overflow-y: hidden;
-        }
-        .site-nav {
-          @include for-phone-only {
-            width: 14rem;
-          }
-          @include for-tablet-portrait-up {
-              width: 14rem;
-          }
-          @include for-tablet-landscape-up {
-            width: 14rem;
-          }
-            ul {
-                li {
-                    a {
-                        padding-left: $padding*2;
-
-                        span {
-                            @include for-phone-only {
-                              display: block;
-                            }
-                            @include for-tablet-portrait-up {
-                                display: block;
-                            }
-                            @include for-tablet-landscape-up {
-                              display: block;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        .detailHeader {
-            position: relative;
-            display: flex;
-            background: $warm-gray-08;
-            flex-grow: 0;
-            flex-shrink: 0;
-            justify-content: flex-start;
-            flex-wrap: wrap;
-            color: $white;
-            padding: ($padding/2) ($padding*2);
-            height: 4.75rem;
-            border-bottom: 2px solid $white;
-
-            section {
-                margin-right: $padding*2;
-                flex-grow: 0;
-                flex-shrink: 0;
-                flex-basis: auto;
-                dl {
-                    margin-bottom: 0;
-                    div {
-                        dt {
-                            font-size: $font-size-xs;
-                            letter-spacing: 0.07em;
-                        }
-                        dd {
-                            margin-bottom: 0;
-                            font-size: $font-size-sm;
-                            +dd {
-                                font-size: $font-size-xs;
-                                letter-spacing: 0.07em;
-                            }
-                        }
-                    }
-                }
-
-                &.cencellationDate {
-                    flex-grow: 1;
-                }
-                &.quoteEffectiveDate {
-                    flex-grow: 1;
-                }
-                &.premium {
-                    margin-right: 0;
-                    background: $yellow-lighten-06;
-                    color: $warm-gray-12;
-                    margin: 0 (-$padding*1.5);
-                    padding: ($padding/2) $padding;
-                    align-self: flex-start;
-                    min-width: 6rem;
-
-                    dd {
-                        font-size: $font-size-h4;
-                        text-align: right;
-                    }
-                }
-            }
-        }
-        main[role="document"] {
-            .content-panel-left {
-                @include for-phone-only {
-                    position: relative;
-                    z-index: 100;
-                    top: auto;
-                    bottom: auto;
-                    left: auto;
-                }
-            }
-        }
-    }
-}
-
-
-
-// Generic Global Styles
-
-.flex-parent {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-content: space-between;
-    align-items: flex-start;
-
-    .flex-child {
-        margin: 0 ($padding*2) 0 0;
-        order: 0;
-        flex: 1 1 auto;
-        align-self: auto;
-    }
-
-    .flex-child:last-of-type {
-        margin: 0;
-        flex: 1 1 auto;
-    }
-
-
 }
