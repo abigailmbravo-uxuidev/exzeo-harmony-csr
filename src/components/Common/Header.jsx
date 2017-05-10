@@ -1,22 +1,47 @@
 import React from 'react';
-import logo from '../../img/TypTap.svg';
+import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import logo from '../../img/Harmony.svg';
+import * as userActions from '../../actions/userActions';
 
-const Header = () => (
+const handleLogout = (props) => {
+  props.actions.user.logout();
+};
+
+export const Header = props => (
   <header>
     <div role="banner">
       <button className="btn-icon btn-bars"><i className="fa fa-bars" /></button>
       <div id="logo" className="logo">
-        <img src={logo} alt="TypTap Insurance" />
+        <img src={logo} alt="Harmony" />
       </div>
       <button className="btn-icon btn-ellipsis-v"><i className="fa fa-ellipsis-v" /></button>
       <nav className="fade-in">
-        <a href="https://www.typtap.com">HOME</a>
-        <a href="" className="active">AGENTS</a>
-        <a href="https://policyholder.typtap.com/login">POLICYHOLDERS</a>
-        <a className="link-phone btn" href="tel:+844-289-7968"><i className="fa fa-phone" /><span>844-289-7968</span></a>
+        <a href="" className="active">Policy Management</a>
+        {/*<a href="">Agency Management</a>
+        <a href="">User Management</a>*/}
+        <div className="user-name">ttic20000@typtap.com</div>
+        <button className="btn btn-action"><i className="fa fa-gear" /></button>
+        <button className="btn logout btn-action" type="button" onClick={() => handleLogout(props)}><i className="fa fa-sign-out" /></button>
       </nav>
     </div>
   </header>
 );
 
-export default Header;
+
+
+
+Header.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node])
+};
+
+const mapStateToProps = state => ({
+  user: state.user
+});
+const mapDispatchToProps = dispatch => ({
+  actions: {
+    user: bindActionCreators(userActions, dispatch)
+  }
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

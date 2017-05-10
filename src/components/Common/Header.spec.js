@@ -1,8 +1,10 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import renderer from 'react-test-renderer';
 import Header from './Header';
 
 it('renders without crashing', () => {
-  const wrapper = shallow(<Header />);
-  expect(wrapper);
+  const tree = renderer.create(
+    <Header />
+  ).toJSON();
+  expect(tree).toMatchSnapshot();
 });

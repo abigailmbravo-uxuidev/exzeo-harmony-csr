@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -6,27 +7,21 @@ import Header from '../components/Common/Header';
 import SideNav from '../components/Common/SideNav';
 import * as userActions from '../actions/userActions';
 
+/*
 const handleLogout = (props) => {
   props.actions.user.logout();
 };
+*/
 
 export const Base = props => (
-  <div className="app-wrapper">
+  <div className="app-wrapper csr">
     <Header />
     <main role="document">
       <aside className="content-panel-left">
-        <div className="user">
-          <label htmlFor="user">User</label>
-          <h5 className="user-name">
-            <span>TTIC20000@typtap.com</span>
-            <i className="fa fa-gear" />
-          </h5>
+        <div className="csr">
+          <h3>CSR Portal</h3>
         </div>
         <SideNav />
-        <button className="btn logout btn-action" type="button" onClick={() => handleLogout(props)}>
-          <i className="fa fa-sign-out" />
-          <span>Logout</span>
-        </button>
       </aside>
       <div className="content-wrapper">
         {props.children}

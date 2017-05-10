@@ -690,6 +690,14 @@ header {
             color: $cool-gray-10;
         }
 
+        > .logo {
+            width: 7rem;
+            flex-basis: 7rem;
+            @include for-phone-only {
+                margin-left: 3rem;
+            }
+        }
+
         > nav {
             @include for-phone-only {
                 //border: 1px solid $cool-gray-00;
@@ -1232,6 +1240,12 @@ ul.result-cards {
             }
         }
     }
+    .address-not-found {
+        background-color: $cool-gray-01;
+        &:after {
+            border-color: $cool-gray-01 transparent;
+        }
+    }
 }
 
 .quote-list {
@@ -1356,6 +1370,20 @@ ul.result-cards {
 }
 //Additional Interests
 /*------------------------------------------------------------------------------------*/
+#AddAdditionalInterestPage {
+    .result-cards {
+        li {
+            a {
+                .card-icon {
+                    color: $green;
+                }
+            }
+            .fa-pencil {
+                color: $bright-blue;
+            }
+        }
+    }
+}
 #AdditionalInterest {
     .form-group {
         .ai1City,
@@ -1627,38 +1655,6 @@ ul.result-cards {
                 background: rgba($green-darken-03,.9);
             }
         }
-    }
-}
-//ERROR PAGE animations
-/*------------------------------------------------------------------------------------*/
-@keyframes waves {
-    0% {
-        background-position: 0 0;
-    }
-
-    50% {
-        background-position: 50% 100x;
-    }
-
-    100% {
-        background-position: 100% 0;
-    }
-}
-@keyframes wave-motion {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    50% {
-        transform: rotate(3deg);
-    }
-
-    75% {
-        transform: rotate(-3deg);
-    }
-
-    100% {
-        transform: rotate(0deg);
     }
 }
 //General Errors

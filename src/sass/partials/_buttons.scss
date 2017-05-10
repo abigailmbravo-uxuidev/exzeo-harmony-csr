@@ -35,6 +35,10 @@ input[type="submit"] {
 
   &.btn-sm {
       font-size: $font-size-sm;
+
+      &.btn-link {
+          padding: .375rem .25rem
+      }
   }
 
   &.focus {
@@ -256,5 +260,25 @@ input[type="submit"] {
 
     i {
         margin: 0;
+    }
+}
+
+.btn-footer {
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    align-content: stretch;
+    align-items: flex-start;
+    margin-bottom: ($padding*2);
+
+  .btn {
+      align-self: flex-end;
+      margin-left: $padding;
+      order: 0;
+      flex: 0 1 auto;
+      align-self: auto;
+
     }
 }

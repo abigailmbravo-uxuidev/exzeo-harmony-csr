@@ -133,7 +133,7 @@ $link-hover-decoration: underline !default;
   @media (min-width: 1800px) { @content; }
 }
 
-
+$csr-min-width: 80rem !default;
 // Centered container element
 body {
     padding: 0;
@@ -191,9 +191,9 @@ $default-font-color: $body-color;
 // Pixel value used to responsively scale all typography. Applied to the `<html>` element.
 $font-size-root: 16px !default;
 
-$font-weight-bold: 700;
-$font-weight-normal: 400;
-$font-weight-lighter: 200;
+$font-weight-bold: 500;
+$font-weight-normal: 300;
+$font-weight-lighter: 100;
 
 $font-size-base: 1rem !default;
 $font-size-lg:   1.25rem !default;
@@ -323,9 +323,9 @@ $input-padding-y:                .25rem !default;
 $input-line-height:              1.25 !default;
 
 $input-bg:                       $white !default;
-$input-bg-disabled:              $warm-gray-02 !default;
+$input-bg-disabled:              $warm-gray-00 !default;
 
-$input-color:                    $warm-gray-08 !default;
+$input-color:                    $warm-gray-12 !default;
 $input-border-color:             $warm-gray-03 !default;
 $input-btn-border-width:         $border-width !default; // For form controls and buttons
 $input-box-shadow:               inset 0 1px 1px rgba(0,0,0,.075) !default;
