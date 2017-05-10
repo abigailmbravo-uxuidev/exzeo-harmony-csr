@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -9,7 +9,7 @@ import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
-import RadioField from '../Form/inputs/RadioField';
+import FieldGenerator from '../Form/FieldGenerator';
 
 const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
@@ -17,40 +17,24 @@ const handleGetQuoteData = (state) => {
   return quoteData;
 };
 
-
-const handleFormSubmit = (data, dispatch, props) => {
-  const { appState, actions } = props;
-
-  const workflowId = appState.instanceId;
-  const steps = [
-    { name: 'moveTo', data: { key: 'underwriting' } },
-    { name: 'askUWAnswers', data },
-    { name: 'moveTo', data: { key: 'recalc' } }
-  ];
-
-  actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
-    .then(() => {
-      // now update the workflow details so the recalculated rate shows
-      actions.appStateActions.setAppState(
-        appState.modelName,
-        workflowId,
-        { updateWorkflowDetails: true }
-      );
-      props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { activateRedirect: true });
-    });
+const handleGetQuestions = (state) => {
+  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  const uwQuestions = taskData && taskData.previousTask && taskData.previousTask.value ? taskData.previousTask.value.result : [];
+  return uwQuestions || [];
 };
 
 const handleInitialize = (state) => {
-  // hardcoded values
-  const formValues = {
-    rented: '',
-    monthsOccupied: '',
-    previousClaims: '',
-    fourPointUpdates: '',
-    floodPolicy: '',
-    business: ''
-  };
-  return formValues;
+  const questions = handleGetQuestions(state);
+  const data = handleGetQuoteData(state);
+  const values = {};
+  if (questions && questions.length > 0) {
+    questions.forEach((question) => {
+      const val = _.get(data, `underwritingAnswers.${question.name}.answer`);
+      values[question.name] = val;
+    });
+  }
+  console.log(values);
+  return values;
 };
 
 /**
@@ -63,118 +47,88 @@ const handleInitialize = (state) => {
  to pull it from another place in the model
 ------------------------------------------------
 */
-export const Underwriting = (props) => {
-  const { handleSubmit, actions, appState } = props;
+export class Underwriting extends Component {
 
-  const redirect = (props.activateRedirect)
-    ? (<Redirect to={'/quote/billing'} />)
-    : null;
+  componentWillMount() {
+    const workflowId = this.props.appState.instanceId;
+    const taskName = 'moveTo';
+    const taskData = { key: 'underwriting' };
+    this.props.actions.cgActions.completeTask(this.props.appState.modelName, workflowId, taskName, taskData);
 
-  return (
-    <QuoteBaseConnect>
-      <ClearErrorConnect />
-      <div className="route-content">
-        <Form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
-          { redirect }
-          <div className="scroll">
-            <div className="form-group survey-wrapper" role="group">
-              <h2>Underwriting</h2>
-              <section className="producer">
-                <RadioField
-                  validations={['required']} name={'rented'} styleName={''} label={'Is the home or any structures on the property ever rented?'} onChange={function () {}} segmented answers={[
-                    {
-                      answer: 'Yes',
-                      label: 'Yes'
-                    }, {
-                      answer: 'Occasionally',
-                      label: 'Occasionally'
-                    }, {
-                      answer: 'Never',
-                      label: 'Never'
-                    }
-                  ]}
-                />
+    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+      quote: this.props.quoteData,
+      updateWorkflowDetails: true,
+      hideYoChildren: false
+    });
+  }
 
-                <RadioField
-                  validations={['required']} name={'previousClaims'} styleName={''} label={'When was the last claim filed?'} onChange={function () {}} segmented answers={[
-                    {
-                      answer: '0',
-                      label: 'No claims ever filed'
-                    }, {
-                      answer: '3',
-                      label: 'Less than 3 Years'
-                    }, {
-                      answer: '5',
-                      label: '3-5 Years'
-                    }, {
-                      answer: '5+',
-                      label: 'Over 5 Years'
-                    }, {
-                      answer: 'Unknown',
-                      label: 'Unknown'
-                    }
-                  ]}
-                />
+  handleFormSubmit = (data) => {
+    const { appState, actions } = this.props;
 
-                <RadioField
-                  validations={['required']} name={'monthsOccupied'} styleName={''} label={'How many months a year does the owner live in the home?'} onChange={function () {}} segmented answers={[
-                    {
-                      answer: '0-3',
-                      label: '0-3'
-                    }, {
-                      answer: '4-6',
-                      label: '4-6'
-                    }, {
-                      answer: '7-9',
-                      label: '7-9'
-                    }, {
-                      answer: '10+',
-                      label: '10+'
-                    }
-                  ]}
-                />
+    const workflowId = appState.instanceId;
+    const steps = [
+      { name: 'askUWAnswers', data },
+      { name: 'moveTo', data: { key: 'recalc' } }
+    ];
 
-                <RadioField
-                  validations={['required']} name={'fourPointUpdates'} styleName={''} label={'Have the wiring, plumbing, and HVAC been updated in the last 35 years?'} onChange={function () {}} segmented answers={[
-                    {
-                      answer: 'Yes',
-                      label: 'Yes'
-                    }, {
-                      answer: 'No',
-                      label: 'No'
-                    }, {
-                      answer: 'Unkown',
-                      label: 'Unknown'
-                    }
-                  ]}
-                />
-                <RadioField
-                  validations={['required']} name={'business'} styleName={''} label={'Is a business conducted on the property?'} onChange={function () {}} segmented answers={[
-                    {
-                      answer: 'Yes',
-                      label: 'Yes'
-                    }, {
-                      answer: 'No',
-                      label: 'No'
-                    }
-                  ]}
-                />
-              </section>
-              <div className="btn-footer">
-                <button className="btn btn-secondary" type="submit" form="Coverage">
-                                  Cancel
-                              </button>
-                <button className="btn btn-primary" type="submit" form="Coverage">
-                                    Update
-                                </button>
+    actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
+      .then(() => {
+        // now update the workflow details so the recalculated rate shows
+        actions.appStateActions.setAppState(
+          appState.modelName,
+          workflowId,
+          { updateWorkflowDetails: true }
+        );
+        actions.appStateActions.setAppState(this.props.appState.modelName, appState.instanceId, { activateRedirect: true });
+      });
+  };
+
+  render() {
+    const { fieldValues, handleSubmit, appState, tasks } = this.props;
+    const taskData = tasks[appState.modelName].data;
+    const questions = taskData.previousTask.value.result || [];
+    const quoteData = _.find(taskData.model.variables, { name: 'getQuote' }).value.result;
+
+    const redirect = (this.props.activateRedirect)
+      ? (<Redirect to={'/quote/billing'} />)
+      : null;
+
+    return (
+      <QuoteBaseConnect>
+        <ClearErrorConnect />
+        <div className="route-content">
+          <Form
+            id="Underwriting"
+            onSubmit={handleSubmit(this.handleFormSubmit)}
+            noValidate
+          >
+            { redirect }
+            <div className="scroll">
+              <div className="form-group survey-wrapper" role="group">
+                {questions && questions.length > 0 && questions.map((question, index) =>
+                  <FieldGenerator
+                    data={quoteData}
+                    question={question}
+                    values={fieldValues}
+                    key={index}
+                  />
+            )}
+              </div>
+              <div className="workflow-steps">
+                <button
+                  className="btn btn-primary"
+                  type="submit"
+                  form="Underwriting"
+                  disabled={this.props.appState.data.submitting}
+                >Update</button>
               </div>
             </div>
-          </div>
-        </Form>
-      </div>
-    </QuoteBaseConnect>
-  );
-};
+          </Form>
+        </div>
+      </QuoteBaseConnect>
+    );
+  }
+}
 
 // ------------------------------------------------
 // Property type definitions
@@ -186,7 +140,9 @@ Underwriting.propTypes = {
     modelName: PropTypes.string,
     instanceId: PropTypes.string,
     data: PropTypes.shape({ submitting: PropTypes.boolean })
-  })
+  }),
+  quoteData: PropTypes.shape(),
+  questions: PropTypes.any // eslint-disable-line
 };
 
 // ------------------------------------------------
@@ -198,8 +154,8 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'Coverage.values', {}),
   quoteData: handleGetQuoteData(state),
   initialValues: handleInitialize(state),
-  activateRedirect: state.appState.data.activateRedirect
-
+  activateRedirect: state.appState.data.activateRedirect,
+  questions: handleGetQuestions(state)
 });
 
 const mapDispatchToProps = dispatch => ({
