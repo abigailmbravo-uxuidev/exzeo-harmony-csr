@@ -78,7 +78,7 @@ export const Underwriting = (props) => {
           { redirect }
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
-              <h1>Underwriting</h1>
+              <h2>Underwriting</h2>
               <section className="producer">
                 <RadioField
                   validations={['required']} name={'rented'} styleName={''} label={'Is the home or any structures on the property ever rented?'} onChange={function () {}} segmented answers={[
