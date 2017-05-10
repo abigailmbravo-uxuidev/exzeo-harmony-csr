@@ -162,10 +162,10 @@ export const Underwriting = (props) => {
               </section>
               <div className="btn-footer">
                 <button className="btn btn-secondary" type="submit" form="Coverage">
-                                  Reset
+                                  Cancel
                               </button>
                 <button className="btn btn-primary" type="submit" form="Coverage">
-                                    Save &amp; Re-Evaluate
+                                    Update
                                 </button>
               </div>
             </div>
