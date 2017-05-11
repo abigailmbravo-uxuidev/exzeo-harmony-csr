@@ -30,7 +30,7 @@ const handleInitialize = (state) => {
   if (questions && questions.length > 0) {
     questions.forEach((question) => {
       const val = _.get(data, `underwritingAnswers.${question.name}.answer`);
-      values[question.name] = val;
+      values[question.name] = val || '';
     });
   }
   console.log(values);
@@ -91,8 +91,11 @@ export class Underwriting extends Component {
     }
   };
 
+
   render() {
-    const { fieldValues, handleSubmit, appState, tasks } = this.props;
+    const { fieldValues, handleSubmit, appState, tasks, pristine } = this.props;
+
+    console.log(this.props);
     const taskData = tasks[appState.modelName].data;
     const questions = taskData.previousTask.value.result || [];
     const quoteData = _.find(taskData.model.variables, { name: 'getQuote' }).value.result;
@@ -133,7 +136,7 @@ export class Underwriting extends Component {
                     className="btn btn-primary"
                     type="submit"
                     form="Underwriting"
-                    disabled={this.props.appState.data.submitting}
+                    disabled={this.props.appState.data.submitting || pristine}
                   >Update</button>
 
                 </div>
@@ -167,7 +170,7 @@ Underwriting.propTypes = {
 const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
-  fieldValues: _.get(state.form, 'Coverage.values', {}),
+  fieldValues: _.get(state.form, 'Underwriting.values', {}),
   quoteData: handleGetQuoteData(state),
   initialValues: handleInitialize(state),
   activateRedirect: state.appState.data.activateRedirect,
