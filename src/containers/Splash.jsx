@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import _ from 'lodash';
-import {Helmet} from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import BaseConnect from './Base';
 import ClearErrorConnect from '../components/Error/ClearError';
@@ -22,6 +22,7 @@ export class Splash extends Component {
   }
 
   handleSelectAddress = (address, props) => {
+    if (props.appState.data.submitting === true) return;
     const workflowId = props.appState.instanceId;
     const submitData = {
       igdId: address.id,
@@ -40,13 +41,14 @@ export class Splash extends Component {
       name: 'chooseAddress',
       data: submitData
     }];
+    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { submitting: true });
 
     props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
       .then(() => {
         // now update the workflow details so the recalculated rate shows
         props.actions.appStateActions.setAppState(
           props.appState.modelName,
-          workflowId, 
+          workflowId,
           { recalc: false, updateWorkflowDetails: true }
         );
         this.context.router.history.push('/quote/coverage');
@@ -59,17 +61,17 @@ export class Splash extends Component {
         <Helmet>
           <title>Harmony - CSR Portal</title>
         </Helmet>
-        <ClearErrorConnect/>
+        <ClearErrorConnect />
         <div className="dashboard" role="article">
           <div className="route">
             <div className="search route-content">
-              <SearchBar/>
+              <SearchBar />
               <div className="survey-wrapper scroll">
                 <div className="results-wrapper">
-                  <NoResultsConnect/>
-                  <SearchResults handleSelectAddress={this.handleSelectAddress}/>
+                  <NoResultsConnect />
+                  <SearchResults handleSelectAddress={this.handleSelectAddress} />
                 </div>
-                <Footer/>
+                <Footer />
               </div>
             </div>
           </div>
@@ -85,13 +87,13 @@ Splash.contextTypes = {
 
 Splash.propTypes = {
   actions: PropTypes.shape({
-    cgActions: PropTypes.shape({startWorkflow: PropTypes.func, activeTasks: PropTypes.func, completeTask: PropTypes.func}),
-    appStateActions: PropTypes.shape({setAppState: PropTypes.func, setAppStateError: PropTypes.func})
+    cgActions: PropTypes.shape({ startWorkflow: PropTypes.func, activeTasks: PropTypes.func, completeTask: PropTypes.func }),
+    appStateActions: PropTypes.shape({ setAppState: PropTypes.func, setAppStateError: PropTypes.func })
   }),
-  tasks: PropTypes.shape({activeTask: PropTypes.object})
+  tasks: PropTypes.shape({ activeTask: PropTypes.object })
 };
 
-const mapStateToProps = state => ({tasks: state.cg, appState: state.appState});
+const mapStateToProps = state => ({ tasks: state.cg, appState: state.appState });
 
 const mapDispatchToProps = dispatch => ({
   actions: {

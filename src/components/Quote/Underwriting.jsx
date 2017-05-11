@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { reduxForm, Form, propTypes } from 'redux-form';
+import { reduxForm, Form, propTypes, change } from 'redux-form';
 import { Redirect } from 'react-router';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
@@ -62,6 +62,7 @@ export class Underwriting extends Component {
     });
   }
 
+
   handleFormSubmit = (data) => {
     const { appState, actions } = this.props;
 
@@ -81,6 +82,13 @@ export class Underwriting extends Component {
         );
         actions.appStateActions.setAppState(this.props.appState.modelName, appState.instanceId, { activateRedirect: true });
       });
+  };
+
+  clearForm = () => {
+    const { dispatch, questions } = this.props;
+    for (let i = 0; i < questions.length; i += 1) {
+      dispatch(change('Underwriting', questions[i].name, ''));
+    }
   };
 
   render() {
@@ -113,14 +121,22 @@ export class Underwriting extends Component {
                     key={index}
                   />
             )}
-              </div>
-              <div className="workflow-steps">
-                <button
-                  className="btn btn-primary"
-                  type="submit"
-                  form="Underwriting"
-                  disabled={this.props.appState.data.submitting}
-                >Update</button>
+                <div className="btn-footer">
+                  <button
+                    onClick={this.clearForm}
+                    className="btn btn-secondary"
+                    type="button"
+                    form="Underwriting"
+                    disabled={this.props.appState.data.submitting}
+                  >Cancel</button>
+                  <button
+                    className="btn btn-primary"
+                    type="submit"
+                    form="Underwriting"
+                    disabled={this.props.appState.data.submitting}
+                  >Update</button>
+
+                </div>
               </div>
             </div>
           </Form>
