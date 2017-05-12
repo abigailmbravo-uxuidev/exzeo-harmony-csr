@@ -22,6 +22,11 @@ const csrLinks = [{
   styleName: 'underwriting',
   exact: true
 },{
+  link: '/quote/additionalInterests',
+  label: 'Additional Interests',
+  styleName: 'additionalInterests',
+  exact: true
+},{
   link: '/quote/billing',
   label: 'Mailing / Billing',
   styleName: 'billing',
