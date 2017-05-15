@@ -1,6 +1,10 @@
 /* eslint no-undef:1 */
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
+import { Cookies } from 'react-cookie';
 import * as types from './actionTypes';
+
+const cookies = new Cookies();
 
 export const authenticating = state => ({
   type: types.AUTHENTICATING,
@@ -37,29 +41,24 @@ const handleError = (dispatch, error) => {
   return dispatch(authenticateError(user));
 };
 
-export const login = creds => (dispatch) => {
-  const axiosOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    url: `${process.env.REACT_APP_API_URL}/auth`,
-    data: {
-      username: creds.username,
-      password: creds.password
-    }
-  };
-  dispatch(authenticating('athenticating'));
-  return axios(axiosOptions)
-  .then((response) => {
-    const token = response.data.token.id_token;
-    const user = { token, isAuthenticated: true, loggedOut: false };
-    dispatch(authenticated(user));
-  })
-  .catch(error => handleError(dispatch, error));
+export const decodeToken = (token) => {
+  const decoded = jwtDecode(token);
+  console.log(decoded.groups);
+  return decoded;
+};
+
+export const validateLogin = () => (dispatch) => {
+  const token = cookies.get('harmony-id-token');
+  if (token) {
+    const profile = decodeToken(token);
+    const user = { token, profile, isAuthenticated: true, loggedOut: false };
+    console.log('user', user);
+    return dispatch(authenticated(user));
+  }
+  return handleError(dispatch, 'User is not authenticated');
 };
 
 export const logout = () => (dispatch) => {
-  const user = { token: undefined, isAuthenticated: false, loggedOut: true };
+  const user = { token: undefined, profile: undefined, isAuthenticated: false, loggedOut: true };
   dispatch(authenticated(user));
 };
