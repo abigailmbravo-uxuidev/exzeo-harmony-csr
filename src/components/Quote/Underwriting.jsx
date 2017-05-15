@@ -67,7 +67,7 @@ export const Underwriting = (props) => {
   const { handleSubmit, actions, appState } = props;
 
   const redirect = (props.activateRedirect)
-    ? (<Redirect to={'/quote/billing'} />)
+    ? (<Redirect to={'/quote/additionalInterests'} />)
     : null;
 
   return (
