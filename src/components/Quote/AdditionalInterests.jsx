@@ -189,7 +189,7 @@ export class AdditionalLinterests extends Component {
 
                 <div className="results-wrapper">
                   <ul className="results result-cards">
-                    {quoteData && quoteData.additionalInterests && quoteData.additionalInterests.map((ai, index) =>
+                    {quoteData && quoteData.additionalInterests && _.sortBy(quoteData.additionalInterests, 'type').map((ai, index) =>
                       <li key={index}>
                         <a onClick={() => this.editAdditionalInterest(ai)}>
                           {/* add className based on type - i.e. mortgagee could have class of mortgagee*/}
