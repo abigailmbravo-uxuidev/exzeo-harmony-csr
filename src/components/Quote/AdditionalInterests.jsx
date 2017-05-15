@@ -8,6 +8,7 @@ import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import AdditionalInterestModal from '../../components/Common/AdditionalInterestModal';
+import AdditionalInterestEditModal from '../../components/Common/AdditionalInterestEditModal';
 
 const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
@@ -73,15 +74,20 @@ export class AdditionalLinterests extends Component {
 
     const order = _.filter(additionalInterests, ai => ai.type === type).length === 0 ? 0 : 1;
 
-    additionalInterests.push({
+    // remove any existing items before submission
+    _.remove(additionalInterests, ai => ai._id === data._id); // eslint-disable-line
+
+    const aiData = {
+      _id: data._id, // eslint-disable-line
       name1: data.name1,
       name2: data.name2,
       referenceNumber: data.referenceNumber,
       order,
       active: true,
       type,
+      phoneNumber: data.phoneNumber,
       mailingAddress: {
-        address1: data.adress1,
+        address1: data.address1,
         address2: data.address2,
         city: data.city,
         state: data.state,
@@ -91,7 +97,9 @@ export class AdditionalLinterests extends Component {
           displayText: 'United States of America'
         }
       }
-    });
+    };
+
+    additionalInterests.push(aiData);
 
     // TODO I need to take the form data then push to the additional interest array in the quote then submit the array as data
 
@@ -121,13 +129,45 @@ export class AdditionalLinterests extends Component {
       { showAdditionalInterestModal: true, addAdditionalInterestType: type });
   }
 
+  editAdditionalInterest = (ai) => {
+    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId,
+      { showAdditionalInterestEditModal: true, selectedAI: ai });
+  }
+
   hideAdditionalInterestModal = () => {
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId,
-      { showAdditionalInterestModal: false });
+      { showAdditionalInterestModal: false, showAdditionalInterestEditModal: false });
+  }
+
+  deleteAdditionalInterest = (selectedAdditionalInterest) => {
+    const { appState, actions, quoteData } = this.props;
+
+    const workflowId = appState.instanceId;
+    const additionalInterests = quoteData.additionalInterests || [];
+    // remove any existing items before submission
+    _.remove(additionalInterests, ai => ai._id === selectedAdditionalInterest._id); // eslint-disable-line
+
+    const steps = [{
+      name: 'askadditionalInterests',
+      data: { additionalInterests }
+    },
+    {
+      name: 'moveTo',
+      data: { key: 'additionalInterests' }
+    }
+    ];
+
+    actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
+      .then(() => {
+        // now update the workflow details so the recalculated rate shows
+        actions.appStateActions.setAppState(appState.modelName,
+          workflowId, { updateWorkflowDetails: true });
+        // this.context.router.history.push('/quote/coverage');
+      });
   }
 
   render() {
-    const { appState, handleSubmit, quoteData } = this.props;
+    const { appState, quoteData } = this.props;
 
     return (
       <QuoteBaseConnect>
@@ -139,11 +179,11 @@ export class AdditionalLinterests extends Component {
               <div className="form-group survey-wrapper" role="group">
                 <h2>Additional Interests</h2>
                 <div className="button-group">
-                  <button disabled={quoteData && _.filter(quoteData.dditionalInterests, ai => ai.type === 'Mortgagee').length > 1} onClick={() => this.addAdditionalInterest('Mortgagee')} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
-                  <button disabled={quoteData && _.filter(quoteData.dditionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => this.addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button>
-                  <button disabled={quoteData && _.filter(quoteData.dditionalInterests, ai => ai.type === 'Additional Insured').length > 1} onClick={() => this.addAdditionalInterest('Additional Insured')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
-                  <button disabled={quoteData && _.filter(quoteData.dditionalInterests, ai => ai.type === 'Additional Interest').length > 1} onClick={() => this.addAdditionalInterest('Additional Interest')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
-                  <button disabled={quoteData && _.filter(quoteData.dditionalInterests, ai => ai.type === 'Billpayer').length > 0} onClick={() => this.addAdditionalInterest('Billpayer')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
+                  <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Mortgagee').length > 1} onClick={() => this.addAdditionalInterest('Mortgagee')} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
+                  <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => this.addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button>
+                  <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Additional Insured').length > 1} onClick={() => this.addAdditionalInterest('Additional Insured')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
+                  <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Additional Interest').length > 1} onClick={() => this.addAdditionalInterest('Additional Interest')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
+                  <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Billpayer').length > 0} onClick={() => this.addAdditionalInterest('Billpayer')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
                 </div>
 
 
@@ -151,7 +191,7 @@ export class AdditionalLinterests extends Component {
                   <ul className="results result-cards">
                     {quoteData && quoteData.additionalInterests && quoteData.additionalInterests.map((ai, index) =>
                       <li key={index}>
-                        <a>
+                        <a onClick={() => this.editAdditionalInterest(ai)}>
                           {/* add className based on type - i.e. mortgagee could have class of mortgagee*/}
                           <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {ai.order + 1}</label></div>
                           <section><h4>{ai.name1}</h4><p>{ai.name2}</p><p className="address">{ai.mailingAddress.address1},
@@ -172,6 +212,7 @@ export class AdditionalLinterests extends Component {
               </div>
             </div>
           </form>
+          { appState.data.showAdditionalInterestEditModal && <AdditionalInterestEditModal verify={this.handleFormSubmit} hideAdditionalInterestModal={this.hideAdditionalInterestModal} deleteAdditionalInterest={this.deleteAdditionalInterest} /> }
           { appState.data.showAdditionalInterestModal && <AdditionalInterestModal verify={this.handleFormSubmit} hideAdditionalInterestModal={this.hideAdditionalInterestModal} /> }
         </div>
 
