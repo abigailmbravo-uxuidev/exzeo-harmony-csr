@@ -1,5 +1,5 @@
 // src/routes.js
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -25,8 +25,6 @@ export const validateLogin = () => {
   const cookies = new Cookies();
   const token = cookies.get('harmony-id-token');
   if (token) {
-    const user = { token, isAuthenticated: true, loggedOut: false };
-    console.log('user', user);
     return true;
   }
   return false;
@@ -47,7 +45,7 @@ function authHOC(NavComponent, redirectUrl, props) {
 class Routes extends Component { // eslint-disable-line
   constructor(props) {
     super(props);
-    this.props.actions.user.validateLogin();
+    props.actions.user.validateLogin();
   }
   render() {
     return (

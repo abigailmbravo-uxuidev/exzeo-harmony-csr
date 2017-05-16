@@ -43,7 +43,7 @@ const handleError = (dispatch, error) => {
 
 export const decodeToken = (token) => {
   const decoded = jwtDecode(token);
-  console.log(decoded.groups);
+  console.log(decoded);
   return decoded;
 };
 
@@ -60,5 +60,9 @@ export const validateLogin = () => (dispatch) => {
 
 export const logout = () => (dispatch) => {
   const user = { token: undefined, profile: undefined, isAuthenticated: false, loggedOut: true };
+  // remove the auth header to every request
+  axios.defaults.headers.common['authorization'] = undefined; // eslint-disable-line
+  cookies.set('harmony-id-token', undefined, { expires: new Date('Thu, 01 Jan 1970 00:00:00 GMT') });
+  console.log('logout');
   dispatch(authenticated(user));
 };
