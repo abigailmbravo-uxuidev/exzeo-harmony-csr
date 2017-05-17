@@ -8,8 +8,8 @@ import * as appStateActions from '../../actions/appStateActions';
 
 
 const QuoteSummary = ({ appState, handleSubmit, verify, showQuoteSummaryModal }) => <div className="modal quote-summary">
-<Form noValidate onSubmit={handleSubmit(verify)}>
-  <div className="card">
+  <Form noValidate onSubmit={handleSubmit(verify)}>
+    <div className="card">
       <div className="card-header">
         <h4><i className="fa fa-envelope" /> Send Application</h4>
       </div>
@@ -26,7 +26,7 @@ const QuoteSummary = ({ appState, handleSubmit, verify, showQuoteSummaryModal })
           <button className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Send</button>
         </div>
       </div>
-  </div>
+    </div>
   </Form>
 </div>;
 

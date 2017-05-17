@@ -6,7 +6,7 @@ import TextField from '../Form/inputs/TextField';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 
-const AdditionalInterestModal = ({ appState, handleSubmit, verify, hideAdditionalInterestModal }) => <div className="modal quote-summary">
+const AdditionalInterestModal = ({ appState, handleSubmit, verify, hideAdditionalInterestModal }) => <div className="modal quote-summary" style={{ flexDirection: 'row' }}>
   <Form id="AdditionalInterestModal" noValidate onSubmit={handleSubmit(verify)}>
     <div className="card">
       <div className="card-header">

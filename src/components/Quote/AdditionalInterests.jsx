@@ -12,9 +12,8 @@ import AdditionalInterestEditModal from '../../components/Common/AdditionalInter
 
 const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  const quoteData = _.find(taskData.model.variables, { name: 'updateQuoteWithAdditionalInterests' }) ?
-  _.find(taskData.model.variables, { name: 'updateQuoteWithAdditionalInterests' }).value.result :
-  _.find(taskData.model.variables, { name: 'getQuote' }).value.result;
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ?
+  _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
   return quoteData;
 };
 
@@ -30,44 +29,18 @@ export class AdditionalLinterests extends Component {
     sameAsProperty: false
   }
 
-  componentDidMount() {
-    const workflowId = this.props.appState.instanceId;
-    const taskName = 'moveTo';
-    const taskData = { key: 'additionalInterests' };
-    this.props.actions.cgActions.completeTask(this.props.appState.modelName, workflowId, taskName, taskData);
-
-    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
-      quote: this.props.quoteData,
-      updateWorkflowDetails: true,
-      hideYoChildren: false
-    });
-  }
-
-  fillMailForm = () => {
-    const { appState, dispatch } = this.props;
-    const taskData = this.props.tasks[appState.modelName].data;
-    const quoteData = _.find(taskData.model.variables, { name: 'getQuote' }) ? _.find(taskData.model.variables, { name: 'getQuote' }).value.result : {};
-
-    if (!this.state.sameAsProperty) {
-      dispatch(change('AdditionalLinterests', 'address1', _.get(quoteData, 'property.physicalAddress.address1')));
-      dispatch(change('AdditionalLinterests', 'address2', _.get(quoteData, 'property.physicalAddress.address2')));
-      dispatch(change('AdditionalLinterests', 'city', _.get(quoteData, 'property.physicalAddress.city')));
-      dispatch(change('AdditionalLinterests', 'state', _.get(quoteData, 'property.physicalAddress.state')));
-      dispatch(change('AdditionalLinterests', 'zip', _.get(quoteData, 'property.physicalAddress.zip')));
-    } else {
-      dispatch(change('AdditionalLinterests', 'address1', ''));
-      dispatch(change('AdditionalLinterests', 'address2', ''));
-      dispatch(change('AdditionalLinterests', 'city', ''));
-      dispatch(change('AdditionalLinterests', 'state', ''));
-      dispatch(change('AdditionalLinterests', 'zip', ''));
-    }
-    this.setState({ sameAsProperty: !this.state.sameAsProperty });
-  };
-
   handleFormSubmit = (data) => {
     const { appState, actions, quoteData } = this.props;
 
+
     const workflowId = appState.instanceId;
+    actions.appStateActions.setAppState(appState.modelName,
+      workflowId, {
+        submitting: true,
+        showAdditionalInterestModal: appState.data.showAdditionalInterestModal,
+        showAdditionalInterestEditModal: appState.data.showAdditionalInterestEditModal
+      });
+
     const additionalInterests = quoteData.additionalInterests || [];
 
     const type = appState.data.addAdditionalInterestType;
@@ -105,14 +78,19 @@ export class AdditionalLinterests extends Component {
 
     // TODO Clear out old form data
 
-    const steps = [{
-      name: 'askadditionalInterests',
-      data: { additionalInterests }
-    },
-    {
-      name: 'moveTo',
-      data: { key: 'additionalInterests' }
-    }
+    const steps = [
+      {
+        name: 'hasUserEnteredData',
+        data: { answer: 'Yes' }
+      },
+      {
+        name: 'askadditionalInterests',
+        data: { additionalInterests }
+      },
+      {
+        name: 'moveTo',
+        data: { key: 'additionalInterests' }
+      }
     ];
 
     actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
@@ -141,13 +119,23 @@ export class AdditionalLinterests extends Component {
 
   deleteAdditionalInterest = (selectedAdditionalInterest) => {
     const { appState, actions, quoteData } = this.props;
-
     const workflowId = appState.instanceId;
+    actions.appStateActions.setAppState(appState.modelName,
+      workflowId, {
+        submitting: true,
+        showAdditionalInterestModal: appState.data.showAdditionalInterestModal,
+        showAdditionalInterestEditModal: appState.data.showAdditionalInterestEditModal
+      });
+
     const additionalInterests = quoteData.additionalInterests || [];
     // remove any existing items before submission
     _.remove(additionalInterests, ai => ai._id === selectedAdditionalInterest._id); // eslint-disable-line
 
     const steps = [{
+      name: 'hasUserEnteredData',
+      data: { answer: 'Yes' }
+    },
+    {
       name: 'askadditionalInterests',
       data: { additionalInterests }
     },

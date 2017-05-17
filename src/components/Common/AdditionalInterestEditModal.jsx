@@ -9,29 +9,44 @@ import * as appStateActions from '../../actions/appStateActions';
 
 const handleInitialize = (state) => {
   const selectedAI = state.appState.data.selectedAI;
-  const values = {
-    _id: selectedAI._id, // eslint-disable-line
-    name1: selectedAI.name1,
-    name2: selectedAI.name2,
-    phoneNumber: String(selectedAI.phoneNumber),
-    address1: selectedAI.mailingAddress.address1,
-    address2: selectedAI.mailingAddress.address2,
-    city: selectedAI.mailingAddress.city,
-    state: selectedAI.mailingAddress.state,
-    zip: String(selectedAI.mailingAddress.zip),
-    referenceNumber: selectedAI.referenceNumber,
-    type: selectedAI.type
-  };
 
-  console.log(values);
-  return values;
+
+  if (selectedAI) {
+    return {
+    _id: selectedAI._id, // eslint-disable-line
+      name1: selectedAI.name1,
+      name2: selectedAI.name2,
+      phoneNumber: String(selectedAI.phoneNumber),
+      address1: selectedAI.mailingAddress.address1,
+      address2: selectedAI.mailingAddress.address2,
+      city: selectedAI.mailingAddress.city,
+      state: selectedAI.mailingAddress.state,
+      zip: String(selectedAI.mailingAddress.zip),
+      referenceNumber: selectedAI.referenceNumber,
+      type: selectedAI.type
+    };
+  }
+
+  return {
+    _id: '',
+    name1: '',
+    name2: '',
+    phoneNumber: '',
+    address1: '',
+    address2: '',
+    city: '',
+    state: '',
+    zip: '',
+    referenceNumber: '',
+    type: ''
+  };
 };
 
-const AdditionalInterestEditModal = ({ appState, handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, selectedAI }) => <div className="modal quote-summary">
+const AdditionalInterestEditModal = ({ appState, handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, selectedAI }) => <div className="modal quote-summary" style={{ flexDirection: 'row' }}>
   <Form id="AdditionalInterestEditModal" noValidate onSubmit={handleSubmit(verify)}>
     <div className="card">
       <div className="card-header">
-        <h4><i className={`fa fa-circle ${selectedAI.type}`} /> {selectedAI.type}</h4>
+        <h4><i className={`fa fa-circle ${selectedAI ? selectedAI.type : ''}`} /> {selectedAI ? selectedAI.type : ''}</h4>
       </div>
       <div className="card-block">
         <HiddenField name={'_id'} />
@@ -48,7 +63,7 @@ const AdditionalInterestEditModal = ({ appState, handleSubmit, verify, hideAddit
       <div className="card-footer">
         <div className="btn-footer">
           <button className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal()}>Cancel</button>
-          <button className="btn btn-secondary" type="button" onClick={() => deleteAdditionalInterest(selectedAI)}>Delete</button>
+          <button className="btn btn-secondary" type="button" disabled={appState.data.submitting} onClick={() => deleteAdditionalInterest(selectedAI)}>Delete</button>
           <button className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Send</button>
         </div>
       </div>
