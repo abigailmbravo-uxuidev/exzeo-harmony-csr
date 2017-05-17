@@ -17,7 +17,7 @@ import SelectFieldAgents from '../Form/inputs/SelectFieldAgents';
 
 const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuote' }) ? _.find(taskData.model.variables, { name: 'getQuote' }).value.result : {};
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
   return quoteData;
 };
 
@@ -26,8 +26,8 @@ const handleInitialize = (state) => {
 
   const values = {};
 
-  values.agencyCode = _.get(quoteData, 'agencyCode');
-  values.agentCode = _.get(quoteData, 'agentCode');
+  values.agencyCode = '20000'; // _.get(quoteData, 'agencyCode');
+  values.agentCode = '60000'; // _.get(quoteData, 'agentCode');
   values.effectiveDate = moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD');
 
   values.pH1email = _.get(quoteData, 'policyHolders[0].emailAddress');
@@ -119,10 +119,10 @@ const handleGetDocs = (state, name) => {
 export class Coverage extends Component {
 
   componentDidMount() {
-    const workflowId = this.props.appState.instanceId;
-    const taskName = 'moveTo';
-    const taskData = { key: 'customerData' };
-    this.props.actions.cgActions.completeTask(this.props.appState.modelName, workflowId, taskName, taskData);
+    // const workflowId = this.props.appState.instanceId;
+    // const taskName = 'moveTo';
+    // const taskData = { key: 'customerData' };
+    // this.props.actions.cgActions.completeTask(this.props.appState.modelName, workflowId, taskName, taskData);
 
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
       quote: this.props.quoteData,
@@ -139,6 +139,7 @@ export class Coverage extends Component {
     submitData.agentCode = String(data.agentCode);
 
     const steps = [
+      { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
       { name: 'askCustomerData', data: submitData },
       { name: 'askToCustomizeDefaultQuote', data: { shouldCustomizeQuote: 'No' } }
     ];
@@ -148,7 +149,7 @@ export class Coverage extends Component {
         // now update the workflow details so the recalculated rate shows
         this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
           workflowId, { recalc: false, updateWorkflowDetails: true });
-        this.context.router.history.push('/quote/underwriting');
+        // this.context.router.history.push('/quote/underwriting');
       });
   };
 

@@ -15,7 +15,7 @@ import QuoteSummaryModal from '../../components/Common/QuoteSummaryModal';
 
 const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuote' }) ? _.find(taskData.model.variables, { name: 'getQuote' }).value.result : {};
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
   return quoteData;
 };
 
@@ -78,11 +78,6 @@ export class MailingAddressBilling extends Component {
   }
 
   componentDidMount() {
-    const workflowId = this.props.appState.instanceId;
-    const taskName = 'moveTo';
-    const taskData = { key: 'mailing' };
-    this.props.actions.cgActions.completeTask(this.props.appState.modelName, workflowId, taskName, taskData);
-
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
       quote: this.props.quoteData,
       updateWorkflowDetails: true,
@@ -93,7 +88,7 @@ export class MailingAddressBilling extends Component {
   fillMailForm = () => {
     const { appState, dispatch } = this.props;
     const taskData = this.props.tasks[appState.modelName].data;
-    const quoteData = _.find(taskData.model.variables, { name: 'getQuote' }) ? _.find(taskData.model.variables, { name: 'getQuote' }).value.result : {};
+    const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
 
     if (!this.state.sameAsProperty) {
       dispatch(change('MailingAddressBilling', 'address1', _.get(quoteData, 'property.physicalAddress.address1')));
@@ -116,7 +111,7 @@ export class MailingAddressBilling extends Component {
 
     const workflowId = appState.instanceId;
     const taskData = tasks[appState.modelName].data;
-    const quoteData = _.find(taskData.model.variables, { name: 'getQuote' }) ? _.find(taskData.model.variables, { name: 'getQuote' }).value.result : {};
+    const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
 
     const submitData = fieldValues;
 
@@ -124,14 +119,12 @@ export class MailingAddressBilling extends Component {
     submitData.billToType = 'Policy Holder';
     submitData.billPlan = 'Annual';
 
-    const steps = [{
-      name: 'askAdditionalCustomerData',
-      data: submitData
-    },
-    {
-      name: 'moveTo',
-      data: { key: 'application' }
-    }
+    const steps = [
+      { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
+      {
+        name: 'askAdditionalCustomerData',
+        data: submitData
+      }
     ];
 
     actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
@@ -139,7 +132,6 @@ export class MailingAddressBilling extends Component {
         // now update the workflow details so the recalculated rate shows
         actions.appStateActions.setAppState(appState.modelName,
           workflowId, { updateWorkflowDetails: true });
-        this.context.router.history.push('/quote/coverage');
       });
   };
 

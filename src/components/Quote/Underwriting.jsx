@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
-import { Redirect } from 'react-router';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
@@ -13,7 +12,7 @@ import FieldGenerator from '../Form/FieldGenerator';
 
 const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuote' }) ? _.find(taskData.model.variables, { name: 'getQuote' }).value.result : {};
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
   return quoteData;
 };
 
@@ -33,7 +32,6 @@ const handleInitialize = (state) => {
       values[question.name] = val || '';
     });
   }
-  console.log(values);
   return values;
 };
 
@@ -50,26 +48,30 @@ const handleInitialize = (state) => {
 export class Underwriting extends Component {
 
   componentWillMount() {
-    const workflowId = this.props.appState.instanceId;
-    const taskName = 'moveTo';
-    const taskData = { key: 'underwriting' };
-    this.props.actions.cgActions.completeTask(this.props.appState.modelName, workflowId, taskName, taskData);
+    const { appState, actions, quoteData } = this.props;
+    const workflowId = appState.instanceId;
+    const steps = [
+      { name: 'hasUserEnteredData', data: { answer: 'Yes' } }
+    ];
 
-    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
-      quote: this.props.quoteData,
-      updateWorkflowDetails: true,
-      hideYoChildren: false
-    });
+    actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
+      .then(() => {
+        // now update the workflow details so the recalculated rate shows
+        this.props.actions.appStateActions.setAppState(appState.modelName, appState.instanceId, {
+          quote: quoteData,
+          updateWorkflowDetails: true,
+          hideYoChildren: false
+        });
+      });
   }
 
-
   handleFormSubmit = (data) => {
-    const { appState, actions } = this.props;
+    const { appState, actions, quoteData } = this.props;
 
     const workflowId = appState.instanceId;
     const steps = [
       { name: 'askUWAnswers', data },
-      { name: 'moveTo', data: { key: 'recalc' } }
+      { name: 'hasUserEnteredData', data: { answer: 'Yes' } }
     ];
 
     actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
@@ -78,9 +80,11 @@ export class Underwriting extends Component {
         actions.appStateActions.setAppState(
           appState.modelName,
           workflowId,
-          { updateWorkflowDetails: true }
+          { updateWorkflowDetails: true,
+            quote: quoteData,
+            hideYoChildren: false
+          }
         );
-        actions.appStateActions.setAppState(this.props.appState.modelName, appState.instanceId, { activateRedirect: true });
       });
   };
 
@@ -93,17 +97,7 @@ export class Underwriting extends Component {
 
 
   render() {
-    const { fieldValues, handleSubmit, appState, tasks, pristine } = this.props;
-
-    console.log(this.props);
-    const taskData = tasks[appState.modelName].data;
-    const questions = taskData.previousTask.value.result || [];
-    const quoteData = _.find(taskData.model.variables, { name: 'getQuote' }).value.result;
-
-    const redirect = (this.props.activateRedirect)
-      ? (<Redirect to={'/quote/billing'} />)
-      : null;
-
+    const { fieldValues, handleSubmit, pristine, quoteData, questions } = this.props;
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
@@ -113,7 +107,6 @@ export class Underwriting extends Component {
             onSubmit={handleSubmit(this.handleFormSubmit)}
             noValidate
           >
-            { redirect }
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
                 {questions && questions.length > 0 && questions.map((question, index) =>
