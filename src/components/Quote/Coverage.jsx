@@ -163,7 +163,7 @@ export class Coverage extends Component {
           <Form id="Coverage" onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
-                <h1>Coverage / Rating</h1>
+                <h2>Coverage / Rating</h2>
 
                 <section className="producer ">
                   <h4>Produced By</h4>
@@ -1032,7 +1032,7 @@ export class Coverage extends Component {
 
                 <div className="btn-footer">
                   <button className="btn btn-secondary" type="submit" form="Coverage">
-                                    Reset
+                                    Cancel
                                 </button>
                   <button className="btn btn-primary" type="submit" form="Coverage">
                                       Save {/* Save &amp; Re-Evaluate */}

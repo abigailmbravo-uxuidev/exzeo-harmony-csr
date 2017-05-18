@@ -191,7 +191,7 @@ export const NotesFiles = (props) => {
                     <div className="scroll">
                         <div className="form-group survey-wrapper" role="group">
 
-                            <h1>Notes / Files</h1>
+                            
 
                           <section>
 

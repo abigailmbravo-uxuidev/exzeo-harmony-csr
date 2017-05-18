@@ -12,6 +12,7 @@ import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import CheckField from '../Form/inputs/CheckField';
 import TextField from '../Form/inputs/TextField';
 
+
 const handleFormSubmit = (data, dispatch, props) => {
     alert('submit');
 };
@@ -29,12 +30,6 @@ const handleInitialize = (state) => {
     return formValues;
 
 };
-
-
-
-
-
-
 
 // ------------------------------------------------
 // The render is where all the data is being pulled
