@@ -1,5 +1,4 @@
 import axios from 'axios';
-import * as persistTypes from 'redux-persist/constants';
 import * as types from './../actions/actionTypes';
 import initialState from './initialState';
 
@@ -16,13 +15,6 @@ export default function userReducer(state = initialState.user, action) {
       return newState;
     case types.AUTHENTICATE_ERROR:
       return { ...state, ...action.user };
-    case persistTypes.REHYDRATE:
-      newState = (action.payload && action.payload.user) ? action.payload.user : newState;
-      // add the auth header to every request
-      if (action.payload.user && action.payload.user.token) {
-        axios.defaults.headers.common['authorization'] = `bearer ${action.payload.user.token}`; // eslint-disable-line
-      }
-      return newState;
     default:
       return state;
   }

@@ -10,7 +10,7 @@ export default function appStateReducer(state = initialState.appState, action) {
     case types.APPSTATE_ERROR:
       return { ...state, ...action.appState };
     case persistTypes.REHYDRATE:
-      newState = (action.payload && action.payload.appState) ? action.payload.appState : newState;
+      newState = (action.payload && action.payload.appState) ? action.payload.appState : state;
       return newState;
     default:
       return state;

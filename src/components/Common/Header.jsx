@@ -7,11 +7,15 @@ import logo from '../../img/Harmony.svg';
 import * as userActions from '../../actions/userActions';
 
 const handleLogout = (props) => {
-  console.log('logout', props);
   props.actions.user.logout();
 };
 
-const getUsername = props => (props.user.profile) ? props.user.profile.username : '';
+const getUsername = (props) => {
+  if (props.user.profile) {
+    return props.user.profile.username;
+  }
+  return '';
+};
 
 export const Header = props => (
   <header>
