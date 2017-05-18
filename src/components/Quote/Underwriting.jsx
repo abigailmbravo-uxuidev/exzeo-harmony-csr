@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { reduxForm, Form, propTypes } from 'redux-form';
-import { Redirect } from 'react-router';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
@@ -13,7 +12,7 @@ import RadioField from '../Form/inputs/RadioField';
 
 const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuote' }) ? _.find(taskData.model.variables, { name: 'getQuote' }).value.result : {};
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
   return quoteData;
 };
 
@@ -23,9 +22,8 @@ const handleFormSubmit = (data, dispatch, props) => {
 
   const workflowId = appState.instanceId;
   const steps = [
-    { name: 'moveTo', data: { key: 'underwriting' } },
-    { name: 'askUWAnswers', data },
-    { name: 'moveTo', data: { key: 'recalc' } }
+    { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
+    { name: 'askUWAnswers', data }
   ];
 
   actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
@@ -65,17 +63,11 @@ const handleInitialize = (state) => {
 */
 export const Underwriting = (props) => {
   const { handleSubmit, actions, appState } = props;
-
-  const redirect = (props.activateRedirect)
-    ? (<Redirect to={'/quote/billing'} />)
-    : null;
-
   return (
     <QuoteBaseConnect>
       <ClearErrorConnect />
       <div className="route-content">
         <Form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
-          { redirect }
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
               <h1>Underwriting</h1>

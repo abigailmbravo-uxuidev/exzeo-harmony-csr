@@ -22,20 +22,20 @@ export const SelectInputAgents = ({
       <label htmlFor={name}>
         {label} &nbsp; {Hint}
       </label>
-        {agents && agents.length > 0 ? (
-          <select
-            value={value}
-            name={name}
-            disabled={disabled}
-            onChange={onChange}
-          >
-            <option disabled value={''}>Please select...</option>
-            {agents.map((agent, index) => (
-              <option value={agent.agentCode} key={index}>
-                {`${agent.firstName} ${agent.lastName}`}
-              </option>
+      {agents && agents.length > 0 ? (
+        <select
+          value={value}
+          name={name}
+          disabled={disabled}
+          onChange={onChange}
+        >
+          <option disabled value={''}>Please select...</option>
+          {agents.map((agent, index) => (
+            <option value={agent.agentCode} key={index}>
+              {`${agent.firstName} ${agent.lastName}`}
+            </option>
             ))}
-          </select>
+        </select>
         ) : null}
       { Error }
     </div>
@@ -43,11 +43,12 @@ export const SelectInputAgents = ({
 };
 
 SelectInputAgents.propTypes = {
-  ...PropTypes,
   /**
    * Answers array used to generate options
    */
   agents: PropTypes.any, // eslint-disable-line
+  meta: PropTypes.any, // eslint-disable-line
+
 
   /**
    * Tooltip for user
@@ -57,12 +58,7 @@ SelectInputAgents.propTypes = {
   /**
    * Input provided by redux-form field
    */
-  input: PropTypes.shape({
-    disabled: PropTypes.bool,
-    name: PropTypes.string,
-    onChange: PropTypes.func,
-    value: PropTypes.any, // eslint-disable-line
-  }),
+  input: PropTypes.any, // eslint-disable-line
 
   /**
    * Label for field

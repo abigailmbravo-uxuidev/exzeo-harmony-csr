@@ -9,6 +9,7 @@ import QuoteDetailHeader from '../components/Quote/DetailHeader';
 import * as userActions from '../actions/userActions';
 import Footer from '../components/Common/Footer';
 import NewNoteFileUploader from '../components/Common/NewNoteFileUploader';
+import UnderwritingValidationBarConnect from '../components/Quote/UnderwritingValidationBar';
 
 /*
 const handleLogout = (props) => {
@@ -31,59 +32,11 @@ export const QuoteBase = props => (
         <QuoteSideNav />
       </aside>
       <div className="content-wrapper">
-        {/*<WorkflowDetailsConnect />*/}
         <QuoteDetailHeader />
         {props.children}
         <Footer />
       </div>
-      <aside className="underwriting-validation">
-
-        <h4 className="uw-validation-header">Underwriting Validation</h4>
-
-        <section className="msg-error">
-          <h5>
-            <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Error Messages</h5>
-
-          <div>
-            <ul className="fa-ul">
-              <li><i className="fa-li fa fa-exclamation-circle" aria-hidden="true" />Please enter an effective date 30 days in the past and 90 days in the future.</li>
-              <li><i className="fa-li fa fa-exclamation-circle" aria-hidden="true" />Please enter an effective date 30 days in the past and 90 days in the future.</li>
-              <li><i className="fa-li fa fa-exclamation-circle" aria-hidden="true" />Please enter an effective date 30 days in the past and 90 days in the future.</li>
-            </ul>
-          </div>
-        </section>
-
-        <section className="msg-caution">
-          <h5>
-            <i className="fa fa-exclamation-triangle" aria-hidden="true" />&nbsp;Caution Messages</h5>
-
-          <div>
-            <ul className="fa-ul">
-              <li><i className="fa-li fa fa-exclamation-triangle" aria-hidden="true" />ZipCode is closed for this policy type.</li>
-              <li><i className="fa-li fa fa-exclamation-triangle" aria-hidden="true" />ZipCode is closed for this policy type.</li>
-              <li><i className="fa-li fa fa-exclamation-triangle" aria-hidden="true" />ZipCode is closed for this policy type.</li>
-            </ul>
-          </div>
-
-        </section>
-
-        <section className="msg-info">
-
-          <h5>
-            <i className="fa fa-info-circle" aria-hidden="true" />&nbsp;Info Messages</h5>
-
-          <div>
-            <ul className="fa-ul">
-              <li><i className="fa-li fa fa-info-circle" aria-hidden="true" />Due to the age of the home, a 4-point inspection completed in the last 3 years is requried.</li>
-              <li><i className="fa-li fa fa-info-circle" aria-hidden="true" />Due to the age of the home, a 4-point inspection completed in the last 3 years is requried.</li>
-              <li><i className="fa-li fa fa-info-circle" aria-hidden="true" />Due to the age of the home, a 4-point inspection completed in the last 3 years is requried.</li>
-            </ul>
-          </div>
-
-        </section>
-
-      </aside>
-
+      <UnderwritingValidationBarConnect />
     </main>
   </div>
 );

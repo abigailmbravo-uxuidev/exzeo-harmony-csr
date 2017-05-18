@@ -9,7 +9,7 @@ import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 
 const userTasks = {
-  handleSearchBarSubmit: 'askAddress'
+  handleSearchBarSubmit: 'search'
 };
 
 const handleSearchBarSubmit = (data, dispatch, props) => {
