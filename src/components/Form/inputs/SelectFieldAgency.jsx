@@ -1,5 +1,6 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import FieldHint from './FieldHint';
 import reduxFormField from './reduxFormField';
 
@@ -47,18 +48,11 @@ SelectInputAgency.propTypes = {
    * Answers array used to generate options
    */
   agencies: PropTypes.any, // eslint-disable-line
-  meta: PropTypes.any, // eslint-disable-line
 
   /**
    * Tooltip for user
    */
   hint: PropTypes.string,
-
-  /**
-   * Input provided by redux-form field
-   */
-   input: PropTypes.any, // eslint-disable-line
-
 
   /**
    * Label for field
@@ -68,7 +62,20 @@ SelectInputAgency.propTypes = {
   /**
    * Styles for form group
    */
-  styleName: PropTypes.string
+  styleName: PropTypes.string,
+
+  input: PropTypes.shape({
+    disabled: PropTypes.bool,
+    name: PropTypes.string,
+    onChange: PropTypes.func,
+    value: PropTypes.any
+  }),
+
+  meta: PropTypes.shape({
+    error: PropTypes.string,
+    touched: PropTypes.bool,
+    warning: PropTypes.string
+  })
 };
 
 SelectInputAgency.defaultProps = {
