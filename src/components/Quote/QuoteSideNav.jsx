@@ -52,6 +52,13 @@ const csrLinks = [{
   label: 'Notes / Files',
   styleName: 'notes',
   exact: true
+},
+{
+  key: 'summary',
+  link: '/quote/summary',
+  label: 'Quote Summary',
+  styleName: 'summary',
+  exact: true
 }];
 
 const goToPage = (link, key, props) => {
@@ -66,7 +73,8 @@ const goToPage = (link, key, props) => {
     .then(() => {
       props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, {
         activateRedirectLink: link,
-        activateRedirect: true
+        activateRedirect: true,
+        updateWorkflowDetails: true
       });
     });
 };
