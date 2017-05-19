@@ -36,6 +36,7 @@ export class AdditionalLinterests extends Component {
     const workflowId = appState.instanceId;
     actions.appStateActions.setAppState(appState.modelName,
       workflowId, {
+        ...appState.data,
         submitting: true,
         showAdditionalInterestModal: appState.data.showAdditionalInterestModal,
         showAdditionalInterestEditModal: appState.data.showAdditionalInterestEditModal
@@ -104,17 +105,17 @@ export class AdditionalLinterests extends Component {
 
   addAdditionalInterest = (type) => {
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId,
-      { showAdditionalInterestModal: true, addAdditionalInterestType: type });
+      { ...this.props.appState.data, showAdditionalInterestModal: true, addAdditionalInterestType: type });
   }
 
   editAdditionalInterest = (ai) => {
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId,
-      { showAdditionalInterestEditModal: true, selectedAI: ai });
+      { ...this.props.appState.data, showAdditionalInterestEditModal: true, selectedAI: ai });
   }
 
   hideAdditionalInterestModal = () => {
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId,
-      { showAdditionalInterestModal: false, showAdditionalInterestEditModal: false });
+      { ...this.props.appState.data, showAdditionalInterestModal: false, showAdditionalInterestEditModal: false });
   }
 
   deleteAdditionalInterest = (selectedAdditionalInterest) => {
@@ -122,6 +123,7 @@ export class AdditionalLinterests extends Component {
     const workflowId = appState.instanceId;
     actions.appStateActions.setAppState(appState.modelName,
       workflowId, {
+        ...this.props.appState.data,
         submitting: true,
         showAdditionalInterestModal: appState.data.showAdditionalInterestModal,
         showAdditionalInterestEditModal: appState.data.showAdditionalInterestEditModal

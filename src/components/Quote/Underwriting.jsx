@@ -18,7 +18,7 @@ const handleGetQuoteData = (state) => {
 
 const handleGetQuestions = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  const uwQuestions = taskData && taskData.previousTask && taskData.previousTask.value ? taskData.previousTask.value.result : [];
+  const uwQuestions = _.find(taskData.model.variables, { name: 'getListOfUWQuestions' }) ? _.find(taskData.model.variables, { name: 'getListOfUWQuestions' }).value.result : {};
   return uwQuestions || [];
 };
 
@@ -57,7 +57,7 @@ export class Underwriting extends Component {
     actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
         // now update the workflow details so the recalculated rate shows
-        this.props.actions.appStateActions.setAppState(appState.modelName, appState.instanceId, {
+        this.props.actions.appStateActions.setAppState(appState.modelName, appState.instanceId, { ...appState.data,
           quote: quoteData,
           updateWorkflowDetails: true,
           hideYoChildren: false
@@ -66,13 +66,18 @@ export class Underwriting extends Component {
   }
 
   handleFormSubmit = (data) => {
-    const { appState, actions, quoteData } = this.props;
+    const { appState, actions, quoteData, tasks } = this.props;
 
     const workflowId = appState.instanceId;
+    actions.appStateActions.setAppState(appState.modelName, workflowId, { ...appState.data, submitting: true });
     const steps = [
-      { name: 'askUWAnswers', data },
-      { name: 'hasUserEnteredData', data: { answer: 'Yes' } }
+      { name: 'askUWAnswers', data }
     ];
+
+    const activeTaskName = tasks[appState.modelName].data.activeTask.name;
+    if (activeTaskName === 'hasUserEnteredData') {
+      steps.unshift({ name: 'hasUserEnteredData', data: { answer: 'Yes' } });
+    }
 
     actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
@@ -80,7 +85,9 @@ export class Underwriting extends Component {
         actions.appStateActions.setAppState(
           appState.modelName,
           workflowId,
-          { updateWorkflowDetails: true,
+          {
+            ...appState.data,
+            updateWorkflowDetails: true,
             quote: quoteData,
             hideYoChildren: false
           }

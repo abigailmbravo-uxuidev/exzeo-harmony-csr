@@ -72,6 +72,7 @@ const goToPage = (link, key, props) => {
   props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
     .then(() => {
       props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, {
+        ...props.appState.data,
         activateRedirectLink: link,
         activateRedirect: true,
         updateWorkflowDetails: true

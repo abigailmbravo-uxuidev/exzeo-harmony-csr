@@ -9,11 +9,14 @@ export const SelectFieldBilling = ({
   hint,
   input,
   label,
-  styleName
+  styleName,
+  meta
 }) => {
   const { onChange, name, value, disabled } = input;
+  const { touched, error, warning } = meta;
+  const Error = touched && (error || warning) && <span style={{ border: '1pt solid red' }}>{error || warning}</span>;
 
-  const formGroupStyles = classNames('form-group', { styleName }, { name });
+  const formGroupStyles = classNames('form-group', { styleName }, { name }, Error ? 'error' : '');
   const Hint = hint && (<FieldHint name={name} hint={hint} />);
 
   return (
@@ -21,20 +24,21 @@ export const SelectFieldBilling = ({
       <label htmlFor={name}>
         {label} &nbsp; {Hint}
       </label>
-        {answers && answers.length > 0 ? (
-          <select
-            value={value}
-            name={name}
-            disabled={disabled}
-            onChange={onChange}
-          >
-            <option disabled value={''}>Please select...</option>
-            {answers.map((answer, index) => (
-              <option value={answer.billToId} key={index}>
-                {answer.displayText}
-              </option>
+      {answers && answers.length > 0 ? (
+        <select
+          className={Error ? 'error' : ''}
+          value={value}
+          name={name}
+          disabled={disabled}
+          onChange={onChange}
+        >
+          <option disabled value={''}>Please select...</option>
+          {answers.map((answer, index) => (
+            <option value={answer.billToId} key={index}>
+              {answer.displayText}
+            </option>
             ))}
-          </select>
+        </select>
         ) : null}
     </div>
   );
@@ -50,6 +54,11 @@ SelectFieldBilling.propTypes = {
     label: PropTypes.string,
     image: PropTypes.string
   })),
+  meta: {
+    touched: PropTypes.bool,
+    error: PropTypes.string,
+    warning: PropTypes.string
+  },
 
   /**
    * Tooltip for user
