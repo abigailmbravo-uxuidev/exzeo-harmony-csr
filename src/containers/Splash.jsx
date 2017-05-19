@@ -9,7 +9,6 @@ import ClearErrorConnect from '../components/Error/ClearError';
 import Footer from '../components/Common/Footer';
 import * as cgActions from '../actions/cgActions';
 import * as appStateActions from '../actions/appStateActions';
-import SearchBar from '../components/Search/SearchBar';
 import SearchResults from '../components/Search/SearchResults';
 import NoResultsConnect from '../components/Search/NoResults';
 
@@ -21,27 +20,38 @@ export class Splash extends Component {
     this.props.actions.cgActions.startWorkflow(workflowModelName, {});
   }
 
+  handleSelectQuote = (quote, props) => {
+    const workflowId = props.appState.instanceId;
+    const steps = [{
+      name: 'chooseQuote',
+      data: {
+        quoteId: quote._id
+      }
+    }];
+
+    props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
+      .then(() => {
+        // now update the workflow details so the recalculated rate shows
+        props.actions.appStateActions.setAppState(
+          props.appState.modelName,
+          workflowId,
+          { recalc: false, updateWorkflowDetails: true }
+        );
+        this.context.router.history.push('/quote/coverage');
+      });
+  };
+
   handleSelectAddress = (address, props) => {
-    if (props.appState.data.submitting === true) return;
     const workflowId = props.appState.instanceId;
     const submitData = {
       igdId: address.id,
       stateCode: address.physicalAddress.state
     };
 
-    // const steps = [{
-    //   name: 'chooseAddress',
-    //   data: submitData
-    // }, {
-    //   name: 'moveTo',
-    //   data: { key: 'customerData' }
-    // }];
-
     const steps = [{
       name: 'chooseAddress',
       data: submitData
     }];
-    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { submitting: true });
 
     props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
       .then(() => {
@@ -65,11 +75,10 @@ export class Splash extends Component {
         <div className="dashboard" role="article">
           <div className="route">
             <div className="search route-content">
-              <SearchBar />
               <div className="survey-wrapper scroll">
                 <div className="results-wrapper">
                   <NoResultsConnect />
-                  <SearchResults handleSelectAddress={this.handleSelectAddress} />
+                  <SearchResults handleSelectAddress={this.handleSelectAddress} handleSelectQuote={this.handleSelectQuote} />
                 </div>
                 <Footer />
               </div>
