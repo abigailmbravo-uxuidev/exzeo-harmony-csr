@@ -1,17 +1,12 @@
-import React, {
-  PropTypes
-} from 'react';
-import {
-  bindActionCreators
-} from 'redux';
-import {
-  connect
-} from 'react-redux';
+import React, { PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
-import _ from 'lodash';
-import moment from 'moment';
-import * as cgActions from '../../actions/cgActions';
+import { reduxForm, propTypes } from 'redux-form';
 import * as appStateActions from '../../actions/appStateActions';
+import UWconditions from '../Common/UWconditions';
+import * as cgActions from '../../actions/cgActions';
+
 // Example of a possible schema
 /**
  * {
@@ -61,6 +56,14 @@ const csrLinks = [{
   exact: true
 }];
 
+const UWconditionsPopup = (props) => {
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { showUWconditions: true });
+};
+
+const closeUWConditions = (props) => {
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { showUWconditions: false });
+};
+
 const goToPage = (link, key, props) => {
   const workflowId = props.appState.instanceId;
 
@@ -81,7 +84,6 @@ const goToPage = (link, key, props) => {
 };
 
 const SideNav = (props) => {
-  console.log(props);
   const redirect = (props.activateRedirect)
     ? (<Redirect to={props.activateRedirectLink} />)
     : null;
@@ -104,21 +106,30 @@ const SideNav = (props) => {
             </a>
           </li>
       ))}
+        <hr className="quote-hr" />
+        <li>
+          <button className="btn btn-secondary btn-xs" onClick={() => UWconditionsPopup(props)}>Underwriting Conditions</button>
+        </li>
+        { props.appState.data.showUWconditions === true &&
+        <UWconditions
+          closeButtonHandler={() => closeUWConditions(props)}
+        />
+      }
       </ul>
-    </nav>
-  );
+    </nav>);
 };
 
+// TODO: Needs to be connected to wherever it's gonnna get nav links from
 SideNav.propTypes = {
+  ...propTypes,
   completedTasks: PropTypes.any, // eslint-disable-line
   activateRedirectLink: PropTypes.bool,
   activateRedirect: PropTypes.bool,
-  actions: PropTypes.shape(),
-  tasks: PropTypes.shape(),
   appState: PropTypes.shape({
     instanceId: PropTypes.string,
     modelName: PropTypes.string,
     data: PropTypes.shape({
+      showUWconditions: PropTypes.boolean,
       quote: PropTypes.object,
       updateUnderwriting: PropTypes.boolean
     })
@@ -140,4 +151,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SideNav);
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'SideNav' })(SideNav));

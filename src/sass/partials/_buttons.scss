@@ -37,8 +37,13 @@ input[type="submit"] {
       font-size: $font-size-sm;
 
       &.btn-link {
-          padding: .375rem .25rem
+          padding: .375rem .25rem;
       }
+  }
+
+  &.btn-xs {
+      font-size: $font-size-xs;
+
   }
 
   &.focus {
