@@ -18,7 +18,7 @@ export const Base = props => (
   <div className="app-wrapper csr">
     <Header />
     <div className="search ">
-      <SearchBar />
+      { props.user && props.user.isAuthenticated && <SearchBar /> }
     </div>
     <main role="document">
       <div className="content-wrapper">
