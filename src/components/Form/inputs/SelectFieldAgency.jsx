@@ -1,5 +1,6 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import FieldHint from './FieldHint';
 import reduxFormField from './reduxFormField';
 
@@ -21,21 +22,21 @@ export const SelectInputAgency = ({
     <div className={formGroupStyles}>
       <label htmlFor={name}>
         {label} &nbsp; {Hint}
-     </label>
-        {agencies && agencies.length > 0 ? (
-          <select
-            value={value}
-            name={name}
-            disabled={disabled}
-            onChange={onChange}
-          >
-            <option disabled value={''}>Please select...</option>
-            {agencies.map((agency, index) => (
-              <option value={agency.agencyCode} key={index}>
-                {agency.displayName}
-              </option>
+      </label>
+      {agencies && agencies.length > 0 ? (
+        <select
+          value={value}
+          name={name}
+          disabled={disabled}
+          onChange={onChange}
+        >
+          <option disabled value={''}>Please select...</option>
+          {agencies.map((agency, index) => (
+            <option value={agency.agencyCode} key={index}>
+              {agency.displayName}
+            </option>
             ))}
-          </select>
+        </select>
         ) : null}
       { Error }
     </div>
@@ -43,7 +44,6 @@ export const SelectInputAgency = ({
 };
 
 SelectInputAgency.propTypes = {
-  ...PropTypes,
   /**
    * Answers array used to generate options
    */
@@ -55,16 +55,6 @@ SelectInputAgency.propTypes = {
   hint: PropTypes.string,
 
   /**
-   * Input provided by redux-form field
-   */
-  input: PropTypes.shape({
-    disabled: PropTypes.bool,
-    name: PropTypes.string,
-    onChange: PropTypes.func,
-    value: PropTypes.any, // eslint-disable-line
-  }),
-
-  /**
    * Label for field
    */
   label: PropTypes.string,
@@ -72,7 +62,20 @@ SelectInputAgency.propTypes = {
   /**
    * Styles for form group
    */
-  styleName: PropTypes.string
+  styleName: PropTypes.string,
+
+  input: PropTypes.shape({
+    disabled: PropTypes.bool,
+    name: PropTypes.string,
+    onChange: PropTypes.func,
+    value: PropTypes.any
+  }),
+
+  meta: PropTypes.shape({
+    error: PropTypes.string,
+    touched: PropTypes.bool,
+    warning: PropTypes.string
+  })
 };
 
 SelectInputAgency.defaultProps = {

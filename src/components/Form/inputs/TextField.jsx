@@ -10,10 +10,11 @@ export const TextInput = ({
   label,
   styleName,
   meta,
-  type
+  type,
+  disabled,
+  name
 }) => {
   const { touched, error, warning } = meta;
-  const { disabled, name } = input;
 
   const formGroupStyles = classNames(
     'form-group',
@@ -38,6 +39,8 @@ export const TextInput = ({
     <div className={formGroupStyles}>
       {Label}
       <input
+        disabled={disabled}
+        name={name}
         {...input}
         type={type}
       />

@@ -11,6 +11,7 @@ import AppErrorPage from './containers/AppError';
 import NotFoundPage from './containers/NotFound';
 import QuoteCoverage from './components/Quote/Coverage';
 import QuoteUnderwriting from './components/Quote/Underwriting';
+import AdditionalInterests from './components/Quote/AdditionalInterests';
 import QuoteMailingAddressBilling from './components/Quote/MailingAddressBilling';
 import QuoteNotesFiles from './components/Quote/NotesFiles';
 import QuoteSummary from './components/Quote/Summary';
@@ -59,6 +60,7 @@ class Routes extends Component { // eslint-disable-line
             <Route exact path="/quote/billing" component={authHOC(QuoteMailingAddressBilling, '/quote/billing', this.props)} />
             <Route exact path="/quote/notes" component={authHOC(QuoteNotesFiles, '/quote/notes', this.props)} />
             <Route exact path="/quote/summary" component={authHOC(QuoteSummary, '/quote/summary', this.props)} />
+            <Route exact path="/quote/additionalInterests" component={authHOC(AdditionalInterests, '/quote/additionalInterests', this.props)} />
             <Route exact path="/quote/coverage" component={authHOC(QuoteCoverage, '/quote/coverage', this.props)} />
             <Route exact path="/quote/underwriting" component={authHOC(QuoteUnderwriting, '/quote/underwriting', this.props)} />
             <Route exact path="/policy/coverage" component={authHOC(PolicyCoverage, '/policy/coverage', this.props)} />

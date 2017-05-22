@@ -77,7 +77,9 @@
                         margin: 0 0 ($padding*2);
 
                         .table-view, .card-view {
+                          margin: 0 ($padding*2) 0;
                             &:first-child {
+                              margin-left: 0;
                                 .react-bs-table-container {
                                     .react-bs-table {
                                         margin-left: 0;
@@ -85,6 +87,7 @@
                                 }
                             }
                             &:last-child {
+                              margin-right: 0;
                                 .react-bs-table-container {
                                     .react-bs-table {
                                         margin-right: 0;
@@ -518,9 +521,47 @@
 
 
 
+.modal.uw-conditions {
+
+
+  .card {
+    height: auto;
+  }
+
+
+}
 
 
 
+
+
+
+
+#root {
+   overflow-y: hidden;
+
+   .csr {
+       &.app-wrapper {
+           min-width: $csr-min-width;
+           overflow-y: hidden;
+       }
+       .site-nav {
+           ul {
+               hr.quote-hr {
+                   border-width: 0;
+                   border-top: 2px dotted $warm-gray-04;
+                   margin: ($padding*2)(-$padding);
+                   padding: 0;
+               }
+               li {
+                   a {
+
+                   }
+               }
+           }
+       }
+   }
+}
 
 
 
