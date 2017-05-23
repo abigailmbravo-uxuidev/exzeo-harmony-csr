@@ -5,7 +5,8 @@ import {
 export default {
   user: {
     isAuthenticated: false,
-    token: ''
+    token: '',
+    profile: {}
   },
   search: new Map({}),
   workflowData: {},
