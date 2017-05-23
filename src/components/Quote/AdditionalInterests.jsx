@@ -167,12 +167,12 @@ export class AdditionalLinterests extends Component {
           <form id="AddAdditionalInterestPage">
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
-                <h2>Additional Interests</h2>
+                <h4>Additional Interests</h4>
                 <div className="button-group">
                   <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Mortgagee').length > 1} onClick={() => this.addAdditionalInterest('Mortgagee')} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
-                  <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => this.addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button>
                   <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Additional Insured').length > 1} onClick={() => this.addAdditionalInterest('Additional Insured')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
                   <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Additional Interest').length > 1} onClick={() => this.addAdditionalInterest('Additional Interest')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
+                  <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => this.addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button>
                   <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Billpayer').length > 0} onClick={() => this.addAdditionalInterest('Billpayer')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
                 </div>
 
@@ -184,9 +184,7 @@ export class AdditionalLinterests extends Component {
                         <a onClick={() => this.editAdditionalInterest(ai)}>
                           {/* add className based on type - i.e. mortgagee could have class of mortgagee*/}
                           <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {ai.order + 1}</label></div>
-                          <section><h4>{ai.name1}</h4><p>{ai.name2}</p><p className="address">{ai.mailingAddress.address1},
-                            {ai.mailingAddress.address2}
-                            {ai.mailingAddress.city}, {ai.mailingAddress.state} {ai.mailingAddress.zip}</p></section>
+                          <section><h4>{ai.name1}</h4><p>{ai.name2}</p><p className="address">{ai.mailingAddress.address1},&nbsp;{ai.mailingAddress.address2}&nbsp;{ai.mailingAddress.city},&nbsp;{ai.mailingAddress.state}&nbsp;{ai.mailingAddress.zip}</p></section>
                           <i className="fa fa-pencil" />
                         </a>
                       </li>

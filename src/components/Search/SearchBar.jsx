@@ -140,7 +140,7 @@ const SearchForm = (props) => {
               },
               {
                 answer: 'quote',
-                label: 'Retrieve Quote'
+                label: 'Quote Search'
               },
               {
                 answer: 'policy',

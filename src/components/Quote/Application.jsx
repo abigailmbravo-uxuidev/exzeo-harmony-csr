@@ -33,6 +33,7 @@ const handleFormSubmit = (data, dispatch, props) => {
   const workflowId = appState.instanceId;
 
   const steps = [
+{ name : 'hasUserEnteredData' , answer: 'Yes'},          
     {
       name: 'moveTo',
       data: { key: 'application' }
@@ -81,7 +82,7 @@ export const QuoteApplication = (props) => {
       { redirect }
       <ClearErrorConnect />
       <div className="route-content verify workflow">
-        <Form id="QuoteSummary" onSubmit={handleSubmit(() => quoteSummaryModal(props))} noValidate>
+        <Form id="Application" onSubmit={handleSubmit(() => quoteSummaryModal(props))} noValidate>
           <div className="scroll">
             <div className="detail-wrapper">
 
@@ -96,8 +97,8 @@ export const QuoteApplication = (props) => {
             </div>
             <div className="workflow-steps">
               <button
-                form=""
-                className="btn btn-primary" type="" disabled={underwritingExceptions && underwritingExceptions.length > 0}
+                form="Application"
+                className="btn btn-primary" type="submit" disabled={underwritingExceptions && underwritingExceptions.length > 0}
               >Send to DocuSign</button>
             </div>
 

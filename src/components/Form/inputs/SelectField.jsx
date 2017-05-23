@@ -15,10 +15,8 @@ export const SelectInput = ({
   const { onChange, name, value, disabled } = input;
   const { touched, error, warning } = meta;
   const Error = touched && (error || warning) && <span style={{ border: '1pt solid red' }}>{error || warning}</span>;
-
-  const formGroupStyles = classNames('form-group', { styleName }, { name }, Error ? 'error' : '');
+  const formGroupStyles = classNames('form-group', styleName, name, Error ? 'error' : '');
   const Hint = hint && (<FieldHint name={name} hint={hint} />);
-
   return (
     <div className={formGroupStyles}>
       <label htmlFor={name}>{label} &nbsp; {Hint}</label>

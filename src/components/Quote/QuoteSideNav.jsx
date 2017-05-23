@@ -127,7 +127,7 @@ const SideNav = (props) => {
 SideNav.propTypes = {
   ...propTypes,
   completedTasks: PropTypes.any, // eslint-disable-line
-  activateRedirectLink: PropTypes.bool,
+  activateRedirectLink: PropTypes.string,
   activateRedirect: PropTypes.bool,
   appState: PropTypes.shape({
     instanceId: PropTypes.string,

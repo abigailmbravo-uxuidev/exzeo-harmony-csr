@@ -10,6 +10,7 @@ import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import TextField from '../Form/inputs/TextField';
+import PhoneField from '../Form/inputs/PhoneField';
 import SelectField from '../Form/inputs/SelectField';
 import RadioField from '../Form/inputs/RadioField';
 import SelectFieldAgency from '../Form/inputs/SelectFieldAgency';
@@ -119,11 +120,6 @@ const handleGetDocs = (state, name) => {
 export class Coverage extends Component {
 
   componentDidMount() {
-    // const workflowId = this.props.appState.instanceId;
-    // const taskName = 'moveTo';
-    // const taskData = { key: 'customerData' };
-    // this.props.actions.cgActions.completeTask(this.props.appState.modelName, workflowId, taskName, taskData);
-
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
       ...this.props.appState.data,
       quote: this.props.quoteData,
@@ -222,7 +218,7 @@ export class Coverage extends Component {
       .then(() => {
         // now update the workflow details so the recalculated rate shows
         this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-          workflowId, { ...this.props.appState.data, recalc: false, updateWorkflowDetails: true });
+          workflowId, { ...this.props.appState.data, recalc: false, quote: this.props.quoteData, updateWorkflowDetails: true });
         // this.context.router.history.push('/quote/underwriting');
       });
   };
@@ -237,7 +233,6 @@ export class Coverage extends Component {
           <Form id="Coverage" onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
-                <h2>Coverage / Rating</h2>
                 <section className="producer ">
                   <h4>Produced By</h4>
                   <div className="flex-parent">
@@ -288,10 +283,12 @@ export class Coverage extends Component {
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
+                        {/*<PhoneField validations={['required']} label={'Primary Phone'} styleName={''} name={'pH1phone'} />*/}
                         <TextField validations={['required']} label={'Primary Phone'} styleName={''} name={'pH1phone'} />
                       </div>
                       <div className="flex-child">
-                        <TextField label={'Secondary'} styleName={''} name={'secondaryPhone'} />
+                        {/*<PhoneField label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} />*/}
+                        <TextField label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} />
                       </div>
                     </div>
                     <div className="flex-parent">
@@ -299,7 +296,6 @@ export class Coverage extends Component {
                         <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH1email'} />
                       </div>
                     </div>
-
                   </div>
 
                   <div className="policy-holder-b flex-child">
@@ -314,10 +310,12 @@ export class Coverage extends Component {
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
+                        {/*<PhoneField label={'Primary Phone'} styleName={''} name={'pH2phone'} />*/}
                         <TextField label={'Primary Phone'} styleName={''} name={'pH2phone'} />
                       </div>
                       <div className="flex-child">
-                        <TextField styleName={''} name={'secondaryPhone'} />
+                        <TextField label={'Secondary Phone'}  styleName={''} name={'pH2secondaryPhone'} />
+                        {/*<PhoneField label={'Secondary Phone'}  styleName={''} name={'pH2secondaryPhone'} />*/}
                       </div>
                     </div>
                     <div className="flex-parent">
@@ -325,9 +323,7 @@ export class Coverage extends Component {
                         <TextField validations={['email']} label={'Email Address'} styleName={''} name={'pH2email'} />
                       </div>
                     </div>
-
                   </div>
-
                 </section>
                 <section className="property flex-parent">
                   <div className="property-address flex-child">
@@ -347,17 +343,17 @@ export class Coverage extends Component {
                       </div>
                     </div>
                     <div className="flex-parent">
-                      <div className="flex-child">
+                      <div className="flex-child city">
                         <TextField
                           label={'City'} styleName={''} name={'city'} disabled
                         />
                       </div>
-                      <div className="flex-child">
+                      <div className="flex-child state">
                         <TextField
                           label={'State'} styleName={''} name={'state'} disabled
                         />
                       </div>
-                      <div className="flex-child">
+                      <div className="flex-child zip">
                         <TextField
                           label={'Zip'} styleName={''} name={'zip'} disabled
                         />
@@ -421,7 +417,7 @@ export class Coverage extends Component {
                       </div>
                       <div className="flex-child">
                         <TextField
-                          label={'Distance to Tidal Waters'} styleName={''} name={'distanceToTidalWater'} disabled
+                          label={'Dist. to Tidal Waters'} styleName={''} name={'distanceToTidalWater'} disabled
                         />
                       </div>
 
@@ -530,7 +526,7 @@ export class Coverage extends Component {
 
                       <div className="flex-child">
                         <TextField
-                          label={'Distance to Fire Hydrant'} styleName={''} input={{
+                          label={'Dist. to Fire Hydrant'} styleName={''} input={{
                             name: 'distanceToFireHydrant',
                             disabled: true,
                             value: fieldValues.distanceToFireHydrant
@@ -539,7 +535,7 @@ export class Coverage extends Component {
                       </div>
                       <div className="flex-child">
                         <TextField
-                          label={'Sq. Footage of Dwelling'} styleName={''} input={{
+                          label={'Sq. Ft. of Dwelling'} styleName={''} input={{
                             name: 'squareFeet',
                             disabled: true,
                             value: fieldValues.squareFeet
@@ -588,7 +584,7 @@ export class Coverage extends Component {
                       </div>
                       <div className="flex-child">
                         <TextField
-                          label={'Distance to Fire Station'} styleName={''} input={{
+                          label={'Dist. to Fire Station'} styleName={''} input={{
                             name: 'distanceToFireStation',
                             disabled: true,
                             value: fieldValues.distanceToFireStation
@@ -620,8 +616,17 @@ export class Coverage extends Component {
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
+                        <TextField
+                          label={'Other Structure (B)'} styleName={'coverage-b'}
+                          input={{
+                            name: 'otherStructuresOther'
+
+                          }}
+                        />
+                      </div>
+                      <div className="flex-child">
                         <SelectField
-                          name="otherStructures" component="select" styleName={''} label="Other Structure (B)" onChange={function () {}} validations={['required']} answers={[
+                          name="otherStructures" component="select" styleName={'coverage-b-percentage'} label="Percentage" onChange={function () {}} validations={['required']} answers={[
                             {
                               answer: '0',
                               label: '0%'
@@ -639,20 +644,19 @@ export class Coverage extends Component {
                           ]}
                         />
                       </div>
-                      <div className="flex-child">
-                        <TextField
-                          label={'Other'} styleName={''}
-                          input={{
-                            name: 'otherStructuresOther'
-
-                          }}
-                        />
-                      </div>
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
+                        <TextField
+                          label={'Personal Property (C)'} styleName={'coverage-c'}
+                          input={{
+                            name: 'personalPropertyOther'
+                          }}
+                        />
+                      </div>
+                      <div className="flex-child">
                         <SelectField
-                          name="personalProperty" component="select" styleName={''} label="Personal Property (C)" onChange={function () {}} validations={['required']} answers={[
+                          name="personalProperty" component="select" styleName={'coverage-c-percentage'} label="Percentage" onChange={function () {}} validations={['required']} answers={[
                             {
                               answer: '0',
                               label: '0%'
@@ -673,15 +677,7 @@ export class Coverage extends Component {
                           ]}
                         />
                       </div>
-                      <div className="flex-child">
-                        <TextField
-                          label={'Other'} styleName={''}
-                          input={{
-                            name: 'personalPropertyOther'
 
-                          }}
-                        />
-                      </div>
                       {/* <div className="flex-child">
                         <SelectField
                           name="personalPropertyCSelect" component="select" styleName={''} label="" onChange={function () {}} validations={['required']} answers={[
@@ -712,7 +708,7 @@ export class Coverage extends Component {
                     <div className="flex-parent">
                       <div className="flex-child">
                         <SelectField
-                          name="personalProperty" component="select" styleName={''} label="Personal Property (C)" onChange={function () {}} validations={['required']} answers={[
+                          name="personalLiability" component="select" styleName={''} label="Personal Liability (E)" onChange={function () {}} validations={['required']} answers={[
                             {
                               answer: '100000',
                               label: '$100,000'
@@ -798,8 +794,8 @@ export class Coverage extends Component {
                               answer: '25',
                               label: '25% of Coverage A (included)'
                             }, {
-                              answer: '45',
-                              label: '45% of Coverage A'
+                              answer: '50',
+                              label: '50% of Coverage A'
                             }
                           ]}
                         />

@@ -9,6 +9,7 @@ import {
   connect
 } from 'react-redux';
 import _ from 'lodash';
+import moment from 'moment';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 
@@ -92,7 +93,7 @@ export class WorkflowDetails extends Component {
             <dl>
               <div>
                 <dt>Property County</dt>
-                <dd>[County]</dd>
+                <dd>{this.state.quote.property.physicalAddress.county}</dd>
               </div>
             </dl>
           </section>
@@ -100,7 +101,7 @@ export class WorkflowDetails extends Component {
             <dl>
               <div>
                 <dt>Territory</dt>
-                <dd>[Territory]</dd>
+                <dd>{this.state.quote.property.territory}</dd>
               </div>
             </dl>
           </section>
@@ -108,7 +109,7 @@ export class WorkflowDetails extends Component {
             <dl>
               <div>
                 <dt>Policyholder Phone</dt>
-                <dd>[Policyholder Phone]</dd>
+                <dd>{this.state.quote.policyHolders && this.state.quote.policyHolders[0] ? this.state.quote.policyHolders[0].primaryPhoneNumber : '-' }</dd>
               </div>
             </dl>
           </section>
@@ -116,7 +117,7 @@ export class WorkflowDetails extends Component {
             <dl>
               <div>
                 <dt>Quote Status</dt>
-                <dd>[Quote Status]</dd>
+                <dd>{this.state.quote.quoteState}</dd>
               </div>
             </dl>
           </section>
@@ -124,7 +125,7 @@ export class WorkflowDetails extends Component {
             <dl>
               <div>
                 <dt>Effective Date</dt>
-                <dd>[Effective Date]</dd>
+                <dd>{moment.utc(_.get(this.state.quote, 'effectiveDate')).format('YYYY-MM-DD')}</dd>
               </div>
             </dl>
           </section>

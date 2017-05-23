@@ -17,17 +17,19 @@ const handleLogout = (props) => {
 };
 */
 
+
 export const QuoteBase = props => (
   <div className="app-wrapper csr quote">
-    {/* TODO: dynamically add quote # to title*/}
-    <Helmet><title>Quote 12-123456</title></Helmet>
+    <Helmet><title>Harmony - CSR Portal</title></Helmet>
     <NewNoteFileUploader />
     <QuoteHeader />
     <main role="document">
       <aside className="content-panel-left">
         <div className="user">
           <label htmlFor="user">Policyholder</label>
-          <p className="user-name">[PH1 firstName PH1 lastName]</p>
+          <p className="user-name">{props.appState && props.appState.data && props.appState.data.quote &&
+            props.appState.data.quote.policyHolders &&
+            props.appState.data.quote.policyHolders[0] ? `${props.appState.data.quote.policyHolders[0].firstName} ${props.appState.data.quote.policyHolders[0].lastName}` : '-'}</p>
         </div>
         <QuoteSideNav />
       </aside>
@@ -45,10 +47,25 @@ QuoteBase.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
-  ])
+  ]),
+  appState: PropTypes.shape({
+    instanceId: PropTypes.string,
+    modelName: PropTypes.string,
+    data: PropTypes.shape({
+      quote: PropTypes.object,
+      updateWorkflowDetails: PropTypes.boolean,
+      hideYoChildren: PropTypes.boolean,
+      recalc: PropTypes.boolean
+    })
+  })
 };
 
-const mapStateToProps = state => ({ user: state.user });
+const mapStateToProps = state => (
+  {
+    appState: state.appState,
+    user: state.user
+  }
+);
 const mapDispatchToProps = dispatch => ({
   actions: {
     user: bindActionCreators(userActions, dispatch)

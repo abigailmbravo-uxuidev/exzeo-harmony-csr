@@ -18,7 +18,7 @@ const handleLogout = (props) => {
 export const Policy = props => (
   <div className="app-wrapper csr policy">
     {/*TODO: dynamically add policy # to title*/}
-    <Helmet><title>Policy 12-123456-01</title></Helmet>
+    <Helmet><title>Harmony - CSR Portal</title></Helmet>
     <NewNoteFileUploader/>
     <QuoteHeader/>
     <main role="document">

@@ -20,7 +20,7 @@
 @import "partials/_notes-files-add";
 @import "partials/_csr-quote";
 @import "partials/_csr-policy";
-@import "partials/_messages";
+@import "partials/_additional-interests";
 @import "https://fonts.googleapis.com/css?family=Roboto:100,300,500"; //base
 //links
 /*------------------------------------------------------------------------------------*/
@@ -2888,15 +2888,7 @@ ul.list-cards {
                         padding-left: $padding*2;
 
                         span {
-                            @include for-phone-only {
-                              display: block;
-                            }
-                            @include for-tablet-portrait-up {
-                                display: block;
-                            }
-                            @include for-tablet-landscape-up {
-                              display: block;
-                            }
+                          display: block;
                         }
                     }
                 }
@@ -2973,6 +2965,7 @@ ul.list-cards {
         }
     }
 }
+
 
 
 

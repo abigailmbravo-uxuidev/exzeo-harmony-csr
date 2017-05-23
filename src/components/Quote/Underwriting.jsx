@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { reduxForm, Form, propTypes, change } from 'redux-form';
+import { reduxForm, Form, propTypes, change, reset } from 'redux-form';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
@@ -18,20 +18,20 @@ const handleGetQuoteData = (state) => {
 
 const handleGetQuestions = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  const uwQuestions = _.find(taskData.model.variables, { name: 'getListOfUWQuestions' }) ? _.find(taskData.model.variables, { name: 'getListOfUWQuestions' }).value.result : {};
-  return uwQuestions || [];
+  const uwQuestions = _.find(taskData.model.variables, { name: 'getListOfUWQuestions' }) ? _.find(taskData.model.variables, { name: 'getListOfUWQuestions' }).value.result : [];
+  return uwQuestions;
 };
 
 const handleInitialize = (state) => {
   const questions = handleGetQuestions(state);
   const data = handleGetQuoteData(state);
   const values = {};
-  if (questions && questions.length > 0) {
-    questions.forEach((question) => {
-      const val = _.get(data, `underwritingAnswers.${question.name}.answer`);
-      values[question.name] = val || '';
-    });
-  }
+
+  questions.forEach((question) => {
+    const val = _.get(data.underwritingAnswers, `${question.name}.answer`);
+    values[question.name] = val;
+  });
+
   return values;
 };
 
@@ -48,7 +48,7 @@ const handleInitialize = (state) => {
 export class Underwriting extends Component {
 
   componentWillMount() {
-    const { appState, actions, quoteData } = this.props;
+    const { appState, actions } = this.props;
     const workflowId = appState.instanceId;
     const steps = [
       { name: 'hasUserEnteredData', data: { answer: 'Yes' } }
@@ -58,7 +58,7 @@ export class Underwriting extends Component {
       .then(() => {
         // now update the workflow details so the recalculated rate shows
         this.props.actions.appStateActions.setAppState(appState.modelName, appState.instanceId, { ...appState.data,
-          quote: quoteData,
+          quote: this.props.quoteData,
           updateWorkflowDetails: true,
           hideYoChildren: false
         });
@@ -105,6 +105,7 @@ export class Underwriting extends Component {
 
   render() {
     const { fieldValues, handleSubmit, pristine, quoteData, questions } = this.props;
+
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
@@ -116,9 +117,13 @@ export class Underwriting extends Component {
           >
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
-                {questions && questions.length > 0 && questions.map((question, index) =>
+
+                <h4>Underwriting Questions</h4>
+
+                {questions.map((question, index) =>
+
                   <FieldGenerator
-                    data={quoteData}
+                    data={quoteData.underwritingAnswers}
                     question={question}
                     values={fieldValues}
                     key={index}
@@ -161,7 +166,7 @@ Underwriting.propTypes = {
     data: PropTypes.shape({ submitting: PropTypes.boolean })
   }),
   quoteData: PropTypes.shape(),
-  questions: PropTypes.any // eslint-disable-line
+  questions: PropTypes.arrayOf(PropTypes.shape())
 };
 
 // ------------------------------------------------
@@ -171,10 +176,10 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'Underwriting.values', {}),
-  quoteData: handleGetQuoteData(state),
   initialValues: handleInitialize(state),
-  activateRedirect: state.appState.data.activateRedirect,
-  questions: handleGetQuestions(state)
+  questions: handleGetQuestions(state),
+  quoteData: handleGetQuoteData(state),
+  activateRedirect: state.appState.data.activateRedirect
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -187,4 +192,4 @@ const mapDispatchToProps = dispatch => ({
 // ------------------------------------------------
 // wire up redux form with the redux connect
 // ------------------------------------------------
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Underwriting' })(Underwriting));
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Underwriting', enableReinitialize: true })(Underwriting));

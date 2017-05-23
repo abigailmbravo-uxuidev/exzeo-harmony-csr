@@ -201,7 +201,7 @@ export class MailingAddressBilling extends Component {
       .then(() => {
         // now update the workflow details so the recalculated rate shows
         actions.appStateActions.setAppState(appState.modelName,
-          workflowId, { updateWorkflowDetails: true });
+          workflowId, { quote: this.props.quoteData, updateWorkflowDetails: true });
       });
   };
 
