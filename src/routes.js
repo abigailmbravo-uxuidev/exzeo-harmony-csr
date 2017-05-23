@@ -15,6 +15,7 @@ import AdditionalInterests from './components/Quote/AdditionalInterests';
 import QuoteMailingAddressBilling from './components/Quote/MailingAddressBilling';
 import QuoteNotesFiles from './components/Quote/NotesFiles';
 import QuoteSummary from './components/Quote/Summary';
+import QuoteApplication from './components/Quote/Application';
 import PolicyCoverage from './components/Policy/Coverage';
 import PolicyPolicyholderAgent from './components/Policy/PolicyholderAgent';
 import PolicyMortgageBilling from './components/Policy/MortgageBilling';
@@ -63,6 +64,7 @@ class Routes extends Component { // eslint-disable-line
             <Route exact path="/quote/additionalInterests" component={authHOC(AdditionalInterests, '/quote/additionalInterests', this.props)} />
             <Route exact path="/quote/coverage" component={authHOC(QuoteCoverage, '/quote/coverage', this.props)} />
             <Route exact path="/quote/underwriting" component={authHOC(QuoteUnderwriting, '/quote/underwriting', this.props)} />
+            <Route exact path="/quote/application" component={authHOC(QuoteApplication, '/', this.props)} />
             <Route exact path="/policy/coverage" component={authHOC(PolicyCoverage, '/policy/coverage', this.props)} />
             <Route exact path="/policy/policyholder" component={authHOC(PolicyPolicyholderAgent, '/policy/policyholder', this.props)} />
             <Route exact path="/policy/billing" component={authHOC(PolicyMortgageBilling, '/policy/billing', this.props)} />

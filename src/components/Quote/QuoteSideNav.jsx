@@ -47,12 +47,16 @@ const csrLinks = [{
   label: 'Notes / Files',
   styleName: 'notes',
   exact: true
-},
-{
+}, {
   key: 'summary',
   link: '/quote/summary',
   label: 'Quote Summary',
-  styleName: 'summary',
+  styleName: 'summary'
+}, {
+  key: 'application',
+  link: '/quote/application',
+  label: 'Application',
+  styleName: 'application',
   exact: true
 }];
 
