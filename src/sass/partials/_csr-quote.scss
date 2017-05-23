@@ -1,280 +1,253 @@
 .app-wrapper.csr.quote {
-    //header
-    header {
-        div[role="banner"] {
-            .tab-tag {
-                display: flex;
-                height: 3.25rem;
-                margin: (-$padding) ($padding*2) (-$padding) (-$padding*2);
-                padding: 0 ($padding*2);
-                color: $white;
-                background: $green-darken-03;
-                justify-content: center;
-                align-items: center;
-            }
+  //header
+  header {
+    div[role="banner"] {
+      .tab-tag {
+        display: flex;
+        height: 3.25rem;
+        margin: (-$padding) ($padding*2) (-$padding) (-$padding*2);
+        padding: 0 ($padding*2);
+        color: $white;
+        background: $green-darken-03;
+        justify-content: center;
+        align-items: center;
+      }
 
-            .quote-description {
-                display: flex;
-                color: $white;
-                font-size: $font-size-h5;
-                flex-grow: 1;
-                flex-shrink: 0;
-                align-items: center;
+      .quote-description {
+        display: flex;
+        color: $white;
+        font-size: $font-size-h5;
+        flex-grow: 1;
+        flex-shrink: 0;
+        align-items: center;
 
-                label {
-                  color: $warm-gray-07;
-                  font-weight: $font-weight-normal;
-                  margin-bottom: 0;
-                  padding: 0 $padding 0 ($padding*4);
-                }
-            }
+        label {
+          margin-bottom: 0;
+          padding: 0 $padding 0 ($padding*4);
+          color: $warm-gray-07;
+          font-weight: $font-weight-normal;
         }
+      }
     }
-    //content wrapper
-    main {
-        .content-wrapper {
-            flex-grow: 1;
-            flex-shrink: 1;
-            width: auto;
-            flex-wrap: nowrap;
-            overflow: hidden;
+  }
+  //content wrapper
+  main {
+    .content-wrapper {
+      overflow: hidden;
+      width: auto;
+      flex-grow: 1;
+      flex-shrink: 1;
+      flex-wrap: nowrap;
 
+      .route-content {
+        display: flex;
+        flex-shrink: 1;
+        flex-grow: 1;
 
-                .route-content {
-                    display: flex;
-                    flex-shrink: 1;
-                    flex-grow: 1;
-                    .modal.quote-summary {
-
-                        .card-footer {
-
-                        }
-
-                    }
-
-                    form {
-                        display: flex;
-                        flex-grow: 1;
-                        flex-shrink: 1;
-
-                    }
-                    .scroll {
-                        flex-grow: 1;
-                        flex-shrink: 0;
-                        overflow-y: auto;
-                        width: 100%;
-                    }
-
-                    .survey-wrapper {
-                      flex-direction: column;
-                    }
-                    .form-group {
-
-                      .responsive-tables {
-                        display: flex;
-                        width: 100%;
-                        flex-direction: row;
-                        margin: 0 0 ($padding*2);
-
-                        .table-view, .card-view {
-                          margin: 0 ($padding*2) 0;
-                            &:first-child {
-                              margin-left: 0;
-                                .react-bs-table-container {
-                                    .react-bs-table {
-                                        margin-left: 0;
-                                    }
-                                }
-                            }
-                            &:last-child {
-                              margin-right: 0;
-                                .react-bs-table-container {
-                                    .react-bs-table {
-                                        margin-right: 0;
-                                    }
-                                }
-                            }
-                        }
-
-                        .table-view {
-                          width: 33%;
-
-                          .date {
-                         width: 60%;
-                         padding: $padding 15px $padding $padding;
-                       }
-
-                       .amount {
-                         width: 40%;
-                         padding: $padding $padding $padding 15px;
-                       }
-
-                        }
-                      }
-
-                        h4 {
-                            font-weight: normal;
-                        }
-
-                        label {
-
-                        }
-
-                        > section {
-                          margin-bottom: $padding*4;
-                          border-bottom: 1px dashed $warm-gray-01;
-                          padding-bottom: $padding*2;
-                        }
-
-                        > section:last-of-type {
-                          border: 0;
-                        }
-
-
-
-                        .producer {
-
-
-
-                          .flex-parent {
-
-
-                            .flex-child:first-child {
-                              flex: 0 0 auto;
-                            }
-                          }
-
-                        }
-
-                        .demographics {
-                            .policy-holder-a {
-                                width: 50%;
-                            }
-
-                            .policy-holder-b {
-                                width: 50%;
-                            }
-                        }
-
-                        .property {
-                            .property-address {
-                                width: 40%;
-                            }
-
-                            .property-details {
-                                width: 60%;
-
-                                .flex-parent {
-
-                                  .flex-child {
-                                    width: 25%;
-                                  }
-
-                                }
-
-                            }
-                        }
-
-                        .coverage-options {
-
-                          > .flex-child {
-                                width: 25%;
-                          }
-
-
-                            .coverages {
-                              width: 35%;
-                            }
-
-                            .other-coverages {
-                              width: 30%;
-                            }
-
-                            .deductibles {
-                              width: 20%
-                            }
-
-                            .discounts {
-                              width: 15%;
-                            }
-                        }
-
-                        .wind {
-                            .wind-col1 {
-                                width: 50%;
-                            }
-
-                            .wind-col2 {
-                                width: 50%;
-                            }
-                        }
-                    }
-                }
-
+        .modal.quote-summary {
+          .card-footer {}
         }
 
-        .underwriting-validation {
-          width: 240px;
-          border-left: dashed 1px $warm-gray-04;
-          flex-shrink: 0;
-          flex-basis: 240px;
-          padding: 0 0 ($padding*2) ($padding*2);
+        form {
+          display: flex;
+          flex-grow: 1;
+          flex-shrink: 1;
+        }
+
+        .scroll {
           overflow-y: auto;
-          height: 100%;
+          width: 100%;
+          flex-grow: 1;
+          flex-shrink: 0;
+        }
 
-          .uw-validation-header {
-              margin: ($padding*1.5) 0;
-          }
+        .survey-wrapper {
+          flex-direction: column;
+        }
 
-          section {
+        .form-group {
+          .responsive-tables {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            margin: 0 0 ($padding*2);
 
-          h5 {
+            .card-view,
+            .table-view {
+              margin: 0 ($padding*2);
 
-            font-size: 14px;
-            background: $warm-gray-02;
-            color: $warm-gray-08;
+              &:first-child {
+                margin-left: 0;
 
-            i.fa {
-              padding: ($padding*2);
-              color: $white;
-              margin: 0 ($padding*2) 0 0;
+                .react-bs-table-container {
+                  .react-bs-table {
+                    margin-left: 0;
+                  }
+                }
+              }
+
+              &:last-child {
+                margin-right: 0;
+
+                .react-bs-table-container {
+                  .react-bs-table {
+                    margin-right: 0;
+                  }
+                }
+              }
             }
 
+            .table-view {
+              width: 33%;
+
+              .date {
+                width: 60%;
+                padding: $padding 15px $padding $padding;
+              }
+
+              .amount {
+                width: 40%;
+                padding: $padding $padding $padding 15px;
+              }
+            }
           }
 
-          div {
+          h4 {
+            font-weight: normal;
+          }
 
-            /*
+          label {}
+
+          > section {
+            margin-bottom: $padding*4;
+            padding-bottom: $padding*2;
+            border-bottom: 1px dashed $warm-gray-01;
+          }
+
+          > section:last-of-type {
+            border: 0;
+          }
+
+          .producer {
+            .flex-parent {
+              .flex-child:first-child {
+                flex: 0 0 auto;
+              }
+            }
+          }
+
+          .demographics {
+            .policy-holder-a {
+              width: 50%;
+            }
+
+            .policy-holder-b {
+              width: 50%;
+            }
+          }
+
+          .property {
+            .property-address {
+              width: 40%;
+            }
+
+            .property-details {
+              width: 60%;
+
+              .flex-parent {
+                .flex-child {
+                  width: 25%;
+                }
+              }
+            }
+          }
+
+          .coverage-options {
+            > .flex-child {
+              width: 25%;
+            }
+
+            .coverages {
+              width: 35%;
+            }
+
+            .other-coverages {
+              width: 30%;
+            }
+
+            .deductibles {
+              width: 20%;
+            }
+
+            .discounts {
+              width: 15%;
+            }
+          }
+
+          .wind {
+            .wind-col1 {
+              width: 50%;
+            }
+
+            .wind-col2 {
+              width: 50%;
+            }
+          }
+        }
+      }
+    }
+
+    .underwriting-validation {
+      overflow-y: auto;
+      width: 240px;
+      height: 100%;
+      padding: 0 0 ($padding*2) ($padding*2);
+      border-left: dashed 1px $warm-gray-04;
+      flex-shrink: 0;
+      flex-basis: 240px;
+
+      .uw-validation-header {
+        margin: ($padding*1.5) 0;
+      }
+
+      section {
+        h5 {
+          color: $warm-gray-08;
+          background: $warm-gray-02;
+          font-size: 14px;
+
+          i.fa {
+            margin: 0 ($padding*2) 0 0;
+            padding: ($padding*2);
+            color: $white;
+          }
+        }
+
+        div {
+          /*
             border: solid 1px $warm-gray-04;
             margin: ($padding*2) ($padding*2) ($padding*4);
             padding: 0;
             border-radius: 5px;
             */
-
           ul {
             margin: 0 0 ($padding*4) ($padding*2);
 
             li {
-              font-size: 12px;
-              padding: 0;
-              margin: ($padding*2.25);
-
               //border-bottom: solid 1px $warm-gray-04;
               display: list-item;
+              margin: ($padding*2.25);
+              padding: 0;
               list-style: none;
+              font-size: 12px;
             }
 
             li:last-child {
               border: 0;
             }
-
-
           }
-
         }
-
       }
-
 
       .msg-error {
         h5 {
@@ -282,6 +255,7 @@
             background-color: $red;
           }
         }
+
         ul {
           i.fa {
             color: $red;
@@ -295,6 +269,7 @@
             background-color: $orange;
           }
         }
+
         ul {
           i.fa {
             color: $orange;
@@ -308,25 +283,18 @@
             background-color: $bright-blue;
           }
         }
+
         ul {
           i.fa {
             color: $bright-blue;
           }
         }
       }
-
-
-
-        }
     }
+  }
 }
 
-
-
-
-
 .modal.quote-summary {
-
   .btn-footer.flex-parent {
     display: flex;
     flex-direction: row;
@@ -338,33 +306,15 @@
     .form-group {
       margin: 0;
     }
-
   }
-
 }
 
+.file-list,
+.notes-list {
+  .react-bs-table-tool-bar {
+    margin: 0 0 ($padding*2);
 
-.notes-list, .file-list {
-
-    .react-bs-table-tool-bar {
-      margin: 0 0 ($padding*2);
-
-
-      .toolbar {
-
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        justify-content: flex-start;
-        align-content: stretch;
-        align-items: flex-start;
-
-    .input-group {
-      order: 0;
-      flex: 0 1 auto;
-      align-self: auto;
-      margin: 0 ($padding) 0 0;
-
+    .toolbar {
       display: flex;
       flex-direction: row;
       flex-wrap: nowrap;
@@ -372,208 +322,192 @@
       align-content: stretch;
       align-items: flex-start;
 
+      .input-group {
+        display: flex;
+        flex-direction: row;
+        margin: 0 ($padding) 0 0;
+        order: 0;
+        flex: 0 1 auto;
+        align-self: auto;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-content: stretch;
+        align-items: flex-start;
 
         .btn {
+          height: 38px;
+          margin: 0 2px 0 0;
+          text-transform: capitalize;
+          border: 0;
+          border-radius: 0;
+          line-height: 1.5;
           order: 0;
           flex: 0 1 auto;
           align-self: auto;
-          margin: 0 2px 0 0;
           @include button-variant($warm-gray-08, $warm-gray-02, $warm-gray-02);
-          border-radius: 0;
-          height: 38px;
-          line-height: 1.5;
-          text-transform: capitalize;
-          border: 0;
-
         }
 
         .btn:first-child {
-            border-radius: $border-radius 0 0 $border-radius;
+          border-radius: $border-radius 0 0 $border-radius;
         }
 
         .btn:last-child {
-            border-radius: 0 $border-radius $border-radius 0;
+          border-radius: 0 $border-radius $border-radius 0;
         }
+      }
 
-
-
+      input {
+        height: 38px;
+        order: 0;
+        flex: 1 1 auto;
+        align-self: auto;
+      }
     }
-
-    input {
-      height: 38px;
-      order: 0;
-      flex: 1 1 auto;
-      align-self: auto;
-    }
-
-
-
-}
-    }
-
   }
-
-
-
+}
 
 .notes-list {
-
   .react-bs-table-tool-bar {
-
     .toolbar {
-
-  .input-group {
-  .btn-notes {
-    color: $white;
-    background: $bright-blue-darken-04;
-  }
-}
-}
-}
-
-  .react-bs-table {
-
-    .table-bordered {
-        > tbody {
-
-          > tr:nth-of-type(even) {
-              background-color: transparent;
-          }
-
-        tr {
-
-
-            td {
-
-                thead > tr,
-                thead > tr > th {
-                    background: transparent;
-                }
-
-                .react-bs-table-container {
-                    border: solid 2px $warm-gray-01;
-                }
-            }
+      .input-group {
+        .btn-notes {
+          color: $white;
+          background: $bright-blue-darken-04;
         }
-
-        tr:nth-child(4n+4),
-        tr:nth-child(4n+3) {
-            background-color: $warm-gray-01;
-
-            td {
-                .react-bs-table-container {
-                    border: solid 2px $white;
-                }
-            }
-        }
+      }
     }
   }
+
+  .react-bs-table {
+    .table-bordered {
+      > tbody {
+        > tr:nth-of-type(even) {
+          background-color: transparent;
+        }
+
+        tr {
+          td {
+            thead > tr,
+            thead > tr > th {
+              background: transparent;
+            }
+
+            .react-bs-table-container {
+              border: solid 2px $warm-gray-01;
+            }
+          }
+        }
+
+        tr:nth-child(4n+3),
+        tr:nth-child(4n+4) {
+          background-color: $warm-gray-01;
+
+          td {
+            .react-bs-table-container {
+              border: solid 2px $white;
+            }
+          }
+        }
+      }
+    }
   }
-
 }
-
-
 
 .file-list {
-
   .react-bs-table-tool-bar {
-
     .toolbar {
-
-  .input-group {
-
-  .btn-files {
-    color: $white;
-    background: $bright-blue-darken-04;
+      .input-group {
+        .btn-files {
+          color: $white;
+          background: $bright-blue-darken-04;
+        }
+      }
+    }
   }
 }
-}
-}
-}
-
-
-
-
 
 .verify {
-
   .workflow-steps {
-
     .btn {
-        margin-top: 25px;
-        align-self: flex-start;
-        height: 36px;
+      height: 36px;
+      margin-top: 25px;
+      align-self: flex-start;
     }
 
     input {
       height: 36px;
     }
-
   }
-
-
 }
-
-
-
-
-
-
-
 
 .modal.uw-conditions {
-
-
   .card {
     height: auto;
+
+    ul {
+      list-style: disc;
+
+      li {
+        display: list-item;
+        margin-left: $padding*2;
+
+        ul {
+          list-style: circle;
+        }
+      }
+    }
   }
-
-
 }
-
-
-
-
-
-
 
 #root {
-   overflow-y: hidden;
+  overflow-y: hidden;
 
-   .csr {
-       &.app-wrapper {
-           min-width: $csr-min-width;
-           overflow-y: hidden;
-       }
-       .site-nav {
-           ul {
-               hr.quote-hr {
-                   border-width: 0;
-                   border-top: 2px dotted $warm-gray-04;
-                   margin: ($padding*2)(-$padding);
-                   padding: 0;
-               }
-               li {
-                   a {
+  .csr {
+    &.app-wrapper {
+      overflow-y: hidden;
+      min-width: $csr-min-width;
+    }
 
-                   }
-               }
-           }
-       }
-   }
+    .site-nav {
+      ul {
+        hr.quote-hr {
+          margin: ($padding*2)(-$padding);
+          padding: 0;
+          border-width: 0;
+          border-top: 2px dotted $warm-gray-04;
+        }
+
+        li {
+          a {}
+        }
+      }
+    }
+  }
 }
 
+#root {
+  overflow-y: hidden;
 
+  .csr {
+    &.app-wrapper {
+      overflow-y: hidden;
+      min-width: $csr-min-width;
+    }
 
+    .site-nav {
+      ul {
+        hr.quote-hr {
+          margin: ($padding*2)(-$padding);
+          padding: 0;
+          border-width: 0;
+          border-top: 2px dotted $warm-gray-04;
+        }
 
-
-
-
-
-
-
-
-
-
-
+        li {
+          a {}
+        }
+      }
+    }
+  }
+}
 /* */
