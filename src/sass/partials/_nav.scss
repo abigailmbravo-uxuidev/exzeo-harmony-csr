@@ -1,5 +1,5 @@
-
 //vertical tabs
+
 .side-panel {
   nav {
     display: flex;
@@ -59,37 +59,41 @@
       display: flex;
       margin: 0;
       //background-color: rgba($white, .25
-      a {
-        display: flex;
-        height: 3rem;
-        cursor: pointer;
-        border-left: ($padding/2) solid rgba($white, 0);
-        color: $white;
-        align-items: center;
-        flex-grow: 1;
-        text-decoration: none;
-        margin: 0 (-$padding*2) 0 (-$padding);
-
-        &.active {
-          cursor: default;
-          border-left: ($padding/2) solid $bright-blue;
-          background-color: $white;
+      span {
+        a {
+          display: flex;
+          width: 11rem;
+          height: 3rem;
+          margin: 0 (-$padding*2) 0 (-$padding);
+          cursor: pointer;
           text-decoration: none;
+          color: $warm-gray-07;
+          border-left: ($padding/2) solid rgba($white, 0);
+          align-items: center;
+          flex-grow: 1;
 
-          i {
-            width: 4rem - ($padding/2);
+          &.active {
+            cursor: default;
             text-decoration: none;
-          }
+            color: $bright-blue-darken-04;
+            border-left: ($padding/2) solid $bright-blue-darken-04;
+            background-color: $white;
 
-          span {
-            color: $body-color;
-            text-decoration: none;
-          }
-          &:hover {
-              cursor: default;
-              border-left: ($padding/2) solid $bright-blue;
-              background-color: $white;
+            i {
+              width: 4rem - ($padding/2);
               text-decoration: none;
+            }
+
+            span {
+              text-decoration: none;
+              color: $body-color;
+            }
+
+            &:hover {
+              cursor: default;
+              text-decoration: none;
+              border-left: ($padding/2) solid $bright-blue-darken-04;
+              background-color: $white;
 
               i {
                 width: 4rem - ($padding/2);
@@ -97,40 +101,43 @@
               }
 
               span {
-                color: $body-color;
                 text-decoration: none;
+                color: $body-color;
               }
+            }
           }
-        }
-        &:hover {
+
+          &:hover {
             cursor: pointer;
+            text-decoration: none;
             border-left: ($padding/2) solid rgba($bright-blue, .2);
             background-color: rgba($white, .1);
-            text-decoration: none;
+
             span {
+              text-decoration: none;
               color: $white;
+            }
+          }
+
+          i {
+            width: 4rem;
+            text-align: center;
+            text-decoration: none;
+            @include for-phone-only {
+              width: 3.5rem;
               text-decoration: none;
             }
-        }
+          }
 
-        i {
-          width: 4rem;
-          text-align: center;
-          text-decoration: none;
-          @include for-phone-only {
-            width: 3.5rem;
+          span {
             text-decoration: none;
-          }
-        }
-
-        span {
-          color: $white;
-          text-decoration: none;
-          @include for-tablet-portrait-up {
-            display: none;
-          }
-          @include for-tablet-landscape-up {
-            display: flex;
+            color: $white;
+            @include for-tablet-portrait-up {
+              display: none;
+            }
+            @include for-tablet-landscape-up {
+              display: flex;
+            }
           }
         }
       }

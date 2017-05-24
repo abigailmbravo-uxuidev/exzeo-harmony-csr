@@ -870,99 +870,7 @@ main[role="document"] {
         }
     }
 
-    .site-nav {
-        ul {
-            li {
-                a {
-                    i,
-                    span {
-                        color: $warm-gray-07;
-                    }
 
-                    &.active {
-                        border-left-color: $bright-blue-darken-04;
-                        font-weight: $font-weight-bold;
-
-                        i {
-                            color: $bright-blue-darken-04;
-                        }
-
-                        span {
-                            color: $bright-blue-darken-04;
-                        }
-
-                        &:hover {
-                            text-decoration: none;
-                        }
-                    }
-
-                    &.agent-dashboard {
-                        i {
-                            &:before {
-                                content: "\f009";
-                            }
-                        }
-                    }
-
-                    &.agent-flood {
-                        i {
-                            &:before {
-                                content: "\f043";
-                            }
-                        }
-
-                        &.retrieve {
-                            i {
-                                &:before {
-                                    content: "\f1da";
-                                }
-                            }
-                        }
-
-                        &.new {
-                            i {
-                                &:before {
-                                    content: "\f055";
-                                }
-                            }
-                        }
-                    }
-
-                    &.agent-homeowners {
-                        i {
-                            &:before {
-                                content: "\f015";
-                            }
-                        }
-
-                        &.retrieve {
-                            i {
-                                &:before {
-                                    content: "\f1da";
-                                }
-                            }
-                        }
-
-                        &.new {
-                            i {
-                                &:before {
-                                    content: "\f055";
-                                }
-                            }
-                        }
-                    }
-
-                    &.csr-dashboard {
-                        i {
-                            &:before {
-                                content: "\f009";
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
     .csr {
         width: auto;
         min-height: 4.75rem;
@@ -2884,11 +2792,9 @@ ul.list-cards {
           }
             ul {
                 li {
-                    a {
-                        padding-left: $padding*2;
-
-                        span {
-                          display: block;
+                    span {
+                        a {
+                            padding-left: $padding*2;
                         }
                     }
                 }

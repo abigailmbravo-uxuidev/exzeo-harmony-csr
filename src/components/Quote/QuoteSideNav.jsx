@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import { Redirect } from 'react-router';
 import { reduxForm, propTypes } from 'redux-form';
 import * as appStateActions from '../../actions/appStateActions';
@@ -105,9 +106,12 @@ const SideNav = (props) => {
             </a>
           </li> :
           <li key={index}>
-            <a className={agentLink.styleName} activeClassName="active" onClick={() => goToPage(agentLink.link, agentLink.key, props)}>
+            <span className={agentLink.styleName} onClick={() => goToPage(agentLink.link, agentLink.key, props)}>
+              <NavLink exact={agentLink.exact} className={agentLink.styleName} to={agentLink.link} activeClassName="active">{agentLink.label}</NavLink>
+            </span>
+            {/*<NavLink exact={agentLink.exact} className={agentLink.styleName} to={agentLink.link} activeClassName="active">
               <span>{agentLink.label}</span>
-            </a>
+            </NavLink>*/}
           </li>
       ))}
         <hr className="quote-hr" />

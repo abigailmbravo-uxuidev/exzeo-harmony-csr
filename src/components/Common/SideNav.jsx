@@ -13,8 +13,8 @@ import { NavLink } from 'react-router-dom';
  */
 const agentLinks = [{
   link: '/',
-  label: 'DASHBOARD',
-  styleName: 'agent-dashboard',
+  label: 'Dashboard',
+  styleName: 'csr-dashboard',
   exact: true
 }];
 
