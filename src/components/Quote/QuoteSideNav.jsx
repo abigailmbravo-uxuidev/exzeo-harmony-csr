@@ -52,7 +52,7 @@ const csrLinks = [{
   key: 'summary',
   link: '/quote/summary',
   label: 'Quote Summary',
-  styleName: 'summary'
+  styleName: 'quote-summary'
 }, {
   key: 'application',
   link: '/quote/application',
@@ -81,6 +81,7 @@ const goToPage = (link, key, props) => {
     .then(() => {
       props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, {
         ...props.appState.data,
+        selectedLink: key,
         activateRedirectLink: link,
         activateRedirect: true,
         updateWorkflowDetails: true
@@ -92,7 +93,6 @@ const SideNav = (props) => {
   const redirect = (props.activateRedirect)
     ? (<Redirect to={props.activateRedirectLink} />)
     : null;
-
   return (
     <nav className="site-nav">
       { redirect }
@@ -107,11 +107,8 @@ const SideNav = (props) => {
           </li> :
           <li key={index}>
             <span className={agentLink.styleName} onClick={() => goToPage(agentLink.link, agentLink.key, props)}>
-              <NavLink exact={agentLink.exact} className={agentLink.styleName} to={agentLink.link} activeClassName="active">{agentLink.label}</NavLink>
+              <a className={props.appState.data.selectedLink === agentLink.key ? `${agentLink.styleName} active` : `${agentLink.styleName}` }>{agentLink.label}</a>
             </span>
-            {/*<NavLink exact={agentLink.exact} className={agentLink.styleName} to={agentLink.link} activeClassName="active">
-              <span>{agentLink.label}</span>
-            </NavLink>*/}
           </li>
       ))}
         <hr className="quote-hr" />

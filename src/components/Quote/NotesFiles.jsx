@@ -190,26 +190,18 @@ export const NotesFiles = (props) => {
                 <Form id="NotesFiles" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
                     <div className="scroll">
                         <div className="form-group survey-wrapper" role="group">
-
-                            
-
+                          <h4>History</h4>
                           <section>
-
                             <div className="notes-list">
                               <NoteList />
                             </div>
-
                             <div className="file-list" hidden>
                               <Files />
                             </div>
-
                           </section>
-
                         </div>
-
                     </div>
                 </Form>
-
             </div>
         </QuoteBaseConnect>
     );

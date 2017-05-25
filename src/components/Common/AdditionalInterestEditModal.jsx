@@ -18,14 +18,15 @@ const handleInitialize = (state) => {
     _id: selectedAI._id, // eslint-disable-line
       name1: selectedAI.name1,
       name2: selectedAI.name2,
-      phoneNumber: String(selectedAI.phoneNumber),
+      phoneNumber: String(selectedAI.phoneNumber).length > 0 ? selectedAI.phoneNumber : null,
       address1: selectedAI.mailingAddress.address1,
       address2: selectedAI.mailingAddress.address2,
       city: selectedAI.mailingAddress.city,
       state: selectedAI.mailingAddress.state,
       zip: String(selectedAI.mailingAddress.zip),
       referenceNumber: selectedAI.referenceNumber,
-      type: selectedAI.type
+      type: selectedAI.type,
+      order: selectedAI.order
     };
   }
 
@@ -52,6 +53,8 @@ const AdditionalInterestEditModal = ({ appState, handleSubmit, verify, hideAddit
       </div>
       <div className="card-block">
         <HiddenField name={'_id'} />
+        <HiddenField name={'order'} />
+
         <TextField label={'Name 1'} styleName={''} name={'name1'} validations={['required']} />
         <TextField label={'Name 2'} styleName={''} name={'name2'} />
 
@@ -265,7 +268,7 @@ const AdditionalInterestEditModal = ({ appState, handleSubmit, verify, hideAddit
           <TextField label={'Zip Code'} styleName={''} name={'zip'} validations={['required']} />
         </div>
         <div className="flex-form">
-          <TextField label={'Phone Number'} styleName={''} name={'phoneNumber'} validations={['phone']} />
+          <TextField label={'Phone Number'} styleName={'phone'} name={'phoneNumber'} validations={['phone']} />
           {/*<PhoneField label={'Phone Number'} styleName={'phone'} name={'phoneNumber'} validations={['phone']} />*/}
           <TextField label={'Reference Number'} styleName={''} name={'referenceNumber'} />
         </div>
@@ -313,5 +316,5 @@ const mapDispatchToProps = dispatch => ({
 // wire up redux form with the redux connect
 // ------------------------------------------------
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
-  form: 'AdditionalInterestEditModal'
+  form: 'AdditionalInterestEditModal', enableReinitialize: true
 })(AdditionalInterestEditModal));

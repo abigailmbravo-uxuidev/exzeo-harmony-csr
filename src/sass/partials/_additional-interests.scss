@@ -75,3 +75,39 @@
     }
   }
 }
+
+.additional-interests-details {
+    .card-icon {
+        .fa {
+          &.Mortgagee {
+            &:before {
+              content: "\f19c";
+            }
+          }
+
+          &.Lienholder {
+            &:before {
+              content: "\F27E";
+            }
+          }
+
+          &.Insured {
+            &:before {
+              content: "\F234";
+            }
+          }
+
+          &.Interest {
+            &:before {
+              content: "\F2B5";
+            }
+          }
+
+          &.Billpayer {
+            &:before {
+              content: "\F0D6";
+            }
+          }
+        }
+    }
+}

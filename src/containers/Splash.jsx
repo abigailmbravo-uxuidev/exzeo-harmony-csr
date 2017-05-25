@@ -35,7 +35,7 @@ export class Splash extends Component {
         props.actions.appStateActions.setAppState(
           props.appState.modelName,
           workflowId,
-          { recalc: false, updateWorkflowDetails: true }
+          { ...props.appState.data, recalc: false, updateWorkflowDetails: true, selectedLink: 'customerData' }
         );
         this.context.router.history.push('/quote/coverage');
       });
@@ -59,7 +59,7 @@ export class Splash extends Component {
         props.actions.appStateActions.setAppState(
           props.appState.modelName,
           workflowId,
-          { recalc: false, updateWorkflowDetails: true }
+          { recalc: false, updateWorkflowDetails: true, selectedLink: 'customerData'  }
         );
         this.context.router.history.push('/quote/coverage');
       });

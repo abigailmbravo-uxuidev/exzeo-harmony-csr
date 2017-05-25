@@ -10,7 +10,7 @@ const ShareConfirmation = ({ hideShareConfirmationModal }) => <div className="mo
       <h4><i className="fa fa-envelope" /> Email Sent</h4>
     </div>
     <div className="card-block">
-      <h3>Email Sent Sucessfully</h3>
+      <h3>Email Sent Successfully</h3>
     </div>
     <div className="card-footer">
       <div className="btn-footer">

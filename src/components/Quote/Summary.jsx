@@ -84,8 +84,10 @@ const Summary = (props) => {
 
   const taskData = (tasks && appState && tasks[appState.modelName]) ? tasks[appState.modelName].data : {};
 
-
-  const selectedAgent = _.find(taskData.model.variables, { name: 'getAgentDocument' }) ? _.find(taskData.model.variables, { name: 'getAgentDocument' }).value.result : {};
+  // hardcoded because cg removed the 'getAgentDocument' step from the model.. Will be removed once model is updated and implemented on th UI
+  const selectedAgent = _.find(taskData.model.variables, { name: 'getAgentDocument' }) ?
+  _.find(taskData.model.variables, { name: 'getAgentDocument' }).value.result :
+  { firstName: 'Wally', lastName: 'Wagoner' };
 
   if (quoteData) {
     property = quoteData.property;
@@ -98,7 +100,7 @@ const Summary = (props) => {
   return (
     <QuoteBaseConnect>
       <ClearErrorConnect />
-      <div className="route-content verify workflow">
+      <div className="route-content summary workflow">
 
         <div className="scroll">
 
@@ -114,11 +116,11 @@ const Summary = (props) => {
             }
           {quoteData && quoteData.underwritingExceptions && quoteData.underwritingExceptions.length === 0 &&
           <div className="detail-wrapper">
-            <h4>Quote Details</h4>
-            <div className="workflow-steps">
+            <h4>Share Quote</h4>
+            <div className="share-quote">
               <Form id="Summary" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
-                <TextField validations={['required']} label={'Name'} styleName={''} name={'name'} />
-                <TextField validations={['required', 'email']} label={'Email Address'} styleName={''} name={'emailAddr'} />
+                <TextField validations={['required']} label={'Name'} styleName={'share-name'} name={'name'} />
+                <TextField validations={['required', 'email']} label={'Email Address'} styleName={'share-email'} name={'emailAddr'} />
                 <button
                   disabled={props.appState.data.submitting}
                   form="Summary"
@@ -126,12 +128,13 @@ const Summary = (props) => {
                 >Share</button>
               </Form>
             </div>
+            <h4>Quote Details</h4>
             <div className="detail-group property-details">
               <section className="display-element">
                 <dl className="quote-number">
                   <div>
                     <dt>Quote Number</dt>
-                    <dd>quoteNumber</dd>
+                    <dd>{quoteData.quoteNumber}</dd>
                   </div>
                 </dl>
                 <dl className="property-information">
@@ -163,90 +166,91 @@ const Summary = (props) => {
                 </dl>
               </section>
             </div>
+            <h4>Coverage / Rating</h4>
             <div className="detail-group quote-details">
               <section className="display-element">
                 <dl>
                   <div>
                     <dt>Yearly Premium</dt>
-                    <dd>{quoteData.rating ? quoteData.rating.totalPremium : '-'}</dd>
+                    <dd>${quoteData.rating ? quoteData.rating.totalPremium : '-'}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>A. Dwelling</dt>
-                    <dd>{coverageLimits.dwelling.amount}</dd>
+                    <dd>${coverageLimits.dwelling.amount}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>B. Other Structures</dt>
-                    <dd>{coverageLimits.otherStructures.amount}</dd>
+                    <dd>${coverageLimits.otherStructures.amount}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>C. Personal Property</dt>
-                    <dd>{coverageLimits.personalProperty.amount}</dd>
+                    <dd>${coverageLimits.personalProperty.amount}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>D. Loss Of Use</dt>
-                    <dd>{coverageLimits.lossOfUse.amount}</dd>
+                    <dd>${coverageLimits.lossOfUse.amount}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>E. Personal Liability</dt>
-                    <dd>{coverageLimits.personalLiability.amount}</dd>
+                    <dd>${coverageLimits.personalLiability.amount}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>F. Medical Payments</dt>
-                    <dd>{coverageLimits.medicalPayments.amount}</dd>
+                    <dd>${coverageLimits.medicalPayments.amount}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>Personal Property Replacement Cost</dt>
-                    <dd>{coverageOptions.personalPropertyReplacementCost.answer}</dd>
+                    <dd>{coverageOptions.personalPropertyReplacementCost.answer === true ? 'Yes' : 'No'}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>Mold Property</dt>
-                    <dd>{coverageLimits.moldProperty.amount}</dd>
+                    <dd>${coverageLimits.moldProperty.amount}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>Mold Liability</dt>
-                    <dd>{coverageLimits.moldLiability.amount}</dd>
+                    <dd>${coverageLimits.moldLiability.amount}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>Ordinance or Law</dt>
-                    <dd>{coverageLimits.dwelling.amount}</dd>
+                    <dd>${coverageLimits.ordinanceOrLaw.amount}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>All Other Perils Deductible</dt>
-                    <dd>{deductibles.allOtherPerils.amount}</dd>
+                    <dd>${deductibles.allOtherPerils.amount}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>Hurricane Deductible</dt>
-                    <dd>{deductibles.hurricane.calculatedAmount}</dd>
+                    <dd>${deductibles.hurricane.calculatedAmount}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>Sinkhole Deductible</dt>
-                    <dd>{coverageLimits.dwelling.amount}</dd>
+                    <dd>${(coverageLimits.dwelling.amount * 0.10)}</dd>
                   </div>
                 </dl>
               </section>
@@ -274,11 +278,12 @@ const Summary = (props) => {
                          </dl>)) : null}
               </section>
             </div>
+            <h4>Mailing Address</h4>
             <div className="detail-group mailing-address-details">
               <section className="display-element">
                 <dl>
                   <div>
-                    <dt>Mailing Address</dt>
+                    <dt>Address</dt>
                     <dd>{mailingAddress.address1}</dd>
                     <dd>{mailingAddress.address2}</dd>
                   </div>
@@ -286,8 +291,7 @@ const Summary = (props) => {
                 <dl>
                   <div>
                     <dt>City/State/Zip</dt>
-                    <dd>{mailingAddress.city}, {mailingAddress.state}
-                      {mailingAddress.zip}</dd>
+                    <dd>{mailingAddress.city}, {mailingAddress.state} {mailingAddress.zip}</dd>
                   </div>
                 </dl>
                 <dl>
@@ -300,21 +304,22 @@ const Summary = (props) => {
             </div>
             <div className="detail-group additional-interests-details">
               <section className="display-element additional-interests">
+                <h4>Additional Interests</h4>
                 {(quoteData.additionalInterests && quoteData.additionalInterests.length > 0) ?
                         quoteData.additionalInterests.map((additionalInterest, index) => (_.trim(additionalInterest.name1).length > 0 &&
                         <div className="card" key={`ph${index}`}>
-                          <div className="icon-wrapper">
+                          <div className="card-icon">
                             <i className={`fa ${additionalInterest.type}`} />
-                            <p>{handlePrimarySecondaryTitles(additionalInterest.type, additionalInterest.order)}</p>
+                            <label>{handlePrimarySecondaryTitles(additionalInterest.type, additionalInterest.order)}</label>
                           </div>
                           <section>
-                            <h4>{`${additionalInterest.name1}`} {`${additionalInterest.name2}`}</h4>
-                            <p>{`${additionalInterest.mailingAddress.address1}`} {`${additionalInterest.mailingAddress.address2}`}</p>
+                            <h4>{`${additionalInterest.name1}`} {`${additionalInterest.name2 || ''}`}</h4>
+                            <p>{`${additionalInterest.mailingAddress.address1}`} {`${additionalInterest.mailingAddress.address2 || ''}`}</p>
                             <p>{`${additionalInterest.mailingAddress.city}`}, {`${additionalInterest.mailingAddress.state}`} {`${additionalInterest.mailingAddress.zip}`}</p>
                           </section>
                           <div className="ref-number">
                             <label htmlFor="ref-number">Reference Number</label>
-                            <span>{`${additionalInterest.referenceNumber}`}</span>
+                            <span>{`${additionalInterest.referenceNumber || '-'}`}</span>
                           </div>
                         </div>)) : null}
               </section>
@@ -367,4 +372,4 @@ const mapDispatchToProps = dispatch => ({
 // ------------------------------------------------
 // wire up redux form with the redux connect
 // ------------------------------------------------
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Summary' })(Summary));
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Summary', enableReinitialize: true })(Summary));

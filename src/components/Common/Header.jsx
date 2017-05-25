@@ -21,9 +21,9 @@ export const Header = props => (
   <header>
     <div role="banner">
       <button className="btn-icon btn-bars"><i className="fa fa-bars" /></button>
-      <div id="logo" className="logo">
+      <a href="/" id="logo" className="logo">
         <img src={logo} alt="Harmony" />
-      </div>
+      </a>
       <button className="btn-icon btn-ellipsis-v"><i className="fa fa-ellipsis-v" /></button>
       <nav className="fade-in">
         <a href="" className="active">Policy Management</a>

@@ -11,15 +11,14 @@ export const QuoteHeader = props => (
         <button className="btn-icon btn-bars"><i className="fa fa-bars" /></button>
         <span>QUOTE</span>
       </div>
-      <div id="logo" className="logo">
+      <a href="/" id="logo" className="logo">
         <img src={logo} alt="Harmony" />
-      </div>
-      <div className="quote-description"><label>Type</label>{props.appState && props.appState.data && props.appState.data.quote ? `${props.appState.data.quote.product}` : '-'}
-        <label>Quote Number</label>{props.appState && props.appState.data && props.appState.data.quote ? `${props.appState.data.quote.quoteNumber}` : '-'}</div>
-      <button className="btn-icon btn-ellipsis-v"><i className="fa fa-ellipsis-v" /></button>
+      </a>
+      {/*<div className="quote-description"><label>Type</label>{props.appState && props.appState.data && props.appState.data.quote ? `${props.appState.data.quote.product}` : '-'}
+        <label>Quote Number</label>{props.appState && props.appState.data && props.appState.data.quote ? `${props.appState.data.quote.quoteNumber}` : '-'}</div>*/}
+      {/*<button className="btn-icon btn-ellipsis-v"><i className="fa fa-ellipsis-v" /></button>*/}
       <nav>
         <button className="btn note btn-action" type="button"><i className="fa fa-plus" /> Note/File</button>
-        <button className="btn close btn-action" type="button"><i className="fa fa-times" /></button>
       </nav>
     </div>
   </header>

@@ -272,5 +272,5 @@ const mapDispatchToProps = dispatch => ({
 // wire up redux form with the redux connect
 // ------------------------------------------------
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
-  form: 'AdditionalInterestModal'
+  form: 'AdditionalInterestModal', enableReinitialize: true
 })(AdditionalInterestModal));

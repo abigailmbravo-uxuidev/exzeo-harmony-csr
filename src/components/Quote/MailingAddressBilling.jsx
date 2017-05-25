@@ -216,10 +216,9 @@ export class MailingAddressBilling extends Component {
           <Form id="MailingAddressBilling" onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
-                <h2>Mailing Address</h2>
+                <h4>Mailing Address</h4>
 
-                <section>
-
+                <section className="mailing-address-details">
 
                   <RadioField
                     label={'Is the mailing address the same as the property address?'} name={'sameAsProperty'} onChange={this.fillMailForm}
@@ -234,15 +233,15 @@ export class MailingAddressBilling extends Component {
                     ]}
                   />
 
-                  <TextField validations={['required']} label={'Address 1'} styleName={''} name={'address1'} />
+                  <TextField validations={['required']} label={'Address 1'} styleName={'address-1'} name={'address1'} />
 
-                  <TextField label={'Address 2'} styleName={''} name={'address2'} />
+                  <TextField label={'Address 2'} styleName={'address-2'} name={'address2'} />
 
-                  <div className="flex-parent">
-                    <div className="flex-child">
+                  <div className="flex-parent flex-form">
+                    <div className="flex-child city">
                       <TextField validations={['required']} label={'City'} styleName={''} name={'city'} />
                     </div>
-                    <div className="flex-child">
+                    <div className="flex-child state">
                       <SelectField
                         name="state" component="select" styleName={''} label="State" validations={['required']} answers={[
                           {
@@ -450,7 +449,7 @@ export class MailingAddressBilling extends Component {
                                                                   : 'Field Required')]}
                       />
                     </div>
-                    <div className="flex-child">
+                    <div className="flex-child zip">
                       <TextField validations={['required']} label={'Zip'} styleName={''} name={'zip'} />
                     </div>
                   </div>
@@ -459,7 +458,7 @@ export class MailingAddressBilling extends Component {
                 </section>
 
                 <section>
-                  <h2>Billing</h2>
+                  <h4>Billing</h4>
 
                   <div className="flex-parent">
                     <div className="flex-child">
@@ -486,18 +485,12 @@ export class MailingAddressBilling extends Component {
                          _.find(paymentPlanResult.options, ['billToId', this.props.billToValue]).payPlans : []}
                           paymentPlans={paymentPlanResult.paymentPlans}
                         />
-
                       </div>
                     </div>
                   </div>
-                </section>
-
-                <section>
-                  <h2>Installment Plan</h2>
 
                   <div className="flex-parent">
                     <div className="flex-child">
-
                       <InstallmentTerm
                         payPlans={_.find(paymentPlanResult.options, ['billToId', this.props.billToValue]) ?
                                    _.find(paymentPlanResult.options, ['billToId', this.props.billToValue]).payPlans : []}
@@ -506,20 +499,11 @@ export class MailingAddressBilling extends Component {
                     </div>
                   </div>
                 </section>
-
-
                 <div className="btn-footer">
-                  <button className="btn btn-secondary" type="button" onClick={() => this.clearForm()}>
-                                      Cancel
-                                  </button>
-                  <button className="btn btn-primary" type="submit" form="MailingAddressBilling" disabled={this.props.appState.data.submitting || pristine}>
-                                      Update
-                                  </button>
+                  <button className="btn btn-secondary" type="button" onClick={() => this.clearForm()}>Cancel</button>
+                  <button className="btn btn-primary" type="submit" form="MailingAddressBilling" disabled={this.props.appState.data.submitting || pristine}>Update</button>
                 </div>
-
               </div>
-
-
             </div>
           </Form>
         </div>
@@ -572,4 +556,4 @@ const mapDispatchToProps = dispatch => ({
 // ------------------------------------------------
 // wire up redux form with the redux connect
 // ------------------------------------------------
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'MailingAddressBilling' })(MailingAddressBilling));
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'MailingAddressBilling', enableReinitialize: true })(MailingAddressBilling));

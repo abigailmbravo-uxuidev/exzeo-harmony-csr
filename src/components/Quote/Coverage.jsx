@@ -22,6 +22,16 @@ const handleGetQuoteData = (state) => {
   return quoteData;
 };
 
+
+function calculatePercentage(oldFigure, newFigure) {
+  let percentChange = 0;
+  if ((oldFigure !== 0) && (newFigure !== 0)) {
+    percentChange = (oldFigure / newFigure) * 100;
+  }
+
+  return percentChange;
+}
+
 const handleInitialize = (state) => {
   const quoteData = handleGetQuoteData(state);
 
@@ -72,9 +82,16 @@ const handleInitialize = (state) => {
   values.moldLiability = _.get(quoteData, 'coverageLimits.moldLiability.amount');
   values.moldProperty = _.get(quoteData, 'coverageLimits.moldProperty.amount');
   values.ordinanceOrLaw = _.get(quoteData, 'coverageLimits.ordinanceOrLaw.amount');
-  values.otherStructures = _.get(quoteData, 'coverageLimits.otherStructures.amount');
+
+  const otherStructures = _.get(quoteData, 'coverageLimits.otherStructures.amount');
+  const dwelling = _.get(quoteData, 'coverageLimits.dwelling.amount');
+  const personalProperty = _.get(quoteData, 'coverageLimits.personalProperty.amount');
+
+  values.otherStructuresAmount = otherStructures;
+  values.otherStructures = String(calculatePercentage(otherStructures, dwelling));
   values.personalLiability = _.get(quoteData, 'coverageLimits.personalLiability.amount');
-  values.personalProperty = _.get(quoteData, 'coverageLimits.personalProperty.amount');
+  values.personalPropertyAmount = String(personalProperty);
+  values.personalProperty = String(calculatePercentage(personalProperty, dwelling));
   values.personalPropertyReplacementCost = 'No';
 
 
@@ -94,7 +111,7 @@ const handleInitialize = (state) => {
   values.secondaryWaterResistance = _.get(quoteData, 'property.windMitigation.secondaryWaterResistance');
   values.terrain = _.get(quoteData, 'property.windMitigation.terrain');
   values.windBorneDebrisRegion = _.get(quoteData, 'property.windMitigation.windBorneDebrisRegion');
-
+  values.residenceType = _.get(quoteData, 'property.residenceType');
 
   return values;
 };
@@ -116,6 +133,7 @@ const handleGetDocs = (state, name) => {
  to pull it from another place in the model
 ------------------------------------------------
 */
+
 
 export class Coverage extends Component {
 
@@ -168,15 +186,24 @@ export class Coverage extends Component {
     dispatch(change('Coverage', 'dwellingMin', _.get(quoteData, 'coverageLimits.dwelling.minAmount')));
     dispatch(change('Coverage', 'dwellingMax', _.get(quoteData, 'coverageLimits.dwelling.maxAmount')));
 
-    dispatch(change('Coverage', 'dwelling', _.get(quoteData, 'coverageLimits.dwelling.amount')));
     dispatch(change('Coverage', 'lossOfUse', _.get(quoteData, 'coverageLimits.lossOfUse.amount')));
     dispatch(change('Coverage', 'medicalPayments', _.get(quoteData, 'coverageLimits.medicalPayments.amount')));
     dispatch(change('Coverage', 'moldLiability', _.get(quoteData, 'coverageLimits.moldLiability.amount')));
     dispatch(change('Coverage', 'moldProperty', _.get(quoteData, 'coverageLimits.moldProperty.amount')));
     dispatch(change('Coverage', 'ordinanceOrLaw', _.get(quoteData, 'coverageLimits.ordinanceOrLaw.amount')));
-    dispatch(change('Coverage', 'otherStructures', _.get(quoteData, 'coverageLimits.otherStructures.amount')));
+
+    const otherStructures = _.get(quoteData, 'coverageLimits.otherStructures.amount');
+    const dwelling = _.get(quoteData, 'coverageLimits.dwelling.amount');
+    const personalProperty = _.get(quoteData, 'coverageLimits.personalProperty.amount');
+
+    dispatch(change('Coverage', 'dwelling', dwelling));
+
+
+    dispatch(change('Coverage', 'otherStructuresAmount', otherStructures));
+    dispatch(change('Coverage', 'otherStructures', String(calculatePercentage(otherStructures, dwelling))));
     dispatch(change('Coverage', 'personalLiability', _.get(quoteData, 'coverageLimits.personalLiability.amount')));
-    dispatch(change('Coverage', 'personalProperty', _.get(quoteData, 'coverageLimits.personalProperty.amount')));
+    dispatch(change('Coverage', 'personalProperty', String(calculatePercentage(personalProperty, dwelling))));
+    dispatch(change('Coverage', 'personalPropertyAmount', personalProperty));
     dispatch(change('Coverage', 'personalPropertyReplacementCost', 'No'));
 
 
@@ -196,6 +223,7 @@ export class Coverage extends Component {
     dispatch(change('Coverage', 'secondaryWaterResistance', _.get(quoteData, 'property.windMitigation.secondaryWaterResistance')));
     dispatch(change('Coverage', 'terrain', _.get(quoteData, 'property.windMitigation.terrain')));
     dispatch(change('Coverage', 'windBorneDebrisRegion', _.get(quoteData, 'property.windMitigation.windBorneDebrisRegion')));
+    dispatch(change('Coverage', 'residenceType', _.get(quoteData, 'property.residenceType')));
   };
 
   handleFormSubmit = (data) => {
@@ -283,11 +311,11 @@ export class Coverage extends Component {
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
-                        {/*<PhoneField validations={['required']} label={'Primary Phone'} styleName={''} name={'pH1phone'} />*/}
+                        {/* <PhoneField validations={['required']} label={'Primary Phone'} styleName={''} name={'pH1phone'} />*/}
                         <TextField validations={['required']} label={'Primary Phone'} styleName={''} name={'pH1phone'} />
                       </div>
                       <div className="flex-child">
-                        {/*<PhoneField label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} />*/}
+                        {/* <PhoneField label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} />*/}
                         <TextField label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} />
                       </div>
                     </div>
@@ -310,12 +338,12 @@ export class Coverage extends Component {
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
-                        {/*<PhoneField label={'Primary Phone'} styleName={''} name={'pH2phone'} />*/}
+                        {/* <PhoneField label={'Primary Phone'} styleName={''} name={'pH2phone'} />*/}
                         <TextField label={'Primary Phone'} styleName={''} name={'pH2phone'} />
                       </div>
                       <div className="flex-child">
-                        <TextField label={'Secondary Phone'}  styleName={''} name={'pH2secondaryPhone'} />
-                        {/*<PhoneField label={'Secondary Phone'}  styleName={''} name={'pH2secondaryPhone'} />*/}
+                        <TextField label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} />
+                        {/* <PhoneField label={'Secondary Phone'}  styleName={''} name={'pH2secondaryPhone'} />*/}
                       </div>
                     </div>
                     <div className="flex-parent">
@@ -423,12 +451,12 @@ export class Coverage extends Component {
 
                       <div className="flex-child">
                         <SelectField
-                          name="roofType" component="select" styleName={''} label="Residence Type" name={'residenceType'} disabled answers={[
+                          name="residenceType" component="select" styleName={''} label="Residence Type" disabled answers={[
                             {
-                              answer: 'Single Family',
+                              answer: 'SINGLE FAMILY',
                               label: 'Single Family'
                             }, {
-                              answer: 'Commercial',
+                              answer: 'COMMERCIAL',
                               label: 'Commercial'
                             }
                           ]}
@@ -551,11 +579,7 @@ export class Coverage extends Component {
 
                       <div className="flex-child">
                         <TextField
-                          label={'Year Roof Built'} styleName={''} input={{
-                            name: 'yearOfRoof',
-                            disabled: true,
-                            value: fieldValues.yearOfRoof
-                          }}
+                          label={'Year Roof Built'} styleName={''} name="yearOfRoof" disabled
                         />
                       </div>
                       <div className="flex-child">
@@ -617,11 +641,8 @@ export class Coverage extends Component {
                     <div className="flex-parent">
                       <div className="flex-child">
                         <TextField
-                          label={'Other Structure (B)'} styleName={'coverage-b'}
-                          input={{
-                            name: 'otherStructuresOther'
-
-                          }}
+                          name="otherStructuresAmount"
+                          label={'Other Structure (B)'} styleName={'coverage-b'} disabled
                         />
                       </div>
                       <div className="flex-child">
@@ -648,10 +669,7 @@ export class Coverage extends Component {
                     <div className="flex-parent">
                       <div className="flex-child">
                         <TextField
-                          label={'Personal Property (C)'} styleName={'coverage-c'}
-                          input={{
-                            name: 'personalPropertyOther'
-                          }}
+                          label={'Personal Property (C)'} styleName={'coverage-c'} name="personalPropertyAmount" disabled
                         />
                       </div>
                       <div className="flex-child">
@@ -697,11 +715,7 @@ export class Coverage extends Component {
                     <div className="flex-parent">
                       <div className="flex-child">
                         <TextField
-                          label={'Loss of Use (D)'} styleName={''}
-                          input={{
-                            name: 'lossOfUse',
-                            disabled: true
-                          }}
+                          label={'Loss of Use (D)'} styleName={''} name="lossOfUse" disabled
                         />
                       </div>
                     </div>
@@ -1180,4 +1194,4 @@ const mapDispatchToProps = dispatch => ({
 // ------------------------------------------------
 // wire up redux form with the redux connect
 // ------------------------------------------------
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Coverage' })(Coverage));
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Coverage', enableReinitialize: true })(Coverage));

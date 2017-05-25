@@ -2325,11 +2325,37 @@ ul.list-cards {
         }
     }
 }
-//verify & write policy
+//summary page
 /*------------------------------------------------------------------------------------*/
-.verify {
+.summary {
     overflow-y: auto;
     width: 100%;
+
+    dt {
+        color: $warm-gray-08;
+    }
+
+    .share-quote {
+        display: flex;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px dashed $warm-gray-01;
+
+        .form-group {
+            margin-bottom: 0;
+
+            &.share-name {
+                margin-right: $padding;
+            }
+            &.share-email {
+                margin-right: $padding;
+            }
+        }
+        .btn {
+            align-self: flex-start;
+            margin-top: 23px;
+        }
+    }
 
     .detail-wrapper {
         width: 100%;
@@ -2357,7 +2383,7 @@ ul.list-cards {
                 }
 
                 .display-element {
-                    padding: ($padding);
+                    padding: ($padding) 0;
 
                     .workflow-steps {
                         padding: 0;
@@ -2366,9 +2392,12 @@ ul.list-cards {
             }
 
             &.property-details {
+                border-bottom: 1px dashed $warm-gray-01;
+                margin-bottom: 1rem;
+
                 .display-element {
                     display: flex;
-                    padding: 0 $padding $padding;
+                    padding: $padding 0;
                     flex-wrap: wrap;
                     @include for-phone-only {
                         flex-direction: column;
@@ -2381,10 +2410,6 @@ ul.list-cards {
                         div {
                             dd {
                                 margin-bottom: 0;
-
-                                +dd {
-                                    font-size: $font-size-h6;
-                                }
                             }
                         }
                     }
@@ -2392,6 +2417,9 @@ ul.list-cards {
             }
 
             &.quote-details {
+                border-bottom: 1px dashed $warm-gray-01;
+                margin-bottom: 1rem;
+
                 .display-element {
                     display: flex;
                     flex-direction: column;
@@ -2401,7 +2429,7 @@ ul.list-cards {
                     dl {
                         display: flex;
                         margin-bottom: 0;
-                        padding: ($padding/2) ($padding);
+                        padding: ($padding);
 
                         &:nth-of-type(odd) {
                             background: $warm-gray-01;
@@ -2428,8 +2456,10 @@ ul.list-cards {
             }
 
             &.policyholder-details {
+                border-bottom: 1px dashed $warm-gray-01;
+                margin-bottom: 1rem;
                 .display-element {
-                    padding: 0 $padding $padding;
+                    padding: $padding 0;
 
                     p {
                         padding: $padding*2;
@@ -2457,10 +2487,6 @@ ul.list-cards {
                                 div {
                                     dd {
                                         margin-bottom: 0;
-
-                                        +dd {
-                                            font-size: $font-size-h6;
-                                        }
                                     }
                                 }
                             }
@@ -2470,9 +2496,11 @@ ul.list-cards {
             }
 
             &.mailing-address-details {
+                border-bottom: 1px dashed $warm-gray-01;
+                margin-bottom: 1rem;
                 .display-element {
                     display: flex;
-                    padding: 0 $padding $padding;
+                    padding: $padding 0;
                     @include for-phone-only {
                         flex-direction: column;
                     }
@@ -2486,7 +2514,63 @@ ul.list-cards {
 
             &.additional-interests-details {
                 .display-element {
-                    padding: 0 $padding $padding;
+                    padding: $padding 0;
+
+                    .card {
+                        margin: 0 0 $padding;
+                        flex-direction: row;
+                        padding: $padding;
+
+                        .card-icon {
+                            display: flex;
+                            flex-direction: column;
+                            margin-right: $padding;
+                            align-items: center;
+                            justify-content: center;
+                            i {
+                                width: 2rem;
+                                height: 2rem;
+                                display: flex;
+                                font-size: $font-size-h2;
+                                align-items: center;
+                                justify-content: center;
+                                color: $bright-blue-darken-04;
+                            }
+                            label {
+                                background: none;
+                                font-size: $font-size-xs;
+                                margin-bottom: 0;
+                                font-weight: $font-weight-normal;
+                            }
+                        }
+
+                        section {
+                            flex-grow: 1;
+                            flex-shrink: 1;
+
+                            h4 {
+                                margin-bottom: 0;
+                            }
+
+                            p {
+                                margin-bottom: 0;
+                            }
+                        }
+
+                        .ref-number {
+                            display: flex;
+                            flex-direction: column;
+                            align-self: center;
+                            min-width: 10rem;
+                            label {
+                                font-size: $font-size-sm;
+                                font-weight: $font-weight-normal;
+                            }
+                            span {
+
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -2497,7 +2581,7 @@ ul.list-cards {
                     div {}
 
                     dt {
-                        color: $bright-blue-darken-04;
+
                     }
                 }
             }
@@ -2507,7 +2591,7 @@ ul.list-cards {
             .display-element {
                 dl {
                     div {
-                        color: $warm-gray-08;
+
                     }
 
                     dt {}
@@ -2899,4 +2983,57 @@ ul.list-cards {
     }
 
 
+}
+
+.mailing-address-details {
+
+    .flex-form {
+        .city {
+            flex-grow: 1;
+        }
+        .state {
+            flex-grow: 0;
+            flex-shrink: 0;
+            flex-basis: 10rem;
+        }
+        .zip {
+            flex-grow: 0;
+            flex-shrink: 0;
+            flex-basis: 10rem;
+        }
+    }
+}
+
+.installment-term {
+    display: flex;
+
+    dl {
+        &.column-3 {
+            width: 33.33%;
+            margin-right: $padding;
+
+             &:last-child {
+                 margin-right: 0;
+             }
+
+             div {
+
+               dt {
+                   background: $warm-gray-02;
+                   padding: $padding;
+                   font-size: 14px;
+                   color: $warm-gray-08;
+               }
+
+               dd {
+                   padding: $padding;
+                   font-size: $font-size-sm;
+
+                   &:nth-of-type(even) {
+                       background: $warm-gray-01;
+                   }
+               }
+           }
+        }
+    }
 }

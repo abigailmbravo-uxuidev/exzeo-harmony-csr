@@ -44,9 +44,16 @@ export class AdditionalLinterests extends Component {
 
     const additionalInterests = quoteData.additionalInterests || [];
 
-    const type = appState.data.addAdditionalInterestType;
+    const type = appState.data.addAdditionalInterestType || data.type;
 
-    const order = _.filter(additionalInterests, ai => ai.type === type).length === 0 ? 0 : 1;
+    let order = 0;
+
+    if (String(data.order) !== '0' && String(data.order) !== '1') {
+      order = _.filter(additionalInterests, ai => ai.type === type).length === 0 ? 0 : 1;
+    } else {
+      order = data.order;
+    }
+
 
     // remove any existing items before submission
     _.remove(additionalInterests, ai => ai._id === data._id); // eslint-disable-line
@@ -59,7 +66,7 @@ export class AdditionalLinterests extends Component {
       order,
       active: true,
       type,
-      phoneNumber: data.phoneNumber,
+      phoneNumber: String(data.phoneNumber).length > 0 ? data.phoneNumber : null,
       mailingAddress: {
         address1: data.address1,
         address2: data.address2,
