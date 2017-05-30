@@ -10,7 +10,7 @@ import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import TextField from '../Form/inputs/TextField';
-import PhoneField from '../Form/inputs/PhoneField';
+import HiddenField from '../Form/inputs/HiddenField';
 import SelectField from '../Form/inputs/SelectField';
 import RadioField from '../Form/inputs/RadioField';
 import SelectFieldAgency from '../Form/inputs/SelectFieldAgency';
@@ -31,6 +31,8 @@ function calculatePercentage(oldFigure, newFigure) {
 
   return percentChange;
 }
+
+const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
 
 const handleInitialize = (state) => {
   const quoteData = handleGetQuoteData(state);
@@ -72,11 +74,10 @@ const handleInitialize = (state) => {
   values.fireAlarm = _.get(quoteData, 'property.fireAlarm');
   values.sprinkler = _.get(quoteData, 'property.sprinkler');
 
-  values.dwelling = _.get(quoteData, 'coverageLimits.dwelling.amount');
+  values.dwellingAmount = _.get(quoteData, 'coverageLimits.dwelling.amount');
   values.dwellingMin = _.get(quoteData, 'coverageLimits.dwelling.minAmount');
   values.dwellingMax = _.get(quoteData, 'coverageLimits.dwelling.maxAmount');
 
-  values.dwelling = _.get(quoteData, 'coverageLimits.dwelling.amount');
   values.lossOfUse = _.get(quoteData, 'coverageLimits.lossOfUse.amount');
   values.medicalPayments = _.get(quoteData, 'coverageLimits.medicalPayments.amount');
   values.moldLiability = _.get(quoteData, 'coverageLimits.moldLiability.amount');
@@ -86,19 +87,21 @@ const handleInitialize = (state) => {
   const otherStructures = _.get(quoteData, 'coverageLimits.otherStructures.amount');
   const dwelling = _.get(quoteData, 'coverageLimits.dwelling.amount');
   const personalProperty = _.get(quoteData, 'coverageLimits.personalProperty.amount');
+  const hurricane = _.get(quoteData, 'deductibles.hurricane.amount');
 
   values.otherStructuresAmount = otherStructures;
   values.otherStructures = String(calculatePercentage(otherStructures, dwelling));
   values.personalLiability = _.get(quoteData, 'coverageLimits.personalLiability.amount');
   values.personalPropertyAmount = String(personalProperty);
   values.personalProperty = String(calculatePercentage(personalProperty, dwelling));
-  values.personalPropertyReplacementCost = 'No';
+  values.personalPropertyReplacementCostCoverage = _.get(quoteData, 'coverageOptions.personalPropertyReplacementCost.answer');
 
-
-  values.sinkhole = _.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer');
+  values.sinkholePerilCoverage = _.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer');
 
   values.allOtherPerils = _.get(quoteData, 'deductibles.allOtherPerils.amount');
-  values.hurricane = _.get(quoteData, 'deductibles.hurricane.amount');
+  values.hurricane = hurricane;
+
+  values.calculatedHurricane = _.get(quoteData, 'deductibles.hurricane.calculatedAmount');
 
   values.floridaBuildingCodeWindSpeed = _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeed');
   values.floridaBuildingCodeWindSpeedDesign = _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign');
@@ -113,6 +116,10 @@ const handleInitialize = (state) => {
   values.windBorneDebrisRegion = _.get(quoteData, 'property.windMitigation.windBorneDebrisRegion');
   values.residenceType = _.get(quoteData, 'property.residenceType');
 
+  values.propertyIncidentalOccupanciesMainDwelling = false;
+  values.propertyIncidentalOccupanciesOtherStructures = false;
+  values.liabilityIncidentalOccupancies = false;
+
   return values;
 };
 
@@ -122,17 +129,6 @@ const handleGetDocs = (state, name) => {
   const doc = (result && result.value) ? [result.value.result] : [];
   return _.concat([], doc);
 };
-
-/**
-------------------------------------------------
- The render is where all the data is being pulled
- from the props.
- The quote data data comes from the previous task
- which is createQuote / singleQuote. This might
- not be the case in later calls, you may need
- to pull it from another place in the model
-------------------------------------------------
-*/
 
 
 export class Coverage extends Component {
@@ -182,7 +178,7 @@ export class Coverage extends Component {
     dispatch(change('Coverage', 'fireAlarm', _.get(quoteData, 'property.fireAlarm')));
     dispatch(change('Coverage', 'sprinkler', _.get(quoteData, 'property.sprinkler')));
 
-    dispatch(change('Coverage', 'dwelling', _.get(quoteData, 'coverageLimits.dwelling.amount')));
+    dispatch(change('Coverage', 'dwellingAmount', _.get(quoteData, 'coverageLimits.dwelling.amount')));
     dispatch(change('Coverage', 'dwellingMin', _.get(quoteData, 'coverageLimits.dwelling.minAmount')));
     dispatch(change('Coverage', 'dwellingMax', _.get(quoteData, 'coverageLimits.dwelling.maxAmount')));
 
@@ -195,23 +191,25 @@ export class Coverage extends Component {
     const otherStructures = _.get(quoteData, 'coverageLimits.otherStructures.amount');
     const dwelling = _.get(quoteData, 'coverageLimits.dwelling.amount');
     const personalProperty = _.get(quoteData, 'coverageLimits.personalProperty.amount');
+    const hurricane = _.get(quoteData, 'deductibles.hurricane.amount');
+    const calculatedHurricane = _.get(quoteData, 'deductibles.hurricane.calculatedAmount');
 
-    dispatch(change('Coverage', 'dwelling', dwelling));
 
+    dispatch(change('Coverage', 'dwellingAmount', dwelling));
 
     dispatch(change('Coverage', 'otherStructuresAmount', otherStructures));
     dispatch(change('Coverage', 'otherStructures', String(calculatePercentage(otherStructures, dwelling))));
     dispatch(change('Coverage', 'personalLiability', _.get(quoteData, 'coverageLimits.personalLiability.amount')));
     dispatch(change('Coverage', 'personalProperty', String(calculatePercentage(personalProperty, dwelling))));
     dispatch(change('Coverage', 'personalPropertyAmount', personalProperty));
-    dispatch(change('Coverage', 'personalPropertyReplacementCost', 'No'));
+    dispatch(change('Coverage', 'personalPropertyReplacementCostCoverage', false));
 
 
-    dispatch(change('Coverage', 'sinkhole', _.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer')));
+    dispatch(change('Coverage', 'sinkholePerilCoverage', _.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer')));
 
     dispatch(change('Coverage', 'allOtherPerils', _.get(quoteData, 'deductibles.allOtherPerils.amount')));
-    dispatch(change('Coverage', 'hurricane', _.get(quoteData, 'deductibles.hurricane.amount')));
-
+    dispatch(change('Coverage', 'hurricane', hurricane));
+    dispatch(change('Coverage', 'calculatedHurricane', calculatedHurricane));
     dispatch(change('Coverage', 'floridaBuildingCodeWindSpeed', _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeed')));
     dispatch(change('Coverage', 'floridaBuildingCodeWindSpeedDesign', _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign')));
     dispatch(change('Coverage', 'internalPressureDesign', _.get(quoteData, 'property.windMitigation.internalPressureDesign')));
@@ -235,11 +233,30 @@ export class Coverage extends Component {
 
     submitData.agencyCode = String(data.agencyCode);
     submitData.agentCode = String(data.agentCode);
+    submitData.dwellingAmount = Number(data.dwellingAmount);
+    submitData.otherStructuresAmount = Number(data.otherStructuresAmount);
+
+    submitData.personalPropertyAmount = Number(data.personalPropertyAmount);
+    submitData.hurricane = Number(data.hurricane);
+    submitData.calculatedHurricane = Number(data.calculatedHurricane);
+    submitData.lossOfUse = Number(data.lossOfUse);
+    submitData.medicalPayments = Number(data.medicalPayments);
+    submitData.floridaBuildingCodeWindSpeedDesign = Number(data.floridaBuildingCodeWindSpeedDesign);
+    submitData.floridaBuildingCodeWindSpeed = Number(data.floridaBuildingCodeWindSpeed);
+    submitData.allOtherPerils = Number(data.allOtherPerils);
+    submitData.ordinanceOrLaw = Number(data.ordinanceOrLaw);
+    submitData.moldLiability = Number(data.moldLiability);
+    submitData.moldProperty = Number(data.moldProperty);
+    submitData.personalLiability = Number(data.personalLiability);
+
+    submitData.sinkholePerilCoverage = (String(data.sinkholePerilCoverage) === 'true');
 
     const steps = [
       { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
       { name: 'askCustomerData', data: submitData },
-      { name: 'askToCustomizeDefaultQuote', data: { shouldCustomizeQuote: 'No' } }
+      { name: 'askToCustomizeDefaultQuote', data: { shouldCustomizeQuote: 'Yes' } },
+      { name: 'customizeDefaultQuote', data: submitData }
+
     ];
 
     this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
@@ -251,14 +268,44 @@ export class Coverage extends Component {
       });
   };
 
+  updateDwellingAndDependencies = (event) => {
+    const { dispatch, fieldValues } = this.props;
+
+    if (Number.isNaN(event.target.value)) return;
+
+    if (fieldValues.otherStructures !== 'other') {
+      dispatch(change('Coverage', 'otherStructuresAmount', String(setPercentageOfValue(Number(event.target.value), Number(fieldValues.otherStructures)))));
+    }
+    if (fieldValues.personalProperty !== 'other') {
+      dispatch(change('Coverage', 'personalPropertyAmount', String(setPercentageOfValue(Number(event.target.value), Number(fieldValues.personalProperty)))));
+    }
+    dispatch(change('Coverage', 'calculatedHurricane', String(setPercentageOfValue(Number(event.target.value), Number(fieldValues.hurricane)))));
+
+
+    dispatch(change('Coverage', 'lossOfUse', String(setPercentageOfValue(Number(event.target.value), 10))));
+  }
+
+  updateDependencies = (event, field, dependency) => {
+    const { dispatch, fieldValues } = this.props;
+    if (Number.isNaN(event.target.value)) return;
+
+    const fieldValue = setPercentageOfValue(fieldValues[dependency], Number(event.target.value));
+
+    dispatch(change('Coverage', field, Number.isNaN(fieldValue) ? '' : String(fieldValue)));
+  }
+
   render() {
-    const { fieldValues, handleSubmit, agencyDocs, agentDocs, pristine } = this.props;
+    const { fieldValues, handleSubmit, initialValues, agencyDocs, agentDocs, pristine } = this.props;
 
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
         <div className="route-content">
           <Form id="Coverage" onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
+            <HiddenField name={'propertyIncidentalOccupanciesMainDwelling'} />
+            <HiddenField name={'propertyIncidentalOccupanciesOtherStructures'} />
+            <HiddenField name={'liabilityIncidentalOccupancies'} />
+
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
                 <section className="producer ">
@@ -635,19 +682,23 @@ export class Coverage extends Component {
                     <h4>Coverages</h4>
                     <div className="flex-parent">
                       <div className="flex-child">
-                        <TextField validations={['required']} label={`Dwelling (A - ${fieldValues.dwellingMin} - ${fieldValues.dwellingMax})`} styleName={''} name={'dwelling'} />
+                        <TextField
+                          validations={['required', 'range']} label={`Dwelling (A - ${fieldValues.dwellingMin} - ${fieldValues.dwellingMax})`} styleName={''} name={'dwellingAmount'}
+                          min={initialValues.dwellingMin} max={initialValues.dwellingMax} onChange={value => this.updateDwellingAndDependencies(value)}
+                        />
                       </div>
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
                         <TextField
+                          validations={['required']}
                           name="otherStructuresAmount"
-                          label={'Other Structure (B)'} styleName={'coverage-b'} disabled
+                          label={'Other Structure (B)'} styleName={'coverage-b'} disabled={fieldValues.otherStructures !== 'other'}
                         />
                       </div>
                       <div className="flex-child">
                         <SelectField
-                          name="otherStructures" component="select" styleName={'coverage-b-percentage'} label="Percentage" onChange={function () {}} validations={['required']} answers={[
+                          name="otherStructures" component="select" styleName={'coverage-b-percentage'} label="Percentage" onChange={event => this.updateDependencies(event, 'otherStructuresAmount', 'dwellingAmount')} validations={['required']} answers={[
                             {
                               answer: '0',
                               label: '0%'
@@ -657,6 +708,10 @@ export class Coverage extends Component {
                             }, {
                               answer: '5',
                               label: '5%'
+                            },
+                            {
+                              answer: '10',
+                              label: '10%'
                             }, {
                               answer: 'other',
                               label: 'Other'
@@ -669,12 +724,13 @@ export class Coverage extends Component {
                     <div className="flex-parent">
                       <div className="flex-child">
                         <TextField
-                          label={'Personal Property (C)'} styleName={'coverage-c'} name="personalPropertyAmount" disabled
+                          validations={['required']}
+                          label={'Personal Property (C)'} styleName={'coverage-c'} name="personalPropertyAmount" disabled={fieldValues.personalProperty !== 'other'}
                         />
                       </div>
                       <div className="flex-child">
                         <SelectField
-                          name="personalProperty" component="select" styleName={'coverage-c-percentage'} label="Percentage" onChange={function () {}} validations={['required']} answers={[
+                          name="personalProperty" component="select" styleName={'coverage-c-percentage'} label="Percentage" onChange={event => this.updateDependencies(event, 'personalPropertyAmount', 'dwellingAmount')} validations={['required']} answers={[
                             {
                               answer: '0',
                               label: '0%'
@@ -787,12 +843,12 @@ export class Coverage extends Component {
                     <div className="flex-parent">
                       <div className="flex-child">
                         <RadioField
-                          name={'personalPropertyReplacementCost'} styleName={'billPlan'} label={'Personal Property Repl Cost'} onChange={function () {}} segmented answers={[
+                          name={'personalPropertyReplacementCostCoverage'} styleName={'billPlan'} label={'Personal Property Repl Cost'} onChange={function () {}} segmented answers={[
                             {
-                              answer: 'No',
+                              answer: false,
                               label: 'No'
                             }, {
-                              answer: 'Yes',
+                              answer: true,
                               label: 'Yes'
                             }
                           ]}
@@ -821,7 +877,7 @@ export class Coverage extends Component {
                     <div className="flex-parent">
                       <div className="flex-child">
                         <SelectField
-                          name="hurricane" component="select" styleName={''} label="Hurricane" onChange={function () {}} validations={['required']} answers={[
+                          name="hurricane" component="select" styleName={''} label="Hurricane" onChange={event => this.updateDependencies(event, 'calculatedHurricane', 'dwellingAmount')} validations={['required']} answers={[
                             {
                               answer: '2',
                               label: '2% of Coverage A'
@@ -835,9 +891,20 @@ export class Coverage extends Component {
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
+                        <TextField
+                          validations={['required']}
+                          label={'Calculated Hurricane'} styleName={'coverage-c'} name="calculatedHurricane" disabled
+                        />
+                      </div>
+                    </div>
+                    <div className="flex-parent">
+                      <div className="flex-child">
                         <SelectField
                           name="allOtherPerils" component="select" styleName={''} label="All Other Perils" onChange={function () {}} validations={['required']} answers={[
                             {
+                              answer: '500',
+                              label: '$500'
+                            }, {
                               answer: '1000',
                               label: '$1,000'
                             }, {
@@ -851,7 +918,7 @@ export class Coverage extends Component {
                     <div className="flex-parent">
                       <div className="flex-child">
                         <SelectField
-                          name="sinkhole" component="select" styleName={''} label="Sinkhole" onChange={function () {}} answers={[
+                          name="sinkholePerilCoverage" component="select" styleName={''} label="Sinkhole" onChange={function () {}} answers={[
                             {
                               answer: false,
                               label: 'Coverage Excluded'
@@ -947,14 +1014,22 @@ export class Coverage extends Component {
                         <SelectField
                           name="roofDeckAttachment" component="select" styleName={''} label="Roof Deck Attachment" onChange={function () {}} validations={['required']} answers={[
                             {
-                              answer: 'A',
-                              label: 'A'
-                            }, {
-                              answer: 'B',
-                              label: 'B'
-                            }, {
-                              answer: 'Other',
-                              label: 'Other'
+                              answer: 'A'
+                            },
+                            {
+                              answer: 'B'
+                            },
+                            {
+                              answer: 'C'
+                            },
+                            {
+                              answer: 'D'
+                            },
+                            {
+                              answer: 'Concrete'
+                            },
+                            {
+                              answer: 'Other'
                             }
                           ]}
                         />
@@ -968,15 +1043,19 @@ export class Coverage extends Component {
                         <SelectField
                           name="roofToWallConnection" component="select" styleName={'weakestRoofWallConnect'} label="Roof to Wall Attachment" onChange={function () {}} validations={['required']} answers={[
                             {
-                              answer: 'Toe Nails',
-                              label: 'Toe Nails'
-                            }, {
-                              answer: 'Cement',
-                              label: 'Cement'
+                              answer: 'Toe Nails'
                             },
                             {
-                              answer: 'Other',
-                              label: 'Other'
+                              answer: 'Clips'
+                            },
+                            {
+                              answer: 'Single Wraps'
+                            },
+                            {
+                              answer: 'Double Wraps'
+                            },
+                            {
+                              answer: 'Other'
                             }
                           ]}
                         />
@@ -989,15 +1068,16 @@ export class Coverage extends Component {
                         <SelectField
                           name="roofGeometry" component="select" styleName={''} label="Roof Geometry" onChange={function () {}} validations={['required']} answers={[
                             {
-                              answer: 'Hip',
-                              label: 'Hip'
-                            }, {
-                              answer: 'Flat',
-                              label: 'Flat'
+                              answer: 'Flat'
                             },
                             {
-                              answer: 'Other',
-                              label: 'Other'
+                              answer: 'Gable'
+                            },
+                            {
+                              answer: 'Hip'
+                            },
+                            {
+                              answer: 'Other'
                             }
                           ]}
                         />
@@ -1027,16 +1107,18 @@ export class Coverage extends Component {
 
                       <div className="flex-child">
                         <SelectField
-                          name="windBorneDebrisRegion" component="select" styleName={''} label="Opening Protection" onChange={function () {}} validations={['required']} answers={[
+                          name="openingProtection" component="select" styleName={''} label="Opening Protection" onChange={function () {}} validations={['required']} answers={[
                             {
-                              answer: 'None',
-                              label: 'None'
-                            }, {
-                              answer: 'Some',
-                              label: 'Some'
-                            }, {
-                              answer: 'Other',
-                              label: 'Other'
+                              answer: 'None'
+                            },
+                            {
+                              answer: 'Basic'
+                            },
+                            {
+                              answer: 'Hurricane'
+                            },
+                            {
+                              answer: 'Other'
                             }
                           ]}
                         />
@@ -1069,15 +1151,19 @@ export class Coverage extends Component {
                         <SelectField
                           name="terrain" component="select" styleName={'propertyTerrain'} label="Terrain" onChange={function () {}} validations={['required']} answers={[
                             {
-                              answer: 'A',
-                              label: 'A'
-                            }, {
                               answer: 'B',
                               label: 'B'
-                            },
-                            {
+                            }, {
                               answer: 'C',
                               label: 'C'
+                            },
+                            {
+                              answer: 'HVHZ',
+                              label: 'HVHZ'
+                            },
+                            {
+                              answer: 'Other',
+                              label: 'Other'
                             }
                           ]}
                         />
@@ -1095,8 +1181,8 @@ export class Coverage extends Component {
                               answer: 'Enclosed',
                               label: 'Enclosed'
                             }, {
-                              answer: 'Exclosed',
-                              label: 'Exclosed'
+                              answer: 'Partial',
+                              label: 'Partial'
                             },
                             {
                               answer: 'Other',

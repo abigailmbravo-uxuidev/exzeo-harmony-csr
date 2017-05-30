@@ -12,6 +12,8 @@ export const TextInput = ({
   meta,
   type,
   disabled,
+  min,
+  max,
   name
 }) => {
   const { touched, error, warning } = meta;
@@ -39,6 +41,8 @@ export const TextInput = ({
     <div className={formGroupStyles}>
       {Label}
       <input
+        min={min}
+        max={max}
         disabled={disabled}
         name={name}
         {...input}
@@ -79,6 +83,12 @@ TextInput.propTypes = {
     touched: PropTypes.bool,
     warning: PropTypes.string
   }),
+
+    /**
+   * Max and min limit for range slider
+   */
+  max: PropTypes.number,
+  min: PropTypes.number,
 
   /**
    * Answer Type from original question
