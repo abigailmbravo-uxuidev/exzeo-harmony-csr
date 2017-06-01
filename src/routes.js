@@ -39,10 +39,11 @@ const generateRedirectUrl = urlPath => `${window.location.protocol}//${window.lo
 function authHOC(NavComponent, redirectUrl, props) {
   return class AuthHOC extends React.Component { // eslint-disable-line
     render() {
+      const redirectUrlDerived = (props.user && props.user.error && props.user.accessDenied) ? `${redirectUrl}&ade=${props.user.accessDenied}` : redirectUrl;
       if (props.isAuthenticated) {
         return <NavComponent {...props} />;
       }
-      return <LoginPage redirectUrl={generateRedirectUrl(redirectUrl)} />;
+      return <LoginPage redirectUrl={generateRedirectUrl(redirectUrlDerived)} />;
     }
   };
 }
