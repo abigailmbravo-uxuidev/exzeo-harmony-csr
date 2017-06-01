@@ -7,7 +7,7 @@ import QuoteSideNav from '../components/Policy/PolicySideNav';
 import DetailHeader from '../components/Policy/DetailHeader';
 import * as userActions from '../actions/userActions';
 import Footer from '../components/Common/Footer';
-import NewNoteFileUploader from '../components/Common/NewNoteFileUploader';
+//import NewNoteFileUploader from '../components/Common/NewNoteFileUploader';
 
 /*
 const handleLogout = (props) => {
@@ -18,19 +18,15 @@ const handleLogout = (props) => {
 export const Policy = props => (
   <div className="app-wrapper csr policy">
     {/*TODO: dynamically add policy # to title*/}
-    <Helmet><title>Harmony - CSR Portal</title></Helmet>
-    <NewNoteFileUploader/>
+    <Helmet><title>Policy [policyNumber]</title></Helmet>
+    {/*<NewNoteFileUploader/>*/}
     <QuoteHeader/>
+    <DetailHeader />
     <main role="document">
       <aside className="content-panel-left">
-        <div className="user">
-          <label htmlFor="user">Policyholder</label>
-          <p className="user-name">[PH1 firstName PH1 lastName]</p>
-        </div>
         <QuoteSideNav/>
       </aside>
       <div className="content-wrapper">
-        <DetailHeader />
         {props.children}
         <Footer/>
       </div>

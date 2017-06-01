@@ -1136,3 +1136,14 @@ table {
     }
   }
 }
+
+.responsive-tables {
+    .table-view{
+        margin: 0 $padding $padding 0;
+
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}

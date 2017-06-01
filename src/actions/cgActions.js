@@ -48,13 +48,9 @@ const checkCGError = (responseData) => {
 
 const handleError = (dispatch, error) => {
   let message = 'An error happened';
-  console.log(error.response);
   if (error.response) {
     // The request was made, but the server responded with a status code
     // that falls out of the range of 2xx
-    console.log(error.response.data);
-    console.log(error.response.status);
-    console.log(error.response.headers);
     message = error.response.data.error.message;
   }
   // Something happened in setting up the request that triggered an Error
@@ -128,6 +124,7 @@ export const completeTask = (modelName, workflowId, stepName, data, dispatchAppS
       data
     }
   };
+
   return axios(axiosConfig)
     .then((response) => {
       const responseData = response.data.data;

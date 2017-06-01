@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Form, Field, propTypes, getFormSyncErrors } from 'redux-form';
@@ -29,7 +30,7 @@ const handleSearchBarSubmit = (data, dispatch, props) => {
     lastName: (encodeURIComponent(data.lastName) !== 'undefined' ? encodeURIComponent(data.lastName) : ''),
     address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(data.address) : ''),
     quoteNumber: (encodeURIComponent(data.quoteNumber) !== 'undefined' ? encodeURIComponent(data.quoteNumber) : ''),
-    policyNumber: (encodeURIComponent(data.quoteNumber) !== 'undefined' ? encodeURIComponent(data.quoteNumber) : ''),
+    policyNumber: (encodeURIComponent(data.policyNumber) !== 'undefined' ? encodeURIComponent(data.policyNumber) : ''),
     zip: (encodeURIComponent(data.zip) !== 'undefined' ? encodeURIComponent(data.zip) : ''),
     searchType: props.fieldValues.searchType
   };
@@ -73,7 +74,7 @@ const validate = (values) => {
   }
 
   if (values.policyNumber) {
-    const numberDashesOnly = Rules.numberDashesOnly(values.quoteNumber);
+    const numberDashesOnly = Rules.numberDashesOnly(values.policyNumber);
     if (numberDashesOnly) {
       errors.quoteNumber = numberDashesOnly;
     }

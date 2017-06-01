@@ -30,8 +30,15 @@
       }
     }
   }
+  //detail header
+  .detailHeader {
+      width: 100%;
+  }
   //content wrapper
-  main {
+  main {  
+    height: calc(100vh - 8.5rem);
+    min-height: calc(100vh - 8.5rem);
+
     .content-wrapper {
       overflow: hidden;
       width: auto;
@@ -50,104 +57,132 @@
           flex-grow: 1;
           flex-shrink: 0;
 
-          section {
-            margin-bottom: $padding;
+          .card {
 
-            &.agency,
-            &.agent,
-            &.primary-policyholder,
-            &.secondary-policyholder {
-              .contact-title {
-                padding-bottom: $padding/2;
-                color: $warm-gray-06;
-                font-weight: $font-weight-bold;
-              }
+            &.contact {
+                margin: 0 (-$padding/2) ($padding);
+                flex-direction: row;
+                padding: $padding ($padding*1.5);
 
-              h3 {
-                color: $warm-gray-08;
-              }
 
-              h4 {
-                color: $warm-gray-08;
-                font-weight: $font-weight-lighter;
-              }
 
-              p {
-                margin-bottom: 0;
-              }
+              &.agency,
+              &.agent,
+              &.primary-policyholder,
+              &.secondary-policyholder {
 
-              .contact-methods {
-                display: flex;
 
-                p {
-                  display: flex;
-                  margin-right: $padding*2;
-                  align-items: center;
+                    .contact-title {
+                        display: flex;
+                        flex-direction: column;
+                        width: 6rem;
+                        margin-top: .75rem;
 
-                  small {
-                    margin-right: $padding;
-                    padding: 0 0.2rem;
-                    color: $white;
-                    border-radius: 2px;
-                    background: $bright-blue-darken-03;
-                    font-size: 70%;
+                        i {
+                            color: $bright-blue-darken-04;
+                            font-size: $font-size-h2;
+                            text-align: center;
+                        }
+                        label {
+                            font-size: $font-size-sm;
+                            text-align: center;
+                        }
 
-                    sup {
-                      top: -.5em;
-                      font-size: 50%;
                     }
 
-                    i {
-                      margin-right: 0;
-                      margin-left: 0.1rem;
-                      color: $white;
+                    .contact-details {
+                        margin-left: $padding*2;
+
+                        h4 {
+                          color: $warm-gray-08;
+                          margin-bottom: 0;
+                        }
+
+                        p {
+                          margin-bottom: 0;
+                          color: $warm-gray-10;
+                        }
+
+                        .contact-methods {
+                          display: flex;
+
+                          p {
+                            display: flex;
+                            margin-right: $padding*2;
+                            align-items: center;
+
+                            small {
+                              margin-right: $padding;
+                              padding: 0 0.2rem;
+                              color: $white;
+                              border-radius: 2px;
+                              background: $warm-gray-08;
+                              font-size: 70%;
+
+                              sup {
+                                top: -.5em;
+                                font-size: 50%;
+                              }
+
+                              i {
+                                margin-right: 0;
+                                margin-left: 0.1rem;
+                                color: $white;
+                              }
+                            }
+
+                            i {
+                              margin-right: $padding;
+                              color: $warm-gray-08;
+
+                              &.fa-phone-square {
+                                font-size: 125%;
+                              }
+                            }
+                          }
+                        }
+
+                        .additional-contacts {
+                          ul {
+                            margin: 1rem 0 0;
+                            padding: 0;
+                            list-style: none;
+
+                            li {
+                              display: flex;
+                              padding: ($padding) 0;
+                              border-top: 1px dotted $warm-gray-01;
+                              align-items: center;
+
+                              &:last-child {
+                                  padding-bottom: 0;
+                              }
+
+                              div {
+                                display: flex;
+                                margin-right: $padding*2;
+                                align-items: center;
+
+                                h5 {
+                                  margin: 0 $padding 0 0;
+                                  color: $warm-gray-08;
+                                }
+
+                                span {
+                                  width: auto;
+                                  white-space: nowrap;
+                                }
+
+                                i {
+                                  color: $warm-gray-08;
+                                }
+                              }
+                            }
+                          }
+                        }
+
                     }
-                  }
 
-                  i {
-                    margin-right: $padding;
-                    color: $bright-blue-darken-03;
-
-                    &.fa-phone-square {
-                      font-size: 125%;
-                    }
-                  }
-                }
-              }
-
-              .additional-contacts {
-                ul {
-                  margin: 2rem 0 0;
-                  padding: 0;
-                  list-style: none;
-
-                  li {
-                    display: flex;
-                    padding: ($padding*2) 0;
-                    border-top: 1px dotted $warm-gray-01;
-                    align-items: center;
-
-                    div {
-                      display: flex;
-                      margin-right: $padding*2;
-                      align-items: center;
-
-                      h5 {
-                        margin: 0 $padding 0 0;
-                        color: $warm-gray-08;
-                      }
-
-                      span {
-                        width: auto;
-                        white-space: nowrap;
-                      }
-
-                      i {
-                        color: $bright-blue-darken-04;
-                      }
-                    }
-                  }
-                }
               }
             }
           }
@@ -181,20 +216,42 @@
 
             &:last-child {
               border-bottom-width: 0;
+              margin-bottom: 0;
             }
 
             h4 {
               font-weight: normal;
             }
 
-            .property-info, .payment-summary {
+            .payment-summary,
+            .property-info {
               display: flex;
 
               &.grid {
-                  .react-bs-table {
-                      margin: 0 ($padding*2) 0 0;
-                  }
+                .react-bs-table {
+                  margin: 0 ($padding*2) 0 0;
+                }
+                .total {
+                    > div {
+                        background: $yellow-lighten-05;
+                        padding: ($padding) ($padding*2);
+
+                        dt {
+                            color: $warm-gray-14;
+                        }
+
+                        dd {
+                            font-size: $font-size-h4;
+                            margin-bottom: 0;
+                            text-align: right;
+                        }
+                    }
+                }
               }
+            }
+
+            .property-info  {
+                 justify-content: space-between;
             }
 
             .table-striped > tbody > tr:nth-of-type(odd):hover {
@@ -214,25 +271,27 @@
               flex-direction: row;
               width: 100%;
 
-              .table-view, .card-view {
-                  &:first-child {
-                      .react-bs-table-container {
-                          .react-bs-table {
-                              margin-left: 0;
-                          }
-                      }
+              .card-view,
+              .table-view {
+                &:first-child {
+                  .react-bs-table-container {
+                    .react-bs-table {
+                      margin-left: 0;
+                    }
                   }
-                  &:last-child {
-                      .react-bs-table-container {
-                          .react-bs-table {
-                              margin-right: 0;
-                          }
-                      }
+                }
+
+                &:last-child {
+                  .react-bs-table-container {
+                    .react-bs-table {
+                      margin-right: 0;
+                    }
                   }
+                }
               }
 
               .table-view {
-                width: 25%;
+                width: 33.33%;
 
                 .deductible {
                   thead tr th {
@@ -264,7 +323,7 @@
                   }
                 }
 
-                .coverage {
+                .coverage, .discountSurcharge {
                   width: 60%;
                   padding: $padding 15px $padding $padding;
                 }
@@ -277,33 +336,48 @@
             }
 
             .table-view.claims {
-              margin: 0 -10px ($padding*2);
+              margin: 0 0 ($padding*2);
+
+              .claimNumber {
+                  width: 10%;
+              }
+              .lossDate {
+                  width: 10%;
+              }
+              .closedDate {
+                  width: 10%;
+              }
+              .examiner {
+                  width: 20%;
+              }
+              .lossDescription {
+                  width: 60%;
+              }
             }
           }
 
           .results-wrapper {
-              ul {
-                  padding: 0;
-                  li {
-                      a {
-                          .card-icon {
-                              display: flex;
-                              flex-direction: column;
-                              align-items: center;
+            ul {
+              padding: 0;
 
-                              i {
+              li {
+                a {
+                  .card-icon {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
 
-                              }
-                          }
-
-                          section {
-                              margin: 0 0 0 ($padding*2);
-                              padding: 0;
-                              border-bottom-width: 0;
-                          }
-                      }
+                    i {}
                   }
+
+                  section {
+                    margin: 0 0 0 ($padding*2);
+                    padding: 0;
+                    border-bottom-width: 0;
+                  }
+                }
               }
+            }
           }
         }
       }

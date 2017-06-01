@@ -59,9 +59,30 @@ export class Splash extends Component {
         props.actions.appStateActions.setAppState(
           props.appState.modelName,
           workflowId,
-          { recalc: false, updateWorkflowDetails: true, selectedLink: 'customerData'  }
+          { ...props.appState.data, recalc: false, updateWorkflowDetails: true, selectedLink: 'customerData'  }
         );
         this.context.router.history.push('/quote/coverage');
+      });
+  };
+
+  handleSelectPolicy = (policy, props) => {
+    const workflowId = props.appState.instanceId;
+    const steps = [{
+      name: 'choosePolicy',
+      data: {
+        policyId: policy.policyID
+      }
+    }];
+
+    props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
+      .then(() => {
+        // now update the workflow details so the recalculated rate shows
+        props.actions.appStateActions.setAppState(
+          props.appState.modelName,
+          workflowId,
+          { ...props.appState.data, recalc: false, updateWorkflowDetails: true, selectedLink: 'coverage'  }
+        );
+        this.context.router.history.push('/policy/coverage');
       });
   };
 
@@ -78,7 +99,11 @@ export class Splash extends Component {
               <div className="survey-wrapper scroll">
                 <div className="results-wrapper">
                   <NoResultsConnect />
-                  <SearchResults handleSelectAddress={this.handleSelectAddress} handleSelectQuote={this.handleSelectQuote} />
+                  <SearchResults
+                    handleSelectAddress={this.handleSelectAddress}
+                    handleSelectQuote={this.handleSelectQuote}
+                    handleSelectPolicy={this.handleSelectPolicy}
+                  />
                 </div>
                 <Footer />
               </div>

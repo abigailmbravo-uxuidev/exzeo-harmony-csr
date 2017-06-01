@@ -11,7 +11,8 @@ import NoResultsConnect from './NoResults';
 
 const userTasks = {
   handleSelectAddress: 'chooseAddress',
-  handleSelectQuote: 'chooseQuote'
+  handleSelectQuote: 'chooseQuote',
+  handleSelectPolicy: 'choosePolicy'
 };
 
 const handleSelectAddress = (address, props) => {
@@ -35,13 +36,27 @@ const handleSelectQuote = (quote, props) => {
   props.actions.cgActions.completeTask(props.appState.modelName, workflowId, taskName, data);
 };
 
+const handleSelectPolicy = (policy, props) => {
+  const workflowId = props.appState.instanceId;
+  const taskName = userTasks.handleSelectPolicy;
+  const data = {
+    policyId: policy._id
+  };
+  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { submitting: true });
+  props.actions.cgActions.completeTask(props.appState.modelName, workflowId, taskName, data);
+};
+
 const Search = () => (
   <div className="search route-content">
     <SearchBar />
     <div className="survey-wrapper scroll">
       <div className="results-wrapper">
         <NoResultsConnect />
-        <SearchResults handleSelectAddress={handleSelectAddress} handleSelectQuote={handleSelectQuote} />
+        <SearchResults 
+          handleSelectAddress={handleSelectAddress} 
+          handleSelectQuote={handleSelectQuote}
+          handleSelectPolicy={handleSelectPolicy}
+        />
       </div>
       <Footer />
     </div>

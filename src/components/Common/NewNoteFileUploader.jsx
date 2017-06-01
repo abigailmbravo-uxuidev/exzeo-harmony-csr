@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+import { reduxForm, propTypes } from 'redux-form';
+import { connect } from 'react-redux';
 
-const NewNoteFileUploader = () => (
+const NewNoteFileUploader = ({ closeButtonHandler }) => (
 
     <div className="new-note-file">
         <div className="title-bar">
@@ -8,7 +10,7 @@ const NewNoteFileUploader = () => (
           <div className="controls">
               <i className="fa fa-window-minimize" aria-hidden="true"></i>
               &nbsp;&nbsp;&nbsp;
-              <i className="fa fa-times-circle" aria-hidden="true"></i>
+              <button className="btn btn-icon" onClick={closeButtonHandler} type="submit"><i className="fa fa-times-circle" aria-hidden="true"></i></button>
           </div>
         </div>
         <div className="mainContainer">
@@ -23,10 +25,10 @@ const NewNoteFileUploader = () => (
                 </div>
               </div>
               <div className="buttons">
-                <a href="#" className="btn btn-primary">Upload</a>
+                <button className="btn btn-primary">Upload</button>
                 <div></div>
-                <a href="#" className="btn btn-secondary">Cancel</a>
-                <a href="#" className="btn btn-primary">Save</a>
+                <button className="btn btn-secondary" onClick={closeButtonHandler}>Cancel</button>
+                <button className="btn btn-primary">Save</button>
               </div>
           </div>
           <div className="content state-upload" hidden>
@@ -144,7 +146,21 @@ const NewNoteFileUploader = () => (
         </div>
 </div>
 
-
 );
 
-export default NewNoteFileUploader;
+NewNoteFileUploader.propTypes = {
+  ...propTypes,
+  closeButtonHandler: PropTypes.func
+};
+
+// ------------------------------------------------
+// redux mapping
+// ------------------------------------------------
+const mapStateToProps = state => ({
+  appState: state.appState
+});
+
+
+export default connect(mapStateToProps)(reduxForm({
+  form: 'NewNoteFileUploader'
+})(NewNoteFileUploader));

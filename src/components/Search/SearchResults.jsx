@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -95,8 +96,7 @@ const SearchResults = (props) => {
     props.tasks[props.appState.modelName].data.activeTask &&
     props.tasks[props.appState.modelName].data.activeTask.name === 'choosePolicy'
   ) {
-    const policyResults = props.tasks[props.appState.modelName].data.previousTask.value.result.policies;
-
+    const policyResults = props.tasks[props.appState.modelName].data.previousTask.value.policies;
     return (
       <div className="quote-list">
         {
@@ -155,8 +155,9 @@ SearchResults.propTypes = {
     })
   }),
   tasks: PropTypes.shape(),
-  handleSelect: PropTypes.func,
-  handleSelectQuote: PropTypes.func
+  handleSelectAddress: PropTypes.func,
+  handleSelectQuote: PropTypes.func,
+  handleSelectPolicy: PropTypes.func
 };
 
 const mapStateToProps = state => ({
