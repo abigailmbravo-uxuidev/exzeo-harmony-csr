@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import FieldHint from './FieldHint';
 import reduxFormField from './reduxFormField';
-import normalizePhone from '../customizeHelpers';
+import normalizePhone from '../normalizePhone';
+import { combineRules } from '../Rules';
 
-export const PhoneField = ({
+export const PhoneInput = ({
   input,
   hint,
   label,
@@ -14,9 +15,13 @@ export const PhoneField = ({
   meta,
   type,
   disabled,
+  validations,
   name
 }) => {
   const { touched, error, warning } = meta;
+
+  const ruleArray = combineRules(validations, { });
+
 
   const formGroupStyles = classNames(
     'form-group',
@@ -41,19 +46,20 @@ export const PhoneField = ({
     <div className={formGroupStyles}>
       {Label}
       <Field
-            name={name}
-            component="input"
-            type="text"
-            placeholder="555-555-5555"
-            normalize={normalizePhone}
-            {...input}
-         />
+        name={name}
+        component="input"
+        type="text"
+        placeholder="555-555-5555"
+        normalize={normalizePhone}
+        validate={ruleArray}
+        {...input}
+      />
       {Error}
     </div>
   );
 };
 
-PhoneField.propTypes = {
+PhoneInput.propTypes = {
 
   /**
    * Hint for the user
@@ -104,12 +110,12 @@ PhoneField.propTypes = {
 
 };
 
-PhoneField.defaultProps = {
+PhoneInput.defaultProps = {
   hint: '',
   input: {},
   meta: {},
   type: 'text',
-  styleName: '',
+  styleName: ''
 };
 
-export default reduxFormField(PhoneField);
+export default reduxFormField(PhoneInput);

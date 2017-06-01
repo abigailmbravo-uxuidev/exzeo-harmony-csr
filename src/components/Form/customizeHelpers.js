@@ -49,32 +49,10 @@ export function getInitialValues(questions, data) {
           values[question.name] = newValue.answer;
         }
       }
-    }
-    else if (question.conditional && question.conditional.value) {
+    } else if (question.conditional && question.conditional.value) {
       values[question.name] = question.conditional.value.value;
     }
   });
 
   return values;
 }
-
-//normalize phone number
-const normalizePhone = value => {
-  if (!value) {
-    return value;
-  }
-
-  const onlyNums = value.replace(/[^\d]/g, '');
-
-  return String(onlyNums);
-
-//   if (onlyNums.length <= 3) {
-//     return onlyNums;
-//   }
-//   if (onlyNums.length <= 7) {
-//     return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
-//   }
-//   return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 6)}-${onlyNums.slice(6, 10)}`;
-};
-
-export default normalizePhone;

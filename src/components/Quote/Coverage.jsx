@@ -11,6 +11,7 @@ import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import TextField from '../Form/inputs/TextField';
+import PhoneField from '../Form/inputs/PhoneField';
 import HiddenField from '../Form/inputs/HiddenField';
 import SelectField from '../Form/inputs/SelectField';
 import RadioField from '../Form/inputs/RadioField';
@@ -47,12 +48,15 @@ const handleInitialize = (state) => {
   values.pH1email = _.get(quoteData, 'policyHolders[0].emailAddress');
   values.pH1FirstName = _.get(quoteData, 'policyHolders[0].firstName');
   values.pH1LastName = _.get(quoteData, 'policyHolders[0].lastName');
-  values.pH1phone = _.get(quoteData, 'policyHolders[0].primaryPhoneNumber');
+  values.pH1phone = _.get(quoteData, 'policyHolders[0].primaryPhoneNumber') || '';
+  values.pH1secondaryPhone = _.get(quoteData, 'policyHolders[0].secondaryPhoneNumber') || '';
 
   values.pH2email = _.get(quoteData, 'policyHolders[1].emailAddress');
   values.pH2FirstName = _.get(quoteData, 'policyHolders[1].firstName');
   values.pH2LastName = _.get(quoteData, 'policyHolders[1].lastName');
-  values.pH2phone = _.get(quoteData, 'policyHolders[1].primaryPhoneNumber');
+  values.pH2phone = _.get(quoteData, 'policyHolders[1].primaryPhoneNumber') || '';
+  values.pH2secondaryPhone = _.get(quoteData, 'policyHolders[1].secondaryPhoneNumber') || '';
+
 
   values.address1 = _.get(quoteData, 'property.physicalAddress.address1');
   values.address2 = _.get(quoteData, 'property.physicalAddress.address2');
@@ -152,11 +156,13 @@ export class Coverage extends Component {
     dispatch(change('Coverage', 'pH1FirstName', _.get(quoteData, 'policyHolders[0].firstName')));
     dispatch(change('Coverage', 'pH1LastName', _.get(quoteData, 'policyHolders[0].lastName')));
     dispatch(change('Coverage', 'pH1phone', _.get(quoteData, 'policyHolders[0].primaryPhoneNumber')));
+    dispatch(change('Coverage', 'pH1secondaryPhone', _.get(quoteData, 'policyHolders[0].secondaryPhoneNumber')));
 
     dispatch(change('Coverage', 'pH2email', _.get(quoteData, 'policyHolders[1].emailAddress')));
     dispatch(change('Coverage', 'pH2FirstName', _.get(quoteData, 'policyHolders[1].firstName')));
     dispatch(change('Coverage', 'pH2LastName', _.get(quoteData, 'policyHolders[1].lastName')));
     dispatch(change('Coverage', 'pH2phone', _.get(quoteData, 'policyHolders[1].primaryPhoneNumber')));
+    dispatch(change('Coverage', 'pH2secondaryPhone', _.get(quoteData, 'policyHolders[1].secondaryPhoneNumber')));
 
     dispatch(change('Coverage', 'address1', _.get(quoteData, 'property.physicalAddress.address1')));
     dispatch(change('Coverage', 'address2', _.get(quoteData, 'property.physicalAddress.address2')));
@@ -251,6 +257,13 @@ export class Coverage extends Component {
     submitData.personalLiability = Number(data.personalLiability);
 
     submitData.sinkholePerilCoverage = (String(data.sinkholePerilCoverage) === 'true');
+
+    submitData.pH1phone = submitData.pH1phone.replace(/[^\d]/g, '');
+    submitData.pH1secondaryPhone = submitData.pH1secondaryPhone ? submitData.pH1secondaryPhone.replace(/[^\d]/g, '') : submitData.pH1secondaryPhone;
+
+    submitData.pH2phone = submitData.pH2phone ? submitData.pH2phone.replace(/[^\d]/g, '') : submitData.pH2phone;
+    submitData.pH2secondaryPhone = submitData.pH2secondaryPhone ? submitData.pH2secondaryPhone.replace(/[^\d]/g, '') : submitData.pH2secondaryPhone;
+
 
     const steps = [
       { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
@@ -360,12 +373,10 @@ export class Coverage extends Component {
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
-                        {/* <PhoneField validations={['required']} label={'Primary Phone'} styleName={''} name={'pH1phone'} />*/}
-                        <TextField validations={['required']} label={'Primary Phone'} styleName={''} name={'pH1phone'} />
+                        <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH1phone'} />
                       </div>
                       <div className="flex-child">
-                        {/* <PhoneField label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} />*/}
-                        <TextField label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} />
+                        <PhoneField label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} validations={['phone']} />
                       </div>
                     </div>
                     <div className="flex-parent">
@@ -387,12 +398,10 @@ export class Coverage extends Component {
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
-                        {/* <PhoneField label={'Primary Phone'} styleName={''} name={'pH2phone'} />*/}
-                        <TextField label={'Primary Phone'} styleName={''} name={'pH2phone'} />
+                        <PhoneField label={'Primary Phone'} styleName={''} name={'pH2phone'} validations={['phone']} />
                       </div>
                       <div className="flex-child">
-                        <TextField label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} />
-                        {/* <PhoneField label={'Secondary Phone'}  styleName={''} name={'pH2secondaryPhone'} />*/}
+                        <PhoneField label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} validations={['phone']} />
                       </div>
                     </div>
                     <div className="flex-parent">
