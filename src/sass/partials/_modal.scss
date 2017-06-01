@@ -1,0 +1,32 @@
+.modal {
+  position: absolute;
+  z-index: 999999;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  background: rgba($black, .75);
+  align-items: center;
+
+  &.schedule-date-modal {
+    .survey-wrapper {
+      display: flex;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    margin: auto 20%;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    flex-grow: 0;
+    align-content: flex-start;
+  }
+}

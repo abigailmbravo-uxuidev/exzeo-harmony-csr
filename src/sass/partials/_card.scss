@@ -1,4 +1,5 @@
 .card {
+  z-index: 10;
   display: flex;
   flex-direction: column;
   margin-right: $card-deck-margin;
@@ -8,6 +9,10 @@
   border-radius: $card-border-radius;
   background: $card-bg;
   box-shadow: $card-box-shadow;
+
+  &.card-schedule-date {
+    max-width: 32rem;
+  }
 
   .card-header {
     margin-bottom: 0; // Removes the default margin-bottom of <hN>
@@ -48,7 +53,7 @@
       h4,
       h5,
       h6 {
-        margin: 0 (-$padding*2.5) (-$padding*1.75);
+        margin: 0;
         padding: $padding;
         color: $white;
         flex-basis: auto;
@@ -60,8 +65,12 @@
     overflow-y: auto;
     padding: $card-spacer-x;
     flex-grow: 1;
-    @include for-phone-only {
-      padding: $padding*1.5;
+
+    .form-group {
+      &:last-child {
+        padding-bottom: 0;
+        border-bottom-width: 0;
+      }
     }
 
     h1,
@@ -100,8 +109,8 @@
     }
 
     .btn-group {
-        margin-top: $padding;
       display: flex;
+      margin-top: $padding;
       justify-content: flex-end;
     }
 
@@ -109,4 +118,34 @@
       @include border-radius(0 0 $card-border-radius-inner $card-border-radius-inner);
     }
   }
+}
+
+.card-icon {
+  display: flex;
+  flex-direction: column;
+  width: 6rem;
+  margin-right: $padding;
+  align-items: center;
+  justify-content: center;
+
+  label {
+    margin-bottom: 0;
+    text-align: center;
+    font-size: $font-size-xs;
+  }
+}
+
+.ref-number {
+  display: flex;
+  flex-direction: column;
+  min-width: 10rem;
+  align-self: center;
+
+  label {
+    margin-bottom: 0;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-normal;
+  }
+
+  span {}
 }

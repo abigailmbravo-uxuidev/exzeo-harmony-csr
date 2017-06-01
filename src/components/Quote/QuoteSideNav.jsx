@@ -3,10 +3,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Redirect } from 'react-router';
+import { toastr } from 'react-redux-toastr';
 import { reduxForm, propTypes } from 'redux-form';
 import * as appStateActions from '../../actions/appStateActions';
 import UWconditions from '../Common/UWconditions';
 import * as cgActions from '../../actions/cgActions';
+
 
 // Example of a possible schema
 /**
@@ -79,6 +81,7 @@ const goToPage = (link, key, props) => {
 
   props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
     .then(() => {
+      toastr.removeByType('success'); // Remove all toastrs with the type success.
       props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, {
         ...props.appState.data,
         selectedLink: key,
@@ -107,7 +110,7 @@ const SideNav = (props) => {
           </li> :
           <li key={index}>
             <span className={agentLink.styleName} onClick={() => goToPage(agentLink.link, agentLink.key, props)}>
-              <a className={props.appState.data.selectedLink === agentLink.key ? `${agentLink.styleName} active` : `${agentLink.styleName}` }>{agentLink.label}</a>
+              <a className={props.appState.data.selectedLink === agentLink.key ? `${agentLink.styleName} active` : `${agentLink.styleName}`}>{agentLink.label}</a>
             </span>
           </li>
       ))}

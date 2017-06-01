@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import { reduxForm, Form, propTypes, reset } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
+import { toastr } from 'react-redux-toastr';
 import * as cgActions from '../../actions/cgActions';
 // import ScheduleDate from '../Common/ScheduleDate';
 import TextField from '../Form/inputs/TextField';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
-import ShareConfirmationModal from '../../components/Common/ShareConfirmationModal';
 
 // const scheduleDateModal = (props) => {
 //   const showScheduleDateModal = props.appState.data.showScheduleDateModal;
@@ -55,17 +55,16 @@ const handleFormSubmit = (data, dispatch, props) => {
 
   actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
     .then(() => {
+      toastr.success('Quote Shared', `Quote: ${props.quoteData.quoteNumber} has been shared successfully`);
+
       dispatch(reset('Summary'));
       // now update the workflow details so the recalculated rate shows
       actions.appStateActions.setAppState(appState.modelName,
-        workflowId, { quote: props.quoteData, updateWorkflowDetails: true, showShareConfirmationModal: true });
+        workflowId, { quote: props.quoteData, updateWorkflowDetails: true });
       // context.router.history.push('/quote/coverage');
     });
 };
 
-const hideConfirmationModal = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showShareConfirmationModal: false });
-};
 
 const Summary = (props) => {
   let property = {};
@@ -75,7 +74,6 @@ const Summary = (props) => {
   let deductibles = {};
 
   const {
-      showShareConfirmationModal,
       quoteData,
       tasks,
       appState,
@@ -172,43 +170,43 @@ const Summary = (props) => {
                 <dl>
                   <div>
                     <dt>Yearly Premium</dt>
-                    <dd>${quoteData.rating ? quoteData.rating.totalPremium : '-'}</dd>
+                    <dd>$ {quoteData.rating ? quoteData.rating.totalPremium : '-'}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>A. Dwelling</dt>
-                    <dd>${coverageLimits.dwelling.amount}</dd>
+                    <dd>$ {coverageLimits.dwelling.amount}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>B. Other Structures</dt>
-                    <dd>${coverageLimits.otherStructures.amount}</dd>
+                    <dd>$ {coverageLimits.otherStructures.amount}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>C. Personal Property</dt>
-                    <dd>${coverageLimits.personalProperty.amount}</dd>
+                    <dd>$ {coverageLimits.personalProperty.amount}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>D. Loss Of Use</dt>
-                    <dd>${coverageLimits.lossOfUse.amount}</dd>
+                    <dd>$ {coverageLimits.lossOfUse.amount}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>E. Personal Liability</dt>
-                    <dd>${coverageLimits.personalLiability.amount}</dd>
+                    <dd>$ {coverageLimits.personalLiability.amount}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>F. Medical Payments</dt>
-                    <dd>${coverageLimits.medicalPayments.amount}</dd>
+                    <dd>$ {coverageLimits.medicalPayments.amount}</dd>
                   </div>
                 </dl>
                 <dl>
@@ -220,37 +218,37 @@ const Summary = (props) => {
                 <dl>
                   <div>
                     <dt>Mold Property</dt>
-                    <dd>${coverageLimits.moldProperty.amount}</dd>
+                    <dd>$ {coverageLimits.moldProperty.amount}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>Mold Liability</dt>
-                    <dd>${coverageLimits.moldLiability.amount}</dd>
+                    <dd>$ {coverageLimits.moldLiability.amount}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>Ordinance or Law</dt>
-                    <dd>${coverageLimits.ordinanceOrLaw.amount}</dd>
+                    <dd>{coverageLimits.ordinanceOrLaw.amount}%</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>All Other Perils Deductible</dt>
-                    <dd>${deductibles.allOtherPerils.amount}</dd>
+                    <dd>$ {deductibles.allOtherPerils.amount}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>Hurricane Deductible</dt>
-                    <dd>${deductibles.hurricane.calculatedAmount}</dd>
+                    <dd>$ {deductibles.hurricane.calculatedAmount}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>Sinkhole Deductible</dt>
-                    <dd>${(coverageLimits.dwelling.amount * 0.10)}</dd>
+                    <dd>$ {(coverageLimits.dwelling.amount * 0.10)}</dd>
                   </div>
                 </dl>
               </section>
@@ -314,8 +312,7 @@ const Summary = (props) => {
                           </div>
                           <section>
                             <h4>{`${additionalInterest.name1}`} {`${additionalInterest.name2 || ''}`}</h4>
-                            <p>{`${additionalInterest.mailingAddress.address1}`} {`${additionalInterest.mailingAddress.address2 || ''}`}</p>
-                            <p>{`${additionalInterest.mailingAddress.city}`}, {`${additionalInterest.mailingAddress.state}`} {`${additionalInterest.mailingAddress.zip}`}</p>
+                            <p className="address">{`${additionalInterest.mailingAddress.address1}, ${additionalInterest.mailingAddress.address2 ? `${additionalInterest.mailingAddress.address2},` : ''} ${additionalInterest.mailingAddress.city}, ${additionalInterest.mailingAddress.state} ${additionalInterest.mailingAddress.zip}`}</p>
                           </section>
                           <div className="ref-number">
                             <label htmlFor="ref-number">Reference Number</label>
@@ -327,7 +324,6 @@ const Summary = (props) => {
           </div>
             }
         </div>
-        { showShareConfirmationModal && <ShareConfirmationModal hideShareConfirmationModal={() => hideConfirmationModal(props)} /> }
       </div>
     </QuoteBaseConnect>
   );

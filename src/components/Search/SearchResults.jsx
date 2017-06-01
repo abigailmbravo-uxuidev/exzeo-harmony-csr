@@ -57,7 +57,10 @@ const SearchResults = (props) => {
           quoteResults && quoteResults.map((quote, index) => <div id={quote._id} className="card" key={index}>
             <div className="icon-name">
               <i className="card-icon fa fa-user-circle" />
-              <h4>{quote.policyHolders[0] && `${quote.policyHolders[0].firstName} ${quote.policyHolders[0].lastName}`}</h4>
+              <div className="card-name">
+                <h5>{quote.policyHolders[0] && `${quote.policyHolders[0].firstName}`}</h5>
+                <h5>{quote.policyHolders[0] && `${quote.policyHolders[0].lastName}`}</h5>
+              </div>
             </div>
             <section>
               <ul>
@@ -70,24 +73,14 @@ const SearchResults = (props) => {
                   <span className="premium">Premium</span>
                 </li>
                 <li>
-                  <a
-                    onClick={() => props.handleSelectQuote(quote, props)} tabIndex="-1"
-                    className="quote-no"
-                  >{quote.quoteNumber}</a>
-                  <span className="property-address">{`${quote.property.physicalAddress.address1}
-                        ${quote.property.physicalAddress.city}, ${quote.property.physicalAddress.state}
-                        ${quote.property.physicalAddress.zip}
-                        `}</span>
-                  <span className="quote-state">{quote.quoteState}</span>
-                  <span
-                    className="effctive-date"
-                  >{moment.utc(quote.effectiveDate).format('YYYY-MM-DD')}</span>
-                  <span
-                    className="started-on"
-                  >{moment.utc(quote.createdAt).format('YYYY-MM-DD')}</span>
-                  <span
-                    className="premium"
-                  >$ {quote.rating ? quote.rating.totalPremium : '-'}</span>
+                  <a className="row" onClick={() => props.handleSelectQuote(quote, props)} tabIndex="-1">
+                    <span className="quote-no">{quote.quoteNumber}</span>
+                    <span className="property-address">{`${quote.property.physicalAddress.address1} ${quote.property.physicalAddress.city}, ${quote.property.physicalAddress.state} ${quote.property.physicalAddress.zip}`}</span>
+                    <span className="quote-state">{quote.quoteState}</span>
+                    <span className="effctive-date">{moment.utc(quote.effectiveDate).format('YYYY-MM-DD')}</span>
+                    <span className="started-on">{moment.utc(quote.createdAt).format('YYYY-MM-DD')}</span>
+                    <span className="premium">$ {quote.rating ? quote.rating.totalPremium : '-'}</span>
+                  </a>
                 </li>
               </ul>
             </section>

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
+import ReduxToastr from 'react-redux-toastr';
 import QuoteHeader from '../components/Quote/QuoteHeader';
 import QuoteSideNav from '../components/Quote/QuoteSideNav';
 import QuoteDetailHeader from '../components/Quote/DetailHeader';
@@ -24,6 +25,15 @@ export const QuoteBase = props => (
     <NewNoteFileUploader />
     <QuoteHeader />
     <main role="document">
+      <ReduxToastr
+        timeOut={4000}
+        newestOnTop={false}
+        preventDuplicates
+        position="top-right"
+        transitionIn="fadeIn"
+        transitionOut="fadeOut"
+        progressBar
+      />
       <aside className="content-panel-left">
         <div className="user">
           <label htmlFor="user">Policyholder</label>

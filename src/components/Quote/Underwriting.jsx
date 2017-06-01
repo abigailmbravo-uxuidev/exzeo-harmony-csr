@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { reduxForm, Form, propTypes, change, reset } from 'redux-form';
+import { toastr } from 'react-redux-toastr';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
@@ -81,6 +82,7 @@ export class Underwriting extends Component {
 
     actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
+        toastr.success('Quote Saved', `Quote: ${this.props.quoteData.quoteNumber} has been saved successfully`);
         // now update the workflow details so the recalculated rate shows
         actions.appStateActions.setAppState(
           appState.modelName,

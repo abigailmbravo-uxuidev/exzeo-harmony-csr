@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
+import { toastr } from 'react-redux-toastr';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
@@ -265,6 +266,7 @@ export class Coverage extends Component {
         this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
           workflowId, { ...this.props.appState.data, recalc: false, quote: this.props.quoteData, updateWorkflowDetails: true });
         // this.context.router.history.push('/quote/underwriting');
+        toastr.success('Quote Saved', `Quote: ${this.props.quoteData.quoteNumber} has been saved successfully`);
       });
   };
 
@@ -423,6 +425,9 @@ export class Coverage extends Component {
                           label={'City'} styleName={''} name={'city'} disabled
                         />
                       </div>
+
+                    </div>
+                    <div className="flex-parent">
                       <div className="flex-child state">
                         <TextField
                           label={'State'} styleName={''} name={'state'} disabled
@@ -492,7 +497,7 @@ export class Coverage extends Component {
                       </div>
                       <div className="flex-child">
                         <TextField
-                          label={'Dist. to Tidal Waters'} styleName={''} name={'distanceToTidalWater'} disabled
+                          label={'Tidal Waters Dist.'} styleName={''} name={'distanceToTidalWater'} disabled
                         />
                       </div>
 
@@ -601,7 +606,7 @@ export class Coverage extends Component {
 
                       <div className="flex-child">
                         <TextField
-                          label={'Dist. to Fire Hydrant'} styleName={''} input={{
+                          label={'Fire Hydrant Dist.'} styleName={''} input={{
                             name: 'distanceToFireHydrant',
                             disabled: true,
                             value: fieldValues.distanceToFireHydrant
@@ -610,7 +615,7 @@ export class Coverage extends Component {
                       </div>
                       <div className="flex-child">
                         <TextField
-                          label={'Sq. Ft. of Dwelling'} styleName={''} input={{
+                          label={'Sq. Ft. of Home'} styleName={''} input={{
                             name: 'squareFeet',
                             disabled: true,
                             value: fieldValues.squareFeet
@@ -655,7 +660,7 @@ export class Coverage extends Component {
                       </div>
                       <div className="flex-child">
                         <TextField
-                          label={'Dist. to Fire Station'} styleName={''} input={{
+                          label={'Fire Station Dist.'} styleName={''} input={{
                             name: 'distanceToFireStation',
                             disabled: true,
                             value: fieldValues.distanceToFireStation

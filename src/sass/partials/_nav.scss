@@ -1,43 +1,4 @@
 //vertical tabs
-
-.side-panel {
-  nav {
-    display: flex;
-    flex-direction: column;
-    border-right: 1px solid $warm-gray-01;
-
-    a {
-      margin-left: -$padding;
-      padding: $padding 0 $padding $padding;
-      color: $link-color;
-
-      &:focus,
-      &:hover {
-        text-decoration: none;
-      }
-
-      &.active {
-        color: $link-color;
-
-        &:focus,
-        &:hover {
-          color: lighten($link-color, 10%);
-        }
-      }
-
-      &.disabled {
-        color: $warm-gray-06;
-      }
-
-      &.selected {
-        cursor: default;
-        color: $cool-gray-14;
-        border-right: 5px solid $bright-blue;
-      }
-    }
-  }
-}
-
 .site-nav {
   width: auto;
   padding: $padding*2;

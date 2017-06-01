@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import _ from 'lodash';
+import { toastr } from 'react-redux-toastr';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
@@ -33,7 +34,7 @@ const handleFormSubmit = (data, dispatch, props) => {
   const workflowId = appState.instanceId;
 
   const steps = [
-{ name : 'hasUserEnteredData' , answer: 'Yes'},          
+{ name: 'hasUserEnteredData', answer: 'Yes' },
     {
       name: 'moveTo',
       data: { key: 'application' }
@@ -41,6 +42,8 @@ const handleFormSubmit = (data, dispatch, props) => {
   ];
   actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
   .then(() => {
+    toastr.success('Quote Submitted', 'Quote has been submitted successfully');
+
     props.actions.appStateActions.setAppState(
       appState.modelName,
       props.appState.instanceId,
@@ -89,7 +92,7 @@ export const QuoteApplication = (props) => {
               {underwritingExceptions && underwritingExceptions.length > 0 &&
                 <div className="messages" >
                   <div className="message error">
-                    <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Quote Summary cannot be sent due to Underwriting Validations.
+                    <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Application cannot be sent due to Underwriting Validations.
                   </div>
                 </div>
               }

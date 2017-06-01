@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
 import { reduxForm, Form, change, propTypes, formValueSelector } from 'redux-form';
+import { toastr } from 'react-redux-toastr';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
@@ -199,6 +200,7 @@ export class MailingAddressBilling extends Component {
 
     actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
+        toastr.success('Quote Saved', `Quote: ${this.props.quoteData.quoteNumber} has been saved successfully`);
         // now update the workflow details so the recalculated rate shows
         actions.appStateActions.setAppState(appState.modelName,
           workflowId, { quote: this.props.quoteData, updateWorkflowDetails: true });

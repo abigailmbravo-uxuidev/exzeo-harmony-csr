@@ -221,12 +221,13 @@ export const moveToTaskAndExecuteComplete = (modelName, workflowId, stepName, co
       stepName
     }
   };
+  let newInstanceId = '';
   return axios(axiosConfig)
     .then((response) => {
       const responseData = response.data.data;
       // check to see if the cg has returned an error as an ok
       checkCGError(responseData);
-      const instanceId = responseData.modelInstanceId;
+      newInstanceId = responseData.modelInstanceId;
       const axiosConfig2 = {
         method: 'POST',
         headers: {
@@ -234,7 +235,7 @@ export const moveToTaskAndExecuteComplete = (modelName, workflowId, stepName, co
         },
         url: `${process.env.REACT_APP_API_URL}/cg/complete`,
         data: {
-          workflowId: instanceId,
+          workflowId: newInstanceId,
           stepName: completeStep.stepName,
           data: completeStep.data
         }
@@ -247,7 +248,7 @@ export const moveToTaskAndExecuteComplete = (modelName, workflowId, stepName, co
       checkCGError(responseData);
       if (dispatchAppState) {
         return dispatch(batchActions([complete(modelName, responseData),
-          appStateActions.setAppState(modelName, workflowId, {
+          appStateActions.setAppState(modelName, newInstanceId, {
             submitting: false
           })
         ]));

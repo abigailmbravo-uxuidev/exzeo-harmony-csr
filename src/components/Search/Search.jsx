@@ -21,7 +21,7 @@ const handleSelectAddress = (address, props) => {
     igdId: address.id,
     stateCode: address.physicalAddress.state
   };
-  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { submitting: true });
+  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
   props.actions.cgActions.completeTask(props.appState.modelName, workflowId, taskName, data);
 };
 
@@ -31,7 +31,7 @@ const handleSelectQuote = (quote, props) => {
   const data = {
     quoteId: quote._id
   };
-  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { submitting: true });
+  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { submitting: true, ...props.appState.data });
   props.actions.cgActions.completeTask(props.appState.modelName, workflowId, taskName, data);
 };
 
