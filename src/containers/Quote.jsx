@@ -22,7 +22,7 @@ const handleLogout = (props) => {
 export const QuoteBase = props => (
   <div className="app-wrapper csr quote">
     <Helmet><title>Harmony - CSR Portal</title></Helmet>
-    <NewNoteFileUploader />
+    {/*<NewNoteFileUploader />*/}
     <QuoteHeader />
     <main role="document">
       <ReduxToastr
