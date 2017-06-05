@@ -14,10 +14,11 @@ export const PolicyHeader = props => (
       <a href="/" id="logo" className="logo">
         <img src={logo} alt="Harmony" />
       </a>
-      <nav>
-        <div></div>
-        <button className="btn close btn-action" type="button"><i className="fa fa-times" /></button>
-      </nav>
+      {/*<nav>
+        <div>
+                <button className="btn close btn-action" type="button"><i className="fa fa-times" /></button>
+        </div>
+      </nav>*/}
     </div>
   </header>
 );

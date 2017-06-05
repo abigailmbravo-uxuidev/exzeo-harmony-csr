@@ -2278,7 +2278,7 @@ ul.list-cards {
         flex-basis: auto;
 
         &.quoteDetails {
-            width: 11rem;
+            //width: 11rem;
         }
 
         dl {
@@ -2289,7 +2289,7 @@ ul.list-cards {
               color: $warm-gray-03;
               letter-spacing: 0.05em;
               font-size: $font-size-xs;
-              text-transform: uppercase;
+              //text-transform: uppercase;
             }
 
             dd {
@@ -2301,12 +2301,20 @@ ul.list-cards {
           }
         }
 
+        &.propertyAddress {
+            max-width: 15rem;
+        }
+
         &.policyStatus {
           flex-grow: 1;
         }
 
         &.quoteStatus {
-          flex-grow: 1;
+          //flex-grow: 1;
+        }
+
+        &.quoteEffectiveDate {
+            flex-grow: 1;
         }
 
         &.premium {

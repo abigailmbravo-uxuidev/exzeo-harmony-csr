@@ -18,7 +18,7 @@ const handleInitialize = (state) => {
     _id: selectedAI._id, // eslint-disable-line
       name1: selectedAI.name1,
       name2: selectedAI.name2,
-      phoneNumber: String(selectedAI.phoneNumber).length > 0 ? selectedAI.phoneNumber : null,
+      phoneNumber: String(selectedAI.phoneNumber).length > 0 ? selectedAI.phoneNumber : '',
       address1: selectedAI.mailingAddress.address1,
       address2: selectedAI.mailingAddress.address2,
       city: selectedAI.mailingAddress.city,

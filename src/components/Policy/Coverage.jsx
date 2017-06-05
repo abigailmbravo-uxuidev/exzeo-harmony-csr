@@ -142,7 +142,7 @@ export const Coverage = (props) => {
 
   const deductibleData = [
     {
-      displayText: 'All other Perils',
+      displayText: 'All Other Perils',
       amount: `$ ${_.get(deductibles, 'allOtherPerils.amount')}`
     }, {
       displayText: 'Hurricane',

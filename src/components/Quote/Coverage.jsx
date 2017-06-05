@@ -241,7 +241,7 @@ export class Coverage extends Component {
 
     submitData.agencyCode = String(data.agencyCode);
     submitData.agentCode = String(data.agentCode);
-    submitData.dwellingAmount = Number(data.dwellingAmount.replace(/\D+/g, ''));
+    submitData.dwellingAmount = Number(String(data.dwellingAmount).replace(/\D+/g, ''));
     submitData.otherStructuresAmount = Number(data.otherStructuresAmount);
 
     submitData.personalPropertyAmount = Number(data.personalPropertyAmount);
@@ -817,7 +817,7 @@ export class Coverage extends Component {
                           input={{
                             name: 'medicalPayments',
                             disabled: true,
-                            value: '$2000'
+                            value: '$2,000'
                           }}
                         />
 
@@ -878,7 +878,7 @@ export class Coverage extends Component {
                     <div className="flex-parent">
                       <div className="flex-child">
                         <SelectField
-                          name="ordinanceOrLaw" component="select" styleName={''} label="Ordinace or Law Coverage" onChange={function () {}} validations={['required']} answers={[
+                          name="ordinanceOrLaw" component="select" styleName={''} label="Ordinance or Law Coverage" onChange={function () {}} validations={['required']} answers={[
                             {
                               answer: '25',
                               label: '25% of Coverage A (included)'

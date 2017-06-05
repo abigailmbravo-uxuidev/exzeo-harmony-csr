@@ -8,6 +8,20 @@ import SelectField from '../Form/inputs/SelectField';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 
+const handleInitialize = () => ({
+  name1: '',
+  name2: '',
+  phoneNumber: '',
+  address1: '',
+  address2: '',
+  city: '',
+  state: '',
+  zip: '',
+  referenceNumber: '',
+  type: ''
+});
+
+
 const AdditionalInterestModal = ({ appState, handleSubmit, verify, hideAdditionalInterestModal }) => <div className="modal quote-summary" style={{ flexDirection: 'row' }}>
   <Form id="AdditionalInterestModal" noValidate onSubmit={handleSubmit(verify)}>
     <div className="card">
@@ -258,7 +272,8 @@ AdditionalInterestModal.propTypes = {
 
 const mapStateToProps = state => ({
   tasks: state.cg,
-  appState: state.appState
+  appState: state.appState,
+  initialValues: handleInitialize(state)
 });
 
 const mapDispatchToProps = dispatch => ({

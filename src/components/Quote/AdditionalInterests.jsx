@@ -91,7 +91,7 @@ export class AdditionalLinterests extends Component {
       order,
       active: true,
       type,
-      phoneNumber: String(data.phoneNumber).length > 0 ? data.phoneNumber : null,
+      phoneNumber: String(data.phoneNumber).length > 0 ? String(data.phoneNumber).replace(/[^\d]/g, '') : '',
       mailingAddress: {
         address1: data.address1,
         address2: data.address2,
