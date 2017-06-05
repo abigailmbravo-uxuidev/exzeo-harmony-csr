@@ -46,7 +46,7 @@ export const NoResults = (props) => {
             :
               <p>We&#39;re sorry we couldn&#39;t find any results matching your search parameters. Please
                 check your spelling and try a new search. You can also try a
-                less specific search (such street number and name).</p>
+                less specific search (such as street number and name).</p>
             )
           }
         </div>
