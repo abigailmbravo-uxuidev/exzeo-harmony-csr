@@ -1006,7 +1006,7 @@ ul.list-cards {
   }
 }
 
-.quote-list {
+.quote-list, .policy-list {
   margin-bottom: $padding/2;
   padding: $padding*2;
   flex-grow: 1;
@@ -1020,7 +1020,6 @@ ul.list-cards {
     .icon-name {
       display: flex;
       overflow: hidden;
-      padding-top: 0.5rem;
       flex-basis: 12rem;
       flex-wrap: wrap;
       align-items: center;
@@ -1108,7 +1107,7 @@ ul.list-cards {
             }
           }
 
-          .quote-no {
+          .quote-no, .policy-no {
             padding-left: $padding;
             flex-grow: 0;
             flex-shrink: 0;
@@ -1120,7 +1119,7 @@ ul.list-cards {
             flex-shrink: 0;
           }
 
-          .quote-state {
+          .quote-state, .policy-status {
             flex-grow: 0;
             flex-shrink: 0;
             flex-basis: 9rem;
@@ -1143,11 +1142,6 @@ ul.list-cards {
             flex-grow: 0;
             flex-shrink: 0;
             flex-basis: 5rem;
-          }
-
-          a.quote-no {
-            padding: 0;
-            border-width: 0;
           }
         }
       }
@@ -2234,6 +2228,26 @@ ul.list-cards {
       width: 12rem;
 
       ul {
+          hr.nav-division {
+              border-width: 0;
+              border-top: 2px dotted $warm-gray-04;
+              margin: ($padding*2)(-$padding);
+              padding: 0;
+          }
+          .btn {
+              &.btn-secondary {
+                  background: rgba($white, 0);
+                  border-color: rgba($warm-gray-04, .8);
+
+                  &:hover {
+                      background: rgba($white, .8);
+                      border-color: rgba($warm-gray-04, 1);
+                  }
+              }
+              &.btn-block {
+                  margin: 0 ($padding*2) ($padding*2) 0;
+              }
+          }
         li {
           span {
             a {
@@ -2258,37 +2272,40 @@ ul.list-cards {
       flex-wrap: wrap;
 
       section {
-        margin-right: $padding*2;
+        margin-right: $padding*4;
         flex-grow: 0;
-        flex-shrink: 0;
+        flex-shrink: 1;
         flex-basis: auto;
+
+        &.quoteDetails {
+            width: 11rem;
+        }
 
         dl {
           margin-bottom: 0;
 
           div {
             dt {
-              letter-spacing: 0.07em;
+              color: $warm-gray-03;
+              letter-spacing: 0.05em;
               font-size: $font-size-xs;
+              text-transform: uppercase;
             }
 
             dd {
               margin-bottom: 0;
               font-size: $font-size-sm;
-
-              +dd {
-                letter-spacing: 0.07em;
-                font-size: $font-size-xs;
-              }
+              line-height: $headings-line-height;
+              text-transform: uppercase;
             }
           }
         }
 
-        &.cencellationDate {
+        &.policyStatus {
           flex-grow: 1;
         }
 
-        &.quoteEffectiveDate {
+        &.quoteStatus {
           flex-grow: 1;
         }
 
@@ -2299,6 +2316,10 @@ ul.list-cards {
           color: $warm-gray-12;
           background: $yellow-lighten-06;
           align-self: flex-start;
+
+          dt {
+              color: $warm-gray-12;
+          }
 
           dd {
             text-align: right;

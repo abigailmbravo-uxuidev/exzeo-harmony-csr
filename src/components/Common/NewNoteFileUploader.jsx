@@ -3,14 +3,12 @@ import { reduxForm, propTypes } from 'redux-form';
 import { connect } from 'react-redux';
 
 const NewNoteFileUploader = ({ closeButtonHandler }) => (
-
     <div className="new-note-file">
         <div className="title-bar">
           <div className="title">Note</div>
           <div className="controls">
-              <i className="fa fa-window-minimize" aria-hidden="true"></i>
-              &nbsp;&nbsp;&nbsp;
-              <button className="btn btn-icon" onClick={closeButtonHandler} type="submit"><i className="fa fa-times-circle" aria-hidden="true"></i></button>
+            <button className="btn btn-icon"><i className="fa fa-window-minimize" aria-hidden="true"></i></button>
+            <button className="btn btn-icon" onClick={closeButtonHandler} type="submit"><i className="fa fa-times-circle" aria-hidden="true"></i></button>
           </div>
         </div>
         <div className="mainContainer">

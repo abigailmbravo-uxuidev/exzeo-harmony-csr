@@ -59,13 +59,13 @@ export const Coverage = (props) => {
       value: _.get(underwritingAnswers, 'noPriorInsuranceSurcharge.answer')
     }, {
       discountSurcharge: 'Burglar Alarm',
-      value: _.get(underwritingAnswers, 'property.burglarAlarm') ? 'Yes' : 'No'
+      value: _.get(property, 'burglarAlarm') ? 'Yes' : 'No'
     }, {
       discountSurcharge: 'Fire Alarm',
-      value: _.get(underwritingAnswers, 'property.fireAlarm') ? 'Yes' : 'No'
+      value: _.get(property, 'fireAlarm') ? 'Yes' : 'No'
     }, {
       discountSurcharge: 'Sprinkler',
-      value: _.get(underwritingAnswers, 'property.sprinkler') === 'N' ? 'No' : 'Yes'
+      value: _.get(property, 'sprinkler') === 'N' ? 'No' : 'Yes'
     }, {
       discountSurcharge: 'Wind Mit Factor',
       value: _.get(rating, 'windMitigationDiscount')
@@ -102,20 +102,17 @@ export const Coverage = (props) => {
       coverage: 'Mold Liability',
       value: `$ ${_.get(coverageLimits, 'moldLiability.amount')}`
     }, {
-      coverage: 'Loss Assessment',
-      value: `$ ${_.get(coverageLimits, 'lossOfUse.amount')}`
-    }, {
       coverage: 'Content Replacement Cost',
-      value: `${_.get(coverageOptions, 'personalPropertyReplacementCost.answer')}`
+      value: _.get(coverageOptions, 'personalPropertyReplacementCost.answer') ? 'Yes' : 'No'
     }, {
-      coverage: 'Inc Ordinance Coverage',
-      value: `$ ${_.get(coverageLimits, 'ordinanceOrLaw.amount')}`
+      coverage: 'Ordinance or Law Coverage',
+      value: `${_.get(coverageLimits, 'ordinanceOrLaw.amount')}%`
     }, {
       coverage: 'Incidental Occ Main',
-      value: `${_.get(coverageOptions, 'propertyIncidentalOccupanciesMainDwelling.answer')}`
+      value: _.get(coverageOptions, 'propertyIncidentalOccupanciesMainDwelling.answer') ? 'Yes' : 'No'
     }, {
       coverage: 'Incidental Occ Other',
-      value: `${_.get(coverageOptions, 'propertyIncidentalOccupanciesOtherStructures.answer')}`
+      value: _.get(coverageOptions, 'propertyIncidentalOccupanciesOtherStructures.answer') ? 'Yes' : 'No'
     }
   ];
 
@@ -142,6 +139,18 @@ export const Coverage = (props) => {
       value: _.get(props.policy, 'billPlan')
     }
   ];
+
+  const deductibleData = [
+    {
+      displayText: 'All other Perils',
+      amount: `$ ${_.get(deductibles, 'allOtherPerils.amount')}`
+    }, {
+      displayText: 'Hurricane',
+      amount: `${_.get(deductibles, 'hurricane.amount')}%`
+    }
+  ];
+
+
   const propertyData = property || {};
   return (
     <PolicyConnect>
@@ -180,7 +189,7 @@ export const Coverage = (props) => {
                 <div className="responsive-tables">
                   <div className="table-view">
 
-                    <BootstrapTable className="deductible" data={deductibles ? Object.keys(deductibles).map(k => deductibles[k]) : null} striped hover>
+                    <BootstrapTable className="deductible" data={deductibleData} striped hover>
                       <TableHeaderColumn isKey dataField="displayText" className="coverage" columnClassName="coverage">Deductible</TableHeaderColumn>
                       <TableHeaderColumn dataField="amount" className="value" columnClassName="value" dataAlign="right">Value</TableHeaderColumn>
                     </BootstrapTable>

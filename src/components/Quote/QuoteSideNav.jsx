@@ -8,6 +8,7 @@ import { reduxForm, propTypes } from 'redux-form';
 import * as appStateActions from '../../actions/appStateActions';
 import UWconditions from '../Common/UWconditions';
 import * as cgActions from '../../actions/cgActions';
+import NewNoteFileUploader from '../Common/NewNoteFileUploader';
 
 
 // Example of a possible schema
@@ -63,6 +64,14 @@ const csrLinks = [{
   exact: true
 }];
 
+const NewNoteFileUploaderPopup = (props) => {
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { showNewNoteFileUploader: true });
+};
+
+const closeNewNoteFileUploader = (props) => {
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { showNewNoteFileUploader: false });
+};
+
 const UWconditionsPopup = (props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { showUWconditions: true });
 };
@@ -114,16 +123,22 @@ const SideNav = (props) => {
             </span>
           </li>
       ))}
-        <hr className="quote-hr" />
+        <hr className="nav-division" />
         <li>
-          <button className="btn btn-secondary btn-xs" onClick={() => UWconditionsPopup(props)}>Underwriting Conditions</button>
+          <button className="btn btn-primary btn-sm btn-block" onClick={() => NewNoteFileUploaderPopup(props)}><i className="fa fa-plus"></i> Note / File</button>
         </li>
-        { props.appState.data.showUWconditions === true &&
+        <li>
+          <button className="btn btn-secondary btn-xs btn-block" onClick={() => UWconditionsPopup(props)}>Underwriting Conditions</button>
+        </li>
+      </ul>
+      { props.appState.data.showNewNoteFileUploader === true &&
+        <NewNoteFileUploader closeButtonHandler={() => closeNewNoteFileUploader(props)} />
+      }
+      { props.appState.data.showUWconditions === true &&
         <UWconditions
           closeButtonHandler={() => closeUWConditions(props)}
         />
       }
-      </ul>
     </nav>);
 };
 

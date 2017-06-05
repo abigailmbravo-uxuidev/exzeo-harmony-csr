@@ -2,9 +2,9 @@ import React, {PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import { Helmet } from 'react-helmet';
-import QuoteHeader from '../components/Policy/PolicyHeader';
+import PolicyHeader from '../components/Policy/PolicyHeader';
 import QuoteSideNav from '../components/Policy/PolicySideNav';
-import DetailHeader from '../components/Policy/DetailHeader';
+import PolicyDetailHeader from '../components/Policy/DetailHeader';
 import * as userActions from '../actions/userActions';
 import Footer from '../components/Common/Footer';
 //import NewNoteFileUploader from '../components/Common/NewNoteFileUploader';
@@ -20,8 +20,8 @@ export const Policy = props => (
     {/*TODO: dynamically add policy # to title*/}
     <Helmet><title>Policy [policyNumber]</title></Helmet>
     {/*<NewNoteFileUploader/>*/}
-    <QuoteHeader/>
-    <DetailHeader />
+    <PolicyHeader/>
+    <PolicyDetailHeader />
     <main role="document">
       <aside className="content-panel-left">
         <QuoteSideNav/>

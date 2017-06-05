@@ -15,11 +15,11 @@ import PhoneField from '../Form/inputs/PhoneField';
 import HiddenField from '../Form/inputs/HiddenField';
 import SelectField from '../Form/inputs/SelectField';
 import RadioField from '../Form/inputs/RadioField';
-import SelectFieldAgency from '../Form/inputs/SelectFieldAgency';
-import SelectFieldAgents from '../Form/inputs/SelectFieldAgents';
+import CurrencyField from '../Form/inputs/CurrencyField';
 
 const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  if (!taskData) return {};
   const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
   return quoteData;
 };
@@ -130,6 +130,7 @@ const handleInitialize = (state) => {
 
 const handleGetDocs = (state, name) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  if (!taskData) return [];
   const result = _.find(taskData.model.variables, { name });
   const doc = (result && result.value) ? [result.value.result] : [];
   return _.concat([], doc);
@@ -240,7 +241,7 @@ export class Coverage extends Component {
 
     submitData.agencyCode = String(data.agencyCode);
     submitData.agentCode = String(data.agentCode);
-    submitData.dwellingAmount = Number(data.dwellingAmount);
+    submitData.dwellingAmount = Number(data.dwellingAmount.replace(/\D+/g, ''));
     submitData.otherStructuresAmount = Number(data.otherStructuresAmount);
 
     submitData.personalPropertyAmount = Number(data.personalPropertyAmount);
@@ -286,25 +287,29 @@ export class Coverage extends Component {
   updateDwellingAndDependencies = (event) => {
     const { dispatch, fieldValues } = this.props;
 
-    if (Number.isNaN(event.target.value)) return;
+    const dwellingNumber = String(event.target.value).replace(/\D+/g, '');
+
+    if (Number.isNaN(dwellingNumber)) return;
 
     if (fieldValues.otherStructures !== 'other') {
-      dispatch(change('Coverage', 'otherStructuresAmount', String(setPercentageOfValue(Number(event.target.value), Number(fieldValues.otherStructures)))));
+      dispatch(change('Coverage', 'otherStructuresAmount', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.otherStructures)))));
     }
     if (fieldValues.personalProperty !== 'other') {
-      dispatch(change('Coverage', 'personalPropertyAmount', String(setPercentageOfValue(Number(event.target.value), Number(fieldValues.personalProperty)))));
+      dispatch(change('Coverage', 'personalPropertyAmount', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.personalProperty)))));
     }
-    dispatch(change('Coverage', 'calculatedHurricane', String(setPercentageOfValue(Number(event.target.value), Number(fieldValues.hurricane)))));
+    dispatch(change('Coverage', 'calculatedHurricane', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.hurricane)))));
 
 
-    dispatch(change('Coverage', 'lossOfUse', String(setPercentageOfValue(Number(event.target.value), 10))));
+    dispatch(change('Coverage', 'lossOfUse', String(setPercentageOfValue(Number(dwellingNumber), 10))));
   }
 
   updateDependencies = (event, field, dependency) => {
     const { dispatch, fieldValues } = this.props;
     if (Number.isNaN(event.target.value)) return;
 
-    const fieldValue = setPercentageOfValue(fieldValues[dependency], Number(event.target.value));
+    const dependencyValue = String(fieldValues[dependency]).replace(/\D+/g, '');
+
+    const fieldValue = setPercentageOfValue(Number(dependencyValue), Number(event.target.value));
 
     dispatch(change('Coverage', field, Number.isNaN(fieldValue) ? '' : String(fieldValue)));
   }
@@ -697,14 +702,14 @@ export class Coverage extends Component {
                     <div className="flex-parent">
                       <div className="flex-child">
                         <TextField
-                          validations={['required', 'range']} label={`Dwelling (A - ${fieldValues.dwellingMin} - ${fieldValues.dwellingMax})`} styleName={''} name={'dwellingAmount'}
+                          validations={['required', 'range']} label={`Dwelling (A - $ ${fieldValues.dwellingMin ? String(fieldValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : ''} - $ ${fieldValues.dwellingMax ? String(fieldValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : ''})`} styleName={''} name={'dwellingAmount'}
                           min={initialValues.dwellingMin} max={initialValues.dwellingMax} onChange={value => this.updateDwellingAndDependencies(value)}
                         />
                       </div>
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
-                        <TextField
+                        <CurrencyField
                           validations={['required']}
                           name="otherStructuresAmount"
                           label={'Other Structure (B)'} styleName={'coverage-b'} disabled={fieldValues.otherStructures !== 'other'}
@@ -737,7 +742,7 @@ export class Coverage extends Component {
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
-                        <TextField
+                        <CurrencyField
                           validations={['required']}
                           label={'Personal Property (C)'} styleName={'coverage-c'} name="personalPropertyAmount" disabled={fieldValues.personalProperty !== 'other'}
                         />
@@ -784,7 +789,7 @@ export class Coverage extends Component {
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
-                        <TextField
+                        <CurrencyField
                           label={'Loss of Use (D)'} styleName={''} name="lossOfUse" disabled
                         />
                       </div>
@@ -873,7 +878,7 @@ export class Coverage extends Component {
                     <div className="flex-parent">
                       <div className="flex-child">
                         <SelectField
-                          name="ordinanceOrLaw" component="select" styleName={''} label="Ordinace of Law Coverage" onChange={function () {}} validations={['required']} answers={[
+                          name="ordinanceOrLaw" component="select" styleName={''} label="Ordinace or Law Coverage" onChange={function () {}} validations={['required']} answers={[
                             {
                               answer: '25',
                               label: '25% of Coverage A (included)'
@@ -905,7 +910,7 @@ export class Coverage extends Component {
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
-                        <TextField
+                        <CurrencyField
                           validations={['required']}
                           label={'Calculated Hurricane'} styleName={'coverage-c'} name="calculatedHurricane" disabled
                         />

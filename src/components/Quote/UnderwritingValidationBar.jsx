@@ -18,19 +18,20 @@ export const UnderwritingValidationBar = (props) => {
      appState
    } = props;
 
-  const taskData = (tasks && appState && tasks[appState.modelName]) ? tasks[appState.modelName].data : {};
-
-  console.log(props, taskData);
+  const taskData = (tasks && appState && tasks[appState.modelName]) ? tasks[appState.modelName].data : null;
 
   // combine all quote Objects from UW Exceptions into an array
   // pull the latest quote object by lastUpdated date and set it as quote data
 
-  const getQuoteBetweenPageLoop = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' });
-
-  const quoteData = getQuoteBetweenPageLoop ? getQuoteBetweenPageLoop.value.result : null;
-  const underwritingExceptions = quoteData && quoteData.underwritingExceptions ? quoteData.underwritingExceptions : [];
-
-  console.log(underwritingExceptions);
+  let getQuoteBetweenPageLoop = null;
+  let underwritingExceptions = [];
+  let quoteData = null;
+  if (taskData) {
+    getQuoteBetweenPageLoop = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' });
+    console.log(getQuoteBetweenPageLoop);
+    quoteData = getQuoteBetweenPageLoop ? getQuoteBetweenPageLoop.value.result : null;
+    underwritingExceptions = quoteData && quoteData.underwritingExceptions ? quoteData.underwritingExceptions : [];
+  }
 
     if (!quoteData) { // eslint-disable-line
       return <div className="detailHeader" />;

@@ -2,68 +2,72 @@
   //display: none;
   position: absolute;
   z-index: 99999;
-  right: 40px;
+  right: 2.5rem;
   bottom: 0;
   width: 40%;
   background: $white;
-  box-shadow: 0 0 20px 0 rgba(0,0,0,.25);
+  box-shadow: 0 0 20px 0 rgba($black, .25);
 
   .title-bar {
     display: flex;
     flex-direction: row;
-    padding: 10px 20px;
+    padding: $padding ($padding*2);
     background: $bright-blue-darken-04;
     flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-content: stretch;
-    align-items: flex-start;
 
     * {
       color: $white;
     }
 
+    .btn {
+      padding: 0 ($padding/2);
+    }
+
     .title {
-      font-size: 18px;
       order: 0;
       flex: 1 1 auto;
       align-self: auto;
     }
 
     .controls {
-      font-size: 22px;
+      display: flex;
+      font-size: $font-size-h4;
       order: 0;
       flex: 0 1 auto;
       align-self: auto;
+
+      .btn {
+        margin-left: $padding;
+      }
     }
   }
 
   .mainContainer {
     .content {
-      padding: 10px 20px 20px;
+      padding: $padding ($padding*2) ($padding*2);
 
       .flex-contents {
         display: flex;
         overflow-y: auto;
         flex-direction: column;
         height: 320px;
-        margin: 0 0 20px;
+        margin: 0 0 ($padding*2);
         flex-wrap: nowrap;
         justify-content: flex-start;
         align-content: stretch;
         align-items: stretch;
 
         select {
-          margin: 0 0 10px;
+          margin: 0 0 ($padding*2);
           order: 0;
           flex: 0 0 auto;
           align-self: auto;
         }
 
         textarea {
-          margin: 0 0 10px;
+          margin: 0 0 ($padding*2);
           color: $warm-gray-08;
           border: solid 1px $warm-gray-04;
-          font-size: 12px;
           order: 0;
           flex: 1 1 240px;
           align-self: auto;
@@ -71,7 +75,7 @@
 
         .drag-n-drop {
           max-height: 180px;
-          padding: 10px;
+          padding: $padding;
           text-align: center;
           border: dashed $warm-gray-04 2px;
           border-radius: $border-radius;
@@ -96,7 +100,7 @@
         }
 
         .btn-secondary {
-          margin: 0 10px 0 0;
+          margin: 0 ($padding*2) 0 0;
         }
       }
     }
@@ -108,7 +112,7 @@
         .drag-n-drop {
           max-height: none;
           padding: 120px 20px 0;
-          font-size: 36px;
+          font-size: $font-size-h3;
         }
       }
 
@@ -130,7 +134,7 @@
             li {
               display: flex;
               flex-direction: row;
-              margin: 10px 0;
+              margin: $padding 0;
               flex-wrap: nowrap;
               justify-content: flex-start;
               align-content: stretch;
@@ -145,7 +149,6 @@
               > span {
                 text-align: left;
                 color: $warm-gray-14;
-                font-size: 12px;
                 order: 0;
                 flex: 1 1 auto;
                 align-self: auto;
@@ -153,12 +156,11 @@
 
               > select {
                 width: 36%;
-                margin: 0 10px;
+                margin: 0 $padding;
               }
 
               > i {
                 color: $red;
-                font-size: 24px;
               }
             }
           }

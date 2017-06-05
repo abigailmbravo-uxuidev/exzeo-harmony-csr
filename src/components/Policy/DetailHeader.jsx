@@ -15,22 +15,24 @@ const handleGetPolicy = (state) => {
 const DetailHeader = (props) => {
   const { policyData } = props;
   return (<div className="detailHeader">
+  <section id="quoteDetails" className="quoteDetails">
+    <dl>
+      <div>
+        <dt>HO3 Homeowners Policy</dt>
+        <dd>{_.get(policyData, 'policyNumber')}</dd>
+      </div>
+    </dl>
+  </section>
     <section id="policyholder" className="policyholder">
       <dl>
         <div>
           <dt>Policyholder</dt>
           <dd>{`${_.get(policyData, 'policyHolders[0].firstName')} ${_.get(policyData, 'policyHolders[0].lastName')}`}</dd>
+          <dd>{_.get(policyData, 'policyHolders[0].primaryPhoneNumber')}</dd>
         </div>
       </dl>
     </section>
-    <section id="quoteDetails" className="quoteDetails">
-      <dl>
-        <div>
-          <dt>Policy Number</dt>
-          <dd>{_.get(policyData, 'policyNumber')}</dd>
-        </div>
-      </dl>
-    </section>
+
     <section id="propertyAddress" className="propertyAddress">
       <dl>
         <div>
@@ -57,22 +59,6 @@ const DetailHeader = (props) => {
         </div>
       </dl>
     </section>
-    <section id="policyholderPhone" className="policyholderPhone">
-      <dl>
-        <div>
-          <dt>Policyholder Phone</dt>
-          <dd>{_.get(policyData, 'policyHolders[0].primaryPhoneNumber')}</dd>
-        </div>
-      </dl>
-    </section>
-    <section id="policyStatus" className="policyStatus">
-      <dl>
-        <div>
-          <dt>Policy Status</dt>
-          <dd>{_.get(policyData, 'status')}</dd>
-        </div>
-      </dl>
-    </section>
     <section id="policyEffectiveDate" className="policyEffectiveDate">
       <dl>
         <div>
@@ -81,11 +67,19 @@ const DetailHeader = (props) => {
         </div>
       </dl>
     </section>
-    <section id="cencellationDate" className="cencellationDate">
+    <section id="cancellationDate" className="cancellationDate">
       <dl>
         <div>
           <dt>Cancellation Date</dt>
-          <dd>{moment.utc(_.get(policyData, 'cencellationDate')).format('YYYY-MM-DD')}</dd>
+          <dd>{_.get(policyData, 'cancellationDate') ? moment.utc(_.get(policyData, 'cancellationDate')).format('YYYY-MM-DD') : `` }</dd>
+        </div>
+      </dl>
+    </section>
+    <section id="policyStatus" className="policyStatus">
+      <dl>
+        <div>
+          <dt>Policy Status</dt>
+          <dd>{_.get(policyData, 'status')}</dd>
         </div>
       </dl>
     </section>

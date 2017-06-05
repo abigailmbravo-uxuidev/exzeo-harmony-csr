@@ -78,12 +78,12 @@ export class WorkflowDetails extends Component {
           <section id="propertyAddress" className="propertyAddress">
             <dl>
               <div>
-                <dt>Address</dt>
+                <dt>Property Address</dt>
                 <dd>{this.state.quote.property.physicalAddress.address1}</dd>
                 <dd>{this.state.quote.property.physicalAddress.address2}</dd>
                 <dd>
                   {this.state.quote.property.physicalAddress.city},&nbsp;
-                {this.state.quote.property.physicalAddress.state}&nbsp;
+                  {this.state.quote.property.physicalAddress.state}&nbsp;
                   {this.state.quote.property.physicalAddress.zip}
                 </dd>
               </div>

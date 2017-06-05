@@ -45,6 +45,16 @@ input[type="submit"] {
       }
   }
 
+  &.btn-block {
+      width: 100%;
+      white-space: normal;
+  }
+
+  &.btn-xs {
+      font-size: $font-size-xs;
+      padding: ($padding/2) $padding;
+  }
+
   &.focus {
     text-decoration: none;
   }

@@ -104,16 +104,14 @@ const SideNav = (props) => {
             closeButtonHandler={() => closeUWConditions(props)}
             />
           }*/}
-          <hr className="quote-hr" />
+          <hr className="nav-division" />
           <li>
-            <button className="btn btn-primary btn-xs" onClick={() => NewNoteFileUploaderPopup(props)}><i className="fa fa-plus"></i> Note / File</button>
+            <button className="btn btn-primary btn-sm btn-block" onClick={() => NewNoteFileUploaderPopup(props)}><i className="fa fa-plus"></i> Note / File</button>
           </li>
-          { props.appState.data.showNewNoteFileUploader === true &&
-            <NewNoteFileUploader
-              closeButtonHandler={() => closeNewNoteFileUploader(props)}
-              />
-            }
       </ul>
+      { props.appState.data.showNewNoteFileUploader === true &&
+        <NewNoteFileUploader closeButtonHandler={() => closeNewNoteFileUploader(props)} />
+      }
     </nav>);
 };
 
