@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import { reduxForm, Form, propTypes, reset } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
-import { toastr } from 'react-redux-toastr';
 import * as cgActions from '../../actions/cgActions';
 // import ScheduleDate from '../Common/ScheduleDate';
 import TextField from '../Form/inputs/TextField';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
+import normalizePhone from '../Form/normalizePhone';
 
 // const scheduleDateModal = (props) => {
 //   const showScheduleDateModal = props.appState.data.showScheduleDateModal;
@@ -21,6 +21,8 @@ const handlePrimarySecondaryTitles = (type, order) => `${type} ${order + 1}`;
 
 const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  if (!taskData) return {};
+
   const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
   return quoteData;
 };
@@ -37,7 +39,7 @@ const handleFormSubmit = (data, dispatch, props) => {
   const { appState, actions } = props;
   const workflowId = appState.instanceId;
   actions.appStateActions.setAppState(appState.modelName,
-    workflowId, { submitting: true });
+    workflowId, { ...props.appState.data, ubmitting: true });
 
 
   const steps = [{
@@ -55,12 +57,10 @@ const handleFormSubmit = (data, dispatch, props) => {
 
   actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
     .then(() => {
-      toastr.success('Quote Shared', `Quote: ${props.quoteData.quoteNumber} has been shared successfully`);
-
       dispatch(reset('Summary'));
       // now update the workflow details so the recalculated rate shows
-      actions.appStateActions.setAppState(appState.modelName,
-        workflowId, { quote: props.quoteData, updateWorkflowDetails: true });
+      // actions.appStateActions.setAppState(appState.modelName,
+      //   workflowId, { quote: props.quoteData, updateWorkflowDetails: true });
       // context.router.history.push('/quote/coverage');
     });
 };
@@ -80,12 +80,15 @@ const Summary = (props) => {
        handleSubmit
      } = props;
 
-  const taskData = (tasks && appState && tasks[appState.modelName]) ? tasks[appState.modelName].data : {};
+  const taskData = (tasks && appState && tasks[appState.modelName]) ? tasks[appState.modelName].data : null;
 
   // hardcoded because cg removed the 'getAgentDocument' step from the model.. Will be removed once model is updated and implemented on th UI
-  const selectedAgent = _.find(taskData.model.variables, { name: 'getAgentDocument' }) ?
+  let selectedAgent = {};
+  if (taskData) {
+    selectedAgent = _.find(taskData.model.variables, { name: 'getAgentDocument' }) ?
   _.find(taskData.model.variables, { name: 'getAgentDocument' }).value.result :
   { firstName: 'Wally', lastName: 'Wagoner' };
+  }
 
   if (quoteData) {
     property = quoteData.property;
@@ -266,7 +269,7 @@ const Summary = (props) => {
                              </div>
                              <div className="contact-phone">
                                <dt>Phone Number</dt>
-                               <dd>{policyHolder.primaryPhoneNumber}</dd>
+                               <dd>{normalizePhone(policyHolder.primaryPhoneNumber)}</dd>
                              </div>
                              <div className="contact-email">
                                <dt>Email</dt>

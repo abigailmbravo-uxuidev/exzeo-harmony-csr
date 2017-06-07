@@ -34,7 +34,9 @@ const handleSearchBarSubmit = (data, dispatch, props) => {
     zip: (encodeURIComponent(data.zip) !== 'undefined' ? encodeURIComponent(data.zip) : ''),
     searchType: props.fieldValues.searchType
   };
-  console.log('SEARCH DATA: ', taskData);
+
+  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
+
   // we need to make sure the active task is search otherwise we need to reset the workflow
   if (props.tasks[props.appState.modelName] && props.tasks[props.appState.modelName].data &&
     props.tasks[props.appState.modelName].data.activeTask &&

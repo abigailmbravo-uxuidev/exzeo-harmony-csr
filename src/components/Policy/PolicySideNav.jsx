@@ -19,19 +19,19 @@ import NewNoteFileUploader from '../Common/NewNoteFileUploader';
  *  outside
  * }
  */
- const csrLinks = [{
-   key: 'coverage',
-   link: '/policy/coverage',
-   label: 'Coverage / Rating',
-   styleName: 'coverage',
-   exact: true
- },{
+const csrLinks = [{
+  key: 'coverage',
+  link: '/policy/coverage',
+  label: 'Coverage / Rating',
+  styleName: 'coverage',
+  exact: true
+}, {
    key: 'policyholder',
    link: '/policy/policyholder',
    label: 'Policyholder / Agent',
    styleName: 'policyholder',
    exact: true
- },{
+ }, {
    key: 'billing',
    link: '/policy/billing',
    label: 'Mortgage / Billing',
@@ -46,11 +46,11 @@ import NewNoteFileUploader from '../Common/NewNoteFileUploader';
  }];
 
 const NewNoteFileUploaderPopup = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { showNewNoteFileUploader: true });
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showNewNoteFileUploader: true });
 };
 
 const closeNewNoteFileUploader = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { showNewNoteFileUploader: false });
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showNewNoteFileUploader: false });
 };
 
 const goToPage = (link, key, props) => {
@@ -67,8 +67,7 @@ const goToPage = (link, key, props) => {
         ...props.appState.data,
         selectedLink: key,
         activateRedirectLink: link,
-        activateRedirect: true,
-        updateWorkflowDetails: true
+        activateRedirect: true
       });
     });
 };
@@ -91,11 +90,11 @@ const SideNav = (props) => {
           </li> :
           <li key={index}>
             <span className={agentLink.styleName} onClick={() => goToPage(agentLink.link, agentLink.key, props)}>
-              <a className={props.appState.data.selectedLink === agentLink.key ? `${agentLink.styleName} active` : `${agentLink.styleName}` }>{agentLink.label}</a>
+              <a className={props.appState.data.selectedLink === agentLink.key ? `${agentLink.styleName} active` : `${agentLink.styleName}`}>{agentLink.label}</a>
             </span>
           </li>
       ))}
-        {/*<hr className="quote-hr" />
+        {/* <hr className="quote-hr" />
         <li>
           <button className="btn btn-secondary btn-xs" onClick={() => UWconditionsPopup(props)}>Underwriting Conditions</button>
         </li>

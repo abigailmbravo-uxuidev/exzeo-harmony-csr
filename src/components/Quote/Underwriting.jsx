@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { reduxForm, Form, propTypes, change, reset } from 'redux-form';
-import { toastr } from 'react-redux-toastr';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
@@ -13,18 +12,27 @@ import FieldGenerator from '../Form/FieldGenerator';
 
 const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
-  return quoteData;
+  if (taskData) {
+    const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
+    return quoteData;
+  }
+  return {};
 };
 
-const handleGetQuestions = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  const uwQuestions = _.find(taskData.model.variables, { name: 'getListOfUWQuestions' }) ? _.find(taskData.model.variables, { name: 'getListOfUWQuestions' }).value.result : [];
-  return uwQuestions;
+const populateUnderwritingQuestions = (state) => {
+  if (state.cg && state.cg.getUWQuestions && state.cg.getUWQuestions.data &&
+    state.cg.getUWQuestions.data.model && state.cg.getUWQuestions.data.model.variables) {
+    const underwritingQuestions = _.filter(state.cg.getUWQuestions.data.model.variables, item => item.name === 'getListOfUWQuestions');
+    if (underwritingQuestions.length > 0) {
+      const data = underwritingQuestions[0].value.result;
+      return data;
+    }
+  }
+  return [];
 };
 
 const handleInitialize = (state) => {
-  const questions = handleGetQuestions(state);
+  const questions = populateUnderwritingQuestions(state);
   const data = handleGetQuoteData(state);
   const values = {};
 
@@ -46,50 +54,38 @@ const handleInitialize = (state) => {
  to pull it from another place in the model
 ------------------------------------------------
 */
+
 export class Underwriting extends Component {
 
   componentWillMount() {
-    const { appState, actions } = this.props;
-    const workflowId = appState.instanceId;
-    const steps = [
-      { name: 'hasUserEnteredData', data: { answer: 'Yes' } }
-    ];
-
-    actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
-      .then(() => {
-        // now update the workflow details so the recalculated rate shows
-        this.props.actions.appStateActions.setAppState(appState.modelName, appState.instanceId, { ...appState.data,
-          quote: this.props.quoteData,
-          updateWorkflowDetails: true,
-          hideYoChildren: false
-        });
-      });
+    const { quoteData } = this.props;
+    const startModelData = {
+      companyCode: quoteData.companyCode,
+      state: quoteData.state,
+      property: quoteData.property,
+      product: quoteData.product
+    };
+    this.props.actions.cgActions.startWorkflow('getUWQuestions', startModelData, false);
   }
 
   handleFormSubmit = (data) => {
-    const { appState, actions, quoteData, tasks } = this.props;
+    const { appState, actions, quoteData } = this.props;
 
     const workflowId = appState.instanceId;
     actions.appStateActions.setAppState(appState.modelName, workflowId, { ...appState.data, submitting: true });
     const steps = [
+      { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
       { name: 'askUWAnswers', data }
     ];
 
-    const activeTaskName = tasks[appState.modelName].data.activeTask.name;
-    if (activeTaskName === 'hasUserEnteredData') {
-      steps.unshift({ name: 'hasUserEnteredData', data: { answer: 'Yes' } });
-    }
-
     actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
-        toastr.success('Quote Saved', `Quote: ${this.props.quoteData.quoteNumber} has been saved successfully`);
         // now update the workflow details so the recalculated rate shows
         actions.appStateActions.setAppState(
           appState.modelName,
           workflowId,
           {
             ...appState.data,
-            updateWorkflowDetails: true,
             quote: quoteData,
             hideYoChildren: false
           }
@@ -106,7 +102,9 @@ export class Underwriting extends Component {
 
 
   render() {
-    const { fieldValues, handleSubmit, pristine, quoteData, questions } = this.props;
+    const { fieldValues, handleSubmit, pristine, quoteData, stateObject } = this.props;
+
+    const questions = populateUnderwritingQuestions(stateObject);
 
     return (
       <QuoteBaseConnect>
@@ -120,9 +118,9 @@ export class Underwriting extends Component {
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
 
-                <h4>Underwriting Questions</h4>
+                <h3>Underwriting Questions</h3>
 
-                {questions.map((question, index) =>
+                {questions && questions.map((question, index) =>
 
                   <FieldGenerator
                     data={quoteData.underwritingAnswers}
@@ -161,6 +159,7 @@ export class Underwriting extends Component {
 // ------------------------------------------------
 Underwriting.propTypes = {
   ...propTypes,
+  stateObject: PropTypes.shape(),
   tasks: PropTypes.shape(),
   appState: PropTypes.shape({
     modelName: PropTypes.string,
@@ -175,11 +174,11 @@ Underwriting.propTypes = {
 // redux mapping
 // ------------------------------------------------
 const mapStateToProps = state => ({
+  stateObject: state,
   tasks: state.cg,
   appState: state.appState,
-  fieldValues: _.get(state.form, 'Underwriting.values', {}),
   initialValues: handleInitialize(state),
-  questions: handleGetQuestions(state),
+  fieldValues: _.get(state.form, 'Underwriting.values', {}),
   quoteData: handleGetQuoteData(state),
   activateRedirect: state.appState.data.activateRedirect
 });

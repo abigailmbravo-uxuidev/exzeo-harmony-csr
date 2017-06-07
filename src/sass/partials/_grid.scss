@@ -1,5 +1,4 @@
 /*editor error animate*/
-/*@import "~toastr/build/toastr.min.css";*/
 //** Unit-less `line-height` for use in components like buttons.
 $line-height-base: 1.428571429 !default; // 20/14
 //** Computed "line-height" (`font-size` * `line-height`) for use with `margin`, `padding`, etc.
@@ -9,7 +8,7 @@ $line-height-computed: floor(($font-size-base * $line-height-base)) !default; //
 //## Customizes the `.table` component with basic values, each used across all table variations.
 //** Padding for `<th>`s and `<td>`s.
 $table-cell-padding: $padding !default; //** Padding for cells in `.table-condensed`.
-$table-condensed-cell-padding: 5px !default; //** Default background color used for all tables.
+$table-condensed-cell-padding: ($padding/2) !default; //** Default background color used for all tables.
 $table-bg: transparent !default; //** Background color used for `.table-striped`.
 $table-bg-accent: $white !default; //** Background color used for `.table-hover`.
 $table-bg-hover: $warm-gray-00 !default;
@@ -41,11 +40,11 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
 }
 
 .react-bs-table-pagination {
-  margin: 10px;
+  margin: $padding;
 }
 
 .react-bs-table-tool-bar {
-  margin: 10px 10px 0;
+  margin: $padding $padding 0;
 }
 
 .react-bs-container-header {
@@ -95,7 +94,7 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
 }
 
 .react-bs-table .table-bordered > tbody > tr > td {
-  color: $warm-gray-08;
+  color: $warm-gray-10;
   outline: none !important;
 }
 
@@ -187,14 +186,14 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
 .react-bs-table .react-bs-container-header > table > thead > tr > th .date-filter-input,
 .react-bs-table .react-bs-container-header > table > thead > tr > th .number-filter-input {
   float: left;
-  width: calc(100% - 67px - 5px);
-  margin-left: 5px;
+  width: calc(100% - 4.5rem - $padding);
+  margin-left: $padding;
 }
 
 .react-bs-table .react-bs-container-header > table > thead > tr > th .date-filter-comparator,
 .react-bs-table .react-bs-container-header > table > thead > tr > th .number-filter-comparator {
   float: left;
-  width: 67px;
+  width: 4.5rem;
 }
 
 .react-bs-table .react-bs-container-header .sort-column {
@@ -603,17 +602,17 @@ table {
   .table-bordered {
     tr {
       background: transparent;
-      font-size: 14px;
+      font-size: $font-size-base;
 
       th {
-        padding: 15px;
+        padding: ($padding*1.5) ($padding*2);
         border: none;
       }
 
       td {
-        padding: 15px;
+        padding: ($padding*1.5) ($padding*2);
         border: none;
-        font-size: 12px;
+        font-size: $font-size-base;
       }
     }
   }
@@ -781,130 +780,7 @@ table {
       flex-grow: 1;
       display: flex;
       flex-direction: column;
-      //overflow: hidden;
-    //table view styles
-    /*------------------------------------------------------------------------------------*/
-    /*
-    .table-view {
-      flex-basis: auto;
-      flex-shrink: 1;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
 
-      .results-grid {
-        flex-basis: auto;
-        flex-shrink: 1;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-
-        .react-bs-table {
-          flex-basis: auto;
-          flex-shrink: 1;
-          flex-grow: 1;
-          display: flex;
-          flex-direction: column;
-          overflow: hidden;
-          height: auto !important;
-
-          .react-bs-container-header {
-            flex-grow: 0;
-            flex-shrink: 0;
-
-            .table-bordered {
-              tr {
-                th {
-                  line-height: 1;
-
-                  &.type {
-                    width: 5%;
-                  }
-
-                  &.number {
-                    width: 10%;
-                  }
-
-                  &.policyholder {
-                    width: 15%;
-                  }
-
-                  &.address {
-                    width: 50%;
-                  }
-
-                  &.status {
-                    width: 10%;
-                  }
-
-                  &.effectiveDate {
-                    width: 10%;
-                  }
-                }
-              }
-            }
-          }
-
-          .react-bs-container-body {
-            display: flex;
-            flex-direction: column;
-            overflow-y: scroll;
-            flex-grow: 1;
-            flex-shrink: 1;
-
-            .table {
-              flex-grow: 0;
-              flex-shrink: 0;
-
-              tr {
-                &:hover {
-                  cursor: pointer;
-                }
-
-                td {
-                  line-height: 1;
-
-                  &.type {
-                    font-size: 0;
-                    width: 5%;
-
-                    &:before {
-                      font-family: $font-family-icon;
-                      content: "\f111";
-                      font-size: $font-size-h6;
-                      line-height: 1;
-                    }
-                  }
-
-                  &.number {
-                    width: 10%;
-                  }
-
-                  &.policyholder {
-                    width: 15%;
-                  }
-
-                  &.address {
-                    width: 50%;
-                  }
-
-                  &.status {
-                    width: 10%;
-                  }
-
-                  &.effectiveDate {
-                    width: 10%;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    */
     //card view styles
     /*------------------------------------------------------------------------------------*/
     .card-view {

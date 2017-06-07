@@ -106,7 +106,7 @@ export const MailingAddressBilling = (props) => {
                 <Form id="MailingAddressBilling" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
                     <div className="scroll">
                         <div className="form-group survey-wrapper" role="group">
-                          <h1>Notes / Files</h1>
+                          <h3>History</h3>
 
                           <section>
 

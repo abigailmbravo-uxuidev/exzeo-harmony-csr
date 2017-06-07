@@ -14,7 +14,7 @@ export const SelectInput = ({
 }) => {
   const { onChange, name, value, disabled } = input;
   const { touched, error, warning } = meta;
-  const Error = touched && (error || warning) && <span style={{ border: '1pt solid red' }}>{error || warning}</span>;
+  const Error = touched && (error || warning) && <span>{error || warning}</span>;
   const formGroupStyles = classNames('form-group', styleName, name, Error ? 'error' : '');
   const Hint = hint && (<FieldHint name={name} hint={hint} />);
   return (
@@ -36,6 +36,7 @@ export const SelectInput = ({
             ))}
         </select>
         ) : null}
+      {Error}
     </div>
   );
 };
@@ -65,11 +66,7 @@ SelectInput.propTypes = {
     onChange: PropTypes.func,
     value: PropTypes.any, // eslint-disable-line
   }),
-  meta: {
-    touched: PropTypes.bool,
-    error: PropTypes.string,
-    warning: PropTypes.string
-  },
+  meta: PropTypes.shape(),
   /**
    * Label for field
    */

@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Redirect } from 'react-router';
-import { toastr } from 'react-redux-toastr';
 import { reduxForm, propTypes } from 'redux-form';
 import * as appStateActions from '../../actions/appStateActions';
 import UWconditions from '../Common/UWconditions';
@@ -65,23 +64,25 @@ const csrLinks = [{
 }];
 
 const NewNoteFileUploaderPopup = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { showNewNoteFileUploader: true });
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showNewNoteFileUploader: true });
 };
 
 const closeNewNoteFileUploader = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { showNewNoteFileUploader: false });
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showNewNoteFileUploader: false });
 };
 
 const UWconditionsPopup = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { showUWconditions: true });
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showUWconditions: true });
 };
 
 const closeUWConditions = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { showUWconditions: false });
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showUWconditions: false });
 };
 
 const goToPage = (link, key, props) => {
   const workflowId = props.appState.instanceId;
+
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, submitting: true });
 
   const steps = [
     { name: 'hasUserEnteredData', data: { answer: 'No' } },
@@ -90,13 +91,11 @@ const goToPage = (link, key, props) => {
 
   props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
     .then(() => {
-      toastr.removeByType('success'); // Remove all toastrs with the type success.
       props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, {
         ...props.appState.data,
         selectedLink: key,
         activateRedirectLink: link,
-        activateRedirect: true,
-        updateWorkflowDetails: true
+        activateRedirect: true
       });
     });
 };
@@ -125,7 +124,7 @@ const SideNav = (props) => {
       ))}
         <hr className="nav-division" />
         <li>
-          <button className="btn btn-primary btn-sm btn-block" onClick={() => NewNoteFileUploaderPopup(props)}><i className="fa fa-plus"></i> Note / File</button>
+          <button className="btn btn-primary btn-sm btn-block" onClick={() => NewNoteFileUploaderPopup(props)}><i className="fa fa-plus" /> Note / File</button>
         </li>
         <li>
           <button className="btn btn-secondary btn-xs btn-block" onClick={() => UWconditionsPopup(props)}>Underwriting Conditions</button>

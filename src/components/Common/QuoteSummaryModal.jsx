@@ -5,10 +5,11 @@ import { reduxForm, Form, propTypes } from 'redux-form';
 
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
-
+import Loader from './Loader';
 
 const QuoteSummary = ({ appState, handleSubmit, verify, showQuoteSummaryModal }) => <div className="modal quote-summary">
   <Form noValidate onSubmit={handleSubmit(verify)}>
+    {appState.data.submitting && <Loader />}
     <div className="card">
       <div className="card-header">
         <h4><i className="fa fa-envelope" /> Send Application</h4>

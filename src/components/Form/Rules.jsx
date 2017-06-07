@@ -9,7 +9,8 @@ const rules = {
   minLength3: value => (!value || validator.isLength(value, { min: 3 }) ? undefined : 'Please enter at least 3 characters'),
   onlyAlphaNumeric: value => (!value || validator.isAlphanumeric(value) ? undefined : 'Invalid characters'),
   invalidCharacters: value => (!value.match(/\/|\\/) ? undefined : 'Invalid characters'),
-  numberDashesOnly: value => (value.match(/^(\d+-?)+\d+$/) ? undefined : 'Only numbers and dashes allowed')
+  numberDashesOnly: value => (value.match(/^(\d+-?)+\d+$/) ? undefined : 'Only numbers and dashes allowed'),
+  numbersOnly: value => ((!value || validator.isNumeric(value)) ? undefined : 'Not a valid zip code')
 };
 
 export function combineRules(validations, variables) {
@@ -21,7 +22,7 @@ export function combineRules(validations, variables) {
         ruleArray.push(rules[`${validations[i]}`]);
       } else if (validations[i] === 'range' && variables && variables.min && variables.max) {
         const range = (values) => {
-          const valid = values <= variables.max && values >= variables.min ? undefined : 'Not a valid range';
+          const valid = Number(String(values).replace(/\D+/g, '')) <= variables.max && Number(String(values).replace(/\D+/g, '')) >= variables.min ? undefined : 'Not a valid range';
           return valid;
         };
         ruleArray.push(range);

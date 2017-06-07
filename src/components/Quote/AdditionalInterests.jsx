@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { reduxForm, propTypes, change } from 'redux-form';
-import { toastr } from 'react-redux-toastr';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
@@ -13,6 +12,7 @@ import AdditionalInterestEditModal from '../../components/Common/AdditionalInter
 
 const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  if (!taskData) return {};
   const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ?
   _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
 
@@ -128,14 +128,11 @@ export class AdditionalLinterests extends Component {
 
     actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
-        toastr.success('Quote Saved', `Quote: ${this.props.quoteData.quoteNumber} has been saved successfully`);
-
         additionalInterests = modifiedAIs;
 
         // now update the workflow details so the recalculated rate shows
         actions.appStateActions.setAppState(appState.modelName,
           workflowId, { ...appState.data,
-            updateWorkflowDetails: true,
             showAdditionalInterestModal: false,
             showAdditionalInterestEditModal: false });
         // this.context.router.history.push('/quote/coverage');
@@ -192,12 +189,6 @@ export class AdditionalLinterests extends Component {
     actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
         additionalInterests = modifiedAIs;
-
-        toastr.success('Quote Saved', `Quote: ${this.props.quoteData.quoteNumber} has been saved successfully`);
-        // now update the workflow details so the recalculated rate shows
-        actions.appStateActions.setAppState(appState.modelName,
-          workflowId, { updateWorkflowDetails: true });
-        // this.context.router.history.push('/quote/coverage');
       });
   }
 
@@ -207,12 +198,11 @@ export class AdditionalLinterests extends Component {
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
-
         <div className="route-content">
           <form id="AddAdditionalInterestPage">
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
-                <h4>Additional Interests</h4>
+                <h3>Additional Interests</h3>
                 <div className="button-group">
                   <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Mortgagee').length > 1} onClick={() => this.addAdditionalInterest('Mortgagee')} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
                   <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Additional Insured').length > 1} onClick={() => this.addAdditionalInterest('Additional Insured')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>

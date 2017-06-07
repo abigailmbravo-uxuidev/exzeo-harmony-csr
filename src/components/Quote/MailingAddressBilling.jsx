@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
 import { reduxForm, Form, change, propTypes, formValueSelector } from 'redux-form';
-import { toastr } from 'react-redux-toastr';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
@@ -18,12 +17,14 @@ import {
 
 const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  if (!taskData) return {};
   const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
   return quoteData;
 };
 
 const handleGetPaymentPlans = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  if (!taskData) return {};
   const paymentPlanResult = _.find(taskData.model.variables, { name: 'billingOptionsForMailing' }) ? _.find(taskData.model.variables, { name: 'billingOptionsForMailing' }).value.result : {};
   return paymentPlanResult;
 };
@@ -52,7 +53,7 @@ _.isEqual(_.get(quoteData, 'policyHolderMailingAddress.zip'), _.get(quoteData, '
 
   const paymentPlans = handleGetPaymentPlans(state);
 
-  if (paymentPlans.options.length === 1 && !values.billTo && !values.billPlan) {
+  if (paymentPlans && paymentPlans.options && paymentPlans.options.length === 1 && !values.billTo && !values.billPlan) {
     values.billTo = _.get(paymentPlans.options[0], 'billToId');
     values.billToId = _.get(paymentPlans.options[0], 'billToId');
     values.billToType = _.get(paymentPlans.options[0], 'billToType');
@@ -200,10 +201,9 @@ export class MailingAddressBilling extends Component {
 
     actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
-        toastr.success('Quote Saved', `Quote: ${this.props.quoteData.quoteNumber} has been saved successfully`);
-        // now update the workflow details so the recalculated rate shows
-        actions.appStateActions.setAppState(appState.modelName,
-          workflowId, { quote: this.props.quoteData, updateWorkflowDetails: true });
+        // // now update the workflow details so the recalculated rate shows
+        // actions.appStateActions.setAppState(appState.modelName,
+        //   workflowId, { quote: this.props.quoteData, updateWorkflowDetails: true });
       });
   };
 
@@ -218,7 +218,7 @@ export class MailingAddressBilling extends Component {
           <Form id="MailingAddressBilling" onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
-                <h4>Mailing Address</h4>
+                <h3>Mailing Address</h3>
 
                 <section className="mailing-address-details">
 
@@ -460,7 +460,7 @@ export class MailingAddressBilling extends Component {
                 </section>
 
                 <section>
-                  <h4>Billing</h4>
+                  <h3>Billing</h3>
 
                   <div className="flex-parent">
                     <div className="flex-child">

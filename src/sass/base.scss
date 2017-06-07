@@ -259,8 +259,8 @@ main[role="document"] {
   overflow-y: hidden;
   flex-direction: row;
   width: 100%;
-  height: calc(100vh - 3.75rem);
-  min-height: calc(100vh - 3.75rem);
+  height: calc(100vh - 8.125rem);
+  min-height: calc(100vh - 8.125rem);
   background: $white;
   flex-grow: 1;
   flex-shrink: 0;
@@ -905,10 +905,6 @@ footer {
         flex-direction: column;
         flex-grow: 1;
 
-        .dashboard-message {
-          padding: ($padding*2) ($padding*2) 0;
-        }
-
         .product-wrapper {
           display: flex;
           flex-wrap: wrap;
@@ -1226,239 +1222,6 @@ ul.list-cards {
   }
 }
 
-.dashboard-message {
-  margin-bottom: $padding/2;
-
-  .card {
-    display: flex;
-    flex-direction: row;
-    margin: 0 0 ($padding/2);
-    padding: $padding $padding*1.5;
-
-    .icon-name {
-      display: flex;
-      overflow: hidden;
-      width: 12rem;
-      flex-grow: 0;
-      flex-shrink: 0;
-      flex-basis: 12rem;
-
-      i {
-        display: flex;
-        width: 2rem;
-        height: 2rem;
-        font-size: $font-size-h2;
-        flex-grow: 0;
-        flex-shrink: 0;
-        flex-basis: 2rem;
-        justify-content: center;
-      }
-
-      h4 {
-        display: block;
-        overflow: hidden;
-        width: 10rem;
-        height: 2rem;
-        padding-right: $padding;
-        padding-left: $padding;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        line-height: 2rem;
-      }
-    }
-
-    section {
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-      flex-shrink: 0;
-
-      ul {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-
-        li {
-          display: flex;
-          padding: ($padding/4)($padding);
-          font-size: $font-size-sm;
-          justify-content: space-between;
-          flex-grow: 1;
-          flex-shrink: 0;
-
-          &.header {
-            background: $cool-gray-01;
-            font-size: $font-size-xs;
-
-            .premium {
-              font-weight: $font-weight-normal;
-            }
-          }
-
-          .quote-no {
-            width: 5.5rem;
-            flex-grow: 0;
-            flex-shrink: 0;
-            flex-basis: 5.5rem;
-          }
-
-          .property-address {
-            flex-grow: 1;
-            flex-shrink: 0;
-          }
-
-          .quote-state {
-            width: 6rem;
-            flex-grow: 0;
-            flex-shrink: 0;
-            flex-basis: 6rem;
-          }
-
-          .effctive-date {
-            width: 5rem;
-            flex-grow: 0;
-            flex-shrink: 0;
-            flex-basis: 5rem;
-          }
-
-          .started-on {
-            width: 8rem;
-            flex-grow: 0;
-            flex-shrink: 0;
-            flex-basis: 8rem;
-          }
-
-          .premium {
-            width: 4rem;
-            font-weight: $font-weight-bold;
-            flex-grow: 0;
-            flex-shrink: 0;
-            flex-basis: 4rem;
-          }
-
-          a.quote-no {
-            padding: 0;
-            border-width: 0;
-          }
-        }
-      }
-    }
-  }
-
-  a {
-    padding: $padding $padding*1.5;
-    border: $card-border-width solid $card-border-color;
-    border-radius: $card-border-radius;
-    background: $white;
-    align-items: center;
-    align-items: flex-start;
-
-    section {
-      display: flex;
-      flex-direction: row;
-      flex-grow: 1;
-
-      h2,
-      h3,
-      h4,
-      h5 {
-        display: flex;
-        width: 20%;
-        margin: 0;
-        flex-basis: 20%;
-        flex-grow: 0;
-        flex-shrink: 0;
-      }
-
-      p {
-        margin: 0;
-      }
-
-      ul {
-        display: flex;
-        flex-direction: column;
-        width: 80%;
-        margin: 0;
-        padding: 0;
-        flex-basis: 80%;
-      }
-    }
-
-    i {
-      display: flex;
-      width: 2rem;
-      height: 2rem;
-      font-size: $font-size-h2;
-      justify-content: center;
-
-      &.card-icon {
-        margin-right: $padding;
-      }
-
-      &.fa-map-marker {
-        justify-content: flex-start;
-      }
-    }
-
-    &:hover {
-      cursor: pointer;
-
-      section {
-        h2,
-        h3,
-        h4,
-        h5 {
-          color: $bright-blue-darken-02;
-        }
-
-        p {
-          color: $bright-blue-darken-02;
-        }
-      }
-
-      i {
-        color: $bright-blue-darken-02;
-      }
-    }
-  }
-}
-//Demographics/Customer Info page
-/*------------------------------------------------------------------------------------*/
-#CustomerInfo {
-  .survey-wrapper {
-    .FirstName {
-      width: 40%;
-      padding-right: $padding*2;
-    }
-
-    .LastName {
-      width: 60%;
-    }
-
-    .EmailAddress {
-      width: 60%;
-      padding-right: $padding*2;
-    }
-
-    .phoneNumber {
-      width: 40%;
-      padding-right: $padding*2;
-    }
-
-    .effectiveDate {
-      width: 40%;
-      padding-right: $padding*2;
-    }
-
-    .agentID {
-      width: 60%;
-      padding-right: $padding*2;
-    }
-  }
-}
-//Underwriting page
-/*------------------------------------------------------------------------------------*/
-#Underwriting {}
 //Customize Quote page
 /*------------------------------------------------------------------------------------*/
 #Customize {
@@ -1535,51 +1298,6 @@ ul.list-cards {
     }
   }
 }
-//Share
-/*------------------------------------------------------------------------------------*/
-#SharePage {
-  overflow-y: auto;
-  flex-grow: 1;
-
-  .detail-wrapper {
-    .section-instructions {
-      width: 100%;
-      margin-bottom: $padding*2;
-      padding-bottom: $paragraph-margin-bottom;
-      border-bottom: 1px dashed $warm-gray-02;
-    }
-  }
-}
-
-.email-modal {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: none;
-  flex-direction: column;
-  background: rgba($black, .8);
-  align-items: center;
-  @include animation( 'fade-in .25s 1');
-
-  &.active {
-    display: flex;
-  }
-
-  .survey-wrapper {
-    display: flex;
-    align-items: center;
-
-    .card-email {
-      width: 36rem;
-      margin: $padding 0;
-    }
-  }
-}
-//Assumptions
-/*------------------------------------------------------------------------------------*/
-#Assumptions {}
 //Additional Interests
 /*------------------------------------------------------------------------------------*/
 #AddAdditionalInterestPage {
@@ -1621,36 +1339,6 @@ ul.list-cards {
   }
 }
 
-#AdditionalPolicyHolder {
-  .switch.inactive~.form-group {
-    display: none;
-  }
-}
-
-#Mortgagee {
-  .switch.inactive~.form-group {
-    display: none;
-  }
-}
-
-#Lienholder {
-  .switch.inactive~.form-group {
-    display: none;
-  }
-}
-
-#AdditionalInterest {
-  .switch.inactive~.form-group {
-    display: none;
-  }
-}
-
-#AdditionalInsured {
-  .switch.inactive~.form-group {
-    display: none;
-  }
-}
-
 #BillPayer {
   overflow-y: auto;
   flex-grow: 1;
@@ -1682,47 +1370,6 @@ ul.list-cards {
         }
       }
     }
-  }
-}
-
-.MailingAddress-component {
-  .address1 {
-    width: 100%;
-    flex-grow: 1;
-    flex-shrink: 0;
-  }
-
-  .address2 {
-    width: 100%;
-    flex-grow: 1;
-    flex-shrink: 0;
-  }
-
-  .country {
-    width: 100%;
-    flex-grow: 1;
-    flex-shrink: 0;
-  }
-
-  .city {
-    width: 100%;
-    width: auto;
-    flex-grow: 1;
-    flex-shrink: 0;
-  }
-
-  .state {
-    width: 6rem;
-    flex-grow: 0;
-    flex-shrink: 0;
-    flex-grow: 0;
-  }
-
-  .zip {
-    width: 8rem;
-    flex-grow: 0;
-    flex-shrink: 0;
-    flex-grow: 0;
   }
 }
 //summary page
@@ -2134,14 +1781,6 @@ ul.list-cards {
     }
   }
 }
-//Thanks Page
-/*------------------------------------------------------------------------------------*/
-#thanks {
-  display: flex;
-  flex-direction: column;
-  height: auto;
-  flex-grow: 1;
-}
 //General Errors
 /*------------------------------------------------------------------------------------*/
 .error-wrapper {
@@ -2305,8 +1944,28 @@ ul.list-cards {
             max-width: 15rem;
         }
 
+        &.policyholder {
+            max-width: 13rem;
+        }
+
+        &.policyDetails, &.quoteDetails {
+            display: flex;
+            flex-basis: 10rem;
+            dl {
+                display: flex;
+                > div {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-around;
+                    dd {
+                        font-weight: $font-weight-bold;
+                    }
+                }
+            }
+        }
+
         &.policyStatus {
-          flex-grow: 1;
+          //flex-grow: 1;
         }
 
         &.quoteStatus {
@@ -2314,6 +1973,10 @@ ul.list-cards {
         }
 
         &.quoteEffectiveDate {
+            flex-grow: 1;
+        }
+
+        &.cancellationDate {
             flex-grow: 1;
         }
 

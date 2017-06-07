@@ -203,13 +203,15 @@
                 margin-right: $padding*4;
 
                 dt {
-                  color: $warm-gray-06;
-                  font-size: $font-size-sm;
+                  color: $warm-gray-08;
+                  font-size: $font-size-h5;
+                  margin-bottom: $padding
                 }
 
                 dd {
+                    display: inline-flex;
                   margin-bottom: $padding*2;
-                  color: $warm-gray-14;
+                  color: $warm-gray-10;
                 }
               }
             }
@@ -325,12 +327,12 @@
 
                 .coverage, .discountSurcharge {
                   width: 60%;
-                  padding: $padding 15px $padding $padding;
+                  padding:  ($padding*1.5) ($padding*2);
                 }
 
                 .value {
                   width: 40%;
-                  padding: $padding $padding $padding 15px;
+                  padding:  ($padding*1.5) ($padding*2);
                 }
               }
             }

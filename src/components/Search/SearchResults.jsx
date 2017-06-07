@@ -39,9 +39,7 @@ const SearchResults = (props) => {
               </li>
             ))
             : null}
-          <small>
-            <strong>TIP:</strong> If you don't see your address in the list provided, try entering less address information to see if that improves your search results. Please note, at this time we are only writing single family dwellings in the state of Florida. If you still have problems finding an address, please <a href="tel:888-210-5235"><strong>call us</strong></a> and one of our representatives will be glad to help you.
-          </small>
+          <p><small><strong>TIP:</strong> If you don't see your address in the list provided, try entering less address information to see if that improves your search results. Please note, at this time we are only writing single family dwellings in the state of Florida. If you still have problems finding an address, please <a href="tel:888-210-5235"><strong>call us</strong></a> and one of our representatives will be glad to help you.</small></p>
         </ul>
       </div>
     );
@@ -108,25 +106,35 @@ const SearchResults = (props) => {
                 <h5>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName}`}</h5>
                 <h5>{policy.policyHolders[0] && `${policy.policyHolders[0].lastName}`}</h5>
               </div>
-            </div>
+          </div>
             <section>
               <ul>
                 <li className="header">
                   <span className="policy-no">Policy No.</span>
                   <span className="property-address">Property Address</span>
-                  <span className="policy-status">Policy Status</span>
+                  <span className="quote-state">Policy State</span>
                   <span className="effctive-date">Effective Date</span>
-                  {/*<span className="started-on">Started On</span>*/}
+                  <span className="started-on">Started On</span>
                   <span className="premium">Premium</span>
                 </li>
                 <li>
-                  <a className="row" onClick={() => props.handleSelectPolicy(policy, props)} tabIndex="-1" >
-                    <span className="policy-no">{policy.policyNumber}</span>
-                    <span className="property-address">{`${policy.property.physicalAddress.address1} ${policy.property.physicalAddress.city}, ${policy.property.physicalAddress.state} ${policy.property.physicalAddress.zip}`}</span>
-                    <span className="policy-status">{policy.quoteState}</span>
-                    <span className="effctive-date">{moment.utc(policy.effectiveDate).format('YYYY-MM-DD')}</span>
-                    {/*<span className="started-on">{moment.utc(policy.createdAt).format('YYYY-MM-DD')}</span>*/}
-                    <span className="premium">$ {policy.rating ? policy.rating.totalPremium : '-'}</span></a>
+                  <a onClick={() => props.handleSelectPolicy(policy, props)} tabIndex="-1" className="row" >
+                    <span className="quote-no">{policy.policyNumber}</span>
+                    <span className="property-address">{`${policy.property.physicalAddress.address1}
+                        ${policy.property.physicalAddress.city}, ${policy.property.physicalAddress.state}
+                        ${policy.property.physicalAddress.zip}
+                        `}</span>
+                      <span className="quote-state">{policy.quoteState}</span>
+                      <span
+                        className="effctive-date"
+                        >{moment.utc(policy.effectiveDate).format('YYYY-MM-DD')}</span>
+                      <span
+                        className="started-on"
+                        >{moment.utc(policy.createdAt).format('YYYY-MM-DD')}</span>
+                      <span
+                        className="premium"
+                        >$ {policy.rating ? policy.rating.totalPremium : '-'}</span>
+                      </a>
                 </li>
               </ul>
             </section>

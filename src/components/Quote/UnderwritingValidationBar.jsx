@@ -28,13 +28,12 @@ export const UnderwritingValidationBar = (props) => {
   let quoteData = null;
   if (taskData) {
     getQuoteBetweenPageLoop = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' });
-    console.log(getQuoteBetweenPageLoop);
     quoteData = getQuoteBetweenPageLoop ? getQuoteBetweenPageLoop.value.result : null;
     underwritingExceptions = quoteData && quoteData.underwritingExceptions ? quoteData.underwritingExceptions : [];
   }
 
     if (!quoteData) { // eslint-disable-line
-      return <div className="detailHeader" />;
+      return <div />;
     }
   return (
     <aside className="underwriting-validation">

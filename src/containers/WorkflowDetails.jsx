@@ -22,8 +22,7 @@ const getQuoteFromModel = (state, props) => {
     .then(() => {
       props.actions.appStateActions.setAppState(props.appState.modelName,
         props.appState.instanceId, {
-          ...props.appState.data,
-          updateWorkflowDetails: false
+          ...props.appState.data
         });
     });
 };

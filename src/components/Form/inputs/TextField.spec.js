@@ -6,8 +6,6 @@ import FieldHint from './FieldHint';
 describe('TextInput', () => {
   it('should render "text input" when nothing is provided', () => {
     const wrapper = shallow(<TextInput />);
-    // console.log(wrapper.debug()); // Use for debugging test and seeing output
-
     expect(wrapper.contains(<input type="text" />)).toEqual(true);
   });
 

@@ -8,6 +8,7 @@ import SelectField from '../Form/inputs/SelectField';
 import HiddenField from '../Form/inputs/HiddenField';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
+import normalizePhone from '../Form/normalizePhone';
 
 const handleInitialize = (state) => {
   const selectedAI = state.appState.data.selectedAI;
@@ -18,7 +19,7 @@ const handleInitialize = (state) => {
     _id: selectedAI._id, // eslint-disable-line
       name1: selectedAI.name1,
       name2: selectedAI.name2,
-      phoneNumber: String(selectedAI.phoneNumber).length > 0 ? selectedAI.phoneNumber : '',
+      phoneNumber: String(selectedAI.phoneNumber).length > 0 ? normalizePhone(String(selectedAI.phoneNumber)) : '',
       address1: selectedAI.mailingAddress.address1,
       address2: selectedAI.mailingAddress.address2,
       city: selectedAI.mailingAddress.city,
@@ -61,7 +62,7 @@ const AdditionalInterestEditModal = ({ appState, handleSubmit, verify, hideAddit
         <TextField label={'Address 1'} styleName={''} name={'address1'} validations={['required']} />
         <TextField label={'Address 2'} styleName={''} name={'address2'} />
         <div className="flex-form">
-          <TextField label={'City'} styleName={''} name={'city'} validations={['required']} />
+          <TextField label={'City'} styleName={'city'} name={'city'} validations={['required']} />
           <SelectField
             label={'State'} styleName={'state'} name={'state'} validations={['required']} answers={[
               {
@@ -266,7 +267,7 @@ const AdditionalInterestEditModal = ({ appState, handleSubmit, verify, hideAddit
               }
             ]} validate={[value => (value ? undefined : 'Field Required')]}
           />
-          <TextField label={'Zip Code'} styleName={''} name={'zip'} validations={['required']} />
+          <TextField label={'Zip Code'} styleName={''} name={'zip'} validations={['required', 'numbersOnly']} />
         </div>
         <div className="flex-form">
           <PhoneField label={'Phone Number'} styleName={'phone'} name={'phoneNumber'} validations={['phone']} />

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import normalizePhone from '../Form/normalizePhone';
 
 const handleGetPolicy = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
@@ -15,24 +16,24 @@ const handleGetPolicy = (state) => {
 const DetailHeader = (props) => {
   const { policyData } = props;
   return (<div className="detailHeader">
-  <section id="quoteDetails" className="quoteDetails">
+  <section id="policyDetails" className="policyDetails">
     <dl>
       <div>
-        <dt>HO3 Homeowners Policy</dt>
+        <dd>HO3 Homeowners</dd>
         <dd>{_.get(policyData, 'policyNumber')}</dd>
+        <dd>{_.get(policyData, 'status')}</dd>
       </div>
     </dl>
-  </section>
+    </section>
     <section id="policyholder" className="policyholder">
       <dl>
         <div>
           <dt>Policyholder</dt>
           <dd>{`${_.get(policyData, 'policyHolders[0].firstName')} ${_.get(policyData, 'policyHolders[0].lastName')}`}</dd>
-          <dd>{_.get(policyData, 'policyHolders[0].primaryPhoneNumber')}</dd>
+          <dd>{normalizePhone(_.get(policyData, 'policyHolders[0].primaryPhoneNumber'))}</dd>
         </div>
       </dl>
     </section>
-
     <section id="propertyAddress" className="propertyAddress">
       <dl>
         <div>
@@ -71,15 +72,7 @@ const DetailHeader = (props) => {
       <dl>
         <div>
           <dt>Cancellation Date</dt>
-          <dd>{_.get(policyData, 'cancellationDate') ? moment.utc(_.get(policyData, 'cancellationDate')).format('YYYY-MM-DD') : `` }</dd>
-        </div>
-      </dl>
-    </section>
-    <section id="policyStatus" className="policyStatus">
-      <dl>
-        <div>
-          <dt>Policy Status</dt>
-          <dd>{_.get(policyData, 'status')}</dd>
+          <dd>{_.get(policyData, 'cancellationDate') ? moment.utc(_.get(policyData, 'cancellationDate')).format('YYYY-MM-DD') : '' }</dd>
         </div>
       </dl>
     </section>

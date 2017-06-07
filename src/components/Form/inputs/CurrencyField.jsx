@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import NumberFormat from 'react-number-format';
 import FieldHint from './FieldHint';
 import reduxFormField from './reduxFormField';
 
@@ -16,13 +17,7 @@ export const CurrencyInput = ({
   max
 }) => {
   const { touched, error, warning } = meta;
-  const { name, value } = input;
-
-
-  const handleChange = function (event) {
-    const val = Number(event.target.value.replace(/\D+/g, ''));
-    if (!Number.isNaN(val)) { input.onChange(val); }
-  };
+  const { name, value, onChange } = input;
 
   const formGroupStyles = classNames(
     'form-group',
@@ -46,13 +41,17 @@ export const CurrencyInput = ({
   return (
     <div className={formGroupStyles}>
       {Label}
-      <input
+      <NumberFormat
+        {...input}
+        displayType={'input'}
+        thousandSeparator
+        prefix={'$'}
         min={min}
         max={max}
         disabled={disabled}
         name={name}
-        value={`$ ${value}`.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
-        onChange={handleChange}
+        value={value}
+        onChange={onChange}
         type={type}
       />
       {Error}

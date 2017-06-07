@@ -1,7 +1,6 @@
 /* eslint no-param-reassign:0 */
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
-import { reducer as toastrReducer } from 'react-redux-toastr';
 
 import cg from './cgReducer';
 import user from './userReducer';
@@ -11,7 +10,6 @@ import error from './errorReducer';
 
 const rootReducer = combineReducers({
   form: formReducer,
-  toastr: toastrReducer,
   cg,
   user,
   appState,

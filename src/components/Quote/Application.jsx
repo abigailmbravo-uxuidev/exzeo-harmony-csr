@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import _ from 'lodash';
-import { toastr } from 'react-redux-toastr';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
@@ -20,6 +19,7 @@ const handleInitialize = (state) => {
 
 const handleGetUnderwritingExceptions = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  if (!taskData) return [];
   const updateQuoteStateUWD1 = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' });
 
   const quoteData = updateQuoteStateUWD1 ? updateQuoteStateUWD1.value.result : null;
@@ -33,8 +33,16 @@ const handleFormSubmit = (data, dispatch, props) => {
 
   const workflowId = appState.instanceId;
 
+  props.actions.appStateActions.setAppState(
+      appState.modelName,
+      props.appState.instanceId,
+    {
+      ...props.appState.data,
+      submitting: true
+    });
+
   const steps = [
-{ name: 'hasUserEnteredData', answer: 'Yes' },
+    { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
     {
       name: 'moveTo',
       data: { key: 'application' }
@@ -42,16 +50,13 @@ const handleFormSubmit = (data, dispatch, props) => {
   ];
   actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
   .then(() => {
-    toastr.success('Quote Submitted', 'Quote has been submitted successfully');
-
     props.actions.appStateActions.setAppState(
       appState.modelName,
       props.appState.instanceId,
       {
         ...props.appState.data,
         activateRedirectLink: '/quote/coverage',
-        activateRedirect: true,
-        updateWorkflowDetails: true
+        activateRedirect: true
       });
   });
 };
@@ -61,7 +66,7 @@ const quoteSummaryModal = (props) => {
   props.actions.appStateActions.setAppState(
     props.appState.modelName,
     props.appState.instanceId,
-    { showQuoteSummaryModal: !showQuoteSummaryModal }
+    { ...props.appState.data, showQuoteSummaryModal: !showQuoteSummaryModal }
   );
 };
 

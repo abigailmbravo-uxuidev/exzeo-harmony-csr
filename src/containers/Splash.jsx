@@ -11,6 +11,7 @@ import * as cgActions from '../actions/cgActions';
 import * as appStateActions from '../actions/appStateActions';
 import SearchResults from '../components/Search/SearchResults';
 import NoResultsConnect from '../components/Search/NoResults';
+import Loader from '../components/Common/Loader';
 
 const workflowModelName = 'csrQuote';
 
@@ -29,13 +30,16 @@ export class Splash extends Component {
       }
     }];
 
+    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
+
+
     props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
       .then(() => {
         // now update the workflow details so the recalculated rate shows
         props.actions.appStateActions.setAppState(
           props.appState.modelName,
           workflowId,
-          { ...props.appState.data, recalc: false, updateWorkflowDetails: true, selectedLink: 'customerData' }
+          { ...props.appState.data, selectedLink: 'customerData' }
         );
         this.context.router.history.push('/quote/coverage');
       });
@@ -53,13 +57,15 @@ export class Splash extends Component {
       data: submitData
     }];
 
+    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
+
     props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
       .then(() => {
         // now update the workflow details so the recalculated rate shows
         props.actions.appStateActions.setAppState(
           props.appState.modelName,
           workflowId,
-          { ...props.appState.data, recalc: false, updateWorkflowDetails: true, selectedLink: 'customerData'  }
+          { ...props.appState.data, recalc: false, updateWorkflowDetails: true, selectedLink: 'customerData' }
         );
         this.context.router.history.push('/quote/coverage');
       });
@@ -74,13 +80,15 @@ export class Splash extends Component {
       }
     }];
 
+    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
+
     props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
       .then(() => {
         // now update the workflow details so the recalculated rate shows
         props.actions.appStateActions.setAppState(
           props.appState.modelName,
           workflowId,
-          { ...props.appState.data, recalc: false, updateWorkflowDetails: true, selectedLink: 'coverage'  }
+          { ...props.appState.data, selectedLink: 'coverage' }
         );
         this.context.router.history.push('/policy/coverage');
       });
@@ -93,6 +101,7 @@ export class Splash extends Component {
           <title>Harmony - CSR Portal</title>
         </Helmet>
         <ClearErrorConnect />
+        {this.props.appState.data.submitting && <Loader />}
         <div className="dashboard" role="article">
           <div className="route">
             <div className="search route-content">

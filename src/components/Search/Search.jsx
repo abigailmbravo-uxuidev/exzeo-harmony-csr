@@ -42,7 +42,7 @@ const handleSelectPolicy = (policy, props) => {
   const data = {
     policyId: policy._id
   };
-  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { submitting: true });
+  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
   props.actions.cgActions.completeTask(props.appState.modelName, workflowId, taskName, data);
 };
 
@@ -52,8 +52,8 @@ const Search = () => (
     <div className="survey-wrapper scroll">
       <div className="results-wrapper">
         <NoResultsConnect />
-        <SearchResults 
-          handleSelectAddress={handleSelectAddress} 
+        <SearchResults
+          handleSelectAddress={handleSelectAddress}
           handleSelectQuote={handleSelectQuote}
           handleSelectPolicy={handleSelectPolicy}
         />

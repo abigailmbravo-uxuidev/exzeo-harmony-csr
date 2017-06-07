@@ -23,12 +23,12 @@ policyHolderMailingAddress
         <div className="scroll">
           <div className="form-group survey-wrapper" role="group">
             <section className="policyholder-cards">
-              <h2>Policyholder</h2>
+              <h3>Policyholder</h3>
               { policyHolders && policyHolders.map((policyHolder, index) => (<div key={`ph${index}`} className="primary-policyholder contact card">
                 <div className="contact-title"><i className="fa fa-address-card-o" /><label>Policyholder {index + 1}</label></div>
                 <div className="contact-details">
                   <h4>{`${policyHolder.firstName} ${policyHolder.lastName}`}</h4>
-                  <p>{`${policyHolderMailingAddress.address1} ${policyHolderMailingAddress.address2 ? policyHolderMailingAddress.address2 : ''} 
+                  <p>{`${policyHolderMailingAddress.address1} ${policyHolderMailingAddress.address2 ? policyHolderMailingAddress.address2 : ''}
 ${policyHolderMailingAddress.city} ${policyHolderMailingAddress.state}, ${policyHolderMailingAddress.zip}`}</p>
                   <div className="contact-methods">
                     <p className="primary-phone"><i className="fa fa-phone-square" />
@@ -49,7 +49,7 @@ ${policyHolderMailingAddress.city} ${policyHolderMailingAddress.state}, ${policy
 }
             </section>
             <section className="agency-cards">
-              <h2>Agency / Agent</h2>
+              <h3>Agency / Agent</h3>
               <div className="agency contact card">
                 <div className="contact-title"><i className="fa fa-address-book" /><label>Agency</label></div>
                 <div className="contact-details">

@@ -74,35 +74,35 @@ export const Coverage = (props) => {
 
   const coverageLimitsData = [
     {
-      coverage: 'Building',
+      coverage: 'Dwelling',
       value: `$ ${_.get(coverageLimits, 'dwelling.amount')}`
     }, {
       coverage: 'Other Structures',
       value: `$ ${_.get(coverageLimits, 'otherStructures.amount')}`
     }, {
-      coverage: 'Contents',
+      coverage: 'Personal Property',
       value: `$ ${_.get(coverageLimits, 'personalProperty.amount')}`
     }, {
       coverage: 'Additional Living Expenses',
       value: `$ ${_.get(coverageLimits, 'lossOfUse.amount')}`
     }, {
-      coverage: 'Liability',
+      coverage: 'Personal Liability',
       value: `$ ${_.get(coverageLimits, 'personalLiability.amount')}`
     }, {
-      coverage: 'Medical Payment',
+      coverage: 'Medical Payments',
       value: `$ ${_.get(coverageLimits, 'medicalPayments.amount')}`
     }
   ];
 
   const coverageOptionsData = [
     {
-      coverage: 'Mold Property',
+      coverage: 'Mold Property Limit',
       value: `$ ${_.get(coverageLimits, 'moldProperty.amount')}`
     }, {
-      coverage: 'Mold Liability',
+      coverage: 'Mold Liability Limit',
       value: `$ ${_.get(coverageLimits, 'moldLiability.amount')}`
     }, {
-      coverage: 'Content Replacement Cost',
+      coverage: 'Personal Property Repl Cost',
       value: _.get(coverageOptions, 'personalPropertyReplacementCost.answer') ? 'Yes' : 'No'
     }, {
       coverage: 'Ordinance or Law Coverage',
@@ -147,6 +147,9 @@ export const Coverage = (props) => {
     }, {
       displayText: 'Hurricane',
       amount: `${_.get(deductibles, 'hurricane.amount')}%`
+    }, {
+      displayText: 'Sinkhole',
+      amount: `${_.get(deductibles, 'sinkhole.amount') ? _.get(deductibles, 'sinkhole.amount')  + '%' : 'No'}`
     }
   ];
 
@@ -159,21 +162,17 @@ export const Coverage = (props) => {
         <div className="scroll">
           <div className="form-group survey-wrapper" role="group">
             <section>
-              <h2>Coverage and Premium</h2>
+              <h3>Coverage and Premium</h3>
               <div className="coverage-premium">
                 <div className="responsive-tables">
                   <div className="table-view">
-                    <BootstrapTable
-                      className="" data={coverageLimitsData} striped hover
-                    >
+                    <BootstrapTable className="" data={coverageLimitsData} striped hover>
                       <TableHeaderColumn isKey dataField="coverage" className="coverage" columnClassName="coverage">Coverage Limits</TableHeaderColumn>
                       <TableHeaderColumn dataField="value" className="value" columnClassName="value" dataAlign="right">Value</TableHeaderColumn>
                     </BootstrapTable>
                   </div>
                   <div className="table-view">
-                    <BootstrapTable
-                      className="" data={coverageOptionsData} striped hover
-                    >
+                    <BootstrapTable className="" data={coverageOptionsData} striped hover>
                       <TableHeaderColumn isKey dataField="coverage" className="coverage" columnClassName="coverage">Coverage Limits</TableHeaderColumn>
                       <TableHeaderColumn dataField="value" className="value" columnClassName="value" dataAlign="right">Value</TableHeaderColumn>
                     </BootstrapTable>
@@ -185,10 +184,8 @@ export const Coverage = (props) => {
                     </BootstrapTable>
                   </div>
                 </div>
-
                 <div className="responsive-tables">
                   <div className="table-view">
-
                     <BootstrapTable className="deductible" data={deductibleData} striped hover>
                       <TableHeaderColumn isKey dataField="displayText" className="coverage" columnClassName="coverage">Deductible</TableHeaderColumn>
                       <TableHeaderColumn dataField="amount" className="value" columnClassName="value" dataAlign="right">Value</TableHeaderColumn>
@@ -210,7 +207,7 @@ export const Coverage = (props) => {
               </div>
             </section>
             <section>
-              <h2>Home and Location</h2>
+              <h3>Home and Location</h3>
               <div className="property-info">
                 <dl>
                   <div>

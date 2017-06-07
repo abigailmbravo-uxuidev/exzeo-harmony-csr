@@ -54,7 +54,7 @@ export const PolicyholderAgent = (props) => {
         <div className="scroll">
           <div className="form-group survey-wrapper" role="group">
             <section className="payment-summary">
-              <h2>Billing <button className="btn btn-link"><i className="fa fa-pencil-square" /></button></h2>
+              <h3>Billing <button className="btn btn-link"><i className="fa fa-pencil-square" /></button></h3>
               <div className="payment-summary">
                 <dl>
                   <div>
@@ -70,6 +70,7 @@ export const PolicyholderAgent = (props) => {
                   </div>
                 </dl>
               </div>
+              <h3>Payments</h3>
               <div className="payment-summary grid">
                 <div className="table-view">
                   <BootstrapTable className="" data={payments} striped hover>
@@ -89,7 +90,7 @@ export const PolicyholderAgent = (props) => {
             </section>
 
             <section className="additional-interests">
-              <h2>Additional Interests</h2>
+              <h3>Additional Interests</h3>
               <div className="results-wrapper">
                 <ul className="results result-cards">
                   {additionalInterests && _.sortBy(additionalInterests, ['rank', 'type']).map((ai, index) =>

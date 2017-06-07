@@ -239,7 +239,7 @@ const AdditionalInterestModal = ({ appState, handleSubmit, verify, hideAdditiona
               }
             ]} validate={[value => (value ? undefined : 'Field Required')]}
           />
-          <TextField label={'Zip Code'} styleName={'zip'} name={'zip'} validations={['required']} />
+          <TextField label={'Zip Code'} styleName={'zip'} name={'zip'} validations={['required', 'numbersOnly']} />
         </div>
         <div className="flex-form">
           <PhoneField label={'Phone Number'} styleName={'phone'} name={'phoneNumber'} validations={['phone']} />
