@@ -7,21 +7,13 @@ import moment from 'moment';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 
-/**
-const didNotFindAddressHint = (props) => {
-  const dontSeeAddress = !props.appState.data.dontSeeAddress;
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { dontSeeAddress });
-}
-*/
+const SearchResults = props => {
+  const model = props.tasks[props.appState.modelName] || {};
+  const previousTask = model.data && model.data.previousTask ? model.data.previousTask : {};
+  const activeTask = model.data && model.data.activeTask ? model.data.activeTask : {};
 
-const SearchResults = (props) => {
-  if (
-    props.tasks[props.appState.modelName] &&
-    props.tasks[props.appState.modelName].data.previousTask &&
-    props.tasks[props.appState.modelName].data.previousTask.name === 'searchAddress' &&
-    props.tasks[props.appState.modelName].data.activeTask.name !== 'askToSearchAgain'
-  ) {
-    const addresses = props.tasks[props.appState.modelName].data.previousTask.value.result.IndexResult;
+  if (previousTask && previousTask.name === 'searchAddress' && activeTask.name !== 'askToSearchAgain') {
+    const addresses = previousTask.value.result.IndexResult;
     return (
       <div>
         <ul className="results result-cards">
@@ -44,12 +36,9 @@ const SearchResults = (props) => {
       </div>
     );
   }
-  if (
-    props.tasks[props.appState.modelName] &&
-    props.tasks[props.appState.modelName].data.activeTask &&
-    props.tasks[props.appState.modelName].data.activeTask.name === 'chooseQuote'
-  ) {
-    const quoteResults = props.tasks[props.appState.modelName].data.previousTask.value.result.quotes;
+
+  if (previousTask.value && activeTask.name === 'chooseQuote') {
+    const quoteResults = previousTask.value.result.quotes;
 
     return (
       <div className="quote-list">
@@ -96,6 +85,7 @@ const SearchResults = (props) => {
     props.tasks[props.appState.modelName].data.activeTask.name === 'choosePolicy'
   ) {
     const policyResults = props.tasks[props.appState.modelName].data.previousTask.value.policies;
+
     return (
       <div className="policy-list">
         {

@@ -180,7 +180,6 @@
                             }
                           }
                         }
-
                     }
 
               }
@@ -228,6 +227,7 @@
             .payment-summary,
             .property-info {
               display: flex;
+              justify-content: space-between;
 
               &.grid {
                 .react-bs-table {

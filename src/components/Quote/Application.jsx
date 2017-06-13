@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { reduxForm, Form, propTypes } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -29,7 +30,7 @@ const handleGetUnderwritingExceptions = (state) => {
 };
 
 const handleFormSubmit = (data, dispatch, props) => {
-  const { appState, tasks, actions, fieldValues } = props;
+  const { appState, actions } = props;
 
   const workflowId = appState.instanceId;
 

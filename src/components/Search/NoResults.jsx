@@ -1,41 +1,33 @@
-import React, {
-  PropTypes
-} from 'react';
-import {
-  bindActionCreators
-} from 'redux';
-import {
-  connect
-} from 'react-redux';
-
+import React from 'react';
+import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 
-const userTasks = {
-  askToSearchAgain: 'askToSearchAgain'
-};
-
-const setSearchAgain = (props) => {
-  const workflowId = props.appState.instanceId;
-  const taskName = userTasks.askToSearchAgain;
-  const taskData = {
-    searchAgain: 'Yes'
-  };
-  props.actions.cgActions.completeTask(props.appState.modelName, workflowId, taskName, taskData);
-};
-
 export const NoResults = (props) => {
-  if (props.tasks[props.appState.modelName] &&
-    props.tasks[props.appState.modelName].data.activeTask &&
-    (props.tasks[props.appState.modelName].data.activeTask.name === 'askToSearchAgain')) {
-    setSearchAgain(props);
-  }
-  if (props.tasks[props.appState.modelName] &&
-    props.tasks[props.appState.modelName].data.previousTask && props.tasks[props.appState.modelName].data.activeTask &&
-    (props.tasks[props.appState.modelName].data.previousTask.name && props.tasks[props.appState.modelName].data.activeTask.name &&
-    props.tasks[props.appState.modelName].data.activeTask.name === 'search' &&
-    props.tasks[props.appState.modelName].data.previousTask.name === 'askToSearchAgain')) {
-    const previousTask = props.tasks[props.appState.modelName].data.previousTask;
+  const model = props.tasks[props.appState.modelName] || {};
+  const previousTask = model.data && model.data.previousTask ? model.data.previousTask : {};
+  const activeTask = model.data && model.data.activeTask ? model.data.activeTask : {};
+
+  /**
+  /* Error Message
+  */
+  if (props.error.message) {
+    return (
+      <div className="card">
+        <div className="card-header"><h4><i className="fa fa-frown-o " />Error</h4></div>
+        <div className="card-block">
+          <p>{ props.error.message }</p>
+        </div>
+      </div>
+    )
+  } 
+
+  /**
+  /* No Message
+  */
+  if (activeTask.name === 'askToSearchAgain') {
     return (
       <div className="card">
         <div className="card-header"><h4><i className="fa fa-frown-o " /> No Results Found</h4></div>
@@ -66,7 +58,8 @@ NoResults.propTypes = {
 
 const mapStateToProps = state => ({
   tasks: state.cg,
-  appState: state.appState
+  appState: state.appState,
+  error: state.error
 });
 
 const mapDispatchToProps = dispatch => ({

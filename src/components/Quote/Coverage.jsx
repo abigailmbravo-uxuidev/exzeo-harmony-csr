@@ -304,7 +304,7 @@ export class Coverage extends Component {
   }
 
   render() {
-    const { fieldValues, handleSubmit, initialValues, agencyDocs, agentDocs, pristine } = this.props;
+    const { fieldValues, handleSubmit, initialValues, pristine } = this.props;
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />

@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import Header from '../components/Common/Header';
-import SideNav from '../components/Common/SideNav';
 import * as userActions from '../actions/userActions';
 import SearchBar from '../components/Search/SearchBar';
 

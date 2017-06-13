@@ -11,6 +11,7 @@ export const CG_START = 'CG_START';
 export const CG_ACTIVE_TASK = 'CG_ACTIVE_TASK';
 export const CG_COMPLETE = 'CG_COMPLETE';
 export const CG_ERROR = 'CG_ERROR';
+export const CLEAR_SEARCH_RESULTS = 'CLEAR_SEARCH_RESULTS';
 
 /* WORKFLOW DETAILS */
 export const DETAILS_SET = 'DETAILS_SET';

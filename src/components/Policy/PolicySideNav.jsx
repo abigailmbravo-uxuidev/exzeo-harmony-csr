@@ -1,11 +1,9 @@
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 import { Redirect } from 'react-router';
 import { reduxForm, propTypes } from 'redux-form';
 import * as appStateActions from '../../actions/appStateActions';
-import UWconditions from '../Common/UWconditions';
 import * as cgActions from '../../actions/cgActions';
 import NewNoteFileUploader from '../Common/NewNoteFileUploader';
 

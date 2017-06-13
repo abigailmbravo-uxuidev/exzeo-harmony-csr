@@ -9,7 +9,6 @@ import QuoteSideNav from '../components/Quote/QuoteSideNav';
 import QuoteDetailHeader from '../components/Quote/DetailHeader';
 import * as userActions from '../actions/userActions';
 import Footer from '../components/Common/Footer';
-import NewNoteFileUploader from '../components/Common/NewNoteFileUploader';
 import UnderwritingValidationBarConnect from '../components/Quote/UnderwritingValidationBar';
 import Loader from '../components/Common/Loader';
 /*

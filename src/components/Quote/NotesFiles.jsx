@@ -9,7 +9,6 @@ import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
-import RadioField from '../Form/inputs/RadioField';
 
 const handleFormSubmit = (data, dispatch, props) => {
     alert('submit');

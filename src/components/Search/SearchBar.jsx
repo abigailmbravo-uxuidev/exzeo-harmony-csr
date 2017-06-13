@@ -9,22 +9,18 @@ import Rules from '../Form/Rules';
 import SelectField from '../Form/inputs/SelectField';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as errorActions from '../../actions/errorActions';
 
 const userTasks = {
   handleSearchBarSubmit: 'search'
 };
 
-const handleInitialize = (state) => {
-  const values = {};
-
-  values.searchType = 'quote';
-
-  return values;
-};
+const handleInitialize = state => ({ searchType: 'quote' });
 
 const handleSearchBarSubmit = (data, dispatch, props) => {
   const workflowId = props.appState.instanceId;
   const taskName = userTasks.handleSearchBarSubmit;
+  const modelName = props.appState.modelName;
   const taskData = {
     firstName: (encodeURIComponent(data.firstName) !== 'undefined' ? encodeURIComponent(data.firstName) : ''),
     lastName: (encodeURIComponent(data.lastName) !== 'undefined' ? encodeURIComponent(data.lastName) : ''),
@@ -35,24 +31,23 @@ const handleSearchBarSubmit = (data, dispatch, props) => {
     searchType: props.fieldValues.searchType
   };
 
+  props.actions.errorActions.clearAppError();
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
 
   // we need to make sure the active task is search otherwise we need to reset the workflow
-  if (props.tasks[props.appState.modelName] && props.tasks[props.appState.modelName].data &&
-    props.tasks[props.appState.modelName].data.activeTask &&
-    props.tasks[props.appState.modelName].data.activeTask.name !== userTasks.handleSearchBarSubmit) {
+  if (props.tasks[modelName].data.activeTask && (props.tasks[modelName].data.activeTask.name !== userTasks.handleSearchBarSubmit)){
     const completeStep = {
       stepName: taskName,
       data: taskData
     };
     props.actions.cgActions.moveToTaskAndExecuteComplete(props.appState.modelName, workflowId, taskName, completeStep);
   } else {
-    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true, searchType: props.fieldValues.searchType });
-    props.actions.cgActions.completeTask(props.appState.modelName, workflowId, taskName, taskData);
+    props.actions.appStateActions.setAppState(modelName, workflowId, { ...props.appState.data, submitting: true });
+    props.actions.cgActions.completeTask(modelName, workflowId, taskName, taskData);
   }
 };
 
-const validate = (values) => {
+const validate = values => {
   const errors = {};
   if (values.firstName) {
     const onlyAlphaNumeric = Rules.onlyAlphaNumeric(values.firstName);
@@ -126,19 +121,32 @@ const generateField = (name, placeholder, labelText, formErrors, formGroupCss) =
   return field;
 };
 
-const SearchForm = (props) => {
+const SearchForm = props => {
   const {
     handleSubmit,
     formErrors,
     fieldValues
   } = props;
 
+  const clearForm = (event, newValue, previousValue) => {
+    const modelName = props.appState.modelName;
+    const data = props.tasks[modelName].data;
+
+    props.reset(props.form);  
+    props.actions.cgActions.clearSearchResults(modelName, data);
+    props.actions.errorActions.clearAppError();
+    
+    return;
+  }
+
   return (
     <Form id="SearchBar" onSubmit={handleSubmit(handleSearchBarSubmit)} noValidate>
       <div className="search-input-wrapper">
         <div className="form-group search-context">
           <SelectField
-            name="searchType" component="select" styleName={''} label="Search Context" validations={['required']} answers={[
+            name="searchType" component="select" styleName={''} label="Search Context" validations={['required']} 
+            onChange={ clearForm }
+            answers={[
               {
                 answer: 'address',
                 label: 'New Quote'
@@ -234,18 +242,22 @@ const mapStateToProps = state => ({
   formErrors: getFormSyncErrors('SearchBar')(state),
   fieldValues: _.get(state.form, 'SearchBar.values', {}),
   searchType: state.appState.data.searchType,
-  initialValues: handleInitialize(state)
+  initialValues: handleInitialize(state),
+  error: state.error,
+  cleanForm: state.pristine
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
     cgActions: bindActionCreators(cgActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
+    appStateActions: bindActionCreators(appStateActions, dispatch),
+    errorActions: bindActionCreators(errorActions, dispatch)
   }
 });
 
 const searchBarForm = reduxForm({
   form: 'SearchBar',
+  enableReinitialize: true,
   validate
 })(SearchBar);
 

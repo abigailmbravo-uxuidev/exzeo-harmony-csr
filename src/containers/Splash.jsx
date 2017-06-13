@@ -5,7 +5,6 @@ import _ from 'lodash';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import BaseConnect from './Base';
-import ClearErrorConnect from '../components/Error/ClearError';
 import Footer from '../components/Common/Footer';
 import * as cgActions from '../actions/cgActions';
 import * as appStateActions from '../actions/appStateActions';
@@ -100,7 +99,6 @@ export class Splash extends Component {
         <Helmet>
           <title>Harmony - CSR Portal</title>
         </Helmet>
-        <ClearErrorConnect />
         {this.props.appState.data.submitting && <Loader />}
         <div className="dashboard" role="article">
           <div className="route">
@@ -108,8 +106,8 @@ export class Splash extends Component {
               <div className="survey-wrapper scroll">
                 <div className="results-wrapper">
                   <NoResultsConnect />
-                  <SearchResults
-                    handleSelectAddress={this.handleSelectAddress}
+                  <SearchResults 
+                    handleSelectAddress={this.handleSelectAddress} 
                     handleSelectQuote={this.handleSelectQuote}
                     handleSelectPolicy={this.handleSelectPolicy}
                   />
@@ -136,7 +134,13 @@ Splash.propTypes = {
   tasks: PropTypes.shape({ activeTask: PropTypes.object })
 };
 
-const mapStateToProps = state => ({ tasks: state.cg, appState: state.appState });
+const mapStateToProps = state => (
+  { 
+    tasks: state.cg, 
+    appState: state.appState,
+    error: state.error
+  }
+);
 
 const mapDispatchToProps = dispatch => ({
   actions: {
