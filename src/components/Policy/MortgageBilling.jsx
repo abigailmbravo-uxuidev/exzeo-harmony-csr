@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
-import { reduxForm, Form, change } from 'redux-form';
+import { reduxForm, Form } from 'redux-form';
+import moment from 'moment';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
@@ -11,13 +12,15 @@ import PolicyConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
 import TextField from '../Form/inputs/TextField';
 import SelectField from '../Form/inputs/SelectField';
+import CurrencyField from '../Form/inputs/CurrencyField';
 
 const payments = [
   {
-    date: '05/27/2017',
-    description: 'PAYMENT RECEIVED',
-    note: '20170527-44',
-    amount: '$ 3,123'
+    cashDate: '05/27/2017',
+    cashDescription: 'PAYMENT RECEIVED',
+    batchNumber: '20170527-44',
+    amount: '$ 3,123',
+    cashType: 'CASH'
   }
 ];
 
@@ -54,12 +57,38 @@ const handleGetPolicy = (state) => {
 export class PolicyholderAgent extends Component {
 
   handleFormSubmit = (data) => {
+    const workflowId = this.props.appState.instanceId;
+    const submitData = data;
+
+    this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+      workflowId, { ...this.props.appState.data, submitting: true });
+
+    submitData.cashDate = moment.utc(data.cashDate).format('MM/DD/YYYY');
+    submitData.batchNumber = String(data.batchNumber);
+    submitData.amount = Number(String(data.amount).replace(/[^\d]/g, ''));
+    submitData.cashType = String(data.cashType);
+    submitData.cashDescription = String(data.cashDescription);
+    // const steps = [
+    //   { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
+    //   { name: 'askCustomerData', data: submitData },
+    //   { name: 'askToCustomizeDefaultQuote', data: { shouldCustomizeQuote: 'Yes' } },
+    //   { name: 'customizeDefaultQuote', data: submitData }
+
+    // ];
+
+    // this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
+    //   .then(() => {
+    //     // now update the workflow details so the recalculated rate shows
+    //     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+    //       workflowId, { ...this.props.appState.data, recalc: false, quote: this.props.quoteData });
+    //   });
+    payments.push(data);
     console.log(data);
   };
 
   render() {
     const { additionalInterests } = this.props.policy;
-    const { tasks, appState, handleSubmit } = this.props;
+    const { tasks, appState, handleSubmit, pristine } = this.props;
     setRank(additionalInterests);
     return (
       <PolicyConnect>
@@ -85,16 +114,17 @@ export class PolicyholderAgent extends Component {
                     </div>
                   </dl>
                 </div>
-                  <div className="flex-parent">
-                    <h3 className="flex-child">Payments</h3>
-                      <button className="flex-child btn btn-primary btn-xs" type="submit"><i className="fa fa-plus" aria-hidden="true"></i> Add Payment</button>
-                  </div>
+                <div className="flex-parent">
+                  <h3 className="flex-child">Payments</h3>
+                  <button className="flex-child btn btn-primary btn-xs" type="submit"><i className="fa fa-plus" aria-hidden="true"></i> Add Payment</button>
+                </div>
                 <div className="payment-summary grid">
                   <div className="table-view">
                     <BootstrapTable className="" data={payments} striped hover>
-                      <TableHeaderColumn isKey dataField="date" className="date" columnClassName="date" width="100" dataSort>Date</TableHeaderColumn>
-                      <TableHeaderColumn dataField="description" className="description" columnClassName="description" dataSort>Description</TableHeaderColumn>
-                      <TableHeaderColumn dataField="note" className="note" columnClassName="note" dataSort width="200" >Note</TableHeaderColumn>
+                      <TableHeaderColumn isKey dataField="cashDate" className="date" columnClassName="date" width="100" dataSort>Date</TableHeaderColumn>
+                      <TableHeaderColumn dataField="cashDescription" className="description" columnClassName="description" dataSort>Description</TableHeaderColumn>
+                      <TableHeaderColumn dataField="cashType" className="type" columnClassName="type" dataSort width="200" >Type</TableHeaderColumn>
+                      <TableHeaderColumn dataField="batchNumber" className="note" columnClassName="note" dataSort width="200" >Note</TableHeaderColumn>
                       <TableHeaderColumn dataField="amount" className="amount" columnClassName="amount" width="150" dataSort dataAlign="right">Amount</TableHeaderColumn>
                     </BootstrapTable>
                   </div>
@@ -115,17 +145,15 @@ export class PolicyholderAgent extends Component {
 
                 <Form id="PolicyholderAgent" onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
 
-                    <div className="flex-parent">
-                        <div className="flex-child">
-                          <div className="form-group">
-                              <label>Cash Date</label>
-                              <input type="date" />
+                  <div className="flex-parent">
+                    <div className="flex-child">
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Cash Date'} styleName={''} name={'cashDate'} type={'date'} />
                           </div>
                         </div>
                         <div className="flex-child">
                           <div className="form-group">
-                              <label>Batch Number</label>
-                              <input type="number" />
+                            <TextField validations={['required']} label={'Batch Number'} styleName={''} name={'batchNumber'} />
                           </div>
                         </div>
                     </div>
@@ -133,24 +161,39 @@ export class PolicyholderAgent extends Component {
                     <div className="flex-parent">
                         <div className="flex-child">
                           <div className="form-group">
-                              <label>Cash Type</label>
-                                <select>
-                                  <option>Please Select...</option>
-                                </select>
+                              <SelectField
+                                    name="cashType" component="select" label="Cash Type" onChange={function () {}} validations={['required']} answers={[
+                                      {
+                                        answer: 'CASH',
+                                        label: 'Cash'
+                                      }, {
+                                        answer: 'CREDIT',
+                                        label: 'Credit'
+                                      }
+                                    ]}
+                                  />
                           </div>
                         </div>
                         <div className="flex-child">
                           <div className="form-group">
-                              <label>Cash Description</label>
-                                <select>
-                                  <option>Please Select...</option>
-                                </select>
+                                  <SelectField
+                                    name="cashDescription" component="select" label="Cash Description" onChange={function () {}} validations={['required']} answers={[
+                                      {
+                                        answer: 'PAYMENT RECEIVED',
+                                        label: 'Payment Received'
+                                      }, {
+                                        answer: 'PAYMENT RETURNED',
+                                        label: 'Payment Returned'
+                                      }
+                                    ]}
+                                  />
                           </div>
                         </div>
                         <div className="flex-child">
                           <div className="form-group">
-                              <label>Amount</label>
-                              <input type="number" />
+                             <CurrencyField
+                          validations={['required']} label="Amount" styleName={''} name={'amount'}
+                        />
                           </div>
                         </div>
                     </div>
@@ -158,7 +201,7 @@ export class PolicyholderAgent extends Component {
 
                     <div className="btn-footer">
                       <button className="btn btn-secondary" type="button">Cancel</button>
-                      <button className="btn btn-primary" type="button" disabled>Save</button>
+                      <button className="btn btn-primary" type="submit" form="PolicyholderAgent">Save</button>
                     </div>
 
                   </Form>
@@ -208,7 +251,7 @@ redux mapping
 const mapStateToProps = state => ({
   policy: handleGetPolicy(state),
   tasks: state.cg,
-  appState: state.appState,
+  appState: state.appState
   // fieldValues: _.get(state.form, 'Coverage.values', {}),
   // initialValues: handleInitialize(state),
   // agencyDocs: handleGetDocs(state, 'getAgencyDocument'),
