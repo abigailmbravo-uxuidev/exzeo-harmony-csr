@@ -250,6 +250,10 @@ export class Coverage extends Component {
 
     submitData.sinkholePerilCoverage = (String(data.sinkholePerilCoverage) === 'true');
 
+    if (submitData.sinkholePerilCoverage) {
+      submitData.sinkhole = 10;
+    }
+
     submitData.pH1phone = submitData.pH1phone.replace(/[^\d]/g, '');
     submitData.pH1secondaryPhone = submitData.pH1secondaryPhone ? submitData.pH1secondaryPhone.replace(/[^\d]/g, '') : submitData.pH1secondaryPhone;
 
@@ -896,7 +900,7 @@ export class Coverage extends Component {
                               label: 'Coverage Excluded'
                             }, {
                               answer: true,
-                              label: 'Coverage Included'
+                              label: '10% of Dwelling'
                             }
                           ]}
                         />
