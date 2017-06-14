@@ -73,10 +73,7 @@ export const PolicyholderAgent = (props) => {
                   </div>
                 </dl>
               </div>
-                <div className="flex-parent">
-                  <h3 className="flex-child">Payments</h3>
-                    <button className="flex-child btn btn-primary btn-xs" type="submit"><i className="fa fa-plus" aria-hidden="true"></i> Add Payment</button>
-                </div>
+                <h3 className="flex-child">Payments</h3>
               <div className="payment-summary grid">
                 <div className="table-view">
                   <BootstrapTable className="" data={payments} striped hover>
