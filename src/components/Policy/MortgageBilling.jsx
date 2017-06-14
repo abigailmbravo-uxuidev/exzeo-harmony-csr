@@ -1,9 +1,12 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import { reduxForm, Form, propTypes, change } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import PolicyConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
+import TextField from '../Form/inputs/TextField';
+import SelectField from '../Form/inputs/SelectField';
 
 const payments = [
   {
@@ -54,7 +57,7 @@ export const PolicyholderAgent = (props) => {
         <div className="scroll">
           <div className="form-group survey-wrapper" role="group">
             <section className="payment-summary">
-              <h3>Billing <button className="btn btn-link"><i className="fa fa-pencil-square" /></button></h3>
+              <h3>Billing</h3>
               <div className="payment-summary">
                 <dl>
                   <div>
@@ -70,7 +73,10 @@ export const PolicyholderAgent = (props) => {
                   </div>
                 </dl>
               </div>
-              <h3>Payments</h3>
+                <div className="flex-parent">
+                  <h3 className="flex-child">Payments</h3>
+                    <button className="flex-child btn btn-primary btn-xs" type="submit"><i className="fa fa-plus" aria-hidden="true"></i> Add Payment</button>
+                </div>
               <div className="payment-summary grid">
                 <div className="table-view">
                   <BootstrapTable className="" data={payments} striped hover>
@@ -82,11 +88,73 @@ export const PolicyholderAgent = (props) => {
                 </div>
                 <dl className="total">
                   <div>
-                    <dt>Total Received</dt>
-                    <dd>$ 3,123</dd>
+                    Total
+                    $ 3,123
                   </div>
                 </dl>
               </div>
+            </section>
+
+
+            {/* TODO: This section needs to be hidden per role */}
+            <section className="add-payment">
+
+              <h3>Add Payment</h3>
+
+                <form id="">
+
+
+
+                  <div className="flex-parent">
+                      <div className="flex-child">
+                        <div className="form-group">
+                            <label>Cash Date</label>
+                            <input type="date" />
+                        </div>
+                      </div>
+                      <div className="flex-child">
+                        <div className="form-group">
+                            <label>Batch Number</label>
+                            <input type="number" />
+                        </div>
+                      </div>
+                  </div>
+
+                  <div className="flex-parent">
+                      <div className="flex-child">
+                        <div className="form-group">
+                            <label>Cash Type</label>
+                              <select>
+                                <option>Please Select...</option>
+                              </select>
+                        </div>
+                      </div>
+                      <div className="flex-child">
+                        <div className="form-group">
+                            <label>Cash Description</label>
+                              <select>
+                                <option>Please Select...</option>
+                              </select>
+                        </div>
+                      </div>
+                      <div className="flex-child">
+                        <div className="form-group">
+                            <label>Amount</label>
+                            <input type="number" />
+                        </div>
+                      </div>
+                  </div>
+
+
+
+                  <div className="btn-footer">
+                    <button className="btn btn-secondary" type="button">Cancel</button>
+                    <button className="btn btn-primary" type="button" disabled>Save</button>
+                  </div>
+
+                </form>
+
+
             </section>
 
             <section className="additional-interests">

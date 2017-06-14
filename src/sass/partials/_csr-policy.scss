@@ -224,29 +224,39 @@
               font-weight: normal;
             }
 
+
+            .flex-parent {
+
+                margin-bottom: ($padding*2);
+
+                .btn {
+                  flex: 0 1 auto;
+                }
+            }
+
+
+
             .payment-summary,
             .property-info {
               display: flex;
-              justify-content: space-between;
+
+
+
 
               &.grid {
+                display: block;
                 .react-bs-table {
-                  margin: 0 ($padding*2) 0 0;
+                  margin: 0;
                 }
                 .total {
                     > div {
-                        background: $yellow-lighten-06;
                         padding: ($padding) ($padding*2);
+                        text-align: right;
+                        color: $bright-blue-darken-04;
+                        font-weight: bold;
+                        margin: 0;
+                        border-top: $border-width dotted $border-color;
 
-                        dt {
-                            color: $warm-gray-14;
-                        }
-
-                        dd {
-                            font-size: $font-size-h4;
-                            margin-bottom: 0;
-                            text-align: right;
-                        }
                     }
                 }
               }
@@ -390,4 +400,28 @@
       border-left: dashed 1px $warm-gray-04;
     }
   }
+}
+
+
+
+.add-payment {
+
+
+    .form-group {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      * {
+        flex: 1 1 auto;
+      }
+
+      label {
+        flex: 0 0 30%;
+        text-align: right;
+        margin: 0 ($padding*2) 0 0;
+      }
+
+    }
+
 }
