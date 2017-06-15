@@ -8,6 +8,7 @@ export default {
     token: '',
     profile: {}
   },
+  serviceData: {},
   search: new Map({}),
   workflowData: {},
   appState: {

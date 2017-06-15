@@ -23,3 +23,8 @@ export const APPSTATE_ERROR = 'APPSTATE_ERROR';
 
 export const APP_ERROR = 'APP_ERROR';
 export const APP_ERROR_CLEAR = 'APP_ERROR_CLEAR';
+
+
+/* SERVICE ACTIONS */
+
+export const RUN_SERVICE = 'RUN_SERVICE';

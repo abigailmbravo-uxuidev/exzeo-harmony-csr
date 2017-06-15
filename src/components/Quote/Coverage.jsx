@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
+import * as serviceActions from  '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
@@ -138,6 +139,12 @@ const handleGetDocs = (state, name) => {
 
 
 export class Coverage extends Component {
+
+  componentWillMount() {
+    this.props.actions.serviceActions.runService('GET', 'agency.services', 'v1/agency/TTIC/FL/20000', {}).then(result => {
+      console.log(result);
+    })
+  }
 
   clearForm = () => {
     const { dispatch, quoteData } = this.props;
@@ -1210,6 +1217,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }
