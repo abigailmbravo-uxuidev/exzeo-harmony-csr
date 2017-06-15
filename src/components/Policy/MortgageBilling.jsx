@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
-import { reduxForm, Form } from 'redux-form';
+import { reduxForm, Form, reset } from 'redux-form';
 import moment from 'moment';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as cgActions from '../../actions/cgActions';
@@ -16,10 +16,10 @@ import CurrencyField from '../Form/inputs/CurrencyField';
 
 const payments = [
   {
-    cashDate: '05/27/2017',
+    cashDate: '2017-05-17',
     cashDescription: 'PAYMENT RECEIVED',
     batchNumber: '20170527-44',
-    amount: '$ 3,123',
+    amount: 3123,
     cashType: 'CASH'
   }
 ];
@@ -48,6 +48,111 @@ value.rank = 5; // eslint-disable-line
   });
 };
 
+// const handleInitialize = (state) => {
+//   const quoteData = handleGetQuoteData(state);
+
+//   const values = {};
+
+//   values.agencyCode = '20000'; // _.get(quoteData, 'agencyCode');
+//   values.agentCode = '60000'; // _.get(quoteData, 'agentCode');
+//   values.effectiveDate = moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD');
+
+//   values.pH1email = _.get(quoteData, 'policyHolders[0].emailAddress');
+//   values.pH1FirstName = _.get(quoteData, 'policyHolders[0].firstName');
+//   values.pH1LastName = _.get(quoteData, 'policyHolders[0].lastName');
+//   values.pH1phone = normalizePhone(_.get(quoteData, 'policyHolders[0].primaryPhoneNumber') || '');
+//   values.pH1secondaryPhone = normalizePhone(_.get(quoteData, 'policyHolders[0].secondaryPhoneNumber') || '');
+
+//   values.pH2email = _.get(quoteData, 'policyHolders[1].emailAddress');
+//   values.pH2FirstName = _.get(quoteData, 'policyHolders[1].firstName');
+//   values.pH2LastName = _.get(quoteData, 'policyHolders[1].lastName');
+//   values.pH2phone = normalizePhone(_.get(quoteData, 'policyHolders[1].primaryPhoneNumber') || '');
+//   values.pH2secondaryPhone = normalizePhone(_.get(quoteData, 'policyHolders[1].secondaryPhoneNumber') || '');
+
+
+//   values.address1 = _.get(quoteData, 'property.physicalAddress.address1');
+//   values.address2 = _.get(quoteData, 'property.physicalAddress.address2');
+//   values.city = _.get(quoteData, 'property.physicalAddress.city');
+//   values.state = _.get(quoteData, 'property.physicalAddress.state');
+//   values.zip = _.get(quoteData, 'property.physicalAddress.zip');
+//   values.protectionClass = _.get(quoteData, 'property.protectionClass');
+//   values.constructionType = _.get(quoteData, 'property.constructionType');
+//   values.yearOfRoof = _.get(quoteData, 'property.yearOfRoof');
+//   values.squareFeet = _.get(quoteData, 'property.squareFeet');
+//   values.yearBuilt = _.get(quoteData, 'property.yearBuilt');
+//   values.buildingCodeEffectivenessGrading = _.get(quoteData, 'property.buildingCodeEffectivenessGrading');
+//   values.familyUnits = _.get(quoteData, 'property.familyUnits');
+//   values.distanceToTidalWater = _.get(quoteData, 'property.distanceToTidalWater');
+//   values.distanceToFireHydrant = _.get(quoteData, 'property.distanceToFireHydrant');
+//   values.distanceToFireStation = _.get(quoteData, 'property.distanceToFireStation');
+//   values.floodZone = _.get(quoteData, 'property.floodZone');
+
+//   values.burglarAlarm = _.get(quoteData, 'property.burglarAlarm');
+//   values.fireAlarm = _.get(quoteData, 'property.fireAlarm');
+//   values.sprinkler = _.get(quoteData, 'property.sprinkler');
+
+//   values.dwellingAmount = _.get(quoteData, 'coverageLimits.dwelling.amount');
+//   values.dwellingMin = _.get(quoteData, 'coverageLimits.dwelling.minAmount');
+//   values.dwellingMax = _.get(quoteData, 'coverageLimits.dwelling.maxAmount');
+
+//   values.lossOfUse = _.get(quoteData, 'coverageLimits.lossOfUse.amount');
+//   values.medicalPayments = _.get(quoteData, 'coverageLimits.medicalPayments.amount');
+//   values.moldLiability = _.get(quoteData, 'coverageLimits.moldLiability.amount');
+//   values.moldProperty = _.get(quoteData, 'coverageLimits.moldProperty.amount');
+//   values.ordinanceOrLaw = _.get(quoteData, 'coverageLimits.ordinanceOrLaw.amount');
+
+//   const otherStructures = _.get(quoteData, 'coverageLimits.otherStructures.amount');
+//   const dwelling = _.get(quoteData, 'coverageLimits.dwelling.amount');
+//   const personalProperty = _.get(quoteData, 'coverageLimits.personalProperty.amount');
+//   const hurricane = _.get(quoteData, 'deductibles.hurricane.amount');
+
+//   values.otherStructuresAmount = otherStructures;
+//   values.otherStructures = String(calculatePercentage(otherStructures, dwelling));
+//   values.personalLiability = _.get(quoteData, 'coverageLimits.personalLiability.amount');
+//   values.personalPropertyAmount = String(personalProperty);
+//   values.personalProperty = String(calculatePercentage(personalProperty, dwelling));
+//   values.personalPropertyReplacementCostCoverage = _.get(quoteData, 'coverageOptions.personalPropertyReplacementCost.answer');
+
+//   values.sinkholePerilCoverage = _.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer');
+
+//   values.allOtherPerils = _.get(quoteData, 'deductibles.allOtherPerils.amount');
+//   values.hurricane = hurricane;
+
+//   values.calculatedHurricane = _.get(quoteData, 'deductibles.hurricane.calculatedAmount');
+
+//   values.floridaBuildingCodeWindSpeed = _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeed');
+//   values.floridaBuildingCodeWindSpeedDesign = _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign');
+//   values.internalPressureDesign = _.get(quoteData, 'property.windMitigation.internalPressureDesign');
+//   values.openingProtection = _.get(quoteData, 'property.windMitigation.openingProtection');
+//   values.roofCovering = _.get(quoteData, 'property.windMitigation.roofCovering');
+//   values.roofDeckAttachment = _.get(quoteData, 'property.windMitigation.roofDeckAttachment');
+//   values.roofGeometry = _.get(quoteData, 'property.windMitigation.roofGeometry');
+//   values.roofToWallConnection = _.get(quoteData, 'property.windMitigation.roofToWallConnection');
+//   values.secondaryWaterResistance = _.get(quoteData, 'property.windMitigation.secondaryWaterResistance');
+//   values.terrain = _.get(quoteData, 'property.windMitigation.terrain');
+//   values.windBorneDebrisRegion = _.get(quoteData, 'property.windMitigation.windBorneDebrisRegion');
+//   values.residenceType = _.get(quoteData, 'property.residenceType');
+
+//   values.propertyIncidentalOccupanciesMainDwelling = false;
+//   values.propertyIncidentalOccupanciesOtherStructures = false;
+//   values.liabilityIncidentalOccupancies = false;
+
+//   return values;
+// };
+
+const paymentTotal = () => {
+  let total = 0;
+  for (let i = 0; i < payments.length; i += 1) {
+    if (payments[i].cashDescription === 'PAYMENT RECEIVED') {
+      total += payments[i].amount;
+    }
+    if (payments[i].cashDescription === 'PAYMENT RETURNED') {
+      total -= payments[i].amount;
+    }
+  }
+  return total.toLocaleString();
+};
+
 const handleGetPolicy = (state) => {
   const model = state.appState ? state.appState.modelName : undefined;
   const previousTask = model && state.cg[model] && state.cg[model].data ? state.cg[model].data.previousTask : undefined;
@@ -63,7 +168,7 @@ export class PolicyholderAgent extends Component {
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
       workflowId, { ...this.props.appState.data, submitting: true });
 
-    submitData.cashDate = moment.utc(data.cashDate).format('MM/DD/YYYY');
+    submitData.cashDate = moment.utc(data.cashDate).format('YYYY-MM-DD');
     submitData.batchNumber = String(data.batchNumber);
     submitData.amount = Number(String(data.amount).replace(/[^\d]/g, ''));
     submitData.cashType = String(data.cashType);
@@ -83,12 +188,25 @@ export class PolicyholderAgent extends Component {
     //       workflowId, { ...this.props.appState.data, recalc: false, quote: this.props.quoteData });
     //   });
     payments.push(data);
-    console.log(data);
+    this.clearForm();
+    paymentTotal();
+    console.log(data, payments, 'form data');
   };
+
+  clearForm = () => {
+    const { dispatch } = this.props;
+    const workflowId = this.props.appState.instanceId;
+
+    dispatch(reset('PolicyholderAgent'));
+    this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+      workflowId, { ...this.props.appState.data, submitting: false });
+  };
+
+  amountFormatter = cell => `$ ${cell.toLocaleString()}`;
 
   render() {
     const { additionalInterests } = this.props.policy;
-    const { tasks, appState, handleSubmit, pristine } = this.props;
+    const { handleSubmit, pristine } = this.props;
     setRank(additionalInterests);
     return (
       <PolicyConnect>
@@ -125,13 +243,12 @@ export class PolicyholderAgent extends Component {
                       <TableHeaderColumn dataField="cashDescription" className="description" columnClassName="description" dataSort>Description</TableHeaderColumn>
                       <TableHeaderColumn dataField="cashType" className="type" columnClassName="type" dataSort width="200" >Type</TableHeaderColumn>
                       <TableHeaderColumn dataField="batchNumber" className="note" columnClassName="note" dataSort width="200" >Note</TableHeaderColumn>
-                      <TableHeaderColumn dataField="amount" className="amount" columnClassName="amount" width="150" dataSort dataAlign="right">Amount</TableHeaderColumn>
+                      <TableHeaderColumn dataField="amount" dataFormat={ this.amountFormatter }className="amount" columnClassName="amount" width="150" dataSort dataAlign="right">Amount</TableHeaderColumn>
                     </BootstrapTable>
                   </div>
                   <dl className="total">
                     <div>
-                      Total
-                      $ 3,123
+                      {`Total $ ${paymentTotal()}`}
                     </div>
                   </dl>
                 </div>
@@ -149,64 +266,59 @@ export class PolicyholderAgent extends Component {
                     <div className="flex-child">
                       <div className="form-group">
                         <TextField validations={['required']} label={'Cash Date'} styleName={''} name={'cashDate'} type={'date'} />
-                          </div>
-                        </div>
-                        <div className="flex-child">
-                          <div className="form-group">
-                            <TextField validations={['required']} label={'Batch Number'} styleName={''} name={'batchNumber'} />
-                          </div>
-                        </div>
+                      </div>
                     </div>
+                    <div className="flex-child">
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Batch Number'} styleName={''} name={'batchNumber'} />
+                      </div>
+                    </div>
+                  </div>
 
-                    <div className="flex-parent">
-                        <div className="flex-child">
-                          <div className="form-group">
-                              <SelectField
-                                    name="cashType" component="select" label="Cash Type" onChange={function () {}} validations={['required']} answers={[
-                                      {
-                                        answer: 'CASH',
-                                        label: 'Cash'
-                                      }, {
-                                        answer: 'CREDIT',
-                                        label: 'Credit'
-                                      }
-                                    ]}
-                                  />
-                          </div>
-                        </div>
-                        <div className="flex-child">
-                          <div className="form-group">
-                                  <SelectField
-                                    name="cashDescription" component="select" label="Cash Description" onChange={function () {}} validations={['required']} answers={[
-                                      {
-                                        answer: 'PAYMENT RECEIVED',
-                                        label: 'Payment Received'
-                                      }, {
-                                        answer: 'PAYMENT RETURNED',
-                                        label: 'Payment Returned'
-                                      }
-                                    ]}
-                                  />
-                          </div>
-                        </div>
-                        <div className="flex-child">
-                          <div className="form-group">
-                             <CurrencyField
+                  <div className="flex-parent">
+                    <div className="flex-child">
+                      <div className="form-group">
+                        <SelectField
+                          name="cashType" component="select" label="Cash Type" onChange={function () {}} validations={['required']} answers={[
+                            {
+                              answer: 'CASH',
+                              label: 'Cash'
+                            }, {
+                              answer: 'CREDIT',
+                              label: 'Credit'
+                            }
+                          ]}
+                        />
+                      </div>
+                    </div>
+                    <div className="flex-child">
+                      <div className="form-group">
+                        <SelectField
+                          name="cashDescription" component="select" label="Cash Description" onChange={function () {}} validations={['required']} answers={[
+                            {
+                              answer: 'PAYMENT RECEIVED',
+                              label: 'Payment Received'
+                            }, {
+                              answer: 'PAYMENT RETURNED',
+                              label: 'Payment Returned'
+                            }
+                          ]}
+                        />
+                      </div>
+                    </div>
+                    <div className="flex-child">
+                      <div className="form-group">
+                        <CurrencyField
                           validations={['required']} label="Amount" styleName={''} name={'amount'}
                         />
-                          </div>
-                        </div>
+                      </div>
                     </div>
-
-
-                    <div className="btn-footer">
-                      <button className="btn btn-secondary" type="button">Cancel</button>
-                      <button className="btn btn-primary" type="submit" form="PolicyholderAgent">Save</button>
-                    </div>
-
-                  </Form>
-
-
+                  </div>
+                  <div className="btn-footer">
+                    <button className="btn btn-secondary" type="button" form="PolicyholderAgent" onClick={this.clearForm}>Cancel</button>
+                    <button className="btn btn-primary" type="submit" form="PolicyholderAgent" disabled={this.props.appState.data.submitting || pristine}>Save</button>
+                  </div>
+                </Form>
               </section>
 
               <section className="additional-interests">
@@ -252,11 +364,6 @@ const mapStateToProps = state => ({
   policy: handleGetPolicy(state),
   tasks: state.cg,
   appState: state.appState
-  // fieldValues: _.get(state.form, 'Coverage.values', {}),
-  // initialValues: handleInitialize(state),
-  // agencyDocs: handleGetDocs(state, 'getAgencyDocument'),
-  // agentDocs: handleGetDocs(state, 'getAgentDocument'),
-  // quoteData: handleGetQuoteData(state)
 });
 
 const mapDispatchToProps = dispatch => ({
