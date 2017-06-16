@@ -141,9 +141,7 @@ const handleGetDocs = (state, name) => {
 export class Coverage extends Component {
 
   componentWillMount() {
-    this.props.actions.serviceActions.runService('GET', 'agency.services', 'v1/agency/TTIC/FL/20000', {}).then(result => {
-      console.log(result);
-    })
+    this.props.actions.serviceActions.runService('getAgents', 'GET', 'agency.services', 'v1/agency/TTIC/FL/20000', {});
   }
 
   clearForm = () => {
@@ -315,7 +313,9 @@ export class Coverage extends Component {
   }
 
   render() {
-    const { fieldValues, handleSubmit, initialValues, pristine } = this.props;
+    const { fieldValues, handleSubmit, initialValues, pristine, getAgents } = this.props;
+
+    console.log('getAgents', getAgents);
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
@@ -1206,6 +1206,7 @@ Coverage.propTypes = {
 // redux mapping
 // ------------------------------------------------
 const mapStateToProps = state => ({
+  getAgents: state.service.getAgents,
   tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'Coverage.values', {}),

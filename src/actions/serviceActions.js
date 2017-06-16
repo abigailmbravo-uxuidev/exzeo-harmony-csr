@@ -7,10 +7,15 @@ import * as errorActions from './errorActions';
 import * as appStateActions from './appStateActions';
 
 
-export const serviceTask = (newData) => {
+export const serviceTask = (name, newData) => {
+
+  let serviceObject = {};
+
+  serviceObject[name] = newData.data.result;
+  
   const stateObj = {
     type: types.RUN_SERVICE,
-    serviceData: newData
+    serviceData: serviceObject
   };
   return stateObj;
 };
@@ -20,7 +25,7 @@ const handleError = (error) => {
   return (error.message) ? error.message : message;
 };
 
-export const runService = (method, service, servicePath, data) => (dispatch) => {
+export const runService = (name, method, service, servicePath, data) => (dispatch) => {
   const axiosConfig = {
     method: 'POST',
     headers: {
@@ -38,9 +43,11 @@ export const runService = (method, service, servicePath, data) => (dispatch) => 
     }
   };
 
-  return Promise.resolve(axios(axiosConfig))
+  return axios(axiosConfig)
     .then((response) => {
-      return dispatch(serviceTask(response));
+      // name is going to be the collection name to store in redux state
+      // example: getAllAgencies
+      return dispatch(serviceTask(name, response));
     })
     .catch(error => {
       const message = handleError(error);
