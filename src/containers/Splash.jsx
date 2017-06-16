@@ -17,7 +17,10 @@ const workflowModelName = 'csrQuote';
 export class Splash extends Component {
 
   componentDidMount() {
-    this.props.actions.cgActions.startWorkflow(workflowModelName, {});
+    const workflowData = {
+      dsUrl: `${process.env.REACT_APP_API_URL}/ds`
+    };
+    this.props.actions.cgActions.startWorkflow(workflowModelName, workflowData);
   }
 
   handleSelectQuote = (quote, props) => {

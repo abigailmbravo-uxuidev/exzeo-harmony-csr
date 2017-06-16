@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
+import * as serviceActions from  '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
@@ -138,6 +139,10 @@ const handleGetDocs = (state, name) => {
 
 
 export class Coverage extends Component {
+
+  componentWillMount() {
+    this.props.actions.serviceActions.runService('getAgents', 'GET', 'agency.services', 'v1/agency/TTIC/FL/20000', {});
+  }
 
   clearForm = () => {
     const { dispatch, quoteData } = this.props;
@@ -308,7 +313,9 @@ export class Coverage extends Component {
   }
 
   render() {
-    const { fieldValues, handleSubmit, initialValues, pristine } = this.props;
+    const { fieldValues, handleSubmit, initialValues, pristine, getAgents } = this.props;
+
+    console.log('getAgents', getAgents);
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
@@ -1199,6 +1206,7 @@ Coverage.propTypes = {
 // redux mapping
 // ------------------------------------------------
 const mapStateToProps = state => ({
+  getAgents: state.service.getAgents,
   tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'Coverage.values', {}),
@@ -1210,6 +1218,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }
