@@ -206,7 +206,7 @@ export class PolicyholderAgent extends Component {
 
   render() {
     const { additionalInterests } = this.props.policy;
-    const { handleSubmit, pristine } = this.props;
+    const { handleSubmit, pristine, summaryLedger } = this.props;
     setRank(additionalInterests);
     return (
       <PolicyConnect>
@@ -228,13 +228,11 @@ export class PolicyholderAgent extends Component {
                     <div>
                       <dt>Bill Plan</dt>
                       <dd>{this.props.policy.billPlan}</dd>
-                      {console.log(this.props, 'here is props')}
                     </div>
                   </dl>
                 </div>
                 <div className="flex-parent">
                   <h3 className="flex-child">Payments</h3>
-                  <button className="flex-child btn btn-primary btn-xs" type="submit"><i className="fa fa-plus" aria-hidden="true"></i> Add Payment</button>
                 </div>
                 <div className="payment-summary grid">
                   <div className="table-view">
@@ -243,11 +241,12 @@ export class PolicyholderAgent extends Component {
                       <TableHeaderColumn dataField="cashDescription" className="description" columnClassName="description" dataSort>Description</TableHeaderColumn>
                       <TableHeaderColumn dataField="cashType" className="type" columnClassName="type" dataSort width="200" >Type</TableHeaderColumn>
                       <TableHeaderColumn dataField="batchNumber" className="note" columnClassName="note" dataSort width="200" >Note</TableHeaderColumn>
-                      <TableHeaderColumn dataField="amount" dataFormat={ this.amountFormatter }className="amount" columnClassName="amount" width="150" dataSort dataAlign="right">Amount</TableHeaderColumn>
+                      <TableHeaderColumn dataField="amount" dataFormat={this.amountFormatter} className="amount" columnClassName="amount" width="150" dataSort dataAlign="right">Amount</TableHeaderColumn>
                     </BootstrapTable>
                   </div>
                   <dl className="total">
                     <div>
+                    {console.log(summaryLedger, 'summaryLedger')}
                       {`Total $ ${paymentTotal()}`}
                     </div>
                   </dl>
@@ -294,7 +293,7 @@ export class PolicyholderAgent extends Component {
                     <div className="flex-child">
                       <div className="form-group">
                         <SelectField
-                          name="cashDescription" component="select" label="Cash Description" onChange={function () {}} validations={['required']} answers={[
+                          name="cashDescription" component="select" label="Description" onChange={function () {}} validations={['required']} answers={[
                             {
                               answer: 'PAYMENT RECEIVED',
                               label: 'Payment Received'
@@ -330,7 +329,14 @@ export class PolicyholderAgent extends Component {
                         <a>
                           {/* add className based on type - i.e. mortgagee could have class of mortgagee*/}
                           <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {ai.order + 1}</label></div>
-                          <section><h4>{ai.name1}&nbsp;{ai.name2}</h4><p className="address">{`${ai.mailingAddress.address1}, ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city}, ${ai.mailingAddress.state} ${ai.mailingAddress.zip}`}</p></section>
+                          <section><h4>{ai.name1}&nbsp;{ai.name2}</h4>
+                            <p className="address">{
+                             `${ai.mailingAddress.address1}, 
+                              ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city}, 
+                              ${ai.mailingAddress.state} 
+                              ${ai.mailingAddress.zip}`
+                            }</p>
+                          </section>
                           <div className="ref-number">
                             <label htmlFor="ref-number">Reference Number</label>
                             <span>{` ${ai.referenceNumber || ' - '}`}</span>
