@@ -391,3 +391,162 @@
     }
   }
 }
+
+.app-wrapper.csr.policy main .content-wrapper .route-content {
+
+.endorsements {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+
+  .endo-jump-menu {
+
+    background: $white;
+    padding: ($padding*2);
+    border-bottom: dashed 1px $warm-gray-04;
+    flex: 1 0 auto;
+    display: flex;
+    align-content: space-between;
+
+    * {
+      flex: 1 1 auto;
+      margin: 0 ($padding);
+    }
+
+  }
+
+  .scroll {
+    flex-shrink: 1;
+
+    .flex-child.col3 {
+      width: 50%;
+
+      .form-group.labels {
+        label {
+          text-align: left;
+        }
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: row;;
+        align-items: center;
+
+        label {
+          width: 50%;
+          flex: 0 1 50%;
+          margin: 0 ($padding) 0 0;
+          text-align: right;
+
+          span {
+            font-size: .7em;
+          }
+        }
+
+        *:nth-child(2) {
+          width: 25%;
+          flex: 0 1 25%;
+          margin: 0 ($padding) 0 0;
+        }
+
+        *:nth-child(3) {
+          width: 25%;
+          flex: 0 1 25%;
+        }
+
+      }
+
+    }
+
+    .flex-parent.col2 {
+
+      .flex-child {
+        width: 50%;
+
+        .flex-parent.col2 {
+
+          .form-group {
+            width: 50%;
+            margin-left: ($padding);
+          }
+
+          .form-group:nth-child(1) {
+            margin-left: 0;
+          }
+
+        }
+
+
+      }
+
+    }
+
+    .flex-parent.col211 {
+
+      .flex-child:nth-child(1) {
+        width: 60%;
+      }
+
+    }
+
+
+
+
+  }
+
+  .endo-results-calc {
+    flex: 1 0 auto;
+    background: $white;
+    padding: ($padding*2);
+    border-top: dashed 1px $warm-gray-04;
+
+    h3 {
+      margin-top: 0;
+    }
+
+    .form-group {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-content: space-between;
+      align-items: flex-start;
+      flex-direction: row;
+      align-items: center;
+
+      * {
+        flex: 1 1 auto;
+        width: auto;
+      }
+
+      label {
+        flex: 0 1 50%;
+        text-align: right;
+        margin: 0 ($padding*2);
+      }
+
+    }
+
+    .btn-footer {
+      margin-bottom: 0;
+    }
+
+  }
+
+  .additionalInterests {
+
+    .results-wrapper {
+      margin: ($padding*2) 0 ($padding*4);
+    }
+
+  }
+
+}
+
+.underwriting-validation {
+  width: 240px;
+  flex-shrink: 0;
+  padding: 0 0 ($padding*2) ($padding*2);
+}
+
+}

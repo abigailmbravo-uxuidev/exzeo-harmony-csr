@@ -20,6 +20,7 @@ import PolicyCoverage from './components/Policy/Coverage';
 import PolicyPolicyholderAgent from './components/Policy/PolicyholderAgent';
 import PolicyMortgageBilling from './components/Policy/MortgageBilling';
 import PolicyNotesFiles from './components/Policy/NotesFiles';
+import PolicyEndorsements from './components/Policy/Endorsements';
 
 import * as userActions from './actions/userActions';
 
@@ -70,6 +71,7 @@ class Routes extends Component { // eslint-disable-line
             <Route exact path="/policy/policyholder" component={authHOC(PolicyPolicyholderAgent, '/policy/policyholder', this.props)} />
             <Route exact path="/policy/billing" component={authHOC(PolicyMortgageBilling, '/policy/billing', this.props)} />
             <Route exact path="/policy/notes" component={authHOC(PolicyNotesFiles, '/policy/notes', this.props)} />
+            <Route exact path="/policy/endorsements" component={authHOC(PolicyEndorsements, '/policy/endorsements', this.props)} />
             <Route exact path="/login" component={LoginPage} />
             <Route exact path="/error" component={AppErrorPage} />
             <Route component={NotFoundPage} />
