@@ -111,7 +111,7 @@ export const completeTask = (modelName, workflowId, stepName, data, dispatchAppS
       }
       return dispatch(complete(modelName, responseData));
     })
-    .catch(error => {
+    .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
         errorActions.setAppError({ message }),
@@ -151,7 +151,7 @@ export const batchCompleteTask = (modelName, workflowId, stepsWithData, dispatch
       }
       dispatch(complete(modelName, responseData));
     })
-    .catch(error => {
+    .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
         errorActions.setAppError({ message }),
@@ -187,7 +187,7 @@ export const moveToTask = (modelName, workflowId, stepName, dispatchAppState = t
       }
       return dispatch(complete(modelName, responseData));
     })
-    .catch(error => {
+    .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
         errorActions.setAppError({ message }),
@@ -242,7 +242,7 @@ export const moveToTaskAndExecuteComplete = (modelName, workflowId, stepName, co
       }
       return dispatch(complete(modelName, responseData));
     })
-    .catch(error => {
+    .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
         errorActions.setAppError({ message }),

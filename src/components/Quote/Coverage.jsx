@@ -41,8 +41,8 @@ const handleInitialize = (state) => {
 
   const values = {};
 
-  values.agencyCode = '20000'; // _.get(quoteData, 'agencyCode');
-  values.agentCode = '60000'; // _.get(quoteData, 'agentCode');
+  values.agencyCode = String(_.get(quoteData, 'agencyCode'));
+  values.agentCode = String(_.get(quoteData, 'agentCode'));
   values.effectiveDate = moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD');
 
   values.pH1email = _.get(quoteData, 'policyHolders[0].emailAddress');
@@ -136,11 +136,46 @@ const handleGetDocs = (state, name) => {
   return _.concat([], doc);
 };
 
+const populateAgentData = (state) => {
+  if (state.cg && state.cg.getAgency && state.cg.getAgency.data &&
+    state.cg.getAgency.data.model && state.cg.getAgency.data.model.variables) {
+    const agentData = _.filter(state.cg.getAgency.data.model.variables, item => item.name === 'getAgentsByCode');
+    if (agentData.length > 0) {
+      const data = agentData[0].value.result;
+      return data;
+    }
+  }
+  return [];
+};
 
 export class Coverage extends Component {
 
+
+  componentWillMount() {
+    // TODO: get list of active agencies
+    this.handleAgencyChange(this.props.quoteData.agencyCode, true);
+  }
+
+  handleAgencyChange = (agencyCode, isInit) => {
+    this.props.dispatch(change('Coverage', 'agencyCode', agencyCode));
+
+    if (!isInit) { this.props.dispatch(change('Coverage', 'agentCode', '')); }
+
+    const { quoteData } = this.props;
+    const startModelData = {
+      agencyCode,
+      companyCode: quoteData.companyCode,
+      state: quoteData.state
+    };
+    this.props.actions.cgActions.startWorkflow('getAgency', startModelData, false);
+  };
+
   clearForm = () => {
     const { dispatch, quoteData } = this.props;
+
+    dispatch(change('Coverage', 'agencyCode', _.get(quoteData, 'agencyCode')));
+    dispatch(change('Coverage', 'agentCode', _.get(quoteData, 'agentCode')));
+
 
     dispatch(change('Coverage', 'effectiveDate', moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD')));
 
@@ -308,7 +343,7 @@ export class Coverage extends Component {
   }
 
   render() {
-    const { fieldValues, handleSubmit, initialValues, pristine } = this.props;
+    const { fieldValues, handleSubmit, initialValues, pristine, agents } = this.props;
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
@@ -327,30 +362,29 @@ export class Coverage extends Component {
                     </div>
 
                     <div className="flex-child">
-                      {/* <SelectFieldAgency
-                        name="agencyCode"
-                        label="Agency"
-                        onChange={function () { }}
-                        validations={['required']}
-                        agencies={agencyDocs}
-                      /> */}
+                      {/* TODO: still waiting on endpoint to get all agencies. This will not be hardcoded */}
                       <SelectField
-                        name="agencyCode" component="select" styleName={''} label="Agency" onChange={function () {}} answers={[
+                        name="agencyCode" component="select" styleName={''} label="Agency" validations={['required']} input={{
+                          name: 'agencyCode',
+                          onChange: event => this.handleAgencyChange(event.target.value),
+                          value: fieldValues.agencyCode
+                        }} answers={[
                           {
                             answer: '20000',
                             label: 'TypTap Insurance Company'
+                          },
+                          { answer: '20003',
+                            label: 'OMEGA INSURANCE AGENCY INC'
                           }
                         ]}
                       />
                     </div>
                     <div className="flex-child">
                       <SelectField
-                        name="agentCode" component="select" styleName={''} label="Agent" onChange={function () {}} answers={[
-                          {
-                            answer: '60000',
-                            label: 'Wally Wagoner'
-                          }
-                        ]}
+                        name="agentCode" component="select" styleName={''} label="Agent" validations={['required']} answers={agents.map(agent => ({
+                          answer: String(agent.agentCode),
+                          label: `${agent.firstName} ${agent.lastName}`
+                        }))}
                       />
                     </div>
                   </div>
@@ -1201,6 +1235,7 @@ Coverage.propTypes = {
 const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
+  agents: populateAgentData(state),
   fieldValues: _.get(state.form, 'Coverage.values', {}),
   initialValues: handleInitialize(state),
   agencyDocs: handleGetDocs(state, 'getAgencyDocument'),
