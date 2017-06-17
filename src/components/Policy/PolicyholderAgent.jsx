@@ -31,16 +31,15 @@ policyHolderMailingAddress
                   <p>{`${policyHolderMailingAddress.address1} ${policyHolderMailingAddress.address2 ? policyHolderMailingAddress.address2 : ''}
 ${policyHolderMailingAddress.city} ${policyHolderMailingAddress.state}, ${policyHolderMailingAddress.zip}`}</p>
                   <div className="contact-methods">
-                    <p className="primary-phone"><i className="fa fa-phone-square" />
-                      <a href={`tel: ${policyHolder.primaryPhoneNumber}`}>{policyHolder.primaryPhoneNumber}</a>
+                    <p className="primary-phone">
+                      <a href={`tel: ${policyHolder.primaryPhoneNumber}`}><i className="fa fa-phone-square" />{policyHolder.primaryPhoneNumber}</a>
                     </p>
                     { policyHolder.secondaryPhoneNumber && <p className="secondary-phone">
-                      <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
-                      <a href={`tel: ${policyHolder.secondaryPhoneNumber}`}>{policyHolder.secondaryPhoneNumber}</a>
+                      <a href={`tel: ${policyHolder.secondaryPhoneNumber}`}><small>2<sup>ND</sup><i className="fa fa-phone" /></small>{policyHolder.secondaryPhoneNumber}</a>
                     </p>
 }
-                    <p className="email"><i className="fa fa-envelope" />
-                      <a href={`mailto: ${policyHolder.emailAddress}`}>{policyHolder.emailAddress}</a>
+                    <p className="email">
+                      <a href={`mailto: ${policyHolder.emailAddress}`}><i className="fa fa-envelope" />{policyHolder.emailAddress}</a>
                     </p>
                   </div>
                 </div>
@@ -53,20 +52,17 @@ ${policyHolderMailingAddress.city} ${policyHolderMailingAddress.state}, ${policy
               <div className="agency contact card">
                 <div className="contact-title"><i className="fa fa-address-book" /><label>Agency</label></div>
                 <div className="contact-details">
-                  <h4><a href="">13428</a>&nbsp;GREAT FLORIDA INS - PT CHARLOTTE | ALTERNATE NAME HERE</h4>
+                  <h4>13428 GREAT FLORIDA INS - PT CHARLOTTE | ALTERNATE NAME HERE</h4>
                   <p>2762 Tamiami Trl Unit A, Port Charlotte, FL 33952</p>
                   <div className="contact-methods">
-                    <p className="primary-phone"><i className="fa fa-phone-square" />
-                      <a href="tel: 9417777755">(941) 777-7755</a>
+                    <p className="primary-phone">
+                      <a href="tel: 9417777755"><i className="fa fa-phone-square" />(941) 777-7755</a>
                     </p>
-                    <p className="fax"><i className="fa fa-fax" />
-                      <a href="tel: 9417777722">(941) 777-7722</a>
+                    <p className="fax">
+                      <a href="tel: 9417777722"><i className="fa fa-fax" />(941) 777-7722</a>
                     </p>
-                    <p className="email"><i className="fa fa-envelope" />
-                      <a href="mailto: help@greatflorida.com">help@greatflorida.com</a>
-                    </p>
-                    <p className="web"><i className="fa fa-globe" />
-                      <a href="mailto: help@greatflorida.com">help@greatflorida.com</a>
+                    <p className="email">
+                      <a href="mailto:help@greatflorida.com"><i className="fa fa-envelope" />help@greatflorida.com</a>
                     </p>
                   </div>
                   <div className="additional-contacts">
@@ -76,7 +72,8 @@ ${policyHolderMailingAddress.city} ${policyHolderMailingAddress.state}, ${policy
                           <h5>Laurie Cyr</h5>
                           <span>PI Manager</span>
                         </div>
-                        <div><i className="fa fa-envelope" />&nbsp;<a href="mailto:">laurie.cyr@greatflorida.com</a>
+                        <div className="contact-methods">
+                          <p><a href="mailto:laurie.cyr@greatflorida.com"><i className="fa fa-envelope" />laurie.cyr@greatflorida.com</a></p>
                         </div>
                       </li>
                       <li>
@@ -84,7 +81,8 @@ ${policyHolderMailingAddress.city} ${policyHolderMailingAddress.state}, ${policy
                           <h5>Wendy North</h5>
                           <span>Pricipal</span>
                         </div>
-                        <div><i className="fa fa-envelope" />&nbsp;<a href="mailto:">wendy.north@greatflorida.com</a>
+                        <div className="contact-methods">
+                          <p><a href="mailto:wendy.north@greatflorida.com"><i className="fa fa-envelope" />wendy.north@greatflorida.com</a></p>
                         </div>
                       </li>
                       <li>
@@ -92,6 +90,7 @@ ${policyHolderMailingAddress.city} ${policyHolderMailingAddress.state}, ${policy
                           <h5>Yanet Coursen</h5>
                           <span>Sales Manager</span>
                         </div>
+                        <div className="contact-methods"></div>
                       </li>
                     </ul>
                   </div>
@@ -104,21 +103,20 @@ ${policyHolderMailingAddress.city} ${policyHolderMailingAddress.state}, ${policy
                   <h4><a href="">46129</a>&nbsp;LAURIE CYR</h4>
                   <p>2762 Tamiami Trl Unit A, Port Charlotte, FL 33952</p>
                   <div className="contact-methods">
-                    <p className="primary-phone"><i className="fa fa-phone-square" />
-                      <a href="tel: 9417777755">(941) 777-7755</a>
+                    <p className="primary-phone">
+                      <a href="tel: 9417777755"><i className="fa fa-phone-square" />(941) 777-7755</a>
                     </p>
                     <p className="secondary-phone">
-                      <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
-                      <a href="tel: 9417777333">(941) 777-7333</a>
+                      <a href="tel: 9417777333"><small>2<sup>ND</sup><i className="fa fa-phone" /></small>(941) 777-7333</a>
                     </p>
-                    <p className="fax"><i className="fa fa-fax" />
-                      <a href="tel: 9417777722">(941) 777-7722</a>
+                    <p className="fax">
+                      <a href="tel: 9417777722"><i className="fa fa-fax" />(941) 777-7722</a>
                     </p>
-                    <p className="email"><i className="fa fa-envelope" />
-                      <a href="mailto: laurie.cyr@greatflorida.com">laurie.cyr@greatflorida.com</a>
+                    <p className="email">
+                      <a href="mailto:laurie.cyr@greatflorida.com"><i className="fa fa-envelope" />laurie.cyr@greatflorida.com</a>
                     </p>
-                    <p className="email"><i className="fa fa-envelope" />
-                      <a href="mailto: help@greatflorida.com">help@greatflorida.com</a>
+                    <p className="email">
+                      <a href="mailto:help@greatflorida.com"><i className="fa fa-envelope" />help@greatflorida.com</a>
                     </p>
                   </div>
                 </div>
