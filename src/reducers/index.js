@@ -6,14 +6,15 @@ import cg from './cgReducer';
 import appState from './appStateReducer';
 import error from './errorReducer';
 import questions from './questionsReducer';
-
+import service from './serviceReducer';
 
 const rootReducer = combineReducers({
   form: formReducer,
   cg,
   appState,
-  error,
   questions
+  service,
+  error
 });
 
 export default rootReducer;
