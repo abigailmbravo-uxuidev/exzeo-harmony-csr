@@ -1,23 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 
 import logo from '../../img/Harmony.svg';
-import * as userActions from '../../actions/userActions';
 
-const handleLogout = (props) => {
-  props.actions.user.logout();
+const handleLogout = (auth) => {
+  auth.logout();
 };
 
-const getUsername = (props) => {
-  if (props.user.profile) {
-    return props.user.profile.username;
+const getUsername = (auth) => {
+  const { userProfile } = auth;
+  console.log(userProfile);
+  if (userProfile) {
+    return userProfile.name;
   }
   return '';
 };
 
-export const Header = props => (
+const Header = props => (
   <header>
     <div role="banner">
       <button className="btn-icon btn-bars"><i className="fa fa-bars" /></button>
@@ -29,24 +27,12 @@ export const Header = props => (
         <a href="" className="active">Policy Management</a>
         { /* <a href="">Agency Management</a>
         <a href="">User Management</a> */ }
-        <div className="user-name">{ getUsername(props) }</div>
+        <div className="user-name">{ getUsername(props.auth) }</div>
         <button className="btn btn-action"><i className="fa fa-gear" /></button>
-        <button className="btn logout btn-action" type="button" onClick={() => handleLogout(props)}><i className="fa fa-sign-out" /></button>
+        <button className="btn logout btn-action" type="button" onClick={() => handleLogout(props.auth)}><i className="fa fa-sign-out" /></button>
       </nav>
     </div>
   </header>
 );
 
-Header.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node])
-};
-
-const mapStateToProps = state => ({
-  user: state.user
-});
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    user: bindActionCreators(userActions, dispatch)
-  }
-});
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default Header;

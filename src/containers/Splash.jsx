@@ -95,7 +95,7 @@ export class Splash extends Component {
 
   render() {
     return (
-      <BaseConnect>
+      <BaseConnect {...this.props}>
         <Helmet>
           <title>Harmony - CSR Portal</title>
         </Helmet>
@@ -106,8 +106,8 @@ export class Splash extends Component {
               <div className="survey-wrapper scroll">
                 <div className="results-wrapper">
                   <NoResultsConnect />
-                  <SearchResults 
-                    handleSelectAddress={this.handleSelectAddress} 
+                  <SearchResults
+                    handleSelectAddress={this.handleSelectAddress}
                     handleSelectQuote={this.handleSelectQuote}
                     handleSelectPolicy={this.handleSelectPolicy}
                   />
@@ -135,8 +135,8 @@ Splash.propTypes = {
 };
 
 const mapStateToProps = state => (
-  { 
-    tasks: state.cg, 
+  {
+    tasks: state.cg,
     appState: state.appState,
     error: state.error
   }

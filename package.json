@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "auth0-js": "^8.7.0",
     "axios": "^0.15.2",
     "classnames": "^2.2.5",
     "eslint": "^3.10.2",
@@ -11,6 +12,7 @@
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.7.1",
     "font-awesome": "^4.7.0",
+    "history": "^4.6.2",
     "immutable": "^3.8.1",
     "jwt-decode": "^2.2.0",
     "localStorage": "^1.0.3",
