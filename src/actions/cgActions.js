@@ -48,7 +48,7 @@ const checkCGError = (responseData) => {
 
 const handleError = (dispatch, modelName, workflowId, error) => {
   const message = error.response && error.response.data && error.response.data.error
-    ? error.response.data.error.message 
+    ? error.response.data.error.message
     : 'There was an error.';
   // dispatch the error
   return dispatch(batchActions([
