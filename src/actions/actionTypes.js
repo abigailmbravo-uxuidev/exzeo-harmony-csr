@@ -13,6 +13,9 @@ export const CG_COMPLETE = 'CG_COMPLETE';
 export const CG_ERROR = 'CG_ERROR';
 export const CLEAR_SEARCH_RESULTS = 'CLEAR_SEARCH_RESULTS';
 
+/* SERVICE */
+export const SERVICE_REQUEST = 'SERVICE_REQUEST';
+
 /* WORKFLOW DETAILS */
 export const DETAILS_SET = 'DETAILS_SET';
 export const DETAILS_GET = 'DETAILS_GET';
