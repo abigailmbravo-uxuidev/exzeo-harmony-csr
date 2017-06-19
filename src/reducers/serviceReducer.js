@@ -1,6 +1,7 @@
 import * as types from './../actions/actionTypes';
+import initialState from './initialState';
 
-export default function serviceReducer(state = {}, action) {
+export default function serviceReducer(state = initialState.service, action) {
   let newState = state;
   switch (action.type) {
     case types.SERVICE_REQUEST:
