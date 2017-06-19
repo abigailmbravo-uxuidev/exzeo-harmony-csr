@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import moment from 'moment';
 import { reduxForm, Form, propTypes } from 'redux-form';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
@@ -22,12 +23,12 @@ const handleInitialize = state => ({});
 const SearchPanel = (props) => {
   return (
     <div className="toolbar">
-    <div className='input-group'>
-      <div className="btn btn-notes">Notes</div>
-      <div className="btn btn-files">Files</div>
+      <div className='input-group'>
+        <div className="btn btn-notes">Notes</div>
+        <div className="btn btn-files">Files</div>
+      </div>
+      { props.searchField }
     </div>
-    { props.searchField }
-  </div>
   );
 
 const BSTable = props => props.notes ?
@@ -157,4 +158,3 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'NotesFiles', enableReinitialize: true })(NotesFiles));
-

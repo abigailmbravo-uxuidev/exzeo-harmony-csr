@@ -3,6 +3,7 @@ import {
 } from 'immutable';
 
 export default {
+  service: {},
   search: new Map({}),
   workflowData: {},
   service: {},
