@@ -39,18 +39,6 @@ export const complete = (modelName, workflowData) => {
   return stateObj;
 };
 
-export const clearSearchResults = (modelName, workflowData) => {
-  if (!workflowData.previousTask) return { type: types.CLEAR_SEARCH_RESULTS };
-
-  const newWorkflowData = workflowData;
-  delete newWorkflowData.previousTask;
-
-  return {
-    type: types.CLEAR_SEARCH_RESULTS,
-    workflowData: newWorkflowData
-  };
-};
-
 // helper function to check cg errors
 const checkCGError = (responseData) => {
   if (responseData.activeTask && responseData.activeTask.link && responseData.activeTask.link === 'error') {

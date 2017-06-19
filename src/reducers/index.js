@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
   form: formReducer,
   cg,
   appState,
-  questions
+  questions,
   service,
   error
 });

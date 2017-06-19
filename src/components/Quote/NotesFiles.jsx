@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import moment from 'moment';
 import { reduxForm, Form, propTypes } from 'redux-form';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
@@ -11,7 +10,7 @@ import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
-const handleGetQuoteData = (state) => {
+const handleGetQuote = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
   const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
@@ -20,9 +19,10 @@ const handleGetQuoteData = (state) => {
 
 const handleInitialize = state => ({});
 
-const SearchPanel = props => (
-  <div className="toolbar">
-    <div className="input-group">
+const SearchPanel = (props) => {
+  return (
+    <div className="toolbar">
+    <div className='input-group'>
       <div className="btn btn-notes">Notes</div>
       <div className="btn btn-files">Files</div>
     </div>
@@ -146,7 +146,7 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'NotesFiles.values', {}),
   initialValues: handleInitialize(state),
   notes: state.service.notes,
-  quoteData: handleGetQuoteData(state)
+  quoteData: handleGetQuote(state)
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -157,3 +157,4 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'NotesFiles', enableReinitialize: true })(NotesFiles));
+
