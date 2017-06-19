@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { reduxForm, propTypes } from 'redux-form';
+import _ from 'lodash';
 import * as appStateActions from '../../actions/appStateActions';
 import UWconditions from '../Common/UWconditions';
 import * as cgActions from '../../actions/cgActions';
@@ -99,10 +100,22 @@ const goToPage = (link, key, props) => {
     });
 };
 
+const getDocumentId = (props) => {
+  const taskData = (props.cg[props.appState.modelName]) ? props.cg[props.appState.modelName].data : null;
+  if (!taskData) return null;
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) 
+    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result 
+    : {};
+  return quoteData.quoteNumber;
+};
+
 const SideNav = (props) => {
   const redirect = (props.activateRedirect)
     ? (<Redirect to={props.activateRedirectLink} />)
     : null;
+  
+  const documentId = getDocumentId(props);
+
   return (
     <nav className="site-nav">
       { redirect }
@@ -130,7 +143,7 @@ const SideNav = (props) => {
         </li>
       </ul>
       { props.appState.data.showNewNoteFileUploader === true &&
-        <NewNoteFileUploader closeButtonHandler={() => closeNewNoteFileUploader(props)} />
+        <NewNoteFileUploader noteType="quoteNote" documentId={ documentId } closeButtonHandler={() => closeNewNoteFileUploader(props)} />
       }
       { props.appState.data.showUWconditions === true &&
         <UWconditions
@@ -157,12 +170,13 @@ SideNav.propTypes = {
   })
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps) => ({
   tasks: state.cg,
   appState: state.appState,
   completedTasks: state.completedTasks,
   activateRedirectLink: state.appState.data.activateRedirectLink,
-  activateRedirect: state.appState.data.activateRedirect
+  activateRedirect: state.appState.data.activateRedirect,
+  cg: state.cg
 });
 
 const mapDispatchToProps = dispatch => ({

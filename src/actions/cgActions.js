@@ -17,6 +17,17 @@ export const start = (modelName, workflowData) => {
   return stateObj;
 };
 
+// export const activeTask = (modelName, workflowData) => {
+//   const newWorkflowData = {};
+//   newWorkflowData[modelName] = {};
+//   newWorkflowData[modelName].data = workflowData;
+//   const stateObj = {
+//     type: types.CG_ACTIVE_TASK,
+//     workflowData: newWorkflowData
+//   };
+//   return stateObj;
+// };
+
 export const complete = (modelName, workflowData) => {
   const newWorkflowData = {};
   newWorkflowData[modelName] = {};
@@ -28,18 +39,6 @@ export const complete = (modelName, workflowData) => {
   return stateObj;
 };
 
-export const clearSearchResults = (modelName, workflowData) => {
-  if (!workflowData.previousTask) return { type: types.CLEAR_SEARCH_RESULTS };
-
-  const newWorkflowData = workflowData;
-  delete newWorkflowData.previousTask;
-
-  return {
-    type: types.CLEAR_SEARCH_RESULTS,
-    workflowData: newWorkflowData
-  };
-};
-
 // helper function to check cg errors
 const checkCGError = (responseData) => {
   if (responseData.activeTask && responseData.activeTask.link && responseData.activeTask.link === 'error') {
@@ -47,9 +46,15 @@ const checkCGError = (responseData) => {
   }
 };
 
-const handleError = (error) => {
-  const message = error.response ? error.response.data.error.message : 'An error happened';
-  return (error.message) ? error.message : message;
+const handleError = (dispatch, modelName, workflowId, error) => {
+  const message = error.response && error.response.data && error.response.data.error
+    ? error.response.data.error.message 
+    : 'There was an error.';
+  // dispatch the error
+  return dispatch(batchActions([
+    errorActions.setAppError({ message }),
+    appStateActions.setAppState(modelName, workflowId, { submitting: false })
+  ]));
 };
 
 export const startWorkflow = (modelName, data, dispatchAppState = true) => (dispatch) => {
@@ -80,8 +85,29 @@ export const startWorkflow = (modelName, data, dispatchAppState = true) => (disp
       dispatch(errorActions.clearAppError());
       return dispatch(start(modelName, responseData));
     })
-    .catch(error => handleError(dispatch, error));
+    .catch(error => handleError(dispatch, modelName, null, error));
 };
+
+// export const activeTasks = (modelName, workflowId) => (dispatch) => {
+//   const axiosConfig = {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json'
+//     },
+//     url: `${process.env.REACT_APP_API_URL}/cg/activeTasks`,
+//     data: {
+//       workflowId
+//     }
+//   };
+//   return axios(axiosConfig)
+//     .then((response) => {
+//       const responseData = response.data.data;
+//       // check to see if the cg has returned an error as an ok
+//       checkCGError(responseData);
+//       return dispatch(activeTask(modelName, response.data.data));
+//     })
+//     .catch(error => handleError(dispatch, error));
+// };
 
 export const completeTask = (modelName, workflowId, stepName, data, dispatchAppState = true) => (dispatch) => {
   const axiosConfig = {
@@ -111,13 +137,7 @@ export const completeTask = (modelName, workflowId, stepName, data, dispatchAppS
       }
       return dispatch(complete(modelName, responseData));
     })
-    .catch(error => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError({ message }),
-        appStateActions.setAppState(modelName, workflowId, { submitting: false })
-      ]));
-    });
+    .catch(error => handleError(dispatch, modelName, workflowId, error));
 };
 
 export const batchCompleteTask = (modelName, workflowId, stepsWithData, dispatchAppState = true) => (dispatch) => {
@@ -151,13 +171,7 @@ export const batchCompleteTask = (modelName, workflowId, stepsWithData, dispatch
       }
       dispatch(complete(modelName, responseData));
     })
-    .catch(error => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError({ message }),
-        appStateActions.setAppState(modelName, workflowId, { submitting: false })
-      ]));
-    });
+    .catch(error => handleError(dispatch, modelName, workflowId, error));
 };
 
 export const moveToTask = (modelName, workflowId, stepName, dispatchAppState = true) => (dispatch) => {
@@ -187,13 +201,7 @@ export const moveToTask = (modelName, workflowId, stepName, dispatchAppState = t
       }
       return dispatch(complete(modelName, responseData));
     })
-    .catch(error => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError({ message }),
-        appStateActions.setAppState(modelName, workflowId, { submitting: false })
-      ]));
-    });
+    .catch(error => handleError(dispatch, modelName, workflowId, error));
 };
 
 export const moveToTaskAndExecuteComplete = (modelName, workflowId, stepName, completeStep, dispatchAppState = true) => (dispatch) => {
@@ -242,11 +250,5 @@ export const moveToTaskAndExecuteComplete = (modelName, workflowId, stepName, co
       }
       return dispatch(complete(modelName, responseData));
     })
-    .catch(error => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError({ message }),
-        appStateActions.setAppState(modelName, workflowId, { submitting: false })
-      ]));
-    });
+    .catch(error => handleError(dispatch, modelName, workflowId, error));
 };
