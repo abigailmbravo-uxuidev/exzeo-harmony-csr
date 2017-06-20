@@ -170,7 +170,7 @@ SideNav.propTypes = {
   })
 };
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state) => ({
   tasks: state.cg,
   appState: state.appState,
   completedTasks: state.completedTasks,
