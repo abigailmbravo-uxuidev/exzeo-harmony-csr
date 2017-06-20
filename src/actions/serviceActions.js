@@ -3,8 +3,6 @@ import { batchActions } from 'redux-batched-actions';
 import _ from 'lodash';
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
-// import * as servicesActions from './servicesActions';
-import * as appStateActions from './appStateActions';
 
 const handleError = (error) => {
   const message = error.response && error.response.data && error.response.data.error

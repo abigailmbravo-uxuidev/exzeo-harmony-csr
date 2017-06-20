@@ -56,7 +56,7 @@ const NoteList = (props) => {
 
   return (
     <BootstrapTable
-      data={notes || []}
+      data={ Array.isArray(notes) ? notes : [] }
       options={options}
       expandableRow={isExpandableRow}
       expandComponent={expandComponent}
