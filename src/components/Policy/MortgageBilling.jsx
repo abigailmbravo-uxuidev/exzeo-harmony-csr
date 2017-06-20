@@ -8,30 +8,21 @@ import moment from 'moment';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as serviceActions from '../../actions/serviceActions';
 import PolicyConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
-<<<<<<< HEAD
-import TextField from '../Form/inputs/TextField';
 import SelectField from '../Form/inputs/SelectField';
+import TextField from '../Form/inputs/TextField';
 import CurrencyField from '../Form/inputs/CurrencyField';
 
 const payments = [
+  // hardcoded example until payment endpoint created
   {
-    cashDate: '2017-05-17',
+    cashDate: '2017-06-01',
+    cashType: 'CASH',
     cashDescription: 'PAYMENT RECEIVED',
-    batchNumber: '20170527-44',
-    amount: 3123,
-    cashType: 'CASH'
-=======
-import normalizeNumber from '../Form/normalizeNumbers';
-
-const payments = [
-  {
-    date: '05/27/2017',
-    description: 'PAYMENT RECEIVED',
-    note: '20170527-44',
-    amount: `$ ${normalizeNumber(3123)}`
->>>>>>> develop
+    batchNumber: '44556677-88',
+    amount: '1337'
   }
 ];
 
@@ -59,98 +50,6 @@ value.rank = 5; // eslint-disable-line
   });
 };
 
-// const handleInitialize = (state) => {
-//   const quoteData = handleGetQuoteData(state);
-
-//   const values = {};
-
-//   values.agencyCode = '20000'; // _.get(quoteData, 'agencyCode');
-//   values.agentCode = '60000'; // _.get(quoteData, 'agentCode');
-//   values.effectiveDate = moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD');
-
-//   values.pH1email = _.get(quoteData, 'policyHolders[0].emailAddress');
-//   values.pH1FirstName = _.get(quoteData, 'policyHolders[0].firstName');
-//   values.pH1LastName = _.get(quoteData, 'policyHolders[0].lastName');
-//   values.pH1phone = normalizePhone(_.get(quoteData, 'policyHolders[0].primaryPhoneNumber') || '');
-//   values.pH1secondaryPhone = normalizePhone(_.get(quoteData, 'policyHolders[0].secondaryPhoneNumber') || '');
-
-//   values.pH2email = _.get(quoteData, 'policyHolders[1].emailAddress');
-//   values.pH2FirstName = _.get(quoteData, 'policyHolders[1].firstName');
-//   values.pH2LastName = _.get(quoteData, 'policyHolders[1].lastName');
-//   values.pH2phone = normalizePhone(_.get(quoteData, 'policyHolders[1].primaryPhoneNumber') || '');
-//   values.pH2secondaryPhone = normalizePhone(_.get(quoteData, 'policyHolders[1].secondaryPhoneNumber') || '');
-
-
-//   values.address1 = _.get(quoteData, 'property.physicalAddress.address1');
-//   values.address2 = _.get(quoteData, 'property.physicalAddress.address2');
-//   values.city = _.get(quoteData, 'property.physicalAddress.city');
-//   values.state = _.get(quoteData, 'property.physicalAddress.state');
-//   values.zip = _.get(quoteData, 'property.physicalAddress.zip');
-//   values.protectionClass = _.get(quoteData, 'property.protectionClass');
-//   values.constructionType = _.get(quoteData, 'property.constructionType');
-//   values.yearOfRoof = _.get(quoteData, 'property.yearOfRoof');
-//   values.squareFeet = _.get(quoteData, 'property.squareFeet');
-//   values.yearBuilt = _.get(quoteData, 'property.yearBuilt');
-//   values.buildingCodeEffectivenessGrading = _.get(quoteData, 'property.buildingCodeEffectivenessGrading');
-//   values.familyUnits = _.get(quoteData, 'property.familyUnits');
-//   values.distanceToTidalWater = _.get(quoteData, 'property.distanceToTidalWater');
-//   values.distanceToFireHydrant = _.get(quoteData, 'property.distanceToFireHydrant');
-//   values.distanceToFireStation = _.get(quoteData, 'property.distanceToFireStation');
-//   values.floodZone = _.get(quoteData, 'property.floodZone');
-
-//   values.burglarAlarm = _.get(quoteData, 'property.burglarAlarm');
-//   values.fireAlarm = _.get(quoteData, 'property.fireAlarm');
-//   values.sprinkler = _.get(quoteData, 'property.sprinkler');
-
-//   values.dwellingAmount = _.get(quoteData, 'coverageLimits.dwelling.amount');
-//   values.dwellingMin = _.get(quoteData, 'coverageLimits.dwelling.minAmount');
-//   values.dwellingMax = _.get(quoteData, 'coverageLimits.dwelling.maxAmount');
-
-//   values.lossOfUse = _.get(quoteData, 'coverageLimits.lossOfUse.amount');
-//   values.medicalPayments = _.get(quoteData, 'coverageLimits.medicalPayments.amount');
-//   values.moldLiability = _.get(quoteData, 'coverageLimits.moldLiability.amount');
-//   values.moldProperty = _.get(quoteData, 'coverageLimits.moldProperty.amount');
-//   values.ordinanceOrLaw = _.get(quoteData, 'coverageLimits.ordinanceOrLaw.amount');
-
-//   const otherStructures = _.get(quoteData, 'coverageLimits.otherStructures.amount');
-//   const dwelling = _.get(quoteData, 'coverageLimits.dwelling.amount');
-//   const personalProperty = _.get(quoteData, 'coverageLimits.personalProperty.amount');
-//   const hurricane = _.get(quoteData, 'deductibles.hurricane.amount');
-
-//   values.otherStructuresAmount = otherStructures;
-//   values.otherStructures = String(calculatePercentage(otherStructures, dwelling));
-//   values.personalLiability = _.get(quoteData, 'coverageLimits.personalLiability.amount');
-//   values.personalPropertyAmount = String(personalProperty);
-//   values.personalProperty = String(calculatePercentage(personalProperty, dwelling));
-//   values.personalPropertyReplacementCostCoverage = _.get(quoteData, 'coverageOptions.personalPropertyReplacementCost.answer');
-
-//   values.sinkholePerilCoverage = _.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer');
-
-//   values.allOtherPerils = _.get(quoteData, 'deductibles.allOtherPerils.amount');
-//   values.hurricane = hurricane;
-
-//   values.calculatedHurricane = _.get(quoteData, 'deductibles.hurricane.calculatedAmount');
-
-//   values.floridaBuildingCodeWindSpeed = _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeed');
-//   values.floridaBuildingCodeWindSpeedDesign = _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign');
-//   values.internalPressureDesign = _.get(quoteData, 'property.windMitigation.internalPressureDesign');
-//   values.openingProtection = _.get(quoteData, 'property.windMitigation.openingProtection');
-//   values.roofCovering = _.get(quoteData, 'property.windMitigation.roofCovering');
-//   values.roofDeckAttachment = _.get(quoteData, 'property.windMitigation.roofDeckAttachment');
-//   values.roofGeometry = _.get(quoteData, 'property.windMitigation.roofGeometry');
-//   values.roofToWallConnection = _.get(quoteData, 'property.windMitigation.roofToWallConnection');
-//   values.secondaryWaterResistance = _.get(quoteData, 'property.windMitigation.secondaryWaterResistance');
-//   values.terrain = _.get(quoteData, 'property.windMitigation.terrain');
-//   values.windBorneDebrisRegion = _.get(quoteData, 'property.windMitigation.windBorneDebrisRegion');
-//   values.residenceType = _.get(quoteData, 'property.residenceType');
-
-//   values.propertyIncidentalOccupanciesMainDwelling = false;
-//   values.propertyIncidentalOccupanciesOtherStructures = false;
-//   values.liabilityIncidentalOccupancies = false;
-
-//   return values;
-// };
-
 const paymentTotal = () => {
   let total = 0;
   for (let i = 0; i < payments.length; i += 1) {
@@ -165,12 +64,34 @@ const paymentTotal = () => {
 };
 
 const handleGetPolicy = (state) => {
-  const model = state.appState ? state.appState.modelName : undefined;
-  const previousTask = model && state.cg[model] && state.cg[model].data ? state.cg[model].data.previousTask : undefined;
-  return (previousTask && previousTask.value) ? previousTask.value[0] : {};
+  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  if (!taskData) return {};
+  const quoteData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
+  return quoteData;
+};
+
+const handleInitialize = (state) => {
+  const quoteData = handleGetPolicy(state);
+
+  const values = {};
+  values.policyNumber = _.get(quoteData, 'policyNumber');
+  console.log(values, 'get policy number');
+  return values;
 };
 
 export class PolicyholderAgent extends Component {
+
+  componentWillReceiveProps(nextProps) {
+    if (!_.isEqual(this.props, nextProps)) {
+      console.log(this.props.policy, nextProps.policy, 'all theses props');
+      if (nextProps.policy && nextProps.policy.policyNumber) {
+        // const quoteNumber = nextProps.policy.policyNumber;
+        // to see results you need a valid policyNumber that has been bound - hardcoded one that works but below will get correct information
+        // this.props.actions.serviceActions.runService('getSummaryLedger', 'GET', 'billing.services', `summary-ledgers/${quoteNumber}`, {});
+        this.props.actions.serviceActions.runService('getSummaryLedger', 'GET', 'billing.services', 'summary-ledgers/12-1000001-01', {});
+      }
+    }
+  }
 
   handleFormSubmit = (data) => {
     const workflowId = this.props.appState.instanceId;
@@ -217,7 +138,7 @@ export class PolicyholderAgent extends Component {
 
   render() {
     const { additionalInterests } = this.props.policy;
-    const { handleSubmit, pristine, summaryLedger } = this.props;
+    const { handleSubmit, pristine } = this.props;
     setRank(additionalInterests);
     return (
       <PolicyConnect>
@@ -248,21 +169,22 @@ export class PolicyholderAgent extends Component {
                 <div className="payment-summary grid">
                   <div className="table-view">
                     <BootstrapTable className="" data={payments} striped hover>
-                      <TableHeaderColumn isKey dataField="cashDate" className="date" columnClassName="date" width="100" dataSort>Date</TableHeaderColumn>
+                      <TableHeaderColumn isKey dataField="cashDate" className="date" columnClassName="date" width="150" dataSort>Date</TableHeaderColumn>
+                      <TableHeaderColumn dataField="cashType" className="type" columnClassName="type" dataSort width="150" >Type</TableHeaderColumn>
                       <TableHeaderColumn dataField="cashDescription" className="description" columnClassName="description" dataSort>Description</TableHeaderColumn>
-                      <TableHeaderColumn dataField="cashType" className="type" columnClassName="type" dataSort width="200" >Type</TableHeaderColumn>
                       <TableHeaderColumn dataField="batchNumber" className="note" columnClassName="note" dataSort width="200" >Note</TableHeaderColumn>
                       <TableHeaderColumn dataField="amount" dataFormat={this.amountFormatter} className="amount" columnClassName="amount" width="150" dataSort dataAlign="right">Amount</TableHeaderColumn>
                     </BootstrapTable>
                   </div>
                   <dl className="total">
                     <div>
-                    {console.log(summaryLedger, 'summaryLedger')}
-                      {`Total $ ${paymentTotal()}`}
+                      {console.log(this.props.getSummaryLedger, 'summaryLedger')}
+                      {this.props.getSummaryLedger && `Full Balance $ ${this.props.getSummaryLedger.cashNeeded}`} <br />
+                      {this.props.getSummaryLedger && `Total Due Today $ ${this.props.getSummaryLedger.noticeAmountDue}`} <br />
+                      {this.props.getSummaryLedger && `Payments Recieved $ ${this.props.getSummaryLedger.cashReceived}`} <br />
                     </div>
                   </dl>
                 </div>
-<<<<<<< HEAD
               </section>
 
 
@@ -324,12 +246,6 @@ export class PolicyholderAgent extends Component {
                         />
                       </div>
                     </div>
-=======
-                <dl className="total">
-                  <div>
-                    <dt>Total Received</dt>
-                    <dd>$ {normalizeNumber(3123)}</dd>
->>>>>>> develop
                   </div>
                   <div className="btn-footer">
                     <button className="btn btn-secondary" type="button" form="PolicyholderAgent" onClick={this.clearForm}>Cancel</button>
@@ -385,6 +301,8 @@ redux mapping
 */
 
 const mapStateToProps = state => ({
+  getSummaryLedger: state.service.getSummaryLedger,
+  initialValues: handleInitialize(state),
   policy: handleGetPolicy(state),
   tasks: state.cg,
   appState: state.appState
@@ -392,6 +310,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }

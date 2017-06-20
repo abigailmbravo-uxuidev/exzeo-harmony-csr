@@ -146,12 +146,6 @@ const populateAgentData = (state) => {
 
 export class Coverage extends Component {
 
-<<<<<<< HEAD
-  componentWillMount() {
-    this.props.actions.serviceActions.runService('getAgents', 'GET', 'agency.services', 'v1/agency/TTIC/FL/20000', {});
-  }
-
-=======
   componentDidMount() {
     const isNewTab = localStorage.getItem('isNewTab') === 'true';
 
@@ -208,7 +202,6 @@ export class Coverage extends Component {
     this.props.actions.cgActions.startWorkflow('getAgency', startModelData, false);
   };
 
->>>>>>> develop
   clearForm = () => {
     const { dispatch, quoteData } = this.props;
 
@@ -401,13 +394,7 @@ export class Coverage extends Component {
   }
 
   render() {
-<<<<<<< HEAD
-    const { fieldValues, handleSubmit, initialValues, pristine, getAgents } = this.props;
-
-    console.log('getAgents', getAgents);
-=======
     const { fieldValues, handleSubmit, initialValues, pristine, agents } = this.props;
->>>>>>> develop
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
