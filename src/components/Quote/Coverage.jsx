@@ -143,7 +143,7 @@ const populateAgentData = (state) => {
   return [];
 };
 
-const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], quoteData.quoteState);
+const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
 
 export class Coverage extends Component {
 

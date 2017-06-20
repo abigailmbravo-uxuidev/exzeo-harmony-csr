@@ -44,7 +44,7 @@ const handleInitialize = (state) => {
   return values;
 };
 
-const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], quoteData.quoteState);
+const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
 
 export class Underwriting extends Component {
 

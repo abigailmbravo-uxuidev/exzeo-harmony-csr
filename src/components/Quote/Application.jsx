@@ -78,7 +78,7 @@ const quoteSummaryModal = (props) => {
   );
 };
 
-const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], quoteData.quoteState);
+const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
 
 export const QuoteApplication = (props) => {
   const { appState, handleSubmit, underwritingExceptions, quoteData } = props;
