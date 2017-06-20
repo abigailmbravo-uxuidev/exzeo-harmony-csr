@@ -1911,7 +1911,7 @@ ul.list-cards {
       flex-wrap: wrap;
 
       section {
-        margin-right: $padding*4;
+        margin-right: $padding*3;
         flex-grow: 0;
         flex-shrink: 1;
         flex-basis: auto;
@@ -1941,11 +1941,15 @@ ul.list-cards {
         }
 
         &.propertyAddress {
-            max-width: 15rem;
+            max-width: 19rem;
+        }
+
+        &.policyHolderMailingAddress {
+            max-width: 19rem;
         }
 
         &.policyholder {
-            max-width: 13rem;
+            max-width: 16rem;
         }
 
         &.policyDetails, &.quoteDetails {

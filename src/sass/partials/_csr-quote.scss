@@ -38,7 +38,7 @@
   main {
       height: calc(100vh - 8.5rem);
       min-height: calc(100vh - 8.5rem);
-      
+
     .content-wrapper {
       overflow: hidden;
       width: auto;
@@ -126,7 +126,7 @@
           label {}
 
           > section {
-            margin-bottom: $padding*4;
+            margin-bottom: $padding*2;
             padding-bottom: $padding*2;
             border-bottom: 1px dashed $warm-gray-01;
           }

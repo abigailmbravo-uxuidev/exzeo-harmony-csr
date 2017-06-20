@@ -117,7 +117,7 @@ const SideNav = (props) => {
           </li> :
           <li key={index}>
             <span className={agentLink.styleName} onClick={() => goToPage(agentLink.link, agentLink.key, props)}>
-              <a className={props.appState.data.selectedLink === agentLink.key ? `${agentLink.styleName} active` : `${agentLink.styleName}`}>{agentLink.label}</a>
+              <a className={(props.appState.data.selectedLink || 'customerData') === agentLink.key ? `${agentLink.styleName} active` : `${agentLink.styleName}`}>{agentLink.label}</a>
             </span>
           </li>
       ))}

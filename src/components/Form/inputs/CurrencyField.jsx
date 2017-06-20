@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import NumberFormat from 'react-number-format';
 import FieldHint from './FieldHint';
 import reduxFormField from './reduxFormField';
+import normalizeNumbers from '../normalizeNumbers';
 
 export const CurrencyInput = ({
   input,
@@ -49,6 +50,7 @@ export const CurrencyInput = ({
         min={min}
         max={max}
         disabled={disabled}
+        normalize={normalizeNumbers}
         name={name}
         value={value}
         onChange={onChange}
