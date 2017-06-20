@@ -143,6 +143,8 @@ const populateAgentData = (state) => {
   return [];
 };
 
+const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], quoteData.quoteState);
+
 export class Coverage extends Component {
 
   componentDidMount() {
@@ -393,7 +395,7 @@ export class Coverage extends Component {
   }
 
   render() {
-    const { fieldValues, handleSubmit, initialValues, pristine, agents } = this.props;
+    const { quoteData, fieldValues, handleSubmit, initialValues, pristine, agents } = this.props;
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
@@ -1178,7 +1180,7 @@ export class Coverage extends Component {
                   <button className="btn btn-secondary" type="button" form="Coverage" onClick={this.clearForm}>
                     Cancel
                   </button>
-                  <button className="btn btn-primary" type="submit" form="Coverage" disabled={this.props.appState.data.submitting || pristine}>
+                  <button className="btn btn-primary" type="submit" form="Coverage" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}>
                     Update
                   </button>
                 </div>

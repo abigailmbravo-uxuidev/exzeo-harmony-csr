@@ -18,6 +18,13 @@ const handleInitialize = (state) => {
   return formValues;
 };
 
+const handleGetQuoteData = (state) => {
+  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  if (!taskData) return {};
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
+  return quoteData;
+};
+
 const handleGetUnderwritingExceptions = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return [];
@@ -71,16 +78,10 @@ const quoteSummaryModal = (props) => {
   );
 };
 
-// ------------------------------------------------
-// The render is where all the data is being pulled
-//  from the props.
-// The quote data data comes from the previous task
-//  which is createQuote / singleQuote. This might
-//  not be the case in later calls, you may need
-//  to pull it from another place in the model
-// ------------------------------------------------
+const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], quoteData.quoteState);
+
 export const QuoteApplication = (props) => {
-  const { appState, handleSubmit, underwritingExceptions } = props;
+  const { appState, handleSubmit, underwritingExceptions, quoteData } = props;
 
   const redirect = (props.activateRedirect)
     ? (<Redirect to={props.activateRedirectLink} />)
@@ -107,7 +108,7 @@ export const QuoteApplication = (props) => {
             <div className="workflow-steps">
               <button
                 form="Application"
-                className="btn btn-primary" type="submit" disabled={underwritingExceptions && underwritingExceptions.length > 0}
+                className="btn btn-primary" type="submit" disabled={(underwritingExceptions && underwritingExceptions.length > 0) || checkQuoteState(quoteData)}
               >Send to DocuSign</button>
             </div>
 
@@ -145,7 +146,8 @@ const mapStateToProps = state => ({
   showQuoteSummaryModal: state.appState.data.showQuoteSummaryModal,
   fieldValues: _.get(state.form, 'QuoteApplication.values', {}),
   underwritingExceptions: handleGetUnderwritingExceptions(state),
-  initialValues: handleInitialize(state)
+  initialValues: handleInitialize(state),
+  quoteData: handleGetQuoteData(state)
 });
 
 const mapDispatchToProps = dispatch => ({
