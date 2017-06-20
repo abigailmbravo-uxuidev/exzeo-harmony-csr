@@ -29,7 +29,7 @@ export default class Auth {
   }
 
   handleAuthentication() {
-    this.auth0.parseHash((err, authResult) => {
+    this.auth0.parseHash(window.location.hash, (err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
         history.replace('/');
