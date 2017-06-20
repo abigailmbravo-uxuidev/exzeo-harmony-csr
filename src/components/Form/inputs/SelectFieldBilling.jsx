@@ -55,11 +55,11 @@ SelectFieldBilling.propTypes = {
     label: PropTypes.string,
     image: PropTypes.string
   })),
-  meta: {
+  meta: PropTypes.shape({
     touched: PropTypes.bool,
     error: PropTypes.string,
     warning: PropTypes.string
-  },
+  }),
 
   /**
    * Tooltip for user

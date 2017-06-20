@@ -11,6 +11,7 @@ import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import normalizePhone from '../Form/normalizePhone';
+import normalizeNumbers from '../Form/normalizeNumbers';
 
 // const scheduleDateModal = (props) => {
 //   const showScheduleDateModal = props.appState.data.showScheduleDateModal;
@@ -173,43 +174,43 @@ const Summary = (props) => {
                 <dl>
                   <div>
                     <dt>Yearly Premium</dt>
-                    <dd>$ {quoteData.rating ? quoteData.rating.totalPremium : '-'}</dd>
+                    <dd>$ {quoteData.rating ? normalizeNumbers(quoteData.rating.totalPremium) : '-'}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>A. Dwelling</dt>
-                    <dd>$ {coverageLimits.dwelling.amount}</dd>
+                    <dd>$ {normalizeNumbers(coverageLimits.dwelling.amount)}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>B. Other Structures</dt>
-                    <dd>$ {coverageLimits.otherStructures.amount}</dd>
+                    <dd>$ {normalizeNumbers(coverageLimits.otherStructures.amount)}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>C. Personal Property</dt>
-                    <dd>$ {coverageLimits.personalProperty.amount}</dd>
+                    <dd>$ {normalizeNumbers(coverageLimits.personalProperty.amount)}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>D. Loss Of Use</dt>
-                    <dd>$ {coverageLimits.lossOfUse.amount}</dd>
+                    <dd>$ {normalizeNumbers(coverageLimits.lossOfUse.amount)}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>E. Personal Liability</dt>
-                    <dd>$ {coverageLimits.personalLiability.amount}</dd>
+                    <dd>$ {normalizeNumbers(coverageLimits.personalLiability.amount)}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>F. Medical Payments</dt>
-                    <dd>$ {coverageLimits.medicalPayments.amount}</dd>
+                    <dd>$ {normalizeNumbers(coverageLimits.medicalPayments.amount)}</dd>
                   </div>
                 </dl>
                 <dl>
@@ -221,13 +222,13 @@ const Summary = (props) => {
                 <dl>
                   <div>
                     <dt>Mold Property</dt>
-                    <dd>$ {coverageLimits.moldProperty.amount}</dd>
+                    <dd>$ {normalizeNumbers(coverageLimits.moldProperty.amount)}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>Mold Liability</dt>
-                    <dd>$ {coverageLimits.moldLiability.amount}</dd>
+                    <dd>$ {normalizeNumbers(coverageLimits.moldLiability.amount)}</dd>
                   </div>
                 </dl>
                 <dl>
@@ -239,19 +240,19 @@ const Summary = (props) => {
                 <dl>
                   <div>
                     <dt>All Other Perils Deductible</dt>
-                    <dd>$ {deductibles.allOtherPerils.amount}</dd>
+                    <dd>$ {normalizeNumbers(deductibles.allOtherPerils.amount)}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>Hurricane Deductible</dt>
-                    <dd>$ {deductibles.hurricane.calculatedAmount}</dd>
+                    <dd>$ {normalizeNumbers(deductibles.hurricane.calculatedAmount)}</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
                     <dt>Sinkhole Deductible</dt>
-                    <dd>$ {(coverageLimits.dwelling.amount * 0.10)}</dd>
+                    <dd>$ {normalizeNumbers(coverageLimits.dwelling.amount * 0.10)}</dd>
                   </div>
                 </dl>
               </section>

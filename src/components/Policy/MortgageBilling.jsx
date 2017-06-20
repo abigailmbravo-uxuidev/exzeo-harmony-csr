@@ -10,6 +10,7 @@ import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import PolicyConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
+<<<<<<< HEAD
 import TextField from '../Form/inputs/TextField';
 import SelectField from '../Form/inputs/SelectField';
 import CurrencyField from '../Form/inputs/CurrencyField';
@@ -21,6 +22,16 @@ const payments = [
     batchNumber: '20170527-44',
     amount: 3123,
     cashType: 'CASH'
+=======
+import normalizeNumber from '../Form/normalizeNumbers';
+
+const payments = [
+  {
+    date: '05/27/2017',
+    description: 'PAYMENT RECEIVED',
+    note: '20170527-44',
+    amount: `$ ${normalizeNumber(3123)}`
+>>>>>>> develop
   }
 ];
 
@@ -251,6 +262,7 @@ export class PolicyholderAgent extends Component {
                     </div>
                   </dl>
                 </div>
+<<<<<<< HEAD
               </section>
 
 
@@ -312,6 +324,12 @@ export class PolicyholderAgent extends Component {
                         />
                       </div>
                     </div>
+=======
+                <dl className="total">
+                  <div>
+                    <dt>Total Received</dt>
+                    <dd>$ {normalizeNumber(3123)}</dd>
+>>>>>>> develop
                   </div>
                   <div className="btn-footer">
                     <button className="btn btn-secondary" type="button" form="PolicyholderAgent" onClick={this.clearForm}>Cancel</button>
