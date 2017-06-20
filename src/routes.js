@@ -3,9 +3,13 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Cookies } from 'react-cookie';
 import Modal from 'react-modal';
+
+import history from './history';
+import Auth from './Auth';
 import LoginPage from './containers/Login';
+import AccessDenied from './containers/AccessDenied';
+import Callback from './containers/Callback';
 import SplashPage from './containers/Splash';
 import AppErrorPage from './containers/AppError';
 import NotFoundPage from './containers/NotFound';
@@ -20,76 +24,90 @@ import PolicyCoverage from './components/Policy/Coverage';
 import PolicyPolicyholderAgent from './components/Policy/PolicyholderAgent';
 import PolicyMortgageBilling from './components/Policy/MortgageBilling';
 import PolicyNotesFiles from './components/Policy/NotesFiles';
+
 import * as errorActions from './actions/errorActions';
 
-import * as userActions from './actions/userActions';
+const auth = new Auth();
 
-// this needs to be called because the AuthHOC is being called before redux init
-export const validateLogin = () => {
-  const cookies = new Cookies();
-  const token = cookies.get('harmony-id-token');
-  if (token) {
-    return true;
+const handleAuthentication = (nextState, replace) => {
+  if (/access_token|id_token|error/.test(nextState.location.hash)) {
+    auth.handleAuthentication();
   }
-  return false;
 };
 
-const generateRedirectUrl = urlPath => `${window.location.protocol}//${window.location.host}${urlPath}`;
-
-const  authHOC = (NavComponent, redirectUrl, props) => {
-  const redirectUrlDerived = (props.user && props.user.error && props.user.accessDenied) ? `${redirectUrl}&ade=${props.user.accessDenied}` : redirectUrl;
-  if (props.isAuthenticated) {
-    return () => (<NavComponent {...props} />);
-  }
-  return () => (<LoginPage redirectUrl={generateRedirectUrl(redirectUrlDerived)} />);
+const checkPublicPath = (path) => {
+  const publicPaths = ['/login', '/logout', '/error', '/accessDenied', '/callback'];
+  return (publicPaths.indexOf(path) === -1);
 };
 
-class Routes extends Component { // eslint-disable-line
-  constructor(props) {
-    super(props);
-    props.actions.user.validateLogin();
+class Routes extends Component {
+  componentWillMount() {
+    const { isAuthenticated, userProfile, getProfile } = auth;
+    if (isAuthenticated() && !userProfile && checkPublicPath(window.location.pathname)) {
+      getProfile((err, profile) => {
+        console.log('profile loaded:', profile);
+        if (!auth.checkIfCSRGroup()) {
+          history.push('/accessDenied?error=Please login with the proper credentials.');
+        }
+      });
+    } else if (!isAuthenticated() && checkPublicPath(window.location.pathname)) {
+      history.push('/login');
+    }
   }
-
   clearError = () => this.props.actions.errorActions.clearAppError();
-  
   modalStyles = {
-    content : {
+    content: {
       top: '20%',
       left: '20%'
     }
   };
-
   render() {
     return (
       <div>
         <Modal
-          isOpen={ this.props.error.message !== undefined }
+          isOpen={this.props.error.message !== undefined}
           contentLabel="Example Modal"
-          style={ this.modalStyles }
+          style={this.modalStyles}
         >
           <h2>Error</h2>
           <button onClick={this.clearError}>close</button>
           <div>{ this.props.error.message }</div>
         </Modal>
-
         <Router>
           <div>
             <Switch>
-              <Route exact path="/" render={authHOC(SplashPage, '/', this.props)} />
-              <Route exact path="/quote/billing" render={authHOC(QuoteMailingAddressBilling, '/quote/billing', this.props)} />
-              <Route exact path="/quote/notes" render={authHOC(QuoteNotesFiles, '/quote/notes', this.props)} />
-              <Route exact path="/quote/summary" render={authHOC(QuoteSummary, '/quote/summary', this.props)} />
-              <Route exact path="/quote/additionalInterests" render={authHOC(AdditionalInterests, '/quote/additionalInterests', this.props)} />
-              <Route exact path="/quote/coverage" render={authHOC(QuoteCoverage, '/quote/coverage', this.props)} />
-              <Route exact path="/quote/underwriting" render={authHOC(QuoteUnderwriting, '/quote/underwriting', this.props)} />
-              <Route exact path="/quote/application" render={authHOC(QuoteApplication, '/', this.props)} />
-              <Route exact path="/policy/coverage" render={authHOC(PolicyCoverage, '/policy/coverage', this.props)} />
-              <Route exact path="/policy/policyholder" render={authHOC(PolicyPolicyholderAgent, '/policy/policyholder', this.props)} />
-              <Route exact path="/policy/billing" render={authHOC(PolicyMortgageBilling, '/policy/billing', this.props)} />
-              <Route exact path="/policy/notes" render={authHOC(PolicyNotesFiles, '/policy/notes', this.props)} />
-              <Route exact path="/login" component={LoginPage} />
-              <Route exact path="/error" component={AppErrorPage} />
-              <Route component={NotFoundPage} />
+              <Route exact path="/" render={props => <SplashPage auth={auth} {...props} />} />
+              <Route exact path="/quote/billing" render={props => <QuoteMailingAddressBilling auth={auth} {...props} />} />
+              <Route exact path="/quote/notes" render={props => <QuoteNotesFiles auth={auth} {...props} />} />
+              <Route exact path="/quote/summary" render={props => <QuoteSummary auth={auth} {...props} />} />
+              <Route exact path="/quote/additionalInterests" render={props => <AdditionalInterests auth={auth} {...props} />} />
+              <Route exact path="/quote/coverage" render={props => <QuoteCoverage auth={auth} {...props} />} />
+              <Route exact path="/quote/underwriting" render={props => <QuoteUnderwriting auth={auth} {...props} />} />
+              <Route exact path="/quote/application" render={props => <QuoteApplication auth={auth} {...props} />} />
+              <Route exact path="/policy/coverage" render={props => <PolicyCoverage auth={auth} {...props} />} />
+              <Route exact path="/policy/policyholder" render={props => <PolicyPolicyholderAgent auth={auth} {...props} />} />
+              <Route exact path="/policy/billing" render={props => <PolicyMortgageBilling auth={auth} {...props} />} />
+              <Route exact path="/policy/notes" render={props => <PolicyNotesFiles auth={auth} {...props} />} />
+              <Route exact path="/login" render={props => <LoginPage auth={auth} {...props} />} />
+              <Route exact path="/error" render={props => <AppErrorPage auth={auth} {...props} />} />
+              <Route exact path="/accessDenied" render={props => <AccessDenied auth={auth} {...props} />} />
+              <Route
+                exact
+                path="/logout"
+                render={() => {
+                  auth.logout();
+                  return <span />;
+                }}
+              />
+              <Route
+                exact
+                path="/callback"
+                render={(props) => {
+                  handleAuthentication(props);
+                  return <Callback {...props} />;
+                }}
+              />
+              <Route path="*" render={props => <NotFoundPage auth={auth} {...props} />} />
             </Switch>
           </div>
         </Router>
@@ -99,14 +117,11 @@ class Routes extends Component { // eslint-disable-line
 }
 
 const mapStateToProps = state => ({
-  user: state.user,
-  isAuthenticated: validateLogin(),
   error: state.error
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    user: bindActionCreators(userActions, dispatch),
     errorActions: bindActionCreators(errorActions, dispatch)
   }
 });
