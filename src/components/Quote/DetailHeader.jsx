@@ -18,74 +18,88 @@ const DetailHeader = (props) => {
      return <div className="detailHeader" />;
    }
   return (<div className="detailHeader">
-      <section id="quoteDetails" className="quoteDetails">
-        <dl>
-          <div>
-            <dd>HO3 Homeowners</dd>
-            <dd>{(quoteData.quoteNumber ? quoteData.quoteNumber : '-')}</dd>
-            <dd>{quoteData.quoteState}</dd>
-          </div>
-        </dl>
-      </section>
-      <section id="policyholder" className="policyholder">
-        <dl>
-          <div>
-            <dt>Policyholder</dt>
-            <dd>{props.quoteData && props.quoteData.policyHolders &&
+    <section id="quoteDetails" className="quoteDetails">
+      <dl>
+        <div>
+          <dd>{quoteData.product === 'HO3' ? `${quoteData.product} Homeowners` : quoteData.product}</dd>
+          <dd>{(quoteData.quoteNumber ? quoteData.quoteNumber : '-')}</dd>
+          <dd>{quoteData.quoteState}</dd>
+        </div>
+      </dl>
+    </section>
+    <section id="policyholder" className="policyholder">
+      <dl>
+        <div>
+          <dt>Policyholder</dt>
+          <dd>{props.quoteData && props.quoteData.policyHolders &&
               props.quoteData.policyHolders[0] ? `${props.quoteData.policyHolders[0].firstName} ${props.quoteData.policyHolders[0].lastName}` : '-'}</dd>
-            <dd>{quoteData.policyHolders && quoteData.policyHolders[0] ? normalizePhone(quoteData.policyHolders[0].primaryPhoneNumber) : '' }</dd>
-          </div>
-        </dl>
-      </section>
-      <section id="propertyAddress" className="propertyAddress">
-        <dl>
-          <div>
-            <dt>Property Address</dt>
-            <dd>{quoteData.property.physicalAddress.address1}</dd>
-            <dd>{quoteData.property.physicalAddress.address2}</dd>
-            <dd>
-              {quoteData.property.physicalAddress.city},&nbsp;
+          <dd>{quoteData.policyHolders && quoteData.policyHolders[0] ? normalizePhone(quoteData.policyHolders[0].primaryPhoneNumber) : '' }</dd>
+        </div>
+      </dl>
+    </section>
+    {quoteData.policyHolderMailingAddress && <section id="policyHolderMailingAddress" className="policyHolderMailingAddress">
+      <dl>
+        <div>
+          <dt>Mailing Address</dt>
+          <dd>{quoteData.policyHolderMailingAddress.address1}</dd>
+          <dd>{quoteData.policyHolderMailingAddress.address2}</dd>
+          <dd>
+            {quoteData.policyHolderMailingAddress.city},&nbsp;
+                  {quoteData.policyHolderMailingAddress.state}&nbsp;
+            {quoteData.policyHolderMailingAddress.zip}
+          </dd>
+        </div>
+      </dl>
+      </section>}
+    <section id="propertyAddress" className="propertyAddress">
+      <dl>
+        <div>
+          <dt>Property Address</dt>
+          <dd>{quoteData.property.physicalAddress.address1}</dd>
+          <dd>{quoteData.property.physicalAddress.address2}</dd>
+          <dd>
+            {quoteData.property.physicalAddress.city},&nbsp;
                   {quoteData.property.physicalAddress.state}&nbsp;
-              {quoteData.property.physicalAddress.zip}
-            </dd>
-          </div>
-        </dl>
-      </section>
-      <section id="propertyCounty" className="propertyCounty">
-        <dl>
-          <div>
-            <dt>Property County</dt>
-            <dd>{quoteData.property.physicalAddress.county}</dd>
-          </div>
-        </dl>
-      </section>
-      <section id="territory" className="territory">
-        <dl>
-          <div>
-            <dt>Territory</dt>
-            <dd>{quoteData.property.territory}</dd>
-          </div>
-        </dl>
-      </section>
-      <section id="quoteEffectiveDate" className="quoteEffectiveDate">
-        <dl>
-          <div>
-            <dt>Effective Date</dt>
-            <dd>{moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD')}</dd>
-          </div>
-        </dl>
-      </section>
-      <section id="premium" className="premium">
-        <dl>
-          <div>
-            <dt>Premium</dt>
-            <dd>
+            {quoteData.property.physicalAddress.zip}
+          </dd>
+        </div>
+      </dl>
+    </section>
+    <section id="propertyCounty" className="propertyCounty">
+      <dl>
+        <div>
+          <dt>Property County</dt>
+          <dd>{quoteData.property.physicalAddress.county}</dd>
+        </div>
+      </dl>
+    </section>
+    <section id="territory" className="territory">
+      <dl>
+        <div>
+          <dt>Territory</dt>
+          <dd>{quoteData.property.territory}</dd>
+        </div>
+      </dl>
+    </section>
+    <section id="quoteEffectiveDate" className="quoteEffectiveDate">
+      <dl>
+        <div>
+          <dt>Effective Date</dt>
+          <dd>{moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD')}</dd>
+        </div>
+      </dl>
+    </section>
+    <section id="premium" className="premium">
+      <dl>
+        <div>
+          <dt>Premium</dt>
+          <dd>
                 $ {quoteData.rating && quoteData.rating.totalPremium ? quoteData.rating.totalPremium.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '--'}
-            </dd>
-          </div>
-        </dl>
-      </section>
-    </div>);
+          </dd>
+        </div>
+      </dl>
+    </section>
+  </div>);
 };
 
 

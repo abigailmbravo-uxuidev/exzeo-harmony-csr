@@ -25,7 +25,7 @@ const handleGetQuote = (state) => {
 
 export const QuoteBase = props => (
   <div className="app-wrapper csr quote">
-    <Helmet><title>Harmony - CSR Portal</title></Helmet>
+    <Helmet><title>{props.quoteData.quoteNumber ? `Q: ${props.quoteData.quoteNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
     {/* <NewNoteFileUploader />*/}
     <QuoteHeader />
     <QuoteDetailHeader />

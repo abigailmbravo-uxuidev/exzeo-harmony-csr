@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
+import localStorage from 'localStorage';
 import BaseConnect from './Base';
 import Footer from '../components/Common/Footer';
 import * as cgActions from '../actions/cgActions';
@@ -18,6 +19,24 @@ export class Splash extends Component {
 
   componentDidMount() {
     this.props.actions.cgActions.startWorkflow(workflowModelName, {});
+  }
+
+  handleNewTab = (searchData, props) => {
+    localStorage.setItem('isNewTab', true);
+
+    const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData'));
+
+    if (lastSearchData.searchType === 'address') {
+      localStorage.setItem('stateCode', searchData.physicalAddress.state);
+      localStorage.setItem('igdID', searchData.id);
+      window.open('/quote/coverage', '_blank');
+    } else if (lastSearchData.searchType === 'quote') {
+      localStorage.setItem('quoteId', searchData._id);
+      window.open('/quote/coverage', '_blank');
+    } else if (lastSearchData.searchType === 'policy') {
+      localStorage.setItem('policyID', searchData.policyID);
+      window.open('/policy/coverage', '_blank');
+    }
   }
 
   handleSelectQuote = (quote, props) => {
@@ -106,8 +125,9 @@ export class Splash extends Component {
               <div className="survey-wrapper scroll">
                 <div className="results-wrapper">
                   <NoResultsConnect />
-                  <SearchResults 
-                    handleSelectAddress={this.handleSelectAddress} 
+                  <SearchResults
+                    handleNewTab={this.handleNewTab}
+                    handleSelectAddress={this.handleSelectAddress}
                     handleSelectQuote={this.handleSelectQuote}
                     handleSelectPolicy={this.handleSelectPolicy}
                   />
@@ -135,8 +155,8 @@ Splash.propTypes = {
 };
 
 const mapStateToProps = state => (
-  { 
-    tasks: state.cg, 
+  {
+    tasks: state.cg,
     appState: state.appState,
     error: state.error
   }

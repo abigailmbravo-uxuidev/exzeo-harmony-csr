@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import PolicyConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
+import normalizePhone from '../Form/normalizePhone';
 
 const handleGetPolicy = (state) => {
   const model = state.appState ? state.appState.modelName : undefined;
@@ -31,11 +32,12 @@ policyHolderMailingAddress
                   <p>{`${policyHolderMailingAddress.address1} ${policyHolderMailingAddress.address2 ? policyHolderMailingAddress.address2 : ''}
 ${policyHolderMailingAddress.city} ${policyHolderMailingAddress.state}, ${policyHolderMailingAddress.zip}`}</p>
                   <div className="contact-methods">
-                    <p className="primary-phone">
-                      <a href={`tel: ${policyHolder.primaryPhoneNumber}`}><i className="fa fa-phone-square" />{policyHolder.primaryPhoneNumber}</a>
+                    <p className="primary-phone"><i className="fa fa-phone-square" />
+                      <a href={`tel: ${(policyHolder.primaryPhoneNumber)}`}>{normalizePhone(policyHolder.primaryPhoneNumber)}</a>
                     </p>
                     { policyHolder.secondaryPhoneNumber && <p className="secondary-phone">
-                      <a href={`tel: ${policyHolder.secondaryPhoneNumber}`}><small>2<sup>ND</sup><i className="fa fa-phone" /></small>{policyHolder.secondaryPhoneNumber}</a>
+                      <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
+                      <a href={`tel: ${policyHolder.secondaryPhoneNumber}`}>{normalizePhone(policyHolder.secondaryPhoneNumber)}</a>
                     </p>
 }
                     <p className="email">
@@ -90,7 +92,7 @@ ${policyHolderMailingAddress.city} ${policyHolderMailingAddress.state}, ${policy
                           <h5>Yanet Coursen</h5>
                           <span>Sales Manager</span>
                         </div>
-                        <div className="contact-methods"></div>
+                        <div className="contact-methods" />
                       </li>
                     </ul>
                   </div>

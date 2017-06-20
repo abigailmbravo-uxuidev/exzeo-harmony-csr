@@ -11,9 +11,8 @@ import ClearErrorConnect from '../Error/ClearError';
 import RadioField from '../Form/inputs/RadioField';
 import TextField from '../Form/inputs/TextField';
 import SelectField from '../Form/inputs/SelectField';
-import {
-  RadioFieldBilling, SelectFieldBilling
-} from '../Form/inputs';
+import { RadioFieldBilling, SelectFieldBilling } from '../Form/inputs';
+import normalizeNumbers from '../Form/normalizeNumbers';
 
 const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
@@ -85,30 +84,30 @@ const InstallmentTerm = ({ paymentPlans, payPlans }) => (<div className="install
           {paymentPlan && paymentPlan.amount && <div>
             <dt><span>Annual</span> Installment Plan</dt>
             <dd>
-            $ {paymentPlan.amount} : {moment.utc(paymentPlan.dueDate).format('MM/DD/YYYY')}
+            $ {normalizeNumbers(paymentPlan.amount)} : {moment.utc(paymentPlan.dueDate).format('MM/DD/YYYY')}
             </dd></div>}
           {paymentPlan && paymentPlan.s1 && paymentPlan.s2 && <div>
             <dt><span>Semi-Annual</span> Installment Plan</dt>
             <dd>
-              $ {paymentPlan.s1.amount} : {moment.utc(paymentPlan.s1.dueDate).format('MM/DD/YYYY')}
+              $ {normalizeNumbers(paymentPlan.s1.amount)} : {moment.utc(paymentPlan.s1.dueDate).format('MM/DD/YYYY')}
             </dd>
             <dd>
-              $ {paymentPlan.s2.amount} : {moment.utc(paymentPlan.s2.dueDate).format('MM/DD/YYYY')}
+              $ {normalizeNumbers(paymentPlan.s2.amount)} : {moment.utc(paymentPlan.s2.dueDate).format('MM/DD/YYYY')}
             </dd>
           </div>}
           {paymentPlan && paymentPlan.q1 && paymentPlan.q2 && paymentPlan.q3 && paymentPlan.q4 && <div>
             <dt><span>Quarterly</span> Installment Plan</dt>
             <dd>
-              $ {paymentPlan.q1.amount} : {moment.utc(paymentPlan.q1.dueDate).format('MM/DD/YYYY')}
+              $ {normalizeNumbers(paymentPlan.q1.amount)} : {moment.utc(paymentPlan.q1.dueDate).format('MM/DD/YYYY')}
             </dd>
             <dd>
-              $ {paymentPlan.q2.amount} : {moment.utc(paymentPlan.q2.dueDate).format('MM/DD/YYYY')}
+              $ {normalizeNumbers(paymentPlan.q2.amount)} : {moment.utc(paymentPlan.q2.dueDate).format('MM/DD/YYYY')}
             </dd>
             <dd>
-              $ {paymentPlan.q3.amount} : {moment.utc(paymentPlan.q3.dueDate).format('MM/DD/YYYY')}
+              $ {normalizeNumbers(paymentPlan.q3.amount)} : {moment.utc(paymentPlan.q3.dueDate).format('MM/DD/YYYY')}
             </dd>
             <dd>
-              $ {paymentPlan.q4.amount} : {moment.utc(paymentPlan.q4.dueDate).format('MM/DD/YYYY')}
+              $ {normalizeNumbers(paymentPlan.q4.amount)} : {moment.utc(paymentPlan.q4.dueDate).format('MM/DD/YYYY')}
             </dd>
           </div> }
         </div>
