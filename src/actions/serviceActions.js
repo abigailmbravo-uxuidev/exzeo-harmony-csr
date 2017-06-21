@@ -16,16 +16,14 @@ const serviceRequest = data => ({
   data
 });
 
-const runnerSetup = data => (
-  {
+const runnerSetup = data => ({
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     url: `${process.env.REACT_APP_API_URL}/svc`,
     data
-  }
-);
+});
 
 export const addNote = (id, noteType, values) => (dispatch) => {
   const body = {

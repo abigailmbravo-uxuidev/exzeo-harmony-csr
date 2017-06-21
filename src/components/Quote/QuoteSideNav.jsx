@@ -171,7 +171,6 @@ SideNav.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  tasks: state.cg,
   appState: state.appState,
   completedTasks: state.completedTasks,
   activateRedirectLink: state.appState.data.activateRedirectLink,

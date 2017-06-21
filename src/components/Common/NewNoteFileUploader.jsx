@@ -9,6 +9,7 @@ import * as serviceActions from '../../actions/serviceActions';
 const submitNote = (data, dispatch, props) => {
   const { noteType, documentId } = props;
   props.actions.serviceActions.addNote(documentId, noteType, data);
+  props.closeButtonHandler();
 }
 
 const NewNoteFileUploader = (props, { closeButtonHandler }) => {
@@ -22,7 +23,7 @@ const NewNoteFileUploader = (props, { closeButtonHandler }) => {
       </div>
     </div>
     <div className="mainContainer">
-      <Form id="NewNoteFileUploader" onSubmit={props.handleSubmit(submitNote)} noValidate>
+      <Form id="NewNoteFileUploader" onSubmit={ props.handleSubmit(submitNote) } noValidate>
         <div className="content state-initial">
             <div className="flex-contents">
               <Field name="noteContent" component="input"/>
@@ -33,7 +34,7 @@ const NewNoteFileUploader = (props, { closeButtonHandler }) => {
             <div className="buttons">
               <button className="btn btn-primary">Upload</button>
               <div></div>
-              <button className="btn btn-secondary" onClick={props.closeButtonHandler}>Cancel</button>
+              <button className="btn btn-secondary" onClick={ props.closeButtonHandler }>Cancel</button>
               <button className="btn btn-primary">Save</button>
             </div>
         </div>
