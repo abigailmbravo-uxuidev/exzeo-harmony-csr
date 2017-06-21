@@ -5,13 +5,15 @@ import { reducer as formReducer } from 'redux-form';
 import cg from './cgReducer';
 import appState from './appStateReducer';
 import error from './errorReducer';
+import questions from './questionsReducer';
 
 
 const rootReducer = combineReducers({
   form: formReducer,
   cg,
   appState,
-  error
+  error,
+  questions
 });
 
 export default rootReducer;
