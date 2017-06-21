@@ -1,12 +1,12 @@
-import React, { PropTypes } from 'react';
-import { bindActionCreators } from 'redux';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import _ from 'lodash';
+
 import PolicyHeader from '../components/Policy/PolicyHeader';
 import QuoteSideNav from '../components/Policy/PolicySideNav';
 import PolicyDetailHeader from '../components/Policy/DetailHeader';
-import * as userActions from '../actions/userActions';
 import Footer from '../components/Common/Footer';
 // import NewNoteFileUploader from '../components/Common/NewNoteFileUploader';
 
@@ -51,10 +51,6 @@ Policy.propTypes = {
   policy: PropTypes.shape()
 };
 
-const mapStateToProps = state => ({ policy: handleGetPolicy(state), user: state.user });
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    user: bindActionCreators(userActions, dispatch)
-  }
-});
-export default connect(mapStateToProps, mapDispatchToProps)(Policy);
+const mapStateToProps = state => ({ policy: handleGetPolicy(state) });
+
+export default connect(mapStateToProps)(Policy);

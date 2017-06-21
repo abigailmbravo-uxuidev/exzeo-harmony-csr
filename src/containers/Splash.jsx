@@ -114,7 +114,7 @@ export class Splash extends Component {
 
   render() {
     return (
-      <BaseConnect>
+      <BaseConnect {...this.props}>
         <Helmet>
           <title>Harmony - CSR Portal</title>
         </Helmet>
@@ -150,8 +150,7 @@ Splash.propTypes = {
   actions: PropTypes.shape({
     cgActions: PropTypes.shape({ startWorkflow: PropTypes.func, activeTasks: PropTypes.func, completeTask: PropTypes.func }),
     appStateActions: PropTypes.shape({ setAppState: PropTypes.func, setAppStateError: PropTypes.func })
-  }),
-  tasks: PropTypes.shape({ activeTask: PropTypes.object })
+  })
 };
 
 const mapStateToProps = state => (
