@@ -863,34 +863,35 @@ export const Coverage = (props) => {
 
             <div className="flex-parent">
               <div className="form-group">
-                <label>New Endorsement Amount</label>
-                <input type="numeric" value="52" />
+                <label>Type</label>
+                <select>
+                  <option>Please Select</option>
+                </select>
               </div>
               <div className="form-group">
-                <label>New Endorsement Premium</label>
-                <input type="numeric" value="3732" />
-              </div>
-              <div className="form-group">
-                <label>New Annual Premium</label>
-                <input type="numeric" value="4711" />
+                <label>Effective Date</label>
+                <input type="date" />
               </div>
           </div>
 
 
               <div className="flex-parent">
+
                 <div className="form-group">
-                  <label>Type</label>
-                  <select>
-                    <option>Please Select</option>
-                  </select>
+                  <label>New End. Amount</label>
+                  <input type="numeric" value="52" />
                 </div>
                 <div className="form-group">
-                  <label>Effective Date</label>
-                  <input type="date" />
+                  <label>New End. Premium</label>
+                  <input type="numeric" value="3732" />
+                </div>
+                <div className="form-group">
+                  <label>New Annual Premium</label>
+                  <input type="numeric" value="4711" />
                 </div>
                 <div className="btn-footer">
-                  <button className="btn btn-secondary">Cancel</button>
-                  <button className="btn btn-primary">Calculate</button>
+                  <button className="btn btn-secondary btn-sm">Cancel</button>
+                  <button className="btn btn-primary btn-sm">Calculate</button>
                 </div>
               </div>
 

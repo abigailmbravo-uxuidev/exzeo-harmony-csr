@@ -498,7 +498,7 @@
   .endo-results-calc {
     flex: 1 0 auto;
     background: $white;
-    padding: ($padding*2) ($padding*2) $padding;
+    padding: $padding $padding 0;
     background: $bright-blue-darken-04;
 
     .btn-primary {
@@ -542,10 +542,13 @@
     }
 
 
-    .flex-parent:nth-child(1) {
+
+
+    .flex-parent:nth-child(2) {
 
       .form-group {
-        width: 33.33%;
+        width: 25%;
+        margin-right: $padding;
 
       input {
         background: transparent;
@@ -563,19 +566,9 @@
 
     }
 
-    }
-
-
-    .flex-parent:nth-child(2) {
-
-      .form-group {
-
-        width: 33.33%;
-      }
-
       .btn-footer {
         margin-bottom: 0;
-        width: 33.33%;
+        width: 25%;
         align-self: flex-start;
 
       }
