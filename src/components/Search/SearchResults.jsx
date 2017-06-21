@@ -115,9 +115,9 @@ const SearchResults = (props) => {
                 <li className="header">
                   <span className="policy-no">Policy No.</span>
                   <span className="property-address">Property Address</span>
-                  <span className="quote-state">Policy State</span>
+                  <span className="quote-state">Policy Status</span>
                   <span className="effctive-date">Effective Date</span>
-                  <span className="started-on">Started On</span>
+                  {/*<span className="started-on">Started On</span>*/}
                   <span className="premium">Premium</span>
                 </li>
                 <li>
@@ -131,9 +131,9 @@ const SearchResults = (props) => {
                     <span
                       className="effctive-date"
                     >{moment.utc(policy.effectiveDate).format('YYYY-MM-DD')}</span>
-                    <span
+                  {/*<span
                       className="started-on"
-                    >{moment.utc(policy.createdAt).format('YYYY-MM-DD')}</span>
+                    >{moment.utc(policy.createdAt).format('YYYY-MM-DD')}</span>*/}
                     <span
                       className="premium"
                     >$ {policy.rating ? policy.rating.totalPremium : '-'}</span>

@@ -22,7 +22,7 @@ const handleInitialize = () => ({
 });
 
 
-const AdditionalInterestModal = ({ appState, handleSubmit, verify, hideAdditionalInterestModal }) => <div className="modal quote-summary" style={{ flexDirection: 'row' }}>
+const AdditionalInterestModal = ({ appState, handleSubmit, verify, hideAdditionalInterestModal }) => <div className="modal additionalInterestModal" style={{ flexDirection: 'row' }}>
   <Form id="AdditionalInterestModal" noValidate onSubmit={handleSubmit(verify)}>
     <div className="card">
       <div className="card-header">
