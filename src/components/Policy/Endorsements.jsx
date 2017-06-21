@@ -181,12 +181,12 @@ export const Coverage = (props) => {
       <div className="endorsements">
         <div className="endo-jump-menu">
 
-          <a href="#coverage" className="btn btn-primary btn-sm">Coverage</a>
-          <a href="#home" className="btn btn-primary btn-sm">Home / Location</a>
-          <a href="#policy" className="btn btn-primary btn-sm">Policyholders</a>
-          <a href="#addresses" className="btn btn-primary btn-sm">Addresses</a>
-          <a href="#addInt" className="btn btn-primary btn-sm">Additional Interests</a>
-          <a className="btn btn-secondary btn-sm">Cancel</a>
+          <a href="#coverage" className="btn btn-primary btn-xs">Coverage</a>
+          <a href="#home" className="btn btn-primary btn-xs">Home / Location</a>
+          <a href="#policy" className="btn btn-primary btn-xs">Policyholders</a>
+          <a href="#addresses" className="btn btn-primary btn-xs">Addresses</a>
+          <a href="#addInt" className="btn btn-primary btn-xs">Additional Interests</a>
+          <a className="btn btn-secondary btn-xs">Cancel</a>
 
 
 </div>
@@ -860,50 +860,39 @@ export const Coverage = (props) => {
         </div>
         <div className="endo-results-calc">
 
-          <h3>Endorsement Result</h3>
 
-          <div className="flex-parent">
+            <div className="flex-parent">
+              <div className="form-group">
+                <label>New Endorsement Amount</label>
+                <input type="numeric" value="52" />
+              </div>
+              <div className="form-group">
+                <label>New Endorsement Premium</label>
+                <input type="numeric" value="3732" />
+              </div>
+              <div className="form-group">
+                <label>New Annual Premium</label>
+                <input type="numeric" value="4711" />
+              </div>
+          </div>
 
-              <div className="flex-child">
+
+              <div className="flex-parent">
                 <div className="form-group">
-                  <label>Endorsement Type</label>
+                  <label>Type</label>
                   <select>
                     <option>Please Select</option>
                   </select>
                 </div>
                 <div className="form-group">
-                  <label>Endorsement Effective Date</label>
+                  <label>Effective Date</label>
                   <input type="date" />
                 </div>
                 <div className="btn-footer">
+                  <button className="btn btn-secondary">Cancel</button>
                   <button className="btn btn-primary">Calculate</button>
                 </div>
               </div>
-
-              <div className="flex-child">
-                <div className="form-group">
-                  <label>New Endorsement Amount</label>
-                  <input type="numeric" />
-                </div>
-                <div className="form-group">
-                  <label>New Endorsement Premium</label>
-                  <input type="numeric" />
-                </div>
-                <div className="form-group">
-                  <label>New Annual Premium</label>
-                  <input type="numeric" />
-                </div>
-            </div>
-
-
-
-        </div>
-
-        <div className="btn-footer">
-          <button className="btn btn-secondary">Cancel</button>
-          <button className="btn btn-primary">Save</button>
-        </div>
-
 
 
 </div>

@@ -107,6 +107,7 @@ textarea {
 }
 
 select {
+  background: $white;
   //margin-top: $padding*.825;
   box-shadow: none;
   /* &:not([size]):not([multiple]) {
