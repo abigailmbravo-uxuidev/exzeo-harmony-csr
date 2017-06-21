@@ -17,6 +17,7 @@ import RadioField from '../Form/inputs/RadioField';
 import CurrencyField from '../Form/inputs/CurrencyField';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
+import DateField from '../Form/inputs/DateField';
 
 const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName])
@@ -27,6 +28,15 @@ const handleGetQuoteData = (state) => {
     ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
     : {};
   return quoteData;
+};
+
+const handleGetZipCodeSettings = (state) => {
+  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  if (!taskData) return [];
+
+  const zipCodeSettings = _.find(taskData.model.variables, { name: 'getZipCodeSettings' }) ?
+  _.find(taskData.model.variables, { name: 'getZipCodeSettings' }).value.result[0] : null;
+  return zipCodeSettings;
 };
 
 function calculatePercentage(oldFigure, newFigure) {
@@ -393,7 +403,7 @@ export class Coverage extends Component {
   }
 
   render() {
-    const { fieldValues, handleSubmit, initialValues, pristine, agents } = this.props;
+    const { fieldValues, handleSubmit, initialValues, pristine, agents, zipCodeSettings } = this.props;
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
@@ -408,7 +418,9 @@ export class Coverage extends Component {
                   <h3>Produced By</h3>
                   <div className="flex-parent">
                     <div className="flex-child">
-                      <div><TextField validations={['required']} label={'Effective Date'} styleName={''} name={'effectiveDate'} type={'date'} /></div>
+                      <div>
+                        <DateField validations={['date']} label={'Effective Date'} name={'effectiveDate'} min={zipCodeSettings ? zipCodeSettings.minEffectiveDate : null} max={zipCodeSettings ? zipCodeSettings.maxEffectiveDate : null} />
+                      </div>
                     </div>
 
                     <div className="flex-child">
@@ -1198,6 +1210,7 @@ Coverage.contextTypes = {
 // ------------------------------------------------
 Coverage.propTypes = {
   ...propTypes,
+  zipCodeSettings: PropTypes.shape(),
   tasks: PropTypes.shape(),
   appState: PropTypes.shape({
     modelName: PropTypes.string,
@@ -1215,7 +1228,8 @@ const mapStateToProps = state => ({
   agents: populateAgentData(state),
   fieldValues: _.get(state.form, 'Coverage.values', {}),
   initialValues: handleInitialize(state),
-  quoteData: handleGetQuoteData(state)
+  quoteData: handleGetQuoteData(state),
+  zipCodeSettings: handleGetZipCodeSettings(state)
 });
 
 const mapDispatchToProps = dispatch => ({
