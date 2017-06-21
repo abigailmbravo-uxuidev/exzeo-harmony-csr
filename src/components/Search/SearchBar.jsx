@@ -180,7 +180,6 @@ const SearchForm = (props) => {
           {generateField('firstName', 'First Name Search', 'First Name', formErrors, 'first-name-search')}
           {generateField('lastName', 'Last Name Search', 'Last Name', formErrors, 'last-name-search')}
           {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
-          {generateField('zip', 'Zip Search', 'Zip', formErrors, 'zip-search')}
           {generateField('quoteNumber', 'Quote No Search', 'Quote Number', formErrors, 'quote-no-search')}
 
           <button
@@ -199,7 +198,6 @@ const SearchForm = (props) => {
           {generateField('firstName', 'First Name Search', 'First Name', formErrors, 'first-name-search')}
           {generateField('lastName', 'Last Name Search', 'Last Name', formErrors, 'last-name-search')}
           {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
-          {generateField('zip', 'Zip Search', 'Zip', formErrors, 'zip-search')}
           {generateField('policyNumber', 'Policy No Search', 'Policy Number', formErrors, 'policy-no-search')}
 
           <button
