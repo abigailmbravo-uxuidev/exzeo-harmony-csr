@@ -12,6 +12,7 @@ import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
+import Loader from '../Common/Loader';
 
 // const scheduleDateModal = (props) => {
 //   const showScheduleDateModal = props.appState.data.showScheduleDateModal;
@@ -40,7 +41,7 @@ const handleFormSubmit = (data, dispatch, props) => {
   const { appState, actions } = props;
   const workflowId = appState.instanceId;
   actions.appStateActions.setAppState(appState.modelName,
-    workflowId, { ...props.appState.data, ubmitting: true });
+    workflowId, { ...props.appState.data, submitting: true });
 
 
   const steps = [{
@@ -59,10 +60,8 @@ const handleFormSubmit = (data, dispatch, props) => {
   actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
     .then(() => {
       dispatch(reset('Summary'));
-      // now update the workflow details so the recalculated rate shows
-      // actions.appStateActions.setAppState(appState.modelName,
-      //   workflowId, { quote: props.quoteData, updateWorkflowDetails: true });
-      // context.router.history.push('/quote/coverage');
+      actions.appStateActions.setAppState(appState.modelName,
+    workflowId, { ...props.appState.data, submitting: false });
     });
 };
 
@@ -102,8 +101,9 @@ const Summary = (props) => {
   return (
     <QuoteBaseConnect>
       <ClearErrorConnect />
-      <div className="route-content summary workflow">
 
+      <div className="route-content summary workflow">
+        {appState.data.submitting && <Loader />}
         <div className="scroll">
 
           {quoteData && quoteData.underwritingExceptions && quoteData.underwritingExceptions.length > 0 &&

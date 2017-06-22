@@ -67,11 +67,13 @@ class Routes extends Component {
         <Modal
           isOpen={this.props.error.message !== undefined}
           contentLabel="Example Modal"
-          style={this.modalStyles}
+          style={ this.modalStyles }
+          className="card"
         >
-          <h2>Error</h2>
-          <button onClick={this.clearError}>close</button>
-          <div>{ this.props.error.message }</div>
+          <div className="card-header"><h4><i className="fa fa-exclamation-circle"></i>&nbsp;Error</h4></div>
+          <div className="card-block">{ this.props.error.message }</div>
+          <div className="card-footer"><button className="btn-primary" onClick={this.clearError}>close</button></div>
+
         </Modal>
         <Router>
           <div>
