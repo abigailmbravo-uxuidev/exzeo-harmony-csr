@@ -3,17 +3,17 @@ import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 
 import cg from './cgReducer';
-import user from './userReducer';
 import appState from './appStateReducer';
 import error from './errorReducer';
+import questions from './questionsReducer';
 
 
 const rootReducer = combineReducers({
   form: formReducer,
   cg,
-  user,
   appState,
-  error
+  error,
+  questions
 });
 
 export default rootReducer;
