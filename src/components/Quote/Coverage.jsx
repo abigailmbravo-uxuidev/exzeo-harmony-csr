@@ -121,6 +121,7 @@ const handleInitialize = (state) => {
   values.hurricane = hurricane;
 
   values.calculatedHurricane = _.get(quoteData, 'deductibles.hurricane.calculatedAmount');
+  values.calculatedSinkhole = _.get(quoteData, 'deductibles.sinkhole.calculatedAmount');
 
   values.floridaBuildingCodeWindSpeed = _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeed');
   values.floridaBuildingCodeWindSpeedDesign = _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign');
@@ -278,6 +279,8 @@ export class Coverage extends Component {
     const personalProperty = _.get(quoteData, 'coverageLimits.personalProperty.amount');
     const hurricane = _.get(quoteData, 'deductibles.hurricane.amount');
     const calculatedHurricane = _.get(quoteData, 'deductibles.hurricane.calculatedAmount');
+    const calculatedSinkhole = _.get(quoteData, 'deductibles.sinkhole.calculatedAmount');
+
 
     dispatch(change('Coverage', 'dwellingAmount', dwelling));
 
@@ -289,6 +292,7 @@ export class Coverage extends Component {
     dispatch(change('Coverage', 'personalPropertyReplacementCostCoverage', false));
 
     dispatch(change('Coverage', 'sinkholePerilCoverage', _.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer')));
+    dispatch(change('Coverage', 'calculatedSinkhole', calculatedSinkhole));
 
     dispatch(change('Coverage', 'allOtherPerils', _.get(quoteData, 'deductibles.allOtherPerils.amount')));
     dispatch(change('Coverage', 'hurricane', hurricane));
@@ -397,6 +401,8 @@ export class Coverage extends Component {
     dispatch(change('Coverage', 'calculatedHurricane', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.hurricane)))));
 
     dispatch(change('Coverage', 'lossOfUse', String(setPercentageOfValue(Number(dwellingNumber), 10))));
+
+    dispatch(change('Coverage', 'calculatedSinkhole', String(setPercentageOfValue(Number(dwellingNumber), 10))));
   }
 
   updateDependencies = (event, field, dependency) => {
@@ -410,6 +416,14 @@ export class Coverage extends Component {
     dispatch(change('Coverage', field, Number.isNaN(fieldValue)
       ? ''
       : String(fieldValue)));
+  }
+
+  updateCalculatedSinkhole = () => {
+    const { dispatch, fieldValues } = this.props;
+    if (Number.isNaN(event.target.value)) { return; }
+
+    const dependencyValue = String(fieldValues.dwellingAmount).replace(/\D+/g, '');
+    dispatch(change('Coverage', 'calculatedSinkhole', String(setPercentageOfValue(Number(dependencyValue), 10))));
   }
 
   render() {
@@ -865,7 +879,7 @@ export class Coverage extends Component {
                     <div className="flex-parent">
                       <div className="flex-child">
                         <SelectField
-                          name="sinkholePerilCoverage" component="select" styleName={''} label={'Sinkhole'} onChange={function () {}} answers={[
+                          name="sinkholePerilCoverage" component="select" styleName={''} label="Sinkhole" onChange={() => this.updateCalculatedSinkhole()} answers={[
                             {
                               answer: false,
                               label: 'Coverage Excluded'
@@ -877,6 +891,12 @@ export class Coverage extends Component {
                         />
                       </div>
                     </div>
+                    { String(fieldValues.sinkholePerilCoverage) === 'true' && <div className="flex-parent">
+                      <div className="flex-child">
+                        <CurrencyField validations={['required']} label={'Calculated Sinkhole'} styleName={'coverage-c'} name="calculatedSinkhole" disabled />
+                      </div>
+                    </div>
+                    }
                   </div>
                   <div className="discounts flex-child">
                     <h3>Discounts</h3>
