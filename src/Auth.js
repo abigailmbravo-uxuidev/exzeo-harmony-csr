@@ -100,7 +100,6 @@ export default class Auth {
     this.userProfile = null;
     axios.defaults.headers.common['authorization'] = undefined; // eslint-disable-line
     history.push('/login');
-    // window.location.assign(`https://${process.env.REACT_APP_AUTH0_DOMAIN}/logout?returnTo=${process.env.REACT_APP_AUTH0_PRIMARY_URL}&client_id=${process.env.REACT_APP_AUTH0_CLIENT_ID}`);
   }
 
   isAuthenticated = () => {
