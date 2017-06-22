@@ -5,13 +5,15 @@ import cg from './cgReducer';
 import appState from './appStateReducer';
 import error from './errorReducer';
 import service from './serviceReducer';
+import questions from './questionsReducer';
 
 const rootReducer = combineReducers({
   form: formReducer,
   cg,
   appState,
   service,
-  error
+  error,
+  questions
 });
 
 export default rootReducer;

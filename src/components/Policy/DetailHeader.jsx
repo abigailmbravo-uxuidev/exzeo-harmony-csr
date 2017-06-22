@@ -71,6 +71,14 @@ const DetailHeader = (props) => {
         </div>
       </dl>
     </section>
+    <section id="sourceNumber" className="sourceNumber">
+      <dl>
+        <div>
+          <dt>Source Number</dt>
+          <dd>{_.get(policyData, 'sourceNumber')}</dd>
+        </div>
+      </dl>
+    </section>
     <section id="policyEffectiveDate" className="policyEffectiveDate">
       <dl>
         <div>
