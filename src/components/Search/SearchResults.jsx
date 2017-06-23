@@ -7,7 +7,7 @@ import moment from 'moment';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 
-const SearchResults = props => {
+const SearchResults = (props) => {
   const model = props.tasks[props.appState.modelName] || {};
   const previousTask = model.data && model.data.previousTask ? model.data.previousTask : {};
   const activeTask = model.data && model.data.activeTask ? model.data.activeTask : {};
@@ -20,7 +20,12 @@ const SearchResults = props => {
           {addresses
             ? addresses.map((address, index) => (
               <li id={address.id} key={index}>
-                <a onClick={() => props.handleSelectAddress(address, props)} tabIndex="-1">
+
+                {/* <div>
+                    <button className="row" onClick={() => props.handleSelectAddress(address, props)} tabIndex="-1">Open New Tab</button>
+                  </div>*/}
+
+                <a onClick={() => props.handleNewTab(address, props)} tabIndex="-1">
                   <i className="card-icon fa fa-map-marker" />
                   <section>
                     <h4>{address.physicalAddress.address1}</h4>
@@ -51,6 +56,11 @@ const SearchResults = props => {
                 <h5>{quote.policyHolders[0] && `${quote.policyHolders[0].lastName}`}</h5>
               </div>
             </div>
+
+            {/* <div>
+                <button className="row" onClick={() => props.handleSelectQuote(quote, props)} tabIndex="-1">Open New Tab</button>
+              </div>*/}
+
             <section>
               <ul>
                 <li className="header">
@@ -62,7 +72,7 @@ const SearchResults = props => {
                   <span className="premium">Premium</span>
                 </li>
                 <li>
-                  <a className="row" onClick={() => props.handleSelectQuote(quote, props)} tabIndex="-1">
+                  <a className="row" onClick={() => props.handleNewTab(quote, props)} tabIndex="-1">
                     <span className="quote-no">{quote.quoteNumber}</span>
                     <span className="property-address">{`${quote.property.physicalAddress.address1} ${quote.property.physicalAddress.city}, ${quote.property.physicalAddress.state} ${quote.property.physicalAddress.zip}`}</span>
                     <span className="quote-state">{quote.quoteState}</span>
@@ -84,7 +94,7 @@ const SearchResults = props => {
     props.tasks[props.appState.modelName].data.activeTask &&
     props.tasks[props.appState.modelName].data.activeTask.name === 'choosePolicy'
   ) {
-    const policyResults = props.tasks[props.appState.modelName].data.previousTask.value.policies;
+    const policyResults = props.tasks[props.appState.modelName].data.previousTask ? props.tasks[props.appState.modelName].data.previousTask.value.policies : [];
 
     return (
       <div className="policy-list">
@@ -96,35 +106,38 @@ const SearchResults = props => {
                 <h5>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName}`}</h5>
                 <h5>{policy.policyHolders[0] && `${policy.policyHolders[0].lastName}`}</h5>
               </div>
-          </div>
+            </div>
+            {/* <div>
+                <button className="row" onClick={() => props.handleSelectPolicy(policy, props)}  tabIndex="-1">Open New Tab</button>
+              </div>*/}
             <section>
               <ul>
                 <li className="header">
                   <span className="policy-no">Policy No.</span>
                   <span className="property-address">Property Address</span>
-                  <span className="quote-state">Policy State</span>
+                  <span className="quote-state">Policy Status</span>
                   <span className="effctive-date">Effective Date</span>
-                  <span className="started-on">Started On</span>
+                  {/*<span className="started-on">Started On</span>*/}
                   <span className="premium">Premium</span>
                 </li>
                 <li>
-                  <a onClick={() => props.handleSelectPolicy(policy, props)} tabIndex="-1" className="row" >
+                  <a onClick={() => props.handleNewTab(policy, props)} tabIndex="-1" className="row" >
                     <span className="quote-no">{policy.policyNumber}</span>
                     <span className="property-address">{`${policy.property.physicalAddress.address1}
                         ${policy.property.physicalAddress.city}, ${policy.property.physicalAddress.state}
                         ${policy.property.physicalAddress.zip}
                         `}</span>
-                      <span className="quote-state">{policy.quoteState}</span>
-                      <span
-                        className="effctive-date"
-                        >{moment.utc(policy.effectiveDate).format('YYYY-MM-DD')}</span>
-                      <span
-                        className="started-on"
-                        >{moment.utc(policy.createdAt).format('YYYY-MM-DD')}</span>
-                      <span
-                        className="premium"
-                        >$ {policy.rating ? policy.rating.totalPremium : '-'}</span>
-                      </a>
+                    <span className="quote-state">{policy.quoteState}</span>
+                    <span
+                      className="effctive-date"
+                    >{moment.utc(policy.effectiveDate).format('YYYY-MM-DD')}</span>
+                  {/*<span
+                      className="started-on"
+                    >{moment.utc(policy.createdAt).format('YYYY-MM-DD')}</span>*/}
+                    <span
+                      className="premium"
+                    >$ {policy.rating ? policy.rating.totalPremium : '-'}</span>
+                  </a>
                 </li>
               </ul>
             </section>
@@ -148,6 +161,7 @@ SearchResults.propTypes = {
   tasks: PropTypes.shape(),
   handleSelectAddress: PropTypes.func,
   handleSelectQuote: PropTypes.func,
+  handleNewQuote: PropTypes.func,
   handleSelectPolicy: PropTypes.func
 };
 

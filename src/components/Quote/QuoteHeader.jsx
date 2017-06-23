@@ -1,48 +1,17 @@
-import React, { PropTypes } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import React from 'react';
 import logo from '../../img/Harmony.svg';
-import * as userActions from '../../actions/userActions';
 
-export const QuoteHeader = props => (
+const QuoteHeader = () => (
   <header>
     <div role="banner">
       <div className="tab-tag">
-        <button className="btn-icon btn-bars"><i className="fa fa-bars" /></button>
         <span>QUOTE</span>
       </div>
       <a href="/" id="logo" className="logo">
         <img src={logo} alt="Harmony" />
       </a>
-      {/*<div className="quote-description"><label>Type</label>{props.appState && props.appState.data && props.appState.data.quote ? `${props.appState.data.quote.product}` : '-'}
-        <label>Quote Number</label>{props.appState && props.appState.data && props.appState.data.quote ? `${props.appState.data.quote.quoteNumber}` : '-'}</div>*/}
-      {/*<button className="btn-icon btn-ellipsis-v"><i className="fa fa-ellipsis-v" /></button>*/}
     </div>
   </header>
 );
 
-
-QuoteHeader.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
-  appState: PropTypes.shape({
-    instanceId: PropTypes.string,
-    modelName: PropTypes.string,
-    data: PropTypes.shape({
-      quote: PropTypes.object,
-      updateWorkflowDetails: PropTypes.boolean,
-      hideYoChildren: PropTypes.boolean,
-      recalc: PropTypes.boolean
-    })
-  })
-};
-
-const mapStateToProps = state => ({
-  user: state.user,
-  appState: state.appState
-});
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    user: bindActionCreators(userActions, dispatch)
-  }
-});
-export default connect(mapStateToProps, mapDispatchToProps)(QuoteHeader);
+export default QuoteHeader;

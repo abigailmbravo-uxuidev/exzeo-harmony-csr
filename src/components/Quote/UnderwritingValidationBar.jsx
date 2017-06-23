@@ -29,10 +29,7 @@ export const UnderwritingValidationBar = (props) => {
     }
   return (
     <aside className="underwriting-validation">
-
       <h4 className="uw-validation-header">Qualifier Status</h4>
-
-
       <div>
         {underwritingExceptions && _.filter(underwritingExceptions, { canOverride: false }).length > 0 &&
           <section className="msg-error">
@@ -52,11 +49,10 @@ export const UnderwritingValidationBar = (props) => {
           <section className="msg-caution">
             <h5>
               <i className="fa fa-exclamation-triangle" aria-hidden="true" />&nbsp;Caution</h5>
-
             <div>
               <ul className="fa-ul">
                 {_.filter(underwritingExceptions, { canOverride: true }).map((underwritingException, index) => (
-                  <li key={index}><i className="fa-li fa fa-exclamation-circle" aria-hidden="true" />{underwritingException.internalMessage}</li>
+                  <li key={index}><i className="fa-li fa fa-exclamation-triangle" aria-hidden="true" />{underwritingException.internalMessage}</li>
                 ))}
               </ul>
             </div>
@@ -64,8 +60,6 @@ export const UnderwritingValidationBar = (props) => {
           </section>
         }
       </div>
-
-
     </aside>
   );
 };

@@ -1,9 +1,21 @@
-import React, { PropTypes } from 'react';
+import React, { Component } from 'react';
 
-export const Login = props => (<div>{ window.location.assign(`${process.env.REACT_APP_LOGIN_URL}?redirectUrl=${props.redirectUrl}`) }</div>);
+import history from '../history';
+import Loader from '../components/Common/Loader';
 
-Login.propTypes = {
-  redirectUrl: PropTypes.string
-};
+class Login extends Component {
+  constructor(props) {
+    super(props);
+    const { isAuthenticated } = props.auth;
+    if (!isAuthenticated()) {
+      props.auth.login();
+    } else {
+      history.push('/');
+    }
+  }
+  render() {
+    return (<Loader />);
+  }
+}
 
 export default Login;

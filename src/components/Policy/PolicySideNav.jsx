@@ -24,30 +24,30 @@ const csrLinks = [{
   styleName: 'coverage',
   exact: true
 }, {
-   key: 'policyholder',
-   link: '/policy/policyholder',
-   label: 'Policyholder / Agent',
-   styleName: 'policyholder',
-   exact: true
- }, {
-   key: 'billing',
-   link: '/policy/billing',
-   label: 'Mortgage / Billing',
-   styleName: 'billing',
-   exact: true
- }, {
-   key: 'notes',
-   link: '/policy/notes',
-   label: 'Notes / Files',
-   styleName: 'notes',
-   exact: true
- }, {
-   key: 'endorsements',
-   link: '/policy/endorsements',
-   label: 'Endorsements',
-   styleName: 'endoresments',
-   exact: true
- }];
+  key: 'policyholder',
+  link: '/policy/policyholder',
+  label: 'Policyholder / Agent',
+  styleName: 'policyholder',
+  exact: true
+}, {
+  key: 'billing',
+  link: '/policy/billing',
+  label: 'Mortgage / Billing',
+  styleName: 'billing',
+  exact: true
+}, {
+  key: 'notes',
+  link: '/policy/notes',
+  label: 'Notes / Files',
+  styleName: 'notes',
+  exact: true
+}, {
+  key: 'endorsements',
+  link: '/policy/endorsements',
+  label: 'Endorsements',
+  styleName: 'endoresments',
+  exact: true
+}];
 
 const NewNoteFileUploaderPopup = (props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showNewNoteFileUploader: true });
@@ -94,7 +94,7 @@ const SideNav = (props) => {
           </li> :
           <li key={index}>
             <span className={agentLink.styleName} onClick={() => goToPage(agentLink.link, agentLink.key, props)}>
-              <a className={props.appState.data.selectedLink === agentLink.key ? `${agentLink.styleName} active` : `${agentLink.styleName}`}>{agentLink.label}</a>
+              <a className={(props.appState.data.selectedLink || 'coverage') === agentLink.key ? `${agentLink.styleName} active` : `${agentLink.styleName}`}>{agentLink.label}</a>
             </span>
           </li>
       ))}
@@ -107,10 +107,10 @@ const SideNav = (props) => {
             closeButtonHandler={() => closeUWConditions(props)}
             />
           }*/}
-          <hr className="nav-division" />
-          <li>
-            <button className="btn btn-primary btn-sm btn-block" onClick={() => NewNoteFileUploaderPopup(props)}><i className="fa fa-plus"></i> Note / File</button>
-          </li>
+        <hr className="nav-division" />
+        <li>
+          <button className="btn btn-primary btn-sm btn-block" onClick={() => NewNoteFileUploaderPopup(props)}><i className="fa fa-plus" /> Note / File</button>
+        </li>
       </ul>
       { props.appState.data.showNewNoteFileUploader === true &&
         <NewNoteFileUploader closeButtonHandler={() => closeNewNoteFileUploader(props)} />

@@ -15,7 +15,7 @@ const userTasks = {
   handleSearchBarSubmit: 'search'
 };
 
-const handleInitialize = state => ({ searchType: 'quote' });
+const handleInitialize = () => ({ searchType: 'quote' });
 
 const handleSearchBarSubmit = (data, dispatch, props) => {
   const workflowId = props.appState.instanceId;
@@ -31,11 +31,14 @@ const handleSearchBarSubmit = (data, dispatch, props) => {
     searchType: props.fieldValues.searchType
   };
 
+  localStorage.setItem('lastSearchData', JSON.stringify(taskData));
+
+
   props.actions.errorActions.clearAppError();
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
 
   // we need to make sure the active task is search otherwise we need to reset the workflow
-  if (props.tasks[modelName].data.activeTask && (props.tasks[modelName].data.activeTask.name !== userTasks.handleSearchBarSubmit)){
+  if (props.tasks[modelName].data.activeTask && (props.tasks[modelName].data.activeTask.name !== userTasks.handleSearchBarSubmit)) {
     const completeStep = {
       stepName: taskName,
       data: taskData
@@ -47,7 +50,7 @@ const handleSearchBarSubmit = (data, dispatch, props) => {
   }
 };
 
-const validate = values => {
+const validate = (values) => {
   const errors = {};
   if (values.firstName) {
     const onlyAlphaNumeric = Rules.onlyAlphaNumeric(values.firstName);
@@ -121,7 +124,7 @@ const generateField = (name, placeholder, labelText, formErrors, formGroupCss) =
   return field;
 };
 
-const SearchForm = props => {
+const SearchForm = (props) => {
   const {
     handleSubmit,
     formErrors,
@@ -132,20 +135,18 @@ const SearchForm = props => {
     const modelName = props.appState.modelName;
     const data = props.tasks[modelName].data;
 
-    props.reset(props.form);  
+    props.reset(props.form);
     props.actions.cgActions.clearSearchResults(modelName, data);
     props.actions.errorActions.clearAppError();
-    
-    return;
-  }
+  };
 
   return (
     <Form id="SearchBar" onSubmit={handleSubmit(handleSearchBarSubmit)} noValidate>
       <div className="search-input-wrapper">
         <div className="form-group search-context">
           <SelectField
-            name="searchType" component="select" styleName={''} label="Search Context" validations={['required']} 
-            onChange={ clearForm }
+            name="searchType" component="select" styleName={''} label="Search Context" validations={['required']}
+            onChange={clearForm}
             answers={[
               {
                 answer: 'address',
@@ -179,7 +180,6 @@ const SearchForm = props => {
           {generateField('firstName', 'First Name Search', 'First Name', formErrors, 'first-name-search')}
           {generateField('lastName', 'Last Name Search', 'Last Name', formErrors, 'last-name-search')}
           {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
-          {generateField('zip', 'Zip Search', 'Zip', formErrors, 'zip-search')}
           {generateField('quoteNumber', 'Quote No Search', 'Quote Number', formErrors, 'quote-no-search')}
 
           <button
@@ -198,7 +198,6 @@ const SearchForm = props => {
           {generateField('firstName', 'First Name Search', 'First Name', formErrors, 'first-name-search')}
           {generateField('lastName', 'Last Name Search', 'Last Name', formErrors, 'last-name-search')}
           {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
-          {generateField('zip', 'Zip Search', 'Zip', formErrors, 'zip-search')}
           {generateField('policyNumber', 'Policy No Search', 'Policy Number', formErrors, 'policy-no-search')}
 
           <button

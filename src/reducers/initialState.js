@@ -3,11 +3,6 @@ import {
 } from 'immutable';
 
 export default {
-  user: {
-    isAuthenticated: false,
-    token: '',
-    profile: {}
-  },
   search: new Map({}),
   workflowData: {},
   appState: {
@@ -19,5 +14,6 @@ export default {
   navigation: {
     location: null
   },
-  error: {}
+  error: {},
+  questions: []
 };

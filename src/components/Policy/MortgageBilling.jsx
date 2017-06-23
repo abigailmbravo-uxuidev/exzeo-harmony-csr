@@ -4,13 +4,14 @@ import _ from 'lodash';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import PolicyConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
+import normalizeNumber from '../Form/normalizeNumbers';
 
 const payments = [
   {
     date: '05/27/2017',
     description: 'PAYMENT RECEIVED',
     note: '20170527-44',
-    amount: '$ 3,123'
+    amount: `$ ${normalizeNumber(3123)}`
   }
 ];
 
@@ -83,7 +84,7 @@ export const PolicyholderAgent = (props) => {
                 <dl className="total">
                   <div>
                     <dt>Total Received</dt>
-                    <dd>$ 3,123</dd>
+                    <dd>$ {normalizeNumber(3123)}</dd>
                   </div>
                 </dl>
               </div>

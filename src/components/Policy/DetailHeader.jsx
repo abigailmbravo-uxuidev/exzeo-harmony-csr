@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import normalizePhone from '../Form/normalizePhone';
+import normalizeNumbers from '../Form/normalizeNumbers';
 
 const handleGetPolicy = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
@@ -19,7 +20,7 @@ const DetailHeader = (props) => {
   <section id="policyDetails" className="policyDetails">
     <dl>
       <div>
-        <dd>HO3 Homeowners</dd>
+        <dd>{_.get(policyData, 'product') === 'HO3' ? `${_.get(policyData, 'product')} Homeowners` : _.get(policyData, 'product')}</dd>
         <dd>{_.get(policyData, 'policyNumber')}</dd>
         <dd>{_.get(policyData, 'status')}</dd>
       </div>
@@ -34,13 +35,23 @@ const DetailHeader = (props) => {
         </div>
       </dl>
     </section>
+    <section id="policyHolderMailingAddress" className="policyHolderMailingAddress">
+      <dl>
+        <div>
+          <dt>Mailing Address</dt>
+          <dd>{_.get(policyData, 'policyHolderMailingAddress.address1')}</dd>
+          <dd>{_.get(policyData, 'policyHolderMailingAddress.address2')}</dd>
+          <dd>{`${_.get(policyData, 'policyHolderMailingAddress.city')} ${_.get(policyData, 'policyHolderMailingAddress.state')}, ${_.get(policyData, 'policyHolderMailingAddress.zip')}`}</dd>
+        </div>
+      </dl>
+    </section>
     <section id="propertyAddress" className="propertyAddress">
       <dl>
         <div>
           <dt>Property Address</dt>
-          <dd>{_.get(policyData, 'policyHolderMailingAddress.address1')}</dd>
-          <dd>{_.get(policyData, 'policyHolderMailingAddress.address2')}</dd>
-          <dd>{`${_.get(policyData, 'policyHolderMailingAddress.city')} ${_.get(policyData, 'policyHolderMailingAddress.state')}, ${_.get(policyData, 'policyHolderMailingAddress.zip')}`}</dd>
+          <dd>{_.get(policyData, 'property.physicalAddress.address1')}</dd>
+          <dd>{_.get(policyData, 'property.physicalAddress.address2')}</dd>
+          <dd>{`${_.get(policyData, 'property.physicalAddress.city')} ${_.get(policyData, 'property.physicalAddress.state')}, ${_.get(policyData, 'property.physicalAddress.zip')}`}</dd>
         </div>
       </dl>
     </section>
@@ -57,6 +68,14 @@ const DetailHeader = (props) => {
         <div>
           <dt>Territory</dt>
           <dd>{_.get(policyData, 'property.territory')}</dd>
+        </div>
+      </dl>
+    </section>
+    <section id="sourceNumber" className="sourceNumber">
+      <dl>
+        <div>
+          <dt>Source Number</dt>
+          <dd>{_.get(policyData, 'sourceNumber')}</dd>
         </div>
       </dl>
     </section>
@@ -80,7 +99,7 @@ const DetailHeader = (props) => {
       <dl>
         <div>
           <dt>Current Premium</dt>
-          <dd>$ {_.get(policyData, 'rating.totalPremium')}</dd>
+          <dd>$ {normalizeNumbers(_.get(policyData, 'rating.totalPremium'))}</dd>
         </div>
       </dl>
     </section>
