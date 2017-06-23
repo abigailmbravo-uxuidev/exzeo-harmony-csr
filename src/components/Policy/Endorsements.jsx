@@ -17,9 +17,10 @@ import SelectField from '../Form/inputs/SelectField';
 import CurrencyField from '../Form/inputs/CurrencyField';
 
 const handleGetQuoteData = (state) => {
-  const model = state.appState ? state.appState.modelName : undefined;
-  const previousTask = model && state.cg[model] && state.cg[model].data ? state.cg[model].data.previousTask : undefined;
-  return (previousTask && previousTask.value) ? previousTask.value[0] : {};
+  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  if (!taskData) return {};
+  const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
+  return policyData;
 };
 
 const calculatePercentage = (oldFigure, newFigure) => {
@@ -71,9 +72,9 @@ const handleInitialize = (state) => {
   values.propertyIncidentalOccupanciesMainDwelling = false;
   values.propertyIncidentalOccupanciesOtherStructures = false;
   // TODO: WIND EXCLUDED
-  // TODO: PROPERTY EVER RENTED
-  // TODO: SEASONALLY OCCUPIED
-  // TODO: NO PRIOR INSURANCE
+  values.propertyRented = _.get(quoteData, 'underwritingAnswers.rented.answer');
+  values.seasonallyOccupied = _.get(quoteData, 'underwritingAnswers.monthsOccupied.answer');
+  values.noPriorInsurance = _.get(quoteData, 'underwritingAnswers.noPriorInsuranceSurcharge.answer');
   values.burglarAlarm = _.get(quoteData, 'property.burglarAlarm');
   values.fireAlarm = _.get(quoteData, 'property.fireAlarm');
   values.sprinkler = _.get(quoteData, 'property.sprinkler');
@@ -94,7 +95,7 @@ const handleInitialize = (state) => {
   values.terrain = _.get(quoteData, 'property.windMitigation.terrain');
   values.internalPressureDesign = _.get(quoteData, 'property.windMitigation.internalPressureDesign');
   values.windBorneDebrisRegion = _.get(quoteData, 'property.windMitigation.windBorneDebrisRegion');
-  // MISSING WIND MIT FACTOR
+  values.windMitFactor = _.get(quoteData, 'rating.windMitigationDiscount');
 
 // Home/Location Bottom Left
   values.yearBuilt = _.get(quoteData, 'property.yearBuilt');
@@ -132,7 +133,7 @@ const handleInitialize = (state) => {
   values.city = _.get(quoteData, 'property.physicalAddress.city');
   values.state = _.get(quoteData, 'property.physicalAddress.state');
   values.zip = _.get(quoteData, 'property.physicalAddress.zip');
-
+  console.log(values, 'values');
   return values;
 };
 
@@ -165,115 +166,6 @@ export const Endorsements = (props) => {
     underwritingAnswers
   } = props.policy;
 
-  const discountSurcharge = [
-    {
-      discountSurcharge: 'Wind Excluded',
-      value: _.get(rating, 'windMitigationDiscount') === 0 ? 'No' : 'Yes'
-    }, {
-      discountSurcharge: 'Property Ever Rented',
-      value: _.get(underwritingAnswers, 'rented.answer')
-    }, {
-      discountSurcharge: 'Seasonally Occupied',
-      value: _.get(underwritingAnswers, 'monthsOccupied.answer')
-    }, {
-      discountSurcharge: 'No Prior Insurance',
-      value: _.get(underwritingAnswers, 'noPriorInsuranceSurcharge.answer')
-    }, {
-      discountSurcharge: 'Burglar Alarm',
-      value: _.get(property, 'burglarAlarm') ? 'Yes' : 'No'
-    }, {
-      discountSurcharge: 'Fire Alarm',
-      value: _.get(property, 'fireAlarm') ? 'Yes' : 'No'
-    }, {
-      discountSurcharge: 'Sprinkler',
-      value: _.get(property, 'sprinkler') === 'N' ? 'No' : 'Yes'
-    }, {
-      discountSurcharge: 'Wind Mit Factor',
-      value: _.get(rating, 'windMitigationDiscount')
-    }
-  ];
-
-  const coverageLimitsData = [
-    {
-      coverage: 'Dwelling',
-      value: `$ ${_.get(coverageLimits, 'dwelling.amount')}`
-    }, {
-      coverage: 'Other Structures',
-      value: `$ ${_.get(coverageLimits, 'otherStructures.amount')}`
-    }, {
-      coverage: 'Personal Property',
-      value: `$ ${_.get(coverageLimits, 'personalProperty.amount')}`
-    }, {
-      coverage: 'Additional Living Expenses',
-      value: `$ ${_.get(coverageLimits, 'lossOfUse.amount')}`
-    }, {
-      coverage: 'Personal Liability',
-      value: `$ ${_.get(coverageLimits, 'personalLiability.amount')}`
-    }, {
-      coverage: 'Medical Payments',
-      value: `$ ${_.get(coverageLimits, 'medicalPayments.amount')}`
-    }
-  ];
-
-  const coverageOptionsData = [
-    {
-      coverage: 'Mold Property Limit',
-      value: `$ ${_.get(coverageLimits, 'moldProperty.amount')}`
-    }, {
-      coverage: 'Mold Liability Limit',
-      value: `$ ${_.get(coverageLimits, 'moldLiability.amount')}`
-    }, {
-      coverage: 'Personal Property Repl Cost',
-      value: _.get(coverageOptions, 'personalPropertyReplacementCost.answer') ? 'Yes' : 'No'
-    }, {
-      coverage: 'Ordinance or Law Coverage',
-      value: `${_.get(coverageLimits, 'ordinanceOrLaw.amount')}%`
-    }, {
-      coverage: 'Incidental Occ Main',
-      value: _.get(coverageOptions, 'propertyIncidentalOccupanciesMainDwelling.answer') ? 'Yes' : 'No'
-    }, {
-      coverage: 'Incidental Occ Other',
-      value: _.get(coverageOptions, 'propertyIncidentalOccupanciesOtherStructures.answer') ? 'Yes' : 'No'
-    }
-  ];
-
-  const premium = [{
-    premium: 'Current Premium',
-    value: `$ ${_.get(rating, 'totalPremium')}`
-  }, {
-    premium: 'Initial Premium',
-    value: `$ ${_.get(rating, 'netPremium')}`
-  }];
-
-  const billing = [
-    {
-      coverage: 'Balance Due',
-      value: `$ ${_.get(rating, 'totalPremium')}`
-    }, {
-      coverage: 'Next Payment',
-      value: `$ ${_.get(rating, 'totalPremium')}`
-    }, {
-      coverage: 'Bill To',
-      value: _.get(props.policy, 'billToType')
-    }, {
-      coverage: 'Bill Plan',
-      value: _.get(props.policy, 'billPlan')
-    }
-  ];
-
-  const deductibleData = [
-    {
-      displayText: 'All Other Perils',
-      amount: `$ ${_.get(deductibles, 'allOtherPerils.amount')}`
-    }, {
-      displayText: 'Hurricane',
-      amount: `${_.get(deductibles, 'hurricane.amount')}%`
-    }, {
-      displayText: 'Sinkhole',
-      amount: `${_.get(deductibles, 'sinkhole.amount') ? `${_.get(deductibles, 'sinkhole.amount')}%` : 'No'}`
-    }
-  ];
-
   const endorsements = [
     { date: '03/30/2017', amount: '-$ 85', type: '???' },
     { date: '02/20/2016', amount: '-$ 20', type: '???' },
@@ -282,10 +174,6 @@ export const Endorsements = (props) => {
   ];
 
   class PrevEndorsements extends React.Component {
-
-    componentWillMount = () => {
-      console.log(this.props, 'props');
-    }
 
     updateDependencies = (event, field, dependency) => {
       const { dispatch, fieldValues } = this.props;
@@ -349,17 +237,17 @@ export const Endorsements = (props) => {
                       />
                       <CurrencyField
                         validations={['required', 'range']} styleName={''} name={'dwellingAmountNew'}
-                        min={initialValues.dwellingMin} max={initialValues.dwellingMax}
+                        min={initialValues.dwellingMin} label={''} max={initialValues.dwellingMax}
                       />
                     </div>
                     <div className="form-group">
                       <CurrencyField validations={['required']} name="otherStructuresAmount" label={'Other Structure (B)'} styleName={'coverage-b'} disabled />
-                      <CurrencyField validations={['required']} name="otherStructuresAmountNew" styleName={'coverage-b'} />
+                      <CurrencyField validations={['required']} label={''} name="otherStructuresAmountNew" styleName={'coverage-b'} />
                     </div>
                     <div className="form-group">
                       <TextField validations={['required']} label={'Other Structures %'} styleName={''} name={'otherStructures'} disabled />
                       <SelectField
-                        name="otherStructuresNew" component="select" styleName={'coverage-b-percentage'} onChange={event => this.updateDependencies(event, 'otherStructuresAmount', 'dwellingAmount')} validations={['required']} answers={[
+                        name="otherStructuresNew" component="select" label={''} styleName={'coverage-b-percentage'} onChange={event => this.updateDependencies(event, 'otherStructuresAmount', 'dwellingAmount')} validations={['required']} answers={[
                           {
                             answer: '0',
                             label: '0%'
@@ -383,12 +271,12 @@ export const Endorsements = (props) => {
                     </div>
                     <div className="form-group">
                       <CurrencyField validations={['required']} label={'Personal Property (C)'} styleName={'coverage-c'} name="personalPropertyAmount" disabled />
-                      <CurrencyField validations={['required']} styleName={'coverage-c'} name="personalPropertyAmountNew" />
+                      <CurrencyField validations={['required']} label={''} styleName={'coverage-c'} name="personalPropertyAmountNew" />
                     </div>
                     <div className="form-group">
                       <TextField validations={['required']} label={'Personal Property %'} styleName={''} name={'personalProperty'} disabled />
                       <SelectField
-                        name="personalPropertyNew" component="select" styleName={'coverage-c-percentage'} onChange={event => this.updateDependencies(event, 'personalPropertyAmount', 'dwellingAmount')} validations={['required']} answers={[
+                        name="personalPropertyNew" component="select" label={''} styleName={'coverage-c-percentage'} onChange={event => this.updateDependencies(event, 'personalPropertyAmount', 'dwellingAmount')} validations={['required']} answers={[
                           {
                             answer: '0',
                             label: '0%'
@@ -415,12 +303,12 @@ export const Endorsements = (props) => {
                     </div>
                     <div className="form-group">
                       <CurrencyField label={'Loss of Use (D)'} styleName={''} name={'lossOfUse'} disabled />
-                      <CurrencyField styleName={''} name={'lossOfUseNew'} />
+                      <CurrencyField styleName={''} label={''} name={'lossOfUseNew'} />
                     </div>
                     <div className="form-group">
                       <TextField validations={['required']} label={'Personal Liability (E)'} styleName={''} name={'personalLiability'} disabled />
                       <SelectField
-                        name="personalLiabilityNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
+                        name="personalLiabilityNew" component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
                           {
                             answer: '100000',
                             label: '$100,000'
@@ -434,6 +322,7 @@ export const Endorsements = (props) => {
                     <div className="form-group">
                       <TextField validations={['required']} label={'Medical Payments (F)'} styleName={''} name={'medicalPayments'} disabled />
                       <TextField
+                        label={''}
                         name="medicalPaymentsNew" styleName={''} input={{
                           name: 'medicalPaymentsNew',
                           value: '$2,000'
@@ -443,7 +332,7 @@ export const Endorsements = (props) => {
                     <div className="form-group">
                       <TextField validations={['required']} label={'Mold Property Limit'} styleName={''} name={'moldProperty'} disabled />
                       <SelectField
-                        name="moldPropertyNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
+                        name="moldPropertyNew" component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
                           {
                             answer: '10000',
                             label: '$10,000'
@@ -460,7 +349,7 @@ export const Endorsements = (props) => {
                     <div className="form-group">
                       <TextField validations={['required']} label={'Mold Liability Limit'} styleName={''} name={'moldLiability'} disabled />
                       <SelectField
-                        name="moldLiabilityNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
+                        name="moldLiabilityNew" component="select" styleName={''} label={''} onChange={function () {}} validations={['required']} answers={[
                           {
                             answer: '50000',
                             label: '$50,000'
@@ -474,7 +363,7 @@ export const Endorsements = (props) => {
                     <div className="form-group">
                       <TextField validations={['required']} label={'AOP Deductible'} styleName={''} name={'allOtherPerils'} disabled />
                       <SelectField
-                        name="allOtherPerilsNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
+                        name="allOtherPerilsNew" component="select" styleName={''} label={''} onChange={function () {}} validations={['required']} answers={[
                           {
                             answer: '500',
                             label: '$500'
@@ -486,10 +375,11 @@ export const Endorsements = (props) => {
                             label: '$2,500'
                           }
                         ]}
-                      />                                                                                               </div>
+                      />                                                                                                                                         </div>
                     <div className="form-group">
                       <TextField validations={['required']} label={'Hurricane Deductible'} styleName={''} name={'hurricane'} disabled />
                       <SelectField
+                        label={''}
                         name="hurricaneNew" component="select" styleName={''} onChange={event => this.updateDependencies(event, 'calculatedHurricane', 'dwellingAmount')} validations={['required']} answers={[
                           {
                             answer: '2',
@@ -504,7 +394,7 @@ export const Endorsements = (props) => {
                     <div className="form-group">
                       <TextField validations={['required']} label={'Sinkhole'} styleName={''} name={'sinkholePerilCoverage'} disabled />
                       <SelectField
-                        name="sinkholePerilCoverageNew" component="select" styleName={''} onChange={function () {}} answers={[
+                        name="sinkholePerilCoverageNew" label={''} component="select" styleName={''} onChange={function () {}} answers={[
                           {
                             answer: false,
                             label: 'Coverage Excluded'
@@ -527,7 +417,7 @@ export const Endorsements = (props) => {
                     <div className="form-group">
                       <TextField validations={['required']} label={'Personal Property Repl Cost'} styleName={''} name={'personalPropertyReplacementCostCoverage'} disabled />
                       <SelectField
-                        name={'personalPropertyReplacementCostCoverageNew'} styleName={'billPlan'} onChange={function () {}} answers={[
+                        name={'personalPropertyReplacementCostCoverageNew'} label={''} styleName={'billPlan'} onChange={function () {}} answers={[
                           {
                             answer: false,
                             label: 'No'
@@ -541,7 +431,7 @@ export const Endorsements = (props) => {
                     <div className="form-group">
                       <TextField validations={['required']} label={'Ordinance or Law Coverage'} styleName={''} name={'ordinanceOrLaw'} disabled />
                       <SelectField
-                        name="ordinanceOrLawNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
+                        name="ordinanceOrLawNew" label={''} component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
                           {
                             answer: '25',
                             label: '25% of Coverage A (included)'
@@ -554,11 +444,11 @@ export const Endorsements = (props) => {
                     </div>
                     <div className="form-group">
                       <TextField validations={['required']} label={'Incidental Occ Main'} styleName={''} name={'propertyIncidentalOccupanciesMainDwelling'} disabled />
-                      <TextField validations={['required']} styleName={''} name={'propertyIncidentalOccupanciesMainDwellingNew'} />
+                      <TextField validations={['required']} label={''} styleName={''} name={'propertyIncidentalOccupanciesMainDwellingNew'} />
                     </div>
                     <div className="form-group">
                       <TextField validations={['required']} label={'Incidental Occ Other'} styleName={''} name={'propertyIncidentalOccupanciesOtherStructures'} disabled />
-                      <TextField validations={['required']} styleName={''} name={'propertyIncidentalOccupanciesOtherStructuresNew'} />
+                      <TextField validations={['required']} label={''} styleName={''} name={'propertyIncidentalOccupanciesOtherStructuresNew'} />
                     </div>
                     <div className="form-group">
                       <label>Wind Excluded</label>
@@ -568,30 +458,52 @@ export const Endorsements = (props) => {
                       </select>
                     </div>
                     <div className="form-group">
-                      <label>Property Ever Rented</label>
-                      <input type="text" value="No" disabled />
-                      <select>
-                        <option>No</option>
-                      </select>
+                      <TextField validations={['required']} label={'Property Ever Rented'} styleName={''} name={'propertyRented'} disabled />
+                      <SelectField
+                        label={''}
+                        name={'propertyRentedNew'} styleName={''} onChange={function () {}} answers={[
+                          {
+                            answer: false,
+                            label: 'No'
+                          }, {
+                            answer: true,
+                            label: 'Yes'
+                          }
+                        ]}
+                      />
                     </div>
                     <div className="form-group">
-                      <label>Seasonally Occupied</label>
-                      <input type="text" value="No" disabled />
-                      <select>
-                        <option>No</option>
-                      </select>
+                      <TextField validations={['required']} label={'Seasonally Occupied'} styleName={''} name={'seasonallyOccupied'} disabled />
+                      <SelectField
+                        name={'seasonallyOccupiedNew'} label={''} styleName={''} onChange={function () {}} answers={[
+                          {
+                            answer: false,
+                            label: 'No'
+                          }, {
+                            answer: true,
+                            label: 'Yes'
+                          }
+                        ]}
+                      />
                     </div>
                     <div className="form-group">
-                      <label>No Prior Insurance</label>
-                      <input type="text" value="No" disabled />
-                      <select>
-                        <option>No</option>
-                      </select>
+                      <TextField validations={['required']} label={'Prior Insurance'} styleName={''} name={'noPriorInsurance'} disabled />
+                      <SelectField
+                        name={'noPriorInsuranceNew'} label={''} styleName={''} onChange={function () {}} answers={[
+                          {
+                            answer: false,
+                            label: 'No'
+                          }, {
+                            answer: true,
+                            label: 'Yes'
+                          }
+                        ]}
+                      />
                     </div>
                     <div className="form-group">
                       <TextField validations={['required']} label={'Burglar Alarm'} styleName={''} name={'burglarAlarm'} disabled />
                       <SelectField
-                        name={'burglarAlarmNew'} styleName={''} onChange={function () {}} answers={[
+                        name={'burglarAlarmNew'} label={''} styleName={''} onChange={function () {}} answers={[
                           {
                             answer: false,
                             label: 'No'
@@ -605,7 +517,7 @@ export const Endorsements = (props) => {
                     <div className="form-group">
                       <TextField validations={['required']} label={'Fire Alarm'} styleName={''} name={'fireAlarm'} disabled />
                       <SelectField
-                        name={'fireAlarmNew'} styleName={''} onChange={function () {}} answers={[
+                        name={'fireAlarmNew'} label={''} styleName={''} onChange={function () {}} answers={[
                           {
                             answer: false,
                             label: 'No'
@@ -619,7 +531,7 @@ export const Endorsements = (props) => {
                     <div className="form-group">
                       <TextField validations={['required']} label={'Sprinkler'} styleName={''} name={'sprinkler'} disabled />
                       <SelectField
-                        name={'sprinklerNew'} styleName={''} onChange={function () {}} answers={[
+                        name={'sprinklerNew'} label={''} styleName={''} onChange={function () {}} answers={[
                           {
                             answer: 'N',
                             label: 'No'
@@ -635,12 +547,12 @@ export const Endorsements = (props) => {
                     </div>
                     <div className="form-group">
                       <TextField validations={['required']} label={'Bill To'} styleName={''} name={'billTo'} disabled />
-                      <TextField validations={['required']} styleName={''} name={'billToNew'} />
+                      <TextField validations={['required']} label={''} styleName={''} name={'billToNew'} />
                     </div>
                     <div className="form-group">
                       <TextField validations={['required']} label={'Bill Plan'} styleName={''} name={'billPlan'} disabled />
                       <SelectField
-                        name="billPlanNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
+                        name="billPlanNew" component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
                           {
                             answer: 'ANNUAL',
                             label: 'Annual'
@@ -673,6 +585,7 @@ export const Endorsements = (props) => {
                     <div className="form-group">
                       <TextField validations={['required']} label={'Roof Covering'} styleName={''} name={'roofCovering'} disabled />
                       <SelectField
+                        label={''}
                         name="roofCoveringNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
                           {
                             answer: 'Non-FBC',
@@ -691,6 +604,7 @@ export const Endorsements = (props) => {
                     <div className="form-group">
                       <TextField validations={['required']} label={'Roof Deck Attachment'} styleName={''} name={'roofDeckAttachment'} disabled />
                       <SelectField
+                        label={''}
                         name="roofDeckAttachmentNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
                           {
                             answer: 'A'
@@ -716,6 +630,7 @@ export const Endorsements = (props) => {
                     <div className="form-group">
                       <TextField validations={['required']} label={'Roof to Wall Attachment'} styleName={''} name={'roofToWallConnection'} disabled />
                       <SelectField
+                        label={''}
                         name="roofToWallConnectionNew" component="select" styleName={'weakestRoofWallConnect'} onChange={function () {}} validations={['required']} answers={[
                           {
                             answer: 'Toe Nails'
@@ -738,6 +653,7 @@ export const Endorsements = (props) => {
                     <div className="form-group">
                       <TextField validations={['required']} label={'Roof Geometry'} styleName={''} name={'roofGeometry'} disabled />
                       <SelectField
+                        label={''}
                         name="roofGeometryNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
                           {
                             answer: 'Flat'
@@ -757,6 +673,7 @@ export const Endorsements = (props) => {
                     <div className="form-group">
                       <TextField validations={['required']} label={'Secondary Water Resistance (SWR)'} styleName={''} name={'secondaryWaterResistance'} disabled />
                       <SelectField
+                        label={''}
                         validations={['required']} name={'secondaryWaterResistanceNew'} styleName={''} onChange={function () {}} answers={[
                           {
                             answer: 'Yes',
@@ -774,6 +691,7 @@ export const Endorsements = (props) => {
                     <div className="form-group">
                       <TextField validations={['required']} label={'Opening Protection'} styleName={''} name={'openingProtection'} disabled />
                       <SelectField
+                        label={''}
                         name="openingProtectionNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
                           {
                             answer: 'None'
@@ -800,16 +718,16 @@ export const Endorsements = (props) => {
                     </div>
                     <div className="form-group">
                       <TextField validations={['required']} label={'FBC Wind Speed'} styleName={''} name={'floridaBuildingCodeWindSpeed'} disabled />
-                      <TextField validations={['required']} styleName={''} name={'floridaBuildingCodeWindSpeedNew'} />
+                      <TextField validations={['required']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedNew'} />
                     </div>
                     <div className="form-group">
                       <TextField validations={['required']} label={'FBC Wind Speed Design'} styleName={''} name={'floridaBuildingCodeWindSpeedDesign'} disabled />
-                      <TextField validations={['required']} styleName={''} name={'floridaBuildingCodeWindSpeedDesignNew'} />
+                      <TextField validations={['required']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedDesignNew'} />
                     </div>
                     <div className="form-group">
-                      <TextField validations={['required']} label={'Terrain'} styleName={''} name={'propertyTerrain'} disabled />
+                      <TextField validations={['required']} label={'Terrain'} styleName={''} name={'terrain'} disabled />
                       <SelectField
-                        name="terrainNew" component="select" styleName={'propertyTerrain'} onChange={function () {}} validations={['required']} answers={[
+                        name="terrainNew" component="select" label={''} styleName={'propertyTerrain'} onChange={function () {}} validations={['required']} answers={[
                           {
                             answer: 'B',
                             label: 'B'
@@ -831,7 +749,7 @@ export const Endorsements = (props) => {
                     <div className="form-group">
                       <TextField validations={['required']} label="Internal Pressure Design" styleName={''} name={'internalPressureDesign'} disabled />
                       <SelectField
-                        name="internalPressureDesignNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
+                        name="internalPressureDesignNew" component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
                           {
                             answer: 'Enclosed',
                             label: 'Enclosed'
@@ -849,7 +767,7 @@ export const Endorsements = (props) => {
                     <div className="form-group">
                       <TextField validations={['required']} label={'Wind Borne Debris Region (WBDR)'} styleName={''} name={'windBorneDebrisRegion'} disabled />
                       <SelectField
-                        validations={['required']} name={'windBorneDebrisRegionNew'} styleName={''} onChange={function () {}} answers={[
+                        validations={['required']} name={'windBorneDebrisRegionNew'} label={''} styleName={''} onChange={function () {}} answers={[
                           {
                             answer: 'Yes',
                             label: 'Yes'
@@ -864,13 +782,8 @@ export const Endorsements = (props) => {
                       />
                     </div>
                     <div className="form-group">
-                      <label>Wind Mit Factor</label>
-                      <input type="text" value="Yes" disabled />
-                      <select>
-                        <option>
-                              Yes
-                            </option>
-                      </select>
+                      <TextField validations={['required']} label={'Wind Mit Factor'} styleName={''} name={'windMitFactor'} disabled />
+                      <TextField validations={['required']} styleName={''} label={''} name={'windMitFactorNew'} />
                     </div>
 
                   </div>
@@ -892,12 +805,12 @@ export const Endorsements = (props) => {
                     </div>
                     <div className="form-group">
                       <TextField label={'Year Home Built'} styleName={''} name="yearBuilt" disabled />
-                      <TextField styleName={''} name="yearBuiltNew" />
+                      <TextField styleName={''} label={''} name="yearBuiltNew" />
                     </div>
                     <div className="form-group">
                       <TextField label={'Construction'} styleName={''} name="constructionType" disabled />
                       <SelectField
-                        component="select" styleName={''} name={'constructionTypeNew'}
+                        component="select" styleName={''} label={''} name={'constructionTypeNew'}
                         answers={[
                           {
                             answer: 'FRAME',
@@ -927,12 +840,12 @@ export const Endorsements = (props) => {
                     </div>
                     <div className="form-group">
                       <TextField label={'Year Roof Built'} styleName={''} name="yearOfRoof" disabled />
-                      <TextField styleName={''} name="yearOfRoofNew" />
+                      <TextField styleName={''} label={''} name="yearOfRoofNew" />
                     </div>
                     <div className="form-group">
                       <TextField validations={['required']} label={'Protection Class'} styleName={''} name={'protectionClass'} disabled />
                       <SelectField
-                        name="protectionClassNew" component="select" styleName={''} answers={[
+                        name="protectionClassNew" component="select" label={''} styleName={''} answers={[
                           {
                             answer: '1',
                             label: '01'
@@ -978,7 +891,7 @@ export const Endorsements = (props) => {
                     <div className="form-group">
                       <TextField validations={['required']} label={'BCEG'} styleName={''} name={'buildingCodeEffectivenessGrading'} disabled />
                       <SelectField
-                        component="select" styleName={''} name={'buildingCodeEffectivenessGradingNew'} answers={[
+                        component="select" styleName={''} label={''} name={'buildingCodeEffectivenessGradingNew'} answers={[
                           {
                             answer: '1',
                             label: '01'
@@ -1028,7 +941,7 @@ export const Endorsements = (props) => {
                     <div className="form-group">
                       <TextField validations={['required']} label={'Family Units'} styleName={''} name={'familyUnits'} disabled />
                       <SelectField
-                        name="familyUnitsNew" component="select" styleName={''} onChange={function () {}} answers={[
+                        name="familyUnitsNew" component="select" label={''} styleName={''} onChange={function () {}} answers={[
                           {
                             answer: '1-2',
                             label: '1-2'
@@ -1057,20 +970,20 @@ export const Endorsements = (props) => {
                     </div>
                     <div className="form-group">
                       <TextField validations={['required']} label={'Tidal Waters Dist.'} styleName={''} name={'distanceToTidalWater'} disabled />
-                      <TextField validations={['required']} styleName={''} name={'distanceToTidalWaterNew'} />
+                      <TextField validations={['required']} label={''} styleName={''} name={'distanceToTidalWaterNew'} />
                     </div>
                     <div className="form-group">
                       <TextField validations={['required']} label={'Fire Hydrant Dist.'} styleName={''} name={'distanceToFireHydrant'} disabled />
-                      <TextField validations={['required']} styleName={''} name={'distanceToFireHydrantNew'} />
+                      <TextField validations={['required']} label={''} styleName={''} name={'distanceToFireHydrantNew'} />
                     </div>
                     <div className="form-group">
                       <TextField validations={['required']} label={'Fire Station Dist.'} styleName={''} name={'distanceToFireStation'} disabled />
-                      <TextField validations={['required']} styleName={''} name={'distanceToFireStationNew'} />
+                      <TextField validations={['required']} label={''} styleName={''} name={'distanceToFireStationNew'} />
                     </div>
                     <div className="form-group">
                       <TextField validations={['required']} label={'Residence Type'} styleName={''} name={'residenceType'} disabled />
                       <SelectField
-                        name="residenceTypeNew" component="select" styleName={''} onChange={function () {}} answers={[
+                        name="residenceTypeNew" component="select" label={''} styleName={''} onChange={function () {}} answers={[
                           {
                             answer: 'Single Family',
                             label: 'Single Family'
@@ -1083,12 +996,12 @@ export const Endorsements = (props) => {
                     </div>
                     <div className="form-group">
                       <TextField validations={['required']} label={'Sq. Ft. of Home'} styleName={''} name={'squareFeet'} disabled />
-                      <TextField validations={['required']} styleName={''} name={'squareFeetNew'} />
+                      <TextField validations={['required']} label={''} styleName={''} name={'squareFeetNew'} />
                     </div>
                     <div className="form-group">
                       <TextField validations={['required']} label={'Flood Zone'} styleName={''} name={'floodZone'} disabled />
                       <SelectField
-                        name="floodZoneNew" component="select" styleName={''} onChange={function () {}} answers={[
+                        name="floodZoneNew" component="select" label={''} styleName={''} onChange={function () {}} answers={[
                           {
                             answer: 'A',
                             label: 'A'
@@ -1155,7 +1068,6 @@ export const Endorsements = (props) => {
                     <div className="flex-parent col2">
                       <div className="form-group">
                         <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH2FirstName'} />
-                        {console.log(fieldValues, 'fieldvalues')}
                       </div>
                       <div className="form-group">
                         <TextField validations={['required']} label={'Last Name'} styleName={''} name={'pH2LastName'} />
@@ -1391,3 +1303,113 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Endorsements' })(Endorsements));
+
+
+  // const discountSurcharge = [
+  //   {
+  //     discountSurcharge: 'Wind Excluded',
+  //     value: _.get(rating, 'windMitigationDiscount') === 0 ? 'No' : 'Yes'
+  //   }, {
+  //     discountSurcharge: 'Property Ever Rented',
+  //     value: _.get(underwritingAnswers, 'rented.answer')
+  //   }, {
+  //     discountSurcharge: 'Seasonally Occupied',
+  //     value: _.get(underwritingAnswers, 'monthsOccupied.answer')
+  //   }, {
+  //     discountSurcharge: 'No Prior Insurance',
+  //     value: _.get(underwritingAnswers, 'noPriorInsuranceSurcharge.answer')
+  //   }, {
+  //     discountSurcharge: 'Burglar Alarm',
+  //     value: _.get(property, 'burglarAlarm') ? 'Yes' : 'No'
+  //   }, {
+  //     discountSurcharge: 'Fire Alarm',
+  //     value: _.get(property, 'fireAlarm') ? 'Yes' : 'No'
+  //   }, {
+  //     discountSurcharge: 'Sprinkler',
+  //     value: _.get(property, 'sprinkler') === 'N' ? 'No' : 'Yes'
+  //   }, {
+  //     discountSurcharge: 'Wind Mit Factor',
+  //     value: _.get(rating, 'windMitigationDiscount')
+  //   }
+  // ];
+
+  // const coverageLimitsData = [
+  //   {
+  //     coverage: 'Dwelling',
+  //     value: `$ ${_.get(coverageLimits, 'dwelling.amount')}`
+  //   }, {
+  //     coverage: 'Other Structures',
+  //     value: `$ ${_.get(coverageLimits, 'otherStructures.amount')}`
+  //   }, {
+  //     coverage: 'Personal Property',
+  //     value: `$ ${_.get(coverageLimits, 'personalProperty.amount')}`
+  //   }, {
+  //     coverage: 'Additional Living Expenses',
+  //     value: `$ ${_.get(coverageLimits, 'lossOfUse.amount')}`
+  //   }, {
+  //     coverage: 'Personal Liability',
+  //     value: `$ ${_.get(coverageLimits, 'personalLiability.amount')}`
+  //   }, {
+  //     coverage: 'Medical Payments',
+  //     value: `$ ${_.get(coverageLimits, 'medicalPayments.amount')}`
+  //   }
+  // ];
+
+  // const coverageOptionsData = [
+  //   {
+  //     coverage: 'Mold Property Limit',
+  //     value: `$ ${_.get(coverageLimits, 'moldProperty.amount')}`
+  //   }, {
+  //     coverage: 'Mold Liability Limit',
+  //     value: `$ ${_.get(coverageLimits, 'moldLiability.amount')}`
+  //   }, {
+  //     coverage: 'Personal Property Repl Cost',
+  //     value: _.get(coverageOptions, 'personalPropertyReplacementCost.answer') ? 'Yes' : 'No'
+  //   }, {
+  //     coverage: 'Ordinance or Law Coverage',
+  //     value: `${_.get(coverageLimits, 'ordinanceOrLaw.amount')}%`
+  //   }, {
+  //     coverage: 'Incidental Occ Main',
+  //     value: _.get(coverageOptions, 'propertyIncidentalOccupanciesMainDwelling.answer') ? 'Yes' : 'No'
+  //   }, {
+  //     coverage: 'Incidental Occ Other',
+  //     value: _.get(coverageOptions, 'propertyIncidentalOccupanciesOtherStructures.answer') ? 'Yes' : 'No'
+  //   }
+  // ];
+
+  // const premium = [{
+  //   premium: 'Current Premium',
+  //   value: `$ ${_.get(rating, 'totalPremium')}`
+  // }, {
+  //   premium: 'Initial Premium',
+  //   value: `$ ${_.get(rating, 'netPremium')}`
+  // }];
+
+  // const billing = [
+  //   {
+  //     coverage: 'Balance Due',
+  //     value: `$ ${_.get(rating, 'totalPremium')}`
+  //   }, {
+  //     coverage: 'Next Payment',
+  //     value: `$ ${_.get(rating, 'totalPremium')}`
+  //   }, {
+  //     coverage: 'Bill To',
+  //     value: _.get(props.policy, 'billToType')
+  //   }, {
+  //     coverage: 'Bill Plan',
+  //     value: _.get(props.policy, 'billPlan')
+  //   }
+  // ];
+
+  // const deductibleData = [
+  //   {
+  //     displayText: 'All Other Perils',
+  //     amount: `$ ${_.get(deductibles, 'allOtherPerils.amount')}`
+  //   }, {
+  //     displayText: 'Hurricane',
+  //     amount: `${_.get(deductibles, 'hurricane.amount')}%`
+  //   }, {
+  //     displayText: 'Sinkhole',
+  //     amount: `${_.get(deductibles, 'sinkhole.amount') ? `${_.get(deductibles, 'sinkhole.amount')}%` : 'No'}`
+  //   }
+  // ];
