@@ -283,6 +283,10 @@ export const Endorsements = (props) => {
 
   class PrevEndorsements extends React.Component {
 
+    componentWillMount = () => {
+      console.log(this.props, 'props');
+    }
+
     updateDependencies = (event, field, dependency) => {
       const { dispatch, fieldValues } = this.props;
       if (Number.isNaN(event.target.value)) return;
@@ -482,7 +486,7 @@ export const Endorsements = (props) => {
                             label: '$2,500'
                           }
                         ]}
-                      />                                                                                              </div>
+                      />                                                                                               </div>
                     <div className="form-group">
                       <TextField validations={['required']} label={'Hurricane Deductible'} styleName={''} name={'hurricane'} disabled />
                       <SelectField
