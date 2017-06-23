@@ -6,7 +6,6 @@ import appState from './appStateReducer';
 import error from './errorReducer';
 import service from './serviceReducer';
 import questions from './questionsReducer';
-import service from './serviceReducer';
 
 const rootReducer = combineReducers({
   form: formReducer,

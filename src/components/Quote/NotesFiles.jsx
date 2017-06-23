@@ -20,16 +20,15 @@ const handleGetQuote = (state) => {
 
 const handleInitialize = state => ({});
 
-const SearchPanel = (props) => {
-  return (
-    <div className="toolbar">
-      <div className='input-group'>
-        <div className="btn btn-notes">Notes</div>
-        <div className="btn btn-files">Files</div>
-      </div>
-      { props.searchField }
+const SearchPanel = (props) => (
+  <div className="toolbar">
+    <div className='input-group'>
+      <div className="btn btn-notes">Notes</div>
+      <div className="btn btn-files">Files</div>
     </div>
-  );
+    { props.searchField }
+  </div>
+);
 
 const BSTable = props => props.notes ?
     (
