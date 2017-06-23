@@ -44,16 +44,7 @@ const handleInitialize = (state) => {
   return values;
 };
 
-/**
-------------------------------------------------
- The render is where all the data is being pulled
- from the props.
- The quote data data comes from the previous task
- which is createQuote / singleQuote. This might
- not be the case in later calls, you may need
- to pull it from another place in the model
-------------------------------------------------
-*/
+const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
 
 export class Underwriting extends Component {
 
@@ -141,7 +132,7 @@ export class Underwriting extends Component {
                     className="btn btn-primary"
                     type="submit"
                     form="Underwriting"
-                    disabled={this.props.appState.data.submitting || pristine}
+                    disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}
                   >Update</button>
 
                 </div>

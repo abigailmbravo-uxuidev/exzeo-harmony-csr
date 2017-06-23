@@ -18,6 +18,7 @@ import RadioField from '../Form/inputs/RadioField';
 import CurrencyField from '../Form/inputs/CurrencyField';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
+import DateField from '../Form/inputs/DateField';
 
 const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName])
@@ -28,6 +29,15 @@ const handleGetQuoteData = (state) => {
     ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
     : {};
   return quoteData;
+};
+
+const handleGetZipCodeSettings = (state) => {
+  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  if (!taskData) return [];
+
+  const zipCodeSettings = _.find(taskData.model.variables, { name: 'getZipCodeSettings' }) ?
+  _.find(taskData.model.variables, { name: 'getZipCodeSettings' }).value.result[0] : null;
+  return zipCodeSettings;
 };
 
 function calculatePercentage(oldFigure, newFigure) {
@@ -111,6 +121,7 @@ const handleInitialize = (state) => {
   values.hurricane = hurricane;
 
   values.calculatedHurricane = _.get(quoteData, 'deductibles.hurricane.calculatedAmount');
+  values.calculatedSinkhole = _.get(quoteData, 'deductibles.sinkhole.calculatedAmount');
 
   values.floridaBuildingCodeWindSpeed = _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeed');
   values.floridaBuildingCodeWindSpeedDesign = _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign');
@@ -144,6 +155,7 @@ const populateAgentData = (state) => {
   return [];
 };
 
+const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
 const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question') || '';
@@ -267,6 +279,8 @@ export class Coverage extends Component {
     const personalProperty = _.get(quoteData, 'coverageLimits.personalProperty.amount');
     const hurricane = _.get(quoteData, 'deductibles.hurricane.amount');
     const calculatedHurricane = _.get(quoteData, 'deductibles.hurricane.calculatedAmount');
+    const calculatedSinkhole = _.get(quoteData, 'deductibles.sinkhole.calculatedAmount');
+
 
     dispatch(change('Coverage', 'dwellingAmount', dwelling));
 
@@ -278,6 +292,7 @@ export class Coverage extends Component {
     dispatch(change('Coverage', 'personalPropertyReplacementCostCoverage', false));
 
     dispatch(change('Coverage', 'sinkholePerilCoverage', _.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer')));
+    dispatch(change('Coverage', 'calculatedSinkhole', calculatedSinkhole));
 
     dispatch(change('Coverage', 'allOtherPerils', _.get(quoteData, 'deductibles.allOtherPerils.amount')));
     dispatch(change('Coverage', 'hurricane', hurricane));
@@ -386,6 +401,8 @@ export class Coverage extends Component {
     dispatch(change('Coverage', 'calculatedHurricane', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.hurricane)))));
 
     dispatch(change('Coverage', 'lossOfUse', String(setPercentageOfValue(Number(dwellingNumber), 10))));
+
+    dispatch(change('Coverage', 'calculatedSinkhole', String(setPercentageOfValue(Number(dwellingNumber), 10))));
   }
 
   updateDependencies = (event, field, dependency) => {
@@ -401,8 +418,16 @@ export class Coverage extends Component {
       : String(fieldValue)));
   }
 
+  updateCalculatedSinkhole = () => {
+    const { dispatch, fieldValues } = this.props;
+    if (Number.isNaN(event.target.value)) { return; }
+
+    const dependencyValue = String(fieldValues.dwellingAmount).replace(/\D+/g, '');
+    dispatch(change('Coverage', 'calculatedSinkhole', String(setPercentageOfValue(Number(dependencyValue), 10))));
+  }
+
   render() {
-    const { fieldValues, handleSubmit, initialValues, pristine, agents, questions } = this.props;
+    const { quoteData, fieldValues, handleSubmit, initialValues, pristine, agents, questions, zipCodeSettings } = this.props;
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
@@ -417,7 +442,9 @@ export class Coverage extends Component {
                   <h3>Produced By</h3>
                   <div className="flex-parent">
                     <div className="flex-child">
-                      <div><TextField validations={['required']} label={'Effective Date'} styleName={''} name={'effectiveDate'} type={'date'} /></div>
+                      <div>
+                        <DateField validations={['date']} label={'Effective Date'} name={'effectiveDate'} min={zipCodeSettings ? zipCodeSettings.minEffectiveDate : null} max={zipCodeSettings ? zipCodeSettings.maxEffectiveDate : null} />
+                      </div>
                     </div>
 
                     <div className="flex-child">
@@ -852,7 +879,7 @@ export class Coverage extends Component {
                     <div className="flex-parent">
                       <div className="flex-child">
                         <SelectField
-                          name="sinkholePerilCoverage" component="select" styleName={''} label={'Sinkhole'} onChange={function () {}} answers={[
+                          name="sinkholePerilCoverage" component="select" styleName={''} label="Sinkhole" onChange={() => this.updateCalculatedSinkhole()} answers={[
                             {
                               answer: false,
                               label: 'Coverage Excluded'
@@ -864,6 +891,12 @@ export class Coverage extends Component {
                         />
                       </div>
                     </div>
+                    { String(fieldValues.sinkholePerilCoverage) === 'true' && <div className="flex-parent">
+                      <div className="flex-child">
+                        <CurrencyField validations={['required']} label={'Calculated Sinkhole'} styleName={'coverage-c'} name="calculatedSinkhole" disabled />
+                      </div>
+                    </div>
+                    }
                   </div>
                   <div className="discounts flex-child">
                     <h3>Discounts</h3>
@@ -1002,7 +1035,7 @@ export class Coverage extends Component {
                   <button className="btn btn-secondary" type="button" form="Coverage" onClick={this.clearForm}>
                     Cancel
                   </button>
-                  <button className="btn btn-primary" type="submit" form="Coverage" disabled={this.props.appState.data.submitting || pristine}>
+                  <button className="btn btn-primary" type="submit" form="Coverage" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}>
                     Update
                   </button>
                 </div>
@@ -1022,6 +1055,7 @@ Coverage.contextTypes = {
 // ------------------------------------------------
 Coverage.propTypes = {
   ...propTypes,
+  zipCodeSettings: PropTypes.shape(),
   tasks: PropTypes.shape(),
   appState: PropTypes.shape({
     modelName: PropTypes.string,
@@ -1040,6 +1074,7 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'Coverage.values', {}),
   initialValues: handleInitialize(state),
   quoteData: handleGetQuoteData(state),
+  zipCodeSettings: handleGetZipCodeSettings(state),
   questions: state.questions
 });
 
