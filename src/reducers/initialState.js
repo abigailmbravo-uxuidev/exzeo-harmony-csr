@@ -5,6 +5,7 @@ import {
 export default {
   search: new Map({}),
   workflowData: {},
+  service: {},
   appState: {
     data: {
       submitting: false,
