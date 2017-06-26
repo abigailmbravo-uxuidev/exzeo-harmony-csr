@@ -16,15 +16,18 @@ const handleGetPolicy = (state) => {
 
 const DetailHeader = (props) => {
   const { policyData } = props;
+  if (!policyData.policyID) {
+    return (<div className="detailHeader" />);
+  }
   return (<div className="detailHeader">
-  <section id="policyDetails" className="policyDetails">
-    <dl>
-      <div>
-        <dd>{_.get(policyData, 'product') === 'HO3' ? `${_.get(policyData, 'product')} Homeowners` : _.get(policyData, 'product')}</dd>
-        <dd>{_.get(policyData, 'policyNumber')}</dd>
-        <dd>{_.get(policyData, 'status')}</dd>
-      </div>
-    </dl>
+    <section id="policyDetails" className="policyDetails">
+      <dl>
+        <div>
+          <dd>{_.get(policyData, 'product') === 'HO3' ? `${_.get(policyData, 'product')} Homeowners` : _.get(policyData, 'product')}</dd>
+          <dd>{_.get(policyData, 'policyNumber')}</dd>
+          <dd>{_.get(policyData, 'status')}</dd>
+        </div>
+      </dl>
     </section>
     <section id="policyholder" className="policyholder">
       <dl>

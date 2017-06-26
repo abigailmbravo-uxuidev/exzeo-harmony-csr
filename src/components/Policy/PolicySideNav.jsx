@@ -56,6 +56,8 @@ const closeNewNoteFileUploader = (props) => {
 const goToPage = (link, key, props) => {
   const workflowId = props.appState.instanceId;
 
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, submitting: true });
+
   const steps = [
     { name: 'hasUserEnteredData', data: { answer: 'No' } },
     { name: 'moveTo', data: { key } }
