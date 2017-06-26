@@ -25,9 +25,12 @@ const handleGetQuoteData = (state) => {
     ? state.cg[state.appState.modelName].data
     : null;
   if (!taskData) { return {}; }
+  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
+    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
+    : {};
   const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
     ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
-    : {};
+    : quoteEnd;
   return quoteData;
 };
 
@@ -219,6 +222,7 @@ export class Coverage extends Component {
       companyCode: quoteData.companyCode,
       state: quoteData.state
     };
+
     this.props.actions.cgActions.startWorkflow('getAgency', startModelData, false);
   };
 
