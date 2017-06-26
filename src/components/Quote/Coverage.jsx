@@ -36,11 +36,15 @@ const handleGetQuoteData = (state) => {
 
 const handleGetZipCodeSettings = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return [];
+  if (!taskData) return null;
 
   const zipCodeSettings = _.find(taskData.model.variables, { name: 'getZipCodeSettings' }) ?
   _.find(taskData.model.variables, { name: 'getZipCodeSettings' }).value.result[0] : null;
-  return zipCodeSettings;
+
+  const zipCodeSettingsQuote = _.find(taskData.model.variables, { name: 'getZipCodeSettingsForQuote' }) ?
+  _.find(taskData.model.variables, { name: 'getZipCodeSettingsForQuote' }).value.result[0] : null;
+
+  return zipCodeSettingsQuote || zipCodeSettings;
 };
 
 function calculatePercentage(oldFigure, newFigure) {
