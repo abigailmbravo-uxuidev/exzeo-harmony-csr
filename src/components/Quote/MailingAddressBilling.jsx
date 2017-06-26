@@ -203,9 +203,8 @@ export class MailingAddressBilling extends Component {
 
     actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
-        // // now update the workflow details so the recalculated rate shows
-        // actions.appStateActions.setAppState(appState.modelName,
-        //   workflowId, { quote: this.props.quoteData, updateWorkflowDetails: true });
+        this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+          workflowId, { ...this.props.appState.data, submitting: false, selectedLink: 'mailing' });
       });
   };
 

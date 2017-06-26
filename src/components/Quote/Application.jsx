@@ -64,7 +64,8 @@ const handleFormSubmit = (data, dispatch, props) => {
       {
         ...props.appState.data,
         activateRedirectLink: '/quote/coverage',
-        activateRedirect: true
+        activateRedirect: true,
+        submitting: false
       });
   });
 };

@@ -64,6 +64,8 @@ export class Coverage extends Component {
 
         this.props.actions.appStateActions.setAppState('csrQuote', startResult.modelInstanceId, { ...this.props.appState.data, submitting: true });
         this.props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
+          this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+          startResult.modelInstanceId, { ...this.props.appState.data, submitting: false });
         });
       });
     }

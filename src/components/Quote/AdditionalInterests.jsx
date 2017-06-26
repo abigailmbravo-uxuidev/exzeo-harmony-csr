@@ -137,6 +137,8 @@ export class AdditionalLinterests extends Component {
         // now update the workflow details so the recalculated rate shows
         actions.appStateActions.setAppState(appState.modelName,
           workflowId, { ...appState.data,
+            selectedLink: 'additionalInterests',
+            submitting: false,
             showAdditionalInterestModal: false,
             showAdditionalInterestEditModal: false });
         // this.context.router.history.push('/quote/coverage');
@@ -195,6 +197,10 @@ export class AdditionalLinterests extends Component {
     actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
         additionalInterests = modifiedAIs;
+        this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+          workflowId, { ...this.props.appState.data,
+            selectedLink: 'additionalInterests',
+            submitting: false });
       });
   }
 

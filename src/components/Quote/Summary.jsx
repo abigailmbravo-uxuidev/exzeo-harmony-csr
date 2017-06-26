@@ -61,7 +61,9 @@ const handleFormSubmit = (data, dispatch, props) => {
     .then(() => {
       dispatch(reset('Summary'));
       actions.appStateActions.setAppState(appState.modelName,
-    workflowId, { ...props.appState.data, submitting: false });
+    workflowId, { ...props.appState.data,
+      selectedLink: 'summary',
+      submitting: false });
     });
 };
 

@@ -72,15 +72,10 @@ export class Underwriting extends Component {
     actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
         // now update the workflow details so the recalculated rate shows
-        actions.appStateActions.setAppState(
-          appState.modelName,
-          workflowId,
-          {
-            ...appState.data,
-            quote: quoteData,
-            hideYoChildren: false
-          }
-        );
+        this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+          workflowId, { ...this.props.appState.data,
+            selectedLink: 'underwriting',
+            submitting: false });
       });
   };
 
