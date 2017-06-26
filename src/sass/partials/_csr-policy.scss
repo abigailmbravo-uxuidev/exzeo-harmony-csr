@@ -427,15 +427,38 @@
       width: 50%;
 
       .form-group.labels {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
         label {
           text-align: left;
+          width: 33.33%;
+          flex: 0 1 33.33%;
+          margin: 0 ($padding) 0 0;
+
         }
+
+        label:nth-child(3) {
+          margin: 0;
+        }
+
       }
 
-      .form-group {
+      .form-group-double-element {
         display: flex;
-        flex-direction: row;;
+        flex-direction: row;
         align-items: center;
+        margin: 0 0 ($padding) 0;
+
+      .form-group {
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 66.66%;
+        flex: 0 1 66.66%;
+        margin: 0 ($padding) 0 0;
 
         label {
           width: 50%;
@@ -448,18 +471,33 @@
           }
         }
 
-        *:nth-child(2) {
-          width: 25%;
-          flex: 0 1 25%;
+        > *:nth-child(2) {
+          width: 50%;
+          flex: 0 1 50%;
           margin: 0 ($padding) 0 0;
         }
 
-        *:nth-child(3) {
-          width: 25%;
-          flex: 0 1 25%;
-        }
 
       }
+
+      > .form-group:nth-child(2) {
+        width: 33.33%;
+        flex: 0 1 33.33%;
+
+        * {
+          width: 100%;
+          flex: 0 1 100%;
+          margin: 0;
+        }
+
+        label {
+          display: none;
+        }
+
+
+      }
+
+    }
 
     }
 

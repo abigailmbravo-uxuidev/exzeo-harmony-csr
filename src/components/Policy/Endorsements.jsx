@@ -208,7 +208,7 @@ class Endorsements extends React.Component {
                       <div className="form-group labels">
                         <label /><label>Current</label><label>New</label>
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <CurrencyField
                           validations={['required', 'range']} label={'Dwelling Amount (A)'} styleName={''} name={'dwellingAmount'}
                           min={initialValues.dwellingMin} max={initialValues.dwellingMax} disabled
@@ -218,11 +218,11 @@ class Endorsements extends React.Component {
                           min={initialValues.dwellingMin} label={''} max={initialValues.dwellingMax}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <CurrencyField validations={['required']} name="otherStructuresAmount" label={'Other Structure (B)'} styleName={'coverage-b'} disabled />
                         <CurrencyField validations={['required']} label={''} name="otherStructuresAmountNew" styleName={'coverage-b'} />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Other Structures %'} styleName={''} name={'otherStructures'} disabled />
                         <SelectField
                           name="otherStructuresNew" component="select" label={''} styleName={'coverage-b-percentage'} onChange={event => updateDependencies(event, 'otherStructuresAmount', 'dwellingAmount', this.props)} validations={['required']} answers={[
@@ -247,11 +247,11 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <CurrencyField validations={['required']} label={'Personal Property (C)'} styleName={'coverage-c'} name="personalPropertyAmount" disabled />
                         <CurrencyField validations={['required']} label={''} styleName={'coverage-c'} name="personalPropertyAmountNew" />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Personal Property %'} styleName={''} name={'personalProperty'} disabled />
                         <SelectField
                           name="personalPropertyNew" component="select" label={''} styleName={'coverage-c-percentage'} onChange={event => updateDependencies(event, 'personalPropertyAmount', 'dwellingAmount', this.props)} validations={['required']} answers={[
@@ -274,16 +274,16 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <label>Additional Living Expenses</label>
                         <input type="numeric" onChange={function () {}} value="25750" disabled />
                         <input type="numeric" onChange={function () {}} value="25750" disabled />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <CurrencyField label={'Loss of Use (D)'} styleName={''} name={'lossOfUse'} disabled />
                         <CurrencyField styleName={''} label={''} name={'lossOfUseNew'} />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <CurrencyField validations={['required']} label={'Personal Liability (E)'} styleName={''} name={'personalLiability'} disabled />
                         <SelectField
                           name="personalLiabilityNew" component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
@@ -297,11 +297,11 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <CurrencyField validations={['required']} label={'Medical Payments (F)'} styleName={''} name={'medicalPayments'} disabled />
                         <CurrencyField name={'medicalPaymentsNew'} label={''} styleName={''} />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <CurrencyField validations={['required']} label={'Mold Property Limit'} styleName={''} name={'moldProperty'} disabled />
                         <SelectField
                           name="moldPropertyNew" component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
@@ -318,7 +318,7 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <CurrencyField validations={['required']} label={'Mold Liability Limit'} styleName={''} name={'moldLiability'} disabled />
                         <SelectField
                           name="moldLiabilityNew" component="select" styleName={''} label={''} onChange={function () {}} validations={['required']} answers={[
@@ -332,7 +332,7 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <CurrencyField validations={['required']} label={'AOP Deductible'} styleName={''} name={'allOtherPerils'} disabled />
                         <SelectField
                           name="allOtherPerilsNew" component="select" styleName={''} label={''} onChange={function () {}} validations={['required']} answers={[
@@ -348,7 +348,7 @@ class Endorsements extends React.Component {
                             }
                           ]}
                         />                                                                                                                                                                                                                                               </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Hurricane Deductible'} styleName={''} name={'hurricane'} disabled />
                         <SelectField
                           label={''}
@@ -363,7 +363,7 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Sinkhole'} styleName={''} name={'sinkholePerilCoverage'} disabled />
                         <SelectField
                           name="sinkholePerilCoverageNew" label={''} component="select" styleName={''} onChange={function () {}} answers={[
@@ -386,7 +386,7 @@ class Endorsements extends React.Component {
                       <div className="form-group labels">
                         <label /><label>Current</label><label>New</label>
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Personal Property Repl Cost'} styleName={''} name={'personalPropertyReplacementCostCoverage'} disabled />
                         <SelectField
                           name={'personalPropertyReplacementCostCoverageNew'} label={''} styleName={'billPlan'} onChange={function () {}} answers={[
@@ -400,7 +400,7 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Ordinance or Law Coverage'} styleName={''} name={'ordinanceOrLaw'} disabled />
                         <SelectField
                           name="ordinanceOrLawNew" label={''} component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
@@ -414,22 +414,22 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Incidental Occ Main'} styleName={''} name={'propertyIncidentalOccupanciesMainDwelling'} disabled />
                         <TextField validations={['required']} label={''} styleName={''} name={'propertyIncidentalOccupanciesMainDwellingNew'} />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Incidental Occ Other'} styleName={''} name={'propertyIncidentalOccupanciesOtherStructures'} disabled />
                         <TextField validations={['required']} label={''} styleName={''} name={'propertyIncidentalOccupanciesOtherStructuresNew'} />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <label>Wind Excluded</label>
                         <input type="text" onChange={function () {}} value="No" disabled />
                         <select>
                           <option>No</option>
                         </select>
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Property Ever Rented'} styleName={''} name={'propertyRented'} disabled />
                         <SelectField
                           label={''}
@@ -444,7 +444,7 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Seasonally Occupied'} styleName={''} name={'seasonallyOccupied'} disabled />
                         <SelectField
                           name={'seasonallyOccupiedNew'} label={''} styleName={''} onChange={function () {}} answers={[
@@ -458,7 +458,7 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Prior Insurance'} styleName={''} name={'noPriorInsurance'} disabled />
                         <SelectField
                           name={'noPriorInsuranceNew'} label={''} styleName={''} onChange={function () {}} answers={[
@@ -472,7 +472,7 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Burglar Alarm'} styleName={''} name={'burglarAlarm'} disabled />
                         <SelectField
                           name={'burglarAlarmNew'} label={''} styleName={''} onChange={function () {}} answers={[
@@ -486,7 +486,7 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Fire Alarm'} styleName={''} name={'fireAlarm'} disabled />
                         <SelectField
                           name={'fireAlarmNew'} label={''} styleName={''} onChange={function () {}} answers={[
@@ -500,7 +500,7 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Sprinkler'} styleName={''} name={'sprinkler'} disabled />
                         <SelectField
                           name={'sprinklerNew'} label={''} styleName={''} onChange={function () {}} answers={[
@@ -517,11 +517,11 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Bill To'} styleName={''} name={'billToType'} disabled />
                         <TextField validations={['required']} label={''} styleName={''} name={'billToTypeNew'} />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Bill Plan'} styleName={''} name={'billPlan'} disabled />
                         <SelectField
                           name="billPlanNew" component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
@@ -554,7 +554,7 @@ class Endorsements extends React.Component {
                       <div className="form-group labels">
                         <label /><label>Current</label><label>New</label>
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Roof Covering'} styleName={''} name={'roofCovering'} disabled />
                         <SelectField
                           label={''}
@@ -573,7 +573,7 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Roof Deck Attachment'} styleName={''} name={'roofDeckAttachment'} disabled />
                         <SelectField
                           label={''}
@@ -599,7 +599,7 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Roof to Wall Attachment'} styleName={''} name={'roofToWallConnection'} disabled />
                         <SelectField
                           label={''}
@@ -622,7 +622,7 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Roof Geometry'} styleName={''} name={'roofGeometry'} disabled />
                         <SelectField
                           label={''}
@@ -642,7 +642,7 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Secondary Water Resistance (SWR)'} styleName={''} name={'secondaryWaterResistance'} disabled />
                         <SelectField
                           label={''}
@@ -660,7 +660,7 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Opening Protection'} styleName={''} name={'openingProtection'} disabled />
                         <SelectField
                           label={''}
@@ -688,15 +688,15 @@ class Endorsements extends React.Component {
                       <div className="form-group labels">
                         <label /><label>Current</label><label>New</label>
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'FBC Wind Speed'} styleName={''} name={'floridaBuildingCodeWindSpeed'} disabled />
                         <TextField validations={['required']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedNew'} />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'FBC Wind Speed Design'} styleName={''} name={'floridaBuildingCodeWindSpeedDesign'} disabled />
                         <TextField validations={['required']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedDesignNew'} />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Terrain'} styleName={''} name={'terrain'} disabled />
                         <SelectField
                           name="terrainNew" component="select" label={''} styleName={'propertyTerrain'} onChange={function () {}} validations={['required']} answers={[
@@ -718,7 +718,7 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label="Internal Pressure Design" styleName={''} name={'internalPressureDesign'} disabled />
                         <SelectField
                           name="internalPressureDesignNew" component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
@@ -736,7 +736,7 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Wind Borne Debris Region (WBDR)'} styleName={''} name={'windBorneDebrisRegion'} disabled />
                         <SelectField
                           validations={['required']} name={'windBorneDebrisRegionNew'} label={''} styleName={''} onChange={function () {}} answers={[
@@ -753,7 +753,7 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Wind Mit Factor'} styleName={''} name={'windMitFactor'} disabled />
                         <TextField validations={['required']} styleName={''} label={''} name={'windMitFactorNew'} />
                       </div>
@@ -775,11 +775,11 @@ class Endorsements extends React.Component {
                       <div className="form-group labels">
                         <label /><label>Current</label><label>New</label>
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField label={'Year Home Built'} styleName={''} name="yearBuilt" disabled />
                         <TextField styleName={''} label={''} name="yearBuiltNew" />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField label={'Construction'} styleName={''} name="constructionType" disabled />
                         <SelectField
                           component="select" styleName={''} label={''} name={'constructionTypeNew'}
@@ -810,11 +810,11 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField label={'Year Roof Built'} styleName={''} name="yearOfRoof" disabled />
                         <TextField styleName={''} label={''} name="yearOfRoofNew" />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Protection Class'} styleName={''} name={'protectionClass'} disabled />
                         <SelectField
                           name="protectionClassNew" component="select" label={''} styleName={''} answers={[
@@ -860,7 +860,7 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'BCEG'} styleName={''} name={'buildingCodeEffectivenessGrading'} disabled />
                         <SelectField
                           component="select" styleName={''} label={''} name={'buildingCodeEffectivenessGradingNew'} answers={[
@@ -910,7 +910,7 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Family Units'} styleName={''} name={'familyUnits'} disabled />
                         <SelectField
                           name="familyUnitsNew" component="select" label={''} styleName={''} onChange={function () {}} answers={[
@@ -940,19 +940,19 @@ class Endorsements extends React.Component {
                       <div className="form-group labels">
                         <label /><label>Current</label><label>New</label>
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Tidal Waters Dist.'} styleName={''} name={'distanceToTidalWater'} disabled />
                         <TextField validations={['required']} label={''} styleName={''} name={'distanceToTidalWaterNew'} />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Fire Hydrant Dist.'} styleName={''} name={'distanceToFireHydrant'} disabled />
                         <TextField validations={['required']} label={''} styleName={''} name={'distanceToFireHydrantNew'} />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Fire Station Dist.'} styleName={''} name={'distanceToFireStation'} disabled />
                         <TextField validations={['required']} label={''} styleName={''} name={'distanceToFireStationNew'} />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Residence Type'} styleName={''} name={'residenceType'} disabled />
                         <SelectField
                           name="residenceTypeNew" component="select" label={''} styleName={''} onChange={function () {}} answers={[
@@ -966,11 +966,11 @@ class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Sq. Ft. of Home'} styleName={''} name={'squareFeet'} disabled />
                         <TextField validations={['required']} label={''} styleName={''} name={'squareFeetNew'} />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Flood Zone'} styleName={''} name={'floodZone'} disabled />
                         <SelectField
                           name="floodZoneNew" component="select" label={''} styleName={''} onChange={function () {}} answers={[
@@ -1009,27 +1009,25 @@ class Endorsements extends React.Component {
                       <h3>Primary Policyholder</h3>
 
                       <div className="flex-parent col2">
-                        <div className="form-group">
+
                           <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH1FirstName'} />
-                        </div>
-                        <div className="form-group">
+
                           <TextField validations={['required']} label={'Last Name'} styleName={''} name={'pH1LastName'} />
-                        </div>
+
                       </div>
 
                       <div className="flex-parent col2">
-                        <div className="form-group">
+
                           <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH1phone'} />
-                        </div>
-                        <div className="form-group">
+
                           <PhoneField validations={['required', 'phone']} label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} />
-                        </div>
+
                       </div>
 
                       <div className="flex-parent">
-                        <div className="form-group">
+
                           <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH1email'} />
-                        </div>
+
                       </div>
 
                     </div>
@@ -1039,27 +1037,25 @@ class Endorsements extends React.Component {
                       <h3>Secondary Policyholder</h3>
 
                       <div className="flex-parent col2">
-                        <div className="form-group">
+
                           <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH2FirstName'} />
-                        </div>
-                        <div className="form-group">
+
                           <TextField validations={['required']} label={'Last Name'} styleName={''} name={'pH2LastName'} />
-                        </div>
+
                       </div>
 
                       <div className="flex-parent col2">
-                        <div className="form-group">
+
                           <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH2phone'} />
-                        </div>
-                        <div className="form-group">
+
                           <PhoneField validations={['required', 'phone']} label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} />
-                        </div>
+
                       </div>
 
                       <div className="flex-parent">
-                        <div className="form-group">
+
                           <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH2email'} />
-                        </div>
+
                       </div>
 
                     </div>
@@ -1075,15 +1071,15 @@ class Endorsements extends React.Component {
 
 
                     <div className="flex-child">
-                      <div className="form-group">
+
                         <TextField label={'Address 1'} styleName={''} name={'address1'} />
-                      </div>
+
                     </div>
 
                     <div className="flex-child">
-                      <div className="form-group">
+
                         <TextField label={'Address 2'} styleName={''} name={'address2'} />
-                      </div>
+
                     </div>
 
                   </div>
@@ -1093,21 +1089,21 @@ class Endorsements extends React.Component {
 
 
                     <div className="flex-child">
-                      <div className="form-group">
+
                         <TextField label={'City'} styleName={''} name={'city'} />
-                      </div>
+
                     </div>
 
                     <div className="flex-child">
-                      <div className="form-group">
+
                         <TextField label={'State'} styleName={''} name={'state'} />
-                      </div>
+
                     </div>
 
                     <div className="flex-child">
-                      <div className="form-group">
+
                         <TextField label={'Zip'} styleName={''} name={'zip'} />
-                      </div>
+
                     </div>
 
                   </div>
@@ -1121,15 +1117,15 @@ class Endorsements extends React.Component {
 
 
                     <div className="flex-child">
-                      <div className="form-group">
+
                         <TextField label={'Address 1'} styleName={''} name={'address1'} />
-                      </div>
+
                     </div>
 
                     <div className="flex-child">
-                      <div className="form-group">
+
                         <TextField label={'Address 2'} styleName={''} name={'address2'} />
-                      </div>
+
                     </div>
 
                   </div>
@@ -1139,21 +1135,21 @@ class Endorsements extends React.Component {
 
 
                     <div className="flex-child">
-                      <div className="form-group">
+
                         <TextField label={'City'} styleName={''} name={'city'} />
-                      </div>
+
                     </div>
 
                     <div className="flex-child">
-                      <div className="form-group">
+
                         <TextField label={'State'} styleName={''} name={'state'} />
-                      </div>
+
                     </div>
 
                     <div className="flex-child">
-                      <div className="form-group">
+
                         <TextField label={'Zip'} styleName={''} name={'zip'} />
-                      </div>
+
                     </div>
 
                   </div>
