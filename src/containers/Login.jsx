@@ -6,9 +6,11 @@ import Loader from '../components/Common/Loader';
 class Login extends Component {
   constructor(props) {
     super(props);
-    const { isAuthenticated } = props.auth;
+  }
+  componentDidMount() {
+    const { isAuthenticated } = this.props.auth;
     if (!isAuthenticated()) {
-      props.auth.login();
+      this.props.auth.login();
     } else {
       history.push('/');
     }

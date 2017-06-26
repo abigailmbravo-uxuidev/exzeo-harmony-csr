@@ -1,5 +1,4 @@
 import auth0 from 'auth0-js';
-import axios from 'axios';
 import _ from 'lodash';
 
 import history from './history';
@@ -10,22 +9,37 @@ export default class Auth {
     clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
     redirectUri: `${process.env.REACT_APP_AUTH0_PRIMARY_URL}/callback`,
     responseType: 'token id_token',
-    scope: 'openid email profile name username groups roles'
+    scope: 'openid email profile name username groups roles',
+    sso: true
   });
+
+  renewInterval;
 
   userProfile;
 
   constructor() {
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
+    this.checkAuth = this.checkAuth.bind(this);
     this.handleAuthentication = this.handleAuthentication.bind(this);
     this.isAuthenticated = this.isAuthenticated.bind(this);
     this.getAccessToken = this.getAccessToken.bind(this);
     this.getProfile = this.getProfile.bind(this);
+
+    // check if the user is actually logged out from another sso site
+    this.renewInterval = setInterval(() => { this.checkAuth(); }, 5000);
   }
 
   login() {
     this.auth0.authorize();
+  }
+
+  checkAuth() {
+    if (this.isAuthenticated()) {
+      return;
+    }
+
+    this.logout();
   }
 
   handleAuthentication() {
@@ -45,9 +59,6 @@ export default class Auth {
     localStorage.setItem('access_token', authResult.accessToken);
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
-    axios.defaults.headers.common['authorization'] = `bearer ${authResult.idToken}`; // eslint-disable-line
-    // navigate to the home route
-    history.replace('/');
   }
 
   checkIfCSRGroup() {
@@ -93,13 +104,9 @@ export default class Auth {
 
   logout() {
     // Clear access token and ID token from local storage
-    localStorage.removeItem('userToken');
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('id_token');
-    localStorage.removeItem('expires_at');
+    localStorage.clear();
     this.userProfile = null;
-    const logoutUrl = `https://${process.env.REACT_APP_AUTH0_DOMAIN}/v2/logout?client_id=${process.env.REACT_APP_AUTH0_CLIENT_ID}`;
-    window.location = logoutUrl;
+    this.auth0.logout({ returnTo: process.env.REACT_APP_AUTH0_PRIMARY_URL, clientID: process.env.REACT_APP_AUTH0_CLIENT_ID, federated: true });
   }
 
   isAuthenticated = () => {
