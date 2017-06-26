@@ -1,8 +1,10 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { reduxForm, propTypes } from 'redux-form';
+import _ from 'lodash';
 import * as appStateActions from '../../actions/appStateActions';
 import * as cgActions from '../../actions/cgActions';
 import NewNoteFileUploader from '../Common/NewNoteFileUploader';
@@ -76,10 +78,20 @@ const goToPage = (link, key, props) => {
     });
 };
 
+const getDocumentId = (props) => {
+  const taskData = (props.cg && props.appState && props.cg[props.appState.modelName]) ? props.cg[props.appState.modelName].data : null;
+  if (!taskData) return {};
+  const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
+  return policyData.policyNumber;
+};
+
 const SideNav = (props) => {
   const redirect = (props.activateRedirect)
     ? (<Redirect to={props.activateRedirectLink} />)
     : null;
+
+  const documentId = getDocumentId(props);
+
   return (
     <nav className="site-nav">
       { redirect }
@@ -113,7 +125,7 @@ const SideNav = (props) => {
         </li>
       </ul>
       { props.appState.data.showNewNoteFileUploader === true &&
-        <NewNoteFileUploader closeButtonHandler={() => closeNewNoteFileUploader(props)} />
+        <NewNoteFileUploader noteType="policyNote" documentId={ documentId } closeButtonHandler={() => closeNewNoteFileUploader(props)} />
       }
     </nav>);
 };
@@ -136,11 +148,11 @@ SideNav.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  tasks: state.cg,
   appState: state.appState,
   completedTasks: state.completedTasks,
   activateRedirectLink: state.appState.data.activateRedirectLink,
-  activateRedirect: state.appState.data.activateRedirect
+  activateRedirect: state.appState.data.activateRedirect,
+  cg: state.cg
 });
 
 const mapDispatchToProps = dispatch => ({
