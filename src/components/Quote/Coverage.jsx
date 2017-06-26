@@ -1002,7 +1002,7 @@ export class Coverage extends Component {
                     </div>
                   </div>
                   <div className="wind-col2 flex-child">
-                    <h4>&nbsp;</h4>
+                    <h3>&nbsp;</h3>
                     <div className="flex-parent">
                       <div className="flex-child">
                         <TextField validations={['required']} label={'FBC Wind Speed'} styleName={''} name={'floridaBuildingCodeWindSpeed'} />
