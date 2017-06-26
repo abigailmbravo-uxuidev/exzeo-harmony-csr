@@ -9,7 +9,6 @@ import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import PolicyConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
-import UnderwritingValidationBarConnect from '../../components/Quote/UnderwritingValidationBar';
 import normalizePhone from '../Form/normalizePhone';
 import TextField from '../Form/inputs/TextField';
 import PhoneField from '../Form/inputs/PhoneField';
@@ -20,6 +19,7 @@ const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
   const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
+  console.log(policyData, 'policyData');
   return policyData;
 };
 
@@ -133,11 +133,24 @@ const handleInitialize = (state) => {
   values.city = _.get(quoteData, 'property.physicalAddress.city');
   values.state = _.get(quoteData, 'property.physicalAddress.state');
   values.zip = _.get(quoteData, 'property.physicalAddress.zip');
-  console.log(values, 'values');
+
+  values.uwExceptions = _.get(quoteData, 'underwritingExceptions');
+
   return values;
 };
 
 const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
+
+const updateDependencies = (event, field, dependency, props) => {
+  const { dispatch, fieldValues } = props;
+  if (Number.isNaN(event.target.value)) return;
+
+  const dependencyValue = String(fieldValues[dependency]).replace(/\D+/g, '');
+
+  const fieldValue = setPercentageOfValue(Number(dependencyValue), Number(event.target.value));
+
+  dispatch(change('Coverage', field, Number.isNaN(fieldValue) ? '' : String(fieldValue)));
+};
 
 // const claims = [
 //   {
@@ -155,1117 +168,1078 @@ const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 10
 //   }
 // ];
 
+class Endorsements extends React.Component {
 
-export const Endorsements = (props) => {
-  const {
-    coverageLimits,
-    coverageOptions,
-    deductibles,
-    property,
-    rating,
-    underwritingAnswers
-  } = props.policy;
-
-  const endorsements = [
+  render() {
+    const endorsements = [
     { date: '03/30/2017', amount: '-$ 85', type: '???' },
     { date: '02/20/2016', amount: '-$ 20', type: '???' },
     { date: '01/10/2015', amount: '-$ 35', type: '???' }
+    ];
 
-  ];
+    const { fieldValues, initialValues } = this.props;
+    return (
+      <PolicyConnect>
+        <ClearErrorConnect />
+        <div className="route-content">
+          <div className="endorsements">
+            <div className="endo-jump-menu">
 
-  class PrevEndorsements extends React.Component {
+              <a href="#coverage" className="btn btn-primary btn-xs">Coverage</a>
+              <a href="#home" className="btn btn-primary btn-xs">Home / Location</a>
+              <a href="#policy" className="btn btn-primary btn-xs">Policyholders</a>
+              <a href="#addresses" className="btn btn-primary btn-xs">Addresses</a>
+              <a href="#addInt" className="btn btn-primary btn-xs">Additional Interests</a>
+              <a className="btn btn-secondary btn-xs">Cancel</a>
 
-    updateDependencies = (event, field, dependency) => {
-      const { dispatch, fieldValues } = this.props;
-      if (Number.isNaN(event.target.value)) return;
+            </div>
+            <div className="scroll endorsements">
+              <div className="form-group survey-wrapper" role="group">
 
-      const dependencyValue = String(fieldValues[dependency]).replace(/\D+/g, '');
+                <a name="coverage" />
+                <section>
 
-      const fieldValue = setPercentageOfValue(Number(dependencyValue), Number(event.target.value));
+                  <h3>Coverage</h3>
 
-      dispatch(change('Coverage', field, Number.isNaN(fieldValue) ? '' : String(fieldValue)));
-    }
+                  <div className="flex-parent">
+                    {/* Col1 */}
+                    <div className="flex-child col3">
 
-    render() {
-      return (
-        <BootstrapTable data={endorsements}>
-          <TableHeaderColumn dataField="date" isKey>Date</TableHeaderColumn>
-          <TableHeaderColumn dataField="amount">Amount</TableHeaderColumn>
-          <TableHeaderColumn dataField="type">Type</TableHeaderColumn>
-        </BootstrapTable>
-      );
-    }
-}
+                      <div className="form-group labels">
+                        <label /><label>Current</label><label>New</label>
+                      </div>
+                      <div className="form-group">
+                        <CurrencyField
+                          validations={['required', 'range']} label={'Dwelling Amount (A)'} styleName={''} name={'dwellingAmount'}
+                          min={initialValues.dwellingMin} max={initialValues.dwellingMax} disabled
+                        />
+                        <CurrencyField
+                          validations={['required', 'range']} styleName={''} name={'dwellingAmountNew'}
+                          min={initialValues.dwellingMin} label={''} max={initialValues.dwellingMax}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <CurrencyField validations={['required']} name="otherStructuresAmount" label={'Other Structure (B)'} styleName={'coverage-b'} disabled />
+                        <CurrencyField validations={['required']} label={''} name="otherStructuresAmountNew" styleName={'coverage-b'} />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Other Structures %'} styleName={''} name={'otherStructures'} disabled />
+                        <SelectField
+                          name="otherStructuresNew" component="select" label={''} styleName={'coverage-b-percentage'} onChange={event => updateDependencies(event, 'otherStructuresAmount', 'dwellingAmount', this.props)} validations={['required']} answers={[
+                            {
+                              answer: '0',
+                              label: '0%'
+                            }, {
+                              answer: '2',
+                              label: '2%'
+                            }, {
+                              answer: '5',
+                              label: '5%'
+                            },
+                            {
+                              answer: '10',
+                              label: '10%'
+                            }, {
+                              answer: 'other',
+                              label: 'Other'
+                            }
 
-  const propertyData = property || {};
-  const { fieldValues, handleSubmit, initialValues, pristine, state } = props;
-  return (
-    <PolicyConnect>
-      <ClearErrorConnect />
-      <div className="route-content">
-        <div className="endorsements">
-          <div className="endo-jump-menu">
-
-            <a href="#coverage" className="btn btn-primary btn-xs">Coverage</a>
-            <a href="#home" className="btn btn-primary btn-xs">Home / Location</a>
-            <a href="#policy" className="btn btn-primary btn-xs">Policyholders</a>
-            <a href="#addresses" className="btn btn-primary btn-xs">Addresses</a>
-            <a href="#addInt" className="btn btn-primary btn-xs">Additional Interests</a>
-            <a className="btn btn-secondary btn-xs">Cancel</a>
-
-
-          </div>
-          <div className="scroll endorsements">
-            <div className="form-group survey-wrapper" role="group">
-
-              <a name="coverage" />
-              <section>
-
-                <h3>Coverage</h3>
-
-                <div className="flex-parent">
-                  {/* Col1 */}
-                  <div className="flex-child col3">
-
-                    <div className="form-group labels">
-                      <label /><label>Current</label><label>New</label>
-                    </div>
-                    <div className="form-group">
-                      <CurrencyField
-                        validations={['required', 'range']} label={'Dwelling Amount (A)'} styleName={''} name={'dwellingAmount'}
-                        min={initialValues.dwellingMin} max={initialValues.dwellingMax} disabled
-                      />
-                      <CurrencyField
-                        validations={['required', 'range']} styleName={''} name={'dwellingAmountNew'}
-                        min={initialValues.dwellingMin} label={''} max={initialValues.dwellingMax}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <CurrencyField validations={['required']} name="otherStructuresAmount" label={'Other Structure (B)'} styleName={'coverage-b'} disabled />
-                      <CurrencyField validations={['required']} label={''} name="otherStructuresAmountNew" styleName={'coverage-b'} />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Other Structures %'} styleName={''} name={'otherStructures'} disabled />
-                      <SelectField
-                        name="otherStructuresNew" component="select" label={''} styleName={'coverage-b-percentage'} onChange={event => this.updateDependencies(event, 'otherStructuresAmount', 'dwellingAmount')} validations={['required']} answers={[
-                          {
-                            answer: '0',
-                            label: '0%'
-                          }, {
-                            answer: '2',
-                            label: '2%'
-                          }, {
-                            answer: '5',
-                            label: '5%'
-                          },
-                          {
-                            answer: '10',
-                            label: '10%'
-                          }, {
-                            answer: 'other',
-                            label: 'Other'
-                          }
-
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <CurrencyField validations={['required']} label={'Personal Property (C)'} styleName={'coverage-c'} name="personalPropertyAmount" disabled />
-                      <CurrencyField validations={['required']} label={''} styleName={'coverage-c'} name="personalPropertyAmountNew" />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Personal Property %'} styleName={''} name={'personalProperty'} disabled />
-                      <SelectField
-                        name="personalPropertyNew" component="select" label={''} styleName={'coverage-c-percentage'} onChange={event => this.updateDependencies(event, 'personalPropertyAmount', 'dwellingAmount')} validations={['required']} answers={[
-                          {
-                            answer: '0',
-                            label: '0%'
-                          }, {
-                            answer: '25',
-                            label: '25%'
-                          }, {
-                            answer: '35',
-                            label: '35%'
-                          }, {
-                            answer: '50',
-                            label: '50%'
-                          }, {
-                            answer: 'other',
-                            label: 'Other'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Additional Living Expenses</label>
-                      <input type="numeric" value="25750" disabled />
-                      <input type="numeric" value="25750" disabled />
-                    </div>
-                    <div className="form-group">
-                      <CurrencyField label={'Loss of Use (D)'} styleName={''} name={'lossOfUse'} disabled />
-                      <CurrencyField styleName={''} label={''} name={'lossOfUseNew'} />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Personal Liability (E)'} styleName={''} name={'personalLiability'} disabled />
-                      <SelectField
-                        name="personalLiabilityNew" component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
-                          {
-                            answer: '100000',
-                            label: '$100,000'
-                          }, {
-                            answer: '300000',
-                            label: '$300,000'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Medical Payments (F)'} styleName={''} name={'medicalPayments'} disabled />
-                      <TextField
-                        label={''}
-                        name="medicalPaymentsNew" styleName={''} input={{
-                          name: 'medicalPaymentsNew',
-                          value: '$2,000'
-                        }}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Mold Property Limit'} styleName={''} name={'moldProperty'} disabled />
-                      <SelectField
-                        name="moldPropertyNew" component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
-                          {
-                            answer: '10000',
-                            label: '$10,000'
-                          }, {
-                            answer: '25000',
-                            label: '$25,000'
-                          }, {
-                            answer: '50000',
-                            label: '$50,000'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Mold Liability Limit'} styleName={''} name={'moldLiability'} disabled />
-                      <SelectField
-                        name="moldLiabilityNew" component="select" styleName={''} label={''} onChange={function () {}} validations={['required']} answers={[
-                          {
-                            answer: '50000',
-                            label: '$50,000'
-                          }, {
-                            answer: '100000',
-                            label: '$100,000'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'AOP Deductible'} styleName={''} name={'allOtherPerils'} disabled />
-                      <SelectField
-                        name="allOtherPerilsNew" component="select" styleName={''} label={''} onChange={function () {}} validations={['required']} answers={[
-                          {
-                            answer: '500',
-                            label: '$500'
-                          }, {
-                            answer: '1000',
-                            label: '$1,000'
-                          }, {
-                            answer: '2500',
-                            label: '$2,500'
-                          }
-                        ]}
-                      />                                                                                                                                         </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Hurricane Deductible'} styleName={''} name={'hurricane'} disabled />
-                      <SelectField
-                        label={''}
-                        name="hurricaneNew" component="select" styleName={''} onChange={event => this.updateDependencies(event, 'calculatedHurricane', 'dwellingAmount')} validations={['required']} answers={[
-                          {
-                            answer: '2',
-                            label: '2% of Coverage A'
-                          }, {
-                            answer: '5',
-                            label: '5% of Coverage A'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Sinkhole'} styleName={''} name={'sinkholePerilCoverage'} disabled />
-                      <SelectField
-                        name="sinkholePerilCoverageNew" label={''} component="select" styleName={''} onChange={function () {}} answers={[
-                          {
-                            answer: false,
-                            label: 'Coverage Excluded'
-                          }, {
-                            answer: true,
-                            label: 'Coverage Included'
-                          }
-                        ]}
-                      />
-                    </div>
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <CurrencyField validations={['required']} label={'Personal Property (C)'} styleName={'coverage-c'} name="personalPropertyAmount" disabled />
+                        <CurrencyField validations={['required']} label={''} styleName={'coverage-c'} name="personalPropertyAmountNew" />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Personal Property %'} styleName={''} name={'personalProperty'} disabled />
+                        <SelectField
+                          name="personalPropertyNew" component="select" label={''} styleName={'coverage-c-percentage'} onChange={event => updateDependencies(event, 'personalPropertyAmount', 'dwellingAmount', this.props)} validations={['required']} answers={[
+                            {
+                              answer: '0',
+                              label: '0%'
+                            }, {
+                              answer: '25',
+                              label: '25%'
+                            }, {
+                              answer: '35',
+                              label: '35%'
+                            }, {
+                              answer: '50',
+                              label: '50%'
+                            }, {
+                              answer: 'other',
+                              label: 'Other'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Additional Living Expenses</label>
+                        <input type="numeric" onChange={function () {}} value="25750" disabled />
+                        <input type="numeric" onChange={function () {}} value="25750" disabled />
+                      </div>
+                      <div className="form-group">
+                        <CurrencyField label={'Loss of Use (D)'} styleName={''} name={'lossOfUse'} disabled />
+                        <CurrencyField styleName={''} label={''} name={'lossOfUseNew'} />
+                      </div>
+                      <div className="form-group">
+                        <CurrencyField validations={['required']} label={'Personal Liability (E)'} styleName={''} name={'personalLiability'} disabled />
+                        <SelectField
+                          name="personalLiabilityNew" component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
+                            {
+                              answer: '100000',
+                              label: '$100,000'
+                            }, {
+                              answer: '300000',
+                              label: '$300,000'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <CurrencyField validations={['required']} label={'Medical Payments (F)'} styleName={''} name={'medicalPayments'} disabled />
+                        <CurrencyField name={'medicalPaymentsNew'} label={''} styleName={''} />
+                      </div>
+                      <div className="form-group">
+                        <CurrencyField validations={['required']} label={'Mold Property Limit'} styleName={''} name={'moldProperty'} disabled />
+                        <SelectField
+                          name="moldPropertyNew" component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
+                            {
+                              answer: '10000',
+                              label: '$10,000'
+                            }, {
+                              answer: '25000',
+                              label: '$25,000'
+                            }, {
+                              answer: '50000',
+                              label: '$50,000'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <CurrencyField validations={['required']} label={'Mold Liability Limit'} styleName={''} name={'moldLiability'} disabled />
+                        <SelectField
+                          name="moldLiabilityNew" component="select" styleName={''} label={''} onChange={function () {}} validations={['required']} answers={[
+                            {
+                              answer: '50000',
+                              label: '$50,000'
+                            }, {
+                              answer: '100000',
+                              label: '$100,000'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <CurrencyField validations={['required']} label={'AOP Deductible'} styleName={''} name={'allOtherPerils'} disabled />
+                        <SelectField
+                          name="allOtherPerilsNew" component="select" styleName={''} label={''} onChange={function () {}} validations={['required']} answers={[
+                            {
+                              answer: '500',
+                              label: '$500'
+                            }, {
+                              answer: '1000',
+                              label: '$1,000'
+                            }, {
+                              answer: '2500',
+                              label: '$2,500'
+                            }
+                          ]}
+                        />                                                                                                                                                                                                                                               </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Hurricane Deductible'} styleName={''} name={'hurricane'} disabled />
+                        <SelectField
+                          label={''}
+                          name="hurricaneNew" component="select" styleName={''} onChange={event => updateDependencies(event, 'calculatedHurricane', 'dwellingAmount', this.props)} validations={['required']} answers={[
+                            {
+                              answer: '2',
+                              label: '2% of Coverage A'
+                            }, {
+                              answer: '5',
+                              label: '5% of Coverage A'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Sinkhole'} styleName={''} name={'sinkholePerilCoverage'} disabled />
+                        <SelectField
+                          name="sinkholePerilCoverageNew" label={''} component="select" styleName={''} onChange={function () {}} answers={[
+                            {
+                              answer: false,
+                              label: 'Coverage Excluded'
+                            }, {
+                              answer: true,
+                              label: 'Coverage Included'
+                            }
+                          ]}
+                        />
+                      </div>
 
 
-                  </div>
+                    </div>
 
-                  {/* Col2 */}
-                  <div className="flex-child col3">
-                    <div className="form-group labels">
-                      <label /><label>Current</label><label>New</label>
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Personal Property Repl Cost'} styleName={''} name={'personalPropertyReplacementCostCoverage'} disabled />
-                      <SelectField
-                        name={'personalPropertyReplacementCostCoverageNew'} label={''} styleName={'billPlan'} onChange={function () {}} answers={[
-                          {
-                            answer: false,
-                            label: 'No'
-                          }, {
-                            answer: true,
-                            label: 'Yes'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Ordinance or Law Coverage'} styleName={''} name={'ordinanceOrLaw'} disabled />
-                      <SelectField
-                        name="ordinanceOrLawNew" label={''} component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
-                          {
-                            answer: '25',
-                            label: '25% of Coverage A (included)'
-                          }, {
-                            answer: '50',
-                            label: '50% of Coverage A'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Incidental Occ Main'} styleName={''} name={'propertyIncidentalOccupanciesMainDwelling'} disabled />
-                      <TextField validations={['required']} label={''} styleName={''} name={'propertyIncidentalOccupanciesMainDwellingNew'} />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Incidental Occ Other'} styleName={''} name={'propertyIncidentalOccupanciesOtherStructures'} disabled />
-                      <TextField validations={['required']} label={''} styleName={''} name={'propertyIncidentalOccupanciesOtherStructuresNew'} />
-                    </div>
-                    <div className="form-group">
-                      <label>Wind Excluded</label>
-                      <input type="text" value="No" disabled />
-                      <select>
-                        <option>No</option>
-                      </select>
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Property Ever Rented'} styleName={''} name={'propertyRented'} disabled />
-                      <SelectField
-                        label={''}
-                        name={'propertyRentedNew'} styleName={''} onChange={function () {}} answers={[
-                          {
-                            answer: false,
-                            label: 'No'
-                          }, {
-                            answer: true,
-                            label: 'Yes'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Seasonally Occupied'} styleName={''} name={'seasonallyOccupied'} disabled />
-                      <SelectField
-                        name={'seasonallyOccupiedNew'} label={''} styleName={''} onChange={function () {}} answers={[
-                          {
-                            answer: false,
-                            label: 'No'
-                          }, {
-                            answer: true,
-                            label: 'Yes'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Prior Insurance'} styleName={''} name={'noPriorInsurance'} disabled />
-                      <SelectField
-                        name={'noPriorInsuranceNew'} label={''} styleName={''} onChange={function () {}} answers={[
-                          {
-                            answer: false,
-                            label: 'No'
-                          }, {
-                            answer: true,
-                            label: 'Yes'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Burglar Alarm'} styleName={''} name={'burglarAlarm'} disabled />
-                      <SelectField
-                        name={'burglarAlarmNew'} label={''} styleName={''} onChange={function () {}} answers={[
-                          {
-                            answer: false,
-                            label: 'No'
-                          }, {
-                            answer: true,
-                            label: 'Yes'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Fire Alarm'} styleName={''} name={'fireAlarm'} disabled />
-                      <SelectField
-                        name={'fireAlarmNew'} label={''} styleName={''} onChange={function () {}} answers={[
-                          {
-                            answer: false,
-                            label: 'No'
-                          }, {
-                            answer: true,
-                            label: 'Yes'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Sprinkler'} styleName={''} name={'sprinkler'} disabled />
-                      <SelectField
-                        name={'sprinklerNew'} label={''} styleName={''} onChange={function () {}} answers={[
-                          {
-                            answer: 'N',
-                            label: 'No'
-                          }, {
-                            answer: 'A',
-                            label: 'A'
-                          }, {
-                            answer: 'B',
-                            label: 'B'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Bill To'} styleName={''} name={'billTo'} disabled />
-                      <TextField validations={['required']} label={''} styleName={''} name={'billToNew'} />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Bill Plan'} styleName={''} name={'billPlan'} disabled />
-                      <SelectField
-                        name="billPlanNew" component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
-                          {
-                            answer: 'ANNUAL',
-                            label: 'Annual'
-                          }, {
-                            answer: 'SEMI-ANNUAL',
-                            label: 'Semi-Annual'
-                          },
-                          {
-                            answer: 'QUARTERLY',
-                            label: 'Quarterly'
-                          }
-                        ]}
-                      />
+                    {/* Col2 */}
+                    <div className="flex-child col3">
+                      <div className="form-group labels">
+                        <label /><label>Current</label><label>New</label>
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Personal Property Repl Cost'} styleName={''} name={'personalPropertyReplacementCostCoverage'} disabled />
+                        <SelectField
+                          name={'personalPropertyReplacementCostCoverageNew'} label={''} styleName={'billPlan'} onChange={function () {}} answers={[
+                            {
+                              answer: false,
+                              label: 'No'
+                            }, {
+                              answer: true,
+                              label: 'Yes'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Ordinance or Law Coverage'} styleName={''} name={'ordinanceOrLaw'} disabled />
+                        <SelectField
+                          name="ordinanceOrLawNew" label={''} component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
+                            {
+                              answer: '25',
+                              label: '25% of Coverage A (included)'
+                            }, {
+                              answer: '50',
+                              label: '50% of Coverage A'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Incidental Occ Main'} styleName={''} name={'propertyIncidentalOccupanciesMainDwelling'} disabled />
+                        <TextField validations={['required']} label={''} styleName={''} name={'propertyIncidentalOccupanciesMainDwellingNew'} />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Incidental Occ Other'} styleName={''} name={'propertyIncidentalOccupanciesOtherStructures'} disabled />
+                        <TextField validations={['required']} label={''} styleName={''} name={'propertyIncidentalOccupanciesOtherStructuresNew'} />
+                      </div>
+                      <div className="form-group">
+                        <label>Wind Excluded</label>
+                        <input type="text" onChange={function () {}} value="No" disabled />
+                        <select>
+                          <option>No</option>
+                        </select>
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Property Ever Rented'} styleName={''} name={'propertyRented'} disabled />
+                        <SelectField
+                          label={''}
+                          name={'propertyRentedNew'} styleName={''} onChange={function () {}} answers={[
+                            {
+                              answer: false,
+                              label: 'No'
+                            }, {
+                              answer: true,
+                              label: 'Yes'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Seasonally Occupied'} styleName={''} name={'seasonallyOccupied'} disabled />
+                        <SelectField
+                          name={'seasonallyOccupiedNew'} label={''} styleName={''} onChange={function () {}} answers={[
+                            {
+                              answer: false,
+                              label: 'No'
+                            }, {
+                              answer: true,
+                              label: 'Yes'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Prior Insurance'} styleName={''} name={'noPriorInsurance'} disabled />
+                        <SelectField
+                          name={'noPriorInsuranceNew'} label={''} styleName={''} onChange={function () {}} answers={[
+                            {
+                              answer: false,
+                              label: 'No'
+                            }, {
+                              answer: true,
+                              label: 'Yes'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Burglar Alarm'} styleName={''} name={'burglarAlarm'} disabled />
+                        <SelectField
+                          name={'burglarAlarmNew'} label={''} styleName={''} onChange={function () {}} answers={[
+                            {
+                              answer: false,
+                              label: 'No'
+                            }, {
+                              answer: true,
+                              label: 'Yes'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Fire Alarm'} styleName={''} name={'fireAlarm'} disabled />
+                        <SelectField
+                          name={'fireAlarmNew'} label={''} styleName={''} onChange={function () {}} answers={[
+                            {
+                              answer: false,
+                              label: 'No'
+                            }, {
+                              answer: true,
+                              label: 'Yes'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Sprinkler'} styleName={''} name={'sprinkler'} disabled />
+                        <SelectField
+                          name={'sprinklerNew'} label={''} styleName={''} onChange={function () {}} answers={[
+                            {
+                              answer: 'N',
+                              label: 'No'
+                            }, {
+                              answer: 'A',
+                              label: 'A'
+                            }, {
+                              answer: 'B',
+                              label: 'B'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Bill To'} styleName={''} name={'billToType'} disabled />
+                        <TextField validations={['required']} label={''} styleName={''} name={'billToTypeNew'} />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Bill Plan'} styleName={''} name={'billPlan'} disabled />
+                        <SelectField
+                          name="billPlanNew" component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
+                            {
+                              answer: 'ANNUAL',
+                              label: 'Annual'
+                            }, {
+                              answer: 'SEMI-ANNUAL',
+                              label: 'Semi-Annual'
+                            },
+                            {
+                              answer: 'QUARTERLY',
+                              label: 'Quarterly'
+                            }
+                          ]}
+                        />
+                      </div>
+
                     </div>
 
                   </div>
+                </section>
 
+                <section>
+
+                  <div className="flex-parent">
+                    {/* Col1 */}
+                    <div className="flex-child col3">
+
+                      <div className="form-group labels">
+                        <label /><label>Current</label><label>New</label>
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Roof Covering'} styleName={''} name={'roofCovering'} disabled />
+                        <SelectField
+                          label={''}
+                          name="roofCoveringNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
+                            {
+                              answer: 'Non-FBC',
+                              label: 'Non-FBC'
+                            }, {
+                              answer: 'FBC',
+                              label: 'FBC'
+                            },
+                            {
+                              answer: 'Other',
+                              label: 'Other'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Roof Deck Attachment'} styleName={''} name={'roofDeckAttachment'} disabled />
+                        <SelectField
+                          label={''}
+                          name="roofDeckAttachmentNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
+                            {
+                              answer: 'A'
+                            },
+                            {
+                              answer: 'B'
+                            },
+                            {
+                              answer: 'C'
+                            },
+                            {
+                              answer: 'D'
+                            },
+                            {
+                              answer: 'Concrete'
+                            },
+                            {
+                              answer: 'Other'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Roof to Wall Attachment'} styleName={''} name={'roofToWallConnection'} disabled />
+                        <SelectField
+                          label={''}
+                          name="roofToWallConnectionNew" component="select" styleName={'weakestRoofWallConnect'} onChange={function () {}} validations={['required']} answers={[
+                            {
+                              answer: 'Toe Nails'
+                            },
+                            {
+                              answer: 'Clips'
+                            },
+                            {
+                              answer: 'Single Wraps'
+                            },
+                            {
+                              answer: 'Double Wraps'
+                            },
+                            {
+                              answer: 'Other'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Roof Geometry'} styleName={''} name={'roofGeometry'} disabled />
+                        <SelectField
+                          label={''}
+                          name="roofGeometryNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
+                            {
+                              answer: 'Flat'
+                            },
+                            {
+                              answer: 'Gable'
+                            },
+                            {
+                              answer: 'Hip'
+                            },
+                            {
+                              answer: 'Other'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Secondary Water Resistance (SWR)'} styleName={''} name={'secondaryWaterResistance'} disabled />
+                        <SelectField
+                          label={''}
+                          validations={['required']} name={'secondaryWaterResistanceNew'} styleName={''} onChange={function () {}} answers={[
+                            {
+                              answer: 'Yes',
+                              label: 'Yes'
+                            }, {
+                              answer: 'No',
+                              label: 'No'
+                            }, {
+                              answer: 'Other',
+                              label: 'Other'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Opening Protection'} styleName={''} name={'openingProtection'} disabled />
+                        <SelectField
+                          label={''}
+                          name="openingProtectionNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
+                            {
+                              answer: 'None'
+                            },
+                            {
+                              answer: 'Basic'
+                            },
+                            {
+                              answer: 'Hurricane'
+                            },
+                            {
+                              answer: 'Other'
+                            }
+                          ]}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Col2 */}
+                    <div className="flex-child col3">
+
+                      <div className="form-group labels">
+                        <label /><label>Current</label><label>New</label>
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'FBC Wind Speed'} styleName={''} name={'floridaBuildingCodeWindSpeed'} disabled />
+                        <TextField validations={['required']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedNew'} />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'FBC Wind Speed Design'} styleName={''} name={'floridaBuildingCodeWindSpeedDesign'} disabled />
+                        <TextField validations={['required']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedDesignNew'} />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Terrain'} styleName={''} name={'terrain'} disabled />
+                        <SelectField
+                          name="terrainNew" component="select" label={''} styleName={'propertyTerrain'} onChange={function () {}} validations={['required']} answers={[
+                            {
+                              answer: 'B',
+                              label: 'B'
+                            }, {
+                              answer: 'C',
+                              label: 'C'
+                            },
+                            {
+                              answer: 'HVHZ',
+                              label: 'HVHZ'
+                            },
+                            {
+                              answer: 'Other',
+                              label: 'Other'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label="Internal Pressure Design" styleName={''} name={'internalPressureDesign'} disabled />
+                        <SelectField
+                          name="internalPressureDesignNew" component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
+                            {
+                              answer: 'Enclosed',
+                              label: 'Enclosed'
+                            }, {
+                              answer: 'Partial',
+                              label: 'Partial'
+                            },
+                            {
+                              answer: 'Other',
+                              label: 'Other'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Wind Borne Debris Region (WBDR)'} styleName={''} name={'windBorneDebrisRegion'} disabled />
+                        <SelectField
+                          validations={['required']} name={'windBorneDebrisRegionNew'} label={''} styleName={''} onChange={function () {}} answers={[
+                            {
+                              answer: 'Yes',
+                              label: 'Yes'
+                            }, {
+                              answer: 'No',
+                              label: 'No'
+                            }, {
+                              answer: 'Other',
+                              label: 'Other'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Wind Mit Factor'} styleName={''} name={'windMitFactor'} disabled />
+                        <TextField validations={['required']} styleName={''} label={''} name={'windMitFactorNew'} />
+                      </div>
+
+                    </div>
+
+                  </div>
+                </section>
+
+                <a name="home" />
+                <section>
+
+                  <h3>Home / Location</h3>
+
+                  <div className="flex-parent">
+                    {/* Col1 */}
+                    <div className="flex-child col3">
+
+                      <div className="form-group labels">
+                        <label /><label>Current</label><label>New</label>
+                      </div>
+                      <div className="form-group">
+                        <TextField label={'Year Home Built'} styleName={''} name="yearBuilt" disabled />
+                        <TextField styleName={''} label={''} name="yearBuiltNew" />
+                      </div>
+                      <div className="form-group">
+                        <TextField label={'Construction'} styleName={''} name="constructionType" disabled />
+                        <SelectField
+                          component="select" styleName={''} label={''} name={'constructionTypeNew'}
+                          answers={[
+                            {
+                              answer: 'FRAME',
+                              label: 'Frame'
+                            }, {
+                              answer: 'PLASTIC SIDING',
+                              label: 'Plastic Siding'
+                            },
+                            {
+                              answer: 'ALUMINUM SIDING',
+                              label: 'Aluminum Siding'
+                            },
+                            {
+                              answer: 'MASONRY',
+                              label: 'Masonry'
+                            },
+                            {
+                              answer: 'MASONRY VENEER',
+                              label: 'Masonry Veneer'
+                            },
+                            {
+                              answer: 'SUPERIOR',
+                              label: 'Superior'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <TextField label={'Year Roof Built'} styleName={''} name="yearOfRoof" disabled />
+                        <TextField styleName={''} label={''} name="yearOfRoofNew" />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Protection Class'} styleName={''} name={'protectionClass'} disabled />
+                        <SelectField
+                          name="protectionClassNew" component="select" label={''} styleName={''} answers={[
+                            {
+                              answer: '1',
+                              label: '01'
+                            }, {
+                              answer: '2',
+                              label: '02'
+                            },
+                            {
+                              answer: '3',
+                              label: '03'
+                            },
+                            {
+                              answer: '4',
+                              label: '04'
+                            },
+                            {
+                              answer: '5',
+                              label: '05'
+                            },
+                            {
+                              answer: '6',
+                              label: '06'
+                            },
+                            {
+                              answer: '7',
+                              label: '07'
+                            },
+                            {
+                              answer: '8',
+                              label: '08'
+                            },
+                            {
+                              answer: '9',
+                              label: '09'
+                            },
+                            {
+                              answer: '10',
+                              label: '10'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'BCEG'} styleName={''} name={'buildingCodeEffectivenessGrading'} disabled />
+                        <SelectField
+                          component="select" styleName={''} label={''} name={'buildingCodeEffectivenessGradingNew'} answers={[
+                            {
+                              answer: '1',
+                              label: '01'
+                            }, {
+                              answer: '2',
+                              label: '02'
+                            },
+                            {
+                              answer: '3',
+                              label: '03'
+                            },
+                            {
+                              answer: '4',
+                              label: '04'
+                            },
+                            {
+                              answer: '5',
+                              label: '05'
+                            },
+                            {
+                              answer: '6',
+                              label: '06'
+                            },
+                            {
+                              answer: '7',
+                              label: '07'
+                            },
+                            {
+                              answer: '8',
+                              label: '08'
+                            },
+                            {
+                              answer: '9',
+                              label: '09'
+                            },
+                            {
+                              answer: '98',
+                              label: '98'
+                            },
+                            {
+                              answer: '99',
+                              label: '99'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Family Units'} styleName={''} name={'familyUnits'} disabled />
+                        <SelectField
+                          name="familyUnitsNew" component="select" label={''} styleName={''} onChange={function () {}} answers={[
+                            {
+                              answer: '1-2',
+                              label: '1-2'
+                            }, {
+                              answer: '3-4',
+                              label: '3-4'
+                            },
+                            {
+                              answer: '5-8',
+                              label: '5-8'
+                            }, {
+                              answer: '9+',
+                              label: '9+'
+                            }
+                          ]}
+                        />
+                      </div>
+
+                    </div>
+
+                    {/* Col2 */}
+                    <div className="flex-child col3">
+
+                      <div className="form-group labels">
+                        <label /><label>Current</label><label>New</label>
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Tidal Waters Dist.'} styleName={''} name={'distanceToTidalWater'} disabled />
+                        <TextField validations={['required']} label={''} styleName={''} name={'distanceToTidalWaterNew'} />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Fire Hydrant Dist.'} styleName={''} name={'distanceToFireHydrant'} disabled />
+                        <TextField validations={['required']} label={''} styleName={''} name={'distanceToFireHydrantNew'} />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Fire Station Dist.'} styleName={''} name={'distanceToFireStation'} disabled />
+                        <TextField validations={['required']} label={''} styleName={''} name={'distanceToFireStationNew'} />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Residence Type'} styleName={''} name={'residenceType'} disabled />
+                        <SelectField
+                          name="residenceTypeNew" component="select" label={''} styleName={''} onChange={function () {}} answers={[
+                            {
+                              answer: 'Single Family',
+                              label: 'Single Family'
+                            }, {
+                              answer: 'Apartment',
+                              label: 'Apartment'
+                            }
+                          ]}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Sq. Ft. of Home'} styleName={''} name={'squareFeet'} disabled />
+                        <TextField validations={['required']} label={''} styleName={''} name={'squareFeetNew'} />
+                      </div>
+                      <div className="form-group">
+                        <TextField validations={['required']} label={'Flood Zone'} styleName={''} name={'floodZone'} disabled />
+                        <SelectField
+                          name="floodZoneNew" component="select" label={''} styleName={''} onChange={function () {}} answers={[
+                            {
+                              answer: 'A',
+                              label: 'A'
+                            }, {
+                              answer: 'B',
+                              label: 'B'
+                            }
+                          ]}
+                        />
+                      </div>
+
+                    </div>
+                  </div>
+                </section>
+
+                <section>
+
+                  <h3>Previous Endorsements</h3>
+                  <BootstrapTable data={endorsements}>
+                    <TableHeaderColumn dataField="date" isKey>Date</TableHeaderColumn>
+                    <TableHeaderColumn dataField="amount">Amount</TableHeaderColumn>
+                    <TableHeaderColumn dataField="type">Type</TableHeaderColumn>
+                  </BootstrapTable>
+
+                </section>
+
+                <a name="policy" />
+                <section>
+
+                  <div className="flex-parent col2">
+                    {/* Col1 */}
+                    <div className="flex-child">
+                      <h3>Primary Policyholder</h3>
+
+                      <div className="flex-parent col2">
+                        <div className="form-group">
+                          <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH1FirstName'} />
+                        </div>
+                        <div className="form-group">
+                          <TextField validations={['required']} label={'Last Name'} styleName={''} name={'pH1LastName'} />
+                        </div>
+                      </div>
+
+                      <div className="flex-parent col2">
+                        <div className="form-group">
+                          <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH1phone'} />
+                        </div>
+                        <div className="form-group">
+                          <PhoneField validations={['required', 'phone']} label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} />
+                        </div>
+                      </div>
+
+                      <div className="flex-parent">
+                        <div className="form-group">
+                          <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH1email'} />
+                        </div>
+                      </div>
+
+                    </div>
+
+                    {/* Col2 */}
+                    <div className="flex-child">
+                      <h3>Secondary Policyholder</h3>
+
+                      <div className="flex-parent col2">
+                        <div className="form-group">
+                          <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH2FirstName'} />
+                        </div>
+                        <div className="form-group">
+                          <TextField validations={['required']} label={'Last Name'} styleName={''} name={'pH2LastName'} />
+                        </div>
+                      </div>
+
+                      <div className="flex-parent col2">
+                        <div className="form-group">
+                          <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH2phone'} />
+                        </div>
+                        <div className="form-group">
+                          <PhoneField validations={['required', 'phone']} label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} />
+                        </div>
+                      </div>
+
+                      <div className="flex-parent">
+                        <div className="form-group">
+                          <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH2email'} />
+                        </div>
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </section>
+
+                <a name="addresses" />
+                <section>
+                  <h3>Mailing Address</h3>
+                  <div className="flex-parent col2">
+
+
+                    <div className="flex-child">
+                      <div className="form-group">
+                        <TextField label={'Address 1'} styleName={''} name={'address1'} />
+                      </div>
+                    </div>
+
+                    <div className="flex-child">
+                      <div className="form-group">
+                        <TextField label={'Address 2'} styleName={''} name={'address2'} />
+                      </div>
+                    </div>
+
+                  </div>
+
+
+                  <div className="flex-parent col211">
+
+
+                    <div className="flex-child">
+                      <div className="form-group">
+                        <TextField label={'City'} styleName={''} name={'city'} />
+                      </div>
+                    </div>
+
+                    <div className="flex-child">
+                      <div className="form-group">
+                        <TextField label={'State'} styleName={''} name={'state'} />
+                      </div>
+                    </div>
+
+                    <div className="flex-child">
+                      <div className="form-group">
+                        <TextField label={'Zip'} styleName={''} name={'zip'} />
+                      </div>
+                    </div>
+
+                  </div>
+
+                </section>
+
+
+                <section>
+                  <h3>Property Address</h3>
+                  <div className="flex-parent col2">
+
+
+                    <div className="flex-child">
+                      <div className="form-group">
+                        <TextField label={'Address 1'} styleName={''} name={'address1'} />
+                      </div>
+                    </div>
+
+                    <div className="flex-child">
+                      <div className="form-group">
+                        <TextField label={'Address 2'} styleName={''} name={'address2'} />
+                      </div>
+                    </div>
+
+                  </div>
+
+
+                  <div className="flex-parent col211">
+
+
+                    <div className="flex-child">
+                      <div className="form-group">
+                        <TextField label={'City'} styleName={''} name={'city'} />
+                      </div>
+                    </div>
+
+                    <div className="flex-child">
+                      <div className="form-group">
+                        <TextField label={'State'} styleName={''} name={'state'} />
+                      </div>
+                    </div>
+
+                    <div className="flex-child">
+                      <div className="form-group">
+                        <TextField label={'Zip'} styleName={''} name={'zip'} />
+                      </div>
+                    </div>
+
+                  </div>
+
+
+                </section>
+
+                <a name="addInt" />
+                <section className="additionalInterests">
+                  <h3>Additional Interest</h3>
+
+                  <div className="button-group">
+                    <button className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
+                    <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
+                    <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
+                    { /* <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => this.addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button> */ }
+                    <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
+                  </div>
+
+                  <div className="results-wrapper"><ul className="results result-cards"><li><a><div className="card-icon"><i className="fa fa-circle Mortgagee" /><label>Mortgagee</label></div><section><h4>BANK OF AMERICA</h4><p className="address">123 Main Street, Suite A, Tampa, FL 33333</p></section>
+                    <div className="ref-number"><label htmlFor="ref-number">Reference Number</label><span>76532487</span></div><i className="fa fa-pencil" /></a></li></ul></div>
+
+
+                </section>
+
+
+              </div>
+
+            </div>
+            <div className="endo-results-calc">
+
+
+              <div className="flex-parent">
+                <div className="form-group">
+                  <label>Type</label>
+                  <select>
+                    <option>Please Select</option>
+                  </select>
                 </div>
-              </section>
-
-              <section>
-
-                <div className="flex-parent">
-                  {/* Col1 */}
-                  <div className="flex-child col3">
-
-                    <div className="form-group labels">
-                      <label /><label>Current</label><label>New</label>
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Roof Covering'} styleName={''} name={'roofCovering'} disabled />
-                      <SelectField
-                        label={''}
-                        name="roofCoveringNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
-                          {
-                            answer: 'Non-FBC',
-                            label: 'Non-FBC'
-                          }, {
-                            answer: 'FBC',
-                            label: 'FBC'
-                          },
-                          {
-                            answer: 'Other',
-                            label: 'Other'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Roof Deck Attachment'} styleName={''} name={'roofDeckAttachment'} disabled />
-                      <SelectField
-                        label={''}
-                        name="roofDeckAttachmentNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
-                          {
-                            answer: 'A'
-                          },
-                          {
-                            answer: 'B'
-                          },
-                          {
-                            answer: 'C'
-                          },
-                          {
-                            answer: 'D'
-                          },
-                          {
-                            answer: 'Concrete'
-                          },
-                          {
-                            answer: 'Other'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Roof to Wall Attachment'} styleName={''} name={'roofToWallConnection'} disabled />
-                      <SelectField
-                        label={''}
-                        name="roofToWallConnectionNew" component="select" styleName={'weakestRoofWallConnect'} onChange={function () {}} validations={['required']} answers={[
-                          {
-                            answer: 'Toe Nails'
-                          },
-                          {
-                            answer: 'Clips'
-                          },
-                          {
-                            answer: 'Single Wraps'
-                          },
-                          {
-                            answer: 'Double Wraps'
-                          },
-                          {
-                            answer: 'Other'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Roof Geometry'} styleName={''} name={'roofGeometry'} disabled />
-                      <SelectField
-                        label={''}
-                        name="roofGeometryNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
-                          {
-                            answer: 'Flat'
-                          },
-                          {
-                            answer: 'Gable'
-                          },
-                          {
-                            answer: 'Hip'
-                          },
-                          {
-                            answer: 'Other'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Secondary Water Resistance (SWR)'} styleName={''} name={'secondaryWaterResistance'} disabled />
-                      <SelectField
-                        label={''}
-                        validations={['required']} name={'secondaryWaterResistanceNew'} styleName={''} onChange={function () {}} answers={[
-                          {
-                            answer: 'Yes',
-                            label: 'Yes'
-                          }, {
-                            answer: 'No',
-                            label: 'No'
-                          }, {
-                            answer: 'Other',
-                            label: 'Other'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Opening Protection'} styleName={''} name={'openingProtection'} disabled />
-                      <SelectField
-                        label={''}
-                        name="openingProtectionNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
-                          {
-                            answer: 'None'
-                          },
-                          {
-                            answer: 'Basic'
-                          },
-                          {
-                            answer: 'Hurricane'
-                          },
-                          {
-                            answer: 'Other'
-                          }
-                        ]}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Col2 */}
-                  <div className="flex-child col3">
-
-                    <div className="form-group labels">
-                      <label /><label>Current</label><label>New</label>
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'FBC Wind Speed'} styleName={''} name={'floridaBuildingCodeWindSpeed'} disabled />
-                      <TextField validations={['required']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedNew'} />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'FBC Wind Speed Design'} styleName={''} name={'floridaBuildingCodeWindSpeedDesign'} disabled />
-                      <TextField validations={['required']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedDesignNew'} />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Terrain'} styleName={''} name={'terrain'} disabled />
-                      <SelectField
-                        name="terrainNew" component="select" label={''} styleName={'propertyTerrain'} onChange={function () {}} validations={['required']} answers={[
-                          {
-                            answer: 'B',
-                            label: 'B'
-                          }, {
-                            answer: 'C',
-                            label: 'C'
-                          },
-                          {
-                            answer: 'HVHZ',
-                            label: 'HVHZ'
-                          },
-                          {
-                            answer: 'Other',
-                            label: 'Other'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label="Internal Pressure Design" styleName={''} name={'internalPressureDesign'} disabled />
-                      <SelectField
-                        name="internalPressureDesignNew" component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
-                          {
-                            answer: 'Enclosed',
-                            label: 'Enclosed'
-                          }, {
-                            answer: 'Partial',
-                            label: 'Partial'
-                          },
-                          {
-                            answer: 'Other',
-                            label: 'Other'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Wind Borne Debris Region (WBDR)'} styleName={''} name={'windBorneDebrisRegion'} disabled />
-                      <SelectField
-                        validations={['required']} name={'windBorneDebrisRegionNew'} label={''} styleName={''} onChange={function () {}} answers={[
-                          {
-                            answer: 'Yes',
-                            label: 'Yes'
-                          }, {
-                            answer: 'No',
-                            label: 'No'
-                          }, {
-                            answer: 'Other',
-                            label: 'Other'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Wind Mit Factor'} styleName={''} name={'windMitFactor'} disabled />
-                      <TextField validations={['required']} styleName={''} label={''} name={'windMitFactorNew'} />
-                    </div>
-
-                  </div>
-
+                <div className="form-group">
+                  <label>Effective Date</label>
+                  <input type="date" />
                 </div>
-              </section>
+              </div>
 
-              <a name="home" />
-              <section>
 
-                <h3>Home / Location</h3>
+              <div className="flex-parent">
 
-                <div className="flex-parent">
-                  {/* Col1 */}
-                  <div className="flex-child col3">
-
-                    <div className="form-group labels">
-                      <label /><label>Current</label><label>New</label>
-                    </div>
-                    <div className="form-group">
-                      <TextField label={'Year Home Built'} styleName={''} name="yearBuilt" disabled />
-                      <TextField styleName={''} label={''} name="yearBuiltNew" />
-                    </div>
-                    <div className="form-group">
-                      <TextField label={'Construction'} styleName={''} name="constructionType" disabled />
-                      <SelectField
-                        component="select" styleName={''} label={''} name={'constructionTypeNew'}
-                        answers={[
-                          {
-                            answer: 'FRAME',
-                            label: 'Frame'
-                          }, {
-                            answer: 'PLASTIC SIDING',
-                            label: 'Plastic Siding'
-                          },
-                          {
-                            answer: 'ALUMINUM SIDING',
-                            label: 'Aluminum Siding'
-                          },
-                          {
-                            answer: 'MASONRY',
-                            label: 'Masonry'
-                          },
-                          {
-                            answer: 'MASONRY VENEER',
-                            label: 'Masonry Veneer'
-                          },
-                          {
-                            answer: 'SUPERIOR',
-                            label: 'Superior'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField label={'Year Roof Built'} styleName={''} name="yearOfRoof" disabled />
-                      <TextField styleName={''} label={''} name="yearOfRoofNew" />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Protection Class'} styleName={''} name={'protectionClass'} disabled />
-                      <SelectField
-                        name="protectionClassNew" component="select" label={''} styleName={''} answers={[
-                          {
-                            answer: '1',
-                            label: '01'
-                          }, {
-                            answer: '2',
-                            label: '02'
-                          },
-                          {
-                            answer: '3',
-                            label: '03'
-                          },
-                          {
-                            answer: '4',
-                            label: '04'
-                          },
-                          {
-                            answer: '5',
-                            label: '05'
-                          },
-                          {
-                            answer: '6',
-                            label: '06'
-                          },
-                          {
-                            answer: '7',
-                            label: '07'
-                          },
-                          {
-                            answer: '8',
-                            label: '08'
-                          },
-                          {
-                            answer: '9',
-                            label: '09'
-                          },
-                          {
-                            answer: '10',
-                            label: '10'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'BCEG'} styleName={''} name={'buildingCodeEffectivenessGrading'} disabled />
-                      <SelectField
-                        component="select" styleName={''} label={''} name={'buildingCodeEffectivenessGradingNew'} answers={[
-                          {
-                            answer: '1',
-                            label: '01'
-                          }, {
-                            answer: '2',
-                            label: '02'
-                          },
-                          {
-                            answer: '3',
-                            label: '03'
-                          },
-                          {
-                            answer: '4',
-                            label: '04'
-                          },
-                          {
-                            answer: '5',
-                            label: '05'
-                          },
-                          {
-                            answer: '6',
-                            label: '06'
-                          },
-                          {
-                            answer: '7',
-                            label: '07'
-                          },
-                          {
-                            answer: '8',
-                            label: '08'
-                          },
-                          {
-                            answer: '9',
-                            label: '09'
-                          },
-                          {
-                            answer: '98',
-                            label: '98'
-                          },
-                          {
-                            answer: '99',
-                            label: '99'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Family Units'} styleName={''} name={'familyUnits'} disabled />
-                      <SelectField
-                        name="familyUnitsNew" component="select" label={''} styleName={''} onChange={function () {}} answers={[
-                          {
-                            answer: '1-2',
-                            label: '1-2'
-                          }, {
-                            answer: '3-4',
-                            label: '3-4'
-                          },
-                          {
-                            answer: '5-8',
-                            label: '5-8'
-                          }, {
-                            answer: '9+',
-                            label: '9+'
-                          }
-                        ]}
-                      />
-                    </div>
-
-                  </div>
-
-                  {/* Col2 */}
-                  <div className="flex-child col3">
-
-                    <div className="form-group labels">
-                      <label /><label>Current</label><label>New</label>
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Tidal Waters Dist.'} styleName={''} name={'distanceToTidalWater'} disabled />
-                      <TextField validations={['required']} label={''} styleName={''} name={'distanceToTidalWaterNew'} />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Fire Hydrant Dist.'} styleName={''} name={'distanceToFireHydrant'} disabled />
-                      <TextField validations={['required']} label={''} styleName={''} name={'distanceToFireHydrantNew'} />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Fire Station Dist.'} styleName={''} name={'distanceToFireStation'} disabled />
-                      <TextField validations={['required']} label={''} styleName={''} name={'distanceToFireStationNew'} />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Residence Type'} styleName={''} name={'residenceType'} disabled />
-                      <SelectField
-                        name="residenceTypeNew" component="select" label={''} styleName={''} onChange={function () {}} answers={[
-                          {
-                            answer: 'Single Family',
-                            label: 'Single Family'
-                          }, {
-                            answer: 'Apartment',
-                            label: 'Apartment'
-                          }
-                        ]}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Sq. Ft. of Home'} styleName={''} name={'squareFeet'} disabled />
-                      <TextField validations={['required']} label={''} styleName={''} name={'squareFeetNew'} />
-                    </div>
-                    <div className="form-group">
-                      <TextField validations={['required']} label={'Flood Zone'} styleName={''} name={'floodZone'} disabled />
-                      <SelectField
-                        name="floodZoneNew" component="select" label={''} styleName={''} onChange={function () {}} answers={[
-                          {
-                            answer: 'A',
-                            label: 'A'
-                          }, {
-                            answer: 'B',
-                            label: 'B'
-                          }
-                        ]}
-                      />
-                    </div>
-
-                  </div>
+                <div className="form-group">
+                  <label>New End. Amount</label>
+                  <input type="numeric" onChange={function () {}} value="52" />
                 </div>
-              </section>
-
-
-              <section>
-
-                <h3>Previous Endorsements</h3>
-
-                <PrevEndorsements />
-
-
-              </section>
-
-              <a name="policy" />
-              <section>
-
-                <div className="flex-parent col2">
-                  {/* Col1 */}
-                  <div className="flex-child">
-                    <h3>Primary Policyholder</h3>
-
-                    <div className="flex-parent col2">
-                      <div className="form-group">
-                        <TextField validations={['required']} label={'First Name'} value={'First Name'} styleName={''} name={'pH1FirstName'} />
-                      </div>
-                      <div className="form-group">
-                        <TextField validations={['required']} label={'Last Name'} styleName={''} name={'pH1LastName'} />
-                      </div>
-                    </div>
-
-                    <div className="flex-parent col2">
-                      <div className="form-group">
-                        <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH1phone'} />
-                      </div>
-                      <div className="form-group">
-                        <PhoneField validations={['required', 'phone']} label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} />
-                      </div>
-                    </div>
-
-                    <div className="flex-parent">
-                      <div className="form-group">
-                        <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH1email'} />
-                      </div>
-                    </div>
-
-                  </div>
-
-                  {/* Col2 */}
-                  <div className="flex-child">
-                    <h3>Secondary Policyholder</h3>
-
-                    <div className="flex-parent col2">
-                      <div className="form-group">
-                        <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH2FirstName'} />
-                      </div>
-                      <div className="form-group">
-                        <TextField validations={['required']} label={'Last Name'} styleName={''} name={'pH2LastName'} />
-                      </div>
-                    </div>
-
-                    <div className="flex-parent col2">
-                      <div className="form-group">
-                        <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH2phone'} />
-                      </div>
-                      <div className="form-group">
-                        <PhoneField validations={['required', 'phone']} label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} />
-                      </div>
-                    </div>
-
-                    <div className="flex-parent">
-                      <div className="form-group">
-                        <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH2email'} />
-                      </div>
-                    </div>
-
-                  </div>
-
+                <div className="form-group">
+                  <label>New End. Premium</label>
+                  <input type="numeric" onChange={function () {}} value="3732" />
                 </div>
-
-              </section>
-
-              <a name="addresses" />
-              <section>
-                <h3>Mailing Address</h3>
-                <div className="flex-parent col2">
-
-
-                  <div className="flex-child">
-                    <div className="form-group">
-                      <TextField label={'Address 1'} styleName={''} name={'address1'} />
-                    </div>
-                  </div>
-
-                  <div className="flex-child">
-                    <div className="form-group">
-                      <TextField label={'Address 2'} styleName={''} name={'address2'} />
-                    </div>
-                  </div>
-
+                <div className="form-group">
+                  <label>New Annual Premium</label>
+                  <input type="numeric" onChange={function () {}} value="4711" />
                 </div>
-
-
-                <div className="flex-parent col211">
-
-
-                  <div className="flex-child">
-                    <div className="form-group">
-                      <TextField label={'City'} styleName={''} name={'city'} />
-                    </div>
-                  </div>
-
-                  <div className="flex-child">
-                    <div className="form-group">
-                      <TextField label={'State'} styleName={''} name={'state'} />
-                    </div>
-                  </div>
-
-                  <div className="flex-child">
-                    <div className="form-group">
-                      <TextField label={'Zip'} styleName={''} name={'zip'} />
-                    </div>
-                  </div>
-
+                <div className="btn-footer">
+                  <button className="btn btn-secondary btn-sm">Cancel</button>
+                  <button className="btn btn-primary btn-sm">Calculate</button>
                 </div>
-
-              </section>
-
-
-              <section>
-                <h3>Property Address</h3>
-                <div className="flex-parent col2">
-
-
-                  <div className="flex-child">
-                    <div className="form-group">
-                      <TextField label={'Address 1'} styleName={''} name={'address1'} />
-                    </div>
-                  </div>
-
-                  <div className="flex-child">
-                    <div className="form-group">
-                      <TextField label={'Address 2'} styleName={''} name={'address2'} />
-                    </div>
-                  </div>
-
-                </div>
-
-
-                <div className="flex-parent col211">
-
-
-                  <div className="flex-child">
-                    <div className="form-group">
-                      <TextField label={'City'} styleName={''} name={'city'} />
-                    </div>
-                  </div>
-
-                  <div className="flex-child">
-                    <div className="form-group">
-                      <TextField label={'State'} styleName={''} name={'state'} />
-                    </div>
-                  </div>
-
-                  <div className="flex-child">
-                    <div className="form-group">
-                      <TextField label={'Zip'} styleName={''} name={'zip'} />
-                    </div>
-                  </div>
-
-                </div>
-
-
-              </section>
-
-              <a name="addInt" />
-              <section className="additionalInterests">
-                <h3>Additional Interest</h3>
-
-                <div className="button-group">
-                  <button className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
-                  <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
-                  <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
-                  { /* <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => this.addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button> */ }
-                  <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
-                </div>
-
-                <div className="results-wrapper"><ul className="results result-cards"><li><a><div className="card-icon"><i className="fa fa-circle Mortgagee" /><label>Mortgagee</label></div><section><h4>BANK OF AMERICA</h4><p className="address">123 Main Street, Suite A, Tampa, FL 33333</p></section>
-                  <div className="ref-number"><label htmlFor="ref-number">Reference Number</label><span>76532487</span></div><i className="fa fa-pencil" /></a></li></ul></div>
-
-
-              </section>
+              </div>
 
 
             </div>
-
           </div>
-          <div className="endo-results-calc">
 
+          <aside className="underwriting-validation">
 
-            <div className="flex-parent">
-              <div className="form-group">
-                <label>Type</label>
-                <select>
-                  <option>Please Select</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label>Effective Date</label>
-                <input type="date" />
-              </div>
-            </div>
+            <h4 className="uw-validation-header">Underwriting Validation</h4>
 
+          </aside>
 
-            <div className="flex-parent">
-
-              <div className="form-group">
-                <label>New End. Amount</label>
-                <input type="numeric" value="52" />
-              </div>
-              <div className="form-group">
-                <label>New End. Premium</label>
-                <input type="numeric" value="3732" />
-              </div>
-              <div className="form-group">
-                <label>New Annual Premium</label>
-                <input type="numeric" value="4711" />
-              </div>
-              <div className="btn-footer">
-                <button className="btn btn-secondary btn-sm">Cancel</button>
-                <button className="btn btn-primary btn-sm">Calculate</button>
-              </div>
-            </div>
-
-
-          </div>
         </div>
 
-        <aside className="underwriting-validation">
 
-          <h4 className="uw-validation-header">Underwriting Validation</h4>
-
-
-        </aside>
-
-      </div>
+      </PolicyConnect>
 
 
-    </PolicyConnect>
+    );
+  }
+}
 
-
-  );
-};
 
 /**
 ------------------------------------------------
@@ -1291,8 +1265,8 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'Endorsements.values', {}),
-  initialValues: handleInitialize(state),
-  policy: handleGetQuoteData(state)
+  initialValues: handleInitialize(state)
+  // policy: handleGetQuoteData(state)
 });
 
 const mapDispatchToProps = dispatch => ({
