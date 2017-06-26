@@ -1,0 +1,20 @@
+.error {
+    &.card {
+        h1, h2, h3, h4, h5, h6 {
+            color: $red-darken-02;
+        }
+    }
+
+    &.logo {
+        .card-header {
+            background-color: $bright-blue-darken-04;
+        }
+        .card-footer {
+            background-color: $bright-blue-darken-04;
+        }
+    }
+
+    &.access-denied {
+        max-width: 20rem;
+    }
+}

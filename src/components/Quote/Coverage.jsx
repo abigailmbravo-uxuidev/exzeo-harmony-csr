@@ -25,19 +25,26 @@ const handleGetQuoteData = (state) => {
     ? state.cg[state.appState.modelName].data
     : null;
   if (!taskData) { return {}; }
+  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
+    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
+    : {};
   const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
     ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
-    : {};
+    : quoteEnd;
   return quoteData;
 };
 
 const handleGetZipCodeSettings = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return [];
+  if (!taskData) return null;
 
   const zipCodeSettings = _.find(taskData.model.variables, { name: 'getZipCodeSettings' }) ?
   _.find(taskData.model.variables, { name: 'getZipCodeSettings' }).value.result[0] : null;
-  return zipCodeSettings;
+
+  const zipCodeSettingsQuote = _.find(taskData.model.variables, { name: 'getZipCodeSettingsForQuote' }) ?
+  _.find(taskData.model.variables, { name: 'getZipCodeSettingsForQuote' }).value.result[0] : null;
+
+  return zipCodeSettingsQuote || zipCodeSettings;
 };
 
 function calculatePercentage(oldFigure, newFigure) {
@@ -221,6 +228,7 @@ export class Coverage extends Component {
       companyCode: quoteData.companyCode,
       state: quoteData.state
     };
+
     this.props.actions.cgActions.startWorkflow('getAgency', startModelData, false);
   };
 
@@ -996,7 +1004,7 @@ export class Coverage extends Component {
                     </div>
                   </div>
                   <div className="wind-col2 flex-child">
-                    <h4>&nbsp;</h4>
+                    <h3>&nbsp;</h3>
                     <div className="flex-parent">
                       <div className="flex-child">
                         <TextField validations={['required']} label={'FBC Wind Speed'} styleName={''} name={'floridaBuildingCodeWindSpeed'} />

@@ -15,12 +15,15 @@ export const UnderwritingValidationBar = (props) => {
   // combine all quote Objects from UW Exceptions into an array
   // pull the latest quote object by lastUpdated date and set it as quote data
 
-  let getQuoteBetweenPageLoop = null;
   let underwritingExceptions = [];
   let quoteData = null;
   if (taskData) {
-    getQuoteBetweenPageLoop = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' });
-    quoteData = getQuoteBetweenPageLoop ? getQuoteBetweenPageLoop.value.result : null;
+    const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
+    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
+    : null;
+    quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
+    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
+    : quoteEnd;
     underwritingExceptions = quoteData && quoteData.underwritingExceptions ? quoteData.underwritingExceptions : [];
   }
 
