@@ -1916,16 +1916,12 @@ ul.list-cards {
         flex-shrink: 1;
         flex-basis: auto;
 
-        &.quoteDetails {
-            //width: 11rem;
-        }
-
         dl {
           margin-bottom: 0;
 
           div {
             dt {
-              color: $warm-gray-03;
+              color: $yellow-lighten-06;
               letter-spacing: 0.05em;
               font-size: $font-size-xs;
               //text-transform: uppercase;
@@ -1954,7 +1950,10 @@ ul.list-cards {
 
         &.policyDetails, &.quoteDetails {
             display: flex;
-            flex-basis: 10rem;
+            flex-basis: 12rem;
+            margin: (-$padding/2)($padding*2)(-$padding/2)(-$padding*2);
+            padding: ($padding/2)($padding*2);
+            background: rgba($black, .1);
             dl {
                 display: flex;
                 > div {
@@ -1963,6 +1962,7 @@ ul.list-cards {
                     justify-content: space-around;
                     dd {
                         font-weight: $font-weight-bold;
+                        color: $yellow-lighten-06;
                     }
                 }
             }

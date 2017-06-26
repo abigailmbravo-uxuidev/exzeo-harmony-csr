@@ -1,56 +1,87 @@
 import axios from 'axios';
 import { batchActions } from 'redux-batched-actions';
 import _ from 'lodash';
-import Promise from 'bluebird';
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
-import * as appStateActions from './appStateActions';
-
-
-export const serviceTask = (name, newData) => {
-
-  let serviceObject = {};
-
-  serviceObject[name] = newData.data.result;
-  
-  const stateObj = {
-    type: types.RUN_SERVICE,
-    serviceData: serviceObject
-  };
-  return stateObj;
-};
 
 const handleError = (error) => {
-  const message = error.response ? error.response.data.error.message : 'An error happened';
+  const message = error.response && error.response.data && error.response.data.error
+   ? error.response.data.error.message
+   : 'An error happened';
   return (error.message) ? error.message : message;
 };
 
-export const runService = (name, method, service, servicePath, data) => (dispatch) => {
-  const axiosConfig = {
-    method: 'POST',
-    headers: {
+const serviceRequest = data => ({
+  type: types.SERVICE_REQUEST,
+  data
+});
+
+const runnerSetup = data => ({
+  method: 'POST',
+  headers: {
       'Content-Type': 'application/json'
     },
-    url: `${process.env.REACT_APP_API_URL}/svc`,
-    data:  {
-        method, // 'GET', 'POST', 'PUT'
-        service, // agency.services
-        path: servicePath, // v1/agency/TTIC/FL/20000
-        data /* {
-            "_id": "${singleQuote.result._id}",
-            "quoteState": "Quote Stopped"
-        }*/
+  url: `${process.env.REACT_APP_API_URL}/svc`,
+  data
+});
+
+export const addNote = (id, noteType, values) => (dispatch) => {
+  const body = {
+    service: 'notes.services',
+    method: 'POST',
+    path: 'v1/note/',
+    data: {
+      noteType,
+      noteContent: values.noteContent,
+      contactType: 'Agent',
+      createdAt: new Date().getTime(),
+      noteAttachments: [],
+      createdBy: {},
+      updatedBy: {}
     }
   };
 
-  return axios(axiosConfig)
-    .then((response) => {
-      // name is going to be the collection name to store in redux state
-      // example: getAllAgencies
-      return dispatch(serviceTask(name, response));
-    })
-    .catch(error => {
+  if (noteType === 'quoteNote') body.data.quoteNumber = id;
+  if (noteType === 'policyNote') body.data.policyNumber = id;
+
+  const axiosConfig = runnerSetup(body);
+
+  return axios(axiosConfig).then((response) => {
+    const data = { notes: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+        // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
+    ]));
+  })
+    .catch((error) => {
       const message = handleError(error);
-      return dispatch(batchActions([errorActions.setAppError({ message })]));
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+        // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
+      ]));
     });
 };
+
+export const getNotes = (field, value) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'notes.services',
+    method: 'GET',
+    path: `v1/notes/?${field}=${value}`
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { notes: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+      // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+        // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
+      ]));
+    });
+};
+

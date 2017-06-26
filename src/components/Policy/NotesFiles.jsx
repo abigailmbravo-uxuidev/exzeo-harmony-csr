@@ -1,162 +1,157 @@
-import React, {PropTypes} from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import _ from 'lodash';
-import {reduxForm, Form, propTypes} from 'redux-form';
-import * as cgActions from '../../actions/cgActions';
+import moment from 'moment';
+import { reduxForm, Form, propTypes } from 'redux-form';
 import * as appStateActions from '../../actions/appStateActions';
+import * as serviceActions from '../../actions/serviceActions';
 import PolicyBaseConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
-import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
+import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
-const handleFormSubmit = (data, dispatch, props) => {
-    alert('submit');
+const handleGetPolicyData = (state) => {
+  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  if (!taskData) return {};
+  const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
+  return policyData;
 };
 
-const handleInitialize = (state) => {
-    const formValues = {
-        textField1: '',
-        billTo: 'Mortgagee',
-        billPlan: 'Annual',
-        textField2: '5000',
-        isActive: true,
-        deductible: 200000,
-        disabled: true
-    };
-    return formValues;
+const handleInitialize = state => ({});
 
+const SearchPanel = props => (
+  <div className="toolbar">
+    <div className="input-group">
+      <div className="btn btn-notes">Notes</div>
+      <div className="btn btn-files">Files</div>
+    </div>
+    { props.searchField }
+  </div>
+  );
+
+const BSTable = props => props.notes ?
+    (
+      <BootstrapTable data={props.notes}>
+        <TableHeaderColumn dataField="fileList" isKey>Attachment List</TableHeaderColumn>
+      </BootstrapTable>
+    ) : (<p>?</p>);
+
+const NoteList = (props) => {
+  const { notes } = props;
+
+  const isExpandableRow = (row) => {
+    if (row.id < 2) return true;
+    return true;
+  };
+
+  const expandComponent = row => (
+    <BSTable data={row.expand} />
+    );
+
+  const options = { searchPanel: props => (<SearchPanel {...props} />) };
+
+  const showCreatedBy = createdBy => `${createdBy.firstName} ${createdBy.lastName}`;
+  const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
+
+  return (
+    <BootstrapTable
+      data={ Array.isArray(notes) ? notes : [] }
+      options={options}
+      expandableRow={isExpandableRow}
+      expandComponent={expandComponent}
+      search
+    >
+      <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
+      <TableHeaderColumn dataField="attachmentCount" className="attachmentCount" dataSort dataAlign="center" width="7%"><i className="fa fa-paperclip" aria-hidden="true" /></TableHeaderColumn>
+      <TableHeaderColumn dataField="createdDate" dataSort width="10%" dataFormat={formatCreateDate}>Created</TableHeaderColumn>
+      <TableHeaderColumn dataField="createdBy" dataSort width="13%" dataFormat={showCreatedBy}>Author</TableHeaderColumn>
+      <TableHeaderColumn dataField="noteContent" dataSort tdStyle={{ whiteSpace: 'normal' }} width="45%">Note</TableHeaderColumn>
+    </BootstrapTable>
+  );
 };
 
-var notes = [
-  { id: 0, type: 'Agent', attachmentCount: 3, created: '03/20/2017', author: 'REGNA', term: 0, note: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus non pharetra erat. Maecenas egestas, est nec accumsan porta, felis erat facilisis velit, ac bibendum felis est id neque.', expand: [ { fileList: 'HTML list / data' } ]
-}, { id: 1, type: 'Agent', attachmentCount: 2, created: '03/18/2017', author: 'JSUTPHIN', term: 0, note: 'Maecenas egestas, est nec accumsan porta, felis erat facilisis velit, ac bibendum felis est id neque.', expand: [ { fileList: 'HTML list / data' } ]
- }, { id: 2, type: 'Policy Holder', attachmentCount: 1, created: '03/19/2017', author: 'REGNA', term: 0, note: 'Pharetra erat. Maecenas egestas, est nec accumsan porta, felis erat facilisis velit, ac bibendum felis est id neque.', expand: [ { fileList: 'HTML list / data' } ]
-  },
-  { id: 3, type: 'Policy Holder', attachmentCount: 0, created: '03/19/2017', author: 'REGNA', term: 0, note: 'Hasellus non pharetra erat. Maecenas egestas, est nec accumsan porta, felis erat facilisis velit, ac bibendum felis est id neque.', expand: []
-  },
-  { id: 4, type: 'Policy Holder', attachmentCount: 7, created: '03/12/2017', author: 'JSUTPHIN', term: 0, note: 'Non pharetra erat. Maecenas egestas, est nec accumsan porta, felis erat facilisis velit, ac bibendum felis est id neque.', expand: [ { fileList: 'HTML list / data' } ]
-   },
+const Files = (props) => {
+  const options = { searchPanel: props => (<SearchPanel {...props} />) };
+  return (
+    <BootstrapTable data={[]} options={options} search>
+      <TableHeaderColumn dataField="id" isKey hidden>ID</TableHeaderColumn>
+      <TableHeaderColumn dataField="format" dataSort width="10%">Format</TableHeaderColumn>
+      <TableHeaderColumn dataField="type" dataSort width="20%">Type</TableHeaderColumn>
+      <TableHeaderColumn dataField="fileName" dataSort tdStyle={{ whiteSpace: 'normal' }} width="30%">File Name</TableHeaderColumn>
+      <TableHeaderColumn dataField="created" dataSort width="15%">Created</TableHeaderColumn>
+      <TableHeaderColumn dataField="author" dataSort width="15%">Author</TableHeaderColumn>
+    </BootstrapTable>
+  );
+};
 
-]
+const handleFormSubmit = (data, dispatch, props) => alert('submit');
 
-class BSTable extends React.Component {
-  render() {
-    if (this.props.data) {
-      return (
-        <BootstrapTable data={ this.props.data }>
-          <TableHeaderColumn dataField='fileList' isKey={ true }>Attachment List</TableHeaderColumn>
-        </BootstrapTable>);
-    } else {
-      return (<p>?</p>);
+export class NotesFiles extends Component {
+
+  componentWillReceiveProps(nextProps) {
+    if (!_.isEqual(this.props, nextProps)) {
+      if (nextProps.policyData && nextProps.policyData.policyNumber) {
+        const policyNumber = nextProps.policyData.policyNumber;
+        this.props.actions.serviceActions.getNotes('policyNumber', policyNumber);
+      }
     }
   }
-}
-
-class NoteList extends React.Component {
-  isExpandableRow(row) {
-    if (row.id < 2) return true;
-    else return true;
-  }
-
-  expandComponent(row) {
-    return (
-      <BSTable data={ row.expand } />
-    );
-  }
 
   render() {
-    const options = {
+    const { handleSubmit } = this.props;
 
-    };
     return (
-      <BootstrapTable data={ notes }
-        options={ options }
-        expandableRow={ this.isExpandableRow }
-        expandComponent={ this.expandComponent }
-        search>
-        <TableHeaderColumn dataField='id'isKey hidden>ID</TableHeaderColumn>
-        <TableHeaderColumn dataField='type' dataSort={ true } width='15%'>Type</TableHeaderColumn>
-        <TableHeaderColumn dataField='attachmentCount' className="attachmentCount" dataSort={ true } dataAlign="center" width='7%'><i className="fa fa-paperclip" aria-hidden="true"></i></TableHeaderColumn>
-        <TableHeaderColumn dataField='created' dataSort={ true } width='10%'>Created</TableHeaderColumn>
-        <TableHeaderColumn dataField='author' dataSort={ true } width='13%'>Author</TableHeaderColumn>
-        <TableHeaderColumn dataField='term' dataSort={ true } dataAlign="center" width='10%'>Term</TableHeaderColumn>
-        <TableHeaderColumn dataField='note' dataSort={ true } tdStyle={ { whiteSpace: 'normal' } } width='45%'>Note</TableHeaderColumn>
-      </BootstrapTable>
-
+      <PolicyBaseConnect>
+        <ClearErrorConnect />
+        <div className="route-content">
+          <Form id="NotesFiles" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+            <div className="scroll">
+              <div className="form-group survey-wrapper" role="group">
+                <h3>History</h3>
+                <section>
+                  <div className="notes-list">
+                    <NoteList {...this.props} />
+                  </div>
+                  <div className="file-list" hidden>
+                    <Files />
+                  </div>
+                </section>
+              </div>
+            </div>
+          </Form>
+        </div>
+      </PolicyBaseConnect>
     );
   }
 }
 
-
-
-// ------------------------------------------------
-// The render is where all the data is being pulled
-//  from the props.
-// The quote data data comes from the previous task
-//  which is createQuote / singleQuote. This might
-//  not be the case in later calls, you may need
-//  to pull it from another place in the model
-// ------------------------------------------------
-export const MailingAddressBilling = (props) => {
-    const {handleSubmit} = props;
-    return (
-        <PolicyBaseConnect>
-            <ClearErrorConnect/>
-            <div className="route-content">
-                <Form id="MailingAddressBilling" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
-                    <div className="scroll">
-                        <div className="form-group survey-wrapper" role="group">
-                          <h3>History</h3>
-
-                          <section>
-
-                            <div className="notes-list">
-                              <NoteList />
-                            </div>
-
-                          </section>
-
-                        </div>
-
-                    </div>
-                </Form>
-
-            </div>
-    </PolicyBaseConnect>
-    );
-};
-
-// ------------------------------------------------
-// Property type definitions
-// ------------------------------------------------
-MailingAddressBilling.propTypes = {
-    ...propTypes,
-    tasks: PropTypes.shape(),
-    appState: PropTypes.shape({
-        modelName: PropTypes.string,
-        instanceId: PropTypes.string,
-        data: PropTypes.shape({submitting: PropTypes.boolean})
-    })
+NotesFiles.propTypes = {
+  ...propTypes,
+  policyData: PropTypes.shape(),
+  appState: PropTypes.shape({
+    modelName: PropTypes.string,
+    instanceId: PropTypes.string,
+    data: PropTypes.shape({ submitting: PropTypes.boolean })
+  })
 };
 
 // ------------------------------------------------
 // redux mapping
 // ------------------------------------------------
 const mapStateToProps = state => ({
-    tasks: state.cg,
-    appState: state.appState,
-    fieldValues: _.get(state.form, 'MailingAddressBilling.values', {}),
-    initialValues: handleInitialize(state)
+  appState: state.appState,
+  fieldValues: _.get(state.form, 'NotesFiles.values', {}),
+  initialValues: handleInitialize(state),
+  notes: state.service.notes,
+  policyData: handleGetPolicyData(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-    actions: {
-        cgActions: bindActionCreators(cgActions, dispatch),
-        appStateActions: bindActionCreators(appStateActions, dispatch)
-    }
+  actions: {
+    appStateActions: bindActionCreators(appStateActions, dispatch),
+    serviceActions: bindActionCreators(serviceActions, dispatch)
+  }
 });
 
-// ------------------------------------------------
-// wire up redux form with the redux connect
-// ------------------------------------------------
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({form: 'MailingAddressBilling'})(MailingAddressBilling));
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'NotesFiles', enableReinitialize: true })(NotesFiles));

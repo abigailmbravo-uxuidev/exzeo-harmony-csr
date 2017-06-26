@@ -85,10 +85,10 @@ export class Coverage extends Component {
         value: _.get(rating, 'windMitigationDiscount') === 0 ? 'No' : 'Yes'
       }, {
         discountSurcharge: 'Property Ever Rented',
-        value: _.get(underwritingAnswers, 'rented.answer')
+        value: _.get(underwritingAnswers, 'rented.answer') === 'Yes' ? 'Yes' : 'No'
       }, {
         discountSurcharge: 'Seasonally Occupied',
-        value: _.get(underwritingAnswers, 'monthsOccupied.answer')
+        value: _.get(underwritingAnswers, 'monthsOccupied.answer') !== '10+' ? 'Yes' : 'No'
       }, {
         discountSurcharge: 'No Prior Insurance',
         value: _.get(underwritingAnswers, 'noPriorInsuranceSurcharge.answer')
@@ -100,10 +100,10 @@ export class Coverage extends Component {
         value: _.get(property, 'fireAlarm') ? 'Yes' : 'No'
       }, {
         discountSurcharge: 'Sprinkler',
-        value: _.get(property, 'sprinkler') === 'N' ? 'No' : 'Yes'
+        value: _.get(property, 'sprinkler') === 'N' ? 'No' : _.get(property, 'sprinkler')
       }, {
         discountSurcharge: 'Wind Mit Factor',
-        value: _.get(rating, 'windMitigationDiscount')
+        value: _.get(rating, 'worksheet.elements.windMitigationDiscount')
       }
     ];
 

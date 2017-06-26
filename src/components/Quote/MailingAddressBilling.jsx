@@ -121,6 +121,9 @@ InstallmentTerm.propTypes = {
   paymentPlans: PropTypes.any // eslint-disable-line
 };
 
+const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
+
+
 export class MailingAddressBilling extends Component {
 
   selectBillTo = () => {
@@ -208,7 +211,7 @@ export class MailingAddressBilling extends Component {
 
 
   render() {
-    const { handleSubmit, paymentPlanResult, pristine } = this.props;
+    const { handleSubmit, paymentPlanResult, pristine, quoteData } = this.props;
 
     return (
       <QuoteBaseConnect>
@@ -243,211 +246,8 @@ export class MailingAddressBilling extends Component {
                       <TextField validations={['required']} label={'City'} styleName={''} name={'city'} />
                     </div>
                     <div className="flex-child state">
-                      <SelectField
-                        name="state" component="select" styleName={''} label="State" validations={['required']} answers={[
-                          {
-                            label: 'Alabama',
-                            answer: 'AL'
-                          },
-                          {
-                            label: 'Alaska',
-                            answer: 'AK'
-                          },
-                          {
-                            label: 'Arizona',
-                            answer: 'AZ'
-                          },
-                          {
-                            label: 'Arkansas',
-                            answer: 'AR'
-                          },
-                          {
-                            label: 'California',
-                            answer: 'CA'
-                          },
-                          {
-                            label: 'Colorado',
-                            answer: 'CO'
-                          },
-                          {
-                            label: 'Connecticut',
-                            answer: 'CT'
-                          },
-                          {
-                            label: 'Delaware',
-                            answer: 'DE'
-                          },
-                          {
-                            label: 'Florida',
-                            answer: 'FL'
-                          },
-                          {
-                            label: 'Georgia',
-                            answer: 'GA'
-                          },
-                          {
-                            label: 'Hawaii',
-                            answer: 'HI'
-                          },
-                          {
-                            label: 'Idaho',
-                            answer: 'ID'
-                          },
-                          {
-                            label: 'Illinois',
-                            answer: 'IL'
-                          },
-                          {
-                            label: 'Indiana',
-                            answer: 'IN'
-                          },
-                          {
-                            label: 'Iowa',
-                            answer: 'IA'
-                          },
-                          {
-                            label: 'Kansas',
-                            answer: 'KS'
-                          },
-                          {
-                            label: 'Kentucky',
-                            answer: 'KY'
-                          },
-                          {
-                            label: 'Louisiana',
-                            answer: 'LA'
-                          },
-                          {
-                            label: 'Maine',
-                            answer: 'ME'
-                          },
-                          {
-                            label: 'Maryland',
-                            answer: 'MD'
-                          },
-                          {
-                            label: 'Massachusetts',
-                            answer: 'MA'
-                          },
-                          {
-                            label: 'Michigan',
-                            answer: 'MI'
-                          },
-                          {
-                            label: 'Minnesota',
-                            answer: 'MN'
-                          },
-                          {
-                            label: 'Mississippi',
-                            answer: 'MS'
-                          },
-                          {
-                            label: 'Missouri',
-                            answer: 'MO'
-                          },
-                          {
-                            label: 'Montana',
-                            answer: 'MT'
-                          },
-                          {
-                            label: 'Nebraska',
-                            answer: 'NE'
-                          },
-                          {
-                            label: 'Nevada',
-                            answer: 'NV'
-                          },
-                          {
-                            label: 'New Hampshire',
-                            answer: 'NH'
-                          },
-                          {
-                            label: 'New Jersey',
-                            answer: 'NJ'
-                          },
-                          {
-                            label: 'New Mexico',
-                            answer: 'NM'
-                          },
-                          {
-                            label: 'New York',
-                            answer: 'NY'
-                          },
-                          {
-                            label: 'North Carolina',
-                            answer: 'NC'
-                          },
-                          {
-                            label: 'North Dakota',
-                            answer: 'ND'
-                          },
-                          {
-                            label: 'Ohio',
-                            answer: 'OH'
-                          },
-                          {
-                            label: 'Oklahoma',
-                            answer: 'OK'
-                          },
-                          {
-                            label: 'Oregon',
-                            answer: 'OR'
-                          },
-                          {
-                            label: 'Pennsylvania',
-                            answer: 'PA'
-                          },
-                          {
-                            label: 'Rhode Island',
-                            answer: 'RI'
-                          },
-                          {
-                            label: 'South Carolina',
-                            answer: 'SC'
-                          },
-                          {
-                            label: 'South Dakota',
-                            answer: 'SD'
-                          },
-                          {
-                            label: 'Tennessee',
-                            answer: 'TN'
-                          },
-                          {
-                            label: 'Texas',
-                            answer: 'TX'
-                          },
-                          {
-                            label: 'Utah',
-                            answer: 'UT'
-                          },
-                          {
-                            label: 'Vermont',
-                            answer: 'VT'
-                          },
-                          {
-                            label: 'Virginia',
-                            answer: 'VA'
-                          },
-                          {
-                            label: 'Washington',
-                            answer: 'WA'
-                          },
-                          {
-                            label: 'West Virginia',
-                            answer: 'WV'
-                          },
-                          {
-                            label: 'Wisconsin',
-                            answer: 'WI'
-                          },
-                          {
-                            label: 'Wyoming',
-                            answer: 'WY'
-                          }
-                        ]} validate={[value => (value
-                                                                  ? undefined
-                                                                  : 'Field Required')]}
+                      <TextField
+                        name="state" component="select" styleName={''} label="State" validations={['required']}
                       />
                     </div>
                     <div className="flex-child zip">
@@ -502,7 +302,7 @@ export class MailingAddressBilling extends Component {
                 </section>
                 <div className="btn-footer">
                   <button className="btn btn-secondary" type="button" onClick={() => this.clearForm()}>Cancel</button>
-                  <button className="btn btn-primary" type="submit" form="MailingAddressBilling" disabled={this.props.appState.data.submitting || pristine}>Update</button>
+                  <button className="btn btn-primary" type="submit" form="MailingAddressBilling" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}>Update</button>
                 </div>
               </div>
             </div>

@@ -1,164 +1,79 @@
-import React, { PropTypes } from 'react';
-import { reduxForm, propTypes } from 'redux-form';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Field, Form, reduxForm, propTypes } from 'redux-form';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import _ from 'lodash';
+import * as serviceActions from '../../actions/serviceActions';
 
-const NewNoteFileUploader = ({ closeButtonHandler }) => (
-    <div className="new-note-file">
-        <div className="title-bar">
-          <div className="title">Note</div>
-          <div className="controls">
-            <button className="btn btn-icon"><i className="fa fa-window-minimize" aria-hidden="true"></i></button>
-            <button className="btn btn-icon" onClick={closeButtonHandler} type="submit"><i className="fa fa-times-circle" aria-hidden="true"></i></button>
-          </div>
-        </div>
-        <div className="mainContainer">
-          <div className="content state-initial">
-              <div className="flex-contents">
-                <select>
-                  <option value="">Select Type</option>
-                </select>
-                <textarea placeholder="Enter Notes"></textarea>
-                <div className="drag-n-drop">
-                  Drag and Drop Files
-                </div>
-              </div>
-              <div className="buttons">
-                <button className="btn btn-primary">Upload</button>
-                <div></div>
-                <button className="btn btn-secondary" onClick={closeButtonHandler}>Cancel</button>
-                <button className="btn btn-primary">Save</button>
-              </div>
-          </div>
-          <div className="content state-upload" hidden>
+const submitNote = (data, dispatch, props) => {
+  const { noteType, documentId } = props;
+  props.actions.serviceActions.addNote(documentId, noteType, data);
+  props.closeButtonHandler();
+}
+
+const NewNoteFileUploader = (props, { closeButtonHandler }) => {
+  return(
+  <div className="new-note-file">
+    <div className="title-bar">
+      <div className="title">Note</div>
+      <div className="controls">
+        <button className="btn btn-icon"><i className="fa fa-window-minimize" aria-hidden="true"></i></button>
+        <button className="btn btn-icon" onClick={ props.closeButtonHandler } type="submit"><i className="fa fa-times-circle" aria-hidden="true"></i></button>
+      </div>
+    </div>
+    <div className="mainContainer">
+      <Form id="NewNoteFileUploader" onSubmit={ props.handleSubmit(submitNote) } noValidate>
+        <div className="content state-initial">
             <div className="flex-contents">
+              <Field name="noteContent" component="input"/>
               <div className="drag-n-drop">
                 Drag and Drop Files
               </div>
             </div>
             <div className="buttons">
-              <a href="#" className="btn btn-primary">Choose Files</a>
+              <button className="btn btn-primary">Upload</button>
               <div></div>
-              <a href="#" className="btn btn-secondary">Cancel</a>
+              <button className="btn btn-secondary" onClick={ props.closeButtonHandler }>Cancel</button>
+              <button className="btn btn-primary">Save</button>
+            </div>
+        </div>
+        <div className="content state-upload" hidden>
+          <div className="flex-contents">
+            <div className="drag-n-drop">
+              Drag and Drop Files
             </div>
           </div>
-          <div className="content state-finalize" hidden>
-            <div className="flex-contents">
-              <select>
-                <option value="">Select Type</option>
-              </select>
-              <textarea placeholder="Enter Notes"></textarea>
-              <div className="drag-n-drop">
-                <ul>
-                  <li>
-                    <span>H031860370920170315.jpg</span>
-                    <select>
-                      <option>
-                        Select Type
-                      </option>
-                      <option>
-                        Select Type
-                      </option>
-                      <option>
-                        Select Type
-                      </option>
-                      <option>
-                        Select Type
-                      </option>
-                      <option>
-                        Select Type
-                      </option>
-                      <option>
-                        Select Type
-                      </option>
-                      <option>
-                        Select Type
-                      </option>
-                    </select>
-                    <i className="fa fa-times-circle" aria-hidden="true"></i>
-                  </li>
-                  <li>
-                    <span>H031860370920170315.jpg</span>
-                    <select>
-                      <option>
-                        Select Type
-                      </option>
-                    </select>
-                    <i className="fa fa-times-circle" aria-hidden="true"></i>
-                  </li>
-
-                  <li>
-                    <span>H031860370920170315.jpg</span>
-                    <select>
-                      <option>
-                        Select Type
-                      </option>
-                    </select>
-                    <i className="fa fa-times-circle" aria-hidden="true"></i>
-                  </li>
-                  <li>
-                    <span>H031860370920170315.jpg</span>
-                    <select>
-                      <option>
-                        Select Type
-                      </option>
-                    </select>
-                    <i className="fa fa-times-circle" aria-hidden="true"></i>
-                  </li>
-                  <li>
-                    <span>H031860370920170315.jpg</span>
-                    <select>
-                      <option>
-                        Select Type
-                      </option>
-                    </select>
-                    <i className="fa fa-times-circle" aria-hidden="true"></i>
-                  </li>
-                  <li>
-                    <span>H031860370920170315.jpg</span>
-                    <select>
-                      <option>
-                        Select Type
-                      </option>
-                    </select>
-                    <i className="fa fa-times-circle" aria-hidden="true"></i>
-                  </li>
-                  <li>
-                    <span>H031860370920170315.jpg</span>
-                    <select>
-                      <option>
-                        Select Type
-                      </option>
-                    </select>
-                    <i className="fa fa-times-circle" aria-hidden="true"></i>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="buttons">
-              <a href="#" className="btn btn-primary">Upload</a>
-              <div></div>
-              <a href="#" className="btn btn-secondary">Cancel</a>
-              <a href="#" className="btn btn-primary">Save</a>
-            </div>
+          <div className="buttons">
+            <a href="#" className="btn btn-primary">Choose Files</a>
+            <div></div>
+            <a href="#" className="btn btn-secondary">Cancel</a>
           </div>
         </div>
-</div>
-
-);
+      </Form>
+    </div>
+  </div>
+)};
 
 NewNoteFileUploader.propTypes = {
   ...propTypes,
-  closeButtonHandler: PropTypes.func
+  closeButtonHandler: PropTypes.func,
+  noteType: PropTypes.string
 };
 
 // ------------------------------------------------
 // redux mapping
 // ------------------------------------------------
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   appState: state.appState
 });
 
+const mapDispatchToProps = dispatch => ({
+  actions: {
+    serviceActions: bindActionCreators(serviceActions, dispatch)
+  }
+});
 
-export default connect(mapStateToProps)(reduxForm({
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
   form: 'NewNoteFileUploader'
 })(NewNoteFileUploader));

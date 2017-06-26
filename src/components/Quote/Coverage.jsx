@@ -5,9 +5,10 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
-import * as serviceActions from  '../../actions/serviceActions';
+import * as serviceActions from '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as questionsActions from '../../actions/questionsActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import TextField from '../Form/inputs/TextField';
@@ -18,6 +19,7 @@ import RadioField from '../Form/inputs/RadioField';
 import CurrencyField from '../Form/inputs/CurrencyField';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
+import DateField from '../Form/inputs/DateField';
 
 const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName])
@@ -28,6 +30,15 @@ const handleGetQuoteData = (state) => {
     ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
     : {};
   return quoteData;
+};
+
+const handleGetZipCodeSettings = (state) => {
+  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  if (!taskData) return [];
+
+  const zipCodeSettings = _.find(taskData.model.variables, { name: 'getZipCodeSettings' }) ?
+  _.find(taskData.model.variables, { name: 'getZipCodeSettings' }).value.result[0] : null;
+  return zipCodeSettings;
 };
 
 function calculatePercentage(oldFigure, newFigure) {
@@ -111,6 +122,7 @@ const handleInitialize = (state) => {
   values.hurricane = hurricane;
 
   values.calculatedHurricane = _.get(quoteData, 'deductibles.hurricane.calculatedAmount');
+  values.calculatedSinkhole = _.get(quoteData, 'deductibles.sinkhole.calculatedAmount');
 
   values.floridaBuildingCodeWindSpeed = _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeed');
   values.floridaBuildingCodeWindSpeedDesign = _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign');
@@ -144,9 +156,17 @@ const populateAgentData = (state) => {
   return [];
 };
 
+const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
+const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
+
+const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question') || '';
+
+
 export class Coverage extends Component {
 
   componentDidMount() {
+    this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuote');
+
     const isNewTab = localStorage.getItem('isNewTab') === 'true';
 
     if (isNewTab) {
@@ -189,9 +209,10 @@ export class Coverage extends Component {
   }
 
   handleAgencyChange = (agencyCode, isInit) => {
-    this.props.dispatch(change('Coverage', 'agencyCode', agencyCode));
-
-    if (!isInit) { this.props.dispatch(change('Coverage', 'agentCode', '')); }
+    if (!isInit) {
+      this.props.dispatch(change('Coverage', 'agencyCode', agencyCode));
+      this.props.dispatch(change('Coverage', 'agentCode', ''));
+    }
 
     const { quoteData } = this.props;
     const startModelData = {
@@ -259,6 +280,8 @@ export class Coverage extends Component {
     const personalProperty = _.get(quoteData, 'coverageLimits.personalProperty.amount');
     const hurricane = _.get(quoteData, 'deductibles.hurricane.amount');
     const calculatedHurricane = _.get(quoteData, 'deductibles.hurricane.calculatedAmount');
+    const calculatedSinkhole = _.get(quoteData, 'deductibles.sinkhole.calculatedAmount');
+
 
     dispatch(change('Coverage', 'dwellingAmount', dwelling));
 
@@ -270,6 +293,7 @@ export class Coverage extends Component {
     dispatch(change('Coverage', 'personalPropertyReplacementCostCoverage', false));
 
     dispatch(change('Coverage', 'sinkholePerilCoverage', _.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer')));
+    dispatch(change('Coverage', 'calculatedSinkhole', calculatedSinkhole));
 
     dispatch(change('Coverage', 'allOtherPerils', _.get(quoteData, 'deductibles.allOtherPerils.amount')));
     dispatch(change('Coverage', 'hurricane', hurricane));
@@ -378,6 +402,8 @@ export class Coverage extends Component {
     dispatch(change('Coverage', 'calculatedHurricane', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.hurricane)))));
 
     dispatch(change('Coverage', 'lossOfUse', String(setPercentageOfValue(Number(dwellingNumber), 10))));
+
+    dispatch(change('Coverage', 'calculatedSinkhole', String(setPercentageOfValue(Number(dwellingNumber), 10))));
   }
 
   updateDependencies = (event, field, dependency) => {
@@ -393,8 +419,16 @@ export class Coverage extends Component {
       : String(fieldValue)));
   }
 
+  updateCalculatedSinkhole = () => {
+    const { dispatch, fieldValues } = this.props;
+    if (Number.isNaN(event.target.value)) { return; }
+
+    const dependencyValue = String(fieldValues.dwellingAmount).replace(/\D+/g, '');
+    dispatch(change('Coverage', 'calculatedSinkhole', String(setPercentageOfValue(Number(dependencyValue), 10))));
+  }
+
   render() {
-    const { fieldValues, handleSubmit, initialValues, pristine, agents } = this.props;
+    const { quoteData, fieldValues, handleSubmit, initialValues, pristine, agents, questions, zipCodeSettings } = this.props;
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
@@ -409,7 +443,9 @@ export class Coverage extends Component {
                   <h3>Produced By</h3>
                   <div className="flex-parent">
                     <div className="flex-child">
-                      <div><TextField validations={['required']} label={'Effective Date'} styleName={''} name={'effectiveDate'} type={'date'} /></div>
+                      <div>
+                        <DateField validations={['date']} label={'Effective Date'} name={'effectiveDate'} min={zipCodeSettings ? zipCodeSettings.minEffectiveDate : null} max={zipCodeSettings ? zipCodeSettings.maxEffectiveDate : null} />
+                      </div>
                     </div>
 
                     <div className="flex-child">
@@ -711,60 +747,28 @@ export class Coverage extends Component {
                     <h3>Coverages</h3>
                     <div className="flex-parent">
                       <div className="flex-child">
-                        <CurrencyField validations={['required', 'range']} label={`Dwelling (A - $${String(fieldValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $${String(fieldValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`} styleName={''} name={'dwellingAmount'} min={initialValues.dwellingMin} max={initialValues.dwellingMax} onChange={this.updateDwellingAndDependencies} />
+                        <CurrencyField validations={['required', 'range']} label={`${getQuestionName('dwellingAmount', questions)} ($${String(fieldValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $${String(fieldValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`} styleName={''} name={'dwellingAmount'} min={initialValues.dwellingMin} max={initialValues.dwellingMax} onChange={this.updateDwellingAndDependencies} />
                       </div>
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
-                        <CurrencyField validations={['required']} name="otherStructuresAmount" label={'Other Structures (B)'} styleName={'coverage-b'} disabled={fieldValues.otherStructures !== 'other'} />
+                        <CurrencyField validations={['required']} name="otherStructuresAmount" label={getQuestionName('otherStructuresAmount', questions)} styleName={'coverage-b'} disabled={fieldValues.otherStructures !== 'other'} />
                       </div>
                       <div className="flex-child">
                         <SelectField
-                          name="otherStructures" component="select" styleName={'coverage-b-percentage'} label="Percentage" onChange={event => this.updateDependencies(event, 'otherStructuresAmount', 'dwellingAmount')} validations={['required']} answers={[
-                            {
-                              answer: '0',
-                              label: '0%'
-                            }, {
-                              answer: '2',
-                              label: '2%'
-                            }, {
-                              answer: '5',
-                              label: '5%'
-                            }, {
-                              answer: '10',
-                              label: '10%'
-                            }, {
-                              answer: 'other',
-                              label: 'Other'
-                            }
-                          ]}
+                          name="otherStructures" component="select" styleName={'coverage-b-percentage'} label="Percentage" onChange={event => this.updateDependencies(event, 'otherStructuresAmount', 'dwellingAmount')} validations={['required']}
+                          answers={getAnswers('otherStructuresAmount', questions)}
                         />
                       </div>
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
-                        <CurrencyField validations={['required']} label={'Personal Property (C)'} styleName={'coverage-c'} name="personalPropertyAmount" disabled={fieldValues.personalProperty !== 'other'} />
+                        <CurrencyField validations={['required']} label={getQuestionName('personalPropertyAmount', questions)} styleName={'coverage-c'} name="personalPropertyAmount" disabled={fieldValues.personalProperty !== 'other'} />
                       </div>
                       <div className="flex-child">
                         <SelectField
-                          name="personalProperty" component="select" styleName={'coverage-c-percentage'} label="Percentage" onChange={event => this.updateDependencies(event, 'personalPropertyAmount', 'dwellingAmount')} validations={['required']} answers={[
-                            {
-                              answer: '0',
-                              label: '0%'
-                            }, {
-                              answer: '25',
-                              label: '25%'
-                            }, {
-                              answer: '35',
-                              label: '35%'
-                            }, {
-                              answer: '50',
-                              label: '50%'
-                            }, {
-                              answer: 'other',
-                              label: 'Other'
-                            }
-                          ]}
+                          name="personalProperty" component="select" styleName={'coverage-c-percentage'} label="Percentage" onChange={event => this.updateDependencies(event, 'personalPropertyAmount', 'dwellingAmount')} validations={['required']}
+                          answers={getAnswers('personalPropertyAmount', questions)}
                         />
                       </div>
                       {/* <div className="flex-child">
@@ -785,28 +789,21 @@ export class Coverage extends Component {
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
-                        <CurrencyField label={'Loss of Use (D)'} styleName={''} name="lossOfUse" disabled />
+                        <CurrencyField label={'Loss of Use'} styleName={''} name="lossOfUse" disabled />
                       </div>
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
                         <SelectField
-                          name="personalLiability" component="select" styleName={''} label="Personal Liability (E)" onChange={function () {}} validations={['required']} answers={[
-                            {
-                              answer: '100000',
-                              label: '$100,000'
-                            }, {
-                              answer: '300000',
-                              label: '$300,000'
-                            }
-                          ]}
+                          name="personalLiability" component="select" styleName={''} label={getQuestionName('personalLiability', questions)} onChange={function () {}} validations={['required']}
+                          answers={getAnswers('personalLiability', questions)}
                         />
                       </div>
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
                         <TextField
-                          name="medicalPayments" disabled label={'Medical Payments (F)'} styleName={''} input={{
+                          name="medicalPayments" disabled label={getQuestionName('medicalPayments', questions)} styleName={''} input={{
                             name: 'medicalPayments',
                             disabled: true,
                             value: '$2,000'
@@ -820,33 +817,14 @@ export class Coverage extends Component {
                     <div className="flex-parent">
                       <div className="flex-child">
                         <SelectField
-                          name="moldProperty" component="select" styleName={''} label="Mold Property Limit" onChange={function () {}} validations={['required']} answers={[
-                            {
-                              answer: '10000',
-                              label: '$10,000'
-                            }, {
-                              answer: '25000',
-                              label: '$25,000'
-                            }, {
-                              answer: '50000',
-                              label: '$50,000'
-                            }
-                          ]}
+                          name="moldProperty" component="select" styleName={''} label="Mold Property Limit" onChange={function () {}} validations={['required']} answers={getAnswers('moldProperty', questions)}
                         />
                       </div>
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
                         <SelectField
-                          name="moldLiability" component="select" styleName={''} label="Mold Liability Limit" onChange={function () {}} validations={['required']} answers={[
-                            {
-                              answer: '50000',
-                              label: '$50,000'
-                            }, {
-                              answer: '100000',
-                              label: '$100,000'
-                            }
-                          ]}
+                          name="moldLiability" component="select" styleName={''} label="Mold Liability Limit" onChange={function () {}} validations={['required']} answers={getAnswers('moldLiability', questions)}
                         />
                       </div>
                     </div>
@@ -869,15 +847,8 @@ export class Coverage extends Component {
                     <div className="flex-parent">
                       <div className="flex-child">
                         <SelectField
-                          name="ordinanceOrLaw" component="select" styleName={''} label="Ordinance or Law Coverage" onChange={function () {}} validations={['required']} answers={[
-                            {
-                              answer: '25',
-                              label: '25% of Dwelling (included)'
-                            }, {
-                              answer: '50',
-                              label: '50% of Dwelling'
-                            }
-                          ]}
+                          name="ordinanceOrLaw" component="select" styleName={''} label="Ordinance or Law Coverage" onChange={function () {}} validations={['required']}
+                          answers={getAnswers('ordinanceOrLaw', questions)}
                         />
                       </div>
                     </div>
@@ -887,15 +858,9 @@ export class Coverage extends Component {
                     <div className="flex-parent">
                       <div className="flex-child">
                         <SelectField
-                          name="hurricane" component="select" styleName={''} label="Hurricane" onChange={event => this.updateDependencies(event, 'calculatedHurricane', 'dwellingAmount')} validations={['required']} answers={[
-                            {
-                              answer: '2',
-                              label: '2% of Dwelling'
-                            }, {
-                              answer: '5',
-                              label: '5% of Dwelling'
-                            }
-                          ]}
+                          name="hurricane" component="select" styleName={''} label="Hurricane" onChange={event => this.updateDependencies(event, 'calculatedHurricane', 'dwellingAmount')}
+                          validations={['required']}
+                          answers={getAnswers('hurricane', questions)}
                         />
                       </div>
                     </div>
@@ -907,36 +872,32 @@ export class Coverage extends Component {
                     <div className="flex-parent">
                       <div className="flex-child">
                         <SelectField
-                          name="allOtherPerils" component="select" styleName={''} label="All Other Perils" onChange={function () {}} validations={['required']} answers={[
-                            {
-                              answer: '500',
-                              label: '$500'
-                            }, {
-                              answer: '1000',
-                              label: '$1,000'
-                            }, {
-                              answer: '2500',
-                              label: '$2,500'
-                            }
-                          ]}
+                          name="allOtherPerils" component="select" styleName={''} label="All Other Perils" onChange={function () {}} validations={['required']}
+                          answers={getAnswers('allOtherPerils', questions)}
                         />
                       </div>
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
                         <SelectField
-                          name="sinkholePerilCoverage" component="select" styleName={''} label="Sinkhole" onChange={function () {}} answers={[
+                          name="sinkholePerilCoverage" component="select" styleName={''} label="Sinkhole" onChange={() => this.updateCalculatedSinkhole()} answers={[
                             {
                               answer: false,
                               label: 'Coverage Excluded'
                             }, {
                               answer: true,
-                              label: '10% of Dwelling'
+                              label: `10% of ${getQuestionName('dwellingAmount', questions)}`
                             }
                           ]}
                         />
                       </div>
                     </div>
+                    { String(fieldValues.sinkholePerilCoverage) === 'true' && <div className="flex-parent">
+                      <div className="flex-child">
+                        <CurrencyField validations={['required']} label={'Calculated Sinkhole'} styleName={'coverage-c'} name="calculatedSinkhole" disabled />
+                      </div>
+                    </div>
+                    }
                   </div>
                   <div className="discounts flex-child">
                     <h3>Discounts</h3>
@@ -973,18 +934,8 @@ export class Coverage extends Component {
                     <div className="flex-parent">
                       <div className="flex-child">
                         <RadioField
-                          name={'sprinkler'} styleName={''} label={'Sprinkler'} onChange={function () {}} segmented answers={[
-                            {
-                              answer: 'N',
-                              label: 'No'
-                            }, {
-                              answer: 'A',
-                              label: 'A'
-                            }, {
-                              answer: 'B',
-                              label: 'B'
-                            }
-                          ]}
+                          name={'sprinkler'} styleName={''} label={'Sprinkler'} onChange={function () {}} segmented
+                          answers={getAnswers('sprinkler', questions)}
                         />
                       </div>
                     </div>
@@ -996,110 +947,49 @@ export class Coverage extends Component {
                     <div className="flex-parent">
                       <div className="flex-child">
                         <SelectField
-                          name="roofCovering" component="select" styleName={''} label="Roof Covering" onChange={function () {}} validations={['required']} answers={[
-                            {
-                              answer: 'Non-FBC',
-                              label: 'Non-FBC'
-                            }, {
-                              answer: 'FBC',
-                              label: 'FBC'
-                            }, {
-                              answer: 'Other',
-                              label: 'Other'
-                            }
-                          ]}
+                          name="roofCovering" component="select" styleName={''} label="Roof Covering" onChange={function () {}} validations={['required']}
+                          answers={getAnswers('roofCovering', questions)}
+
                         />
                       </div>
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
                         <SelectField
-                          name="roofDeckAttachment" component="select" styleName={''} label="Roof Deck Attachment" onChange={function () {}} validations={['required']} answers={[
-                            {
-                              answer: 'A'
-                            }, {
-                              answer: 'B'
-                            }, {
-                              answer: 'C'
-                            }, {
-                              answer: 'D'
-                            }, {
-                              answer: 'Concrete'
-                            }, {
-                              answer: 'Other'
-                            }
-                          ]}
+                          name="roofDeckAttachment" component="select" styleName={''} label="Roof Deck Attachment" onChange={function () {}} validations={['required']}
+                          answers={getAnswers('roofDeckAttachment', questions)}
                         />
                       </div>
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
                         <SelectField
-                          name="roofToWallConnection" component="select" styleName={'weakestRoofWallConnect'} label="Roof to Wall Attachment" onChange={function () {}} validations={['required']} answers={[
-                            {
-                              answer: 'Toe Nails'
-                            }, {
-                              answer: 'Clips'
-                            }, {
-                              answer: 'Single Wraps'
-                            }, {
-                              answer: 'Double Wraps'
-                            }, {
-                              answer: 'Other'
-                            }
-                          ]}
+                          name="roofToWallConnection" component="select" styleName={'weakestRoofWallConnect'} label="Roof to Wall Attachment" onChange={function () {}} validations={['required']}
+                          answers={getAnswers('roofToWallConnection', questions)}
                         />
                       </div>
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
                         <SelectField
-                          name="roofGeometry" component="select" styleName={''} label="Roof Geometry" onChange={function () {}} validations={['required']} answers={[
-                            {
-                              answer: 'Flat'
-                            }, {
-                              answer: 'Gable'
-                            }, {
-                              answer: 'Hip'
-                            }, {
-                              answer: 'Other'
-                            }
-                          ]}
+                          name="roofGeometry" component="select" styleName={''} label="Roof Geometry" onChange={function () {}} validations={['required']}
+                          answers={getAnswers('roofGeometry', questions)}
                         />
                       </div>
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
                         <RadioField
-                          validations={['required']} name={'secondaryWaterResistance'} styleName={''} label={'Secondary Water Resistance (SWR)'} onChange={function () {}} segmented answers={[
-                            {
-                              answer: 'Yes',
-                              label: 'Yes'
-                            }, {
-                              answer: 'No',
-                              label: 'No'
-                            }, {
-                              answer: 'Other',
-                              label: 'Other'
-                            }
-                          ]}
+                          validations={['required']} name={'secondaryWaterResistance'} styleName={''} label={'Secondary Water Resistance (SWR)'} onChange={function () {}} segmented
+                          answers={getAnswers('secondaryWaterResistance', questions)}
                         />
                       </div>
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
                         <SelectField
-                          name="openingProtection" component="select" styleName={''} label="Opening Protection" onChange={function () {}} validations={['required']} answers={[
-                            {
-                              answer: 'None'
-                            }, {
-                              answer: 'Basic'
-                            }, {
-                              answer: 'Hurricane'
-                            }, {
-                              answer: 'Other'
-                            }
-                          ]}
+                          name="openingProtection" component="select" styleName={''} label="Opening Protection" onChange={function () {}} validations={['required']}
+                          answers={getAnswers('openingProtection', questions)}
                         />
                       </div>
                     </div>
@@ -1119,57 +1009,24 @@ export class Coverage extends Component {
                     <div className="flex-parent">
                       <div className="flex-child">
                         <SelectField
-                          name="terrain" component="select" styleName={'propertyTerrain'} label="Terrain" onChange={function () {}} validations={['required']} answers={[
-                            {
-                              answer: 'B',
-                              label: 'B'
-                            }, {
-                              answer: 'C',
-                              label: 'C'
-                            }, {
-                              answer: 'HVHZ',
-                              label: 'HVHZ'
-                            }, {
-                              answer: 'Other',
-                              label: 'Other'
-                            }
-                          ]}
+                          name="terrain" component="select" styleName={'propertyTerrain'} label="Terrain" onChange={function () {}} validations={['required']}
+                          answers={getAnswers('terrain', questions)}
                         />
                       </div>
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
                         <SelectField
-                          name="internalPressureDesign" component="select" styleName={''} label="Internal Pressure Design" onChange={function () {}} validations={['required']} answers={[
-                            {
-                              answer: 'Enclosed',
-                              label: 'Enclosed'
-                            }, {
-                              answer: 'Partial',
-                              label: 'Partial'
-                            }, {
-                              answer: 'Other',
-                              label: 'Other'
-                            }
-                          ]}
+                          name="internalPressureDesign" component="select" styleName={''} label="Internal Pressure Design" onChange={function () {}} validations={['required']}
+                          answers={getAnswers('internalPressureDesign', questions)}
                         />
                       </div>
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
                         <RadioField
-                          validations={['required']} name={'windBorneDebrisRegion'} styleName={''} label={'Wind Borne Debris Region (WBDR)'} onChange={function () {}} segmented answers={[
-                            {
-                              answer: 'Yes',
-                              label: 'Yes'
-                            }, {
-                              answer: 'No',
-                              label: 'No'
-                            }, {
-                              answer: 'Other',
-                              label: 'Other'
-                            }
-                          ]}
+                          validations={['required']} name={'windBorneDebrisRegion'} styleName={''} label={'Wind Borne Debris Region (WBDR)'} onChange={function () {}} segmented
+                          answers={getAnswers('windBorneDebrisRegion', questions)}
                         />
                       </div>
                     </div>
@@ -1179,7 +1036,7 @@ export class Coverage extends Component {
                   <button className="btn btn-secondary" type="button" form="Coverage" onClick={this.clearForm}>
                     Cancel
                   </button>
-                  <button className="btn btn-primary" type="submit" form="Coverage" disabled={this.props.appState.data.submitting || pristine}>
+                  <button className="btn btn-primary" type="submit" form="Coverage" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}>
                     Update
                   </button>
                 </div>
@@ -1199,6 +1056,7 @@ Coverage.contextTypes = {
 // ------------------------------------------------
 Coverage.propTypes = {
   ...propTypes,
+  zipCodeSettings: PropTypes.shape(),
   tasks: PropTypes.shape(),
   appState: PropTypes.shape({
     modelName: PropTypes.string,
@@ -1217,12 +1075,14 @@ const mapStateToProps = state => ({
   agents: populateAgentData(state),
   fieldValues: _.get(state.form, 'Coverage.values', {}),
   initialValues: handleInitialize(state),
-  quoteData: handleGetQuoteData(state)
+  quoteData: handleGetQuoteData(state),
+  zipCodeSettings: handleGetZipCodeSettings(state),
+  questions: state.questions
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    serviceActions: bindActionCreators(serviceActions, dispatch),
+    questionsActions: bindActionCreators(questionsActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }

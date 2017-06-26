@@ -49,6 +49,9 @@ const handleInitialize = () => {
   return values;
 };
 
+const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
+
+
 export class AdditionalLinterests extends Component {
 
   state = {
@@ -141,11 +144,13 @@ export class AdditionalLinterests extends Component {
   };
 
   addAdditionalInterest = (type) => {
+    if (checkQuoteState(this.props.quoteData)) return;
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId,
       { ...this.props.appState.data, showAdditionalInterestModal: true, addAdditionalInterestType: type });
   }
 
   editAdditionalInterest = (ai) => {
+    if (checkQuoteState(this.props.quoteData)) return;
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId,
       { ...this.props.appState.data, showAdditionalInterestEditModal: true, selectedAI: ai });
   }
@@ -205,11 +210,11 @@ export class AdditionalLinterests extends Component {
               <div className="form-group survey-wrapper" role="group">
                 <h3>Additional Interests</h3>
                 <div className="button-group">
-                  <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Mortgagee').length > 1} onClick={() => this.addAdditionalInterest('Mortgagee')} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
-                  <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Additional Insured').length > 1} onClick={() => this.addAdditionalInterest('Additional Insured')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
-                  <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Additional Interest').length > 1} onClick={() => this.addAdditionalInterest('Additional Interest')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
+                  <button disabled={(quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Mortgagee').length > 1) || checkQuoteState(quoteData)} onClick={() => this.addAdditionalInterest('Mortgagee')} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
+                  <button disabled={(quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Additional Insured').length > 1) || checkQuoteState(quoteData)} onClick={() => this.addAdditionalInterest('Additional Insured')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
+                  <button disabled={(quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Additional Interest').length > 1) || checkQuoteState(quoteData)} onClick={() => this.addAdditionalInterest('Additional Interest')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
                   { /* <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => this.addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button> */ }
-                  <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Bill Payer').length > 0} onClick={() => this.addAdditionalInterest('Bill Payer')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
+                  <button disabled={(quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Bill Payer').length > 0) || checkQuoteState(quoteData)} onClick={() => this.addAdditionalInterest('Bill Payer')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
                 </div>
 
 

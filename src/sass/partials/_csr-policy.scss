@@ -11,6 +11,7 @@
         background: $bright-blue-darken-01;
         justify-content: center;
         align-items: center;
+        width: 12rem;
       }
 
       .policy-description {
@@ -224,24 +225,13 @@
               font-weight: normal;
             }
 
-
-            .flex-parent {
-
-                margin-bottom: ($padding*2);
-
-                .btn {
-                  flex: 0 1 auto;
-                }
+            .property-info {
+                 justify-content: space-between;
             }
-
-
 
             .payment-summary,
             .property-info {
               display: flex;
-
-
-
 
               &.grid {
                 display: block;
