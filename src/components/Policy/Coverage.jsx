@@ -189,6 +189,11 @@ export class Coverage extends Component {
     ];
 
     const propertyData = property || {};
+    if (!this.props.policy.policyID) {
+      return (<PolicyConnect>
+        <ClearErrorConnect />
+      </PolicyConnect>);
+    }
     return (
       <PolicyConnect>
         <ClearErrorConnect />
