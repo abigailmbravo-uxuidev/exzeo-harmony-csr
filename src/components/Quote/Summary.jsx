@@ -106,15 +106,11 @@ const Summary = (props) => {
   return (
     <QuoteBaseConnect>
       <ClearErrorConnect />
-
       <div className="route-content summary workflow">
         {appState.data.submitting && <Loader />}
-        {console.log(props)}
         <div className="scroll">
-
           {quoteData && quoteData.underwritingExceptions && quoteData.underwritingExceptions.length > 0 &&
           <div className="detail-wrapper">
-
             <div className="messages">
               <div className="message error">
                 <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Quote Summary cannot be sent due to Underwriting Validations.
