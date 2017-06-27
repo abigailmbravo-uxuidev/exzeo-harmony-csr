@@ -100,7 +100,7 @@ const handleInitialize = (state) => {
   values.fireAlarm = _.get(quoteData, 'property.fireAlarm');
   values.sprinkler = _.get(quoteData, 'property.sprinkler');
 
-  values.dwellingAmount = _.get(quoteData, 'coverageLimits.dwelling.amount');
+  values.dwellingAmount = Math.round(_.get(quoteData, 'coverageLimits.dwelling.amount') / 1000) * 1000;
   values.dwellingMin = _.get(quoteData, 'coverageLimits.dwelling.minAmount');
   values.dwellingMax = _.get(quoteData, 'coverageLimits.dwelling.maxAmount');
 
@@ -274,7 +274,7 @@ export class Coverage extends Component {
     dispatch(change('Coverage', 'fireAlarm', _.get(quoteData, 'property.fireAlarm')));
     dispatch(change('Coverage', 'sprinkler', _.get(quoteData, 'property.sprinkler')));
 
-    dispatch(change('Coverage', 'dwellingAmount', _.get(quoteData, 'coverageLimits.dwelling.amount')));
+    dispatch(change('Coverage', 'dwellingAmount', Math.round(_.get(quoteData, 'coverageLimits.dwelling.amount') / 1000) * 1000));
     dispatch(change('Coverage', 'dwellingMin', _.get(quoteData, 'coverageLimits.dwelling.minAmount')));
     dispatch(change('Coverage', 'dwellingMax', _.get(quoteData, 'coverageLimits.dwelling.maxAmount')));
 
@@ -285,7 +285,7 @@ export class Coverage extends Component {
     dispatch(change('Coverage', 'ordinanceOrLaw', _.get(quoteData, 'coverageLimits.ordinanceOrLaw.amount')));
 
     const otherStructures = _.get(quoteData, 'coverageLimits.otherStructures.amount');
-    const dwelling = _.get(quoteData, 'coverageLimits.dwelling.amount');
+    const dwelling = Math.round(_.get(quoteData, 'coverageLimits.dwelling.amount') / 1000) * 1000;
     const personalProperty = _.get(quoteData, 'coverageLimits.personalProperty.amount');
     const hurricane = _.get(quoteData, 'deductibles.hurricane.amount');
     const calculatedHurricane = _.get(quoteData, 'deductibles.hurricane.calculatedAmount');
