@@ -25,6 +25,7 @@ import PolicyCoverage from './components/Policy/Coverage';
 import PolicyPolicyholderAgent from './components/Policy/PolicyholderAgent';
 import PolicyMortgageBilling from './components/Policy/MortgageBilling';
 import PolicyNotesFiles from './components/Policy/NotesFiles';
+import PolicyCancel from './components/Policy/Cancel';
 
 import * as errorActions from './actions/errorActions';
 
@@ -93,9 +94,11 @@ class Routes extends Component {
               <Route exact path="/policy/policyholder" render={props => <PolicyPolicyholderAgent auth={auth} {...props} />} />
               <Route exact path="/policy/billing" render={props => <PolicyMortgageBilling auth={auth} {...props} />} />
               <Route exact path="/policy/notes" render={props => <PolicyNotesFiles auth={auth} {...props} />} />
+              <Route exact path="/policy/cancel" render={props => <PolicyCancel auth={auth} {...props} />} />
               <Route exact path="/login" render={props => <LoginPage auth={auth} {...props} />} />
               <Route exact path="/error" render={props => <AppErrorPage auth={auth} {...props} />} />
               <Route exact path="/accessDenied" render={props => <AccessDenied auth={auth} {...props} />} />
+
               <Route
                 exact
                 path="/logout"

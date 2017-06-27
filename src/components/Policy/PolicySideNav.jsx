@@ -43,6 +43,12 @@ const csrLinks = [{
   label: 'Notes / Files',
   styleName: 'notes',
   exact: true
+}, {
+  key: 'cancel',
+  link: '/policy/cancel',
+  label: 'Cancel Policy',
+  styleName: 'cancel',
+  exact: true
 }];
 
 const NewNoteFileUploaderPopup = (props) => {
