@@ -19,8 +19,8 @@ const serviceRequest = data => ({
 const runnerSetup = data => ({
   method: 'POST',
   headers: {
-      'Content-Type': 'application/json'
-    },
+    'Content-Type': 'application/json'
+  },
   url: `${process.env.REACT_APP_API_URL}/svc`,
   data
 });
@@ -85,3 +85,87 @@ export const getNotes = (field, value) => (dispatch) => {
     });
 };
 
+export const getSummaryLedger = policyNumber => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'billing.services',
+    method: 'GET',
+    path: `summary-ledgers/${policyNumber}`
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { getSummaryLedger: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+      // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+        // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
+      ]));
+    });
+};
+
+export const getTransactionHistory = policyNumber => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'billing.services',
+    method: 'GET',
+    path: `transaction-history/${policyNumber}`
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { getTransactionHistory: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+      // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+        // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
+      ]));
+    });
+};
+
+export const addTransaction = (props, batchNumber, cashType, cashDescription, cashAmount) => (dispatch) => {
+  const body = {
+    service: 'billing.services',
+    method: 'POST',
+    path: `transaction-history/${props.policy.policyNumber}`,
+    data: {
+      createdBy: props.auth.userProfile.name,
+      updatedBy: props.auth.userProfile.name,
+      companyCode: props.auth.userProfile.groups.companyCode,
+      state: props.policy.state,
+      product: props.policy.product,
+      policyNumber: props.policy.policyNumber,
+      policyTerm: props.policy.policyTerm,
+      policyAccountCode: props.policy.policyAccountCode,
+      effectiveDate: new Date().getTime(),
+      date: new Date().getTime(),
+      type: cashType,
+      description: cashDescription,
+      batch: batchNumber,
+      amount: cashAmount
+    }
+  };
+  console.log(body.data, body.data);
+  const axiosConfig = runnerSetup(body);
+
+  return axios(axiosConfig).then((response) => {
+    const data = { notes: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};

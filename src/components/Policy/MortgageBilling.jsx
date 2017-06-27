@@ -15,16 +15,7 @@ import SelectField from '../Form/inputs/SelectField';
 import TextField from '../Form/inputs/TextField';
 import CurrencyField from '../Form/inputs/CurrencyField';
 
-const payments = [
-  // hardcoded example until payment endpoint created
-  {
-    cashDate: '2017-06-01',
-    cashType: 'CASH',
-    cashDescription: 'PAYMENT RECEIVED',
-    batchNumber: '44556677-88',
-    amount: '1337'
-  }
-];
+const payments = [];
 
 const setRank = (additionalInterests) => {
   _.forEach(additionalInterests, (value) => {
@@ -75,20 +66,47 @@ const handleInitialize = (state) => {
 
   const values = {};
   values.policyNumber = _.get(quoteData, 'policyNumber');
-  console.log(values, 'get policy number');
   return values;
 };
 
 export class PolicyholderAgent extends Component {
 
-  componentWillReceiveProps(nextProps) {
+  componentWillMount = () => {
+    this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+          this.props.appState.instanceId, { ...this.props.appState.data, ranService: false });
+  }
+
+  componentWillReceiveProps = (nextProps) => {
     if (!_.isEqual(this.props, nextProps)) {
-      console.log(this.props.policy, nextProps.policy, 'all theses props');
-      if (nextProps.policy && nextProps.policy.policyNumber) {
-        // const quoteNumber = nextProps.policy.policyNumber;
-        // to see results you need a valid policyNumber that has been bound - hardcoded one that works but below will get correct information
-        // this.props.actions.serviceActions.runService('getSummaryLedger', 'GET', 'billing.services', `summary-ledgers/${quoteNumber}`, {});
-        this.props.actions.serviceActions.runService('getSummaryLedger', 'GET', 'billing.services', 'summary-ledgers/12-1000001-01', {});
+      if (nextProps.policy.policyNumber !== undefined) {
+        this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
+        this.props.actions.serviceActions.getTransactionHistory(nextProps.policy.policyNumber);
+        this.loadTable();
+        console.log(payments, 'payments');
+        this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+          this.props.appState.instanceId, { ...this.props.appState.data, ranService: true });
+      }
+    }
+  }
+
+  checkPayments = (batchNumber, transaction) => {
+    const found = payments.some(payment => payment.batchNumber === batchNumber);
+    if (!found) { payments.push(transaction); }
+  }
+
+  loadTable = () => {
+    if (this.props.getTransactionHistory) {
+      console.log(this.props, 'props');
+      const getTransactionHistory = this.props.getTransactionHistory;
+      for (let i = 0; i < getTransactionHistory.length; i += 1) {
+        const transaction = {
+          cashDate: getTransactionHistory[i].createdAt.substring(0, 10),
+          cashType: getTransactionHistory[i].transactionType,
+          cashDescription: 'No Discription in transaction-history',
+          batchNumber: getTransactionHistory[i].policyTransactionId,
+          amount: 'no amount in transaction-history'
+        };
+        this.checkPayments(getTransactionHistory[i].policyTransactionId, transaction);
       }
     }
   }
@@ -119,6 +137,7 @@ export class PolicyholderAgent extends Component {
     //     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
     //       workflowId, { ...this.props.appState.data, recalc: false, quote: this.props.quoteData });
     //   });
+    this.props.actions.serviceActions.addTransaction(this.props, submitData.batchNumber, submitData.cashType, submitData.cashDescription, submitData.amount);
     payments.push(data);
     this.clearForm();
     paymentTotal();
@@ -140,6 +159,12 @@ export class PolicyholderAgent extends Component {
     const { additionalInterests } = this.props.policy;
     const { handleSubmit, pristine } = this.props;
     setRank(additionalInterests);
+    if (!this.props.getTransactionHistory) {
+      return (<PolicyConnect>
+        {console.log('I RETURNED NOTHING', this.props)}
+        <ClearErrorConnect />
+      </PolicyConnect>);
+    }
     return (
       <PolicyConnect>
         <ClearErrorConnect />
@@ -178,7 +203,7 @@ export class PolicyholderAgent extends Component {
                   </div>
                   <dl className="total">
                     <div>
-                      {console.log(this.props.getSummaryLedger, 'summaryLedger')}
+                      {this.props.getTransactionHistory && console.log(this.props.getTransactionHistory[0], 'transaction-history')}
                       {this.props.getSummaryLedger && `Full Balance $ ${this.props.getSummaryLedger.cashNeeded}`} <br />
                       {this.props.getSummaryLedger && `Total Due Today $ ${this.props.getSummaryLedger.noticeAmountDue}`} <br />
                       {this.props.getSummaryLedger && `Payments Recieved $ ${this.props.getSummaryLedger.cashReceived}`} <br />
@@ -301,6 +326,7 @@ redux mapping
 */
 
 const mapStateToProps = state => ({
+  getTransactionHistory: state.service.getTransactionHistory,
   getSummaryLedger: state.service.getSummaryLedger,
   initialValues: handleInitialize(state),
   policy: handleGetPolicy(state),
