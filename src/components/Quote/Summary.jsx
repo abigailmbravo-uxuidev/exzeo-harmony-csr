@@ -109,6 +109,7 @@ const Summary = (props) => {
 
       <div className="route-content summary workflow">
         {appState.data.submitting && <Loader />}
+        {console.log(props)}
         <div className="scroll">
 
           {quoteData && quoteData.underwritingExceptions && quoteData.underwritingExceptions.length > 0 &&
