@@ -8,7 +8,6 @@ const handleLogout = (auth) => {
 
 const getUsername = (auth) => {
   const { userProfile } = auth;
-  console.log(userProfile);
   if (userProfile) {
     return userProfile.name;
   }
