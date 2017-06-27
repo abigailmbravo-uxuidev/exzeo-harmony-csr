@@ -11,7 +11,6 @@
         background: $bright-blue-darken-01;
         justify-content: center;
         align-items: center;
-        width: 12rem;
       }
 
       .policy-description {
@@ -305,7 +304,7 @@
                   }
 
                   tbody tr:nth-of-type(even) > td {
-                    background: rgba($orange-lighten-04, .1);
+                    background: rgba($orange-lighten-04, .2);
                   }
                 }
 
@@ -315,7 +314,7 @@
                   }
 
                   tbody tr:nth-of-type(even) > td {
-                    background: rgba($yellow-lighten-04, .1);
+                    background: rgba($yellow-lighten-04, .2);
                   }
                 }
 
@@ -325,7 +324,7 @@
                   }
 
                   tbody tr:nth-of-type(even) > td {
-                    background: rgba($green-lighten-04, .1);
+                    background: rgba($green-lighten-04, .2);
                   }
                 }
 
