@@ -208,6 +208,8 @@ export class Coverage extends Component {
 
         this.props.actions.appStateActions.setAppState('csrQuote', startResult.modelInstanceId, { ...this.props.appState.data, submitting: true });
         this.props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
+          this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+          startResult.modelInstanceId, { ...this.props.appState.data, submitting: false });
           this.handleAgencyChange(this.props.quoteData.agencyCode, true);
         });
       });
@@ -389,7 +391,7 @@ export class Coverage extends Component {
       .then(() => {
         // now update the workflow details so the recalculated rate shows
         this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-          workflowId, { ...this.props.appState.data });
+          workflowId, { ...this.props.appState.data, submitting: false, selectedLink: 'coverage' });
       });
   };
 
