@@ -16,7 +16,7 @@ const SearchResults = (props) => {
     const addresses = previousTask.value.result.IndexResult;
     return (
       <div>
-        <ul className="results result-cards">
+        <ul id="property-search-results" className="results result-cards property-search-results">
           {addresses
             ? addresses.map((address, index) => (
               <li id={address.id} key={index}>
@@ -25,7 +25,7 @@ const SearchResults = (props) => {
                     <button className="row" onClick={() => props.handleSelectAddress(address, props)} tabIndex="-1">Open New Tab</button>
                   </div>*/}
 
-                <a onClick={() => props.handleNewTab(address, props)} tabIndex="-1">
+                <a id={address.physicalAddress.address1} aria-label={address.physicalAddress.address1} className={address.physicalAddress.address1} value={address.physicalAddress.address1} onClick={() => props.handleNewTab(address, props)} tabIndex="-1">
                   <i className="card-icon fa fa-map-marker" />
                   <section>
                     <h4>{address.physicalAddress.address1}</h4>
@@ -61,7 +61,7 @@ const SearchResults = (props) => {
               </div>*/}
 
             <section>
-              <ul>
+              <ul id="quote-search-results" className="quote-search-results">
                 <li className="header">
                   <span className="quote-no">Quote No.</span>
                   <span className="property-address">Property Address</span>
@@ -71,7 +71,7 @@ const SearchResults = (props) => {
                   <span className="premium">Premium</span>
                 </li>
                 <li>
-                  <a className="row" onClick={() => props.handleNewTab(quote, props)} tabIndex="-1">
+                  <a id={quote.quoteNumber + quote.property.physicalAddress.address1} className={quote.quoteNumber + quote.property.physicalAddress.address1 + ' row'} aria-label={quote.quoteNumber + quote.property.physicalAddress.address1} value={quote.quoteNumber + quote.property.physicalAddress.address1} onClick={() => props.handleNewTab(quote, props)} tabIndex="-1">
                     <span className="quote-no">{quote.quoteNumber}</span>
                     <span className="property-address">{`${quote.property.physicalAddress.address1} ${quote.property.physicalAddress.city}, ${quote.property.physicalAddress.state} ${quote.property.physicalAddress.zip}`}</span>
                     <span className="quote-state">{quote.quoteState}</span>
@@ -109,7 +109,7 @@ const SearchResults = (props) => {
                 <button className="row" onClick={() => props.handleSelectPolicy(policy, props)}  tabIndex="-1">Open New Tab</button>
               </div>*/}
             <section>
-              <ul>
+              <ul id="policy-search-results" className="policy-search-results">
                 <li className="header">
                   <span className="policy-no">Policy No.</span>
                   <span className="property-address">Property Address</span>
@@ -119,7 +119,7 @@ const SearchResults = (props) => {
                   <span className="premium">Premium</span>
                 </li>
                 <li>
-                  <a onClick={() => props.handleNewTab(policy, props)} tabIndex="-1" className="row" >
+                  <a id={policy.policyNumber + policy.property.physicalAddress.address1} className={policy.policyNumber + policy.property.physicalAddress.address1 + ' row'} aria-label={policy.policyNumber + policy.property.physicalAddress.address1} value={policy.policyNumber + policy.property.physicalAddress.address1} onClick={() => props.handleNewTab(policy, props)} tabIndex="-1">
                     <span className="quote-no">{policy.policyNumber}</span>
                     <span className="property-address">{`${policy.property.physicalAddress.address1}
                         ${policy.property.physicalAddress.city}, ${policy.property.physicalAddress.state}

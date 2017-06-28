@@ -26,10 +26,10 @@ const NewNoteFileUploader = (props, { closeButtonHandler }) => {
   return(
   <div className={props.appState.data.minimize === true ? 'new-note-file minimize' : 'new-note-file'} >
     <div className="title-bar">
-      <div className="title" onClick={() => minimzeButtonHandler(props)}>Note / File</div>
-      <div className="controls">
-        <button className="btn btn-icon" onClick={() => minimzeButtonHandler(props)}><i className="fa fa-window-minimize" aria-hidden="true"></i></button>
-        <button className="btn btn-icon" onClick={ props.closeButtonHandler } type="submit"><i className="fa fa-times-circle" aria-hidden="true"></i></button>
+      <div className="title title-minimze-button" onClick={() => minimzeButtonHandler(props)}>Note / File</div>
+      <div className="controls note-file-header-button-group">
+        <button className="btn btn-icon minimize-button" onClick={() => minimzeButtonHandler(props)}><i className="fa fa-window-minimize" aria-hidden="true"></i></button>
+        <button className="btn btn-icon header-cancel-button" onClick={ props.closeButtonHandler } type="submit"><i className="fa fa-times-circle" aria-hidden="true"></i></button>
       </div>
     </div>
     <div className="mainContainer">
@@ -41,14 +41,14 @@ const NewNoteFileUploader = (props, { closeButtonHandler }) => {
                 Drag and Drop Files
               </div>
             </div>
-            <div className="buttons">
-              <button className="btn btn-primary">Upload</button>
+            <div className="buttons note-file-footer-button-group">
+              <button className="btn btn-primary upload-button">Upload</button>
               <div></div>
-              <button className="btn btn-secondary" onClick={ props.closeButtonHandler }>Cancel</button>
-              <button className="btn btn-primary">Save</button>
+              <button className="btn btn-secondary cancel-button" onClick={ props.closeButtonHandler }>Cancel</button>
+              <button className="btn btn-primary submit-button">Save</button>
             </div>
         </div>
-        <div className="content state-upload" hidden>
+        {/*<div className="content state-upload" hidden>
           <div className="flex-contents">
             <div className="drag-n-drop">
               Drag and Drop Files
@@ -59,7 +59,7 @@ const NewNoteFileUploader = (props, { closeButtonHandler }) => {
             <div></div>
             <a href="#" className="btn btn-secondary">Cancel</a>
           </div>
-        </div>
+        </div>*/}
       </Form>
     </div>
 </div>
