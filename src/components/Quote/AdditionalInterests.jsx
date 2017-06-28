@@ -14,8 +14,12 @@ import AdditionalInterestEditModal from '../../components/Common/AdditionalInter
 const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ?
-  _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
+  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
+    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
+    : {};
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
+    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
+    : quoteEnd;
 
   // add rank to sort by a specific way
   _.forEach(quoteData.additionalInterests, (value) => {
@@ -137,6 +141,8 @@ export class AdditionalLinterests extends Component {
         // now update the workflow details so the recalculated rate shows
         actions.appStateActions.setAppState(appState.modelName,
           workflowId, { ...appState.data,
+            selectedLink: 'additionalInterests',
+            submitting: false,
             showAdditionalInterestModal: false,
             showAdditionalInterestEditModal: false });
         // this.context.router.history.push('/quote/coverage');
@@ -195,6 +201,10 @@ export class AdditionalLinterests extends Component {
     actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
         additionalInterests = modifiedAIs;
+        this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+          workflowId, { ...this.props.appState.data,
+            selectedLink: 'additionalInterests',
+            submitting: false });
       });
   }
 

@@ -21,6 +21,7 @@
 @import "partials/_csr-quote";
 @import "partials/_csr-policy";
 @import "partials/_additional-interests";
+@import "partials/_error";
 @import "https://fonts.googleapis.com/css?family=Roboto:100,300,500"; //base
 //links
 /*------------------------------------------------------------------------------------*/
@@ -667,7 +668,7 @@ main[role="document"] {
           min-width: 7rem;
           margin: 0;
           padding: ($padding/2) $padding;
-          background: $yellow-lighten-05;
+          background: $warm-gray-03;
           box-shadow: $card-box-shadow-alt;
           justify-content: center;
           align-items: center;
@@ -1401,7 +1402,7 @@ ul.list-cards {
     }
 
     .btn {
-      margin-top: 23px;
+      margin-top: 1.75rem;
       align-self: flex-start;
     }
   }
@@ -1924,6 +1925,7 @@ ul.list-cards {
               color: $yellow-lighten-06;
               letter-spacing: 0.05em;
               font-size: $font-size-xs;
+              font-weight: $font-weight-normal;
               //text-transform: uppercase;
             }
 
@@ -1961,7 +1963,6 @@ ul.list-cards {
                     flex-direction: column;
                     justify-content: space-around;
                     dd {
-                        font-weight: $font-weight-bold;
                         color: $yellow-lighten-06;
                     }
                 }
@@ -1986,10 +1987,10 @@ ul.list-cards {
 
         &.premium {
           min-width: 6rem;
-          margin: 0 0 0 (-$padding*1.5);
-          padding: ($padding/2) $padding;
+          margin: 0 (-$padding*1.5);
+          padding: $padding;
           color: $warm-gray-12;
-          background: $yellow-lighten-06;
+          background: $warm-gray-02;
           align-self: flex-start;
 
           dt {
@@ -1997,7 +1998,6 @@ ul.list-cards {
           }
 
           dd {
-            text-align: right;
             font-size: $font-size-h4;
           }
         }
@@ -2077,12 +2077,10 @@ ul.list-cards {
           padding: $padding;
           color: $warm-gray-08;
           background: $warm-gray-02;
-          font-size: 14px;
         }
 
         dd {
           padding: $padding;
-          font-size: $font-size-sm;
 
           &:nth-of-type(even) {
             background: $warm-gray-01;

@@ -28,9 +28,12 @@ const handleGetQuoteData = (state) => {
 const handleGetUnderwritingExceptions = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return [];
-  const updateQuoteStateUWD1 = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' });
-
-  const quoteData = updateQuoteStateUWD1 ? updateQuoteStateUWD1.value.result : null;
+  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
+    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
+    : {};
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
+    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
+    : quoteEnd;
 
   const underwritingExceptions = quoteData && quoteData.underwritingExceptions ? quoteData.underwritingExceptions : [];
   return underwritingExceptions;
@@ -64,7 +67,8 @@ const handleFormSubmit = (data, dispatch, props) => {
       {
         ...props.appState.data,
         activateRedirectLink: '/quote/coverage',
-        activateRedirect: true
+        activateRedirect: true,
+        submitting: false
       });
   });
 };

@@ -57,7 +57,7 @@ export class Splash extends Component {
         props.actions.appStateActions.setAppState(
           props.appState.modelName,
           workflowId,
-          { ...props.appState.data, selectedLink: 'customerData' }
+          { ...props.appState.data, selectedLink: 'customerData', submitting: false }
         );
         this.context.router.history.push('/quote/coverage');
       });
@@ -83,7 +83,7 @@ export class Splash extends Component {
         props.actions.appStateActions.setAppState(
           props.appState.modelName,
           workflowId,
-          { ...props.appState.data, recalc: false, updateWorkflowDetails: true, selectedLink: 'customerData' }
+          { ...props.appState.data, recalc: false, updateWorkflowDetails: true, selectedLink: 'customerData', submitting: false }
         );
         this.context.router.history.push('/quote/coverage');
       });
@@ -106,7 +106,7 @@ export class Splash extends Component {
         props.actions.appStateActions.setAppState(
           props.appState.modelName,
           workflowId,
-          { ...props.appState.data, selectedLink: 'coverage' }
+          { ...props.appState.data, selectedLink: 'coverage', submitting: false }
         );
         this.context.router.history.push('/policy/coverage');
       });

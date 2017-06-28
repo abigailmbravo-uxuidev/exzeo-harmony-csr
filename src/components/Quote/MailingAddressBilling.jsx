@@ -17,7 +17,12 @@ import normalizeNumbers from '../Form/normalizeNumbers';
 const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
+  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
+    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
+    : {};
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
+    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
+    : quoteEnd;
   return quoteData;
 };
 
@@ -203,9 +208,8 @@ export class MailingAddressBilling extends Component {
 
     actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
-        // // now update the workflow details so the recalculated rate shows
-        // actions.appStateActions.setAppState(appState.modelName,
-        //   workflowId, { quote: this.props.quoteData, updateWorkflowDetails: true });
+        this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+          workflowId, { ...this.props.appState.data, submitting: false, selectedLink: 'mailing' });
       });
   };
 

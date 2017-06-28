@@ -13,7 +13,12 @@ import FieldGenerator from '../Form/FieldGenerator';
 const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (taskData) {
-    const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
+    const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
+    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
+    : {};
+    const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
+    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
+    : quoteEnd;
     return quoteData;
   }
   return {};
@@ -72,15 +77,10 @@ export class Underwriting extends Component {
     actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
         // now update the workflow details so the recalculated rate shows
-        actions.appStateActions.setAppState(
-          appState.modelName,
-          workflowId,
-          {
-            ...appState.data,
-            quote: quoteData,
-            hideYoChildren: false
-          }
-        );
+        this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+          workflowId, { ...this.props.appState.data,
+            selectedLink: 'underwriting',
+            submitting: false });
       });
   };
 

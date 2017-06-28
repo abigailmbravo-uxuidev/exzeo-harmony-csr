@@ -1,6 +1,6 @@
 // src/routes.js
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import axios from 'axios';
@@ -103,7 +103,7 @@ class Routes extends Component {
                 path="/logout"
                 render={() => {
                   auth.logout();
-                  return <span />;
+                  return <Callback />;
                 }}
               />
               <Route
@@ -111,7 +111,7 @@ class Routes extends Component {
                 path="/callback"
                 render={(props) => {
                   handleAuthentication(props);
-                  return <Callback {...props} />;
+                  return <Callback />;
                 }}
               />
               <Route path="*" render={props => <NotFoundPage auth={auth} {...props} />} />

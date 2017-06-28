@@ -25,19 +25,26 @@ const handleGetQuoteData = (state) => {
     ? state.cg[state.appState.modelName].data
     : null;
   if (!taskData) { return {}; }
+  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
+    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
+    : {};
   const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
     ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
-    : {};
+    : quoteEnd;
   return quoteData;
 };
 
 const handleGetZipCodeSettings = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return [];
+  if (!taskData) return null;
 
   const zipCodeSettings = _.find(taskData.model.variables, { name: 'getZipCodeSettings' }) ?
   _.find(taskData.model.variables, { name: 'getZipCodeSettings' }).value.result[0] : null;
-  return zipCodeSettings;
+
+  const zipCodeSettingsQuote = _.find(taskData.model.variables, { name: 'getZipCodeSettingsForQuote' }) ?
+  _.find(taskData.model.variables, { name: 'getZipCodeSettingsForQuote' }).value.result[0] : null;
+
+  return zipCodeSettingsQuote || zipCodeSettings;
 };
 
 function calculatePercentage(oldFigure, newFigure) {
@@ -201,6 +208,8 @@ export class Coverage extends Component {
 
         this.props.actions.appStateActions.setAppState('csrQuote', startResult.modelInstanceId, { ...this.props.appState.data, submitting: true });
         this.props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
+          this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+          startResult.modelInstanceId, { ...this.props.appState.data, submitting: false });
           this.handleAgencyChange(this.props.quoteData.agencyCode, true);
         });
       });
@@ -219,6 +228,7 @@ export class Coverage extends Component {
       companyCode: quoteData.companyCode,
       state: quoteData.state
     };
+
     this.props.actions.cgActions.startWorkflow('getAgency', startModelData, false);
   };
 
@@ -381,7 +391,7 @@ export class Coverage extends Component {
       .then(() => {
         // now update the workflow details so the recalculated rate shows
         this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-          workflowId, { ...this.props.appState.data });
+          workflowId, { ...this.props.appState.data, submitting: false, selectedLink: 'coverage' });
       });
   };
 
@@ -994,7 +1004,7 @@ export class Coverage extends Component {
                     </div>
                   </div>
                   <div className="wind-col2 flex-child">
-                    <h4>&nbsp;</h4>
+                    <h3>&nbsp;</h3>
                     <div className="flex-parent">
                       <div className="flex-child">
                         <TextField validations={['required']} label={'FBC Wind Speed'} styleName={''} name={'floridaBuildingCodeWindSpeed'} />

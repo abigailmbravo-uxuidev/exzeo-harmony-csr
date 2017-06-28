@@ -25,7 +25,12 @@ const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
 
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
+  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
+    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
+    : {};
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
+    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
+    : quoteEnd;
   return quoteData;
 };
 
@@ -61,7 +66,9 @@ const handleFormSubmit = (data, dispatch, props) => {
     .then(() => {
       dispatch(reset('Summary'));
       actions.appStateActions.setAppState(appState.modelName,
-    workflowId, { ...props.appState.data, submitting: false });
+    workflowId, { ...props.appState.data,
+      selectedLink: 'summary',
+      submitting: false });
     });
 };
 
@@ -101,14 +108,11 @@ const Summary = (props) => {
   return (
     <QuoteBaseConnect>
       <ClearErrorConnect />
-
       <div className="route-content summary workflow">
         {appState.data.submitting && <Loader />}
         <div className="scroll">
-
           {quoteData && quoteData.underwritingExceptions && quoteData.underwritingExceptions.length > 0 &&
           <div className="detail-wrapper">
-
             <div className="messages">
               <div className="message error">
                 <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Quote Summary cannot be sent due to Underwriting Validations.
