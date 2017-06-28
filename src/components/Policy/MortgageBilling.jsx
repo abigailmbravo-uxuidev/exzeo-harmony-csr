@@ -203,9 +203,6 @@ export class PolicyholderAgent extends Component {
                   </div>
                   <dl className="total">
                     <div>
-                      {this.props.getTransactionHistory && console.log(this.props.getTransactionHistory[0], 'transaction-history')}
-                      {this.props.getSummaryLedger && `Full Balance $ ${this.props.getSummaryLedger.cashNeeded}`} <br />
-                      {this.props.getSummaryLedger && `Total Due Today $ ${this.props.getSummaryLedger.noticeAmountDue}`} <br />
                       {this.props.getSummaryLedger && `Payments Recieved $ ${this.props.getSummaryLedger.cashReceived}`} <br />
                     </div>
                   </dl>
