@@ -1039,12 +1039,13 @@ ul.list-cards {
         padding-left: $padding;
         flex-wrap: wrap;
         flex-basis: 10rem;
+        align-items: center;
 
         h5 {
           display: block;
           overflow: hidden;
           margin: 0;
-          white-space: nowrap;
+          white-space: pre-wrap;
           text-overflow: ellipsis;
           line-height: $line-height-base;
           flex-grow: 0;

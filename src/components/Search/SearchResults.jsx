@@ -52,8 +52,7 @@ const SearchResults = (props) => {
             <div className="icon-name">
               <i className="card-icon fa fa-user-circle" />
               <div className="card-name">
-                <h5>{quote.policyHolders[0] && `${quote.policyHolders[0].firstName}`}</h5>
-                <h5>{quote.policyHolders[0] && `${quote.policyHolders[0].lastName}`}</h5>
+                <h5>{quote.policyHolders[0] && `${quote.policyHolders[0].firstName}`} {quote.policyHolders[0] && `${quote.policyHolders[0].lastName}`}</h5>
               </div>
             </div>
 
@@ -103,8 +102,7 @@ const SearchResults = (props) => {
             <div className="icon-name">
               <i className="card-icon fa fa-user-circle" />
               <div className="card-name">
-                <h5>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName}`}</h5>
-                <h5>{policy.policyHolders[0] && `${policy.policyHolders[0].lastName}`}</h5>
+                <h5>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName}`} {policy.policyHolders[0] && `${policy.policyHolders[0].lastName}`}</h5>
               </div>
             </div>
             {/* <div>
