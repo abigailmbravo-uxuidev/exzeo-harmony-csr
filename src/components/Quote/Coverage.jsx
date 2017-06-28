@@ -798,7 +798,7 @@ export class Coverage extends Component {
                     </div>
                     <div className="flex-parent">
                       <div className="flex-child">
-                        <CurrencyField label={'Loss of Use'} styleName={''} name="lossOfUse" disabled />
+                        <CurrencyField label={'Loss of Use Limit'} styleName={''} name="lossOfUse" disabled />
                       </div>
                     </div>
                     <div className="flex-parent">
