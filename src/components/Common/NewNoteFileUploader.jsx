@@ -26,7 +26,7 @@ const NewNoteFileUploader = (props, { closeButtonHandler }) => {
       <Form id="NewNoteFileUploader" onSubmit={ props.handleSubmit(submitNote) } noValidate>
         <div className="content state-initial">
             <div className="flex-contents">
-              <Field name="noteContent" component="input"/>
+              <Field name="noteContent" component="textarea"/>
               <div className="drag-n-drop">
                 Drag and Drop Files
               </div>
