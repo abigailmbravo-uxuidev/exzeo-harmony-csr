@@ -324,6 +324,7 @@ export class Coverage extends Component {
   handleFormSubmit = (data) => {
     const workflowId = this.props.appState.instanceId;
     const submitData = data;
+    const { dispatch } = this.props;
 
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName, workflowId, {
       ...this.props.appState.data,
@@ -332,7 +333,8 @@ export class Coverage extends Component {
 
     submitData.agencyCode = String(data.agencyCode);
     submitData.agentCode = String(data.agentCode);
-    submitData.dwellingAmount = Number(String(data.dwellingAmount).replace(/[^\d]/g, ''));
+    submitData.dwellingAmount = Math.round(Number(String(data.dwellingAmount).replace(/[^\d]/g, '')) / 1000) * 1000;
+    dispatch(change('Coverage', 'dwellingAmount', submitData.dwellingAmount));
     submitData.otherStructuresAmount = Number(data.otherStructuresAmount);
 
     submitData.personalPropertyAmount = Number(data.personalPropertyAmount);
