@@ -8,6 +8,16 @@ import ConnectedApp, { Login } from './Login';
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 
+function wrapWithContext(context, contextTypes, children) {
+  const wrapperWithContext = React.createClass({ //eslint-disable-line
+    childContextTypes: contextTypes,
+    getChildContext() { return context; },
+    render() { return React.createElement('div', null, children); }
+  });
+
+  return React.createElement(wrapperWithContext);
+}
+
 describe('Testing Login component', () => {
   it('should test props and render', () => {
     const initialState = {};
@@ -24,7 +34,9 @@ describe('Testing Login component', () => {
       user: {},
       ...propTypes
     };
-    const wrapper = shallow(<Login {...props} />);
+    const context = { router: {} };
+    const contextTypes = { router: React.PropTypes.object };
+    const wrapper = wrapWithContext(context, contextTypes, <Login {...props} />, React);
     expect(wrapper);
   });
 

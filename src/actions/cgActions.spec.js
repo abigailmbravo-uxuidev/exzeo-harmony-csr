@@ -382,14 +382,9 @@ describe('CG Actions', () => {
       workflowId: '819966'
     };
 
-    const stateObj = [{
-      type: types.APP_ERROR,
-      error: { message: 'Request failed with status code 400' }
-    }];
-
     return cgActions.moveToTask(inputProps.modelName, inputProps.workflowId, 'search', false)(store.dispatch)
       .then(() => {
-        expect(store.getActions()).toEqual(stateObj);
+        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
       });
   });
 });

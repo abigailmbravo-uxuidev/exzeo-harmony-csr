@@ -4,11 +4,6 @@ import { TextInput } from './TextField';
 import FieldHint from './FieldHint';
 
 describe('TextInput', () => {
-  it('should render "text input" when nothing is provided', () => {
-    const wrapper = shallow(<TextInput />);
-    expect(wrapper.contains(<input type="text" />)).toEqual(true);
-  });
-
   it('should render "text input" with label, when label and name are provided', () => {
     const inputProps = {
       label: 'Test',
@@ -28,9 +23,9 @@ describe('TextInput', () => {
     const inputProps = {
       label: 'Test',
       input: {
-        name: 'testing',
-        hint: 'Test Hint'
-      }
+        name: 'testing'
+      },
+      hint: 'Test Hint'
 
     };
     const wrapper = shallow(<TextInput {...inputProps} />);
@@ -43,11 +38,8 @@ describe('TextInput', () => {
   });
 
   const types = [
+    'text',
     'number',
-    'tel',
-    'password',
-    'date',
-    'email',
     'date'
   ];
 
@@ -57,8 +49,7 @@ describe('TextInput', () => {
         type
       };
       const wrapper = shallow(<TextInput {...inputProps} />);
-
-      expect(wrapper.contains(<input type={type} />)).toEqual(true);
+      expect(wrapper.find('input').prop('type')).toEqual(type);
     });
   });
 
@@ -69,7 +60,7 @@ describe('TextInput', () => {
       }
     };
     const wrapper = shallow(<TextInput {...inputProps} />);
-    expect(wrapper.contains(<input type="text" disabled />)).toEqual(true);
+    expect(wrapper.find('input').prop('disabled')).toEqual(true);
   });
 
   it('should render "text input" with error, when touched and error are provided', () => {
