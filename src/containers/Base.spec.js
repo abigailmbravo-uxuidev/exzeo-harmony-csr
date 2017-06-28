@@ -13,6 +13,9 @@ describe('Testing Base component', () => {
     const initialState = {};
     const store = mockStore(initialState);
     const props = {
+      auth: {
+        isAuthenticated() { return true; }
+      },
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,
@@ -44,6 +47,9 @@ describe('Testing Base component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      auth: {
+        isAuthenticated() { return true; }
+      },
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,

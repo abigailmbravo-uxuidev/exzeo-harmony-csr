@@ -28,9 +28,10 @@ describe('TextInput', () => {
     const inputProps = {
       label: 'Test',
       input: {
-        name: 'testing'
-      },
-      hint: 'Test Hint'
+        name: 'testing',
+        hint: 'Test Hint'
+      }
+
     };
     const wrapper = shallow(<TextInput {...inputProps} />);
 
@@ -104,11 +105,13 @@ describe('TextInput', () => {
   it('should render "text input" without FieldHint, when name and hint are provided', () => {
     const inputProps = {
       input: {
-        name: 'testing'
-      },
-      hint: 'Test Hint'
+        name: 'testing',
+        hint: 'Test Hint'
+      }
     };
     const wrapper = shallow(<TextInput {...inputProps} />);
+
+    console.log(wrapper);
 
     expect(wrapper.find(FieldHint).length).toEqual(0);
   });

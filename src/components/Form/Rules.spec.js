@@ -33,7 +33,7 @@ describe('Rules', () => {
       expect(rules.phone('888-888-8888')).toBeUndefined();
     });
     it('should return "is not a valid Phone Number." on invalid phone', () => {
-      expect(rules.phone('')).toEqual('is not a valid Phone Number.');
+      expect(rules.phone('vcxvxcvxcv')).toEqual('is not a valid Phone Number.');
     });
   });
   describe('date', () => {

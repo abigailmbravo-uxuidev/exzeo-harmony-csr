@@ -13,9 +13,9 @@ describe('SelectField', () => {
   it('should render FieldHint when provided with name and hint', () => {
     const inputProps = {
       input: {
-        name: 'test'
-      },
-      hint: 'testing'
+        name: 'test',
+        hint: 'testing'
+      }
     };
     const wrapper = shallow(<SelectField {...inputProps} />);
     expect(wrapper.find(FieldHint).length).toEqual(1);
