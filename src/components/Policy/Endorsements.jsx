@@ -55,7 +55,6 @@ const handleInitialize = (state) => {
   values.otherStructures = String(calculatePercentage(otherStructures, dwelling));
   values.personalPropertyAmount = String(personalProperty);
   values.personalProperty = String(calculatePercentage(personalProperty, dwelling));
-  // TODO: Additional Living Expenses
   values.lossOfUse = _.get(quoteData, 'coverageLimits.lossOfUse.amount');
   values.personalLiability = _.get(quoteData, 'coverageLimits.personalLiability.amount');
   values.medicalPayments = _.get(quoteData, 'coverageLimits.medicalPayments.amount');
@@ -71,7 +70,7 @@ const handleInitialize = (state) => {
   values.ordinanceOrLaw = _.get(quoteData, 'coverageLimits.ordinanceOrLaw.amount');
   values.propertyIncidentalOccupanciesMainDwelling = false;
   values.propertyIncidentalOccupanciesOtherStructures = false;
-  // TODO: WIND EXCLUDED
+  values.windExcluded = _.get(quoteData, 'rating.windMitigationDiscount') === 0 ? 'No' : 'Yes';
   values.propertyRented = _.get(quoteData, 'underwritingAnswers.rented.answer');
   values.seasonallyOccupied = _.get(quoteData, 'underwritingAnswers.monthsOccupied.answer');
   values.noPriorInsurance = _.get(quoteData, 'underwritingAnswers.noPriorInsuranceSurcharge.answer');
@@ -275,11 +274,6 @@ class Endorsements extends React.Component {
                         />
                       </div>
                       <div className="form-group-double-element">
-                        <label>Additional Living Expenses</label>
-                        <input type="numeric" onChange={function () {}} value="25750" disabled />
-                        <input type="numeric" onChange={function () {}} value="25750" disabled />
-                      </div>
-                      <div className="form-group-double-element">
                         <CurrencyField label={'Loss of Use (D)'} styleName={''} name={'lossOfUse'} disabled />
                         <CurrencyField styleName={''} label={''} name={'lossOfUseNew'} />
                       </div>
@@ -347,7 +341,7 @@ class Endorsements extends React.Component {
                               label: '$2,500'
                             }
                           ]}
-                        />                                                                                                                                                                                                                                               </div>
+                        />                                                                                                                                                                                                                                                   </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Hurricane Deductible'} styleName={''} name={'hurricane'} disabled />
                         <SelectField
@@ -423,11 +417,19 @@ class Endorsements extends React.Component {
                         <TextField validations={['required']} label={''} styleName={''} name={'propertyIncidentalOccupanciesOtherStructuresNew'} />
                       </div>
                       <div className="form-group-double-element">
-                        <label>Wind Excluded</label>
-                        <input type="text" onChange={function () {}} value="No" disabled />
-                        <select>
-                          <option>No</option>
-                        </select>
+                        <TextField validations={['required']} label={'Wind Excluded'} styleName={''} name={'windExcluded'} disabled />
+                        <SelectField
+                          label={''}
+                          name={'windExcludedNew'} styleName={''} onChange={function () {}} answers={[
+                            {
+                              answer: false,
+                              label: 'No'
+                            }, {
+                              answer: true,
+                              label: 'Yes'
+                            }
+                          ]}
+                        />
                       </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Property Ever Rented'} styleName={''} name={'propertyRented'} disabled />
@@ -1010,23 +1012,23 @@ class Endorsements extends React.Component {
 
                       <div className="flex-parent col2">
 
-                          <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH1FirstName'} />
+                        <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH1FirstName'} />
 
-                          <TextField validations={['required']} label={'Last Name'} styleName={''} name={'pH1LastName'} />
+                        <TextField validations={['required']} label={'Last Name'} styleName={''} name={'pH1LastName'} />
 
                       </div>
 
                       <div className="flex-parent col2">
 
-                          <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH1phone'} />
+                        <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH1phone'} />
 
-                          <PhoneField validations={['required', 'phone']} label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} />
+                        <PhoneField validations={['required', 'phone']} label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} />
 
                       </div>
 
                       <div className="flex-parent">
 
-                          <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH1email'} />
+                        <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH1email'} />
 
                       </div>
 
@@ -1038,23 +1040,23 @@ class Endorsements extends React.Component {
 
                       <div className="flex-parent col2">
 
-                          <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH2FirstName'} />
+                        <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH2FirstName'} />
 
-                          <TextField validations={['required']} label={'Last Name'} styleName={''} name={'pH2LastName'} />
+                        <TextField validations={['required']} label={'Last Name'} styleName={''} name={'pH2LastName'} />
 
                       </div>
 
                       <div className="flex-parent col2">
 
-                          <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH2phone'} />
+                        <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH2phone'} />
 
-                          <PhoneField validations={['required', 'phone']} label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} />
+                        <PhoneField validations={['required', 'phone']} label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} />
 
                       </div>
 
                       <div className="flex-parent">
 
-                          <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH2email'} />
+                        <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH2email'} />
 
                       </div>
 
@@ -1072,13 +1074,13 @@ class Endorsements extends React.Component {
 
                     <div className="flex-child">
 
-                        <TextField label={'Address 1'} styleName={''} name={'address1'} />
+                      <TextField label={'Address 1'} styleName={''} name={'address1'} />
 
                     </div>
 
                     <div className="flex-child">
 
-                        <TextField label={'Address 2'} styleName={''} name={'address2'} />
+                      <TextField label={'Address 2'} styleName={''} name={'address2'} />
 
                     </div>
 
@@ -1090,19 +1092,19 @@ class Endorsements extends React.Component {
 
                     <div className="flex-child">
 
-                        <TextField label={'City'} styleName={''} name={'city'} />
+                      <TextField label={'City'} styleName={''} name={'city'} />
 
                     </div>
 
                     <div className="flex-child">
 
-                        <TextField label={'State'} styleName={''} name={'state'} />
+                      <TextField label={'State'} styleName={''} name={'state'} />
 
                     </div>
 
                     <div className="flex-child">
 
-                        <TextField label={'Zip'} styleName={''} name={'zip'} />
+                      <TextField label={'Zip'} styleName={''} name={'zip'} />
 
                     </div>
 
@@ -1118,13 +1120,13 @@ class Endorsements extends React.Component {
 
                     <div className="flex-child">
 
-                        <TextField label={'Address 1'} styleName={''} name={'address1'} />
+                      <TextField label={'Address 1'} styleName={''} name={'address1'} />
 
                     </div>
 
                     <div className="flex-child">
 
-                        <TextField label={'Address 2'} styleName={''} name={'address2'} />
+                      <TextField label={'Address 2'} styleName={''} name={'address2'} />
 
                     </div>
 
@@ -1136,19 +1138,19 @@ class Endorsements extends React.Component {
 
                     <div className="flex-child">
 
-                        <TextField label={'City'} styleName={''} name={'city'} />
+                      <TextField label={'City'} styleName={''} name={'city'} />
 
                     </div>
 
                     <div className="flex-child">
 
-                        <TextField label={'State'} styleName={''} name={'state'} />
+                      <TextField label={'State'} styleName={''} name={'state'} />
 
                     </div>
 
                     <div className="flex-child">
 
-                        <TextField label={'Zip'} styleName={''} name={'zip'} />
+                      <TextField label={'Zip'} styleName={''} name={'zip'} />
 
                     </div>
 
