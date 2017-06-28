@@ -52,21 +52,25 @@ const handleGetPolicy = (state) => {
 
 
 var paymentsData = [{
+  date: "3/07/2016",
+  description: "Payment Received",
+  notes: "2016030739",
+  amount: "$ 4,142.00"
+},{
       date: "3/31/2016",
       description: "Payment Transfer",
       notes: "20160331_TFR",
       amount: "($ 1,876.00)"
-  }, {
-    date: "3/07/2016",
-    description: "Payment Received",
-    notes: "2016030739",
-    amount: "$ 4,142.00"
   }];
 
   class Payments extends React.Component {
     render() {
+      const options = {
+        defaultSortName: 'date',
+        defaultSortOrder: 'desc'
+      };
       return (
-        <BootstrapTable data={ paymentsData }>
+        <BootstrapTable data={ paymentsData } options={ options }>
           <TableHeaderColumn dataField='date' width="25%" isKey>Date</TableHeaderColumn>
           <TableHeaderColumn dataField='description' width="25%">Description</TableHeaderColumn>
           <TableHeaderColumn dataField='notes' width="25%">Notes</TableHeaderColumn>
@@ -78,7 +82,17 @@ var paymentsData = [{
 
 
 
-  var claimsData = [{
+  var claimsData = [
+    {
+          jeLossNo: "888888",
+          lossID: "44950",
+          dateLoss: "06/03/2016",
+          reportDate: "06/09/2016",
+          closeDate: "06/18/2016",
+          lossStatus: " ",
+          lossDesc: "Ins called in to file a claim for water damage to his living room ceiling.Ins ac handler was clogged causing the drain line to over flow and water starting coming out which effected the living room ceiling. Repairs have been made to the air handler.The damage is to the plaster on the ceiling and drywall."
+      },
+    {
         jeLossNo: "999999",
         lossID: "44952",
         dateLoss: "07/12/2016",
@@ -86,23 +100,19 @@ var paymentsData = [{
         closeDate: "07/29/2016",
         lossStatus: " ",
         lossDesc: "Ins called in to file a claim for water damage to his living room ceiling.Ins ac handler was clogged causing the drain line to over flow and water starting coming out which effected the living room ceiling. Repairs have been made to the air handler.The damage is to the plaster on the ceiling and drywall."
-    }, {
-          jeLossNo: "999999",
-          lossID: "44951",
-          dateLoss: "06/03/2016",
-          reportDate: "06/09/2016",
-          closeDate: "06/18/2016",
-          lossStatus: " ",
-          lossDesc: "Ins called in to file a claim for water damage to his living room ceiling.Ins ac handler was clogged causing the drain line to over flow and water starting coming out which effected the living room ceiling. Repairs have been made to the air handler.The damage is to the plaster on the ceiling and drywall."
-      }];
+    } ];
 
     class Claims extends React.Component {
       render() {
+        const options = {
+          defaultSortName: 'jeLossNo',
+          defaultSortOrder: 'desc'
+        };
         return (
-          <BootstrapTable data={ claimsData }>
-            <TableHeaderColumn dataField='jeLossNo' width="10%">JE Loss No</TableHeaderColumn>
+          <BootstrapTable data={ claimsData } options={options} >
+            <TableHeaderColumn dataField='jeLossNo' width="10%" isKey>JE Loss No</TableHeaderColumn>
             <TableHeaderColumn dataField='lossID' width="10%">Loss ID</TableHeaderColumn>
-            <TableHeaderColumn dataField='dateLoss' width="10%" isKey>Date Loss</TableHeaderColumn>
+            <TableHeaderColumn dataField='dateLoss' width="10%">Date Loss</TableHeaderColumn>
             <TableHeaderColumn dataField='reportDate' width="10%">Report Date</TableHeaderColumn>
             <TableHeaderColumn dataField='closeDate' width="10%">Close Date</TableHeaderColumn>
             <TableHeaderColumn dataField='lossStatus' width="20%">Loss Status</TableHeaderColumn>
@@ -121,7 +131,7 @@ export const PolicyholderAgent = (props) => {
       <div className="route-content">
         <div className="scroll">
           <div className="form-group survey-wrapper cancel-policy" role="group">
-
+            <form id="cancellation">
             <section>
               <div className="flex-parent">
               <h3>Cancel Policy</h3>
@@ -198,11 +208,13 @@ export const PolicyholderAgent = (props) => {
                 <div className="form-group note">
                   <label>&nbsp;</label>
                   <textarea>
-                    
+
                   </textarea>
                 </div>
 
             </section>
+</form>
+
 
             <section>
               <h3>Payments</h3>
