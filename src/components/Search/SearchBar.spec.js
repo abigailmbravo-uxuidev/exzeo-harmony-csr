@@ -20,18 +20,32 @@ describe('Testing SearchBar component', () => {
           }
         }
       },
+      form: {
+        SearchBar: {
+          values: {
+            searchType: 'address'
+          }
+        }
+      },
       appState: {
+        data: {
+          searchType: 'address'
+        },
         modelName: 'bb'
       }
     };
     const store = mockStore(initialState);
     const props = {
+      fieldValues: {
+        searchType: 'address'
+      },
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,
       appState: {
         data: {
-          submitting: false
+          submitting: false,
+          searchType: 'address'
         }
       },
       ...propTypes
