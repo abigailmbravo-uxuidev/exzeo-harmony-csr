@@ -4,25 +4,25 @@ import _ from 'lodash';
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
 
-const handleError = (error) => {
+export const handleError = (error) => {
   const message = error.response && error.response.data && error.response.data.error
    ? error.response.data.error.message
    : 'An error happened';
   return (error.message) ? error.message : message;
 };
 
-const serviceRequest = data => ({
+export const serviceRequest = data => ({
   type: types.SERVICE_REQUEST,
   data
 });
 
-const runnerSetup = data => ({
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    url: `${process.env.REACT_APP_API_URL}/svc`,
-    data
+export const runnerSetup = data => ({
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  url: `${process.env.REACT_APP_API_URL}/svc`,
+  data
 });
 
 export const addNote = (id, noteType, values) => (dispatch) => {
