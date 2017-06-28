@@ -806,7 +806,7 @@ export class Coverage extends Component {
                     <div className="flex-parent coverages-row-6">
                       <div className="flex-child coverages-medical-payments">
                         <TextField
-                          name="medicalPayments" disabled label={getQuestionName('medicalPayments', questions)} styleName={''} input={{
+                          name="medicalPayments" disabled label={'Medical Payments to Others Limit'} styleName={''} input={{
                             name: 'medicalPayments',
                             disabled: true,
                             value: '$2,000'
@@ -849,7 +849,7 @@ export class Coverage extends Component {
                     <div className="flex-parent other-coverages-row-4">
                       <div className="flex-child other-coverages-ordinance-or-law-coverage">
                         <SelectField
-                          name="ordinanceOrLaw" component="select" styleName={''} label="Ordinance or Law Coverage" onChange={function () {}} validations={['required']}
+                          name="ordinanceOrLaw" component="select" styleName={''} label="Ordinance or Law Coverage Limit" onChange={function () {}} validations={['required']}
                           answers={getAnswers('ordinanceOrLaw', questions)}
                         />
                       </div>
