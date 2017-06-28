@@ -7,6 +7,21 @@
   width: 40%;
   background: $white;
   box-shadow: 0 0 20px 0 rgba($black, .25);
+  @include transition(all .1s ease-in-out);
+
+  &.minimize {
+      bottom: -396px;
+
+      .controls {
+          .btn-icon {
+              i.fa-window-minimize{
+                  &:before {
+                      content: "\f2d0";
+                  }
+              }
+          }
+      }
+  }
 
   .title-bar {
     display: flex;
@@ -21,6 +36,12 @@
 
     .btn {
       padding: 0 ($padding/2);
+
+      &:focus {
+          outline: none;
+          outline-offset: 0;
+          background-color: rgba($bright-blue, .1);
+      }
     }
 
     .title {

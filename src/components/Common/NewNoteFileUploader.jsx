@@ -5,6 +5,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import * as serviceActions from '../../actions/serviceActions';
+import * as appStateActions from '../../actions/appStateActions';
+
 
 const submitNote = (data, dispatch, props) => {
   const { noteType, documentId } = props;
@@ -12,13 +14,22 @@ const submitNote = (data, dispatch, props) => {
   props.closeButtonHandler();
 }
 
+const minimzeButtonHandler = (props) => {
+  if (props.appState.data.minimize) {
+    props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, minimize: false });
+  } else {
+    props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, minimize: true });
+  }
+}
+
 const NewNoteFileUploader = (props, { closeButtonHandler }) => {
   return(
-  <div className="new-note-file">
+  <div className={props.appState.data.minimize === true ? 'new-note-file minimize' : 'new-note-file'} >
     <div className="title-bar">
-      <div className="title">Note</div>
+      <div className="title">Note / File</div>
       <div className="controls">
-        <button className="btn btn-icon"><i className="fa fa-window-minimize" aria-hidden="true"></i></button>
+        <button className="btn btn-icon" onClick={() => minimzeButtonHandler(props)}><i className="fa fa-window-minimize" aria-hidden="true"></i></button>
+        {console.log(props, 'props')}
         <button className="btn btn-icon" onClick={ props.closeButtonHandler } type="submit"><i className="fa fa-times-circle" aria-hidden="true"></i></button>
       </div>
     </div>
@@ -52,7 +63,7 @@ const NewNoteFileUploader = (props, { closeButtonHandler }) => {
         </div>
       </Form>
     </div>
-  </div>
+</div>
 )};
 
 NewNoteFileUploader.propTypes = {
@@ -70,7 +81,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    serviceActions: bindActionCreators(serviceActions, dispatch)
+    serviceActions: bindActionCreators(serviceActions, dispatch),
+    appStateActions: bindActionCreators(appStateActions, dispatch)
   }
 });
 
