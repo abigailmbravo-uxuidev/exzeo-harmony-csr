@@ -26,10 +26,9 @@ const NewNoteFileUploader = (props, { closeButtonHandler }) => {
   return(
   <div className={props.appState.data.minimize === true ? 'new-note-file minimize' : 'new-note-file'} >
     <div className="title-bar">
-      <div className="title">Note / File</div>
+      <div className="title" onClick={() => minimzeButtonHandler(props)}>Note / File</div>
       <div className="controls">
         <button className="btn btn-icon" onClick={() => minimzeButtonHandler(props)}><i className="fa fa-window-minimize" aria-hidden="true"></i></button>
-        {console.log(props, 'props')}
         <button className="btn btn-icon" onClick={ props.closeButtonHandler } type="submit"><i className="fa fa-times-circle" aria-hidden="true"></i></button>
       </div>
     </div>
