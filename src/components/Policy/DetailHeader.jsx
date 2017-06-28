@@ -44,7 +44,7 @@ const DetailHeader = (props) => {
           <dt>Mailing Address</dt>
           <dd>{_.get(policyData, 'policyHolderMailingAddress.address1')}</dd>
           <dd>{_.get(policyData, 'policyHolderMailingAddress.address2')}</dd>
-          <dd>{`${_.get(policyData, 'policyHolderMailingAddress.city')} ${_.get(policyData, 'policyHolderMailingAddress.state')}, ${_.get(policyData, 'policyHolderMailingAddress.zip')}`}</dd>
+          <dd>{`${_.get(policyData, 'policyHolderMailingAddress.city')}, ${_.get(policyData, 'policyHolderMailingAddress.state')} ${_.get(policyData, 'policyHolderMailingAddress.zip')}`}</dd>
         </div>
       </dl>
     </section>
@@ -54,7 +54,7 @@ const DetailHeader = (props) => {
           <dt>Property Address</dt>
           <dd>{_.get(policyData, 'property.physicalAddress.address1')}</dd>
           <dd>{_.get(policyData, 'property.physicalAddress.address2')}</dd>
-          <dd>{`${_.get(policyData, 'property.physicalAddress.city')} ${_.get(policyData, 'property.physicalAddress.state')}, ${_.get(policyData, 'property.physicalAddress.zip')}`}</dd>
+          <dd>{`${_.get(policyData, 'property.physicalAddress.city')}, ${_.get(policyData, 'property.physicalAddress.state')} ${_.get(policyData, 'property.physicalAddress.zip')}`}</dd>
         </div>
       </dl>
     </section>
