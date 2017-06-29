@@ -100,7 +100,7 @@ const handleInitialize = (state) => {
   values.fireAlarm = _.get(quoteData, 'property.fireAlarm');
   values.sprinkler = _.get(quoteData, 'property.sprinkler');
 
-  values.dwellingAmount = _.get(quoteData, 'coverageLimits.dwelling.amount');
+  values.dwellingAmount = Math.round(_.get(quoteData, 'coverageLimits.dwelling.amount') / 1000) * 1000;
   values.dwellingMin = _.get(quoteData, 'coverageLimits.dwelling.minAmount');
   values.dwellingMax = _.get(quoteData, 'coverageLimits.dwelling.maxAmount');
 
@@ -274,7 +274,7 @@ export class Coverage extends Component {
     dispatch(change('Coverage', 'fireAlarm', _.get(quoteData, 'property.fireAlarm')));
     dispatch(change('Coverage', 'sprinkler', _.get(quoteData, 'property.sprinkler')));
 
-    dispatch(change('Coverage', 'dwellingAmount', _.get(quoteData, 'coverageLimits.dwelling.amount')));
+    dispatch(change('Coverage', 'dwellingAmount', Math.round(_.get(quoteData, 'coverageLimits.dwelling.amount') / 1000) * 1000));
     dispatch(change('Coverage', 'dwellingMin', _.get(quoteData, 'coverageLimits.dwelling.minAmount')));
     dispatch(change('Coverage', 'dwellingMax', _.get(quoteData, 'coverageLimits.dwelling.maxAmount')));
 
@@ -285,7 +285,7 @@ export class Coverage extends Component {
     dispatch(change('Coverage', 'ordinanceOrLaw', _.get(quoteData, 'coverageLimits.ordinanceOrLaw.amount')));
 
     const otherStructures = _.get(quoteData, 'coverageLimits.otherStructures.amount');
-    const dwelling = _.get(quoteData, 'coverageLimits.dwelling.amount');
+    const dwelling = Math.round(_.get(quoteData, 'coverageLimits.dwelling.amount') / 1000) * 1000;
     const personalProperty = _.get(quoteData, 'coverageLimits.personalProperty.amount');
     const hurricane = _.get(quoteData, 'deductibles.hurricane.amount');
     const calculatedHurricane = _.get(quoteData, 'deductibles.hurricane.calculatedAmount');
@@ -324,6 +324,7 @@ export class Coverage extends Component {
   handleFormSubmit = (data) => {
     const workflowId = this.props.appState.instanceId;
     const submitData = data;
+    const { dispatch } = this.props;
 
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName, workflowId, {
       ...this.props.appState.data,
@@ -332,7 +333,8 @@ export class Coverage extends Component {
 
     submitData.agencyCode = String(data.agencyCode);
     submitData.agentCode = String(data.agentCode);
-    submitData.dwellingAmount = Number(String(data.dwellingAmount).replace(/[^\d]/g, ''));
+    submitData.dwellingAmount = Math.round(Number(String(data.dwellingAmount).replace(/[^\d]/g, '')) / 1000) * 1000;
+    dispatch(change('Coverage', 'dwellingAmount', submitData.dwellingAmount));
     submitData.otherStructuresAmount = Number(data.otherStructuresAmount);
 
     submitData.personalPropertyAmount = Number(data.personalPropertyAmount);
