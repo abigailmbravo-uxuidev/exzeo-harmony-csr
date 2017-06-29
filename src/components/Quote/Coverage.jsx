@@ -450,16 +450,13 @@ export class Coverage extends Component {
             <HiddenField name={'liabilityIncidentalOccupancies'} />
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
-                <section className="producer ">
+                <section id="produced-by" className="producer produced-by">
                   <h3>Produced By</h3>
-                  <div className="flex-parent">
-                    <div className="flex-child">
-                      <div>
-                        <DateField validations={['date']} label={'Effective Date'} name={'effectiveDate'} min={zipCodeSettings ? zipCodeSettings.minEffectiveDate : null} max={zipCodeSettings ? zipCodeSettings.maxEffectiveDate : null} />
-                      </div>
+                  <div className="flex-parent produced-by-wrapper">
+                    <div className="flex-child effectiveDate">
+                      <DateField validations={['date']} label={'Effective Date'} name={'effectiveDate'} min={zipCodeSettings ? zipCodeSettings.minEffectiveDate : null} max={zipCodeSettings ? zipCodeSettings.maxEffectiveDate : null} />
                     </div>
-
-                    <div className="flex-child">
+                    <div className="flex-child agencyCode">
                       {/* TODO: still waiting on endpoint to get all agencies. This will not be hardcoded */}
                       <SelectField
                         name="agencyCode" component="select" styleName={''} label="Agency" validations={['required']} input={{
@@ -477,7 +474,7 @@ export class Coverage extends Component {
                         ]}
                       />
                     </div>
-                    <div className="flex-child">
+                    <div className="flex-child agentCode">
                       <SelectField
                         name="agentCode" component="select" styleName={''} label="Agent" validations={['required']} answers={agents.map(agent => ({
                           answer: String(agent.agentCode),
@@ -487,91 +484,91 @@ export class Coverage extends Component {
                     </div>
                   </div>
                 </section>
-                <section className="demographics flex-parent">
-                  <div className="policy-holder-a flex-child">
+                <section id="policyHolders" className="demographics flex-parent policyHolders">
+                  <div id="policy-holder-a" className="policy-holder-a flex-child">
                     <h3>Primary Policyholder</h3>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent policy-holder-a-name">
+                      <div className="flex-child policy-holder-a-first-name">
                         <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH1FirstName'} />
                       </div>
-                      <div className="flex-child">
+                      <div className="flex-child policy-holder-a-last-name">
                         <TextField validations={['required']} label={'Last Name'} styleName={''} name={'pH1LastName'} />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent policy-holder-a-phone">
+                      <div className="flex-child policy-holder-a-primary-phone">
                         <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH1phone'} />
                       </div>
-                      <div className="flex-child">
+                      <div className="flex-child policy-holder-a-secondary-phone">
                         <PhoneField label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} validations={['phone']} />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent policy-holder-a-email">
+                      <div className="flex-child email-address">
                         <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH1email'} />
                       </div>
                     </div>
                   </div>
-                  <div className="policy-holder-b flex-child">
+                  <div id="policy-holder-b" className="policy-holder-b flex-child">
                     <h3>Secondary Policyholder</h3>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent policy-holder-b-name">
+                      <div className="flex-child policy-holder-b-first-name">
                         <TextField label={'First Name'} styleName={''} name={'pH2FirstName'} />
                       </div>
-                      <div className="flex-child">
+                      <div className="flex-child policy-holder-b-last-name">
                         <TextField label={'Last Name'} styleName={''} name={'pH2LastName'} />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent policy-holder-b-phone">
+                      <div className="flex-child policy-holder-b-primary-phone">
                         <PhoneField label={'Primary Phone'} styleName={''} name={'pH2phone'} validations={['phone']} />
                       </div>
-                      <div className="flex-child">
+                      <div className="flex-child policy-holder-b-secondary-phone">
                         <PhoneField label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} validations={['phone']} />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent policy-holder-b-email">
+                      <div className="flex-child email-address">
                         <TextField validations={['email']} label={'Email Address'} styleName={''} name={'pH2email'} />
                       </div>
                     </div>
                   </div>
                 </section>
-                <section className="property flex-parent">
-                  <div className="property-address flex-child">
+                <section id="property-location" className="property flex-parent property-location">
+                  <div id="property-risk" className="property-address flex-child property-risk">
                     <h3>Property (Risk)</h3>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent property-risk-address-1-row">
+                      <div className="flex-child property-risk-address-1">
                         <TextField label={'Address 1'} styleName={''} name={'address1'} disabled />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent property-risk-address-2-row">
+                      <div className="flex-child property-risk-address-2">
                         <TextField label={'Address 2'} styleName={''} name={'address2'} disabled />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child city">
+                    <div className="flex-parent property-risk-city-row">
+                      <div className="flex-child city property-risk-city">
                         <TextField label={'City'} styleName={''} name={'city'} disabled />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child state">
+                    <div className="flex-parent property-risk-state-zip-row">
+                      <div className="flex-child state property-risk-state">
                         <TextField label={'State'} styleName={''} name={'state'} disabled />
                       </div>
-                      <div className="flex-child zip">
+                      <div className="flex-child zip property-risk-zip">
                         <TextField label={'Zip'} styleName={''} name={'zip'} disabled />
                       </div>
                     </div>
-                    <div className="flex-parent" />
+                    <div className="flex-parent property-risk-spacer" />
                   </div>
-                  <div className="property-details flex-child">
+                  <div className="property-details flex-child home-location">
                     <h3>Home and Location</h3>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent home-location-row-1">
+                      <div className="flex-child home-location-year-built">
                         <TextField label={'Year Home Built'} styleName={''} name={'yearBuilt'} disabled />
                       </div>
-                      <div className="flex-child">
+                      <div className="flex-child home-location-protection-class">
                         <SelectField
                           name="protectionClass" component="select" styleName={''} label="Protection Class" input={{
                             name: 'protectionClass',
@@ -612,10 +609,10 @@ export class Coverage extends Component {
                           ]}
                         />
                       </div>
-                      <div className="flex-child">
+                      <div className="flex-child home-location-tidal-waters">
                         <TextField label={'Tidal Waters Dist.'} styleName={''} name={'distanceToTidalWater'} disabled />
                       </div>
-                      <div className="flex-child">
+                      <div className="flex-child home-location-residence-type">
                         <SelectField
                           name="residenceType" component="select" styleName={''} label="Residence Type" input={{
                             name: 'residenceType',
@@ -633,8 +630,8 @@ export class Coverage extends Component {
                         />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent home-location-row-2">
+                      <div className="flex-child home-location-construction">
                         <SelectField
                           component="select" styleName={''} label="Construction" name={'constructionType'} input={{
                             name: 'constructionType',
@@ -663,7 +660,7 @@ export class Coverage extends Component {
                           ]}
                         />
                       </div>
-                      <div className="flex-child">
+                      <div className="flex-child home-location-bceg">
                         <SelectField
                           component="select" styleName={''} label="BCEG" name={'buildingCodeEffectivenessGrading'} input={{
                             name: 'buildingCodeEffectivenessGrading',
@@ -707,22 +704,20 @@ export class Coverage extends Component {
                           ]}
                         />
                       </div>
-
-                      <div className="flex-child">
+                      <div className="flex-child home-location-fire-hydrant">
                         <TextField name={'distanceToFireHydrant'} disabled label={'Fire Hydrant Dist.'} styleName={''} />
                       </div>
-                      <div className="flex-child">
+                      <div className="flex-child home-location-square-ft">
                         <TextField name={'squareFeet'} disabled label={'Sq. Ft. of Home'} styleName={''} />
                       </div>
-
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent home-location-row-3">
+                      <div className="flex-child home-location-year-roof-built">
                         <TextField label={'Year Roof Built'} styleName={''} name="yearOfRoof" disabled />
                       </div>
-                      <div className="flex-child">
+                      <div className="flex-child home-location-family-units">
                         <SelectField
-                          name="distanceHydrant" component="select" styleName={''} label="Family Units" input={{
+                          name="familyUnits" component="select" styleName={''} label="Family Units" input={{
                             name: 'familyUnits',
                             disabled: true,
                             value: fieldValues.familyUnits
@@ -743,40 +738,39 @@ export class Coverage extends Component {
                           ]}
                         />
                       </div>
-                      <div className="flex-child">
+                      <div className="flex-child home-location-fire-station">
                         <TextField label={'Fire Station Dist.'} styleName={''} name={'distanceToFireStation'} disabled />
                       </div>
-
-                      <div className="flex-child">
+                      <div className="flex-child home-location-flood-zone">
                         <TextField name={'floodZone'} disabled label={'Flood Zone'} styleName={''} />
                       </div>
                     </div>
                   </div>
                 </section>
-                <section className="coverage-options flex-parent">
+                <section id="coverage-deductibles-discounts" className="coverage-options flex-parent coverage-deductibles-discounts">
                   <div className="coverages flex-child">
                     <h3>Coverages</h3>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent coverages-row-1">
+                      <div className="flex-child coverages-dwelling-limit">
                         <CurrencyField validations={['required', 'range']} label={`${getQuestionName('dwellingAmount', questions)} ($${String(fieldValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $${String(fieldValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`} styleName={''} name={'dwellingAmount'} min={initialValues.dwellingMin} max={initialValues.dwellingMax} onChange={this.updateDwellingAndDependencies} />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent coverages-row-2">
+                      <div className="flex-child coverages-other-structures-limit">
                         <CurrencyField validations={['required']} name="otherStructuresAmount" label={getQuestionName('otherStructuresAmount', questions)} styleName={'coverage-b'} disabled={fieldValues.otherStructures !== 'other'} />
                       </div>
-                      <div className="flex-child">
+                      <div className="flex-child coverages-other-structures-limit-percent">
                         <SelectField
                           name="otherStructures" component="select" styleName={'coverage-b-percentage'} label="Percentage" onChange={event => this.updateDependencies(event, 'otherStructuresAmount', 'dwellingAmount')} validations={['required']}
                           answers={getAnswers('otherStructuresAmount', questions)}
                         />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent coverages-row-3">
+                      <div className="flex-child coverages-personal-property-limit">
                         <CurrencyField validations={['required']} label={getQuestionName('personalPropertyAmount', questions)} styleName={'coverage-c'} name="personalPropertyAmount" disabled={fieldValues.personalProperty !== 'other'} />
                       </div>
-                      <div className="flex-child">
+                      <div className="flex-child coverages-personal-property-limit-percent">
                         <SelectField
                           name="personalProperty" component="select" styleName={'coverage-c-percentage'} label="Percentage" onChange={event => this.updateDependencies(event, 'personalPropertyAmount', 'dwellingAmount')} validations={['required']}
                           answers={getAnswers('personalPropertyAmount', questions)}
@@ -798,23 +792,23 @@ export class Coverage extends Component {
                         />
                       </div> */}
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
-                        <CurrencyField label={'Loss of Use'} styleName={''} name="lossOfUse" disabled />
+                    <div className="flex-parent coverages-row-4">
+                      <div className="flex-child coverages-loss-of-use-limit">
+                        <CurrencyField label={'Loss of Use Limit'} styleName={''} name="lossOfUse" disabled />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent coverages-row-5">
+                      <div className="flex-child coverages-personal-liability">
                         <SelectField
                           name="personalLiability" component="select" styleName={''} label={getQuestionName('personalLiability', questions)} onChange={function () {}} validations={['required']}
                           answers={getAnswers('personalLiability', questions)}
                         />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent coverages-row-6">
+                      <div className="flex-child coverages-medical-payments">
                         <TextField
-                          name="medicalPayments" disabled label={getQuestionName('medicalPayments', questions)} styleName={''} input={{
+                          name="medicalPayments" disabled label={'Medical Payments to Others Limit'} styleName={''} input={{
                             name: 'medicalPayments',
                             disabled: true,
                             value: '$2,000'
@@ -825,22 +819,22 @@ export class Coverage extends Component {
                   </div>
                   <div className="other-coverages flex-child">
                     <h3>Other Coverages</h3>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent other-coverages-row-1">
+                      <div className="flex-child other-coverages-mold-property-limit">
                         <SelectField
                           name="moldProperty" component="select" styleName={''} label="Mold Property Limit" onChange={function () {}} validations={['required']} answers={getAnswers('moldProperty', questions)}
                         />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent other-coverages-row-2">
+                      <div className="flex-child other-coverages-mold-liability-limit">
                         <SelectField
                           name="moldLiability" component="select" styleName={''} label="Mold Liability Limit" onChange={function () {}} validations={['required']} answers={getAnswers('moldLiability', questions)}
                         />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent other-coverages-row-3">
+                      <div className="flex-child other-coverages-property-replacement-cost">
                         <RadioField
                           name={'personalPropertyReplacementCostCoverage'} styleName={'billPlan'} label={'Personal Property Repl Cost'} onChange={function () {}} segmented answers={[
                             {
@@ -854,11 +848,10 @@ export class Coverage extends Component {
                         />
                       </div>
                     </div>
-                    <div className="flex-parent" />
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent other-coverages-row-4">
+                      <div className="flex-child other-coverages-ordinance-or-law-coverage">
                         <SelectField
-                          name="ordinanceOrLaw" component="select" styleName={''} label="Ordinance or Law Coverage" onChange={function () {}} validations={['required']}
+                          name="ordinanceOrLaw" component="select" styleName={''} label="Ordinance or Law Coverage Limit" onChange={function () {}} validations={['required']}
                           answers={getAnswers('ordinanceOrLaw', questions)}
                         />
                       </div>
@@ -866,8 +859,8 @@ export class Coverage extends Component {
                   </div>
                   <div className="deductibles flex-child">
                     <h3>Deductibles</h3>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent deductibles-row-1">
+                      <div className="flex-child deductibles-hurricane">
                         <SelectField
                           name="hurricane" component="select" styleName={''} label="Hurricane" onChange={event => this.updateDependencies(event, 'calculatedHurricane', 'dwellingAmount')}
                           validations={['required']}
@@ -875,20 +868,20 @@ export class Coverage extends Component {
                         />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent deductibles-row-2">
+                      <div className="flex-child deductibles-calculated-hurricane">
                         <CurrencyField validations={['required']} label={'Calculated Hurricane'} styleName={'coverage-c'} name="calculatedHurricane" disabled />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent deductibles-row-3">
+                      <div className="flex-child deductibles-all-other-perils">
                         <SelectField
                           name="allOtherPerils" component="select" styleName={''} label="All Other Perils" onChange={function () {}} validations={['required']}
                           answers={getAnswers('allOtherPerils', questions)}
                         />
                       </div>
                     </div>
-                    <div className="flex-parent">
+                    <div className="flex-parent deductibles-row-4">
                       <div className="flex-child">
                         <SelectField
                           name="sinkholePerilCoverage" component="select" styleName={''} label="Sinkhole" onChange={() => this.updateCalculatedSinkhole()} answers={[
@@ -904,7 +897,7 @@ export class Coverage extends Component {
                       </div>
                     </div>
                     { String(fieldValues.sinkholePerilCoverage) === 'true' && <div className="flex-parent">
-                      <div className="flex-child">
+                      <div className="flex-child deductibles-sinkhole">
                         <CurrencyField validations={['required']} label={'Calculated Sinkhole'} styleName={'coverage-c'} name="calculatedSinkhole" disabled />
                       </div>
                     </div>
@@ -912,8 +905,8 @@ export class Coverage extends Component {
                   </div>
                   <div className="discounts flex-child">
                     <h3>Discounts</h3>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent discounts-row-1">
+                      <div className="flex-child discounts-burglar-alarm">
                         <RadioField
                           name={'burglarAlarm'} styleName={''} label={'Burglar Alarm'} onChange={function () {}} segmented answers={[
                             {
@@ -927,8 +920,8 @@ export class Coverage extends Component {
                         />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent discounts-row-2">
+                      <div className="flex-child discounts-fire-alarm">
                         <RadioField
                           name={'fireAlarm'} styleName={''} label={'Fire Alarm'} onChange={function () {}} segmented answers={[
                             {
@@ -942,8 +935,8 @@ export class Coverage extends Component {
                         />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent discounts-row-3">
+                      <div className="flex-child discounts-sprinkler">
                         <RadioField
                           name={'sprinkler'} styleName={''} label={'Sprinkler'} onChange={function () {}} segmented
                           answers={getAnswers('sprinkler', questions)}
@@ -955,8 +948,8 @@ export class Coverage extends Component {
                 <section className="wind flex-parent">
                   <div className="wind-col1 flex-child">
                     <h3>Wind Mitigation</h3>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent wind-col1-row-1">
+                      <div className="flex-child wind-roof-covering">
                         <SelectField
                           name="roofCovering" component="select" styleName={''} label="Roof Covering" onChange={function () {}} validations={['required']}
                           answers={getAnswers('roofCovering', questions)}
@@ -964,40 +957,40 @@ export class Coverage extends Component {
                         />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent wind-col1-row-2">
+                      <div className="flex-child wind-roof-deck-attachment">
                         <SelectField
                           name="roofDeckAttachment" component="select" styleName={''} label="Roof Deck Attachment" onChange={function () {}} validations={['required']}
                           answers={getAnswers('roofDeckAttachment', questions)}
                         />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent wind-col1-row-3">
+                      <div className="flex-child wind-roof-to-wall-attachment">
                         <SelectField
                           name="roofToWallConnection" component="select" styleName={'weakestRoofWallConnect'} label="Roof to Wall Attachment" onChange={function () {}} validations={['required']}
                           answers={getAnswers('roofToWallConnection', questions)}
                         />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent wind-col1-row-4">
+                      <div className="flex-child wind-roof-geometry">
                         <SelectField
                           name="roofGeometry" component="select" styleName={''} label="Roof Geometry" onChange={function () {}} validations={['required']}
                           answers={getAnswers('roofGeometry', questions)}
                         />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent wind-col1-row-5">
+                      <div className="flex-child wind-swr">
                         <RadioField
                           validations={['required']} name={'secondaryWaterResistance'} styleName={''} label={'Secondary Water Resistance (SWR)'} onChange={function () {}} segmented
                           answers={getAnswers('secondaryWaterResistance', questions)}
                         />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent wind-col1-row-6">
+                      <div className="flex-child wind-opening-protection">
                         <SelectField
                           name="openingProtection" component="select" styleName={''} label="Opening Protection" onChange={function () {}} validations={['required']}
                           answers={getAnswers('openingProtection', questions)}
@@ -1007,34 +1000,34 @@ export class Coverage extends Component {
                   </div>
                   <div className="wind-col2 flex-child">
                     <h3>&nbsp;</h3>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent wind-col1-row-1">
+                      <div className="flex-child wind-fbc-wind-speed">
                         <TextField validations={['required']} label={'FBC Wind Speed'} styleName={''} name={'floridaBuildingCodeWindSpeed'} />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent wind-col1-row-2">
+                      <div className="flex-child wind-fbc-wind-speed-design">
                         <TextField validations={['required']} label={'FBC Wind Speed Design'} styleName={''} name={'floridaBuildingCodeWindSpeedDesign'} />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent wind-col1-row-3">
+                      <div className="flex-child wind-terrain">
                         <SelectField
                           name="terrain" component="select" styleName={'propertyTerrain'} label="Terrain" onChange={function () {}} validations={['required']}
                           answers={getAnswers('terrain', questions)}
                         />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent wind-col1-row-4">
+                      <div className="flex-child wind-internal-pressure-design">
                         <SelectField
                           name="internalPressureDesign" component="select" styleName={''} label="Internal Pressure Design" onChange={function () {}} validations={['required']}
                           answers={getAnswers('internalPressureDesign', questions)}
                         />
                       </div>
                     </div>
-                    <div className="flex-parent">
-                      <div className="flex-child">
+                    <div className="flex-parent wind-col1-row-5">
+                      <div className="flex-child wind-wbdr">
                         <RadioField
                           validations={['required']} name={'windBorneDebrisRegion'} styleName={''} label={'Wind Borne Debris Region (WBDR)'} onChange={function () {}} segmented
                           answers={getAnswers('windBorneDebrisRegion', questions)}

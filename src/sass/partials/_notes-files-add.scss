@@ -7,11 +7,25 @@
   width: 40%;
   background: $white;
   box-shadow: 0 0 20px 0 rgba($black, .25);
+  @include transition(all .1s ease-in-out);
+
+  &.minimize {
+    bottom: -396px;
+
+    .controls {
+      .btn-icon {
+        i.fa-window-minimize {
+          &:before {
+            content: "\f2d0";
+          }
+        }
+      }
+    }
+  }
 
   .title-bar {
     display: flex;
     flex-direction: row;
-    padding: $padding ($padding*2);
     background: $bright-blue-darken-04;
     flex-wrap: nowrap;
 
@@ -21,9 +35,17 @@
 
     .btn {
       padding: 0 ($padding/2);
+
+      &:focus {
+        outline: none;
+        outline-offset: 0;
+        background-color: rgba($bright-blue, .1);
+      }
     }
 
     .title {
+      padding: $padding ($padding*2);
+      cursor: pointer;
       order: 0;
       flex: 1 1 auto;
       align-self: auto;
@@ -31,6 +53,7 @@
 
     .controls {
       display: flex;
+      padding: $padding ($padding*2) $padding 0;
       font-size: $font-size-h4;
       order: 0;
       flex: 0 1 auto;
