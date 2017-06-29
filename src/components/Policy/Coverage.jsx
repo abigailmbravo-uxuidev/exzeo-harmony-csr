@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import localStorage from 'localStorage';
 import { reduxForm, propTypes } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as cgActions from '../../actions/cgActions';
@@ -60,7 +61,7 @@ export class Coverage extends Component {
           });
         }
 
-        const startResult = result.payload[0].workflowData.csrQuote.data;
+        const startResult = result.payload[0].workflowData ? result.payload[0].workflowData.csrQuote.data : {};
 
         this.props.actions.appStateActions.setAppState('csrQuote', startResult.modelInstanceId, { ...this.props.appState.data, submitting: true });
         this.props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {

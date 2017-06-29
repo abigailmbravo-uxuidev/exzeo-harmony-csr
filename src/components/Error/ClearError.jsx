@@ -7,7 +7,10 @@ import * as errorActions from '../../actions/errorActions';
 export class ClearError extends React.Component {
   constructor(props) {
     super(props);
-    props.actions.errorActions.dispatchClearAppError();
+    console.log(props);
+    if (props && props.actions && props.actions.errorActions) {
+      props.actions.errorActions.dispatchClearAppError();
+    }
   }
   render() {
     return <span />;

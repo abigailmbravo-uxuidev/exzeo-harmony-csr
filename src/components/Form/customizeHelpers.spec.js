@@ -298,5 +298,101 @@ describe('customizeHelpers', () => {
     const result = customizeHelpers.getInitialValues(questions, data);
 
     expect(result.dwellingAmount).toEqual(10000000);
+
+    questions[0].readOnlyValue = '324334';
+    const result2 = customizeHelpers.getInitialValues(questions, data);
+
+    expect(result2.dwellingAmount).toEqual('324334');
+  });
+
+  it('getInitialValues date', () => {
+    const questions = [{
+      _id: '588274ee711411e6b4d3ac5b',
+      name: 'effectiveDate',
+      models: [
+        'quote',
+        'quoteModel-mark',
+        'quoteModel-marco',
+        'quoteModel-eshu',
+        'quoteModelFinalUI',
+        'quoteModel',
+        'quoteModelUIVishal',
+        'quoteModelFinalUIVishal'
+      ],
+      steps: [
+        'askToCustomizeDefaultQuote'
+      ],
+      question: 'Dwelling Limit',
+      group: [
+        'coverageLimits'
+      ],
+      order: 2,
+      defaultValueLocation: 'effectiveDate',
+      answerType: 'date',
+      step: 1000
+    }];
+    const result = customizeHelpers.getInitialValues(questions, data);
+    expect(result.effectiveDate).toEqual('2017-01-04');
+  });
+
+  it('getInitialValues', () => {
+    const questions = [{
+      _id: '588274ee711411e6b4d3ac5b',
+      name: 'personalPropertyAmount',
+      defaultValueLocation: 'coverageLimits.personalProperty.amount',
+      models: [
+        'quote',
+        'quoteModel-mark',
+        'quoteModel-marco',
+        'quoteModel-eshu',
+        'quoteModelFinalUI',
+        'quoteModel',
+        'quoteModelUIVishal',
+        'quoteModelFinalUIVishal',
+        'quoteModelFinalUI-Giri',
+        'a226ad4',
+        'quoteModel-juan'
+      ],
+      steps: [
+        'askToCustomizeDefaultQuote'
+      ],
+      question: 'Personal Property Limit',
+      group: [
+        'coverageLimits'
+      ],
+      order: 4,
+      answerType: 'radio',
+      answerFormat: 'currency',
+      answers: [
+        {
+          answer: 0,
+          label: '0%'
+        },
+        {
+          answer: 25,
+          label: '25%'
+        },
+        {
+          answer: 35,
+          label: '35%'
+        },
+        {
+          answer: 50,
+          label: '50%'
+        }
+      ],
+      conditional: {
+        dependency: {
+          type: 'percent',
+          parent: 'dwellingAmount'
+        }
+      }
+    }];
+    const result = customizeHelpers.getInitialValues(questions, data);
+    expect(result.personalPropertyAmount).toEqual(500000);
+
+    result.personalPropertyAmount = '500000';
+    const convertedStrings = customizeHelpers.convertQuoteStringsToNumber(result);
+    expect(convertedStrings.personalPropertyAmount).toEqual(500000);
   });
 });

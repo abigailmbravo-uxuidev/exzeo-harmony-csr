@@ -11,7 +11,7 @@ import ClearErrorConnect from '../Error/ClearError';
 import AdditionalInterestModal from '../../components/Common/AdditionalInterestModal';
 import AdditionalInterestEditModal from '../../components/Common/AdditionalInterestEditModal';
 
-const handleGetQuoteData = (state) => {
+export const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
   const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
@@ -53,88 +53,79 @@ const handleInitialize = () => {
   return values;
 };
 
-const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
+export const handleFormSubmit = (data, dispatch, props) => {
+  const { appState, actions, quoteData } = props;
 
 
-export class AdditionalLinterests extends Component {
-
-  state = {
-    sameAsProperty: false
-  }
-
-  handleFormSubmit = (data) => {
-    const { appState, actions, quoteData } = this.props;
-
-
-    const workflowId = appState.instanceId;
-    actions.appStateActions.setAppState(appState.modelName,
+  const workflowId = appState.instanceId;
+  actions.appStateActions.setAppState(appState.modelName,
       workflowId, {
         ...appState.data,
         submitting: true
       });
 
-    let additionalInterests = quoteData.additionalInterests || [];
+  let additionalInterests = quoteData.additionalInterests || [];
 
-    const type = appState.data.addAdditionalInterestType || data.type;
+  const type = appState.data.addAdditionalInterestType || data.type;
 
-    let order = 0;
+  let order = 0;
 
-    if (String(data.order) !== '0' && String(data.order) !== '1') {
-      order = _.filter(additionalInterests, ai => ai.type === type).length === 0 ? 0 : 1;
-    } else {
-      order = data.order;
-    }
+  if (String(data.order) !== '0' && String(data.order) !== '1') {
+    order = _.filter(additionalInterests, ai => ai.type === type).length === 0 ? 0 : 1;
+  } else {
+    order = data.order;
+  }
 
 
     // remove any existing items before submission
-    const modifiedAIs = _.cloneDeep(additionalInterests);
+  const modifiedAIs = _.cloneDeep(additionalInterests);
 
     _.remove(modifiedAIs, ai => ai._id === data._id); // eslint-disable-line
 
-    const aiData = {
+  const aiData = {
       _id: data._id, // eslint-disable-line
-      name1: data.name1,
-      name2: data.name2,
-      referenceNumber: data.referenceNumber,
-      order,
-      active: true,
-      type,
-      phoneNumber: String(data.phoneNumber).length > 0 ? String(data.phoneNumber).replace(/[^\d]/g, '') : '',
-      mailingAddress: {
-        address1: data.address1,
-        address2: data.address2,
-        city: data.city,
-        state: data.state,
-        zip: data.zip,
-        country: {
-          code: 'USA',
-          displayText: 'United States of America'
-        }
+    name1: data.name1,
+    name2: data.name2,
+    referenceNumber: data.referenceNumber,
+    order,
+    active: true,
+    type,
+    phoneNumber: String(data.phoneNumber).length > 0 ? String(data.phoneNumber).replace(/[^\d]/g, '') : '',
+    mailingAddress: {
+      address1: data.address1,
+      address2: data.address2,
+      city: data.city,
+      state: data.state,
+      zip: data.zip,
+      country: {
+        code: 'USA',
+        displayText: 'United States of America'
       }
-    };
+    }
+  };
 
-    modifiedAIs.push(aiData);
+  modifiedAIs.push(aiData);
 
     // TODO I need to take the form data then push to the additional interest array in the quote then submit the array as data
 
     // TODO Clear out old form data
 
-    const steps = [
-      {
-        name: 'hasUserEnteredData',
-        data: { answer: 'Yes' }
-      },
-      {
-        name: 'askadditionalInterests',
-        data: { additionalInterests: modifiedAIs }
-      },
-      {
-        name: 'moveTo',
-        data: { key: 'additionalInterests' }
-      }
-    ];
+  const steps = [
+    {
+      name: 'hasUserEnteredData',
+      data: { answer: 'Yes' }
+    },
+    {
+      name: 'askadditionalInterests',
+      data: { additionalInterests: modifiedAIs }
+    },
+    {
+      name: 'moveTo',
+      data: { key: 'additionalInterests' }
+    }
+  ];
 
-    actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
+  actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
         additionalInterests = modifiedAIs;
 
@@ -147,65 +138,74 @@ export class AdditionalLinterests extends Component {
             showAdditionalInterestEditModal: false });
         // this.context.router.history.push('/quote/coverage');
       });
-  };
+};
 
-  addAdditionalInterest = (type) => {
-    if (checkQuoteState(this.props.quoteData)) return;
-    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId,
-      { ...this.props.appState.data, showAdditionalInterestModal: true, addAdditionalInterestType: type });
-  }
+const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
 
-  editAdditionalInterest = (ai) => {
-    if (checkQuoteState(this.props.quoteData)) return;
-    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId,
-      { ...this.props.appState.data, showAdditionalInterestEditModal: true, selectedAI: ai });
-  }
 
-  hideAdditionalInterestModal = () => {
-    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId,
-      { ...this.props.appState.data, showAdditionalInterestModal: false, showAdditionalInterestEditModal: false });
-  }
+export const addAdditionalInterest = (type, props) => {
+  if (checkQuoteState(props.quoteData)) return;
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data, showAdditionalInterestModal: true, addAdditionalInterestType: type });
+};
 
-  deleteAdditionalInterest = (selectedAdditionalInterest) => {
-    const { appState, actions, quoteData } = this.props;
-    const workflowId = appState.instanceId;
-    actions.appStateActions.setAppState(appState.modelName,
+export const editAdditionalInterest = (ai, props) => {
+  if (checkQuoteState(props.quoteData)) return;
+  this.props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data, showAdditionalInterestEditModal: true, selectedAI: ai });
+};
+
+export const hideAdditionalInterestModal = (props) => {
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data, showAdditionalInterestModal: false, showAdditionalInterestEditModal: false });
+};
+
+export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
+  const { appState, actions, quoteData } = props;
+  const workflowId = appState.instanceId;
+  actions.appStateActions.setAppState(appState.modelName,
       workflowId, {
-        ...this.props.appState.data,
+        ...props.appState.data,
         submitting: true,
         showAdditionalInterestModal: appState.data.showAdditionalInterestModal,
         showAdditionalInterestEditModal: appState.data.showAdditionalInterestEditModal
       });
 
-    let additionalInterests = quoteData.additionalInterests || [];
+  let additionalInterests = quoteData.additionalInterests || [];
 
         // remove any existing items before submission
-    const modifiedAIs = _.cloneDeep(additionalInterests);
+  const modifiedAIs = _.cloneDeep(additionalInterests);
     // remove any existing items before submission
     _.remove(modifiedAIs, ai => ai._id === selectedAdditionalInterest._id); // eslint-disable-line
 
-    const steps = [{
-      name: 'hasUserEnteredData',
-      data: { answer: 'Yes' }
-    },
-    {
-      name: 'askadditionalInterests',
-      data: { additionalInterests: modifiedAIs }
-    },
-    {
-      name: 'moveTo',
-      data: { key: 'additionalInterests' }
-    }
-    ];
+  const steps = [{
+    name: 'hasUserEnteredData',
+    data: { answer: 'Yes' }
+  },
+  {
+    name: 'askadditionalInterests',
+    data: { additionalInterests: modifiedAIs }
+  },
+  {
+    name: 'moveTo',
+    data: { key: 'additionalInterests' }
+  }
+  ];
 
-    actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
+  actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
         additionalInterests = modifiedAIs;
-        this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-          workflowId, { ...this.props.appState.data,
+        props.actions.appStateActions.setAppState(props.appState.modelName,
+          workflowId, { ...props.appState.data,
             selectedLink: 'additionalInterests',
             submitting: false });
       });
+};
+
+export class AdditionalLinterests extends Component {
+
+  state = {
+    sameAsProperty: false
   }
 
   render() {
