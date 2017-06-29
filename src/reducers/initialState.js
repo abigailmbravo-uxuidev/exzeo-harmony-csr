@@ -16,5 +16,8 @@ export default {
     location: null
   },
   error: {},
-  questions: []
+  questions: [],
+  authState: {
+    userProfile: null
+  }
 };

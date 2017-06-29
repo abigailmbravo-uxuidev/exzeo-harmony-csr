@@ -25,3 +25,4 @@ export const APP_ERROR_CLEAR = 'APP_ERROR_CLEAR';
 /* QUESTION ACTIONS */
 export const GET_QUESTIONS = 'GET_QUESTIONS';
 
+export const AUTH = 'AUTH';
