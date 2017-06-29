@@ -1,16 +1,14 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
-import * as serviceActions from '../../actions/serviceActions';
-import ConnectedApp, { submitNote } from './NewNoteFileUploader';
+
+import ConnectedApp from './ShareConfirmationModal';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 
-describe('Testing NewNoteFileUploader component', () => {
+describe('Testing ShareConfirmationModal component', () => {
   it('should test connected app', () => {
     const initialState = {
       cg: {
@@ -39,6 +37,6 @@ describe('Testing NewNoteFileUploader component', () => {
       ...propTypes
     };
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
-    expect(wrapper.instance().props.fieldQuestions).toEqual([]);
+    expect(wrapper);
   });
 });

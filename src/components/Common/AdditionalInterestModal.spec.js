@@ -1,14 +1,14 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
-import ConnectedApp from './AdditionalInterestEditModal';
+import ConnectedApp from './AdditionalInterestModal';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 
-describe('Testing AdditionalInterestEditModal component', () => {
+describe('Testing AdditionalInterestModal component', () => {
   it('should test connected app', () => {
     const initialState = {
       cg: {
@@ -22,6 +22,11 @@ describe('Testing AdditionalInterestEditModal component', () => {
       },
       appState: {
         data: {
+          selectedAI: {
+            type: 'Mortgagee',
+            phoneNumber: '43543543535',
+            mailingAddress: {}
+          },
           showAdditionalInterestModal: false
         },
         modelName: 'bb'
@@ -29,10 +34,20 @@ describe('Testing AdditionalInterestEditModal component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      selectedAI: {
+        type: 'Mortgagee',
+        phoneNumber: '43543543535',
+        mailingAddress: {}
+      },
       fieldQuestions: [],
       dispatch: store.dispatch,
       appState: {
         data: {
+          selectedAI: {
+            type: 'Mortgagee',
+            phoneNumber: '43543543535',
+            mailingAddress: {}
+          },
           submitting: false
         }
       },
@@ -60,6 +75,7 @@ describe('Testing AdditionalInterestEditModal component', () => {
       ...propTypes
     };
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
-    expect(wrapper);
+    expect(wrapper.props().selectedAI.phoneNumber).toEqual('43543543535');
+    expect(wrapper.props().selectedAI.type).toEqual('Mortgagee');
   });
 });

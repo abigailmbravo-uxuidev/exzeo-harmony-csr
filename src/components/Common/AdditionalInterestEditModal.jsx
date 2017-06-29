@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { reduxForm, Form, propTypes } from 'redux-form';
 import TextField from '../Form/inputs/TextField';
 import PhoneField from '../Form/inputs/PhoneField';
-import SelectField from '../Form/inputs/SelectField';
 import HiddenField from '../Form/inputs/HiddenField';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
@@ -12,7 +11,6 @@ import normalizePhone from '../Form/normalizePhone';
 
 const handleInitialize = (state) => {
   const selectedAI = state.appState.data.selectedAI;
-
 
   if (selectedAI) {
     return {

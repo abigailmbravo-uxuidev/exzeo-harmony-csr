@@ -30,6 +30,7 @@ describe('CG Actions', () => {
     expect(store.getActions()).toEqual(stateObj);
   });
 
+
   it('should call complete', () => {
     const initialState = {};
     const store = mockStore(initialState);
@@ -51,6 +52,51 @@ describe('CG Actions', () => {
 
     expect(store.getActions()).toEqual(stateObj);
   });
+
+  it('should call clearSearchResults without previous task', () => {
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    const inputProps = {
+      modelName: 'bb',
+      workflowId: '123'
+    };
+    const newWorkflowData = {};
+    newWorkflowData[inputProps.modelName] = {};
+    newWorkflowData[inputProps.modelName].data = inputProps.workflowId;
+
+    const stateObj = [{
+      type: types.CLEAR_SEARCH_RESULTS
+    }];
+
+    store.dispatch(cgActions.clearSearchResults(inputProps.modelName, {}));
+
+    expect(store.getActions()).toEqual(stateObj);
+  });
+
+  it('should call clearSearchResults with previous task', () => {
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    const inputProps = {
+      modelName: 'bb',
+      workflowId: '123'
+    };
+    const newWorkflowData = {};
+    newWorkflowData[inputProps.modelName] = {};
+    newWorkflowData[inputProps.modelName].data = inputProps.workflowId;
+    newWorkflowData.previousTask = {};
+
+    const stateObj = [{
+      type: types.CLEAR_SEARCH_RESULTS,
+      workflowData: newWorkflowData
+    }];
+
+    store.dispatch(cgActions.clearSearchResults(inputProps.modelName, newWorkflowData));
+
+    expect(store.getActions()).toEqual(stateObj);
+  });
+
 
   it('should call start workflow thunk', () => {
     const mockAdapter = new MockAdapter(axios);
@@ -385,6 +431,55 @@ describe('CG Actions', () => {
     return cgActions.moveToTask(inputProps.modelName, inputProps.workflowId, 'search', false)(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+      });
+  });
+
+  it('should call start workflowWithData thunk', () => {
+    const mockAdapter = new MockAdapter(axios);
+    const data = {
+      modelName: 'quoteModel',
+      data: {
+        bb: '123'
+      }
+    };
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/cg/start`,
+      data
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: {
+        modelInstanceId: '819966',
+        modelName: 'qouteModel',
+        activeTask: {
+          name: 'search'
+        },
+        previousTask: {
+          name: 'uiTasks',
+          value: {}
+        }
+      }
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    const stateObj = [{
+      type: types.APP_ERROR_CLEAR,
+      error: {}
+    }, {
+      type: types.CG_START,
+      workflowData: { quoteModel: { data: { activeTask: { name: 'search' }, modelInstanceId: '819966', modelName: 'qouteModel', previousTask: { name: 'uiTasks', value: {} } } } }
+    }];
+
+    return cgActions.startWorkflowWithData(data.modelName, data.data, false)(store.dispatch)
+      .then(() => {
+        expect(store.getActions()).toEqual(stateObj);
       });
   });
 });
