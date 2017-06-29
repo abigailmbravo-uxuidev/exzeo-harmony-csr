@@ -50,38 +50,34 @@ export const addNote = (id, noteType, values) => (dispatch) => {
     const data = { notes: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
-        // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
     ]));
   })
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
         errorActions.setAppError({ message })
-        // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
       ]));
     });
 };
 
-export const getNotes = (field, value) => (dispatch) => {
+export const getNotes = (id) => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'notes.services',
+    service: 'transaction-logs.services',
     method: 'GET',
-    path: `v1/notes/?${field}=${value}`
+    path: `history?number=${id}`
   });
 
   return axios(axiosConfig).then((response) => {
     const data = { notes: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
-      // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
     ]));
   })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError({ message })
-        // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
-      ]));
-    });
+  .catch((error) => {
+    const message = handleError(error);
+    return dispatch(batchActions([
+      errorActions.setAppError({ message })
+    ]));
+  });
 };
 
