@@ -12,9 +12,16 @@ import ClearErrorConnect from '../Error/ClearError';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 const handleGetQuote = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName])
+    ? state.cg[state.appState.modelName].data
+    : null;
   if (!taskData) return {};
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
+  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
+    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
+    : {};
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
+    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
+    : quoteEnd;
   return quoteData;
 };
 
@@ -72,7 +79,7 @@ const NoteList = (props) => {
 };
 
 const Files = (props) => {
-  const options = { searchPanel: props => (<SearchPanel {...props} />) };
+  const options = { searchPanel: props => (<SearchPanel { ...props } />) };
   return (
     <BootstrapTable data={[]} options={options} search>
       <TableHeaderColumn dataField="id" isKey hidden>ID</TableHeaderColumn>
@@ -93,7 +100,7 @@ export class NotesFiles extends Component {
     if (!_.isEqual(this.props, nextProps)) {
       if (nextProps.quoteData && nextProps.quoteData.quoteNumber) {
         const quoteNumber = nextProps.quoteData.quoteNumber;
-        this.props.actions.serviceActions.getNotes('quoteNumber', quoteNumber);
+        this.props.actions.serviceActions.getNotes(quoteNumber);
       }
     }
   }
