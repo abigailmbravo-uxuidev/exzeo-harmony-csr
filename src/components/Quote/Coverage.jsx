@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import localStorage from 'localStorage';
 import moment from 'moment';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
 import * as cgActions from '../../actions/cgActions';
@@ -20,7 +21,7 @@ import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import DateField from '../Form/inputs/DateField';
 
-const handleGetQuoteData = (state) => {
+export const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName])
     ? state.cg[state.appState.modelName].data
     : null;
@@ -150,7 +151,7 @@ const handleInitialize = (state) => {
   return values;
 };
 
-const populateAgentData = (state) => {
+export const populateAgentData = (state) => {
   if (state.cg && state.cg.getAgency && state.cg.getAgency.data &&
     state.cg.getAgency.data.model && state.cg.getAgency.data.model.variables) {
     const agentData = _.filter(state.cg.getAgency.data.model.variables, item => item.name === 'getAgentsByCode');
@@ -166,6 +167,185 @@ const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Receive
 const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question') || '';
+
+export const handleAgencyChange = (props, agencyCode, isInit) => {
+  if (!isInit) {
+    this.props.dispatch(change('Coverage', 'agencyCode', agencyCode));
+    this.props.dispatch(change('Coverage', 'agentCode', ''));
+  }
+
+  const { quoteData } = props;
+  const startModelData = {
+    agencyCode,
+    companyCode: quoteData.companyCode,
+    state: quoteData.state
+  };
+
+  this.props.actions.cgActions.startWorkflow('getAgency', startModelData, false);
+};
+
+export const clearForm = (props) => {
+  const { dispatch, quoteData } = props;
+
+  dispatch(change('Coverage', 'agencyCode', _.get(quoteData, 'agencyCode')));
+  dispatch(change('Coverage', 'agentCode', _.get(quoteData, 'agentCode')));
+
+
+  dispatch(change('Coverage', 'effectiveDate', moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD')));
+
+  dispatch(change('Coverage', 'pH1email', _.get(quoteData, 'policyHolders[0].emailAddress')));
+  dispatch(change('Coverage', 'pH1FirstName', _.get(quoteData, 'policyHolders[0].firstName')));
+  dispatch(change('Coverage', 'pH1LastName', _.get(quoteData, 'policyHolders[0].lastName')));
+  dispatch(change('Coverage', 'pH1phone', normalizePhone(_.get(quoteData, 'policyHolders[0].primaryPhoneNumber'))));
+  dispatch(change('Coverage', 'pH1secondaryPhone', normalizePhone(_.get(quoteData, 'policyHolders[0].secondaryPhoneNumber'))));
+
+  dispatch(change('Coverage', 'pH2email', _.get(quoteData, 'policyHolders[1].emailAddress')));
+  dispatch(change('Coverage', 'pH2FirstName', _.get(quoteData, 'policyHolders[1].firstName')));
+  dispatch(change('Coverage', 'pH2LastName', _.get(quoteData, 'policyHolders[1].lastName')));
+  dispatch(change('Coverage', 'pH2phone', normalizePhone(_.get(quoteData, 'policyHolders[1].primaryPhoneNumber'))));
+  dispatch(change('Coverage', 'pH2secondaryPhone', normalizePhone(_.get(quoteData, 'policyHolders[1].secondaryPhoneNumber'))));
+
+  dispatch(change('Coverage', 'address1', _.get(quoteData, 'property.physicalAddress.address1')));
+  dispatch(change('Coverage', 'address2', _.get(quoteData, 'property.physicalAddress.address2')));
+  dispatch(change('Coverage', 'city', _.get(quoteData, 'property.physicalAddress.city')));
+  dispatch(change('Coverage', 'state', _.get(quoteData, 'property.physicalAddress.state')));
+  dispatch(change('Coverage', 'zip', _.get(quoteData, 'property.physicalAddress.zip')));
+  dispatch(change('Coverage', 'protectionClass', _.get(quoteData, 'property.protectionClass')));
+  dispatch(change('Coverage', 'constructionType', _.get(quoteData, 'property.constructionType')));
+  dispatch(change('Coverage', 'yearOfRoof', _.get(quoteData, 'property.yearOfRoof')));
+  dispatch(change('Coverage', 'squareFeet', _.get(quoteData, 'property.squareFeet')));
+  dispatch(change('Coverage', 'yearBuilt', _.get(quoteData, 'property.yearBuilt')));
+  dispatch(change('Coverage', 'buildingCodeEffectivenessGrading', _.get(quoteData, 'property.buildingCodeEffectivenessGrading')));
+  dispatch(change('Coverage', 'familyUnits', _.get(quoteData, 'property.familyUnits')));
+  dispatch(change('Coverage', 'distanceToTidalWater', _.get(quoteData, 'property.distanceToTidalWater')));
+  dispatch(change('Coverage', 'distanceToFireHydrant', _.get(quoteData, 'property.distanceToFireHydrant')));
+  dispatch(change('Coverage', 'distanceToFireStation', _.get(quoteData, 'property.distanceToFireStation')));
+  dispatch(change('Coverage', 'floodZone', _.get(quoteData, 'property.floodZone')));
+
+  dispatch(change('Coverage', 'burglarAlarm', _.get(quoteData, 'property.burglarAlarm')));
+  dispatch(change('Coverage', 'fireAlarm', _.get(quoteData, 'property.fireAlarm')));
+  dispatch(change('Coverage', 'sprinkler', _.get(quoteData, 'property.sprinkler')));
+
+  dispatch(change('Coverage', 'dwellingAmount', _.get(quoteData, 'coverageLimits.dwelling.amount')));
+  dispatch(change('Coverage', 'dwellingMin', _.get(quoteData, 'coverageLimits.dwelling.minAmount')));
+  dispatch(change('Coverage', 'dwellingMax', _.get(quoteData, 'coverageLimits.dwelling.maxAmount')));
+
+  dispatch(change('Coverage', 'lossOfUse', _.get(quoteData, 'coverageLimits.lossOfUse.amount')));
+  dispatch(change('Coverage', 'medicalPayments', _.get(quoteData, 'coverageLimits.medicalPayments.amount')));
+  dispatch(change('Coverage', 'moldLiability', _.get(quoteData, 'coverageLimits.moldLiability.amount')));
+  dispatch(change('Coverage', 'moldProperty', _.get(quoteData, 'coverageLimits.moldProperty.amount')));
+  dispatch(change('Coverage', 'ordinanceOrLaw', _.get(quoteData, 'coverageLimits.ordinanceOrLaw.amount')));
+
+  const otherStructures = _.get(quoteData, 'coverageLimits.otherStructures.amount');
+  const dwelling = _.get(quoteData, 'coverageLimits.dwelling.amount');
+  const personalProperty = _.get(quoteData, 'coverageLimits.personalProperty.amount');
+  const hurricane = _.get(quoteData, 'deductibles.hurricane.amount');
+  const calculatedHurricane = _.get(quoteData, 'deductibles.hurricane.calculatedAmount');
+  const calculatedSinkhole = _.get(quoteData, 'deductibles.sinkhole.calculatedAmount');
+
+
+  dispatch(change('Coverage', 'dwellingAmount', dwelling));
+
+  dispatch(change('Coverage', 'otherStructuresAmount', otherStructures));
+  dispatch(change('Coverage', 'otherStructures', String(calculatePercentage(otherStructures, dwelling))));
+  dispatch(change('Coverage', 'personalLiability', _.get(quoteData, 'coverageLimits.personalLiability.amount')));
+  dispatch(change('Coverage', 'personalProperty', String(calculatePercentage(personalProperty, dwelling))));
+  dispatch(change('Coverage', 'personalPropertyAmount', personalProperty));
+  dispatch(change('Coverage', 'personalPropertyReplacementCostCoverage', false));
+
+  dispatch(change('Coverage', 'sinkholePerilCoverage', _.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer')));
+  dispatch(change('Coverage', 'calculatedSinkhole', calculatedSinkhole));
+
+  dispatch(change('Coverage', 'allOtherPerils', _.get(quoteData, 'deductibles.allOtherPerils.amount')));
+  dispatch(change('Coverage', 'hurricane', hurricane));
+  dispatch(change('Coverage', 'calculatedHurricane', calculatedHurricane));
+  dispatch(change('Coverage', 'floridaBuildingCodeWindSpeed', _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeed')));
+  dispatch(change('Coverage', 'floridaBuildingCodeWindSpeedDesign', _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign')));
+  dispatch(change('Coverage', 'internalPressureDesign', _.get(quoteData, 'property.windMitigation.internalPressureDesign')));
+  dispatch(change('Coverage', 'openingProtection', _.get(quoteData, 'property.windMitigation.openingProtection')));
+  dispatch(change('Coverage', 'roofCovering', _.get(quoteData, 'property.windMitigation.roofCovering')));
+  dispatch(change('Coverage', 'roofDeckAttachment', _.get(quoteData, 'property.windMitigation.roofDeckAttachment')));
+  dispatch(change('Coverage', 'roofGeometry', _.get(quoteData, 'property.windMitigation.roofGeometry')));
+  dispatch(change('Coverage', 'roofToWallConnection', _.get(quoteData, 'property.windMitigation.roofToWallConnection')));
+  dispatch(change('Coverage', 'secondaryWaterResistance', _.get(quoteData, 'property.windMitigation.secondaryWaterResistance')));
+  dispatch(change('Coverage', 'terrain', _.get(quoteData, 'property.windMitigation.terrain')));
+  dispatch(change('Coverage', 'windBorneDebrisRegion', _.get(quoteData, 'property.windMitigation.windBorneDebrisRegion')));
+  dispatch(change('Coverage', 'residenceType', _.get(quoteData, 'property.residenceType')));
+};
+
+export const handleFormSubmit = (data, dispatch, props) => {
+  const workflowId = props.appState.instanceId;
+  const submitData = data;
+
+  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, {
+    ...props.appState.data,
+    submitting: true
+  });
+
+  submitData.agencyCode = String(data.agencyCode);
+  submitData.agentCode = String(data.agentCode);
+  submitData.dwellingAmount = Number(String(data.dwellingAmount).replace(/[^\d]/g, ''));
+  submitData.otherStructuresAmount = Number(data.otherStructuresAmount);
+
+  submitData.personalPropertyAmount = Number(data.personalPropertyAmount);
+  submitData.hurricane = Number(data.hurricane);
+  submitData.calculatedHurricane = Number(data.calculatedHurricane);
+  submitData.lossOfUse = Number(data.lossOfUse);
+  submitData.medicalPayments = Number(data.medicalPayments);
+  submitData.floridaBuildingCodeWindSpeedDesign = Number(data.floridaBuildingCodeWindSpeedDesign);
+  submitData.floridaBuildingCodeWindSpeed = Number(data.floridaBuildingCodeWindSpeed);
+  submitData.allOtherPerils = Number(data.allOtherPerils);
+  submitData.ordinanceOrLaw = Number(data.ordinanceOrLaw);
+  submitData.moldLiability = Number(data.moldLiability);
+  submitData.moldProperty = Number(data.moldProperty);
+  submitData.personalLiability = Number(data.personalLiability);
+
+  submitData.sinkholePerilCoverage = (String(data.sinkholePerilCoverage) === 'true');
+
+  if (submitData.sinkholePerilCoverage) {
+    submitData.sinkhole = 10;
+  }
+
+  submitData.pH1phone = submitData.pH1phone.replace(/[^\d]/g, '');
+  submitData.pH1secondaryPhone = submitData.pH1secondaryPhone
+      ? submitData.pH1secondaryPhone.replace(/[^\d]/g, '')
+      : submitData.pH1secondaryPhone;
+
+  submitData.pH2phone = submitData.pH2phone
+      ? submitData.pH2phone.replace(/[^\d]/g, '')
+      : submitData.pH2phone;
+  submitData.pH2secondaryPhone = submitData.pH2secondaryPhone
+      ? submitData.pH2secondaryPhone.replace(/[^\d]/g, '')
+      : submitData.pH2secondaryPhone;
+
+  const steps = [
+    {
+      name: 'hasUserEnteredData',
+      data: {
+        answer: 'Yes'
+      }
+    }, {
+      name: 'askCustomerData',
+      data: submitData
+    }, {
+      name: 'askToCustomizeDefaultQuote',
+      data: {
+        shouldCustomizeQuote: 'Yes'
+      }
+    }, {
+      name: 'customizeDefaultQuote',
+      data: submitData
+    }
+
+  ];
+
+  props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
+      .then(() => {
+        // now update the workflow details so the recalculated rate shows
+        props.actions.appStateActions.setAppState(props.appState.modelName,
+          workflowId, { ...props.appState.data, submitting: false, selectedLink: 'coverage' });
+      });
+};
 
 
 export class Coverage extends Component {
@@ -210,190 +390,11 @@ export class Coverage extends Component {
         this.props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
           this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
           startResult.modelInstanceId, { ...this.props.appState.data, submitting: false });
-          this.handleAgencyChange(this.props.quoteData.agencyCode, true);
+          handleAgencyChange(this.props, this.props.quoteData.agencyCode, true);
         });
       });
-    } else this.handleAgencyChange(this.props.quoteData.agencyCode, true);
+    } else handleAgencyChange(this.props, this.props.quoteData.agencyCode, true);
   }
-
-  handleAgencyChange = (agencyCode, isInit) => {
-    if (!isInit) {
-      this.props.dispatch(change('Coverage', 'agencyCode', agencyCode));
-      this.props.dispatch(change('Coverage', 'agentCode', ''));
-    }
-
-    const { quoteData } = this.props;
-    const startModelData = {
-      agencyCode,
-      companyCode: quoteData.companyCode,
-      state: quoteData.state
-    };
-
-    this.props.actions.cgActions.startWorkflow('getAgency', startModelData, false);
-  };
-
-  clearForm = () => {
-    const { dispatch, quoteData } = this.props;
-
-    dispatch(change('Coverage', 'agencyCode', _.get(quoteData, 'agencyCode')));
-    dispatch(change('Coverage', 'agentCode', _.get(quoteData, 'agentCode')));
-
-
-    dispatch(change('Coverage', 'effectiveDate', moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD')));
-
-    dispatch(change('Coverage', 'pH1email', _.get(quoteData, 'policyHolders[0].emailAddress')));
-    dispatch(change('Coverage', 'pH1FirstName', _.get(quoteData, 'policyHolders[0].firstName')));
-    dispatch(change('Coverage', 'pH1LastName', _.get(quoteData, 'policyHolders[0].lastName')));
-    dispatch(change('Coverage', 'pH1phone', normalizePhone(_.get(quoteData, 'policyHolders[0].primaryPhoneNumber'))));
-    dispatch(change('Coverage', 'pH1secondaryPhone', normalizePhone(_.get(quoteData, 'policyHolders[0].secondaryPhoneNumber'))));
-
-    dispatch(change('Coverage', 'pH2email', _.get(quoteData, 'policyHolders[1].emailAddress')));
-    dispatch(change('Coverage', 'pH2FirstName', _.get(quoteData, 'policyHolders[1].firstName')));
-    dispatch(change('Coverage', 'pH2LastName', _.get(quoteData, 'policyHolders[1].lastName')));
-    dispatch(change('Coverage', 'pH2phone', normalizePhone(_.get(quoteData, 'policyHolders[1].primaryPhoneNumber'))));
-    dispatch(change('Coverage', 'pH2secondaryPhone', normalizePhone(_.get(quoteData, 'policyHolders[1].secondaryPhoneNumber'))));
-
-    dispatch(change('Coverage', 'address1', _.get(quoteData, 'property.physicalAddress.address1')));
-    dispatch(change('Coverage', 'address2', _.get(quoteData, 'property.physicalAddress.address2')));
-    dispatch(change('Coverage', 'city', _.get(quoteData, 'property.physicalAddress.city')));
-    dispatch(change('Coverage', 'state', _.get(quoteData, 'property.physicalAddress.state')));
-    dispatch(change('Coverage', 'zip', _.get(quoteData, 'property.physicalAddress.zip')));
-    dispatch(change('Coverage', 'protectionClass', _.get(quoteData, 'property.protectionClass')));
-    dispatch(change('Coverage', 'constructionType', _.get(quoteData, 'property.constructionType')));
-    dispatch(change('Coverage', 'yearOfRoof', _.get(quoteData, 'property.yearOfRoof')));
-    dispatch(change('Coverage', 'squareFeet', _.get(quoteData, 'property.squareFeet')));
-    dispatch(change('Coverage', 'yearBuilt', _.get(quoteData, 'property.yearBuilt')));
-    dispatch(change('Coverage', 'buildingCodeEffectivenessGrading', _.get(quoteData, 'property.buildingCodeEffectivenessGrading')));
-    dispatch(change('Coverage', 'familyUnits', _.get(quoteData, 'property.familyUnits')));
-    dispatch(change('Coverage', 'distanceToTidalWater', _.get(quoteData, 'property.distanceToTidalWater')));
-    dispatch(change('Coverage', 'distanceToFireHydrant', _.get(quoteData, 'property.distanceToFireHydrant')));
-    dispatch(change('Coverage', 'distanceToFireStation', _.get(quoteData, 'property.distanceToFireStation')));
-    dispatch(change('Coverage', 'floodZone', _.get(quoteData, 'property.floodZone')));
-
-    dispatch(change('Coverage', 'burglarAlarm', _.get(quoteData, 'property.burglarAlarm')));
-    dispatch(change('Coverage', 'fireAlarm', _.get(quoteData, 'property.fireAlarm')));
-    dispatch(change('Coverage', 'sprinkler', _.get(quoteData, 'property.sprinkler')));
-
-    dispatch(change('Coverage', 'dwellingAmount', _.get(quoteData, 'coverageLimits.dwelling.amount')));
-    dispatch(change('Coverage', 'dwellingMin', _.get(quoteData, 'coverageLimits.dwelling.minAmount')));
-    dispatch(change('Coverage', 'dwellingMax', _.get(quoteData, 'coverageLimits.dwelling.maxAmount')));
-
-    dispatch(change('Coverage', 'lossOfUse', _.get(quoteData, 'coverageLimits.lossOfUse.amount')));
-    dispatch(change('Coverage', 'medicalPayments', _.get(quoteData, 'coverageLimits.medicalPayments.amount')));
-    dispatch(change('Coverage', 'moldLiability', _.get(quoteData, 'coverageLimits.moldLiability.amount')));
-    dispatch(change('Coverage', 'moldProperty', _.get(quoteData, 'coverageLimits.moldProperty.amount')));
-    dispatch(change('Coverage', 'ordinanceOrLaw', _.get(quoteData, 'coverageLimits.ordinanceOrLaw.amount')));
-
-    const otherStructures = _.get(quoteData, 'coverageLimits.otherStructures.amount');
-    const dwelling = _.get(quoteData, 'coverageLimits.dwelling.amount');
-    const personalProperty = _.get(quoteData, 'coverageLimits.personalProperty.amount');
-    const hurricane = _.get(quoteData, 'deductibles.hurricane.amount');
-    const calculatedHurricane = _.get(quoteData, 'deductibles.hurricane.calculatedAmount');
-    const calculatedSinkhole = _.get(quoteData, 'deductibles.sinkhole.calculatedAmount');
-
-
-    dispatch(change('Coverage', 'dwellingAmount', dwelling));
-
-    dispatch(change('Coverage', 'otherStructuresAmount', otherStructures));
-    dispatch(change('Coverage', 'otherStructures', String(calculatePercentage(otherStructures, dwelling))));
-    dispatch(change('Coverage', 'personalLiability', _.get(quoteData, 'coverageLimits.personalLiability.amount')));
-    dispatch(change('Coverage', 'personalProperty', String(calculatePercentage(personalProperty, dwelling))));
-    dispatch(change('Coverage', 'personalPropertyAmount', personalProperty));
-    dispatch(change('Coverage', 'personalPropertyReplacementCostCoverage', false));
-
-    dispatch(change('Coverage', 'sinkholePerilCoverage', _.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer')));
-    dispatch(change('Coverage', 'calculatedSinkhole', calculatedSinkhole));
-
-    dispatch(change('Coverage', 'allOtherPerils', _.get(quoteData, 'deductibles.allOtherPerils.amount')));
-    dispatch(change('Coverage', 'hurricane', hurricane));
-    dispatch(change('Coverage', 'calculatedHurricane', calculatedHurricane));
-    dispatch(change('Coverage', 'floridaBuildingCodeWindSpeed', _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeed')));
-    dispatch(change('Coverage', 'floridaBuildingCodeWindSpeedDesign', _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign')));
-    dispatch(change('Coverage', 'internalPressureDesign', _.get(quoteData, 'property.windMitigation.internalPressureDesign')));
-    dispatch(change('Coverage', 'openingProtection', _.get(quoteData, 'property.windMitigation.openingProtection')));
-    dispatch(change('Coverage', 'roofCovering', _.get(quoteData, 'property.windMitigation.roofCovering')));
-    dispatch(change('Coverage', 'roofDeckAttachment', _.get(quoteData, 'property.windMitigation.roofDeckAttachment')));
-    dispatch(change('Coverage', 'roofGeometry', _.get(quoteData, 'property.windMitigation.roofGeometry')));
-    dispatch(change('Coverage', 'roofToWallConnection', _.get(quoteData, 'property.windMitigation.roofToWallConnection')));
-    dispatch(change('Coverage', 'secondaryWaterResistance', _.get(quoteData, 'property.windMitigation.secondaryWaterResistance')));
-    dispatch(change('Coverage', 'terrain', _.get(quoteData, 'property.windMitigation.terrain')));
-    dispatch(change('Coverage', 'windBorneDebrisRegion', _.get(quoteData, 'property.windMitigation.windBorneDebrisRegion')));
-    dispatch(change('Coverage', 'residenceType', _.get(quoteData, 'property.residenceType')));
-  };
-
-  handleFormSubmit = (data) => {
-    const workflowId = this.props.appState.instanceId;
-    const submitData = data;
-
-    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, workflowId, {
-      ...this.props.appState.data,
-      submitting: true
-    });
-
-    submitData.agencyCode = String(data.agencyCode);
-    submitData.agentCode = String(data.agentCode);
-    submitData.dwellingAmount = Number(String(data.dwellingAmount).replace(/[^\d]/g, ''));
-    submitData.otherStructuresAmount = Number(data.otherStructuresAmount);
-
-    submitData.personalPropertyAmount = Number(data.personalPropertyAmount);
-    submitData.hurricane = Number(data.hurricane);
-    submitData.calculatedHurricane = Number(data.calculatedHurricane);
-    submitData.lossOfUse = Number(data.lossOfUse);
-    submitData.medicalPayments = Number(data.medicalPayments);
-    submitData.floridaBuildingCodeWindSpeedDesign = Number(data.floridaBuildingCodeWindSpeedDesign);
-    submitData.floridaBuildingCodeWindSpeed = Number(data.floridaBuildingCodeWindSpeed);
-    submitData.allOtherPerils = Number(data.allOtherPerils);
-    submitData.ordinanceOrLaw = Number(data.ordinanceOrLaw);
-    submitData.moldLiability = Number(data.moldLiability);
-    submitData.moldProperty = Number(data.moldProperty);
-    submitData.personalLiability = Number(data.personalLiability);
-
-    submitData.sinkholePerilCoverage = (String(data.sinkholePerilCoverage) === 'true');
-
-    if (submitData.sinkholePerilCoverage) {
-      submitData.sinkhole = 10;
-    }
-
-    submitData.pH1phone = submitData.pH1phone.replace(/[^\d]/g, '');
-    submitData.pH1secondaryPhone = submitData.pH1secondaryPhone
-      ? submitData.pH1secondaryPhone.replace(/[^\d]/g, '')
-      : submitData.pH1secondaryPhone;
-
-    submitData.pH2phone = submitData.pH2phone
-      ? submitData.pH2phone.replace(/[^\d]/g, '')
-      : submitData.pH2phone;
-    submitData.pH2secondaryPhone = submitData.pH2secondaryPhone
-      ? submitData.pH2secondaryPhone.replace(/[^\d]/g, '')
-      : submitData.pH2secondaryPhone;
-
-    const steps = [
-      {
-        name: 'hasUserEnteredData',
-        data: {
-          answer: 'Yes'
-        }
-      }, {
-        name: 'askCustomerData',
-        data: submitData
-      }, {
-        name: 'askToCustomizeDefaultQuote',
-        data: {
-          shouldCustomizeQuote: 'Yes'
-        }
-      }, {
-        name: 'customizeDefaultQuote',
-        data: submitData
-      }
-
-    ];
-
-    this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
-      .then(() => {
-        // now update the workflow details so the recalculated rate shows
-        this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-          workflowId, { ...this.props.appState.data, submitting: false, selectedLink: 'coverage' });
-      });
-  };
 
   updateDwellingAndDependencies = (e, value) => {
     const { dispatch, fieldValues } = this.props;
@@ -1042,7 +1043,7 @@ export class Coverage extends Component {
                   </div>
                 </section>
                 <div className="btn-footer">
-                  <button className="btn btn-secondary" type="button" form="Coverage" onClick={this.clearForm}>
+                  <button className="btn btn-secondary" type="button" form="Coverage" onClick={clearForm(this.props)}>
                     Cancel
                   </button>
                   <button className="btn btn-primary" type="submit" form="Coverage" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}>
