@@ -7,7 +7,7 @@ import moment from 'moment';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 
-const SearchResults = (props) => {
+export const SearchResults = (props) => {
   const model = props.tasks[props.appState.modelName] || {};
   const previousTask = model.data && model.data.previousTask ? model.data.previousTask : {};
   const activeTask = model.data && model.data.activeTask ? model.data.activeTask : {};
@@ -71,7 +71,7 @@ const SearchResults = (props) => {
                   <span className="premium">Premium</span>
                 </li>
                 <li>
-                  <a id={quote.quoteNumber + quote.property.physicalAddress.address1} className={quote.quoteNumber + quote.property.physicalAddress.address1 + ' row'} aria-label={quote.quoteNumber + quote.property.physicalAddress.address1} value={quote.quoteNumber + quote.property.physicalAddress.address1} onClick={() => props.handleNewTab(quote, props)} tabIndex="-1">
+                  <a id={quote.quoteNumber + quote.property.physicalAddress.address1} className={`${quote.quoteNumber + quote.property.physicalAddress.address1} row`} aria-label={quote.quoteNumber + quote.property.physicalAddress.address1} value={quote.quoteNumber + quote.property.physicalAddress.address1} onClick={() => props.handleNewTab(quote, props)} tabIndex="-1">
                     <span className="quote-no">{quote.quoteNumber}</span>
                     <span className="property-address">{`${quote.property.physicalAddress.address1} ${quote.property.physicalAddress.city}, ${quote.property.physicalAddress.state} ${quote.property.physicalAddress.zip}`}</span>
                     <span className="quote-state">{quote.quoteState}</span>
@@ -115,11 +115,11 @@ const SearchResults = (props) => {
                   <span className="property-address">Property Address</span>
                   <span className="quote-state">Policy Status</span>
                   <span className="effctive-date">Effective Date</span>
-                  {/*<span className="started-on">Started On</span>*/}
+                  {/* <span className="started-on">Started On</span>*/}
                   <span className="premium">Premium</span>
                 </li>
                 <li>
-                  <a id={policy.policyNumber + policy.property.physicalAddress.address1} className={policy.policyNumber + policy.property.physicalAddress.address1 + ' row'} aria-label={policy.policyNumber + policy.property.physicalAddress.address1} value={policy.policyNumber + policy.property.physicalAddress.address1} onClick={() => props.handleNewTab(policy, props)} tabIndex="-1">
+                  <a id={policy.policyNumber + policy.property.physicalAddress.address1} className={`${policy.policyNumber + policy.property.physicalAddress.address1} row`} aria-label={policy.policyNumber + policy.property.physicalAddress.address1} value={policy.policyNumber + policy.property.physicalAddress.address1} onClick={() => props.handleNewTab(policy, props)} tabIndex="-1">
                     <span className="quote-no">{policy.policyNumber}</span>
                     <span className="property-address">{`${policy.property.physicalAddress.address1}
                         ${policy.property.physicalAddress.city}, ${policy.property.physicalAddress.state}
@@ -129,7 +129,7 @@ const SearchResults = (props) => {
                     <span
                       className="effctive-date"
                     >{moment.utc(policy.effectiveDate).format('YYYY-MM-DD')}</span>
-                  {/*<span
+                    {/* <span
                       className="started-on"
                     >{moment.utc(policy.createdAt).format('YYYY-MM-DD')}</span>*/}
                     <span
