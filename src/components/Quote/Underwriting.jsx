@@ -24,7 +24,7 @@ const handleGetQuoteData = (state) => {
   return {};
 };
 
-const populateUnderwritingQuestions = (state) => {
+export const populateUnderwritingQuestions = (state) => {
   if (state.cg && state.cg.getUWQuestions && state.cg.getUWQuestions.data &&
     state.cg.getUWQuestions.data.model && state.cg.getUWQuestions.data.model.variables) {
     const underwritingQuestions = _.filter(state.cg.getUWQuestions.data.model.variables, item => item.name === 'getListOfUWQuestions');

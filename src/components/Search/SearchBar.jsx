@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
+import localStorage from 'localStorage';
 import { connect } from 'react-redux';
 import { reduxForm, Form, Field, propTypes, getFormSyncErrors } from 'redux-form';
 import ReactTooltip from 'react-tooltip';
@@ -17,7 +18,7 @@ const userTasks = {
 
 const handleInitialize = () => ({ searchType: 'quote' });
 
-const handleSearchBarSubmit = (data, dispatch, props) => {
+export const handleSearchBarSubmit = (data, dispatch, props) => {
   const workflowId = props.appState.instanceId;
   const taskName = userTasks.handleSearchBarSubmit;
   const modelName = props.appState.modelName;
@@ -50,7 +51,7 @@ const handleSearchBarSubmit = (data, dispatch, props) => {
   }
 };
 
-const validate = (values) => {
+export const validate = (values) => {
   const errors = {};
   if (values.firstName) {
     const onlyAlphaNumeric = Rules.onlyAlphaNumeric(values.firstName);
@@ -76,7 +77,7 @@ const validate = (values) => {
   if (values.policyNumber) {
     const numberDashesOnly = Rules.numberDashesOnly(values.policyNumber);
     if (numberDashesOnly) {
-      errors.quoteNumber = numberDashesOnly;
+      errors.policyNumber = numberDashesOnly;
     }
   }
 
@@ -86,15 +87,13 @@ const validate = (values) => {
       errors.zip = onlyAlphaNumeric;
     }
   }
-
   if (values.address) {
     const required = Rules.required(values.address);
     const invalidCharacters = Rules.invalidCharacters(values.address);
-    if (invalidCharacters) {
-      errors.address = invalidCharacters;
-    }
     if (required) {
       errors.address = required;
+    } else if (invalidCharacters) {
+      errors.address = invalidCharacters;
     }
   }
 
