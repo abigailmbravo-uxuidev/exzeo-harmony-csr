@@ -31,11 +31,11 @@ const SearchPanel = props => (
   );
 
 const BSTable = props => props.notes ?
-    (
-      <BootstrapTable data={props.notes}>
-        <TableHeaderColumn dataField="fileList" isKey>Attachment List</TableHeaderColumn>
-      </BootstrapTable>
-    ) : (<p>?</p>);
+  (
+    <BootstrapTable data={props.notes}>
+      <TableHeaderColumn dataField="fileList" isKey>Attachment List</TableHeaderColumn>
+    </BootstrapTable>
+  ) : (<p>?</p>);
 
 const NoteList = (props) => {
   const { notes } = props;
@@ -93,7 +93,7 @@ export class NotesFiles extends Component {
     if (!_.isEqual(this.props, nextProps)) {
       if (nextProps.policyData && nextProps.policyData.policyNumber) {
         const policyNumber = nextProps.policyData.policyNumber;
-        this.props.actions.serviceActions.getNotes('policyNumber', policyNumber);
+        this.props.actions.serviceActions.getNotes(policyNumber);
       }
     }
   }

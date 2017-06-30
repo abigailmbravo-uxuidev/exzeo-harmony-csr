@@ -40,9 +40,9 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'notes.services',
+        service: 'transaction-logs.services',
         method: 'GET',
-        path: 'v1/notes/?test=test'
+        path: 'history?number=test'
       }
     };
 
@@ -53,7 +53,7 @@ describe('Service Actions', () => {
     const initialState = {};
     const store = mockStore(initialState);
 
-    return serviceActions.getNotes('test', 'test')(store.dispatch)
+    return serviceActions.getNotes('test')(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
       });

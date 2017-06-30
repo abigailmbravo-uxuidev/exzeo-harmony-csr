@@ -12,7 +12,6 @@ import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
-import Loader from '../Common/Loader';
 
 // const scheduleDateModal = (props) => {
 //   const showScheduleDateModal = props.appState.data.showScheduleDateModal;
@@ -109,7 +108,7 @@ const Summary = (props) => {
     <QuoteBaseConnect>
       <ClearErrorConnect />
       <div className="route-content summary workflow">
-        {appState.data.submitting && <Loader />}
+
         <div className="scroll">
           {quoteData && quoteData.underwritingExceptions && quoteData.underwritingExceptions.length > 0 &&
           <div className="detail-wrapper">
