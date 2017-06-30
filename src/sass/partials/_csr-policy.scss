@@ -395,3 +395,245 @@
     }
   }
 }
+
+.app-wrapper.csr.policy main .content-wrapper .route-content {
+
+.endorsements {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+
+  .endo-jump-menu {
+
+    background: $white;
+    padding: $padding;
+    border-bottom: dashed 1px $warm-gray-04;
+    flex: 1 0 auto;
+    display: flex;
+    align-content: space-between;
+
+    * {
+      flex: 1 1 auto;
+      margin: 0 ($padding);
+    }
+
+  }
+
+  .scroll {
+    flex-shrink: 1;
+
+    .flex-child.col3 {
+      width: 50%;
+
+      .form-group.labels {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        label {
+          text-align: left;
+          width: 33.33%;
+          flex: 0 1 33.33%;
+          margin: 0 ($padding) 0 0;
+
+        }
+
+        label:nth-child(3) {
+          margin: 0;
+        }
+
+      }
+
+      .form-group-double-element {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin: 0 0 ($padding) 0;
+
+      .form-group {
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 66.66%;
+        flex: 0 1 66.66%;
+        margin: 0 ($padding) 0 0;
+
+        label {
+          width: 50%;
+          flex: 0 1 50%;
+          margin: 0 ($padding) 0 0;
+          text-align: right;
+
+          span {
+            font-size: .7em;
+          }
+        }
+
+        > *:nth-child(2) {
+          width: 50%;
+          flex: 0 1 50%;
+          margin: 0 ($padding) 0 0;
+        }
+
+
+      }
+
+      > .form-group:nth-child(2) {
+        width: 33.33%;
+        flex: 0 1 33.33%;
+
+        * {
+          width: 100%;
+          flex: 0 1 100%;
+          margin: 0;
+        }
+
+        label {
+          display: none;
+        }
+
+
+      }
+
+    }
+
+    }
+
+    .flex-parent.col2 {
+
+      .flex-child {
+        width: 50%;
+
+        .flex-parent.col2 {
+
+          .form-group {
+            width: 50%;
+            margin-left: ($padding);
+          }
+
+          .form-group:nth-child(1) {
+            margin-left: 0;
+          }
+
+        }
+
+
+      }
+
+    }
+
+    .flex-parent.col211 {
+
+      .flex-child:nth-child(1) {
+        width: 60%;
+      }
+
+    }
+
+
+
+
+  }
+
+  .endo-results-calc {
+    flex: 1 0 auto;
+    background: $white;
+    padding: $padding $padding 0;
+    background: $bright-blue-darken-04;
+
+    .btn-primary {
+      background-color: $white;
+      color: $bright-blue-darken-04;
+    }
+
+    .btn-secondary {
+      background-color: $bright-blue-darken-04;
+      color: $white;
+      border: 1px solid $white;
+    }
+
+
+
+
+    .form-group {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-content: space-between;
+      align-items: flex-end;
+      flex-direction: row;
+      align-items: center;
+
+
+
+      * {
+        flex: 1 1 auto;
+        width: auto;
+      }
+
+      label {
+        flex: 0 1 auto;
+        text-align: right;
+        margin: 0 ($padding*2);
+        color: $white;
+        font-size: .8em;
+      }
+
+    }
+
+
+
+
+    .flex-parent:nth-child(2) {
+
+      .form-group {
+        width: 25%;
+        margin-right: $padding;
+
+      input {
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid $white;
+        color: $white;
+        border-radius: 0;
+        width: 25%;
+        flex: 0 0 auto;
+      }
+
+      label {
+        flex: 1 1 75%;
+      }
+
+    }
+
+      .btn-footer {
+        margin-bottom: 0;
+        width: 25%;
+        align-self: flex-start;
+
+      }
+
+    }
+
+
+  }
+
+  .additionalInterests {
+
+    .results-wrapper {
+      margin: ($padding*2) 0 ($padding*4);
+    }
+
+  }
+
+}
+
+.underwriting-validation {
+  width: 240px;
+  flex-shrink: 0;
+  padding: 0 0 ($padding*2) ($padding*2);
+}
+
+}

@@ -50,7 +50,6 @@ export const CurrencyInput = ({
         min={min}
         max={max}
         disabled={disabled}
-        normalize={normalizeNumbers}
         name={name}
         value={value}
         onChange={onChange}

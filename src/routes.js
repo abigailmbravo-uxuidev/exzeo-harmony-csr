@@ -26,6 +26,7 @@ import PolicyCoverage from './components/Policy/Coverage';
 import PolicyPolicyholderAgent from './components/Policy/PolicyholderAgent';
 import PolicyMortgageBilling from './components/Policy/MortgageBilling';
 import PolicyNotesFiles from './components/Policy/NotesFiles';
+import PolicyEndorsements from './components/Policy/Endorsements';
 
 import * as errorActions from './actions/errorActions';
 import * as authActions from './actions/authActions';
@@ -76,10 +77,10 @@ class Routes extends Component {
         <Modal
           isOpen={this.props.error.message !== undefined}
           contentLabel="Example Modal"
-          style={ this.modalStyles }
+          style={this.modalStyles}
           className="card"
         >
-          <div className="card-header"><h4><i className="fa fa-exclamation-circle"></i>&nbsp;Error</h4></div>
+          <div className="card-header"><h4><i className="fa fa-exclamation-circle" />&nbsp;Error</h4></div>
           <div className="card-block">{ this.props.error.message }</div>
           <div className="card-footer"><button className="btn-primary" onClick={this.clearError}>close</button></div>
 
@@ -99,6 +100,7 @@ class Routes extends Component {
               <Route exact path="/policy/policyholder" render={props => <PolicyPolicyholderAgent auth={auth} {...props} />} />
               <Route exact path="/policy/billing" render={props => <PolicyMortgageBilling auth={auth} {...props} />} />
               <Route exact path="/policy/notes" render={props => <PolicyNotesFiles auth={auth} {...props} />} />
+              <Route exact path="/policy/endorsements" render={props => <PolicyEndorsements auth={auth} {...props} />} />
               <Route exact path="/login" render={props => <LoginPage auth={auth} {...props} />} />
               <Route exact path="/error" render={props => <AppErrorPage auth={auth} {...props} />} />
               <Route exact path="/accessDenied" render={props => <AccessDenied auth={auth} {...props} />} />

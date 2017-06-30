@@ -43,6 +43,12 @@ const csrLinks = [{
   label: 'Notes / Files',
   styleName: 'notes',
   exact: true
+}, {
+  key: 'endorsements',
+  link: '/policy/endorsements',
+  label: 'Endorsements',
+  styleName: 'endoresments',
+  exact: true
 }];
 
 const NewNoteFileUploaderPopup = (props) => {
