@@ -15,29 +15,30 @@ import Loader from '../components/Common/Loader';
 
 const workflowModelName = 'csrQuote';
 
+export const handleNewTab = (searchData) => {
+  localStorage.setItem('isNewTab', true);
+
+  const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData'));
+
+  if (lastSearchData.searchType === 'address') {
+    localStorage.setItem('stateCode', searchData.physicalAddress.state);
+    localStorage.setItem('igdID', searchData.id);
+    window.open('/quote/coverage', '_blank');
+  } else if (lastSearchData.searchType === 'quote') {
+    localStorage.setItem('quoteId', searchData._id);
+    window.open('/quote/coverage', '_blank');
+  } else if (lastSearchData.searchType === 'policy') {
+    localStorage.setItem('policyID', searchData.policyID);
+    window.open('/policy/coverage', '_blank');
+  }
+};
+
 export class Splash extends Component {
 
   componentDidMount() {
     this.props.actions.cgActions.startWorkflow(workflowModelName, {});
   }
 
-  handleNewTab = (searchData, props) => {
-    localStorage.setItem('isNewTab', true);
-
-    const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData'));
-
-    if (lastSearchData.searchType === 'address') {
-      localStorage.setItem('stateCode', searchData.physicalAddress.state);
-      localStorage.setItem('igdID', searchData.id);
-      window.open('/quote/coverage', '_blank');
-    } else if (lastSearchData.searchType === 'quote') {
-      localStorage.setItem('quoteId', searchData._id);
-      window.open('/quote/coverage', '_blank');
-    } else if (lastSearchData.searchType === 'policy') {
-      localStorage.setItem('policyID', searchData.policyID);
-      window.open('/policy/coverage', '_blank');
-    }
-  }
 
   handleSelectQuote = (quote, props) => {
     const workflowId = props.appState.instanceId;
@@ -126,7 +127,7 @@ export class Splash extends Component {
                 <div className="results-wrapper">
                   <NoResultsConnect />
                   <SearchResults
-                    handleNewTab={this.handleNewTab}
+                    handleNewTab={() => handleNewTab}
                     handleSelectAddress={this.handleSelectAddress}
                     handleSelectQuote={this.handleSelectQuote}
                     handleSelectPolicy={this.handleSelectPolicy}

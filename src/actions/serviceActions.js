@@ -60,7 +60,7 @@ export const addNote = (id, noteType, values) => (dispatch) => {
     });
 };
 
-export const getNotes = (id) => (dispatch) => {
+export const getNotes = id => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'transaction-logs.services',
     method: 'GET',

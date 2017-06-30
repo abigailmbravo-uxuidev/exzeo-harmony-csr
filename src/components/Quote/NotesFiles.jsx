@@ -27,9 +27,9 @@ const handleGetQuote = (state) => {
 
 const handleInitialize = state => ({});
 
-const SearchPanel = (props) => (
+const SearchPanel = props => (
   <div className="toolbar">
-    <div className='input-group'>
+    <div className="input-group">
       <div className="btn btn-notes">Notes</div>
       <div className="btn btn-files">Files</div>
     </div>
@@ -44,13 +44,13 @@ const BSTable = props => props.notes ?
       </BootstrapTable>
     ) : (<p>?</p>);
 
-const NoteList = (props) => {
-  const { notes } = props;
+export const isExpandableRow = (row) => {
+  if (row.id < 2) return true;
+  return true;
+};
 
-  const isExpandableRow = (row) => {
-    if (row.id < 2) return true;
-    return true;
-  };
+export const NoteList = (props) => {
+  const { notes } = props;
 
   const expandComponent = row => (
     <BSTable data={row.expand} />
@@ -63,7 +63,7 @@ const NoteList = (props) => {
 
   return (
     <BootstrapTable
-      data={ Array.isArray(notes) ? notes : [] }
+      data={Array.isArray(notes) ? notes : []}
       options={options}
       expandableRow={isExpandableRow}
       expandComponent={expandComponent}
@@ -79,7 +79,7 @@ const NoteList = (props) => {
 };
 
 const Files = (props) => {
-  const options = { searchPanel: props => (<SearchPanel { ...props } />) };
+  const options = { searchPanel: props => (<SearchPanel {...props} />) };
   return (
     <BootstrapTable data={[]} options={options} search>
       <TableHeaderColumn dataField="id" isKey hidden>ID</TableHeaderColumn>

@@ -10,4 +10,4 @@ export const setUserProfile = (userProfile) => {
   return stateObj;
 };
 
-export const dispatchUserProfile = (userProfile) => dispatch => dispatch(setUserProfile(userProfile));
+export const dispatchUserProfile = userProfile => dispatch => dispatch(setUserProfile(userProfile));

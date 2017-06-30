@@ -490,7 +490,6 @@ describe('Testing MailingAddressBilling component', () => {
           setAppState() { }
         },
         cgActions: {
-          batchCompleteTask() { return Promise.resolve(() => {}); }
         }
       },
       appState: {
@@ -645,7 +644,6 @@ describe('Testing MailingAddressBilling component', () => {
           setAppState() { }
         },
         cgActions: {
-          batchCompleteTask() { return Promise.resolve(() => {}); }
         }
       },
       appState: {
@@ -722,7 +720,6 @@ describe('Testing MailingAddressBilling component', () => {
           setAppState() { }
         },
         cgActions: {
-          batchCompleteTask() { return Promise.resolve(() => {}); }
         }
       },
       appState: {
@@ -801,7 +798,6 @@ describe('Testing MailingAddressBilling component', () => {
           setAppState() { }
         },
         cgActions: {
-          batchCompleteTask() { return Promise.resolve(() => {}); }
         }
       },
       appState: {

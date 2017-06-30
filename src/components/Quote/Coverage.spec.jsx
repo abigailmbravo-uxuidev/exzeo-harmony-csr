@@ -496,7 +496,6 @@ describe('Testing Coverage component', () => {
           setAppState() { }
         },
         cgActions: {
-          batchCompleteTask() { return Promise.resolve(() => {}); }
         }
       },
       appState: {

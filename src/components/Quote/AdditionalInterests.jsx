@@ -151,7 +151,7 @@ export const addAdditionalInterest = (type, props) => {
 
 export const editAdditionalInterest = (ai, props) => {
   if (checkQuoteState(props.quoteData)) return;
-  this.props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
       { ...props.appState.data, showAdditionalInterestEditModal: true, selectedAI: ai });
 };
 

@@ -3,7 +3,8 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
 
-import ConnectedApp, { handleGetQuoteData, handleFormSubmit } from './AdditionalInterests';
+import ConnectedApp, { handleGetQuoteData, handleFormSubmit,
+   deleteAdditionalInterest, addAdditionalInterest, editAdditionalInterest, hideAdditionalInterestModal } from './AdditionalInterests';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -393,7 +394,7 @@ describe('Testing AdditionalInterests component', () => {
     expect(quote).toEqual(quoteData);
   });
 
-  it('should test handleGetQuoteData', () => {
+  it('should test deleteAdditionalInterest', () => {
     const initialState = {
       cg: {
         bb: {
@@ -420,10 +421,260 @@ describe('Testing AdditionalInterests component', () => {
         modelName: 'bb'
       }
     };
-    let quote = {};
+    const store = mockStore(initialState);
+    const props = {
+      fieldQuestions: [],
+      dispatch: store.dispatch,
+      actions: {
+        appStateActions: {
+          setAppState() { }
+        },
+        cgActions: {
+          batchCompleteTask() { return Promise.resolve(() => {}); }
+        }
+      },
+      appState: {
+        data: {
+          submitting: false
+        }
+      },
+      quoteData: {
+        AdditionalInterests: [{
+          id: '049a50b23c21c2ae3',
+          type: 'Mortgagee',
+          order: 1,
+          name1: 'BB&T Home Mortgage',
+          referenceNumber: '1234567',
+          mailingAddress: {
+            address1: '5115 Garden Vale Ave',
+            city: 'Tampa',
+            state: 'FL',
+            county: 'Hillsborough',
+            zip: '33624',
+            country: {
+              code: 'USA',
+              displayText: 'United States of America'
+            }
+          },
+          active: true
+        }]
+      },
+      ...propTypes
+    };
+    deleteAdditionalInterest(quoteData.additionalInterests[0], props);
+  });
 
-    quote = handleGetQuoteData(initialState);
-    expect(quote).toEqual(quoteData);
+  it('should test addAdditionalInterest', () => {
+    const initialState = {
+      cg: {
+        bb: {
+          data: {
+            modelInstanceId: '123',
+            model: {
+              variables: [
+                { name: 'retrieveQuote',
+                  value: {
+                    result: quoteData
+                  } }, { name: 'getQuoteBeforePageLoop',
+                    value: {
+                      result: quoteData
+                    } }]
+            },
+            uiQuestions: []
+          }
+        }
+      },
+      appState: {
+        data: {
+          showAdditionalInterestModal: false
+        },
+        modelName: 'bb'
+      }
+    };
+    const store = mockStore(initialState);
+    const props = {
+      fieldQuestions: [],
+      dispatch: store.dispatch,
+      actions: {
+        appStateActions: {
+          setAppState() { }
+        },
+        cgActions: {
+          batchCompleteTask() { return Promise.resolve(() => {}); }
+        }
+      },
+      appState: {
+        data: {
+          showAdditionalInterestModal: false,
+          submitting: false
+        }
+      },
+      quoteData: {
+        AdditionalInterests: [{
+          id: '049a50b23c21c2ae3',
+          type: 'Mortgagee',
+          order: 1,
+          name1: 'BB&T Home Mortgage',
+          referenceNumber: '1234567',
+          mailingAddress: {
+            address1: '5115 Garden Vale Ave',
+            city: 'Tampa',
+            state: 'FL',
+            county: 'Hillsborough',
+            zip: '33624',
+            country: {
+              code: 'USA',
+              displayText: 'United States of America'
+            }
+          },
+          active: true
+        }]
+      },
+      ...propTypes
+    };
+    addAdditionalInterest(quoteData.additionalInterests[0], props);
+  });
+
+  it('should test addAdditionalInterest', () => {
+    const initialState = {
+      cg: {
+        bb: {
+          data: {
+            modelInstanceId: '123',
+            model: {
+              variables: [
+                { name: 'retrieveQuote',
+                  value: {
+                    result: quoteData
+                  } }, { name: 'getQuoteBeforePageLoop',
+                    value: {
+                      result: quoteData
+                    } }]
+            },
+            uiQuestions: []
+          }
+        }
+      },
+      appState: {
+        data: {
+          showAdditionalInterestModal: false
+        },
+        modelName: 'bb'
+      }
+    };
+    const store = mockStore(initialState);
+    const props = {
+      fieldQuestions: [],
+      dispatch: store.dispatch,
+      actions: {
+        appStateActions: {
+          setAppState() { }
+        },
+        cgActions: {
+          batchCompleteTask() { return Promise.resolve(() => {}); }
+        }
+      },
+      appState: {
+        data: {
+          showAdditionalInterestModal: false,
+          submitting: false
+        }
+      },
+      quoteData: {
+        AdditionalInterests: [{
+          id: '049a50b23c21c2ae3',
+          type: 'Mortgagee',
+          order: 1,
+          name1: 'BB&T Home Mortgage',
+          referenceNumber: '1234567',
+          mailingAddress: {
+            address1: '5115 Garden Vale Ave',
+            city: 'Tampa',
+            state: 'FL',
+            county: 'Hillsborough',
+            zip: '33624',
+            country: {
+              code: 'USA',
+              displayText: 'United States of America'
+            }
+          },
+          active: true
+        }]
+      },
+      ...propTypes
+    };
+    editAdditionalInterest(quoteData.additionalInterests[0], props);
+  });
+
+  it('should test hideAdditionalInterestModal', () => {
+    const initialState = {
+      cg: {
+        bb: {
+          data: {
+            modelInstanceId: '123',
+            model: {
+              variables: [
+                { name: 'retrieveQuote',
+                  value: {
+                    result: quoteData
+                  } }, { name: 'getQuoteBeforePageLoop',
+                    value: {
+                      result: quoteData
+                    } }]
+            },
+            uiQuestions: []
+          }
+        }
+      },
+      appState: {
+        data: {
+          showAdditionalInterestModal: false
+        },
+        modelName: 'bb'
+      }
+    };
+    const store = mockStore(initialState);
+    const props = {
+      fieldQuestions: [],
+      dispatch: store.dispatch,
+      actions: {
+        appStateActions: {
+          setAppState() { }
+        },
+        cgActions: {
+          batchCompleteTask() { return Promise.resolve(() => {}); }
+        }
+      },
+      appState: {
+        data: {
+          showAdditionalInterestModal: false,
+          submitting: false
+        }
+      },
+      quoteData: {
+        AdditionalInterests: [{
+          id: '049a50b23c21c2ae3',
+          type: 'Mortgagee',
+          order: 1,
+          name1: 'BB&T Home Mortgage',
+          referenceNumber: '1234567',
+          mailingAddress: {
+            address1: '5115 Garden Vale Ave',
+            city: 'Tampa',
+            state: 'FL',
+            county: 'Hillsborough',
+            zip: '33624',
+            country: {
+              code: 'USA',
+              displayText: 'United States of America'
+            }
+          },
+          active: true
+        }]
+      },
+      ...propTypes
+    };
+    hideAdditionalInterestModal(props);
   });
 
   it('should test handleFormSubmit', () => {

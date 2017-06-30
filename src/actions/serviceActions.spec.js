@@ -59,42 +59,42 @@ describe('Service Actions', () => {
       });
   });
 
-  // it('should call start addNotes', () => {
-  //   const mockAdapter = new MockAdapter(axios);
-  //   const createdAt = new Date().getTime();
-  //   const note = {
-  //     noteType: 'test1',
-  //     noteContent: 'test1',
-  //     contactType: 'Agent',
-  //     createdAt,
-  //     noteAttachments: [],
-  //     createdBy: {},
-  //     updatedBy: {}
-  //   };
-  //   const axiosOptions = {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     url: `${process.env.REACT_APP_API_URL}/svc`,
-  //     data: {
-  //       service: 'notes.services',
-  //       method: 'POST',
-  //       path: 'v1/note/',
-  //       data: note
-  //     }
-  //   };
+  it('should call start addNotes', () => {
+    const mockAdapter = new MockAdapter(axios);
+    const createdAt = new Date().getTime();
+    const note = {
+      noteType: 'quoteNote',
+      noteContent: 'test',
+      contactType: 'Agent',
+      createdAt,
+      noteAttachments: [],
+      createdBy: {},
+      updatedBy: {}
+    };
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'notes.services',
+        method: 'POST',
+        path: 'v1/note/',
+        data: note
+      }
+    };
 
-  //   mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-  //     data: [note]
-  //   });
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: [note]
+    });
 
-  //   const initialState = {};
-  //   const store = mockStore(initialState);
+    const initialState = {};
+    const store = mockStore(initialState);
 
-  //   return serviceActions.addNote(null, 'test1', { noteContent: 'test1' })(store.dispatch)
-  //     .then(() => {
-  //       expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
-  //     });
-  // });
+    return serviceActions.addNote(2, 'quoteNote', {})(store.dispatch)
+      .then(() => {
+        expect(note).toEqual(axiosOptions.data.data);
+      });
+  });
 });
