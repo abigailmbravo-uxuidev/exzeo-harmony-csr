@@ -11,6 +11,7 @@
         background: $green-darken-03;
         justify-content: center;
         align-items: center;
+        width: 12rem;
       }
 
       .quote-description {
@@ -33,6 +34,27 @@
   //detail header
   .detailHeader {
       width: 100%;
+
+      .quoteDetails {
+          dd {
+              .btn-link {
+                  padding: 0;
+                  margin: 0;
+                  font-size: $font-size-sm;
+                  line-height: 1;
+                  display: flex;
+                  color: $bright-blue-lighten-02;
+                  text-decoration: underline;
+
+                  @include hover {
+                    color: $bright-blue-lighten-01;
+                  }
+                  @include hover-focus {
+                    color: $bright-blue-lighten-01;
+                  }
+              }
+          }
+      }
   }
   //content wrapper
   main {

@@ -17,12 +17,12 @@ const serviceRequest = data => ({
 });
 
 const runnerSetup = data => ({
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    url: `${process.env.REACT_APP_API_URL}/svc`,
-    data
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  url: `${process.env.REACT_APP_API_URL}/svc`,
+  data
 });
 
 export const addNote = (id, noteType, values) => (dispatch) => {
@@ -81,3 +81,66 @@ export const getNotes = (id) => (dispatch) => {
   });
 };
 
+export const getAgency = (companyCode, state, agencyCode) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'agency.services',
+    method: 'GET',
+    path: `v1/agency/${companyCode}/${state}/${agencyCode}`
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { agency: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
+export const getAgents = (companyCode, state) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'agency.services',
+    method: 'GET',
+    path: `v1/agents/${companyCode}/${state}`
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { agents: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
+export const getPolicyFromPolicyNumber = (companyCode, state, product, policyNumber) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'policy-data.services',
+    method: 'GET',
+    path: `transactions?companyCode=${companyCode}&state=${state}&product=${product}&policyNumber=${policyNumber}`
+  });
+
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
+    console.log(response);
+    const data = { policy: response.data.policies ? response.data.policies[0] : {} };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};

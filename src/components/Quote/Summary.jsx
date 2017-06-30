@@ -86,14 +86,16 @@ const Summary = (props) => {
        handleSubmit
      } = props;
 
-  const taskData = (tasks && appState && tasks[appState.modelName]) ? tasks[appState.modelName].data : null;
+  const agentTaskData = (tasks && appState && tasks.getAgency) ? tasks.getAgency.data : null;
 
   // hardcoded because cg removed the 'getAgentDocument' step from the model.. Will be removed once model is updated and implemented on th UI
+  let agents = [];
   let selectedAgent = {};
-  if (taskData) {
-    selectedAgent = _.find(taskData.model.variables, { name: 'getAgentDocument' }) ?
-  _.find(taskData.model.variables, { name: 'getAgentDocument' }).value.result :
-  { firstName: 'Wally', lastName: 'Wagoner' };
+  if (agentTaskData) {
+    const agentData = _.filter(agentTaskData.model.variables, item => item.name === 'getAgentsByCode');
+    if (agentData.length > 0) {
+      agents = agentData[0].value.result;
+    }
   }
 
   if (quoteData) {
@@ -102,6 +104,10 @@ const Summary = (props) => {
     coverageOptions = quoteData.coverageOptions;
     mailingAddress = quoteData.policyHolderMailingAddress || {};
     deductibles = quoteData.deductibles;
+  }
+
+  if (quoteData && agents.length > 0) {
+    selectedAgent = _.find(agents, a => a.agentCode === quoteData.agentCode);
   }
 
   return (
@@ -249,15 +255,29 @@ const Summary = (props) => {
                 <dl>
                   <div>
                     <dt>Hurricane Deductible</dt>
-                    <dd>$ {normalizeNumbers(deductibles.hurricane.calculatedAmount)}</dd>
+                    <dd>{deductibles.hurricane.amount} %</dd>
                   </div>
                 </dl>
                 <dl>
                   <div>
-                    <dt>Sinkhole Deductible</dt>
-                    <dd>$ {normalizeNumbers(coverageLimits.dwelling.amount * 0.10)}</dd>
+                    <dt>Calculated Hurricane Deductible</dt>
+                    <dd>$ {normalizeNumbers(deductibles.hurricane.calculatedAmount)}</dd>
                   </div>
                 </dl>
+                {deductibles.sinkhole && <dl>
+                  <div>
+                    <dt>Sinkhole Deductible</dt>
+                    <dd>{deductibles.sinkhole.amount} %</dd>
+                  </div>
+                </dl>
+                }
+                {deductibles.sinkhole && <dl>
+                  <div>
+                    <dt>Calculated Sinkhole Deductible</dt>
+                    <dd>$ {normalizeNumbers(deductibles.sinkhole.calculatedAmount)}</dd>
+                  </div>
+                </dl>
+                }
               </section>
             </div>
             <div className="detail-group policyholder-details">
