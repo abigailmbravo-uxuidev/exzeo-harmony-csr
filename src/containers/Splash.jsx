@@ -127,7 +127,7 @@ export class Splash extends Component {
                 <div className="results-wrapper">
                   <NoResultsConnect />
                   <SearchResults
-                    handleNewTab={() => handleNewTab}
+                    handleNewTab={handleNewTab}
                     handleSelectAddress={this.handleSelectAddress}
                     handleSelectQuote={this.handleSelectQuote}
                     handleSelectPolicy={this.handleSelectPolicy}

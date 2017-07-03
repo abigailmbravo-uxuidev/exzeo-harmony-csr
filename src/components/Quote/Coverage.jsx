@@ -170,8 +170,8 @@ const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 
 
 export const handleAgencyChange = (props, agencyCode, isInit) => {
   if (!isInit) {
-    this.props.dispatch(change('Coverage', 'agencyCode', agencyCode));
-    this.props.dispatch(change('Coverage', 'agentCode', ''));
+    props.dispatch(change('Coverage', 'agencyCode', agencyCode));
+    props.dispatch(change('Coverage', 'agentCode', ''));
   }
 
   const { quoteData } = props;
@@ -181,7 +181,7 @@ export const handleAgencyChange = (props, agencyCode, isInit) => {
     state: quoteData.state
   };
 
-  this.props.actions.cgActions.startWorkflow('getAgency', startModelData, false);
+  props.actions.cgActions.startWorkflow('getAgency', startModelData, false);
 };
 
 export const clearForm = (props) => {
@@ -443,7 +443,7 @@ export class Coverage extends Component {
       <QuoteBaseConnect>
         <ClearErrorConnect />
         <div className="route-content">
-          <Form id="Coverage" onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
+          <Form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
             <HiddenField name={'propertyIncidentalOccupanciesMainDwelling'} />
             <HiddenField name={'propertyIncidentalOccupanciesOtherStructures'} />
             <HiddenField name={'liabilityIncidentalOccupancies'} />
@@ -460,7 +460,7 @@ export class Coverage extends Component {
                       <SelectField
                         name="agencyCode" component="select" styleName={''} label="Agency" validations={['required']} input={{
                           name: 'agencyCode',
-                          onChange: event => this.handleAgencyChange(event.target.value),
+                          onChange: event => handleAgencyChange(event.target.value),
                           value: fieldValues.agencyCode
                         }} answers={[
                           {
@@ -1036,7 +1036,7 @@ export class Coverage extends Component {
                   </div>
                 </section>
                 <div className="btn-footer">
-                  <button className="btn btn-secondary" type="button" form="Coverage" onClick={clearForm(this.props)}>
+                  <button className="btn btn-secondary" type="button" form="Coverage" onClick={() => clearForm(this.props)}>
                     Cancel
                   </button>
                   <button className="btn btn-primary" type="submit" form="Coverage" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}>

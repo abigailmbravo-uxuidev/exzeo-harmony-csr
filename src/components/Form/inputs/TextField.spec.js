@@ -101,9 +101,6 @@ describe('TextInput', () => {
       }
     };
     const wrapper = shallow(<TextInput {...inputProps} />);
-
-    console.log(wrapper);
-
     expect(wrapper.find(FieldHint).length).toEqual(0);
   });
 

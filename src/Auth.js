@@ -38,7 +38,6 @@ export default class Auth {
   }
 
   checkAuth() {
-    console.log(this.renewInterval);
     if (this.isAuthenticated()) {
       return;
     }
@@ -46,7 +45,7 @@ export default class Auth {
     if (csrLoggedOut) {
       clearInterval(this.renewInterval);
     }
-    
+
     this.logout();
   }
 

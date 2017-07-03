@@ -131,7 +131,6 @@ export const getPolicyFromPolicyNumber = (companyCode, state, product, policyNum
   });
 
   return Promise.resolve(axios(axiosConfig)).then((response) => {
-    console.log(response);
     const data = { policy: response.data.policies ? response.data.policies[0] : {} };
     return dispatch(batchActions([
       serviceRequest(data)

@@ -33,9 +33,6 @@ const calculatePercentage = (oldFigure, newFigure) => {
 const handleInitialize = (state) => {
   const quoteData = handleGetPolicy(state);
   const values = {};
-
-  console.log(quoteData, 'state.form');
-
   // values.agencyCode = '20000'; // _.get(quoteData, 'agencyCode');
   // values.agentCode = '60000'; // _.get(quoteData, 'agentCode');
   // values.effectiveDate = moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD');
@@ -340,7 +337,7 @@ export class Endorsements extends React.Component {
                               label: '$2,500'
                             }
                           ]}
-                        />                                                                                                                                                                                                                                                           </div>
+                        />                                                                                                                                                                                                                                                             </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Hurricane Deductible'} styleName={''} name={'hurricane'} disabled />
                         <SelectField
