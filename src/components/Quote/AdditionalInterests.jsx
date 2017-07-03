@@ -197,7 +197,9 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
         props.actions.appStateActions.setAppState(props.appState.modelName,
           workflowId, { ...props.appState.data,
             selectedLink: 'additionalInterests',
-            submitting: false });
+            submitting: false,
+            showAdditionalInterestModal: false,
+            showAdditionalInterestEditModal: false });
       });
 };
 
@@ -254,8 +256,8 @@ export class AdditionalLinterests extends Component {
               </div>
             </div>
           </form>
-          { appState.data.showAdditionalInterestEditModal && <AdditionalInterestEditModal verify={handleFormSubmit} hideAdditionalInterestModal={hideAdditionalInterestModal} deleteAdditionalInterest={deleteAdditionalInterest} /> }
-          { appState.data.showAdditionalInterestModal && <AdditionalInterestModal verify={handleFormSubmit} hideAdditionalInterestModal={hideAdditionalInterestModal} /> }
+          { appState.data.showAdditionalInterestEditModal && <AdditionalInterestEditModal selectedAI={this.props.appState.data.selectedAI} quoteData={quoteData} verify={handleFormSubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
+          { appState.data.showAdditionalInterestModal && <AdditionalInterestModal quoteData={quoteData} verify={handleFormSubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
         </div>
 
       </QuoteBaseConnect>

@@ -75,7 +75,7 @@ const AdditionalInterestEditModal = (props) => {
         </div>
         <div className="card-footer">
           <div className="btn-group">
-            <button className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal()}>Cancel</button>
+            <button className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal(props)}>Cancel</button>
             <button className="btn btn-secondary" type="button" disabled={appState.data.submitting} onClick={() => deleteAdditionalInterest(selectedAI, props)}>Delete</button>
             <button className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Update</button>
           </div>
