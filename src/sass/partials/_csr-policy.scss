@@ -400,67 +400,17 @@
 .cancel-policy {
 
 
-
-label {
-  text-align: right;
-  margin: 0 ($padding) 0 0;
-}
-
-.form-group.segmented {
+label.form-group.segmented {
 
   > label {
     margin-bottom: $padding;
+    display: none;
   }
 
   label{
     margin-right: 0;
   }
 
-}
-
-.form-group.eff-date {
-  display: flex;
-  width: 50%;
-  flex-direction: row;
-  align-items: center;
-
-  label {
-    width: 25%;
-  }
-
-  input {
-    width: 75%;
-    margin-right: .5rem;
-  }
-
-}
-
-.form-group.reason {
-
-  display: flex;
-  flex-direction: row;
-  margin-right: $padding;
-  align-items: center;
-
-   label {
-     width: 25%;
-   }
-
-   select {
-     width: 75%;
-   }
-
-}
-
-.form-group.reason:nth-child(2) {
-  margin-right: 0;
-
-  label {
-    display: none;
-  }
-  input {
-    width: 100%;
-  }
 }
 
 

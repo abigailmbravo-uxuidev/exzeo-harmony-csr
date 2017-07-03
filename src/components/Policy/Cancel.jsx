@@ -141,78 +141,68 @@ export const PolicyholderAgent = (props) => {
               </div>
             </div>
 
+
             <div className="form-group segmented name" role="group">
-              <label className="group-label label-segmented">Cancellation Type</label>
+              <label className="group-label label-segmented"></label>
               <div className="segmented-answer-wrapper">
+                <div className="radio-column-3">
+                  <label className="label-segmented">
+                    <input type="radio" value="" />
+                      <span>Voluntary Cancel</span>
+                      </label>
+                      </div>
                 <div className="radio-column-3">
                 <label className="label-segmented">
                   <input type="radio" value="" />
-                    <span>Voluntary Non Renewal</span>
+                    <span>Voluntary Nonrenewal</span>
                     </label>
                     </div>
-                  <div className="radio-column-3">
-                    <label className="label-segmented">
-                      <input type="radio" value="" />
-                        <span>Voluntary Cancellation</span>
-
-                        </label>
-
-                        </div>
                         <div className="radio-column-3">
                           <label className="label-segmented">
                             <input type="radio"  value="Other" />
-                              <span>Involuntary Cancellation-Underwriting</span>
-
+                              <span>Underwriting / NonRenewal</span>
                               </label></div>
-
+                              </div>
                               </div>
 
-                              </div>
 
 
-              <div className="form-group eff-date">
+<div className="flex-parent">
+
+
+      <div className="flex-child">
+
+              <div className="form-group">
                 <label>Effective Date</label>
                 <input type="date" />
               </div>
+</div>
 
-              <div className="flex-parent">
-
-              <div className="form-group reason">
+<div className="flex-child">
+              <div className="form-group">
                 <label>Reason</label>
                 <select>
                   <option>Please Select</option>
                 </select>
               </div>
-              <div className="form-group reason">
-                <label>&nbsp;</label>
-                <input type="text" />
+
+              <div className="form-group">
+                <label style="display: none;"></label>
+                <select>
+                  <input type="text" />
+                </select>
               </div>
-            </div>
+</div>
+</div>
 
 
-            </section>
 
 
-            <section>
-
-              <h3>Policy Notes</h3>
-
-
-                <div className="form-group note-type">
-                  <label></label>
-                  <select>
-                    <option>Please Select</option>
-                  </select>
-                </div>
-
-                <div className="form-group note">
-                  <label>&nbsp;</label>
-                  <textarea>
-
-                  </textarea>
-                </div>
 
             </section>
+
+
+
 </form>
 
 
