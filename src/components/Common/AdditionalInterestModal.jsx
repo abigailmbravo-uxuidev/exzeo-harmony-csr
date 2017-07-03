@@ -22,38 +22,42 @@ const handleInitialize = () => ({
 });
 
 
-const AdditionalInterestModal = ({ appState, handleSubmit, verify, hideAdditionalInterestModal }) => <div className="modal additionalInterestModal" style={{ flexDirection: 'row' }}>
-  <Form id="AdditionalInterestModal" noValidate onSubmit={handleSubmit(verify)}>
-    <div className="card">
-      <div className="card-header">
-        <h4><i className={`fa fa-circle ${appState.data.addAdditionalInterestType}`} /> {appState.data.addAdditionalInterestType}</h4>
-      </div>
-      <div className="card-block">
-        <TextField label={'Name 1'} styleName={'name-1'} name={'name1'} validations={['required']} />
-        <TextField label={'Name 2'} styleName={'name-2'} name={'name2'} />
-        <TextField label={'Address 1'} styleName={'address-1'} name={'address1'} validations={['required']} />
-        <TextField label={'Address 2'} styleName={'address-2'} name={'address2'} />
-        <div className="flex-form">
-          <TextField label={'City'} styleName={'city'} name={'city'} validations={['required']} />
-          <TextField
-            label={'State'} styleName={'state'} name={'state'} validations={['required']}
-          />
-          <TextField label={'Zip Code'} styleName={'zip'} name={'zip'} validations={['required', 'numbersOnly']} />
+const AdditionalInterestModal = (props) => {
+  const { appState, handleSubmit, verify, hideAdditionalInterestModal } = props;
+  return (
+    <div className="modal additionalInterestModal" style={{ flexDirection: 'row' }}>
+      <Form id="AdditionalInterestModal" noValidate onSubmit={handleSubmit(verify)}>
+        <div className="card">
+          <div className="card-header">
+            <h4><i className={`fa fa-circle ${appState.data.addAdditionalInterestType}`} /> {appState.data.addAdditionalInterestType}</h4>
+          </div>
+          <div className="card-block">
+            <TextField label={'Name 1'} styleName={'name-1'} name={'name1'} validations={['required']} />
+            <TextField label={'Name 2'} styleName={'name-2'} name={'name2'} />
+            <TextField label={'Address 1'} styleName={'address-1'} name={'address1'} validations={['required']} />
+            <TextField label={'Address 2'} styleName={'address-2'} name={'address2'} />
+            <div className="flex-form">
+              <TextField label={'City'} styleName={'city'} name={'city'} validations={['required']} />
+              <TextField
+                label={'State'} styleName={'state'} name={'state'} validations={['required']}
+              />
+              <TextField label={'Zip Code'} styleName={'zip'} name={'zip'} validations={['required', 'numbersOnly']} />
+            </div>
+            <div className="flex-form">
+              <PhoneField label={'Phone Number'} styleName={'phone'} name={'phoneNumber'} validations={['phone']} />
+              <TextField label={'Reference Number'} styleName={'reference-number'} name={'referenceNumber'} />
+            </div>
+          </div>
+          <div className="card-footer">
+            <div className="btn-group">
+              <button className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal()}>Cancel</button>
+              <button className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Save</button>
+            </div>
+          </div>
         </div>
-        <div className="flex-form">
-          <PhoneField label={'Phone Number'} styleName={'phone'} name={'phoneNumber'} validations={['phone']} />
-          <TextField label={'Reference Number'} styleName={'reference-number'} name={'referenceNumber'} />
-        </div>
-      </div>
-      <div className="card-footer">
-        <div className="btn-group">
-          <button className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal()}>Cancel</button>
-          <button className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Save</button>
-        </div>
-      </div>
-    </div>
-  </Form>
-</div>;
+      </Form>
+    </div>);
+};
 
 AdditionalInterestModal.propTypes = {
   ...propTypes,
