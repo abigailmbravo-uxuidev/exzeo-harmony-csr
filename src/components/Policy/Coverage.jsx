@@ -51,15 +51,13 @@ export class Coverage extends Component {
 
         steps.push({ name: 'search', data: lastSearchData });
 
-        if (lastSearchData.searchType === 'policy') {
-          const policyId = localStorage.getItem('policyID');
-          steps.push({
-            name: 'choosePolicy',
-            data: {
-              policyId
-            }
-          });
-        }
+        const policyId = localStorage.getItem('policyID');
+        steps.push({
+          name: 'choosePolicy',
+          data: {
+            policyId
+          }
+        });
 
         const startResult = result.payload[0].workflowData ? result.payload[0].workflowData.csrQuote.data : {};
 
@@ -106,7 +104,7 @@ export class Coverage extends Component {
         value: _.get(property, 'sprinkler') === 'N' ? 'No' : _.get(property, 'sprinkler')
       }, {
         discountSurcharge: 'Wind Mit Factor',
-        value: _.get(rating, 'worksheet.elements.windMitigationDiscount')
+        value: _.get(rating, 'worksheet.elements.windMitigationDiscount') ? _.get(rating, 'worksheet.elements.windMitigationDiscount') : '0'
       }
     ];
 
@@ -280,7 +278,7 @@ export class Coverage extends Component {
                       <dt>Dist. to Tidal Waters</dt>
                       <dd>{propertyData.distanceToTidalWater} mi.</dd>
                       <dt>Dist. to Fire Hydrant</dt>
-                      <dd>-</dd>
+                      <dd>{propertyData.distanceToFireHydrant ? `${propertyData.distanceToFireHydrant} mi.` : '-'}</dd>
                       <dt>Dist. to Fire Station</dt>
                       <dd>{propertyData.distanceToFireStation} mi.</dd>
                     </div>
