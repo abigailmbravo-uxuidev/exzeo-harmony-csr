@@ -1,11 +1,13 @@
 import React from 'react';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import localStorage from 'localStorage';
-import ConnectedApp, { handleNewTab, handleSelectQuote } from './Splash';
+import ConnectedApp, { Splash, handleNewTab, handleSelectQuote } from './Splash';
 
-const middlewares = [];
+const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 
 const quoteData = {
@@ -465,5 +467,53 @@ describe('Testing Splash component', () => {
 
     handleNewTab(policy);
     expect(localStorage.getItem('policyID')).toEqual(policy.policyID);
+  });
+
+  it('should test mount', () => {
+    const initialState = {
+      cg: {
+        bb: {
+          data: {
+            modelInstanceId: '123',
+            model: {},
+            uiQuestions: []
+          }
+        }
+      },
+      appState: {
+        data: {
+          searchType: 'address'
+        },
+        modelName: 'bb'
+      }
+    };
+    const store = mockStore(initialState);
+    const props = {
+      actions: {
+        cgActions: {
+          batchCompleteTask() { return Promise.resolve(); },
+          startWorkflow() { }
+        }
+      },
+      searchType: 'address',
+      auth: {
+        isAuthenticated() { return true; }
+      },
+      fieldQuestions: [],
+      quoteData: {},
+      dispatch: store.dispatch,
+      appState: {
+        data: {
+          searchType: 'address',
+          submitting: false
+        }
+      }
+    };
+    const wrapper = mount(<Provider store={store}>
+      <Splash {...props} />
+    </Provider>);
+    expect(wrapper.find(Splash).props()).toEqual(props);
+
+    wrapper.setProps({});
   });
 });

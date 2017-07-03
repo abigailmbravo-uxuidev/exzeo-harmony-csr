@@ -159,7 +159,7 @@ describe('Testing Coverage component', () => {
 
     wrapper.setProps(props);
   });
-  it('should test handleGetQuoteData', () => {
+  it('should test handleGetPolicy', () => {
     const initialState = {
       cg: {
         bb: {
