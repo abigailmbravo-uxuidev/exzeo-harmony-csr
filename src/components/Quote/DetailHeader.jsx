@@ -41,7 +41,7 @@ const selectPolicy = (quote, props) => {
   });
 };
 
-const DetailHeader = (props) => {
+export const DetailHeader = (props) => {
   const { quoteData } = props;
    if (!quoteData || !quoteData._id) { // eslint-disable-line
      return <div className="detailHeader" />;
