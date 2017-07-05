@@ -402,9 +402,11 @@ export class Coverage extends Component {
   updateDwellingAndDependencies = (e, value) => {
     const { dispatch, fieldValues } = this.props;
 
-    const dwellingNumber = String(value).replace(/\D+/g, '');
+    let dwellingNumber = String(value).replace(/\D+/g, '');
 
     if (Number.isNaN(dwellingNumber)) { return; }
+
+    dwellingNumber = Math.round(dwellingNumber / 1000) * 1000;
 
     if (fieldValues.otherStructures !== 'other') {
       dispatch(change('Coverage', 'otherStructuresAmount', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.otherStructures)))));
@@ -423,7 +425,12 @@ export class Coverage extends Component {
     const { dispatch, fieldValues } = this.props;
     if (Number.isNaN(event.target.value)) { return; }
 
-    const dependencyValue = String(fieldValues[dependency]).replace(/\D+/g, '');
+    let dependencyValue = null;
+
+    if (dependency === 'dwellingAmount') {
+      dependencyValue = Math.round(Number(String(fieldValues[dependency]).replace(/\D+/g, '')) / 1000) * 1000;
+    } else dependencyValue = String(fieldValues[dependency]).replace(/\D+/g, '');
+
 
     const fieldValue = setPercentageOfValue(Number(dependencyValue), Number(event.target.value));
 
@@ -436,7 +443,8 @@ export class Coverage extends Component {
     const { dispatch, fieldValues } = this.props;
     if (Number.isNaN(event.target.value)) { return; }
 
-    const dependencyValue = String(fieldValues.dwellingAmount).replace(/\D+/g, '');
+    const dependencyValue = Math.round(Number(String(fieldValues.dwellingAmount).replace(/\D+/g, '')) / 1000) * 1000;
+
     dispatch(change('Coverage', 'calculatedSinkhole', String(setPercentageOfValue(Number(dependencyValue), 10))));
   }
 
