@@ -165,11 +165,13 @@ export const handleAgencyChange = (props, agencyCode, isInit) => {
 
   if (agencyCode) {
     const agency = _.find(props.agencies, a => String(a.agencyCode) === String(agencyCode));
-    props.actions.serviceActions.getAgentsByAgency(agency.companyCode, agency.state, agencyCode).then((response) => {
-      if (response.payload && response.payload[0].data.agents && response.payload[0].data.agents.length === 1) {
-        props.dispatch(change('Coverage', 'agentCode', response.payload[0].data.agents[0].agentCode));
-      }
-    });
+    if (agency) {
+      props.actions.serviceActions.getAgentsByAgency(agency.companyCode, agency.state, agencyCode).then((response) => {
+        if (response.payload && response.payload[0].data.agents && response.payload[0].data.agents.length === 1) {
+          props.dispatch(change('Coverage', 'agentCode', response.payload[0].data.agents[0].agentCode));
+        }
+      });
+    }
   }
 };
 
