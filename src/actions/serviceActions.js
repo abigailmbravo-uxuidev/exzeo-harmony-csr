@@ -123,6 +123,48 @@ export const getAgents = (companyCode, state) => (dispatch) => {
     });
 };
 
+export const getAgentsByAgency = (companyCode, state, agencyCode) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'agency.services',
+    method: 'GET',
+    path: `v1/agents/${companyCode}/${state}?agencyCode=${agencyCode}`
+  });
+
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
+    const data = { agents: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
+export const getAgencies = (companyCode, state) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'agency.services',
+    method: 'GET',
+    path: `v1/agencies/${companyCode}/${state}`
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { agencies: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
 export const getPolicyFromPolicyNumber = (companyCode, state, product, policyNumber) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'policy-data.services',
