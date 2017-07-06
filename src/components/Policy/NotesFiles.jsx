@@ -105,21 +105,23 @@ export class NotesFiles extends Component {
       <PolicyBaseConnect>
         <ClearErrorConnect />
         <div className="route-content">
-          <Form id="NotesFiles" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
-            <div className="scroll">
-              <div className="form-group survey-wrapper" role="group">
-                <h3>History</h3>
-                <section>
-                  <div className="notes-list">
-                    <NoteList {...this.props} />
-                  </div>
-                  <div className="file-list" hidden>
-                    <Files />
-                  </div>
-                </section>
+          <div className="scroll">
+            <Form id="NotesFiles" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+              <div className="scroll">
+                <div className="form-group survey-wrapper" role="group">
+                  <h3>History</h3>
+                  <section>
+                    <div className="notes-list">
+                      <NoteList {...this.props} />
+                    </div>
+                    <div className="file-list" hidden>
+                      <Files />
+                    </div>
+                  </section>
+                </div>
               </div>
-            </div>
-          </Form>
+            </Form>
+          </div>
         </div>
       </PolicyBaseConnect>
     );

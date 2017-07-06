@@ -4,9 +4,9 @@ import logo from '../img/Harmony.svg';
 
 const parsed = queryString.parse(window.location.search);
 
-const LoggedOut = props => (<div className="route-content">
-  <div className="modal">
-    <div className="card logo">
+const LoggedOut = props => (<div className="route-content harmony-bg">
+  <div className="modal gradient-bg">
+    <div className="card logged-out logo scale-in-center">
       <div className="card-header">
           <img src={logo} alt="Harmony" />
       </div>
@@ -15,7 +15,7 @@ const LoggedOut = props => (<div className="route-content">
         <p>You have been signed out.</p>
       </div>
       <div className="card-footer">
-        <button className="btn btn-secondary" onClick={() => props.auth.login()}><i className="fa fa-sign-in" /> Login</button>
+        <button className="btn btn-secondary" onClick={() => props.auth.login()}><i className="fa fa-sign-in" />Login</button>
       </div>
     </div>
   </div>

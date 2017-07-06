@@ -8,7 +8,8 @@
         margin: (-$padding) ($padding*2) (-$padding) (-$padding*2);
         padding: 0 ($padding*2);
         color: $white;
-        background: $green-darken-03;
+        background: $green-darken-04;
+        border-right: 1px dotted $green-darken-03;
         justify-content: center;
         align-items: center;
         width: 12rem;
@@ -72,6 +73,7 @@
         display: flex;
         flex-shrink: 1;
         flex-grow: 1;
+        overflow: hidden;
 
         .modal.quote-summary {
           .card-footer {}
@@ -244,9 +246,9 @@
     .underwriting-validation {
       overflow-y: auto;
       width: 240px;
-      height: 100%;
+      align-self: stretch;
       padding: 0 0 ($padding*2) ($padding*2);
-      border-left: dashed 1px $warm-gray-04;
+      border-left: dotted 1px $warm-gray-04;
       flex-shrink: 0;
       flex-basis: 240px;
 

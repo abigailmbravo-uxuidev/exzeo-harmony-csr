@@ -8,6 +8,7 @@
 @import "partials/mixins/_tab-focus";
 @import "partials/mixins/_buttons";
 @import "partials/mixins/_forms";
+@import "partials/_animations";
 /*Correct and normalize browser rendering*/
 @import "partials/_normalize";
 @import "partials/_reset";
@@ -191,6 +192,7 @@ html {
                 flex-direction: column;
                 height: auto;
                 flex-grow: 1;
+                overflow: hidden;
 
                 .main,
                 form {
@@ -894,11 +896,13 @@ footer {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    overflow: hidden;
 
     .route-content {
       display: flex;
       height: auto;
       flex-grow: 1;
+      overflow: hidden;
 
       .scroll {
         display: flex;
@@ -1120,7 +1124,7 @@ ul.list-cards {
           .quote-state, .policy-status {
             flex-grow: 0;
             flex-shrink: 0;
-            flex-basis: 9rem;
+            flex-basis: 12rem;
           }
 
           .effctive-date {
@@ -1866,13 +1870,13 @@ ul.list-cards {
     }
 
     .site-nav {
-      width: 12rem;
+      //width: 12rem;
 
       ul {
           hr.nav-division {
               border-width: 0;
               border-top: 1px dotted $warm-gray-05;
-              margin: ($padding*2)(-$padding);
+              margin: ($padding*2) 0;
               padding: 0;
           }
           .btn {
@@ -2090,4 +2094,9 @@ ul.list-cards {
       }
     }
   }
+}
+
+
+#NotesFiles {
+    width: 100%;
 }
