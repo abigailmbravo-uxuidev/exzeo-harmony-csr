@@ -187,10 +187,8 @@ export const PolicyholderAgent = (props) => {
               </div>
 
               <div className="form-group">
-                <label style="display: none;"></label>
-                <select>
+                <label style={{ display: 'none;' }} />
                   <input type="text" />
-                </select>
               </div>
 </div>
 </div>
@@ -212,6 +210,7 @@ export const PolicyholderAgent = (props) => {
             <div className="form-group flex-parent billing">
               <div className="flex-child"><label>Bill To</label> <span>Semi-Annual to Policyholder</span></div>
               <div className="flex-child"><label>Bill Plan</label> <span>Semi-Annual</span></div>
+              <div className="flex-child"><div className="form-group"><label>Equity Date</label> <input type="date" /></div></div>
             </div>
 
                 <Payments />

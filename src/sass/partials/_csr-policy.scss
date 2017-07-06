@@ -430,24 +430,44 @@ label.form-group.segmented {
 .form-group.billing {
 
   div {
-
-    flex: 0 0 auto;
+    flex: 1 1 auto;
     margin: 0 ($padding*4) 0 0;
-
-
-  label {
-    font-weight: $font-weight-normal;
-    color: $body-color;
-        font-size: .8em;
   }
 
-  span {
-    font-weight: bold;
-    color: $warm-gray-10;
-        font-size: .9em;
+  .flex-child {
+    flex: 1 1 auto;
+
+    label {
+      margin-right: .5rem;
+      text-align: right;
+    }
+
+    .form-group {
+      flex-direction: row;
+      align-items: center;
+
+      label {
+
+        flex: 0 1 auto;
+        width: 25%;
+        margin-bottom: 0;
+      }
+
+      input {
+        flex: 1 0 auto;
+        width: 75%;
+      }
+
+
+    }
+
   }
 
-}
+  .flex-child:last-child {
+    margin-right: 0;
+  }
+
+
 
 }
 
