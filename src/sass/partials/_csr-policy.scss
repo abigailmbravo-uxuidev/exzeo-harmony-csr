@@ -8,7 +8,8 @@
         margin: (-$padding) ($padding*2) (-$padding) (-$padding*2);
         padding: 0 ($padding*2);
         color: $white;
-        background: $bright-blue-darken-01;
+        background: $bright-blue-darken-03;
+        border-right: 1px dotted $bright-blue-darken-01;
         justify-content: center;
         align-items: center;
         width: 12rem;
@@ -51,6 +52,7 @@
         display: flex;
         flex-shrink: 1;
         flex-grow: 1;
+        overflow: hidden;
 
         .scroll {
           overflow-y: auto;
@@ -391,7 +393,7 @@
 
     .underwriting-validation {
       width: 200px;
-      border-left: dashed 1px $warm-gray-04;
+      border-left: dotted 1px $warm-gray-04;
     }
   }
 }

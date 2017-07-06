@@ -1,8 +1,8 @@
 import React from 'react';
 
 const Loader = () => (
-  <div className="loader modal">
-    <div className="card" role="dialog">
+  <div className="loader modal fade-in">
+    <div className="card scale-in-center" role="dialog">
       <div className="card-block">
         <div className="ring-5">
           <div className="ring-4">

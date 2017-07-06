@@ -4,8 +4,8 @@ import logo from '../img/Harmony.svg';
 
 const parsed = queryString.parse(window.location.search);
 
-const AccessDenied = props => (<div className="route-content">
-  <div className="modal">
+const AccessDenied = props => (<div className="route-content harmony-bg">
+  <div className="modal gradient-bg">
     <div className="card access-denied error logo">
       <div className="card-header">
           <img src={logo} alt="Harmony" />

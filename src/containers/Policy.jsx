@@ -30,11 +30,11 @@ export const Policy = props => (
   <div className="app-wrapper csr policy">
     {/* TODO: dynamically add policy # to title*/}
     <Helmet><title>{props.policy.policyNumber ? `P: ${props.policy.policyNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
-    {/* <NewNoteFileUploader/>*/}
-    {props.appState.data.submitting && <Loader />}
+    {/* <NewNoteFileUploader/>*/}    
     <PolicyHeader />
     <PolicyDetailHeader />
     <main role="document">
+      {props.appState.data.submitting && <Loader />}
       <aside className="content-panel-left">
         <QuoteSideNav />
       </aside>
