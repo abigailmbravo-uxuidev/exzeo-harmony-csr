@@ -153,8 +153,7 @@
 
                             li {
                               display: flex;
-                              padding: ($padding) 0;
-                              border-top: 1px dotted $warm-gray-01;
+                              padding: 0;
                               align-items: center;
 
                               &:last-child {
@@ -188,6 +187,44 @@
               }
             }
           }
+
+          .card-multi {
+            display: block;
+
+            .card-multi-split {
+                  display: flex;
+                  align-content: stretch;
+                  margin-bottom: ($padding*2);
+                  border-bottom: 1px dashed $warm-gray-01;
+                  padding-bottom: ($padding*2);
+
+                  .contact-title {
+
+                  }
+
+                  .contact-details {
+                    flex: 1 1 auto;
+                  }
+
+                  a {
+                    flex: 0 0 auto;
+                    i.fa-pencil {
+                      color: $bright-blue-darken-04;
+                      font-size: 1.25rem;
+                    }
+                  }
+
+            }
+
+
+          }
+
+          .card-multi:last-of-type {
+            border: 0;
+            margin-bottom: 0;
+          }
+
+
         }
 
         .survey-wrapper {
@@ -236,23 +273,19 @@
               display: flex;
 
               &.grid {
+                display: block;
                 .react-bs-table {
-                  margin: 0 ($padding*2) 0 0;
+                  margin: 0;
                 }
                 .total {
                     > div {
-                        background: $yellow-lighten-06;
                         padding: ($padding) ($padding*2);
+                        text-align: right;
+                        color: $bright-blue-darken-04;
+                        font-weight: bold;
+                        margin: 0;
+                        border-top: $border-width dotted $border-color;
 
-                        dt {
-                            color: $warm-gray-14;
-                        }
-
-                        dd {
-                            font-size: $font-size-h4;
-                            margin-bottom: 0;
-                            text-align: right;
-                        }
                     }
                 }
               }

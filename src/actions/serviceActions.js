@@ -81,15 +81,15 @@ export const getNotes = id => (dispatch) => {
   });
 };
 
-export const getAgency = (companyCode, state, agencyCode) => (dispatch) => {
+export const getAgents = (companyCode, state) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'agency.services',
     method: 'GET',
-    path: `v1/agency/${companyCode}/${state}/${agencyCode}`
+    path: `v1/agents/${companyCode}/${state}`
   });
 
   return axios(axiosConfig).then((response) => {
-    const data = { agency: response.data.result };
+    const data = { agents: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));
@@ -102,15 +102,15 @@ export const getAgency = (companyCode, state, agencyCode) => (dispatch) => {
     });
 };
 
-export const getAgents = (companyCode, state) => (dispatch) => {
+export const getAgency = (companyCode, state, agencyCode) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'agency.services',
     method: 'GET',
-    path: `v1/agents/${companyCode}/${state}`
+    path: `v1/agency/${companyCode}/${state}/${agencyCode}`
   });
 
   return axios(axiosConfig).then((response) => {
-    const data = { agents: response.data.result };
+    const data = { agency: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));
@@ -153,6 +153,27 @@ export const getAgencies = (companyCode, state) => (dispatch) => {
 
   return axios(axiosConfig).then((response) => {
     const data = { agencies: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
+export const currentAgent = (companyCode, state, agentCode) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'agency.services',
+    method: 'GET',
+    path: `v1/agent/${companyCode}/${state}/${agentCode}`
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { currentAgent: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));

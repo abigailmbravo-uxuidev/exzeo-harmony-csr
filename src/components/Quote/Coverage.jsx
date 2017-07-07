@@ -1078,6 +1078,7 @@ Coverage.propTypes = {
 // redux mapping
 // ------------------------------------------------
 const mapStateToProps = state => ({
+  getAgents: state.service.getAgents,
   tasks: state.cg,
   appState: state.appState,
   agents: state.service.agents,
