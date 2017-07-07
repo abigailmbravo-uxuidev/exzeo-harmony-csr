@@ -26,8 +26,11 @@ export default class Auth {
     this.getAccessToken = this.getAccessToken.bind(this);
     this.getProfile = this.getProfile.bind(this);
 
+    const csrLoggedOut = localStorage.getItem('csr_loggedOut');
     // check if the user is actually logged out from another sso site
-    this.renewInterval = setInterval(() => { this.checkAuth(); }, 5000);
+    if (!csrLoggedOut) {
+      this.renewInterval = setInterval(() => { this.checkAuth(); }, 5000);
+    }
   }
 
   login() {
@@ -35,10 +38,15 @@ export default class Auth {
   }
 
   checkAuth() {
+    console.log(this.renewInterval);
     if (this.isAuthenticated()) {
       return;
     }
-
+    const csrLoggedOut = localStorage.getItem('csr_loggedOut');
+    if (csrLoggedOut) {
+      clearInterval(this.renewInterval);
+    }
+    
     this.logout();
   }
 
@@ -59,6 +67,7 @@ export default class Auth {
     localStorage.setItem('access_token', authResult.accessToken);
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
+    localStorage.removeItem('csr_loggedOut');
   }
 
   checkIfCSRGroup() {
@@ -104,9 +113,12 @@ export default class Auth {
 
   logout() {
     // Clear access token and ID token from local storage
-    localStorage.clear();
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('expires_at');
+    localStorage.removeItem('id_token');
+    localStorage.setItem('csr_loggedOut', true);
     this.userProfile = null;
-    this.auth0.logout({ returnTo: process.env.REACT_APP_AUTH0_PRIMARY_URL, clientID: process.env.REACT_APP_AUTH0_CLIENT_ID, federated: true });
+    this.auth0.logout({ returnTo: `${process.env.REACT_APP_AUTH0_PRIMARY_URL}/loggedOut`, clientID: process.env.REACT_APP_AUTH0_CLIENT_ID, federated: true });
   }
 
   isAuthenticated = () => {

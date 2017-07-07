@@ -96,6 +96,10 @@ input[type="submit"] {
 
 .btn-secondary {
   @include button-variant($btn-secondary-color, $btn-secondary-bg, $btn-secondary-border);
+
+  &:hover {
+      @include button-variant($btn-secondary-color, rgba($btn-secondary-bg, .9), $btn-secondary-border);
+  }
 }
 
 .btn-action {

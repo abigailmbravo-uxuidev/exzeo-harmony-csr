@@ -1,18 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import logo from '../../img/Harmony.svg';
 
 const handleLogout = (auth) => {
   auth.logout();
-};
-
-const getUsername = (auth) => {
-  const { userProfile } = auth;
-  console.log(userProfile);
-  if (userProfile) {
-    return userProfile.name;
-  }
-  return '';
 };
 
 const Header = props => (
@@ -27,7 +20,7 @@ const Header = props => (
         <a href="" className="active">Policy Management</a>
         { /* <a href="">Agency Management</a>
         <a href="">User Management</a> */ }
-        <div className="user-name">{ getUsername(props.auth) }</div>
+        <div className="user-name">{ props.authState.userProfile && props.authState.userProfile.name }</div>
         <button className="btn btn-action"><i className="fa fa-gear" /></button>
         <button className="btn logout btn-action" type="button" onClick={() => handleLogout(props.auth)}><i className="fa fa-sign-out" /></button>
       </nav>
@@ -35,4 +28,14 @@ const Header = props => (
   </header>
 );
 
-export default Header;
+Header.propTypes = {
+  authState: PropTypes.shape({
+    userProfile: PropTypes.object
+  })
+};
+
+const mapStateToProps = state => ({
+  authState: state.authState
+});
+
+export default connect(mapStateToProps)(Header);

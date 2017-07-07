@@ -50,37 +50,96 @@ export const addNote = (id, noteType, values) => (dispatch) => {
     const data = { notes: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
-        // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
     ]));
   })
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
         errorActions.setAppError({ message })
-        // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
       ]));
     });
 };
 
-export const getNotes = (field, value) => (dispatch) => {
+export const getNotes = id => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'notes.services',
+    service: 'transaction-logs.services',
     method: 'GET',
-    path: `v1/notes/?${field}=${value}`
+    path: `history?number=${id}`
   });
 
   return axios(axiosConfig).then((response) => {
     const data = { notes: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
-      // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
+    ]));
+  })
+  .catch((error) => {
+    const message = handleError(error);
+    return dispatch(batchActions([
+      errorActions.setAppError({ message })
+    ]));
+  });
+};
+
+export const getAgents = (companyCode, state) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'agency.services',
+    method: 'GET',
+    path: `v1/agents/${companyCode}/${state}`
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { agents: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
     ]));
   })
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
         errorActions.setAppError({ message })
-        // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
+      ]));
+    });
+};
+
+export const getAgency = (companyCode, state, agencyCode) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'agency.services',
+    method: 'GET',
+    path: `v1/agency/${companyCode}/${state}/${agencyCode}`
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { agency: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
+export const currentAgent = (companyCode, state, agentCode) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'agency.services',
+    method: 'GET',
+    path: `v1/agent/${companyCode}/${state}/${agentCode}`
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { currentAgent: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
       ]));
     });
 };

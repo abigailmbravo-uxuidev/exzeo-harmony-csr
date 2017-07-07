@@ -4,9 +4,7 @@ import history from '../history';
 import Loader from '../components/Common/Loader';
 
 class Login extends Component {
-  constructor(props) {
-    super(props);
-  }
+
   componentDidMount() {
     const { isAuthenticated } = this.props.auth;
     if (!isAuthenticated()) {

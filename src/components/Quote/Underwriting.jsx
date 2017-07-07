@@ -65,7 +65,7 @@ export class Underwriting extends Component {
   }
 
   handleFormSubmit = (data) => {
-    const { appState, actions, quoteData } = this.props;
+    const { appState, actions } = this.props;
 
     const workflowId = appState.instanceId;
     actions.appStateActions.setAppState(appState.modelName, workflowId, { ...appState.data, submitting: true });

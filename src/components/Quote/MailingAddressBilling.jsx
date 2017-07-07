@@ -10,7 +10,6 @@ import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import RadioField from '../Form/inputs/RadioField';
 import TextField from '../Form/inputs/TextField';
-import SelectField from '../Form/inputs/SelectField';
 import { RadioFieldBilling, SelectFieldBilling } from '../Form/inputs';
 import normalizeNumbers from '../Form/normalizeNumbers';
 
