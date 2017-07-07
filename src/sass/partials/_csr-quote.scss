@@ -13,6 +13,10 @@
         justify-content: center;
         align-items: center;
         width: 12rem;
+
+        span {
+            font-size: 1.125rem;
+        }
       }
 
       .quote-description {
@@ -459,18 +463,7 @@
   }
 }
 
-.file-list {
-  .react-bs-table-tool-bar {
-    .toolbar {
-      .input-group {
-        .btn-files {
-          color: $white;
-          background: $bright-blue-darken-04;
-        }
-      }
-    }
-  }
-}
+
 
 .verify {
   .workflow-steps {
@@ -486,23 +479,7 @@
   }
 }
 
-.modal.uw-conditions {
 
-  .card {
-    height: auto;
-
-    .card-block {
-        ul {
-            list-style: disc;
-            margin: 0 ($padding*4);
-
-            li {
-                display: list-item;
-            }
-        }
-    }
-  }
-}
 
 #root {
   overflow-y: hidden;

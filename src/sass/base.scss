@@ -1011,6 +1011,7 @@ ul.list-cards {
   margin-bottom: $padding/2;
   padding: $padding*2;
   flex-grow: 1;
+  width: 100%;
 
   .card {
     display: flex;
@@ -1281,6 +1282,10 @@ ul.list-cards {
       color: $body-color;
       border-bottom: 2px solid $warm-gray-01;
       background-color: rgba($white, 0);
+
+      h3 {
+          flex-basis: $font-size-h3;
+      }
     }
 
     .form-group {
@@ -1907,7 +1912,6 @@ ul.list-cards {
       position: relative;
       display: flex;
       height: 4.75rem;
-      padding: ($padding/2) ($padding*2);
       color: $white;
       border-bottom: 2px solid $white;
       background: $warm-gray-08;
@@ -1921,6 +1925,7 @@ ul.list-cards {
         flex-grow: 0;
         flex-shrink: 1;
         flex-basis: auto;
+        padding: ($padding/2) 0;
 
         dl {
           margin-bottom: 0;
@@ -1958,8 +1963,9 @@ ul.list-cards {
         &.policyDetails, &.quoteDetails {
             display: flex;
             flex-basis: 12rem;
-            margin: (-$padding/2)($padding*2)(-$padding/2)(-$padding*2);
-            padding: ($padding/2)($padding*2);
+            width: 12rem;
+            max-width: 12rem;
+            padding: ($padding/2) ($padding/2) ($padding/2) ($padding*2);
             background: rgba($black, .1);
             dl {
                 display: flex;
@@ -1992,7 +1998,7 @@ ul.list-cards {
 
         &.premium {
           min-width: 6rem;
-          margin: 0 (-$padding*1.5);
+          margin: $padding/2;
           padding: $padding;
           color: $warm-gray-12;
           background: $warm-gray-02;
