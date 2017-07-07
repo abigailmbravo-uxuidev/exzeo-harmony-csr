@@ -5,12 +5,13 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
 import * as cgActions from '../../actions/cgActions';
+import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import FieldGenerator from '../Form/FieldGenerator';
 
-const handleGetQuoteData = (state) => {
+export const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (taskData) {
     const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
@@ -24,20 +25,8 @@ const handleGetQuoteData = (state) => {
   return {};
 };
 
-export const populateUnderwritingQuestions = (state) => {
-  if (state.cg && state.cg.getUWQuestions && state.cg.getUWQuestions.data &&
-    state.cg.getUWQuestions.data.model && state.cg.getUWQuestions.data.model.variables) {
-    const underwritingQuestions = _.filter(state.cg.getUWQuestions.data.model.variables, item => item.name === 'getListOfUWQuestions');
-    if (underwritingQuestions.length > 0) {
-      const data = underwritingQuestions[0].value.result;
-      return data;
-    }
-  }
-  return [];
-};
-
-const handleInitialize = (state) => {
-  const questions = populateUnderwritingQuestions(state);
+export const handleInitialize = (state) => {
+  const questions = state.service.underwritingQuestions ? state.service.underwritingQuestions : [];
   const data = handleGetQuoteData(state);
   const values = {};
 
@@ -77,25 +66,21 @@ export const clearForm = (props) => {
     dispatch(change('Underwriting', questions[i].name, ''));
   }
 };
-
+let setUnderwriting = false;
 export class Underwriting extends Component {
 
-  componentWillMount() {
-    const { quoteData } = this.props;
-    const startModelData = {
-      companyCode: quoteData.companyCode,
-      state: quoteData.state,
-      property: quoteData.property,
-      product: quoteData.product
-    };
-    this.props.actions.cgActions.startWorkflow('getUWQuestions', startModelData, false);
+  componentWillReceiveProps(nextProps) {
+    if (!_.isEqual(this.props, nextProps)) {
+      const quoteData = nextProps.quoteData;
+      if (quoteData.companyCode && quoteData.state && quoteData.agencyCode && !setUnderwriting) {
+        this.props.actions.serviceActions.getUnderwritingQuestions(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property);
+        setUnderwriting = true;
+      }
+    }
   }
 
   render() {
-    const { fieldValues, handleSubmit, pristine, quoteData, stateObject } = this.props;
-
-    const questions = populateUnderwritingQuestions(stateObject);
-
+    const { fieldValues, handleSubmit, pristine, quoteData, underwritingQuestions } = this.props;
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
@@ -110,7 +95,7 @@ export class Underwriting extends Component {
 
                 <h3>Underwriting Questions</h3>
 
-                {questions && questions.map((question, index) =>
+                {underwritingQuestions && underwritingQuestions.map((question, index) =>
 
                   <FieldGenerator
                     data={quoteData.underwritingAnswers}
@@ -170,11 +155,13 @@ const mapStateToProps = state => ({
   initialValues: handleInitialize(state),
   fieldValues: _.get(state.form, 'Underwriting.values', {}),
   quoteData: handleGetQuoteData(state),
-  activateRedirect: state.appState.data.activateRedirect
+  activateRedirect: state.appState.data.activateRedirect,
+  underwritingQuestions: state.service.underwritingQuestions
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }

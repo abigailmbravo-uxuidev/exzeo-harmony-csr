@@ -185,3 +185,34 @@ export const getPolicyFromPolicyNumber = (companyCode, state, product, policyNum
       ]));
     });
 };
+
+export const getUnderwritingQuestions = (companyCode, state, product, property) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'questions.services',
+    method: 'POST',
+    path: 'questions/uw',
+    data: {
+      model: 'quote',
+      step: 'askUWAnswers',
+      quote: {
+        companyCode,
+        state,
+        product,
+        property
+      }
+    }
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { underwritingQuestions: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};

@@ -154,4 +154,108 @@ describe('Service Actions', () => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
       });
   });
+
+  it('should call start underwritingQuestions', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const uw = [
+      {
+        _id: '11b1cd9f28479a0a989faa08',
+        name: 'floodCoverage',
+        model: 'quote',
+        step: 'customizeDefaultQuote',
+        question: 'Do you want Flood?',
+        group: [
+          'coverageLimits'
+        ],
+        order: 5,
+        answerType: 'bool',
+        answers: [
+          {
+            answer: 'Yes'
+          },
+          {
+            answer: 'No'
+          }
+        ]
+      }
+    ];
+
+    const property = {
+      id: '12089DF01D986BF1A',
+      source: 'CasaClue',
+      physicalAddress: {
+        address1: '95155 STINGRAY LN',
+        address2: '',
+        city: 'FERNANDINA BEACH',
+        state: 'FL',
+        county: 'NASSAU',
+        zip: '32034',
+        latitude: 30.57729,
+        longitude: -81.50374,
+        _id: '5866c036a46eb72908f3f55b'
+      },
+      residenceType: 'Single Family',
+      yearBuilt: 2005,
+      constructionType: 'Frame',
+      territory: '892-0',
+      protectionClass: 'A',
+      buildingCodeEffectivenessGrading: 99,
+      familyUnits: '1-2',
+      squareFeet: 2066,
+      sprinkler: 'no',
+      floodZone: 'V',
+      windMitigation: {
+        roofGeometry: 'Other',
+        roofDeckAttachment: 'A',
+        secondaryWaterResistance: false,
+        windBorneDebrisRegion: false,
+        terrain: 'B',
+        _id: '5866c036a46eb72908f3f55a'
+      },
+      _id: '5866c036a46eb72908f3f559',
+      gatedCommunity: false,
+      burglarAlarm: false,
+      fireAlarm: false,
+      trampoline: false,
+      divingBoard: false,
+      poolSecured: false,
+      pool: false
+    };
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'questions.services',
+        method: 'POST',
+        path: 'questions/uw',
+        data: {
+          model: 'quote',
+          step: 'askUWAnswers',
+          quote: {
+            companyCode: 'TTIC',
+            state: 'FL',
+            product: 'HO3',
+            property
+          }
+        }
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: uw
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    return serviceActions.getUnderwritingQuestions('TTIC', 'FL', 'HO3', property)(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+      });
+  });
 });
