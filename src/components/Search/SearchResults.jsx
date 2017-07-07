@@ -115,8 +115,9 @@ export const SearchResults = (props) => {
                   <span className="property-address">Property Address</span>
                   <span className="quote-state">Policy Status</span>
                   <span className="effctive-date">Effective Date</span>
-                  {/* <span className="started-on">Started On</span>*/}
+                  {/* <span className="started-on">Started On</span>
                   <span className="premium">Premium</span>
+                  */}
                 </li>
                 <li>
                   <a id={policy.policyNumber + policy.property.physicalAddress.address1} className={`${policy.policyNumber + policy.property.physicalAddress.address1} row`} aria-label={policy.policyNumber + policy.property.physicalAddress.address1} value={policy.policyNumber + policy.property.physicalAddress.address1} onClick={() => props.handleNewTab(policy, props)} tabIndex="-1">
@@ -131,10 +132,11 @@ export const SearchResults = (props) => {
                     >{moment.utc(policy.effectiveDate).format('YYYY-MM-DD')}</span>
                     {/* <span
                       className="started-on"
-                    >{moment.utc(policy.createdAt).format('YYYY-MM-DD')}</span>*/}
+                    >{moment.utc(policy.createdAt).format('YYYY-MM-DD')}</span>
                     <span
                       className="premium"
                     >$ {policy.rating ? policy.rating.totalPremium : '-'}</span>
+                  */}
                   </a>
                 </li>
               </ul>
