@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import NumberFormat from 'react-number-format';
 import FieldHint from './FieldHint';
 import reduxFormField from './reduxFormField';
-import normalizeNumbers from '../normalizeNumbers';
 
 export const CurrencyInput = ({
   input,

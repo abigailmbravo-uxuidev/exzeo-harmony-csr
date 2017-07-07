@@ -60,7 +60,7 @@ export const addNote = (id, noteType, values) => (dispatch) => {
     });
 };
 
-export const getNotes = (id) => (dispatch) => {
+export const getNotes = id => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'transaction-logs.services',
     method: 'GET',
@@ -79,27 +79,6 @@ export const getNotes = (id) => (dispatch) => {
       errorActions.setAppError({ message })
     ]));
   });
-};
-
-export const getAgency = (companyCode, state, agencyCode) => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'agency.services',
-    method: 'GET',
-    path: `v1/agency/${companyCode}/${state}/${agencyCode}`
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = { agency: response.data.result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError({ message })
-      ]));
-    });
 };
 
 export const getAgents = (companyCode, state) => (dispatch) => {
@@ -123,16 +102,15 @@ export const getAgents = (companyCode, state) => (dispatch) => {
     });
 };
 
-export const getPolicyFromPolicyNumber = (companyCode, state, product, policyNumber) => (dispatch) => {
+export const getAgency = (companyCode, state, agencyCode) => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'policy-data.services',
+    service: 'agency.services',
     method: 'GET',
-    path: `transactions?companyCode=${companyCode}&state=${state}&product=${product}&policyNumber=${policyNumber}`
+    path: `v1/agency/${companyCode}/${state}/${agencyCode}`
   });
 
-  return Promise.resolve(axios(axiosConfig)).then((response) => {
-    console.log(response);
-    const data = { policy: response.data.policies ? response.data.policies[0] : {} };
+  return axios(axiosConfig).then((response) => {
+    const data = { agency: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));
@@ -144,3 +122,25 @@ export const getPolicyFromPolicyNumber = (companyCode, state, product, policyNum
       ]));
     });
 };
+
+export const currentAgent = (companyCode, state, agentCode) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'agency.services',
+    method: 'GET',
+    path: `v1/agent/${companyCode}/${state}/${agentCode}`
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { currentAgent: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+

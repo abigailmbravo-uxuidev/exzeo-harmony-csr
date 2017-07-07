@@ -10,11 +10,11 @@ import questions from './questionsReducer';
 
 const rootReducer = combineReducers({
   form: formReducer,
+  service,
   cg,
   authState,
   appState,
   questions,
-  service,
   error
 });
 
