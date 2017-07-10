@@ -182,6 +182,44 @@
               }
             }
           }
+
+          .card-multi {
+            display: block;
+
+            .card-multi-split {
+                  display: flex;
+                  align-content: stretch;
+                  margin-bottom: ($padding*2);
+                  border-bottom: 1px dashed $warm-gray-01;
+                  padding-bottom: ($padding*2);
+
+                  .contact-title {
+
+                  }
+
+                  .contact-details {
+                    flex: 1 1 auto;
+                  }
+
+                  a {
+                    flex: 0 0 auto;
+                    i.fa-pencil {
+                      color: $bright-blue-darken-04;
+                      font-size: 1.25rem;
+                    }
+                  }
+
+            }
+
+
+          }
+
+          .card-multi:last-of-type {
+            border: 0;
+            margin-bottom: 0;
+          }
+
+
         }
 
         .survey-wrapper {
@@ -230,8 +268,9 @@
               display: flex;
 
               &.grid {
+                display: block;
                 .react-bs-table {
-                  margin: 0 ($padding*2) 0 0;
+                  margin: 0;
                 }
 
                 .total {
