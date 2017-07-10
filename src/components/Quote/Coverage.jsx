@@ -342,8 +342,8 @@ let setAgents = false;
 
 export class Coverage extends Component {
 
-  componentWillMount() {
-    this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuote');
+  componentDidMount() {
+    this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
 
     const isNewTab = localStorage.getItem('isNewTab') === 'true';
 
@@ -575,43 +575,11 @@ export class Coverage extends Component {
                       </div>
                       <div className="flex-child home-location-protection-class">
                         <SelectField
-                          name="protectionClass" component="select" styleName={''} label="Protection Class" input={{
+                          name="protectionClass" component="select" styleName={''} label={getQuestionName('protectionClass', questions)} input={{
                             name: 'protectionClass',
                             disabled: true,
                             value: fieldValues.protectionClass
-                          }} answers={[
-                            {
-                              answer: '1',
-                              label: '01'
-                            }, {
-                              answer: '2',
-                              label: '02'
-                            }, {
-                              answer: '3',
-                              label: '03'
-                            }, {
-                              answer: '4',
-                              label: '04'
-                            }, {
-                              answer: '5',
-                              label: '05'
-                            }, {
-                              answer: '6',
-                              label: '06'
-                            }, {
-                              answer: '7',
-                              label: '07'
-                            }, {
-                              answer: '8',
-                              label: '08'
-                            }, {
-                              answer: '9',
-                              label: '09'
-                            }, {
-                              answer: '10',
-                              label: '10'
-                            }
-                          ]}
+                          }} answers={getAnswers('protectionClass', questions)}
                         />
                       </div>
                       <div className="flex-child home-location-tidal-waters">
@@ -619,94 +587,31 @@ export class Coverage extends Component {
                       </div>
                       <div className="flex-child home-location-residence-type">
                         <SelectField
-                          name="residenceType" component="select" styleName={''} label="Residence Type" input={{
+                          name="residenceType" component="select" styleName={''} label={getQuestionName('residenceType', questions)} input={{
                             name: 'residenceType',
                             disabled: true,
                             value: fieldValues.residenceType
-                          }} answers={[
-                            {
-                              answer: 'SINGLE FAMILY',
-                              label: 'Single Family'
-                            }, {
-                              answer: 'COMMERCIAL',
-                              label: 'Commercial'
-                            }
-                          ]}
+                          }} answers={getAnswers('residenceType', questions)}
                         />
                       </div>
                     </div>
                     <div className="flex-parent home-location-row-2">
                       <div className="flex-child home-location-construction">
                         <SelectField
-                          component="select" styleName={''} label="Construction" name={'constructionType'} input={{
+                          component="select" styleName={''} label={getQuestionName('constructionType', questions)} name={'constructionType'} input={{
                             name: 'constructionType',
                             disabled: true,
                             value: fieldValues.constructionType
-                          }} answers={[
-                            {
-                              answer: 'FRAME',
-                              label: 'Frame'
-                            }, {
-                              answer: 'PLASTIC SIDING',
-                              label: 'Plastic Siding'
-                            }, {
-                              answer: 'ALUMINUM SIDING',
-                              label: 'Aluminum Siding'
-                            }, {
-                              answer: 'MASONRY',
-                              label: 'Masonry'
-                            }, {
-                              answer: 'MASONRY VENEER',
-                              label: 'Masonry Veneer'
-                            }, {
-                              answer: 'SUPERIOR',
-                              label: 'Superior'
-                            }
-                          ]}
+                          }} answers={getAnswers('constructionType', questions)}
                         />
                       </div>
                       <div className="flex-child home-location-bceg">
                         <SelectField
-                          component="select" styleName={''} label="BCEG" name={'buildingCodeEffectivenessGrading'} input={{
+                          component="select" styleName={''} label={getQuestionName('buildingCodeEffectivenessGrading', questions)} name={'buildingCodeEffectivenessGrading'} input={{
                             name: 'buildingCodeEffectivenessGrading',
                             disabled: true,
                             value: fieldValues.buildingCodeEffectivenessGrading
-                          }} answers={[
-                            {
-                              answer: '1',
-                              label: '01'
-                            }, {
-                              answer: '2',
-                              label: '02'
-                            }, {
-                              answer: '3',
-                              label: '03'
-                            }, {
-                              answer: '4',
-                              label: '04'
-                            }, {
-                              answer: '5',
-                              label: '05'
-                            }, {
-                              answer: '6',
-                              label: '06'
-                            }, {
-                              answer: '7',
-                              label: '07'
-                            }, {
-                              answer: '8',
-                              label: '08'
-                            }, {
-                              answer: '9',
-                              label: '09'
-                            }, {
-                              answer: '98',
-                              label: '98'
-                            }, {
-                              answer: '99',
-                              label: '99'
-                            }
-                          ]}
+                          }} answers={getAnswers('buildingCodeEffectivenessGrading', questions)}
                         />
                       </div>
                       <div className="flex-child home-location-fire-hydrant">
@@ -722,25 +627,11 @@ export class Coverage extends Component {
                       </div>
                       <div className="flex-child home-location-family-units">
                         <SelectField
-                          name="familyUnits" component="select" styleName={''} label="Family Units" input={{
+                          name="familyUnits" component="select" styleName={''} label={getQuestionName('familyUnits', questions)} input={{
                             name: 'familyUnits',
                             disabled: true,
                             value: fieldValues.familyUnits
-                          }} onChange={function () {}} answers={[
-                            {
-                              answer: '1-2',
-                              label: '1-2'
-                            }, {
-                              answer: '3-4',
-                              label: '3-4'
-                            }, {
-                              answer: '5-8',
-                              label: '5-8'
-                            }, {
-                              answer: '9+',
-                              label: '9+'
-                            }
-                          ]}
+                          }} onChange={function () {}} answers={getAnswers('familyUnits', questions)}
                         />
                       </div>
                       <div className="flex-child home-location-fire-station">

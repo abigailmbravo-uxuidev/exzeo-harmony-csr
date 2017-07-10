@@ -51,7 +51,7 @@ describe('Testing Coverage component', () => {
         }
       },
       service: {
-
+        getAgents() {}
       },
       appState: {
         data: { activateRedirect: false },
@@ -60,6 +60,14 @@ describe('Testing Coverage component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      actions: {
+        serviceActions: {
+          getAgents() {}
+        },
+        appStateActions: {
+          setAppState() {}
+        }
+      },
       agency: {
         _id: '3a5ba179de46e8f2c',
         companyCode: 'TTIC',

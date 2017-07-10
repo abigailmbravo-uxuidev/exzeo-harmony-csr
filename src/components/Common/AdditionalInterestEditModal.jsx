@@ -1,20 +1,29 @@
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
+import _ from 'lodash';
 import { connect } from 'react-redux';
-import { reduxForm, Form, propTypes } from 'redux-form';
+import { reduxForm, Form, propTypes, change } from 'redux-form';
 import TextField from '../Form/inputs/TextField';
+import SelectFieldMortgagee from '../Form/inputs/SelectFieldMortgagee';
 import PhoneField from '../Form/inputs/PhoneField';
 import HiddenField from '../Form/inputs/HiddenField';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import normalizePhone from '../Form/normalizePhone';
 
+const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
+
+
 const handleInitialize = (state) => {
   const selectedAI = state.appState.data.selectedAI;
 
   if (selectedAI) {
+    const mortgagee = _.get(_.find(getAnswers('mortgagee', state.questions), a => a.AIName1 === selectedAI.name1 &&
+    a.AIAddress1 === selectedAI.mailingAddress.address1), 'ID');
+
     return {
-    _id: selectedAI._id, // eslint-disable-line
+      mortgagee,
+      _id: selectedAI._id, // eslint-disable-line
       name1: selectedAI.name1,
       name2: selectedAI.name2,
       phoneNumber: String(selectedAI.phoneNumber).length > 0 ? normalizePhone(String(selectedAI.phoneNumber)) : '',
@@ -44,8 +53,19 @@ const handleInitialize = (state) => {
   };
 };
 
-const AdditionalInterestEditModal = (props) => {
-  const { appState, handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, selectedAI } = props;
+export const setMortgageeValues = (id, props) => {
+  const answers = getAnswers('mortgagee', props.questions);
+  const selectedMortgagee = _.find(answers, a => String(a.ID) === String(id));
+  props.dispatch(change('AdditionalInterestEditModal', 'name1', _.get(selectedMortgagee, 'AIName1')));
+  props.dispatch(change('AdditionalInterestEditModal', 'name2', _.get(selectedMortgagee, 'AIName2')));
+  props.dispatch(change('AdditionalInterestEditModal', 'address1', _.get(selectedMortgagee, 'AIAddress1')));
+  props.dispatch(change('AdditionalInterestEditModal', 'city', _.get(selectedMortgagee, 'AICity')));
+  props.dispatch(change('AdditionalInterestEditModal', 'state', _.get(selectedMortgagee, 'AIState')));
+  props.dispatch(change('AdditionalInterestEditModal', 'zip', String(_.get(selectedMortgagee, 'AIZip'))));
+};
+
+export const AdditionalInterestEditModal = (props) => {
+  const { appState, handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, selectedAI, questions } = props;
   return (<div className="modal additionalInterestModal" style={{ flexDirection: 'row' }}>
     <Form id="AdditionalInterestEditModal" noValidate onSubmit={handleSubmit(verify)}>
       <div className="card">
@@ -56,7 +76,17 @@ const AdditionalInterestEditModal = (props) => {
           <HiddenField name={'_id'} />
           <HiddenField name={'order'} />
 
-          <TextField label={'Name 1'} styleName={''} name={'name1'} validations={['required']} />
+          { appState.data.addAdditionalInterestType === 'Mortgagee' && <span><SelectFieldMortgagee
+            name="mortgagee" component="select" styleName={'name-1'} label="Name 1" validations={['required']}
+            onChange={event => setMortgageeValues(event.target.value, props)}
+            answers={getAnswers('mortgagee', questions)}
+          />
+            <HiddenField label={'Name 1'} name={'name1'} />
+          </span>
+         }
+          { selectedAI && selectedAI.type !== 'Mortgagee' &&
+            <TextField label={'Name 1'} styleName={'name-1'} name={'name1'} />
+            }
           <TextField label={'Name 2'} styleName={''} name={'name2'} />
 
           <TextField label={'Address 1'} styleName={''} name={'address1'} validations={['required']} />

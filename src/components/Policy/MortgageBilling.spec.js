@@ -11,6 +11,8 @@ const mockStore = configureStore(middlewares);
 describe('Testing MortgageBilling component', () => {
   it('should test connected app', () => {
     const initialState = {
+      service: {
+      },
       cg: {
         bb: {
           data: {

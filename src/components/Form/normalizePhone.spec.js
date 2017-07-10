@@ -21,6 +21,6 @@ describe('normalizePhone', () => {
     expect(result6).toEqual('123-456-');
 
     const result7 = normalizePhone('123456789');
-    expect(result7).toEqual('123-456-789');
+    expect(result7).toEqual('(123) 456-789');
   });
 });

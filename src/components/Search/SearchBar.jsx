@@ -29,6 +29,7 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
     quoteNumber: (encodeURIComponent(data.quoteNumber) !== 'undefined' ? encodeURIComponent(data.quoteNumber) : ''),
     policyNumber: (encodeURIComponent(data.policyNumber) !== 'undefined' ? encodeURIComponent(data.policyNumber) : ''),
     zip: (encodeURIComponent(data.zip) !== 'undefined' ? encodeURIComponent(data.zip) : ''),
+    quoteState: (encodeURIComponent(data.quoteState) !== 'undefined' ? encodeURIComponent(data.quoteState) : ''),
     searchType: props.fieldValues.searchType
   };
 
@@ -123,8 +124,11 @@ const generateField = (name, placeholder, labelText, formErrors, formGroupCss) =
   return field;
 };
 
+const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
+
 const SearchForm = (props) => {
   const {
+    questions,
     handleSubmit,
     formErrors,
     fieldValues
@@ -180,6 +184,13 @@ const SearchForm = (props) => {
           {generateField('lastName', 'Last Name Search', 'Last Name', formErrors, 'last-name-search')}
           {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
           {generateField('quoteNumber', 'Quote No Search', 'Quote Number', formErrors, 'quote-no-search')}
+          <div className="form-group search-context">
+            <SelectField
+              name="quoteState" component="select" styleName={''} label="Quote State"
+              onChange={clearForm}
+              answers={getAnswers('quoteState', questions)}
+            />
+          </div>
 
           <button
             className="btn btn-success multi-input"
@@ -242,7 +253,8 @@ const mapStateToProps = state => ({
   searchType: state.appState.data.searchType,
   initialValues: handleInitialize(state),
   error: state.error,
-  cleanForm: state.pristine
+  cleanForm: state.pristine,
+  questions: state.questions
 });
 
 const mapDispatchToProps = dispatch => ({

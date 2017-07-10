@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { reduxForm, propTypes } from 'redux-form';
 import * as cgActions from '../../actions/cgActions';
+import * as questionsActions from '../../actions/questionsActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
@@ -66,7 +67,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
 
   let additionalInterests = quoteData.additionalInterests || [];
 
-  const type = appState.data.addAdditionalInterestType || data.type;
+  const type = appState.data.addAdditionalInterestType;
 
   let order = 0;
 
@@ -151,7 +152,7 @@ export const addAdditionalInterest = (type, props) => {
 export const editAdditionalInterest = (ai, props) => {
   if (checkQuoteState(props.quoteData)) return;
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
-      { ...props.appState.data, showAdditionalInterestEditModal: true, selectedAI: ai });
+      { ...props.appState.data, showAdditionalInterestEditModal: true, selectedAI: ai, addAdditionalInterestType: ai.type });
 };
 
 export const hideAdditionalInterestModal = (props) => {
@@ -204,9 +205,12 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
 };
 
 export class AdditionalLinterests extends Component {
-
   state = {
     sameAsProperty: false
+  }
+
+  componentDidMount() {
+    this.props.actions.questionsActions.getUIQuestions('additionalInterestsCSR');
   }
 
   render() {
@@ -256,8 +260,8 @@ export class AdditionalLinterests extends Component {
               </div>
             </div>
           </form>
-          { appState.data.showAdditionalInterestEditModal && <AdditionalInterestEditModal selectedAI={this.props.appState.data.selectedAI} quoteData={quoteData} verify={handleFormSubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
-          { appState.data.showAdditionalInterestModal && <AdditionalInterestModal quoteData={quoteData} verify={handleFormSubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
+          { appState.data.showAdditionalInterestEditModal && <AdditionalInterestEditModal questions={this.props.questions} selectedAI={this.props.appState.data.selectedAI} quoteData={quoteData} verify={handleFormSubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
+          { appState.data.showAdditionalInterestModal && <AdditionalInterestModal questions={this.props.questions} quoteData={quoteData} verify={handleFormSubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
         </div>
 
       </QuoteBaseConnect>
@@ -286,6 +290,7 @@ AdditionalLinterests.propTypes = {
 // ------------------------------------------------
 const mapStateToProps = state => ({
   tasks: state.cg,
+  questions: state.questions,
   appState: state.appState,
   fieldValues: _.get(state.form, 'AdditionalLinterests.values', {}),
   initialValues: handleInitialize(state),
@@ -295,6 +300,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    questionsActions: bindActionCreators(questionsActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }

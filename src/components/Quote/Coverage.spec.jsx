@@ -311,7 +311,7 @@ describe('Testing Coverage component', () => {
   it('should test connected app', () => {
     const initialState = {
       service: {
-
+        getAgents() {}
       },
       cg: {
         bb: {
