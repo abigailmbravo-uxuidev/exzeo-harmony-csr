@@ -24,7 +24,7 @@ const handleGetQuoteData = (state) => {
   return {};
 };
 
-const populateUnderwritingQuestions = (state) => {
+export const populateUnderwritingQuestions = (state) => {
   if (state.cg && state.cg.getUWQuestions && state.cg.getUWQuestions.data &&
     state.cg.getUWQuestions.data.model && state.cg.getUWQuestions.data.model.variables) {
     const underwritingQuestions = _.filter(state.cg.getUWQuestions.data.model.variables, item => item.name === 'getListOfUWQuestions');
@@ -51,6 +51,33 @@ const handleInitialize = (state) => {
 
 const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
 
+export const handleFormSubmit = (data, dispatch, props) => {
+  const { appState, actions } = props;
+
+  const workflowId = appState.instanceId;
+  actions.appStateActions.setAppState(appState.modelName, workflowId, { ...appState.data, submitting: true });
+  const steps = [
+      { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
+      { name: 'askUWAnswers', data }
+  ];
+
+  actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
+      .then(() => {
+        // now update the workflow details so the recalculated rate shows
+        props.actions.appStateActions.setAppState(props.appState.modelName,
+          workflowId, { ...props.appState.data,
+            selectedLink: 'underwriting',
+            submitting: false });
+      });
+};
+
+export const clearForm = (props) => {
+  const { dispatch, questions } = props;
+  for (let i = 0; i < questions.length; i += 1) {
+    dispatch(change('Underwriting', questions[i].name, ''));
+  }
+};
+
 export class Underwriting extends Component {
 
   componentWillMount() {
@@ -64,34 +91,6 @@ export class Underwriting extends Component {
     this.props.actions.cgActions.startWorkflow('getUWQuestions', startModelData, false);
   }
 
-  handleFormSubmit = (data) => {
-    const { appState, actions } = this.props;
-
-    const workflowId = appState.instanceId;
-    actions.appStateActions.setAppState(appState.modelName, workflowId, { ...appState.data, submitting: true });
-    const steps = [
-      { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
-      { name: 'askUWAnswers', data }
-    ];
-
-    actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
-      .then(() => {
-        // now update the workflow details so the recalculated rate shows
-        this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-          workflowId, { ...this.props.appState.data,
-            selectedLink: 'underwriting',
-            submitting: false });
-      });
-  };
-
-  clearForm = () => {
-    const { dispatch, questions } = this.props;
-    for (let i = 0; i < questions.length; i += 1) {
-      dispatch(change('Underwriting', questions[i].name, ''));
-    }
-  };
-
-
   render() {
     const { fieldValues, handleSubmit, pristine, quoteData, stateObject } = this.props;
 
@@ -103,7 +102,7 @@ export class Underwriting extends Component {
         <div className="route-content">
           <Form
             id="Underwriting"
-            onSubmit={handleSubmit(this.handleFormSubmit)}
+            onSubmit={handleSubmit(handleFormSubmit)}
             noValidate
           >
             <div className="scroll">
@@ -122,7 +121,7 @@ export class Underwriting extends Component {
             )}
                 <div className="btn-footer">
                   <button
-                    onClick={this.clearForm}
+                    onClick={() => clearForm(this.props)}
                     className="btn btn-secondary"
                     type="button"
                     form="Underwriting"

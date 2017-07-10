@@ -15,11 +15,10 @@ import PhoneField from '../Form/inputs/PhoneField';
 import SelectField from '../Form/inputs/SelectField';
 import CurrencyField from '../Form/inputs/CurrencyField';
 
-const handleGetQuoteData = (state) => {
+const handleGetPolicy = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
   const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
-  console.log(policyData, 'policyData');
   return policyData;
 };
 
@@ -32,11 +31,8 @@ const calculatePercentage = (oldFigure, newFigure) => {
 };
 
 const handleInitialize = (state) => {
-  const quoteData = handleGetQuoteData(state);
+  const quoteData = handleGetPolicy(state);
   const values = {};
-
-  console.log(quoteData, 'state.form');
-
   // values.agencyCode = '20000'; // _.get(quoteData, 'agencyCode');
   // values.agentCode = '60000'; // _.get(quoteData, 'agentCode');
   // values.effectiveDate = moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD');
@@ -167,7 +163,7 @@ const updateDependencies = (event, field, dependency, props) => {
 //   }
 // ];
 
-class Endorsements extends React.Component {
+export class Endorsements extends React.Component {
 
   render() {
     const endorsements = [
@@ -341,7 +337,7 @@ class Endorsements extends React.Component {
                               label: '$2,500'
                             }
                           ]}
-                        />                                                                                                                                                                                                                                                   </div>
+                        />                                                                                                                                                                                                                                                             </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Hurricane Deductible'} styleName={''} name={'hurricane'} disabled />
                         <SelectField
@@ -1264,7 +1260,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   fieldValues: _.get(state.form, 'Endorsements.values', {}),
   initialValues: handleInitialize(state)
-  // policy: handleGetQuoteData(state)
+  // policy: handleGetPolicy(state)
 });
 
 const mapDispatchToProps = dispatch => ({

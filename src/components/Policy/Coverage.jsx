@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import localStorage from 'localStorage';
 import { reduxForm, propTypes } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import * as questionsActions from '../../actions/questionsActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import PolicyConnect from '../../containers/Policy';
@@ -34,11 +36,20 @@ const handleGetPolicy = (state) => {
 //   }
 // ];
 
+export const getPropertyAppraisialLink = (county, questions) => {
+  console.log(county);
+  const answers = _.get(_.find(questions, { name: 'propertyAppraisal' }), 'answers') || [];
+  console.log(answers);
+
+  return _.find(answers, { label: county }) || {};
+};
+
 const handleInitialize = state => handleGetPolicy(state);
 
 export class Coverage extends Component {
 
   componentDidMount() {
+    this.props.actions.questionsActions.getUIQuestions('propertyAppraisalCSR');
     const isNewTab = localStorage.getItem('isNewTab') === 'true';
 
     if (isNewTab) {
@@ -58,7 +69,7 @@ export class Coverage extends Component {
           }
         });
 
-        const startResult = result.payload[0].workflowData.csrQuote.data;
+        const startResult = result.payload[0].workflowData ? result.payload[0].workflowData.csrQuote.data : {};
 
         this.props.actions.appStateActions.setAppState('csrQuote', startResult.modelInstanceId, { ...this.props.appState.data, submitting: true });
         this.props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
@@ -78,6 +89,8 @@ export class Coverage extends Component {
     rating,
     underwritingAnswers
   } = this.props.policy;
+
+    const { questions } = this.props;
 
     const discountSurcharge = [
       {
@@ -296,7 +309,10 @@ export class Coverage extends Component {
                     <div>
                       <dt>Appraiser</dt>
                       <dd>
-                        <a href="">appraiser-website.com</a>
+                        <a
+                          target="_blank" rel="noopener noreferrer"
+                          href={getPropertyAppraisialLink(propertyData.physicalAddress.county, questions).answer}
+                        >{getPropertyAppraisialLink(propertyData.physicalAddress.county, questions).label}</a>
                       </dd>
                     </div>
                   </dl>
@@ -348,11 +364,14 @@ const mapStateToProps = state => ({
   appState: state.appState,
   fieldValues: _.get(state.form, 'Coverage.values', {}),
   initialValues: handleInitialize(state),
-  policy: handleGetPolicy(state)
+  policy: handleGetPolicy(state),
+  questions: state.questions
+
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    questionsActions: bindActionCreators(questionsActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }

@@ -7,7 +7,7 @@ import moment from 'moment';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 
-const SearchResults = (props) => {
+export const SearchResults = (props) => {
   const model = props.tasks[props.appState.modelName] || {};
   const previousTask = model.data && model.data.previousTask ? model.data.previousTask : {};
   const activeTask = model.data && model.data.activeTask ? model.data.activeTask : {};

@@ -1,10 +1,32 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { shallow } from 'enzyme';
+import configureStore from 'redux-mock-store';
 import Header from './Header';
 
+const middlewares = [];
+const mockStore = configureStore(middlewares);
 it('renders without crashing', () => {
-  const tree = renderer.create(
-    <Header />
-  ).toJSON();
-  expect(tree).toMatchSnapshot();
+  const props = {
+    auth: {
+      userProfile: {}
+    }
+  };
+  const initialState = {
+    cg: {
+      bb: {
+        data: {
+          modelInstanceId: '123',
+          model: {},
+          uiQuestions: []
+        }
+      }
+    },
+    appState: {
+      data: { showScheduleDateModal: true },
+      modelName: 'bb'
+    }
+  };
+  const store = mockStore(initialState);
+  const wrapper = shallow(<Header store={store} {...props} />);
+  expect(wrapper);
 });

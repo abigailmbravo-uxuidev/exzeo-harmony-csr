@@ -8,11 +8,11 @@ import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
 
 
-const submitNote = (data, dispatch, props) => {
+export const submitNote = (data, dispatch, props) => {
   const { noteType, documentId } = props;
   props.actions.serviceActions.addNote(documentId, noteType, data);
   props.closeButtonHandler();
-}
+};
 
 const minimzeButtonHandler = (props) => {
   if (props.appState.data.minimize) {
@@ -20,35 +20,34 @@ const minimzeButtonHandler = (props) => {
   } else {
     props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, minimize: true });
   }
-}
+};
 
-const NewNoteFileUploader = (props, { closeButtonHandler }) => {
-  return(
+const NewNoteFileUploader = (props, { closeButtonHandler }) => (
   <div className={props.appState.data.minimize === true ? 'new-note-file minimize' : 'new-note-file'} >
     <div className="title-bar">
       <div className="title title-minimze-button" onClick={() => minimzeButtonHandler(props)}>Note / File</div>
       <div className="controls note-file-header-button-group">
-        <button className="btn btn-icon minimize-button" onClick={() => minimzeButtonHandler(props)}><i className="fa fa-window-minimize" aria-hidden="true"></i></button>
-        <button className="btn btn-icon header-cancel-button" onClick={ props.closeButtonHandler } type="submit"><i className="fa fa-times-circle" aria-hidden="true"></i></button>
+        <button className="btn btn-icon minimize-button" onClick={() => minimzeButtonHandler(props)}><i className="fa fa-window-minimize" aria-hidden="true" /></button>
+        <button className="btn btn-icon header-cancel-button" onClick={props.closeButtonHandler} type="submit"><i className="fa fa-times-circle" aria-hidden="true" /></button>
       </div>
     </div>
     <div className="mainContainer">
-      <Form id="NewNoteFileUploader" onSubmit={ props.handleSubmit(submitNote) } noValidate>
+      <Form id="NewNoteFileUploader" onSubmit={props.handleSubmit(submitNote)} noValidate>
         <div className="content state-initial">
-            <div className="flex-contents">
-              <Field name="noteContent" component="textarea"/>
-              <div className="drag-n-drop">
+          <div className="flex-contents">
+            <Field name="noteContent" component="textarea" />
+            <div className="drag-n-drop">
                 Drag and Drop Files
               </div>
-            </div>
-            <div className="buttons note-file-footer-button-group">
-              <button className="btn btn-primary upload-button">Upload</button>
-              <div></div>
-              <button className="btn btn-secondary cancel-button" onClick={ props.closeButtonHandler }>Cancel</button>
-              <button className="btn btn-primary submit-button">Save</button>
-            </div>
+          </div>
+          <div className="buttons note-file-footer-button-group">
+            <button className="btn btn-primary upload-button">Upload</button>
+            <div />
+            <button className="btn btn-secondary cancel-button" onClick={props.closeButtonHandler}>Cancel</button>
+            <button className="btn btn-primary submit-button">Save</button>
+          </div>
         </div>
-        {/*<div className="content state-upload" hidden>
+        {/* <div className="content state-upload" hidden>
           <div className="flex-contents">
             <div className="drag-n-drop">
               Drag and Drop Files
@@ -56,14 +55,14 @@ const NewNoteFileUploader = (props, { closeButtonHandler }) => {
           </div>
           <div className="buttons">
             <a href="#" className="btn btn-primary">Choose Files</a>
-            <div></div>
+            <div />
             <a href="#" className="btn btn-secondary">Cancel</a>
           </div>
         </div>*/}
       </Form>
     </div>
-</div>
-)};
+  </div>
+);
 
 NewNoteFileUploader.propTypes = {
   ...propTypes,
@@ -74,7 +73,7 @@ NewNoteFileUploader.propTypes = {
 // ------------------------------------------------
 // redux mapping
 // ------------------------------------------------
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   appState: state.appState
 });
 

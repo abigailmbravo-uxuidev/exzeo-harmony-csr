@@ -30,20 +30,21 @@ const SearchPanel = props => (
   </div>
   );
 
-const BSTable = props => props.notes ?
+export const BSTable = props => props.notes ?
   (
     <BootstrapTable data={props.notes}>
       <TableHeaderColumn dataField="fileList" isKey>Attachment List</TableHeaderColumn>
     </BootstrapTable>
   ) : (<p>?</p>);
 
-const NoteList = (props) => {
+export const isExpandableRow = (row) => {
+  if (row.id < 2) return true;
+  return true;
+};
+
+export const NoteList = (props) => {
   const { notes } = props;
 
-  const isExpandableRow = (row) => {
-    if (row.id < 2) return true;
-    return true;
-  };
 
   const expandComponent = row => (
     <BSTable data={row.expand} />
@@ -56,7 +57,7 @@ const NoteList = (props) => {
 
   return (
     <BootstrapTable
-      data={ Array.isArray(notes) ? notes : [] }
+      data={Array.isArray(notes) ? notes : []}
       options={options}
       expandableRow={isExpandableRow}
       expandComponent={expandComponent}

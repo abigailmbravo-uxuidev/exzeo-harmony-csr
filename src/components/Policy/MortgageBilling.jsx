@@ -26,7 +26,7 @@ const payments = [
   }
 ];
 
-const setRank = (additionalInterests) => {
+export const setRank = (additionalInterests) => {
   _.forEach(additionalInterests, (value) => {
     switch (value.type) {
       case 'Mortgagee':
