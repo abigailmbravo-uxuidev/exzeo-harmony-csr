@@ -973,14 +973,6 @@ ul.list-cards {
 
       i {
         color: $bright-blue-darken-04;
-
-        &.card-icon {
-          margin-right: $padding;
-        }
-
-        &.fa-map-marker {
-          justify-content: flex-start;
-        }
       }
 
       &:hover {
@@ -1333,14 +1325,6 @@ ul.list-cards {
       margin: 0;
       padding: 0;
       list-style: none;
-
-      li {
-        a {
-          .fa-pencil {
-            font-size: $font-size-h4;
-          }
-        }
-      }
     }
   }
 }

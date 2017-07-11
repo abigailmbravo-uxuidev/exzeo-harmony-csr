@@ -205,7 +205,7 @@ export class Endorsements extends React.Component {
                       </div>
                       <div className="form-group-double-element">
                         <CurrencyField
-                          validations={['required', 'range']} label={'Dwelling Amount (A)'} styleName={''} name={'dwellingAmount'}
+                          validations={['required', 'range']} label={'Dwelling (A)'} styleName={''} name={'dwellingAmount'}
                           min={initialValues.dwellingMin} max={initialValues.dwellingMax} disabled
                         />
                         <CurrencyField
@@ -214,7 +214,7 @@ export class Endorsements extends React.Component {
                         />
                       </div>
                       <div className="form-group-double-element">
-                        <CurrencyField validations={['required']} name="otherStructuresAmount" label={'Other Structure (B)'} styleName={'coverage-b'} disabled />
+                        <CurrencyField validations={['required']} name="otherStructuresAmount" label={'Other Structures (B)'} styleName={'coverage-b'} disabled />
                         <CurrencyField validations={['required']} label={''} name="otherStructuresAmountNew" styleName={'coverage-b'} />
                       </div>
                       <div className="form-group-double-element">
@@ -289,10 +289,10 @@ export class Endorsements extends React.Component {
                       </div>
                       <div className="form-group-double-element">
                         <CurrencyField validations={['required']} label={'Medical Payments (F)'} styleName={''} name={'medicalPayments'} disabled />
-                        <CurrencyField name={'medicalPaymentsNew'} label={''} styleName={''} />
+                        <CurrencyField name={'medicalPaymentsNew'} label={''} styleName={''} disabled />
                       </div>
                       <div className="form-group-double-element">
-                        <CurrencyField validations={['required']} label={'Mold Property Limit'} styleName={''} name={'moldProperty'} disabled />
+                        <CurrencyField validations={['required']} label={'Mold Property'} styleName={''} name={'moldProperty'} disabled />
                         <SelectField
                           name="moldPropertyNew" component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
                             {
@@ -309,7 +309,7 @@ export class Endorsements extends React.Component {
                         />
                       </div>
                       <div className="form-group-double-element">
-                        <CurrencyField validations={['required']} label={'Mold Liability Limit'} styleName={''} name={'moldLiability'} disabled />
+                        <CurrencyField validations={['required']} label={'Mold Liability'} styleName={''} name={'moldLiability'} disabled />
                         <SelectField
                           name="moldLiabilityNew" component="select" styleName={''} label={''} onChange={function () {}} validations={['required']} answers={[
                             {
@@ -354,7 +354,7 @@ export class Endorsements extends React.Component {
                         />
                       </div>
                       <div className="form-group-double-element">
-                        <TextField validations={['required']} label={'Sinkhole'} styleName={''} name={'sinkholePerilCoverage'} disabled />
+                        <TextField validations={['required']} label={'Sinkhole Deductible'} styleName={''} name={'sinkholePerilCoverage'} disabled />
                         <SelectField
                           name="sinkholePerilCoverageNew" label={''} component="select" styleName={''} onChange={function () {}} answers={[
                             {
@@ -362,15 +362,12 @@ export class Endorsements extends React.Component {
                               label: 'Coverage Excluded'
                             }, {
                               answer: true,
-                              label: 'Coverage Included'
+                              label: '10% of Dwelling'
                             }
                           ]}
                         />
                       </div>
-
-
                     </div>
-
                     {/* Col2 */}
                     <div className="flex-child col3">
                       <div className="form-group labels">
@@ -537,18 +534,13 @@ export class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-
                     </div>
-
                   </div>
                 </section>
-
                 <section>
-
                   <div className="flex-parent">
                     {/* Col1 */}
                     <div className="flex-child col3">
-
                       <div className="form-group labels">
                         <label /><label>Current</label><label>New</label>
                       </div>
@@ -982,183 +974,100 @@ export class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-
                     </div>
                   </div>
                 </section>
-
                 <section>
-
                   <h3>Previous Endorsements</h3>
                   <BootstrapTable data={endorsements}>
                     <TableHeaderColumn dataField="date" isKey>Date</TableHeaderColumn>
                     <TableHeaderColumn dataField="amount">Amount</TableHeaderColumn>
                     <TableHeaderColumn dataField="type">Type</TableHeaderColumn>
                   </BootstrapTable>
-
                 </section>
-
                 <a name="policy" />
                 <section>
-
                   <div className="flex-parent col2">
                     {/* Col1 */}
                     <div className="flex-child">
                       <h3>Primary Policyholder</h3>
-
                       <div className="flex-parent col2">
-
                         <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH1FirstName'} />
-
                         <TextField validations={['required']} label={'Last Name'} styleName={''} name={'pH1LastName'} />
-
                       </div>
-
                       <div className="flex-parent col2">
-
                         <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH1phone'} />
-
                         <PhoneField validations={['required', 'phone']} label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} />
-
                       </div>
-
                       <div className="flex-parent">
-
                         <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH1email'} />
-
                       </div>
-
                     </div>
-
                     {/* Col2 */}
                     <div className="flex-child">
                       <h3>Secondary Policyholder</h3>
-
                       <div className="flex-parent col2">
-
                         <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH2FirstName'} />
-
                         <TextField validations={['required']} label={'Last Name'} styleName={''} name={'pH2LastName'} />
-
                       </div>
-
                       <div className="flex-parent col2">
-
                         <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH2phone'} />
-
                         <PhoneField validations={['required', 'phone']} label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} />
-
                       </div>
-
                       <div className="flex-parent">
-
                         <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH2email'} />
-
                       </div>
-
                     </div>
-
                   </div>
-
                 </section>
-
                 <a name="addresses" />
                 <section>
                   <h3>Mailing Address</h3>
                   <div className="flex-parent col2">
-
-
                     <div className="flex-child">
-
                       <TextField label={'Address 1'} styleName={''} name={'address1'} />
-
                     </div>
-
                     <div className="flex-child">
-
                       <TextField label={'Address 2'} styleName={''} name={'address2'} />
-
                     </div>
-
                   </div>
-
-
                   <div className="flex-parent col211">
-
-
                     <div className="flex-child">
-
                       <TextField label={'City'} styleName={''} name={'city'} />
-
                     </div>
-
                     <div className="flex-child">
-
                       <TextField label={'State'} styleName={''} name={'state'} />
-
                     </div>
-
                     <div className="flex-child">
-
                       <TextField label={'Zip'} styleName={''} name={'zip'} />
-
                     </div>
-
                   </div>
-
                 </section>
-
-
                 <section>
                   <h3>Property Address</h3>
                   <div className="flex-parent col2">
-
-
                     <div className="flex-child">
-
                       <TextField label={'Address 1'} styleName={''} name={'address1'} />
-
                     </div>
-
                     <div className="flex-child">
-
                       <TextField label={'Address 2'} styleName={''} name={'address2'} />
-
                     </div>
-
                   </div>
-
-
                   <div className="flex-parent col211">
-
-
                     <div className="flex-child">
-
                       <TextField label={'City'} styleName={''} name={'city'} />
-
                     </div>
-
                     <div className="flex-child">
-
                       <TextField label={'State'} styleName={''} name={'state'} />
-
                     </div>
-
                     <div className="flex-child">
-
                       <TextField label={'Zip'} styleName={''} name={'zip'} />
-
                     </div>
-
                   </div>
-
-
                 </section>
-
                 <a name="addInt" />
                 <section className="additionalInterests">
                   <h3>Additional Interest</h3>
-
                   <div className="button-group">
                     <button className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
                     <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
@@ -1166,20 +1075,12 @@ export class Endorsements extends React.Component {
                     { /* <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => this.addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button> */ }
                     <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
                   </div>
-
                   <div className="results-wrapper"><ul className="results result-cards"><li><a><div className="card-icon"><i className="fa fa-circle Mortgagee" /><label>Mortgagee</label></div><section><h4>BANK OF AMERICA</h4><p className="address">123 Main Street, Suite A, Tampa, FL 33333</p></section>
                     <div className="ref-number"><label htmlFor="ref-number">Reference Number</label><span>76532487</span></div><i className="fa fa-pencil" /></a></li></ul></div>
-
-
                 </section>
-
-
               </div>
-
             </div>
             <div className="endo-results-calc">
-
-
               <div className="flex-parent">
                 <div className="form-group">
                   <label>Type</label>
@@ -1192,10 +1093,7 @@ export class Endorsements extends React.Component {
                   <input type="date" />
                 </div>
               </div>
-
-
               <div className="flex-parent">
-
                 <div className="form-group">
                   <label>New End. Amount</label>
                   <input type="numeric" onChange={function () {}} value="52" />
@@ -1213,23 +1111,13 @@ export class Endorsements extends React.Component {
                   <button className="btn btn-primary btn-sm">Calculate</button>
                 </div>
               </div>
-
-
             </div>
           </div>
-
           <aside className="underwriting-validation">
-
             <h4 className="uw-validation-header">Underwriting Validation</h4>
-
           </aside>
-
         </div>
-
-
       </PolicyConnect>
-
-
     );
   }
 }
