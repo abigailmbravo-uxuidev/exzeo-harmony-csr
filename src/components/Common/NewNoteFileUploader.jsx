@@ -14,7 +14,7 @@ export const submitNote = (data, dispatch, props) => {
   props.closeButtonHandler();
 };
 
-const minimzeButtonHandler = (props) => {
+export const minimzeButtonHandler = (props) => {
   if (props.appState.data.minimize) {
     props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, minimize: false });
   } else {
@@ -22,7 +22,7 @@ const minimzeButtonHandler = (props) => {
   }
 };
 
-const NewNoteFileUploader = (props, { closeButtonHandler }) => (
+export const NewNoteFileUploader = (props, { closeButtonHandler }) => (
   <div className={props.appState.data.minimize === true ? 'new-note-file minimize' : 'new-note-file'} >
     <div className="title-bar">
       <div className="title title-minimze-button" onClick={() => minimzeButtonHandler(props)}>Note / File</div>

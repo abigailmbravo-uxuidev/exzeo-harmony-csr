@@ -86,7 +86,7 @@ export class Splash extends Component {
         props.actions.appStateActions.setAppState(
           props.appState.modelName,
           workflowId,
-          { ...props.appState.data, recalc: false, updateWorkflowDetails: true, selectedLink: 'customerData', submitting: false }
+          { ...props.appState.data, selectedLink: 'customerData', submitting: false }
         );
         this.context.router.history.push('/quote/coverage');
       });

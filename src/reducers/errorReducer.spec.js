@@ -6,7 +6,7 @@ import errorReducer from './errorReducer';
 describe('Error Reducer', () => {
   it('should call errorReducer APP_ERROR', () => {
     const state = initialState.appState;
-    const inputProps = { data: { submitting: false, updateWorkflowDetails: false } };
+    const inputProps = { data: { submitting: false } };
     const action = {
       type: types.APP_ERROR,
       error: inputProps
@@ -26,7 +26,7 @@ describe('Error Reducer', () => {
   });
   it('should call errorReducer REHYDRATE', () => {
     const state = initialState.appState;
-    const inputProps = { data: { submitting: false, updateWorkflowDetails: false } };
+    const inputProps = { data: { submitting: false } };
     const action = {
       type: persistTypes.REHYDRATE,
       payload: {

@@ -1,0 +1,66 @@
+import React, { Component } from 'react';
+
+export class ConfirmPopup extends Component {
+
+  constructor(props) {
+    super(props);
+    this.yes = this.yes.bind(this);
+    this.no = this.no.bind(this);
+
+    this.state = {
+      hidden: false
+    };
+  }
+  componentWillReceiveProps() {
+    this.setState({ hidden: false });
+  }
+
+  yes() {
+    this.props.setBackStep(true, this.props.callback);
+    this.setState({ hidden: true });
+  }
+
+  no() {
+    this.props.setBackStep(false, this.props.callback);
+    this.setState({ hidden: true });
+  }
+
+  render() {
+    if (this.state.hidden) {
+      return null;
+    }
+    return (
+      <div className="modal quote-summary">
+        <div className="card">
+          <div className="card-header">
+            <h4><i className="fa fa-envelope" /> Unsaved Changes</h4>
+          </div>
+          <div className="card-block">
+            <h3>{this.props.message}</h3>
+          </div>
+          <div className="card-footer">
+            <div className="btn-footer">
+              <button
+                className="btn btn-secondary"
+                type="button"
+                onClick={this.yes}
+              >
+            Yes
+          </button>
+              <button
+                className="btn btn-secondary"
+                type="button"
+                onClick={this.no}
+              >
+            No
+          </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default ConfirmPopup;
+

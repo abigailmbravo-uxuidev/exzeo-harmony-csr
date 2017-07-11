@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
-import ConnectedApp, { handleAgencyChange, handleFormSubmit, handleGetQuoteData, clearForm } from './Coverage';
+import ConnectedApp, { Coverage, handleAgencyChange, handleFormSubmit, handleGetQuoteData, clearForm } from './Coverage';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
@@ -674,5 +674,75 @@ describe('Testing Coverage component', () => {
     };
 
     handleAgencyChange(props, 100011, false);
+  });
+
+  it('should test instance functions', () => {
+    const initialState = {
+      service: {
+        getAgents() {}
+      },
+      cg: {
+        bb: {
+          data: {
+            modelInstanceId: '123',
+            model: {},
+            uiQuestions: []
+          }
+        }
+      },
+      appState: {
+        data: {
+
+        },
+        modelName: 'bb'
+      }
+    };
+    const store = mockStore(initialState);
+    const props = {
+      initialValues: {},
+      fieldValues: {
+        dwellingAmount: '',
+        agencyCode: 20000
+      },
+      agency: {
+        agencyCode: 20000
+      },
+      handleSubmit: function name() {
+
+      },
+      actions: {
+        appStateActions: {
+          setAppState() { return Promise.resolve(() => {}); }
+        },
+        questionsActions: {
+          getUIQuestions() { return Promise.resolve(() => {}); }
+        },
+        cgActions: {
+          startWorkflow() { return Promise.resolve(() => {}); },
+          batchCompleteTask() { return Promise.resolve(() => {}); }
+        }
+      },
+      fieldQuestions: [],
+      quoteData: {},
+      dispatch: store.dispatch,
+      appState: {
+        data: {
+          submitting: false
+        }
+      }
+    };
+
+    localStorage.setItem('isNewTab', true);
+    localStorage.setItem('lastSearchData', JSON.stringify({
+      searchType: 'address'
+    }));
+
+    const wrapper = shallow(<Coverage store={store} {...props} />);
+
+    wrapper.instance().componentDidMount();
+    wrapper.instance().updateDwellingAndDependencies({ target: { value: '' } }, '');
+    wrapper.instance().updateDependencies({ target: { value: '' } }, 'calculatedSinkhole', 'dwellingAmount');
+    wrapper.instance().updateCalculatedSinkhole();
+    expect(wrapper.instance().props.fieldValues.dwellingAmount).toEqual('');
   });
 });

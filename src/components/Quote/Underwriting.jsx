@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Prompt } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -69,6 +70,26 @@ export const clearForm = (props) => {
 let setUnderwriting = false;
 export class Underwriting extends Component {
 
+  componentDidMount() {
+    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+      ...this.props.appState.data,
+      submitting: true
+    });
+    const steps = [
+    { name: 'hasUserEnteredData', data: { answer: 'No' } },
+    { name: 'moveTo', data: { key: 'underwriting' } }
+    ];
+    const workflowId = this.props.appState.instanceId;
+
+    this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
+    .then(() => {
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+        ...this.props.appState.data,
+        selectedLink: 'underwriting'
+      });
+    });
+  }
+
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props, nextProps)) {
       const quoteData = nextProps.quoteData;
@@ -80,10 +101,12 @@ export class Underwriting extends Component {
   }
 
   render() {
-    const { fieldValues, handleSubmit, pristine, quoteData, underwritingQuestions } = this.props;
+    const { fieldValues, handleSubmit, pristine, quoteData, underwritingQuestions, dirty } = this.props;
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
+        <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
+
         <div className="route-content">
           <Form
             id="Underwriting"
