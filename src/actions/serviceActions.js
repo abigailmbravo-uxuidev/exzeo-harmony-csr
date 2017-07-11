@@ -33,10 +33,10 @@ export const addNote = (id, noteType, values) => (dispatch) => {
     data: {
       noteType,
       noteContent: values.noteContent,
-      contactType: 'Agent',
+      contactType: values.contactType,
       createdAt: new Date().getTime(),
       noteAttachments: [],
-      createdBy: {},
+      createdBy: values.createdBy,
       updatedBy: {}
     }
   };
