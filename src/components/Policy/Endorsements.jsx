@@ -55,6 +55,9 @@ const handleInitialize = (state) => {
   values.lossOfUse = _.get(quoteData, 'coverageLimits.lossOfUse.amount');
   values.personalLiability = _.get(quoteData, 'coverageLimits.personalLiability.amount');
   values.medicalPayments = _.get(quoteData, 'coverageLimits.medicalPayments.amount');
+
+  values.medicalPaymentsNew = _.get(quoteData, 'coverageLimits.medicalPayments.amount');
+
   values.moldProperty = _.get(quoteData, 'coverageLimits.moldProperty.amount');
   values.moldLiability = _.get(quoteData, 'coverageLimits.moldLiability.amount');
   values.allOtherPerils = _.get(quoteData, 'deductibles.allOtherPerils.amount');
@@ -123,12 +126,19 @@ const handleInitialize = (state) => {
   values.pH2phone = normalizePhone(_.get(quoteData, 'policyHolders[1].primaryPhoneNumber') || '');
   values.pH2secondaryPhone = normalizePhone(_.get(quoteData, 'policyHolders[1].secondaryPhoneNumber') || '');
 
-// Mailing/Billing
-  values.address1 = _.get(quoteData, 'property.physicalAddress.address1');
-  values.address2 = _.get(quoteData, 'property.physicalAddress.address2');
-  values.city = _.get(quoteData, 'property.physicalAddress.city');
-  values.state = _.get(quoteData, 'property.physicalAddress.state');
-  values.zip = _.get(quoteData, 'property.physicalAddress.zip');
+  // Mailing/Billing
+  values.address1 = _.get(quoteData, 'policyHolderMailingAddress.address1');
+  values.address2 = _.get(quoteData, 'policyHolderMailingAddress.address2');
+  values.city = _.get(quoteData, 'policyHolderMailingAddress.city');
+  values.state = _.get(quoteData, 'policyHolderMailingAddress.state');
+  values.zip = _.get(quoteData, 'policyHolderMailingAddress.zip');
+
+// Property
+  values.propertyAddress1 = _.get(quoteData, 'property.physicalAddress.address1');
+  values.propertyAddress2 = _.get(quoteData, 'property.physicalAddress.address2');
+  values.propertyCity = _.get(quoteData, 'property.physicalAddress.city');
+  values.propertyState = _.get(quoteData, 'property.physicalAddress.state');
+  values.propertyZip = _.get(quoteData, 'property.physicalAddress.zip');
 
   values.uwExceptions = _.get(quoteData, 'underwritingExceptions');
 
@@ -373,7 +383,7 @@ export class Endorsements extends React.Component {
                               label: '$2,500'
                             }
                           ]}
-                        />                                                                                                                                                                                                                                                                                                                                                                               </div>
+                        />                                                                                                                                                                                                                                                                                                                                                                                         </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Hurricane Deductible'} styleName={''} name={'hurricane'} disabled />
                         <SelectField
@@ -1096,21 +1106,21 @@ export class Endorsements extends React.Component {
                   <h3>Property Address</h3>
                   <div className="flex-parent col2">
                     <div className="flex-child">
-                      <TextField label={'Address 1'} styleName={''} name={'address1'} />
+                      <TextField label={'Address 1'} styleName={''} name={'propertyAddress1'} />
                     </div>
                     <div className="flex-child">
-                      <TextField label={'Address 2'} styleName={''} name={'address2'} />
+                      <TextField label={'Address 2'} styleName={''} name={'propertyAddress2'} />
                     </div>
                   </div>
                   <div className="flex-parent col211">
                     <div className="flex-child">
-                      <TextField label={'City'} styleName={''} name={'city'} />
+                      <TextField label={'City'} styleName={''} name={'propertyCity'} />
                     </div>
                     <div className="flex-child">
-                      <TextField label={'State'} styleName={''} name={'state'} />
+                      <TextField label={'State'} styleName={''} name={'propertyState'} />
                     </div>
                     <div className="flex-child">
-                      <TextField label={'Zip'} styleName={''} name={'zip'} />
+                      <TextField label={'Zip'} styleName={''} name={'propertyZip'} />
                     </div>
                   </div>
                 </section>
