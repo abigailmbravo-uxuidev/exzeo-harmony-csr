@@ -1,0 +1,33 @@
+
+
+
+.messages {
+
+  .message {
+    font-size: 14px;
+    background: $warm-gray-02;
+    color: $warm-gray-08;
+    margin: ($padding*2) 0;
+
+
+    &.error i {
+      background-color: $red;
+    }
+
+    &.warning i {
+      background-color: $orange;
+    }
+
+    &.info i {
+      background-color: $bright-blue;
+    }
+
+    i.fa {
+      padding: ($padding*2);
+      color: $white;
+      margin: 0 ($padding*2) 0 0;
+    }
+
+  }
+
+}

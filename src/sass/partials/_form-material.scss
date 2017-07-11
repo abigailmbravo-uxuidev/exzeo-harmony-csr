@@ -1,0 +1,1053 @@
+
+@import "_variables";
+@import "utilities/_borders"; // scss-lint:disable QualifyingElement
+//
+// Textual form controls
+//
+
+  input,
+  select,
+  textarea {
+    // // Make inputs at least the height of their button counterpart (base line-height + padding + border)
+    padding: $input-padding-y $input-padding-x;
+    color: $input-color;
+    border: $input-btn-border-width solid $input-border-color;
+    background-color: $input-bg;
+    // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214.
+    background-image: none;
+    background-clip: padding-box;
+    font-size: $font-size-base;
+    line-height: $input-line-height;
+    @include box-shadow($input-box-shadow);
+    @include transition(border-color ease-in-out .15s, box-shadow ease-in-out .15s);
+    // Customize the `:focus` state to imitate native WebKit styles.
+    @include form-control-focus();
+
+    &[type="checkbox"] {
+      position: relative;
+      width: 1rem;
+      height: 1rem;
+      box-shadow: none;
+      line-height: 1;
+    }
+
+    &[type="range"] {
+      border-width: 0;
+      box-shadow: none;
+    }
+
+    &[type="radio"] {
+      position: relative;
+      width: 1rem;
+      height: 1rem;
+      box-shadow: none;
+      line-height: 1;
+    }
+
+    &[type="file"] {
+      width: 100%;
+      //box-shadow: none;
+    }
+    // Note: This has no effect on <select>s in some browsers, due to the limited stylability of `<select>`s in CSS.
+    @if $enable-rounded {
+      // Manually use the if/else instead of the mixin to account for iOS override
+      border-radius: $input-border-radius;
+    }
+    @else {
+      // Otherwise undo the iOS default
+      border-radius: 0;
+    }
+    // Unstyle the caret on `<select>`s in IE10+.
+    &::-ms-expand {
+      border: 0;
+      background-color: transparent;
+    }
+    // Placeholder
+    &::placeholder {
+      // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526.
+      opacity: 1;
+      color: $input-color-placeholder;
+      font-style: italic;
+    }
+    // Disabled and read-only inputs
+    //
+    // HTML5 says that controls under a fieldset > legend:first-child won't be
+    // disabled if the fieldset is disabled. Due to implementation difficulty, we
+    // don't honor that edge case; we style them as disabled anyway.
+    &:disabled,
+    &[disabled="disabled"],
+    &[readonly] {
+      // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655.
+      opacity: 1;
+      background-color: $input-bg-disabled;
+    }
+
+    &:disabled,
+    &[disabled="disabled"] {
+      cursor: $cursor-disabled;
+    }
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: $padding;
+    border-width: 0;
+    border-bottom: 2px solid $cool-gray-03;
+    border-radius: 0;
+    background: $white;
+    box-shadow: none;
+  }
+
+  select {
+    //margin-top: $padding*.825;
+    box-shadow: none;
+
+    &:not([size]):not([multiple]) {
+      width: 100%;
+      height: calc(#{$input-height} - #{$select-border-width});
+      $select-border-width: ($border-width * 2);
+    }
+
+    &:focus::-ms-value {
+      // Suppress the nested default white text on blue background highlight given to
+      // the selected option text when the (still closed) <select> receives focus
+      // in IE and (under certain conditions) Edge, as it looks bad and cannot be made to
+      // match the appearance of the native widget.
+      // See https://github.com/twbs/bootstrap/issues/19398.
+      color: $input-color;
+      background-color: $input-bg;
+    }
+  }
+  //
+  // Legends
+  //
+  // For use with horizontal and inline forms, when you need the legend text to
+  // be the same size as regular labels, and to align with the form controls.
+  .col-form-legend {
+    margin-bottom: 0;
+    padding-top: $input-padding-y;
+    padding-bottom: $input-padding-y;
+    font-size: $font-size-base;
+  }
+  // Static form control text
+  //
+  // Apply class to an element to make any string of text align with labels in a
+  // horizontal form layout.
+  .form-control-static {
+    padding-top: $input-padding-y;
+    padding-bottom: $input-padding-y;
+    border: solid transparent;
+    border-width: 1px 0;
+    line-height: $input-line-height;
+  }
+  // Form groups
+  //
+  // Designed to help with the organization and spacing of vertical forms. For
+  // horizontal forms, use the predefined grid classes.
+  label {
+    font-weight: $font-weight-bold;
+  }
+
+  .form-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: $form-group-margin-bottom;
+    padding: 0 $padding/2;
+
+    .h1,
+    .h2,
+    .h3,
+    .h4,
+    .h5,
+    .h6,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      flex-basis: 100%;
+    }
+
+    &.row[role="group"] {
+      margin: 0 -($padding/2);
+    }
+
+    &.row {
+      flex-direction: row;
+    }
+
+    .__react_component_tooltip {
+      z-index: 900;
+    }
+
+    label {
+      @include transition(all .2s ease-in-out);
+    }
+
+    &.disabled,
+    &.disabled.error {
+      label {
+        color: $warm-gray-06;
+      }
+    }
+
+    input[type="date"] {
+      padding: ($padding*.65) $padding;
+      @include for-phone-only {
+        width: 100%;
+      }
+    }
+
+    input[type="tel"] {
+
+    }
+
+    &.segmented {
+
+        label {
+            &.label-segmented {
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+
+                  >input[type="text"] {
+                          flex-basis: 6.5rem;
+                  }
+            }
+        }
+
+      .segmented-answer-wrapper {
+        display: flex;
+        flex-direction: row;
+
+        @include for-phone-only {
+            flex-direction: column;
+
+        }
+
+        div {
+          display: flex;
+          flex-direction: column;
+          width: auto;
+          flex-grow: 1;
+          flex-shrink: 0;
+
+          &.radio-column-1 {}
+
+          &.radio-column-2 {
+            //width: 50%;
+          }
+
+          &.radio-column-3 {
+            //width: 33.33%;
+          }
+
+          &.radio-column-4 {
+            //width: 25%;
+          }
+
+          &.radio-column-5 {
+            //width: 20%;
+          }
+
+          &:hover {
+            cursor: pointer;
+          }
+
+          img {
+            display: flex;
+            flex-basis: 100px;
+            flex-grow: 0;
+            flex-shrink: 0;
+            @include for-phone-only {
+              height: 70px;
+              flex-basis: 50px;
+              @include transition(all .2s ease-in-out);
+              -webkit-filter: drop-shadow(0 0 4px rgba($green, 0));
+              filter: drop-shadow(0 0 4px rgba($green, 0));
+            }
+          }
+
+          &.selected {
+            img {
+              -webkit-filter: drop-shadow(0 0 4px rgba($green, 0.8));
+              filter: drop-shadow(0 0 4px rgba($green, 0.8));
+            }
+          }
+
+          .label-segmented {
+            display: flex;
+            flex-direction: column;
+            border-right: 2px solid $white;
+            flex-grow: 1;
+            flex-shrink: 0;
+
+            span {
+              display: flex;
+              width: 100%;
+              cursor: pointer;
+              user-select: none;
+              text-align: center;
+              vertical-align: middle;
+              white-space: initial;
+              border: $input-btn-border-width solid transparent;
+              font-weight: $btn-font-weight;
+              line-height: $btn-line-height;
+              flex-grow: 1;
+              justify-content: center;
+              align-items: center;
+              @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, 0);
+              @include transition(all .2s ease-in-out);
+              @include button-variant($warm-gray-08, $warm-gray-02, $warm-gray-02);
+
+              @include for-phone-only {
+                  border-radius: $border-radius;
+              }
+
+              &,
+              &.active,
+              &:active {
+                &.focus,
+                &:focus {
+                  @include tab-focus();
+                }
+              }
+            }
+
+            input[type=radio] {
+              display: none;
+
+              &:checked {
+                + span {
+                  color: $white;
+                  background: $bright-blue-darken-04;
+                }
+              }
+            }
+          }
+        }
+
+        div:first-child {
+          span {
+            border-radius: $border-radius 0 0 $border-radius;
+
+            @include for-phone-only {
+                border-radius: $border-radius;
+            }
+          }
+        }
+
+        div:last-child {
+          .label-segmented {
+            border-right-width: 0;
+          }
+
+          span {
+            border-radius: 0 $border-radius $border-radius 0;
+
+            @include for-phone-only {
+                border-radius: $border-radius;
+            }
+          }
+        }
+
+        &.error {
+            div {
+                .label-segmented {
+                    span {
+                      color: $red-lighten-01;
+                      border-color: $red-lighten-01;
+                    }
+                }
+            }
+        }
+      }
+
+      .installment-term {
+          display: flex;
+          flex-wrap: wrap;
+
+          .column-3 {
+              width: 33.33%;
+              padding: 0;
+              border-right: 2px solid $white;
+
+              dt {
+                padding: (.25*$padding) $padding;
+
+                  span {
+                      font-size: $font-size-h4;
+                      display: none;
+
+
+                      @include for-phone-only {
+                          display: block;
+                      }
+                  }
+              }
+
+              dd {
+                  padding: (.25*$padding) $padding;
+              }
+
+              @include for-phone-only {
+                  width: 100%;
+              }
+          }
+      }
+
+
+      &.disabled,
+      &.disabled.invalid {
+        cursor: not-allowed;
+
+        .segmented-answer-wrapper {
+          cursor: not-allowed;
+
+          div {
+            cursor: not-allowed;
+
+            .label-segmented {
+              cursor: not-allowed;
+              border-right: 1px solid $warm-gray-01;
+
+              span {
+                cursor: not-allowed;
+                @include button-variant($warm-gray-04, $warm-gray-01, $warm-gray-01);
+              }
+
+              input[type=radio] {
+                &:checked {
+                  cursor: not-allowed;
+
+                  + span {
+                    cursor: not-allowed;
+                    color: $warm-gray-05;
+                    background: $warm-gray-03;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        span {
+          cursor: not-allowed;
+          border-color: $warm-gray-02;
+        }
+
+        label {
+          cursor: not-allowed;
+
+          &.label-segmented {
+            cursor: not-allowed;
+
+            span {
+              cursor: not-allowed;
+              color: $warm-gray-03;
+            }
+          }
+        }
+
+        input[type=radio] {
+          cursor: not-allowed;
+
+          &:checked {
+            cursor: not-allowed;
+
+            + span {
+              cursor: not-allowed;
+              color: $warm-gray-03;
+              background: $warm-gray-01;
+            }
+          }
+        }
+      }
+    }
+
+    &.switch {
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      label {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        margin-bottom: 0;
+        line-height: 1.45;
+        justify-content: space-between;
+        align-items: center;
+
+        span {
+          flex-grow: 1;
+        }
+
+        input[type="checkbox"],
+        input[type="radio"] {
+          display: none;
+
+          &:checked {
+            + div.switch-div {
+              background-color: $bright-blue-darken-04;
+
+              &:before {
+                -webkit-transform: translateX(2rem);
+                -ms-transform: translateX(2rem);
+                transform: translateX(2rem);
+                border-color: $cool-gray-01;
+                background-color: lighten($cool-gray-00, 10%);
+              }
+
+              &:after {
+                top: 0.25rem;
+                left: 0.5rem;
+                content: "Yes";
+                color: $white;
+              }
+
+              &.disabled {
+                background-color: $cool-gray-00;
+
+                &:after {
+                  color: $cool-gray-01;
+                }
+              }
+            }
+          }
+        }
+
+        div.switch-div {
+          position: relative;
+          width: 3.5rem;
+          height: 1.5rem;
+          margin: 0.225rem 0;
+          cursor: pointer;
+          -webkit-transition: 0.4s;
+          transition: 0.4s;
+          border-radius: 0.75rem;
+          background: $warm-gray-03;
+          flex-basis: 3.5rem;
+          flex-grow: 0;
+          flex-shrink: 0;
+          color: $warm-gray-08;
+
+          &:before {
+            position: absolute;
+            z-index: 2;
+            width: 1.5rem;
+            height: 1.5rem;
+            content: "";
+            -webkit-transition: 0.4s;
+            transition: 0.4s;
+            border: 1px solid $cool-gray-01;
+            border-radius: 50%;
+            background-color: lighten($cool-gray-00, 10%);
+            box-shadow: $input-box-shadow;
+            line-height: 1;
+          }
+
+          &:after {
+            position: absolute;
+            z-index: 1;
+            top: 0.25rem;
+            left: 2rem;
+            content: "No";
+            font-size: 0.7rem;
+            font-weight: $font-weight-bold;
+          }
+        }
+      }
+
+      &.disabled,
+      &.disabled.invalid {
+        cursor: not-allowed;
+
+        label {
+          cursor: not-allowed;
+          color: $text-muted;
+        }
+
+        div {
+          cursor: not-allowed;
+          background-color: $warm-gray-01;
+
+          &:after {
+            cursor: not-allowed;
+            color: $warm-gray-03;
+          }
+
+          &:before {
+            cursor: not-allowed;
+            border-color: $warm-gray-02;
+            background-color: $warm-gray-01;
+          }
+        }
+
+        input[type="checkbox"],
+        input[type="radio"] {
+          display: none;
+
+          &:checked {
+            + div {
+              background-color: $warm-gray-01;
+
+              &:after {
+                color: $warm-gray-03;
+              }
+            }
+          }
+        }
+      }
+
+      &.error {
+        label {
+          color: $red-lighten-01;
+        }
+
+        div {
+          background-color: $red-lighten-01;
+
+          &:after {
+            color: $white;
+          }
+
+          &:before {
+            border-color: $red;
+            background-color: $red-lighten-03;
+          }
+        }
+
+        input[type="checkbox"],
+        input[type="radio"] {
+          display: none;
+
+          &:checked {
+            + div {
+              background-color: $red-lighten-01;
+
+              &:after {
+                color: $white;
+              }
+            }
+          }
+        }
+      }
+
+      &.verification {
+          flex-direction: column;
+          position: relative;
+
+          label {
+              justify-content: flex-start;
+              flex-direction: row-reverse;
+              margin-right: 2rem;
+
+              &:before {
+                  font: normal normal normal 1rem $font-family-sans-serif;
+                  content: 'VERIFY HERE';
+                  line-height: 1;
+                  position: absolute;
+                  left: -.25rem;
+                  background: $orange-lighten-01;
+                  color: $red-darken-02;
+                  display: block;
+                  padding: .25rem;
+                  top: .25rem;
+                  text-align: center;
+                  width: 9rem;
+                  border-top-left-radius: .125rem;
+                  border-bottom-left-radius: .125rem;
+
+                  @include for-phone-only {
+                      left: -.75rem;
+                      font-size: .875rem;
+                      width: 8rem;
+                  }
+              }
+              &:after {
+                  content:'';
+                  position: absolute;
+                  width: 0;
+                  height: 0;
+                  border-top: .75rem solid transparent;
+                  border-left: 1rem solid $orange-lighten-01;
+                  border-bottom: .75rem solid transparent;
+                  top: .25rem;
+                  left: 8.75rem;
+
+                  @include for-phone-only {
+                      left: 7.25rem;
+                      border-top: .6875rem solid transparent;
+                      border-bottom: .6875rem solid transparent;
+                  }
+              }
+
+              div {
+                      margin-right: .5rem;
+              }
+              span {
+                      margin-right: .5rem;
+                      height: 1px;
+                      background: $warm-gray-02;
+                      flex-grow: 1;
+                      position: relative;
+                      cursor: pointer;
+
+                      &:before {
+                          font: normal normal normal 1rem $font-family-icon;
+                          content: '\f14a';
+                          position: absolute;
+                          left: -.75rem;
+                          background: $yellow;
+                          color: $yellow-lighten-05;
+                          display: block;
+                          padding: .25rem;
+                          top: -.75rem;
+                          text-align: center;
+                          width: 1.5rem;
+                          border-top-left-radius: .125rem;
+                          border-bottom-left-radius: .125rem;
+                      }
+                      &:after {
+                          content:'';
+                          position: absolute;
+                          width: 0;
+                          height: 0;
+                          border-top: .75rem solid transparent;
+                          border-left: 1rem solid $yellow;
+                          border-bottom: .75rem solid transparent;
+                          top: -.75rem;
+                          left: .75rem;
+                      }
+              }
+              input[type="checkbox"] {
+
+                  &:checked {
+                      ~ span {
+                          &:before {
+                              //content: '\f14a';
+                              color: $green;
+                              background: $warm-gray-02;
+                          }
+                          &:after {
+                              border-left-color: $warm-gray-02;
+                          }
+                      }
+                  }
+              }
+          }
+      }
+      &.confirm {
+          flex-direction: column;
+          position: relative;
+
+          label {
+              justify-content: flex-start;
+              flex-direction: row-reverse;
+              margin-right: 2rem;
+
+              &:before {
+                  font: normal normal normal 1rem $font-family-sans-serif;
+                  content: 'CONFIRM HERE';
+                  line-height: 1;
+                  position: absolute;
+                  left: -.25rem;
+                  background: $orange-lighten-01;
+                  color: $red-darken-02;
+                  display: block;
+                  padding: .25rem;
+                  top: .25rem;
+                  text-align: center;
+                  width: 9rem;
+                  border-top-left-radius: .125rem;
+                  border-bottom-left-radius: .125rem;
+
+                  @include for-phone-only {
+                      left: -.75rem;
+                      font-size: .875rem;
+                      width: 8rem;
+                  }
+              }
+              &:after {
+                  content:'';
+                  position: absolute;
+                  width: 0;
+                  height: 0;
+                  border-top: .75rem solid transparent;
+                  border-left: 1rem solid $orange-lighten-01;
+                  border-bottom: .75rem solid transparent;
+                  top: .25rem;
+                  left: 8.75rem;
+
+                  @include for-phone-only {
+                      left: 7.25rem;
+                      border-top: .6875rem solid transparent;
+                      border-bottom: .6875rem solid transparent;
+                  }
+              }
+
+              div {
+                      margin-right: .5rem;
+              }
+              span {
+                      margin-right: .5rem;
+                      height: 1px;
+                      background: $warm-gray-02;
+                      flex-grow: 1;
+                      position: relative;
+                      cursor: pointer;
+
+                      &:before {
+                          font: normal normal normal 1rem $font-family-icon;
+                          content: '\f14a';
+                          position: absolute;
+                          left: -.75rem;
+                          background: $yellow;
+                          color: $yellow-lighten-05;
+                          display: block;
+                          padding: .25rem;
+                          top: -.75rem;
+                          text-align: center;
+                          width: 1.5rem;
+                          border-top-left-radius: .125rem;
+                          border-bottom-left-radius: .125rem;
+                      }
+                      &:after {
+                          content:'';
+                          position: absolute;
+                          width: 0;
+                          height: 0;
+                          border-top: .75rem solid transparent;
+                          border-left: 1rem solid $yellow;
+                          border-bottom: .75rem solid transparent;
+                          top: -.75rem;
+                          left: .75rem;
+                      }
+              }
+              input[type="checkbox"] {
+
+                  &:checked {
+                      ~ span {
+                          &:before {
+                              //content: '\f14a';
+                              color: $green;
+                              background: $warm-gray-02;
+                          }
+                          &:after {
+                              border-left-color: $warm-gray-02;
+                          }
+                      }
+                  }
+              }
+          }
+      }
+    }
+
+    &.error {
+        span {
+            color: $red;
+        }
+    }
+
+    &.info {
+        span {
+            color: $green;
+        }
+    }
+
+  }
+
+  .form-group.segmented.BillType {
+
+    .segmented-answer-wrapper {
+
+        div {
+          width: 33.33%
+        }
+
+    }
+
+  }
+
+
+  .submit-button-group {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-end;
+
+    button[type="submit"] {
+      margin-left: 1rem;
+    }
+  }
+
+/*
+  &.disabled,
+  &.disabled.invalid,
+  &[disabled="disabled"] {
+    cursor: $cursor-disabled;
+    color: $text-muted;
+
+    input,
+    select,
+    textarea {
+      cursor: $cursor-disabled;
+      color: $text-muted;
+    }
+  }
+*/
+
+ul.list,
+ul.results {
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &.list-cards {
+    li {
+      z-index: 1;
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      padding: $padding $padding*1.5;
+      text-decoration: none;
+      border: $card-border-width solid $card-border-color;
+      border-top-width: 0;
+      border-radius: 0;
+      box-shadow: $card-box-shadow;
+      align-items: flex-start;
+      @include transition(all .2s ease-in-out);
+
+      &:first-child {
+        border-top-width: $card-border-width;
+        border-top-left-radius: $card-border-radius;
+        border-top-right-radius: $card-border-radius;
+      }
+
+      &:last-child {
+        border-bottom-right-radius: $card-border-radius;
+        border-bottom-left-radius: $card-border-radius;
+      }
+
+      section {
+        flex-grow: 1;
+
+        h2,
+        h3,
+        h4,
+        h5 {
+          margin: 0;
+        }
+
+        p {
+          margin: 0;
+        }
+      }
+
+      ul.list {
+        width: 12rem;
+        border-right: 1px solid $border-color;
+        flex-basis: 12rem;
+        flex-grow: 0;
+        flex-shrink: 0;
+
+        li {
+          border-width: 0;
+          box-shadow: none;
+
+          &:first-child {
+            border-width: 0;
+          }
+        }
+      }
+
+      i {
+        &.fa-trash {
+          display: flex;
+          width: 2rem;
+          height: 2.4rem;
+          margin: 0;
+          cursor: pointer;
+          font-size: $font-size-h4;
+          flex-basis: 2rem;
+          flex-shrink: 0;
+          align-items: center;
+          justify-content: flex-end;
+          @include transition(all .2s ease-in-out);
+
+          &:hover {
+            color: $red;
+          }
+        }
+      }
+    }
+  }
+
+  &.result-cards {
+    li {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: $padding/2;
+      border-bottom: none;
+
+      a {
+        z-index: 1;
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        padding: $padding $padding*1.5;
+        text-decoration: none;
+        border: $card-border-width solid $card-border-color;
+        border-radius: $card-border-radius;
+        box-shadow: $card-box-shadow;
+        align-items: center;
+        @include transition(all .2s ease-in-out);
+
+        section {
+          flex-grow: 1;
+
+          h2,
+          h3,
+          h4,
+          h5 {
+            margin: 0;
+          }
+
+          p {
+            margin: 0;
+          }
+        }
+
+        i {
+          display: flex;
+          flex-direction: row;
+          width: 2rem;
+          height: 2rem;
+          font-size: $font-size-h2;
+          align-items: center;
+          justify-content: center;
+          @include transition(all .2s ease-in-out);
+        }
+
+        &:hover {
+          z-index: 2;
+          transform: scale(1.004);
+          box-shadow: $card-box-shadow-hover;
+
+          h2,
+          h3,
+          h4,
+          h5 {}
+        }
+      }
+    }
+  }
+}
+
+form + form {
+  margin-top: $padding*2;
+}

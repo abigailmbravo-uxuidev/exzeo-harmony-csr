@@ -1,62 +1,177 @@
-import React, { PropTypes } from 'react';
-import { Link } from 'react-router-dom';
-
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import _ from 'lodash';
+import { Helmet } from 'react-helmet';
+import PropTypes from 'prop-types';
+import localStorage from 'localStorage';
 import BaseConnect from './Base';
-import ClearErrorConnect from '../components/Error/ClearError';
 import Footer from '../components/Common/Footer';
+import * as cgActions from '../actions/cgActions';
+import * as appStateActions from '../actions/appStateActions';
+import * as questionsActions from '../actions/questionsActions';
+import SearchResults from '../components/Search/SearchResults';
+import NoResultsConnect from '../components/Search/NoResults';
+import Loader from '../components/Common/Loader';
 
-const Splash = () => (
-  <BaseConnect>
-    <ClearErrorConnect />
-    <div className="dashboard" role="article">
-      <div className="route">
-        <div className="route-content">
-          <div className="scroll">
-            <div className="dashboard-message">
-              <h1 className="app-header">Agency Portal</h1>
-              <h4>Easily quote Flood and HO3 insurance for Florida properties</h4>
-              <p>Getting a quote is always quick and simple with <strong>TypTap Insurance</strong>. You can start a quote or find an existing quote using the start and retrieve buttons below.</p>
-            </div>
-            <div className="survey-wrapper">
-              <div className="product-wrapper">
-                <div className="product card">
-                  <div className="card-header image card-header-image-flood">
-                    <h4 className="product-name"><i className="fa fa-tint" /> Flood Insurance</h4>
-                  </div>
-                  <div className="card-block">
-                    <p>TypTap currently offers stand-alone flood policies for single family residential dwellings in Florida.</p>
-                  </div>
-                  <div className="card-footer">
-                    <Link to="https://www.typtap.com/agency" className="btn btn-secondary"><i className="fa fa-plus" />New Quote</Link>
-                    <Link to="https://www.typtap.com/agency" className="btn btn-primary"><i className="fa fa-history" />Retrieve Quote</Link>
-                  </div>
-                </div>
-                <div className="product card">
-                  <div className="card-header image card-header-image-home">
-                    <h4 className="product-name"><i className="fa fa-home" /> Homeowners Insurance</h4>
-                  </div>
-                  <div className="card-block">
-                    <p>TypTap currently offers HO3 homeowner&apos;s policies for single family residential dwellings in Florida.</p>
-                  </div>
-                  <div className="card-footer">
-                    <Link to={{ pathname: '/quote', state: { searchType: 'address' } }} className="btn btn-secondary btn-block"><i className="fa fa-plus" />New Quote</Link>
-                    <Link to={{ pathname: '/quote/retrieve', state: { searchType: 'quote' } }} className="btn btn-primary btn-block"><i className="fa fa-history" />Retrieve Quote</Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <Footer />
-          </div>
-        </div>
-      </div>
-    </div>
-  </BaseConnect>
-);
+const workflowModelName = 'csrQuote';
 
-Splash.propTypes = {
-  splashScreen: PropTypes.bool
+export const handleNewTab = (searchData) => {
+  localStorage.setItem('isNewTab', true);
+
+  const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData'));
+
+  if (lastSearchData.searchType === 'address') {
+    localStorage.setItem('stateCode', searchData.physicalAddress.state);
+    localStorage.setItem('igdID', searchData.id);
+    window.open('/quote/coverage', '_blank');
+  } else if (lastSearchData.searchType === 'quote') {
+    localStorage.setItem('quoteId', searchData._id);
+    window.open('/quote/coverage', '_blank');
+  } else if (lastSearchData.searchType === 'policy') {
+    localStorage.setItem('policyID', searchData.policyID);
+    window.open('/policy/coverage', '_blank');
+  }
 };
 
-Splash.displayName = 'Splash';
+export class Splash extends Component {
 
-export default Splash;
+  componentDidMount() {
+    this.props.actions.cgActions.startWorkflow(workflowModelName, {});
+    this.props.actions.questionsActions.getUIQuestions('searchCSR');
+  }
+
+
+  handleSelectQuote = (quote, props) => {
+    const workflowId = props.appState.instanceId;
+    const steps = [{
+      name: 'chooseQuote',
+      data: {
+        quoteId: quote._id
+      }
+    }];
+
+    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
+
+
+    props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
+      .then(() => {
+        // now update the workflow details so the recalculated rate shows
+        props.actions.appStateActions.setAppState(
+          props.appState.modelName,
+          workflowId,
+          { ...props.appState.data, selectedLink: 'customerData', submitting: false }
+        );
+        this.context.router.history.push('/quote/coverage');
+      });
+  };
+
+  handleSelectAddress = (address, props) => {
+    const workflowId = props.appState.instanceId;
+    const submitData = {
+      igdId: address.id,
+      stateCode: address.physicalAddress.state
+    };
+
+    const steps = [{
+      name: 'chooseAddress',
+      data: submitData
+    }];
+
+    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
+
+    props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
+      .then(() => {
+        // now update the workflow details so the recalculated rate shows
+        props.actions.appStateActions.setAppState(
+          props.appState.modelName,
+          workflowId,
+          { ...props.appState.data, recalc: false, updateWorkflowDetails: true, selectedLink: 'customerData', submitting: false }
+        );
+        this.context.router.history.push('/quote/coverage');
+      });
+  };
+
+  handleSelectPolicy = (policy, props) => {
+    const workflowId = props.appState.instanceId;
+    const steps = [{
+      name: 'choosePolicy',
+      data: {
+        policyId: policy.policyID
+      }
+    }];
+
+    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
+
+    props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
+      .then(() => {
+        // now update the workflow details so the recalculated rate shows
+        props.actions.appStateActions.setAppState(
+          props.appState.modelName,
+          workflowId,
+          { ...props.appState.data, selectedLink: 'coverage', submitting: false }
+        );
+        this.context.router.history.push('/policy/coverage');
+      });
+  };
+
+  render() {
+    return (
+      <BaseConnect {...this.props}>
+        <Helmet>
+          <title>Harmony - CSR Portal</title>
+        </Helmet>
+        {this.props.appState.data.submitting && <Loader />}
+        <div className="dashboard" role="article">
+          <div className="route">
+            <div className="search route-content">
+              <div className="survey-wrapper scroll">
+                <div className="results-wrapper">
+                  <NoResultsConnect />
+                  <SearchResults
+                    handleNewTab={handleNewTab}
+                    handleSelectAddress={this.handleSelectAddress}
+                    handleSelectQuote={this.handleSelectQuote}
+                    handleSelectPolicy={this.handleSelectPolicy}
+                  />
+                </div>
+                <Footer />
+              </div>
+            </div>
+          </div>
+        </div>
+      </BaseConnect>
+    );
+  }
+}
+
+Splash.contextTypes = {
+  router: PropTypes.object
+};
+
+Splash.propTypes = {
+  actions: PropTypes.shape({
+    questionsActions: PropTypes.shape(),
+    cgActions: PropTypes.shape({ startWorkflow: PropTypes.func, activeTasks: PropTypes.func, completeTask: PropTypes.func }),
+    appStateActions: PropTypes.shape({ setAppState: PropTypes.func, setAppStateError: PropTypes.func })
+  })
+};
+
+const mapStateToProps = state => (
+  {
+    questions: state.questions,
+    tasks: state.cg,
+    appState: state.appState,
+    error: state.error
+  }
+);
+
+const mapDispatchToProps = dispatch => ({
+  actions: {
+    questionsActions: bindActionCreators(questionsActions, dispatch),
+    cgActions: bindActionCreators(cgActions, dispatch),
+    appStateActions: bindActionCreators(appStateActions, dispatch)
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Splash);

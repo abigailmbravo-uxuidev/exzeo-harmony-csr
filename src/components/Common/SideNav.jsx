@@ -13,19 +13,9 @@ import { NavLink } from 'react-router-dom';
  */
 const agentLinks = [{
   link: '/',
-  label: 'DASHBOARD',
-  styleName: 'agent-dashboard',
+  label: 'Dashboard',
+  styleName: 'csr-dashboard',
   exact: true
-}, {
-  link: 'https://www.typtap.com/agency',
-  label: 'FLOOD QUOTE',
-  styleName: 'agent-flood label',
-  outside: true
-},
-{
-  link: '/quote',
-  label: 'HO3 QUOTE',
-  styleName: 'agent-homeowners label'
 }];
 
 const SideNav = () => (
@@ -34,14 +24,13 @@ const SideNav = () => (
       {agentLinks && agentLinks.length > 0 && agentLinks.map((agentLink, index) => (
         agentLink.outside ?
           <li key={index}>
-            <a className={agentLink.styleName} href={agentLink.link}>
-              <i className="fa" />
+            {/*<a className={agentLink.styleName} href={agentLink.link}>*/}
+            <a className="csr-dashboard" href="/">
               <span>{agentLink.label}</span>
             </a>
           </li> :
           <li key={index}>
             <NavLink exact={agentLink.exact} className={agentLink.styleName} to={agentLink.link} activeClassName="active">
-              <i className="fa" />
               <span>{agentLink.label}</span>
             </NavLink>
           </li>

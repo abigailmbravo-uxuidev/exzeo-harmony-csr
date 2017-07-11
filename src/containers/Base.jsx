@@ -1,51 +1,20 @@
-import React, { PropTypes } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-
+import React from 'react';
 import Header from '../components/Common/Header';
-import SideNav from '../components/Common/SideNav';
-import * as userActions from '../actions/userActions';
+import SearchBar from '../components/Search/SearchBar';
 
-const handleLogout = (props) => {
-  props.actions.user.logout();
-};
-
-export const Base = props => (
-  <div className="app-wrapper">
-    <Header />
+const Base = (props) => {
+  const { isAuthenticated } = props.auth;
+  return (<div className="app-wrapper csr">
+    <Header {...props} />
+    <div className="search ">
+      { isAuthenticated() && <SearchBar /> }
+    </div>
     <main role="document">
-      <aside className="content-panel-left">
-        <div className="user">
-          <label htmlFor="user">User</label>
-          <h5 className="user-name">
-            <span>TTIC20000@typtap.com</span>
-            <i className="fa fa-gear" />
-          </h5>
-        </div>
-        <SideNav />
-        <button className="btn logout btn-action" type="button" onClick={() => handleLogout(props)}>
-          <i className="fa fa-sign-out" />
-          <span>Logout</span>
-        </button>
-      </aside>
       <div className="content-wrapper">
         {props.children}
       </div>
     </main>
-  </div>
-);
-
-
-Base.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node])
+  </div>);
 };
 
-const mapStateToProps = state => ({
-  user: state.user
-});
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    user: bindActionCreators(userActions, dispatch)
-  }
-});
-export default connect(mapStateToProps, mapDispatchToProps)(Base);
+export default Base;

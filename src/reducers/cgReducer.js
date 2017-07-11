@@ -17,6 +17,9 @@ export default function cgReducer(state = initialState.workflowData, action) {
     case types.CG_ERROR:
       newState = (action.error) ? { ...state, ...action.error } : newState;
       return newState;
+    case types.CLEAR_SEARCH_RESULTS:
+      newState = (action.workflowData) ? { ...state, ...action.workflowData } : newState;
+      return newState;
     case persistTypes.REHYDRATE:
       newState = (action.payload && action.payload.cg) ? action.payload.cg : newState;
       return newState;

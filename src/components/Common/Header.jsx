@@ -1,22 +1,41 @@
 import React from 'react';
-import logo from '../../img/TypTap.svg';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-const Header = () => (
+import logo from '../../img/Harmony.svg';
+
+const handleLogout = (auth) => {
+  auth.logout();
+};
+
+const Header = props => (
   <header>
     <div role="banner">
       <button className="btn-icon btn-bars"><i className="fa fa-bars" /></button>
-      <div id="logo" className="logo">
-        <img src={logo} alt="TypTap Insurance" />
-      </div>
+      <a href="/" id="logo" className="logo">
+        <img src={logo} alt="Harmony" />
+      </a>
       <button className="btn-icon btn-ellipsis-v"><i className="fa fa-ellipsis-v" /></button>
       <nav className="fade-in">
-        <a href="https://www.typtap.com">HOME</a>
-        <a href="" className="active">AGENTS</a>
-        <a href="https://policyholder.typtap.com/login">POLICYHOLDERS</a>
-        <a className="link-phone btn" href="tel:+844-289-7968"><i className="fa fa-phone" /><span>844-289-7968</span></a>
+        <a href="" className="active">Policy Management</a>
+        { /* <a href="">Agency Management</a>
+        <a href="">User Management</a> */ }
+        <div className="user-name">{ props.authState && props.authState.userProfile ? props.authState.userProfile.name : ''}</div>
+        <button className="btn btn-action"><i className="fa fa-gear" /></button>
+        <button className="btn logout btn-action" type="button" onClick={() => handleLogout(props.auth)}><i className="fa fa-sign-out" /></button>
       </nav>
     </div>
   </header>
 );
 
-export default Header;
+Header.propTypes = {
+  authState: PropTypes.shape({
+    userProfile: PropTypes.object
+  })
+};
+
+const mapStateToProps = state => ({
+  authState: state.authState
+});
+
+export default connect(mapStateToProps)(Header);

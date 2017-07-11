@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import FieldHint from './FieldHint';
 import reduxFormField from './reduxFormField';
@@ -9,10 +10,13 @@ export const TextInput = ({
   label,
   styleName,
   meta,
-  type
+  type,
+  disabled,
+  min,
+  max,
+  name
 }) => {
   const { touched, error, warning } = meta;
-  const { disabled, name } = input;
 
   const formGroupStyles = classNames(
     'form-group',
@@ -37,6 +41,10 @@ export const TextInput = ({
     <div className={formGroupStyles}>
       {Label}
       <input
+        min={min}
+        max={max}
+        disabled={disabled}
+        name={name}
         {...input}
         type={type}
       />
@@ -75,6 +83,12 @@ TextInput.propTypes = {
     touched: PropTypes.bool,
     warning: PropTypes.string
   }),
+
+    /**
+   * Max and min limit for range slider
+   */
+  max: PropTypes.number,
+  min: PropTypes.number,
 
   /**
    * Answer Type from original question

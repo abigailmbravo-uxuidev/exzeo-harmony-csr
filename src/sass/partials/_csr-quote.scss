@@ -1,0 +1,531 @@
+.app-wrapper.csr.quote {
+  //header
+  header {
+    div[role="banner"] {
+      .tab-tag {
+        display: flex;
+        height: 3.25rem;
+        margin: (-$padding) ($padding*2) (-$padding) (-$padding*2);
+        padding: 0 ($padding*2);
+        color: $white;
+        background: $green-darken-04;
+        border-right: 1px dotted $green-darken-03;
+        justify-content: center;
+        align-items: center;
+        width: 12rem;
+      }
+
+      .quote-description {
+        display: flex;
+        color: $white;
+        font-size: $font-size-h5;
+        flex-grow: 1;
+        flex-shrink: 0;
+        align-items: center;
+
+        label {
+          margin-bottom: 0;
+          padding: 0 $padding 0 ($padding*4);
+          color: $warm-gray-07;
+          font-weight: $font-weight-normal;
+        }
+      }
+    }
+  }
+  //detail header
+  .detailHeader {
+      width: 100%;
+
+      .quoteDetails {
+          dd {
+              .btn-link {
+                  padding: 0;
+                  margin: 0;
+                  font-size: $font-size-sm;
+                  line-height: 1;
+                  display: flex;
+                  color: $bright-blue-lighten-02;
+                  text-decoration: underline;
+
+                  @include hover {
+                    color: $bright-blue-lighten-01;
+                  }
+                  @include hover-focus {
+                    color: $bright-blue-lighten-01;
+                  }
+              }
+          }
+      }
+  }
+  //content wrapper
+  main {
+      height: calc(100vh - 8.5rem);
+      min-height: calc(100vh - 8.5rem);
+
+    .content-wrapper {
+      overflow: hidden;
+      width: auto;
+      flex-grow: 1;
+      flex-shrink: 1;
+      flex-wrap: nowrap;
+
+      .route-content {
+        display: flex;
+        flex-shrink: 1;
+        flex-grow: 1;
+        overflow: hidden;
+
+        .modal.quote-summary {
+          .card-footer {}
+        }
+
+        form {
+          display: flex;
+          flex-grow: 1;
+          flex-shrink: 1;
+        }
+
+        .scroll {
+          overflow-y: auto;
+          width: 100%;
+          flex-grow: 1;
+          flex-shrink: 0;
+        }
+
+        .survey-wrapper {
+          flex-direction: column;
+        }
+
+        .form-group {
+          .responsive-tables {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            margin: 0 0 ($padding*2);
+
+            .card-view,
+            .table-view {
+              margin: 0 ($padding*2);
+
+              &:first-child {
+                margin-left: 0;
+
+                .react-bs-table-container {
+                  .react-bs-table {
+                    margin-left: 0;
+                  }
+                }
+              }
+
+              &:last-child {
+                margin-right: 0;
+
+                .react-bs-table-container {
+                  .react-bs-table {
+                    margin-right: 0;
+                  }
+                }
+              }
+            }
+
+            .table-view {
+              width: 33%;
+
+              .date {
+                width: 60%;
+                padding: $padding 15px $padding $padding;
+              }
+
+              .amount {
+                width: 40%;
+                padding: $padding $padding $padding 15px;
+              }
+            }
+          }
+
+          h4 {
+            font-weight: normal;
+          }
+
+          label {}
+
+          > section {
+            margin-bottom: $padding*2;
+            padding-bottom: $padding*2;
+            border-bottom: 1px dashed $warm-gray-01;
+          }
+
+          > section:last-of-type {
+            border: 0;
+            margin-bottom: 0;
+          }
+
+          .producer {
+            .flex-parent {
+              .flex-child:first-child {
+                flex: 0 0 auto;
+              }
+            }
+          }
+
+          .demographics {
+            .policy-holder-a {
+              width: 50%;
+            }
+
+            .policy-holder-b {
+              width: 50%;
+            }
+          }
+
+          .property {
+            .property-address {
+              width: 35%;
+
+              .city {}
+
+              .state {
+                flex-grow: 0;
+                flex-shrink: 0;
+                flex-basis: 4rem;
+              }
+
+              .zip {
+                flex-grow: 0;
+                flex-shrink: 0;
+                flex-basis: 6rem;
+              }
+            }
+
+            .property-details {
+              width: 65%;
+
+              .flex-parent {
+                .flex-child {
+                  width: 25%;
+                }
+              }
+            }
+          }
+
+          .coverage-options {
+            > .flex-child {
+              width: 25%;
+            }
+
+            .coverages {
+              width: 35%;
+            }
+
+            .other-coverages {
+              width: 30%;
+            }
+
+            .deductibles {
+              width: 20%;
+            }
+
+            .discounts {
+              width: 15%;
+            }
+          }
+
+          .wind {
+            .wind-col1 {
+              width: 50%;
+            }
+
+            .wind-col2 {
+              width: 50%;
+            }
+          }
+        }
+      }
+    }
+
+    .underwriting-validation {
+      overflow-y: auto;
+      width: 240px;
+      align-self: stretch;
+      padding: 0 0 ($padding*2) ($padding*2);
+      border-left: dotted 1px $warm-gray-04;
+      flex-shrink: 0;
+      flex-basis: 240px;
+
+      .uw-validation-header {
+        margin: ($padding*1.5) 0;
+      }
+
+      section {
+        h5 {
+          color: $warm-gray-08;
+          background: $warm-gray-02;
+          font-size: 14px;
+
+          i.fa {
+            margin: 0 ($padding*2) 0 0;
+            padding: ($padding*2);
+            color: $white;
+          }
+        }
+
+        div {
+          /*
+            border: solid 1px $warm-gray-04;
+            margin: ($padding*2) ($padding*2) ($padding*4);
+            padding: 0;
+            border-radius: 5px;
+            */
+          ul {
+            margin: 0 0 ($padding*4) ($padding*2);
+
+            li {
+              //border-bottom: solid 1px $warm-gray-04;
+              display: list-item;
+              margin: ($padding*2.25);
+              padding: 0;
+              list-style: none;
+              font-size: $font-size-base
+            }
+
+            li:last-child {
+              border: 0;
+            }
+          }
+        }
+      }
+
+      .msg-error {
+        h5 {
+          i.fa {
+            background-color: $red;
+          }
+        }
+
+        ul {
+          i.fa {
+            color: $red;
+          }
+        }
+      }
+
+      .msg-caution {
+        h5 {
+          i.fa {
+            background-color: $orange;
+          }
+        }
+
+        ul {
+          i.fa {
+            color: $orange;
+          }
+        }
+      }
+
+      .msg-info {
+        h5 {
+          i.fa {
+            background-color: $bright-blue;
+          }
+        }
+
+        ul {
+          i.fa {
+            color: $bright-blue;
+          }
+        }
+      }
+    }
+  }
+}
+
+.modal.quote-summary {
+  .btn-footer.flex-parent {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-content: center;
+    align-items: flex-end;
+
+    .form-group {
+      margin: 0;
+    }
+  }
+}
+
+.file-list,
+.notes-list {
+  .react-bs-table-tool-bar {
+    margin: 0 0 ($padding*2);
+
+    .toolbar {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-content: stretch;
+      align-items: flex-start;
+
+      .input-group {
+        display: flex;
+        flex-direction: row;
+        margin: 0 ($padding) 0 0;
+        order: 0;
+        flex: 0 1 auto;
+        align-self: auto;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-content: stretch;
+        align-items: flex-start;
+
+        .btn {
+          height: 38px;
+          margin: 0 2px 0 0;
+          text-transform: capitalize;
+          border: 0;
+          border-radius: 0;
+          line-height: 1.5;
+          order: 0;
+          flex: 0 1 auto;
+          align-self: auto;
+          @include button-variant($warm-gray-08, $warm-gray-02, $warm-gray-02);
+        }
+
+        .btn:first-child {
+          border-radius: $border-radius 0 0 $border-radius;
+        }
+
+        .btn:last-child {
+          border-radius: 0 $border-radius $border-radius 0;
+        }
+      }
+
+      input {
+        height: 38px;
+        order: 0;
+        flex: 1 1 auto;
+        align-self: auto;
+      }
+    }
+  }
+}
+
+.notes-list {
+  .react-bs-table-tool-bar {
+    .toolbar {
+      .input-group {
+        .btn-notes {
+          color: $white;
+          background: $bright-blue-darken-04;
+        }
+      }
+    }
+  }
+
+  .react-bs-table {
+    .table-bordered {
+      > tbody {
+        > tr:nth-of-type(even) {
+          background-color: transparent;
+        }
+
+        tr {
+          td {
+            thead > tr,
+            thead > tr > th {
+              background: transparent;
+            }
+
+            .react-bs-table-container {
+              border: solid 2px $warm-gray-01;
+            }
+          }
+        }
+
+        tr:nth-child(4n+3),
+        tr:nth-child(4n+4) {
+          background-color: $warm-gray-01;
+
+          td {
+            .react-bs-table-container {
+              border: solid 2px $white;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.file-list {
+  .react-bs-table-tool-bar {
+    .toolbar {
+      .input-group {
+        .btn-files {
+          color: $white;
+          background: $bright-blue-darken-04;
+        }
+      }
+    }
+  }
+}
+
+.verify {
+  .workflow-steps {
+    .btn {
+      height: 36px;
+      margin-top: 25px;
+      align-self: flex-start;
+    }
+
+    input {
+      height: 36px;
+    }
+  }
+}
+
+.modal.uw-conditions {
+
+  .card {
+    height: auto;
+
+    .card-block {
+        ul {
+            list-style: disc;
+            margin: 0 ($padding*4);
+
+            li {
+                display: list-item;
+            }
+        }
+    }
+  }
+}
+
+#root {
+  overflow-y: hidden;
+
+  .csr {
+    &.app-wrapper {
+      overflow-y: hidden;
+      min-width: $csr-min-width;
+    }
+
+    .site-nav {
+      ul {
+        hr.quote-hr {
+          margin: ($padding*2)(-$padding);
+          padding: 0;
+          border-width: 0;
+          border-top: 2px dotted $warm-gray-04;
+        }
+
+        li {
+          a {}
+        }
+      }
+    }
+  }
+}

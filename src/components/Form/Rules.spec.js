@@ -33,7 +33,7 @@ describe('Rules', () => {
       expect(rules.phone('888-888-8888')).toBeUndefined();
     });
     it('should return "is not a valid Phone Number." on invalid phone', () => {
-      expect(rules.phone('')).toEqual('is not a valid Phone Number.');
+      expect(rules.phone('vcxvxcvxcv')).toEqual('is not a valid Phone Number.');
     });
   });
   describe('date', () => {
@@ -48,6 +48,58 @@ describe('Rules', () => {
   describe('range', () => {
     it('should return undefined when value is not undefined', () => {
       const ruleArray = combineRules(['range'], { min: 100, max: 20000 });
+      expect(ruleArray[0].length).toEqual(1);
+    });
+  });
+
+  describe('minLength3', () => {
+    it('should return undefined for min of 3', () => {
+      expect(rules.minLength3('456')).toBeUndefined();
+    });
+    it('should return "is not a valid Date."', () => {
+      expect(rules.minLength3('4')).toEqual('Please enter at least 3 characters');
+    });
+  });
+
+  describe('onlyAlphaNumeric', () => {
+    it('should return undefined for onlyAlphaNumeric', () => {
+      expect(rules.onlyAlphaNumeric('456')).toBeUndefined();
+    });
+    it('should return Invalid characters', () => {
+      expect(rules.onlyAlphaNumeric('4ds4&')).toEqual('Invalid characters');
+    });
+  });
+
+  describe('invalidCharacters', () => {
+    it('should return undefined for invalidCharacters', () => {
+      expect(rules.invalidCharacters('456')).toBeUndefined();
+    });
+    it('should return Invalid characters', () => {
+      expect(rules.invalidCharacters('|/&')).toEqual('Invalid characters');
+    });
+  });
+
+  describe('numberDashesOnly', () => {
+    it('should return undefined for numberDashesOnly', () => {
+      expect(rules.numberDashesOnly('456')).toBeUndefined();
+    });
+    it('should return Only numbers and dashes allowed', () => {
+      expect(rules.numberDashesOnly('|/&')).toEqual('Only numbers and dashes allowed');
+    });
+  });
+
+  describe('numbersOnly', () => {
+    it('should return undefined for numbersOnly', () => {
+      expect(rules.numbersOnly('456')).toBeUndefined();
+    });
+    it('should return Not a valid zip code', () => {
+      expect(rules.numbersOnly('|/&')).toEqual('Not a valid zip code');
+    });
+  });
+
+  describe('date', () => {
+    it('should return undefined when value is not undefined', () => {
+      const ruleArray = combineRules(['date'], { min: '12-12-2005', max: '12-12-2099' });
       expect(ruleArray[0].length).toEqual(1);
     });
   });

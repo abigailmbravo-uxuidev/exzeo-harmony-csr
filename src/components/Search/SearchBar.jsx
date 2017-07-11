@@ -1,43 +1,58 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
+import localStorage from 'localStorage';
 import { connect } from 'react-redux';
 import { reduxForm, Form, Field, propTypes, getFormSyncErrors } from 'redux-form';
 import ReactTooltip from 'react-tooltip';
-
+import _ from 'lodash';
 import Rules from '../Form/Rules';
+import SelectField from '../Form/inputs/SelectField';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as errorActions from '../../actions/errorActions';
 
 const userTasks = {
   handleSearchBarSubmit: 'search'
 };
 
-const handleSearchBarSubmit = (data, dispatch, props) => {
+const handleInitialize = () => ({ searchType: 'quote' });
+
+export const handleSearchBarSubmit = (data, dispatch, props) => {
   const workflowId = props.appState.instanceId;
   const taskName = userTasks.handleSearchBarSubmit;
+  const modelName = props.appState.modelName;
   const taskData = {
     firstName: (encodeURIComponent(data.firstName) !== 'undefined' ? encodeURIComponent(data.firstName) : ''),
     lastName: (encodeURIComponent(data.lastName) !== 'undefined' ? encodeURIComponent(data.lastName) : ''),
     address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(data.address) : ''),
     quoteNumber: (encodeURIComponent(data.quoteNumber) !== 'undefined' ? encodeURIComponent(data.quoteNumber) : ''),
+    policyNumber: (encodeURIComponent(data.policyNumber) !== 'undefined' ? encodeURIComponent(data.policyNumber) : ''),
     zip: (encodeURIComponent(data.zip) !== 'undefined' ? encodeURIComponent(data.zip) : ''),
-    searchType: props.searchType
+    quoteState: (encodeURIComponent(data.quoteState) !== 'undefined' ? encodeURIComponent(data.quoteState) : ''),
+    searchType: props.fieldValues.searchType
   };
-  console.log('SEARCH DATA: ', taskData);
+
+  localStorage.setItem('lastSearchData', JSON.stringify(taskData));
+
+
+  props.actions.errorActions.clearAppError();
+  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
+
   // we need to make sure the active task is search otherwise we need to reset the workflow
-  if (props.tasks[props.appState.modelName].data.activeTask.name !== userTasks.handleSearchBarSubmit) {
+  if (props.tasks[modelName].data.activeTask && (props.tasks[modelName].data.activeTask.name !== userTasks.handleSearchBarSubmit)) {
     const completeStep = {
       stepName: taskName,
       data: taskData
     };
     props.actions.cgActions.moveToTaskAndExecuteComplete(props.appState.modelName, workflowId, taskName, completeStep);
   } else {
-    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
-    props.actions.cgActions.completeTask(props.appState.modelName, workflowId, taskName, taskData);
+    props.actions.appStateActions.setAppState(modelName, workflowId, { ...props.appState.data, submitting: true });
+    props.actions.cgActions.completeTask(modelName, workflowId, taskName, taskData);
   }
 };
 
-const validate = (values) => {
+export const validate = (values) => {
   const errors = {};
   if (values.firstName) {
     const onlyAlphaNumeric = Rules.onlyAlphaNumeric(values.firstName);
@@ -60,28 +75,31 @@ const validate = (values) => {
     }
   }
 
+  if (values.policyNumber) {
+    const numberDashesOnly = Rules.numberDashesOnly(values.policyNumber);
+    if (numberDashesOnly) {
+      errors.policyNumber = numberDashesOnly;
+    }
+  }
+
   if (values.zip) {
     const onlyAlphaNumeric = Rules.onlyAlphaNumeric(values.zip);
     if (onlyAlphaNumeric) {
       errors.zip = onlyAlphaNumeric;
     }
   }
-
   if (values.address) {
     const required = Rules.required(values.address);
     const invalidCharacters = Rules.invalidCharacters(values.address);
-    if (invalidCharacters) {
-      errors.address = invalidCharacters;
-    }
     if (required) {
       errors.address = required;
+    } else if (invalidCharacters) {
+      errors.address = invalidCharacters;
     }
   }
 
   return errors;
 };
-
-const setIsRetrieve = () => window.location.pathname === '/quote/retrieve';
 
 const getErrorToolTip = (formErrors, fieldName) => {
   const errorFieldName = `error${fieldName}`;
@@ -106,21 +124,50 @@ const generateField = (name, placeholder, labelText, formErrors, formGroupCss) =
   return field;
 };
 
+const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
+
 const SearchForm = (props) => {
   const {
+    questions,
     handleSubmit,
     formErrors,
-    isRetrieve
+    fieldValues
   } = props;
-  if (isRetrieve) {
-    return (
-      <Form id="SearchBar" onSubmit={handleSubmit(handleSearchBarSubmit)} noValidate>
-        <div className="search-input-wrapper">
-          {generateField('firstName', 'First Name Search', 'First Name', formErrors, 'first-name-search')}
-          {generateField('lastName', 'Last Name Search', 'Last Name', formErrors, 'last-name-search')}
-          {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
-          {generateField('zip', 'Zip Search', 'Zip', formErrors, 'zip-search')}
-          {generateField('quoteNumber', 'Quote No Search', 'Quote Number', formErrors, 'quote-no-search')}        
+
+  const clearForm = (event, newValue, previousValue) => {
+    const modelName = props.appState.modelName;
+    const data = props.tasks[modelName].data;
+
+    props.reset(props.form);
+    props.actions.cgActions.clearSearchResults(modelName, data);
+    props.actions.errorActions.clearAppError();
+  };
+
+  return (
+    <Form id="SearchBar" onSubmit={handleSubmit(handleSearchBarSubmit)} noValidate>
+      <div className="search-input-wrapper">
+        <div className="form-group search-context">
+          <SelectField
+            name="searchType" component="select" styleName={''} label="Search Context" validations={['required']}
+            onChange={clearForm}
+            answers={[
+              {
+                answer: 'address',
+                label: 'New Quote'
+              },
+              {
+                answer: 'quote',
+                label: 'Quote Search'
+              },
+              {
+                answer: 'policy',
+                label: 'Policy Search'
+              }
+            ]}
+          />
+        </div>
+        {fieldValues.searchType === 'address' && <div className="search-inputs fade-in">
+          {generateField('address', 'Property Address Search', 'Property Address', formErrors, '')}
           <button
             className="btn btn-success multi-input"
             type="submit"
@@ -130,22 +177,50 @@ const SearchForm = (props) => {
             <i className="fa fa-search" />Search
           </button>
         </div>
-      </Form>
-    );
-  }
+        }
+        {fieldValues.searchType === 'quote' && <div className="search-inputs fade-in">
 
-  return (
-    <Form id="SearchBar" onSubmit={handleSubmit(handleSearchBarSubmit)} noValidate>
-      <div className="search-input-wrapper">
-        {generateField('address', 'Search for Property Address', 'Property Address', formErrors, '')}
-        <button
-          className="btn btn-success multi-input"
-          type="submit"
-          form="SearchBar"
-          disabled={props.appState.data.submitting || formErrors}
-        >
-          <i className="fa fa-search" />Search
-        </button>
+          {generateField('firstName', 'First Name Search', 'First Name', formErrors, 'first-name-search')}
+          {generateField('lastName', 'Last Name Search', 'Last Name', formErrors, 'last-name-search')}
+          {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
+          {generateField('quoteNumber', 'Quote No Search', 'Quote Number', formErrors, 'quote-no-search')}
+          <div className="form-group search-context">
+            <SelectField
+              name="quoteState" component="select" styleName={''} label="Quote State"
+              onChange={clearForm}
+              answers={getAnswers('quoteState', questions)}
+            />
+          </div>
+
+          <button
+            className="btn btn-success multi-input"
+            type="submit"
+            form="SearchBar"
+            disabled={props.appState.data.submitting || formErrors}
+          >
+            <i className="fa fa-search" />Search
+          </button>
+        </div>
+        }
+
+        {fieldValues.searchType === 'policy' && <div className="search-inputs fade-in">
+
+          {generateField('firstName', 'First Name Search', 'First Name', formErrors, 'first-name-search')}
+          {generateField('lastName', 'Last Name Search', 'Last Name', formErrors, 'last-name-search')}
+          {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
+          {generateField('policyNumber', 'Policy No Search', 'Policy Number', formErrors, 'policy-no-search')}
+
+          <button
+            className="btn btn-success multi-input"
+            type="submit"
+            form="SearchBar"
+            disabled={props.appState.data.submitting || formErrors}
+          >
+            <i className="fa fa-search" />Search
+          </button>
+        </div>
+        }
+
       </div>
     </Form>
   );
@@ -174,19 +249,25 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   formErrors: getFormSyncErrors('SearchBar')(state),
-  isRetrieve: setIsRetrieve(),
-  searchType: setIsRetrieve() ? 'quote' : 'address'
+  fieldValues: _.get(state.form, 'SearchBar.values', {}),
+  searchType: state.appState.data.searchType,
+  initialValues: handleInitialize(state),
+  error: state.error,
+  cleanForm: state.pristine,
+  questions: state.questions
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
     cgActions: bindActionCreators(cgActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
+    appStateActions: bindActionCreators(appStateActions, dispatch),
+    errorActions: bindActionCreators(errorActions, dispatch)
   }
 });
 
 const searchBarForm = reduxForm({
   form: 'SearchBar',
+  enableReinitialize: true,
   validate
 })(SearchBar);
 

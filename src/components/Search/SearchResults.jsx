@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -6,26 +7,25 @@ import moment from 'moment';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 
-const didNotFindAddressHint = (props) => {
-  const dontSeeAddress = !props.appState.data.dontSeeAddress;
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { dontSeeAddress });
-}
+export const SearchResults = (props) => {
+  const model = props.tasks[props.appState.modelName] || {};
+  const previousTask = model.data && model.data.previousTask ? model.data.previousTask : {};
+  const activeTask = model.data && model.data.activeTask ? model.data.activeTask : {};
 
-const SearchResults = (props) => {
-  if (
-    props.tasks[props.appState.modelName] &&
-    props.tasks[props.appState.modelName].data.previousTask &&
-    props.tasks[props.appState.modelName].data.previousTask.name === 'searchAddress' &&
-    props.tasks[props.appState.modelName].data.activeTask.name !== 'askToSearchAgain'
-  ) {
-    const addresses = props.tasks[props.appState.modelName].data.previousTask.value.result.IndexResult;
+  if (previousTask && previousTask.name === 'searchAddress' && activeTask.name !== 'askToSearchAgain') {
+    const addresses = previousTask.value.result.IndexResult;
     return (
       <div>
-        <ul className="results result-cards">
+        <ul id="property-search-results" className="results result-cards property-search-results">
           {addresses
             ? addresses.map((address, index) => (
               <li id={address.id} key={index}>
-                <a onClick={() => props.handleSelectAddress(address, props)} tabIndex="-1">
+
+                {/* <div>
+                    <button className="row" onClick={() => props.handleSelectAddress(address, props)} tabIndex="-1">Open New Tab</button>
+                  </div>*/}
+
+                <a id={address.physicalAddress.address1} aria-label={address.physicalAddress.address1} className={address.physicalAddress.address1} value={address.physicalAddress.address1} onClick={() => props.handleNewTab(address, props)} tabIndex="-1">
                   <i className="card-icon fa fa-map-marker" />
                   <section>
                     <h4>{address.physicalAddress.address1}</h4>
@@ -36,63 +36,115 @@ const SearchResults = (props) => {
               </li>
             ))
             : null}
+          <p><small><strong>TIP:</strong> If you don't see your address in the list provided, try entering less address information to see if that improves your search results. Please note, at this time we are only writing single family dwellings in the state of Florida. If you still have problems finding an address, please <a href="tel:888-210-5235"><strong>call us</strong></a> and one of our representatives will be glad to help you.</small></p>
         </ul>
-    
-        <div className="card address-not-found">
-          <a onClick={() => didNotFindAddressHint(props)} className="btn btn-secondary"><i className="fa fa-map-marker"></i> Don't see your address?</a>
-          { props.appState.data.dontSeeAddress && <div>
-            <p>If you don't see your address in the list provided, try entering less
-              address information to see if that improves your search results. Please note, at this
-              time we are only writing single family dwellings in the state of Florida.</p>
-            <p>If you still have problems finding an address, please <a href="tel:888-210-5235"><strong>call us</strong></a>
-              and one of our representatives will be glad to help you.</p>
-          </div>
-          }
-        </div>
       </div>
     );
   }
+
+  if (previousTask.value && activeTask.name === 'chooseQuote') {
+    const quoteResults = previousTask.value.result.quotes;
+
+    return (
+      <div className="quote-list">
+        {
+          quoteResults && quoteResults.map((quote, index) => <div id={quote._id} className="card" key={index}>
+            <div className="icon-name">
+              <i className="card-icon fa fa-user-circle" />
+              <div className="card-name">
+                <h5>{quote.policyHolders[0] && `${quote.policyHolders[0].firstName}`} {quote.policyHolders[0] && `${quote.policyHolders[0].lastName}`}</h5>
+              </div>
+            </div>
+
+            {/* <div>
+                <button className="row" onClick={() => props.handleSelectQuote(quote, props)} tabIndex="-1">Open New Tab</button>
+              </div>*/}
+
+            <section>
+              <ul id="quote-search-results" className="quote-search-results">
+                <li className="header">
+                  <span className="quote-no">Quote No.</span>
+                  <span className="property-address">Property Address</span>
+                  <span className="quote-state">Quote State</span>
+                  <span className="effctive-date">Effective Date</span>
+                  <span className="started-on">Started On</span>
+                  <span className="premium">Premium</span>
+                </li>
+                <li>
+                  <a id={quote.quoteNumber + quote.property.physicalAddress.address1} className={`${quote.quoteNumber + quote.property.physicalAddress.address1} row`} aria-label={quote.quoteNumber + quote.property.physicalAddress.address1} value={quote.quoteNumber + quote.property.physicalAddress.address1} onClick={() => props.handleNewTab(quote, props)} tabIndex="-1">
+                    <span className="quote-no">{quote.quoteNumber}</span>
+                    <span className="property-address">{`${quote.property.physicalAddress.address1} ${quote.property.physicalAddress.city}, ${quote.property.physicalAddress.state} ${quote.property.physicalAddress.zip}`}</span>
+                    <span className="quote-state">{quote.quoteState}</span>
+                    <span className="effctive-date">{moment.utc(quote.effectiveDate).format('YYYY-MM-DD')}</span>
+                    <span className="started-on">{moment.utc(quote.createdAt).format('YYYY-MM-DD')}</span>
+                    <span className="premium">$ {quote.rating ? quote.rating.totalPremium : '-'}</span>
+                  </a>
+                </li>
+              </ul>
+            </section>
+          </div>)
+        }
+      </div>
+    );
+  }
+
   if (
     props.tasks[props.appState.modelName] &&
     props.tasks[props.appState.modelName].data.activeTask &&
-    props.tasks[props.appState.modelName].data.activeTask.name === 'chooseQuote'
+    props.tasks[props.appState.modelName].data.activeTask.name === 'choosePolicy'
   ) {
-    const quoteResults = props.tasks[props.appState.modelName].data.previousTask.value.result;
-    const quote = quoteResults[0];
-    return (quote ? (
-      <div className="quote-list">
-              {/*add iteration of cards within this div*/}
-              <div id={quote._id} className="card">
-                <div className="icon-name">
-                  <i className="card-icon fa fa-user-circle" />
-                  <h4>{quote.policyHolders[0] && `${quote.policyHolders[0].firstName} ${quote.policyHolders[0].lastName}`}</h4>
-                </div>
-                <section>
-                  <ul>
-                    <li className="header">
-                      <span className="quote-no">Quote No.</span>
-                      <span className="property-address">Property Address</span>
-                      <span className="quote-state">Quote State</span>
-                      <span className="effctive-date">Effective Date</span>
-                      <span className="started-on">Started On</span>
-                      <span className="premium">Premium</span>
-                    </li>
-                    <li>
-                      <a onClick={() => props.handleSelectQuote(quote, props)} tabIndex="-1" className="quote-no">{quote.quoteNumber}</a>
-                      <span className="property-address">{`${quote.property.physicalAddress.address1}
-                        ${quote.property.physicalAddress.city}, ${quote.property.physicalAddress.state}
-                        ${quote.property.physicalAddress.zip}
-                        `}</span>
-                      <span className="quote-state">{quote.quoteState}</span>
-                      <span className="effctive-date">{moment.utc(quote.effectiveDate).format('YYYY-MM-DD')}</span>
-                      <span className="started-on">{moment.utc(quote.createdAt).format('YYYY-MM-DD')}</span>
-                      <span className="premium">$ [{quote.rating ? quote.rating.totalPremium : '-'}]</span>
-                    </li>
-                  </ul>
-                </section>
+    const policyResults = props.tasks[props.appState.modelName].data.previousTask ? props.tasks[props.appState.modelName].data.previousTask.value.policies : [];
+
+    return (
+      <div className="policy-list">
+        {
+          policyResults && policyResults.map((policy, index) => <div id={policy._id} className="card" key={index}>
+            <div className="icon-name">
+              <i className="card-icon fa fa-user-circle" />
+              <div className="card-name">
+                <h5>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName}`} {policy.policyHolders[0] && `${policy.policyHolders[0].lastName}`}</h5>
               </div>
+            </div>
+            {/* <div>
+                <button className="row" onClick={() => props.handleSelectPolicy(policy, props)}  tabIndex="-1">Open New Tab</button>
+              </div>*/}
+            <section>
+              <ul id="policy-search-results" className="policy-search-results">
+                <li className="header">
+                  <span className="policy-no">Policy No.</span>
+                  <span className="property-address">Property Address</span>
+                  <span className="quote-state">Policy Status</span>
+                  <span className="effctive-date">Effective Date</span>
+                  {/* <span className="started-on">Started On</span>
+                  <span className="premium">Premium</span>
+                  */}
+                </li>
+                <li>
+                  <a id={policy.policyNumber + policy.property.physicalAddress.address1} className={`${policy.policyNumber + policy.property.physicalAddress.address1} row`} aria-label={policy.policyNumber + policy.property.physicalAddress.address1} value={policy.policyNumber + policy.property.physicalAddress.address1} onClick={() => props.handleNewTab(policy, props)} tabIndex="-1">
+                    <span className="quote-no">{policy.policyNumber}</span>
+                    <span className="property-address">{`${policy.property.physicalAddress.address1}
+                        ${policy.property.physicalAddress.city}, ${policy.property.physicalAddress.state}
+                        ${policy.property.physicalAddress.zip}
+                        `}</span>
+                    <span className="quote-state">{policy.quoteState}</span>
+                    <span
+                      className="effctive-date"
+                    >{moment.utc(policy.effectiveDate).format('YYYY-MM-DD')}</span>
+                    {/* <span
+                      className="started-on"
+                    >{moment.utc(policy.createdAt).format('YYYY-MM-DD')}</span>
+                    <span
+                      className="premium"
+                    >$ {policy.rating ? policy.rating.totalPremium : '-'}</span>
+                  */}
+                  </a>
+                </li>
+              </ul>
+            </section>
+          </div>)
+        }
       </div>
-    ) : null);
+    );
   }
 
   return <span />;
@@ -107,8 +159,10 @@ SearchResults.propTypes = {
     })
   }),
   tasks: PropTypes.shape(),
-  handleSelect: PropTypes.func,
-  handleSelectQuote: PropTypes.func
+  handleSelectAddress: PropTypes.func,
+  handleSelectQuote: PropTypes.func,
+  handleNewQuote: PropTypes.func,
+  handleSelectPolicy: PropTypes.func
 };
 
 const mapStateToProps = state => ({

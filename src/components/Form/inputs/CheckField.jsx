@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import FieldHint from './FieldHint';
 import reduxFormField from './reduxFormField';
@@ -19,7 +20,7 @@ export const CheckInput = ({
   } = input;
 
   const formGroupStyles = classNames(
-    input.value ? 'active' : 'inactive' ,
+    input.value ? 'active' : 'inactive',
     'form-group',
     { name },
     { disabled },

@@ -9,13 +9,14 @@ import { client } from './reducers';
 import configureStore from './store/configureStore';
 
 import '../node_modules/font-awesome/css/font-awesome.min.css';
-import './css/typtap-theme.css';
+import './css/base.css';
 
 const store = configureStore();
 persistStore(store, { storage: asyncSessionStorage });
 
 const holder = document.getElementById('root');
 render(
-  <Provider client={client} store={store}><Routes store={store} /></ Provider>,
+  <Provider client={client} store={store}><Routes store={store} />
+  </Provider>,
   holder
 );

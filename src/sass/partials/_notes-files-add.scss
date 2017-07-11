@@ -1,0 +1,198 @@
+.new-note-file {
+  //display: none;
+  position: absolute;
+  z-index: 99999;
+  right: 2.5rem;
+  bottom: 0;
+  width: 40%;
+  background: $white;
+  box-shadow: 0 0 20px 0 rgba($black, .25);
+  @include transition(all .1s ease-in-out);
+
+  &.minimize {
+    bottom: -396px;
+
+    .controls {
+      .btn-icon {
+        i.fa-window-minimize {
+          &:before {
+            content: "\f2d0";
+          }
+        }
+      }
+    }
+  }
+
+  .title-bar {
+    display: flex;
+    flex-direction: row;
+    background: $bright-blue-darken-04;
+    flex-wrap: nowrap;
+
+    * {
+      color: $white;
+    }
+
+    .btn {
+      padding: 0 ($padding/2);
+
+      &:focus {
+        outline: none;
+        outline-offset: 0;
+        background-color: rgba($bright-blue, .1);
+      }
+    }
+
+    .title {
+      padding: $padding ($padding*2);
+      cursor: pointer;
+      order: 0;
+      flex: 1 1 auto;
+      align-self: auto;
+    }
+
+    .controls {
+      display: flex;
+      padding: $padding ($padding*2) $padding 0;
+      font-size: $font-size-h4;
+      order: 0;
+      flex: 0 1 auto;
+      align-self: auto;
+
+      .btn {
+        margin-left: $padding;
+      }
+    }
+  }
+
+  .mainContainer {
+    .content {
+      padding: $padding ($padding*2) ($padding*2);
+
+      .flex-contents {
+        display: flex;
+        overflow-y: auto;
+        flex-direction: column;
+        height: 320px;
+        margin: 0 0 ($padding*2);
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-content: stretch;
+        align-items: stretch;
+
+        select {
+          margin: 0 0 ($padding*2);
+          order: 0;
+          flex: 0 0 auto;
+          align-self: auto;
+        }
+
+        textarea {
+          margin: 0 0 ($padding*2);
+          color: $warm-gray-08;
+          border: solid 1px $warm-gray-04;
+          order: 0;
+          flex: 1 1 240px;
+          align-self: auto;
+        }
+
+        .drag-n-drop {
+          max-height: 180px;
+          padding: $padding;
+          text-align: center;
+          border: dashed $warm-gray-04 2px;
+          border-radius: $border-radius;
+          order: 0;
+          flex: 1 1 auto;
+          align-self: auto;
+        }
+      }
+
+      .buttons {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-content: stretch;
+        align-items: flex-start;
+
+        div {
+          order: 0;
+          flex: 1 1 auto;
+          align-self: auto;
+        }
+
+        .btn-secondary {
+          margin: 0 ($padding*2) 0 0;
+        }
+      }
+    }
+
+    .content.state-initial {}
+
+    .content.state-upload {
+      .flex-contents {
+        .drag-n-drop {
+          max-height: none;
+          padding: 120px 20px 0;
+          font-size: $font-size-h3;
+        }
+      }
+
+      a.btn-secondary {
+        margin: 0;
+      }
+    }
+
+    .content.state-finalize {
+      .flex-contents {
+        .drag-n-drop {
+          overflow: scroll;
+          border: solid 1px $warm-gray-04;
+
+          ul {
+            padding: 0;
+            list-style: none;
+
+            li {
+              display: flex;
+              flex-direction: row;
+              margin: $padding 0;
+              flex-wrap: nowrap;
+              justify-content: flex-start;
+              align-content: stretch;
+              align-items: flex-start;
+
+              > * {
+                order: 0;
+                flex: 0 1 auto;
+                align-self: auto;
+              }
+
+              > span {
+                text-align: left;
+                color: $warm-gray-14;
+                order: 0;
+                flex: 1 1 auto;
+                align-self: auto;
+              }
+
+              > select {
+                width: 36%;
+                margin: 0 $padding;
+              }
+
+              > i {
+                color: $red;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.new-note-files {
+  @include transition(all .2s ease-in-out);
+}

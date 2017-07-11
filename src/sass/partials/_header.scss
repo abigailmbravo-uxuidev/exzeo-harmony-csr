@@ -1,0 +1,123 @@
+header {
+  display: flex;
+  width: 100%;
+  padding: $padding $padding*2;
+  border-bottom: 2px solid $white;
+  background: $bright-blue-darken-04;
+  justify-content: center;
+  flex-shrink: 0;
+  flex-basis: 3.375rem;
+
+  div[role="banner"] {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    height: 2.25rem;
+
+    .btn-bars {
+      display: none;
+    }
+
+    .btn-ellipsis-v {
+      display: none;
+    }
+
+    > .logo {
+      display: block;
+      width: 10rem;
+      flex-basis: 10rem;
+      flex-shrink: 0;
+    }
+
+    > nav {
+      position: relative;
+      top: 0;
+      right: 0;
+      display: flex;
+      flex-direction: row;
+      width: auto;
+      padding: 0;
+      border-width: 0;
+      border-top-width: 0;
+      background-color: transparent;
+      box-shadow: none;
+      flex: 1;
+      justify-content: flex-end;
+      align-items: center;
+
+      > a {
+        display: flex;
+        height: 3.375rem;
+        margin-left: 1rem;
+        padding: 0 $padding;
+        white-space: nowrap;
+        text-decoration: none;
+        color: $bright-blue;
+        font-size: $font-size-h6;
+        font-weight: $font-weight-bold;
+        justify-content: center;
+        align-items: center;
+        @include transition(all .2s ease-in-out);
+
+        &:hover {
+          text-decoration: none;
+          color: $bright-blue-lighten-01;
+        }
+
+        &.active {
+          padding-top: 5px;
+          cursor: default;
+          color: $white;
+          color: $white;
+          border-bottom: 5px solid $white;
+
+          &:hover {
+            color: $white;
+          }
+        }
+
+        &.btn {
+          height: 2rem;
+
+          &:hover {
+            color: $white;
+          }
+
+          &.link-phone {
+            height: 3.375rem;
+
+            &:hover {
+              color: $bright-blue-lighten-02;
+            }
+          }
+        }
+      }
+
+      .user-name {
+        margin: 0 ($padding/2) 0 ($padding*4);
+        color: rgba($white, .5);
+        font-size: $font-size-sm;
+      }
+
+      > button {
+        i {
+          margin: 0;
+          color: $white;
+          @include transition(all .2s ease-in-out);
+        }
+
+        span {
+          +i {
+            margin: 0 0 0 $padding;
+          }
+        }
+
+        &:hover {
+          i {
+            color: $bright-blue-lighten-01;
+          }
+        }
+      }
+    }
+  }
+}

@@ -8,11 +8,27 @@ import ConnectedApp, { Base } from './Base';
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 
+function wrapWithContext(context, contextTypes, children) {
+  const wrapperWithContext = React.createClass({ //eslint-disable-line
+    childContextTypes: contextTypes,
+    getChildContext() { return context; },
+    render() { return React.createElement('div', null, children); }
+  });
+
+  return React.createElement(wrapperWithContext);
+}
+
 describe('Testing Base component', () => {
   it('should test props and render', () => {
     const initialState = {};
     const store = mockStore(initialState);
     const props = {
+      auth: {
+        userProfile: {
+
+        },
+        isAuthenticated() { return true; }
+      },
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,
@@ -23,7 +39,10 @@ describe('Testing Base component', () => {
       },
       ...propTypes
     };
-    const wrapper = shallow(<Base {...props} />);
+
+    const context = { router: {} };
+    const contextTypes = { router: React.PropTypes.object };
+    const wrapper = wrapWithContext(context, contextTypes, <Base {...props} />, React);
     expect(wrapper);
   });
 
@@ -44,6 +63,12 @@ describe('Testing Base component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      auth: {
+        userProfile: {
+
+        },
+        isAuthenticated() { return true; }
+      },
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,

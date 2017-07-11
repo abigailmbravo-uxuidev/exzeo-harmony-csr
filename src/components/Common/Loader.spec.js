@@ -1,10 +1,10 @@
-import React from 'react';
-import renderer from 'react-test-renderer';
-import Loader from './Loader';
+  import React from 'react';
+  import { shallow } from 'enzyme';
+  import Loader from './Loader';
 
-it('renders without crashing', () => {
-  const tree = renderer.create(
-    <Loader />
-  ).toJSON();
-  expect(tree).toMatchSnapshot();
-});
+  describe('Testing Loader component', () => {
+    it('renders Loader', () => {
+      const wrapper = shallow(<Loader />);
+      expect(wrapper);
+    });
+  });

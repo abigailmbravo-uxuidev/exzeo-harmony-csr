@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as errorActions from '../../actions/errorActions';
@@ -6,7 +7,9 @@ import * as errorActions from '../../actions/errorActions';
 export class ClearError extends React.Component {
   constructor(props) {
     super(props);
-    props.actions.errorActions.dispatchClearAppError();
+    if (props && props.actions && props.actions.errorActions) {
+      props.actions.errorActions.dispatchClearAppError();
+    }
   }
   render() {
     return <span />;

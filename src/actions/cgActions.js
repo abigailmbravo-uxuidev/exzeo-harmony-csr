@@ -39,6 +39,18 @@ export const complete = (modelName, workflowData) => {
   return stateObj;
 };
 
+export const clearSearchResults = (modelName, workflowData) => {
+  if (!workflowData.previousTask) return { type: types.CLEAR_SEARCH_RESULTS };
+
+  const newWorkflowData = workflowData;
+  delete newWorkflowData.previousTask;
+
+  return {
+    type: types.CLEAR_SEARCH_RESULTS,
+    workflowData: newWorkflowData
+  };
+};
+
 // helper function to check cg errors
 const checkCGError = (responseData) => {
   if (responseData.activeTask && responseData.activeTask.link && responseData.activeTask.link === 'error') {
@@ -46,22 +58,49 @@ const checkCGError = (responseData) => {
   }
 };
 
-const handleError = (dispatch, error) => {
-  let message = 'An error happened';
-  console.log(error.response);
-  if (error.response) {
-    // The request was made, but the server responded with a status code
-    // that falls out of the range of 2xx
-    console.log(error.response.data);
-    console.log(error.response.status);
-    console.log(error.response.headers);
-    message = error.response.data.error.message;
-  }
-  // Something happened in setting up the request that triggered an Error
-  message = (error.message) ? error.message : message;
+const handleError = (dispatch, modelName, workflowId, error) => {
+  const message = error.response && error.response.data && error.response.data.error
+    ? error.response.data.error.message
+    : 'There was an error.';
   // dispatch the error
-  return dispatch(errorActions.setAppError({ message }));
+  return dispatch(batchActions([
+    errorActions.setAppError({ message }),
+    appStateActions.setAppState(modelName, workflowId, { submitting: false })
+  ]));
 };
+
+
+export const startWorkflowWithData = (modelName, data, dispatchAppState = true) => (dispatch) => {
+  const axiosConfig = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: {
+      modelName,
+      data
+    },
+    url: `${process.env.REACT_APP_API_URL}/cg/start`
+  };
+
+  return Promise.resolve(axios(axiosConfig))
+    .then((response) => {
+      const responseData = response.data.data;
+      // check to see if the cg has returned an error as an ok
+      checkCGError(responseData);
+      const instanceId = responseData.modelInstanceId;
+      if (dispatchAppState) {
+        return dispatch(batchActions([start(modelName, responseData),
+          errorActions.clearAppError(),
+          appStateActions.setAppState(modelName, instanceId, {})
+        ]));
+      }
+      dispatch(errorActions.clearAppError());
+      return dispatch(start(modelName, responseData));
+    })
+    .catch(error => handleError(dispatch, error));
+};
+
 
 export const startWorkflow = (modelName, data, dispatchAppState = true) => (dispatch) => {
   const axiosConfig = {
@@ -91,7 +130,7 @@ export const startWorkflow = (modelName, data, dispatchAppState = true) => (disp
       dispatch(errorActions.clearAppError());
       return dispatch(start(modelName, responseData));
     })
-    .catch(error => handleError(dispatch, error));
+    .catch(error => handleError(dispatch, modelName, null, error));
 };
 
 // export const activeTasks = (modelName, workflowId) => (dispatch) => {
@@ -128,6 +167,7 @@ export const completeTask = (modelName, workflowId, stepName, data, dispatchAppS
       data
     }
   };
+
   return axios(axiosConfig)
     .then((response) => {
       const responseData = response.data.data;
@@ -142,7 +182,7 @@ export const completeTask = (modelName, workflowId, stepName, data, dispatchAppS
       }
       return dispatch(complete(modelName, responseData));
     })
-    .catch(error => handleError(dispatch, error));
+    .catch(error => handleError(dispatch, modelName, workflowId, error));
 };
 
 export const batchCompleteTask = (modelName, workflowId, stepsWithData, dispatchAppState = true) => (dispatch) => {
@@ -176,7 +216,7 @@ export const batchCompleteTask = (modelName, workflowId, stepsWithData, dispatch
       }
       dispatch(complete(modelName, responseData));
     })
-    .catch(error => handleError(dispatch, error));
+    .catch(error => handleError(dispatch, modelName, workflowId, error));
 };
 
 export const moveToTask = (modelName, workflowId, stepName, dispatchAppState = true) => (dispatch) => {
@@ -206,7 +246,7 @@ export const moveToTask = (modelName, workflowId, stepName, dispatchAppState = t
       }
       return dispatch(complete(modelName, responseData));
     })
-    .catch(error => handleError(dispatch, error));
+    .catch(error => handleError(dispatch, modelName, workflowId, error));
 };
 
 export const moveToTaskAndExecuteComplete = (modelName, workflowId, stepName, completeStep, dispatchAppState = true) => (dispatch) => {
@@ -221,12 +261,13 @@ export const moveToTaskAndExecuteComplete = (modelName, workflowId, stepName, co
       stepName
     }
   };
+  let newInstanceId = '';
   return axios(axiosConfig)
     .then((response) => {
       const responseData = response.data.data;
       // check to see if the cg has returned an error as an ok
       checkCGError(responseData);
-      const instanceId = responseData.modelInstanceId;
+      newInstanceId = responseData.modelInstanceId;
       const axiosConfig2 = {
         method: 'POST',
         headers: {
@@ -234,7 +275,7 @@ export const moveToTaskAndExecuteComplete = (modelName, workflowId, stepName, co
         },
         url: `${process.env.REACT_APP_API_URL}/cg/complete`,
         data: {
-          workflowId: instanceId,
+          workflowId: newInstanceId,
           stepName: completeStep.stepName,
           data: completeStep.data
         }
@@ -247,12 +288,12 @@ export const moveToTaskAndExecuteComplete = (modelName, workflowId, stepName, co
       checkCGError(responseData);
       if (dispatchAppState) {
         return dispatch(batchActions([complete(modelName, responseData),
-          appStateActions.setAppState(modelName, workflowId, {
+          appStateActions.setAppState(modelName, newInstanceId, {
             submitting: false
           })
         ]));
       }
       return dispatch(complete(modelName, responseData));
     })
-    .catch(error => handleError(dispatch, error));
+    .catch(error => handleError(dispatch, modelName, workflowId, error));
 };
