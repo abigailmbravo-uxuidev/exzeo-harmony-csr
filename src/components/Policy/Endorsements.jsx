@@ -1096,15 +1096,15 @@ export class Endorsements extends React.Component {
               <div className="flex-parent">
                 <div className="form-group">
                   <label>New End. Amount</label>
-                  <input type="numeric" onChange={function () {}} value="52" />
+                  <input type="numeric" onChange={function () {}} value="" />
                 </div>
                 <div className="form-group">
-                  <label>New End. Premium</label>
-                  <input type="numeric" onChange={function () {}} value="3732" />
+                  <label>New End Premium</label>
+                  <input type="numeric" onChange={function () {}} value="" />
                 </div>
                 <div className="form-group">
                   <label>New Annual Premium</label>
-                  <input type="numeric" onChange={function () {}} value="4711" />
+                  <input type="numeric" onChange={function () {}} value="" />
                 </div>
                 <div className="btn-footer">
                   <button className="btn btn-secondary btn-sm">Cancel</button>
