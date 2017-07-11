@@ -506,6 +506,16 @@
           }
         }
 
+        &.segmented {
+            width: 100%;
+            label {
+                width: 100%;
+                flex: 1 1 auto;
+                margin: 0;
+                text-align: center;
+            }
+        }
+
         > *:nth-child(2) {
           width: 50%;
           flex: 0 1 50%;
