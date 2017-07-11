@@ -11,6 +11,7 @@ import PolicyConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
 import normalizePhone from '../Form/normalizePhone';
 import TextField from '../Form/inputs/TextField';
+import RadioField from '../Form/inputs/RadioField';
 import PhoneField from '../Form/inputs/PhoneField';
 import SelectField from '../Form/inputs/SelectField';
 import CurrencyField from '../Form/inputs/CurrencyField';
@@ -337,7 +338,7 @@ export class Endorsements extends React.Component {
                               label: '$2,500'
                             }
                           ]}
-                        />                                                                                                                                                                                                                                                             </div>
+                        />                                                                                                                                                                                                                                                                                                                                                    </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Hurricane Deductible'} styleName={''} name={'hurricane'} disabled />
                         <SelectField
@@ -375,17 +376,19 @@ export class Endorsements extends React.Component {
                       </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Personal Property Repl Cost'} styleName={''} name={'personalPropertyReplacementCostCoverage'} disabled />
-                        <SelectField
-                          name={'personalPropertyReplacementCostCoverageNew'} label={''} styleName={'billPlan'} onChange={function () {}} answers={[
-                            {
-                              answer: false,
-                              label: 'No'
-                            }, {
-                              answer: true,
-                              label: 'Yes'
-                            }
-                          ]}
-                        />
+                        <div className="flex-child other-coverages-property-replacement-cost">
+                          <RadioField
+                            name={'personalPropertyReplacementCostCoverageNew'} styleName={'billPlan'} label={''} onChange={function () {}} segmented answers={[
+                              {
+                                answer: false,
+                                label: 'No'
+                              }, {
+                                answer: true,
+                                label: 'Yes'
+                              }
+                            ]}
+                          />
+                        </div>
                       </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Ordinance or Law Coverage'} styleName={''} name={'ordinanceOrLaw'} disabled />
@@ -469,48 +472,54 @@ export class Endorsements extends React.Component {
                       </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Burglar Alarm'} styleName={''} name={'burglarAlarm'} disabled />
-                        <SelectField
-                          name={'burglarAlarmNew'} label={''} styleName={''} onChange={function () {}} answers={[
-                            {
-                              answer: false,
-                              label: 'No'
-                            }, {
-                              answer: true,
-                              label: 'Yes'
-                            }
-                          ]}
-                        />
+                        <div className="flex-child discounts-burglar-alarm">
+                          <RadioField
+                            name={'burglarAlarmNew'} styleName={''} label={''} onChange={function () {}} segmented answers={[
+                              {
+                                answer: false,
+                                label: 'No'
+                              }, {
+                                answer: true,
+                                label: 'Yes'
+                              }
+                            ]}
+                          />
+                        </div>
                       </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Fire Alarm'} styleName={''} name={'fireAlarm'} disabled />
-                        <SelectField
-                          name={'fireAlarmNew'} label={''} styleName={''} onChange={function () {}} answers={[
-                            {
-                              answer: false,
-                              label: 'No'
-                            }, {
-                              answer: true,
-                              label: 'Yes'
-                            }
-                          ]}
-                        />
+                        <div className="flex-child discounts-fire-alarm">
+                          <RadioField
+                            name={'fireAlarmNew'} styleName={''} label={''} onChange={function () {}} segmented answers={[
+                              {
+                                answer: false,
+                                label: 'No'
+                              }, {
+                                answer: true,
+                                label: 'Yes'
+                              }
+                            ]}
+                          />
+                        </div>
                       </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Sprinkler'} styleName={''} name={'sprinkler'} disabled />
-                        <SelectField
-                          name={'sprinklerNew'} label={''} styleName={''} onChange={function () {}} answers={[
-                            {
-                              answer: 'N',
-                              label: 'No'
-                            }, {
-                              answer: 'A',
-                              label: 'A'
-                            }, {
-                              answer: 'B',
-                              label: 'B'
-                            }
-                          ]}
-                        />
+                        <div className="flex-child discounts-sprinkler">
+                          <RadioField
+                            name={'sprinklerNew'} label={''} styleName={''} onChange={function () {}} segmented answers={[
+                              {
+                                answer: 'N',
+                                label: 'No'
+                              }, {
+                                answer: 'A',
+                                label: 'A'
+                              }, {
+                                answer: 'B',
+                                label: 'B'
+                              }
+                            ]}
+                          />
+                        </div>
                       </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Bill To'} styleName={''} name={'billToType'} disabled />
@@ -634,21 +643,23 @@ export class Endorsements extends React.Component {
                       </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Secondary Water Resistance (SWR)'} styleName={''} name={'secondaryWaterResistance'} disabled />
-                        <SelectField
-                          label={''}
-                          validations={['required']} name={'secondaryWaterResistanceNew'} styleName={''} onChange={function () {}} answers={[
-                            {
-                              answer: 'Yes',
-                              label: 'Yes'
-                            }, {
-                              answer: 'No',
-                              label: 'No'
-                            }, {
-                              answer: 'Other',
-                              label: 'Other'
-                            }
-                          ]}
-                        />
+                        <div className="form-group-double-element">
+                          <RadioField
+                            label={''}
+                            validations={['required']} name={'secondaryWaterResistanceNew'} styleName={''} onChange={function () {}} segmented answers={[
+                              {
+                                answer: 'Yes',
+                                label: 'Yes'
+                              }, {
+                                answer: 'No',
+                                label: 'No'
+                              }, {
+                                answer: 'Other',
+                                label: 'Other'
+                              }
+                            ]}
+                          />
+                        </div>
                       </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Opening Protection'} styleName={''} name={'openingProtection'} disabled />
@@ -728,20 +739,23 @@ export class Endorsements extends React.Component {
                       </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Wind Borne Debris Region (WBDR)'} styleName={''} name={'windBorneDebrisRegion'} disabled />
-                        <SelectField
-                          validations={['required']} name={'windBorneDebrisRegionNew'} label={''} styleName={''} onChange={function () {}} answers={[
-                            {
-                              answer: 'Yes',
-                              label: 'Yes'
-                            }, {
-                              answer: 'No',
-                              label: 'No'
-                            }, {
-                              answer: 'Other',
-                              label: 'Other'
-                            }
-                          ]}
-                        />
+                        <div className="form-group-double-element">
+                          <RadioField
+                            label={''}
+                            validations={['required']} name={'windBorneDebrisRegionNew'} styleName={''} onChange={function () {}} segmented answers={[
+                              {
+                                answer: 'Yes',
+                                label: 'Yes'
+                              }, {
+                                answer: 'No',
+                                label: 'No'
+                              }, {
+                                answer: 'Other',
+                                label: 'Other'
+                              }
+                            ]}
+                          />
+                        </div>
                       </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Wind Mit Factor'} styleName={''} name={'windMitFactor'} disabled />
