@@ -166,6 +166,41 @@ const updateDependencies = (event, field, dependency, props) => {
 
 export class Endorsements extends React.Component {
 
+  cancelFormSubmit = () => {
+    const { appState, actions } = this.props;
+
+    const workflowId = appState.instanceId;
+
+    actions.appStateActions.setAppState(
+      appState.modelName,
+      appState.instanceId,
+      {
+        ...appState.data,
+        submitting: true
+      });
+
+    const steps = [
+    { name: 'hasUserEnteredData', data: { answer: 'No' } },
+      {
+        name: 'moveTo',
+        data: { key: 'coverage' }
+      }
+    ];
+    actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
+  .then(() => {
+    actions.appStateActions.setAppState(
+      appState.modelName,
+      appState.instanceId,
+      {
+        ...appState.data,
+        selectedLink: 'coverage',
+        activateRedirectLink: '/policy/coverage',
+        activateRedirect: true,
+        submitting: false
+      });
+  });
+  }
+
   render() {
     const endorsements = [
     { date: '03/30/2017', amount: '-$ 85', type: '???' },
@@ -186,7 +221,7 @@ export class Endorsements extends React.Component {
               <a href="#policy" className="btn btn-primary btn-xs">Policyholders</a>
               <a href="#addresses" className="btn btn-primary btn-xs">Addresses</a>
               <a href="#addInt" className="btn btn-primary btn-xs">Additional Interests</a>
-              <a className="btn btn-secondary btn-xs">Cancel</a>
+              <a className="btn btn-secondary btn-xs" onClick={() => this.cancelFormSubmit()}>Cancel</a>
 
             </div>
             <div className="scroll endorsements">
@@ -206,11 +241,11 @@ export class Endorsements extends React.Component {
                       </div>
                       <div className="form-group-double-element">
                         <CurrencyField
-                          validations={['required', 'range']} label={'Dwelling (A)'} styleName={''} name={'dwellingAmount'}
+                          validations={['required']} label={'Dwelling (A)'} styleName={''} name={'dwellingAmount'}
                           min={initialValues.dwellingMin} max={initialValues.dwellingMax} disabled
                         />
                         <CurrencyField
-                          validations={['required', 'range']} styleName={''} name={'dwellingAmountNew'}
+                          validations={['required']} styleName={''} name={'dwellingAmountNew'}
                           min={initialValues.dwellingMin} label={''} max={initialValues.dwellingMax}
                         />
                       </div>
@@ -338,7 +373,7 @@ export class Endorsements extends React.Component {
                               label: '$2,500'
                             }
                           ]}
-                        />                                                                                                                                                                                                                                                                                                                                                    </div>
+                        />                                                                                                                                                                                                                                                                                                                                                                               </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Hurricane Deductible'} styleName={''} name={'hurricane'} disabled />
                         <SelectField
@@ -1121,7 +1156,7 @@ export class Endorsements extends React.Component {
                   <input type="numeric" onChange={function () {}} value="" />
                 </div>
                 <div className="btn-footer">
-                  <button className="btn btn-secondary btn-sm">Cancel</button>
+                  <button className="btn btn-secondary btn-sm" onClick={() => this.cancelFormSubmit()}>Cancel</button>
                   <button className="btn btn-primary btn-sm">Calculate</button>
                 </div>
               </div>
