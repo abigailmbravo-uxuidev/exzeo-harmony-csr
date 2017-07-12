@@ -14,6 +14,8 @@ export const submitNote = (data, dispatch, props) => {
   const noteData = Object.assign({}, 
     data,
     {
+      noteType,
+      number: documentId,
       createdBy:{
         useerId: user.user_id,
         userName: user.username
@@ -21,7 +23,7 @@ export const submitNote = (data, dispatch, props) => {
     }
   );
 
-  props.actions.serviceActions.addNote(documentId, noteType, noteData);
+  props.actions.serviceActions.addNote(noteData);
   props.closeButtonHandler();
 };
 
@@ -43,7 +45,7 @@ const NewNoteFileUploader = (props, { closeButtonHandler }) => {
       "Agent", "Policyholder", "Lienholder", "Claims", "Inspector", "Other"
     ]
   };
-console.log('wang',props)
+
   const contactTypes = props.noteType ? contactTypeOptions[props.noteType] : [];
 
   return (
@@ -59,10 +61,10 @@ console.log('wang',props)
         <Form id="NewNoteFileUploader" onSubmit={props.handleSubmit(submitNote)} noValidate>
           <div className="content state-initial">
             <div className="flex-contents">
-              <select name="contactType" disabled={ !contactTypes.length }>
+              <Field component="select" name="contactType" disabled={ !contactTypes.length }>
                 <option>Select a Contact Type</option>
                 { contactTypes.map(option => <option value={ option } key={ option }>{ option }</option>) }
-              </select>
+              </Field>
               <Field name="noteContent" component="textarea" />
             </div>
             <div className="buttons note-file-footer-button-group">
