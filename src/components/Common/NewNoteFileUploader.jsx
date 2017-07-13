@@ -9,8 +9,21 @@ import * as appStateActions from '../../actions/appStateActions';
 
 
 export const submitNote = (data, dispatch, props) => {
-  const { noteType, documentId } = props;
-  props.actions.serviceActions.addNote(documentId, noteType, data);
+  const { user, noteType, documentId } = props;
+
+  const noteData = Object.assign({}, 
+    data,
+    {
+      noteType,
+      number: documentId,
+      createdBy:{
+        useerId: user.user_id,
+        userName: user.username
+      }
+    }
+  );
+
+  props.actions.serviceActions.addNote(noteData);
   props.closeButtonHandler();
 };
 
@@ -22,47 +35,62 @@ const minimzeButtonHandler = (props) => {
   }
 };
 
-const NewNoteFileUploader = (props, { closeButtonHandler }) => (
-  <div className={props.appState.data.minimize === true ? 'new-note-file minimize' : 'new-note-file'} >
-    <div className="title-bar">
-      <div className="title title-minimze-button" onClick={() => minimzeButtonHandler(props)}>Note / File</div>
-      <div className="controls note-file-header-button-group">
-        <button className="btn btn-icon minimize-button" onClick={() => minimzeButtonHandler(props)}><i className="fa fa-window-minimize" aria-hidden="true" /></button>
-        <button className="btn btn-icon header-cancel-button" onClick={props.closeButtonHandler} type="submit"><i className="fa fa-times-circle" aria-hidden="true" /></button>
-      </div>
-    </div>
-    <div className="mainContainer">
-      <Form id="NewNoteFileUploader" onSubmit={props.handleSubmit(submitNote)} noValidate>
-        <div className="content state-initial">
-          <div className="flex-contents">
-            <Field name="noteContent" component="textarea" />
-            <div className="drag-n-drop">
-                Drag and Drop Files
-              </div>
-          </div>
-          <div className="buttons note-file-footer-button-group">
-            <button className="btn btn-primary upload-button">Upload</button>
-            <div />
-            <button className="btn btn-secondary cancel-button" onClick={props.closeButtonHandler}>Cancel</button>
-            <button className="btn btn-primary submit-button">Save</button>
-          </div>
+const NewNoteFileUploader = (props, { closeButtonHandler }) => {
+  // TODO: Pull this from the list service
+  const contactTypeOptions = {
+    "Quote Note": [
+      "Agent", "Policyholder", "Inspector", "Other"
+    ],
+    "Policy Note": [
+      "Agent", "Policyholder", "Lienholder", "Claims", "Inspector", "Other"
+    ]
+  };
+
+  const contactTypes = props.noteType ? contactTypeOptions[props.noteType] : [];
+
+  return (
+    <div className={props.appState.data.minimize === true ? 'new-note-file minimize' : 'new-note-file'} >
+      <div className="title-bar">
+        <div className="title title-minimze-button" onClick={() => minimzeButtonHandler(props)}>Note / File</div>
+        <div className="controls note-file-header-button-group">
+          <button className="btn btn-icon minimize-button" onClick={() => minimzeButtonHandler(props)}><i className="fa fa-window-minimize" aria-hidden="true" /></button>
+          <button className="btn btn-icon header-cancel-button" onClick={props.closeButtonHandler} type="submit"><i className="fa fa-times-circle" aria-hidden="true" /></button>
         </div>
-        {/* <div className="content state-upload" hidden>
-          <div className="flex-contents">
-            <div className="drag-n-drop">
-              Drag and Drop Files
+      </div>
+      <div className="mainContainer">
+        <Form id="NewNoteFileUploader" onSubmit={props.handleSubmit(submitNote)} noValidate>
+          <div className="content state-initial">
+            <div className="flex-contents">
+              <Field component="select" name="contactType" disabled={ !contactTypes.length }>
+                <option>Select a Contact Type</option>
+                { contactTypes.map(option => <option value={ option } key={ option }>{ option }</option>) }
+              </Field>
+              <Field name="noteContent" component="textarea" />
+            </div>
+            <div className="buttons note-file-footer-button-group">
+              <button className="btn btn-primary upload-button">Upload</button>
+              <div />
+              <button className="btn btn-secondary cancel-button" onClick={props.closeButtonHandler}>Cancel</button>
+              <button className="btn btn-primary submit-button">Save</button>
             </div>
           </div>
-          <div className="buttons">
-            <a href="#" className="btn btn-primary">Choose Files</a>
-            <div />
-            <a href="#" className="btn btn-secondary">Cancel</a>
-          </div>
-        </div>*/}
-      </Form>
+          {/* <div className="content state-upload" hidden>
+            <div className="flex-contents">
+              <div className="drag-n-drop">
+                Drag and Drop Files
+              </div>
+            </div>
+            <div className="buttons">
+              <a href="#" className="btn btn-primary">Choose Files</a>
+              <div />
+              <a href="#" className="btn btn-secondary">Cancel</a>
+            </div>
+          </div>*/}
+        </Form>
+      </div>
     </div>
-  </div>
-);
+  )
+};
 
 NewNoteFileUploader.propTypes = {
   ...propTypes,
@@ -74,7 +102,8 @@ NewNoteFileUploader.propTypes = {
 // redux mapping
 // ------------------------------------------------
 const mapStateToProps = state => ({
-  appState: state.appState
+  appState: state.appState,
+  user: state.authState.userProfile
 });
 
 const mapDispatchToProps = dispatch => ({

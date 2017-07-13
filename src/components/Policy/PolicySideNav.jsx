@@ -127,7 +127,7 @@ const SideNav = (props) => {
         </li>
       </ul>
       { props.appState.data.showNewNoteFileUploader === true &&
-        <NewNoteFileUploader noteType="policyNote" documentId={documentId} closeButtonHandler={() => closeNewNoteFileUploader(props)} />
+        <NewNoteFileUploader noteType="Policy Note" documentId={documentId} closeButtonHandler={() => closeNewNoteFileUploader(props)} />
       }
     </nav>);
 };
