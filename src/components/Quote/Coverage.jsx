@@ -66,6 +66,8 @@ const handleInitialize = (state) => {
 
   const values = {};
 
+  values.electronicDelivery = _.get(quoteData, 'policyHolders[0].electronicDelivery') || false;
+
   values.agencyCode = String(_.get(quoteData, 'agencyCode'));
   values.agentCode = String(_.get(quoteData, 'agentCode'));
   values.effectiveDate = moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD');

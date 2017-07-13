@@ -25,24 +25,25 @@ export const runnerSetup = data => ({
   data
 });
 
-export const addNote = (id, noteType, values) => (dispatch) => {
+export const addNote = (values) => (dispatch) => {
   const body = {
     service: 'notes.services',
     method: 'POST',
     path: 'v1/note/',
     data: {
-      noteType,
+      number: values.number,
+      noteType: values.noteType,
       noteContent: values.noteContent,
-      contactType: 'Agent',
+      contactType: values.contactType,
       createdAt: new Date().getTime(),
       noteAttachments: [],
-      createdBy: {},
+      createdBy: values.createdBy,
       updatedBy: {}
     }
   };
 
-  if (noteType === 'quoteNote') body.data.quoteNumber = id;
-  if (noteType === 'policyNote') body.data.policyNumber = id;
+  if (values.noteType === 'Quote Note') body.data.quoteNumber = values.number;
+  if (values.noteType === 'Policy Note') body.data.policyNumber = values.number;
 
   const axiosConfig = runnerSetup(body);
 
