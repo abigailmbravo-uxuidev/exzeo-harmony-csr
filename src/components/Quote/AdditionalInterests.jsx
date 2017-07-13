@@ -5,13 +5,14 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { reduxForm, propTypes } from 'redux-form';
 import * as cgActions from '../../actions/cgActions';
+import * as questionsActions from '../../actions/questionsActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import AdditionalInterestModal from '../../components/Common/AdditionalInterestModal';
 import AdditionalInterestEditModal from '../../components/Common/AdditionalInterestEditModal';
 
-const handleGetQuoteData = (state) => {
+export const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
   const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
@@ -53,138 +54,65 @@ const handleInitialize = () => {
   return values;
 };
 
-const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
+export const handleFormSubmit = (data, dispatch, props) => {
+  const { appState, actions, quoteData } = props;
 
 
-export class AdditionalLinterests extends Component {
-
-  state = {
-    sameAsProperty: false
-  }
-
-  handleFormSubmit = (data) => {
-    const { appState, actions, quoteData } = this.props;
-
-
-    const workflowId = appState.instanceId;
-    actions.appStateActions.setAppState(appState.modelName,
+  const workflowId = appState.instanceId;
+  actions.appStateActions.setAppState(appState.modelName,
       workflowId, {
         ...appState.data,
         submitting: true
       });
 
-    let additionalInterests = quoteData.additionalInterests || [];
+  let additionalInterests = quoteData.additionalInterests || [];
 
-    const type = appState.data.addAdditionalInterestType || data.type;
+  const type = appState.data.addAdditionalInterestType;
 
-    let order = 0;
+  let order = 0;
 
-    if (String(data.order) !== '0' && String(data.order) !== '1') {
-      order = _.filter(additionalInterests, ai => ai.type === type).length === 0 ? 0 : 1;
-    } else {
-      order = data.order;
-    }
+  if (String(data.order) !== '0' && String(data.order) !== '1') {
+    order = _.filter(additionalInterests, ai => ai.type === type).length === 0 ? 0 : 1;
+  } else {
+    order = data.order;
+  }
 
 
     // remove any existing items before submission
-    const modifiedAIs = _.cloneDeep(additionalInterests);
+  const modifiedAIs = _.cloneDeep(additionalInterests);
 
     _.remove(modifiedAIs, ai => ai._id === data._id); // eslint-disable-line
 
-    const aiData = {
+  const aiData = {
       _id: data._id, // eslint-disable-line
-      name1: data.name1,
-      name2: data.name2,
-      referenceNumber: data.referenceNumber,
-      order,
-      active: true,
-      type,
-      phoneNumber: String(data.phoneNumber).length > 0 ? String(data.phoneNumber).replace(/[^\d]/g, '') : '',
-      mailingAddress: {
-        address1: data.address1,
-        address2: data.address2,
-        city: data.city,
-        state: data.state,
-        zip: data.zip,
-        country: {
-          code: 'USA',
-          displayText: 'United States of America'
-        }
+    name1: data.name1,
+    name2: data.name2,
+    referenceNumber: data.referenceNumber,
+    order,
+    active: true,
+    type,
+    phoneNumber: String(data.phoneNumber).length > 0 ? String(data.phoneNumber).replace(/[^\d]/g, '') : '',
+    mailingAddress: {
+      address1: data.address1,
+      address2: data.address2,
+      city: data.city,
+      state: data.state,
+      zip: data.zip,
+      country: {
+        code: 'USA',
+        displayText: 'United States of America'
       }
-    };
+    }
+  };
 
-    modifiedAIs.push(aiData);
+  modifiedAIs.push(aiData);
 
     // TODO I need to take the form data then push to the additional interest array in the quote then submit the array as data
 
     // TODO Clear out old form data
 
-    const steps = [
-      {
-        name: 'hasUserEnteredData',
-        data: { answer: 'Yes' }
-      },
-      {
-        name: 'askadditionalInterests',
-        data: { additionalInterests: modifiedAIs }
-      },
-      {
-        name: 'moveTo',
-        data: { key: 'additionalInterests' }
-      }
-    ];
-
-    actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
-      .then(() => {
-        additionalInterests = modifiedAIs;
-
-        // now update the workflow details so the recalculated rate shows
-        actions.appStateActions.setAppState(appState.modelName,
-          workflowId, { ...appState.data,
-            selectedLink: 'additionalInterests',
-            submitting: false,
-            showAdditionalInterestModal: false,
-            showAdditionalInterestEditModal: false });
-        // this.context.router.history.push('/quote/coverage');
-      });
-  };
-
-  addAdditionalInterest = (type) => {
-    if (checkQuoteState(this.props.quoteData)) return;
-    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId,
-      { ...this.props.appState.data, showAdditionalInterestModal: true, addAdditionalInterestType: type });
-  }
-
-  editAdditionalInterest = (ai) => {
-    if (checkQuoteState(this.props.quoteData)) return;
-    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId,
-      { ...this.props.appState.data, showAdditionalInterestEditModal: true, selectedAI: ai });
-  }
-
-  hideAdditionalInterestModal = () => {
-    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId,
-      { ...this.props.appState.data, showAdditionalInterestModal: false, showAdditionalInterestEditModal: false });
-  }
-
-  deleteAdditionalInterest = (selectedAdditionalInterest) => {
-    const { appState, actions, quoteData } = this.props;
-    const workflowId = appState.instanceId;
-    actions.appStateActions.setAppState(appState.modelName,
-      workflowId, {
-        ...this.props.appState.data,
-        submitting: true,
-        showAdditionalInterestModal: appState.data.showAdditionalInterestModal,
-        showAdditionalInterestEditModal: appState.data.showAdditionalInterestEditModal
-      });
-
-    let additionalInterests = quoteData.additionalInterests || [];
-
-        // remove any existing items before submission
-    const modifiedAIs = _.cloneDeep(additionalInterests);
-    // remove any existing items before submission
-    _.remove(modifiedAIs, ai => ai._id === selectedAdditionalInterest._id); // eslint-disable-line
-
-    const steps = [{
+  const steps = [
+    {
       name: 'hasUserEnteredData',
       data: { answer: 'Yes' }
     },
@@ -196,16 +124,93 @@ export class AdditionalLinterests extends Component {
       name: 'moveTo',
       data: { key: 'additionalInterests' }
     }
-    ];
+  ];
 
-    actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
+  actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
         additionalInterests = modifiedAIs;
-        this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-          workflowId, { ...this.props.appState.data,
+
+        // now update the workflow details so the recalculated rate shows
+        actions.appStateActions.setAppState(appState.modelName,
+          workflowId, { ...appState.data,
             selectedLink: 'additionalInterests',
-            submitting: false });
+            submitting: false,
+            showAdditionalInterestModal: false,
+            showAdditionalInterestEditModal: false });
       });
+};
+
+const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
+
+
+export const addAdditionalInterest = (type, props) => {
+  if (checkQuoteState(props.quoteData)) return;
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data, showAdditionalInterestModal: true, addAdditionalInterestType: type });
+};
+
+export const editAdditionalInterest = (ai, props) => {
+  if (checkQuoteState(props.quoteData)) return;
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data, showAdditionalInterestEditModal: true, selectedAI: ai, addAdditionalInterestType: ai.type });
+};
+
+export const hideAdditionalInterestModal = (props) => {
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data, showAdditionalInterestModal: false, showAdditionalInterestEditModal: false });
+};
+
+export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
+  const { appState, actions, quoteData } = props;
+  const workflowId = appState.instanceId;
+  actions.appStateActions.setAppState(appState.modelName,
+      workflowId, {
+        ...props.appState.data,
+        submitting: true,
+        showAdditionalInterestModal: appState.data.showAdditionalInterestModal,
+        showAdditionalInterestEditModal: appState.data.showAdditionalInterestEditModal
+      });
+
+  let additionalInterests = quoteData.additionalInterests || [];
+
+        // remove any existing items before submission
+  const modifiedAIs = _.cloneDeep(additionalInterests);
+    // remove any existing items before submission
+    _.remove(modifiedAIs, ai => ai._id === selectedAdditionalInterest._id); // eslint-disable-line
+
+  const steps = [{
+    name: 'hasUserEnteredData',
+    data: { answer: 'Yes' }
+  },
+  {
+    name: 'askadditionalInterests',
+    data: { additionalInterests: modifiedAIs }
+  },
+  {
+    name: 'moveTo',
+    data: { key: 'additionalInterests' }
+  }
+  ];
+
+  actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
+      .then(() => {
+        additionalInterests = modifiedAIs;
+        props.actions.appStateActions.setAppState(props.appState.modelName,
+          workflowId, { ...props.appState.data,
+            selectedLink: 'additionalInterests',
+            submitting: false,
+            showAdditionalInterestModal: false,
+            showAdditionalInterestEditModal: false });
+      });
+};
+
+export class AdditionalLinterests extends Component {
+  state = {
+    sameAsProperty: false
+  }
+
+  componentDidMount() {
+    this.props.actions.questionsActions.getUIQuestions('additionalInterestsCSR');
   }
 
   render() {
@@ -220,11 +225,11 @@ export class AdditionalLinterests extends Component {
               <div className="form-group survey-wrapper" role="group">
                 <h3>Additional Interests</h3>
                 <div className="button-group">
-                  <button disabled={(quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Mortgagee').length > 1) || checkQuoteState(quoteData)} onClick={() => this.addAdditionalInterest('Mortgagee')} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
-                  <button disabled={(quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Additional Insured').length > 1) || checkQuoteState(quoteData)} onClick={() => this.addAdditionalInterest('Additional Insured')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
-                  <button disabled={(quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Additional Interest').length > 1) || checkQuoteState(quoteData)} onClick={() => this.addAdditionalInterest('Additional Interest')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
-                  { /* <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => this.addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button> */ }
-                  <button disabled={(quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Bill Payer').length > 0) || checkQuoteState(quoteData)} onClick={() => this.addAdditionalInterest('Bill Payer')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
+                  <button disabled={(quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Mortgagee').length > 1) || checkQuoteState(quoteData)} onClick={() => addAdditionalInterest('Mortgagee', this.props)} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
+                  <button disabled={(quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Additional Insured').length > 1) || checkQuoteState(quoteData)} onClick={() => addAdditionalInterest('Additional Insured', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
+                  <button disabled={(quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Additional Interest').length > 1) || checkQuoteState(quoteData)} onClick={() => addAdditionalInterest('Additional Interest', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
+                  { /* <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button> */ }
+                  <button disabled={(quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Bill Payer').length > 0) || checkQuoteState(quoteData)} onClick={() => addAdditionalInterest('Bill Payer', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
                 </div>
 
 
@@ -232,7 +237,7 @@ export class AdditionalLinterests extends Component {
                   <ul className="results result-cards">
                     {quoteData && quoteData.additionalInterests && _.sortBy(quoteData.additionalInterests, ['rank', 'type']).map((ai, index) =>
                       <li key={index}>
-                        <a onClick={() => this.editAdditionalInterest(ai)}>
+                        <a onClick={() => editAdditionalInterest(ai, this.props)}>
                           {/* add className based on type - i.e. mortgagee could have class of mortgagee*/}
                           <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {ai.order + 1}</label></div>
                           <section><h4>{ai.name1}&nbsp;{ai.name2}</h4><p className="address">{`${ai.mailingAddress.address1}, ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city}, ${ai.mailingAddress.state} ${ai.mailingAddress.zip}`}</p></section>
@@ -255,8 +260,8 @@ export class AdditionalLinterests extends Component {
               </div>
             </div>
           </form>
-          { appState.data.showAdditionalInterestEditModal && <AdditionalInterestEditModal verify={this.handleFormSubmit} hideAdditionalInterestModal={this.hideAdditionalInterestModal} deleteAdditionalInterest={this.deleteAdditionalInterest} /> }
-          { appState.data.showAdditionalInterestModal && <AdditionalInterestModal verify={this.handleFormSubmit} hideAdditionalInterestModal={this.hideAdditionalInterestModal} /> }
+          { appState.data.showAdditionalInterestEditModal && <AdditionalInterestEditModal questions={this.props.questions} selectedAI={this.props.appState.data.selectedAI} quoteData={quoteData} verify={handleFormSubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
+          { appState.data.showAdditionalInterestModal && <AdditionalInterestModal questions={this.props.questions} quoteData={quoteData} verify={handleFormSubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
         </div>
 
       </QuoteBaseConnect>
@@ -285,6 +290,7 @@ AdditionalLinterests.propTypes = {
 // ------------------------------------------------
 const mapStateToProps = state => ({
   tasks: state.cg,
+  questions: state.questions,
   appState: state.appState,
   fieldValues: _.get(state.form, 'AdditionalLinterests.values', {}),
   initialValues: handleInitialize(state),
@@ -294,6 +300,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    questionsActions: bindActionCreators(questionsActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }

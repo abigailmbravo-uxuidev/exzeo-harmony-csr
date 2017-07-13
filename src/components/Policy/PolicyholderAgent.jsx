@@ -9,10 +9,11 @@ import normalizePhone from '../Form/normalizePhone';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 
-const handleGetPolicy = (state) => {
-  const model = state.appState ? state.appState.modelName : undefined;
-  const previousTask = model && state.cg[model] && state.cg[model].data ? state.cg[model].data.previousTask : undefined;
-  return (previousTask && previousTask.value) ? previousTask.value[0] : {};
+export const handleGetPolicy = (state) => {
+  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  if (!taskData) return {};
+  const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
+  return policyData;
 };
 
 

@@ -9,38 +9,38 @@ import BaseConnect from './Base';
 import Footer from '../components/Common/Footer';
 import * as cgActions from '../actions/cgActions';
 import * as appStateActions from '../actions/appStateActions';
+import * as questionsActions from '../actions/questionsActions';
 import SearchResults from '../components/Search/SearchResults';
 import NoResultsConnect from '../components/Search/NoResults';
 import Loader from '../components/Common/Loader';
 
 const workflowModelName = 'csrQuote';
 
+export const handleNewTab = (searchData) => {
+  localStorage.setItem('isNewTab', true);
+
+  const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData'));
+
+  if (lastSearchData.searchType === 'address') {
+    localStorage.setItem('stateCode', searchData.physicalAddress.state);
+    localStorage.setItem('igdID', searchData.id);
+    window.open('/quote/coverage', '_blank');
+  } else if (lastSearchData.searchType === 'quote') {
+    localStorage.setItem('quoteId', searchData._id);
+    window.open('/quote/coverage', '_blank');
+  } else if (lastSearchData.searchType === 'policy') {
+    localStorage.setItem('policyID', searchData.policyID);
+    window.open('/policy/coverage', '_blank');
+  }
+};
+
 export class Splash extends Component {
 
   componentDidMount() {
-    const workflowData = {
-      dsUrl: `${process.env.REACT_APP_API_URL}/ds`
-    };
-    this.props.actions.cgActions.startWorkflow(workflowModelName, workflowData);
+    this.props.actions.cgActions.startWorkflow(workflowModelName, {});
+    this.props.actions.questionsActions.getUIQuestions('searchCSR');
   }
 
-  handleNewTab = (searchData, props) => {
-    localStorage.setItem('isNewTab', true);
-
-    const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData'));
-
-    if (lastSearchData.searchType === 'address') {
-      localStorage.setItem('stateCode', searchData.physicalAddress.state);
-      localStorage.setItem('igdID', searchData.id);
-      window.open('/quote/coverage', '_blank');
-    } else if (lastSearchData.searchType === 'quote') {
-      localStorage.setItem('quoteId', searchData._id);
-      window.open('/quote/coverage', '_blank');
-    } else if (lastSearchData.searchType === 'policy') {
-      localStorage.setItem('policyID', searchData.policyID);
-      window.open('/policy/coverage', '_blank');
-    }
-  }
 
   handleSelectQuote = (quote, props) => {
     const workflowId = props.appState.instanceId;
@@ -129,7 +129,7 @@ export class Splash extends Component {
                 <div className="results-wrapper">
                   <NoResultsConnect />
                   <SearchResults
-                    handleNewTab={this.handleNewTab}
+                    handleNewTab={handleNewTab}
                     handleSelectAddress={this.handleSelectAddress}
                     handleSelectQuote={this.handleSelectQuote}
                     handleSelectPolicy={this.handleSelectPolicy}
@@ -151,6 +151,7 @@ Splash.contextTypes = {
 
 Splash.propTypes = {
   actions: PropTypes.shape({
+    questionsActions: PropTypes.shape(),
     cgActions: PropTypes.shape({ startWorkflow: PropTypes.func, activeTasks: PropTypes.func, completeTask: PropTypes.func }),
     appStateActions: PropTypes.shape({ setAppState: PropTypes.func, setAppStateError: PropTypes.func })
   })
@@ -158,6 +159,7 @@ Splash.propTypes = {
 
 const mapStateToProps = state => (
   {
+    questions: state.questions,
     tasks: state.cg,
     appState: state.appState,
     error: state.error
@@ -166,6 +168,7 @@ const mapStateToProps = state => (
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    questionsActions: bindActionCreators(questionsActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }

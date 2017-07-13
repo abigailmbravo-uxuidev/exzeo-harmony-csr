@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
+import localStorage from 'localStorage';
 import { connect } from 'react-redux';
 import { reduxForm, Form, Field, propTypes, getFormSyncErrors } from 'redux-form';
 import ReactTooltip from 'react-tooltip';
@@ -17,7 +18,7 @@ const userTasks = {
 
 const handleInitialize = () => ({ searchType: 'quote' });
 
-const handleSearchBarSubmit = (data, dispatch, props) => {
+export const handleSearchBarSubmit = (data, dispatch, props) => {
   const workflowId = props.appState.instanceId;
   const taskName = userTasks.handleSearchBarSubmit;
   const modelName = props.appState.modelName;
@@ -28,6 +29,7 @@ const handleSearchBarSubmit = (data, dispatch, props) => {
     quoteNumber: (encodeURIComponent(data.quoteNumber) !== 'undefined' ? encodeURIComponent(data.quoteNumber) : ''),
     policyNumber: (encodeURIComponent(data.policyNumber) !== 'undefined' ? encodeURIComponent(data.policyNumber) : ''),
     zip: (encodeURIComponent(data.zip) !== 'undefined' ? encodeURIComponent(data.zip) : ''),
+    quoteState: (encodeURIComponent(data.quoteState) !== 'undefined' ? encodeURIComponent(data.quoteState) : ''),
     searchType: props.fieldValues.searchType
   };
 
@@ -50,7 +52,7 @@ const handleSearchBarSubmit = (data, dispatch, props) => {
   }
 };
 
-const validate = (values) => {
+export const validate = (values) => {
   const errors = {};
   if (values.firstName) {
     const onlyAlphaNumeric = Rules.onlyAlphaNumeric(values.firstName);
@@ -76,7 +78,7 @@ const validate = (values) => {
   if (values.policyNumber) {
     const numberDashesOnly = Rules.numberDashesOnly(values.policyNumber);
     if (numberDashesOnly) {
-      errors.quoteNumber = numberDashesOnly;
+      errors.policyNumber = numberDashesOnly;
     }
   }
 
@@ -86,15 +88,13 @@ const validate = (values) => {
       errors.zip = onlyAlphaNumeric;
     }
   }
-
   if (values.address) {
     const required = Rules.required(values.address);
     const invalidCharacters = Rules.invalidCharacters(values.address);
-    if (invalidCharacters) {
-      errors.address = invalidCharacters;
-    }
     if (required) {
       errors.address = required;
+    } else if (invalidCharacters) {
+      errors.address = invalidCharacters;
     }
   }
 
@@ -124,8 +124,11 @@ const generateField = (name, placeholder, labelText, formErrors, formGroupCss) =
   return field;
 };
 
+const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
+
 const SearchForm = (props) => {
   const {
+    questions,
     handleSubmit,
     formErrors,
     fieldValues
@@ -181,6 +184,13 @@ const SearchForm = (props) => {
           {generateField('lastName', 'Last Name Search', 'Last Name', formErrors, 'last-name-search')}
           {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
           {generateField('quoteNumber', 'Quote No Search', 'Quote Number', formErrors, 'quote-no-search')}
+          <div className="form-group search-context">
+            <SelectField
+              name="quoteState" component="select" styleName={''} label="Quote State"
+              onChange={clearForm}
+              answers={getAnswers('quoteState', questions)}
+            />
+          </div>
 
           <button
             className="btn btn-success multi-input"
@@ -243,7 +253,8 @@ const mapStateToProps = state => ({
   searchType: state.appState.data.searchType,
   initialValues: handleInitialize(state),
   error: state.error,
-  cleanForm: state.pristine
+  cleanForm: state.pristine,
+  questions: state.questions
 });
 
 const mapDispatchToProps = dispatch => ({

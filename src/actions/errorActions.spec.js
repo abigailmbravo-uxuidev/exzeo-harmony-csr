@@ -11,7 +11,7 @@ describe('Error Actions', () => {
 
     const inputProps = {
       error: 'my error'
-    }
+    };
 
     const stateObj = [{
       type: types.APP_ERROR,

@@ -56,7 +56,7 @@ describe('<FieldGenerator />', () => {
     expect(wrapper.find('select'));
   });
 
-  it('should render dropdown from radio input for long radio answers', () => {
+  it('should render select', () => {
     const inputProps = {
       handleSubmit: onSubmit,
       question: { answerType: 'radio', answers: [{}, {}, {}] }

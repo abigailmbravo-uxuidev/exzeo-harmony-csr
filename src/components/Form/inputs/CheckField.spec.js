@@ -16,7 +16,8 @@ describe('CheckInput', () => {
     const inputProps = {
       label: 'Test',
       input: {
-        name: 'testing'
+        name: 'testing',
+        hint: 'Test Hint'
       }
     };
     const wrapper = shallow(<CheckInput {...inputProps} />);
