@@ -58,8 +58,8 @@ export const NoteList = (props) => {
 
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
 
-  const showCreatedBy = createdBy => `${createdBy.userName}`;
-  const attachmentCount = attachments => `${attachments.length}`;
+  const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
+  const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
   const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
 
   return (
