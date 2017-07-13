@@ -7,8 +7,7 @@
     justify-content: center;
 
     .card {
-
-      -webkit-box-shadow: 0 0 40px 10px rgba(0,0,0,.25);
+        position: absolute;
       box-shadow: 0 0 40px 10px rgba(0,0,0,.25);
       width: auto;
       margin: auto;
@@ -21,7 +20,6 @@
             overflow: hidden;
 
             div {
-              -webkit-border-radius: 32px;
               border-radius: 32px;
               padding: 3px;
               animation-name: spin-load;
