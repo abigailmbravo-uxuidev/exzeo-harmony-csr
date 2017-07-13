@@ -10,7 +10,6 @@ import * as appStateActions from '../../actions/appStateActions';
 
 export const submitNote = (data, dispatch, props) => {
   const { user, noteType, documentId } = props;
-
   const noteData = Object.assign({}, 
     data,
     {
@@ -35,6 +34,21 @@ const minimzeButtonHandler = (props) => {
   }
 };
 
+export const validate = (values) => {
+  const errors = {};
+
+  if (!values.noteContent) errors.noteContent = "Note Content Required";
+
+  return errors;
+};
+
+const renderNotes = ({ input, label, type, meta: { touched, error } }) => (
+    <div>
+      <textarea { ...input } placeholder={ label } rows="10" cols="40"></textarea>
+      { touched && error && <span>{ error }</span> }
+    </div>
+  )
+
 const NewNoteFileUploader = (props, { closeButtonHandler }) => {
   // TODO: Pull this from the list service
   const contactTypeOptions = {
@@ -47,6 +61,7 @@ const NewNoteFileUploader = (props, { closeButtonHandler }) => {
   };
 
   const contactTypes = props.noteType ? contactTypeOptions[props.noteType] : [];
+
 
   return (
     <div className={props.appState.data.minimize === true ? 'new-note-file minimize' : 'new-note-file'} >
@@ -62,10 +77,10 @@ const NewNoteFileUploader = (props, { closeButtonHandler }) => {
           <div className="content state-initial">
             <div className="flex-contents">
               <Field component="select" name="contactType" disabled={ !contactTypes.length }>
-                <option>Select a Contact Type</option>
-                { contactTypes.map(option => <option value={ option } key={ option }>{ option }</option>) }
+                 { contactTypes.map(option => <option value={ option } key={ option }>{ option }</option>) }
               </Field>
-              <Field name="noteContent" component="textarea" />
+              <Field name="noteContent" component={ renderNotes } label="Note Content" />
+              
             </div>
             <div className="buttons note-file-footer-button-group">
               <button className="btn btn-primary upload-button">Upload</button>
@@ -114,5 +129,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
-  form: 'NewNoteFileUploader'
+  form: 'NewNoteFileUploader',
+  initialValues: { contactType: 'Agent' },
+  validate
 })(NewNoteFileUploader));
