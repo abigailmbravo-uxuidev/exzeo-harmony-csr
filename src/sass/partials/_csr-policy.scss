@@ -672,3 +672,27 @@
 }
 
 }
+
+
+
+.add-payment {
+
+
+    .form-group {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      * {
+        flex: 1 1 auto;
+      }
+
+      label {
+        flex: 0 0 30%;
+        text-align: right;
+        margin: 0 ($padding*2) 0 0;
+      }
+
+    }
+
+}

@@ -25,7 +25,7 @@ export const runnerSetup = data => ({
   data
 });
 
-export const addNote = (values) => (dispatch) => {
+export const addNote = values => (dispatch) => {
   const body = {
     service: 'notes.services',
     method: 'POST',
@@ -196,6 +196,67 @@ export const getPolicyFromPolicyNumber = (companyCode, state, product, policyNum
 
   return Promise.resolve(axios(axiosConfig)).then((response) => {
     const data = { policy: response.data.policies ? response.data.policies[0] : {} };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
+export const getTransactionHistory = policyNumber => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'billing.services',
+    method: 'GET',
+    path: `transaction-history/${policyNumber}`
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { getTransactionHistory: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+      // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+        // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
+      ]));
+    });
+};
+
+export const addTransaction = (props, batchNumber, cashType, cashDescription, cashAmount) => (dispatch) => {
+  const body = {
+    service: 'billing.services',
+    method: 'POST',
+    path: `transaction-history/${props.policy.policyNumber}`,
+    data: {
+      createdBy: props.auth.userProfile.name,
+      updatedBy: props.auth.userProfile.name,
+      companyCode: props.auth.userProfile.groups.companyCode,
+      state: props.policy.state,
+      product: props.policy.product,
+      policyNumber: props.policy.policyNumber,
+      policyTerm: props.policy.policyTerm,
+      policyAccountCode: props.policy.policyAccountCode,
+      effectiveDate: new Date().getTime(),
+      date: new Date().getTime(),
+      type: cashType,
+      description: cashDescription,
+      batch: batchNumber,
+      amount: cashAmount
+    }
+  };
+  const axiosConfig = runnerSetup(body);
+
+  return axios(axiosConfig).then((response) => {
+    const data = { notes: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));

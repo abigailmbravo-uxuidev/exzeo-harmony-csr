@@ -13,6 +13,8 @@ const mockStore = configureStore(middlewares);
 describe('Testing NewNoteFileUploader component', () => {
   it('should test connected app', () => {
     const initialState = {
+      authState: {
+      },
       cg: {
         bb: {
           data: {
