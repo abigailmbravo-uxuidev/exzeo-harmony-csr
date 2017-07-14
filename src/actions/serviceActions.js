@@ -187,28 +187,6 @@ export const currentAgent = (companyCode, state, agentCode) => (dispatch) => {
     });
 };
 
-export const getSummaryLedger = policyNumber => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'billing.services',
-    method: 'GET',
-    path: `summary-ledgers/${policyNumber}`
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = { getSummaryLedger: response.data.result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-      // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError({ message })
-      ]));
-    });
-};
-
 export const getPolicyFromPolicyNumber = (companyCode, state, product, policyNumber) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'policy-data.services',
