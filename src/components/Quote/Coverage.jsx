@@ -8,6 +8,7 @@ import moment from 'moment';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as serviceActions from '../../actions/serviceActions';
 import * as questionsActions from '../../actions/questionsActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
@@ -153,18 +154,6 @@ const handleInitialize = (state) => {
   return values;
 };
 
-export const populateAgentData = (state) => {
-  if (state.cg && state.cg.getAgency && state.cg.getAgency.data &&
-    state.cg.getAgency.data.model && state.cg.getAgency.data.model.variables) {
-    const agentData = _.filter(state.cg.getAgency.data.model.variables, item => item.name === 'getAgentsByCode');
-    if (agentData.length > 0) {
-      const data = agentData[0].value.result;
-      return data;
-    }
-  }
-  return [];
-};
-
 const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
 const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
@@ -176,14 +165,16 @@ export const handleAgencyChange = (props, agencyCode, isInit) => {
     props.dispatch(change('Coverage', 'agentCode', ''));
   }
 
-  const { quoteData } = props;
-  const startModelData = {
-    agencyCode,
-    companyCode: quoteData.companyCode,
-    state: quoteData.state
-  };
-
-  props.actions.cgActions.startWorkflow('getAgency', startModelData, false);
+  if (agencyCode) {
+    const agency = _.find(props.agencies, a => String(a.agencyCode) === String(agencyCode));
+    if (agency) {
+      props.actions.serviceActions.getAgentsByAgency(agency.companyCode, agency.state, agencyCode).then((response) => {
+        if (response.payload && response.payload[0].data.agents && response.payload[0].data.agents.length === 1) {
+          props.dispatch(change('Coverage', 'agentCode', response.payload[0].data.agents[0].agentCode));
+        }
+      });
+    }
+  }
 };
 
 export const clearForm = (props) => {
@@ -349,6 +340,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
       });
 };
 
+let setAgents = false;
 
 export class Coverage extends Component {
 
@@ -391,19 +383,32 @@ export class Coverage extends Component {
         this.props.actions.appStateActions.setAppState('csrQuote', startResult.modelInstanceId, { ...this.props.appState.data, submitting: true });
         this.props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
           this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-          startResult.modelInstanceId, { ...this.props.appState.data, submitting: false });
+          startResult.modelInstanceId, { ...this.props.appState.data });
           handleAgencyChange(this.props, this.props.quoteData.agencyCode, true);
         });
       });
     } else handleAgencyChange(this.props, this.props.quoteData.agencyCode, true);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!_.isEqual(this.props, nextProps)) {
+      const quoteData = nextProps.quoteData;
+      if (quoteData.companyCode && quoteData.state && quoteData.agencyCode && !setAgents) {
+        this.props.actions.serviceActions.getAgencies(quoteData.companyCode, quoteData.state);
+        this.props.actions.serviceActions.getAgentsByAgency(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
+        setAgents = true;
+      }
+    }
+  }
+
   updateDwellingAndDependencies = (e, value) => {
     const { dispatch, fieldValues } = this.props;
 
-    const dwellingNumber = String(value).replace(/\D+/g, '');
+    let dwellingNumber = String(value).replace(/\D+/g, '');
 
     if (Number.isNaN(dwellingNumber)) { return; }
+
+    dwellingNumber = Math.round(dwellingNumber / 1000) * 1000;
 
     if (fieldValues.otherStructures !== 'other') {
       dispatch(change('Coverage', 'otherStructuresAmount', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.otherStructures)))));
@@ -422,7 +427,12 @@ export class Coverage extends Component {
     const { dispatch, fieldValues } = this.props;
     if (Number.isNaN(event.target.value)) { return; }
 
-    const dependencyValue = String(fieldValues[dependency]).replace(/\D+/g, '');
+    let dependencyValue = null;
+
+    if (dependency === 'dwellingAmount') {
+      dependencyValue = Math.round(Number(String(fieldValues[dependency]).replace(/\D+/g, '')) / 1000) * 1000;
+    } else dependencyValue = String(fieldValues[dependency]).replace(/\D+/g, '');
+
 
     const fieldValue = setPercentageOfValue(Number(dependencyValue), Number(event.target.value));
 
@@ -435,12 +445,13 @@ export class Coverage extends Component {
     const { dispatch, fieldValues } = this.props;
     if (Number.isNaN(event.target.value)) { return; }
 
-    const dependencyValue = String(fieldValues.dwellingAmount).replace(/\D+/g, '');
+    const dependencyValue = Math.round(Number(String(fieldValues.dwellingAmount).replace(/\D+/g, '')) / 1000) * 1000;
+
     dispatch(change('Coverage', 'calculatedSinkhole', String(setPercentageOfValue(Number(dependencyValue), 10))));
   }
 
   render() {
-    const { quoteData, fieldValues, handleSubmit, initialValues, pristine, agents, questions, zipCodeSettings } = this.props;
+    const { quoteData, fieldValues, handleSubmit, initialValues, pristine, agents, agencies, questions, zipCodeSettings } = this.props;
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
@@ -462,22 +473,17 @@ export class Coverage extends Component {
                       <SelectField
                         name="agencyCode" component="select" styleName={''} label="Agency" validations={['required']} input={{
                           name: 'agencyCode',
-                          onChange: event => handleAgencyChange(event.target.value),
+                          onChange: event => handleAgencyChange(this.props, event.target.value),
                           value: fieldValues.agencyCode
-                        }} answers={[
-                          {
-                            answer: '20000',
-                            label: 'TypTap Insurance Company'
-                          },
-                          { answer: '20003',
-                            label: 'OMEGA INSURANCE AGENCY INC'
-                          }
-                        ]}
+                        }} answers={agencies && agencies.map(agency => ({
+                          answer: String(agency.agencyCode),
+                          label: `${agency.displayName}`
+                        }))}
                       />
                     </div>
                     <div className="flex-child agentCode">
                       <SelectField
-                        name="agentCode" component="select" styleName={''} label="Agent" validations={['required']} answers={agents.map(agent => ({
+                        name="agentCode" component="select" styleName={''} label="Agent" validations={['required']} answers={agents && agents.map(agent => ({
                           answer: String(agent.agentCode),
                           label: `${agent.firstName} ${agent.lastName}`
                         }))}
@@ -968,7 +974,8 @@ const mapStateToProps = state => ({
   getAgents: state.service.getAgents,
   tasks: state.cg,
   appState: state.appState,
-  agents: populateAgentData(state),
+  agents: state.service.agents,
+  agencies: state.service.agencies,
   fieldValues: _.get(state.form, 'Coverage.values', {}),
   initialValues: handleInitialize(state),
   quoteData: handleGetQuoteData(state),
@@ -978,6 +985,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     questionsActions: bindActionCreators(questionsActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
