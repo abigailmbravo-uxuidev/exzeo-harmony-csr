@@ -40,6 +40,10 @@ body {
   align-items: center;
 }
 
+.auth0-lock.auth0-lock .auth0-lock-header .auth0-lock-header-bg-solid {
+  background-color: #f3f3f4 !important;
+}
+
 .auth0-lock-view-content {
   background: #fff;
   border-bottom: 1px solid rgba(0, 0, 0, .125);

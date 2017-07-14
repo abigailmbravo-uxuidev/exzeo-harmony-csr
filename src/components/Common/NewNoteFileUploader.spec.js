@@ -46,6 +46,8 @@ describe('Testing NewNoteFileUploader component', () => {
 
   it('should test submit note and minimzeButtonHandler', () => {
     const initialState = {
+      authState: {
+      },
       cg: {
         bb: {
           data: {
@@ -61,6 +63,9 @@ describe('Testing NewNoteFileUploader component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      user: {
+        user_id: '2342'
+      },
       closeButtonHandler() {},
       actions: {
         appStateActions: {
@@ -96,6 +101,8 @@ describe('Testing NewNoteFileUploader component', () => {
 
   it('should test NewNoteFileUploader', () => {
     const initialState = {
+      authState: {
+      },
       cg: {
         bb: {
           data: {
@@ -111,6 +118,9 @@ describe('Testing NewNoteFileUploader component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      user: {
+        user_id: '2342'
+      },
       closeButtonHandler() {},
       actions: {
         appStateActions: {

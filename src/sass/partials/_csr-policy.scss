@@ -13,6 +13,10 @@
         justify-content: center;
         align-items: center;
         width: 12rem;
+
+        span {
+          font-size: 1.125rem;
+        }
       }
 
       .policy-description {
@@ -94,6 +98,7 @@
                     }
 
                     .contact-details {
+                        flex-grow: 1;
                         margin-left: $padding*2;
 
                         h4 {
@@ -142,6 +147,14 @@
                                 font-size: 125%;
                               }
                             }
+
+                            h5 {
+                              flex-basis: auto;
+                              flex-grow: 0;
+                              flex-shrink: 0;
+                              margin: 0 $padding 0 0;
+                              color: $warm-gray-08;
+                            }
                           }
                         }
 
@@ -183,7 +196,6 @@
                           }
                         }
                     }
-
               }
             }
           }
@@ -209,12 +221,17 @@
                       font-size: 1.25rem;
                     }
                   }
+
             }
+
+
           }
 
           .card-multi:last-of-type {
             margin-bottom: 0;
           }
+
+
         }
 
         .survey-wrapper {
@@ -447,6 +464,7 @@
 
   .scroll {
     flex-shrink: 1;
+    overflow-x: hidden;
 
     .flex-child.col3 {
       width: 50%;
@@ -476,64 +494,54 @@
         align-items: center;
         margin: 0 0 ($padding) 0;
 
-          .form-group {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            width: 66.66%;
-            flex: 0 1 66.66%;
-            margin: 0;
+      .form-group {
 
-            label {
-              width: 50%;
-              flex: 0 1 50%;
-              margin: 0 ($padding) 0 0;
-              text-align: right;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 66.66%;
+        flex: 0 1 66.66%;
+        margin: 0 ($padding) 0 0;
 
-              span {
-                font-size: .7em;
-              }
-            }
+        label {
+          width: 50%;
+          flex: 0 1 50%;
+          margin: 0 ($padding) 0 0;
+          text-align: right;
 
-            &.segmented {
-                width: 100%;
-                label {
-                    width: 100%;
-                    flex: 1 1 auto;
-                    margin: 0;
-                    text-align: center;
-                }
-            }
-
-            > *:nth-child(2) {
-              width: 50%;
-              flex: 0 1 50%;
-              margin: 0 ($padding) 0 0;
-
-              &.segmented-answer-wrapper {
-                  width: 100%;
-                  flex: 1 0 100%;
-              }
-            }
-          }
-
-          > .form-group:last-child {
-            width: 33.33%;
-            flex: 0 1 33.33%;
-            margin-right: 0;
-            flex-direction: column;
-
-            * {
-              width: 100%;
-              flex: 0 1 100%;
-              margin: 0;
-            }
-
-            label {
-              display: none;
-            }
+          span {
+            font-size: .7em;
           }
         }
+
+        > *:nth-child(2) {
+          width: 50%;
+          flex: 0 1 50%;
+          margin: 0 ($padding) 0 0;
+        }
+
+
+      }
+
+      > .form-group:nth-child(2) {
+        width: 33.33%;
+        flex: 0 1 33.33%;
+
+        * {
+          width: 100%;
+          flex: 0 1 100%;
+          margin: 0;
+        }
+
+        label {
+          display: none;
+        }
+
+
+      }
+
+    }
+
     }
 
     .flex-parent.col2 {
