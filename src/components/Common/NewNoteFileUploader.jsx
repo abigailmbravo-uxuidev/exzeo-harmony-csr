@@ -10,7 +10,7 @@ import * as appStateActions from '../../actions/appStateActions';
 
 export const submitNote = (data, dispatch, props) => {
   const { user, noteType, documentId } = props;
-  const noteData = Object.assign({}, 
+  const noteData = Object.assign({},
     data,
     {
       noteType,
@@ -43,7 +43,7 @@ export const validate = (values) => {
 };
 
 const renderNotes = ({ input, label, type, meta: { touched, error } }) => (
-    <div>
+    <div className="text-area-wrapper">
       <textarea { ...input } placeholder={ label } rows="10" cols="40"></textarea>
       { touched && error && <span>{ error }</span> }
     </div>
@@ -80,7 +80,7 @@ const NewNoteFileUploader = (props, { closeButtonHandler }) => {
                  { contactTypes.map(option => <option value={ option } key={ option }>{ option }</option>) }
               </Field>
               <Field name="noteContent" component={ renderNotes } label="Note Content" />
-              
+
             </div>
             <div className="buttons note-file-footer-button-group">
               <button className="btn btn-primary upload-button">Upload</button>
