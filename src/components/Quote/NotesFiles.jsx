@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import { Prompt } from 'react-router-dom';
 import moment from 'moment';
 import { reduxForm, Form, propTypes } from 'redux-form';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
+import * as cgActions from '../../actions/cgActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
@@ -97,6 +99,26 @@ const handleFormSubmit = (data, dispatch, props) => alert('submit');
 
 export class NotesFiles extends Component {
 
+  componentDidMount() {
+    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+      ...this.props.appState.data,
+      submitting: true
+    });
+    const steps = [
+    { name: 'hasUserEnteredData', data: { answer: 'No' } },
+    { name: 'moveTo', data: { key: 'notes' } }
+    ];
+    const workflowId = this.props.appState.instanceId;
+
+    this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
+    .then(() => {
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+        ...this.props.appState.data,
+        selectedLink: 'notes'
+      });
+    });
+  }
+
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props, nextProps)) {
       if (nextProps.quoteData && nextProps.quoteData.quoteNumber) {
@@ -107,11 +129,12 @@ export class NotesFiles extends Component {
   }
 
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, dirty } = this.props;
 
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
+        <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         <div className="route-content">
           <div className="scroll">
             <Form id="NotesFiles" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
@@ -161,6 +184,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch)
   }
