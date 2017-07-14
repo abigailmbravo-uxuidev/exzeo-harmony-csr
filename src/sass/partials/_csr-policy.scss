@@ -198,10 +198,6 @@
                   border-bottom: 1px dashed $warm-gray-01;
                   padding-bottom: ($padding*2);
 
-                  .contact-title {
-
-                  }
-
                   .contact-details {
                     flex: 1 1 auto;
                   }
@@ -213,18 +209,12 @@
                       font-size: 1.25rem;
                     }
                   }
-
             }
-
-
           }
 
           .card-multi:last-of-type {
-            border: 0;
             margin-bottom: 0;
           }
-
-
         }
 
         .survey-wrapper {
@@ -486,54 +476,64 @@
         align-items: center;
         margin: 0 0 ($padding) 0;
 
-      .form-group {
+          .form-group {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 66.66%;
+            flex: 0 1 66.66%;
+            margin: 0;
 
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        width: 66.66%;
-        flex: 0 1 66.66%;
-        margin: 0 ($padding) 0 0;
+            label {
+              width: 50%;
+              flex: 0 1 50%;
+              margin: 0 ($padding) 0 0;
+              text-align: right;
 
-        label {
-          width: 50%;
-          flex: 0 1 50%;
-          margin: 0 ($padding) 0 0;
-          text-align: right;
+              span {
+                font-size: .7em;
+              }
+            }
 
-          span {
-            font-size: .7em;
+            &.segmented {
+                width: 100%;
+                label {
+                    width: 100%;
+                    flex: 1 1 auto;
+                    margin: 0;
+                    text-align: center;
+                }
+            }
+
+            > *:nth-child(2) {
+              width: 50%;
+              flex: 0 1 50%;
+              margin: 0 ($padding) 0 0;
+
+              &.segmented-answer-wrapper {
+                  width: 100%;
+                  flex: 1 0 100%;
+              }
+            }
+          }
+
+          > .form-group:last-child {
+            width: 33.33%;
+            flex: 0 1 33.33%;
+            margin-right: 0;
+            flex-direction: column;
+
+            * {
+              width: 100%;
+              flex: 0 1 100%;
+              margin: 0;
+            }
+
+            label {
+              display: none;
+            }
           }
         }
-
-        > *:nth-child(2) {
-          width: 50%;
-          flex: 0 1 50%;
-          margin: 0 ($padding) 0 0;
-        }
-
-
-      }
-
-      > .form-group:nth-child(2) {
-        width: 33.33%;
-        flex: 0 1 33.33%;
-
-        * {
-          width: 100%;
-          flex: 0 1 100%;
-          margin: 0;
-        }
-
-        label {
-          display: none;
-        }
-
-
-      }
-
-    }
-
     }
 
     .flex-parent.col2 {

@@ -1,11 +1,13 @@
 import React from 'react';
+import thunk from 'redux-thunk';
+import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
-import ConnectedApp, { populateUnderwritingQuestions, handleFormSubmit, clearForm } from './Underwriting';
+import ConnectedApp, { handleFormSubmit, handleGetQuoteData, handleInitialize, clearForm } from './Underwriting';
 
-const middlewares = [];
+const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
 
 const quoteData = {
@@ -308,10 +310,10 @@ const quoteData = {
 const underwritingQuestions = [
   {
     _id: '11b1cd9f28479a0a989faa08',
-    name: 'personalPropertyreplacementcostcoverage',
+    name: 'floodCoverage',
     model: 'quote',
     step: 'customizeDefaultQuote',
-    question: 'Do you want Personal Property Replacement Cost Coverage?',
+    question: 'Do you want Flood?',
     group: [
       'coverageLimits'
     ],
@@ -331,6 +333,9 @@ const underwritingQuestions = [
 describe('Testing Underwriting component', () => {
   it('should test connected app', () => {
     const initialState = {
+      service: {
+        underwritingQuestions
+      },
       getUWQuestions: {
         data: {
           modelInstanceId: '123',
@@ -359,6 +364,7 @@ describe('Testing Underwriting component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      underwritingQuestions,
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,
@@ -366,54 +372,16 @@ describe('Testing Underwriting component', () => {
         data: {
           submitting: false
         }
-      },
-      ...propTypes
-    };
-    const wrapper = shallow(<ConnectedApp store={store} {...props} />);
-    expect(wrapper);
-  });
-
-  it('should test UW questions', () => {
-    const initialState = {
-      cg: {
-        getUWQuestions: {
-          data: {
-            modelInstanceId: '123',
-            model: {
-              variables: [
-                { name: 'getListOfUWQuestions',
-                  value: {
-                    result: underwritingQuestions
-                  } }]
-            }
-          }
-        },
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {
-              variables: [
-                { name: 'retrieveQuote',
-                  value: {
-                    result: {}
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: {}
-                    } }]
-            },
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        data: {
-          showAdditionalInterestModal: false
-        },
-        modelName: 'bb'
       }
     };
-    const questions = populateUnderwritingQuestions(initialState);
-    expect(questions).toEqual(underwritingQuestions);
+    const wrapper = shallow(
+      <Provider store={store} >
+        <ConnectedApp />
+      </Provider>);
+    expect(wrapper);
+    wrapper.setProps({
+      none: ''
+    });
   });
 
   it('should test handleFormSubmit', () => {
@@ -554,5 +522,78 @@ describe('Testing Underwriting component', () => {
 
     clearForm(props);
     expect(underwritingQuestions).toEqual(props.questions);
+  });
+
+  it('should test handleGetQuoteData', () => {
+    const initialState = {
+      service: {
+
+      },
+      cg: {
+        bb: {
+          data: {
+            modelInstanceId: '123',
+            model: {
+              variables: [
+                { name: 'retrieveQuote',
+                  value: {
+                    result: quoteData
+                  } }, { name: 'getQuoteBeforePageLoop',
+                    value: {
+                      result: quoteData
+                    } }]
+            },
+            uiQuestions: []
+          }
+        }
+      },
+      appState: {
+        data: {
+          showAdditionalInterestModal: false
+        },
+        modelName: 'bb'
+      }
+    };
+    let quote = {};
+
+    quote = handleGetQuoteData(initialState);
+    expect(quote).toEqual(quoteData);
+  });
+
+  it('should test handleGetQuoteData', () => {
+    const initialState = {
+      service: {
+        underwritingQuestions
+      },
+      cg: {
+        bb: {
+          data: {
+            modelInstanceId: '123',
+            model: {
+              variables: [
+                { name: 'retrieveQuote',
+                  value: {
+                    result: quoteData
+                  } }, { name: 'getQuoteBeforePageLoop',
+                    value: {
+                      result: quoteData
+                    } }]
+            },
+            uiQuestions: []
+          }
+        }
+      },
+      appState: {
+        data: {
+          showAdditionalInterestModal: false
+        },
+        modelName: 'bb'
+      }
+    };
+    let values = {};
+
+    values = handleInitialize(initialState);
+    const expection = { floodCoverage: 'yes' };
+    expect(values).toEqual(expection);
   });
 });

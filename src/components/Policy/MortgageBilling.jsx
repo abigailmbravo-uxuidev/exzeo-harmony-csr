@@ -78,12 +78,12 @@ const handleInitialize = (state) => {
   return values;
 };
 
-export class PolicyholderAgent extends Component {
+export class MortgageBilling extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props, nextProps)) {
       if (nextProps.policy && nextProps.policy.policyNumber) {
-        this.props.actions.serviceActions.runService('getSummaryLedger', 'GET', 'billing.services', 'summary-ledgers/12-1000001-01', {});
+        this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
       }
     }
   }
@@ -270,7 +270,7 @@ export class PolicyholderAgent extends Component {
   }
 }
 
-PolicyholderAgent.propTypes = {
+MortgageBilling.propTypes = {
   policy: PropTypes.shape()
 };
 
@@ -296,4 +296,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'PolicyholderAgent', enableReinitialize: true })(PolicyholderAgent));
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'PolicyholderAgent', enableReinitialize: true })(MortgageBilling));
