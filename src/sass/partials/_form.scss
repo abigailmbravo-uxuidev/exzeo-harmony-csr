@@ -1030,6 +1030,18 @@ ul.results {
           align-items: center;
           justify-content: center;
           @include transition(all .2s ease-in-out);
+
+          &.fa-pencil {
+              font-size: $font-size-h4;
+          }
+
+          &.card-icon {
+            margin-right: $padding;
+          }
+
+          &.fa-map-marker {
+            justify-content: flex-start;
+          }
         }
 
         &:hover {

@@ -30,7 +30,6 @@ export const SliderInput = ({
     <div className={formGroupStyles}>
       <label htmlFor={name}>
         {label}
-         &nbsp;
         {Hint}
       </label>
       <div className="range-wrapper">
