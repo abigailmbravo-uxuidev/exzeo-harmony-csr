@@ -124,6 +124,48 @@ export const getAgency = (companyCode, state, agencyCode) => (dispatch) => {
     });
 };
 
+export const getAgentsByAgency = (companyCode, state, agencyCode) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'agency.services',
+    method: 'GET',
+    path: `v1/agents/${companyCode}/${state}?agencyCode=${agencyCode}`
+  });
+
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
+    const data = { agents: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
+export const getAgencies = (companyCode, state) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'agency.services',
+    method: 'GET',
+    path: `v1/agencies/${companyCode}/${state}`
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { agencies: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
 export const currentAgent = (companyCode, state, agentCode) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'agency.services',
@@ -145,3 +187,54 @@ export const currentAgent = (companyCode, state, agentCode) => (dispatch) => {
     });
 };
 
+export const getPolicyFromPolicyNumber = (companyCode, state, product, policyNumber) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'policy-data.services',
+    method: 'GET',
+    path: `transactions?companyCode=${companyCode}&state=${state}&product=${product}&policyNumber=${policyNumber}`
+  });
+
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
+    const data = { policy: response.data.policies ? response.data.policies[0] : {} };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
+export const getUnderwritingQuestions = (companyCode, state, product, property) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'questions.services',
+    method: 'POST',
+    path: 'questions/uw',
+    data: {
+      model: 'quote',
+      step: 'askUWAnswers',
+      quote: {
+        companyCode,
+        state,
+        product,
+        property
+      }
+    }
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { underwritingQuestions: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
