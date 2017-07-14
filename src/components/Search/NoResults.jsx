@@ -13,7 +13,7 @@ export const NoResults = (props) => {
   /**
   /* Error Message
   */
-  if (props.error.message) {
+  if (props.error && props.error.message) {
     return (
       <div className="card">
         <div className="card-header"><h4><i className="fa fa-frown-o " />Error</h4></div>
@@ -21,8 +21,8 @@ export const NoResults = (props) => {
           <p>{ props.error.message }</p>
         </div>
       </div>
-    )
-  } 
+    );
+  }
 
   /**
   /* No Message

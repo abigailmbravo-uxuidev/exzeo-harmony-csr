@@ -41,7 +41,7 @@ const handleInitialize = () => {
   return values;
 };
 
-const handleFormSubmit = (data, dispatch, props) => {
+export const handleFormSubmit = (data, dispatch, props) => {
   const { appState, actions } = props;
   const workflowId = appState.instanceId;
   actions.appStateActions.setAppState(appState.modelName,
@@ -72,7 +72,7 @@ const handleFormSubmit = (data, dispatch, props) => {
 };
 
 
-const Summary = (props) => {
+export const Summary = (props) => {
   let property = {};
   let coverageLimits = {};
   let coverageOptions = {};
@@ -225,7 +225,7 @@ const Summary = (props) => {
                 <dl>
                   <div>
                     <dt>Personal Property Replacement Cost</dt>
-                    <dd>{coverageOptions.personalPropertyReplacementCost.answer === true ? 'Yes' : 'No'}</dd>
+                    <dd>{coverageOptions.personalPropertyReplacementCost && coverageOptions.personalPropertyReplacementCost.answer === true ? 'Yes' : 'No'}</dd>
                   </div>
                 </dl>
                 <dl>

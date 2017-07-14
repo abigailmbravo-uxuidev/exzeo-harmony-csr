@@ -27,9 +27,9 @@ const handleGetQuote = (state) => {
 
 const handleInitialize = state => ({});
 
-const SearchPanel = (props) => (
+const SearchPanel = props => (
   <div className="toolbar">
-    <div className='input-group'>
+    <div className="input-group">
       <div className="btn btn-notes">Notes</div>
       <div className="btn btn-files">Files</div>
     </div>
@@ -44,13 +44,13 @@ const BSTable = props => props.notes ?
       </BootstrapTable>
     ) : (<p>?</p>);
 
-const NoteList = (props) => {
-  const { notes } = props;
+export const isExpandableRow = (row) => {
+  if (row.id < 2) return true;
+  return true;
+};
 
-  const isExpandableRow = (row) => {
-    if (row.id < 2) return true;
-    return true;
-  };
+export const NoteList = (props) => {
+  const { notes } = props;
 
   const expandComponent = row => (
     <BSTable data={row.expand} />
@@ -58,28 +58,29 @@ const NoteList = (props) => {
 
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
 
-  const showCreatedBy = createdBy => `${createdBy.firstName} ${createdBy.lastName}`;
+  const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
+  const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
   const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
 
   return (
     <BootstrapTable
-      data={ Array.isArray(notes) ? notes : [] }
+      data={Array.isArray(notes) ? notes : []}
       options={options}
       expandableRow={isExpandableRow}
       expandComponent={expandComponent}
       search
     >
       <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
-      <TableHeaderColumn dataField="attachmentCount" className="attachmentCount" dataSort dataAlign="center" width="7%"><i className="fa fa-paperclip" aria-hidden="true" /></TableHeaderColumn>
-      <TableHeaderColumn dataField="createdDate" dataSort width="10%" dataFormat={formatCreateDate}>Created</TableHeaderColumn>
-      <TableHeaderColumn dataField="createdBy" dataSort width="13%" dataFormat={showCreatedBy}>Author</TableHeaderColumn>
-      <TableHeaderColumn dataField="noteContent" dataSort tdStyle={{ whiteSpace: 'normal' }} width="45%">Note</TableHeaderColumn>
+      <TableHeaderColumn dataField="attachments" dataFormat={ attachmentCount } className="attachmentCount" dataSort dataAlign="center" width="7%"><i className="fa fa-paperclip" aria-hidden="true" /></TableHeaderColumn>
+      <TableHeaderColumn dataField="createdDate" dataSort width="10%" dataFormat={ formatCreateDate }>Created</TableHeaderColumn>
+      <TableHeaderColumn dataField="createdBy" dataSort width="13%" dataFormat={ showCreatedBy }>Author</TableHeaderColumn>
+      <TableHeaderColumn dataField="content" dataSort tdStyle={{ whiteSpace: 'normal' }} width="45%">Note</TableHeaderColumn>
     </BootstrapTable>
   );
 };
 
 const Files = (props) => {
-  const options = { searchPanel: props => (<SearchPanel { ...props } />) };
+  const options = { searchPanel: props => (<SearchPanel {...props} />) };
   return (
     <BootstrapTable data={[]} options={options} search>
       <TableHeaderColumn dataField="id" isKey hidden>ID</TableHeaderColumn>

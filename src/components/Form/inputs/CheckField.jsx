@@ -20,7 +20,7 @@ export const CheckInput = ({
   } = input;
 
   const formGroupStyles = classNames(
-    input.value ? 'active' : 'inactive' ,
+    input.value ? 'active' : 'inactive',
     'form-group',
     { name },
     { disabled },

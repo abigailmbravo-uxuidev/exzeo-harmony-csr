@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import localStorage from 'localStorage';
 import moment from 'moment';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
 import * as serviceActions from '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as serviceActions from '../../actions/serviceActions';
 import * as questionsActions from '../../actions/questionsActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
@@ -21,7 +23,7 @@ import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import DateField from '../Form/inputs/DateField';
 
-const handleGetQuoteData = (state) => {
+export const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName])
     ? state.cg[state.appState.modelName].data
     : null;
@@ -63,6 +65,8 @@ const handleInitialize = (state) => {
   const quoteData = handleGetQuoteData(state);
 
   const values = {};
+
+  values.electronicDelivery = _.get(quoteData, 'policyHolders[0].electronicDelivery') || false;
 
   values.agencyCode = String(_.get(quoteData, 'agencyCode'));
   values.agentCode = String(_.get(quoteData, 'agentCode'));
@@ -151,28 +155,198 @@ const handleInitialize = (state) => {
   return values;
 };
 
-const populateAgentData = (state) => {
-  if (state.cg && state.cg.getAgency && state.cg.getAgency.data &&
-    state.cg.getAgency.data.model && state.cg.getAgency.data.model.variables) {
-    const agentData = _.filter(state.cg.getAgency.data.model.variables, item => item.name === 'getAgentsByCode');
-    if (agentData.length > 0) {
-      const data = agentData[0].value.result;
-      return data;
-    }
-  }
-  return [];
-};
-
 const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
 const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question') || '';
 
+export const handleAgencyChange = (props, agencyCode, isInit) => {
+  if (!isInit) {
+    props.dispatch(change('Coverage', 'agencyCode', agencyCode));
+    props.dispatch(change('Coverage', 'agentCode', ''));
+  }
+
+  if (agencyCode) {
+    const agency = _.find(props.agencies, a => String(a.agencyCode) === String(agencyCode));
+    if (agency) {
+      props.actions.serviceActions.getAgentsByAgency(agency.companyCode, agency.state, agencyCode).then((response) => {
+        if (response.payload && response.payload[0].data.agents && response.payload[0].data.agents.length === 1) {
+          props.dispatch(change('Coverage', 'agentCode', response.payload[0].data.agents[0].agentCode));
+        }
+      });
+    }
+  }
+};
+
+export const clearForm = (props) => {
+  const { dispatch, quoteData } = props;
+
+  dispatch(change('Coverage', 'agencyCode', _.get(quoteData, 'agencyCode')));
+  dispatch(change('Coverage', 'agentCode', _.get(quoteData, 'agentCode')));
+
+
+  dispatch(change('Coverage', 'effectiveDate', moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD')));
+
+  dispatch(change('Coverage', 'pH1email', _.get(quoteData, 'policyHolders[0].emailAddress')));
+  dispatch(change('Coverage', 'pH1FirstName', _.get(quoteData, 'policyHolders[0].firstName')));
+  dispatch(change('Coverage', 'pH1LastName', _.get(quoteData, 'policyHolders[0].lastName')));
+  dispatch(change('Coverage', 'pH1phone', normalizePhone(_.get(quoteData, 'policyHolders[0].primaryPhoneNumber'))));
+  dispatch(change('Coverage', 'pH1secondaryPhone', normalizePhone(_.get(quoteData, 'policyHolders[0].secondaryPhoneNumber'))));
+
+  dispatch(change('Coverage', 'pH2email', _.get(quoteData, 'policyHolders[1].emailAddress')));
+  dispatch(change('Coverage', 'pH2FirstName', _.get(quoteData, 'policyHolders[1].firstName')));
+  dispatch(change('Coverage', 'pH2LastName', _.get(quoteData, 'policyHolders[1].lastName')));
+  dispatch(change('Coverage', 'pH2phone', normalizePhone(_.get(quoteData, 'policyHolders[1].primaryPhoneNumber'))));
+  dispatch(change('Coverage', 'pH2secondaryPhone', normalizePhone(_.get(quoteData, 'policyHolders[1].secondaryPhoneNumber'))));
+
+  dispatch(change('Coverage', 'address1', _.get(quoteData, 'property.physicalAddress.address1')));
+  dispatch(change('Coverage', 'address2', _.get(quoteData, 'property.physicalAddress.address2')));
+  dispatch(change('Coverage', 'city', _.get(quoteData, 'property.physicalAddress.city')));
+  dispatch(change('Coverage', 'state', _.get(quoteData, 'property.physicalAddress.state')));
+  dispatch(change('Coverage', 'zip', _.get(quoteData, 'property.physicalAddress.zip')));
+  dispatch(change('Coverage', 'protectionClass', _.get(quoteData, 'property.protectionClass')));
+  dispatch(change('Coverage', 'constructionType', _.get(quoteData, 'property.constructionType')));
+  dispatch(change('Coverage', 'yearOfRoof', _.get(quoteData, 'property.yearOfRoof')));
+  dispatch(change('Coverage', 'squareFeet', _.get(quoteData, 'property.squareFeet')));
+  dispatch(change('Coverage', 'yearBuilt', _.get(quoteData, 'property.yearBuilt')));
+  dispatch(change('Coverage', 'buildingCodeEffectivenessGrading', _.get(quoteData, 'property.buildingCodeEffectivenessGrading')));
+  dispatch(change('Coverage', 'familyUnits', _.get(quoteData, 'property.familyUnits')));
+  dispatch(change('Coverage', 'distanceToTidalWater', _.get(quoteData, 'property.distanceToTidalWater')));
+  dispatch(change('Coverage', 'distanceToFireHydrant', _.get(quoteData, 'property.distanceToFireHydrant')));
+  dispatch(change('Coverage', 'distanceToFireStation', _.get(quoteData, 'property.distanceToFireStation')));
+  dispatch(change('Coverage', 'floodZone', _.get(quoteData, 'property.floodZone')));
+
+  dispatch(change('Coverage', 'burglarAlarm', _.get(quoteData, 'property.burglarAlarm')));
+  dispatch(change('Coverage', 'fireAlarm', _.get(quoteData, 'property.fireAlarm')));
+  dispatch(change('Coverage', 'sprinkler', _.get(quoteData, 'property.sprinkler')));
+
+  dispatch(change('Coverage', 'dwellingAmount', Math.round(_.get(quoteData, 'coverageLimits.dwelling.amount') / 1000) * 1000));
+  dispatch(change('Coverage', 'dwellingMin', _.get(quoteData, 'coverageLimits.dwelling.minAmount')));
+  dispatch(change('Coverage', 'dwellingMax', _.get(quoteData, 'coverageLimits.dwelling.maxAmount')));
+
+  dispatch(change('Coverage', 'lossOfUse', _.get(quoteData, 'coverageLimits.lossOfUse.amount')));
+  dispatch(change('Coverage', 'medicalPayments', _.get(quoteData, 'coverageLimits.medicalPayments.amount')));
+  dispatch(change('Coverage', 'moldLiability', _.get(quoteData, 'coverageLimits.moldLiability.amount')));
+  dispatch(change('Coverage', 'moldProperty', _.get(quoteData, 'coverageLimits.moldProperty.amount')));
+  dispatch(change('Coverage', 'ordinanceOrLaw', _.get(quoteData, 'coverageLimits.ordinanceOrLaw.amount')));
+
+  const otherStructures = _.get(quoteData, 'coverageLimits.otherStructures.amount');
+  const dwelling = Math.round(_.get(quoteData, 'coverageLimits.dwelling.amount') / 1000) * 1000;
+  const personalProperty = _.get(quoteData, 'coverageLimits.personalProperty.amount');
+  const hurricane = _.get(quoteData, 'deductibles.hurricane.amount');
+  const calculatedHurricane = _.get(quoteData, 'deductibles.hurricane.calculatedAmount');
+  const calculatedSinkhole = _.get(quoteData, 'deductibles.sinkhole.calculatedAmount');
+
+
+  dispatch(change('Coverage', 'dwellingAmount', dwelling));
+
+  dispatch(change('Coverage', 'otherStructuresAmount', otherStructures));
+  dispatch(change('Coverage', 'otherStructures', String(calculatePercentage(otherStructures, dwelling))));
+  dispatch(change('Coverage', 'personalLiability', _.get(quoteData, 'coverageLimits.personalLiability.amount')));
+  dispatch(change('Coverage', 'personalProperty', String(calculatePercentage(personalProperty, dwelling))));
+  dispatch(change('Coverage', 'personalPropertyAmount', personalProperty));
+  dispatch(change('Coverage', 'personalPropertyReplacementCostCoverage', false));
+
+  dispatch(change('Coverage', 'sinkholePerilCoverage', _.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer')));
+  dispatch(change('Coverage', 'calculatedSinkhole', calculatedSinkhole));
+
+  dispatch(change('Coverage', 'allOtherPerils', _.get(quoteData, 'deductibles.allOtherPerils.amount')));
+  dispatch(change('Coverage', 'hurricane', hurricane));
+  dispatch(change('Coverage', 'calculatedHurricane', calculatedHurricane));
+  dispatch(change('Coverage', 'floridaBuildingCodeWindSpeed', _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeed')));
+  dispatch(change('Coverage', 'floridaBuildingCodeWindSpeedDesign', _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign')));
+  dispatch(change('Coverage', 'internalPressureDesign', _.get(quoteData, 'property.windMitigation.internalPressureDesign')));
+  dispatch(change('Coverage', 'openingProtection', _.get(quoteData, 'property.windMitigation.openingProtection')));
+  dispatch(change('Coverage', 'roofCovering', _.get(quoteData, 'property.windMitigation.roofCovering')));
+  dispatch(change('Coverage', 'roofDeckAttachment', _.get(quoteData, 'property.windMitigation.roofDeckAttachment')));
+  dispatch(change('Coverage', 'roofGeometry', _.get(quoteData, 'property.windMitigation.roofGeometry')));
+  dispatch(change('Coverage', 'roofToWallConnection', _.get(quoteData, 'property.windMitigation.roofToWallConnection')));
+  dispatch(change('Coverage', 'secondaryWaterResistance', _.get(quoteData, 'property.windMitigation.secondaryWaterResistance')));
+  dispatch(change('Coverage', 'terrain', _.get(quoteData, 'property.windMitigation.terrain')));
+  dispatch(change('Coverage', 'windBorneDebrisRegion', _.get(quoteData, 'property.windMitigation.windBorneDebrisRegion')));
+  dispatch(change('Coverage', 'residenceType', _.get(quoteData, 'property.residenceType')));
+};
+
+export const handleFormSubmit = (data, dispatch, props) => {
+  const workflowId = props.appState.instanceId;
+  const submitData = data;
+
+  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, {
+    ...props.appState.data,
+    submitting: true
+  });
+
+  submitData.agencyCode = String(data.agencyCode);
+  submitData.agentCode = String(data.agentCode);
+  submitData.dwellingAmount = Math.round(Number(String(data.dwellingAmount).replace(/[^\d]/g, '')) / 1000) * 1000;
+  submitData.otherStructuresAmount = Number(data.otherStructuresAmount);
+
+  submitData.personalPropertyAmount = Number(data.personalPropertyAmount);
+  submitData.hurricane = Number(data.hurricane);
+  submitData.calculatedHurricane = Number(data.calculatedHurricane);
+  submitData.lossOfUse = Number(data.lossOfUse);
+  submitData.medicalPayments = Number(data.medicalPayments);
+  submitData.floridaBuildingCodeWindSpeedDesign = Number(data.floridaBuildingCodeWindSpeedDesign);
+  submitData.floridaBuildingCodeWindSpeed = Number(data.floridaBuildingCodeWindSpeed);
+  submitData.allOtherPerils = Number(data.allOtherPerils);
+  submitData.ordinanceOrLaw = Number(data.ordinanceOrLaw);
+  submitData.moldLiability = Number(data.moldLiability);
+  submitData.moldProperty = Number(data.moldProperty);
+  submitData.personalLiability = Number(data.personalLiability);
+
+  submitData.sinkholePerilCoverage = (String(data.sinkholePerilCoverage) === 'true');
+
+  if (submitData.sinkholePerilCoverage) {
+    submitData.sinkhole = 10;
+  }
+
+  submitData.pH1phone = submitData.pH1phone.replace(/[^\d]/g, '');
+  submitData.pH1secondaryPhone = submitData.pH1secondaryPhone
+      ? submitData.pH1secondaryPhone.replace(/[^\d]/g, '')
+      : submitData.pH1secondaryPhone;
+
+  submitData.pH2phone = submitData.pH2phone
+      ? submitData.pH2phone.replace(/[^\d]/g, '')
+      : submitData.pH2phone;
+  submitData.pH2secondaryPhone = submitData.pH2secondaryPhone
+      ? submitData.pH2secondaryPhone.replace(/[^\d]/g, '')
+      : submitData.pH2secondaryPhone;
+
+  const steps = [
+    {
+      name: 'hasUserEnteredData',
+      data: {
+        answer: 'Yes'
+      }
+    }, {
+      name: 'askCustomerData',
+      data: submitData
+    }, {
+      name: 'askToCustomizeDefaultQuote',
+      data: {
+        shouldCustomizeQuote: 'Yes'
+      }
+    }, {
+      name: 'customizeDefaultQuote',
+      data: submitData
+    }
+
+  ];
+
+  props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
+      .then(() => {
+        // now update the workflow details so the recalculated rate shows
+        props.actions.appStateActions.setAppState(props.appState.modelName,
+          workflowId, { ...props.appState.data, submitting: false, selectedLink: 'coverage' });
+      });
+};
+
+let setAgents = false;
 
 export class Coverage extends Component {
 
   componentDidMount() {
-    this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuote');
+    this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
 
     const isNewTab = localStorage.getItem('isNewTab') === 'true';
 
@@ -210,200 +384,32 @@ export class Coverage extends Component {
         this.props.actions.appStateActions.setAppState('csrQuote', startResult.modelInstanceId, { ...this.props.appState.data, submitting: true });
         this.props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
           this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-          startResult.modelInstanceId, { ...this.props.appState.data, submitting: false });
-          this.handleAgencyChange(this.props.quoteData.agencyCode, true);
+          startResult.modelInstanceId, { ...this.props.appState.data });
+          handleAgencyChange(this.props, this.props.quoteData.agencyCode, true);
         });
       });
-    } else this.handleAgencyChange(this.props.quoteData.agencyCode, true);
+    } else handleAgencyChange(this.props, this.props.quoteData.agencyCode, true);
   }
 
-  handleAgencyChange = (agencyCode, isInit) => {
-    if (!isInit) {
-      this.props.dispatch(change('Coverage', 'agencyCode', agencyCode));
-      this.props.dispatch(change('Coverage', 'agentCode', ''));
-    }
-
-    const { quoteData } = this.props;
-    const startModelData = {
-      agencyCode,
-      companyCode: quoteData.companyCode,
-      state: quoteData.state
-    };
-
-    this.props.actions.cgActions.startWorkflow('getAgency', startModelData, false);
-  };
-
-  clearForm = () => {
-    const { dispatch, quoteData } = this.props;
-
-    dispatch(change('Coverage', 'agencyCode', _.get(quoteData, 'agencyCode')));
-    dispatch(change('Coverage', 'agentCode', _.get(quoteData, 'agentCode')));
-
-
-    dispatch(change('Coverage', 'effectiveDate', moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD')));
-
-    dispatch(change('Coverage', 'pH1email', _.get(quoteData, 'policyHolders[0].emailAddress')));
-    dispatch(change('Coverage', 'pH1FirstName', _.get(quoteData, 'policyHolders[0].firstName')));
-    dispatch(change('Coverage', 'pH1LastName', _.get(quoteData, 'policyHolders[0].lastName')));
-    dispatch(change('Coverage', 'pH1phone', normalizePhone(_.get(quoteData, 'policyHolders[0].primaryPhoneNumber'))));
-    dispatch(change('Coverage', 'pH1secondaryPhone', normalizePhone(_.get(quoteData, 'policyHolders[0].secondaryPhoneNumber'))));
-
-    dispatch(change('Coverage', 'pH2email', _.get(quoteData, 'policyHolders[1].emailAddress')));
-    dispatch(change('Coverage', 'pH2FirstName', _.get(quoteData, 'policyHolders[1].firstName')));
-    dispatch(change('Coverage', 'pH2LastName', _.get(quoteData, 'policyHolders[1].lastName')));
-    dispatch(change('Coverage', 'pH2phone', normalizePhone(_.get(quoteData, 'policyHolders[1].primaryPhoneNumber'))));
-    dispatch(change('Coverage', 'pH2secondaryPhone', normalizePhone(_.get(quoteData, 'policyHolders[1].secondaryPhoneNumber'))));
-
-    dispatch(change('Coverage', 'address1', _.get(quoteData, 'property.physicalAddress.address1')));
-    dispatch(change('Coverage', 'address2', _.get(quoteData, 'property.physicalAddress.address2')));
-    dispatch(change('Coverage', 'city', _.get(quoteData, 'property.physicalAddress.city')));
-    dispatch(change('Coverage', 'state', _.get(quoteData, 'property.physicalAddress.state')));
-    dispatch(change('Coverage', 'zip', _.get(quoteData, 'property.physicalAddress.zip')));
-    dispatch(change('Coverage', 'protectionClass', _.get(quoteData, 'property.protectionClass')));
-    dispatch(change('Coverage', 'constructionType', _.get(quoteData, 'property.constructionType')));
-    dispatch(change('Coverage', 'yearOfRoof', _.get(quoteData, 'property.yearOfRoof')));
-    dispatch(change('Coverage', 'squareFeet', _.get(quoteData, 'property.squareFeet')));
-    dispatch(change('Coverage', 'yearBuilt', _.get(quoteData, 'property.yearBuilt')));
-    dispatch(change('Coverage', 'buildingCodeEffectivenessGrading', _.get(quoteData, 'property.buildingCodeEffectivenessGrading')));
-    dispatch(change('Coverage', 'familyUnits', _.get(quoteData, 'property.familyUnits')));
-    dispatch(change('Coverage', 'distanceToTidalWater', _.get(quoteData, 'property.distanceToTidalWater')));
-    dispatch(change('Coverage', 'distanceToFireHydrant', _.get(quoteData, 'property.distanceToFireHydrant')));
-    dispatch(change('Coverage', 'distanceToFireStation', _.get(quoteData, 'property.distanceToFireStation')));
-    dispatch(change('Coverage', 'floodZone', _.get(quoteData, 'property.floodZone')));
-
-    dispatch(change('Coverage', 'burglarAlarm', _.get(quoteData, 'property.burglarAlarm')));
-    dispatch(change('Coverage', 'fireAlarm', _.get(quoteData, 'property.fireAlarm')));
-    dispatch(change('Coverage', 'sprinkler', _.get(quoteData, 'property.sprinkler')));
-
-    dispatch(change('Coverage', 'dwellingAmount', Math.round(_.get(quoteData, 'coverageLimits.dwelling.amount') / 1000) * 1000));
-    dispatch(change('Coverage', 'dwellingMin', _.get(quoteData, 'coverageLimits.dwelling.minAmount')));
-    dispatch(change('Coverage', 'dwellingMax', _.get(quoteData, 'coverageLimits.dwelling.maxAmount')));
-
-    dispatch(change('Coverage', 'lossOfUse', _.get(quoteData, 'coverageLimits.lossOfUse.amount')));
-    dispatch(change('Coverage', 'medicalPayments', _.get(quoteData, 'coverageLimits.medicalPayments.amount')));
-    dispatch(change('Coverage', 'moldLiability', _.get(quoteData, 'coverageLimits.moldLiability.amount')));
-    dispatch(change('Coverage', 'moldProperty', _.get(quoteData, 'coverageLimits.moldProperty.amount')));
-    dispatch(change('Coverage', 'ordinanceOrLaw', _.get(quoteData, 'coverageLimits.ordinanceOrLaw.amount')));
-
-    const otherStructures = _.get(quoteData, 'coverageLimits.otherStructures.amount');
-    const dwelling = Math.round(_.get(quoteData, 'coverageLimits.dwelling.amount') / 1000) * 1000;
-    const personalProperty = _.get(quoteData, 'coverageLimits.personalProperty.amount');
-    const hurricane = _.get(quoteData, 'deductibles.hurricane.amount');
-    const calculatedHurricane = _.get(quoteData, 'deductibles.hurricane.calculatedAmount');
-    const calculatedSinkhole = _.get(quoteData, 'deductibles.sinkhole.calculatedAmount');
-
-
-    dispatch(change('Coverage', 'dwellingAmount', dwelling));
-
-    dispatch(change('Coverage', 'otherStructuresAmount', otherStructures));
-    dispatch(change('Coverage', 'otherStructures', String(calculatePercentage(otherStructures, dwelling))));
-    dispatch(change('Coverage', 'personalLiability', _.get(quoteData, 'coverageLimits.personalLiability.amount')));
-    dispatch(change('Coverage', 'personalProperty', String(calculatePercentage(personalProperty, dwelling))));
-    dispatch(change('Coverage', 'personalPropertyAmount', personalProperty));
-    dispatch(change('Coverage', 'personalPropertyReplacementCostCoverage', false));
-
-    dispatch(change('Coverage', 'sinkholePerilCoverage', _.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer')));
-    dispatch(change('Coverage', 'calculatedSinkhole', calculatedSinkhole));
-
-    dispatch(change('Coverage', 'allOtherPerils', _.get(quoteData, 'deductibles.allOtherPerils.amount')));
-    dispatch(change('Coverage', 'hurricane', hurricane));
-    dispatch(change('Coverage', 'calculatedHurricane', calculatedHurricane));
-    dispatch(change('Coverage', 'floridaBuildingCodeWindSpeed', _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeed')));
-    dispatch(change('Coverage', 'floridaBuildingCodeWindSpeedDesign', _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign')));
-    dispatch(change('Coverage', 'internalPressureDesign', _.get(quoteData, 'property.windMitigation.internalPressureDesign')));
-    dispatch(change('Coverage', 'openingProtection', _.get(quoteData, 'property.windMitigation.openingProtection')));
-    dispatch(change('Coverage', 'roofCovering', _.get(quoteData, 'property.windMitigation.roofCovering')));
-    dispatch(change('Coverage', 'roofDeckAttachment', _.get(quoteData, 'property.windMitigation.roofDeckAttachment')));
-    dispatch(change('Coverage', 'roofGeometry', _.get(quoteData, 'property.windMitigation.roofGeometry')));
-    dispatch(change('Coverage', 'roofToWallConnection', _.get(quoteData, 'property.windMitigation.roofToWallConnection')));
-    dispatch(change('Coverage', 'secondaryWaterResistance', _.get(quoteData, 'property.windMitigation.secondaryWaterResistance')));
-    dispatch(change('Coverage', 'terrain', _.get(quoteData, 'property.windMitigation.terrain')));
-    dispatch(change('Coverage', 'windBorneDebrisRegion', _.get(quoteData, 'property.windMitigation.windBorneDebrisRegion')));
-    dispatch(change('Coverage', 'residenceType', _.get(quoteData, 'property.residenceType')));
-  };
-
-  handleFormSubmit = (data) => {
-    const workflowId = this.props.appState.instanceId;
-    const submitData = data;
-    const { dispatch } = this.props;
-
-    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, workflowId, {
-      ...this.props.appState.data,
-      submitting: true
-    });
-
-    submitData.agencyCode = String(data.agencyCode);
-    submitData.agentCode = String(data.agentCode);
-    submitData.dwellingAmount = Math.round(Number(String(data.dwellingAmount).replace(/[^\d]/g, '')) / 1000) * 1000;
-    dispatch(change('Coverage', 'dwellingAmount', submitData.dwellingAmount));
-    submitData.otherStructuresAmount = Number(data.otherStructuresAmount);
-
-    submitData.personalPropertyAmount = Number(data.personalPropertyAmount);
-    submitData.hurricane = Number(data.hurricane);
-    submitData.calculatedHurricane = Number(data.calculatedHurricane);
-    submitData.lossOfUse = Number(data.lossOfUse);
-    submitData.medicalPayments = Number(data.medicalPayments);
-    submitData.floridaBuildingCodeWindSpeedDesign = Number(data.floridaBuildingCodeWindSpeedDesign);
-    submitData.floridaBuildingCodeWindSpeed = Number(data.floridaBuildingCodeWindSpeed);
-    submitData.allOtherPerils = Number(data.allOtherPerils);
-    submitData.ordinanceOrLaw = Number(data.ordinanceOrLaw);
-    submitData.moldLiability = Number(data.moldLiability);
-    submitData.moldProperty = Number(data.moldProperty);
-    submitData.personalLiability = Number(data.personalLiability);
-
-    submitData.sinkholePerilCoverage = (String(data.sinkholePerilCoverage) === 'true');
-
-    if (submitData.sinkholePerilCoverage) {
-      submitData.sinkhole = 10;
-    }
-
-    submitData.pH1phone = submitData.pH1phone.replace(/[^\d]/g, '');
-    submitData.pH1secondaryPhone = submitData.pH1secondaryPhone
-      ? submitData.pH1secondaryPhone.replace(/[^\d]/g, '')
-      : submitData.pH1secondaryPhone;
-
-    submitData.pH2phone = submitData.pH2phone
-      ? submitData.pH2phone.replace(/[^\d]/g, '')
-      : submitData.pH2phone;
-    submitData.pH2secondaryPhone = submitData.pH2secondaryPhone
-      ? submitData.pH2secondaryPhone.replace(/[^\d]/g, '')
-      : submitData.pH2secondaryPhone;
-
-    const steps = [
-      {
-        name: 'hasUserEnteredData',
-        data: {
-          answer: 'Yes'
-        }
-      }, {
-        name: 'askCustomerData',
-        data: submitData
-      }, {
-        name: 'askToCustomizeDefaultQuote',
-        data: {
-          shouldCustomizeQuote: 'Yes'
-        }
-      }, {
-        name: 'customizeDefaultQuote',
-        data: submitData
+  componentWillReceiveProps(nextProps) {
+    if (!_.isEqual(this.props, nextProps)) {
+      const quoteData = nextProps.quoteData;
+      if (quoteData.companyCode && quoteData.state && quoteData.agencyCode && !setAgents) {
+        this.props.actions.serviceActions.getAgencies(quoteData.companyCode, quoteData.state);
+        this.props.actions.serviceActions.getAgentsByAgency(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
+        setAgents = true;
       }
-
-    ];
-
-    this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
-      .then(() => {
-        // now update the workflow details so the recalculated rate shows
-        this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-          workflowId, { ...this.props.appState.data, submitting: false, selectedLink: 'coverage' });
-      });
-  };
+    }
+  }
 
   updateDwellingAndDependencies = (e, value) => {
     const { dispatch, fieldValues } = this.props;
 
-    const dwellingNumber = String(value).replace(/\D+/g, '');
+    let dwellingNumber = String(value).replace(/\D+/g, '');
 
     if (Number.isNaN(dwellingNumber)) { return; }
+
+    dwellingNumber = Math.round(dwellingNumber / 1000) * 1000;
 
     if (fieldValues.otherStructures !== 'other') {
       dispatch(change('Coverage', 'otherStructuresAmount', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.otherStructures)))));
@@ -422,7 +428,12 @@ export class Coverage extends Component {
     const { dispatch, fieldValues } = this.props;
     if (Number.isNaN(event.target.value)) { return; }
 
-    const dependencyValue = String(fieldValues[dependency]).replace(/\D+/g, '');
+    let dependencyValue = null;
+
+    if (dependency === 'dwellingAmount') {
+      dependencyValue = Math.round(Number(String(fieldValues[dependency]).replace(/\D+/g, '')) / 1000) * 1000;
+    } else dependencyValue = String(fieldValues[dependency]).replace(/\D+/g, '');
+
 
     const fieldValue = setPercentageOfValue(Number(dependencyValue), Number(event.target.value));
 
@@ -435,17 +446,18 @@ export class Coverage extends Component {
     const { dispatch, fieldValues } = this.props;
     if (Number.isNaN(event.target.value)) { return; }
 
-    const dependencyValue = String(fieldValues.dwellingAmount).replace(/\D+/g, '');
+    const dependencyValue = Math.round(Number(String(fieldValues.dwellingAmount).replace(/\D+/g, '')) / 1000) * 1000;
+
     dispatch(change('Coverage', 'calculatedSinkhole', String(setPercentageOfValue(Number(dependencyValue), 10))));
   }
 
   render() {
-    const { quoteData, fieldValues, handleSubmit, initialValues, pristine, agents, questions, zipCodeSettings } = this.props;
+    const { quoteData, fieldValues, handleSubmit, initialValues, pristine, agents, agencies, questions, zipCodeSettings } = this.props;
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
         <div className="route-content">
-          <Form id="Coverage" onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
+          <Form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
             <HiddenField name={'propertyIncidentalOccupanciesMainDwelling'} />
             <HiddenField name={'propertyIncidentalOccupanciesOtherStructures'} />
             <HiddenField name={'liabilityIncidentalOccupancies'} />
@@ -462,22 +474,17 @@ export class Coverage extends Component {
                       <SelectField
                         name="agencyCode" component="select" styleName={''} label="Agency" validations={['required']} input={{
                           name: 'agencyCode',
-                          onChange: event => this.handleAgencyChange(event.target.value),
+                          onChange: event => handleAgencyChange(this.props, event.target.value),
                           value: fieldValues.agencyCode
-                        }} answers={[
-                          {
-                            answer: '20000',
-                            label: 'TypTap Insurance Company'
-                          },
-                          { answer: '20003',
-                            label: 'OMEGA INSURANCE AGENCY INC'
-                          }
-                        ]}
+                        }} answers={agencies && agencies.map(agency => ({
+                          answer: String(agency.agencyCode),
+                          label: `${agency.displayName}`
+                        }))}
                       />
                     </div>
                     <div className="flex-child agentCode">
                       <SelectField
-                        name="agentCode" component="select" styleName={''} label="Agent" validations={['required']} answers={agents.map(agent => ({
+                        name="agentCode" component="select" styleName={''} label="Agent" validations={['required']} answers={agents && agents.map(agent => ({
                           answer: String(agent.agentCode),
                           label: `${agent.firstName} ${agent.lastName}`
                         }))}
@@ -571,43 +578,11 @@ export class Coverage extends Component {
                       </div>
                       <div className="flex-child home-location-protection-class">
                         <SelectField
-                          name="protectionClass" component="select" styleName={''} label="Protection Class" input={{
+                          name="protectionClass" component="select" styleName={''} label={getQuestionName('protectionClass', questions)} input={{
                             name: 'protectionClass',
                             disabled: true,
                             value: fieldValues.protectionClass
-                          }} answers={[
-                            {
-                              answer: '1',
-                              label: '01'
-                            }, {
-                              answer: '2',
-                              label: '02'
-                            }, {
-                              answer: '3',
-                              label: '03'
-                            }, {
-                              answer: '4',
-                              label: '04'
-                            }, {
-                              answer: '5',
-                              label: '05'
-                            }, {
-                              answer: '6',
-                              label: '06'
-                            }, {
-                              answer: '7',
-                              label: '07'
-                            }, {
-                              answer: '8',
-                              label: '08'
-                            }, {
-                              answer: '9',
-                              label: '09'
-                            }, {
-                              answer: '10',
-                              label: '10'
-                            }
-                          ]}
+                          }} answers={getAnswers('protectionClass', questions)}
                         />
                       </div>
                       <div className="flex-child home-location-tidal-waters">
@@ -615,94 +590,31 @@ export class Coverage extends Component {
                       </div>
                       <div className="flex-child home-location-residence-type">
                         <SelectField
-                          name="residenceType" component="select" styleName={''} label="Residence Type" input={{
+                          name="residenceType" component="select" styleName={''} label={getQuestionName('residenceType', questions)} input={{
                             name: 'residenceType',
                             disabled: true,
                             value: fieldValues.residenceType
-                          }} answers={[
-                            {
-                              answer: 'SINGLE FAMILY',
-                              label: 'Single Family'
-                            }, {
-                              answer: 'COMMERCIAL',
-                              label: 'Commercial'
-                            }
-                          ]}
+                          }} answers={getAnswers('residenceType', questions)}
                         />
                       </div>
                     </div>
                     <div className="flex-parent home-location-row-2">
                       <div className="flex-child home-location-construction">
                         <SelectField
-                          component="select" styleName={''} label="Construction" name={'constructionType'} input={{
+                          component="select" styleName={''} label={getQuestionName('constructionType', questions)} name={'constructionType'} input={{
                             name: 'constructionType',
                             disabled: true,
                             value: fieldValues.constructionType
-                          }} answers={[
-                            {
-                              answer: 'FRAME',
-                              label: 'Frame'
-                            }, {
-                              answer: 'PLASTIC SIDING',
-                              label: 'Plastic Siding'
-                            }, {
-                              answer: 'ALUMINUM SIDING',
-                              label: 'Aluminum Siding'
-                            }, {
-                              answer: 'MASONRY',
-                              label: 'Masonry'
-                            }, {
-                              answer: 'MASONRY VENEER',
-                              label: 'Masonry Veneer'
-                            }, {
-                              answer: 'SUPERIOR',
-                              label: 'Superior'
-                            }
-                          ]}
+                          }} answers={getAnswers('constructionType', questions)}
                         />
                       </div>
                       <div className="flex-child home-location-bceg">
                         <SelectField
-                          component="select" styleName={''} label="BCEG" name={'buildingCodeEffectivenessGrading'} input={{
+                          component="select" styleName={''} label={getQuestionName('buildingCodeEffectivenessGrading', questions)} name={'buildingCodeEffectivenessGrading'} input={{
                             name: 'buildingCodeEffectivenessGrading',
                             disabled: true,
                             value: fieldValues.buildingCodeEffectivenessGrading
-                          }} answers={[
-                            {
-                              answer: '1',
-                              label: '01'
-                            }, {
-                              answer: '2',
-                              label: '02'
-                            }, {
-                              answer: '3',
-                              label: '03'
-                            }, {
-                              answer: '4',
-                              label: '04'
-                            }, {
-                              answer: '5',
-                              label: '05'
-                            }, {
-                              answer: '6',
-                              label: '06'
-                            }, {
-                              answer: '7',
-                              label: '07'
-                            }, {
-                              answer: '8',
-                              label: '08'
-                            }, {
-                              answer: '9',
-                              label: '09'
-                            }, {
-                              answer: '98',
-                              label: '98'
-                            }, {
-                              answer: '99',
-                              label: '99'
-                            }
-                          ]}
+                          }} answers={getAnswers('buildingCodeEffectivenessGrading', questions)}
                         />
                       </div>
                       <div className="flex-child home-location-fire-hydrant">
@@ -718,25 +630,11 @@ export class Coverage extends Component {
                       </div>
                       <div className="flex-child home-location-family-units">
                         <SelectField
-                          name="familyUnits" component="select" styleName={''} label="Family Units" input={{
+                          name="familyUnits" component="select" styleName={''} label={getQuestionName('familyUnits', questions)} input={{
                             name: 'familyUnits',
                             disabled: true,
                             value: fieldValues.familyUnits
-                          }} onChange={function () {}} answers={[
-                            {
-                              answer: '1-2',
-                              label: '1-2'
-                            }, {
-                              answer: '3-4',
-                              label: '3-4'
-                            }, {
-                              answer: '5-8',
-                              label: '5-8'
-                            }, {
-                              answer: '9+',
-                              label: '9+'
-                            }
-                          ]}
+                          }} onChange={function () {}} answers={getAnswers('familyUnits', questions)}
                         />
                       </div>
                       <div className="flex-child home-location-fire-station">
@@ -1038,7 +936,7 @@ export class Coverage extends Component {
                   </div>
                 </section>
                 <div className="btn-footer">
-                  <button className="btn btn-secondary" type="button" form="Coverage" onClick={this.clearForm}>
+                  <button className="btn btn-secondary" type="button" form="Coverage" onClick={() => clearForm(this.props)}>
                     Cancel
                   </button>
                   <button className="btn btn-primary" type="submit" form="Coverage" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}>
@@ -1077,7 +975,8 @@ const mapStateToProps = state => ({
   getAgents: state.service.getAgents,
   tasks: state.cg,
   appState: state.appState,
-  agents: populateAgentData(state),
+  agents: state.service.agents,
+  agencies: state.service.agencies,
   fieldValues: _.get(state.form, 'Coverage.values', {}),
   initialValues: handleInitialize(state),
   quoteData: handleGetQuoteData(state),
@@ -1087,6 +986,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     questionsActions: bindActionCreators(questionsActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)

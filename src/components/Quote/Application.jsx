@@ -39,7 +39,7 @@ const handleGetUnderwritingExceptions = (state) => {
   return underwritingExceptions;
 };
 
-const handleFormSubmit = (data, dispatch, props) => {
+export const handleFormSubmit = (data, dispatch, props) => {
   const { appState, actions } = props;
 
   const workflowId = appState.instanceId;
