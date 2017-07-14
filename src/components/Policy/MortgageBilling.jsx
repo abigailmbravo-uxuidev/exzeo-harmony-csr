@@ -69,7 +69,7 @@ const handleInitialize = (state) => {
   return values;
 };
 
-export class PolicyholderAgent extends Component {
+export class MortgageBilling extends Component {
 
   componentWillMount = () => {
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
@@ -312,7 +312,7 @@ export class PolicyholderAgent extends Component {
   }
 }
 
-PolicyholderAgent.propTypes = {
+MortgageBilling.propTypes = {
   policy: PropTypes.shape()
 };
 
@@ -339,4 +339,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'PolicyholderAgent', enableReinitialize: true })(PolicyholderAgent));
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'PolicyholderAgent', enableReinitialize: true })(MortgageBilling));

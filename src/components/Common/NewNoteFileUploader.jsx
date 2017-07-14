@@ -10,12 +10,12 @@ import * as appStateActions from '../../actions/appStateActions';
 
 export const submitNote = (data, dispatch, props) => {
   const { user, noteType, documentId } = props;
-  const noteData = Object.assign({}, 
+  const noteData = Object.assign({},
     data,
     {
       noteType,
       number: documentId,
-      createdBy:{
+      createdBy: {
         useerId: user.user_id,
         userName: user.username
       }
@@ -26,7 +26,7 @@ export const submitNote = (data, dispatch, props) => {
   props.closeButtonHandler();
 };
 
-const minimzeButtonHandler = (props) => {
+export const minimzeButtonHandler = (props) => {
   if (props.appState.data.minimize) {
     props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, minimize: false });
   } else {
@@ -37,26 +37,26 @@ const minimzeButtonHandler = (props) => {
 export const validate = (values) => {
   const errors = {};
 
-  if (!values.noteContent) errors.noteContent = "Note Content Required";
+  if (!values.noteContent) errors.noteContent = 'Note Content Required';
 
   return errors;
 };
 
 const renderNotes = ({ input, label, type, meta: { touched, error } }) => (
-    <div>
-      <textarea { ...input } placeholder={ label } rows="10" cols="40"></textarea>
-      { touched && error && <span>{ error }</span> }
-    </div>
-  )
+  <div>
+    <textarea {...input} placeholder={label} rows="10" cols="40" />
+    { touched && error && <span>{ error }</span> }
+  </div>
+  );
 
 const NewNoteFileUploader = (props, { closeButtonHandler }) => {
   // TODO: Pull this from the list service
   const contactTypeOptions = {
-    "Quote Note": [
-      "Agent", "Policyholder", "Inspector", "Other"
+    'Quote Note': [
+      'Agent', 'Policyholder', 'Inspector', 'Other'
     ],
-    "Policy Note": [
-      "Agent", "Policyholder", "Lienholder", "Claims", "Inspector", "Other"
+    'Policy Note': [
+      'Agent', 'Policyholder', 'Lienholder', 'Claims', 'Inspector', 'Other'
     ]
   };
 
@@ -76,11 +76,11 @@ const NewNoteFileUploader = (props, { closeButtonHandler }) => {
         <Form id="NewNoteFileUploader" onSubmit={props.handleSubmit(submitNote)} noValidate>
           <div className="content state-initial">
             <div className="flex-contents">
-              <Field component="select" name="contactType" disabled={ !contactTypes.length }>
-                 { contactTypes.map(option => <option value={ option } key={ option }>{ option }</option>) }
+              <Field component="select" name="contactType" disabled={!contactTypes.length}>
+                { contactTypes.map(option => <option value={option} key={option}>{ option }</option>) }
               </Field>
-              <Field name="noteContent" component={ renderNotes } label="Note Content" />
-              
+              <Field name="noteContent" component={renderNotes} label="Note Content" />
+
             </div>
             <div className="buttons note-file-footer-button-group">
               <button className="btn btn-primary upload-button">Upload</button>
@@ -104,7 +104,7 @@ const NewNoteFileUploader = (props, { closeButtonHandler }) => {
         </Form>
       </div>
     </div>
-  )
+  );
 };
 
 NewNoteFileUploader.propTypes = {

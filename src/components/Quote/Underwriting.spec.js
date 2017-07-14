@@ -382,7 +382,6 @@ describe('Testing Underwriting component', () => {
     wrapper.setProps({
       none: ''
     });
-    wrapper.instance().componentWillReceiveProps(props);
   });
 
   it('should test handleFormSubmit', () => {

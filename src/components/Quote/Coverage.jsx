@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import localStorage from 'localStorage';
 import moment from 'moment';
+import { Prompt } from 'react-router-dom';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
 import * as serviceActions from '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
@@ -378,16 +379,38 @@ export class Coverage extends Component {
           });
         }
 
-        const startResult = result.payload[0].workflowData.csrQuote.data;
+        steps.push({ name: 'hasUserEnteredData', data: { answer: 'No' } });
+        steps.push({ name: 'moveTo', data: { key: 'customerData' } });
+
+        const startResult = result.payload ? result.payload[0].workflowData.csrQuote.data : {};
 
         this.props.actions.appStateActions.setAppState('csrQuote', startResult.modelInstanceId, { ...this.props.appState.data, submitting: true });
         this.props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
           this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-          startResult.modelInstanceId, { ...this.props.appState.data });
+          this.props.appState.instanceId, { ...this.props.appState.data, selectedLink: 'customerData' });
           handleAgencyChange(this.props, this.props.quoteData.agencyCode, true);
         });
       });
-    } else handleAgencyChange(this.props, this.props.quoteData.agencyCode, true);
+    } else {
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+        ...this.props.appState.data,
+        submitting: true
+      });
+      const steps = [
+    { name: 'hasUserEnteredData', data: { answer: 'No' } },
+    { name: 'moveTo', data: { key: 'customerData' } }
+      ];
+      const workflowId = this.props.appState.instanceId;
+
+      this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
+    .then(() => {
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+        ...this.props.appState.data,
+        selectedLink: 'customerData'
+      });
+    });
+      handleAgencyChange(this.props, this.props.quoteData.agencyCode, true);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -443,7 +466,6 @@ export class Coverage extends Component {
 
   updateCalculatedSinkhole = () => {
     const { dispatch, fieldValues } = this.props;
-    if (Number.isNaN(event.target.value)) { return; }
 
     const dependencyValue = Math.round(Number(String(fieldValues.dwellingAmount).replace(/\D+/g, '')) / 1000) * 1000;
 
@@ -451,10 +473,12 @@ export class Coverage extends Component {
   }
 
   render() {
-    const { quoteData, fieldValues, handleSubmit, initialValues, pristine, agents, agencies, questions, zipCodeSettings } = this.props;
+    const { quoteData, fieldValues, handleSubmit, initialValues, pristine, agents, agencies, questions, zipCodeSettings, dirty } = this.props;
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
+        <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
+
         <div className="route-content">
           <Form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
             <HiddenField name={'propertyIncidentalOccupanciesMainDwelling'} />
