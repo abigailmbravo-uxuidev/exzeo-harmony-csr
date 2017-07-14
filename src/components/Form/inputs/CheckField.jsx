@@ -35,7 +35,7 @@ export const CheckInput = ({
   return (
     <div className={formGroupStyles} >
       <label htmlFor={name} onClick={() => onChange(!value)}>
-        {label} &nbsp; {Hint}
+        {label}{Hint}
         <input
           {...input}
           type="checkbox"

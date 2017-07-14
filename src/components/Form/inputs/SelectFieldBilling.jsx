@@ -22,7 +22,7 @@ export const SelectFieldBilling = ({
   return (
     <div className={formGroupStyles}>
       <label htmlFor={name}>
-        {label} &nbsp; {Hint}
+        {label}{Hint}
       </label>
       {answers && answers.length > 0 ? (
         <select
