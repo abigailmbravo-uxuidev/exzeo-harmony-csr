@@ -4,25 +4,27 @@ import { Field, Form, reduxForm, propTypes } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import * as serviceActions from '../../actions/serviceActions';
+import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 
 
 export const submitNote = (data, dispatch, props) => {
   const { user, noteType, documentId } = props;
-  const noteData = Object.assign({},
-    data,
-    {
-      noteType,
-      number: documentId,
-      createdBy: {
-        useerId: user.user_id,
-        userName: user.username
-      }
-    }
-  );
+  const noteData = {
+    number: documentId,
+    noteType: props.noteType,
+    noteContent: data.noteContent,
+    contactType: 'Agent',
+    createdAt: new Date().getTime(),
+    noteAttachments: [],
+    createdBy:{
+      useerId: user.user_id,
+      userName: user.username
+    },
+    updatedBy: {}
+  };
 
-  props.actions.serviceActions.addNote(noteData);
+  props.actions.cgActions.startWorkflow('addNote', noteData, false);
   props.closeButtonHandler();
 };
 
@@ -36,9 +38,7 @@ export const minimzeButtonHandler = (props) => {
 
 export const validate = (values) => {
   const errors = {};
-
-  if (!values.noteContent) errors.noteContent = 'Note Content Required';
-
+  if (!values.noteContent) errors.noteContent = "Note Content Required";
   return errors;
 };
 
@@ -123,7 +123,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    serviceActions: bindActionCreators(serviceActions, dispatch),
+    cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }
 });
