@@ -15,16 +15,7 @@ import SelectField from '../Form/inputs/SelectField';
 import TextField from '../Form/inputs/TextField';
 import CurrencyField from '../Form/inputs/CurrencyField';
 
-const payments = [
-  // hardcoded example until payment endpoint created
-  {
-    cashDate: '2017-06-01',
-    cashType: 'CASH',
-    cashDescription: 'PAYMENT RECEIVED',
-    batchNumber: '44556677-88',
-    amount: '1337'
-  }
-];
+const payments = [];
 
 export const setRank = (additionalInterests) => {
   _.forEach(additionalInterests, (value) => {
@@ -78,12 +69,44 @@ const handleInitialize = (state) => {
   return values;
 };
 
-export class PolicyholderAgent extends Component {
+export class MortgageBilling extends Component {
 
-  componentWillReceiveProps(nextProps) {
+  componentWillMount = () => {
+    this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+          this.props.appState.instanceId, { ...this.props.appState.data, ranService: false });
+  }
+
+  componentWillReceiveProps = (nextProps) => {
     if (!_.isEqual(this.props, nextProps)) {
-      if (nextProps.policy && nextProps.policy.policyNumber) {
-        this.props.actions.serviceActions.runService('getSummaryLedger', 'GET', 'billing.services', 'summary-ledgers/12-1000001-01', {});
+      if (nextProps.policy.policyNumber !== undefined) {
+        this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
+        this.props.actions.serviceActions.getTransactionHistory(nextProps.policy.policyNumber);
+        this.loadTable();
+        console.log(payments, 'payments');
+        this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+          this.props.appState.instanceId, { ...this.props.appState.data, ranService: true });
+      }
+    }
+  }
+
+  checkPayments = (batchNumber, transaction) => {
+    const found = payments.some(payment => payment.batchNumber === batchNumber);
+    if (!found) { payments.push(transaction); }
+  }
+
+  loadTable = () => {
+    if (this.props.getTransactionHistory) {
+      console.log(this.props, 'props');
+      const getTransactionHistory = this.props.getTransactionHistory;
+      for (let i = 0; i < getTransactionHistory.length; i += 1) {
+        const transaction = {
+          cashDate: getTransactionHistory[i].createdAt.substring(0, 10),
+          cashType: getTransactionHistory[i].transactionType,
+          cashDescription: 'No Discription in transaction-history',
+          batchNumber: getTransactionHistory[i].policyTransactionId,
+          amount: 'no amount in transaction-history'
+        };
+        this.checkPayments(getTransactionHistory[i].policyTransactionId, transaction);
       }
     }
   }
@@ -100,10 +123,25 @@ export class PolicyholderAgent extends Component {
     submitData.amount = Number(String(data.amount).replace(/[^\d]/g, ''));
     submitData.cashType = String(data.cashType);
     submitData.cashDescription = String(data.cashDescription);
+    // const steps = [
+    //   { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
+    //   { name: 'askCustomerData', data: submitData },
+    //   { name: 'askToCustomizeDefaultQuote', data: { shouldCustomizeQuote: 'Yes' } },
+    //   { name: 'customizeDefaultQuote', data: submitData }
 
+    // ];
+
+    // this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
+    //   .then(() => {
+    //     // now update the workflow details so the recalculated rate shows
+    //     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+    //       workflowId, { ...this.props.appState.data, recalc: false, quote: this.props.quoteData });
+    //   });
+    this.props.actions.serviceActions.addTransaction(this.props, submitData.batchNumber, submitData.cashType, submitData.cashDescription, submitData.amount);
     payments.push(data);
     this.clearForm();
     paymentTotal();
+    console.log(data, payments, 'form data');
   };
 
   clearForm = () => {
@@ -121,6 +159,12 @@ export class PolicyholderAgent extends Component {
     const { additionalInterests } = this.props.policy;
     const { handleSubmit, pristine } = this.props;
     setRank(additionalInterests);
+    if (!this.props.getTransactionHistory) {
+      return (<PolicyConnect>
+        {console.log('I RETURNED NOTHING', this.props)}
+        <ClearErrorConnect />
+      </PolicyConnect>);
+    }
     return (
       <PolicyConnect>
         <ClearErrorConnect />
@@ -159,8 +203,6 @@ export class PolicyholderAgent extends Component {
                   </div>
                   <dl className="total">
                     <div>
-                      {this.props.getSummaryLedger && `Full Balance $ ${this.props.getSummaryLedger.cashNeeded}`} <br />
-                      {this.props.getSummaryLedger && `Total Due Today $ ${this.props.getSummaryLedger.noticeAmountDue}`} <br />
                       {this.props.getSummaryLedger && `Payments Recieved $ ${this.props.getSummaryLedger.cashReceived}`} <br />
                     </div>
                   </dl>
@@ -270,7 +312,7 @@ export class PolicyholderAgent extends Component {
   }
 }
 
-PolicyholderAgent.propTypes = {
+MortgageBilling.propTypes = {
   policy: PropTypes.shape()
 };
 
@@ -281,6 +323,7 @@ redux mapping
 */
 
 const mapStateToProps = state => ({
+  getTransactionHistory: state.service.getTransactionHistory,
   getSummaryLedger: state.service.getSummaryLedger,
   initialValues: handleInitialize(state),
   policy: handleGetPolicy(state),
@@ -296,4 +339,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'PolicyholderAgent', enableReinitialize: true })(PolicyholderAgent));
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'PolicyholderAgent', enableReinitialize: true })(MortgageBilling));

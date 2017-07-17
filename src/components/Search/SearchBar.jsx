@@ -184,7 +184,7 @@ const SearchForm = (props) => {
           {generateField('lastName', 'Last Name Search', 'Last Name', formErrors, 'last-name-search')}
           {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
           {generateField('quoteNumber', 'Quote No Search', 'Quote Number', formErrors, 'quote-no-search')}
-          <div className="form-group search-context">
+          <div className="form-group quote-state">
             <SelectField
               name="quoteState" component="select" styleName={''} label="Quote State"
               onChange={clearForm}
