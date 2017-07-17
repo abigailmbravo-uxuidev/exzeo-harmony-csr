@@ -5,20 +5,20 @@
       .tab-tag {
         display: flex;
         align-items: center;
+        align-items: center;
         justify-content: center;
+        justify-content: center;
+        width: 12rem;
         width: 12rem;
         height: 3.25rem;
         margin: (-$padding) ($padding*2) (-$padding) (-$padding*2);
         padding: 0 ($padding*2);
         color: $white;
-        background: $green-darken-04;
         border-right: 1px dotted $green-darken-03;
-        justify-content: center;
-        align-items: center;
-        width: 12rem;
+        background: $green-darken-04;
 
         span {
-            font-size: 1.125rem;
+          font-size: 1.125rem;
         }
       }
 
@@ -465,8 +465,6 @@
   }
 }
 
-
-
 .verify {
   .workflow-steps {
     .btn {
@@ -480,8 +478,6 @@
     }
   }
 }
-
-
 
 #root {
   overflow-y: hidden;

@@ -39,8 +39,8 @@ export const setMortgageeValues = (id, props) => {
 export const AdditionalInterestModal = (props) => {
   const { appState, handleSubmit, verify, hideAdditionalInterestModal, questions } = props;
   return (
-    <div className="modal additionalInterestModal" style={{ flexDirection: 'row' }}>
-      <Form id="AdditionalInterestModal" noValidate onSubmit={handleSubmit(verify)}>
+    <div className="modal" style={{ flexDirection: 'row' }}>
+      <Form id="AdditionalInterestModal" className="AdditionalInterestModal" noValidate onSubmit={handleSubmit(verify)}>
         <div className="card">
           <div className="card-header">
             <h4><i className={`fa fa-circle ${appState.data.addAdditionalInterestType}`} /> {appState.data.addAdditionalInterestType}</h4>
