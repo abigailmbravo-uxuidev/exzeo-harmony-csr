@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import _ from 'lodash';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 import { connect } from 'react-redux';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
 import TextField from '../Form/inputs/TextField';
-import SelectFieldMortgagee from '../Form/inputs/SelectFieldMortgagee';
 import PhoneField from '../Form/inputs/PhoneField';
 import HiddenField from '../Form/inputs/HiddenField';
 import * as cgActions from '../../actions/cgActions';
@@ -53,15 +54,28 @@ const handleInitialize = (state) => {
   };
 };
 
-export const setMortgageeValues = (id, props) => {
-  const answers = getAnswers('mortgagee', props.questions);
-  const selectedMortgagee = _.find(answers, a => String(a.ID) === String(id));
-  props.dispatch(change('AdditionalInterestEditModal', 'name1', _.get(selectedMortgagee, 'AIName1')));
-  props.dispatch(change('AdditionalInterestEditModal', 'name2', _.get(selectedMortgagee, 'AIName2')));
-  props.dispatch(change('AdditionalInterestEditModal', 'address1', _.get(selectedMortgagee, 'AIAddress1')));
-  props.dispatch(change('AdditionalInterestEditModal', 'city', _.get(selectedMortgagee, 'AICity')));
-  props.dispatch(change('AdditionalInterestEditModal', 'state', _.get(selectedMortgagee, 'AIState')));
-  props.dispatch(change('AdditionalInterestEditModal', 'zip', String(_.get(selectedMortgagee, 'AIZip'))));
+export const setMortgageeValues = (val, props) => {
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, {
+    ...props.appState.data,
+    selectedMortgageeOption: val
+  });
+  const selectedMortgagee = val;
+
+  if (selectedMortgagee) {
+    props.dispatch(change('AdditionalInterestEditModal', 'name1', _.get(selectedMortgagee, 'AIName1')));
+    props.dispatch(change('AdditionalInterestEditModal', 'name2', _.get(selectedMortgagee, 'AIName2')));
+    props.dispatch(change('AdditionalInterestEditModal', 'address1', _.get(selectedMortgagee, 'AIAddress1')));
+    props.dispatch(change('AdditionalInterestEditModal', 'city', _.get(selectedMortgagee, 'AICity')));
+    props.dispatch(change('AdditionalInterestEditModal', 'state', _.get(selectedMortgagee, 'AIState')));
+    props.dispatch(change('AdditionalInterestEditModal', 'zip', String(_.get(selectedMortgagee, 'AIZip'))));
+  } else {
+    props.dispatch(change('AdditionalInterestEditModal', 'name1', ''));
+    props.dispatch(change('AdditionalInterestEditModal', 'name2', ''));
+    props.dispatch(change('AdditionalInterestEditModal', 'address1', ''));
+    props.dispatch(change('AdditionalInterestEditModal', 'city', ''));
+    props.dispatch(change('AdditionalInterestEditModal', 'state', ''));
+    props.dispatch(change('AdditionalInterestEditModal', 'zip', ''));
+  }
 };
 
 export const AdditionalInterestEditModal = (props) => {
@@ -76,17 +90,22 @@ export const AdditionalInterestEditModal = (props) => {
           <HiddenField name={'_id'} />
           <HiddenField name={'order'} />
 
-          { appState.data.addAdditionalInterestType === 'Mortgagee' && <span><SelectFieldMortgagee
-            name="mortgagee" component="select" styleName={'name-1'} label="Name 1" validations={['required']}
-            onChange={event => setMortgageeValues(event.target.value, props)}
-            answers={getAnswers('mortgagee', questions)}
-          />
-            <HiddenField label={'Name 1'} name={'name1'} />
-          </span>
+          { appState.data.addAdditionalInterestType === 'Mortgagee' && <span>
+            <label htmlFor={'mortgage'}>
+                Top Mortgagees
+              </label>
+            <Select
+              name="mortgage"
+              searchable
+              labelKey="displayText"
+              autofocus
+              value={appState.data.selectedMortgageeOption}
+              options={getAnswers('mortgagee', questions)}
+              onChange={val => setMortgageeValues(val, props)}
+            />
+            </span>
          }
-          { selectedAI && selectedAI.type !== 'Mortgagee' &&
-            <TextField label={'Name 1'} styleName={'name-1'} name={'name1'} />
-            }
+          <TextField label={'Name 1'} styleName={'name-1'} name={'name1'} validations={['required']} />
           <TextField label={'Name 2'} styleName={''} name={'name2'} />
 
           <TextField label={'Address 1'} styleName={''} name={'address1'} validations={['required']} />

@@ -132,6 +132,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
         // now update the workflow details so the recalculated rate shows
         actions.appStateActions.setAppState(appState.modelName,
           workflowId, { ...appState.data,
+            selectedMortgageeOption: null,
             selectedLink: 'additionalInterests',
             submitting: false,
             showAdditionalInterestModal: false,
@@ -198,6 +199,7 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
           workflowId, { ...props.appState.data,
             selectedLink: 'additionalInterests',
             submitting: false,
+            selectedMortgageeOption: null,
             showAdditionalInterestModal: false,
             showAdditionalInterestEditModal: false });
       });
@@ -237,7 +239,7 @@ export class AdditionalLinterests extends Component {
     _.forEach(getAnswers('mortgagee', questions), (answer) => {
       answer.displayText = `${answer.AIName1}, ${answer.AICity} ${answer.AIState}, ${answer.AIZip}`;
     });
-    
+
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />

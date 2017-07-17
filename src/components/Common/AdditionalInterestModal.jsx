@@ -7,7 +7,6 @@ import _ from 'lodash';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
 import TextField from '../Form/inputs/TextField';
 import PhoneField from '../Form/inputs/PhoneField';
-import HiddenField from '../Form/inputs/HiddenField';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 
@@ -75,7 +74,7 @@ export const AdditionalInterestModal = (props) => {
               />
             </span>
          }
-            <TextField label={'Name 1'} styleName={'name-1'} name={'name1'} />
+            <TextField label={'Name 1'} styleName={'name-1'} name={'name1'} validations={['required']} />
             <TextField label={'Name 2'} styleName={'name-2'} name={'name2'} />
             <TextField label={'Address 1'} styleName={'address-1'} name={'address1'} validations={['required']} />
             <TextField label={'Address 2'} styleName={'address-2'} name={'address2'} />
