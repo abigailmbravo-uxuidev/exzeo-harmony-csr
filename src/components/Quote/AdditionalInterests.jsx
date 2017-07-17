@@ -57,7 +57,6 @@ const handleInitialize = () => {
 export const handleFormSubmit = (data, dispatch, props) => {
   const { appState, actions, quoteData } = props;
 
-
   const workflowId = appState.instanceId;
   actions.appStateActions.setAppState(appState.modelName,
       workflowId, {
@@ -204,6 +203,9 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
       });
 };
 
+const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
+
+
 export class AdditionalLinterests extends Component {
   state = {
     sameAsProperty: false
@@ -231,8 +233,11 @@ export class AdditionalLinterests extends Component {
   }
 
   render() {
-    const { appState, quoteData } = this.props;
-
+    const { appState, quoteData, questions } = this.props;
+    _.forEach(getAnswers('mortgagee', questions), (answer) => {
+      answer.displayText = `${answer.AIName1}, ${answer.AICity} ${answer.AIState}, ${answer.AIZip}`;
+    });
+    
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
