@@ -68,6 +68,9 @@ describe('Testing NewNoteFileUploader component', () => {
       },
       closeButtonHandler() {},
       actions: {
+        cgActions: {
+          startWorkflow() {}
+        },
         appStateActions: {
           setAppState() {}
         },
