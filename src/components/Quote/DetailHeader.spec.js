@@ -2,12 +2,13 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { shallow, mount } from 'enzyme';
-import ConnectedApp, { DetailHeader } from './DetailHeader';
+import ConnectedApp, { DetailHeader, selectPolicy, handleGetQuote } from './DetailHeader';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 
 const quoteData = {
+  policyNumber: '12-2332323-3',
   _id: '5866c036a46eb72908f3f547',
   companyCode: 'TTIC',
   state: 'FL',
@@ -311,7 +312,16 @@ describe('Testing DetailHeader component', () => {
         bb: {
           data: {
             modelInstanceId: '123',
-            model: {},
+            model: {
+              variables: [
+                { name: 'retrieveQuote',
+                  value: {
+                    result: quoteData
+                  } }, { name: 'getQuoteBeforePageLoop',
+                    value: {
+                      result: quoteData
+                    } }]
+            },
             uiQuestions: []
           }
         }
@@ -322,6 +332,11 @@ describe('Testing DetailHeader component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      actions: {
+        serviceActions: {
+          getPolicyFromPolicyNumber() { return Promise.resolve({ payload: [{ data: { policy: { } } }] }); }
+        }
+      },
       fieldQuestions: [],
       quoteData,
       dispatch: store.dispatch,
@@ -333,6 +348,8 @@ describe('Testing DetailHeader component', () => {
     };
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
     expect(wrapper.instance().props.quoteData).toEqual(quoteData);
+    selectPolicy(wrapper.instance().props.quoteData, props);
+    handleGetQuote(initialState);
   });
   it('should test mount', () => {
     const initialState = {

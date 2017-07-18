@@ -62,7 +62,7 @@ export class Splash extends Component {
           workflowId,
           { ...props.appState.data, selectedLink: 'customerData', submitting: false }
         );
-        this.context.router.history.push('/quote/coverage');
+        if (this.context.router) { this.context.router.history.push('/quote/coverage'); }
       });
   };
 
@@ -88,7 +88,7 @@ export class Splash extends Component {
           workflowId,
           { ...props.appState.data, selectedLink: 'customerData', submitting: false }
         );
-        this.context.router.history.push('/quote/coverage');
+        if (this.context.router) { this.context.router.history.push('/quote/coverage'); }
       });
   };
 
@@ -111,7 +111,7 @@ export class Splash extends Component {
           workflowId,
           { ...props.appState.data, selectedLink: 'coverage', submitting: false }
         );
-        this.context.router.history.push('/policy/coverage');
+        if (this.context.router) { this.context.router.history.push('/policy/coverage'); }
       });
   };
 

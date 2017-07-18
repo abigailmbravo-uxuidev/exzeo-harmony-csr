@@ -107,6 +107,8 @@ describe('Testing MortgageBilling component', () => {
       policy,
       actions: {
         serviceActions: {
+          getTransactionHistory() {},
+          addTransaction() {},
           getSummaryLedger() {}
         },
         appStateActions: {
