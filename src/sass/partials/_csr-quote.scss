@@ -82,7 +82,11 @@
         flex-shrink: 1;
 
         .modal.quote-summary {
-          .card-footer {}
+          form {
+            flex-basis: auto;
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
         }
 
         form {
