@@ -80,8 +80,8 @@ export const setMortgageeValues = (val, props) => {
 
 export const AdditionalInterestEditModal = (props) => {
   const { appState, handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, selectedAI, questions } = props;
-  return (<div className="modal additionalInterestModal" style={{ flexDirection: 'row' }}>
-    <Form id="AdditionalInterestEditModal" noValidate onSubmit={handleSubmit(verify)}>
+  return (<div className="modal" style={{ flexDirection: 'row' }}>
+    <Form id="AdditionalInterestEditModal" className="AdditionalInterestModal" noValidate onSubmit={handleSubmit(verify)}>
       <div className="card">
         <div className="card-header">
           <h4><i className={`fa fa-circle ${selectedAI ? selectedAI.type : ''}`} /> {selectedAI ? selectedAI.type : ''}</h4>
