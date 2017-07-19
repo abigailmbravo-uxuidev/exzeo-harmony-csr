@@ -80,24 +80,27 @@ const closeUWConditions = (props) => {
 };
 
 const goToPage = (link, key, props) => {
-  const workflowId = props.appState.instanceId;
-
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, submitting: true });
-
-  const steps = [
-    { name: 'hasUserEnteredData', data: { answer: 'No' } },
-    { name: 'moveTo', data: { key } }
-  ];
-
-  props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
-    .then(() => {
-      props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, {
-        ...props.appState.data,
-        selectedLink: key,
-        activateRedirectLink: link,
-        activateRedirect: true
-      });
+  // const workflowId = props.appState.instanceId;
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+    { ...props.appState.data,
+      activateRedirectLink: link,
+      activateRedirect: true
     });
+
+  // const steps = [
+  //   { name: 'hasUserEnteredData', data: { answer: 'No' } },
+  //   { name: 'moveTo', data: { key } }
+  // ];
+
+  // props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
+  //   .then(() => {
+  //     props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, {
+  //       ...props.appState.data,
+  //       selectedLink: key,
+  //       activateRedirectLink: link,
+  //       activateRedirect: true
+  //     });
+  //   });
 };
 
 const getDocumentId = (props) => {
@@ -143,7 +146,7 @@ const SideNav = (props) => {
         </li>
       </ul>
       { props.appState.data.showNewNoteFileUploader === true &&
-        <NewNoteFileUploader noteType="quoteNote" documentId={documentId} closeButtonHandler={() => closeNewNoteFileUploader(props)} />
+        <NewNoteFileUploader noteType="Quote Note" documentId={ documentId } closeButtonHandler={() => closeNewNoteFileUploader(props)} />
       }
       { props.appState.data.showUWconditions === true &&
         <UWconditions

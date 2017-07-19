@@ -13,6 +13,10 @@
         justify-content: center;
         align-items: center;
         width: 12rem;
+
+        span {
+          font-size: 1.125rem;
+        }
       }
 
       .policy-description {
@@ -94,6 +98,7 @@
                     }
 
                     .contact-details {
+                        flex-grow: 1;
                         margin-left: $padding*2;
 
                         h4 {
@@ -142,6 +147,14 @@
                                 font-size: 125%;
                               }
                             }
+
+                            h5 {
+                              flex-basis: auto;
+                              flex-grow: 0;
+                              flex-shrink: 0;
+                              margin: 0 $padding 0 0;
+                              color: $warm-gray-08;
+                            }
                           }
                         }
 
@@ -183,7 +196,6 @@
                           }
                         }
                     }
-
               }
             }
           }
@@ -197,10 +209,6 @@
                   margin-bottom: ($padding*2);
                   border-bottom: 1px dashed $warm-gray-01;
                   padding-bottom: ($padding*2);
-
-                  .contact-title {
-
-                  }
 
                   .contact-details {
                     flex: 1 1 auto;
@@ -220,7 +228,6 @@
           }
 
           .card-multi:last-of-type {
-            border: 0;
             margin-bottom: 0;
           }
 
@@ -457,6 +464,7 @@
 
   .scroll {
     flex-shrink: 1;
+    overflow-x: hidden;
 
     .flex-child.col3 {
       width: 50%;
@@ -670,5 +678,29 @@
   flex-shrink: 0;
   padding: 0 0 ($padding*2) ($padding*2);
 }
+
+}
+
+
+
+.add-payment {
+
+
+    .form-group {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      * {
+        flex: 1 1 auto;
+      }
+
+      label {
+        flex: 0 0 30%;
+        text-align: right;
+        margin: 0 ($padding*2) 0 0;
+      }
+
+    }
 
 }

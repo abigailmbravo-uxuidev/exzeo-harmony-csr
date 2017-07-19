@@ -19,7 +19,7 @@ export const SelectInputMortgagee = ({
   const Hint = hint && (<FieldHint name={name} hint={hint} />);
   return (
     <div className={formGroupStyles}>
-      <label htmlFor={name}>{label} &nbsp; {Hint}</label>
+      <label htmlFor={name}>{label}{Hint}</label>
       {answers && answers.length > 0 ? (
         <select
           className={Error ? 'error' : ''}

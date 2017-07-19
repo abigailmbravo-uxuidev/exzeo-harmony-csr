@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import { Prompt } from 'react-router-dom';
 import moment from 'moment';
 import { reduxForm, Form, change, propTypes, formValueSelector } from 'redux-form';
 import * as cgActions from '../../actions/cgActions';
@@ -210,12 +211,33 @@ export const fillMailForm = (props) => {
 
 export class MailingAddressBilling extends Component {
 
+  componentDidMount() {
+    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+      ...this.props.appState.data,
+      submitting: true
+    });
+    const steps = [
+    { name: 'hasUserEnteredData', data: { answer: 'No' } },
+    { name: 'moveTo', data: { key: 'mailing' } }
+    ];
+    const workflowId = this.props.appState.instanceId;
+
+    this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
+    .then(() => {
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+        ...this.props.appState.data,
+        selectedLink: 'mailing'
+      });
+    });
+  }
+
   render() {
-    const { handleSubmit, paymentPlanResult, pristine, quoteData } = this.props;
+    const { handleSubmit, paymentPlanResult, pristine, quoteData, dirty } = this.props;
 
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
+        <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         <div className="route-content">
           <Form id="MailingAddressBilling" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
             <div className="scroll">
