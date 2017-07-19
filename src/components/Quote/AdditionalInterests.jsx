@@ -210,8 +210,9 @@ export class AdditionalLinterests extends Component {
   }
 
   componentDidMount() {
+    this.props.actions.questionsActions.getUIQuestions('additionalInterestsCSR');
+
     if (this.props.appState.instanceId) {
-      this.props.actions.questionsActions.getUIQuestions('additionalInterestsCSR');
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         submitting: true
