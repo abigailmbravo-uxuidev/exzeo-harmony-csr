@@ -353,7 +353,7 @@ export class Coverage extends Component {
     if (isNewTab) {
       localStorage.setItem('isNewTab', false);
 
-      this.props.actions.cgActions.startWorkflow('csrQuote', {}).then((result) => {
+      this.props.actions.cgActions.startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds`}).then((result) => {
         const steps = [];
         const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData'));
 
