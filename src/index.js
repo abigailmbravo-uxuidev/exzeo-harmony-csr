@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
 import { asyncSessionStorage } from 'redux-persist/storages';
 import Routes from './routes';
-import { client } from './reducers';
 import configureStore from './store/configureStore';
 
 import '../node_modules/font-awesome/css/font-awesome.min.css';
@@ -16,7 +15,7 @@ persistStore(store, { storage: asyncSessionStorage });
 
 const holder = document.getElementById('root');
 render(
-  <Provider client={client} store={store}><Routes store={store} />
+  <Provider store={store}><Routes store={store} />
   </Provider>,
   holder
 );
