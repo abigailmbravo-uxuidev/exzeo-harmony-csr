@@ -73,9 +73,9 @@ export const NoteList = (props) => {
       search
     >
       <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
-      <TableHeaderColumn dataField="attachments" dataFormat={ attachmentCount } className="attachmentCount" dataSort dataAlign="center" width="7%"><i className="fa fa-paperclip" aria-hidden="true" /></TableHeaderColumn>
-      <TableHeaderColumn dataField="createdDate" dataSort width="10%" dataFormat={ formatCreateDate }>Created</TableHeaderColumn>
-      <TableHeaderColumn dataField="createdBy" dataSort width="13%" dataFormat={ showCreatedBy }>Author</TableHeaderColumn>
+      <TableHeaderColumn dataField="attachments" dataFormat={attachmentCount} className="attachmentCount" dataSort dataAlign="center" width="7%"><i className="fa fa-paperclip" aria-hidden="true" /></TableHeaderColumn>
+      <TableHeaderColumn dataField="createdDate" dataSort width="10%" dataFormat={formatCreateDate}>Created</TableHeaderColumn>
+      <TableHeaderColumn dataField="createdBy" dataSort width="13%" dataFormat={showCreatedBy}>Author</TableHeaderColumn>
       <TableHeaderColumn dataField="content" dataSort tdStyle={{ whiteSpace: 'normal' }} width="45%">Note</TableHeaderColumn>
     </BootstrapTable>
   );
@@ -100,23 +100,25 @@ const handleFormSubmit = (data, dispatch, props) => alert('submit');
 export class NotesFiles extends Component {
 
   componentDidMount() {
-    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
-      ...this.props.appState.data,
-      submitting: true
-    });
-    const steps = [
+    if (this.props.appState.instanceId) {
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+        ...this.props.appState.data,
+        submitting: true
+      });
+      const steps = [
     { name: 'hasUserEnteredData', data: { answer: 'No' } },
     { name: 'moveTo', data: { key: 'notes' } }
-    ];
-    const workflowId = this.props.appState.instanceId;
+      ];
+      const workflowId = this.props.appState.instanceId;
 
-    this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
+      this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
     .then(() => {
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         selectedLink: 'notes'
       });
     });
+    }
   }
 
   componentWillReceiveProps(nextProps) {

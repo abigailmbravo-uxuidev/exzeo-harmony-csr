@@ -210,24 +210,26 @@ export class AdditionalLinterests extends Component {
   }
 
   componentDidMount() {
-    this.props.actions.questionsActions.getUIQuestions('additionalInterestsCSR');
-    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
-      ...this.props.appState.data,
-      submitting: true
-    });
-    const steps = [
+    if (this.props.appState.instanceId) {
+      this.props.actions.questionsActions.getUIQuestions('additionalInterestsCSR');
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+        ...this.props.appState.data,
+        submitting: true
+      });
+      const steps = [
     { name: 'hasUserEnteredData', data: { answer: 'No' } },
     { name: 'moveTo', data: { key: 'additionalInterests' } }
-    ];
-    const workflowId = this.props.appState.instanceId;
+      ];
+      const workflowId = this.props.appState.instanceId;
 
-    this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
+      this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
     .then(() => {
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         selectedLink: 'additionalInterests'
       });
     });
+    }
   }
 
   render() {
