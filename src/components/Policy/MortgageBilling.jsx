@@ -17,6 +17,27 @@ import CurrencyField from '../Form/inputs/CurrencyField';
 
 const payments = [];
 
+let isLoded = false;
+
+    // replace with this.props.paymentOptions
+const paymentOptions = [
+  {
+    paymentType: 'Paper Deposit',
+    paymentDescription: ['Duplicate Payment Applied in Error', 'Misapplied Payment', 'Misapplied Transfer', 'Payment Received', 'Payment Removed from Deposit', 'Payment Transfer']
+  },
+  {
+    paymentType: 'Electronic Deposit',
+    paymentDescription: ['Duplicate Payment Applied in Error', 'Misapplied Payment', 'Misapplied Transfer', 'Payment Received', 'Payment Removed from Deposit', 'Payment Transfer']
+  },
+  {
+    paymentType: 'Paper Deposit Charge Back',
+    paymentDescription: ['Account Closed', 'Bank Adjustment', 'Currency Conversion', 'No Account', 'NSF Payment', 'Payment Stopped', 'Refer to Maker', 'Unable to Locate Account']
+  }, {
+    paymentType: 'Electronic Deposit Charge Back',
+    paymentDescription: ['Account Closed', 'Bank Adjustment', 'Currency Conversion', 'No Account', 'NSF Payment', 'Payment Stopped', 'Refer to Maker', 'Unable to Locate Account']
+  }
+];
+
 export const setRank = (additionalInterests) => {
   _.forEach(additionalInterests, (value) => {
     switch (value.type) {
@@ -69,20 +90,31 @@ const handleInitialize = (state) => {
   return values;
 };
 
+const getPaymentDescription = (event, props) => {
+  /* ************************************** change to props.paymentOptions  *************************************** */
+  const selectedDescriptionType = _.find(paymentOptions, type => type.paymentType === event.target.value);
+
+  props.actions.appStateActions.setAppState(props.appState.modelName,
+          props.appState.instanceId, { ...props.appState.data, ranService: false, paymentDescription: selectedDescriptionType.paymentDescription });
+};
+
 export class MortgageBilling extends Component {
 
   componentWillMount = () => {
-    this.props.actions.serviceActions.getPaymentOptionsApplyPayments();
+    /* ************************************** USE WHEN THE SERVICE GETS UPDATED  *************************************** */
+   // this.props.actions.serviceActions.getPaymentOptionsApplyPayments();
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-          this.props.appState.instanceId, { ...this.props.appState.data, ranService: false });
+          this.props.appState.instanceId, { ...this.props.appState.data, ranService: false, paymentDescription: [] });
   }
 
   componentWillReceiveProps = (nextProps) => {
     if (!_.isEqual(this.props, nextProps)) {
-      if (nextProps.policy.policyNumber !== undefined) {
+      if (nextProps.policy.policyNumber && !isLoded) {
+        isLoded = true;
         this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
         this.props.actions.serviceActions.getTransactionHistory(nextProps.policy.policyNumber);
-        this.props.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
+          /* ************************************** USE WHEN THE SERVICE GETS UPDATED *************************************** */
+   //     this.props.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
         this.loadTable();
         console.log(payments, 'payments');
         this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
@@ -167,6 +199,7 @@ export class MortgageBilling extends Component {
         <ClearErrorConnect />
       </PolicyConnect>);
     }
+
     return (
       <PolicyConnect>
         <ClearErrorConnect />
@@ -195,7 +228,7 @@ export class MortgageBilling extends Component {
                 </div>
                 <div className="payment-summary grid">
                   <div className="table-view">
-                    <BootstrapTable className="" data={payments} striped hover>
+                    <BootstrapTable className="" data={this.props.paymentHistory || []} striped hover>
                       <TableHeaderColumn isKey dataField="cashDate" className="date" columnClassName="date" width="150" dataSort>Date</TableHeaderColumn>
                       <TableHeaderColumn dataField="cashType" className="type" columnClassName="type" dataSort width="150" >Type</TableHeaderColumn>
                       <TableHeaderColumn dataField="cashDescription" className="description" columnClassName="description" dataSort>Description</TableHeaderColumn>
@@ -235,31 +268,19 @@ export class MortgageBilling extends Component {
                   <div className="flex-parent">
                     <div className="flex-child">
                       <div className="form-group">
+                        { /* ************************************************ change paymentOptions to props.paymentOptions ************************************************ */}
                         <SelectField
-                          name="cashType" component="select" label="Cash Type" onChange={function () {}} validations={['required']} answers={[
-                            {
-                              answer: 'CASH',
-                              label: 'Cash'
-                            }, {
-                              answer: 'CREDIT',
-                              label: 'Credit'
-                            }
-                          ]}
+                          name="cashType" component="select" label="Cash Type" onChange={val => getPaymentDescription(val, this.props)} validations={['required']}
+
+                          answers={_.map(paymentOptions, type => ({ answer: type.paymentType }))}
                         />
                       </div>
                     </div>
                     <div className="flex-child">
                       <div className="form-group">
                         <SelectField
-                          name="cashDescription" component="select" label="Description" onChange={function () {}} validations={['required']} answers={[
-                            {
-                              answer: 'PAYMENT RECEIVED',
-                              label: 'Payment Received'
-                            }, {
-                              answer: 'PAYMENT RETURNED',
-                              label: 'Payment Returned'
-                            }
-                          ]}
+                          name="cashDescription" component="select" label="Description" onChange={function () {}} validations={['required']}
+                          answers={_.map(this.props.appState.data.paymentDescription, description => ({ answer: description }))}
                         />
                       </div>
                     </div>
