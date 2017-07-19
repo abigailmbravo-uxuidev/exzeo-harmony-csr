@@ -72,6 +72,7 @@ const handleInitialize = (state) => {
 export class MortgageBilling extends Component {
 
   componentWillMount = () => {
+    this.props.actions.serviceActions.getPaymentOptionsApplyPayments();
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
           this.props.appState.instanceId, { ...this.props.appState.data, ranService: false });
   }
@@ -81,6 +82,7 @@ export class MortgageBilling extends Component {
       if (nextProps.policy.policyNumber !== undefined) {
         this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
         this.props.actions.serviceActions.getTransactionHistory(nextProps.policy.policyNumber);
+        this.props.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
         this.loadTable();
         console.log(payments, 'payments');
         this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
@@ -328,7 +330,9 @@ const mapStateToProps = state => ({
   initialValues: handleInitialize(state),
   policy: handleGetPolicy(state),
   tasks: state.cg,
-  appState: state.appState
+  appState: state.appState,
+  paymentHistory: state.service.paymentHistory,
+  paymentOptions: state.service.applyPayment
 });
 
 const mapDispatchToProps = dispatch => ({

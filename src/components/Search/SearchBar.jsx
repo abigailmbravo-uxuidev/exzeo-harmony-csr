@@ -115,7 +115,7 @@ const generateField = (name, placeholder, labelText, formErrors, formGroupCss) =
     </label>
     <Field
       name={name}
-      className={focus ? 'focus-user' : ''}
+      className={''}
       placeholder={placeholder}
       type="text"
       component="input"
