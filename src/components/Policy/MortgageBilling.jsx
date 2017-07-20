@@ -193,12 +193,12 @@ export class MortgageBilling extends Component {
                 </div>
                 <div className="payment-summary grid">
                   <div className="table-view">
-                    <BootstrapTable className="" data={payments} striped hover>
-                      <TableHeaderColumn isKey dataField="cashDate" className="date" columnClassName="date" width="150" dataSort>Date</TableHeaderColumn>
-                      <TableHeaderColumn dataField="cashType" className="type" columnClassName="type" dataSort width="150" >Type</TableHeaderColumn>
+                    <BootstrapTable className="payment-summary-table" data={payments} striped hover>
+                      <TableHeaderColumn isKey dataField="cashDate" className="date" columnClassName="date" dataSort>Date</TableHeaderColumn>
+                      <TableHeaderColumn dataField="cashType" className="type" columnClassName="type" dataSort>Type</TableHeaderColumn>
                       <TableHeaderColumn dataField="cashDescription" className="description" columnClassName="description" dataSort>Description</TableHeaderColumn>
-                      <TableHeaderColumn dataField="batchNumber" className="note" columnClassName="note" dataSort width="200" >Note</TableHeaderColumn>
-                      <TableHeaderColumn dataField="amount" dataFormat={this.amountFormatter} className="amount" columnClassName="amount" width="150" dataSort dataAlign="right">Amount</TableHeaderColumn>
+                      <TableHeaderColumn dataField="batchNumber" className="note" columnClassName="note" dataSort >Note</TableHeaderColumn>
+                      <TableHeaderColumn dataField="amount" dataFormat={this.amountFormatter} className="amount" columnClassName="amount" dataSort dataAlign="right">Amount</TableHeaderColumn>
                     </BootstrapTable>
                   </div>
                   <dl className="total">
@@ -287,9 +287,9 @@ export class MortgageBilling extends Component {
                           <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {ai.order + 1}</label></div>
                           <section><h4>{ai.name1}&nbsp;{ai.name2}</h4>
                             <p className="address">{
-                             `${ai.mailingAddress.address1}, 
-                              ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city}, 
-                              ${ai.mailingAddress.state} 
+                             `${ai.mailingAddress.address1},
+                              ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city},
+                              ${ai.mailingAddress.state}
                               ${ai.mailingAddress.zip}`
                             }</p>
                           </section>
