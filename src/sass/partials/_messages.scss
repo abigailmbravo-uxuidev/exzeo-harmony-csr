@@ -1,14 +1,9 @@
-
-
-
 .messages {
-
   .message {
-    font-size: 14px;
-    background: $warm-gray-02;
-    color: $warm-gray-08;
     margin: ($padding*2) 0;
-
+    color: $warm-gray-08;
+    background: $warm-gray-02;
+    font-size: 14px;
 
     &.error i {
       background-color: $red;
@@ -23,11 +18,9 @@
     }
 
     i.fa {
+      margin: 0 ($padding*2) 0 0;
       padding: ($padding*2);
       color: $white;
-      margin: 0 ($padding*2) 0 0;
     }
-
   }
-
 }
