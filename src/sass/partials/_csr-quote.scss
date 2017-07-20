@@ -518,3 +518,15 @@
 .coverages-personal-property-limit-percent {
   width: 32%;
 }
+
+#MailingAddressBilling {
+    .bill-plan {
+        .segmented {
+            .segmented-answer-wrapper {
+                .radio-column-3 {
+                    width: 33.3%
+                }
+            }
+        }
+    }
+}

@@ -295,7 +295,7 @@ export class MailingAddressBilling extends Component {
                         answers={paymentPlanResult.options}
                       />
 
-                      <div className="flex-child">
+                    <div className="flex-child bill-plan">
 
                         <RadioFieldBilling
                           validations={['required']}
