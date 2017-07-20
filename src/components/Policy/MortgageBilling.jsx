@@ -101,8 +101,7 @@ const getPaymentDescription = (event, props) => {
 export class MortgageBilling extends Component {
 
   componentWillMount = () => {
-    /* ************************************** USE WHEN THE SERVICE GETS UPDATED  *************************************** */
-   // this.props.actions.serviceActions.getPaymentOptionsApplyPayments();
+    this.props.actions.serviceActions.getPaymentOptionsApplyPayments();
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
           this.props.appState.instanceId, { ...this.props.appState.data, ranService: false, paymentDescription: [] });
   }
@@ -113,10 +112,9 @@ export class MortgageBilling extends Component {
         isLoded = true;
         this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
         this.props.actions.serviceActions.getTransactionHistory(nextProps.policy.policyNumber);
-          /* ************************************** USE WHEN THE SERVICE GETS UPDATED *************************************** */
-   //     this.props.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
+        // Bug in billing service throws a 404 if no payments in payment history - this to be used later
+        // this.props.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
         this.loadTable();
-        console.log(payments, 'payments');
         this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
           this.props.appState.instanceId, { ...this.props.appState.data, ranService: true });
       }
@@ -130,13 +128,12 @@ export class MortgageBilling extends Component {
 
   loadTable = () => {
     if (this.props.getTransactionHistory) {
-      console.log(this.props, 'props');
       const getTransactionHistory = this.props.getTransactionHistory;
       for (let i = 0; i < getTransactionHistory.length; i += 1) {
         const transaction = {
           cashDate: getTransactionHistory[i].createdAt.substring(0, 10),
           cashType: getTransactionHistory[i].transactionType,
-          cashDescription: 'No Discription in transaction-history',
+          cashDescription: 'No Description in transaction-history',
           batchNumber: getTransactionHistory[i].policyTransactionId,
           amount: 'no amount in transaction-history'
         };
@@ -181,7 +178,7 @@ export class MortgageBilling extends Component {
   clearForm = () => {
     const { dispatch } = this.props;
     const workflowId = this.props.appState.instanceId;
-
+    console.log(this.props, 'props');
     dispatch(reset('PolicyholderAgent'));
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
       workflowId, { ...this.props.appState.data, submitting: false });
@@ -194,10 +191,10 @@ export class MortgageBilling extends Component {
     const { handleSubmit, pristine } = this.props;
     setRank(additionalInterests);
     if (!this.props.getTransactionHistory) {
-      return (<PolicyConnect>
-        {console.log('I RETURNED NOTHING', this.props)}
-        <ClearErrorConnect />
-      </PolicyConnect>);
+      return (
+        <PolicyConnect>
+          <ClearErrorConnect />
+        </PolicyConnect>);
     }
 
     return (
@@ -353,7 +350,7 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   paymentHistory: state.service.paymentHistory,
-  paymentOptions: state.service.applyPayment
+  paymentOptions: state.service
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -325,7 +325,7 @@ export const getPaymentOptionsApplyPayments = () => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'billing.services',
     method: 'GET',
-    path: '/payment-options-apply-payment'
+    path: 'payment-options-apply-payment'
   });
 
   return axios(axiosConfig).then((response) => {
@@ -346,7 +346,7 @@ export const getPaymentHistory = policyNumber => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'billing.services',
     method: 'GET',
-    path: `/payment-history/${policyNumber}`
+    path: `payment-history/${policyNumber}`
   });
 
   return axios(axiosConfig).then((response) => {
