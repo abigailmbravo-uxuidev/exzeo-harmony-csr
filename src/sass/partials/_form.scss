@@ -125,6 +125,40 @@ select {
     background-color: $input-bg;
   }
 }
+//combobox
+.Select {
+    margin-bottom: 1rem;
+    .Select-control {
+        border: 1px solid $warm-gray-06;
+        .Select-multi-value-wrapper {
+            .Select-placeholder {}
+            .Select-input {
+                width: 100%;
+
+                input[role="combobox"] {
+                    padding: 0;
+                    height: 2.125rem;
+                    line-height: 2.125rem;
+                    width: 100%;
+                }
+            }
+        }
+    }
+    &.is-focused {
+        &:not(.is-open) {
+            .Select-control {
+                color: $input-color-focus;
+                background-color: $input-bg-focus;
+                border-color: $input-border-focus;
+                outline: none;
+                box-shadow: none;
+            }
+        }
+    }
+    .Select-menu-outer {
+        border-color: $input-border-focus;
+    }
+}
 //
 // Legends
 //
