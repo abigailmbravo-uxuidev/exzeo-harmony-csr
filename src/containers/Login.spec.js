@@ -40,7 +40,7 @@ describe('Testing Login component', () => {
     expect(wrapper);
   });
 
-  it('should test connected app', () => {
+  it('should try to login', () => {
     const initialState = {
       cg: {
         bb: {
@@ -57,6 +57,10 @@ describe('Testing Login component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      auth: {
+        login() {},
+        isAuthenticated() {}
+      },
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,
@@ -69,5 +73,6 @@ describe('Testing Login component', () => {
     };
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
     expect(wrapper);
+    wrapper.instance().componentDidMount();
   });
 });

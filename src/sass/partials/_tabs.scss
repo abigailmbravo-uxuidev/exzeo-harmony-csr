@@ -1,34 +1,38 @@
 nav {
-    a {
-        &.btn {
-            border-radius: 0;
-            @include button-variant($warm-gray-12, $warm-gray-01, $warm-gray-01);
-            text-transform: none;
-            font-weight: $font-weight-normal;
-            margin-right: 2px;
+  a {
+    &.btn {
+      margin-right: 2px;
+      text-transform: none;
+      border-radius: 0;
+      font-weight: $font-weight-normal;
+      @include button-variant($warm-gray-12, $warm-gray-01, $warm-gray-01);
 
-            &:hover {
-                @include button-variant($warm-gray-12, $warm-gray-04, $warm-gray-04);
-                cursor: pointer;
-                text-decoration: none;
-            }
-            &:first-child {
-                border-top-left-radius: $border-radius;
-                border-bottom-left-radius:  $border-radius;
-            }
-            &:last-child {
-                border-top-right-radius: $border-radius;
-                border-bottom-right-radius:  $border-radius;
-                margin-right: 0;
-            }
-            &.selected {
-                @include button-variant($white, $bright-blue-darken-04, $bright-blue-darken-04);
-                &:hover {
-                    @include button-variant($white, $bright-blue-darken-04, $bright-blue-darken-04);
-                    cursor: default;
-                    text-decoration: none;
-                }
-            }
+      &:hover {
+        cursor: pointer;
+        text-decoration: none;
+        @include button-variant($warm-gray-12, $warm-gray-04, $warm-gray-04);
+      }
+
+      &:first-child {
+        border-top-left-radius: $border-radius;
+        border-bottom-left-radius: $border-radius;
+      }
+
+      &:last-child {
+        margin-right: 0;
+        border-top-right-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
+      }
+
+      &.selected {
+        @include button-variant($white, $bright-blue-darken-04, $bright-blue-darken-04);
+
+        &:hover {
+          cursor: default;
+          text-decoration: none;
+          @include button-variant($white, $bright-blue-darken-04, $bright-blue-darken-04);
         }
+      }
     }
+  }
 }

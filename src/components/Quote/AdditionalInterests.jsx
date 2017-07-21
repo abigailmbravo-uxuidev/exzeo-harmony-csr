@@ -57,7 +57,6 @@ const handleInitialize = () => {
 export const handleFormSubmit = (data, dispatch, props) => {
   const { appState, actions, quoteData } = props;
 
-
   const workflowId = appState.instanceId;
   actions.appStateActions.setAppState(appState.modelName,
       workflowId, {
@@ -133,6 +132,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
         // now update the workflow details so the recalculated rate shows
         actions.appStateActions.setAppState(appState.modelName,
           workflowId, { ...appState.data,
+            selectedMortgageeOption: null,
             selectedLink: 'additionalInterests',
             submitting: false,
             showAdditionalInterestModal: false,
@@ -199,10 +199,14 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
           workflowId, { ...props.appState.data,
             selectedLink: 'additionalInterests',
             submitting: false,
+            selectedMortgageeOption: null,
             showAdditionalInterestModal: false,
             showAdditionalInterestEditModal: false });
       });
 };
+
+const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
+
 
 export class AdditionalLinterests extends Component {
   state = {
@@ -231,7 +235,10 @@ export class AdditionalLinterests extends Component {
   }
 
   render() {
-    const { appState, quoteData } = this.props;
+    const { appState, quoteData, questions } = this.props;
+    _.forEach(getAnswers('mortgagee', questions), (answer) => {
+      answer.displayText = `${answer.AIName1}, ${answer.AICity} ${answer.AIState}, ${answer.AIZip}`;
+    });
 
     return (
       <QuoteBaseConnect>
