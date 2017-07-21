@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp from './UWConditions';
+import ConnectedApp from './UWconditions';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
