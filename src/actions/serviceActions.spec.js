@@ -581,7 +581,7 @@ describe('Service Actions', () => {
 
     return serviceActions.getPaymentOptionsApplyPayments()(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
       });
   });
 
@@ -610,7 +610,7 @@ describe('Service Actions', () => {
 
     return serviceActions.getPaymentHistory('12345')(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
       });
   });
 
