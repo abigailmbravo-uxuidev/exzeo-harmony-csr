@@ -235,7 +235,6 @@ export const addTransaction = (props, batchNumber, cashType, cashDescription, ca
   const body = {
     service: 'billing.services',
     method: 'POST',
-    // path: `transaction-history/${props.policy.policyNumber}`,
     path: 'post-payment-transaction',
     data: {
       companyCode: props.auth.userProfile.groups[0].companyCode,
