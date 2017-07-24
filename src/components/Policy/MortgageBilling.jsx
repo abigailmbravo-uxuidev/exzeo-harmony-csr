@@ -43,19 +43,6 @@ value.rank = 5; // eslint-disable-line
   });
 };
 
-const paymentTotal = () => {
-  let total = 0;
-  for (let i = 0; i < payments.length; i += 1) {
-    if (payments[i].cashDescription === 'PAYMENT RECEIVED') {
-      total += payments[i].amount;
-    }
-    if (payments[i].cashDescription === 'PAYMENT RETURNED') {
-      total -= payments[i].amount;
-    }
-  }
-  return total.toLocaleString();
-};
-
 const handleGetPolicy = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
@@ -91,9 +78,7 @@ export class MortgageBilling extends Component {
       if (nextProps.policy.policyNumber && !isLoded) {
         isLoded = true;
         this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
-        this.props.actions.serviceActions.getTransactionHistory(nextProps.policy.policyNumber);
         this.props.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
-        // this.loadTable();
         this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
           this.props.appState.instanceId, { ...this.props.appState.data, ranService: true });
       }
@@ -105,53 +90,26 @@ export class MortgageBilling extends Component {
     if (!found) { payments.push(transaction); }
   }
 
-  // loadTable = () => {
-  //   if (this.props.getTransactionHistory) {
-  //     const getTransactionHistory = this.props.getTransactionHistory;
-  //     for (let i = 0; i < getTransactionHistory.length; i += 1) {
-  //       const transaction = {
-  //         cashDate: getTransactionHistory[i].createdAt.substring(0, 10),
-  //         cashType: getTransactionHistory[i].transactionType,
-  //         cashDescription: 'No Description in transaction-history',
-  //         batchNumber: getTransactionHistory[i].policyTransactionId,
-  //         amount: 'no amount in transaction-history'
-  //       };
-  //       this.checkPayments(getTransactionHistory[i].policyTransactionId, transaction);
-  //     }
-  //   }
-  // }
-
   handleFormSubmit = (data) => {
     const workflowId = this.props.appState.instanceId;
     const submitData = data;
-
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
       workflowId, { ...this.props.appState.data, submitting: true });
 
     submitData.cashDate = moment.utc(data.cashDate).format('YYYY-MM-DD');
     submitData.batchNumber = String(data.batchNumber);
-    submitData.amount = Number(String(data.amount).replace(/[^\d]/g, ''));
+    submitData.amount = Number(String(data.amount).replace(/[^\d.]/g, ''));
     submitData.cashType = String(data.cashType);
     submitData.cashDescription = String(data.cashDescription);
-    // const steps = [
-    //   { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
-    //   { name: 'askCustomerData', data: submitData },
-    //   { name: 'askToCustomizeDefaultQuote', data: { shouldCustomizeQuote: 'Yes' } },
-    //   { name: 'customizeDefaultQuote', data: submitData }
+    this.props.actions.serviceActions.addTransaction(this.props, submitData.batchNumber, submitData.cashType, submitData.cashDescription, submitData.amount)
+    .then(() => {
+      this.props.actions.serviceActions.getPaymentHistory(this.props.policy.policyNumber);
+      this.props.actions.serviceActions.getSummaryLedger(this.props.policy.policyNumber);
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+        this.props.appState.instanceId, { ...this.props.appState.data });
+    });
 
-    // ];
-
-    // this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
-    //   .then(() => {
-    //     // now update the workflow details so the recalculated rate shows
-    //     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-    //       workflowId, { ...this.props.appState.data, recalc: false, quote: this.props.quoteData });
-    //   });
-    this.props.actions.serviceActions.addTransaction(this.props, submitData.batchNumber, submitData.cashType, submitData.cashDescription, submitData.amount);
-    payments.push(data);
     this.clearForm();
-    paymentTotal();
-    console.log(data, payments, 'form data');
   };
 
   clearForm = () => {
@@ -163,12 +121,13 @@ export class MortgageBilling extends Component {
   };
 
   amountFormatter = cell => `$ ${cell.toLocaleString()}`;
+  dateFormatter = cell => `${cell.substring(0, 10)}`;
 
   render() {
     const { additionalInterests } = this.props.policy;
     const { handleSubmit, pristine } = this.props;
     setRank(additionalInterests);
-    if (!this.props.getTransactionHistory) {
+    if (!this.props.getSummaryLedger) {
       return (
         <PolicyConnect>
           <ClearErrorConnect />
@@ -204,10 +163,10 @@ export class MortgageBilling extends Component {
                 <div className="payment-summary grid">
                   <div className="table-view">
                     <BootstrapTable className="" data={this.props.paymentHistory || []} striped hover>
-                      <TableHeaderColumn isKey dataField="cashDate" className="date" columnClassName="date" width="150" dataSort>Date</TableHeaderColumn>
-                      <TableHeaderColumn dataField="cashType" className="type" columnClassName="type" dataSort width="150" >Type</TableHeaderColumn>
-                      <TableHeaderColumn dataField="cashDescription" className="description" columnClassName="description" dataSort>Description</TableHeaderColumn>
-                      <TableHeaderColumn dataField="batchNumber" className="note" columnClassName="note" dataSort width="200" >Note</TableHeaderColumn>
+                      <TableHeaderColumn isKey dataField="date" dataFormat={this.dateFormatter} className="date" columnClassName="date" width="150" dataSort>Date</TableHeaderColumn>
+                      <TableHeaderColumn dataField="type" className="type" columnClassName="type" dataSort width="150" >Type</TableHeaderColumn>
+                      <TableHeaderColumn dataField="description" className="description" columnClassName="description" dataSort>Description</TableHeaderColumn>
+                      <TableHeaderColumn dataField="batch" className="note" columnClassName="note" dataSort width="200" >Note</TableHeaderColumn>
                       <TableHeaderColumn dataField="amount" dataFormat={this.amountFormatter} className="amount" columnClassName="amount" width="150" dataSort dataAlign="right">Amount</TableHeaderColumn>
                     </BootstrapTable>
                   </div>
@@ -286,9 +245,9 @@ export class MortgageBilling extends Component {
                           <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {ai.order + 1}</label></div>
                           <section><h4>{ai.name1}&nbsp;{ai.name2}</h4>
                             <p className="address">{
-                             `${ai.mailingAddress.address1}, 
-                              ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city}, 
-                              ${ai.mailingAddress.state} 
+                             `${ai.mailingAddress.address1},
+                              ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city},
+                              ${ai.mailingAddress.state}
                               ${ai.mailingAddress.zip}`
                             }</p>
                           </section>
@@ -322,7 +281,6 @@ redux mapping
 */
 
 const mapStateToProps = state => ({
-  getTransactionHistory: state.service.getTransactionHistory,
   getSummaryLedger: state.service.getSummaryLedger,
   initialValues: handleInitialize(state),
   policy: handleGetPolicy(state),
