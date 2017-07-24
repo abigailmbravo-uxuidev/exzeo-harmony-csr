@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
-import { reduxForm, Form, reset } from 'redux-form';
+import { reduxForm, Form, reset, change } from 'redux-form';
 import moment from 'moment';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as cgActions from '../../actions/cgActions';
@@ -18,25 +18,6 @@ import CurrencyField from '../Form/inputs/CurrencyField';
 const payments = [];
 
 let isLoded = false;
-
-    // replace with this.props.paymentOptions
-const paymentOptions = [
-  {
-    paymentType: 'Paper Deposit',
-    paymentDescription: ['Duplicate Payment Applied in Error', 'Misapplied Payment', 'Misapplied Transfer', 'Payment Received', 'Payment Removed from Deposit', 'Payment Transfer']
-  },
-  {
-    paymentType: 'Electronic Deposit',
-    paymentDescription: ['Duplicate Payment Applied in Error', 'Misapplied Payment', 'Misapplied Transfer', 'Payment Received', 'Payment Removed from Deposit', 'Payment Transfer']
-  },
-  {
-    paymentType: 'Paper Deposit Charge Back',
-    paymentDescription: ['Account Closed', 'Bank Adjustment', 'Currency Conversion', 'No Account', 'NSF Payment', 'Payment Stopped', 'Refer to Maker', 'Unable to Locate Account']
-  }, {
-    paymentType: 'Electronic Deposit Charge Back',
-    paymentDescription: ['Account Closed', 'Bank Adjustment', 'Currency Conversion', 'No Account', 'NSF Payment', 'Payment Stopped', 'Refer to Maker', 'Unable to Locate Account']
-  }
-];
 
 export const setRank = (additionalInterests) => {
   _.forEach(additionalInterests, (value) => {
@@ -91,11 +72,10 @@ const handleInitialize = (state) => {
 };
 
 const getPaymentDescription = (event, props) => {
-  /* ************************************** change to props.paymentOptions  *************************************** */
-  const selectedDescriptionType = _.find(paymentOptions, type => type.paymentType === event.target.value);
+  const selectedDescriptionType = _.find(props.paymentOptions, type => type.paymentType === event.target.value);
 
   props.actions.appStateActions.setAppState(props.appState.modelName,
-          props.appState.instanceId, { ...props.appState.data, ranService: false, paymentDescription: selectedDescriptionType.paymentDescription });
+          props.appState.instanceId, { ...props.appState.data, ranService: false, paymentDescription: selectedDescriptionType.paymentDescription, showDescription: true });
 };
 
 export class MortgageBilling extends Component {
@@ -103,7 +83,7 @@ export class MortgageBilling extends Component {
   componentWillMount = () => {
     this.props.actions.serviceActions.getPaymentOptionsApplyPayments();
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-          this.props.appState.instanceId, { ...this.props.appState.data, ranService: false, paymentDescription: [] });
+          this.props.appState.instanceId, { ...this.props.appState.data, ranService: false, paymentDescription: [], showDescription: false });
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -112,9 +92,8 @@ export class MortgageBilling extends Component {
         isLoded = true;
         this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
         this.props.actions.serviceActions.getTransactionHistory(nextProps.policy.policyNumber);
-        // Bug in billing service throws a 404 if no payments in payment history - this to be used later
-        // this.props.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
-        this.loadTable();
+        this.props.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
+        // this.loadTable();
         this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
           this.props.appState.instanceId, { ...this.props.appState.data, ranService: true });
       }
@@ -126,21 +105,21 @@ export class MortgageBilling extends Component {
     if (!found) { payments.push(transaction); }
   }
 
-  loadTable = () => {
-    if (this.props.getTransactionHistory) {
-      const getTransactionHistory = this.props.getTransactionHistory;
-      for (let i = 0; i < getTransactionHistory.length; i += 1) {
-        const transaction = {
-          cashDate: getTransactionHistory[i].createdAt.substring(0, 10),
-          cashType: getTransactionHistory[i].transactionType,
-          cashDescription: 'No Description in transaction-history',
-          batchNumber: getTransactionHistory[i].policyTransactionId,
-          amount: 'no amount in transaction-history'
-        };
-        this.checkPayments(getTransactionHistory[i].policyTransactionId, transaction);
-      }
-    }
-  }
+  // loadTable = () => {
+  //   if (this.props.getTransactionHistory) {
+  //     const getTransactionHistory = this.props.getTransactionHistory;
+  //     for (let i = 0; i < getTransactionHistory.length; i += 1) {
+  //       const transaction = {
+  //         cashDate: getTransactionHistory[i].createdAt.substring(0, 10),
+  //         cashType: getTransactionHistory[i].transactionType,
+  //         cashDescription: 'No Description in transaction-history',
+  //         batchNumber: getTransactionHistory[i].policyTransactionId,
+  //         amount: 'no amount in transaction-history'
+  //       };
+  //       this.checkPayments(getTransactionHistory[i].policyTransactionId, transaction);
+  //     }
+  //   }
+  // }
 
   handleFormSubmit = (data) => {
     const workflowId = this.props.appState.instanceId;
@@ -178,7 +157,6 @@ export class MortgageBilling extends Component {
   clearForm = () => {
     const { dispatch } = this.props;
     const workflowId = this.props.appState.instanceId;
-    console.log(this.props, 'props');
     dispatch(reset('PolicyholderAgent'));
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
       workflowId, { ...this.props.appState.data, submitting: false });
@@ -265,20 +243,21 @@ export class MortgageBilling extends Component {
                   <div className="flex-parent">
                     <div className="flex-child">
                       <div className="form-group">
-                        { /* ************************************************ change paymentOptions to props.paymentOptions ************************************************ */}
                         <SelectField
                           name="cashType" component="select" label="Cash Type" onChange={val => getPaymentDescription(val, this.props)} validations={['required']}
 
-                          answers={_.map(paymentOptions, type => ({ answer: type.paymentType }))}
+                          answers={_.map(this.props.paymentOptions, type => ({ answer: type.paymentType }))}
                         />
                       </div>
                     </div>
                     <div className="flex-child">
                       <div className="form-group">
+                        {this.props.appState.data.paymentDescription &&
                         <SelectField
                           name="cashDescription" component="select" label="Description" onChange={function () {}} validations={['required']}
                           answers={_.map(this.props.appState.data.paymentDescription, description => ({ answer: description }))}
                         />
+                        }
                       </div>
                     </div>
                     <div className="flex-child">
@@ -350,7 +329,7 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   paymentHistory: state.service.paymentHistory,
-  paymentOptions: state.service
+  paymentOptions: state.service.paymentOptions
 });
 
 const mapDispatchToProps = dispatch => ({

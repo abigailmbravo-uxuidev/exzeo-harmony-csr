@@ -329,7 +329,7 @@ export const getPaymentOptionsApplyPayments = () => (dispatch) => {
   });
 
   return axios(axiosConfig).then((response) => {
-    const data = { paymentOptions: response.data.result };
+    const data = { paymentOptions: response.data.paymentOptions };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));
