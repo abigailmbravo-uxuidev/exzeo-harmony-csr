@@ -129,6 +129,7 @@ describe('Testing MortgageBilling component', () => {
     expect(wrapper);
 
     wrapper.instance().handleFormSubmit({});
+    wrapper.instance().componentWillMount();
     wrapper.instance().componentWillReceiveProps({ policy, policyNumber: 10000 });
   });
 
