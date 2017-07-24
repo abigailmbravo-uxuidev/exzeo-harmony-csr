@@ -109,7 +109,8 @@ describe('Testing MortgageBilling component', () => {
         serviceActions: {
           addTransaction() {},
           getTransactionHistory() {},
-          getSummaryLedger() {}
+          getSummaryLedger() {},
+          getPaymentOptionsApplyPayments() {}
         },
         appStateActions: {
           setAppState() {}
@@ -129,7 +130,6 @@ describe('Testing MortgageBilling component', () => {
     expect(wrapper);
 
     wrapper.instance().handleFormSubmit({});
-    wrapper.instance().componentWillMount();
     wrapper.instance().componentWillReceiveProps({ policy, policyNumber: 10000 });
   });
 
