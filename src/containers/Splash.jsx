@@ -15,6 +15,9 @@ import NoResultsConnect from '../components/Search/NoResults';
 import Loader from '../components/Common/Loader';
 
 const workflowModelName = 'csrQuote';
+const workflowData = {
+    dsUrl: `${process.env.REACT_APP_API_URL}/ds`
+  };
 
 export const handleNewTab = (searchData) => {
   localStorage.setItem('isNewTab', true);
@@ -37,7 +40,7 @@ export const handleNewTab = (searchData) => {
 export class Splash extends Component {
 
   componentDidMount() {
-    this.props.actions.cgActions.startWorkflow(workflowModelName, {});
+    this.props.actions.cgActions.startWorkflow(workflowModelName, workflowData);
     this.props.actions.questionsActions.getUIQuestions('searchCSR');
   }
 
