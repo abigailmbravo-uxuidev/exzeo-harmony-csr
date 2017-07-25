@@ -94,8 +94,8 @@ export class NotesFiles extends Component {
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props, nextProps)) {
       if (nextProps.policyData && nextProps.policyData.policyNumber) {
-        const policyNumber = nextProps.policyData.policyNumber;
-        this.props.actions.serviceActions.getNotes(policyNumber);
+        const ids = [nextProps.policyData.policyNumber, nextProps.policyData.sourceNumber];
+        this.props.actions.serviceActions.getNotes(ids.toString());
       }
     }
   }
