@@ -12,7 +12,7 @@ export const submitNote = (data, dispatch, props) => {
   const { user, noteType, documentId } = props;
   const noteData = {
     number: documentId,
-    noteType: props.noteType,
+    noteType: noteType,
     noteContent: data.noteContent,
     contactType: 'Agent',
     createdAt: new Date().getTime(),
