@@ -196,7 +196,7 @@ export class MortgageBilling extends Component {
                     </div>
                     <div className="flex-child">
                       <div className="form-group">
-                        <TextField validations={['required']} label={'Batch Number'} styleName={''} name={'batchNumber'} />
+                        <TextField validations={['required', 'minLength10']} label={'Batch Number'} styleName={''} name={'batchNumber'} />
                       </div>
                     </div>
                   </div>
