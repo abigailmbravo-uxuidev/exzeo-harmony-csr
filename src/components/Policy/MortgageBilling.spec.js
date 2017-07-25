@@ -127,9 +127,10 @@ describe('Testing MortgageBilling component', () => {
       policy,
       actions: {
         serviceActions: {
-          addTransaction() {},
+          addTransaction() { return Promise.resolve(); },
           getTransactionHistory() {},
           getSummaryLedger() {},
+          getPaymentHistory() {},
           getPaymentOptionsApplyPayments() {}
         },
         appStateActions: {

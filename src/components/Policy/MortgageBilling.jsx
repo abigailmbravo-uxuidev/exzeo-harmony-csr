@@ -51,10 +51,12 @@ const handleGetPolicy = (state) => {
 };
 
 const handleInitialize = (state) => {
-  const quoteData = handleGetPolicy(state);
+  const policy = handleGetPolicy(state);
 
   const values = {};
-  values.policyNumber = _.get(quoteData, 'policyNumber');
+  values.policyNumber = _.get(policy, 'policyNumber');
+  values.batchNumber = moment.utc().format('YYYYMMDD');
+
   return values;
 };
 
