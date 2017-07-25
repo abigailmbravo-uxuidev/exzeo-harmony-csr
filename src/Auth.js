@@ -1,5 +1,6 @@
 import auth0 from 'auth0-js';
 import _ from 'lodash';
+import jwtDecode from 'jwt-decode';
 
 import history from './history';
 
@@ -123,8 +124,12 @@ export default class Auth {
   isAuthenticated = () => {
     // Check whether the current time is past the
     // access token's expiry time
-    const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
-    return new Date().getTime() < expiresAt;
+    const idToken = localStorage.getItem('id_token');
+    if (!idToken) {
+      return false;
+    }
+    const payload = jwtDecode(idToken);
+    return Math.floor(Date.now() / 1000) < payload.exp;
   }
 
 }
