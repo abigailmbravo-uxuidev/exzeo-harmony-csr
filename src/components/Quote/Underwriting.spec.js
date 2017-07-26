@@ -5,12 +5,13 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
 
-import ConnectedApp, { handleFormSubmit, handleGetQuoteData, handleInitialize, clearForm } from './Underwriting';
+import ConnectedApp, { Underwriting, handleFormSubmit, handleGetQuoteData, handleInitialize, clearForm } from './Underwriting';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
 
 const quoteData = {
+  agencyCode: 20000,
   _id: '5866c036a46eb72908f3f547',
   companyCode: 'TTIC',
   state: 'FL',
@@ -500,10 +501,15 @@ describe('Testing Underwriting component', () => {
     const store = mockStore(initialState);
 
     const props = {
+
+      handleSubmit() {},
       questions: underwritingQuestions,
       fieldQuestions: [],
       dispatch: store.dispatch,
       actions: {
+        serviceActions: {
+          getUnderwritingQuestions() {}
+        },
         appStateActions: {
           setAppState() { }
         },
@@ -512,16 +518,22 @@ describe('Testing Underwriting component', () => {
         }
       },
       appState: {
+        instanceId: 1,
         data: {
           submitting: false
         }
       },
-      quoteData: {
-      }
+      quoteData
     };
 
     clearForm(props);
     expect(underwritingQuestions).toEqual(props.questions);
+
+    const wrapper = shallow(
+      <Underwriting store={store} {...props} />);
+
+    wrapper.instance().componentDidMount();
+    wrapper.instance().componentWillReceiveProps(props);
   });
 
   it('should test handleGetQuoteData', () => {

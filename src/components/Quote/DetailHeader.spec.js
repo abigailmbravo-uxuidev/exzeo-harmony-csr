@@ -368,6 +368,14 @@ describe('Testing DetailHeader component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      actions: {
+        serviceActions: {
+          getPolicyFromPolicyNumber() { return Promise.resolve({ payload: [{ data: { policy: {} } }] }); }
+        },
+        appStateActions: {
+          setAppState() {}
+        }
+      },
       fieldQuestions: [],
       quoteData,
       dispatch: store.dispatch,
@@ -381,5 +389,7 @@ describe('Testing DetailHeader component', () => {
       <DetailHeader {...props} />
     </Provider>);
     expect(wrapper);
+
+    selectPolicy(quoteData, props);
   });
 });

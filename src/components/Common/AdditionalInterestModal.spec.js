@@ -211,6 +211,8 @@ describe('Testing AdditionalInterestModal component', () => {
     };
 
     setMortgageeValues(1, props);
+    setMortgageeValues(null, props);
+
 
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
     expect(wrapper.props().selectedAI).toEqual(null);
