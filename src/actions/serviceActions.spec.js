@@ -656,9 +656,9 @@ describe('Service Actions', () => {
       },
       auth: {
         userProfile: {
-          groups: {
+          groups: [{
             companyCode: 'TTIC'
-          },
+          }],
           name: 'test'
         }
       }
@@ -719,9 +719,9 @@ describe('Service Actions', () => {
       },
       auth: {
         userProfile: {
-          groups: {
+          groups: [{
             companyCode: 'TTIC'
-          },
+          }],
           name: 'test'
         }
       }
