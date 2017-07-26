@@ -157,6 +157,14 @@ describe('Testing AdditionalInterestEditModal component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      actions: {
+        cgActions: {
+          startWorkflow() {}
+        },
+        appStateActions: {
+          setAppState() {}
+        }
+      },
       selectedAI: null,
       fieldQuestions: [],
       dispatch: store.dispatch,

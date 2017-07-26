@@ -1,8 +1,5 @@
 import React from 'react';
-import * as queryString from 'query-string';
 import logo from '../img/Harmony.svg';
-
-const parsed = queryString.parse(window.location.search);
 
 const LoggedOut = props => (<div className="route-content harmony-bg">
   <div className="modal gradient-bg">

@@ -31,7 +31,7 @@ export class ConfirmPopup extends Component {
     }
     return (
       <div className="modal quote-summary">
-        <div className="card">
+        <div className="card unsaved-changes">
           <div className="card-header">
             <h4><i className="fa fa-exclamation-circle" /> Unsaved Changes</h4>
           </div>

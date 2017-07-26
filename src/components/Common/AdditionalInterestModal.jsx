@@ -1,12 +1,12 @@
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 import _ from 'lodash';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
 import TextField from '../Form/inputs/TextField';
 import PhoneField from '../Form/inputs/PhoneField';
-import HiddenField from '../Form/inputs/HiddenField';
-import SelectFieldMortgagee from '../Form/inputs/SelectFieldMortgagee';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 
@@ -24,39 +24,57 @@ const handleInitialize = () => ({
 });
 const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
-export const setMortgageeValues = (id, props) => {
-  const answers = getAnswers('mortgagee', props.questions);
-  const selectedMortgagee = _.find(answers, a => String(a.ID) === String(id));
-  props.dispatch(change('AdditionalInterestEditModal', 'name1', _.get(selectedMortgagee, 'AIName1')));
-  props.dispatch(change('AdditionalInterestEditModal', 'name2', _.get(selectedMortgagee, 'AIName2')));
-  props.dispatch(change('AdditionalInterestEditModal', 'address1', _.get(selectedMortgagee, 'AIAddress1')));
-  props.dispatch(change('AdditionalInterestEditModal', 'city', _.get(selectedMortgagee, 'AICity')));
-  props.dispatch(change('AdditionalInterestEditModal', 'state', _.get(selectedMortgagee, 'AIState')));
-  props.dispatch(change('AdditionalInterestEditModal', 'zip', String(_.get(selectedMortgagee, 'AIZip'))));
+export const setMortgageeValues = (val, props) => {
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, {
+    ...props.appState.data,
+    selectedMortgageeOption: val
+  });
+  const selectedMortgagee = val;
+
+  if (selectedMortgagee) {
+    props.dispatch(change('AdditionalInterestModal', 'name1', _.get(selectedMortgagee, 'AIName1')));
+    props.dispatch(change('AdditionalInterestModal', 'name2', _.get(selectedMortgagee, 'AIName2')));
+    props.dispatch(change('AdditionalInterestModal', 'address1', _.get(selectedMortgagee, 'AIAddress1')));
+    props.dispatch(change('AdditionalInterestModal', 'city', _.get(selectedMortgagee, 'AICity')));
+    props.dispatch(change('AdditionalInterestModal', 'state', _.get(selectedMortgagee, 'AIState')));
+    props.dispatch(change('AdditionalInterestModal', 'zip', String(_.get(selectedMortgagee, 'AIZip'))));
+  } else {
+    props.dispatch(change('AdditionalInterestModal', 'name1', ''));
+    props.dispatch(change('AdditionalInterestModal', 'name2', ''));
+    props.dispatch(change('AdditionalInterestModal', 'address1', ''));
+    props.dispatch(change('AdditionalInterestModal', 'city', ''));
+    props.dispatch(change('AdditionalInterestModal', 'state', ''));
+    props.dispatch(change('AdditionalInterestModal', 'zip', ''));
+  }
 };
 
 
 export const AdditionalInterestModal = (props) => {
   const { appState, handleSubmit, verify, hideAdditionalInterestModal, questions } = props;
   return (
-    <div className="modal additionalInterestModal" style={{ flexDirection: 'row' }}>
-      <Form id="AdditionalInterestModal" noValidate onSubmit={handleSubmit(verify)}>
+    <div className="modal" style={{ flexDirection: 'row' }}>
+      <Form id="AdditionalInterestModal" className="AdditionalInterestModal" noValidate onSubmit={handleSubmit(verify)}>
         <div className="card">
           <div className="card-header">
             <h4><i className={`fa fa-circle ${appState.data.addAdditionalInterestType}`} /> {appState.data.addAdditionalInterestType}</h4>
           </div>
           <div className="card-block">
-            { appState.data.addAdditionalInterestType === 'Mortgagee' && <span><SelectFieldMortgagee
-              name="mortgagee" component="select" styleName={'name-1'} label="Name 1" validations={['required']}
-              onChange={event => setMortgageeValues(event.target.value, props)}
-              answers={getAnswers('mortgagee', questions)}
-            />
-              <HiddenField label={'Name 1'} name={'name1'} />
+            { appState.data.addAdditionalInterestType === 'Mortgagee' && <span>
+              <label htmlFor={'mortgage'}>
+                Top Mortgagees
+              </label>
+              <Select
+                name="mortgage"
+                searchable
+                labelKey="displayText"
+                autofocus
+                value={appState.data.selectedMortgageeOption}
+                options={getAnswers('mortgagee', questions)}
+                onChange={val => setMortgageeValues(val, props)}
+              />
             </span>
          }
-            { appState.data.addAdditionalInterestType !== 'Mortgagee' &&
-            <TextField label={'Name 1'} styleName={'name-1'} name={'name1'} />
-            }
+            <TextField label={'Name 1'} styleName={'name-1'} name={'name1'} validations={['required']} />
             <TextField label={'Name 2'} styleName={'name-2'} name={'name2'} />
             <TextField label={'Address 1'} styleName={'address-1'} name={'address1'} validations={['required']} />
             <TextField label={'Address 2'} styleName={'address-2'} name={'address2'} />

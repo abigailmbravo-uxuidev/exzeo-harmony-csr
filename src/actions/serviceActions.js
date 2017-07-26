@@ -235,18 +235,15 @@ export const addTransaction = (props, batchNumber, cashType, cashDescription, ca
   const body = {
     service: 'billing.services',
     method: 'POST',
-    path: `transaction-history/${props.policy.policyNumber}`,
+    path: 'post-payment-transaction',
     data: {
-      createdBy: props.auth.userProfile.name,
-      updatedBy: props.auth.userProfile.name,
-      companyCode: props.auth.userProfile.groups.companyCode,
+      companyCode: props.auth.userProfile.groups[0].companyCode,
       state: props.policy.state,
       product: props.policy.product,
       policyNumber: props.policy.policyNumber,
       policyTerm: props.policy.policyTerm,
       policyAccountCode: props.policy.policyAccountCode,
-      effectiveDate: new Date().getTime(),
-      date: new Date().getTime(),
+      date: new Date(),
       type: cashType,
       description: cashDescription,
       batch: batchNumber,
@@ -309,6 +306,48 @@ export const getSummaryLedger = policyNumber => (dispatch) => {
 
   return axios(axiosConfig).then((response) => {
     const data = { getSummaryLedger: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
+export const getPaymentOptionsApplyPayments = () => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'billing.services',
+    method: 'GET',
+    path: 'payment-options-apply-payment'
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { paymentOptions: response.data.paymentOptions };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
+export const getPaymentHistory = policyNumber => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'billing.services',
+    method: 'GET',
+    path: `payment-history/${policyNumber}`
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { paymentHistory: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));

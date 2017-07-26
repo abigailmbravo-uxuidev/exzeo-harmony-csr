@@ -1,4 +1,8 @@
-#AdditionalInterestModal, #AdditionalInterestEditModal {
+#AdditionalInterestEditModal,
+#AdditionalInterestModal {
+  height: 80%;
+  max-height: 40rem;
+
   .card-header {
     .fa {
       &.Mortgagee {
@@ -52,23 +56,23 @@
       }
 
       .state {
-        width: 10rem;
-        margin-right: $padding;
         flex-grow: 0;
         flex-shrink: 0;
+        width: 10rem;
+        margin-right: $padding;
       }
 
       .zip {
-        width: 10rem;
         flex-grow: 0;
         flex-shrink: 0;
+        width: 10rem;
       }
 
       .phone {
-        margin-right: $padding;
+        flex-basis: 10rem;
         flex-grow: 0;
         flex-shrink: 0;
-        flex-basis: 10rem;
+        margin-right: $padding;
       }
 
       .reference-number {}
@@ -77,37 +81,37 @@
 }
 
 .additional-interests-details {
-    .card-icon {
-        .fa {
-          &.Mortgagee {
-            &:before {
-              content: "\f19c";
-            }
-          }
-
-          &.Lienholder {
-            &:before {
-              content: "\F27E";
-            }
-          }
-
-          &.Insured {
-            &:before {
-              content: "\F234";
-            }
-          }
-
-          &.Interest {
-            &:before {
-              content: "\F2B5";
-            }
-          }
-
-          &.Billpayer {
-            &:before {
-              content: "\F0D6";
-            }
-          }
+  .card-icon {
+    .fa {
+      &.Mortgagee {
+        &:before {
+          content: "\f19c";
         }
+      }
+
+      &.Lienholder {
+        &:before {
+          content: "\F27E";
+        }
+      }
+
+      &.Insured {
+        &:before {
+          content: "\F234";
+        }
+      }
+
+      &.Interest {
+        &:before {
+          content: "\F2B5";
+        }
+      }
+
+      &.Billpayer {
+        &:before {
+          content: "\F0D6";
+        }
+      }
     }
+  }
 }
