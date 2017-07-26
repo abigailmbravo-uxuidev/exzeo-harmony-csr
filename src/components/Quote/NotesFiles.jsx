@@ -39,7 +39,7 @@ const SearchPanel = props => (
   </div>
 );
 
-const BSTable = props => props.notes ?
+export const BSTable = props => props.notes ?
     (
       <BootstrapTable data={props.notes}>
         <TableHeaderColumn dataField="fileList" isKey>Attachment List</TableHeaderColumn>
@@ -81,7 +81,7 @@ export const NoteList = (props) => {
   );
 };
 
-const Files = (props) => {
+export const Files = (props) => {
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
   return (
     <BootstrapTable data={[]} options={options} search>
