@@ -529,10 +529,8 @@ describe('Testing Underwriting component', () => {
     clearForm(props);
     expect(underwritingQuestions).toEqual(props.questions);
 
-
     const wrapper = shallow(
       <Underwriting store={store} {...props} />);
-
 
     wrapper.instance().componentDidMount();
     wrapper.instance().componentWillReceiveProps(props);

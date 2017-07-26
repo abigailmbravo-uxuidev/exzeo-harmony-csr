@@ -208,7 +208,7 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
 const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 
-export class AdditionalLinterests extends Component {
+export class AdditionalInterests extends Component {
   state = {
     sameAsProperty: false
   }
@@ -296,13 +296,10 @@ export class AdditionalLinterests extends Component {
   }
 
 }
-AdditionalLinterests.contextTypes = {
-  router: PropTypes.object
-};
 // ------------------------------------------------
 // Property type definitions
 // ------------------------------------------------
-AdditionalLinterests.propTypes = {
+AdditionalInterests.propTypes = {
   ...propTypes,
   tasks: PropTypes.shape(),
   appState: PropTypes.shape({
@@ -336,4 +333,4 @@ const mapDispatchToProps = dispatch => ({
 // ------------------------------------------------
 // wire up redux form with the redux connect
 // ------------------------------------------------
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'AdditionalLinterests' })(AdditionalLinterests));
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'AdditionalInterests' })(AdditionalInterests));
