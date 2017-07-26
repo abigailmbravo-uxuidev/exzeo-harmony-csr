@@ -14,6 +14,8 @@ const store = configureStore();
 persistStore(store, { storage: asyncSessionStorage });
 
 const holder = document.getElementById('root');
+const c = document.createComment(`Version: ${process.env.VERSION_NO}`);
+document.body.appendChild(c);
 render(
   <Provider store={store}><Routes store={store} />
   </Provider>,
