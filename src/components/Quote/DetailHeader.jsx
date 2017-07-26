@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
+import localStorage from 'localStorage';
 import normalizePhone from '../Form/normalizePhone';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
@@ -20,7 +21,7 @@ const handleGetQuote = (state) => {
   return quoteData;
 };
 
-const selectPolicy = (quote, props) => {
+export const selectPolicy = (quote, props) => {
   if (!quote.policyNumber) return;
 
   props.actions.serviceActions.getPolicyFromPolicyNumber(quote.companyCode, quote.state, quote.product, quote.policyNumber).then((result) => {

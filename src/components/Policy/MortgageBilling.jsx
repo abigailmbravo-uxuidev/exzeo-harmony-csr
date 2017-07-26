@@ -100,7 +100,7 @@ export class MortgageBilling extends Component {
 
     submitData.cashDate = moment.utc(data.cashDate).format('YYYY-MM-DD');
     submitData.batchNumber = String(data.batchNumber);
-    submitData.amount = Number(String(data.amount).replace(/[^\d.]/g, ''));
+    submitData.amount = Number(String(data.amount).replace(/[^\d.-]/g, ''));
     submitData.cashType = String(data.cashType);
     submitData.cashDescription = String(data.cashDescription);
     this.props.actions.serviceActions.addTransaction(this.props, submitData.batchNumber, submitData.cashType, submitData.cashDescription, submitData.amount)
