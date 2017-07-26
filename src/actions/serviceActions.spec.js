@@ -1,5 +1,6 @@
 import configureStore from 'redux-mock-store';
 import axios from 'axios';
+import moment from 'moment';
 import MockAdapter from 'axios-mock-adapter';
 import * as types from './actionTypes';
 import * as serviceActions from './serviceActions';
@@ -640,6 +641,73 @@ describe('Service Actions', () => {
     return serviceActions.getPaymentHistory('43543534')(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+      });
+  });
+
+  it('should add transaction', () => {
+    const props = {
+      policy: {
+        state: 'FL',
+        product: 'HO3',
+        policyTerm: 'A',
+        policyAccountCode: '123',
+        policyNumber: '123'
+      },
+      auth: {
+        userProfile: {
+          groups: [{
+            companyCode: 'TTIC'
+          }]
+        }
+      }
+    };
+
+    const submitData = {};
+
+    submitData.cashDate = moment.utc('07-27-2017').format('YYYY-MM-DD');
+    submitData.batchNumber = String('2017072701');
+    submitData.amount = Number(String('400').replace(/[^\d.-]/g, ''));
+    submitData.cashType = String('Electronic Deposit');
+    submitData.cashDescription = String('Payment Received');
+
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'billing.services',
+        method: 'POST',
+        path: 'post-payment-transaction',
+        data: {
+          companyCode: props.auth.userProfile.groups[0].companyCode,
+          state: props.policy.state,
+          product: props.policy.product,
+          policyNumber: props.policy.policyNumber,
+          policyTerm: props.policy.policyTerm,
+          policyAccountCode: props.policy.policyAccountCode,
+          date: submitData.cashDate,
+          type: submitData.cashType,
+          description: submitData.cashDescription,
+          batch: submitData.batchNumber,
+          amount: submitData.amount
+        }
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    return serviceActions.addTransaction(props, submitData)(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
       });
   });
 });

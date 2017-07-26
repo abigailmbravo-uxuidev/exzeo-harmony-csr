@@ -231,7 +231,7 @@ export const getTransactionHistory = policyNumber => (dispatch) => {
     });
 };
 
-export const addTransaction = (props, batchNumber, cashType, cashDescription, cashAmount) => (dispatch) => {
+export const addTransaction = (props, submitData) => (dispatch) => {
   const body = {
     service: 'billing.services',
     method: 'POST',
@@ -243,17 +243,17 @@ export const addTransaction = (props, batchNumber, cashType, cashDescription, ca
       policyNumber: props.policy.policyNumber,
       policyTerm: props.policy.policyTerm,
       policyAccountCode: props.policy.policyAccountCode,
-      date: new Date(),
-      type: cashType,
-      description: cashDescription,
-      batch: batchNumber,
-      amount: cashAmount
+      date: submitData.cashDate,
+      type: submitData.cashType,
+      description: submitData.cashDescription,
+      batch: submitData.batchNumber,
+      amount: submitData.amount
     }
   };
   const axiosConfig = runnerSetup(body);
 
   return axios(axiosConfig).then((response) => {
-    const data = { notes: response.data.result };
+    const data = { transactions: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));
