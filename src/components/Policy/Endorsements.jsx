@@ -218,7 +218,7 @@ export class Endorsements extends React.Component {
     { date: '01/10/2015', amount: '-$ 35', type: '???' }
     ];
 
-    const { fieldValues, initialValues } = this.props;
+    const { initialValues } = this.props;
     return (
       <PolicyConnect>
         <ClearErrorConnect />

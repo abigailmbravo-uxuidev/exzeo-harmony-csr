@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
-import { reduxForm, Form, reset } from 'redux-form';
+import { reduxForm, Form, reset, change } from 'redux-form';
 import moment from 'moment';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as cgActions from '../../actions/cgActions';
@@ -16,6 +16,8 @@ import TextField from '../Form/inputs/TextField';
 import CurrencyField from '../Form/inputs/CurrencyField';
 
 const payments = [];
+
+let isLoded = false;
 
 export const setRank = (additionalInterests) => {
   _.forEach(additionalInterests, (value) => {
@@ -41,19 +43,6 @@ value.rank = 5; // eslint-disable-line
   });
 };
 
-const paymentTotal = () => {
-  let total = 0;
-  for (let i = 0; i < payments.length; i += 1) {
-    if (payments[i].cashDescription === 'PAYMENT RECEIVED') {
-      total += payments[i].amount;
-    }
-    if (payments[i].cashDescription === 'PAYMENT RETURNED') {
-      total -= payments[i].amount;
-    }
-  }
-  return total.toLocaleString();
-};
-
 const handleGetPolicy = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
@@ -62,27 +51,36 @@ const handleGetPolicy = (state) => {
 };
 
 const handleInitialize = (state) => {
-  const quoteData = handleGetPolicy(state);
+  const policy = handleGetPolicy(state);
 
   const values = {};
-  values.policyNumber = _.get(quoteData, 'policyNumber');
+  values.policyNumber = _.get(policy, 'policyNumber');
+  values.batchNumber = moment.utc().format('YYYYMMDD');
+
   return values;
+};
+
+const getPaymentDescription = (event, props) => {
+  const selectedDescriptionType = _.find(props.paymentOptions, type => type.paymentType === event.target.value);
+
+  props.actions.appStateActions.setAppState(props.appState.modelName,
+          props.appState.instanceId, { ...props.appState.data, ranService: false, paymentDescription: selectedDescriptionType.paymentDescription, showDescription: true });
 };
 
 export class MortgageBilling extends Component {
 
   componentWillMount = () => {
+    this.props.actions.serviceActions.getPaymentOptionsApplyPayments();
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-          this.props.appState.instanceId, { ...this.props.appState.data, ranService: false });
+          this.props.appState.instanceId, { ...this.props.appState.data, ranService: false, paymentDescription: [], showDescription: false });
   }
 
   componentWillReceiveProps = (nextProps) => {
     if (!_.isEqual(this.props, nextProps)) {
-      if (nextProps.policy.policyNumber !== undefined) {
+      if (nextProps.policy.policyNumber && !isLoded) {
+        isLoded = true;
         this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
-        this.props.actions.serviceActions.getTransactionHistory(nextProps.policy.policyNumber);
-        this.loadTable();
-        console.log(payments, 'payments');
+        this.props.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
         this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
           this.props.appState.instanceId, { ...this.props.appState.data, ranService: true });
       }
@@ -94,77 +92,50 @@ export class MortgageBilling extends Component {
     if (!found) { payments.push(transaction); }
   }
 
-  loadTable = () => {
-    if (this.props.getTransactionHistory) {
-      console.log(this.props, 'props');
-      const getTransactionHistory = this.props.getTransactionHistory;
-      for (let i = 0; i < getTransactionHistory.length; i += 1) {
-        const transaction = {
-          cashDate: getTransactionHistory[i].createdAt.substring(0, 10),
-          cashType: getTransactionHistory[i].transactionType,
-          cashDescription: 'No Discription in transaction-history',
-          batchNumber: getTransactionHistory[i].policyTransactionId,
-          amount: 'no amount in transaction-history'
-        };
-        this.checkPayments(getTransactionHistory[i].policyTransactionId, transaction);
-      }
-    }
-  }
-
   handleFormSubmit = (data) => {
     const workflowId = this.props.appState.instanceId;
     const submitData = data;
-
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
       workflowId, { ...this.props.appState.data, submitting: true });
 
     submitData.cashDate = moment.utc(data.cashDate).format('YYYY-MM-DD');
     submitData.batchNumber = String(data.batchNumber);
-    submitData.amount = Number(String(data.amount).replace(/[^\d]/g, ''));
+    submitData.amount = Number(String(data.amount).replace(/[^\d.]/g, ''));
     submitData.cashType = String(data.cashType);
     submitData.cashDescription = String(data.cashDescription);
-    // const steps = [
-    //   { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
-    //   { name: 'askCustomerData', data: submitData },
-    //   { name: 'askToCustomizeDefaultQuote', data: { shouldCustomizeQuote: 'Yes' } },
-    //   { name: 'customizeDefaultQuote', data: submitData }
+    this.props.actions.serviceActions.addTransaction(this.props, submitData.batchNumber, submitData.cashType, submitData.cashDescription, submitData.amount)
+    .then(() => {
+      this.props.actions.serviceActions.getPaymentHistory(this.props.policy.policyNumber);
+      this.props.actions.serviceActions.getSummaryLedger(this.props.policy.policyNumber);
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+        this.props.appState.instanceId, { ...this.props.appState.data });
+    });
 
-    // ];
-
-    // this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
-    //   .then(() => {
-    //     // now update the workflow details so the recalculated rate shows
-    //     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-    //       workflowId, { ...this.props.appState.data, recalc: false, quote: this.props.quoteData });
-    //   });
-    this.props.actions.serviceActions.addTransaction(this.props, submitData.batchNumber, submitData.cashType, submitData.cashDescription, submitData.amount);
-    payments.push(data);
     this.clearForm();
-    paymentTotal();
-    console.log(data, payments, 'form data');
   };
 
   clearForm = () => {
     const { dispatch } = this.props;
     const workflowId = this.props.appState.instanceId;
-
     dispatch(reset('PolicyholderAgent'));
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
       workflowId, { ...this.props.appState.data, submitting: false });
   };
 
   amountFormatter = cell => `$ ${cell.toLocaleString()}`;
+  dateFormatter = cell => `${cell.substring(0, 10)}`;
 
   render() {
     const { additionalInterests } = this.props.policy;
     const { handleSubmit, pristine } = this.props;
     setRank(additionalInterests);
-    if (!this.props.getTransactionHistory) {
-      return (<PolicyConnect>
-        {console.log('I RETURNED NOTHING', this.props)}
-        <ClearErrorConnect />
-      </PolicyConnect>);
+    if (!this.props.getSummaryLedger) {
+      return (
+        <PolicyConnect>
+          <ClearErrorConnect />
+        </PolicyConnect>);
     }
+
     return (
       <PolicyConnect>
         <ClearErrorConnect />
@@ -193,12 +164,12 @@ export class MortgageBilling extends Component {
                 </div>
                 <div className="payment-summary grid">
                   <div className="table-view">
-                    <BootstrapTable className="payment-summary-table" data={payments} striped hover>
-                      <TableHeaderColumn isKey dataField="cashDate" className="date" columnClassName="date" dataSort>Date</TableHeaderColumn>
-                      <TableHeaderColumn dataField="cashType" className="type" columnClassName="type" dataSort>Type</TableHeaderColumn>
-                      <TableHeaderColumn dataField="cashDescription" className="description" columnClassName="description" dataSort>Description</TableHeaderColumn>
-                      <TableHeaderColumn dataField="batchNumber" className="note" columnClassName="note" dataSort >Note</TableHeaderColumn>
-                      <TableHeaderColumn dataField="amount" dataFormat={this.amountFormatter} className="amount" columnClassName="amount" dataSort dataAlign="right">Amount</TableHeaderColumn>
+                    <BootstrapTable className="" data={this.props.paymentHistory || []} striped hover>
+                      <TableHeaderColumn isKey dataField="date" dataFormat={this.dateFormatter} className="date" columnClassName="date" width="150" dataSort>Date</TableHeaderColumn>
+                      <TableHeaderColumn dataField="type" className="type" columnClassName="type" dataSort width="150" >Type</TableHeaderColumn>
+                      <TableHeaderColumn dataField="description" className="description" columnClassName="description" dataSort>Description</TableHeaderColumn>
+                      <TableHeaderColumn dataField="batch" className="note" columnClassName="note" dataSort width="200" >Note</TableHeaderColumn>
+                      <TableHeaderColumn dataField="amount" dataFormat={this.amountFormatter} className="amount" columnClassName="amount" width="150" dataSort dataAlign="right">Amount</TableHeaderColumn>
                     </BootstrapTable>
                   </div>
                   <dl className="total">
@@ -225,7 +196,7 @@ export class MortgageBilling extends Component {
                     </div>
                     <div className="flex-child">
                       <div className="form-group">
-                        <TextField validations={['required']} label={'Batch Number'} styleName={''} name={'batchNumber'} />
+                        <TextField validations={['required', 'minLength10']} label={'Batch Number'} styleName={''} name={'batchNumber'} />
                       </div>
                     </div>
                   </div>
@@ -234,31 +205,20 @@ export class MortgageBilling extends Component {
                     <div className="flex-child">
                       <div className="form-group">
                         <SelectField
-                          name="cashType" component="select" label="Cash Type" onChange={function () {}} validations={['required']} answers={[
-                            {
-                              answer: 'CASH',
-                              label: 'Cash'
-                            }, {
-                              answer: 'CREDIT',
-                              label: 'Credit'
-                            }
-                          ]}
+                          name="cashType" component="select" label="Cash Type" onChange={val => getPaymentDescription(val, this.props)} validations={['required']}
+
+                          answers={_.map(this.props.paymentOptions, type => ({ answer: type.paymentType }))}
                         />
                       </div>
                     </div>
                     <div className="flex-child">
                       <div className="form-group">
+                        {this.props.appState.data.paymentDescription &&
                         <SelectField
-                          name="cashDescription" component="select" label="Description" onChange={function () {}} validations={['required']} answers={[
-                            {
-                              answer: 'PAYMENT RECEIVED',
-                              label: 'Payment Received'
-                            }, {
-                              answer: 'PAYMENT RETURNED',
-                              label: 'Payment Returned'
-                            }
-                          ]}
+                          name="cashDescription" component="select" label="Description" onChange={function () {}} validations={['required']}
+                          answers={_.map(this.props.appState.data.paymentDescription, description => ({ answer: description }))}
                         />
+                        }
                       </div>
                     </div>
                     <div className="flex-child">
@@ -323,12 +283,13 @@ redux mapping
 */
 
 const mapStateToProps = state => ({
-  getTransactionHistory: state.service.getTransactionHistory,
   getSummaryLedger: state.service.getSummaryLedger,
   initialValues: handleInitialize(state),
   policy: handleGetPolicy(state),
   tasks: state.cg,
-  appState: state.appState
+  appState: state.appState,
+  paymentHistory: state.service.paymentHistory,
+  paymentOptions: state.service.paymentOptions
 });
 
 const mapDispatchToProps = dispatch => ({
