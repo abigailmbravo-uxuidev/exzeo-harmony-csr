@@ -539,7 +539,7 @@ describe('Service Actions', () => {
       });
   });
 
-  it('should fail start getSummaryLedger', () => {
+  it('should call start getPaymentOptions', () => {
     const mockAdapter = new MockAdapter(axios);
 
     const axiosOptions = {
@@ -551,7 +551,53 @@ describe('Service Actions', () => {
       data: {
         service: 'billing.services',
         method: 'GET',
-        path: 'summary-ledgers/12345'
+        path: '/payment-options-apply-payment'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: [
+        {
+          paymentType: 'Paper Deposit',
+          paymentDescription: ['Duplicate Payment Applied in Error', 'Misapplied Payment', 'Misapplied Transfer', 'Payment Received', 'Payment Removed from Deposit', 'Payment Transfer']
+        },
+        {
+          paymentType: 'Electronic Deposit',
+          paymentDescription: ['Duplicate Payment Applied in Error', 'Misapplied Payment', 'Misapplied Transfer', 'Payment Received', 'Payment Removed from Deposit', 'Payment Transfer']
+        },
+        {
+          paymentType: 'Paper Deposit Charge Back',
+          paymentDescription: ['Account Closed', 'Bank Adjustment', 'Currency Conversion', 'No Account', 'NSF Payment', 'Payment Stopped', 'Refer to Maker', 'Unable to Locate Account']
+        },
+        {
+          paymentType: 'Electronic Deposit Charge Back',
+          paymentDescription: ['Account Closed', 'Bank Adjustment', 'Currency Conversion', 'No Account', 'NSF Payment', 'Payment Stopped', 'Refer to Maker', 'Unable to Locate Account']
+        }
+      ]
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    return serviceActions.getPaymentOptionsApplyPayments()(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+      });
+  });
+
+  it('should call start getPaymentHistory', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'billing.services',
+        method: 'GET',
+        path: '/payment-history/12345'
       }
     };
 
@@ -561,9 +607,37 @@ describe('Service Actions', () => {
 
     const initialState = {};
     const store = mockStore(initialState);
-    serviceActions.getSummaryLedger(store.dispatch);
 
-    return serviceActions.getSummaryLedger('3324234234324')(store.dispatch)
+    return serviceActions.getPaymentHistory('12345')(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+      });
+  });
+
+  it('should fail start getPaymentHistory', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'billing.services',
+        method: 'GET',
+        path: '/payment-history/12345'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    return serviceActions.getPaymentHistory('43543534')(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
       });

@@ -8,6 +8,26 @@ import ConnectedApp, { MortgageBilling, setRank } from './MortgageBilling';
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 
+
+const body = {
+  service: 'billing.services',
+  method: 'POST',
+  path: 'post-payment-transaction',
+  data: {
+    companyCode: 'TTIC',
+    state: 'FL',
+    product: 'HO3',
+    policyNumber: 10000,
+    policyTerm: 1,
+    policyAccountCode: '1234567',
+    date: new Date(),
+    type: 'Cash',
+    description: 'Annual Payment',
+    batch: '239484-333838',
+    amount: 100.00
+  }
+};
+
 const policy = {
   policyTerm: 1,
   updatedAt: '2017-06-30T14:59:40.455Z',
@@ -107,9 +127,11 @@ describe('Testing MortgageBilling component', () => {
       policy,
       actions: {
         serviceActions: {
+          addTransaction() { return Promise.resolve(); },
           getTransactionHistory() {},
-          addTransaction() {},
-          getSummaryLedger() {}
+          getSummaryLedger() {},
+          getPaymentHistory() {},
+          getPaymentOptionsApplyPayments() {}
         },
         appStateActions: {
           setAppState() {}
@@ -128,7 +150,7 @@ describe('Testing MortgageBilling component', () => {
     const wrapper = shallow(<MortgageBilling store={store} {...props} />);
     expect(wrapper);
 
-    wrapper.instance().handleFormSubmit({});
+    wrapper.instance().handleFormSubmit({ body });
     wrapper.instance().componentWillReceiveProps({ policy, policyNumber: 10000 });
   });
 
