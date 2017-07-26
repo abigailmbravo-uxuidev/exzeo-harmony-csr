@@ -2,12 +2,13 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { shallow, mount } from 'enzyme';
-import ConnectedApp, { DetailHeader } from './DetailHeader';
+import ConnectedApp, { DetailHeader, selectPolicy } from './DetailHeader';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 
 const quoteData = {
+  policyNumber: '1223',
   _id: '5866c036a46eb72908f3f547',
   companyCode: 'TTIC',
   state: 'FL',
@@ -351,6 +352,14 @@ describe('Testing DetailHeader component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      actions: {
+        serviceActions: {
+          getPolicyFromPolicyNumber() { return Promise.resolve({ payload: [{ data: { policy: {} } }] }); }
+        },
+        appStateActions: {
+          setAppState() {}
+        }
+      },
       fieldQuestions: [],
       quoteData,
       dispatch: store.dispatch,
@@ -364,5 +373,7 @@ describe('Testing DetailHeader component', () => {
       <DetailHeader {...props} />
     </Provider>);
     expect(wrapper);
+
+    selectPolicy(quoteData, props);
   });
 });
