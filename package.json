@@ -30,7 +30,7 @@
     "react-redux": "^5.0.4",
     "react-router": "^4.0.0-beta.8",
     "react-router-dom": "^4.0.0-beta.8",
-    "react-scripts": "0.9.5",
+    "react-scripts": "^1.0.10",
     "react-select": "^1.0.0-rc.5",
     "react-tooltip": "^3.2.10",
     "redux": "^3.6.0",
@@ -46,7 +46,7 @@
     "enzyme": "^2.8.0",
     "istanbul": "^0.4.5",
     "jest-enzyme": "2.1.2",
-    "react-scripts": "0.9.5",
+    "react-scripts": "^1.0.10",
     "react-test-renderer": "^15.5.4",
     "redux-mock-store": "^1.2.3",
     "sinon": "^2.1.0"
@@ -56,8 +56,16 @@
     "watch-css": "node-sass src/sass --output-style 'compressed' -o src/css --watch --recursive",
     "start": "npm run build-css && react-scripts start",
     "build": "npm run build-css && react-scripts build",
-    "copyCoverage": "node setupCodeCoverage",
-    "test": "npm run copyCoverage && react-scripts test --env=jsdom --coverage",
+     "cover": "npm test -- --coverage",
+    "test": "react-scripts test --env=jsdom --coverage",
     "eject": "react-scripts eject"
+  },
+   "jest": {
+    "collectCoverageFrom": ["src/**/*.{js,jsx}", "!src/index.js", "!src/routes.js", "!src/setupTests.js", "!src/Auth.js"],
+    "coverageThreshold": {
+      "global": {
+        "statements": 80
+      }
+    }
   }
 }

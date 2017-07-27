@@ -51,15 +51,15 @@ const csrLinks = [{
   exact: true
 }];
 
-const NewNoteFileUploaderPopup = (props) => {
+export const NewNoteFileUploaderPopup = (props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showNewNoteFileUploader: true });
 };
 
-const closeNewNoteFileUploader = (props) => {
+export const closeNewNoteFileUploader = (props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showNewNoteFileUploader: false });
 };
 
-const goToPage = (link, key, props) => {
+export const goToPage = (link, key, props) => {
   const workflowId = props.appState.instanceId;
 
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, submitting: true });
