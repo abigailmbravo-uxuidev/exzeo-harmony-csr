@@ -117,11 +117,8 @@ export class Underwriting extends Component {
           >
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
-
                 <h3>Underwriting Questions</h3>
-
-                {underwritingQuestions && underwritingQuestions.map((question, index) =>
-
+                {underwritingQuestions && _.sortBy(underwritingQuestions, ['order']).map((question, index) =>
                   <FieldGenerator
                     data={quoteData.underwritingAnswers}
                     question={question}
