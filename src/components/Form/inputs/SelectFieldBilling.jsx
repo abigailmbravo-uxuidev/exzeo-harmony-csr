@@ -32,9 +32,9 @@ export const SelectFieldBilling = ({
           disabled={disabled}
           onChange={onChange}
         >
-          <option disabled value={''}>Please select...</option>
+          <option aria-label={'Please select...'} disabled value={''}>Please select...</option>
           {answers.map((answer, index) => (
-            <option value={answer.billToId} key={index}>
+            <option aria-label={answer.billToId} value={answer.billToId} key={index}>
               {answer.displayText}
             </option>
             ))}
