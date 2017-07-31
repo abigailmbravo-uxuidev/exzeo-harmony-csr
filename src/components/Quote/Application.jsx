@@ -49,7 +49,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
       props.appState.instanceId,
     {
       ...props.appState.data,
-      submitting: true
+      applicationSubmitting: true
     });
 
   const steps = [
@@ -68,7 +68,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
         ...props.appState.data,
         activateRedirectLink: '/quote/coverage',
         activateRedirect: true,
-        submitting: false
+        applicationSubmitting: false
       });
   });
 };
