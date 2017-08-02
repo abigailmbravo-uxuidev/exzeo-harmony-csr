@@ -241,6 +241,12 @@ html {
               }
             }
           }
+
+          .route-content {
+            .modal {
+              z-index: 100;
+            }
+          }
         }
       }
     }
