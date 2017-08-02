@@ -240,7 +240,7 @@ export class AdditionalInterests extends Component {
   render() {
     const { appState, quoteData, questions } = this.props;
     _.forEach(getAnswers('mortgagee', questions), (answer) => {
-      answer.displayText = `${answer.AIName1}, ${answer.AICity} ${answer.AIState}, ${answer.AIZip}`;
+      answer.displayText = `${answer.AIName1}, ${answer.AIAddress1}, ${answer.AICity} ${answer.AIState}, ${answer.AIZip}`;
     });
 
     return (
@@ -333,4 +333,4 @@ const mapDispatchToProps = dispatch => ({
 // ------------------------------------------------
 // wire up redux form with the redux connect
 // ------------------------------------------------
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'AdditionalInterests' })(AdditionalInterests));
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'AdditionalInterests', enableReinitialize: true })(AdditionalInterests));
