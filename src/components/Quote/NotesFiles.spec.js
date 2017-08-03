@@ -2,8 +2,8 @@ import React from 'react';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
-
-import ConnectedApp, { NoteList, isExpandableRow } from './NotesFiles';
+import _ from 'lodash';
+import ConnectedApp, { NotesFiles, NoteList, isExpandableRow, Files, BSTable } from './NotesFiles';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -63,11 +63,24 @@ describe('Testing NotesFiles component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      notes: [],
+      actions: {
+        serviceActions: {
+          getNotes() {}
+        },
+        appStateActions: {
+          setAppState() { }
+        },
+        cgActions: {
+          batchCompleteTask() { return Promise.resolve(() => {}); }
+        }
+      },
       handleSubmit() { },
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,
       appState: {
+        instanceId: 1,
         data: {
           submitting: false
         }
@@ -75,6 +88,16 @@ describe('Testing NotesFiles component', () => {
     };
     const wrapper = shallow(<NoteList {...props} />);
     expect(wrapper);
+
+    const notesFiles = shallow(<NotesFiles store={store} {...props} />);
+    expect(notesFiles);
+    notesFiles.instance().componentDidMount();
+
+    notesFiles.instance().componentWillReceiveProps({ quoteData: { quoteNumber: '1234' } });
+
+    Files(props);
+
+    BSTable(props);
   });
   it('test isExpandableRow true', () => {
     const result = isExpandableRow({

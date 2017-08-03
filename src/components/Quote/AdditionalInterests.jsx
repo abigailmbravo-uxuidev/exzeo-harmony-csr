@@ -208,30 +208,33 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
 const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 
-export class AdditionalLinterests extends Component {
+export class AdditionalInterests extends Component {
   state = {
     sameAsProperty: false
   }
 
   componentDidMount() {
     this.props.actions.questionsActions.getUIQuestions('additionalInterestsCSR');
-    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
-      ...this.props.appState.data,
-      submitting: true
-    });
-    const steps = [
+
+    if (this.props.appState.instanceId) {
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+        ...this.props.appState.data,
+        submitting: true
+      });
+      const steps = [
     { name: 'hasUserEnteredData', data: { answer: 'No' } },
     { name: 'moveTo', data: { key: 'additionalInterests' } }
-    ];
-    const workflowId = this.props.appState.instanceId;
+      ];
+      const workflowId = this.props.appState.instanceId;
 
-    this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
+      this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
     .then(() => {
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         selectedLink: 'additionalInterests'
       });
     });
+    }
   }
 
   render() {
@@ -293,13 +296,10 @@ export class AdditionalLinterests extends Component {
   }
 
 }
-AdditionalLinterests.contextTypes = {
-  router: PropTypes.object
-};
 // ------------------------------------------------
 // Property type definitions
 // ------------------------------------------------
-AdditionalLinterests.propTypes = {
+AdditionalInterests.propTypes = {
   ...propTypes,
   tasks: PropTypes.shape(),
   appState: PropTypes.shape({
@@ -333,4 +333,4 @@ const mapDispatchToProps = dispatch => ({
 // ------------------------------------------------
 // wire up redux form with the redux connect
 // ------------------------------------------------
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'AdditionalLinterests' })(AdditionalLinterests));
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'AdditionalInterests' })(AdditionalInterests));

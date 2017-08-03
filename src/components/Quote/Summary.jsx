@@ -75,23 +75,25 @@ export const handleFormSubmit = (data, dispatch, props) => {
 export class Summary extends Component {
 
   componentDidMount() {
-    this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
-      ...this.props.appState.data,
-      submitting: true
-    });
-    const steps = [
+    if (this.props.appState.instanceId) {
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+        ...this.props.appState.data,
+        submitting: true
+      });
+      const steps = [
     { name: 'hasUserEnteredData', data: { answer: 'No' } },
     { name: 'moveTo', data: { key: 'summary' } }
-    ];
-    const workflowId = this.props.appState.instanceId;
+      ];
+      const workflowId = this.props.appState.instanceId;
 
-    this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
+      this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
     .then(() => {
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         selectedLink: 'summary'
       });
     });
+    }
   }
 
   render() {

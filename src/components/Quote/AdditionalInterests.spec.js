@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
 
-import ConnectedApp, { handleGetQuoteData, handleFormSubmit,
+import ConnectedApp, { AdditionalInterests, handleGetQuoteData, handleFormSubmit,
    deleteAdditionalInterest, addAdditionalInterest, editAdditionalInterest, hideAdditionalInterestModal } from './AdditionalInterests';
 
 const middlewares = [];
@@ -710,6 +710,9 @@ describe('Testing AdditionalInterests component', () => {
       fieldQuestions: [],
       dispatch: store.dispatch,
       actions: {
+        questionsActions: {
+          getUIQuestions() {}
+        },
         appStateActions: {
           setAppState() { }
         },
@@ -718,6 +721,7 @@ describe('Testing AdditionalInterests component', () => {
         }
       },
       appState: {
+        instanceId: 1,
         data: {
           submitting: false
         }
@@ -742,10 +746,12 @@ describe('Testing AdditionalInterests component', () => {
           },
           active: true
         }]
-      },
-      ...propTypes
+      }
     };
-
     handleFormSubmit(quoteData.additionalInterests, store.dispatch, props);
+
+    const wrapper = shallow(<AdditionalInterests store={store} {...props} />);
+
+    wrapper.instance().componentDidMount();
   });
 });

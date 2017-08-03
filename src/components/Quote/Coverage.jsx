@@ -353,7 +353,7 @@ export class Coverage extends Component {
     if (isNewTab) {
       localStorage.setItem('isNewTab', false);
 
-      this.props.actions.cgActions.startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds`}).then((result) => {
+      this.props.actions.cgActions.startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` }).then((result) => {
         const steps = [];
         const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData'));
 
@@ -387,11 +387,11 @@ export class Coverage extends Component {
         this.props.actions.appStateActions.setAppState('csrQuote', startResult.modelInstanceId, { ...this.props.appState.data, submitting: true });
         this.props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
           this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-          this.props.appState.instanceId, { ...this.props.appState.data, selectedLink: 'customerData' });
+          startResult.modelInstanceId, { ...this.props.appState.data, selectedLink: 'customerData' });
           handleAgencyChange(this.props, this.props.quoteData.agencyCode, true);
         });
       });
-    } else {
+    } else if (this.props.appState.instanceId) {
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         submitting: true
@@ -400,8 +400,8 @@ export class Coverage extends Component {
     { name: 'hasUserEnteredData', data: { answer: 'No' } },
     { name: 'moveTo', data: { key: 'customerData' } }
       ];
-      const workflowId = this.props.appState.instanceId;
 
+      const workflowId = this.props.appState.instanceId;
       this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
     .then(() => {
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
