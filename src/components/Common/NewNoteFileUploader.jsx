@@ -43,7 +43,7 @@ export const validate = (values) => {
 };
 
 const renderNotes = ({ input, label, type, meta: { touched, error } }) => (
-  <div className={touched && error  ? 'error text-area-wrapper' : 'text-area-wrapper'}>
+  <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
     <textarea {...input} placeholder={label} rows="10" cols="40" />
     { touched && error && <span className="error-message">{ error }</span> }
   </div>
