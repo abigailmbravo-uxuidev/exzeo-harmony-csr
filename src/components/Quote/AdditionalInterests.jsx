@@ -12,18 +12,9 @@ import ClearErrorConnect from '../Error/ClearError';
 import AdditionalInterestModal from '../../components/Common/AdditionalInterestModal';
 import AdditionalInterestEditModal from '../../components/Common/AdditionalInterestEditModal';
 
-export const handleGetQuoteData = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
-    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
-    : {};
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
-    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
-    : quoteEnd;
-
-  // add rank to sort by a specific way
-  _.forEach(quoteData.additionalInterests, (value) => {
+export const applyRank = (additionalInterests) => {
+    // add rank to sort by a specific way
+  _.forEach(additionalInterests, (value) => {
     switch (value.type) {
       case 'Mortgagee':
         value.rank = 1; // eslint-disable-line
@@ -44,6 +35,18 @@ export const handleGetQuoteData = (state) => {
         break;
     }
   });
+};
+export const handleGetQuoteData = (state) => {
+  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  if (!taskData) return {};
+  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
+    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
+    : {};
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
+    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
+    : quoteEnd;
+
+  applyRank(quoteData.additionalInterests);
 
   return quoteData;
 };
@@ -61,7 +64,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
   actions.appStateActions.setAppState(appState.modelName,
       workflowId, {
         ...appState.data,
-        submitting: true
+        submittingAI: true
       });
 
   let additionalInterests = quoteData.additionalInterests || [];
@@ -110,6 +113,9 @@ export const handleFormSubmit = (data, dispatch, props) => {
 
     // TODO Clear out old form data
 
+  applyRank(modifiedAIs);
+
+
   const steps = [
     {
       name: 'hasUserEnteredData',
@@ -128,13 +134,12 @@ export const handleFormSubmit = (data, dispatch, props) => {
   actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
         additionalInterests = modifiedAIs;
-
         // now update the workflow details so the recalculated rate shows
         actions.appStateActions.setAppState(appState.modelName,
           workflowId, { ...appState.data,
             selectedMortgageeOption: null,
             selectedLink: 'additionalInterests',
-            submitting: false,
+            submittingAI: false,
             showAdditionalInterestModal: false,
             showAdditionalInterestEditModal: false });
       });
@@ -166,7 +171,7 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
   actions.appStateActions.setAppState(appState.modelName,
       workflowId, {
         ...props.appState.data,
-        submitting: true,
+        submittingAI: true,
         showAdditionalInterestModal: appState.data.showAdditionalInterestModal,
         showAdditionalInterestEditModal: appState.data.showAdditionalInterestEditModal
       });
@@ -177,6 +182,13 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
   const modifiedAIs = _.cloneDeep(additionalInterests);
     // remove any existing items before submission
     _.remove(modifiedAIs, ai => ai._id === selectedAdditionalInterest._id); // eslint-disable-line
+
+  if (_.filter(modifiedAIs, ai => ai.type === selectedAdditionalInterest.type).length === 1) {
+    const index = _.findIndex(modifiedAIs, { type: selectedAdditionalInterest.type });
+    const ai = modifiedAIs[index];
+    ai.order = 0;
+    modifiedAIs.splice(index, 1, ai);
+  }
 
   const steps = [{
     name: 'hasUserEnteredData',
@@ -198,7 +210,7 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
         props.actions.appStateActions.setAppState(props.appState.modelName,
           workflowId, { ...props.appState.data,
             selectedLink: 'additionalInterests',
-            submitting: false,
+            submittingAI: false,
             selectedMortgageeOption: null,
             showAdditionalInterestModal: false,
             showAdditionalInterestEditModal: false });
@@ -219,7 +231,7 @@ export class AdditionalInterests extends Component {
     if (this.props.appState.instanceId) {
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
-        submitting: true
+        submittingAI: true
       });
       const steps = [
     { name: 'hasUserEnteredData', data: { answer: 'No' } },
@@ -262,7 +274,7 @@ export class AdditionalInterests extends Component {
 
                 <div className="results-wrapper">
                   <ul className="results result-cards">
-                    {quoteData && quoteData.additionalInterests && _.sortBy(quoteData.additionalInterests, ['rank', 'type']).map((ai, index) =>
+                    {quoteData && quoteData.additionalInterests && _.sortBy(quoteData.additionalInterests, ['rank', 'order']).map((ai, index) =>
                       <li key={index}>
                         <a onClick={() => editAdditionalInterest(ai, this.props)}>
                           {/* add className based on type - i.e. mortgagee could have class of mortgagee*/}
@@ -305,7 +317,7 @@ AdditionalInterests.propTypes = {
   appState: PropTypes.shape({
     modelName: PropTypes.string,
     instanceId: PropTypes.string,
-    data: PropTypes.shape({ submitting: PropTypes.boolean })
+    data: PropTypes.shape({ submittingAI: PropTypes.boolean })
   })
 };
 
