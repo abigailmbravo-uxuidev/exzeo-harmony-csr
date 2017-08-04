@@ -13,6 +13,7 @@ const mockStore = configureStore(middlewares);
 const policy = {
   companyCode: 'TTIC',
   state: 'FL',
+  agentCode: 123213,
   agencyCode: 100011,
   policyHolderMailingAddress: {
     careOf: null,

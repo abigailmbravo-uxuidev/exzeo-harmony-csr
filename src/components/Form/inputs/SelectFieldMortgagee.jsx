@@ -28,9 +28,9 @@ export const SelectInputMortgagee = ({
           disabled={disabled}
           onChange={onChange}
         >
-          <option disabled value={''}>Please select...</option>
+          <option aria-label={'Please select...'} disabled value={''}>Please select...</option>
           {answers.map((answer, index) => (
-            <option value={answer.ID} key={index}>
+            <option value={answer.ID} key={index} aria-label={`${answer.AIName1} ${answer.AIAddress1}, ${answer.AICity}, ${answer.AIState} ${answer.AIZip}`}>
               {answer.AIName1} {answer.AIAddress1}, {answer.AICity}, {answer.AIState} {answer.AIZip}
             </option>
             ))}
