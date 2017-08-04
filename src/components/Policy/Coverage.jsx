@@ -55,7 +55,7 @@ export class Coverage extends Component {
     if (isNewTab) {
       localStorage.setItem('isNewTab', false);
 
-      this.props.actions.cgActions.startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds`}).then((result) => {
+      this.props.actions.cgActions.startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` }).then((result) => {
         const steps = [];
         const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData'));
 
@@ -94,9 +94,6 @@ export class Coverage extends Component {
 
     const discountSurcharge = [
       {
-        discountSurcharge: 'Wind Excluded',
-        value: _.get(rating, 'windMitigationDiscount') === 0 ? 'No' : 'Yes'
-      }, {
         discountSurcharge: 'Property Ever Rented',
         value: _.get(underwritingAnswers, 'rented.answer') === 'Yes' ? 'Yes' : 'No'
       }, {
@@ -122,22 +119,22 @@ export class Coverage extends Component {
 
     const coverageLimitsData = [
       {
-        coverage: 'Dwelling',
+        coverage: 'Dwelling Limit',
         value: `$ ${normalizeNumbers(_.get(coverageLimits, 'dwelling.amount'))}`
       }, {
-        coverage: 'Other Structures',
+        coverage: 'Other Structures Limit',
         value: `$ ${normalizeNumbers(_.get(coverageLimits, 'otherStructures.amount'))}`
       }, {
-        coverage: 'Personal Property',
+        coverage: 'Personal Property Limit',
         value: `$ ${normalizeNumbers(_.get(coverageLimits, 'personalProperty.amount'))}`
       }, {
-        coverage: 'Additional Living Expenses',
+        coverage: 'Loss of Use Limit',
         value: `$ ${normalizeNumbers(_.get(coverageLimits, 'lossOfUse.amount'))}`
       }, {
-        coverage: 'Personal Liability',
+        coverage: 'Personal Liability Limit',
         value: `$ ${normalizeNumbers(_.get(coverageLimits, 'personalLiability.amount'))}`
       }, {
-        coverage: 'Medical Payments',
+        coverage: 'Medical Payments to Others Limit',
         value: `$ ${normalizeNumbers(_.get(coverageLimits, 'medicalPayments.amount'))}`
       }
     ];
@@ -153,7 +150,7 @@ export class Coverage extends Component {
         coverage: 'Personal Property Repl Cost',
         value: _.get(coverageOptions, 'personalPropertyReplacementCost.answer') ? 'Yes' : 'No'
       }, {
-        coverage: 'Ordinance or Law Coverage',
+        coverage: 'Ordinance or Law Coverage Limit',
         value: `${_.get(coverageLimits, 'ordinanceOrLaw.amount')}%`
       }, {
         coverage: 'Incidental Occ Main',
@@ -161,6 +158,10 @@ export class Coverage extends Component {
       }, {
         coverage: 'Incidental Occ Other',
         value: _.get(coverageOptions, 'propertyIncidentalOccupanciesOtherStructures.answer') ? 'Yes' : 'No'
+      },
+      {
+        coverage: 'Incidental Occ Liability',
+        value: _.get(coverageOptions, 'liabilityIncidentalOccupancies.answer') ? 'Yes' : 'No'
       }
     ];
 
