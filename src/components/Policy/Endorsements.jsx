@@ -231,7 +231,6 @@ export class Endorsements extends React.Component {
               <a href="#home" className="btn btn-primary btn-xs">Home / Location</a>
               <a href="#policy" className="btn btn-primary btn-xs">Policyholders</a>
               <a href="#addresses" className="btn btn-primary btn-xs">Addresses</a>
-              <a href="#addInt" className="btn btn-primary btn-xs">Additional Interests</a>
               <a className="btn btn-secondary btn-xs" onClick={() => this.cancelFormSubmit()}>Cancel</a>
 
             </div>
@@ -318,7 +317,7 @@ export class Endorsements extends React.Component {
                       </div>
                       <div className="form-group-double-element">
                         <CurrencyField label={'Loss of Use (D)'} styleName={''} name={'lossOfUse'} disabled />
-                        <CurrencyField styleName={''} label={''} name={'lossOfUseNew'} />
+                        <CurrencyField styleName={''} label={''} name={'lossOfUseNew'} disabled />
                       </div>
                       <div className="form-group-double-element">
                         <CurrencyField validations={['required']} label={'Personal Liability (E)'} styleName={''} name={'personalLiability'} disabled />
@@ -459,19 +458,20 @@ export class Endorsements extends React.Component {
                         <TextField validations={['required']} label={''} styleName={''} name={'propertyIncidentalOccupanciesOtherStructuresNew'} />
                       </div>
                       <div className="form-group-double-element">
-                        <TextField validations={['required']} label={'Wind Excluded'} styleName={''} name={'windExcluded'} disabled />
-                        <SelectField
-                          label={''}
-                          name={'windExcludedNew'} styleName={''} onChange={function () {}} answers={[
-                            {
-                              answer: false,
-                              label: 'No'
-                            }, {
-                              answer: true,
-                              label: 'Yes'
-                            }
-                          ]}
-                        />
+                        <TextField validations={['required']} label={'Townhouse / Rowhouse'} styleName={''} name={'townHouseRoadHouse'} disabled />
+                        <div className="flex-child">
+                          <RadioField
+                            name={'townHouseRoadHouseNew'} styleName={''} label={''} onChange={function () {}} segmented answers={[
+                              {
+                                answer: false,
+                                label: 'No'
+                              }, {
+                                answer: true,
+                                label: 'Yes'
+                              }
+                            ]}
+                          />
+                      </div>
                       </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Property Ever Rented'} styleName={''} name={'propertyRented'} disabled />
@@ -568,27 +568,12 @@ export class Endorsements extends React.Component {
                         </div>
                       </div>
                       <div className="form-group-double-element">
-                        <TextField validations={['required']} label={'Bill To'} styleName={''} name={'billToType'} disabled />
-                        <TextField validations={['required']} label={''} styleName={''} name={'billToTypeNew'} />
+                        <CurrencyField validations={['required']} label={'Incidental Occ Liability'} styleName={''} name={'incidentalOccLiability'} disabled />
+                        <CurrencyField name={'incidentalOccLiabilityNew'} label={''} styleName={''} disabled />
                       </div>
-                      <div className="form-group-double-element">
-                        <TextField validations={['required']} label={'Bill Plan'} styleName={''} name={'billPlan'} disabled />
-                        <SelectField
-                          name="billPlanNew" component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
-                            {
-                              answer: 'ANNUAL',
-                              label: 'Annual'
-                            }, {
-                              answer: 'SEMI-ANNUAL',
-                              label: 'Semi-Annual'
-                            },
-                            {
-                              answer: 'QUARTERLY',
-                              label: 'Quarterly'
-                            }
-                          ]}
-                        />
-                      </div>
+
+
+
                     </div>
                   </div>
                 </section>
@@ -805,7 +790,7 @@ export class Endorsements extends React.Component {
                       </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Wind Mit Factor'} styleName={''} name={'windMitFactor'} disabled />
-                        <TextField validations={['required']} styleName={''} label={''} name={'windMitFactorNew'} />
+                        <TextField validations={['required']} styleName={''} label={''} name={'windMitFactorNew'} disabled />
                       </div>
 
                     </div>
@@ -860,10 +845,7 @@ export class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
-                      <div className="form-group-double-element">
-                        <TextField label={'Year Roof Built'} styleName={''} name="yearOfRoof" disabled />
-                        <TextField styleName={''} label={''} name="yearOfRoofNew" />
-                      </div>
+
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Protection Class'} styleName={''} name={'protectionClass'} disabled />
                         <SelectField
@@ -960,6 +942,7 @@ export class Endorsements extends React.Component {
                           ]}
                         />
                       </div>
+
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Family Units'} styleName={''} name={'familyUnits'} disabled />
                         <SelectField
@@ -977,6 +960,21 @@ export class Endorsements extends React.Component {
                             }, {
                               answer: '9+',
                               label: '9+'
+                            }
+                          ]}
+                        />
+                      </div>
+
+                      <div className="form-group-double-element">
+                        <TextField validations={['required']} label={'Flood Zone'} styleName={''} name={'floodZone'} disabled />
+                        <SelectField
+                          name="floodZoneNew" component="select" label={''} styleName={''} onChange={function () {}} answers={[
+                            {
+                              answer: 'A',
+                              label: 'A'
+                            }, {
+                              answer: 'B',
+                              label: 'B'
                             }
                           ]}
                         />
@@ -1021,19 +1019,10 @@ export class Endorsements extends React.Component {
                         <TextField validations={['required']} label={''} styleName={''} name={'squareFeetNew'} />
                       </div>
                       <div className="form-group-double-element">
-                        <TextField validations={['required']} label={'Flood Zone'} styleName={''} name={'floodZone'} disabled />
-                        <SelectField
-                          name="floodZoneNew" component="select" label={''} styleName={''} onChange={function () {}} answers={[
-                            {
-                              answer: 'A',
-                              label: 'A'
-                            }, {
-                              answer: 'B',
-                              label: 'B'
-                            }
-                          ]}
-                        />
+                        <TextField label={'Year Roof Built'} styleName={''} name="yearOfRoof" disabled />
+                        <TextField styleName={''} label={''} name="yearOfRoofNew" />
                       </div>
+
                     </div>
                   </div>
                 </section>
@@ -1126,18 +1115,7 @@ export class Endorsements extends React.Component {
                   </div>
                 </section>
                 <a name="addInt" />
-                <section className="additionalInterests">
-                  <h3>Additional Interest</h3>
-                  <div className="button-group">
-                    <button className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
-                    <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
-                    <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
-                    { /* <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => this.addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button> */ }
-                    <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
-                  </div>
-                  <div className="results-wrapper"><ul className="results result-cards"><li><a><div className="card-icon"><i className="fa fa-circle Mortgagee" /><label>Mortgagee</label></div><section><h4>BANK OF AMERICA</h4><p className="address">123 Main Street, Suite A, Tampa, FL 33333</p></section>
-                    <div className="ref-number"><label htmlFor="ref-number">Reference Number</label><span>76532487</span></div><i className="fa fa-pencil" /></a></li></ul></div>
-                </section>
+
               </div>
             </div>
             <div className="endo-results-calc">
