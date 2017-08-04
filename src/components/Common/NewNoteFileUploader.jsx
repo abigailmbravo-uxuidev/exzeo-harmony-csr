@@ -43,9 +43,9 @@ export const validate = (values) => {
 };
 
 const renderNotes = ({ input, label, type, meta: { touched, error } }) => (
-  <div className="text-area-wrapper">
+  <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
     <textarea {...input} placeholder={label} rows="10" cols="40" />
-    { touched && error && <span>{ error }</span> }
+    { touched && error && <span className="error-message">{ error }</span> }
   </div>
   );
 
@@ -76,6 +76,7 @@ export const NewNoteFileUploader = (props, { closeButtonHandler }) => {
         <Form id="NewNoteFileUploader" onSubmit={props.handleSubmit(submitNote)} noValidate>
           <div className="content state-initial">
             <div className="flex-contents">
+              <label>Note Type</label>
               <Field component="select" name="contactType" disabled={!contactTypes.length}>
                 { contactTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
               </Field>
