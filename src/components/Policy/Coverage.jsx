@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import moment from 'moment';
 import localStorage from 'localStorage';
 import { reduxForm, propTypes } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
@@ -85,6 +84,19 @@ export class Coverage extends Component {
       if (nextProps.policy.policyNumber && !isLoded) {
         isLoded = true;
         this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
+
+        const paymentOptions = {
+          effectiveDate: nextProps.policy.effectiveDate,
+          policyHolders: nextProps.policy.policyHolders,
+          additionalInterests: nextProps.policy.additionalInterests,
+          netPremium: nextProps.policy.rating.netPremium,
+          fees: {
+            empTrustFee: nextProps.policy.rating.worksheet.fees.empTrustFee,
+            mgaPolicyFee: nextProps.policy.rating.worksheet.fees.mgaPolicyFee
+          },
+          totalPremium: nextProps.policy.rating.totalPremium
+        };
+        this.props.actions.serviceActions.getBillingOptions(paymentOptions);
       }
     }
   }
@@ -99,7 +111,7 @@ export class Coverage extends Component {
     underwritingAnswers
   } = this.props.policy;
 
-    const { questions, summaryLedger } = this.props;
+    const { questions, summaryLedger, paymentOptions } = this.props;
 
     const discountSurcharge = [
       {
@@ -196,7 +208,7 @@ export class Coverage extends Component {
       },
       {
         coverage: 'Bill To',
-        value: _.get(summaryLedger, 'billToType')
+        value: `${_.get(_.find(_.get(paymentOptions, 'options'), option => option.billToId === _.get(summaryLedger, 'billToId')), 'displayText')}`
       }, {
         coverage: 'Bill Plan',
         value: _.get(summaryLedger, 'billPlan')
@@ -375,6 +387,7 @@ redux mapping
 ------------------------------------------------
 */
 const mapStateToProps = state => ({
+  paymentOptions: state.service.paymentOptions,
   summaryLedger: state.service.getSummaryLedger,
   tasks: state.cg,
   appState: state.appState,
