@@ -15,6 +15,7 @@ import RadioField from '../Form/inputs/RadioField';
 import PhoneField from '../Form/inputs/PhoneField';
 import SelectField from '../Form/inputs/SelectField';
 import CurrencyField from '../Form/inputs/CurrencyField';
+import Footer from '../Common/Footer';
 
 const handleGetPolicy = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
@@ -1175,6 +1176,9 @@ export class Endorsements extends React.Component {
           <aside className="underwriting-validation">
             <h4 className="uw-validation-header">Underwriting Validation</h4>
           </aside>
+        </div>
+        <div className="btn-footer">
+          <Footer />
         </div>
       </PolicyConnect>
     );

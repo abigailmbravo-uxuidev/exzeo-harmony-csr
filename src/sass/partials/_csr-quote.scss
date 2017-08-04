@@ -65,8 +65,8 @@
   }
   //content wrapper
   main {
-    height: calc(100vh - 8.5rem);
-    min-height: calc(100vh - 8.5rem);
+    height: calc(100vh - 8.125rem);
+    min-height: calc(100vh - 8.125rem);
 
     .content-wrapper {
       overflow: hidden;
@@ -162,7 +162,7 @@
           > section {
             margin-bottom: $padding*2;
             padding-bottom: $padding*2;
-            border-bottom: 1px dashed $warm-gray-01;
+            border-bottom: 1px dashed $green-darken-04;
           }
 
           > section:last-of-type {
@@ -348,6 +348,25 @@
       }
     }
   }
+  //footer
+  .btn-footer {
+    margin-bottom: 0;
+    flex-shrink: 0;
+    height: 3.25rem;
+    flex-grow: 0;
+    padding: 0.5rem;
+    align-items: center;
+    border-top: 1px dotted $warm-gray-04;
+    footer {
+        flex-grow: 1;
+        flex-shrink: 0;
+        width: auto;
+
+        div[role="banner"] {
+
+        }
+    }
+  }
 }
 
 .modal.quote-summary {
@@ -517,4 +536,16 @@
 .coverages-other-structures-limit-percent,
 .coverages-personal-property-limit-percent {
   width: 32%;
+}
+
+#MailingAddressBilling {
+    .bill-plan {
+        .segmented {
+            .segmented-answer-wrapper {
+                .radio-column-3 {
+                    width: 33.3%
+                }
+            }
+        }
+    }
 }
