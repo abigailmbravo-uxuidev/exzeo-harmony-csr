@@ -8,6 +8,7 @@ import * as cgActions from '../../actions/cgActions';
 // import ScheduleDate from '../Common/ScheduleDate';
 import TextField from '../Form/inputs/TextField';
 import * as appStateActions from '../../actions/appStateActions';
+import * as serviceActions from '../../actions/serviceActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import normalizePhone from '../Form/normalizePhone';
@@ -96,6 +97,15 @@ export class Summary extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!_.isEqual(this.props, nextProps)) {
+      const quoteData = nextProps.quoteData;
+      if (quoteData.companyCode && quoteData.state) {
+        this.props.actions.serviceActions.getAgents(quoteData.companyCode, quoteData.state);
+      }
+    }
+  }
+
   render() {
     let property = {};
     let coverageLimits = {};
@@ -105,21 +115,15 @@ export class Summary extends Component {
 
     const {
       quoteData,
-      tasks,
-      appState,
-       handleSubmit
+       handleSubmit,
+       agents
      } = this.props;
 
-    const agentTaskData = (tasks && appState && tasks.getAgency) ? tasks.getAgency.data : null;
-
-  // hardcoded because cg removed the 'getAgentDocument' step from the model.. Will be removed once model is updated and implemented on th UI
-    let agents = [];
     let selectedAgent = {};
-    if (agentTaskData) {
-      const agentData = _.filter(agentTaskData.model.variables, item => item.name === 'getAgentsByCode');
-      if (agentData.length > 0) {
-        agents = agentData[0].value.result;
-      }
+
+    if (agents && agents.length > 0 && quoteData && quoteData.agencyCode) {
+      console.log(quoteData.agencyCode);
+      selectedAgent = _.find(agents, a => a.agentCode === quoteData.agentCode);
     }
 
     if (quoteData) {
@@ -128,10 +132,6 @@ export class Summary extends Component {
       coverageOptions = quoteData.coverageOptions;
       mailingAddress = quoteData.policyHolderMailingAddress || {};
       deductibles = quoteData.deductibles;
-    }
-
-    if (quoteData && agents.length > 0) {
-      selectedAgent = _.find(agents, a => a.agentCode === quoteData.agentCode);
     }
 
     return (
@@ -401,6 +401,7 @@ Summary.propTypes = {
 // redux mapping
 // ------------------------------------------------
 const mapStateToProps = state => ({
+  agents: state.service.agents,
   tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'Summary.values', {}),
@@ -412,6 +413,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }

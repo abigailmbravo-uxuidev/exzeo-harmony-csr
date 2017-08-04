@@ -308,6 +308,13 @@ const quoteData = {
 describe('Testing Summary component', () => {
   it('should test connected app', () => {
     const initialState = {
+      service: {
+
+      },
+      actions: {
+        serviceActions: {
+        }
+      },
       cg: {
         bb: {
           data: {
@@ -324,6 +331,7 @@ describe('Testing Summary component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      agents: [{ firstName: '' }],
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,
