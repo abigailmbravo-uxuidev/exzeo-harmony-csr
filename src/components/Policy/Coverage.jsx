@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import moment from 'moment';
 import localStorage from 'localStorage';
 import { reduxForm, propTypes } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as questionsActions from '../../actions/questionsActions';
+import * as serviceActions from '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import PolicyConnect from '../../containers/Policy';
@@ -37,14 +39,12 @@ const handleGetPolicy = (state) => {
 // ];
 
 export const getPropertyAppraisialLink = (county, questions) => {
-  console.log(county);
   const answers = _.get(_.find(questions, { name: 'propertyAppraisal' }), 'answers') || [];
-  console.log(answers);
-
   return _.find(answers, { label: county }) || {};
 };
 
 const handleInitialize = state => handleGetPolicy(state);
+let isLoded = false;
 
 export class Coverage extends Component {
 
@@ -73,10 +73,19 @@ export class Coverage extends Component {
 
         this.props.actions.appStateActions.setAppState('csrQuote', startResult.modelInstanceId, { ...this.props.appState.data, submitting: true });
         this.props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
-          this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+          this.props.actions.appStateActions.setAppState('csrQuote',
           startResult.modelInstanceId, { ...this.props.appState.data, submitting: false });
         });
       });
+    }
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    if (!_.isEqual(this.props, nextProps)) {
+      if (nextProps.policy.policyNumber && !isLoded) {
+        isLoded = true;
+        this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
+      }
     }
   }
 
@@ -90,10 +99,13 @@ export class Coverage extends Component {
     underwritingAnswers
   } = this.props.policy;
 
-    const { questions } = this.props;
+    const { questions, summaryLedger } = this.props;
 
     const discountSurcharge = [
       {
+        discountSurcharge: 'Townhouse/Rowhouse',
+        value: _.get(property, 'townhouseRowhouse') ? 'No' : 'Yes'
+      }, {
         discountSurcharge: 'Property Ever Rented',
         value: _.get(underwritingAnswers, 'rented.answer') === 'Yes' ? 'Yes' : 'No'
       }, {
@@ -167,25 +179,27 @@ export class Coverage extends Component {
 
     const premium = [{
       premium: 'Current Premium',
-      value: `$ ${normalizeNumbers(_.get(rating, 'totalPremium'))}`
+      value: `$ ${normalizeNumbers(_.get(summaryLedger, 'currentPremium'))}`
     }, {
       premium: 'Initial Premium',
-      value: `$ ${normalizeNumbers(_.get(rating, 'netPremium'))}`
+      value: `$ ${normalizeNumbers(_.get(summaryLedger, 'initialPremium'))}`
+    },
+    {
+      premium: 'Balance Due',
+      value: `$ ${normalizeNumbers(_.get(summaryLedger, 'balance'))}`
     }];
 
     const billing = [
       {
-        coverage: 'Balance Due',
-        value: `$ ${normalizeNumbers(_.get(rating, 'totalPremium'))}`
-      }, {
         coverage: 'Next Payment',
-        value: `$ ${normalizeNumbers(_.get(rating, 'totalPremium'))}`
-      }, {
+        value: `$ ${normalizeNumbers(_.get(summaryLedger, 'noticeAmountDue'))}`
+      },
+      {
         coverage: 'Bill To',
-        value: _.get(this.props.policy, 'billToType')
+        value: _.get(summaryLedger, 'billToType')
       }, {
         coverage: 'Bill Plan',
-        value: _.get(this.props.policy, 'billPlan')
+        value: _.get(summaryLedger, 'billPlan')
       }
     ];
 
@@ -361,6 +375,7 @@ redux mapping
 ------------------------------------------------
 */
 const mapStateToProps = state => ({
+  summaryLedger: state.service.getSummaryLedger,
   tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'Coverage.values', {}),
@@ -372,6 +387,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     questionsActions: bindActionCreators(questionsActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
