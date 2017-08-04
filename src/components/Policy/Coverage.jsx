@@ -37,10 +37,7 @@ const handleGetPolicy = (state) => {
 // ];
 
 export const getPropertyAppraisialLink = (county, questions) => {
-  console.log(county);
   const answers = _.get(_.find(questions, { name: 'propertyAppraisal' }), 'answers') || [];
-  console.log(answers);
-
   return _.find(answers, { label: county }) || {};
 };
 

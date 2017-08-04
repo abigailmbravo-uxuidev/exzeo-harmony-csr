@@ -153,7 +153,7 @@ export const getAgencies = (companyCode, state) => (dispatch) => {
   });
 
   return axios(axiosConfig).then((response) => {
-    const data = { agencies: response.data.result };
+    const data = { agencies: response.data.result.sort() };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));
