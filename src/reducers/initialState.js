@@ -8,6 +8,7 @@ export default {
   service: {},
   appState: {
     data: {
+      showScheduleDateModal: false,
       submitting: false
     }
   },
