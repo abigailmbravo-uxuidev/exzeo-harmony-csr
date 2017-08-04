@@ -94,8 +94,19 @@
             flex-grow: 1;
             flex-shrink: 1;
             order: 0;
-            margin: 0 0 ($padding*2);
+            margin: 0;
             color: $warm-gray-08;
+          }
+
+          .error-message {
+              color: $red;
+              font-size: $font-size-sm;
+          }
+
+          &.error {
+              textarea {
+                  border-color: $red;
+              }
           }
         }
 
