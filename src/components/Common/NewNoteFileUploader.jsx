@@ -12,12 +12,12 @@ export const submitNote = (data, dispatch, props) => {
   const { user, noteType, documentId } = props;
   const noteData = {
     number: documentId,
-    noteType: noteType,
+    noteType,
     noteContent: data.noteContent,
     contactType: 'Agent',
     createdAt: new Date().getTime(),
     noteAttachments: [],
-    createdBy:{
+    createdBy: {
       useerId: user.user_id,
       userName: user.username
     },
@@ -38,7 +38,7 @@ export const minimzeButtonHandler = (props) => {
 
 export const validate = (values) => {
   const errors = {};
-  if (!values.noteContent) errors.noteContent = "Note Content Required";
+  if (!values.noteContent) errors.noteContent = 'Note Content Required';
   return errors;
 };
 
@@ -77,7 +77,7 @@ export const NewNoteFileUploader = (props, { closeButtonHandler }) => {
           <div className="content state-initial">
             <div className="flex-contents">
               <Field component="select" name="contactType" disabled={!contactTypes.length}>
-                { contactTypes.map(option => <option value={option} key={option}>{ option }</option>) }
+                { contactTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
               </Field>
               <Field name="noteContent" component={renderNotes} label="Note Content" />
             </div>
