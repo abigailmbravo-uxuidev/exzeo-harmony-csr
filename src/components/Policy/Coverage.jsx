@@ -387,7 +387,7 @@ redux mapping
 ------------------------------------------------
 */
 const mapStateToProps = state => ({
-  paymentOptions: state.service.paymentOptions,
+  paymentOptions: state.service.billingOptions,
   summaryLedger: state.service.getSummaryLedger,
   tasks: state.cg,
   appState: state.appState,
