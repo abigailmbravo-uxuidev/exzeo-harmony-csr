@@ -72,6 +72,9 @@ const handleInitialize = (state) => {
   values.ordinanceOrLaw = _.get(policy, 'coverageLimits.ordinanceOrLaw.amount');
   values.propertyIncidentalOccupanciesMainDwelling = false;
   values.propertyIncidentalOccupanciesOtherStructures = false;
+
+  values.liabilityIncidentalOccupancies = _.get(policy, 'coverageOptions.liabilityIncidentalOccupancies.answer');
+
   values.townhouseRowhouse = _.get(policy, 'property.townhouseRowhouse') ? 'Yes' : 'No';
   values.windExcluded = _.get(policy, 'rating.windMitigationDiscount') === 0 ? 'No' : 'Yes';
   values.propertyRented = _.get(policy, 'underwritingAnswers.rented.answer');
@@ -349,7 +352,7 @@ export class Endorsements extends React.Component {
                               label: '$2,500'
                             }
                           ]}
-                        />                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                        />                                                                                                                                                                                                                                                                                                                                                                                                                                   </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Hurricane Deductible'} styleName={''} name={'hurricane'} disabled />
                         <SelectField
@@ -422,6 +425,10 @@ export class Endorsements extends React.Component {
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Incidental Occ Other'} styleName={''} name={'propertyIncidentalOccupanciesOtherStructures'} disabled />
                         <TextField validations={['required']} label={''} styleName={''} name={'propertyIncidentalOccupanciesOtherStructuresNew'} />
+                      </div>
+                      <div className="form-group-double-element">
+                        <TextField validations={['required']} label={'Incidental Occ Liability'} styleName={''} name={'liabilityIncidentalOccupancies'} disabled />
+                        <CurrencyField name={'liabilityIncidentalOccupanciesNew'} label={''} styleName={''} disabled />
                       </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Townhouse / Rowhouse'} styleName={''} name={'townhouseRowhouse'} disabled />
@@ -981,7 +988,6 @@ export class Endorsements extends React.Component {
                         <TextField label={'Year Roof Built'} styleName={''} name="yearOfRoof" disabled />
                         <TextField styleName={''} label={''} name="yearOfRoofNew" />
                       </div>
-
                     </div>
                   </div>
                 </section>
