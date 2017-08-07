@@ -8,13 +8,37 @@ import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import { RadioFieldBilling, SelectFieldBilling } from '../Form/inputs';
 
-const handleInitialize = state => ({});
+const handleGetPolicy = (state) => {
+  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  if (!taskData) return {};
+  const quoteData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
+  return quoteData;
+};
+
+const handleInitialize = (state) => {
+  const policyData = handleGetPolicy(state);
+  const values = {};
+
+  values.billToId = _.get(policyData, 'billToId');
+  values.billToType = _.get(policyData, 'billToType');
+  values.billPlan = _.get(policyData, 'billPlan');
+
+  const paymentPlans = state.service.billingOptions;
+
+  if (paymentPlans && paymentPlans.options && paymentPlans.options.length === 1 && !values.billTo && !values.billPlan) {
+    values.billToId = _.get(paymentPlans.options[0], 'billToId');
+    values.billToType = _.get(paymentPlans.options[0], 'billToType');
+    values.billPlan = 'Annual';
+  }
+
+  return values;
+};
 
 export const selectBillPlan = (value, props) => {
-  const { paymentPlanResult, billToValue, dispatch } = props;
+  const { billingOptions, dispatch, fieldValues } = props;
 
-  const currentPaymentPlan = _.find(paymentPlanResult.options, ['billToId', billToValue]) ?
-    _.find(paymentPlanResult.options, ['billToId', billToValue]) : {};
+  const currentPaymentPlan = _.find(billingOptions.options, ['billToId', fieldValues.billToId]) ?
+    _.find(billingOptions.options, ['billToId', fieldValues.billToId]) : {};
 
   dispatch(change('BillingEditModal', 'billToId', currentPaymentPlan.billToId));
   dispatch(change('BillingEditModal', 'billToType', currentPaymentPlan.billToType));
@@ -22,13 +46,13 @@ export const selectBillPlan = (value, props) => {
 };
 
 export const selectBillTo = (props) => {
-  const { paymentPlanResult, billToValue, dispatch } = props;
-  const currentPaymentPlan = _.find(paymentPlanResult.options, ['billToId', billToValue]) ?
-    _.find(paymentPlanResult.options, ['billToId', billToValue]) : {};
+  const { billingOptions, fieldValues, dispatch } = props;
+  const currentPaymentPlan = _.find(billingOptions.options, ['billToId', fieldValues.billToId]) ?
+    _.find(billingOptions.options, ['billToId', fieldValues.billToId]) : {};
 
   dispatch(change('BillingEditModal', 'billToId', currentPaymentPlan.billToId));
   dispatch(change('BillingEditModal', 'billToType', currentPaymentPlan.billToType));
-  dispatch(change('BillingEditModal', 'billPlan', ''));
+  dispatch(change('BillingEditModal', 'billPlan', 'Annual'));
 };
 
 export const BillingEditModal = (props) => {

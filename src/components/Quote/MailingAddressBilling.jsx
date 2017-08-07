@@ -127,9 +127,9 @@ InstallmentTerm.propTypes = {
 const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
 
 export const selectBillTo = (props) => {
-  const { paymentPlanResult, billToValue, dispatch } = props;
-  const currentPaymentPlan = _.find(paymentPlanResult.options, ['billToId', billToValue]) ?
-    _.find(paymentPlanResult.options, ['billToId', billToValue]) : {};
+  const { paymentPlanResult, fieldValues, dispatch } = props;
+  const currentPaymentPlan = _.find(paymentPlanResult.options, ['billToId', fieldValues.billToId]) ?
+    _.find(paymentPlanResult.options, ['billToId', fieldValues.billToId]) : {};
 
   dispatch(change('MailingAddressBilling', 'billToId', currentPaymentPlan.billToId));
   dispatch(change('MailingAddressBilling', 'billToType', currentPaymentPlan.billToType));
@@ -177,10 +177,10 @@ export const clearForm = (props) => {
 };
 
 export const selectBillPlan = (value, props) => {
-  const { paymentPlanResult, billToValue, dispatch } = props;
+  const { paymentPlanResult, fieldValues, dispatch } = props;
 
-  const currentPaymentPlan = _.find(paymentPlanResult.options, ['billToId', billToValue]) ?
-    _.find(paymentPlanResult.options, ['billToId', billToValue]) : {};
+  const currentPaymentPlan = _.find(paymentPlanResult.options, ['billToId', fieldValues.billToId]) ?
+    _.find(paymentPlanResult.options, ['billToId', fieldValues.billToId]) : {};
 
   dispatch(change('MailingAddressBilling', 'billToId', currentPaymentPlan.billToId));
   dispatch(change('MailingAddressBilling', 'billToType', currentPaymentPlan.billToType));
@@ -295,7 +295,7 @@ export class MailingAddressBilling extends Component {
                         answers={paymentPlanResult.options}
                       />
 
-                    <div className="flex-child bill-plan">
+                      <div className="flex-child bill-plan">
 
                         <RadioFieldBilling
                           validations={['required']}
