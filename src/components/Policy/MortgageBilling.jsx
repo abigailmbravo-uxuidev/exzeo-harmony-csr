@@ -14,6 +14,7 @@ import ClearErrorConnect from '../Error/ClearError';
 import SelectField from '../Form/inputs/SelectField';
 import TextField from '../Form/inputs/TextField';
 import CurrencyField from '../Form/inputs/CurrencyField';
+import BillingModal from '../../components/Common/BillingEditModal';
 
 const payments = [];
 
@@ -69,6 +70,15 @@ const getPaymentDescription = (event, props) => {
           props.appState.instanceId, { ...props.appState.data, ranService: false, paymentDescription: selectedDescriptionType.paymentDescription, showDescription: true });
 };
 
+export const hideBillingModal = (props) => {
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data, showBillingEditModal: false });
+};
+
+export const handleBillingFormSubmit = (data, dispatch, props) => {
+
+};
+
 export class MortgageBilling extends Component {
 
   componentWillMount = () => {
@@ -83,6 +93,19 @@ export class MortgageBilling extends Component {
         isLoded = true;
         this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
         this.props.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
+
+        const paymentOptions = {
+          effectiveDate: nextProps.policy.effectiveDate,
+          policyHolders: nextProps.policy.policyHolders,
+          additionalInterests: nextProps.policy.additionalInterests,
+          netPremium: nextProps.policy.rating.netPremium,
+          fees: {
+            empTrustFee: nextProps.policy.rating.worksheet.fees.empTrustFee,
+            mgaPolicyFee: nextProps.policy.rating.worksheet.fees.mgaPolicyFee
+          },
+          totalPremium: nextProps.policy.rating.totalPremium
+        };
+        this.props.actions.serviceActions.getBillingOptions(paymentOptions);
         this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
           this.props.appState.instanceId, { ...this.props.appState.data, ranService: true });
       }
@@ -110,6 +133,13 @@ export class MortgageBilling extends Component {
 
     this.clearForm();
   };
+
+  handleBillingEdit = () => {
+    const workflowId = this.props.appState.instanceId;
+    this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+      workflowId, { ...this.props.appState.data, showBillingEditModal: true });
+  };
+
 
   clearForm = () => {
     const { dispatch } = this.props;
@@ -152,6 +182,7 @@ export class MortgageBilling extends Component {
             <div className="form-group survey-wrapper" role="group">
               <section className="payment-summary">
                 <h3>Billing</h3>
+                <button onClick={this.handleBillingEdit}>Edit</button>
                 <div className="payment-summary">
                   <dl>
                     <div>
@@ -275,6 +306,8 @@ export class MortgageBilling extends Component {
             </div>
           </div>
         </div>
+        { this.props.appState.data.showBillingEditModal && <BillingModal policy={this.props.policy} billingOptions={this.props.billingOptions} handleBillingFormSubmit={handleBillingFormSubmit} hideBillingModal={() => hideBillingModal(this.props)} /> }
+
       </PolicyConnect>
     );
   }
@@ -297,7 +330,8 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   paymentHistory: state.service.paymentHistory,
-  paymentOptions: state.service.paymentOptions
+  paymentOptions: state.service.paymentOptions,
+  billingOptions: state.service.billingOptions
 });
 
 const mapDispatchToProps = dispatch => ({

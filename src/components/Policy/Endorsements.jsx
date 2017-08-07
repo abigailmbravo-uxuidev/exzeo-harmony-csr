@@ -383,7 +383,7 @@ export class Endorsements extends React.Component {
                               label: '$2,500'
                             }
                           ]}
-                        />                                                                                                                                                                                                                                                                                                                                                                                         </div>
+                        />                                                                                                                                                                                                                                                                                                                                                                                           </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Hurricane Deductible'} styleName={''} name={'hurricane'} disabled />
                         <SelectField
@@ -565,28 +565,6 @@ export class Endorsements extends React.Component {
                             ]}
                           />
                         </div>
-                      </div>
-                      <div className="form-group-double-element">
-                        <TextField validations={['required']} label={'Bill To'} styleName={''} name={'billToType'} disabled />
-                        <TextField validations={['required']} label={''} styleName={''} name={'billToTypeNew'} />
-                      </div>
-                      <div className="form-group-double-element">
-                        <TextField validations={['required']} label={'Bill Plan'} styleName={''} name={'billPlan'} disabled />
-                        <SelectField
-                          name="billPlanNew" component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
-                            {
-                              answer: 'ANNUAL',
-                              label: 'Annual'
-                            }, {
-                              answer: 'SEMI-ANNUAL',
-                              label: 'Semi-Annual'
-                            },
-                            {
-                              answer: 'QUARTERLY',
-                              label: 'Quarterly'
-                            }
-                          ]}
-                        />
                       </div>
                     </div>
                   </div>
