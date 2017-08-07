@@ -89,10 +89,10 @@ export class MortgageBilling extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     if (!_.isEqual(this.props, nextProps)) {
-      if (nextProps.policy.policyNumber && !isLoded) {
+      if (nextProps.policy && nextProps.policy.policyNumber && !isLoded) {
         isLoded = true;
-        this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
-        this.props.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
+        nextProps.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
+        nextProps.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
 
         const paymentOptions = {
           effectiveDate: nextProps.policy.effectiveDate,
@@ -105,9 +105,9 @@ export class MortgageBilling extends Component {
           },
           totalPremium: nextProps.policy.rating.totalPremium
         };
-        this.props.actions.serviceActions.getBillingOptions(paymentOptions);
-        this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-          this.props.appState.instanceId, { ...this.props.appState.data, ranService: true });
+        nextProps.actions.serviceActions.getBillingOptions(paymentOptions);
+        nextProps.actions.appStateActions.setAppState(nextProps.appState.modelName,
+          nextProps.appState.instanceId, { ...nextProps.appState.data, ranService: true });
       }
     }
   }
