@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import { Link } from 'react-router-dom';
 import { reduxForm, propTypes, change } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as cgActions from '../../actions/cgActions';
@@ -231,8 +232,7 @@ export class Endorsements extends React.Component {
               <a href="#home" className="btn btn-primary btn-xs">Home / Location</a>
               <a href="#policy" className="btn btn-primary btn-xs">Policyholders</a>
               <a href="#addresses" className="btn btn-primary btn-xs">Addresses</a>
-              <a className="btn btn-secondary btn-xs" onClick={() => this.cancelFormSubmit()}>Cancel</a>
-
+              <Link className="btn btn-secondary btn-xs" to={'/policy/coverage'} >Cancel</Link>
             </div>
             <div className="scroll endorsements">
               <div className="form-group survey-wrapper" role="group">
@@ -383,7 +383,7 @@ export class Endorsements extends React.Component {
                               label: '$2,500'
                             }
                           ]}
-                        />                                                                                                                                                                                                                                                                                                                                                                                             </div>
+                        />                                                                                                                                                                                                                                                                                                                                                                                                   </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Hurricane Deductible'} styleName={''} name={'hurricane'} disabled />
                         <SelectField
@@ -1138,7 +1138,7 @@ export class Endorsements extends React.Component {
                   <input type="numeric" onChange={function () {}} value="" />
                 </div>
                 <div className="btn-footer">
-                  <button className="btn btn-secondary btn-sm" onClick={() => this.cancelFormSubmit()}>Cancel</button>
+                  <Link className="btn btn-secondary btn-sm" to={'/policy/coverage'} >Cancel</Link>
                   <button className="btn btn-primary btn-sm">Calculate</button>
                 </div>
               </div>
