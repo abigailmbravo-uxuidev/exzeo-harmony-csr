@@ -34,115 +34,116 @@ const calculatePercentage = (oldFigure, newFigure) => {
 };
 
 const handleInitialize = (state) => {
-  const quoteData = handleGetPolicy(state);
+  const policy = handleGetPolicy(state);
   const values = {};
-  // values.agencyCode = '20000'; // _.get(quoteData, 'agencyCode');
-  // values.agentCode = '60000'; // _.get(quoteData, 'agentCode');
-  // values.effectiveDate = moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD');
-  // values.dwellingMin = _.get(quoteData, 'coverageLimits.dwelling.minAmount');
-  // values.dwellingMax = _.get(quoteData, 'coverageLimits.dwelling.maxAmount');
+  // values.agencyCode = '20000'; // _.get(policy, 'agencyCode');
+  // values.agentCode = '60000'; // _.get(policy, 'agentCode');
+  // values.effectiveDate = moment.utc(_.get(policy, 'effectiveDate')).format('YYYY-MM-DD');
+  // values.dwellingMin = _.get(policy, 'coverageLimits.dwelling.minAmount');
+  // values.dwellingMax = _.get(policy, 'coverageLimits.dwelling.maxAmount');
   // values.liabilityIncidentalOccupancies = false;
 
-  const dwelling = _.get(quoteData, 'coverageLimits.dwelling.amount');
-  const otherStructures = _.get(quoteData, 'coverageLimits.otherStructures.amount');
-  const personalProperty = _.get(quoteData, 'coverageLimits.personalProperty.amount');
-  const hurricane = _.get(quoteData, 'deductibles.hurricane.amount');
+  const dwelling = _.get(policy, 'coverageLimits.dwelling.amount');
+  const otherStructures = _.get(policy, 'coverageLimits.otherStructures.amount');
+  const personalProperty = _.get(policy, 'coverageLimits.personalProperty.amount');
+  const hurricane = _.get(policy, 'deductibles.hurricane.amount');
 
 // Coverage Top Left
-  values.dwellingAmount = _.get(quoteData, 'coverageLimits.dwelling.amount');
+  values.dwellingAmount = _.get(policy, 'coverageLimits.dwelling.amount');
   values.otherStructuresAmount = otherStructures;
   values.otherStructures = String(calculatePercentage(otherStructures, dwelling));
   values.personalPropertyAmount = String(personalProperty);
   values.personalProperty = String(calculatePercentage(personalProperty, dwelling));
-  values.lossOfUse = _.get(quoteData, 'coverageLimits.lossOfUse.amount');
-  values.personalLiability = _.get(quoteData, 'coverageLimits.personalLiability.amount');
-  values.medicalPayments = _.get(quoteData, 'coverageLimits.medicalPayments.amount');
+  values.lossOfUse = _.get(policy, 'coverageLimits.lossOfUse.amount');
+  values.personalLiability = _.get(policy, 'coverageLimits.personalLiability.amount');
+  values.medicalPayments = _.get(policy, 'coverageLimits.medicalPayments.amount');
 
-  values.medicalPaymentsNew = _.get(quoteData, 'coverageLimits.medicalPayments.amount');
+  values.medicalPaymentsNew = _.get(policy, 'coverageLimits.medicalPayments.amount');
 
-  values.moldProperty = _.get(quoteData, 'coverageLimits.moldProperty.amount');
-  values.moldLiability = _.get(quoteData, 'coverageLimits.moldLiability.amount');
-  values.allOtherPerils = _.get(quoteData, 'deductibles.allOtherPerils.amount');
+  values.moldProperty = _.get(policy, 'coverageLimits.moldProperty.amount');
+  values.moldLiability = _.get(policy, 'coverageLimits.moldLiability.amount');
+  values.allOtherPerils = _.get(policy, 'deductibles.allOtherPerils.amount');
   values.hurricane = hurricane;
-  values.calculatedHurricane = _.get(quoteData, 'deductibles.hurricane.calculatedAmount');
-  values.sinkholePerilCoverage = _.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer');
+  values.calculatedHurricane = _.get(policy, 'deductibles.hurricane.calculatedAmount');
+  values.sinkholePerilCoverage = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer');
 
 // Coverage Top Right
-  values.personalPropertyReplacementCostCoverage = _.get(quoteData, 'coverageOptions.personalPropertyReplacementCost.answer');
-  values.ordinanceOrLaw = _.get(quoteData, 'coverageLimits.ordinanceOrLaw.amount');
+  values.personalPropertyReplacementCostCoverage = _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer');
+  values.ordinanceOrLaw = _.get(policy, 'coverageLimits.ordinanceOrLaw.amount');
   values.propertyIncidentalOccupanciesMainDwelling = false;
   values.propertyIncidentalOccupanciesOtherStructures = false;
-  values.windExcluded = _.get(quoteData, 'rating.windMitigationDiscount') === 0 ? 'No' : 'Yes';
-  values.propertyRented = _.get(quoteData, 'underwritingAnswers.rented.answer');
-  values.seasonallyOccupied = _.get(quoteData, 'underwritingAnswers.monthsOccupied.answer');
-  values.noPriorInsurance = _.get(quoteData, 'underwritingAnswers.noPriorInsuranceSurcharge.answer');
-  values.burglarAlarm = _.get(quoteData, 'property.burglarAlarm');
-  values.fireAlarm = _.get(quoteData, 'property.fireAlarm');
-  values.sprinkler = _.get(quoteData, 'property.sprinkler');
-  values.billToType = _.get(quoteData, 'billToType');
-  values.billPlan = _.get(quoteData, 'billPlan');
+  values.townhouseRowhouse = _.get(policy, 'property.townhouseRowhouse') ? 'Yes' : 'No';
+  values.windExcluded = _.get(policy, 'rating.windMitigationDiscount') === 0 ? 'No' : 'Yes';
+  values.propertyRented = _.get(policy, 'underwritingAnswers.rented.answer');
+  values.seasonallyOccupied = _.get(policy, 'underwritingAnswers.monthsOccupied.answer');
+  values.noPriorInsurance = _.get(policy, 'underwritingAnswers.noPriorInsuranceSurcharge.answer');
+  values.burglarAlarm = _.get(policy, 'property.burglarAlarm');
+  values.fireAlarm = _.get(policy, 'property.fireAlarm');
+  values.sprinkler = _.get(policy, 'property.sprinkler');
+  values.billToType = _.get(policy, 'billToType');
+  values.billPlan = _.get(policy, 'billPlan');
 
 // Coverage Mid Left
-  values.roofCovering = _.get(quoteData, 'property.windMitigation.roofCovering');
-  values.roofDeckAttachment = _.get(quoteData, 'property.windMitigation.roofDeckAttachment');
-  values.roofToWallConnection = _.get(quoteData, 'property.windMitigation.roofToWallConnection');
-  values.roofGeometry = _.get(quoteData, 'property.windMitigation.roofGeometry');
-  values.secondaryWaterResistance = _.get(quoteData, 'property.windMitigation.secondaryWaterResistance');
-  values.openingProtection = _.get(quoteData, 'property.windMitigation.openingProtection');
+  values.roofCovering = _.get(policy, 'property.windMitigation.roofCovering');
+  values.roofDeckAttachment = _.get(policy, 'property.windMitigation.roofDeckAttachment');
+  values.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
+  values.roofGeometry = _.get(policy, 'property.windMitigation.roofGeometry');
+  values.secondaryWaterResistance = _.get(policy, 'property.windMitigation.secondaryWaterResistance');
+  values.openingProtection = _.get(policy, 'property.windMitigation.openingProtection');
 
 // Coverage Mid Right
-  values.floridaBuildingCodeWindSpeed = _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeed');
-  values.floridaBuildingCodeWindSpeedDesign = _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign');
-  values.terrain = _.get(quoteData, 'property.windMitigation.terrain');
-  values.internalPressureDesign = _.get(quoteData, 'property.windMitigation.internalPressureDesign');
-  values.windBorneDebrisRegion = _.get(quoteData, 'property.windMitigation.windBorneDebrisRegion');
-  values.windMitFactor = _.get(quoteData, 'rating.windMitigationDiscount');
+  values.floridaBuildingCodeWindSpeed = _.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeed');
+  values.floridaBuildingCodeWindSpeedDesign = _.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign');
+  values.terrain = _.get(policy, 'property.windMitigation.terrain');
+  values.internalPressureDesign = _.get(policy, 'property.windMitigation.internalPressureDesign');
+  values.windBorneDebrisRegion = _.get(policy, 'property.windMitigation.windBorneDebrisRegion');
+  values.windMitFactor = _.get(policy, 'rating.windMitigationDiscount');
 
 // Home/Location Bottom Left
-  values.yearBuilt = _.get(quoteData, 'property.yearBuilt');
-  values.constructionType = _.get(quoteData, 'property.constructionType');
-  values.yearOfRoof = _.get(quoteData, 'property.yearOfRoof');
-  values.protectionClass = _.get(quoteData, 'property.protectionClass');
-  values.buildingCodeEffectivenessGrading = _.get(quoteData, 'property.buildingCodeEffectivenessGrading');
-  values.familyUnits = _.get(quoteData, 'property.familyUnits');
+  values.yearBuilt = _.get(policy, 'property.yearBuilt');
+  values.constructionType = _.get(policy, 'property.constructionType');
+  values.yearOfRoof = _.get(policy, 'property.yearOfRoof');
+  values.protectionClass = _.get(policy, 'property.protectionClass');
+  values.buildingCodeEffectivenessGrading = _.get(policy, 'property.buildingCodeEffectivenessGrading');
+  values.familyUnits = _.get(policy, 'property.familyUnits');
 
 // Home/Location Bottom Right
-  values.distanceToTidalWater = _.get(quoteData, 'property.distanceToTidalWater');
-  values.distanceToFireHydrant = _.get(quoteData, 'property.distanceToFireHydrant');
-  values.distanceToFireStation = _.get(quoteData, 'property.distanceToFireStation');
-  values.residenceType = _.get(quoteData, 'property.residenceType');
-  values.squareFeet = _.get(quoteData, 'property.squareFeet');
-  values.floodZone = _.get(quoteData, 'property.floodZone');
+  values.distanceToTidalWater = _.get(policy, 'property.distanceToTidalWater');
+  values.distanceToFireHydrant = _.get(policy, 'property.distanceToFireHydrant');
+  values.distanceToFireStation = _.get(policy, 'property.distanceToFireStation');
+  values.residenceType = _.get(policy, 'property.residenceType');
+  values.squareFeet = _.get(policy, 'property.squareFeet');
+  values.floodZone = _.get(policy, 'property.floodZone');
 
 // Policyholder 1
-  values.pH1email = _.get(quoteData, 'policyHolders[0].emailAddress');
-  values.pH1FirstName = _.get(quoteData, 'policyHolders[0].firstName');
-  values.pH1LastName = _.get(quoteData, 'policyHolders[0].lastName');
-  values.pH1phone = normalizePhone(_.get(quoteData, 'policyHolders[0].primaryPhoneNumber') || '');
-  values.pH1secondaryPhone = normalizePhone(_.get(quoteData, 'policyHolders[0].secondaryPhoneNumber') || '');
+  values.pH1email = _.get(policy, 'policyHolders[0].emailAddress');
+  values.pH1FirstName = _.get(policy, 'policyHolders[0].firstName');
+  values.pH1LastName = _.get(policy, 'policyHolders[0].lastName');
+  values.pH1phone = normalizePhone(_.get(policy, 'policyHolders[0].primaryPhoneNumber') || '');
+  values.pH1secondaryPhone = normalizePhone(_.get(policy, 'policyHolders[0].secondaryPhoneNumber') || '');
 
 // Policyholder 2
-  values.pH2email = _.get(quoteData, 'policyHolders[1].emailAddress');
-  values.pH2FirstName = _.get(quoteData, 'policyHolders[1].firstName');
-  values.pH2LastName = _.get(quoteData, 'policyHolders[1].lastName');
-  values.pH2phone = normalizePhone(_.get(quoteData, 'policyHolders[1].primaryPhoneNumber') || '');
-  values.pH2secondaryPhone = normalizePhone(_.get(quoteData, 'policyHolders[1].secondaryPhoneNumber') || '');
+  values.pH2email = _.get(policy, 'policyHolders[1].emailAddress');
+  values.pH2FirstName = _.get(policy, 'policyHolders[1].firstName');
+  values.pH2LastName = _.get(policy, 'policyHolders[1].lastName');
+  values.pH2phone = normalizePhone(_.get(policy, 'policyHolders[1].primaryPhoneNumber') || '');
+  values.pH2secondaryPhone = normalizePhone(_.get(policy, 'policyHolders[1].secondaryPhoneNumber') || '');
 
   // Mailing/Billing
-  values.address1 = _.get(quoteData, 'policyHolderMailingAddress.address1');
-  values.address2 = _.get(quoteData, 'policyHolderMailingAddress.address2');
-  values.city = _.get(quoteData, 'policyHolderMailingAddress.city');
-  values.state = _.get(quoteData, 'policyHolderMailingAddress.state');
-  values.zip = _.get(quoteData, 'policyHolderMailingAddress.zip');
+  values.address1 = _.get(policy, 'policyHolderMailingAddress.address1');
+  values.address2 = _.get(policy, 'policyHolderMailingAddress.address2');
+  values.city = _.get(policy, 'policyHolderMailingAddress.city');
+  values.state = _.get(policy, 'policyHolderMailingAddress.state');
+  values.zip = _.get(policy, 'policyHolderMailingAddress.zip');
 
 // Property
-  values.propertyAddress1 = _.get(quoteData, 'property.physicalAddress.address1');
-  values.propertyAddress2 = _.get(quoteData, 'property.physicalAddress.address2');
-  values.propertyCity = _.get(quoteData, 'property.physicalAddress.city');
-  values.propertyState = _.get(quoteData, 'property.physicalAddress.state');
-  values.propertyZip = _.get(quoteData, 'property.physicalAddress.zip');
+  values.propertyAddress1 = _.get(policy, 'property.physicalAddress.address1');
+  values.propertyAddress2 = _.get(policy, 'property.physicalAddress.address2');
+  values.propertyCity = _.get(policy, 'property.physicalAddress.city');
+  values.propertyState = _.get(policy, 'property.physicalAddress.state');
+  values.propertyZip = _.get(policy, 'property.physicalAddress.zip');
 
-  values.uwExceptions = _.get(quoteData, 'underwritingExceptions');
+  values.uwExceptions = _.get(policy, 'underwritingExceptions');
 
   return values;
 };
@@ -177,41 +178,6 @@ const updateDependencies = (event, field, dependency, props) => {
 // ];
 
 export class Endorsements extends React.Component {
-
-  cancelFormSubmit = () => {
-    const { appState, actions } = this.props;
-
-    const workflowId = appState.instanceId;
-
-    actions.appStateActions.setAppState(
-      appState.modelName,
-      appState.instanceId,
-      {
-        ...appState.data,
-        submitting: true
-      });
-
-    const steps = [
-    { name: 'hasUserEnteredData', data: { answer: 'No' } },
-      {
-        name: 'moveTo',
-        data: { key: 'coverage' }
-      }
-    ];
-    actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
-  .then(() => {
-    actions.appStateActions.setAppState(
-      appState.modelName,
-      appState.instanceId,
-      {
-        ...appState.data,
-        selectedLink: 'coverage',
-        activateRedirectLink: '/policy/coverage',
-        activateRedirect: true,
-        submitting: false
-      });
-  });
-  }
 
   render() {
     const endorsements = [
@@ -383,7 +349,7 @@ export class Endorsements extends React.Component {
                               label: '$2,500'
                             }
                           ]}
-                        />                                                                                                                                                                                                                                                                                                                                                                                                   </div>
+                        />                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
                       <div className="form-group-double-element">
                         <TextField validations={['required']} label={'Hurricane Deductible'} styleName={''} name={'hurricane'} disabled />
                         <SelectField
@@ -458,10 +424,10 @@ export class Endorsements extends React.Component {
                         <TextField validations={['required']} label={''} styleName={''} name={'propertyIncidentalOccupanciesOtherStructuresNew'} />
                       </div>
                       <div className="form-group-double-element">
-                        <TextField validations={['required']} label={'Townhouse / Rowhouse'} styleName={''} name={'townHouseRoadHouse'} disabled />
+                        <TextField validations={['required']} label={'Townhouse / Rowhouse'} styleName={''} name={'townhouseRowhouse'} disabled />
                         <div className="flex-child">
                           <RadioField
-                            name={'townHouseRoadHouseNew'} styleName={''} label={''} onChange={function () {}} segmented answers={[
+                            name={'townhouseRowhouseNew'} styleName={''} label={''} onChange={function () {}} segmented answers={[
                               {
                                 answer: false,
                                 label: 'No'
@@ -1148,9 +1114,6 @@ export class Endorsements extends React.Component {
             <h4 className="uw-validation-header">Underwriting Validation</h4>
           </aside>
         </div>
-        <div className="btn-footer">
-          <Footer />
-        </div>
       </PolicyConnect>
     );
   }
@@ -1181,8 +1144,8 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'Endorsements.values', {}),
-  initialValues: handleInitialize(state)
-  // policy: handleGetPolicy(state)
+  initialValues: handleInitialize(state),
+  policy: handleGetPolicy(state)
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -1192,7 +1155,7 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Endorsements' })(Endorsements));
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Endorsements', enableReinitialize: true })(Endorsements));
 
 
   // const discountSurcharge = [
