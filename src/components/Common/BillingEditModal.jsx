@@ -35,6 +35,7 @@ const handleInitialize = (state) => {
 };
 
 export const selectBillPlan = (value, props) => {
+  console.log(value);
   const { billingOptions, dispatch, fieldValues } = props;
 
   const currentPaymentPlan = _.find(billingOptions.options, ['billToId', fieldValues.billToId]) ?
@@ -45,10 +46,10 @@ export const selectBillPlan = (value, props) => {
   dispatch(change('BillingEditModal', 'billPlan', value));
 };
 
-export const selectBillTo = (props) => {
-  const { billingOptions, fieldValues, dispatch } = props;
-  const currentPaymentPlan = _.find(billingOptions.options, ['billToId', fieldValues.billToId]) ?
-    _.find(billingOptions.options, ['billToId', fieldValues.billToId]) : {};
+export const selectBillTo = (event, props) => {
+  const { billingOptions, dispatch } = props;
+  const currentPaymentPlan = _.find(billingOptions.options, ['billToId', event.target.value]) ?
+    _.find(billingOptions.options, ['billToId', event.target.value]) : {};
 
   dispatch(change('BillingEditModal', 'billToId', currentPaymentPlan.billToId));
   dispatch(change('BillingEditModal', 'billToType', currentPaymentPlan.billToType));
@@ -56,9 +57,9 @@ export const selectBillTo = (props) => {
 };
 
 export const BillingEditModal = (props) => {
-  const { appState, handleSubmit, verify, hideBillingModal, billingOptions } = props;
+  const { appState, handleSubmit, handleBillingFormSubmit, hideBillingModal, billingOptions } = props;
   return (<div className="modal" style={{ flexDirection: 'row' }}>
-    <Form id="BillingEditModal" className="AdditionalInterestModal" noValidate onSubmit={handleSubmit(verify)}>
+    <Form id="BillingEditModal" className="BillingEditModal" noValidate onSubmit={handleSubmit(handleBillingFormSubmit)}>
       <div className="card">
         <div className="card-header">
           <h4><i className={'fa fa-circle Billing'} /> Edit Billing</h4>
@@ -71,7 +72,7 @@ export const BillingEditModal = (props) => {
                 name="billToId"
                 component="select"
                 label="Bill To"
-                onChange={() => selectBillTo(this.props)}
+                onChange={() => selectBillTo(props)}
                 validations={['required']}
                 answers={billingOptions.options}
               />
@@ -82,11 +83,11 @@ export const BillingEditModal = (props) => {
                   validations={['required']}
                   name={'billPlan'}
                   label={'Bill Plan'}
-                  onChange={value => selectBillPlan(value, this.props)}
+                  onChange={value => selectBillPlan(value, props)}
                   validate={[value => (value ? undefined : 'Field Required')]}
                   segmented
-                  answers={_.find(billingOptions.options, ['billToId', this.props.billToValue]) ?
-                         _.find(billingOptions.options, ['billToId', this.props.billToValue]).payPlans : []}
+                  answers={_.find(billingOptions.options, ['billToId', props.fieldValues.billToId]) ?
+                         _.find(billingOptions.options, ['billToId', props.fieldValues.billToId]).payPlans : []}
                   paymentPlans={billingOptions.paymentPlans}
                 />
               </div>
@@ -122,7 +123,9 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   selectedAI: state.appState.data.selectedAI,
-  initialValues: handleInitialize(state)
+  initialValues: handleInitialize(state),
+  policy: handleGetPolicy(state),
+  fieldValues: _.get(state.form, 'BillingEditModal.values', {})
 });
 
 const mapDispatchToProps = dispatch => ({
