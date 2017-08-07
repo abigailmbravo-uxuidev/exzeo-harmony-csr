@@ -47,7 +47,7 @@
           flex-basis: 9rem;
           flex-grow: 0;
           flex-shrink: 0;
-          margin-right: 0;
+          margin-right: $padding;
 
           select {
             width: 100%;
@@ -82,9 +82,31 @@
           flex-basis: 10rem;
           flex-grow: 0;
           flex-shrink: 0;
+          margin-right: $padding;
         }
 
         &.quote-no-search {
+          flex-basis: 10rem;
+          flex-grow: 0;
+          flex-shrink: 0;
+          margin-right: $padding;
+        }
+
+        &.record-no-search {
+          flex-basis: 10rem;
+          flex-grow: 0;
+          flex-shrink: 0;
+          margin-right: $padding;
+        }
+
+        &.claim-no-search {
+          flex-basis: 10rem;
+          flex-grow: 0;
+          flex-shrink: 0;
+          margin-right: $padding;
+        }
+
+        &.source-no-search {
           flex-basis: 10rem;
           flex-grow: 0;
           flex-shrink: 0;
@@ -97,6 +119,7 @@
           flex-shrink: 0;
           margin-right: $padding;
         }
+
 
         label {
           margin-bottom: $padding/4;
@@ -132,7 +155,6 @@
         line-height: 1;
 
         &.multi-input {
-          margin-left: $padding;
           border-top-left-radius: 0.25rem;
           border-bottom-left-radius: 0.25rem;
         }

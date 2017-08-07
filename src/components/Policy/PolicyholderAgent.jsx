@@ -40,8 +40,8 @@ policyHolderMailingAddress
 
     let selectedAgent;
 
-    if (agents && agents.length > 0 && policy && policy.agencyCode) {
-      selectedAgent = _.find(agents, a => a.agencyCode === policy.agencyCode);
+    if (agents && agents.length > 0 && policy && policy.agentCode) {
+      selectedAgent = _.find(agents, a => a.agentCode === policy.agentCode);
     }
 
     return (

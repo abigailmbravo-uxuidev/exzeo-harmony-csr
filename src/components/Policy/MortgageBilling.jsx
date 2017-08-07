@@ -275,9 +275,19 @@ export class MortgageBilling extends Component {
                 </Form>
               </section>
 
+
               <section className="additional-interests">
                 <h3>Additional Interests</h3>
+
                 <div className="results-wrapper">
+
+                  <div className="button-group">
+                    <button className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
+                    <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
+                    <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
+                    { /* <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => this.addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button> */ }
+                    <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
+                  </div>
                   <ul className="results result-cards">
                     {additionalInterests && _.sortBy(additionalInterests, ['rank', 'type']).map((ai, index) =>
                       <li key={index}>
