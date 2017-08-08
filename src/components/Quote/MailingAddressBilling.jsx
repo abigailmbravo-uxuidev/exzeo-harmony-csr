@@ -42,9 +42,6 @@ const handleInitialize = (state) => {
   values.state = _.get(quoteData, 'policyHolderMailingAddress.state');
   values.zip = _.get(quoteData, 'policyHolderMailingAddress.zip');
 
-  values.billToId = _.get(quoteData, 'billToId');
-  values.billToType = _.get(quoteData, 'billToType');
-  values.billPlan = _.get(quoteData, 'billPlan');
   values.sameAsProperty = false;
 
   if (_.isEqual(_.get(quoteData, 'policyHolderMailingAddress.address1'), _.get(quoteData, 'property.physicalAddress.address1')) &&
@@ -55,11 +52,16 @@ _.isEqual(_.get(quoteData, 'policyHolderMailingAddress.zip'), _.get(quoteData, '
   }
 
   const paymentPlans = handleGetPaymentPlans(state);
+  const selectedBilling = _.find(paymentPlans.options, ['billToId', _.get(quoteData, 'billToId')]);
 
-  if (paymentPlans && paymentPlans.options && paymentPlans.options.length === 1 && !values.billTo && !values.billPlan) {
+  if (paymentPlans && paymentPlans.options && paymentPlans.options.length === 1 && !_.get(quoteData, 'billToId') && !_.get(quoteData, 'billPlan')) {
     values.billToId = _.get(paymentPlans.options[0], 'billToId');
     values.billToType = _.get(paymentPlans.options[0], 'billToType');
     values.billPlan = 'Annual';
+  } else if (selectedBilling) {
+    values.billToId = selectedBilling.billToId;
+    values.billToType = selectedBilling.billToType;
+    values.billPlan = _.get(quoteData, 'billPlan') || '';
   }
 
   return values;
