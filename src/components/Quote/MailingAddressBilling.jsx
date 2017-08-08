@@ -42,7 +42,6 @@ const handleInitialize = (state) => {
   values.state = _.get(quoteData, 'policyHolderMailingAddress.state');
   values.zip = _.get(quoteData, 'policyHolderMailingAddress.zip');
 
-  values.billTo = _.get(quoteData, 'billToId');
   values.billToId = _.get(quoteData, 'billToId');
   values.billToType = _.get(quoteData, 'billToType');
   values.billPlan = _.get(quoteData, 'billPlan');
@@ -58,7 +57,6 @@ _.isEqual(_.get(quoteData, 'policyHolderMailingAddress.zip'), _.get(quoteData, '
   const paymentPlans = handleGetPaymentPlans(state);
 
   if (paymentPlans && paymentPlans.options && paymentPlans.options.length === 1 && !values.billTo && !values.billPlan) {
-    values.billTo = _.get(paymentPlans.options[0], 'billToId');
     values.billToId = _.get(paymentPlans.options[0], 'billToId');
     values.billToType = _.get(paymentPlans.options[0], 'billToType');
     values.billPlan = 'Annual';
@@ -129,13 +127,13 @@ InstallmentTerm.propTypes = {
 const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
 
 export const selectBillTo = (props) => {
-  const { paymentPlanResult, billToValue, dispatch } = props;
-  const currentPaymentPlan = _.find(paymentPlanResult.options, ['billToId', billToValue]) ?
-    _.find(paymentPlanResult.options, ['billToId', billToValue]) : {};
+  const { paymentPlanResult, fieldValues, dispatch } = props;
+  const currentPaymentPlan = _.find(paymentPlanResult.options, ['billToId', fieldValues.billToId]) ?
+    _.find(paymentPlanResult.options, ['billToId', fieldValues.billToId]) : {};
 
   dispatch(change('MailingAddressBilling', 'billToId', currentPaymentPlan.billToId));
   dispatch(change('MailingAddressBilling', 'billToType', currentPaymentPlan.billToType));
-  dispatch(change('MailingAddressBilling', 'billPlan', ''));
+  dispatch(change('MailingAddressBilling', 'billPlan', 'Annual'));
 };
 
 export const handleFormSubmit = (data, dispatch, props) => {
@@ -179,10 +177,10 @@ export const clearForm = (props) => {
 };
 
 export const selectBillPlan = (value, props) => {
-  const { paymentPlanResult, billToValue, dispatch } = props;
+  const { paymentPlanResult, fieldValues, dispatch } = props;
 
-  const currentPaymentPlan = _.find(paymentPlanResult.options, ['billToId', billToValue]) ?
-    _.find(paymentPlanResult.options, ['billToId', billToValue]) : {};
+  const currentPaymentPlan = _.find(paymentPlanResult.options, ['billToId', fieldValues.billToId]) ?
+    _.find(paymentPlanResult.options, ['billToId', fieldValues.billToId]) : {};
 
   dispatch(change('MailingAddressBilling', 'billToId', currentPaymentPlan.billToId));
   dispatch(change('MailingAddressBilling', 'billToType', currentPaymentPlan.billToType));
@@ -289,7 +287,7 @@ export class MailingAddressBilling extends Component {
                     <div className="flex-child">
 
                       <SelectFieldBilling
-                        name="billTo"
+                        name="billToId"
                         component="select"
                         label="Bill To"
                         onChange={() => selectBillTo(this.props)}
@@ -297,7 +295,7 @@ export class MailingAddressBilling extends Component {
                         answers={paymentPlanResult.options}
                       />
 
-                    <div className="flex-child bill-plan">
+                      <div className="flex-child bill-plan">
 
                         <RadioFieldBilling
                           validations={['required']}
@@ -306,8 +304,8 @@ export class MailingAddressBilling extends Component {
                           onChange={value => selectBillPlan(value, this.props)}
                           validate={[value => (value ? undefined : 'Field Required')]}
                           segmented
-                          answers={_.find(paymentPlanResult.options, ['billToId', this.props.billToValue]) ?
-                         _.find(paymentPlanResult.options, ['billToId', this.props.billToValue]).payPlans : []}
+                          answers={_.find(paymentPlanResult.options, ['billToId', this.props.fieldValues.billToId]) ?
+                         _.find(paymentPlanResult.options, ['billToId', this.props.fieldValues.billToId]).payPlans : []}
                           paymentPlans={paymentPlanResult.paymentPlans}
                         />
                       </div>
@@ -317,8 +315,8 @@ export class MailingAddressBilling extends Component {
                   <div className="flex-parent">
                     <div className="flex-child">
                       <InstallmentTerm
-                        payPlans={_.find(paymentPlanResult.options, ['billToId', this.props.billToValue]) ?
-                                   _.find(paymentPlanResult.options, ['billToId', this.props.billToValue]).payPlans : []}
+                        payPlans={_.find(paymentPlanResult.options, ['billToId', this.props.fieldValues.billToId]) ?
+                                   _.find(paymentPlanResult.options, ['billToId', this.props.fieldValues.billToId]).payPlans : []}
                         paymentPlans={paymentPlanResult.paymentPlans}
                       />
                     </div>
@@ -326,7 +324,7 @@ export class MailingAddressBilling extends Component {
                 </section>
                 <div className="btn-footer">
                   <button className="btn btn-secondary" type="button" onClick={() => clearForm(this.props)}>Cancel</button>
-                  <button className="btn btn-primary" type="submit" form="MailingAddressBilling" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}>Update</button>
+                  <button className="btn btn-primary" type="submit" form="MailingAddressBilling" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData) || !this.props.fieldValues.billToId}>Update</button>
                 </div>
               </div>
             </div>
@@ -356,20 +354,14 @@ MailingAddressBilling.propTypes = {
 // ------------------------------------------------
 // redux mapping
 // ------------------------------------------------
-const mapStateToProps = (state) => {
-  const selector = formValueSelector('MailingAddressBilling');
-  const billToValue = selector(state, 'billTo');
-
-  return {
-    tasks: state.cg,
-    appState: state.appState,
-    fieldValues: _.get(state.form, 'MailingAddressBilling.values', {}),
-    initialValues: handleInitialize(state),
-    quoteData: handleGetQuoteData(state),
-    paymentPlanResult: handleGetPaymentPlans(state),
-    billToValue
-  };
-};
+const mapStateToProps = state => ({
+  tasks: state.cg,
+  appState: state.appState,
+  fieldValues: _.get(state.form, 'MailingAddressBilling.values', {}),
+  initialValues: handleInitialize(state),
+  quoteData: handleGetQuoteData(state),
+  paymentPlanResult: handleGetPaymentPlans(state)
+});
 
 const mapDispatchToProps = dispatch => ({
   actions: {

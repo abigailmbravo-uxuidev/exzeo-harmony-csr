@@ -9,6 +9,8 @@ import normalizePhone from '../Form/normalizePhone';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 
+let isLoaded = false;
+
 export const handleGetPolicy = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
@@ -21,12 +23,11 @@ export const handleGetPolicy = (state) => {
 export class PolicyholderAgent extends Component {
 
   componentWillReceiveProps(nextProps) {
-    if (!_.isEqual(this.props, nextProps)) {
-      const policyData = nextProps.policy;
-      if (policyData.companyCode && policyData.state && policyData.agencyCode) {
-        this.props.actions.serviceActions.getAgents(policyData.companyCode, policyData.state);
-        this.props.actions.serviceActions.getAgency(policyData.companyCode, policyData.state, policyData.agencyCode);
-      }
+    const policyData = nextProps.policy;
+    if (policyData && policyData.companyCode && policyData.state && policyData.agencyCode && !isLoaded) {
+      isLoaded = true;
+      nextProps.actions.serviceActions.getAgents(policyData.companyCode, policyData.state);
+      nextProps.actions.serviceActions.getAgency(policyData.companyCode, policyData.state, policyData.agencyCode);
     }
   }
 

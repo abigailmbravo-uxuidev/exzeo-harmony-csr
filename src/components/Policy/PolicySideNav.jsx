@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
+import { Link } from 'react-router-dom';
 import { reduxForm, propTypes } from 'redux-form';
 import _ from 'lodash';
 import * as appStateActions from '../../actions/appStateActions';
@@ -66,27 +66,6 @@ export const closeNewNoteFileUploader = (props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showNewNoteFileUploader: false });
 };
 
-export const goToPage = (link, key, props) => {
-  const workflowId = props.appState.instanceId;
-
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, submitting: true });
-
-  const steps = [
-    { name: 'hasUserEnteredData', data: { answer: 'No' } },
-    { name: 'moveTo', data: { key } }
-  ];
-
-  props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
-    .then(() => {
-      props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, {
-        ...props.appState.data,
-        selectedLink: key,
-        activateRedirectLink: link,
-        activateRedirect: true
-      });
-    });
-};
-
 const getDocumentId = (props) => {
   const taskData = (props.cg && props.appState && props.cg[props.appState.modelName]) ? props.cg[props.appState.modelName].data : null;
   if (!taskData) return {};
@@ -95,15 +74,10 @@ const getDocumentId = (props) => {
 };
 
 const SideNav = (props) => {
-  const redirect = (props.activateRedirect)
-    ? (<Redirect to={props.activateRedirectLink} />)
-    : null;
-
   const documentId = getDocumentId(props);
 
   return (
     <nav className="site-nav">
-      { redirect }
       <ul>
         {csrLinks && csrLinks.length > 0 && csrLinks.map((agentLink, index) => (
         agentLink.outside ?
@@ -114,8 +88,8 @@ const SideNav = (props) => {
             </a>
           </li> :
           <li key={index}>
-            <span className={agentLink.styleName} onClick={() => goToPage(agentLink.link, agentLink.key, props)}>
-              <a className={(props.appState.data.selectedLink || 'coverage') === agentLink.key ? `${agentLink.styleName} active` : `${agentLink.styleName}`}>{agentLink.label}</a>
+            <span className={agentLink.styleName}>
+              <Link to={agentLink.link} activeClassName="active" exact>{agentLink.label}</Link>
             </span>
           </li>
       ))}
