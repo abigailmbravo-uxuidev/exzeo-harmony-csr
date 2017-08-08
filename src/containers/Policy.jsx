@@ -8,6 +8,8 @@ import PolicyHeader from '../components/Policy/PolicyHeader';
 import QuoteSideNav from '../components/Policy/PolicySideNav';
 import PolicyDetailHeader from '../components/Policy/DetailHeader';
 import Footer from '../components/Common/Footer';
+import Loader from '../components/Common/Loader';
+
 // import NewNoteFileUploader from '../components/Common/NewNoteFileUploader';
 
 /*
@@ -28,10 +30,11 @@ export const Policy = props => (
   <div className="app-wrapper csr policy">
     {/* TODO: dynamically add policy # to title*/}
     <Helmet><title>{props.policy.policyNumber ? `P: ${props.policy.policyNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
-    {/* <NewNoteFileUploader/>*/}
+    {/* <NewNoteFileUploader/>*/}    
     <PolicyHeader />
     <PolicyDetailHeader />
     <main role="document">
+      {props.appState.data.submitting && <Loader />}
       <aside className="content-panel-left">
         <QuoteSideNav />
       </aside>
@@ -51,6 +54,6 @@ Policy.propTypes = {
   policy: PropTypes.shape()
 };
 
-const mapStateToProps = state => ({ policy: handleGetPolicy(state) });
+const mapStateToProps = state => ({ appState: state.appState, policy: handleGetPolicy(state) });
 
 export default connect(mapStateToProps)(Policy);

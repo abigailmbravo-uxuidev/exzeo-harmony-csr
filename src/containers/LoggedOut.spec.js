@@ -1,14 +1,13 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
-import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { Search } from './Search';
+import ConnectedApp from './LoggedOut';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 
-describe('Testing Search component', () => {
+describe('Testing LoggedOut component', () => {
   it('should test connected app', () => {
     const initialState = {
       cg: {
@@ -33,8 +32,7 @@ describe('Testing Search component', () => {
         data: {
           submitting: false
         }
-      },
-      ...propTypes
+      }
     };
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
     expect(wrapper);

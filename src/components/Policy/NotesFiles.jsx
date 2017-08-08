@@ -30,20 +30,21 @@ const SearchPanel = props => (
   </div>
   );
 
-const BSTable = props => props.notes ?
-    (
-      <BootstrapTable data={props.notes}>
-        <TableHeaderColumn dataField="fileList" isKey>Attachment List</TableHeaderColumn>
-      </BootstrapTable>
-    ) : (<p>?</p>);
+export const BSTable = props => props.notes ?
+  (
+    <BootstrapTable data={props.notes}>
+      <TableHeaderColumn dataField="fileList" isKey>Attachment List</TableHeaderColumn>
+    </BootstrapTable>
+  ) : (<p>?</p>);
 
-const NoteList = (props) => {
+export const isExpandableRow = (row) => {
+  if (row.id < 2) return true;
+  return true;
+};
+
+export const NoteList = (props) => {
   const { notes } = props;
 
-  const isExpandableRow = (row) => {
-    if (row.id < 2) return true;
-    return true;
-  };
 
   const expandComponent = row => (
     <BSTable data={row.expand} />
@@ -51,22 +52,23 @@ const NoteList = (props) => {
 
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
 
-  const showCreatedBy = createdBy => `${createdBy.firstName} ${createdBy.lastName}`;
+  const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
+  const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
   const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
 
   return (
     <BootstrapTable
-      data={ Array.isArray(notes) ? notes : [] }
+      data={Array.isArray(notes) ? notes : []}
       options={options}
       expandableRow={isExpandableRow}
       expandComponent={expandComponent}
       search
     >
       <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
-      <TableHeaderColumn dataField="attachmentCount" className="attachmentCount" dataSort dataAlign="center" width="7%"><i className="fa fa-paperclip" aria-hidden="true" /></TableHeaderColumn>
-      <TableHeaderColumn dataField="createdDate" dataSort width="10%" dataFormat={formatCreateDate}>Created</TableHeaderColumn>
-      <TableHeaderColumn dataField="createdBy" dataSort width="13%" dataFormat={showCreatedBy}>Author</TableHeaderColumn>
-      <TableHeaderColumn dataField="noteContent" dataSort tdStyle={{ whiteSpace: 'normal' }} width="45%">Note</TableHeaderColumn>
+      <TableHeaderColumn dataField="attachments" dataFormat={ attachmentCount } className="attachmentCount" dataSort dataAlign="center" width="7%"><i className="fa fa-paperclip" aria-hidden="true" /></TableHeaderColumn>
+      <TableHeaderColumn dataField="createdDate" dataSort width="10%" dataFormat={ formatCreateDate }>Created</TableHeaderColumn>
+      <TableHeaderColumn dataField="createdBy" dataSort width="13%" dataFormat={ showCreatedBy }>Author</TableHeaderColumn>
+      <TableHeaderColumn dataField="content" dataSort tdStyle={{ whiteSpace: 'normal' }} width="45%">Note</TableHeaderColumn>
     </BootstrapTable>
   );
 };
@@ -92,8 +94,8 @@ export class NotesFiles extends Component {
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props, nextProps)) {
       if (nextProps.policyData && nextProps.policyData.policyNumber) {
-        const policyNumber = nextProps.policyData.policyNumber;
-        this.props.actions.serviceActions.getNotes('policyNumber', policyNumber);
+        const ids = [nextProps.policyData.policyNumber, nextProps.policyData.sourceNumber];
+        this.props.actions.serviceActions.getNotes(ids.toString());
       }
     }
   }
@@ -105,21 +107,23 @@ export class NotesFiles extends Component {
       <PolicyBaseConnect>
         <ClearErrorConnect />
         <div className="route-content">
-          <Form id="NotesFiles" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
-            <div className="scroll">
-              <div className="form-group survey-wrapper" role="group">
-                <h3>History</h3>
-                <section>
-                  <div className="notes-list">
-                    <NoteList {...this.props} />
-                  </div>
-                  <div className="file-list" hidden>
-                    <Files />
-                  </div>
-                </section>
+          <div className="scroll">
+            <Form id="NotesFiles" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+              <div className="scroll">
+                <div className="form-group survey-wrapper" role="group">
+                  <h3>History</h3>
+                  <section>
+                    <div className="notes-list">
+                      <NoteList {...this.props} />
+                    </div>
+                    <div className="file-list" hidden>
+                      <Files />
+                    </div>
+                  </section>
+                </div>
               </div>
-            </div>
-          </Form>
+            </Form>
+          </div>
         </div>
       </PolicyBaseConnect>
     );

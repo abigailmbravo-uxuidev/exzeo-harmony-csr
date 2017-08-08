@@ -6,7 +6,7 @@ import appStateReducer from './appStateReducer';
 describe('App State Reducer', () => {
   it('should call appStateReducer APPSTATE_SET', () => {
     const state = initialState.appState;
-    const inputProps = { data: { submitting: false, updateWorkflowDetails: false } };
+    const inputProps = { data: { submitting: false } };
     const action = {
       type: types.APPSTATE_SET,
       appState: inputProps
@@ -16,7 +16,7 @@ describe('App State Reducer', () => {
   });
   it('should call appStateReducer APPSTATE_ERROR', () => {
     const state = initialState.appState;
-    const inputProps = { data: { submitting: false, updateWorkflowDetails: false } };
+    const inputProps = { data: { submitting: false } };
     const action = {
       type: types.APPSTATE_ERROR,
       appState: inputProps
@@ -26,7 +26,7 @@ describe('App State Reducer', () => {
   });
   it('should call appStateReducer REHYDRATE', () => {
     const state = initialState.appState;
-    const inputProps = { data: { submitting: false, updateWorkflowDetails: false } };
+    const inputProps = { data: { submitting: false } };
     const action = {
       type: persistTypes.REHYDRATE,
       payload: {

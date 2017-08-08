@@ -16,15 +16,18 @@ const handleGetPolicy = (state) => {
 
 const DetailHeader = (props) => {
   const { policyData } = props;
+  if (!policyData.policyID) {
+    return (<div className="detailHeader" />);
+  }
   return (<div className="detailHeader">
-  <section id="policyDetails" className="policyDetails">
-    <dl>
-      <div>
-        <dd>{_.get(policyData, 'product') === 'HO3' ? `${_.get(policyData, 'product')} Homeowners` : _.get(policyData, 'product')}</dd>
-        <dd>{_.get(policyData, 'policyNumber')}</dd>
-        <dd>{_.get(policyData, 'status')}</dd>
-      </div>
-    </dl>
+    <section id="policyDetails" className="policyDetails">
+      <dl>
+        <div>
+          <dd>{_.get(policyData, 'product') === 'HO3' ? `${_.get(policyData, 'product')} Homeowners` : _.get(policyData, 'product')}</dd>
+          <dd>{_.get(policyData, 'policyNumber')}</dd>
+          <dd>{_.get(policyData, 'status')}</dd>
+        </div>
+      </dl>
     </section>
     <section id="policyholder" className="policyholder">
       <dl>
@@ -41,7 +44,7 @@ const DetailHeader = (props) => {
           <dt>Mailing Address</dt>
           <dd>{_.get(policyData, 'policyHolderMailingAddress.address1')}</dd>
           <dd>{_.get(policyData, 'policyHolderMailingAddress.address2')}</dd>
-          <dd>{`${_.get(policyData, 'policyHolderMailingAddress.city')} ${_.get(policyData, 'policyHolderMailingAddress.state')}, ${_.get(policyData, 'policyHolderMailingAddress.zip')}`}</dd>
+          <dd>{`${_.get(policyData, 'policyHolderMailingAddress.city')}, ${_.get(policyData, 'policyHolderMailingAddress.state')} ${_.get(policyData, 'policyHolderMailingAddress.zip')}`}</dd>
         </div>
       </dl>
     </section>
@@ -51,7 +54,7 @@ const DetailHeader = (props) => {
           <dt>Property Address</dt>
           <dd>{_.get(policyData, 'property.physicalAddress.address1')}</dd>
           <dd>{_.get(policyData, 'property.physicalAddress.address2')}</dd>
-          <dd>{`${_.get(policyData, 'property.physicalAddress.city')} ${_.get(policyData, 'property.physicalAddress.state')}, ${_.get(policyData, 'property.physicalAddress.zip')}`}</dd>
+          <dd>{`${_.get(policyData, 'property.physicalAddress.city')}, ${_.get(policyData, 'property.physicalAddress.state')} ${_.get(policyData, 'property.physicalAddress.zip')}`}</dd>
         </div>
       </dl>
     </section>

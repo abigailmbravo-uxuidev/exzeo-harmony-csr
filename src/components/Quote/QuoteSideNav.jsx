@@ -80,31 +80,34 @@ const closeUWConditions = (props) => {
 };
 
 const goToPage = (link, key, props) => {
-  const workflowId = props.appState.instanceId;
-
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, submitting: true });
-
-  const steps = [
-    { name: 'hasUserEnteredData', data: { answer: 'No' } },
-    { name: 'moveTo', data: { key } }
-  ];
-
-  props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
-    .then(() => {
-      props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, {
-        ...props.appState.data,
-        selectedLink: key,
-        activateRedirectLink: link,
-        activateRedirect: true
-      });
+  // const workflowId = props.appState.instanceId;
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+    { ...props.appState.data,
+      activateRedirectLink: link,
+      activateRedirect: true
     });
+
+  // const steps = [
+  //   { name: 'hasUserEnteredData', data: { answer: 'No' } },
+  //   { name: 'moveTo', data: { key } }
+  // ];
+
+  // props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
+  //   .then(() => {
+  //     props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, {
+  //       ...props.appState.data,
+  //       selectedLink: key,
+  //       activateRedirectLink: link,
+  //       activateRedirect: true
+  //     });
+  //   });
 };
 
 const getDocumentId = (props) => {
   const taskData = (props.cg[props.appState.modelName]) ? props.cg[props.appState.modelName].data : null;
   if (!taskData) return null;
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) 
-    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result 
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
+    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
     : {};
   return quoteData.quoteNumber;
 };
@@ -113,7 +116,7 @@ const SideNav = (props) => {
   const redirect = (props.activateRedirect)
     ? (<Redirect to={props.activateRedirectLink} />)
     : null;
-  
+
   const documentId = getDocumentId(props);
 
   return (
@@ -143,7 +146,7 @@ const SideNav = (props) => {
         </li>
       </ul>
       { props.appState.data.showNewNoteFileUploader === true &&
-        <NewNoteFileUploader noteType="quoteNote" documentId={ documentId } closeButtonHandler={() => closeNewNoteFileUploader(props)} />
+        <NewNoteFileUploader noteType="Quote Note" documentId={ documentId } closeButtonHandler={() => closeNewNoteFileUploader(props)} />
       }
       { props.appState.data.showUWconditions === true &&
         <UWconditions
@@ -170,7 +173,7 @@ SideNav.propTypes = {
   })
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   appState: state.appState,
   completedTasks: state.completedTasks,
   activateRedirectLink: state.appState.data.activateRedirectLink,

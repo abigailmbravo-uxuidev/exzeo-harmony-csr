@@ -1,17 +1,17 @@
 header {
   display: flex;
+  flex-shrink: 0;
+  justify-content: center;
   width: 100%;
   padding: $padding $padding*2;
   border-bottom: 2px solid $white;
   background: $bright-blue-darken-04;
-  justify-content: center;
-  flex-shrink: 0;
-  flex-basis: 3.375rem;
 
   div[role="banner"] {
     display: flex;
-    width: 100%;
     align-items: center;
+    width: 100%;
+    height: 2.25rem;
 
     .btn-bars {
       display: none;
@@ -23,9 +23,9 @@ header {
 
     > .logo {
       display: block;
-      width: 10rem;
       flex-basis: 10rem;
       flex-shrink: 0;
+      width: 10rem;
     }
 
     > nav {
@@ -33,19 +33,21 @@ header {
       top: 0;
       right: 0;
       display: flex;
+      align-items: center;
+      flex: 1;
       flex-direction: row;
+      justify-content: flex-end;
       width: auto;
       padding: 0;
       border-width: 0;
       border-top-width: 0;
       background-color: transparent;
       box-shadow: none;
-      flex: 1;
-      justify-content: flex-end;
-      align-items: center;
 
       > a {
         display: flex;
+        align-items: center;
+        justify-content: center;
         height: 3.375rem;
         margin-left: 1rem;
         padding: 0 $padding;
@@ -54,8 +56,6 @@ header {
         color: $bright-blue;
         font-size: $font-size-h6;
         font-weight: $font-weight-bold;
-        justify-content: center;
-        align-items: center;
         @include transition(all .2s ease-in-out);
 
         &:hover {

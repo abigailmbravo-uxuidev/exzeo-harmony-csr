@@ -1,18 +1,48 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import localStorage from 'localStorage';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import normalizePhone from '../Form/normalizePhone';
+import * as appStateActions from '../../actions/appStateActions';
+import * as serviceActions from '../../actions/serviceActions';
 
-const handleGetQuote = (state) => {
+export const handleGetQuote = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
+  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
+    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
+    : {};
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
+    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
+    : quoteEnd;
   return quoteData;
 };
 
-const DetailHeader = (props) => {
+export const selectPolicy = (quote, props) => {
+  if (!quote.policyNumber) return;
+
+  props.actions.serviceActions.getPolicyFromPolicyNumber(quote.companyCode, quote.state, quote.product, quote.policyNumber).then((result) => {
+    const lastSearchData = {
+      firstName: '',
+      lastName: '',
+      address: '',
+      quoteNumber: '',
+      policyNumber: encodeURIComponent(quote.policyNumber),
+      zip: '',
+      searchType: 'policy'
+    };
+
+    localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
+    localStorage.setItem('isNewTab', true);
+    localStorage.setItem('policyID', result.payload[0].data.policy.policyID);
+    window.open('/policy/coverage', '_blank');
+  });
+};
+
+export const DetailHeader = (props) => {
   const { quoteData } = props;
    if (!quoteData || !quoteData._id) { // eslint-disable-line
      return <div className="detailHeader" />;
@@ -23,7 +53,7 @@ const DetailHeader = (props) => {
         <div>
           <dd>{quoteData.product === 'HO3' ? `${quoteData.product} Homeowners` : quoteData.product}</dd>
           <dd>{(quoteData.quoteNumber ? quoteData.quoteNumber : '-')}</dd>
-          <dd>{quoteData.quoteState}</dd>
+          <dd>{quoteData.quoteState === 'Policy Issued' ? <button className="btn btn-link" onClick={() => selectPolicy(quoteData, props)}>{quoteData.quoteState}</button> : quoteData.quoteState}</dd>
         </div>
       </dl>
     </section>
@@ -115,4 +145,11 @@ const mapStateToProps = state => ({
   quoteData: handleGetQuote(state)
 });
 
-export default connect(mapStateToProps)(DetailHeader);
+const mapDispatchToProps = dispatch => ({
+  actions: {
+    appStateActions: bindActionCreators(appStateActions, dispatch),
+    serviceActions: bindActionCreators(serviceActions, dispatch)
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DetailHeader);

@@ -1,0 +1,71 @@
+.error {
+  &.card {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: $red-darken-02;
+    }
+  }
+
+  &.logo {
+    @include transition(all .2s ease-in-out);
+
+    .card-header {
+      background-color: $bright-blue-darken-04;
+
+      img {
+        max-width: 100%;
+      }
+    }
+
+    .card-block {
+      background-color: $white;
+    }
+
+    .card-footer {
+      background-color: $bright-blue-darken-04;
+    }
+  }
+
+  &.access-denied {
+    max-width: 20rem;
+  }
+}
+
+.logged-out {
+  max-width: 20rem;
+
+  &.card {
+    background-color: $bright-blue-darken-04;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: $bright-blue-darken-04;
+    }
+  }
+
+  &.logo {
+    .card-header {
+      background-color: $bright-blue-darken-04;
+
+      img {
+        max-width: 100%;
+      }
+    }
+
+    .card-block {
+      background-color: $white;
+    }
+
+    .card-footer {
+      background-color: $bright-blue-darken-04;
+    }
+  }
+}

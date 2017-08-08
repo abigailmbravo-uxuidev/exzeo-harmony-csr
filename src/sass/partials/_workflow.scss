@@ -1,16 +1,16 @@
-
 //workflow
 
-.workflow, .error-page {
+.error-page,
+.workflow {
   /*ul element*/
   .workflow-header {
     position: relative;
     display: flex;
+    justify-content: space-around;
     width: 100%;
     margin: 0;
     padding: 0;
     list-style: none;
-    justify-content: space-around;
 
     .rule {
       position: absolute;
@@ -30,20 +30,20 @@
     li {
       z-index: 5;
       display: flex;
-      flex-direction: column;
-      text-align: center;
       align-items: center;
       flex: 1;
+      flex-direction: column;
+      text-align: center;
 
       a {
         z-index: 2;
         display: flex;
+        align-items: center;
+        flex: 1;
         flex-direction: column;
         padding: $padding;
         cursor: pointer;
         font-weight: $font-weight-bold;
-        flex: 1;
-        align-items: center;
         @include for-phone-only {
           padding: 0;
         }
@@ -56,10 +56,6 @@
 
         i {
           width: 2rem;
-
-          &:before {
-              font-family: $font-family-icon;
-          }
           @include for-phone-only {
             font-size: $font-size-h4;
           }
@@ -72,6 +68,10 @@
           @include for-big-desktop-up {
             width: 4rem;
             font-size: $font-size-h3;
+          }
+
+          &:before {
+            font-family: $font-family-icon;
           }
         }
 
@@ -136,9 +136,9 @@
 
   .workflow-steps {
     display: flex;
-    justify-content: flex-end;
     flex-grow: 0;
     flex-shrink: 0;
+    justify-content: flex-end;
     padding: 0 ($padding*2) ($padding*2);
 
     .btn {

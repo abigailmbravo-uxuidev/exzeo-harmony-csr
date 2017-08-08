@@ -1,4 +1,3 @@
-
 //
 // Base styles
 //
@@ -34,25 +33,25 @@ input[type="submit"] {
   }
 
   &.btn-sm {
-      font-size: $font-size-sm;
+    font-size: $font-size-sm;
 
-      &.btn-link {
-          padding: 0 .25rem;
+    &.btn-link {
+      padding: 0 0.25rem;
 
-          .fa {
-              margin: 0;
-          }
+      .fa {
+        margin: 0;
       }
+    }
   }
 
   &.btn-block {
-      width: 100%;
-      white-space: normal;
+    width: 100%;
+    white-space: normal;
   }
 
   &.btn-xs {
-      font-size: $font-size-xs;
-      padding: ($padding/2) $padding;
+    padding: ($padding/2) $padding;
+    font-size: $font-size-xs;
   }
 
   &.focus {
@@ -74,14 +73,14 @@ input[type="submit"] {
   }
 
   i {
-      margin-right: $padding;
+    margin-right: $padding;
   }
 }
 //
 // Alternate buttons
 //
 
-,
+.btn,
 .btn-default,
 button,
 input[type="button"],
@@ -96,10 +95,14 @@ input[type="submit"] {
 
 .btn-secondary {
   @include button-variant($btn-secondary-color, $btn-secondary-bg, $btn-secondary-border);
+
+  &:hover {
+    @include button-variant($btn-secondary-color, rgba($btn-secondary-bg, .9), $btn-secondary-border);
+  }
 }
 
 .btn-action {
-    @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+  @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
 }
 
 .btn-info {
@@ -122,7 +125,7 @@ input[type="submit"] {
   @include button-variant($btn-primary-bg, $btn-link-bg, $btn-link-border);
 
   &:hover {
-      text-decoration: none;
+    text-decoration: none;
   }
 }
 // Remove all backgrounds
@@ -153,29 +156,29 @@ input[type="submit"] {
 
 .btn-round {
   display: flex;
+  align-items: center;
+  flex-basis: 2rem;
+  flex-grow: 0;
+  flex-shrink: 0;
+  justify-content: center;
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  flex-basis: 2rem;
-  flex-shrink: 0;
-  flex-grow: 0;
-  justify-content: center;
-  align-items: center;
 
   i {
-      margin: 0;
-      padding: 0;
+    margin: 0;
+    padding: 0;
   }
 }
 
 .btn-send {
   display: flex;
+  align-items: center;
+  flex-basis: 3rem;
+  justify-content: center;
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  justify-content: center;
-  align-items: center;
-  flex-basis: 3rem;
 
   i {
     width: 1.25rem;
@@ -261,38 +264,36 @@ input[type="submit"] {
 }
 
 .btn-icon {
-    background: rgba($bright-blue, 0.1);
-    border-width: 0;
+  color: $body-color;
+  border-width: 0;
+  background: rgba($bright-blue, 0.1);
+  box-shadow: none;
+
+  &:hover {
     color: $body-color;
-    box-shadow: none;
+    border-width: 0;
+    background: rgba($bright-blue, 0.2);
+  }
 
-    &:hover {
-        background: rgba($bright-blue, 0.2);
-        border-width: 0;
-        color: $body-color;
-    }
-
-    i {
-        margin: 0;
-    }
+  i {
+    margin: 0;
+  }
 }
 
 .btn-footer {
-
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-end;
-    align-content: stretch;
-    align-items: flex-start;
-    margin-bottom: ($padding*2);
+  display: flex;
+  align-content: stretch;
+  align-items: flex-start;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  margin-bottom: ($padding*2);
 
   .btn {
-      align-self: flex-end;
-      margin-left: $padding;
-      order: 0;
-      flex: 0 1 auto;
-      align-self: auto;
-
-    }
+    align-self: flex-end;
+    align-self: auto;
+    flex: 0 1 auto;
+    order: 0;
+    margin-left: $padding;
+  }
 }

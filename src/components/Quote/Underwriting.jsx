@@ -1,44 +1,47 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Prompt } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
 import * as cgActions from '../../actions/cgActions';
+import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import FieldGenerator from '../Form/FieldGenerator';
 
-const handleGetQuoteData = (state) => {
+export const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (taskData) {
-    const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
+    const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
+    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
+    : {};
+    const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
+    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
+    : quoteEnd;
     return quoteData;
   }
   return {};
 };
 
-const populateUnderwritingQuestions = (state) => {
-  if (state.cg && state.cg.getUWQuestions && state.cg.getUWQuestions.data &&
-    state.cg.getUWQuestions.data.model && state.cg.getUWQuestions.data.model.variables) {
-    const underwritingQuestions = _.filter(state.cg.getUWQuestions.data.model.variables, item => item.name === 'getListOfUWQuestions');
-    if (underwritingQuestions.length > 0) {
-      const data = underwritingQuestions[0].value.result;
-      return data;
-    }
-  }
-  return [];
-};
-
-const handleInitialize = (state) => {
-  const questions = populateUnderwritingQuestions(state);
+export const handleInitialize = (state) => {
+  const questions = state.service.underwritingQuestions ? state.service.underwritingQuestions : [];
   const data = handleGetQuoteData(state);
   const values = {};
 
   questions.forEach((question) => {
-    const val = _.get(data.underwritingAnswers, `${question.name}.answer`);
+    const val = _.get(data, `underwritingAnswers.${question.name}.answer`);
     values[question.name] = val;
+
+    const defaultAnswer = question && question.answers &&
+    _.find(question.answers, { default: true }) ?
+    _.find(question.answers, { default: true }).answer : null;
+
+    if (defaultAnswer && question.hidden) {
+      values[question.name] = defaultAnswer;
+    }
   });
 
   return values;
@@ -46,73 +49,84 @@ const handleInitialize = (state) => {
 
 const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
 
-export class Underwriting extends Component {
+export const handleFormSubmit = (data, dispatch, props) => {
+  const { appState, actions } = props;
 
-  componentWillMount() {
-    const { quoteData } = this.props;
-    const startModelData = {
-      companyCode: quoteData.companyCode,
-      state: quoteData.state,
-      property: quoteData.property,
-      product: quoteData.product
-    };
-    this.props.actions.cgActions.startWorkflow('getUWQuestions', startModelData, false);
-  }
-
-  handleFormSubmit = (data) => {
-    const { appState, actions, quoteData } = this.props;
-
-    const workflowId = appState.instanceId;
-    actions.appStateActions.setAppState(appState.modelName, workflowId, { ...appState.data, submitting: true });
-    const steps = [
+  const workflowId = appState.instanceId;
+  actions.appStateActions.setAppState(appState.modelName, workflowId, { ...appState.data, submitting: true });
+  const steps = [
       { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
       { name: 'askUWAnswers', data }
-    ];
+  ];
 
-    actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
+  actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
         // now update the workflow details so the recalculated rate shows
-        actions.appStateActions.setAppState(
-          appState.modelName,
-          workflowId,
-          {
-            ...appState.data,
-            quote: quoteData,
-            hideYoChildren: false
-          }
-        );
+        props.actions.appStateActions.setAppState(props.appState.modelName,
+          workflowId, { ...props.appState.data,
+            selectedLink: 'underwriting',
+            submitting: false });
       });
-  };
+};
 
-  clearForm = () => {
-    const { dispatch, questions } = this.props;
-    for (let i = 0; i < questions.length; i += 1) {
-      dispatch(change('Underwriting', questions[i].name, ''));
+export const clearForm = (props) => {
+  const { dispatch, questions } = props;
+  for (let i = 0; i < questions.length; i += 1) {
+    dispatch(change('Underwriting', questions[i].name, ''));
+  }
+};
+let setUnderwriting = false;
+export class Underwriting extends Component {
+
+  componentDidMount() {
+    if (this.props.appState.instanceId) {
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+        ...this.props.appState.data,
+        submitting: true
+      });
+      const steps = [
+    { name: 'hasUserEnteredData', data: { answer: 'No' } },
+    { name: 'moveTo', data: { key: 'underwriting' } }
+      ];
+      const workflowId = this.props.appState.instanceId;
+
+      this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
+    .then(() => {
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+        ...this.props.appState.data,
+        selectedLink: 'underwriting'
+      });
+    });
     }
-  };
+  }
 
+  componentWillReceiveProps(nextProps) {
+    if (!_.isEqual(this.props, nextProps)) {
+      const quoteData = nextProps.quoteData;
+      if (quoteData.companyCode && quoteData.state && quoteData.agencyCode && !setUnderwriting) {
+        this.props.actions.serviceActions.getUnderwritingQuestions(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property);
+        setUnderwriting = true;
+      }
+    }
+  }
 
   render() {
-    const { fieldValues, handleSubmit, pristine, quoteData, stateObject } = this.props;
-
-    const questions = populateUnderwritingQuestions(stateObject);
-
+    const { fieldValues, handleSubmit, pristine, quoteData, underwritingQuestions, dirty } = this.props;
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
+        <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
+
         <div className="route-content">
           <Form
             id="Underwriting"
-            onSubmit={handleSubmit(this.handleFormSubmit)}
+            onSubmit={handleSubmit(handleFormSubmit)}
             noValidate
           >
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
-
                 <h3>Underwriting Questions</h3>
-
-                {questions && questions.map((question, index) =>
-
+                {underwritingQuestions && _.sortBy(underwritingQuestions, ['order']).map((question, index) =>
                   <FieldGenerator
                     data={quoteData.underwritingAnswers}
                     question={question}
@@ -122,7 +136,7 @@ export class Underwriting extends Component {
             )}
                 <div className="btn-footer">
                   <button
-                    onClick={this.clearForm}
+                    onClick={() => clearForm(this.props)}
                     className="btn btn-secondary"
                     type="button"
                     form="Underwriting"
@@ -171,11 +185,13 @@ const mapStateToProps = state => ({
   initialValues: handleInitialize(state),
   fieldValues: _.get(state.form, 'Underwriting.values', {}),
   quoteData: handleGetQuoteData(state),
-  activateRedirect: state.appState.data.activateRedirect
+  activateRedirect: state.appState.data.activateRedirect,
+  underwritingQuestions: state.service.underwritingQuestions
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }

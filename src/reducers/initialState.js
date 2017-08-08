@@ -8,13 +8,15 @@ export default {
   service: {},
   appState: {
     data: {
-      submitting: false,
-      updateWorkflowDetails: false
+      submitting: false
     }
   },
   navigation: {
     location: null
   },
   error: {},
-  questions: []
+  questions: [],
+  authState: {
+    userProfile: null
+  }
 };

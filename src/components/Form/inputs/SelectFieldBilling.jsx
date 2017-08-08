@@ -22,7 +22,7 @@ export const SelectFieldBilling = ({
   return (
     <div className={formGroupStyles}>
       <label htmlFor={name}>
-        {label} &nbsp; {Hint}
+        {label}{Hint}
       </label>
       {answers && answers.length > 0 ? (
         <select
@@ -32,9 +32,9 @@ export const SelectFieldBilling = ({
           disabled={disabled}
           onChange={onChange}
         >
-          <option disabled value={''}>Please select...</option>
+          <option aria-label={'Please select...'} disabled value={''}>Please select...</option>
           {answers.map((answer, index) => (
-            <option value={answer.billToId} key={index}>
+            <option aria-label={answer.displayText} value={answer.billToId} key={index}>
               {answer.displayText}
             </option>
             ))}

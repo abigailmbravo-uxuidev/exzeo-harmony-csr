@@ -4,23 +4,31 @@
     div[role="banner"] {
       .tab-tag {
         display: flex;
+        align-items: center;
+        align-items: center;
+        justify-content: center;
+        justify-content: center;
+        width: 12rem;
+        width: 12rem;
         height: 3.25rem;
         margin: (-$padding) ($padding*2) (-$padding) (-$padding*2);
         padding: 0 ($padding*2);
         color: $white;
-        background: $green-darken-03;
-        justify-content: center;
-        align-items: center;
-        width: 12rem;
+        border-right: 1px dotted $green-darken-03;
+        background: $green-darken-04;
+
+        span {
+          font-size: 1.125rem;
+        }
       }
 
       .quote-description {
         display: flex;
-        color: $white;
-        font-size: $font-size-h5;
+        align-items: center;
         flex-grow: 1;
         flex-shrink: 0;
-        align-items: center;
+        color: $white;
+        font-size: $font-size-h5;
 
         label {
           margin-bottom: 0;
@@ -33,27 +41,52 @@
   }
   //detail header
   .detailHeader {
-      width: 100%;
+    width: 100%;
+
+    .quoteDetails {
+      dd {
+        .btn-link {
+          display: flex;
+          margin: 0;
+          padding: 0;
+          text-decoration: underline;
+          color: $bright-blue-lighten-02;
+          font-size: $font-size-sm;
+          line-height: 1;
+          @include hover {
+            color: $bright-blue-lighten-01;
+          }
+          @include hover-focus {
+            color: $bright-blue-lighten-01;
+          }
+        }
+      }
+    }
   }
   //content wrapper
   main {
-      height: calc(100vh - 8.5rem);
-      min-height: calc(100vh - 8.5rem);
+    height: calc(100vh - 8.5rem);
+    min-height: calc(100vh - 8.5rem);
 
     .content-wrapper {
       overflow: hidden;
-      width: auto;
       flex-grow: 1;
       flex-shrink: 1;
       flex-wrap: nowrap;
+      width: auto;
 
       .route-content {
         display: flex;
-        flex-shrink: 1;
+        overflow: hidden;
         flex-grow: 1;
+        flex-shrink: 1;
 
         .modal.quote-summary {
-          .card-footer {}
+          form {
+            flex-basis: auto;
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
         }
 
         form {
@@ -64,9 +97,9 @@
 
         .scroll {
           overflow-y: auto;
-          width: 100%;
           flex-grow: 1;
           flex-shrink: 0;
+          width: 100%;
         }
 
         .survey-wrapper {
@@ -133,8 +166,8 @@
           }
 
           > section:last-of-type {
-            border: 0;
             margin-bottom: 0;
+            border: 0;
           }
 
           .producer {
@@ -157,25 +190,25 @@
 
           .property {
             .property-address {
-              width: 35%;
+              width: 30%;
 
               .city {}
 
               .state {
+                flex-basis: 4rem;
                 flex-grow: 0;
                 flex-shrink: 0;
-                flex-basis: 4rem;
               }
 
               .zip {
+                flex-basis: 6rem;
                 flex-grow: 0;
                 flex-shrink: 0;
-                flex-basis: 6rem;
               }
             }
 
             .property-details {
-              width: 65%;
+              width: 70%;
 
               .flex-parent {
                 .flex-child {
@@ -222,12 +255,12 @@
 
     .underwriting-validation {
       overflow-y: auto;
-      width: 240px;
-      height: 100%;
-      padding: 0 0 ($padding*2) ($padding*2);
-      border-left: dashed 1px $warm-gray-04;
-      flex-shrink: 0;
+      align-self: stretch;
       flex-basis: 240px;
+      flex-shrink: 0;
+      width: 240px;
+      padding: 0 0 ($padding*2) ($padding*2);
+      border-left: dotted 1px $warm-gray-04;
 
       .uw-validation-header {
         margin: ($padding*1.5) 0;
@@ -262,7 +295,7 @@
               margin: ($padding*2.25);
               padding: 0;
               list-style: none;
-              font-size: $font-size-base
+              font-size: $font-size-base;
             }
 
             li:last-child {
@@ -320,11 +353,11 @@
 .modal.quote-summary {
   .btn-footer.flex-parent {
     display: flex;
+    align-content: center;
+    align-items: flex-end;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: center;
-    align-content: center;
-    align-items: flex-end;
 
     .form-group {
       margin: 0;
@@ -339,34 +372,34 @@
 
     .toolbar {
       display: flex;
+      align-content: stretch;
+      align-items: flex-start;
       flex-direction: row;
       flex-wrap: nowrap;
       justify-content: flex-start;
-      align-content: stretch;
-      align-items: flex-start;
 
       .input-group {
         display: flex;
-        flex-direction: row;
-        margin: 0 ($padding) 0 0;
-        order: 0;
-        flex: 0 1 auto;
-        align-self: auto;
-        flex-wrap: nowrap;
-        justify-content: flex-start;
         align-content: stretch;
         align-items: flex-start;
+        align-self: auto;
+        flex: 0 1 auto;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        order: 0;
+        margin: 0 ($padding) 0 0;
 
         .btn {
+          align-self: auto;
+          flex: 0 1 auto;
+          order: 0;
           height: 38px;
           margin: 0 2px 0 0;
           text-transform: capitalize;
           border: 0;
           border-radius: 0;
           line-height: 1.5;
-          order: 0;
-          flex: 0 1 auto;
-          align-self: auto;
           @include button-variant($warm-gray-08, $warm-gray-02, $warm-gray-02);
         }
 
@@ -380,10 +413,10 @@
       }
 
       input {
-        height: 38px;
-        order: 0;
-        flex: 1 1 auto;
         align-self: auto;
+        flex: 1 1 auto;
+        order: 0;
+        height: 38px;
       }
     }
   }
@@ -436,47 +469,16 @@
   }
 }
 
-.file-list {
-  .react-bs-table-tool-bar {
-    .toolbar {
-      .input-group {
-        .btn-files {
-          color: $white;
-          background: $bright-blue-darken-04;
-        }
-      }
-    }
-  }
-}
-
 .verify {
   .workflow-steps {
     .btn {
+      align-self: flex-start;
       height: 36px;
       margin-top: 25px;
-      align-self: flex-start;
     }
 
     input {
       height: 36px;
-    }
-  }
-}
-
-.modal.uw-conditions {
-
-  .card {
-    height: auto;
-
-    .card-block {
-        ul {
-            list-style: disc;
-            margin: 0 ($padding*4);
-
-            li {
-                display: list-item;
-            }
-        }
     }
   }
 }
@@ -505,4 +507,26 @@
       }
     }
   }
+}
+
+.coverages-other-structures-limit,
+.coverages-personal-property-limit {
+  width: 68%;
+}
+
+.coverages-other-structures-limit-percent,
+.coverages-personal-property-limit-percent {
+  width: 32%;
+}
+
+#MailingAddressBilling {
+    .bill-plan {
+        .segmented {
+            .segmented-answer-wrapper {
+                .radio-column-3 {
+                    width: 33.3%
+                }
+            }
+        }
+    }
 }

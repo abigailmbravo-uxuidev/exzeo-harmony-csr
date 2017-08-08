@@ -7,13 +7,27 @@
   width: 40%;
   background: $white;
   box-shadow: 0 0 20px 0 rgba($black, .25);
+  @include transition(all .1s ease-in-out);
+
+  &.minimize {
+    bottom: -396px;
+
+    .controls {
+      .btn-icon {
+        i.fa-window-minimize {
+          &:before {
+            content: "\f2d0";
+          }
+        }
+      }
+    }
+  }
 
   .title-bar {
     display: flex;
     flex-direction: row;
-    padding: $padding ($padding*2);
-    background: $bright-blue-darken-04;
     flex-wrap: nowrap;
+    background: $bright-blue-darken-04;
 
     * {
       color: $white;
@@ -21,20 +35,29 @@
 
     .btn {
       padding: 0 ($padding/2);
+
+      &:focus {
+        outline: none;
+        outline-offset: 0;
+        background-color: rgba($bright-blue, .1);
+      }
     }
 
     .title {
-      order: 0;
-      flex: 1 1 auto;
       align-self: auto;
+      flex: 1 1 auto;
+      order: 0;
+      padding: $padding ($padding*2);
+      cursor: pointer;
     }
 
     .controls {
       display: flex;
-      font-size: $font-size-h4;
-      order: 0;
-      flex: 0 1 auto;
       align-self: auto;
+      flex: 0 1 auto;
+      order: 0;
+      padding: $padding ($padding*2) $padding 0;
+      font-size: $font-size-h4;
 
       .btn {
         margin-left: $padding;
@@ -44,59 +67,73 @@
 
   .mainContainer {
     .content {
-      padding: $padding ($padding*2) ($padding*2);
+      padding: ($padding*2);
 
       .flex-contents {
         display: flex;
-        overflow-y: auto;
-        flex-direction: column;
-        height: 320px;
-        margin: 0 0 ($padding*2);
-        flex-wrap: nowrap;
-        justify-content: flex-start;
         align-content: stretch;
         align-items: stretch;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        height: 320px;
+        margin: 0 0 ($padding*2);
 
         select {
           margin: 0 0 ($padding*2);
-          order: 0;
-          flex: 0 0 auto;
-          align-self: auto;
         }
 
-        textarea {
-          margin: 0 0 ($padding*2);
-          color: $warm-gray-08;
-          border: solid 1px $warm-gray-04;
-          order: 0;
-          flex: 1 1 240px;
-          align-self: auto;
+        .text-area-wrapper {
+          display: flex;
+          flex-direction: column;
+          flex-grow: 1;
+          flex-shrink: 1;
+
+          textarea {
+            align-self: auto;
+            flex-grow: 1;
+            flex-shrink: 1;
+            order: 0;
+            margin: 0;
+            color: $warm-gray-08;
+          }
+
+          .error-message {
+              color: $red;
+              font-size: $font-size-sm;
+          }
+
+          &.error {
+              textarea {
+                  border-color: $red;
+              }
+          }
         }
 
         .drag-n-drop {
+          align-self: auto;
+          flex: 1 1 auto;
+          order: 0;
           max-height: 180px;
           padding: $padding;
           text-align: center;
           border: dashed $warm-gray-04 2px;
           border-radius: $border-radius;
-          order: 0;
-          flex: 1 1 auto;
-          align-self: auto;
         }
       }
 
       .buttons {
         display: flex;
+        align-content: stretch;
+        align-items: flex-start;
         flex-direction: row;
         flex-wrap: nowrap;
         justify-content: flex-start;
-        align-content: stretch;
-        align-items: flex-start;
 
         div {
-          order: 0;
-          flex: 1 1 auto;
           align-self: auto;
+          flex: 1 1 auto;
+          order: 0;
         }
 
         .btn-secondary {
@@ -133,25 +170,25 @@
 
             li {
               display: flex;
-              flex-direction: row;
-              margin: $padding 0;
-              flex-wrap: nowrap;
-              justify-content: flex-start;
               align-content: stretch;
               align-items: flex-start;
+              flex-direction: row;
+              flex-wrap: nowrap;
+              justify-content: flex-start;
+              margin: $padding 0;
 
               > * {
-                order: 0;
-                flex: 0 1 auto;
                 align-self: auto;
+                flex: 0 1 auto;
+                order: 0;
               }
 
               > span {
+                align-self: auto;
+                flex: 1 1 auto;
+                order: 0;
                 text-align: left;
                 color: $warm-gray-14;
-                order: 0;
-                flex: 1 1 auto;
-                align-self: auto;
               }
 
               > select {
@@ -172,4 +209,20 @@
 
 .new-note-files {
   @include transition(all .2s ease-in-out);
+}
+
+.file-list {
+  .react-bs-table-tool-bar {
+    .toolbar {
+      .input-group {
+        flex-grow: 0;
+        flex-shrink: 0;
+
+        .btn-files {
+          color: $white;
+          background: $bright-blue-darken-04;
+        }
+      }
+    }
+  }
 }

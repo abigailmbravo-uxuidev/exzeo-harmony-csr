@@ -8,6 +8,7 @@
 @import "partials/mixins/_tab-focus";
 @import "partials/mixins/_buttons";
 @import "partials/mixins/_forms";
+@import "partials/_animations";
 /*Correct and normalize browser rendering*/
 @import "partials/_normalize";
 @import "partials/_reset";
@@ -21,6 +22,7 @@
 @import "partials/_csr-quote";
 @import "partials/_csr-policy";
 @import "partials/_additional-interests";
+@import "partials/_error";
 @import "https://fonts.googleapis.com/css?family=Roboto:100,300,500"; //base
 //links
 /*------------------------------------------------------------------------------------*/
@@ -73,7 +75,6 @@ a {
 //inputs & forms
 /*------------------------------------------------------------------------------------*/
 @import "partials/_form"; //form partial
-@import "partials/_range"; //range / slider partial
 //vertical tabs
 /*------------------------------------------------------------------------------------*/
 @import "partials/_nav"; //vertical tab partial
@@ -83,12 +84,21 @@ a {
 /*------------------------------------------------------------------------------------*/
 .detail-wrapper,
 .survey-wrapper {
-  flex-direction: row;
-  padding: ($padding*2) ($padding*2) 0;
-  flex-wrap: wrap;
-  flex-shrink: 0;
-  flex-grow: 1;
   align-content: flex-start;
+  flex-direction: row;
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  padding: ($padding*2) ($padding*2) 0;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    flex-basis: auto;
+  }
 
   .section-group-header {
     width: 100%;
@@ -99,8 +109,8 @@ a {
   }
 
   &.form-group {
-    margin-bottom: 0;
     flex-grow: 0;
+    margin-bottom: 0;
 
     .display-element {
       display: flex;
@@ -187,9 +197,10 @@ html {
             .route {
               .route-content {
                 display: flex;
+                overflow: hidden;
                 flex-direction: column;
-                height: auto;
                 flex-grow: 1;
+                height: auto;
 
                 .main,
                 form {
@@ -201,8 +212,8 @@ html {
 
               .search {
                 form {
-                  flex-shrink: 0;
                   flex-grow: 0;
+                  flex-shrink: 0;
                 }
               }
 
@@ -210,9 +221,9 @@ html {
                 display: flex;
                 overflow-y: auto;
                 flex-direction: column;
-                width: 100%;
-                flex-wrap: nowrap;
                 flex-grow: 1;
+                flex-wrap: nowrap;
+                width: 100%;
 
                 ul {
                   flex-grow: 1;
@@ -223,12 +234,18 @@ html {
                   flex-shrink: 0;
 
                   .btn {
-                    margin-left: $padding;
                     align-self: flex-end;
+                    margin-left: $padding;
                   }
                 }
               }
             }
+          }
+
+          .route-content {
+              .modal {
+                  z-index: 100;
+              }
           }
         }
       }
@@ -239,14 +256,14 @@ html {
 /*------------------------------------------------------------------------------------*/
 .app-wrapper {
   display: flex;
+  align-items: center;
   flex-direction: column;
+  flex-shrink: 0;
   width: 100%;
   min-height: 100vh;
   margin: 0;
   padding: 0;
   background: $warm-gray-10;
-  align-items: center;
-  flex-shrink: 0;
 }
 //header - includes logo and main navigation
 /*------------------------------------------------------------------------------------*/
@@ -257,23 +274,23 @@ main[role="document"] {
   position: relative;
   display: flex;
   overflow-y: hidden;
+  align-items: flex-start;
   flex-direction: row;
+  flex-grow: 1;
+  flex-shrink: 0;
   width: 100%;
   height: calc(100vh - 8.125rem);
   min-height: calc(100vh - 8.125rem);
   background: $white;
-  flex-grow: 1;
-  flex-shrink: 0;
-  align-items: flex-start;
 
   .content-wrapper {
     display: flex;
     overflow-y: hidden;
+    align-self: stretch;
     flex-direction: column;
-    width: 100%;
     flex-grow: 1;
     flex-wrap: wrap;
-    align-self: stretch;
+    width: 100%;
 
     > div {
       //overflow: hidden;
@@ -288,10 +305,10 @@ main[role="document"] {
         bottom: 0;
         left: 0;
         display: flex;
+        align-content: center;
+        align-items: center;
         align-items: center;
         justify-content: center;
-        align-items: center;
-        align-content: center;
         justify-content: center;
 
         .card {
@@ -301,11 +318,11 @@ main[role="document"] {
 
       > div[role="article"] {
         display: flex;
+        flex: 1;
+        flex-grow: 0;
+        flex-shrink: 0;
         width: 100%;
         background: $white;
-        flex-shrink: 0;
-        flex-grow: 0;
-        flex: 1;
 
         &.workflow {
           overflow: hidden;
@@ -313,14 +330,14 @@ main[role="document"] {
         }
 
         &.splash {
-          border-top: $card-border-width solid $card-border-color;
           align-items: center;
           justify-content: center;
+          border-top: $card-border-width solid $card-border-color;
 
           .fade-in {
             display: flex;
-            flex-direction: column;
             align-items: center;
+            flex-direction: column;
             justify-content: center;
 
             .products {
@@ -334,8 +351,8 @@ main[role="document"] {
 
           .fade-in {
             display: flex;
-            flex-direction: column;
             flex: 1;
+            flex-direction: column;
           }
         }
 
@@ -344,8 +361,8 @@ main[role="document"] {
 
           .fade-in {
             display: flex;
-            flex-direction: column;
             flex: 1;
+            flex-direction: column;
 
             .content {
               display: flex;
@@ -360,21 +377,21 @@ main[role="document"] {
                 .side-panel {
                   position: relative;
                   display: flex;
+                  flex-basis: 8rem;
                   flex-direction: column;
+                  flex-grow: 0;
+                  flex-shrink: 0;
                   margin: ($padding*2) 0 ($padding) ($padding*3);
                   padding: $padding;
-                  flex-basis: 8rem;
-                  flex-shrink: 0;
-                  flex-grow: 0;
                   @include for-big-desktop-up {
-                    width: 17.975rem;
                     flex-basis: 17.975rem;
+                    width: 17.975rem;
                   }
 
                   section {
-                    margin-bottom: $margin-bottom;
                     flex-grow: 0;
                     flex-shrink: 0;
+                    margin-bottom: $margin-bottom;
                   }
                 }
               }
@@ -386,8 +403,8 @@ main[role="document"] {
 
                 .content {
                   flex-direction: column;
-                  padding: ($padding*2) ($padding*4) 0;
                   flex-wrap: wrap;
+                  padding: ($padding*2) ($padding*4) 0;
 
                   .admin-header {
                     display: flex;
@@ -398,17 +415,17 @@ main[role="document"] {
                     h3,
                     h4,
                     h5 {
-                      margin: 0;
                       flex-grow: 1;
+                      margin: 0;
                     }
                   }
 
                   .modal {
                     display: flex;
-                    background: rgba($black, .5);
-                    background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, .5));
                     align-items: center;
                     justify-content: center;
+                    background: rgba($black, .5);
+                    background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, .5));
 
                     .card {
                       max-width: 24rem;
@@ -454,27 +471,27 @@ main[role="document"] {
 /*------------------------------------------------------------------------------------*/
 .content-panel-left {
   display: flex;
+  align-self: stretch;
+  flex-basis: 12rem;
   flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 0;
   width: auto;
   width: 12rem;
   color: $warm-gray-12;
   background: $warm-gray-02;
-  flex-shrink: 0;
-  flex-grow: 0;
-  flex-basis: 12rem;
-  align-self: stretch;
   @include transition(all .2s ease-in-out);
 
   .csr {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     width: auto;
     min-height: 4.75rem;
     padding: ($padding) ($padding*2);
     text-align: center;
     border-bottom: 2px solid $white;
     background-color: $warm-gray-04;
-    justify-content: center;
 
     h3 {
       margin: 0;
@@ -502,36 +519,38 @@ main[role="document"] {
 
     .user-name {
       display: flex;
+      align-items: center;
+      flex-basis: auto;
+      flex-grow: 0;
+      flex-shrink: 0;
       margin: 0;
       color: $white;
       font-size: $font-size-sm;
-      flex-grow: 0;
-      flex-shrink: 0;
-      flex-basis: auto;
-      align-items: center;
 
       span {
         overflow: hidden;
+        flex-basis: 9rem;
+        flex-grow: 0;
+        flex-shrink: 0;
         width: 9rem;
         padding-right: $padding;
         text-overflow: ellipsis;
-        flex-grow: 0;
-        flex-shrink: 0;
-        flex-basis: 9rem;
       }
 
       i {
-        text-align: center;
-        font-size: 1rem;
+        flex-basis: 1rem;
         flex-grow: 0;
         flex-shrink: 0;
-        flex-basis: 1rem;
+        text-align: center;
+        font-size: 1rem;
       }
     }
   }
 
   .logout {
     display: flex;
+    align-items: center;
+    justify-content: center;
     width: 3rem;
     width: auto;
     height: 3rem;
@@ -540,8 +559,6 @@ main[role="document"] {
     padding: ($padding) 0;
     border-radius: 50%;
     border-radius: $btn-border-radius;
-    align-items: center;
-    justify-content: center;
 
     div {
       display: flex;
@@ -567,6 +584,7 @@ main[role="document"] {
 .search {
   z-index: 10;
   display: flex;
+  align-items: flex-start;
   width: 100%;
   height: auto;
   margin-top: 0;
@@ -574,12 +592,12 @@ main[role="document"] {
   transition: margin 0.5s;
   opacity: 1;
   background: $white;
-  align-items: flex-start;
 
   .results,
   .results-wrapper {
-    width: 100%;
+    flex-basis: 100%;
     flex-grow: 1;
+    width: 100%;
 
     .survey-wrapper {
       padding: $padding*2;
@@ -601,18 +619,18 @@ main[role="document"] {
     .detailHeader {
       position: relative;
       display: flex;
-      background: $warm-gray-08;
       flex-grow: 0;
       flex-shrink: 0;
       justify-content: flex-start;
+      background: $warm-gray-08;
 
       section {
         dl {
           display: flex;
           flex-direction: column;
+          justify-content: flex-start;
           margin: ($padding/2);
           padding: ($padding/2) $padding;
-          justify-content: flex-start;
 
           div {
             display: flex;
@@ -664,13 +682,13 @@ main[role="document"] {
           top: $padding/2;
           right: $padding/2;
           right: ($padding/2);
+          align-items: center;
+          justify-content: center;
           min-width: 7rem;
           margin: 0;
           padding: ($padding/2) $padding;
-          background: $yellow-lighten-05;
+          background: $warm-gray-03;
           box-shadow: $card-box-shadow-alt;
-          justify-content: center;
-          align-items: center;
 
           dl {
             padding: 0;
@@ -691,9 +709,9 @@ main[role="document"] {
     }
     //stepper header
     .workflow-header {
+      flex-shrink: 0;
       padding: $padding;
       background-color: $warm-gray-01;
-      flex-shrink: 0;
 
       .rule {
         background: $warm-gray-03;
@@ -801,21 +819,21 @@ main[role="document"] {
         .side-panel {
           position: relative;
           display: flex;
+          flex-basis: 8rem;
           flex-direction: column;
+          flex-grow: 0;
+          flex-shrink: 0;
           width: 8rem;
           margin: ($padding);
-          flex-basis: 8rem;
-          flex-shrink: 0;
-          flex-grow: 0;
           @include for-big-desktop-up {
-            width: 17.975rem;
             flex-basis: 17.975rem;
+            width: 17.975rem;
           }
 
           section {
-            margin-bottom: $margin-bottom/2;
             flex-grow: 0;
             flex-shrink: 0;
+            margin-bottom: $margin-bottom/2;
 
             dl {
               display: flex;
@@ -825,19 +843,19 @@ main[role="document"] {
               div {
                 display: flex;
                 flex-direction: column;
-                margin: 0;
                 flex-wrap: wrap;
+                margin: 0;
 
                 dt {
+                  flex-basis: auto;
                   font-size: $font-size-sm;
                   font-weight: $font-weight-bold;
-                  flex-basis: auto;
                 }
 
                 dd {
                   display: flex;
-                  flex-direction: column;
                   flex-basis: auto;
+                  flex-direction: column;
                 }
 
                 &:last-child {
@@ -853,28 +871,32 @@ main[role="document"] {
 
       > section {
         display: flex;
-        height: 100%;
         flex-grow: 1;
         flex-shrink: 0;
+        height: 100%;
       }
     }
   }
 }
 //footer
 /*------------------------------------------------------------------------------------*/
-footer {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  align-items: center;
+.btn-footer {
+  margin-bottom: 0;
   flex-shrink: 0;
+  height: auto;
+  flex-grow: 0;
+  padding: 0.5rem;
+  align-items: center;
+  border-top: 1px dotted $warm-gray-04;
+  width: 100%;
+  footer {
+      flex-grow: 1;
+      flex-shrink: 0;
+      width: auto;
 
-  div[role="banner"] {
-    width: 100%;
-    margin-bottom: 0;
-    padding: $padding ($padding*2);
-    border-top: $border-width dotted $border-color;
-    background: $white;
+      div[role="banner"] {
+
+      }
   }
 }
 //ROUTE SPECIFIC STYLES
@@ -886,18 +908,20 @@ footer {
   display: flex;
   overflow: hidden;
   flex-direction: column;
-  height: auto;
   flex-grow: 1;
+  height: auto;
 
   .route {
     display: flex;
+    overflow: hidden;
     flex-direction: column;
     flex-grow: 1;
 
     .route-content {
       display: flex;
-      height: auto;
+      overflow: hidden;
       flex-grow: 1;
+      height: auto;
 
       .scroll {
         display: flex;
@@ -907,27 +931,27 @@ footer {
 
         .product-wrapper {
           display: flex;
-          flex-wrap: wrap;
           align-items: flex-start;
-          justify-content: space-around;
           flex-grow: 0;
           flex-shrink: 0;
+          flex-wrap: wrap;
+          justify-content: space-around;
 
           .product {
-            margin-bottom: $padding;
+            align-self: stretch;
+            flex-basis: 0;
             flex-grow: 1;
             flex-shrink: 0;
-            flex-basis: 0;
-            align-self: stretch;
+            margin-bottom: $padding;
 
             .card-footer {
               justify-content: space-around;
 
               .btn {
-                margin-left: 0;
+                flex-basis: 45%;
                 flex-grow: 0;
                 flex-shrink: 0;
-                flex-basis: 45%;
+                margin-left: 0;
               }
             }
           }
@@ -946,11 +970,11 @@ ul.list-cards {
     margin-bottom: $padding/2;
 
     a {
+      align-items: center;
       padding: $padding $padding*1.5;
       border: $card-border-width solid $card-border-color;
       border-radius: $card-border-radius;
       background: $white;
-      align-items: center;
 
       section {
         flex-direction: column;
@@ -968,14 +992,6 @@ ul.list-cards {
 
       i {
         color: $bright-blue-darken-04;
-
-        &.card-icon {
-          margin-right: $padding;
-        }
-
-        &.fa-map-marker {
-          justify-content: flex-start;
-        }
       }
 
       &:hover {
@@ -1002,10 +1018,13 @@ ul.list-cards {
   }
 }
 
-.quote-list, .policy-list {
+.quote-list, .policy-list, .claim-list {
   margin-bottom: $padding/2;
   padding: $padding*2;
   flex-grow: 1;
+  width: 100%;
+  margin-bottom: $padding/2;
+  padding: $padding*2;
 
   .card {
     display: flex;
@@ -1016,39 +1035,40 @@ ul.list-cards {
     .icon-name {
       display: flex;
       overflow: hidden;
+      align-items: center;
       flex-basis: 12rem;
       flex-wrap: wrap;
-      align-items: center;
 
       i {
         display: flex;
+        flex-basis: 2rem;
+        flex-grow: 0;
+        flex-shrink: 0;
+        justify-content: center;
         height: 2rem;
         margin: 0;
         font-size: $font-size-h2;
-        flex-grow: 0;
-        flex-shrink: 0;
-        flex-basis: 2rem;
-        justify-content: center;
       }
 
       .card-name {
         display: flex;
         overflow: hidden;
+        align-items: center;
+        flex-basis: 10rem;
+        flex-wrap: wrap;
         height: 2.875rem;
         padding-left: $padding;
-        flex-wrap: wrap;
-        flex-basis: 10rem;
 
         h5 {
           display: block;
           overflow: hidden;
-          margin: 0;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          line-height: $line-height-base;
+          flex-basis: 8.75rem;
           flex-grow: 0;
           flex-shrink: 0;
-          flex-basis: 8.75rem;
+          margin: 0;
+          white-space: pre-wrap;
+          text-overflow: ellipsis;
+          line-height: $line-height-base;
         }
       }
     }
@@ -1066,10 +1086,10 @@ ul.list-cards {
 
         li {
           display: flex;
-          padding: 0;
-          justify-content: space-between;
           flex-grow: 1;
           flex-shrink: 0;
+          justify-content: space-between;
+          padding: 0;
 
           &.header {
             padding: ($padding/4) 0;
@@ -1103,11 +1123,12 @@ ul.list-cards {
             }
           }
 
-          .quote-no, .policy-no {
-            padding-left: $padding;
+          .policy-no,
+          .quote-no {
+            flex-basis: 8rem;
             flex-grow: 0;
             flex-shrink: 0;
-            flex-basis: 8rem;
+            padding-left: $padding;
           }
 
           .property-address {
@@ -1115,29 +1136,30 @@ ul.list-cards {
             flex-shrink: 0;
           }
 
-          .quote-state, .policy-status {
+          .policy-status,
+          .quote-state {
+            flex-basis: 12rem;
             flex-grow: 0;
             flex-shrink: 0;
-            flex-basis: 9rem;
           }
 
           .effctive-date {
+            flex-basis: 5.75rem;
             flex-grow: 0;
             flex-shrink: 0;
-            flex-basis: 5.75rem;
           }
 
           .started-on {
+            flex-basis: 5.75rem;
             flex-grow: 0;
             flex-shrink: 0;
-            flex-basis: 5.75rem;
           }
 
           .premium {
-            padding-right: $padding;
+            flex-basis: 5rem;
             flex-grow: 0;
             flex-shrink: 0;
-            flex-basis: 5rem;
+            padding-right: $padding;
           }
         }
       }
@@ -1145,12 +1167,12 @@ ul.list-cards {
   }
 
   a {
+    align-items: center;
+    align-items: flex-start;
     padding: $padding $padding*1.5;
     border: $card-border-width solid $card-border-color;
     border-radius: $card-border-radius;
     background: $white;
-    align-items: center;
-    align-items: flex-start;
 
     section {
       display: flex;
@@ -1162,11 +1184,11 @@ ul.list-cards {
       h4,
       h5 {
         display: flex;
-        width: 20%;
-        margin: 0;
         flex-basis: 20%;
         flex-grow: 0;
         flex-shrink: 0;
+        width: 20%;
+        margin: 0;
       }
 
       p {
@@ -1175,20 +1197,20 @@ ul.list-cards {
 
       ul {
         display: flex;
+        flex-basis: 80%;
         flex-direction: column;
         width: 80%;
         margin: 0;
         padding: 0;
-        flex-basis: 80%;
       }
     }
 
     i {
       display: flex;
+      justify-content: center;
       width: 2rem;
       height: 2rem;
       font-size: $font-size-h2;
-      justify-content: center;
 
       &.card-icon {
         margin-right: $padding;
@@ -1221,7 +1243,6 @@ ul.list-cards {
     }
   }
 }
-
 //Customize Quote page
 /*------------------------------------------------------------------------------------*/
 #Customize {
@@ -1275,18 +1296,22 @@ ul.list-cards {
       color: $body-color;
       border-bottom: 2px solid $warm-gray-01;
       background-color: rgba($white, 0);
+
+      h3 {
+        flex-basis: $font-size-h3;
+      }
     }
 
     .form-group {
-      flex-direction: row;
       align-items: center;
+      flex-direction: row;
       justify-content: space-between;
 
       &.range-component,
       &.range-component,
       &.segmented {
-        flex-direction: column;
         align-items: flex-start;
+        flex-direction: column;
         justify-content: flex-start;
 
         .range-wrapper,
@@ -1316,25 +1341,17 @@ ul.list-cards {
   .results-wrapper {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 0;
     width: 100%;
     margin-bottom: $padding*2;
     padding-bottom: $paragraph-margin-bottom;
     border-bottom: 1px dashed $warm-gray-02;
-    flex-grow: 1;
-    flex-shrink: 0;
 
     .result-cards {
       margin: 0;
       padding: 0;
       list-style: none;
-
-      li {
-        a {
-          .fa-pencil {
-            font-size: $font-size-h4;
-          }
-        }
-      }
     }
   }
 }
@@ -1401,8 +1418,8 @@ ul.list-cards {
     }
 
     .btn {
-      margin-top: 23px;
       align-self: flex-start;
+      margin-top: 1.75rem;
     }
   }
 
@@ -1446,12 +1463,12 @@ ul.list-cards {
 
         .display-element {
           display: flex;
-          padding: $padding 0;
           flex-wrap: wrap;
+          padding: $padding 0;
 
           dl {
-            flex-shrink: 0;
             flex-grow: 1;
+            flex-shrink: 0;
 
             div {
               dd {
@@ -1469,8 +1486,8 @@ ul.list-cards {
         .display-element {
           display: flex;
           flex-direction: column;
-          margin-bottom: $padding;
           flex-wrap: wrap;
+          margin-bottom: $padding;
 
           dl {
             display: flex;
@@ -1483,9 +1500,9 @@ ul.list-cards {
 
             div {
               display: flex;
-              width: 100%;
               align-items: center;
               justify-content: space-between;
+              width: 100%;
 
               dt {
                 span {
@@ -1565,19 +1582,21 @@ ul.list-cards {
 
             .card-icon {
               display: flex;
-              flex-direction: column;
-              margin-right: $padding;
               align-items: center;
+              flex-direction: column;
               justify-content: center;
+              margin-right: $padding;
 
               i {
                 display: flex;
+                flex-grow: 0;
+                flex-shrink: 0;
+                align-items: center;
+                justify-content: center;
                 width: 2rem;
                 height: 2rem;
                 color: $bright-blue-darken-04;
                 font-size: $font-size-h2;
-                align-items: center;
-                justify-content: center;
               }
 
               label {
@@ -1668,9 +1687,9 @@ ul.list-cards {
   .error-wrapper {
     display: flex;
     overflow-y: auto;
-    flex-direction: row;
-    flex-direction: row;
     flex-basis: 100%;
+    flex-direction: row;
+    flex-direction: row;
 
     section {
       display: flex;
@@ -1696,14 +1715,17 @@ ul.list-cards {
 
     aside {
       display: flex;
+      align-items: center;
       flex-direction: column;
-      width: 12rem;
-      padding: $padding;
       flex-grow: 0;
       flex-shrink: 0;
-      align-items: center;
+      width: 12rem;
+      padding: $padding;
 
       .image {
+        flex-basis: 10rem;
+        flex-grow: 0;
+        flex-shrink: 0;
         width: 10rem;
         height: 10rem;
         margin-right: $padding;
@@ -1712,9 +1734,6 @@ ul.list-cards {
         background-image: url('../img/csr.jpg');
         background-position: right center;
         background-size: cover;
-        flex-basis: 10rem;
-        flex-grow: 0;
-        flex-shrink: 0;
       }
 
       .contact-info {
@@ -1741,9 +1760,9 @@ ul.list-cards {
 
     .survey-wrapper {
       display: flex;
+      align-items: center;
       flex-direction: column;
       justify-content: center;
-      align-items: center;
 
       .contact-message {
         .card {
@@ -1812,12 +1831,10 @@ ul.list-cards {
           }
 
           aside {
-            flex-shrink: 0;
             flex-grow: 0;
+            flex-shrink: 0;
           }
         }
-
-        footer {}
       }
     }
   }
@@ -1864,29 +1881,31 @@ ul.list-cards {
     }
 
     .site-nav {
-      width: 12rem;
-
+      //width: 12rem;
       ul {
-          hr.nav-division {
-              border-width: 0;
-              border-top: 2px dotted $warm-gray-04;
-              margin: ($padding*2)(-$padding);
-              padding: 0;
-          }
-          .btn {
-              &.btn-secondary {
-                  background: rgba($white, 0);
-                  border-color: rgba($warm-gray-04, .8);
+        hr.nav-division {
+          margin: ($padding*2) 0;
+          padding: 0;
+          border-width: 0;
+          border-top: 1px dotted $warm-gray-05;
+        }
 
-                  &:hover {
-                      background: rgba($white, .8);
-                      border-color: rgba($warm-gray-04, 1);
-                  }
-              }
-              &.btn-block {
-                  margin: 0 ($padding*2) ($padding*2) 0;
-              }
+        .btn {
+          &.btn-secondary {
+            border-color: rgba($warm-gray-04, .8);
+            background: rgba($white, 0);
+
+            &:hover {
+              border-color: rgba($warm-gray-04, 1);
+              background: rgba($white, .8);
+            }
           }
+
+          &.btn-block {
+            margin: 0 ($padding*2) ($padding*2) 0;
+          }
+        }
+
         li {
           span {
             a {
@@ -1900,72 +1919,77 @@ ul.list-cards {
     .detailHeader {
       position: relative;
       display: flex;
+      flex-grow: 0;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+      justify-content: flex-start;
       height: 4.75rem;
-      padding: ($padding/2) ($padding*2);
       color: $white;
       border-bottom: 2px solid $white;
       background: $warm-gray-08;
-      flex-grow: 0;
-      flex-shrink: 0;
-      justify-content: flex-start;
-      flex-wrap: wrap;
 
       section {
-        margin-right: $padding*3;
+        flex-basis: auto;
         flex-grow: 0;
         flex-shrink: 1;
-        flex-basis: auto;
+        margin-right: $padding*3;
+        padding: ($padding/2) 0;
 
         dl {
           margin-bottom: 0;
 
           div {
             dt {
-              color: $yellow-lighten-06;
               letter-spacing: 0.05em;
+              color: $yellow-lighten-06;
               font-size: $font-size-xs;
+              font-weight: $font-weight-normal;
               //text-transform: uppercase;
             }
 
             dd {
               margin-bottom: 0;
+              text-transform: uppercase;
               font-size: $font-size-sm;
               line-height: $headings-line-height;
-              text-transform: uppercase;
             }
           }
         }
 
         &.propertyAddress {
-            max-width: 19rem;
+          max-width: 19rem;
         }
 
         &.policyHolderMailingAddress {
-            max-width: 19rem;
+          max-width: 19rem;
         }
 
         &.policyholder {
-            max-width: 16rem;
+          max-width: 16rem;
         }
 
-        &.policyDetails, &.quoteDetails {
+        &.policyDetails,
+        &.quoteDetails {
+          display: flex;
+          flex-basis: 12rem;
+          width: 12rem;
+          max-width: 12rem;
+          padding: ($padding/2) ($padding/2) ($padding/2) ($padding*2);
+          background: rgba($black, .1);
+
+          dl {
             display: flex;
-            flex-basis: 12rem;
-            margin: (-$padding/2)($padding*2)(-$padding/2)(-$padding*2);
-            padding: ($padding/2)($padding*2);
-            background: rgba($black, .1);
-            dl {
-                display: flex;
-                > div {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-around;
-                    dd {
-                        font-weight: $font-weight-bold;
-                        color: $yellow-lighten-06;
-                    }
-                }
+
+            > div {
+              display: flex;
+              flex-direction: column;
+              justify-content: space-around;
+
+              dd {
+                color: $yellow-lighten-06;
+              }
             }
+          }
         }
 
         &.policyStatus {
@@ -1977,54 +2001,198 @@ ul.list-cards {
         }
 
         &.quoteEffectiveDate {
-            flex-grow: 1;
+          flex-grow: 1;
         }
 
         &.cancellationDate {
-            flex-grow: 1;
+          flex-grow: 1;
         }
 
         &.premium {
-          min-width: 6rem;
-          margin: 0 0 0 (-$padding*1.5);
-          padding: ($padding/2) $padding;
-          color: $warm-gray-12;
-          background: $yellow-lighten-06;
           align-self: flex-start;
+          min-width: 6rem;
+          margin: $padding/2;
+          padding: $padding;
+          color: $warm-gray-12;
+          background: $warm-gray-02;
 
           dt {
-              color: $warm-gray-12;
+            color: $warm-gray-12;
           }
 
           dd {
-            text-align: right;
             font-size: $font-size-h4;
           }
         }
       }
     }
+    .deductibleHeader {
+        position: relative;
+        display: flex;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        color: $white;
+        border-bottom: 2px solid $white;
+        background: $warm-gray-10;
+        margin-top: -2px;
+        height: 2.75rem;
+
+        section {
+          flex-basis: auto;
+          flex-grow: 0;
+          flex-shrink: 1;
+          margin-right: $padding*3;
+          padding: ($padding/2) 0;
+
+          dl {
+            margin-bottom: 0;
+
+            div {
+              dt {
+                letter-spacing: 0.05em;
+                color: $yellow-lighten-06;
+                font-size: $font-size-xs;
+                font-weight: $font-weight-normal;
+                //text-transform: uppercase;
+              }
+
+              dd {
+                margin-bottom: 0;
+                text-transform: uppercase;
+                font-size: $font-size-sm;
+                line-height: $headings-line-height;
+              }
+            }
+          }
+
+          &.propertyAddress {
+            max-width: 19rem;
+          }
+
+          &.policyHolderMailingAddress {
+            max-width: 19rem;
+          }
+
+          &.policyholder {
+            max-width: 16rem;
+          }
+
+          &.policyDetails,
+          &.quoteDetails {
+            display: flex;
+            flex-basis: 12rem;
+            width: 12rem;
+            max-width: 12rem;
+            padding: ($padding/2) ($padding/2) ($padding/2) ($padding*2);
+            background: rgba($black, .1);
+
+            dl {
+              display: flex;
+
+              > div {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+
+                dd {
+                  color: $yellow-lighten-06;
+                }
+              }
+            }
+          }
+
+          &.policyStatus {
+            //flex-grow: 1;
+          }
+
+          &.quoteStatus {
+            //flex-grow: 1;
+          }
+
+          &.quoteEffectiveDate {
+            flex-grow: 1;
+          }
+
+          &.cancellationDate {
+            flex-grow: 1;
+          }
+
+          &.premium {
+            align-self: flex-start;
+            min-width: 6rem;
+            margin: $padding/2;
+            padding: $padding;
+            color: $warm-gray-12;
+            background: $warm-gray-02;
+
+            dt {
+              color: $warm-gray-12;
+            }
+
+            dd {
+              font-size: $font-size-h4;
+            }
+          }
+        }
+    }
   }
 }
 // Generic Global Styles
+
 .flex-parent {
   display: flex;
-  flex-direction: row;
-  width: 100%;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
   align-content: space-between;
   align-items: flex-start;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  width: 100%;
 
   .flex-child {
-    margin: 0 ($padding*2) 0 0;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
     order: 0;
-    flex: 1 1 auto;
-    align-self: auto;
+    padding: 0 ($padding*2) 0 0;
   }
 
   .flex-child:last-of-type {
-    margin: 0;
-    flex: 1 1 auto;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
+    padding: 0;
+  }
+
+  .flex-2, .flex-2:last-of-type {
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: 50%;
+      &:last-of-type {
+    }
+  }
+
+  .flex-3, .flex-3:last-of-type {
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: 33.33%;
+    &:last-of-type {
+    }
+  }
+
+  .flex-4, .flex-4:last-of-type {
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: 25%;
+  }
+}
+
+.button-group {
+  display: flex;
+
+  .btn {
+    margin: 0 $padding $padding 0;
   }
 }
 
@@ -2035,15 +2203,15 @@ ul.list-cards {
     }
 
     .state {
+      flex-basis: 10rem;
       flex-grow: 0;
       flex-shrink: 0;
-      flex-basis: 10rem;
     }
 
     .zip {
+      flex-basis: 10rem;
       flex-grow: 0;
       flex-shrink: 0;
-      flex-basis: 10rem;
     }
   }
 }
@@ -2065,12 +2233,10 @@ ul.list-cards {
           padding: $padding;
           color: $warm-gray-08;
           background: $warm-gray-02;
-          font-size: 14px;
         }
 
         dd {
           padding: $padding;
-          font-size: $font-size-sm;
 
           &:nth-of-type(even) {
             background: $warm-gray-01;
@@ -2079,4 +2245,8 @@ ul.list-cards {
       }
     }
   }
+}
+
+#NotesFiles {
+  width: 100%;
 }

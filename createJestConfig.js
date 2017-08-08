@@ -8,7 +8,7 @@
  */
 
 // bbbbb
-'use strict';
+
 
 // Note: this file does not exist after ejecting.
 
@@ -23,7 +23,7 @@ module.exports = (resolve, rootDir, isEjecting) => {
   // TODO: I don't know if it's safe or not to just use / as path separator
   // in Jest configs. We need help from somebody with Windows to determine this.
   const config = {
-    collectCoverageFrom: ['src/**/*.{js,jsx}', '!src/index.js', '!src/routes.js', '!src/setupTests.js'],
+    collectCoverageFrom: ['src/**/*.{js,jsx}', '!src/index.js', '!src/routes.js', '!src/setupTests.js', '!src/Auth.js'],
     coverageReporters: ['lcov'],
     coverageDirectory: '<rootDir>/documentation',
     setupFiles: [resolve('config/polyfills.js')],
@@ -38,7 +38,7 @@ module.exports = (resolve, rootDir, isEjecting) => {
         '<rootDir>/node_modules/babel-jest'
         : resolve('config/jest/babelTransform.js'),
       '^.+\\.css$': resolve('config/jest/cssTransform.js'),
-      '^(?!.*\\.(js|jsx|css|json)$)': resolve('config/jest/fileTransform.js'),
+      '^(?!.*\\.(js|jsx|css|json)$)': resolve('config/jest/fileTransform.js')
     },
     transformIgnorePatterns: [
       '[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'

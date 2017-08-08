@@ -11,19 +11,27 @@
   box-shadow: $card-box-shadow;
 
   &.card-schedule-date {
-    max-width: 32rem;
+    max-width: 24em;
+  }
+
+  &.unsaved-changes {
+    max-width: 26rem;
   }
 
   .card-header {
+    flex-grow: 0;
+    flex-shrink: 0;
     margin-bottom: 0; // Removes the default margin-bottom of <hN>
     padding: $card-spacer-y $card-spacer-x;
     border-bottom: $card-border-width solid $card-border-color;
     background-color: $card-cap-bg;
-    flex-shrink: 0;
-    flex-grow: 0;
 
-    > h1, > h2, >h3, >h4, >h5 {
-        margin: 0;
+     > h2,
+     > h3,
+     > h4,
+     > h5,
+    > h1 {
+      margin: 0;
     }
 
     &:first-child {
@@ -33,11 +41,11 @@
     &.image {
       display: flex;
       flex-direction: column;
+      justify-content: flex-end;
       height: 8rem;
       background-color: $warm-gray-13;
       background-image: url("../img/background.png");
       background-size: cover;
-      justify-content: flex-end;
 
       &.lg {
         height: 12rem;
@@ -57,18 +65,18 @@
       h4,
       h5,
       h6 {
+        flex-basis: auto;
         margin: 0;
         padding: $padding;
         color: $white;
-        flex-basis: auto;
       }
     }
   }
 
   .card-block {
     overflow-y: auto;
-    padding: $card-spacer-x;
     flex-grow: 1;
+    padding: $card-spacer-x;
 
     .form-group {
       &:last-child {
@@ -89,18 +97,18 @@
 
   .card-footer {
     display: flex;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    justify-content: flex-end;
     padding: $card-spacer-y $card-spacer-x;
     border-top: $card-border-width solid $card-border-color;
     background-color: $card-cap-bg;
-    justify-content: flex-end;
-    flex-shrink: 0;
-    flex-grow: 0;
-    flex-wrap: wrap;
 
     a,
     button {
-      margin-left: $padding*2;
       align-self: center;
+      margin-left: $padding*2;
     }
 
     a {
@@ -112,9 +120,11 @@
       }
     }
 
+    .btn-footer,
     .btn-group {
       display: flex;
       justify-content: flex-end;
+      margin: 0;
     }
 
     &:last-child {
@@ -125,11 +135,11 @@
 
 .card-icon {
   display: flex;
+  align-items: center;
   flex-direction: column;
+  justify-content: center;
   width: 6rem;
   margin-right: $padding;
-  align-items: center;
-  justify-content: center;
 
   label {
     margin-bottom: 0;
@@ -140,9 +150,9 @@
 
 .ref-number {
   display: flex;
+  align-self: center;
   flex-direction: column;
   min-width: 10rem;
-  align-self: center;
 
   label {
     margin-bottom: 0;
@@ -151,4 +161,10 @@
   }
 
   span {}
+}
+
+.gradient-bg {
+  .card {
+    box-shadow: 0 0 40px 4px rgba($warm-gray-15, .9);
+  }
 }

@@ -34,7 +34,7 @@ export const TextInput = ({
   );
 
   const Label = label && (<label htmlFor={name}>
-    {label} &nbsp; {Hint}
+    {label}{Hint}
   </label>);
 
   return (

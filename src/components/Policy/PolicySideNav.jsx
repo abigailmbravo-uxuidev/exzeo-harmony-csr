@@ -49,18 +49,27 @@ const csrLinks = [{
   label: 'Cancel Policy',
   styleName: 'cancel',
   exact: true
+},
+{
+  key: 'endorsements',
+  link: '/policy/endorsements',
+  label: 'Endorsements',
+  styleName: 'endoresments',
+  exact: true
 }];
 
-const NewNoteFileUploaderPopup = (props) => {
+export const NewNoteFileUploaderPopup = (props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showNewNoteFileUploader: true });
 };
 
-const closeNewNoteFileUploader = (props) => {
+export const closeNewNoteFileUploader = (props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showNewNoteFileUploader: false });
 };
 
-const goToPage = (link, key, props) => {
+export const goToPage = (link, key, props) => {
   const workflowId = props.appState.instanceId;
+
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, submitting: true });
 
   const steps = [
     { name: 'hasUserEnteredData', data: { answer: 'No' } },
@@ -125,7 +134,7 @@ const SideNav = (props) => {
         </li>
       </ul>
       { props.appState.data.showNewNoteFileUploader === true &&
-        <NewNoteFileUploader noteType="policyNote" documentId={ documentId } closeButtonHandler={() => closeNewNoteFileUploader(props)} />
+        <NewNoteFileUploader noteType="Policy Note" documentId={documentId} closeButtonHandler={() => closeNewNoteFileUploader(props)} />
       }
     </nav>);
 };
