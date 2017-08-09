@@ -13,15 +13,6 @@ import * as serviceActions from '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 
-const payments = [
-  {
-    date: '05/27/2017',
-    description: 'PAYMENT RECEIVED',
-    note: '20170527-44',
-    amount: `$ ${normalizeNumber(3123)}`
-  }
-];
-
 const setRank = (additionalInterests) => {
   _.forEach(additionalInterests, (value) => {
     switch (value.type) {
@@ -59,34 +50,20 @@ const handleInitialize = (state) => {
   return values;
 };
 
-const paymentsData = [{
-  date: '3/07/2016',
-  description: 'Payment Received',
-  notes: '2016030739',
-  amount: '$ 4,142.00'
-}, {
-  date: '3/31/2016',
-  description: 'Payment Transfer',
-  notes: '20160331_TFR',
-  amount: '($ 1,876.00)'
-}];
-
-export class Payments extends React.Component {
-  render() {
-    const options = {
-      defaultSortName: 'date',
-      defaultSortOrder: 'desc'
-    };
-    return (
-      <BootstrapTable data={paymentsData} options={options}>
-        <TableHeaderColumn dataField="date" width="25%" isKey>Date</TableHeaderColumn>
-        <TableHeaderColumn dataField="description" width="25%">Description</TableHeaderColumn>
-        <TableHeaderColumn dataField="notes" width="25%">Notes</TableHeaderColumn>
-        <TableHeaderColumn dataField="amount" width="25%">Amount</TableHeaderColumn>
-      </BootstrapTable>
-    );
-  }
-  }
+export const Payments = ({ payments }) => {
+  const options = {
+    defaultSortName: 'date',
+    defaultSortOrder: 'desc'
+  };
+  return (
+    <BootstrapTable data={payments} options={options}>
+      <TableHeaderColumn dataField="date" width="25%" isKey>Date</TableHeaderColumn>
+      <TableHeaderColumn dataField="description" width="25%">Description</TableHeaderColumn>
+      <TableHeaderColumn dataField="notes" width="25%">Notes</TableHeaderColumn>
+      <TableHeaderColumn dataField="amount" width="25%">Amount</TableHeaderColumn>
+    </BootstrapTable>
+  );
+};
 
 
 const claimsData = [
@@ -137,6 +114,10 @@ export const resetCancelReasons = (props) => {
   props.dispatch(change('CancelPolicy', 'cancelReason', ''));
 };
 
+export const returnToCoveragePage = () => {
+
+};
+
 const cancelOptions = [
   {
     cancelType: 'Voluntary Cancellation',
@@ -152,95 +133,120 @@ const cancelOptions = [
   }
 ];
 
-export const CancelPolicy = (props) => {
-  const { policy, handleSubmit, fieldValues } = props;
+let isLoded = false;
+export class CancelPolicy extends React.Component {
+  componentWillReceiveProps = (nextProps) => {
+    if (!_.isEqual(this.props, nextProps)) {
+      if (nextProps.policy.policyNumber && !isLoded) {
+        isLoded = true;
+        nextProps.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
+        nextProps.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
+        const paymentOptions = {
+          effectiveDate: nextProps.policy.effectiveDate,
+          policyHolders: nextProps.policy.policyHolders,
+          additionalInterests: nextProps.policy.additionalInterests,
+          netPremium: nextProps.policy.rating.netPremium,
+          fees: {
+            empTrustFee: nextProps.policy.rating.worksheet.fees.empTrustFee,
+            mgaPolicyFee: nextProps.policy.rating.worksheet.fees.mgaPolicyFee
+          },
+          totalPremium: nextProps.policy.rating.totalPremium
+        };
+        this.props.actions.serviceActions.getBillingOptions(paymentOptions);
+      }
+    }
+  }
 
-  const { additionalInterests } = policy;
+  render() {
+    const { policy, handleSubmit, fieldValues } = this.props;
 
-  setRank(additionalInterests);
+    const { additionalInterests } = policy;
 
-  const cancelGroup = _.map(cancelOptions, option => ({ answer: option.cancelType }));
-  return (
-    <PolicyConnect>
-      <ClearErrorConnect />
-      <div className="route-content">
-        <div className="scroll">
-          <div className="form-group survey-wrapper cancel-policy" role="group">
-            <Form id="Cancellation" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
-              <section>
-                <div className="flex-parent">
-                  <h3>Cancel Policy</h3>
-                  <div className="btn-footer">
-                    <button className="btn btn-secondary">Return</button>
-                    <button className="btn btn-danger">Cancel Policy</button>
-                  </div>
-                </div>
+    setRank(additionalInterests);
 
-
-                <div className="flex-parent">
-                  <div className="flex-child wind-wbdr">
-                    <RadioField
-                      onChange={() => resetCancelReasons(props)}
-                      validations={['required']} name={'cancelOptions'} styleName={''} label={'Cancel Options'} segmented
-                      answers={cancelGroup}
-                    />
-                  </div>
-                </div>
-
-
-                <div className="flex-parent">
-
-
-                  <div className="flex-child">
-
-                    <div className="form-group">
-                      <label>Effective Date</label>
-                      <input type="date" />
+    const cancelGroup = _.map(cancelOptions, option => ({ answer: option.cancelType }));
+    return (
+      <PolicyConnect>
+        <ClearErrorConnect />
+        <div className="route-content">
+          <div className="scroll">
+            <div className="form-group survey-wrapper cancel-policy" role="group">
+              <Form id="Cancellation" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+                <section>
+                  <div className="flex-parent">
+                    <h3>Cancel Policy</h3>
+                    <div className="btn-footer">
+                      <button className="btn btn-secondary">Return</button>
+                      <button className="btn btn-danger">Cancel Policy</button>
                     </div>
                   </div>
 
-                  <div className="flex-child">
-                    <SelectField
-                      name="cancelReason" component="select" styleName={''} label="Cancel Reason" validations={['required']}
-                      answers={_.concat([], _.get(_.find(cancelOptions, option => option.cancelType === fieldValues.cancelOptions), 'cancelReason')).map(reason => ({
-                        answer: reason,
-                        label: reason
-                      }))}
-                    />
+
+                  <div className="flex-parent">
+                    <div className="flex-child wind-wbdr">
+                      <RadioField
+                        onChange={() => resetCancelReasons(this.props)}
+                        validations={['required']} name={'cancelOptions'} styleName={''} label={'Cancel Options'} segmented
+                        answers={cancelGroup}
+                      />
+                    </div>
                   </div>
+
+
+                  <div className="flex-parent">
+
+
+                    <div className="flex-child">
+
+                      <div className="form-group">
+                        <label>Effective Date</label>
+                        <input type="date" />
+                      </div>
+                    </div>
+
+                    <div className="flex-child">
+                      <SelectField
+                        name="cancelReason" component="select" styleName={''} label="Cancel Reason" validations={['required']}
+                        answers={_.concat([], _.get(_.find(cancelOptions, option => option.cancelType === fieldValues.cancelOptions), 'cancelReason')).map(reason => ({
+                          answer: reason,
+                          label: reason
+                        }))}
+                      />
+                    </div>
+                  </div>
+
+
+                </section>
+              </Form>
+              <section>
+                <h3>Payments</h3>
+
+                <div className="form-group flex-parent billing">
+                  <div className="flex-child"><label>Bill To</label> <span>{_.get(_.find(_.get(this.props.paymentOptions, 'options'), option => option.billToId === _.get(this.props.summaryLedger, 'billToId')), 'displayText')}</span></div>
+                  <div className="flex-child"><label>Bill Plan</label> <span>{_.get(this.props.summaryLedger, 'billPlan')}</span></div>
+                  <div className="flex-child"><div className="form-group"><label>Equity Date</label> <input type="date" /></div></div>
                 </div>
+
+                <Payments payments={this.props.paymentHistory || []} />
 
 
               </section>
-            </Form>
-            <section>
-              <h3>Payments</h3>
 
-              <div className="form-group flex-parent billing">
-                <div className="flex-child"><label>Bill To</label> <span>Semi-Annual to Policyholder</span></div>
-                <div className="flex-child"><label>Bill Plan</label> <span>Semi-Annual</span></div>
-                <div className="flex-child"><div className="form-group"><label>Equity Date</label> <input type="date" /></div></div>
-              </div>
+              <section>
+                <h3>Claims</h3>
 
-              <Payments />
+                <Claims />
 
 
-            </section>
+              </section>
 
-            <section>
-              <h3>Claims</h3>
-
-              <Claims />
-
-
-            </section>
-
+            </div>
           </div>
         </div>
-      </div>
-    </PolicyConnect>
-  );
-};
+      </PolicyConnect>
+    );
+  }
+}
 
 CancelPolicy.propTypes = {
   policy: PropTypes.shape()
@@ -251,7 +257,10 @@ const mapStateToProps = state => ({
   appState: state.appState,
   fieldValues: _.get(state.form, 'CancelPolicy.values', {}),
   initialValues: handleInitialize(state),
-  policy: handleGetPolicy(state)
+  policy: handleGetPolicy(state),
+  paymentHistory: state.service.paymentHistory,
+  summaryLedger: state.service.getSummaryLedger,
+  paymentOptions: state.service.billingOptions
 });
 
 const mapDispatchToProps = dispatch => ({
