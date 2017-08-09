@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { reduxForm, propTypes, Form, change } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
@@ -7,9 +8,10 @@ import _ from 'lodash';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import PolicyConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
-import normalizeNumber from '../Form/normalizeNumbers';
 import RadioField from '../Form/inputs/RadioField';
+import DateField from '../Form/inputs/DateField';
 import SelectField from '../Form/inputs/SelectField';
+import TextField from '../Form/inputs/TextField';
 import * as serviceActions from '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
@@ -47,6 +49,10 @@ const handleGetPolicy = (state) => {
 
 const handleInitialize = (state) => {
   const values = {};
+
+  const summaryLedger = state.service.getSummaryLedger || {};
+
+  values.equityDate = summaryLedger.equityDate ? moment.utc(summaryLedger.equityDate).format('MM/DD/YYYY') : '';
 
   return values;
 };
@@ -154,7 +160,7 @@ export class CancelPolicy extends React.Component {
   }
 
   render() {
-    const { policy, handleSubmit, fieldValues } = this.props;
+    const { policy, handleSubmit, fieldValues, isValid } = this.props;
 
     const { additionalInterests } = policy;
 
@@ -194,10 +200,8 @@ export class CancelPolicy extends React.Component {
 
                     <div className="flex-child">
 
-                      <div className="form-group">
-                        <label>Effective Date</label>
-                        <input type="date" />
-                      </div>
+                      <DateField validations={['required']} label={'Effective Date'} name={'effectiveDate'} />
+
                     </div>
 
                     <div className="flex-child">
@@ -208,6 +212,8 @@ export class CancelPolicy extends React.Component {
                           label: reason
                         }))}
                       />
+                      <TextField label={'Additional Reason'} name={'additionalReason'} />
+
                     </div>
                   </div>
 
@@ -220,7 +226,9 @@ export class CancelPolicy extends React.Component {
                 <div className="form-group flex-parent billing">
                   <div className="flex-child"><label>Bill To</label> <span>{_.get(_.find(_.get(this.props.paymentOptions, 'options'), option => option.billToId === _.get(this.props.summaryLedger, 'billToId')), 'displayText')}</span></div>
                   <div className="flex-child"><label>Bill Plan</label> <span>{_.get(this.props.summaryLedger, 'billPlan')}</span></div>
-                  <div className="flex-child"><div className="form-group"><label>Equity Date</label> <input type="date" /></div></div>
+                  <div className="flex-child"><div className="form-group">
+                    <TextField disabled label={'Equity Date'} name={'equityDate'} />
+                  </div></div>
                 </div>
 
                 <Payments payments={this.props.paymentHistory || []} />
