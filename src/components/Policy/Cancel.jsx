@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, propTypes, Form, change } from 'redux-form';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import PolicyConnect from '../../containers/Policy';
@@ -86,36 +87,31 @@ const claimsData = [
     lossDesc: 'Ins called in to file a claim for water damage to his living room ceiling.Ins ac handler was clogged causing the drain line to over flow and water starting coming out which effected the living room ceiling. Repairs have been made to the air handler.The damage is to the plaster on the ceiling and drywall.'
   }];
 
-export class Claims extends React.Component {
-  render() {
-    const options = {
-      defaultSortName: 'jeLossNo',
-      defaultSortOrder: 'desc'
-    };
-    return (
-      <BootstrapTable data={claimsData} options={options} >
-        <TableHeaderColumn dataField="jeLossNo" width="10%" isKey>JE Loss No</TableHeaderColumn>
-        <TableHeaderColumn dataField="lossID" width="10%">Loss ID</TableHeaderColumn>
-        <TableHeaderColumn dataField="dateLoss" width="10%">Date Loss</TableHeaderColumn>
-        <TableHeaderColumn dataField="reportDate" width="10%">Report Date</TableHeaderColumn>
-        <TableHeaderColumn dataField="closeDate" width="10%">Close Date</TableHeaderColumn>
-        <TableHeaderColumn dataField="lossStatus" width="20%">Loss Status</TableHeaderColumn>
-        <TableHeaderColumn dataField="lossDesc" width="30%" tdStyle={{ whiteSpace: 'normal' }}>Loss Description</TableHeaderColumn>
-      </BootstrapTable>
-    );
-  }
-}
+export const Claims = ({ claims }) => {
+  const options = {
+    defaultSortName: 'jeLossNo',
+    defaultSortOrder: 'desc'
+  };
+  return (
+    // chang to props claims when endpoint is ready
+    <BootstrapTable data={claimsData} options={options} >
+      <TableHeaderColumn dataField="jeLossNo" width="10%" isKey>JE Loss No</TableHeaderColumn>
+      <TableHeaderColumn dataField="lossID" width="10%">Loss ID</TableHeaderColumn>
+      <TableHeaderColumn dataField="dateLoss" width="10%">Date Loss</TableHeaderColumn>
+      <TableHeaderColumn dataField="reportDate" width="10%">Report Date</TableHeaderColumn>
+      <TableHeaderColumn dataField="closeDate" width="10%">Close Date</TableHeaderColumn>
+      <TableHeaderColumn dataField="lossStatus" width="20%">Loss Status</TableHeaderColumn>
+      <TableHeaderColumn dataField="lossDesc" width="30%" tdStyle={{ whiteSpace: 'normal' }}>Loss Description</TableHeaderColumn>
+    </BootstrapTable>
+  );
+};
 
 export const handleFormSubmit = (data, dispatch, props) => {
-
+  alert('Policy Canceled');
 };
 
 export const resetCancelReasons = (props) => {
   props.dispatch(change('CancelPolicy', 'cancelReason', ''));
-};
-
-export const returnToCoveragePage = () => {
-
 };
 
 const cancelOptions = [
@@ -176,8 +172,8 @@ export class CancelPolicy extends React.Component {
                   <div className="flex-parent">
                     <h3>Cancel Policy</h3>
                     <div className="btn-footer">
-                      <button className="btn btn-secondary">Return</button>
-                      <button className="btn btn-danger">Cancel Policy</button>
+                      <Link to={'/policy/coverage'} className="btn btn-secondary">Return</Link>
+                      <button type="submit" className="btn btn-danger">Cancel Policy</button>
                     </div>
                   </div>
 
