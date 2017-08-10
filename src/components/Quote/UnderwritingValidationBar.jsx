@@ -1,13 +1,21 @@
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { reduxForm, Form, Field } from 'redux-form';
 import _ from 'lodash';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as serviceActions from '../../actions/serviceActions';
+
+export const handleFormSubmit = (data, dispatch, props) => {
+
+};
 
 export const UnderwritingValidationBar = (props) => {
   const { tasks,
-     appState
+     appState,
+     handleSubmit,
+     pristine
    } = props;
 
   const taskData = (tasks && appState && tasks[appState.modelName]) ? tasks[appState.modelName].data : null;
@@ -31,10 +39,13 @@ export const UnderwritingValidationBar = (props) => {
       return <div />;
     }
   return (
-    <aside className="underwriting-validation">
-      <h4 className="uw-validation-header">Qualifier Status</h4>
-      <div>
-        {underwritingExceptions && _.filter(underwritingExceptions, { canOverride: false }).length > 0 &&
+    <Form id="UnderwritingOverride" submit={handleSubmit(handleFormSubmit)} noValidate>
+      <aside className="underwriting-validation">
+        <h4 className="uw-validation-header">Qualifier Status</h4>
+        <button type="submit" disabled={pristine}>Save</button>
+        <div>
+
+          {underwritingExceptions && _.filter(underwritingExceptions, { canOverride: false }).length > 0 &&
           <section className="msg-error">
             <h5>
               <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Error</h5>
@@ -48,22 +59,31 @@ export const UnderwritingValidationBar = (props) => {
             </div>
           </section>
         }
-        {underwritingExceptions && _.filter(underwritingExceptions, { canOverride: true }).length > 0 &&
+          {underwritingExceptions && _.filter(underwritingExceptions, { canOverride: true }).length > 0 &&
           <section className="msg-caution">
             <h5>
               <i className="fa fa-exclamation-triangle" aria-hidden="true" />&nbsp;Caution</h5>
             <div>
               <ul className="fa-ul">
                 {_.filter(underwritingExceptions, { canOverride: true }).map((underwritingException, index) => (
-                  <li key={index}><i className="fa-li fa fa-exclamation-triangle" aria-hidden="true" />{underwritingException.internalMessage}</li>
+                  <li key={index}><i className="fa-li fa fa-exclamation-triangle" aria-hidden="true" /><span>{underwritingException.internalMessage}</span>
+                    <label htmlFor={underwritingException._id}>Override </label>
+                    <Field
+                      name={underwritingException._id}
+                      id={underwritingException._id}
+                      component="input"
+                      type="checkbox"
+                    /></li>
                 ))}
               </ul>
             </div>
 
           </section>
         }
-      </div>
-    </aside>
+
+        </div>
+      </aside>
+    </Form>
   );
 };
 
@@ -90,9 +110,12 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }
 });
-
-export default connect(mapStateToProps, mapDispatchToProps)(UnderwritingValidationBar);
+// ------------------------------------------------
+// wire up redux form with the redux connect
+// ------------------------------------------------
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'UnderwritingOverride', enableReinitialize: true })(UnderwritingValidationBar));
