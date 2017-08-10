@@ -8,41 +8,73 @@ import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 
 export const handleFormSubmit = (data, dispatch, props) => {
+  const uwExceptions = props.quoteData.underwritingExceptions || [];
 
+  for (let i = 0; i < uwExceptions.length; i += 1) {
+    const uwException = uwExceptions[i];
+    if (uwException.canOverride && data[uwException._id] === true) {
+      uwException.overridden = true;
+    } else if (uwException.canOverride) {
+      uwException.overridden = false;
+    }
+  }
+  props.actions.serviceActions.saveUnderwritingExceptions(props.quoteData._id, uwExceptions);
 };
 
-export const UnderwritingValidationBar = (props) => {
-  const { tasks,
-     appState,
-     handleSubmit,
-     pristine
-   } = props;
-
-  const taskData = (tasks && appState && tasks[appState.modelName]) ? tasks[appState.modelName].data : null;
-
-  // combine all quote Objects from UW Exceptions into an array
-  // pull the latest quote object by lastUpdated date and set it as quote data
-
-  let underwritingExceptions = [];
-  let quoteData = null;
-  if (taskData) {
-    const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
-    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
+export const handleGetQuoteData = (state) => {
+  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName])
+    ? state.cg[state.appState.modelName].data
     : null;
-    quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
+  if (!taskData) { return {}; }
+  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
+    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
+    : {};
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
     ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
     : quoteEnd;
-    underwritingExceptions = quoteData && quoteData.underwritingExceptions ? quoteData.underwritingExceptions : [];
-  }
+  return quoteData;
+};
 
-    if (!quoteData) { // eslint-disable-line
-      return <div />;
+
+export const handleInitialize = (state) => {
+  const values = {};
+  const quoteData = handleGetQuoteData(state);
+
+  if (!quoteData) return values;
+
+  const underwritingExceptions = quoteData && quoteData.underwritingExceptions ? quoteData.underwritingExceptions : [];
+
+  for (let i = 0; i < underwritingExceptions.length; i += 1) {
+    const uwException = underwritingExceptions[i];
+    if (uwException.canOverride) {
+      values[uwException._id] = uwException.overridden;
     }
+  }
+  return values;
+};
+
+
+export const UnderwritingValidationBar = (props) => {
+  const {
+     handleSubmit,
+     pristine,
+     quoteData
+   } = props;
+
+  if (!quoteData) { // eslint-disable-line
+    return <div />;
+  }
+  let underwritingExceptions = [];
+
+  underwritingExceptions = quoteData && quoteData.underwritingExceptions ? quoteData.underwritingExceptions : [];
+
+  const noOverrideExceptions = _.filter(underwritingExceptions, { canOverride: true }).length === 0;
+
   return (
-    <Form id="UnderwritingOverride" submit={handleSubmit(handleFormSubmit)} noValidate>
+    <Form id="UnderwritingOverride" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
       <aside className="underwriting-validation">
         <h4 className="uw-validation-header">Qualifier Status</h4>
-        <button type="submit" disabled={pristine}>Save</button>
+        <button type="submit" disabled={pristine || noOverrideExceptions}>Save</button>
         <div>
 
           {underwritingExceptions && _.filter(underwritingExceptions, { canOverride: false }).length > 0 &&
@@ -65,7 +97,7 @@ export const UnderwritingValidationBar = (props) => {
               <i className="fa fa-exclamation-triangle" aria-hidden="true" />&nbsp;Caution</h5>
             <div>
               <ul className="fa-ul">
-                {_.filter(underwritingExceptions, { canOverride: true }).map((underwritingException, index) => (
+                {_.orderBy(_.filter(underwritingExceptions, { canOverride: true }), ['overridden'], ['asc']).map((underwritingException, index) => (
                   <li key={index}><i className="fa-li fa fa-exclamation-triangle" aria-hidden="true" /><span>{underwritingException.internalMessage}</span>
                     <label htmlFor={underwritingException._id}>Override </label>
                     <Field
@@ -105,7 +137,10 @@ UnderwritingValidationBar.propTypes = {
 const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
-  completedTasks: state.completedTasks
+  completedTasks: state.completedTasks,
+  quoteData: handleGetQuoteData(state),
+  fieldValues: _.get(state.form, 'UnderwritingOverride.values', {}),
+  initialValues: handleInitialize(state)
 });
 
 const mapDispatchToProps = dispatch => ({

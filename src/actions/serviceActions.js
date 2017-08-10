@@ -359,3 +359,29 @@ export const getPaymentHistory = policyNumber => (dispatch) => {
       ]));
     });
 };
+
+export const saveUnderwritingExceptions = (id, underwritingExceptions) => (dispatch) => {
+  const body = {
+    service: 'quote-data.services',
+    method: 'put',
+    path: String(' '),
+    data: {
+      _id: id,
+      underwritingExceptions
+    }
+  };
+  const axiosConfig = runnerSetup(body);
+
+  return axios(axiosConfig).then((response) => {
+    const data = { transactions: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
