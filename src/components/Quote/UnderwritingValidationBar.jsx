@@ -68,13 +68,13 @@ export const UnderwritingValidationBar = (props) => {
 
   underwritingExceptions = quoteData && quoteData.underwritingExceptions ? quoteData.underwritingExceptions : [];
 
-  const noOverrideExceptions = _.filter(underwritingExceptions, { canOverride: true }).length === 0;
+  const hasOverrideExceptions = _.filter(underwritingExceptions, { canOverride: true }).length > 0;
 
   return (
     <Form id="UnderwritingOverride" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
       <aside className="underwriting-validation">
         <h4 className="uw-validation-header">Qualifier Status</h4>
-        <button type="submit" disabled={pristine || noOverrideExceptions}>Save</button>
+        { hasOverrideExceptions && !pristine && <button type="submit">Save</button> }
         <div>
 
           {underwritingExceptions && _.filter(underwritingExceptions, { canOverride: false }).length > 0 &&
@@ -98,14 +98,16 @@ export const UnderwritingValidationBar = (props) => {
             <div>
               <ul className="fa-ul">
                 {_.orderBy(_.filter(underwritingExceptions, { canOverride: true }), ['overridden'], ['asc']).map((underwritingException, index) => (
-                  <li key={index}><i className="fa-li fa fa-exclamation-triangle" aria-hidden="true" /><span>{underwritingException.internalMessage}</span>
-                    <label htmlFor={underwritingException._id}>Override </label>
+                  <li className={underwritingException.overridden ? 'overridden' : ''} key={index}><i className="fa-li fa fa-exclamation-triangle" aria-hidden="true" /><span>{underwritingException.internalMessage}</span>
+
                     <Field
                       name={underwritingException._id}
                       id={underwritingException._id}
                       component="input"
                       type="checkbox"
-                    /></li>
+                    />
+                    <label htmlFor={underwritingException._id}>Override </label>
+                  </li>
                 ))}
               </ul>
             </div>
