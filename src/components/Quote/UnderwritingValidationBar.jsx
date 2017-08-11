@@ -78,14 +78,12 @@ export const UnderwritingValidationBar = (props) => {
     <Form id="UnderwritingOverride" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
       <aside className="underwriting-validation">
         <h4 className="uw-validation-header">Qualifier Status</h4>
-        { hasOverrideExceptions && !pristine && <button type="submit">Save</button> }
         <div>
-
           {underwritingExceptions && _.filter(underwritingExceptions, { canOverride: false }).length > 0 &&
           <section className="msg-error">
             <h5>
-              <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Error</h5>
-
+              <i className="fa fa-exclamation-circle" aria-hidden="true" /><span>Error</span>
+            </h5>
             <div>
               <ul className="fa-ul">
                 {_.filter(underwritingExceptions, { canOverride: false }).map((underwritingException, index) => (
@@ -98,27 +96,29 @@ export const UnderwritingValidationBar = (props) => {
           {underwritingExceptions && _.filter(underwritingExceptions, { canOverride: true }).length > 0 &&
           <section className="msg-caution">
             <h5>
-              <i className="fa fa-exclamation-triangle" aria-hidden="true" />&nbsp;Caution</h5>
+              <i className="fa fa-exclamation-triangle" aria-hidden="true" /><span>Caution</span>{ hasOverrideExceptions && !pristine && <button className="btn btn-sm" type="submit">Save</button> }
+            </h5>
             <div>
               <ul className="fa-ul">
                 {_.orderBy(_.filter(underwritingExceptions, { canOverride: true }), ['overridden'], ['asc']).map((underwritingException, index) => (
-                  <li className={underwritingException.overridden ? 'overridden' : ''} key={index}><i className="fa-li fa fa-exclamation-triangle" aria-hidden="true" /><span>{underwritingException.internalMessage}</span>
-
-                    <Field
-                      name={underwritingException._id}
-                      id={underwritingException._id}
-                      component="input"
-                      type="checkbox"
-                    />
-                    <label htmlFor={underwritingException._id}>Override </label>
+                  <li className={underwritingException.overridden ? 'overridden' : ''} key={index}>
+                    <i className="fa-li fa fa-exclamation-triangle" aria-hidden="true" />
+                    <span>{underwritingException.internalMessage}</span>
+                    <div className="override-wrapper">
+                      <Field
+                        name={underwritingException._id}
+                        id={underwritingException._id}
+                        component="input"
+                        type="checkbox"
+                      />
+                      <label htmlFor={underwritingException._id}>Override </label>
+                    </div>
                   </li>
                 ))}
               </ul>
             </div>
-
           </section>
         }
-
         </div>
       </aside>
     </Form>
