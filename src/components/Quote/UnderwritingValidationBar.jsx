@@ -3,17 +3,21 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Form, Field } from 'redux-form';
 import _ from 'lodash';
+import moment from 'moment';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 
 export const handleFormSubmit = (data, dispatch, props) => {
   const uwExceptions = props.quoteData.underwritingExceptions || [];
+  console.log(props.userProfile);
 
   for (let i = 0; i < uwExceptions.length; i += 1) {
     const uwException = uwExceptions[i];
     if (uwException.canOverride && data[uwException._id] === true) {
       uwException.overridden = true;
+      uwException.overriddenAt = moment.utc();
+      uwException.overriddenBy = { userId: props.userProfile.user_id, userName: props.userProfile.username };
     } else if (uwException.canOverride) {
       uwException.overridden = false;
     }
@@ -137,6 +141,7 @@ UnderwritingValidationBar.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  userProfile: state.authState.userProfile,
   tasks: state.cg,
   appState: state.appState,
   completedTasks: state.completedTasks,
