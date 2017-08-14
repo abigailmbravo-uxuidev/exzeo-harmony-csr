@@ -253,29 +253,37 @@
       }
     }
 
-    .underwriting-validation {
-      overflow-y: auto;
-      align-self: stretch;
-      flex-basis: 240px;
+    #UnderwritingOverride {
+      overflow: hidden;
+      display: flex;
+      flex-grow: 0;
       flex-shrink: 0;
-      width: 240px;
-      padding: 0 0 ($padding*2) ($padding*2);
-      border-left: dotted 1px $warm-gray-04;
+      height: 100%;
 
-      .uw-validation-header {
-        margin: ($padding*1.5) 0;
-      }
+      .underwriting-validation {
+        overflow-y: auto;
+        align-self: stretch;
+        flex-basis: 240px;
+        flex-shrink: 0;
+        width: 240px;
+        padding: 0 0 ($padding*2) ($padding*2);
+        border-left: dotted 1px $warm-gray-04;
 
-      section {
-        h5 {
-          color: $warm-gray-08;
-          background: $warm-gray-02;
-          font-size: 14px;
+        .uw-validation-header {
+          margin: ($padding*1.5) 0;
+        }
 
-          i.fa {
-            margin: 0 ($padding*2) 0 0;
-            padding: ($padding*2);
-            color: $white;
+        section {
+          h5 {
+            color: $warm-gray-08;
+            background: $warm-gray-02;
+            font-size: 14px;
+
+            i.fa {
+              margin: 0 ($padding*2) 0 0;
+              padding: ($padding*2);
+              color: $white;
+            }
           }
         }
 
@@ -291,76 +299,75 @@
               font-size: $font-size-base;
 
               &.overridden {
-                  i.fa {
-                      color: $warm-gray-05;
-                  }
-                  span {
-                      color: $warm-gray-04;
-                  }
+                i.fa {
+                  color: $warm-gray-03;
+                }
 
-                  .override-wrapper {
-                      input {
-                          &:checked {
-                              + label {
-                                  color: $warm-gray-05;
-                                  &:after {
-                                      background: $warm-gray-05;
-                                      border-color: $warm-gray-04;
-                                  }
-                              }
-                          }
+                span {
+                  color: $warm-gray-04;
+                }
+
+                .override-wrapper {
+                  input {
+                    &:checked {
+                      + label {
+                        &:after {}
                       }
+                    }
                   }
+                }
               }
 
               .override-wrapper {
-                  position: relative;
-                  display: flex;
-                  margin-top: $padding;
-                  input {
-                      &:checked {
-                          + label {
-                              &:after {
-                                  content: '\f00c';
-                                  font-family: $font-family-icon;
-                                  color: $white;
-                                  position: absolute;
-                                  width: 1rem;
-                                  height: 1rem;
-                                  border-radius: $border-radius;
-                                  border: 1px solid $bright-blue-darken-03;
-                                  background: $bright-blue-darken-04;
-                                  top: 0;
-                                  left: -$padding*3;
-                                  z-index: 20;
-                                  display: flex;
-                                  align-items: center;
-                                  justify-content: center;
-                                  font-size: $font-size-sm;
-                              }
-                          }
-                      }
-                  }
-                  label {
-                      position: absolute;
-                      margin-bottom: 0;
-                      left: $padding*3;
-                      height: 1rem;
-                      line-height: 1rem;
+                position: relative;
+                display: flex;
+                margin-top: $padding;
 
-                      &:before {
-                          content: '';
-                          position: absolute;
-                          width: 1rem;
-                          height: 1rem;
-                          border-radius: $border-radius;
-                          border: 1px solid $warm-gray-10;
-                          background: $white;
-                          top: 0;
-                          left: -$padding*3;
-                          z-index: 10;
+                input {
+                  &:checked {
+                    + label {
+                      &:after {
+                        content: '\f00c';
+                        font-family: $font-family-icon;
+                        color: $white;
+                        position: absolute;
+                        width: 1rem;
+                        height: 1rem;
+                        border-radius: $border-radius;
+                        border: 1px solid $bright-blue-darken-03;
+                        background: $bright-blue-darken-04;
+                        top: 0;
+                        left: -$padding*3;
+                        z-index: 20;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: $font-size-sm;
                       }
+                    }
                   }
+                }
+
+                label {
+                  position: absolute;
+                  margin-bottom: 0;
+                  left: $padding*3;
+                  height: 1rem;
+                  line-height: 1rem;
+
+                  &:before {
+                    content: '';
+                    position: absolute;
+                    width: 1rem;
+                    height: 1rem;
+                    border-radius: $border-radius;
+                    border: 1px solid $warm-gray-10;
+                    background: $white;
+                    top: 0;
+                    left: -$padding*3;
+                    z-index: 10;
+                  }
+                }
               }
             }
 
@@ -396,16 +403,18 @@
             flex-shrink: 0;
             width: auto;
           }
+
           span {
-              flex-grow: 1;
-              flex-shrink: 1;
-              padding-right: ($padding*2.25);
+            flex-grow: 1;
+            flex-shrink: 1;
+            padding-right: ($padding*2.25);
           }
+
           button {
-              flex-grow: 0;
-              flex-shrink: 0;
-              width: auto;
-              margin-right: $padding;
+            flex-grow: 0;
+            flex-shrink: 0;
+            width: auto;
+            margin-right: $padding;
           }
         }
 
@@ -603,13 +612,13 @@
 }
 
 #MailingAddressBilling {
-    .bill-plan {
-        .segmented {
-            .segmented-answer-wrapper {
-                .radio-column-3 {
-                    width: 33.3%
-                }
-            }
+  .bill-plan {
+    .segmented {
+      .segmented-answer-wrapper {
+        .radio-column-3 {
+          width: 33.3%;
         }
+      }
     }
+  }
 }

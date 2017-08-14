@@ -96,7 +96,7 @@ export const UnderwritingValidationBar = (props) => {
           {underwritingExceptions && _.filter(underwritingExceptions, { canOverride: true }).length > 0 &&
           <section className="msg-caution">
             <h5>
-              <i className="fa fa-exclamation-triangle" aria-hidden="true" /><span>Caution</span>{ hasOverrideExceptions && !pristine && <button className="btn btn-sm" type="submit">Save</button> }
+              <i className="fa fa-exclamation-triangle" aria-hidden="true" /><span>Caution</span>{ hasOverrideExceptions && !pristine && <button className="btn btn-sm btn-primary" type="submit">Save</button> }
             </h5>
             <div>
               <ul className="fa-ul">
