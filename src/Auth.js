@@ -6,6 +6,7 @@ import history from './history';
 
 export default class Auth {
   auth0 = new auth0.WebAuth({
+    audience: process.env.REACT_APP_AUTH0_AUDIENCE,
     domain: process.env.REACT_APP_AUTH0_DOMAIN,
     clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
     redirectUri: `${process.env.REACT_APP_AUTH0_PRIMARY_URL}/callback`,
