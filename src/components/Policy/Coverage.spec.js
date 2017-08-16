@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
-import ConnectedApp, { getPropertyAppraisialLink } from './Coverage';
+import ConnectedApp, { Coverage, getPropertyAppraisialLink } from './Coverage';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
@@ -13,6 +13,9 @@ const mockStore = configureStore(middlewares);
 describe('Testing Coverage component', () => {
   it('should test connected app', () => {
     const initialState = {
+      service: {
+        paymentOptions: {}
+      },
       cg: {
         bb: {
           data: {
@@ -29,7 +32,17 @@ describe('Testing Coverage component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      summaryLedger: {
+
+      },
+      policy: {
+        rating: {}
+      },
       actions: {
+        serviceActions: {
+          getBillingOptions() { return Promise.resolve(); },
+          getSummaryLedger() { return Promise.resolve(); }
+        },
         errorActions: { dispatchClearAppError() { } }
       },
       fieldQuestions: [],
@@ -53,6 +66,10 @@ describe('Testing Coverage component', () => {
         <ConnectedApp {...props} />
       </Provider>);
     expect(wrapper);
+
+    const wrapper2 = shallow(<Coverage store={store} {...props} />);
+
+    wrapper2.instance().componentWillReceiveProps({ policy: { policyNumber: '324324', rating: { worksheet: { fees: {} } } } });
   });
 
   it('should test getPropertyAppraisialLink', () => {

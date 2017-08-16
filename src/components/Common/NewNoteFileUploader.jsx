@@ -12,12 +12,12 @@ export const submitNote = (data, dispatch, props) => {
   const { user, noteType, documentId } = props;
   const noteData = {
     number: documentId,
-    noteType: noteType,
+    noteType,
     noteContent: data.noteContent,
     contactType: 'Agent',
     createdAt: new Date().getTime(),
     noteAttachments: [],
-    createdBy:{
+    createdBy: {
       useerId: user.user_id,
       userName: user.username
     },
@@ -38,14 +38,14 @@ export const minimzeButtonHandler = (props) => {
 
 export const validate = (values) => {
   const errors = {};
-  if (!values.noteContent) errors.noteContent = "Note Content Required";
+  if (!values.noteContent) errors.noteContent = 'Note Content Required';
   return errors;
 };
 
 const renderNotes = ({ input, label, type, meta: { touched, error } }) => (
-  <div className="text-area-wrapper">
+  <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
     <textarea {...input} placeholder={label} rows="10" cols="40" />
-    { touched && error && <span>{ error }</span> }
+    { touched && error && <span className="error-message">{ error }</span> }
   </div>
   );
 
@@ -76,8 +76,9 @@ export const NewNoteFileUploader = (props, { closeButtonHandler }) => {
         <Form id="NewNoteFileUploader" onSubmit={props.handleSubmit(submitNote)} noValidate>
           <div className="content state-initial">
             <div className="flex-contents">
+              <label>Note Type</label>
               <Field component="select" name="contactType" disabled={!contactTypes.length}>
-                { contactTypes.map(option => <option value={option} key={option}>{ option }</option>) }
+                { contactTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
               </Field>
               <Field name="noteContent" component={renderNotes} label="Note Content" />
             </div>
