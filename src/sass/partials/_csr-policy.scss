@@ -79,6 +79,8 @@
                   flex-direction: column;
                   width: 6rem;
                   margin-top: 0.75rem;
+                  flex-grow: 0;
+                  flex-shrink: 0;
 
                   i {
                     text-align: center;
@@ -108,6 +110,7 @@
 
                   .contact-methods {
                     display: flex;
+                    flex-wrap: wrap;
 
                     p {
                       display: flex;
@@ -193,6 +196,21 @@
                       }
                     }
                   }
+                }
+
+                .electronic-delivery {
+                    display: flex;
+                    align-items: center;
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    width: auto;
+                    font-size: $font-size-sm;
+
+                    label {
+                        font-size: $font-size-sm;
+                        margin-bottom: 0;
+                        margin-right: $padding;
+                    }
                 }
               }
             }

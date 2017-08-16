@@ -69,9 +69,9 @@ ${policyHolderMailingAddress.city} ${policyHolderMailingAddress.state}, ${policy
                       <p className="email">
                         <a href={`mailto: ${policyHolder.emailAddress}`}><i className="fa fa-envelope" />{policyHolder.emailAddress}</a>
                       </p>
-                      <p><label>Electronic Delivery: </label> {policyHolder.electronicDelivery ? 'Yes' : 'No'} </p>
                     </div>
                   </div>
+                  <div className="electronic-delivery"><label>Electronic Delivery: </label> {policyHolder.electronicDelivery ? 'Yes' : 'No'}</div>
                 </div>)) }
               </section>
               { agency && selectedAgent && <section className="agency-cards">
