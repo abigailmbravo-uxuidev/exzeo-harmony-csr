@@ -538,7 +538,20 @@ export class Coverage extends Component {
                       <div className="flex-child email-address">
                         <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH1email'} />
                       </div>
-                    </div>
+                      <div className="flex-child electronicDelivery">
+                        <RadioField
+                          name={''} styleName={'electronicDelivery'} label={'Electronic Delivery'} onChange={function () {}} segmented answers={[
+                            {
+                              answer: false,
+                              label: 'No'
+                            }, {
+                              answer: true,
+                              label: 'Yes'
+                            }
+                          ]}
+                        />
+                      </div>
+                    </div>        
                   </div>
                   <div id="policy-holder-b" className="policy-holder-b flex-child">
                     <h3>Secondary Policyholder</h3>
