@@ -44,14 +44,14 @@ value.rank = 5; // eslint-disable-line
   });
 };
 
-const handleGetPolicy = (state) => {
+export const handleGetPolicy = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
   const quoteData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
   return quoteData;
 };
 
-const handleInitialize = (state) => {
+export const handleInitialize = (state) => {
   const policy = handleGetPolicy(state);
 
   const values = {};
@@ -63,7 +63,7 @@ const handleInitialize = (state) => {
   return values;
 };
 
-const getPaymentDescription = (event, props) => {
+export const getPaymentDescription = (event, props) => {
   const selectedDescriptionType = _.find(props.paymentOptions, type => type.paymentType === event.target.value);
 
   props.actions.appStateActions.setAppState(props.appState.modelName,

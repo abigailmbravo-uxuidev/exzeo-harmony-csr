@@ -23,7 +23,7 @@ function wrapWithContext(context, contextTypes, children) {
 const policy = {
   companyCode: 'TTIC',
   state: 'FL',
-  agentCode: 123213,
+  agentCode: 100209,
   agencyCode: 100011,
   policyHolderMailingAddress: {
     careOf: null,
@@ -73,7 +73,8 @@ describe('Testing Coverage component', () => {
     const props = {
       actions: {
         serviceActions: {
-          getAgents() {}
+          getAgents() {},
+          getAgency() {}
         },
         appStateActions: {
           setAppState() {}
@@ -174,6 +175,11 @@ describe('Testing Coverage component', () => {
     const contextTypes = { router: React.PropTypes.object };
     const wrapper = wrapWithContext(context, contextTypes, <PolicyholderAgent />, React);
     expect(wrapper);
+
+    const shallowWrapper = shallow(<PolicyholderAgent store={store} {...props} />);
+    expect(shallowWrapper);
+
+    shallowWrapper.instance().componentWillReceiveProps({ policy, actions: props.actions });
   });
   it('should test handleGetPolicy', () => {
     const initialState = {

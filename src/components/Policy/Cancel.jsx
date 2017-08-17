@@ -16,38 +16,14 @@ import * as serviceActions from '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 
-const setRank = (additionalInterests) => {
-  _.forEach(additionalInterests, (value) => {
-    switch (value.type) {
-      case 'Mortgagee':
-value.rank = 1; // eslint-disable-line
-        break;
-      case 'Additional Insured':
-value.rank = 2; // eslint-disable-line
-        break;
-      case 'Additional Interest':
-value.rank = 3; // eslint-disable-line
-        break;
-      case 'Lienholder':
-value.rank = 4; // eslint-disable-line
-        break;
-      case 'Bill Payer':
-value.rank = 5; // eslint-disable-line
-        break;
-      default:
-        break;
-    }
-  });
-};
-
-const handleGetPolicy = (state) => {
+export const handleGetPolicy = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
   const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
   return policyData;
 };
 
-const handleInitialize = (state) => {
+export const handleInitialize = (state) => {
   const values = {};
 
   const summaryLedger = state.service.getSummaryLedger || {};
@@ -161,10 +137,6 @@ export class CancelPolicy extends React.Component {
 
   render() {
     const { policy, handleSubmit, fieldValues, isValid } = this.props;
-
-    const { additionalInterests } = policy;
-
-    setRank(additionalInterests);
 
     const cancelGroup = _.map(cancelOptions, option => ({ answer: option.cancelType }));
     return (

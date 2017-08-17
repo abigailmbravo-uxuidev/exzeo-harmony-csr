@@ -73,7 +73,7 @@ const getDocumentId = (props) => {
   return policyData.policyNumber;
 };
 
-const SideNav = (props) => {
+export const SideNav = (props) => {
   const documentId = getDocumentId(props);
 
   return (
