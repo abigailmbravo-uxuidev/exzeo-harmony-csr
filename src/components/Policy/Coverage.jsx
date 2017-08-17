@@ -7,6 +7,7 @@ import localStorage from 'localStorage';
 import { reduxForm, propTypes } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as questionsActions from '../../actions/questionsActions';
+import * as serviceActions from '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import PolicyConnect from '../../containers/Policy';
@@ -37,14 +38,12 @@ const handleGetPolicy = (state) => {
 // ];
 
 export const getPropertyAppraisialLink = (county, questions) => {
-  console.log(county);
   const answers = _.get(_.find(questions, { name: 'propertyAppraisal' }), 'answers') || [];
-  console.log(answers);
-
   return _.find(answers, { label: county }) || {};
 };
 
 const handleInitialize = state => handleGetPolicy(state);
+let isLoded = false;
 
 export class Coverage extends Component {
 
@@ -55,7 +54,7 @@ export class Coverage extends Component {
     if (isNewTab) {
       localStorage.setItem('isNewTab', false);
 
-      this.props.actions.cgActions.startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds`}).then((result) => {
+      this.props.actions.cgActions.startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` }).then((result) => {
         const steps = [];
         const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData'));
 
@@ -73,10 +72,32 @@ export class Coverage extends Component {
 
         this.props.actions.appStateActions.setAppState('csrQuote', startResult.modelInstanceId, { ...this.props.appState.data, submitting: true });
         this.props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
-          this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+          this.props.actions.appStateActions.setAppState('csrQuote',
           startResult.modelInstanceId, { ...this.props.appState.data, submitting: false });
         });
       });
+    }
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    if (!_.isEqual(this.props, nextProps)) {
+      if (nextProps.policy.policyNumber && !isLoded) {
+        isLoded = true;
+        this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
+
+        const paymentOptions = {
+          effectiveDate: nextProps.policy.effectiveDate,
+          policyHolders: nextProps.policy.policyHolders,
+          additionalInterests: nextProps.policy.additionalInterests,
+          netPremium: nextProps.policy.rating.netPremium,
+          fees: {
+            empTrustFee: nextProps.policy.rating.worksheet.fees.empTrustFee,
+            mgaPolicyFee: nextProps.policy.rating.worksheet.fees.mgaPolicyFee
+          },
+          totalPremium: nextProps.policy.rating.totalPremium
+        };
+        this.props.actions.serviceActions.getBillingOptions(paymentOptions);
+      }
     }
   }
 
@@ -90,12 +111,12 @@ export class Coverage extends Component {
     underwritingAnswers
   } = this.props.policy;
 
-    const { questions } = this.props;
+    const { questions, summaryLedger, paymentOptions } = this.props;
 
     const discountSurcharge = [
       {
-        discountSurcharge: 'Wind Excluded',
-        value: _.get(rating, 'windMitigationDiscount') === 0 ? 'No' : 'Yes'
+        discountSurcharge: 'Townhouse/Rowhouse',
+        value: _.get(property, 'townhouseRowhouse') ? 'No' : 'Yes'
       }, {
         discountSurcharge: 'Property Ever Rented',
         value: _.get(underwritingAnswers, 'rented.answer') === 'Yes' ? 'Yes' : 'No'
@@ -122,22 +143,22 @@ export class Coverage extends Component {
 
     const coverageLimitsData = [
       {
-        coverage: 'Dwelling',
+        coverage: 'Dwelling Limit',
         value: `$ ${normalizeNumbers(_.get(coverageLimits, 'dwelling.amount'))}`
       }, {
-        coverage: 'Other Structures',
+        coverage: 'Other Structures Limit',
         value: `$ ${normalizeNumbers(_.get(coverageLimits, 'otherStructures.amount'))}`
       }, {
-        coverage: 'Personal Property',
+        coverage: 'Personal Property Limit',
         value: `$ ${normalizeNumbers(_.get(coverageLimits, 'personalProperty.amount'))}`
       }, {
-        coverage: 'Additional Living Expenses',
+        coverage: 'Loss of Use Limit',
         value: `$ ${normalizeNumbers(_.get(coverageLimits, 'lossOfUse.amount'))}`
       }, {
-        coverage: 'Personal Liability',
+        coverage: 'Personal Liability Limit',
         value: `$ ${normalizeNumbers(_.get(coverageLimits, 'personalLiability.amount'))}`
       }, {
-        coverage: 'Medical Payments',
+        coverage: 'Medical Payments to Others Limit',
         value: `$ ${normalizeNumbers(_.get(coverageLimits, 'medicalPayments.amount'))}`
       }
     ];
@@ -153,7 +174,7 @@ export class Coverage extends Component {
         coverage: 'Personal Property Repl Cost',
         value: _.get(coverageOptions, 'personalPropertyReplacementCost.answer') ? 'Yes' : 'No'
       }, {
-        coverage: 'Ordinance or Law Coverage',
+        coverage: 'Ordinance or Law Coverage Limit',
         value: `${_.get(coverageLimits, 'ordinanceOrLaw.amount')}%`
       }, {
         coverage: 'Incidental Occ Main',
@@ -161,30 +182,36 @@ export class Coverage extends Component {
       }, {
         coverage: 'Incidental Occ Other',
         value: _.get(coverageOptions, 'propertyIncidentalOccupanciesOtherStructures.answer') ? 'Yes' : 'No'
+      },
+      {
+        coverage: 'Incidental Occ Liability',
+        value: _.get(coverageOptions, 'liabilityIncidentalOccupancies.answer') ? 'Yes' : 'No'
       }
     ];
 
     const premium = [{
       premium: 'Current Premium',
-      value: `$ ${normalizeNumbers(_.get(rating, 'totalPremium'))}`
+      value: `$ ${normalizeNumbers(_.get(summaryLedger, 'currentPremium'))}`
     }, {
       premium: 'Initial Premium',
-      value: `$ ${normalizeNumbers(_.get(rating, 'netPremium'))}`
+      value: `$ ${normalizeNumbers(_.get(summaryLedger, 'initialPremium'))}`
+    },
+    {
+      premium: 'Balance Due',
+      value: `$ ${normalizeNumbers(_.get(summaryLedger, 'balance'))}`
     }];
 
     const billing = [
       {
-        coverage: 'Balance Due',
-        value: `$ ${normalizeNumbers(_.get(rating, 'totalPremium'))}`
-      }, {
         coverage: 'Next Payment',
-        value: `$ ${normalizeNumbers(_.get(rating, 'totalPremium'))}`
-      }, {
+        value: `$ ${normalizeNumbers(_.get(summaryLedger, 'noticeAmountDue'))}`
+      },
+      {
         coverage: 'Bill To',
-        value: _.get(this.props.policy, 'billToType')
+        value: `${_.get(_.find(_.get(paymentOptions, 'options'), option => option.billToId === _.get(summaryLedger, 'billToId')), 'displayText')}`
       }, {
         coverage: 'Bill Plan',
-        value: _.get(this.props.policy, 'billPlan')
+        value: _.get(summaryLedger, 'billPlan')
       }
     ];
 
@@ -360,6 +387,8 @@ redux mapping
 ------------------------------------------------
 */
 const mapStateToProps = state => ({
+  paymentOptions: state.service.billingOptions,
+  summaryLedger: state.service.getSummaryLedger,
   tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'Coverage.values', {}),
@@ -371,6 +400,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     questionsActions: bindActionCreators(questionsActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)

@@ -231,7 +231,7 @@ export const getTransactionHistory = policyNumber => (dispatch) => {
     });
 };
 
-export const addTransaction = (props, batchNumber, cashType, cashDescription, cashAmount) => (dispatch) => {
+export const addTransaction = (props, submitData) => (dispatch) => {
   const body = {
     service: 'billing.services',
     method: 'POST',
@@ -243,17 +243,17 @@ export const addTransaction = (props, batchNumber, cashType, cashDescription, ca
       policyNumber: props.policy.policyNumber,
       policyTerm: props.policy.policyTerm,
       policyAccountCode: props.policy.policyAccountCode,
-      date: new Date(),
-      type: cashType,
-      description: cashDescription,
-      batch: batchNumber,
-      amount: cashAmount
+      date: submitData.cashDate,
+      type: submitData.cashType,
+      description: submitData.cashDescription,
+      batch: submitData.batchNumber,
+      amount: submitData.amount
     }
   };
   const axiosConfig = runnerSetup(body);
 
   return axios(axiosConfig).then((response) => {
-    const data = { notes: response.data.result };
+    const data = { transactions: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));
@@ -348,6 +348,40 @@ export const getPaymentHistory = policyNumber => (dispatch) => {
 
   return axios(axiosConfig).then((response) => {
     const data = { paymentHistory: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
+export const getBillingOptions = paymentOptions => (dispatch) => {
+        // const paymentOptions = {
+        //   effectiveDate: nextProps.policy.effectiveDate,
+        //   policyHolders: nextProps.policy.policyHolders,
+        //   additionalInterests: nextProps.policy.additionalInterests,
+        //   netPremium: nextProps.policy.rating.netPremium,
+        //   fees: {
+        //     empTrustFee: nextProps.policy.rating.worksheet.fees.empTrustFee,
+        //     mgaPolicyFee: nextProps.policy.rating.worksheet.fees.mgaPolicyFee
+        //   },
+        //   totalPremium: nextProps.policy.rating.totalPremium
+        // };
+
+  const axiosConfig = runnerSetup({
+    service: 'billing.services',
+    method: 'POST',
+    path: 'payment-options-for-quoting',
+    data: paymentOptions
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { billingOptions: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));

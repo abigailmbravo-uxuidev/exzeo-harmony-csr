@@ -293,8 +293,42 @@
               }
             }
 
-            .payment-summary {
-              .date {}
+            &.payment-summary {
+
+                .payment-summary {
+
+                    * {
+                        white-space: normal;
+                    }
+                    .date {
+                        width:120px;
+                        flex-grow: 0;
+                        flex-shrink: 0;
+                    }
+                    .type {
+                        width: 200px;
+                        flex-grow: 0;
+                        flex-shrink: 0;
+                    }
+                    .description {
+                        width: 230px;
+                        flex-grow: 0;
+                        flex-shrink: 0;
+                    }
+                    .note {
+                        flex-grow: 1;
+                        flex-shrink: 1;
+                    }
+                    .amount {
+                        width: 200px;
+                        flex-grow: 0;
+                        flex-shrink: 0;
+
+                        > div {
+                            text-align: right;
+                        }
+                    }
+                }
             }
 
             .property-info {

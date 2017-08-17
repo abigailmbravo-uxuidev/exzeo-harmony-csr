@@ -32,8 +32,16 @@ export const handleInitialize = (state) => {
   const values = {};
 
   questions.forEach((question) => {
-    const val = _.get(data.underwritingAnswers, `${question.name}.answer`);
+    const val = _.get(data, `underwritingAnswers.${question.name}.answer`);
     values[question.name] = val;
+
+    const defaultAnswer = question && question.answers &&
+    _.find(question.answers, { default: true }) ?
+    _.find(question.answers, { default: true }).answer : null;
+
+    if (defaultAnswer && question.hidden) {
+      values[question.name] = defaultAnswer;
+    }
   });
 
   return values;
@@ -117,11 +125,8 @@ export class Underwriting extends Component {
           >
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
-
                 <h3>Underwriting Questions</h3>
-
-                {underwritingQuestions && underwritingQuestions.map((question, index) =>
-
+                {underwritingQuestions && _.sortBy(underwritingQuestions, ['order']).map((question, index) =>
                   <FieldGenerator
                     data={quoteData.underwritingAnswers}
                     question={question}

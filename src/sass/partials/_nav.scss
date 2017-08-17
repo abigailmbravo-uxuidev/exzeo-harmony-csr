@@ -32,9 +32,23 @@
           //margin: 0 (-$padding*2) 0 (-$padding);
           cursor: pointer;
           text-decoration: none;
-          color: $warm-gray-07;
-          border-left: ($padding/2) solid rgba($white, 0);
+          &.disabled {
+            color: #c8c8c3;
+            &:hover {
+              cursor: not-allowed;
+              color: #c8c8c3;
+              text-decoration: none;
+              i {
+                width: 4rem - ($padding/2);
+                text-decoration: none;
+              }
 
+              span {
+                text-decoration: none;
+                color: $body-color;
+              }
+            }
+          }
           &.active {
             cursor: default;
             text-decoration: none;
