@@ -35,6 +35,15 @@ import * as authActions from './actions/authActions';
 
 const auth = new Auth();
 
+// logout the user if the server comesback with a 401
+axios.interceptors.response.use(response => response,
+  (error) => {
+    if (error.response.status === 401) {
+      auth.logout();
+    }
+    return Promise.reject(error);
+  });
+
 const handleAuthentication = (nextState, replace) => {
   if (/access_token|id_token|error/.test(nextState.location.hash)) {
     auth.handleAuthentication();

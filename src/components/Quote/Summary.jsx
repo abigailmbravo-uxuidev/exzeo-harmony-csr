@@ -406,8 +406,8 @@ const mapStateToProps = state => ({
   appState: state.appState,
   fieldValues: _.get(state.form, 'Summary.values', {}),
   initialValues: handleInitialize(state),
-  showScheduleDateModal: state.appState.data.showScheduleDateModal,
-  showShareConfirmationModal: state.appState.data.showShareConfirmationModal,
+  showScheduleDateModal: state.appState.data ? state.appState.data.showScheduleDateModal : false,
+  showShareConfirmationModal: state.appState.data ? state.appState.data.showShareConfirmationModal : false,
   quoteData: handleGetQuoteData(state)
 });
 
