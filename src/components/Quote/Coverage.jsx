@@ -538,7 +538,7 @@ export class Coverage extends Component {
                       <div className="flex-child email-address">
                         <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH1email'} />
                       </div>
-                      <div className="flex-child electronicDelivery">
+                      <div hidden className="flex-child electronicDelivery">
                         <RadioField
                           name={''} styleName={'electronicDelivery'} label={'Electronic Delivery'} onChange={function () {}} segmented answers={[
                             {
