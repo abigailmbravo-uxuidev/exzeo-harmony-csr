@@ -129,16 +129,7 @@ InstallmentTerm.propTypes = {
 const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
 
 export const selectBillTo = (props) => {
-<<<<<<< .merge_file_vdGIaR
-  const { paymentPlanResult, fieldValues, dispatch } = props;
-  const currentPaymentPlan = _.find(paymentPlanResult.options, ['billToId', fieldValues.billToId]) ?
-    _.find(paymentPlanResult.options, ['billToId', fieldValues.billToId]) : {};
-
-  dispatch(change('MailingAddressBilling', 'billToId', currentPaymentPlan.billToId));
-  dispatch(change('MailingAddressBilling', 'billToType', currentPaymentPlan.billToType));
-=======
   const { dispatch } = props;
->>>>>>> .merge_file_6bKyM5
   dispatch(change('MailingAddressBilling', 'billPlan', 'Annual'));
 };
 
@@ -186,20 +177,6 @@ export const clearForm = (props) => {
   dispatch(change('MailingAddressBilling', 'sameAsProperty', false));
 };
 
-<<<<<<< .merge_file_vdGIaR
-export const selectBillPlan = (value, props) => {
-  const { paymentPlanResult, fieldValues, dispatch } = props;
-
-  const currentPaymentPlan = _.find(paymentPlanResult.options, ['billToId', fieldValues.billToId]) ?
-    _.find(paymentPlanResult.options, ['billToId', fieldValues.billToId]) : {};
-
-  dispatch(change('MailingAddressBilling', 'billToId', currentPaymentPlan.billToId));
-  dispatch(change('MailingAddressBilling', 'billToType', currentPaymentPlan.billToType));
-  dispatch(change('MailingAddressBilling', 'billPlan', value));
-};
-
-=======
->>>>>>> .merge_file_6bKyM5
 export const fillMailForm = (props) => {
   const { dispatch, quoteData } = props;
 
