@@ -19,10 +19,11 @@ export function combineRules(validations, variables) {
 
   if (validations) {
     for (let i = 0; i < validations.length; i += 1) {
-      if (!variables || (!variables.min && !variables.max)) {
+      if (!variables || (!variables.min && !variables.max && !variables.dateString)) {
         ruleArray.push(rules[`${validations[i]}`]);
       } else if (validations[i] === 'range' && variables && variables.min && variables.max) {
         const range = (values) => {
+          if (Number(String(values).replace(/\D+/g, '')) === 0 || String(values).length === 0) return 'Not a valid range';
           const valid = Number(String(values).replace(/\D+/g, '')) <= variables.max && Number(String(values).replace(/\D+/g, '')) >= variables.min ? undefined : 'Not a valid range';
           return valid;
         };
@@ -33,6 +34,12 @@ export function combineRules(validations, variables) {
           return valid;
         };
         ruleArray.push(range);
+      } else if (validations[i] === 'matchDateMin10' && variables && variables.dateString) {
+        const matchDate = (values) => {
+          const valid = String(values).substring(0, 8) === variables.dateString && validator.isLength(String(values), { min: 10 }) ? undefined : 'Field must match date and be at least 10 characters';
+          return valid;
+        };
+        ruleArray.push(matchDate);
       }
     }
   }

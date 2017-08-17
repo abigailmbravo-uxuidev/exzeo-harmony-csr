@@ -361,3 +361,37 @@ export const getPaymentHistory = policyNumber => (dispatch) => {
       ]));
     });
 };
+
+export const getBillingOptions = paymentOptions => (dispatch) => {
+        // const paymentOptions = {
+        //   effectiveDate: nextProps.policy.effectiveDate,
+        //   policyHolders: nextProps.policy.policyHolders,
+        //   additionalInterests: nextProps.policy.additionalInterests,
+        //   netPremium: nextProps.policy.rating.netPremium,
+        //   fees: {
+        //     empTrustFee: nextProps.policy.rating.worksheet.fees.empTrustFee,
+        //     mgaPolicyFee: nextProps.policy.rating.worksheet.fees.mgaPolicyFee
+        //   },
+        //   totalPremium: nextProps.policy.rating.totalPremium
+        // };
+
+  const axiosConfig = runnerSetup({
+    service: 'billing.services',
+    method: 'POST',
+    path: 'payment-options-for-quoting',
+    data: paymentOptions
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { billingOptions: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};

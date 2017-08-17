@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { handleFormSubmit, handleGetQuoteData, selectBillTo, selectBillPlan, clearForm, fillMailForm } from './MailingAddressBilling';
+import ConnectedApp, { handleFormSubmit, handleGetQuoteData, selectBillTo, clearForm, fillMailForm } from './MailingAddressBilling';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -399,6 +399,16 @@ describe('Testing MailingAddressBilling component', () => {
     const store = mockStore(initialState);
 
     const props = {
+      fieldValues: {
+        billToId: '598b4570efb84c0013f7ed3c'
+      },
+      paymentPlanResult: {
+        options: [{
+          billToId: '598b4570efb84c0013f7ed3c',
+          billToType: 'Policyholder',
+          displayText: 'Policyholder: gdfg fgfdg'
+        }]
+      },
       fieldQuestions: [],
       dispatch: store.dispatch,
       actions: {
@@ -521,87 +531,6 @@ describe('Testing MailingAddressBilling component', () => {
     };
 
     selectBillTo(props);
-  });
-
-  it('should test selectBillPlan', () => {
-    const initialState = {
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {
-              variables: [
-                { name: 'retrieveQuote',
-                  value: {
-                    result: quoteData
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: quoteData
-                    } }]
-            },
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        data: {
-          showAdditionalInterestModal: false
-        },
-        modelName: 'bb'
-      }
-    };
-    const store = mockStore(initialState);
-
-    const props = {
-      paymentPlanResult: {
-        options: [
-          {
-            billToType: '',
-            billToId: '',
-            displayText: '',
-            payPlans: ['Annual', 'Semi-Annual', 'Quarterly']
-          }
-        ]
-      },
-      fieldQuestions: [],
-      dispatch: store.dispatch,
-      actions: {
-        appStateActions: {
-          setAppState() { }
-        },
-        cgActions: {
-          batchCompleteTask() { return Promise.resolve(() => {}); }
-        }
-      },
-      appState: {
-        data: {
-          submitting: false
-        }
-      },
-      quoteData: {
-        AdditionalInterests: [{
-          id: '049a50b23c21c2ae3',
-          type: 'Mortgagee',
-          order: 1,
-          name1: 'BB&T Home Mortgage',
-          referenceNumber: '1234567',
-          mailingAddress: {
-            address1: '5115 Garden Vale Ave',
-            city: 'Tampa',
-            state: 'FL',
-            county: 'Hillsborough',
-            zip: '33624',
-            country: {
-              code: 'USA',
-              displayText: 'United States of America'
-            }
-          },
-          active: true
-        }]
-      }
-    };
-
-    selectBillPlan('Annual', props);
   });
 
   it('should test clearForm', () => {
