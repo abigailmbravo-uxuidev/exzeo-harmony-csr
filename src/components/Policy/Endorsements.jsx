@@ -21,7 +21,7 @@ import Footer from '../Common/Footer';
 const handleGetPolicy = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
-  const policyData = _.find(taskData.model.variables, { name: 'getPolicyDocument' }) ? _.find(taskData.model.variables, { name: 'getPolicyDocument' }).value[0] : {};
+  const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
   return policyData;
 };
 
@@ -248,8 +248,33 @@ const updateDependencies = (event, field, dependency, props) => {
 //   }
 // ];
 
-export const calculate = () => {
+export const calculate = (data, dispatch, props) => {
+  const workflowId = props.appState.instanceId;
+  const submitData = data;
 
+  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, {
+    ...props.appState.data,
+    submitting: true
+  });
+
+  const steps = [
+    {
+      name: 'askAction',
+      data: {
+        action: 'calculate'
+      }
+    }, {
+      name: 'changePolicyData',
+      data: submitData
+    }
+  ];
+
+  props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
+      .then(() => {
+        // now update the workflow details so the recalculated rate shows
+        props.actions.appStateActions.setAppState(props.appState.modelName,
+          workflowId, { ...props.appState.data, submitting: false });
+      });
 };
 
 export const save = () => {
@@ -273,11 +298,11 @@ export class Endorsements extends React.Component {
     { date: '01/10/2015', amount: '-$ 35', type: '???' }
     ];
 
-    const { initialValues, pristine, handleSubmit } = this.props;
+    const { initialValues, handleSubmit, appState } = this.props;
     return (
       <PolicyConnect>
         <ClearErrorConnect />
-        <Form id="Endorsements" className={'content-wrapper'} onSubmit={handleSubmit(pristine ? save : calculate)} >
+        <Form id="Endorsements" className={'content-wrapper'} onSubmit={handleSubmit(appState.data.isCalculated ? save : calculate)} >
 
           <div className="route-content">
             <div className="endorsements">
@@ -439,7 +464,7 @@ export class Endorsements extends React.Component {
                                 label: '$2,500'
                               }
                             ]}
-                          />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       </div>
+                          />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               </div>
                         <div className="form-group-double-element">
                           <TextField validations={['required']} label={'Hurricane Deductible'} styleName={''} name={'hurricane'} disabled />
                           <SelectField
@@ -1198,7 +1223,7 @@ export class Endorsements extends React.Component {
                   </div>
                   <div className="btn-footer">
                     <Link className="btn btn-secondary btn-sm" to={'/policy/coverage'} >Cancel</Link>
-                    <button className="btn btn-primary btn-sm">Calculate</button>
+                    <button type="submit" className="btn btn-primary btn-sm">{appState.data.isCalculated ? 'Save' : 'Calculate'}</button>
                   </div>
                 </div>
               </div>
