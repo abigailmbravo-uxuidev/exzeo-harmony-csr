@@ -47,7 +47,7 @@ export const CurrencyInput = ({
         validations={validations}
         displayType={'input'}
         thousandSeparator
-        prefix={'$'}
+        prefix={'$ '}
         min={min}
         max={max}
         disabled={disabled}
