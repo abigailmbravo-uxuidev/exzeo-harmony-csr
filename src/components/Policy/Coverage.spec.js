@@ -61,12 +61,6 @@ describe('Testing Coverage component', () => {
       searchType: 'policy'
     }));
 
-    const wrapper = mount(
-      <Provider store={store} >
-        <ConnectedApp {...props} />
-      </Provider>);
-    expect(wrapper);
-
     const wrapper2 = shallow(<Coverage store={store} {...props} />);
 
     wrapper2.instance().componentWillReceiveProps({ policy: { policyNumber: '324324', rating: { worksheet: { fees: {} } } } });

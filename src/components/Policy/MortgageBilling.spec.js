@@ -151,7 +151,13 @@ describe('Testing MortgageBilling component', () => {
     expect(wrapper);
 
     wrapper.instance().handleFormSubmit({ body });
-    wrapper.instance().componentWillReceiveProps({ policy, policyNumber: 10000 });
+    wrapper.instance().componentWillReceiveProps({ ...policy,
+      policyNumber: 10000,
+      actions: { serviceActions: { addTransaction() { return Promise.resolve(); },
+        getTransactionHistory() {},
+        getSummaryLedger() {},
+        getPaymentHistory() {},
+        getPaymentOptionsApplyPayments() {} } } });
   });
 
   it('test setRank', () => {
