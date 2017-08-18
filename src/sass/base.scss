@@ -881,12 +881,24 @@ main[role="document"] {
 }
 //footer
 /*------------------------------------------------------------------------------------*/
+footer {
+    display: flex;
+    flex-grow: 0;
+    flex-shrink: 0;
+    height: auto;
+    border-top: 1px dotted $warm-gray-04;
+    padding: ($padding/4) $padding;
+
+    small {
+        font-size: $font-size-xs;
+    }
+}
 .btn-footer {
   margin-bottom: 0;
   flex-shrink: 0;
   height: auto;
   flex-grow: 0;
-  padding: 0.5rem;
+  padding: $padding;
   align-items: center;
   border-top: 1px dotted $warm-gray-04;
   width: 100%;
@@ -894,6 +906,7 @@ main[role="document"] {
       flex-grow: 1;
       flex-shrink: 0;
       width: auto;
+      padding: 0;
 
       div[role="banner"] {
           line-height: 1;

@@ -7,6 +7,7 @@ const RadioOption = ({
   answer,
   name,
   segmented,
+  disabled,
   size,
   value
 }) => (
@@ -15,7 +16,7 @@ const RadioOption = ({
         `radio-column-${size}`,
         { selected: value === answer.answer }
     )}
-    onClick={() => onChange(answer.answer)}
+    onClick={() => { if (!disabled) onChange(answer.answer)} }
   >
     {answer.image && <img src={answer.image} role="presentation" />}
     <label
@@ -29,6 +30,7 @@ const RadioOption = ({
         name={name}
         type="radio"
         checked={String(value) === String(answer.answer)}
+        disabled={disabled}
         value={answer.answer}
       />
       <span>{answer.label || answer.answer}</span>

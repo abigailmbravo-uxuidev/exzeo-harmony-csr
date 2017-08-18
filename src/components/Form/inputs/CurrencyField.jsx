@@ -6,6 +6,7 @@ import FieldHint from './FieldHint';
 import reduxFormField from './reduxFormField';
 
 export const CurrencyInput = ({
+  validations,
   input,
   hint,
   label,
@@ -43,6 +44,7 @@ export const CurrencyInput = ({
       {Label}
       <NumberFormat
         {...input}
+        validations={validations}
         displayType={'input'}
         thousandSeparator
         prefix={'$'}

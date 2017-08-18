@@ -5,6 +5,7 @@ import FieldHint from './FieldHint';
 import reduxFormField from './reduxFormField';
 
 export const TextInput = ({
+  dateString,
   input,
   hint,
   label,
@@ -41,6 +42,7 @@ export const TextInput = ({
     <div className={formGroupStyles}>
       {Label}
       <input
+        dateString={dateString}
         min={min}
         max={max}
         disabled={disabled}

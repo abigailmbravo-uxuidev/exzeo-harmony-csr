@@ -103,4 +103,11 @@ describe('Rules', () => {
       expect(ruleArray[0].length).toEqual(1);
     });
   });
+
+  describe('dateString', () => {
+    it('should return undefined when value is not undefined', () => {
+      const ruleArray = combineRules(['matchDateMin10'], { dateString: '20170802' });
+      expect(ruleArray[0].length).toEqual(1);
+    });
+  });
 });

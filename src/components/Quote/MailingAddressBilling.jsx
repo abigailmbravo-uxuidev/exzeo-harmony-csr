@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Prompt } from 'react-router-dom';
 import moment from 'moment';
-import { reduxForm, Form, change, propTypes, formValueSelector } from 'redux-form';
+import { reduxForm, Form, change, propTypes } from 'redux-form';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
@@ -42,9 +42,6 @@ const handleInitialize = (state) => {
   values.state = _.get(quoteData, 'policyHolderMailingAddress.state');
   values.zip = _.get(quoteData, 'policyHolderMailingAddress.zip');
 
-  values.billToId = _.get(quoteData, 'billToId');
-  values.billToType = _.get(quoteData, 'billToType');
-  values.billPlan = _.get(quoteData, 'billPlan');
   values.sameAsProperty = false;
 
   if (_.isEqual(_.get(quoteData, 'policyHolderMailingAddress.address1'), _.get(quoteData, 'property.physicalAddress.address1')) &&
@@ -55,11 +52,16 @@ _.isEqual(_.get(quoteData, 'policyHolderMailingAddress.zip'), _.get(quoteData, '
   }
 
   const paymentPlans = handleGetPaymentPlans(state);
+  const selectedBilling = _.find(paymentPlans.options, ['billToId', _.get(quoteData, 'billToId')]);
 
-  if (paymentPlans && paymentPlans.options && paymentPlans.options.length === 1 && !values.billTo && !values.billPlan) {
+  if (paymentPlans && paymentPlans.options && paymentPlans.options.length === 1 && !_.get(quoteData, 'billToId') && !_.get(quoteData, 'billPlan')) {
     values.billToId = _.get(paymentPlans.options[0], 'billToId');
     values.billToType = _.get(paymentPlans.options[0], 'billToType');
     values.billPlan = 'Annual';
+  } else if (selectedBilling) {
+    values.billToId = selectedBilling.billToId;
+    values.billToType = selectedBilling.billToType;
+    values.billPlan = _.get(quoteData, 'billPlan') || '';
   }
 
   return values;
@@ -137,11 +139,15 @@ export const selectBillTo = (props) => {
 };
 
 export const handleFormSubmit = (data, dispatch, props) => {
-  const { appState, actions, fieldValues } = props;
+  const { appState, actions, paymentPlanResult, fieldValues } = props;
   const workflowId = appState.instanceId;
   actions.appStateActions.setAppState(appState.modelName, workflowId, { ...appState.data, submitting: true });
 
   const submitData = fieldValues;
+
+  const selectedBilling = _.find(paymentPlanResult.options, ['billToId', submitData.billToId]);
+
+  submitData.billToType = selectedBilling.billToType;
 
   const steps = [
       { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
@@ -301,7 +307,6 @@ export class MailingAddressBilling extends Component {
                           validations={['required']}
                           name={'billPlan'}
                           label={'Bill Plan'}
-                          onChange={value => selectBillPlan(value, this.props)}
                           validate={[value => (value ? undefined : 'Field Required')]}
                           segmented
                           answers={_.find(paymentPlanResult.options, ['billToId', this.props.fieldValues.billToId]) ?

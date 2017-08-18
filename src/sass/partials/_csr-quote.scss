@@ -350,22 +350,7 @@
   }
   //footer
   .btn-footer {
-    margin-bottom: 0;
-    flex-shrink: 0;
     height: 3.25rem;
-    flex-grow: 0;
-    padding: 0.5rem;
-    align-items: center;
-    border-top: 1px dotted $warm-gray-04;
-    footer {
-        flex-grow: 1;
-        flex-shrink: 0;
-        width: auto;
-
-        div[role="banner"] {
-
-        }
-    }
   }
 }
 
@@ -518,10 +503,6 @@
           padding: 0;
           border-width: 0;
           border-top: 2px dotted $warm-gray-04;
-        }
-
-        li {
-          a {}
         }
       }
     }

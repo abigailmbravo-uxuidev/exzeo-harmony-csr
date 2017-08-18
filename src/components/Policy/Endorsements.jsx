@@ -313,9 +313,8 @@ export class Endorsements extends React.Component {
                 <a href="#home" className="btn btn-primary btn-xs">Home / Location</a>
                 <a href="#policy" className="btn btn-primary btn-xs">Policyholders</a>
                 <a href="#addresses" className="btn btn-primary btn-xs">Addresses</a>
-                <Link className="btn btn-secondary btn-xs" to={'/policy/coverage'} >Cancel</Link>
               </div>
-              <div className="scroll endorsements">
+              <div className="scroll">
                 <div className="form-group survey-wrapper" role="group">
 
                   <a name="coverage" />
@@ -1198,17 +1197,9 @@ export class Endorsements extends React.Component {
               <div className="endo-results-calc">
                 <div className="flex-parent">
                   <div className="form-group">
-                    <label>Type</label>
-                    <select>
-                      <option>Please Select</option>
-                    </select>
-                  </div>
-                  <div className="form-group">
                     <label>Effective Date</label>
                     <input type="date" />
                   </div>
-                </div>
-                <div className="flex-parent">
                   <div className="form-group">
                     <label>New End. Amount</label>
                     <input type="numeric" onChange={function () {}} value="" />
@@ -1221,10 +1212,8 @@ export class Endorsements extends React.Component {
                     <label>New Annual Premium</label>
                     <input type="numeric" onChange={function () {}} value="" />
                   </div>
-                  <div className="btn-footer">
-                    <Link className="btn btn-secondary btn-sm" to={'/policy/coverage'} >Cancel</Link>
-                    <button type="submit" className="btn btn-primary btn-sm">{appState.data.isCalculated ? 'Save' : 'Calculate'}</button>
-                  </div>
+                  <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link>
+                  <button type="submit" className="btn btn-primary">{appState.data.isCalculated ? 'Save' : 'Review'}</button>
                 </div>
               </div>
 
