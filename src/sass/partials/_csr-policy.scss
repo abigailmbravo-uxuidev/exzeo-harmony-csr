@@ -639,10 +639,14 @@
         }
       }
 
-      .flex-parent.col211 {
-        .flex-child:nth-child(1) {
-          width: 60%;
-        }
+      .flex-parent {
+          .address {
+              width: 100%;
+          }
+
+          &.wrap {
+              flex-wrap: wrap;
+          }
       }
     }
 

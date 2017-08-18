@@ -1148,44 +1148,40 @@ export class Endorsements extends React.Component {
                   <a name="addresses" />
                   <section>
                     <h3>Mailing Address</h3>
-                    <div className="flex-parent col2">
-                      <div className="flex-child">
+                    <div className="flex-parent wrap">
+                      <div className="address">
                         <TextField label={'Address 1'} styleName={''} name={'address1'} />
                       </div>
-                      <div className="flex-child">
+                      <div className="address">
                         <TextField label={'Address 2'} styleName={''} name={'address2'} />
                       </div>
-                    </div>
-                    <div className="flex-parent col211">
-                      <div className="flex-child">
+                      <div className="city">
                         <TextField label={'City'} styleName={''} name={'city'} />
                       </div>
-                      <div className="flex-child">
+                      <div className="state">
                         <TextField label={'State'} styleName={''} name={'state'} />
                       </div>
-                      <div className="flex-child">
+                      <div className="zip">
                         <TextField label={'Zip'} styleName={''} name={'zip'} />
                       </div>
                     </div>
                   </section>
                   <section>
                     <h3>Property Address</h3>
-                    <div className="flex-parent col2">
-                      <div className="flex-child">
+                    <div className="flex-parent wrap">
+                      <div className="address">
                         <TextField label={'Address 1'} styleName={''} name={'propertyAddress1'} />
                       </div>
-                      <div className="flex-child">
+                      <div className="address">
                         <TextField label={'Address 2'} styleName={''} name={'propertyAddress2'} />
                       </div>
-                    </div>
-                    <div className="flex-parent col211">
-                      <div className="flex-child">
+                      <div className="city">
                         <TextField label={'City'} styleName={''} name={'propertyCity'} />
                       </div>
-                      <div className="flex-child">
+                      <div className="state">
                         <TextField label={'State'} styleName={''} name={'propertyState'} />
                       </div>
-                      <div className="flex-child">
+                      <div className="zip">
                         <TextField label={'Zip'} styleName={''} name={'propertyZip'} />
                       </div>
                     </div>
