@@ -422,53 +422,6 @@
   }
 }
 
-.notes-list {
-  .react-bs-table-tool-bar {
-    .toolbar {
-      .input-group {
-        .btn-notes {
-          color: $white;
-          background: $bright-blue-darken-04;
-        }
-      }
-    }
-  }
-
-  .react-bs-table {
-    .table-bordered {
-      > tbody {
-        > tr:nth-of-type(even) {
-          background-color: transparent;
-        }
-
-        tr {
-          td {
-            thead > tr,
-            thead > tr > th {
-              background: transparent;
-            }
-
-            .react-bs-table-container {
-              border: solid 2px $warm-gray-01;
-            }
-          }
-        }
-
-        tr:nth-child(4n+3),
-        tr:nth-child(4n+4) {
-          background-color: $warm-gray-01;
-
-          td {
-            .react-bs-table-container {
-              border: solid 2px $white;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
 .verify {
   .workflow-steps {
     .btn {
