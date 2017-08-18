@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 import _ from 'lodash';
-import ConnectedApp, { MortgageBilling, setRank } from './MortgageBilling';
+import ConnectedApp, { MortgageBilling, setRank, handleGetPolicy, handleInitialize, getPaymentDescription } from './MortgageBilling';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -100,7 +100,12 @@ const policy = {
     protectionClass: 5,
     townhouseRowhouse: false
   },
-  product: 'HO3'
+  product: 'HO3',
+  rating: {
+    worksheet: {
+      fees: {}
+    }
+  }
 };
 
 describe('Testing MortgageBilling component', () => {
@@ -149,9 +154,30 @@ describe('Testing MortgageBilling component', () => {
     };
     const wrapper = shallow(<MortgageBilling store={store} {...props} />);
     expect(wrapper);
+    handleGetPolicy(initialState);
+    handleInitialize(initialState);
 
     wrapper.instance().handleFormSubmit({ body });
-    wrapper.instance().componentWillReceiveProps({ policy, policyNumber: 10000 });
+    wrapper.instance().componentWillReceiveProps({ policy,
+      appState: {
+        data: {
+          submitting: false
+        }
+      },
+      policyNumber: 10000,
+      actions: {
+        serviceActions: {
+          getBillingOptions() { },
+          addTransaction() { return Promise.resolve(); },
+          getTransactionHistory() {},
+          getSummaryLedger() {},
+          getPaymentHistory() {},
+          getPaymentOptionsApplyPayments() {}
+        },
+        appStateActions: {
+          setAppState() {}
+        }
+      } });
   });
 
   it('test setRank', () => {

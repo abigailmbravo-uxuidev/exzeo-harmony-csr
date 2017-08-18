@@ -18,14 +18,14 @@ import SelectField from '../Form/inputs/SelectField';
 import CurrencyField from '../Form/inputs/CurrencyField';
 import Footer from '../Common/Footer';
 
-const handleGetPolicy = (state) => {
+export const handleGetPolicy = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
   const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
   return policyData;
 };
 
-const calculatePercentage = (oldFigure, newFigure) => {
+export const calculatePercentage = (oldFigure, newFigure) => {
   let percentChange = 0;
   if ((oldFigure !== 0) && (newFigure !== 0)) {
     percentChange = (oldFigure / newFigure) * 100;
@@ -33,7 +33,7 @@ const calculatePercentage = (oldFigure, newFigure) => {
   return percentChange;
 };
 
-const handleInitialize = (state) => {
+export const handleInitialize = (state) => {
   const policy = handleGetPolicy(state);
   const values = {};
   // values.agencyCode = '20000'; // _.get(policy, 'agencyCode');
@@ -219,9 +219,9 @@ const handleInitialize = (state) => {
   return values;
 };
 
-const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
+export const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
 
-const updateDependencies = (event, field, dependency, props) => {
+export const updateDependencies = (event, field, dependency, props) => {
   const { dispatch, fieldValues } = props;
   if (Number.isNaN(event.target.value)) return;
 
@@ -463,7 +463,7 @@ export class Endorsements extends React.Component {
                                 label: '$2,500'
                               }
                             ]}
-                          />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               </div>
+                          />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
                         <div className="form-group-double-element">
                           <TextField validations={['required']} label={'Hurricane Deductible'} styleName={''} name={'hurricane'} disabled />
                           <SelectField
@@ -516,7 +516,7 @@ export class Endorsements extends React.Component {
                           </div>
                         </div>
                         <div className="form-group-double-element">
-                          <TextField validations={['required']} label={'Ordinance or Law Coverage'} styleName={''} name={'ordinanceOrLaw'} disabled />
+                          <TextField validations={['required']} label={'Ordinance or Law'} styleName={''} name={'ordinanceOrLaw'} disabled />
                           <SelectField
                             name="ordinanceOrLawNew" label={''} component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
                               {
@@ -587,7 +587,7 @@ export class Endorsements extends React.Component {
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField validations={['required']} label={'Prior Insurance'} styleName={''} name={'noPriorInsurance'} disabled />
+                          <TextField validations={['required']} label={'No Prior Insurance'} styleName={''} name={'noPriorInsurance'} disabled />
                           <SelectField
                             name={'noPriorInsuranceNew'} label={''} styleName={''} onChange={function () {}} answers={[
                               {
