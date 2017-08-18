@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Dropzone from 'react-dropzone';
 import { Field, Form, reduxForm, propTypes } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import * as cgActions from '../../actions/cgActions';
+import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
 
 
@@ -12,19 +14,19 @@ export const submitNote = (data, dispatch, props) => {
   const { user, noteType, documentId } = props;
   const noteData = {
     number: documentId,
-    noteType: noteType,
+    noteType,
     noteContent: data.noteContent,
     contactType: 'Agent',
     createdAt: new Date().getTime(),
-    noteAttachments: [],
-    createdBy:{
+    noteAttachments: data.noteAttachments.length,
+    createdBy: {
       useerId: user.user_id,
       userName: user.username
     },
     updatedBy: {}
   };
 
-  props.actions.cgActions.startWorkflow('addNote', noteData, false);
+  props.actions.serviceActions.addNote(noteData, data.noteAttachments);
   props.closeButtonHandler();
 };
 
@@ -38,16 +40,41 @@ export const minimzeButtonHandler = (props) => {
 
 export const validate = (values) => {
   const errors = {};
-  if (!values.noteContent) errors.noteContent = "Note Content Required";
+  if (!values.noteContent) errors.noteContent = 'Note Content Required';
   return errors;
 };
 
 const renderNotes = ({ input, label, type, meta: { touched, error } }) => (
-  <div className="text-area-wrapper">
+  <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
     <textarea {...input} placeholder={label} rows="10" cols="40" />
-    { touched && error && <span>{ error }</span> }
+    { touched && error && <span className="error-message">{ error }</span> }
   </div>
   );
+
+const renderDropzone = (field) => {
+  const files = field.input.value;
+
+  const updateFiles = ( filesToUpload, e ) => {
+    const list = Array.isArray(files) ? files.concat(filesToUpload) : filesToUpload;
+    field.input.onChange(list)
+  }
+
+  return (
+    <div>
+      <Dropzone name={ field.name } onDrop={ updateFiles }>
+        <div>Drop files here or click to select files.</div>
+      </Dropzone>
+      {
+        field.meta.touched && field.meta.error &&
+        <span className="error">{ field.meta.error }</span>
+      }
+      { 
+        files && Array.isArray(files) && 
+        (<ul>{ files.map((file, i) => <li key={ i }>{ file.name }</li>) }</ul>)
+      }
+    </div>
+  );
+};
 
 export const NewNoteFileUploader = (props, { closeButtonHandler }) => {
   // TODO: Pull this from the list service
@@ -76,30 +103,18 @@ export const NewNoteFileUploader = (props, { closeButtonHandler }) => {
         <Form id="NewNoteFileUploader" onSubmit={props.handleSubmit(submitNote)} noValidate>
           <div className="content state-initial">
             <div className="flex-contents">
+              <label>Note Type</label>
               <Field component="select" name="contactType" disabled={!contactTypes.length}>
-                { contactTypes.map(option => <option value={option} key={option}>{ option }</option>) }
+                { contactTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
               </Field>
               <Field name="noteContent" component={renderNotes} label="Note Content" />
             </div>
+            <Field name="noteAttachments" component={ renderDropzone } />
             <div className="buttons note-file-footer-button-group">
-              <button className="btn btn-primary upload-button">Upload</button>
-              <div />
               <button className="btn btn-secondary cancel-button" onClick={props.closeButtonHandler}>Cancel</button>
               <button className="btn btn-primary submit-button">Save</button>
             </div>
           </div>
-          {/* <div className="content state-upload" hidden>
-            <div className="flex-contents">
-              <div className="drag-n-drop">
-                Drag and Drop Files
-              </div>
-            </div>
-            <div className="buttons">
-              <a href="#" className="btn btn-primary">Choose Files</a>
-              <div />
-              <a href="#" className="btn btn-secondary">Cancel</a>
-            </div>
-          </div>*/}
         </Form>
       </div>
     </div>
@@ -123,6 +138,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: {
     cgActions: bindActionCreators(cgActions, dispatch),
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }
 });
