@@ -11,6 +11,7 @@ const mockStore = configureStore(middlewares);
 describe('Testing UnderwritingValidationBar component', () => {
   it('should test connected app', () => {
     const initialState = {
+      authState: {},
       cg: {
         bb: {
           data: {
@@ -27,8 +28,11 @@ describe('Testing UnderwritingValidationBar component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      quoteData: {
+        policyHolders: []
+      },
+      userProfile: '',
       fieldQuestions: [],
-      quoteData: {},
       dispatch: store.dispatch,
       appState: {
         data: {

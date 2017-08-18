@@ -79,6 +79,19 @@ export const UnderwritingValidationBar = (props) => {
       <aside className="underwriting-validation">
         <h4 className="uw-validation-header">Qualifier Status</h4>
         <div>
+          {quoteData && (!quoteData.rating || quoteData.policyHolders.length === 0) &&
+          <section className="msg-info">
+            <h5>
+              <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Info</h5>
+
+            <div>
+              <ul className="fa-ul">
+                { quoteData.policyHolders && quoteData.policyHolders.length === 0 && <li key={0}><i className="fa-li fa fa-exclamation-circle" aria-hidden="true" />Needs a Primary Policyholder</li> }
+                { !quoteData.rating && <li key={1}><i className="fa-li fa fa-exclamation-circle" aria-hidden="true" />Needs Underwriting</li> }
+              </ul>
+            </div>
+          </section>
+        }
           {underwritingExceptions && _.filter(underwritingExceptions, { canOverride: false }).length > 0 &&
           <section className="msg-error">
             <h5>

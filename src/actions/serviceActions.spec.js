@@ -723,7 +723,7 @@ describe('Service Actions', () => {
       data: {
         service: 'quote-data.services',
         method: 'put',
-        path: '',
+        path: ' ',
         data: {
           _id: 123,
           underwritingExceptions: [{
@@ -805,6 +805,109 @@ describe('Service Actions', () => {
     const store = mockStore(initialState);
 
     return serviceActions.saveUnderwritingExceptions(123, null)(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+      });
+  });
+
+
+  it('should call start getBillingOptions', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const paymentOptions = {
+      effectiveDate: '2017-08-08',
+      policyHolders: [
+        {
+          id: '523abc231c049a02e',
+          order: 1,
+          entityType: 'Person',
+          firstName: 'John',
+          lastName: 'Smith',
+          primaryPhoneNumber: '8135551234',
+          emailAddress: 'john.smith@google.com'
+        }],
+      additionalInterests: [],
+      netPremium: 123,
+      fees: {
+        empTrustFee: 123,
+        mgaPolicyFee: 123
+      },
+      totalPremium: 123
+    };
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'billing.services',
+        method: 'POST',
+        path: 'payment-options-for-quoting',
+        data: paymentOptions
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    return serviceActions.getBillingOptions(paymentOptions)(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+      });
+  });
+
+  it('should fail start getBillingOptions', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const paymentOptions = {
+      effectiveDate: '2017-08-08',
+      policyHolders: [
+        {
+          id: '523abc231c049a02e',
+          order: 1,
+          entityType: 'Person',
+          firstName: 'John',
+          lastName: 'Smith',
+          primaryPhoneNumber: '8135551234',
+          emailAddress: 'john.smith@google.com'
+        }],
+      additionalInterests: [],
+      netPremium: 123,
+      fees: {
+        empTrustFee: 123,
+        mgaPolicyFee: 123
+      },
+      totalPremium: 123
+    };
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'billing.services',
+        method: 'POST',
+        path: 'payment-options-for-quoting',
+        data: paymentOptions
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    return serviceActions.getBillingOptions('43543534')(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
       });

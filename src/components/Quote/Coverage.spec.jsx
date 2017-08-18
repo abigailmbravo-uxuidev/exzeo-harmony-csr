@@ -310,6 +310,7 @@ const quoteData = {
 describe('Testing Coverage component', () => {
   it('should test connected app', () => {
     const initialState = {
+      authState: {},
       service: {
         getAgents() {}
       },
@@ -341,7 +342,7 @@ describe('Testing Coverage component', () => {
         }
       },
       fieldQuestions: [],
-      quoteData: {},
+      quoteData,
       dispatch: store.dispatch,
       appState: {
         data: {
@@ -473,78 +474,6 @@ describe('Testing Coverage component', () => {
     handleFormSubmit({
       pH1phone: '4345435343'
     }, store.dispatch, props);
-  });
-
-  it('should test clearForm', () => {
-    const initialState = {
-      service: {
-
-      },
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {
-              variables: [
-                { name: 'retrieveQuote',
-                  value: {
-                    result: quoteData
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: quoteData
-                    } }]
-            },
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        data: {
-          showAdditionalInterestModal: false
-        },
-        modelName: 'bb'
-      }
-    };
-    const store = mockStore(initialState);
-
-    const props = {
-      fieldQuestions: [],
-      dispatch: store.dispatch,
-      actions: {
-        appStateActions: {
-          setAppState() { }
-        },
-        cgActions: {
-        }
-      },
-      appState: {
-        data: {
-          submitting: false
-        }
-      },
-      quoteData: {
-        AdditionalInterests: [{
-          id: '049a50b23c21c2ae3',
-          type: 'Mortgagee',
-          order: 1,
-          name1: 'BB&T Home Mortgage',
-          referenceNumber: '1234567',
-          mailingAddress: {
-            address1: '5115 Garden Vale Ave',
-            city: 'Tampa',
-            state: 'FL',
-            county: 'Hillsborough',
-            zip: '33624',
-            country: {
-              code: 'USA',
-              displayText: 'United States of America'
-            }
-          },
-          active: true
-        }]
-      }
-    };
-    clearForm(props);
   });
 
   it('should test handleFormSubmit', () => {

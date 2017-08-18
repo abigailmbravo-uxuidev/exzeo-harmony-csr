@@ -14,20 +14,20 @@ export const RadioInput = ({
   label,
   meta,
   segmented,
+  disabled,
   styleName
 }) => {
   const { error, touched } = meta;
-  const { onChange, name, value, disabled } = input;
-
+  const { onChange, name, value } = input;
   const formGroupStyles = classNames(
     'form-group',
     { segmented },
-    { name },
-    { styleName },
-    { disabled },
+    name,
+    styleName,
+    disabled ? 'disabled' : '',
   );
 
-  const labelStyles = classNames('group-label', { 'label-segmented': segmented });
+  const labelStyles = classNames('group-label', { 'label-segmented': segmented }, { 'disabled': disabled });
 
   const answerWrapperStyles = classNames('segmented-answer-wrapper', { error: touched && error });
 
@@ -51,6 +51,7 @@ export const RadioInput = ({
             onChange={onChange}
             name={name}
             segmented={segmented}
+            disabled={disabled}
             value={value}
           />
         )}
@@ -85,7 +86,6 @@ RadioInput.propTypes = {
    * Provided by redux-form Field
    */
   input: PropTypes.shape({
-    disabled: PropTypes.bool,
     name: PropTypes.string,
     onChange: PropTypes.func,
     value: PropTypes.any, // eslint-disable-line
