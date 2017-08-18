@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import localStorage from 'localStorage';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
-import localStorage from 'localStorage';
 import normalizePhone from '../Form/normalizePhone';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 
-const handleGetQuote = (state) => {
+export const handleGetQuote = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
   const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
