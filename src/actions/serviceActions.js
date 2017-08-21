@@ -155,7 +155,6 @@ export const getAgencies = (companyCode, state) => (dispatch) => {
   return axios(axiosConfig).then((response) => {
     const result = response.data && response.data.result ? response.data.result.sort() : [];
     const data = { agencies: result };
-    console.log(data);
     return dispatch(batchActions([
       serviceRequest(data)
     ]));

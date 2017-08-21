@@ -122,7 +122,6 @@ export class Summary extends Component {
     let selectedAgent = {};
 
     if (agents && agents.length > 0 && quoteData && quoteData.agencyCode) {
-      console.log(quoteData.agencyCode);
       selectedAgent = _.find(agents, a => a.agentCode === quoteData.agentCode);
     }
 

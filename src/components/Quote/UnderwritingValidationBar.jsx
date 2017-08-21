@@ -10,8 +10,6 @@ import * as serviceActions from '../../actions/serviceActions';
 
 export const handleFormSubmit = (data, dispatch, props) => {
   const uwExceptions = props.quoteData.underwritingExceptions || [];
-  console.log(props.userProfile);
-
   for (let i = 0; i < uwExceptions.length; i += 1) {
     const uwException = uwExceptions[i];
     if (uwException.canOverride && data[uwException._id] === true) {
