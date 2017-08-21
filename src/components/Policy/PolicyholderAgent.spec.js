@@ -63,7 +63,8 @@ describe('Testing Coverage component', () => {
     const props = {
       actions: {
         serviceActions: {
-          getAgents() {}
+          getAgents() {},
+          getAgency() {}
         },
         appStateActions: {
           setAppState() {}
@@ -159,13 +160,9 @@ describe('Testing Coverage component', () => {
         }
       }
     };
-    const wrapper = mount(<Provider store={store}>
-      <PolicyholderAgent {...props} />
-    </Provider>);
-    expect(wrapper.find(PolicyholderAgent).props().policy).toEqual(policy);
+    const wrapper = shallow(<PolicyholderAgent store={store} {...props} />);
 
-    wrapper.setProps({ });
-
+    expect(wrapper);
     wrapper.setProps(props);
   });
   it('should test handleGetPolicy', () => {

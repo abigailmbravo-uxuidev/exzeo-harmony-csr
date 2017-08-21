@@ -39,6 +39,16 @@ describe('Testing Coverage component', () => {
         rating: {}
       },
       actions: {
+        appStateActions: {
+          setAppState() { }
+        },
+        cgActions: {
+          batchCompleteTask() { return Promise.resolve({ payload: [{ data: { policy: { } } }] }); },
+          startWorkflow() { return Promise.resolve({ payload: [{ data: { policy: { } } }] }); }
+        },
+        questionsActions: {
+          getUIQuestions() {}
+        },
         serviceActions: {
           getBillingOptions() { return Promise.resolve(); },
           getSummaryLedger() { return Promise.resolve(); }
@@ -61,15 +71,10 @@ describe('Testing Coverage component', () => {
       searchType: 'policy'
     }));
 
-    const wrapper = mount(
-      <Provider store={store} >
-        <ConnectedApp {...props} />
-      </Provider>);
-    expect(wrapper);
-
     const wrapper2 = shallow(<Coverage store={store} {...props} />);
 
     wrapper2.instance().componentWillReceiveProps({ policy: { policyNumber: '324324', rating: { worksheet: { fees: {} } } } });
+    wrapper2.instance().componentDidMount();
   });
 
   it('should test getPropertyAppraisialLink', () => {
