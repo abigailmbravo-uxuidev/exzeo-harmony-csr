@@ -284,10 +284,10 @@ export const save = () => {
 export class Endorsements extends React.Component {
 
   componentWillMount = () => {
-    if (this.props && this.props.policy && this.props.policy.policyNumber) {
-      this.props.actions.cgActions.startWorkflow('endorsePolicyModel', { policyNumber: this.props.policy.policyNumber }).then(() => {
-      });
-    }
+    // if (this.props && this.props.policy && this.props.policy.policyNumber) {
+    //   this.props.actions.cgActions.startWorkflow('endorsePolicyModel', { policyNumber: this.props.policy.policyNumber }).then(() => {
+    //   });
+    // }
   }
 
 
@@ -463,7 +463,7 @@ export class Endorsements extends React.Component {
                                 label: '$2,500'
                               }
                             ]}
-                          />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
+                          />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      </div>
                         <div className="form-group-double-element">
                           <TextField validations={['required']} label={'Hurricane Deductible'} styleName={''} name={'hurricane'} disabled />
                           <SelectField
