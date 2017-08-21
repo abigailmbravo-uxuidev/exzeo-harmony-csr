@@ -459,12 +459,8 @@ export class Endorsements extends React.Component {
                                 label: '$2,500'
                               }
                             ]}
-<<<<<<< HEAD
                           />
                         </div>
-=======
-                          />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
->>>>>>> 87228d1c8231a5737057443bb263a196adeb2bed
                         <div className="form-group-double-element">
                           <TextField validations={['required']} label={'Hurricane Deductible'} styleName={''} name={'hurricane'} disabled />
                           <SelectField
