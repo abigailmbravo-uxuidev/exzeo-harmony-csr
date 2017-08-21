@@ -58,6 +58,244 @@
         flex-grow: 1;
         flex-shrink: 1;
 
+        .endorsements {
+          position: relative;
+          display: flex;
+          flex-grow: 1;
+          flex-shrink: 1;
+          flex-basis: auto;
+          flex-direction: column;
+          overflow: hidden;
+
+          .endo-jump-menu {
+            display: flex;
+            align-content: space-between;
+            flex: 1 0 auto;
+            padding: $padding;
+            border-bottom: dotted 1px $warm-gray-04;
+            background: $white;
+
+            * {
+              flex-grow: 1;
+              flex-shrink: 1;
+              flex-basis: auto;
+              margin: 0 ($padding);
+            }
+          }
+
+          .scroll {
+            flex-shrink: 1;
+            flex-grow: 1;
+
+            .flex-child.col3 {
+              width: 50%;
+              padding: 0;
+
+              .form-group.labels {
+                display: flex;
+                align-items: center;
+                flex-direction: row;
+
+                label {
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  width: 33.33%;
+                  margin: 0;
+                  padding: 0;
+                  text-align: left;
+                }
+              }
+
+              .form-group-double-element {
+                display: flex;
+                align-items: flex-start;
+                margin: 0 0 ($padding*2);
+
+                > .form-group {
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+                  width: 66.66%;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  margin: 0;
+                  padding: 0 $padding;
+
+                  &.error {
+                    span {
+                      width: 100%;
+                    }
+                  }
+
+                  &:last-child {
+                    width: 33.33%;
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    margin: 0;
+                    padding: 0;
+                    flex-direction: column;
+
+                    label {
+                      display: none;
+                    }
+                  }
+
+                  label {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    width: 50%;
+                    margin: 0;
+                    text-align: right;
+                    padding-right: $padding;
+                    @media (max-width: 1600px) {
+                      font-size: $font-size-sm;
+                    }
+                  }
+
+                  select {
+                    width: 100%;
+                  }
+
+                  > *:nth-child(2) {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    width: 50%;
+                    margin: 0;
+                  }
+                }
+
+                .segmented {
+                  flex-direction: column;
+                  width: 100;
+                  margin: 0;
+
+                  .label-segmented {
+                    margin: 0;
+                  }
+
+                  .segmented-answer-wrapper {
+                    flex-grow: 1;
+                    flex-shrink: 1;
+                    width: 100%;
+                    margin: 0;
+
+                    > div {
+                      flex-basis: auto;
+                      flex-grow: 1;
+                      flex-shrink: 1;
+
+                      .label-segmented {
+                        flex-grow: 1;
+                        flex-shrink: 1;
+                        width: 100%;
+                        margin: 0;
+
+                        span {
+                          font-size: $font-size-h5;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+            .flex-parent.col2 {
+              .flex-child {
+                width: 50%;
+
+                .flex-parent.col2 {
+                  .form-group {
+                    width: 50%;
+                    margin-left: ($padding);
+                  }
+
+                  .form-group:nth-child(1) {
+                    margin-left: 0;
+                  }
+                }
+              }
+            }
+
+            .flex-parent {
+              .address {
+                width: 100%;
+              }
+
+              .city {
+                width: 65%;
+                padding-right: $padding;
+              }
+
+              .state {
+                width: 15%;
+                padding-right: $padding;
+              }
+
+              .zip {
+                width: 20%;
+              }
+
+              &.wrap {
+                flex-wrap: wrap;
+              }
+            }
+          }
+
+          .endo-results-calc {
+            flex-grow: 1;
+            flex-shrink: 1;
+            width: auto;
+            padding: $padding;
+            background: $bright-blue-darken-04;
+
+            .btn-primary {
+              @include button-variant($bright-blue-darken-04, $white, $white);
+            }
+
+            .btn-secondary {
+              @include button-variant($white, $bright-blue-darken-04, $white);
+            }
+
+            .flex-parent {
+              align-items: flex-end;
+
+              .form-group {
+                margin: 0 $padding 0 0;
+
+                label {
+                  color: $white;
+                  font-size: $font-size-sm;
+                }
+
+                input {
+                    &[disabled="disabled"], &:disabled {
+                        background: $bright-blue-darken-03;
+                        border-color: $bright-blue-darken-03;
+                        color: $white;
+                    }
+                }
+              }
+
+              .btn-secondary {
+                margin-right: $padding;
+              }
+            }
+          }
+
+          .additionalInterests {
+            .results-wrapper {
+              margin: ($padding*2) 0 ($padding);
+            }
+          }
+        }
+
+        .underwriting-validation {
+          flex-shrink: 0;
+          width: 240px;
+          padding: 0 0 ($padding*2) ($padding*2);
+        }
+
         .scroll {
           overflow-y: auto;
           flex-grow: 1;
@@ -470,243 +708,12 @@
           }
         }
       }
+
     }
 
     .underwriting-validation {
       width: 200px;
       border-left: dotted 1px $warm-gray-04;
     }
-  }
-}
-
-.app-wrapper.csr.policy main .content-wrapper .route-content {
-  .endorsements {
-    position: relative;
-    display: flex;
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: auto;
-    flex-direction: column;
-    overflow: hidden;
-
-    .endo-jump-menu {
-      display: flex;
-      align-content: space-between;
-      flex: 1 0 auto;
-      padding: $padding;
-      border-bottom: dotted 1px $warm-gray-04;
-      background: $white;
-
-      * {
-        flex-grow: 1;
-        flex-shrink: 1;
-        flex-basis: auto;
-        margin: 0 ($padding);
-      }
-    }
-
-    .scroll {
-      flex-shrink: 1;
-      flex-grow: 1;
-
-      .flex-child.col3 {
-        width: 50%;
-        padding: 0;
-
-        .form-group.labels {
-          display: flex;
-          align-items: center;
-          flex-direction: row;
-
-          label {
-            flex-grow: 0;
-            flex-shrink: 0;
-            width: 33.33%;
-            margin: 0;
-            padding: 0;
-            text-align: left;
-          }
-        }
-
-        .form-group-double-element {
-          display: flex;
-          align-items: flex-start;
-          margin: 0 0 ($padding*2);
-
-          > .form-group {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            width: 66.66%;
-            flex-grow: 0;
-            flex-shrink: 0;
-            margin: 0;
-            padding: 0 $padding;
-
-            &.error {
-              span {
-                width: 100%;
-              }
-            }
-
-            &:last-child {
-              width: 33.33%;
-              flex-grow: 0;
-              flex-shrink: 0;
-              margin: 0;
-              padding: 0;
-              flex-direction: column;
-
-              label {
-                display: none;
-              }
-            }
-
-            label {
-              flex-grow: 0;
-              flex-shrink: 0;
-              width: 50%;
-              margin: 0;
-              text-align: right;
-              padding-right: $padding;
-              @media (max-width: 1600px) {
-                font-size: $font-size-sm;
-              }
-            }
-
-            select {
-              width: 100%;
-            }
-
-            > *:nth-child(2) {
-              flex-grow: 0;
-              flex-shrink: 0;
-              width: 50%;
-              margin: 0;
-            }
-          }
-
-          .segmented {
-            flex-direction: column;
-            width: 100;
-            margin: 0;
-
-            .label-segmented {
-              margin: 0;
-            }
-
-            .segmented-answer-wrapper {
-              flex-grow: 1;
-              flex-shrink: 1;
-              width: 100%;
-              margin: 0;
-
-              > div {
-                flex-basis: auto;
-                flex-grow: 1;
-                flex-shrink: 1;
-
-                .label-segmented {
-                  flex-grow: 1;
-                  flex-shrink: 1;
-                  width: 100%;
-                  margin: 0;
-
-                  span {
-                    font-size: $font-size-h5;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-
-      .flex-parent.col2 {
-        .flex-child {
-          width: 50%;
-
-          .flex-parent.col2 {
-            .form-group {
-              width: 50%;
-              margin-left: ($padding);
-            }
-
-            .form-group:nth-child(1) {
-              margin-left: 0;
-            }
-          }
-        }
-      }
-
-      .flex-parent {
-        .address {
-          width: 100%;
-        }
-
-        .city {
-          width: 65%;
-          padding-right: $padding;
-        }
-
-        .state {
-          width: 15%;
-          padding-right: $padding;
-        }
-
-        .zip {
-          width: 20%;
-        }
-
-        &.wrap {
-          flex-wrap: wrap;
-        }
-      }
-    }
-
-    .endo-results-calc {
-      flex-grow: 1;
-      flex-shrink: 1;
-      width: auto;
-      padding: $padding;
-      background: $bright-blue-darken-04;
-
-      .btn-primary {
-        @include button-variant($bright-blue-darken-04, $white, $white);
-      }
-
-      .btn-secondary {
-        @include button-variant($white, $bright-blue-darken-04, $white);
-      }
-
-      .flex-parent {
-        align-items: flex-end;
-
-        .form-group {
-          margin: 0 $padding 0 0;
-
-          label {
-            color: $white;
-            font-size: $font-size-sm;
-          }
-        }
-
-        .btn-secondary {
-          margin-right: $padding;
-        }
-      }
-    }
-
-    .additionalInterests {
-      .results-wrapper {
-        margin: ($padding*2) 0 ($padding);
-      }
-    }
-  }
-
-  .underwriting-validation {
-    flex-shrink: 0;
-    width: 240px;
-    padding: 0 0 ($padding*2) ($padding*2);
   }
 }

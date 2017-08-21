@@ -184,8 +184,7 @@ export class MortgageBilling extends Component {
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
               <section className="payment-summary">
-                <h3>Billing</h3>
-                <button onClick={this.handleBillingEdit}>Edit</button>
+                <h3>Billing <button className="btn btn-link btn-sm" onClick={this.handleBillingEdit}><i className="fa fa-pencil-square"></i>Edit</button></h3>
                 <div className="payment-summary">
                   <dl>
                     <div>
