@@ -267,6 +267,14 @@
                   color: $white;
                   font-size: $font-size-sm;
                 }
+
+                input {
+                    &[disabled="disabled"], &:disabled {
+                        background: $bright-blue-darken-03;
+                        border-color: $bright-blue-darken-03;
+                        color: $white;
+                    }
+                }
               }
 
               .btn-secondary {
