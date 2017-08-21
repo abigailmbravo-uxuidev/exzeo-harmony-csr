@@ -309,23 +309,19 @@ export class Endorsements extends React.Component {
 
               <div className="endo-jump-menu">
 
-                <a href="#coverage" className="btn btn-primary btn-xs">Coverage</a>
-                <a href="#home" className="btn btn-primary btn-xs">Home / Location</a>
-                <a href="#policy" className="btn btn-primary btn-xs">Policyholders</a>
-                <a href="#addresses" className="btn btn-primary btn-xs">Addresses</a>
+                <a href="#coverage" className="btn btn-secondary btn-xs">Coverage</a>
+                <a href="#home" className="btn btn-secondary btn-xs">Home / Location</a>
+                <a href="#policy" className="btn btn-secondary btn-xs">Policyholders</a>
+                <a href="#addresses" className="btn btn-secondary btn-xs">Addresses</a>
               </div>
               <div className="scroll">
                 <div className="form-group survey-wrapper" role="group">
-
-                  <a name="coverage" />
                   <section>
-
+                    <a name="coverage" />
                     <h3>Coverage</h3>
-
                     <div className="flex-parent">
                       {/* Col1 */}
                       <div className="flex-child col3">
-
                         <div className="form-group labels">
                           <label /><label>Current</label><label>New</label>
                         </div>
@@ -463,7 +459,8 @@ export class Endorsements extends React.Component {
                                 label: '$2,500'
                               }
                             ]}
-                          />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               </div>
+                          />
+                        </div>
                         <div className="form-group-double-element">
                           <TextField validations={['required']} label={'Hurricane Deductible'} styleName={''} name={'hurricane'} disabled />
                           <SelectField
@@ -874,16 +871,12 @@ export class Endorsements extends React.Component {
 
                     </div>
                   </section>
-
-                  <a name="home" />
                   <section>
-
+                    <a name="home" />
                     <h3>Home / Location</h3>
-
                     <div className="flex-parent">
                       {/* Col1 */}
                       <div className="flex-child col3">
-
                         <div className="form-group labels">
                           <label /><label>Current</label><label>New</label>
                         </div>
@@ -922,7 +915,6 @@ export class Endorsements extends React.Component {
                             ]}
                           />
                         </div>
-
                         <div className="form-group-double-element">
                           <TextField validations={['required']} label={'Protection Class'} styleName={''} name={'protectionClass'} disabled />
                           <SelectField
@@ -1019,7 +1011,6 @@ export class Endorsements extends React.Component {
                             ]}
                           />
                         </div>
-
                         <div className="form-group-double-element">
                           <TextField validations={['required']} label={'Family Units'} styleName={''} name={'familyUnits'} disabled />
                           <SelectField
@@ -1041,7 +1032,6 @@ export class Endorsements extends React.Component {
                             ]}
                           />
                         </div>
-
                         <div className="form-group-double-element">
                           <TextField validations={['required']} label={'Flood Zone'} styleName={''} name={'floodZone'} disabled />
                           <SelectField
@@ -1056,12 +1046,9 @@ export class Endorsements extends React.Component {
                             ]}
                           />
                         </div>
-
                       </div>
-
                       {/* Col2 */}
                       <div className="flex-child col3">
-
                         <div className="form-group labels">
                           <label /><label>Current</label><label>New</label>
                         </div>
@@ -1110,8 +1097,8 @@ export class Endorsements extends React.Component {
                       <TableHeaderColumn dataField="type">Type</TableHeaderColumn>
                     </BootstrapTable>
                   </section>
-                  <a name="policy" />
                   <section>
+                    <a name="policy" />
                     <div className="flex-parent col2">
                       {/* Col1 */}
                       <div className="flex-child">
@@ -1145,8 +1132,8 @@ export class Endorsements extends React.Component {
                       </div>
                     </div>
                   </section>
-                  <a name="addresses" />
                   <section>
+                    <a name="addresses" />
                     <h3>Mailing Address</h3>
                     <div className="flex-parent wrap">
                       <div className="address">
@@ -1186,8 +1173,6 @@ export class Endorsements extends React.Component {
                       </div>
                     </div>
                   </section>
-                  <a name="addInt" />
-
                 </div>
               </div>
               <div className="endo-results-calc">
@@ -1198,28 +1183,26 @@ export class Endorsements extends React.Component {
                   </div>
                   <div className="form-group">
                     <label>New End. Amount</label>
-                    <input type="numeric" onChange={function () {}} value="" />
+                    <input type="numeric" disabled onChange={function () {}} value="" />
                   </div>
                   <div className="form-group">
                     <label>New End Premium</label>
-                    <input type="numeric" onChange={function () {}} value="" />
+                    <input type="numeric" disabled onChange={function () {}} value="" />
                   </div>
                   <div className="form-group">
                     <label>New Annual Premium</label>
-                    <input type="numeric" onChange={function () {}} value="" />
+                    <input type="numeric" disabled onChange={function () {}} value="" />
                   </div>
                   <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link>
                   <button type="submit" className="btn btn-primary">{appState.data.isCalculated ? 'Save' : 'Review'}</button>
                 </div>
               </div>
-
             </div>
             <aside className="underwriting-validation">
               <h4 className="uw-validation-header">Underwriting Validation</h4>
             </aside>
           </div>
         </Form>
-
       </PolicyConnect>
     );
   }
