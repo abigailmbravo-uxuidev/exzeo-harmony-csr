@@ -75,8 +75,8 @@ export const SearchResults = (props) => {
                     <span className="quote-no">{quote.quoteNumber}</span>
                     <span className="property-address">{`${quote.property.physicalAddress.address1} ${quote.property.physicalAddress.city}, ${quote.property.physicalAddress.state} ${quote.property.physicalAddress.zip}`}</span>
                     <span className="quote-state">{quote.quoteState}</span>
-                    <span className="effctive-date">{moment.utc(quote.effectiveDate).format('YYYY-MM-DD')}</span>
-                    <span className="started-on">{moment.utc(quote.createdAt).format('YYYY-MM-DD')}</span>
+                    <span className="effctive-date">{moment.utc(quote.effectiveDate).format('MM/DD/YYYY')}</span>
+                    <span className="started-on">{moment.utc(quote.createdAt).format('MM/DD/YYYY')}</span>
                     <span className="premium">$ {quote.rating ? quote.rating.totalPremium : '-'}</span>
                   </a>
                 </li>
@@ -129,10 +129,10 @@ export const SearchResults = (props) => {
                     <span className="quote-state">{policy.quoteState}</span>
                     <span
                       className="effctive-date"
-                    >{moment.utc(policy.effectiveDate).format('YYYY-MM-DD')}</span>
+                    >{moment.utc(policy.effectiveDate).format('MM/DD/YYYY')}</span>
                     {/* <span
                       className="started-on"
-                    >{moment.utc(policy.createdAt).format('YYYY-MM-DD')}</span>
+                    >{moment.utc(policy.createdAt).format('MM/DD/YYYY')}</span>
                     <span
                       className="premium"
                     >$ {policy.rating ? policy.rating.totalPremium : '-'}</span>
