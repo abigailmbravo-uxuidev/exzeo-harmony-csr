@@ -29,10 +29,20 @@ import PolicyMortgageBilling from './components/Policy/MortgageBilling';
 import PolicyNotesFiles from './components/Policy/NotesFiles';
 import PolicyEndorsements from './components/Policy/Endorsements';
 import * as appStateActions from './actions/appStateActions';
+import PolicyCancel from './components/Policy/Cancel';
 import * as errorActions from './actions/errorActions';
 import * as authActions from './actions/authActions';
 
 const auth = new Auth();
+
+// logout the user if the server comesback with a 401
+axios.interceptors.response.use(response => response,
+  (error) => {
+    if (error.response.status === 401) {
+      auth.logout();
+    }
+    return Promise.reject(error);
+  });
 
 const handleAuthentication = (nextState, replace) => {
   if (/access_token|id_token|error/.test(nextState.location.hash)) {
@@ -114,6 +124,7 @@ class Routes extends Component {
               <Route exact path="/policy/policyholder" render={props => <PolicyPolicyholderAgent auth={auth} {...props} />} />
               <Route exact path="/policy/billing" render={props => <PolicyMortgageBilling auth={auth} {...props} />} />
               <Route exact path="/policy/notes" render={props => <PolicyNotesFiles auth={auth} {...props} />} />
+              <Route exact path="/policy/cancel" render={props => <PolicyCancel auth={auth} {...props} />} />
               <Route exact path="/policy/endorsements" render={props => <PolicyEndorsements auth={auth} {...props} />} />
               <Route exact path="/login" render={props => <LoginPage auth={auth} {...props} />} />
               <Route exact path="/error" render={props => <AppErrorPage auth={auth} {...props} />} />

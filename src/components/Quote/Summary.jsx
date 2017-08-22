@@ -122,7 +122,6 @@ export class Summary extends Component {
     let selectedAgent = {};
 
     if (agents && agents.length > 0 && quoteData && quoteData.agencyCode) {
-      console.log(quoteData.agencyCode);
       selectedAgent = _.find(agents, a => a.agentCode === quoteData.agentCode);
     }
 
@@ -323,6 +322,10 @@ export class Summary extends Component {
                                <dt>Email</dt>
                                <dd>{policyHolder.emailAddress}</dd>
                              </div>
+                             <div className="contact-email">
+                               <dt>Electronic Delivery</dt>
+                               <dd>{policyHolder.electronicDelivery ? 'Yes' : 'No'}</dd>
+                             </div>
                            </div>
                          </dl>)) : null}
                 </section>
@@ -406,8 +409,8 @@ const mapStateToProps = state => ({
   appState: state.appState,
   fieldValues: _.get(state.form, 'Summary.values', {}),
   initialValues: handleInitialize(state),
-  showScheduleDateModal: state.appState.data.showScheduleDateModal,
-  showShareConfirmationModal: state.appState.data.showShareConfirmationModal,
+  showScheduleDateModal: state.appState.data ? state.appState.data.showScheduleDateModal : false,
+  showShareConfirmationModal: state.appState.data ? state.appState.data.showShareConfirmationModal : false,
   quoteData: handleGetQuoteData(state)
 });
 

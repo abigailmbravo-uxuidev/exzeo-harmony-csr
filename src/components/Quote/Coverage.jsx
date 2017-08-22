@@ -63,7 +63,6 @@ const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 10
 
 const handleInitialize = (state) => {
   const quoteData = handleGetQuoteData(state);
-
   const values = {};
 
   values.electronicDelivery = _.get(quoteData, 'policyHolders[0].electronicDelivery') || false;
@@ -176,95 +175,6 @@ export const handleAgencyChange = (props, agencyCode, isInit) => {
       });
     }
   }
-};
-
-export const clearForm = (props) => {
-  const { dispatch, quoteData } = props;
-
-  dispatch(change('Coverage', 'agencyCode', _.get(quoteData, 'agencyCode')));
-  dispatch(change('Coverage', 'agentCode', _.get(quoteData, 'agentCode')));
-
-
-  dispatch(change('Coverage', 'effectiveDate', moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD')));
-
-  dispatch(change('Coverage', 'pH1email', _.get(quoteData, 'policyHolders[0].emailAddress')));
-  dispatch(change('Coverage', 'pH1FirstName', _.get(quoteData, 'policyHolders[0].firstName')));
-  dispatch(change('Coverage', 'pH1LastName', _.get(quoteData, 'policyHolders[0].lastName')));
-  dispatch(change('Coverage', 'pH1phone', normalizePhone(_.get(quoteData, 'policyHolders[0].primaryPhoneNumber'))));
-  dispatch(change('Coverage', 'pH1secondaryPhone', normalizePhone(_.get(quoteData, 'policyHolders[0].secondaryPhoneNumber'))));
-
-  dispatch(change('Coverage', 'pH2email', _.get(quoteData, 'policyHolders[1].emailAddress')));
-  dispatch(change('Coverage', 'pH2FirstName', _.get(quoteData, 'policyHolders[1].firstName')));
-  dispatch(change('Coverage', 'pH2LastName', _.get(quoteData, 'policyHolders[1].lastName')));
-  dispatch(change('Coverage', 'pH2phone', normalizePhone(_.get(quoteData, 'policyHolders[1].primaryPhoneNumber'))));
-  dispatch(change('Coverage', 'pH2secondaryPhone', normalizePhone(_.get(quoteData, 'policyHolders[1].secondaryPhoneNumber'))));
-
-  dispatch(change('Coverage', 'address1', _.get(quoteData, 'property.physicalAddress.address1')));
-  dispatch(change('Coverage', 'address2', _.get(quoteData, 'property.physicalAddress.address2')));
-  dispatch(change('Coverage', 'city', _.get(quoteData, 'property.physicalAddress.city')));
-  dispatch(change('Coverage', 'state', _.get(quoteData, 'property.physicalAddress.state')));
-  dispatch(change('Coverage', 'zip', _.get(quoteData, 'property.physicalAddress.zip')));
-  dispatch(change('Coverage', 'protectionClass', _.get(quoteData, 'property.protectionClass')));
-  dispatch(change('Coverage', 'constructionType', _.get(quoteData, 'property.constructionType')));
-  dispatch(change('Coverage', 'yearOfRoof', _.get(quoteData, 'property.yearOfRoof')));
-  dispatch(change('Coverage', 'squareFeet', _.get(quoteData, 'property.squareFeet')));
-  dispatch(change('Coverage', 'yearBuilt', _.get(quoteData, 'property.yearBuilt')));
-  dispatch(change('Coverage', 'buildingCodeEffectivenessGrading', _.get(quoteData, 'property.buildingCodeEffectivenessGrading')));
-  dispatch(change('Coverage', 'familyUnits', _.get(quoteData, 'property.familyUnits')));
-  dispatch(change('Coverage', 'distanceToTidalWater', _.get(quoteData, 'property.distanceToTidalWater')));
-  dispatch(change('Coverage', 'distanceToFireHydrant', _.get(quoteData, 'property.distanceToFireHydrant')));
-  dispatch(change('Coverage', 'distanceToFireStation', _.get(quoteData, 'property.distanceToFireStation')));
-  dispatch(change('Coverage', 'floodZone', _.get(quoteData, 'property.floodZone')));
-
-  dispatch(change('Coverage', 'burglarAlarm', _.get(quoteData, 'property.burglarAlarm')));
-  dispatch(change('Coverage', 'fireAlarm', _.get(quoteData, 'property.fireAlarm')));
-  dispatch(change('Coverage', 'sprinkler', _.get(quoteData, 'property.sprinkler')));
-
-  dispatch(change('Coverage', 'dwellingAmount', Math.round(_.get(quoteData, 'coverageLimits.dwelling.amount') / 1000) * 1000));
-  dispatch(change('Coverage', 'dwellingMin', _.get(quoteData, 'coverageLimits.dwelling.minAmount')));
-  dispatch(change('Coverage', 'dwellingMax', _.get(quoteData, 'coverageLimits.dwelling.maxAmount')));
-
-  dispatch(change('Coverage', 'lossOfUse', _.get(quoteData, 'coverageLimits.lossOfUse.amount')));
-  dispatch(change('Coverage', 'medicalPayments', _.get(quoteData, 'coverageLimits.medicalPayments.amount')));
-  dispatch(change('Coverage', 'moldLiability', _.get(quoteData, 'coverageLimits.moldLiability.amount')));
-  dispatch(change('Coverage', 'moldProperty', _.get(quoteData, 'coverageLimits.moldProperty.amount')));
-  dispatch(change('Coverage', 'ordinanceOrLaw', _.get(quoteData, 'coverageLimits.ordinanceOrLaw.amount')));
-
-  const otherStructures = _.get(quoteData, 'coverageLimits.otherStructures.amount');
-  const dwelling = Math.round(_.get(quoteData, 'coverageLimits.dwelling.amount') / 1000) * 1000;
-  const personalProperty = _.get(quoteData, 'coverageLimits.personalProperty.amount');
-  const hurricane = _.get(quoteData, 'deductibles.hurricane.amount');
-  const calculatedHurricane = _.get(quoteData, 'deductibles.hurricane.calculatedAmount');
-  const calculatedSinkhole = _.get(quoteData, 'deductibles.sinkhole.calculatedAmount');
-
-
-  dispatch(change('Coverage', 'dwellingAmount', dwelling));
-
-  dispatch(change('Coverage', 'otherStructuresAmount', otherStructures));
-  dispatch(change('Coverage', 'otherStructures', String(calculatePercentage(otherStructures, dwelling))));
-  dispatch(change('Coverage', 'personalLiability', _.get(quoteData, 'coverageLimits.personalLiability.amount')));
-  dispatch(change('Coverage', 'personalProperty', String(calculatePercentage(personalProperty, dwelling))));
-  dispatch(change('Coverage', 'personalPropertyAmount', personalProperty));
-  dispatch(change('Coverage', 'personalPropertyReplacementCostCoverage', false));
-
-  dispatch(change('Coverage', 'sinkholePerilCoverage', _.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer')));
-  dispatch(change('Coverage', 'calculatedSinkhole', calculatedSinkhole));
-
-  dispatch(change('Coverage', 'allOtherPerils', _.get(quoteData, 'deductibles.allOtherPerils.amount')));
-  dispatch(change('Coverage', 'hurricane', hurricane));
-  dispatch(change('Coverage', 'calculatedHurricane', calculatedHurricane));
-  dispatch(change('Coverage', 'floridaBuildingCodeWindSpeed', _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeed')));
-  dispatch(change('Coverage', 'floridaBuildingCodeWindSpeedDesign', _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign')));
-  dispatch(change('Coverage', 'internalPressureDesign', _.get(quoteData, 'property.windMitigation.internalPressureDesign')));
-  dispatch(change('Coverage', 'openingProtection', _.get(quoteData, 'property.windMitigation.openingProtection')));
-  dispatch(change('Coverage', 'roofCovering', _.get(quoteData, 'property.windMitigation.roofCovering')));
-  dispatch(change('Coverage', 'roofDeckAttachment', _.get(quoteData, 'property.windMitigation.roofDeckAttachment')));
-  dispatch(change('Coverage', 'roofGeometry', _.get(quoteData, 'property.windMitigation.roofGeometry')));
-  dispatch(change('Coverage', 'roofToWallConnection', _.get(quoteData, 'property.windMitigation.roofToWallConnection')));
-  dispatch(change('Coverage', 'secondaryWaterResistance', _.get(quoteData, 'property.windMitigation.secondaryWaterResistance')));
-  dispatch(change('Coverage', 'terrain', _.get(quoteData, 'property.windMitigation.terrain')));
-  dispatch(change('Coverage', 'windBorneDebrisRegion', _.get(quoteData, 'property.windMitigation.windBorneDebrisRegion')));
-  dispatch(change('Coverage', 'residenceType', _.get(quoteData, 'property.residenceType')));
 };
 
 export const handleFormSubmit = (data, dispatch, props) => {
@@ -413,6 +323,13 @@ export class Coverage extends Component {
     }
   }
 
+  componentDidUpdate() {
+    const { dispatch, fieldValues } = this.props;
+    if (fieldValues.personalProperty === '0') {
+      dispatch(change('Coverage', 'personalPropertyReplacementCostCoverage', false));
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props, nextProps)) {
       const quoteData = nextProps.quoteData;
@@ -456,7 +373,6 @@ export class Coverage extends Component {
       dependencyValue = Math.round(Number(String(fieldValues[dependency]).replace(/\D+/g, '')) / 1000) * 1000;
     } else dependencyValue = String(fieldValues[dependency]).replace(/\D+/g, '');
 
-
     const fieldValue = setPercentageOfValue(Number(dependencyValue), Number(event.target.value));
 
     dispatch(change('Coverage', field, Number.isNaN(fieldValue)
@@ -493,7 +409,6 @@ export class Coverage extends Component {
                       <DateField validations={['date']} label={'Effective Date'} name={'effectiveDate'} min={zipCodeSettings ? zipCodeSettings.minEffectiveDate : null} max={zipCodeSettings ? zipCodeSettings.maxEffectiveDate : null} />
                     </div>
                     <div className="flex-child agencyCode">
-                      {/* TODO: still waiting on endpoint to get all agencies. This will not be hardcoded */}
                       <SelectField
                         name="agencyCode" component="select" styleName={''} label="Agency" validations={['required']} input={{
                           name: 'agencyCode',
@@ -501,7 +416,7 @@ export class Coverage extends Component {
                           value: fieldValues.agencyCode
                         }} answers={agencies && agencies.map(agency => ({
                           answer: String(agency.agencyCode),
-                          label: `${agency.displayName}`
+                          label: `${agency.displayName} - ${agency.agencyCode}`
                         }))}
                       />
                     </div>
@@ -509,7 +424,7 @@ export class Coverage extends Component {
                       <SelectField
                         name="agentCode" component="select" styleName={''} label="Agent" validations={['required']} answers={agents && agents.map(agent => ({
                           answer: String(agent.agentCode),
-                          label: `${agent.firstName} ${agent.lastName}`
+                          label: `${agent.firstName} ${agent.lastName} - ${agent.agentCode}`
                         }))}
                       />
                     </div>
@@ -538,7 +453,20 @@ export class Coverage extends Component {
                       <div className="flex-child email-address">
                         <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH1email'} />
                       </div>
-                    </div>
+                      <div hidden className="flex-child electronicDelivery">
+                        <RadioField
+                          name={''} styleName={'electronicDelivery'} label={'Electronic Delivery'} onChange={function () {}} segmented answers={[
+                            {
+                              answer: false,
+                              label: 'No'
+                            }, {
+                              answer: true,
+                              label: 'Yes'
+                            }
+                          ]}
+                        />
+                      </div>
+                    </div>        
                   </div>
                   <div id="policy-holder-b" className="policy-holder-b flex-child">
                     <h3>Secondary Policyholder</h3>
@@ -674,7 +602,7 @@ export class Coverage extends Component {
                     <h3>Coverages</h3>
                     <div className="flex-parent coverages-row-1">
                       <div className="flex-child coverages-dwelling-limit">
-                        <CurrencyField validations={['required', 'range']} label={`${getQuestionName('dwellingAmount', questions)} ($${String(fieldValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $${String(fieldValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`} styleName={''} name={'dwellingAmount'} min={initialValues.dwellingMin} max={initialValues.dwellingMax} onChange={this.updateDwellingAndDependencies} />
+                        <CurrencyField validations={['required', 'range']} label={`${getQuestionName('dwellingAmount', questions)} ($ ${String(fieldValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $ ${String(fieldValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`} styleName={''} name={'dwellingAmount'} min={initialValues.dwellingMin} max={initialValues.dwellingMax} onChange={this.updateDwellingAndDependencies} />
                       </div>
                     </div>
                     <div className="flex-parent coverages-row-2">
@@ -758,14 +686,11 @@ export class Coverage extends Component {
                     <div className="flex-parent other-coverages-row-3">
                       <div className="flex-child other-coverages-property-replacement-cost">
                         <RadioField
-                          name={'personalPropertyReplacementCostCoverage'} styleName={'billPlan'} label={'Personal Property Repl Cost'} onChange={function () {}} segmented answers={[
-                            {
-                              answer: false,
-                              label: 'No'
-                            }, {
-                              answer: true,
-                              label: 'Yes'
-                            }
+                          name="personalPropertyReplacementCostCoverage" styleName="billPlan" label="Personal Property Repl Cost"
+                          disabled={parseInt(fieldValues.personalPropertyAmount, 10) === 0}
+                          onChange={function () {}} segmented answers={[
+                            { answer: false, label: 'No' }, 
+                            { answer: true, label: 'Yes' }
                           ]}
                         />
                       </div>
@@ -781,6 +706,14 @@ export class Coverage extends Component {
                   </div>
                   <div className="deductibles flex-child">
                     <h3>Deductibles</h3>
+                    <div className="flex-parent deductibles-row-3">
+                      <div className="flex-child deductibles-all-other-perils">
+                        <SelectField
+                          name="allOtherPerils" component="select" styleName={''} label="All Other Perils" onChange={function () {}} validations={['required']}
+                          answers={getAnswers('allOtherPerils', questions)}
+                        />
+                      </div>
+                    </div>
                     <div className="flex-parent deductibles-row-1">
                       <div className="flex-child deductibles-hurricane">
                         <SelectField
@@ -793,14 +726,6 @@ export class Coverage extends Component {
                     <div className="flex-parent deductibles-row-2">
                       <div className="flex-child deductibles-calculated-hurricane">
                         <CurrencyField validations={['required']} label={'Calculated Hurricane'} styleName={'coverage-c'} name="calculatedHurricane" disabled />
-                      </div>
-                    </div>
-                    <div className="flex-parent deductibles-row-3">
-                      <div className="flex-child deductibles-all-other-perils">
-                        <SelectField
-                          name="allOtherPerils" component="select" styleName={''} label="All Other Perils" onChange={function () {}} validations={['required']}
-                          answers={getAnswers('allOtherPerils', questions)}
-                        />
                       </div>
                     </div>
                     <div className="flex-parent deductibles-row-4">
@@ -959,7 +884,7 @@ export class Coverage extends Component {
                   </div>
                 </section>
                 <div className="btn-footer">
-                  <button className="btn btn-secondary" type="button" form="Coverage" onClick={() => clearForm(this.props)}>
+                  <button className="btn btn-secondary" type="button" form="Coverage" onClick={() => this.props.reset('Coverage')}>
                     Cancel
                   </button>
                   <button className="btn btn-primary" type="submit" form="Coverage" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}>

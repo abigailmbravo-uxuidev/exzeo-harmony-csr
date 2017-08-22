@@ -14,6 +14,7 @@ import ClearErrorConnect from '../Error/ClearError';
 import SelectField from '../Form/inputs/SelectField';
 import TextField from '../Form/inputs/TextField';
 import CurrencyField from '../Form/inputs/CurrencyField';
+import BillingModal from '../../components/Common/BillingEditModal';
 
 const payments = [];
 
@@ -43,14 +44,14 @@ value.rank = 5; // eslint-disable-line
   });
 };
 
-const handleGetPolicy = (state) => {
+export const handleGetPolicy = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
   const quoteData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
   return quoteData;
 };
 
-const handleInitialize = (state) => {
+export const handleInitialize = (state) => {
   const policy = handleGetPolicy(state);
 
   const values = {};
@@ -62,11 +63,20 @@ const handleInitialize = (state) => {
   return values;
 };
 
-const getPaymentDescription = (event, props) => {
+export const getPaymentDescription = (event, props) => {
   const selectedDescriptionType = _.find(props.paymentOptions, type => type.paymentType === event.target.value);
 
   props.actions.appStateActions.setAppState(props.appState.modelName,
           props.appState.instanceId, { ...props.appState.data, ranService: false, paymentDescription: selectedDescriptionType.paymentDescription, showDescription: true });
+};
+
+export const hideBillingModal = (props) => {
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data, showBillingEditModal: false });
+};
+
+export const handleBillingFormSubmit = (data, dispatch, props) => {
+
 };
 
 export class MortgageBilling extends Component {
@@ -79,12 +89,25 @@ export class MortgageBilling extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     if (!_.isEqual(this.props, nextProps)) {
-      if (nextProps.policy.policyNumber && !isLoded) {
+      if (nextProps.policy && nextProps.policy.policyNumber && !isLoded) {
         isLoded = true;
-        this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
-        this.props.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
-        this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-          this.props.appState.instanceId, { ...this.props.appState.data, ranService: true });
+        nextProps.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
+        nextProps.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
+
+        const paymentOptions = {
+          effectiveDate: nextProps.policy.effectiveDate,
+          policyHolders: nextProps.policy.policyHolders,
+          additionalInterests: nextProps.policy.additionalInterests,
+          netPremium: nextProps.policy.rating.netPremium,
+          fees: {
+            empTrustFee: nextProps.policy.rating.worksheet.fees.empTrustFee,
+            mgaPolicyFee: nextProps.policy.rating.worksheet.fees.mgaPolicyFee
+          },
+          totalPremium: nextProps.policy.rating.totalPremium
+        };
+        nextProps.actions.serviceActions.getBillingOptions(paymentOptions);
+        nextProps.actions.appStateActions.setAppState(nextProps.appState.modelName,
+          nextProps.appState.instanceId, { ...nextProps.appState.data, ranService: true });
       }
     }
   }
@@ -110,6 +133,13 @@ export class MortgageBilling extends Component {
 
     this.clearForm();
   };
+
+  handleBillingEdit = () => {
+    const workflowId = this.props.appState.instanceId;
+    this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
+      workflowId, { ...this.props.appState.data, showBillingEditModal: true });
+  };
+
 
   clearForm = () => {
     const { dispatch } = this.props;
@@ -155,6 +185,7 @@ export class MortgageBilling extends Component {
             <div className="form-group survey-wrapper" role="group">
               <section className="payment-summary">
                 <h3>Billing</h3>
+                <button onClick={this.handleBillingEdit}>Edit</button>
                 <div className="payment-summary">
                   <dl>
                     <div>
@@ -247,9 +278,19 @@ export class MortgageBilling extends Component {
                 </Form>
               </section>
 
+
               <section className="additional-interests">
                 <h3>Additional Interests</h3>
+
                 <div className="results-wrapper">
+
+                  <div className="button-group">
+                    <button className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
+                    <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
+                    <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
+                    { /* <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => this.addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button> */ }
+                    <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
+                  </div>
                   <ul className="results result-cards">
                     {additionalInterests && _.sortBy(additionalInterests, ['rank', 'type']).map((ai, index) =>
                       <li key={index}>
@@ -278,6 +319,8 @@ export class MortgageBilling extends Component {
             </div>
           </div>
         </div>
+        { this.props.appState.data.showBillingEditModal && <BillingModal policy={this.props.policy} billingOptions={this.props.billingOptions} handleBillingFormSubmit={handleBillingFormSubmit} hideBillingModal={() => hideBillingModal(this.props)} /> }
+
       </PolicyConnect>
     );
   }
@@ -301,7 +344,8 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   paymentHistory: state.service.paymentHistory,
-  paymentOptions: state.service.paymentOptions
+  paymentOptions: state.service.paymentOptions,
+  billingOptions: state.service.billingOptions
 });
 
 const mapDispatchToProps = dispatch => ({

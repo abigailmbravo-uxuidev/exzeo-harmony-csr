@@ -146,7 +146,8 @@ export const getAgencies = (companyCode, state) => (dispatch) => {
   });
 
   return axios(axiosConfig).then((response) => {
-    const data = { agencies: response.data.result };
+    const result = response.data && response.data.result ? response.data.result.sort() : [];
+    const data = { agencies: result };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));
@@ -341,6 +342,32 @@ export const getPaymentHistory = policyNumber => (dispatch) => {
 
   return axios(axiosConfig).then((response) => {
     const data = { paymentHistory: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
+export const saveUnderwritingExceptions = (id, underwritingExceptions) => (dispatch) => {
+  const body = {
+    service: 'quote-data.services',
+    method: 'put',
+    path: String(' '),
+    data: {
+      _id: id,
+      underwritingExceptions
+    }
+  };
+  const axiosConfig = runnerSetup(body);
+
+  return axios(axiosConfig).then((response) => {
+    const data = { transactions: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));

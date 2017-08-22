@@ -11,6 +11,7 @@ import HiddenField from '../Form/inputs/HiddenField';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import normalizePhone from '../Form/normalizePhone';
+import Loader from './Loader';
 
 const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
@@ -81,7 +82,9 @@ export const setMortgageeValues = (val, props) => {
 export const AdditionalInterestEditModal = (props) => {
   const { appState, handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, selectedAI, questions } = props;
   return (<div className="modal" style={{ flexDirection: 'row' }}>
+
     <Form id="AdditionalInterestEditModal" className="AdditionalInterestModal" noValidate onSubmit={handleSubmit(verify)}>
+      {props.appState.data.submittingAI && <Loader />}
       <div className="card">
         <div className="card-header">
           <h4><i className={`fa fa-circle ${selectedAI ? selectedAI.type : ''}`} /> {selectedAI ? selectedAI.type : ''}</h4>
@@ -103,7 +106,7 @@ export const AdditionalInterestEditModal = (props) => {
               options={getAnswers('mortgagee', questions)}
               onChange={val => setMortgageeValues(val, props)}
             />
-            </span>
+          </span>
          }
           <TextField label={'Name 1'} styleName={'name-1'} name={'name1'} validations={['required']} />
           <TextField label={'Name 2'} styleName={''} name={'name2'} />
@@ -125,8 +128,8 @@ export const AdditionalInterestEditModal = (props) => {
         <div className="card-footer">
           <div className="btn-group">
             <button className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal(props)}>Cancel</button>
-            <button className="btn btn-secondary" type="button" disabled={appState.data.submitting} onClick={() => deleteAdditionalInterest(selectedAI, props)}>Delete</button>
-            <button className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Update</button>
+            <button className="btn btn-secondary" type="button" disabled={appState.data.submittingAI} onClick={() => deleteAdditionalInterest(selectedAI, props)}>Delete</button>
+            <button className="btn btn-primary" type="submit" disabled={appState.data.submittingAI}>Update</button>
           </div>
         </div>
       </div>
@@ -142,7 +145,7 @@ AdditionalInterestEditModal.propTypes = {
     modelName: PropTypes.string,
     data: PropTypes.shape({
       recalc: PropTypes.boolean,
-      submitting: PropTypes.boolean
+      submittingAI: PropTypes.boolean
     })
   })
 };

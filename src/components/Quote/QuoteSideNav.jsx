@@ -39,6 +39,7 @@ const csrLinks = [{
   styleName: 'additionalInterests',
   exact: true
 }, {
+  needsRating: true,
   key: 'mailing',
   link: '/quote/billing',
   label: 'Mailing / Billing',
@@ -56,6 +57,7 @@ const csrLinks = [{
   label: 'Quote Summary',
   styleName: 'quote-summary'
 }, {
+  needsRating: true,
   key: 'application',
   link: '/quote/application',
   label: 'Application',
@@ -79,11 +81,12 @@ const closeUWConditions = (props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showUWconditions: false });
 };
 
-const goToPage = (link, key, props) => {
+const goToPage = (agentLink, props, quote) => {
+  if (!quote || (agentLink.needsRating && quote && (!quote.rating || quote.policyHolders.length === 0))) return;
   // const workflowId = props.appState.instanceId;
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
     { ...props.appState.data,
-      activateRedirectLink: link,
+      activateRedirectLink: agentLink.link,
       activateRedirect: true
     });
 
@@ -109,7 +112,7 @@ const getDocumentId = (props) => {
   const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
     ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
     : {};
-  return quoteData.quoteNumber;
+  return quoteData || {};
 };
 
 const SideNav = (props) => {
@@ -117,7 +120,7 @@ const SideNav = (props) => {
     ? (<Redirect to={props.activateRedirectLink} />)
     : null;
 
-  const documentId = getDocumentId(props);
+  const quote = getDocumentId(props);
 
   return (
     <nav className="site-nav">
@@ -132,8 +135,8 @@ const SideNav = (props) => {
             </a>
           </li> :
           <li key={index}>
-            <span className={agentLink.styleName} onClick={() => goToPage(agentLink.link, agentLink.key, props)}>
-              <a className={(props.appState.data.selectedLink || 'customerData') === agentLink.key ? `${agentLink.styleName} active` : `${agentLink.styleName}`}>{agentLink.label}</a>
+            <span className={agentLink.styleName} onClick={() => goToPage(agentLink, props, quote)}>
+              <a className={(props.appState.data.selectedLink || 'customerData') === agentLink.key ? `${agentLink.styleName} active` : `${agentLink.styleName} ${agentLink.needsRating && quote && (!quote.rating || quote.policyHolders.length === 0) ? 'disabled' : ''}`}>{agentLink.label}</a>
             </span>
           </li>
       ))}
@@ -146,7 +149,7 @@ const SideNav = (props) => {
         </li>
       </ul>
       { props.appState.data.showNewNoteFileUploader === true &&
-        <NewNoteFileUploader noteType="Quote Note" documentId={ documentId } closeButtonHandler={() => closeNewNoteFileUploader(props)} />
+        <NewNoteFileUploader noteType="Quote Note" documentId={quote.quoteNumber} closeButtonHandler={() => closeNewNoteFileUploader(props)} />
       }
       { props.appState.data.showUWconditions === true &&
         <UWconditions
