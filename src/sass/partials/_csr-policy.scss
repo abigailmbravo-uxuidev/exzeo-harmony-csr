@@ -233,10 +233,10 @@
         }
 
         .form-group {
-          section {
+          > section {
             margin-bottom: $padding*2;
             padding-bottom: $padding*2;
-            border-bottom: 1px dashed $warm-gray-01;
+            border-bottom: 1px dashed $bright-blue-darken-03;
 
             dl {
               div {
@@ -474,13 +474,35 @@
       border-left: dotted 1px $warm-gray-04;
     }
   }
+
+  //footer
+  .btn-footer {
+    margin-bottom: 0;
+    flex-shrink: 0;
+    height: auto;
+    flex-grow: 0;
+    padding: 0.5rem;
+    align-items: center;
+    border-top: 1px dotted $warm-gray-04;
+    footer {
+        flex-grow: 1;
+        flex-shrink: 0;
+        width: auto;
+
+        div[role="banner"] {
+
+        }
+    }
+  }
 }
 
 .app-wrapper.csr.policy main .content-wrapper .route-content {
   .endorsements {
     position: relative;
     display: flex;
-    flex: 1 1 auto;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
     flex-direction: column;
 
     .endo-jump-menu {
@@ -488,11 +510,13 @@
       align-content: space-between;
       flex: 1 0 auto;
       padding: $padding;
-      border-bottom: dashed 1px $warm-gray-04;
+      border-bottom: dotted 1px $warm-gray-04;
       background: $white;
 
       * {
-        flex: 1 1 auto;
+        flex-grow: 1;
+        flex-shrink: 1;
+        flex-basis: auto;
         margin: 0 ($padding);
       }
     }
@@ -503,6 +527,7 @@
 
       .flex-child.col3 {
         width: 50%;
+        padding: 0;
 
         .form-group.labels {
           display: flex;
@@ -510,97 +535,105 @@
           flex-direction: row;
 
           label {
-            flex: 0 0 33.33%;
+            flex-grow: 0;
+            flex-shrink: 0;
             width: 33.33%;
-            margin: 0 ($padding) 0 0;
-            text-align: left;
-          }
-
-          label:nth-child(3) {
             margin: 0;
+            padding: 0;
+            text-align: left;
           }
         }
 
         .form-group-double-element {
           display: flex;
-          align-items: center;
-          flex-direction: row;
-          margin: 0 0 ($padding);
+          align-items: flex-start;
+          margin: 0 0 ($padding*2) 0;
 
-          .form-group {
+          > .form-group {
             display: flex;
-            align-items: center;
-            flex: 0 0 66.66%;
             flex-direction: row;
+            align-items: center;
             width: 66.66%;
-            margin: 0 ($padding) 0 0;
+            flex-grow: 0;
+            flex-shrink: 0;
+            margin: 0;
+            padding: 0 $padding;
 
-            &.segmented {
-              flex-basis: 100%;
-              flex-direction: column;
-              width: 100%;
-
-              .segmented-answer-wrapper {
-                flex: 1 1 100%;
-                flex-basis: 100%;
-                flex-grow: 1;
-                flex-shrink: 1;
-                width: 100%;
-                margin: 0;
-
-                > div {
-                  flex: 1 1 auto;
-                  flex-basis: auto;
-                  flex-grow: 1;
-                  flex-shrink: 1;
-
-                  .label-segmented {
-                    flex: 1 1 100%;
-                    flex-basis: 100%;
-                    flex-grow: 1;
-                    flex-shrink: 1;
+            &.error {
+                span {
                     width: 100%;
-                    margin: 0;
-
-                    span {
-                      font-size: $font-size-h5;
-                    }
-                  }
                 }
+            }
+
+            &:last-child {
+              width: 33.33%;
+              flex-grow: 0;
+              flex-shrink: 0;
+              margin: 0;
+              padding: 0;
+              flex-direction: column;
+
+              label {
+                display: none;
               }
             }
 
             label {
-              flex: 0 1 50%;
+              flex-grow: 0;
+              flex-shrink: 0;
               width: 50%;
-              margin: 0 ($padding) 0 0;
+              margin: 0;
               text-align: right;
+              padding-right: $padding;
 
-              span {
-                font-size: 0.7em;
-              }
+              @media (max-width: 1600px) {
+                  font-size: $font-size-sm;
+                }
+            }
+
+            select {
+              width: 100%;
             }
 
             > *:nth-child(2) {
-              flex: 0 1 50%;
+              flex-grow: 0;
+              flex-shrink: 0;
               width: 50%;
-              margin: 0 ($padding) 0 0;
+              margin: 0;
             }
           }
 
-          > .form-group:last-child {
-            flex: 0 0 33.33%;
-            width: 33.33%;
-            margin-right: 0;
+          .segmented {
+            flex-direction: column;
+            width: 100;
+            margin: 0;
 
-            * {
-              flex: 0 1 100%;
-              width: 100%;
-              margin: 0;
+            .label-segmented {
+                margin: 0;
             }
 
-            label {
-              display: none;
+            .segmented-answer-wrapper {
+              flex-grow: 1;
+              flex-shrink: 1;
+              width: 100%;
+              margin: 0;
+
+              > div {
+                flex-basis: auto;
+                flex-grow: 1;
+                flex-shrink: 1;
+
+                .label-segmented {
+                  flex-grow: 1;
+                  flex-shrink: 1;
+                  width: 100%;
+                  margin: 0;
+
+                  span {
+                    font-size: $font-size-h5;
+                  }
+                }
+              }
             }
           }
         }
@@ -633,18 +666,14 @@
     .endo-results-calc {
       flex: 1 0 auto;
       padding: $padding $padding 0;
-      background: $white;
       background: $bright-blue-darken-04;
 
       .btn-primary {
-        color: $bright-blue-darken-04;
-        background-color: $white;
+        @include button-variant($bright-blue-darken-04, $white, $white);
       }
 
       .btn-secondary {
-        color: $white;
-        border: 1px solid $white;
-        background-color: $bright-blue-darken-04;
+        @include button-variant($white, $bright-blue-darken-04, $white);
       }
 
       .form-group {
@@ -694,13 +723,14 @@
           align-self: flex-start;
           width: 25%;
           margin-bottom: 0;
+          border-width: 0;
         }
       }
     }
 
     .additionalInterests {
       .results-wrapper {
-        margin: ($padding*2) 0 ($padding*4);
+        margin: ($padding*2) 0 ($padding);
       }
     }
   }
@@ -709,5 +739,75 @@
     flex-shrink: 0;
     width: 240px;
     padding: 0 0 ($padding*2) ($padding*2);
+  }
+}
+
+.cancel-policy {
+  label.form-group.segmented {
+
+    > label {
+      margin-bottom: $padding;
+      display: none;
+    }
+
+    label{
+      margin-right: 0;
+    }
+
+  }
+
+  .note-type, .note {
+    label {
+      display: none;
+    }
+
+  }
+
+  .note {
+    textarea {
+      height: 120px;
+    }
+  }
+
+  .form-group.billing {
+
+    div {
+      flex: 1 1 auto;
+      margin: 0 ($padding*4) 0 0;
+    }
+
+    .flex-child {
+      flex: 1 1 auto;
+
+      label {
+        margin-right: .5rem;
+        text-align: right;
+      }
+
+      .form-group {
+        flex-direction: row;
+        align-items: center;
+
+        label {
+
+          flex: 0 1 auto;
+          width: 25%;
+          margin-bottom: 0;
+        }
+
+        input {
+          flex: 1 0 auto;
+          width: 75%;
+        }
+
+
+      }
+
+    }
+
+    .flex-child:last-child {
+      margin-right: 0;
+    }
+
   }
 }

@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { NewNoteFileUploaderPopup, closeNewNoteFileUploader, goToPage } from './PolicySideNav';
+import ConnectedApp, { NewNoteFileUploaderPopup, closeNewNoteFileUploader, SideNav } from './PolicySideNav';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -48,8 +48,9 @@ describe('Testing PolicySideNav component', () => {
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
     expect(wrapper);
 
+    SideNav(props);
+
     NewNoteFileUploaderPopup(props);
     closeNewNoteFileUploader(props);
-    goToPage('test', 'test', props);
   });
 });

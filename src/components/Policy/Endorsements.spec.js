@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
-import ConnectedApp from './Endorsements';
+import Endorsements from './Endorsements';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
@@ -48,10 +48,7 @@ describe('Testing Endorsements component', () => {
       searchType: 'policy'
     }));
 
-    const wrapper = mount(
-      <Provider store={store} >
-        <ConnectedApp {...props} />
-      </Provider>);
+    const wrapper = shallow(<Endorsements store={store} {...props} />);
     expect(wrapper);
   });
 });
