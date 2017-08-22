@@ -25,7 +25,7 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
   const taskData = {
     firstName: (encodeURIComponent(data.firstName) !== 'undefined' ? encodeURIComponent(data.firstName) : ''),
     lastName: (encodeURIComponent(data.lastName) !== 'undefined' ? encodeURIComponent(data.lastName) : ''),
-    address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(data.address) : ''),
+    address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(String(data.address).trim()) : ''),
     quoteNumber: (encodeURIComponent(data.quoteNumber) !== 'undefined' ? encodeURIComponent(data.quoteNumber) : ''),
     policyNumber: (encodeURIComponent(data.policyNumber) !== 'undefined' ? encodeURIComponent(data.policyNumber) : ''),
     zip: (encodeURIComponent(data.zip) !== 'undefined' ? encodeURIComponent(data.zip) : ''),
@@ -89,7 +89,7 @@ export const validate = (values) => {
     }
   }
   if (values.address) {
-    const required = Rules.required(values.address);
+    const required = Rules.required(String(values.address).trim());
     const invalidCharacters = Rules.invalidCharacters(values.address);
     if (required) {
       errors.address = required;
@@ -172,7 +172,7 @@ const SearchForm = (props) => {
             className="btn btn-success multi-input"
             type="submit"
             form="SearchBar"
-            disabled={props.appState.data.submitting || formErrors}
+            disabled={props.appState.data.submitting || formErrors || !fieldValues.address || !String(fieldValues.address).trim()}
           >
             <i className="fa fa-search" />Search
           </button>
@@ -248,8 +248,8 @@ SearchForm.propTypes = {
 const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
-  formErrors: getFormSyncErrors('SearchBar')(state),
   fieldValues: _.get(state.form, 'SearchBar.values', {}),
+  formErrors: getFormSyncErrors('SearchBar')(state),
   searchType: state.appState.data.searchType,
   initialValues: handleInitialize(state),
   error: state.error,
