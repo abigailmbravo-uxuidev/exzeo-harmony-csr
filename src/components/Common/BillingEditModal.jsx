@@ -35,7 +35,6 @@ const handleInitialize = (state) => {
 };
 
 export const selectBillPlan = (value, props) => {
-  console.log(value);
   const { billingOptions, dispatch, fieldValues } = props;
 
   const currentPaymentPlan = _.find(billingOptions.options, ['billToId', fieldValues.billToId]) ?

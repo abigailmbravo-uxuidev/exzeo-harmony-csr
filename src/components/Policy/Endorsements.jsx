@@ -16,7 +16,6 @@ import RadioField from '../Form/inputs/RadioField';
 import PhoneField from '../Form/inputs/PhoneField';
 import SelectField from '../Form/inputs/SelectField';
 import CurrencyField from '../Form/inputs/CurrencyField';
-import Footer from '../Common/Footer';
 
 const handleGetPolicy = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
