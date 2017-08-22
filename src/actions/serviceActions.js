@@ -302,7 +302,7 @@ export const getSummaryLedger = policyNumber => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'billing.services',
     method: 'GET',
-    path: `summary-ledgers/${policyNumber}`
+    path: `summary-ledgers/${policyNumber}/latest`
   });
 
   return axios(axiosConfig).then((response) => {
