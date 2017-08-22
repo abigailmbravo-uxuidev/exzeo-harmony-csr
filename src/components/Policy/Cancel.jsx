@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { reduxForm, propTypes, Form, change } from 'redux-form';
+import { reduxForm, Form, change } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
@@ -136,7 +137,7 @@ export class CancelPolicy extends React.Component {
   }
 
   render() {
-    const { policy, handleSubmit, fieldValues, isValid } = this.props;
+    const { handleSubmit, fieldValues } = this.props;
 
     const cancelGroup = _.map(cancelOptions, option => ({ answer: option.cancelType }));
     return (
