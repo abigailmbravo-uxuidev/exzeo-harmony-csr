@@ -72,6 +72,7 @@ ${policyHolderMailingAddress.city} ${policyHolderMailingAddress.state}, ${policy
                       </p>
                     </div>
                   </div>
+                  <div className="electronic-delivery"><label>Electronic Delivery: </label> {policyHolder.electronicDelivery ? 'Yes' : 'No'}</div>
                 </div>)) }
               </section>
               { agency && selectedAgent && <section className="agency-cards">

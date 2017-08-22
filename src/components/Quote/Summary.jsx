@@ -323,6 +323,10 @@ export class Summary extends Component {
                                <dt>Email</dt>
                                <dd>{policyHolder.emailAddress}</dd>
                              </div>
+                             <div className="contact-email">
+                               <dt>Electronic Delivery</dt>
+                               <dd>{policyHolder.electronicDelivery ? 'Yes' : 'No'}</dd>
+                             </div>
                            </div>
                          </dl>)) : null}
                 </section>

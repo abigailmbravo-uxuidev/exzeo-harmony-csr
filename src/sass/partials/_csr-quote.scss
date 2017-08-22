@@ -549,3 +549,18 @@
         }
     }
 }
+
+.csr.quote {
+    .policy-holder-a-email, .policy-holder-b {
+        .email-address {
+            flex-grow: 0;
+            flex-shrink: 0;
+            width: 68%;
+        }
+        .electronicDelivery {
+            flex-grow: 0;
+            flex-shrink: 0;
+            width: 32%;
+        }
+    }
+}
