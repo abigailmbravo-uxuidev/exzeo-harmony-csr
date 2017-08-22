@@ -86,7 +86,7 @@ const DetailHeader = (props) => {
       <dl>
         <div>
           <dt>Effective Date</dt>
-          <dd>{moment.utc(_.get(policyData, 'effectiveDate')).format('YYYY-MM-DD')}</dd>
+          <dd>{moment.utc(_.get(policyData, 'effectiveDate')).format('MM/DD/YYYY')}</dd>
         </div>
       </dl>
     </section>
@@ -94,7 +94,7 @@ const DetailHeader = (props) => {
       <dl>
         <div>
           <dt>Cancellation Date</dt>
-          <dd>{_.get(policyData, 'cancellationDate') ? moment.utc(_.get(policyData, 'cancellationDate')).format('YYYY-MM-DD') : '' }</dd>
+          <dd>{_.get(policyData, 'cancellationDate') ? moment.utc(_.get(policyData, 'cancellationDate')).format('MM/DD/YYYY') : '' }</dd>
         </div>
       </dl>
     </section>

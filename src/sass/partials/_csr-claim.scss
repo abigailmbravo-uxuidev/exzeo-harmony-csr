@@ -1,0 +1,398 @@
+.app-wrapper.csr.fnol {
+  overflow: hidden;
+
+  header {
+    div[role="banner"] {
+      .tab-tag {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 12rem;
+        height: 3.25rem;
+        margin: (-$padding) ($padding*2) (-$padding) (-$padding*2);
+        padding: 0 ($padding*2);
+        color: $white;
+        border-right: 1px dotted $orange;
+        background: mix($yellow, $orange-darken-01, 6.5%);
+
+        span {
+          font-size: 1.125rem;
+        }
+      }
+
+      .policy-description {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        flex-shrink: 0;
+        color: $white;
+        font-size: $font-size-h5;
+
+        label {
+          margin-bottom: 0;
+          padding: 0 $padding 0 ($padding*4);
+          color: $warm-gray-07;
+          font-weight: $font-weight-normal;
+        }
+      }
+    }
+  }
+
+  .claim-header {
+    width: 100%;
+
+    form#DetailHeader {
+      position: relative;
+      width: 100%;
+      padding: $padding;
+      background-color: $warm-gray-08;
+
+      .search {
+        display: flex;
+        align-content: stretch;
+        align-items: flex-start;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        background: transparent;
+
+        .form-group {
+          margin-right: 0.5rem;
+          margin-bottom: 0;
+
+          label {
+            margin-bottom: $padding/4;
+            color: $yellow-lighten-06;
+            font-size: $font-size-sm;
+            font-weight: $font-weight-normal;
+          }
+        }
+
+        .btn,
+        .form-group {
+          align-self: auto;
+          flex: 1 1 auto;
+          order: 0;
+        }
+
+        .property-address {
+          flex-basis: 30%;
+          flex-shrink: 0;
+        }
+
+        .btn {
+          align-self: flex-end;
+          height: 38px;
+        }
+
+        .form-group.claim-start-menu {
+          flex: 0 0 11rem;
+          width: 12rem;
+
+          select {
+            height: 38px;
+            text-align: left;
+            color: $white;
+            border: none;
+            background: $bright-blue-darken-01;
+          }
+        }
+
+        input[type=text] {
+          height: 38px;
+          padding: 0.25rem 0.5rem;
+          line-height: 1.75;
+        }
+      }
+    }
+
+    .claim-list {}
+
+    .policy-verification {
+      h3 {
+        margin: 0;
+        padding: ($padding*2);
+        background: $white;
+      }
+    }
+  }
+
+  main {
+    overflow: hidden;
+    height: calc(100vh - 10.75rem);
+    min-height: calc(100vh - 10.75rem);
+
+    .content-wrapper {
+      overflow: hidden;
+      flex-grow: 1;
+      flex-shrink: 1;
+      flex-wrap: nowrap;
+      width: auto;
+
+      .route-content {
+        display: flex;
+        overflow: hidden;
+        flex-grow: 1;
+        flex-shrink: 1;
+
+        form {
+          display: flex;
+          overflow: hidden;
+          width: 100%;
+
+          .scroll {
+            display: flex;
+            overflow-y: auto;
+            flex-direction: column;
+            flex-grow: 1;
+
+            .form-group.fnol-wrapper {
+              padding: 0 1rem;
+
+              > section {
+                margin-bottom: 1rem;
+                padding-bottom: 1rem;
+                border-bottom: 1px dashed mix($yellow, $orange-darken-01, 6.5%);
+
+                &:last-child, &.no-border {
+                    border-width: 0;
+                }
+              }
+
+              .title {
+                flex-basis: 16rem;
+                flex-grow: 0;
+                flex-shrink: 0;
+              }
+
+              .language {
+                flex-basis: 14rem;
+                flex-grow: 0;
+                flex-shrink: 0;
+              }
+
+              .phone {
+                flex-basis: 14rem;
+                flex-grow: 0;
+                flex-shrink: 0;
+              }
+
+              .date {
+                flex-basis: 14rem;
+                flex-grow: 0;
+                flex-shrink: 0;
+              }
+
+              .form-group {
+                padding: 0;
+              }
+
+              .checkField {
+                .form-group {
+                  label {
+                    display: flex;
+                    align-items: center;
+                    flex-direction: row-reverse;
+                    justify-content: flex-end;
+                    font-weight: $font-weight-normal;
+
+                    &:hover {
+                      cursor: pointer;
+                    }
+
+                    input {
+                      position: relative;
+                      width: 2rem;
+                      height: 2rem;
+                      margin: 0;
+
+                      &:before {
+                        position: absolute;
+                        top: 0.4rem;
+                        left: 0;
+                        display: flex;
+                        width: 1.4rem;
+                        height: 1.4rem;
+                        content: "";
+                        border: 1px solid $warm-gray-10;
+                        border-radius: $border-radius;
+                        background-color: $white;
+                      }
+
+                      &:checked {
+                        &:before {
+                          border-color: $bright-blue-darken-03;
+                          background: $bright-blue-darken-04;
+                        }
+
+                        &:after {
+                          position: absolute;
+                          top: 0.4rem;
+                          left: 0;
+                          display: flex;
+                          align-items: center;
+                          flex-direction: column;
+                          justify-content: center;
+                          width: 1.4rem;
+                          height: 1.4rem;
+                          content: "\f00c";
+                          color: $white;
+                          font-family: $font-family-icon;
+                          font-size: font-size-h4;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  //footer
+  .btn-footer {
+    margin-bottom: 0;
+    flex-shrink: 0;
+    height: auto;
+    flex-grow: 0;
+    padding: 0.5rem;
+    align-items: center;
+    border-top: 1px dotted $warm-gray-04;
+    footer {
+        flex-grow: 1;
+        flex-shrink: 0;
+        width: auto;
+
+        div[role="banner"] {
+
+        }
+    }
+  }
+}
+
+.loss-form {
+  margin: 0 -1rem;
+  padding: 4rem 16rem;
+  background: $warm-gray-01;
+
+  .form-group.segmented .segmented-answer-wrapper div .label-segmented span {
+    background: $warm-gray-03;
+  }
+}
+
+.advisement {
+  margin: ($padding*2) 0;
+  padding: $padding*2;
+  border:3px dashed $orange;
+
+  h5 {
+    margin: 0;
+  }
+}
+//add to main form chooseAddress
+
+textarea {
+  min-height: 4rem;
+}
+
+ul.results.result-cards {
+  li {
+    a {
+      .contact-methods {
+        display: flex;
+
+        p {
+          display: flex;
+          align-items: center;
+          margin-right: $padding*2;
+
+          a {
+            padding: 0;
+            border: none;
+            box-shadow: none;
+          }
+
+          small {
+            margin-right: $padding;
+            padding: 0 0.2rem;
+            color: $white;
+            border-radius: 2px;
+            background: $warm-gray-08;
+            font-size: 70%;
+
+            sup {
+              top: -.5em;
+              font-size: 50%;
+            }
+
+            i {
+              margin-right: 0;
+              margin-left: 0.1rem;
+              color: $white;
+            }
+          }
+
+          i {
+            width: auto;
+            height: auto;
+            margin-right: $padding;
+            color: $warm-gray-08;
+
+            &.fa {
+              font-size: 1rem;
+            }
+
+            &.fa-phone-square {
+              font-size: 125%;
+            }
+          }
+
+          h5 {
+            flex-basis: auto;
+            flex-grow: 0;
+            flex-shrink: 0;
+            margin: 0 $padding 0 0;
+            color: $warm-gray-08;
+          }
+        }
+      }
+    }
+  }
+}
+
+.table-view {
+  &.claims {
+    .claimNumber {
+      flex-grow: 0;
+      flex-shrink: 0;
+      width: 11%;
+    }
+
+    .lossDate {
+      flex-grow: 0;
+      flex-shrink: 0;
+      width: 11%;
+    }
+
+    .closedDate {
+      flex-grow: 0;
+      flex-shrink: 0;
+      width: 11%;
+    }
+
+    .examiner {
+      flex-grow: 0;
+      flex-shrink: 0;
+      width: 16%;
+    }
+
+    .lossDescription {
+      flex-grow: 1;
+      flex-shrink: 1;
+      width: 51%;
+    }
+  }
+}
