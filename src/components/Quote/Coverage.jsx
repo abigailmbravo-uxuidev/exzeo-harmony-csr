@@ -453,7 +453,20 @@ export class Coverage extends Component {
                       <div className="flex-child email-address">
                         <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH1email'} />
                       </div>
-                    </div>
+                      <div hidden className="flex-child electronicDelivery">
+                        <RadioField
+                          name={''} styleName={'electronicDelivery'} label={'Electronic Delivery'} onChange={function () {}} segmented answers={[
+                            {
+                              answer: false,
+                              label: 'No'
+                            }, {
+                              answer: true,
+                              label: 'Yes'
+                            }
+                          ]}
+                        />
+                      </div>
+                    </div>        
                   </div>
                   <div id="policy-holder-b" className="policy-holder-b flex-child">
                     <h3>Secondary Policyholder</h3>
@@ -589,7 +602,7 @@ export class Coverage extends Component {
                     <h3>Coverages</h3>
                     <div className="flex-parent coverages-row-1">
                       <div className="flex-child coverages-dwelling-limit">
-                        <CurrencyField validations={['required', 'range']} label={`${getQuestionName('dwellingAmount', questions)} ($${String(fieldValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $${String(fieldValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`} styleName={''} name={'dwellingAmount'} min={initialValues.dwellingMin} max={initialValues.dwellingMax} onChange={this.updateDwellingAndDependencies} />
+                        <CurrencyField validations={['required', 'range']} label={`${getQuestionName('dwellingAmount', questions)} ($ ${String(fieldValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $ ${String(fieldValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`} styleName={''} name={'dwellingAmount'} min={initialValues.dwellingMin} max={initialValues.dwellingMax} onChange={this.updateDwellingAndDependencies} />
                       </div>
                     </div>
                     <div className="flex-parent coverages-row-2">

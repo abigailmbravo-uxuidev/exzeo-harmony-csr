@@ -118,7 +118,7 @@ input[type="submit"] {
 }
 
 .btn-danger {
-  @include button-variant($btn-danger-color, $btn-danger-bg, $btn-danger-border);
+  @include button-variant($btn-danger-bg, $btn-danger-color, $btn-danger-border);
 }
 
 .btn-link {

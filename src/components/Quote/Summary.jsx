@@ -122,7 +122,6 @@ export class Summary extends Component {
     let selectedAgent = {};
 
     if (agents && agents.length > 0 && quoteData && quoteData.agencyCode) {
-      console.log(quoteData.agencyCode);
       selectedAgent = _.find(agents, a => a.agentCode === quoteData.agentCode);
     }
 
@@ -322,6 +321,10 @@ export class Summary extends Component {
                              <div className="contact-email">
                                <dt>Email</dt>
                                <dd>{policyHolder.emailAddress}</dd>
+                             </div>
+                             <div className="contact-email">
+                               <dt>Electronic Delivery</dt>
+                               <dd>{policyHolder.electronicDelivery ? 'Yes' : 'No'}</dd>
                              </div>
                            </div>
                          </dl>)) : null}

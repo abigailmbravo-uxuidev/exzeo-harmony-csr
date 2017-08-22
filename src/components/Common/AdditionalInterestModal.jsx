@@ -9,6 +9,7 @@ import TextField from '../Form/inputs/TextField';
 import PhoneField from '../Form/inputs/PhoneField';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
+import Loader from './Loader';
 
 const handleInitialize = () => ({
   name1: '',
@@ -54,6 +55,7 @@ export const AdditionalInterestModal = (props) => {
   return (
     <div className="modal" style={{ flexDirection: 'row' }}>
       <Form id="AdditionalInterestModal" className="AdditionalInterestModal" noValidate onSubmit={handleSubmit(verify)}>
+        {props.appState.data.submittingAI && <Loader />}
         <div className="card">
           <div className="card-header">
             <h4><i className={`fa fa-circle ${appState.data.addAdditionalInterestType}`} /> {appState.data.addAdditionalInterestType}</h4>

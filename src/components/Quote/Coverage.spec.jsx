@@ -310,6 +310,7 @@ const quoteData = {
 describe('Testing Coverage component', () => {
   it('should test connected app', () => {
     const initialState = {
+      authState: {},
       service: {
         getAgents() {}
       },
@@ -341,7 +342,7 @@ describe('Testing Coverage component', () => {
         }
       },
       fieldQuestions: [],
-      quoteData: {},
+      quoteData,
       dispatch: store.dispatch,
       appState: {
         data: {
