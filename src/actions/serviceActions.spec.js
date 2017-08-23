@@ -522,7 +522,7 @@ describe('Service Actions', () => {
       data: {
         service: 'billing.services',
         method: 'GET',
-        path: 'summary-ledgers/12345'
+        path: 'summary-ledgers/12345/latest'
       }
     };
 
