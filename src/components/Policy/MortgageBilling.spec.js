@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 import _ from 'lodash';
-import ConnectedApp, { MortgageBilling, setRank, handleGetPolicy, handleInitialize, getPaymentDescription } from './MortgageBilling';
+import ConnectedApp, { MortgageBilling, setRank, handleGetPolicy, handleInitialize } from './MortgageBilling';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -164,8 +164,6 @@ describe('Testing MortgageBilling component', () => {
 
     wrapper.instance().amountFormatter(100);
     wrapper.instance().dateFormatter('123');
-    getPaymentDescription({ target: { value: '' } }, props);
-
 
     wrapper.instance().componentWillReceiveProps({
       policy: { policyNumber: '1234', rating: { worksheet: { fees: {} } } },
