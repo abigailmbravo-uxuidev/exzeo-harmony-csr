@@ -93,6 +93,7 @@
           display: flex;
           flex-grow: 1;
           flex-shrink: 1;
+          overflow: hidden;
         }
 
         .scroll {
@@ -156,8 +157,6 @@
           h4 {
             font-weight: normal;
           }
-
-          label {}
 
           > section {
             margin-bottom: $padding*2;
@@ -248,6 +247,10 @@
             .wind-col2 {
               width: 50%;
             }
+          }
+
+          .agencyCode {
+              overflow: hidden;
           }
         }
       }
