@@ -39,6 +39,11 @@ const SearchPanel = props => (
   </div>
 );
 
+/*
+TODO:
+This will be used to display attachments
+Need to set expandableRow in the BootstrapTable component
+*/
 export const BSTable = props => props.notes ?
     (
       <BootstrapTable data={props.notes}>
@@ -54,12 +59,8 @@ export const isExpandableRow = (row) => {
 export const NoteList = (props) => {
   const { notes } = props;
 
-  const expandComponent = row => (
-    <BSTable data={row.expand} />
-    );
-
+  const expandComponent = row => (<BSTable data={row.expand} />);
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
-
   const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
   const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
   const attachmentUrl = attachments => 
@@ -70,7 +71,7 @@ export const NoteList = (props) => {
     <BootstrapTable
       data={Array.isArray(notes) ? notes : []}
       options={options}
-      expandableRow={isExpandableRow}
+      expandableRow={false}
       expandComponent={expandComponent}
       search
     >
