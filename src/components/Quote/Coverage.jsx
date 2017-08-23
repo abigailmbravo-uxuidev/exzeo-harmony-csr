@@ -661,7 +661,7 @@ export class Coverage extends Component {
                           name="medicalPayments" disabled label={'Medical Payments to Others Limit'} styleName={''} input={{
                             name: 'medicalPayments',
                             disabled: true,
-                            value: '$2,000'
+                            value: '$ 2,000'
                           }}
                         />
                       </div>
