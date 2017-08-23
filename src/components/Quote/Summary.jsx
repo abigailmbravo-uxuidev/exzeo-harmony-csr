@@ -278,7 +278,7 @@ export class Summary extends Component {
                   <dl>
                     <div>
                       <dt>Hurricane Deductible</dt>
-                      <dd>{deductibles.hurricane.amount} %</dd>
+                      <dd>{deductibles.hurricane.amount}%</dd>
                     </div>
                   </dl>
                   <dl>
