@@ -91,9 +91,9 @@
 
         form {
           display: flex;
+          overflow: hidden;
           flex-grow: 1;
           flex-shrink: 1;
-          overflow: hidden;
         }
 
         .scroll {
@@ -250,15 +250,15 @@
           }
 
           .agencyCode {
-              overflow: hidden;
+            overflow: hidden;
           }
         }
       }
     }
 
     #UnderwritingOverride {
-      overflow: hidden;
       display: flex;
+      overflow: hidden;
       flex-grow: 0;
       flex-shrink: 0;
       height: 100%;
@@ -330,21 +330,21 @@
                   &:checked {
                     + label {
                       &:after {
-                        content: '\f00c';
-                        font-family: $font-family-icon;
-                        color: $white;
                         position: absolute;
-                        width: 1rem;
-                        height: 1rem;
-                        border-radius: $border-radius;
-                        border: 1px solid $bright-blue-darken-03;
-                        background: $bright-blue-darken-04;
+                        z-index: 20;
                         top: 0;
                         left: -$padding*3;
-                        z-index: 20;
                         display: flex;
                         align-items: center;
                         justify-content: center;
+                        width: 1rem;
+                        height: 1rem;
+                        content: '\f00c';
+                        color: $white;
+                        border: 1px solid $bright-blue-darken-03;
+                        border-radius: $border-radius;
+                        background: $bright-blue-darken-04;
+                        font-family: $font-family-icon;
                         font-size: $font-size-sm;
                       }
                     }
@@ -353,22 +353,22 @@
 
                 label {
                   position: absolute;
-                  margin-bottom: 0;
                   left: $padding*3;
                   height: 1rem;
+                  margin-bottom: 0;
                   line-height: 1rem;
 
                   &:before {
-                    content: '';
                     position: absolute;
-                    width: 1rem;
-                    height: 1rem;
-                    border-radius: $border-radius;
-                    border: 1px solid $warm-gray-10;
-                    background: $white;
+                    z-index: 10;
                     top: 0;
                     left: -$padding*3;
-                    z-index: 10;
+                    width: 1rem;
+                    height: 1rem;
+                    content: '';
+                    border: 1px solid $warm-gray-10;
+                    border-radius: $border-radius;
+                    background: $white;
                   }
                 }
               }
@@ -401,10 +401,10 @@
           align-items: center;
 
           i.fa {
-            background-color: $orange;
             flex-grow: 0;
             flex-shrink: 0;
             width: auto;
+            background-color: $orange;
           }
 
           span {
@@ -445,21 +445,20 @@
   }
   //footer
   .btn-footer {
-    margin-bottom: 0;
+    align-items: center;
+    flex-grow: 0;
     flex-shrink: 0;
     height: 3.25rem;
-    flex-grow: 0;
+    margin-bottom: 0;
     padding: 0.5rem;
-    align-items: center;
     border-top: 1px dotted $warm-gray-04;
+
     footer {
-        flex-grow: 1;
-        flex-shrink: 0;
-        width: auto;
+      flex-grow: 1;
+      flex-shrink: 0;
+      width: auto;
 
-        div[role="banner"] {
-
-        }
+      div[role="banner"] {}
     }
   }
 }
@@ -599,16 +598,18 @@
 }
 
 .csr.quote {
-    .policy-holder-a-email, .policy-holder-b {
-        .email-address {
-            flex-grow: 0;
-            flex-shrink: 0;
-            width: 68%;
-        }
-        .electronicDelivery {
-            flex-grow: 0;
-            flex-shrink: 0;
-            width: 32%;
-        }
+  .policy-holder-a-email,
+  .policy-holder-b {
+    .email-address {
+      flex-grow: 0;
+      flex-shrink: 0;
+      width: 68%;
     }
+
+    .electronicDelivery {
+      flex-grow: 0;
+      flex-shrink: 0;
+      width: 32%;
+    }
+  }
 }
