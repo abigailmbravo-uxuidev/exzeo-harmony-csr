@@ -295,7 +295,8 @@
             margin: 0 0 ($padding*4) ($padding*2);
 
             li {
-              display: list-item;
+              display: flex;
+              flex-direction: column;
               margin: ($padding*2.25);
               padding: 0;
               list-style: none;
@@ -309,66 +310,42 @@
                 span {
                   color: $warm-gray-04;
                 }
-
-                .override-wrapper {
-                  input {
-                    &:checked {
-                      + label {
-                        &:after {}
-                      }
-                    }
-                  }
-                }
               }
 
               .override-wrapper {
                 position: relative;
                 display: flex;
-                margin-top: $padding;
+                margin: $padding 0;
+                height: auto;
+                flex-shrink: 0;
+                flex-grow: 0;
 
                 input {
+                    display: none;
                   &:checked {
                     + label {
-                      &:after {
-                        position: absolute;
-                        z-index: 20;
-                        top: 0;
-                        left: -$padding*3;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        width: 1rem;
-                        height: 1rem;
-                        content: '\f00c';
-                        color: $white;
-                        border: 1px solid $bright-blue-darken-03;
-                        border-radius: $border-radius;
-                        background: $bright-blue-darken-04;
-                        font-family: $font-family-icon;
-                        font-size: $font-size-sm;
+                      &:before {
+                        content: '\f14a';
+                        color: $bright-blue;
                       }
                     }
                   }
                 }
 
                 label {
-                  position: absolute;
-                  left: $padding*3;
-                  height: 1rem;
-                  margin-bottom: 0;
-                  line-height: 1rem;
+                    margin-bottom: 0;
+                    position: relative;
+                    padding-left: $padding*3;
 
                   &:before {
-                    position: absolute;
-                    z-index: 10;
-                    top: 0;
-                    left: -$padding*3;
-                    width: 1rem;
-                    height: 1rem;
-                    content: '';
-                    border: 1px solid $warm-gray-10;
-                    border-radius: $border-radius;
-                    background: $white;
+                      position: absolute;
+                      left: 0;
+                      top: -1px;
+                      width: 1.5rem;
+                      content: '\f096';
+                      color: $warm-gray-10;
+                      font-family: $font-family-icon;
+                      font-size: $font-size-h4;
                   }
                 }
               }
