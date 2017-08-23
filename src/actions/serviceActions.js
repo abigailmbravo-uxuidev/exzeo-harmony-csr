@@ -16,6 +16,11 @@ export const serviceRequest = data => ({
   data
 });
 
+export const serviceFinished = data => ({
+  type: types.SERVICE_REQUEST_FINISHED,
+  data
+});
+
 export const runnerSetup = data => ({
   method: 'POST',
   headers: {
@@ -30,7 +35,8 @@ export const addNote = (data, files) => (dispatch) => {
   const url = `${process.env.REACT_APP_API_URL}/upload`;
 
   for (let [key, value] of Object.entries(data)) {
-    form.append(key, value);
+    const fieldValue = key === 'createdBy' ? JSON.stringify(value) : value;
+    form.append(key, fieldValue);
   }
   
   if (files && files.length > 0) {
@@ -44,9 +50,8 @@ export const addNote = (data, files) => (dispatch) => {
       'Content-Type': `multipart/form-data; boundary=${ form._boundary }`
     }
   })
-  .then((response) => {
-    console.log('response', response);
-  }).catch((error) => {
+  .then((response) => dispatch(getNotes(response.data.number)))
+  .catch((error) => {
     const message = handleError(error);
     return dispatch(batchActions([
       errorActions.setAppError({ message })

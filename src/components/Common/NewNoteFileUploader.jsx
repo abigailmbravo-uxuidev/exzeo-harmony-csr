@@ -16,14 +16,14 @@ export const submitNote = (data, dispatch, props) => {
     number: documentId,
     noteType,
     noteContent: data.noteContent,
-    contactType: 'Agent',
+    contactType: data.contactType,
     createdAt: new Date().getTime(),
-    noteAttachments: data.noteAttachments.length,
+    noteAttachments: data.noteAttachments ? data.noteAttachments.length : 0,
+    fileType: data.fileType,
     createdBy: {
       useerId: user.user_id,
       userName: user.username
-    },
-    updatedBy: {}
+    }
   };
 
   props.actions.serviceActions.addNote(noteData, data.noteAttachments);
@@ -87,8 +87,72 @@ export const NewNoteFileUploader = (props, { closeButtonHandler }) => {
     ]
   };
 
-  const contactTypes = props.noteType ? contactTypeOptions[props.noteType] : [];
+  const docTypeOptions = {
+    'Quote Note': [
+      "4-pt Inspection",
+      "Claims Documentation",
+      "Consent To Rate Form",
+      "Correspondence",
+      "Elevation Certificate",
+      "Flood Selection Form", 
+      "Flood Waiver Form", 
+      "HUD Statement", 
+      "New Business Application",
+      "Other",
+      "Proof Of Prior Insurance", 
+      "Proof Of Repair", 
+      "Property Inspection", 
+      "Protection Device Certificate",
+      "Quote Summary",
+      "Replacement Cost Estimator",
+      "Roof Inspection/permit", 
+      "Sinkhole Loss Questionnaire", 
+      "Sinkhole Selection/rejection Form",
+      "Wind Exclusion", 
+      "Wind Mitigation"
+    ],
+    'Policy Note': [
+      "4-pt Inspection", 
+      "AI Change", 
+      "AOR Change", 
+      "Cancellation Request", 
+      "Cancellation/non-renewal Notice", 
+      "Claims Documentation", 
+      "Consent To Rate Form", 
+      "Correspondence", 
+      "DEC Page", 
+      "Electronic Payment Receipt", 
+      "Elevation Certificate", 
+      "Endorsement", 
+      "Financial Document", 
+      "Policy Packet", 
+      "Flood Selection Form", 
+      "Flood Waiver Form", 
+      "HUD Statement", 
+      "New Business Application", 
+      "Occupancy Letter", 
+      "Other", 
+      "Proof Of Prior Insurance", 
+      "Proof Of Repair", 
+      "Property Inspection", 
+      "Protection Device Certificate", 
+      "Reinstatement Notice", 
+      "Renewal Application", 
+      "Replacement Cost Estimator", 
+      "Returned Mail", 
+      "Returned Renewal Application", 
+      "Roof Inspection/permit", 
+      "Sinkhole Loss Questionnaire", 
+      "Sinkhole Selection/rejection Form", 
+      "Statement Of No Loss", 
+      "UW Condition Letter", 
+      "Wind Exclusion", 
+      "Wind Mitigation"
+    ]
+  };
 
+  const contactTypes = props.noteType ? contactTypeOptions[props.noteType] : [];
+  const docTypes = props.noteType ? docTypeOptions[props.noteType] : [];
 
   return (
     <div className={props.appState.data.minimize === true ? 'new-note-file minimize' : 'new-note-file'} >
@@ -106,6 +170,10 @@ export const NewNoteFileUploader = (props, { closeButtonHandler }) => {
               <label>Note Type</label>
               <Field component="select" name="contactType" disabled={!contactTypes.length}>
                 { contactTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
+              </Field>
+              <label>Document Type</label>
+              <Field component="select" name="fileType" disabled={!docTypes.length}>
+                { docTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
               </Field>
               <Field name="noteContent" component={renderNotes} label="Note Content" />
             </div>
@@ -145,6 +213,6 @@ const mapDispatchToProps = dispatch => ({
 
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
   form: 'NewNoteFileUploader',
-  initialValues: { contactType: 'Agent' },
+  initialValues: { contactType: 'Agent', fileType: 'Other' },
   validate
 })(NewNoteFileUploader));
