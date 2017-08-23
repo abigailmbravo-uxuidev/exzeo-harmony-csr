@@ -540,12 +540,8 @@ export class Coverage extends Component {
                         <TextField label={'Tidal Waters Dist.'} styleName={''} name={'distanceToTidalWater'} disabled />
                       </div>
                       <div className="flex-child home-location-residence-type">
-                        <SelectField
-                          name="residenceType" component="select" styleName={''} label={getQuestionName('residenceType', questions)} input={{
-                            name: 'residenceType',
-                            disabled: true,
-                            value: fieldValues.residenceType
-                          }} answers={getAnswers('residenceType', questions)}
+                        <TextField
+                          name="residenceType" styleName={''} label={getQuestionName('residenceType', questions)} disabled
                         />
                       </div>
                     </div>
