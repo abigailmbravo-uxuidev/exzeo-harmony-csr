@@ -4,7 +4,7 @@ import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
 
 import ConnectedApp, { AdditionalInterests, handleGetQuoteData, handleFormSubmit,
-   deleteAdditionalInterest, addAdditionalInterest, editAdditionalInterest, hideAdditionalInterestModal } from './AdditionalInterests';
+   deleteAdditionalInterest, addAdditionalInterest, editAdditionalInterest, hideAdditionalInterestModal, applyRank } from './AdditionalInterests';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -753,5 +753,7 @@ describe('Testing AdditionalInterests component', () => {
     const wrapper = shallow(<AdditionalInterests store={store} {...props} />);
 
     wrapper.instance().componentDidMount();
+
+    applyRank(quoteData.additionalInterests);
   });
 });

@@ -44,6 +44,13 @@ const csrLinks = [{
   styleName: 'notes',
   exact: true
 }, {
+  key: 'cancel',
+  link: '/policy/cancel',
+  label: 'Cancel Policy',
+  styleName: 'cancel',
+  exact: true
+},
+{
   key: 'endorsements',
   link: '/policy/endorsements',
   label: 'Endorsements',
@@ -66,7 +73,7 @@ const getDocumentId = (props) => {
   return policyData.policyNumber;
 };
 
-const SideNav = (props) => {
+export const SideNav = (props) => {
   const documentId = getDocumentId(props);
 
   return (

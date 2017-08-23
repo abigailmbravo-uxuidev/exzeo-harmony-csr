@@ -158,26 +158,30 @@ describe('Testing MortgageBilling component', () => {
     handleInitialize(initialState);
 
     wrapper.instance().handleFormSubmit({ body });
-    wrapper.instance().componentWillReceiveProps({ policy,
+    wrapper.instance().handleBillingEdit();
+    wrapper.instance().setBatch('');
+    wrapper.instance().checkPayments();
+
+    wrapper.instance().amountFormatter(100);
+    wrapper.instance().dateFormatter('123');
+    getPaymentDescription({ target: { value: '' } }, props);
+
+
+    wrapper.instance().componentWillReceiveProps({
+      policy: { policyNumber: '1234', rating: { worksheet: { fees: {} } } },
       appState: {
-        data: {
-          submitting: false
-        }
+
       },
-      policyNumber: 10000,
       actions: {
-        serviceActions: {
-          getBillingOptions() { },
-          addTransaction() { return Promise.resolve(); },
-          getTransactionHistory() {},
-          getSummaryLedger() {},
-          getPaymentHistory() {},
-          getPaymentOptionsApplyPayments() {}
-        },
         appStateActions: {
           setAppState() {}
-        }
-      } });
+        },
+        serviceActions: { addTransaction() { return Promise.resolve(); },
+          getTransactionHistory() {},
+          getSummaryLedger() {},
+          getBillingOptions() {},
+          getPaymentHistory() {},
+          getPaymentOptionsApplyPayments() {} } } });
   });
 
   it('test setRank', () => {

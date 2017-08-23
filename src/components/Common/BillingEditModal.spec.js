@@ -3,14 +3,16 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { NewNoteFileUploaderPopup, closeNewNoteFileUploader, SideNav } from './PolicySideNav';
+import ConnectedApp, { BillingEditModal, selectBillPlan, selectBillTo } from './BillingEditModal';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 
-describe('Testing PolicySideNav component', () => {
+describe('Testing BillingEditModal component', () => {
   it('should test connected app', () => {
     const initialState = {
+      authState: {
+      },
       cg: {
         bb: {
           data: {
@@ -20,37 +22,33 @@ describe('Testing PolicySideNav component', () => {
           }
         }
       },
+      service: {},
       appState: {
-        data: { activateRedirect: false },
+        data: {
+          selectedAI: {
+            type: 'Mortgagee',
+            phoneNumber: '43543543535',
+            mailingAddress: {}
+          },
+          showAdditionalInterestModal: false
+        },
         modelName: 'bb'
       }
     };
     const store = mockStore(initialState);
     const props = {
-      actions: {
-        cgActions: {
-          batchCompleteTask() { return Promise.resolve(); }
-        },
-        appStateActions: {
-          setAppState() { }
-        }
-      },
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,
       appState: {
-        instanceId: 1,
         data: {
           submitting: false
         }
-      }
+      },
+      ...propTypes
     };
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
-    expect(wrapper);
-
-    SideNav(props);
-
-    NewNoteFileUploaderPopup(props);
-    closeNewNoteFileUploader(props);
+    console.log('hhhhhhhh', wrapper.instance().props.appState)
+    expect(wrapper.instance().props.fieldQuestions).toEqual([]);
   });
 });

@@ -63,7 +63,7 @@ export const handleInitialize = (state) => {
   return values;
 };
 
-const getPaymentDescription = (event, props) => {
+export const getPaymentDescription = (event, props) => {
   const selectedDescriptionType = _.find(props.paymentOptions, type => type.paymentType === event.target.value);
 
   props.actions.appStateActions.setAppState(props.appState.modelName,

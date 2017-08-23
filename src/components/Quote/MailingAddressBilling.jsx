@@ -129,12 +129,7 @@ InstallmentTerm.propTypes = {
 const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
 
 export const selectBillTo = (props) => {
-  const { paymentPlanResult, fieldValues, dispatch } = props;
-  const currentPaymentPlan = _.find(paymentPlanResult.options, ['billToId', fieldValues.billToId]) ?
-    _.find(paymentPlanResult.options, ['billToId', fieldValues.billToId]) : {};
-
-  dispatch(change('MailingAddressBilling', 'billToId', currentPaymentPlan.billToId));
-  dispatch(change('MailingAddressBilling', 'billToType', currentPaymentPlan.billToType));
+  const { dispatch } = props;
   dispatch(change('MailingAddressBilling', 'billPlan', 'Annual'));
 };
 
@@ -182,6 +177,7 @@ export const clearForm = (props) => {
   dispatch(change('MailingAddressBilling', 'sameAsProperty', false));
 };
 
+<<<<<<< HEAD
 export const selectBillPlan = (value, props) => {
   const { paymentPlanResult, fieldValues, dispatch } = props;
 
@@ -193,6 +189,8 @@ export const selectBillPlan = (value, props) => {
   dispatch(change('MailingAddressBilling', 'billPlan', value));
 };
 
+=======
+>>>>>>> develop
 export const fillMailForm = (props) => {
   const { dispatch, quoteData } = props;
 
