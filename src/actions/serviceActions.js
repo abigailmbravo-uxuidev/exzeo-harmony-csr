@@ -16,11 +16,6 @@ export const serviceRequest = data => ({
   data
 });
 
-export const serviceFinished = data => ({
-  type: types.SERVICE_REQUEST_FINISHED,
-  data
-});
-
 export const runnerSetup = data => ({
   method: 'POST',
   headers: {
