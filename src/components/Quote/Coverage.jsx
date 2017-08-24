@@ -37,7 +37,7 @@ export const handleGetQuoteData = (state) => {
   return quoteData;
 };
 
-const handleGetZipCodeSettings = (state) => {
+export const handleGetZipCodeSettings = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return null;
 
@@ -50,7 +50,7 @@ const handleGetZipCodeSettings = (state) => {
   return zipCodeSettingsQuote || zipCodeSettings;
 };
 
-function calculatePercentage(oldFigure, newFigure) {
+export function calculatePercentage(oldFigure, newFigure) {
   let percentChange = 0;
   if ((oldFigure !== 0) && (newFigure !== 0)) {
     percentChange = (oldFigure / newFigure) * 100;
@@ -59,9 +59,9 @@ function calculatePercentage(oldFigure, newFigure) {
   return percentChange;
 }
 
-const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
+export const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
 
-const handleInitialize = (state) => {
+export const handleInitialize = (state) => {
   const quoteData = handleGetQuoteData(state);
   const values = {};
 
