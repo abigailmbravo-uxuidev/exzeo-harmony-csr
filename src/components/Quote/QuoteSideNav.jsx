@@ -57,7 +57,6 @@ const csrLinks = [{
   label: 'Quote Summary',
   styleName: 'quote-summary'
 }, {
-  needsRating: true,
   key: 'application',
   link: '/quote/application',
   label: 'Application',

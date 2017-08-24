@@ -21,7 +21,12 @@ const handleInitialize = (state) => {
 const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : {};
+  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
+  ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
+  : {};
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
+  ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
+  : quoteEnd;
   return quoteData;
 };
 
@@ -124,7 +129,7 @@ export class QuoteApplication extends Component {
             <div className="scroll">
               <div className="detail-wrapper">
 
-                {underwritingExceptions && underwritingExceptions.length > 0 &&
+                {underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0 &&
                 <div className="messages" >
                   <div className="message error">
                     <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Application cannot be sent due to Underwriting Validations.
@@ -136,7 +141,7 @@ export class QuoteApplication extends Component {
               <div className="workflow-steps">
                 <button
                   form="Application"
-                  className="btn btn-primary" type="submit" disabled={(underwritingExceptions && underwritingExceptions.length > 0) || checkQuoteState(quoteData)}
+                  className="btn btn-primary" type="submit" disabled={(underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0) || checkQuoteState(quoteData)}
                 >Send to DocuSign</button>
               </div>
 
@@ -176,7 +181,7 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'QuoteApplication.values', {}),
   underwritingExceptions: handleGetUnderwritingExceptions(state),
   initialValues: handleInitialize(state),
-  quoteData: handleGetQuoteData(state)
+  quoteData: state.service.transactions || handleGetQuoteData(state)
 });
 
 const mapDispatchToProps = dispatch => ({

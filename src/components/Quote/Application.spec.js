@@ -11,6 +11,9 @@ const mockStore = configureStore(middlewares);
 describe('Testing Coverage component', () => {
   it('should test connected app', () => {
     const initialState = {
+      service: {
+        transactions: {}
+      },
       cg: {
         bb: {
           data: {
