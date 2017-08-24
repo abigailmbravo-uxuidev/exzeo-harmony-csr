@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
-import ConnectedApp, { Coverage, handleAgencyChange, handleFormSubmit, handleGetQuoteData, clearForm } from './Coverage';
+import ConnectedApp, { Coverage, handleAgencyChange, handleFormSubmit, handleGetQuoteData, handleInitialize, handleGetZipCodeSettings } from './Coverage';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
@@ -13,6 +13,7 @@ const mockStore = configureStore(middlewares);
 const quoteData = {
   _id: '5866c036a46eb72908f3f547',
   companyCode: 'TTIC',
+  agencyCode: '20000',
   state: 'FL',
   product: 'HO3',
   quoteNumber: '12-1234567-12',
@@ -306,62 +307,7 @@ const quoteData = {
   __v: 0
 };
 
-
 describe('Testing Coverage component', () => {
-  it('should test connected app', () => {
-    const initialState = {
-      authState: {},
-      service: {
-        getAgents() {}
-      },
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {},
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        data: {
-
-        },
-        modelName: 'bb'
-      }
-    };
-    const store = mockStore(initialState);
-    const props = {
-      handleSubmit: function name() {
-
-      },
-      actions: {
-        cgActions: {
-          startWorkflow() { return Promise.resolve(() => {}); },
-          batchCompleteTask() { return Promise.resolve(() => {}); }
-        }
-      },
-      fieldQuestions: [],
-      quoteData,
-      dispatch: store.dispatch,
-      appState: {
-        data: {
-          submitting: false
-        }
-      }
-    };
-
-    localStorage.setItem('isNewTab', true);
-    localStorage.setItem('lastSearchData', JSON.stringify({
-      searchType: 'address'
-    }));
-
-    const wrapper = mount(
-      <Provider store={store} >
-        <ConnectedApp {...props} />
-      </Provider>);
-    expect(wrapper);
-  });
   it('should test handleGetQuoteData', () => {
     const initialState = {
       service: {
@@ -640,6 +586,10 @@ describe('Testing Coverage component', () => {
 
       },
       actions: {
+        serviceActions: {
+          getAgencies() {},
+          getAgentsByAgency() {}
+        },
         appStateActions: {
           setAppState() { return Promise.resolve(() => {}); }
         },
@@ -652,7 +602,7 @@ describe('Testing Coverage component', () => {
         }
       },
       fieldQuestions: [],
-      quoteData: {},
+      quoteData,
       dispatch: store.dispatch,
       appState: {
         data: {
@@ -672,6 +622,146 @@ describe('Testing Coverage component', () => {
     wrapper.instance().updateDwellingAndDependencies({ target: { value: '' } }, '');
     wrapper.instance().updateDependencies({ target: { value: '' } }, 'calculatedSinkhole', 'dwellingAmount');
     wrapper.instance().updateCalculatedSinkhole();
+    wrapper.instance().componentWillReceiveProps(props);
+    wrapper.instance().componentDidUpdate();
     expect(wrapper.instance().props.fieldValues.dwellingAmount).toEqual('');
+
+    handleInitialize(initialState);
+    handleGetZipCodeSettings(initialState);
+  });
+
+  it('should test componentWillMount', () => {
+    const initialState = {
+      service: {
+        getAgents() {}
+      },
+      cg: {
+        bb: {
+          data: {
+            modelInstanceId: '123',
+            model: {},
+            uiQuestions: []
+          }
+        }
+      },
+      appState: {
+        data: {
+
+        },
+        modelName: 'bb'
+      }
+    };
+    const store = mockStore(initialState);
+    const props = {
+      initialValues: {},
+      fieldValues: {
+        dwellingAmount: '',
+        agencyCode: 20000
+      },
+      agency: {
+        agencyCode: 20000
+      },
+      handleSubmit: function name() {
+
+      },
+      actions: {
+        serviceActions: {
+          getAgencies() {},
+          getAgentsByAgency() {}
+        },
+        appStateActions: {
+          setAppState() { return Promise.resolve(() => {}); }
+        },
+        questionsActions: {
+          getUIQuestions() { return Promise.resolve(() => {}); }
+        },
+        cgActions: {
+          startWorkflow() { return Promise.resolve(() => {}); },
+          batchCompleteTask() { return Promise.resolve(() => {}); }
+        }
+      },
+      fieldQuestions: [],
+      quoteData,
+      dispatch: store.dispatch,
+      appState: {
+        data: {
+          submitting: false
+        }
+      }
+    };
+
+    const wrapper2 = shallow(<Coverage store={store} {...props} />);
+    localStorage.setItem('isNewTab', true);
+    localStorage.setItem('lastSearchData', JSON.stringify({
+      searchType: 'quote'
+    }));
+    wrapper2.instance().componentDidMount();
+  });
+
+  it('should test componentWillMount newTab === false', () => {
+    const initialState = {
+      service: {
+        getAgents() {}
+      },
+      cg: {
+        bb: {
+          data: {
+            modelInstanceId: '123',
+            model: {},
+            uiQuestions: []
+          }
+        }
+      },
+      appState: {
+        instanceId: '234',
+        data: {
+
+        },
+        modelName: 'bb'
+      }
+    };
+    const store = mockStore(initialState);
+    const props = {
+      initialValues: {},
+      fieldValues: {
+        dwellingAmount: '',
+        agencyCode: 20000
+      },
+      agency: {
+        agencyCode: 20000
+      },
+      handleSubmit: function name() {
+
+      },
+      actions: {
+        serviceActions: {
+          getAgencies() {},
+          getAgentsByAgency() {}
+        },
+        appStateActions: {
+          setAppState() { return Promise.resolve(() => {}); }
+        },
+        questionsActions: {
+          getUIQuestions() { return Promise.resolve(() => {}); }
+        },
+        cgActions: {
+          startWorkflow() { return Promise.resolve(() => {}); },
+          batchCompleteTask() { return Promise.resolve(() => {}); }
+        }
+      },
+      fieldQuestions: [],
+      quoteData,
+      dispatch: store.dispatch,
+      appState: {
+        instanceId: '234',
+        data: {
+          submitting: false
+        }
+      }
+    };
+
+    const wrapper2 = shallow(<Coverage store={store} {...props} />);
+    localStorage.setItem('isNewTab', false);
+    wrapper2.instance().componentDidMount();
   });
 });
