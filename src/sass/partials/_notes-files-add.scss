@@ -113,25 +113,43 @@
         }
 
         .dropzone-wrapper {
-            @include transition(all .2s ease-in-out);
-            &:hover {
-                position: absolute;
-                background: rgba($black, .5);
-                bottom: 0;
-                top: -1rem;
-                left: -1rem;
-                right: -1rem;
-                padding: .5rem;
-                display: flex;
-                flex-direction: column;
+          @include transition(all .2s ease-in-out);
 
-                .dropzone-component {
-                    background: $white;
-                    flex-grow: 1;
-                    flex-shrink: 1;
-                    height: auto;
-                }
+          .upload-list {
+            overflow-y: auto;
+            max-height: 3.5rem;
+            margin: 0.5rem 0 0;
+            padding: ($padding/2) $padding;
+            border: 1px solid $warm-gray-02;
+            border-radius: $border-radius;
+            background: $warm-gray-01;
+          }
+
+          .dropzone-overlay {
+            position: absolute;
+            top: -1rem;
+            right: -1rem;
+            bottom: -4.25rem;
+            left: -1rem;
+            color: $white;
+            background: rgba($warm-gray-15, .75);
+
+            .dropzone-drop-area {
+                position: absolute;
+                top: $padding;
+                right: $padding;
+                bottom: $padding;
+                left: $padding;
+                padding: $padding;
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                justify-content: center;
+                border: 5px dashed $white;
+                border-radius: $border-radius;
+                font-size: $font-size-h3;
             }
+          }
         }
       }
 

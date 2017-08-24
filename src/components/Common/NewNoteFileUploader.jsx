@@ -9,6 +9,42 @@ import * as cgActions from '../../actions/cgActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
 
+class FullScreen extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      accept: '',
+      files: [],
+      dropzoneActive: false
+    }
+  }
+
+  onDragEnter() {
+    this.setState({
+      dropzoneActive: true
+    });
+  }
+
+  onDragLeave() {
+    this.setState({
+      dropzoneActive: false
+    });
+  }
+
+  onDrop(files) {
+    this.setState({
+      files,
+      dropzoneActive: false
+    });
+  }
+
+  applyMimeTypes(event) {
+    this.setState({
+      accept: event.target.value
+    });
+  }
+}
+
 
 export const submitNote = (data, dispatch, props) => {
   const { user, noteType, documentId } = props;
@@ -51,7 +87,7 @@ const renderNotes = ({ input, label, type, meta: { touched, error } }) => (
   </div>
   );
 
-const renderDropzone = (field) => {
+const renderDropzone = (field, accept, dropzoneActive) => {
   const files = field.input.value;
 
   const updateFiles = ( filesToUpload, e ) => {
@@ -61,16 +97,23 @@ const renderDropzone = (field) => {
 
   return (
     <div className="dropzone-wrapper">
-      <Dropzone className="dropzone-component" name={ field.name } onDrop={ updateFiles }>
+      <Dropzone
+        className="dropzone-component"
+        name={ field.name }
+        style={{}}
+        accept={accept}
+        onDragEnter={{}}
+        onDrop={ updateFiles }>
         Drop files here or click to select files.
       </Dropzone>
+      { dropzoneActive && <div className="dropzone-overlay"><div className="dropzone-drop-area">Drop files...</div></div> }
       {
         field.meta.touched && field.meta.error &&
         <span className="error">{ field.meta.error }</span>
       }
       {
         files && Array.isArray(files) &&
-        (<ul>{ files.map((file, i) => <li key={ i }>{ file.name }</li>) }</ul>)
+        (<ul className="upload-list">{ files.map((file, i) => <li key={ i }>{ file.name }</li>) }</ul>)
       }
     </div>
   );
@@ -177,7 +220,7 @@ export const NewNoteFileUploader = (props, { closeButtonHandler }) => {
                   { docTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
                 </Field>
                 <Field name="noteAttachments" component={ renderDropzone } />
-            </div>        
+            </div>
             <div className="buttons note-file-footer-button-group">
               <button className="btn btn-secondary cancel-button" onClick={props.closeButtonHandler}>Cancel</button>
               <button className="btn btn-primary submit-button">Save</button>
