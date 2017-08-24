@@ -2,16 +2,6 @@
 
 .site-nav {
   margin: $padding 0 $padding ($padding*2);
-  //width: auto;
-  //padding: ($padding*2) 0;
-  @include transition(all .05s ease-in-out);
-  @include for-phone-only {
-    width: 14rem;
-  }
-  @include for-tablet-portrait-up {}
-  @include for-tablet-landscape-up {
-    //width: 12rem;
-  }
   //main left navigation
   ul {
     margin: 0;
@@ -21,7 +11,7 @@
     li {
       display: flex;
       margin: 0;
-      //background-color: rgba($white, .25
+
       span {
         a {
           display: flex;
@@ -29,26 +19,23 @@
           flex-grow: 1;
           width: 11rem;
           height: 3rem;
-          //margin: 0 (-$padding*2) 0 (-$padding);
           cursor: pointer;
           text-decoration: none;
+          color: $warm-gray-07;
+          border-left: ($padding/2) solid rgba($white, 0);
+
           &.disabled {
-            color: #c8c8c3;
+            color: $warm-gray-04;
+
             &:hover {
               cursor: not-allowed;
-              color: #c8c8c3;
               text-decoration: none;
-              i {
-                width: 4rem - ($padding/2);
-                text-decoration: none;
-              }
-
-              span {
-                text-decoration: none;
-                color: $body-color;
-              }
+              color: $warm-gray-04;
+              border-left: ($padding/2) solid rgba($white, 0);
+              background-color: rgba($white, 0);
             }
           }
+
           &.active {
             cursor: default;
             text-decoration: none;
@@ -56,31 +43,11 @@
             border-left: ($padding/2) solid $bright-blue-darken-04;
             background-color: $white;
 
-            i {
-              width: 4rem - ($padding/2);
-              text-decoration: none;
-            }
-
-            span {
-              text-decoration: none;
-              color: $body-color;
-            }
-
             &:hover {
               cursor: default;
               text-decoration: none;
               border-left: ($padding/2) solid $bright-blue-darken-04;
               background-color: $white;
-
-              i {
-                width: 4rem - ($padding/2);
-                text-decoration: none;
-              }
-
-              span {
-                text-decoration: none;
-                color: $body-color;
-              }
             }
           }
 
@@ -88,7 +55,7 @@
             cursor: pointer;
             text-decoration: none;
             border-left: ($padding/2) solid rgba($bright-blue, .2);
-            background-color: rgba($white, .1);
+            background-color: rgba($white, .4);
 
             span {
               text-decoration: none;
@@ -96,25 +63,9 @@
             }
           }
 
-          i {
-            width: 4rem;
-            text-align: center;
-            text-decoration: none;
-            @include for-phone-only {
-              width: 3.5rem;
-              text-decoration: none;
-            }
-          }
-
           span {
             text-decoration: none;
             color: $white;
-            @include for-tablet-portrait-up {
-              display: none;
-            }
-            @include for-tablet-landscape-up {
-              display: flex;
-            }
           }
         }
       }
