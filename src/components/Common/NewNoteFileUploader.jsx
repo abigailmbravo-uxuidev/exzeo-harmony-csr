@@ -9,43 +9,6 @@ import * as cgActions from '../../actions/cgActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
 
-class FullScreen extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      accept: '',
-      files: [],
-      dropzoneActive: false
-    }
-  }
-
-  onDragEnter() {
-    this.setState({
-      dropzoneActive: true
-    });
-  }
-
-  onDragLeave() {
-    this.setState({
-      dropzoneActive: false
-    });
-  }
-
-  onDrop(files) {
-    this.setState({
-      files,
-      dropzoneActive: false
-    });
-  }
-
-  applyMimeTypes(event) {
-    this.setState({
-      accept: event.target.value
-    });
-  }
-}
-
-
 export const submitNote = (data, dispatch, props) => {
   const { user, noteType, documentId } = props;
   const noteData = {
@@ -87,7 +50,7 @@ const renderNotes = ({ input, label, type, meta: { touched, error } }) => (
   </div>
   );
 
-const renderDropzone = (field, accept, dropzoneActive) => {
+const renderDropzone = ( field ) => {
   const files = field.input.value;
 
   const updateFiles = ( filesToUpload, e ) => {
@@ -97,16 +60,12 @@ const renderDropzone = (field, accept, dropzoneActive) => {
 
   return (
     <div className="dropzone-wrapper">
-      <Dropzone
-        className="dropzone-component"
+      <Dropzone className="dropzone-component"
         name={ field.name }
-        style={{}}
-        accept={accept}
-        onDragEnter={{}}
         onDrop={ updateFiles }>
         Drop files here or click to select files.
       </Dropzone>
-      { dropzoneActive && <div className="dropzone-overlay"><div className="dropzone-drop-area">Drop files...</div></div> }
+      {/*{ dropzoneActive && <div className="dropzone-overlay"><div className="dropzone-drop-area">Drop files...</div></div> }*/}
       {
         field.meta.touched && field.meta.error &&
         <span className="error">{ field.meta.error }</span>
