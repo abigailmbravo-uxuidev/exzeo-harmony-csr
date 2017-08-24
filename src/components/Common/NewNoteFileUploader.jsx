@@ -60,16 +60,16 @@ const renderDropzone = (field) => {
   }
 
   return (
-    <div>
-      <Dropzone name={ field.name } onDrop={ updateFiles }>
-        <div>Drop files here or click to select files.</div>
+    <div className="dropzone-wrapper">
+      <Dropzone className="dropzone-component" name={ field.name } onDrop={ updateFiles }>
+        Drop files here or click to select files.
       </Dropzone>
       {
         field.meta.touched && field.meta.error &&
         <span className="error">{ field.meta.error }</span>
       }
-      { 
-        files && Array.isArray(files) && 
+      {
+        files && Array.isArray(files) &&
         (<ul>{ files.map((file, i) => <li key={ i }>{ file.name }</li>) }</ul>)
       }
     </div>
@@ -94,59 +94,59 @@ export const NewNoteFileUploader = (props, { closeButtonHandler }) => {
       "Consent To Rate Form",
       "Correspondence",
       "Elevation Certificate",
-      "Flood Selection Form", 
-      "Flood Waiver Form", 
-      "HUD Statement", 
+      "Flood Selection Form",
+      "Flood Waiver Form",
+      "HUD Statement",
       "New Business Application",
       "Other",
-      "Proof Of Prior Insurance", 
-      "Proof Of Repair", 
-      "Property Inspection", 
+      "Proof Of Prior Insurance",
+      "Proof Of Repair",
+      "Property Inspection",
       "Protection Device Certificate",
       "Quote Summary",
       "Replacement Cost Estimator",
-      "Roof Inspection/permit", 
-      "Sinkhole Loss Questionnaire", 
+      "Roof Inspection/permit",
+      "Sinkhole Loss Questionnaire",
       "Sinkhole Selection/rejection Form",
-      "Wind Exclusion", 
+      "Wind Exclusion",
       "Wind Mitigation"
     ],
     'Policy Note': [
-      "4-pt Inspection", 
-      "AI Change", 
-      "AOR Change", 
-      "Cancellation Request", 
-      "Cancellation/non-renewal Notice", 
-      "Claims Documentation", 
-      "Consent To Rate Form", 
-      "Correspondence", 
-      "DEC Page", 
-      "Electronic Payment Receipt", 
-      "Elevation Certificate", 
-      "Endorsement", 
-      "Financial Document", 
-      "Policy Packet", 
-      "Flood Selection Form", 
-      "Flood Waiver Form", 
-      "HUD Statement", 
-      "New Business Application", 
-      "Occupancy Letter", 
-      "Other", 
-      "Proof Of Prior Insurance", 
-      "Proof Of Repair", 
-      "Property Inspection", 
-      "Protection Device Certificate", 
-      "Reinstatement Notice", 
-      "Renewal Application", 
-      "Replacement Cost Estimator", 
-      "Returned Mail", 
-      "Returned Renewal Application", 
-      "Roof Inspection/permit", 
-      "Sinkhole Loss Questionnaire", 
-      "Sinkhole Selection/rejection Form", 
-      "Statement Of No Loss", 
-      "UW Condition Letter", 
-      "Wind Exclusion", 
+      "4-pt Inspection",
+      "AI Change",
+      "AOR Change",
+      "Cancellation Request",
+      "Cancellation/non-renewal Notice",
+      "Claims Documentation",
+      "Consent To Rate Form",
+      "Correspondence",
+      "DEC Page",
+      "Electronic Payment Receipt",
+      "Elevation Certificate",
+      "Endorsement",
+      "Financial Document",
+      "Policy Packet",
+      "Flood Selection Form",
+      "Flood Waiver Form",
+      "HUD Statement",
+      "New Business Application",
+      "Occupancy Letter",
+      "Other",
+      "Proof Of Prior Insurance",
+      "Proof Of Repair",
+      "Property Inspection",
+      "Protection Device Certificate",
+      "Reinstatement Notice",
+      "Renewal Application",
+      "Replacement Cost Estimator",
+      "Returned Mail",
+      "Returned Renewal Application",
+      "Roof Inspection/permit",
+      "Sinkhole Loss Questionnaire",
+      "Sinkhole Selection/rejection Form",
+      "Statement Of No Loss",
+      "UW Condition Letter",
+      "Wind Exclusion",
       "Wind Mitigation"
     ]
   };
@@ -171,13 +171,13 @@ export const NewNoteFileUploader = (props, { closeButtonHandler }) => {
               <Field component="select" name="contactType" disabled={!contactTypes.length}>
                 { contactTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
               </Field>
-              <label>Document Type</label>
-              <Field component="select" name="fileType" disabled={!docTypes.length}>
-                { docTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
-              </Field>
               <Field name="noteContent" component={renderNotes} label="Note Content" />
-            </div>
-            <Field name="noteAttachments" component={ renderDropzone } />
+                <label>Document Type</label>
+                <Field component="select" name="fileType" disabled={!docTypes.length}>
+                  { docTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
+                </Field>
+                <Field name="noteAttachments" component={ renderDropzone } />
+            </div>        
             <div className="buttons note-file-footer-button-group">
               <button className="btn btn-secondary cancel-button" onClick={props.closeButtonHandler}>Cancel</button>
               <button className="btn btn-primary submit-button">Save</button>
