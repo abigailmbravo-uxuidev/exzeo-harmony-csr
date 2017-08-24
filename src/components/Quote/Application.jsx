@@ -18,7 +18,7 @@ const handleInitialize = (state) => {
   return formValues;
 };
 
-const handleGetQuoteData = (state) => {
+export const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
   const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
@@ -30,7 +30,7 @@ const handleGetQuoteData = (state) => {
   return quoteData;
 };
 
-const handleGetUnderwritingExceptions = (state) => {
+export const handleGetUnderwritingExceptions = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return [];
   const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
@@ -78,7 +78,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
   });
 };
 
-const quoteSummaryModal = (props) => {
+export const quoteSummaryModal = (props) => {
   const showQuoteSummaryModal = props.appState.data.showQuoteSummaryModal;
   props.actions.appStateActions.setAppState(
     props.appState.modelName,
