@@ -2,6 +2,7 @@ import React from 'react';
 import thunk from 'redux-thunk';
 import localStorage from 'localStorage';
 import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
@@ -358,7 +359,7 @@ describe('Testing Coverage component', () => {
 
     const wrapper = mount(
       <Provider store={store} >
-        <ConnectedApp {...props} />
+        <Router><ConnectedApp {...props} /></Router>
       </Provider>);
     expect(wrapper);
   });
