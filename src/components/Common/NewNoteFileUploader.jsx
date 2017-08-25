@@ -58,27 +58,16 @@ const renderDropzone = ( field ) => {
     field.input.onChange(list)
   }
 
-  const dragEnter = () => {
-    
-  }
-
   return (
     <div className="dropzone-wrapper">
       <Dropzone className="dropzone-component"
         name={ field.name }
-        onDrop={ updateFiles }
-        onDragEnter={ dragEnter }>
+        onDrop={ updateFiles }>
         Drop files here or click to select files.
       </Dropzone>
       {/*{ dropzoneActive && <div className="dropzone-overlay"><div className="dropzone-drop-area">Drop files...</div></div> }*/}
-      {
-        field.meta.touched && field.meta.error &&
-        <span className="error">{ field.meta.error }</span>
-      }
-      {
-        files && Array.isArray(files) &&
-        (<ul className="upload-list">{ files.map((file, i) => <li key={ i }>{ file.name }</li>) }</ul>)
-      }
+      { field.meta.touched && field.meta.error && <span className="error">{ field.meta.error }</span> }
+      { files && Array.isArray(files) && (<ul className="upload-list">{ files.map((file, i) => <li key={ i }>{ file.name }</li>) }</ul>) }
     </div>
   );
 };
@@ -86,12 +75,8 @@ const renderDropzone = ( field ) => {
 export const NewNoteFileUploader = (props, { closeButtonHandler }) => {
   // TODO: Pull this from the list service
   const contactTypeOptions = {
-    'Quote Note': [
-      'Agent', 'Policyholder', 'Inspector', 'Other'
-    ],
-    'Policy Note': [
-      'Agent', 'Policyholder', 'Lienholder', 'Claims', 'Inspector', 'Other'
-    ]
+    'Quote Note': [ 'Agent', 'Policyholder', 'Inspector', 'Other' ],
+    'Policy Note': [ 'Agent', 'Policyholder', 'Lienholder', 'Claims', 'Inspector', 'Other' ]
   };
 
   const docTypeOptions = {
