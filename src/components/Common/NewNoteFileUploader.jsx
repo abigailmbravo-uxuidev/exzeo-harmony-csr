@@ -58,11 +58,16 @@ const renderDropzone = ( field ) => {
     field.input.onChange(list)
   }
 
+  const dragEnter = () => {
+    
+  }
+
   return (
     <div className="dropzone-wrapper">
       <Dropzone className="dropzone-component"
         name={ field.name }
-        onDrop={ updateFiles }>
+        onDrop={ updateFiles }
+        onDragEnter={ dragEnter }>
         Drop files here or click to select files.
       </Dropzone>
       {/*{ dropzoneActive && <div className="dropzone-overlay"><div className="dropzone-drop-area">Drop files...</div></div> }*/}
