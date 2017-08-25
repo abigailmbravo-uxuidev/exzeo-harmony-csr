@@ -59,9 +59,9 @@ class renderDropzone extends React.Component {
   }
 
   onDragEnter = () => this.setState({ dropzoneActive: true });
-  
+
   onDragLeave = () => this.setState({ dropzoneActive: false });
-  
+
   onDrop = (files) => {
     const field = this.props.input;
     const list = Array.isArray(field.value) ? field.value.concat(files) : files;
@@ -81,9 +81,11 @@ class renderDropzone extends React.Component {
           onDragEnter={this.onDragEnter.bind(this)}
           onDragLeave={this.onDragLeave.bind(this)}
         >
-        Drop files here or click to select files.
-        { dropzoneActive && <div className="dropzone-overlay"><div className="dropzone-drop-area">Drop files...</div></div> }
-        <ul className="upload-list">{ files.map((f, i) => <li key={ i }>{f.name} - {f.size} bytes</li>) }</ul>
+          <ul className="upload-list">
+            <div className="drop-area-label">Drop files here or <span>click</span> to select files.</div>
+            { files.map((f, i) => <li key={ i }>{f.name} - {f.size} bytes</li>) }
+          </ul>
+          { dropzoneActive && <div className="dropzone-overlay"><div className="dropzone-drop-area">Drop files...</div></div> }
         </Dropzone>
       </div>
     );

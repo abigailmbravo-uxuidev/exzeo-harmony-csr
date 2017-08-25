@@ -117,12 +117,27 @@
 
           .upload-list {
             overflow-y: auto;
-            max-height: 3.5rem;
+            max-height: 4.25rem;
             margin: 0.5rem 0 0;
             padding: ($padding/2) $padding;
             border: 1px solid $warm-gray-02;
             border-radius: $border-radius;
             background: $warm-gray-01;
+
+            .drop-area-label {
+                cursor: pointer;
+                margin-bottom: $padding/2;
+
+                span {
+                    color: $bright-blue;
+                    font-weight: $font-weight-bold;                
+                }
+            }
+
+            li {
+                border-top: 1px dashed $warm-gray-02
+                ;
+            }
           }
 
           .dropzone-overlay {
