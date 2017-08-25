@@ -501,7 +501,7 @@ describe('Testing Underwriting component', () => {
     const store = mockStore(initialState);
 
     const props = {
-
+      reset() {},
       handleSubmit() {},
       questions: underwritingQuestions,
       fieldQuestions: [],
