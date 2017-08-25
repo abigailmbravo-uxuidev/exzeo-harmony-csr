@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp from './UnderwritingValidationBar';
+import { UnderwritingValidationBar } from './UnderwritingValidationBar';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -28,7 +28,9 @@ describe('Testing UnderwritingValidationBar component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      handleSubmit() { },
       quoteData: {
+        underwritingExceptions: [{ canOverride: true, fields: [{ name: 'rating.netPremium', value: 'null' }] }],
         policyHolders: []
       },
       userProfile: '',
@@ -38,10 +40,9 @@ describe('Testing UnderwritingValidationBar component', () => {
         data: {
           submitting: false
         }
-      },
-      ...propTypes
+      }
     };
-    const wrapper = shallow(<ConnectedApp store={store} {...props} />);
+    const wrapper = shallow(<UnderwritingValidationBar store={store} {...props} />);
     expect(wrapper);
   });
 });
