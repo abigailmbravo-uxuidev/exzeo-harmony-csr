@@ -25,6 +25,27 @@ export const runnerSetup = data => ({
   data
 });
 
+export const getNotes = id => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'transaction-logs.services',
+    method: 'GET',
+    path: `history?number=${id}`
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { notes: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+  .catch((error) => {
+    const message = handleError(error);
+    return dispatch(batchActions([
+      errorActions.setAppError({ message })
+    ]));
+  });
+};
+
 export const addNote = (data, files) => (dispatch) => {
   const form = new FormData();
   const url = `${process.env.REACT_APP_API_URL}/upload`;
@@ -46,27 +67,6 @@ export const addNote = (data, files) => (dispatch) => {
     }
   })
   .then((response) => dispatch(getNotes(response.data.number)))
-  .catch((error) => {
-    const message = handleError(error);
-    return dispatch(batchActions([
-      errorActions.setAppError({ message })
-    ]));
-  });
-};
-
-export const getNotes = id => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'transaction-logs.services',
-    method: 'GET',
-    path: `history?number=${id}`
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = { notes: response.data.result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
   .catch((error) => {
     const message = handleError(error);
     return dispatch(batchActions([

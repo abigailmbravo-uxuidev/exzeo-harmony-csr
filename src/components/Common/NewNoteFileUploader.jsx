@@ -50,26 +50,44 @@ const renderNotes = ({ input, label, type, meta: { touched, error } }) => (
   </div>
   );
 
-const renderDropzone = ( field ) => {
-  const files = field.input.value;
-
-  const updateFiles = ( filesToUpload, e ) => {
-    const list = Array.isArray(files) ? files.concat(filesToUpload) : filesToUpload;
-    field.input.onChange(list)
+class renderDropzone extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      dropzoneActive: false
+    }
   }
 
-  return (
-    <div className="dropzone-wrapper">
-      <Dropzone className="dropzone-component"
-        name={ field.name }
-        onDrop={ updateFiles }>
+  onDragEnter = () => this.setState({ dropzoneActive: true });
+  
+  onDragLeave = () => this.setState({ dropzoneActive: false });
+  
+  onDrop = (files) => {
+    const field = this.props.input;
+    const list = Array.isArray(field.value) ? field.value.concat(files) : files;
+    field.onChange(list);
+    this.setState({ files, dropzoneActive: false });
+  }
+
+  render() {
+    const { dropzoneActive } = this.state;
+    const files = this.props.input.value ||  [];
+
+    return (
+      <div className="dropzone-wrapper">
+        <Dropzone
+          style={{}}
+          onDrop={this.onDrop.bind(this)}
+          onDragEnter={this.onDragEnter.bind(this)}
+          onDragLeave={this.onDragLeave.bind(this)}
+        >
         Drop files here or click to select files.
-      </Dropzone>
-      {/*{ dropzoneActive && <div className="dropzone-overlay"><div className="dropzone-drop-area">Drop files...</div></div> }*/}
-      { field.meta.touched && field.meta.error && <span className="error">{ field.meta.error }</span> }
-      { files && Array.isArray(files) && (<ul className="upload-list">{ files.map((file, i) => <li key={ i }>{ file.name }</li>) }</ul>) }
-    </div>
-  );
+        { dropzoneActive && <div className="dropzone-overlay"><div className="dropzone-drop-area">Drop files...</div></div> }
+        <ul className="upload-list">{ files.map((f, i) => <li key={ i }>{f.name} - {f.size} bytes</li>) }</ul>
+        </Dropzone>
+      </div>
+    );
+  }
 };
 
 export const NewNoteFileUploader = (props, { closeButtonHandler }) => {
