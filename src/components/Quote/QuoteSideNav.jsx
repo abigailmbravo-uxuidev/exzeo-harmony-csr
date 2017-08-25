@@ -65,19 +65,19 @@ const csrLinks = [{
   exact: true
 }];
 
-const NewNoteFileUploaderPopup = (props) => {
+export const NewNoteFileUploaderPopup = (props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showNewNoteFileUploader: true });
 };
 
-const closeNewNoteFileUploader = (props) => {
+export const closeNewNoteFileUploader = (props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showNewNoteFileUploader: false });
 };
 
-const UWconditionsPopup = (props) => {
+export const UWconditionsPopup = (props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showUWconditions: true });
 };
 
-const closeUWConditions = (props) => {
+export const closeUWConditions = (props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showUWconditions: false });
 };
 
@@ -115,7 +115,7 @@ const getDocumentId = (props) => {
   return quoteData || {};
 };
 
-const SideNav = (props) => {
+export const SideNav = (props) => {
   const redirect = (props.activateRedirect)
     ? (<Redirect to={props.activateRedirectLink} />)
     : null;
