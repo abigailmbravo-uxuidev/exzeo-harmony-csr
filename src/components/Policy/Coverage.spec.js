@@ -40,7 +40,7 @@ describe('Testing Coverage component', () => {
       },
       actions: {
         appStateActions: {
-          setAppState() {}
+          setAppState() { }
         },
         cgActions: {
           batchCompleteTask() { return Promise.resolve({ payload: [{ data: { policy: { } } }] }); },

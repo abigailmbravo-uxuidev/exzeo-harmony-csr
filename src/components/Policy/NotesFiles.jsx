@@ -10,6 +10,7 @@ import * as serviceActions from '../../actions/serviceActions';
 import PolicyBaseConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import Footer from '../Common/Footer';
 
 const handleGetPolicyData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
@@ -124,6 +125,9 @@ export class NotesFiles extends Component {
               </div>
             </Form>
           </div>
+        </div>
+        <div className="basic-footer">
+          <Footer />
         </div>
       </PolicyBaseConnect>
     );
