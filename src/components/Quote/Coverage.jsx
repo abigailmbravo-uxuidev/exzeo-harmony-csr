@@ -37,7 +37,7 @@ export const handleGetQuoteData = (state) => {
   return quoteData;
 };
 
-const handleGetZipCodeSettings = (state) => {
+export const handleGetZipCodeSettings = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return null;
 
@@ -50,7 +50,7 @@ const handleGetZipCodeSettings = (state) => {
   return zipCodeSettingsQuote || zipCodeSettings;
 };
 
-function calculatePercentage(oldFigure, newFigure) {
+export function calculatePercentage(oldFigure, newFigure) {
   let percentChange = 0;
   if ((oldFigure !== 0) && (newFigure !== 0)) {
     percentChange = (oldFigure / newFigure) * 100;
@@ -59,16 +59,16 @@ function calculatePercentage(oldFigure, newFigure) {
   return percentChange;
 }
 
-const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
+export const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
 
-const handleInitialize = (state) => {
+export const handleInitialize = (state) => {
   const quoteData = handleGetQuoteData(state);
   const values = {};
 
   values.electronicDelivery = _.get(quoteData, 'policyHolders[0].electronicDelivery') || false;
 
-  values.agencyCode = String(_.get(quoteData, 'agencyCode'));
-  values.agentCode = String(_.get(quoteData, 'agentCode'));
+  values.agencyCode = _.get(quoteData, 'agencyCode');
+  values.agentCode = _.get(quoteData, 'agentCode');
   values.effectiveDate = moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD');
 
   values.pH1email = _.get(quoteData, 'policyHolders[0].emailAddress');
@@ -415,7 +415,7 @@ export class Coverage extends Component {
                           onChange: event => handleAgencyChange(this.props, event.target.value),
                           value: fieldValues.agencyCode
                         }} answers={agencies && agencies.map(agency => ({
-                          answer: String(agency.agencyCode),
+                          answer: agency.agencyCode,
                           label: `${agency.displayName} - ${agency.agencyCode}`
                         }))}
                       />
@@ -423,7 +423,7 @@ export class Coverage extends Component {
                     <div className="flex-child agentCode">
                       <SelectField
                         name="agentCode" component="select" styleName={''} label="Agent" validations={['required']} answers={agents && agents.map(agent => ({
-                          answer: String(agent.agentCode),
+                          answer: agent.agentCode,
                           label: `${agent.firstName} ${agent.lastName} - ${agent.agentCode}`
                         }))}
                       />

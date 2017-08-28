@@ -71,6 +71,13 @@ export const UnderwritingValidationBar = (props) => {
   underwritingExceptions = quoteData && quoteData.underwritingExceptions ? quoteData.underwritingExceptions : [];
 
   const hasOverrideExceptions = _.filter(underwritingExceptions, { canOverride: true }).length > 0;
+  if (hasOverrideExceptions) {
+    _.each(_.filter(underwritingExceptions, { canOverride: true }), (uw) => {
+      if (_.find(uw.fields, { name: 'rating.netPremium' }) && _.find(uw.fields, { name: 'rating.netPremium' }).value === 'null') {
+        uw.canOverride = false;
+      }
+    });
+  }
 
   return (
     <Form id="UnderwritingOverride" onSubmit={handleSubmit(handleFormSubmit)} noValidate>

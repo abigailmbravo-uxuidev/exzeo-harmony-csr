@@ -70,6 +70,7 @@
       padding: ($padding*2);
 
       .flex-contents {
+        position: relative;
         display: flex;
         align-content: stretch;
         align-items: stretch;
@@ -88,6 +89,7 @@
           flex-direction: column;
           flex-grow: 1;
           flex-shrink: 1;
+          margin: 0 0 ($padding*2);
 
           textarea {
             align-self: auto;
@@ -99,26 +101,70 @@
           }
 
           .error-message {
-              color: $red;
-              font-size: $font-size-sm;
+            color: $red;
+            font-size: $font-size-sm;
           }
 
           &.error {
-              textarea {
-                  border-color: $red;
-              }
+            textarea {
+              border-color: $red;
+            }
           }
         }
 
-        .drag-n-drop {
-          align-self: auto;
-          flex: 1 1 auto;
-          order: 0;
-          max-height: 180px;
-          padding: $padding;
-          text-align: center;
-          border: dashed $warm-gray-04 2px;
-          border-radius: $border-radius;
+        .dropzone-wrapper {
+          @include transition(all .2s ease-in-out);
+
+          .upload-list {
+            overflow-y: auto;
+            max-height: 4.25rem;
+            margin: 0.5rem 0 0;
+            padding: ($padding/2) $padding;
+            border: 1px solid $warm-gray-02;
+            border-radius: $border-radius;
+            background: $warm-gray-01;
+
+            .drop-area-label {
+                cursor: pointer;
+                margin-bottom: $padding/2;
+
+                span {
+                    color: $bright-blue;
+                    font-weight: $font-weight-bold;                
+                }
+            }
+
+            li {
+                border-top: 1px dashed $warm-gray-02
+                ;
+            }
+          }
+
+          .dropzone-overlay {
+            position: absolute;
+            top: -1rem;
+            right: -1rem;
+            bottom: -4.25rem;
+            left: -1rem;
+            color: $white;
+            background: rgba($warm-gray-15, .75);
+
+            .dropzone-drop-area {
+                position: absolute;
+                top: $padding;
+                right: $padding;
+                bottom: $padding;
+                left: $padding;
+                padding: $padding;
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                justify-content: center;
+                border: 5px dashed $white;
+                border-radius: $border-radius;
+                font-size: $font-size-h3;
+            }
+          }
         }
       }
 
@@ -128,7 +174,7 @@
         align-items: flex-start;
         flex-direction: row;
         flex-wrap: nowrap;
-        justify-content: flex-start;
+        justify-content: flex-end;
 
         div {
           align-self: auto;
@@ -138,69 +184,6 @@
 
         .btn-secondary {
           margin: 0 ($padding*2) 0 0;
-        }
-      }
-    }
-
-    .content.state-initial {}
-
-    .content.state-upload {
-      .flex-contents {
-        .drag-n-drop {
-          max-height: none;
-          padding: 120px 20px 0;
-          font-size: $font-size-h3;
-        }
-      }
-
-      a.btn-secondary {
-        margin: 0;
-      }
-    }
-
-    .content.state-finalize {
-      .flex-contents {
-        .drag-n-drop {
-          overflow: scroll;
-          border: solid 1px $warm-gray-04;
-
-          ul {
-            padding: 0;
-            list-style: none;
-
-            li {
-              display: flex;
-              align-content: stretch;
-              align-items: flex-start;
-              flex-direction: row;
-              flex-wrap: nowrap;
-              justify-content: flex-start;
-              margin: $padding 0;
-
-              > * {
-                align-self: auto;
-                flex: 0 1 auto;
-                order: 0;
-              }
-
-              > span {
-                align-self: auto;
-                flex: 1 1 auto;
-                order: 0;
-                text-align: left;
-                color: $warm-gray-14;
-              }
-
-              > select {
-                width: 36%;
-                margin: 0 $padding;
-              }
-
-              > i {
-                color: $red;
-              }
-            }
-          }
         }
       }
     }

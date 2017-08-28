@@ -36,10 +36,10 @@ input[type="submit"] {
     font-size: $font-size-sm;
 
     &.btn-link {
-      padding: 0 0.25rem;
+      padding: 0 ($padding/2);
 
       .fa {
-        margin: 0;
+        margin: 0 ($padding/2) 0 0;
       }
     }
   }

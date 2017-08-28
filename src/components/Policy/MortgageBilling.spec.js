@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 import _ from 'lodash';
-import ConnectedApp, { MortgageBilling, setRank } from './MortgageBilling';
+import ConnectedApp, { MortgageBilling, setRank, handleGetPolicy, handleInitialize } from './MortgageBilling';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -100,7 +100,12 @@ const policy = {
     protectionClass: 5,
     townhouseRowhouse: false
   },
-  product: 'HO3'
+  product: 'HO3',
+  rating: {
+    worksheet: {
+      fees: {}
+    }
+  }
 };
 
 describe('Testing MortgageBilling component', () => {
@@ -149,6 +154,8 @@ describe('Testing MortgageBilling component', () => {
     };
     const wrapper = shallow(<MortgageBilling store={store} {...props} />);
     expect(wrapper);
+    handleGetPolicy(initialState);
+    handleInitialize(initialState);
 
     wrapper.instance().handleFormSubmit({ body });
     wrapper.instance().handleBillingEdit();
@@ -157,7 +164,6 @@ describe('Testing MortgageBilling component', () => {
 
     wrapper.instance().amountFormatter(100);
     wrapper.instance().dateFormatter('123');
-
 
     wrapper.instance().componentWillReceiveProps({
       policy: { policyNumber: '1234', rating: { worksheet: { fees: {} } } },

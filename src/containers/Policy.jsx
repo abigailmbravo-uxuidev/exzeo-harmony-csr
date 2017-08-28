@@ -7,7 +7,6 @@ import _ from 'lodash';
 import PolicyHeader from '../components/Policy/PolicyHeader';
 import QuoteSideNav from '../components/Policy/PolicySideNav';
 import PolicyDetailHeader from '../components/Policy/DetailHeader';
-
 import Loader from '../components/Common/Loader';
 
 // import NewNoteFileUploader from '../components/Common/NewNoteFileUploader';
