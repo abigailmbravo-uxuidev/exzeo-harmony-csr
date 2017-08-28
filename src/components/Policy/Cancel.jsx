@@ -40,6 +40,9 @@ export const Payments = ({ payments }) => {
     defaultSortName: 'date',
     defaultSortOrder: 'desc'
   };
+
+{/*TODO: NEEDS PAYMENT SUMMARY GRID FROM Policy/MortgageBilling.jsx*/}
+
   return (
     <BootstrapTable data={payments} options={options}>
       <TableHeaderColumn dataField="date" width="25%" isKey>Date</TableHeaderColumn>
@@ -62,13 +65,12 @@ export const Claims = ({ claims }) => {
   return (
     // chang to props claims when endpoint is ready
     <BootstrapTable data={claimsData} options={options} >
-      <TableHeaderColumn dataField="jeLossNo" width="10%" isKey>JE Loss No</TableHeaderColumn>
-      <TableHeaderColumn dataField="lossID" width="10%">Loss ID</TableHeaderColumn>
+      <TableHeaderColumn dataField="jeLossNo" width="10%" isKey>Claim No</TableHeaderColumn>
       <TableHeaderColumn dataField="dateLoss" width="10%">Date Loss</TableHeaderColumn>
       <TableHeaderColumn dataField="reportDate" width="10%">Report Date</TableHeaderColumn>
       <TableHeaderColumn dataField="closeDate" width="10%">Close Date</TableHeaderColumn>
-      <TableHeaderColumn dataField="lossStatus" width="20%">Loss Status</TableHeaderColumn>
-      <TableHeaderColumn dataField="lossDesc" width="30%" tdStyle={{ whiteSpace: 'normal' }}>Loss Description</TableHeaderColumn>
+      <TableHeaderColumn dataField="lossStatus" width="20%">Status</TableHeaderColumn>
+      <TableHeaderColumn dataField="lossDesc" width="30%" tdStyle={{ whiteSpace: 'normal' }}>Description</TableHeaderColumn>
     </BootstrapTable>
   );
 };
@@ -187,10 +189,13 @@ export class CancelPolicy extends React.Component {
             </div>
           </div>
         </div>
-        <div className="btn-footer">
+        <div className="basic-footer btn-footer">
           <Footer />
-          <Link to={'/policy/coverage'} className="btn btn-secondary">Return</Link>
-          <button type="submit" className="btn btn-cancel">Cancel Policy</button>
+          {/*TODO: RESET button should reset form / CANCEL POLICY button should be disabled if form is clean/untouched*/}
+          <div className="btn-wrapper">
+            <button type="reset" className="btn btn-secondary">Clear</button>
+            <button type="submit" className="btn btn-cancel">Cancel Policy</button>
+          </div>
         </div>
       </PolicyConnect>
     );
