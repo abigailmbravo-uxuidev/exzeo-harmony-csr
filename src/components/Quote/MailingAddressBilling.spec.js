@@ -493,7 +493,7 @@ describe('Testing MailingAddressBilling component', () => {
           }
         ]
       },
-      fieldQuestions: [],
+      fieldValues: [],
       dispatch: store.dispatch,
       actions: {
         appStateActions: {

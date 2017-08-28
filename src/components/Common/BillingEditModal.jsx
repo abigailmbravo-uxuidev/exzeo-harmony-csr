@@ -58,49 +58,49 @@ export const selectBillTo = (event, props) => {
 export const BillingEditModal = (props) => {
   const { appState, handleSubmit, handleBillingFormSubmit, hideBillingModal, billingOptions } = props;
   return (<div className="modal" style={{ flexDirection: 'row' }}>
-    <Form id="BillingEditModal" className="BillingEditModal" noValidate onSubmit={handleSubmit(handleBillingFormSubmit)}>
-      <div className="card">
-        <div className="card-header">
-          <h4><i className={'fa fa-circle Billing'} /> Edit Billing</h4>
-        </div>
-        <div className="card-block">
-          <div className="flex-parent">
+    <div className="card card-billing-edit-modal">
+      <Form id="BillingEditModal" className="BillingEditModal" noValidate onSubmit={handleSubmit(handleBillingFormSubmit)}>
+      <div className="card-header">
+        <h4>Edit Billing</h4>
+      </div>
+      <div className="card-block">
+        <div className="flex-parent">
+          <div className="flex-child">
+
+            <SelectFieldBilling
+              name="billToId"
+              component="select"
+              label="Bill To"
+              onChange={() => selectBillTo(props)}
+              validations={['required']}
+              answers={billingOptions.options}
+            />
+
             <div className="flex-child">
 
-              <SelectFieldBilling
-                name="billToId"
-                component="select"
-                label="Bill To"
-                onChange={() => selectBillTo(props)}
+              <RadioFieldBilling
                 validations={['required']}
-                answers={billingOptions.options}
+                name={'billPlan'}
+                label={'Bill Plan'}
+                onChange={value => selectBillPlan(value, props)}
+                validate={[value => (value ? undefined : 'Field Required')]}
+                segmented
+                answers={_.find(billingOptions.options, ['billToId', props.fieldValues.billToId]) ?
+                       _.find(billingOptions.options, ['billToId', props.fieldValues.billToId]).payPlans : []}
+                paymentPlans={billingOptions.paymentPlans}
               />
-
-              <div className="flex-child">
-
-                <RadioFieldBilling
-                  validations={['required']}
-                  name={'billPlan'}
-                  label={'Bill Plan'}
-                  onChange={value => selectBillPlan(value, props)}
-                  validate={[value => (value ? undefined : 'Field Required')]}
-                  segmented
-                  answers={_.find(billingOptions.options, ['billToId', props.fieldValues.billToId]) ?
-                         _.find(billingOptions.options, ['billToId', props.fieldValues.billToId]).payPlans : []}
-                  paymentPlans={billingOptions.paymentPlans}
-                />
-              </div>
             </div>
           </div>
         </div>
-        <div className="card-footer">
-          <div className="btn-group">
-            <button className="btn btn-secondary" type="button" onClick={() => hideBillingModal(props)}>Cancel</button>
-            <button className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Update</button>
-          </div>
+      </div>
+      <div className="card-footer">
+        <div className="btn-group">
+          <button className="btn btn-secondary" type="button" onClick={() => hideBillingModal(props)}>Cancel</button>
+          <button className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Update</button>
         </div>
       </div>
-    </Form>
+      </Form>
+    </div>
   </div>);
 };
 

@@ -68,6 +68,9 @@ describe('Rules', () => {
     it('should return Invalid characters', () => {
       expect(rules.onlyAlphaNumeric('4ds4&')).toEqual('Invalid characters');
     });
+    it('should return undefined for onlyAlphaNumeric with a space', () => {
+      expect(rules.onlyAlphaNumeric('Batman Robin')).toBeUndefined();
+    });
   });
 
   describe('invalidCharacters', () => {
