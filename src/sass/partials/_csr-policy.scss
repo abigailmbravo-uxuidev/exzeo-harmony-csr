@@ -761,71 +761,13 @@
 }
 
 .cancel-policy {
-  label.form-group.segmented {
-
-    > label {
-      margin-bottom: $padding;
-      display: none;
-    }
-
-    label{
-      margin-right: 0;
-    }
-
-  }
-
-  .note-type, .note {
-    label {
-      display: none;
-    }
-
-  }
-
-  .note {
-    textarea {
-      height: 120px;
-    }
-  }
 
   .form-group.billing {
 
-    div {
-      flex: 1 1 auto;
-      margin: 0 ($padding*4) 0 0;
-    }
-
     .flex-child {
-      flex: 1 1 auto;
-
-      label {
-        margin-right: .5rem;
-        text-align: right;
-      }
-
-      .form-group {
-        flex-direction: row;
-        align-items: center;
-
-        label {
-
-          flex: 0 1 auto;
-          width: 25%;
-          margin-bottom: 0;
-        }
-
-        input {
-          flex: 1 0 auto;
-          width: 75%;
-        }
-
-
-      }
-
+      flex-grow: 1;
+      flex-shrink: 1;
+      width: auto;
     }
-
-    .flex-child:last-child {
-      margin-right: 0;
-    }
-
   }
 }

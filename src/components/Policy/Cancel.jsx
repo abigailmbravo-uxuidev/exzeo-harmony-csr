@@ -16,6 +16,7 @@ import TextField from '../Form/inputs/TextField';
 import * as serviceActions from '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
+import Footer from '../Common/Footer';
 
 export const handleGetPolicy = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
@@ -51,24 +52,7 @@ export const Payments = ({ payments }) => {
 
 
 const claimsData = [
-  {
-    jeLossNo: '888888',
-    lossID: '44950',
-    dateLoss: '06/03/2016',
-    reportDate: '06/09/2016',
-    closeDate: '06/18/2016',
-    lossStatus: ' ',
-    lossDesc: 'Ins called in to file a claim for water damage to his living room ceiling.Ins ac handler was clogged causing the drain line to over flow and water starting coming out which effected the living room ceiling. Repairs have been made to the air handler.The damage is to the plaster on the ceiling and drywall.'
-  },
-  {
-    jeLossNo: '999999',
-    lossID: '44952',
-    dateLoss: '07/12/2016',
-    reportDate: '07/14/2016',
-    closeDate: '07/29/2016',
-    lossStatus: ' ',
-    lossDesc: 'Ins called in to file a claim for water damage to his living room ceiling.Ins ac handler was clogged causing the drain line to over flow and water starting coming out which effected the living room ceiling. Repairs have been made to the air handler.The damage is to the plaster on the ceiling and drywall.'
-  }];
+  {  }];
 
 export const Claims = ({ claims }) => {
   const options = {
@@ -146,79 +130,67 @@ export class CancelPolicy extends React.Component {
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper cancel-policy" role="group">
-              <Form id="Cancellation" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
-                <section>
-                  <div className="flex-parent">
-                    <h3>Cancel Policy</h3>
-                    <div className="btn-footer">
-                      <Link to={'/policy/coverage'} className="btn btn-secondary">Return</Link>
-                      <button type="submit" className="btn btn-danger">Cancel Policy</button>
-                    </div>
+              <section>
+                <h3>Cancel Policy</h3>
+                <Form id="Cancellation" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+                <div className="flex-parent">
+                  <div className="flex-child">
+                    <RadioField
+                      onChange={() => resetCancelReasons(this.props)}
+                      validations={['required']} name={'cancelType'} styleName={''} label={'Cancel Type'} segmented
+                      answers={cancelGroup}
+                    />
                   </div>
-
-
-                  <div className="flex-parent">
-                    <div className="flex-child wind-wbdr">
-                      <RadioField
-                        onChange={() => resetCancelReasons(this.props)}
-                        validations={['required']} name={'cancelOptions'} styleName={''} label={'Cancel Options'} segmented
-                        answers={cancelGroup}
-                      />
-                    </div>
+                  <div className="flex-child">
+                    <DateField validations={['required']} label={'Effective Date'} name={'effectiveDate'} />
                   </div>
-
-
-                  <div className="flex-parent">
-
-
-                    <div className="flex-child">
-
-                      <DateField validations={['required']} label={'Effective Date'} name={'effectiveDate'} />
-
-                    </div>
-
-                    <div className="flex-child">
-                      <SelectField
-                        name="cancelReason" component="select" styleName={''} label="Cancel Reason" validations={['required']}
-                        answers={_.concat([], _.get(_.find(cancelOptions, option => option.cancelType === fieldValues.cancelOptions), 'cancelReason')).map(reason => ({
-                          answer: reason,
-                          label: reason
-                        }))}
-                      />
-                      <TextField label={'Additional Reason'} name={'additionalReason'} />
-
-                    </div>
+                </div>
+                <div className="flex-parent">
+                  <div className="flex-child">
+                    <SelectField
+                      name="cancelReason" component="select" styleName={''} label="Cancel Reason" validations={['required']}
+                      answers={_.concat([], _.get(_.find(cancelOptions, option => option.cancelType === fieldValues.cancelOptions), 'cancelReason')).map(reason => ({
+                        answer: reason,
+                        label: reason
+                      }))}
+                    />
+                  {/*TODO: Additional Reason needs to show only when Cancel Type === Underwriting Cancellation || Underwriting Non-Renewal*/}
+                  {/* option.cancelType === || && <TextField label={'Additional Reason'} name={'additionalReason'} /> */}
                   </div>
-
-
-                </section>
+                </div>
               </Form>
+            </section>
+              {/*PAYMENTS SECTION*/}
               <section>
                 <h3>Payments</h3>
-
                 <div className="form-group flex-parent billing">
-                  <div className="flex-child"><label>Bill To</label> <span>{_.get(_.find(_.get(this.props.paymentOptions, 'options'), option => option.billToId === _.get(this.props.summaryLedger, 'billToId')), 'displayText')}</span></div>
-                  <div className="flex-child"><label>Bill Plan</label> <span>{_.get(this.props.summaryLedger, 'billPlan')}</span></div>
-                  <div className="flex-child"><div className="form-group">
-                    <TextField disabled label={'Equity Date'} name={'equityDate'} />
-                  </div></div>
+                  <div className="flex-child">
+                    <label>Bill To</label>
+                    <div>{_.get(_.find(_.get(this.props.paymentOptions, 'options'), option => option.billToId === _.get(this.props.summaryLedger, 'billToId')), 'displayText')}</div>
+                  </div>
+                  <div className="flex-child">
+                    <label>Bill Plan</label>
+                    <div>{_.get(this.props.summaryLedger, 'billPlan')}</div>
+                  </div>
+                  <div className="flex-child">
+                    <label>Equity Date</label>
+                    <TextField disabled name={'equityDate'} />
+                  </div>
                 </div>
-
                 <Payments payments={this.props.paymentHistory || []} />
-
-
               </section>
-
+              {/*CLAIMS SECTION*/}
               <section>
                 <h3>Claims</h3>
-
                 <Claims />
-
-
               </section>
-
             </div>
           </div>
+        </div>
+        <div className="btn-footer">
+          <Footer />
+          <Link to={'/policy/coverage'} className="btn btn-secondary">Return</Link>
+          <button type="submit" className="btn btn-cancel">Cancel Policy</button>
         </div>
       </PolicyConnect>
     );
