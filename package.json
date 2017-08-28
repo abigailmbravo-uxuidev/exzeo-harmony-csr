@@ -24,6 +24,7 @@
     "react-bootstrap-table": "^3.2.1",
     "react-cookie": "^2.0.7",
     "react-dom": "^15.5.4",
+    "react-dropzone": "^4.1.0",
     "react-helmet": "^5.0.2",
     "react-modal": "^1.9.2",
     "react-number-format": "^2.0.0-alpha2",
@@ -56,12 +57,18 @@
     "watch-css": "node-sass src/sass --output-style 'compressed' -o src/css --watch --recursive",
     "start": "npm run build-css && react-scripts start",
     "build": "npm run build-css && react-scripts build",
-     "cover": "npm test -- --coverage",
+    "cover": "npm test -- --coverage",
     "test": "react-scripts test --env=jsdom --coverage",
     "eject": "react-scripts eject"
   },
-   "jest": {
-    "collectCoverageFrom": ["src/**/*.{js,jsx}", "!src/index.js", "!src/routes.js", "!src/setupTests.js", "!src/Auth.js"],
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!src/index.js",
+      "!src/routes.js",
+      "!src/setupTests.js",
+      "!src/Auth.js"
+    ],
     "coverageThreshold": {
       "global": {
         "statements": 80

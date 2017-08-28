@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Dropzone from 'react-dropzone';
 import { Field, Form, reduxForm, propTypes } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import * as cgActions from '../../actions/cgActions';
+import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
-
 
 export const submitNote = (data, dispatch, props) => {
   const { user, noteType, documentId } = props;
@@ -14,17 +15,17 @@ export const submitNote = (data, dispatch, props) => {
     number: documentId,
     noteType,
     noteContent: data.noteContent,
-    contactType: 'Agent',
+    contactType: data.contactType,
     createdAt: new Date().getTime(),
-    noteAttachments: [],
+    noteAttachments: data.noteAttachments ? data.noteAttachments.length : 0,
+    fileType: data.fileType,
     createdBy: {
       useerId: user.user_id,
       userName: user.username
-    },
-    updatedBy: {}
+    }
   };
 
-  props.actions.cgActions.startWorkflow('addNote', noteData, false);
+  props.actions.serviceActions.addNote(noteData, data.noteAttachments);
   props.closeButtonHandler();
 };
 
@@ -49,19 +50,121 @@ const renderNotes = ({ input, label, type, meta: { touched, error } }) => (
   </div>
   );
 
+class renderDropzone extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      dropzoneActive: false
+    }
+  }
+
+  onDragEnter = () => this.setState({ dropzoneActive: true });
+
+  onDragLeave = () => this.setState({ dropzoneActive: false });
+
+  onDrop = (files) => {
+    const field = this.props.input;
+    const list = Array.isArray(field.value) ? field.value.concat(files) : files;
+    field.onChange(list);
+    this.setState({ files, dropzoneActive: false });
+  }
+
+  render() {
+    const { dropzoneActive } = this.state;
+    const files = this.props.input.value ||  [];
+
+    return (
+      <div className="dropzone-wrapper">
+        <Dropzone
+          style={{}}
+          onDrop={this.onDrop.bind(this)}
+          onDragEnter={this.onDragEnter.bind(this)}
+          onDragLeave={this.onDragLeave.bind(this)}
+        >
+          <ul className="upload-list">
+            <div className="drop-area-label">Drop files here or <span>click</span> to select files.</div>
+            { files.map((f, i) => <li key={ i }>{f.name} - {f.size} bytes</li>) }
+          </ul>
+          { dropzoneActive && <div className="dropzone-overlay"><div className="dropzone-drop-area">Drop files...</div></div> }
+        </Dropzone>
+      </div>
+    );
+  }
+};
+
 export const NewNoteFileUploader = (props, { closeButtonHandler }) => {
   // TODO: Pull this from the list service
   const contactTypeOptions = {
+    'Quote Note': [ 'Agent', 'Policyholder', 'Inspector', 'Other' ],
+    'Policy Note': [ 'Agent', 'Policyholder', 'Lienholder', 'Claims', 'Inspector', 'Other' ]
+  };
+
+  const docTypeOptions = {
     'Quote Note': [
-      'Agent', 'Policyholder', 'Inspector', 'Other'
+      "4-pt Inspection",
+      "Claims Documentation",
+      "Consent To Rate Form",
+      "Correspondence",
+      "Elevation Certificate",
+      "Flood Selection Form",
+      "Flood Waiver Form",
+      "HUD Statement",
+      "New Business Application",
+      "Other",
+      "Proof Of Prior Insurance",
+      "Proof Of Repair",
+      "Property Inspection",
+      "Protection Device Certificate",
+      "Quote Summary",
+      "Replacement Cost Estimator",
+      "Roof Inspection/permit",
+      "Sinkhole Loss Questionnaire",
+      "Sinkhole Selection/rejection Form",
+      "Wind Exclusion",
+      "Wind Mitigation"
     ],
     'Policy Note': [
-      'Agent', 'Policyholder', 'Lienholder', 'Claims', 'Inspector', 'Other'
+      "4-pt Inspection",
+      "AI Change",
+      "AOR Change",
+      "Cancellation Request",
+      "Cancellation/non-renewal Notice",
+      "Claims Documentation",
+      "Consent To Rate Form",
+      "Correspondence",
+      "DEC Page",
+      "Electronic Payment Receipt",
+      "Elevation Certificate",
+      "Endorsement",
+      "Financial Document",
+      "Policy Packet",
+      "Flood Selection Form",
+      "Flood Waiver Form",
+      "HUD Statement",
+      "New Business Application",
+      "Occupancy Letter",
+      "Other",
+      "Proof Of Prior Insurance",
+      "Proof Of Repair",
+      "Property Inspection",
+      "Protection Device Certificate",
+      "Reinstatement Notice",
+      "Renewal Application",
+      "Replacement Cost Estimator",
+      "Returned Mail",
+      "Returned Renewal Application",
+      "Roof Inspection/permit",
+      "Sinkhole Loss Questionnaire",
+      "Sinkhole Selection/rejection Form",
+      "Statement Of No Loss",
+      "UW Condition Letter",
+      "Wind Exclusion",
+      "Wind Mitigation"
     ]
   };
 
   const contactTypes = props.noteType ? contactTypeOptions[props.noteType] : [];
-
+  const docTypes = props.noteType ? docTypeOptions[props.noteType] : [];
 
   return (
     <div className={props.appState.data.minimize === true ? 'new-note-file minimize' : 'new-note-file'} >
@@ -81,26 +184,17 @@ export const NewNoteFileUploader = (props, { closeButtonHandler }) => {
                 { contactTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
               </Field>
               <Field name="noteContent" component={renderNotes} label="Note Content" />
+                <label>Document Type</label>
+                <Field component="select" name="fileType" disabled={!docTypes.length}>
+                  { docTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
+                </Field>
+                <Field name="noteAttachments" component={ renderDropzone } />
             </div>
             <div className="buttons note-file-footer-button-group">
-              <button className="btn btn-primary upload-button">Upload</button>
-              <div />
               <button className="btn btn-secondary cancel-button" onClick={props.closeButtonHandler}>Cancel</button>
               <button className="btn btn-primary submit-button">Save</button>
             </div>
           </div>
-          {/* <div className="content state-upload" hidden>
-            <div className="flex-contents">
-              <div className="drag-n-drop">
-                Drag and Drop Files
-              </div>
-            </div>
-            <div className="buttons">
-              <a href="#" className="btn btn-primary">Choose Files</a>
-              <div />
-              <a href="#" className="btn btn-secondary">Cancel</a>
-            </div>
-          </div>*/}
         </Form>
       </div>
     </div>
@@ -124,12 +218,13 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: {
     cgActions: bindActionCreators(cgActions, dispatch),
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
   form: 'NewNoteFileUploader',
-  initialValues: { contactType: 'Agent' },
+  initialValues: { contactType: 'Agent', fileType: 'Other' },
   validate
 })(NewNoteFileUploader));
