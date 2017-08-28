@@ -15,6 +15,7 @@ import SelectField from '../Form/inputs/SelectField';
 import TextField from '../Form/inputs/TextField';
 import CurrencyField from '../Form/inputs/CurrencyField';
 import BillingModal from '../../components/Common/BillingEditModal';
+import Footer from '../Common/Footer';
 
 const payments = [];
 
@@ -184,8 +185,7 @@ export class MortgageBilling extends Component {
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
               <section className="payment-summary">
-                <h3>Billing</h3>
-                <button onClick={this.handleBillingEdit}>Edit</button>
+                <h3>Billing <button className="btn btn-link btn-sm" onClick={this.handleBillingEdit}><i className="fa fa-pencil-square"></i>Edit</button></h3>
                 <div className="payment-summary">
                   <dl>
                     <div>
@@ -320,7 +320,9 @@ export class MortgageBilling extends Component {
           </div>
         </div>
         { this.props.appState.data.showBillingEditModal && <BillingModal policy={this.props.policy} billingOptions={this.props.billingOptions} handleBillingFormSubmit={handleBillingFormSubmit} hideBillingModal={() => hideBillingModal(this.props)} /> }
-
+        <div className="basic-footer">
+          <Footer />
+        </div>
       </PolicyConnect>
     );
   }
