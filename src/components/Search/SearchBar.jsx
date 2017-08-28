@@ -167,7 +167,7 @@ const SearchForm = (props) => {
           />
         </div>
         {fieldValues.searchType === 'address' && <div className="search-inputs fade-in">
-          {generateField('address', 'Property Address Search', 'Property Address', formErrors, '')}
+          {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
           <button
             className="btn btn-success multi-input"
             type="submit"

@@ -1,7 +1,6 @@
 .search {
   position: relative;
   display: flex;
-  //padding: $padding;
   overflow: hidden;
   flex-direction: column;
   flex-grow: 1;
@@ -119,7 +118,6 @@
           flex-shrink: 0;
           margin-right: $padding;
         }
-
 
         label {
           margin-bottom: $padding/4;
