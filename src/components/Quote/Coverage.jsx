@@ -75,13 +75,13 @@ const handleInitialize = (state) => {
   values.pH1FirstName = _.get(quoteData, 'policyHolders[0].firstName');
   values.pH1LastName = _.get(quoteData, 'policyHolders[0].lastName');
   values.pH1phone = normalizePhone(_.get(quoteData, 'policyHolders[0].primaryPhoneNumber') || '');
-  values.pH1secondaryPhone = normalizePhone(_.get(quoteData, 'policyHolders[0].secondaryPhoneNumber') || '');
+  values.pH1phone2 = normalizePhone(_.get(quoteData, 'policyHolders[0].secondaryPhoneNumber') || '');
 
   values.pH2email = _.get(quoteData, 'policyHolders[1].emailAddress');
   values.pH2FirstName = _.get(quoteData, 'policyHolders[1].firstName');
   values.pH2LastName = _.get(quoteData, 'policyHolders[1].lastName');
   values.pH2phone = normalizePhone(_.get(quoteData, 'policyHolders[1].primaryPhoneNumber') || '');
-  values.pH2secondaryPhone = normalizePhone(_.get(quoteData, 'policyHolders[1].secondaryPhoneNumber') || '');
+  values.pH2phone2 = normalizePhone(_.get(quoteData, 'policyHolders[1].secondaryPhoneNumber') || '');
 
   values.address1 = _.get(quoteData, 'property.physicalAddress.address1');
   values.address2 = _.get(quoteData, 'property.physicalAddress.address2');
@@ -211,16 +211,16 @@ export const handleFormSubmit = (data, dispatch, props) => {
   }
 
   submitData.pH1phone = submitData.pH1phone.replace(/[^\d]/g, '');
-  submitData.pH1secondaryPhone = submitData.pH1secondaryPhone
-      ? submitData.pH1secondaryPhone.replace(/[^\d]/g, '')
-      : submitData.pH1secondaryPhone;
+  submitData.pH1phone2 = submitData.pH1phone2
+      ? submitData.pH1phone2.replace(/[^\d]/g, '')
+      : submitData.pH1phone2;
 
   submitData.pH2phone = submitData.pH2phone
       ? submitData.pH2phone.replace(/[^\d]/g, '')
       : submitData.pH2phone;
-  submitData.pH2secondaryPhone = submitData.pH2secondaryPhone
-      ? submitData.pH2secondaryPhone.replace(/[^\d]/g, '')
-      : submitData.pH2secondaryPhone;
+  submitData.pH2phone2 = submitData.pH2phone2
+      ? submitData.pH2phone2.replace(/[^\d]/g, '')
+      : submitData.pH2phone2;
 
   const steps = [
     {
@@ -446,7 +446,7 @@ export class Coverage extends Component {
                         <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH1phone'} />
                       </div>
                       <div className="flex-child policy-holder-a-secondary-phone">
-                        <PhoneField label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} validations={['phone']} />
+                        <PhoneField label={'Secondary Phone'} styleName={''} name={'pH1phone2'} validations={['phone']} />
                       </div>
                     </div>
                     <div className="flex-parent policy-holder-a-email">
@@ -466,7 +466,7 @@ export class Coverage extends Component {
                           ]}
                         />
                       </div>
-                    </div>        
+                    </div>
                   </div>
                   <div id="policy-holder-b" className="policy-holder-b flex-child">
                     <h3>Secondary Policyholder</h3>
@@ -483,7 +483,7 @@ export class Coverage extends Component {
                         <PhoneField label={'Primary Phone'} styleName={''} name={'pH2phone'} validations={['phone']} />
                       </div>
                       <div className="flex-child policy-holder-b-secondary-phone">
-                        <PhoneField label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} validations={['phone']} />
+                        <PhoneField label={'Secondary Phone'} styleName={''} name={'pH2phone2'} validations={['phone']} />
                       </div>
                     </div>
                     <div className="flex-parent policy-holder-b-email">
@@ -540,12 +540,8 @@ export class Coverage extends Component {
                         <TextField label={'Tidal Waters Dist.'} styleName={''} name={'distanceToTidalWater'} disabled />
                       </div>
                       <div className="flex-child home-location-residence-type">
-                        <SelectField
-                          name="residenceType" component="select" styleName={''} label={getQuestionName('residenceType', questions)} input={{
-                            name: 'residenceType',
-                            disabled: true,
-                            value: fieldValues.residenceType
-                          }} answers={getAnswers('residenceType', questions)}
+                        <TextField
+                          name="residenceType" styleName={''} label={getQuestionName('residenceType', questions)} disabled
                         />
                       </div>
                     </div>
@@ -689,7 +685,7 @@ export class Coverage extends Component {
                           name="personalPropertyReplacementCostCoverage" styleName="billPlan" label="Personal Property Repl Cost"
                           disabled={parseInt(fieldValues.personalPropertyAmount, 10) === 0}
                           onChange={function () {}} segmented answers={[
-                            { answer: false, label: 'No' }, 
+                            { answer: false, label: 'No' },
                             { answer: true, label: 'Yes' }
                           ]}
                         />
