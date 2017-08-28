@@ -2,6 +2,7 @@ import React from 'react';
 import thunk from 'redux-thunk';
 import localStorage from 'localStorage';
 import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
@@ -308,6 +309,60 @@ const quoteData = {
 };
 
 describe('Testing Coverage component', () => {
+  it('should test connected app', () => {
+    const initialState = {
+      authState: {},
+      service: {
+        getAgents() {}
+      },
+      cg: {
+        bb: {
+          data: {
+            modelInstanceId: '123',
+            model: {},
+            uiQuestions: []
+          }
+        }
+      },
+      appState: {
+        data: {
+
+        },
+        modelName: 'bb'
+      }
+    };
+    const store = mockStore(initialState);
+    const props = {
+      handleSubmit: function name() {
+
+      },
+      actions: {
+        cgActions: {
+          startWorkflow() { return Promise.resolve(() => {}); },
+          batchCompleteTask() { return Promise.resolve(() => {}); }
+        }
+      },
+      fieldQuestions: [],
+      quoteData,
+      dispatch: store.dispatch,
+      appState: {
+        data: {
+          submitting: false
+        }
+      }
+    };
+
+    localStorage.setItem('isNewTab', true);
+    localStorage.setItem('lastSearchData', JSON.stringify({
+      searchType: 'address'
+    }));
+
+    const wrapper = mount(
+      <Provider store={store} >
+        <Router><ConnectedApp {...props} /></Router>
+      </Provider>);
+    expect(wrapper);
+  });
   it('should test handleGetQuoteData', () => {
     const initialState = {
       service: {

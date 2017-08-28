@@ -67,8 +67,8 @@ export const handleInitialize = (state) => {
 
   values.electronicDelivery = _.get(quoteData, 'policyHolders[0].electronicDelivery') || false;
 
-  values.agencyCode = String(_.get(quoteData, 'agencyCode'));
-  values.agentCode = String(_.get(quoteData, 'agentCode'));
+  values.agencyCode = _.get(quoteData, 'agencyCode');
+  values.agentCode = _.get(quoteData, 'agentCode');
   values.effectiveDate = moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD');
 
   values.pH1email = _.get(quoteData, 'policyHolders[0].emailAddress');
@@ -415,7 +415,7 @@ export class Coverage extends Component {
                           onChange: event => handleAgencyChange(this.props, event.target.value),
                           value: fieldValues.agencyCode
                         }} answers={agencies && agencies.map(agency => ({
-                          answer: String(agency.agencyCode),
+                          answer: agency.agencyCode,
                           label: `${agency.displayName} - ${agency.agencyCode}`
                         }))}
                       />
@@ -423,7 +423,7 @@ export class Coverage extends Component {
                     <div className="flex-child agentCode">
                       <SelectField
                         name="agentCode" component="select" styleName={''} label="Agent" validations={['required']} answers={agents && agents.map(agent => ({
-                          answer: String(agent.agentCode),
+                          answer: agent.agentCode,
                           label: `${agent.firstName} ${agent.lastName} - ${agent.agentCode}`
                         }))}
                       />
