@@ -25,42 +25,6 @@ export const runnerSetup = data => ({
   data
 });
 
-export const addNote = values => (dispatch) => {
-  const body = {
-    service: 'notes.services',
-    method: 'POST',
-    path: 'v1/note/',
-    data: {
-      number: values.number,
-      noteType: values.noteType,
-      noteContent: values.noteContent,
-      contactType: values.contactType,
-      createdAt: new Date().getTime(),
-      noteAttachments: [],
-      createdBy: values.createdBy,
-      updatedBy: {}
-    }
-  };
-
-  if (values.noteType === 'Quote Note') body.data.quoteNumber = values.number;
-  if (values.noteType === 'Policy Note') body.data.policyNumber = values.number;
-
-  const axiosConfig = runnerSetup(body);
-
-  return axios(axiosConfig).then((response) => {
-    const data = { notes: response.data.result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError({ message })
-      ]));
-    });
-};
-
 export const getNotes = id => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'transaction-logs.services',
@@ -74,6 +38,35 @@ export const getNotes = id => (dispatch) => {
       serviceRequest(data)
     ]));
   })
+  .catch((error) => {
+    const message = handleError(error);
+    return dispatch(batchActions([
+      errorActions.setAppError({ message })
+    ]));
+  });
+};
+
+export const addNote = (data, files) => (dispatch) => {
+  const form = new FormData();
+  const url = `${process.env.REACT_APP_API_URL}/upload`;
+
+  for (let [key, value] of Object.entries(data)) {
+    const fieldValue = key === 'createdBy' ? JSON.stringify(value) : value;
+    form.append(key, fieldValue);
+  }
+  
+  if (files && files.length > 0) {
+    files.forEach(file => form.append(file.name, file));
+  }
+
+  axios.post(url, form, {
+    headers: {
+      'accept': 'application/json',
+      'Accept-Language': 'en-US,en;q=0.8',
+      'Content-Type': `multipart/form-data; boundary=${ form._boundary }`
+    }
+  })
+  .then((response) => dispatch(getNotes(response.data.number)))
   .catch((error) => {
     const message = handleError(error);
     return dispatch(batchActions([
