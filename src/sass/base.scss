@@ -881,38 +881,35 @@ main[role="document"] {
 }
 //footer
 /*------------------------------------------------------------------------------------*/
-footer {
-    display: flex;
-    flex-grow: 0;
-    flex-shrink: 0;
-    height: auto;
-    border-top: 1px dotted $warm-gray-04;
-    padding: ($padding/4) $padding;
-
-    small {
-        font-size: $font-size-xs;
-    }
-}
-.btn-footer {
+.basic-footer {
   margin-bottom: 0;
   flex-shrink: 0;
   height: auto;
   flex-grow: 0;
-  padding: $padding;
+  padding: ($padding/2) $padding;
   align-items: center;
   border-top: 1px dotted $warm-gray-04;
   width: 100%;
+
+  &.btn-footer {
+      padding: $padding;
+
+      footer {
+          align-self: flex-end;
+      }
+  }
+
   footer {
       flex-grow: 1;
       flex-shrink: 0;
       width: auto;
-      padding: 0;
 
       div[role="banner"] {
-          line-height: 1;
+          line-height: $font-size-xs;
 
           small {
               font-size: $font-size-xs;
+              line-height: 1;
           }
       }
   }
