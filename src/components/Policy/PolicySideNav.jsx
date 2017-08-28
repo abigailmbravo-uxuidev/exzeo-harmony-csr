@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { reduxForm, propTypes } from 'redux-form';
 import _ from 'lodash';
 import * as appStateActions from '../../actions/appStateActions';
@@ -89,7 +89,7 @@ export const SideNav = (props) => {
           </li> :
           <li key={index}>
             <span className={agentLink.styleName}>
-              <Link to={agentLink.link} activeClassName="active" exact>{agentLink.label}</Link>
+              <NavLink to={agentLink.link} activeClassName="active" exact>{agentLink.label}</NavLink>
             </span>
           </li>
       ))}

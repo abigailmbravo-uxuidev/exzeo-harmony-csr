@@ -19,10 +19,10 @@
           flex-grow: 1;
           width: 11rem;
           height: 3rem;
+          border-left: ($padding/2) solid rgba($bright-blue, 0);
           cursor: pointer;
           text-decoration: none;
           color: $warm-gray-07;
-          border-left: ($padding/2) solid rgba($white, 0);
 
           &.disabled {
             color: $warm-gray-04;
@@ -50,7 +50,6 @@
               background-color: $white;
             }
           }
-
           &:hover {
             cursor: pointer;
             text-decoration: none;

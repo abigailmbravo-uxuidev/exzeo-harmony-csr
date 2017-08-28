@@ -385,12 +385,12 @@ th {
   max-width: 100%;
   margin-bottom: $line-height-computed;
   // Cells
-   > tbody,
+   > tfoot,
    > thead,
-  > tfoot {
+  > tbody {
     > tr {
-       > td,
-      > th {
+       > th,
+      > td {
         padding: $table-cell-padding;
         vertical-align: top;
         border-top: 1px solid $table-border-color;
@@ -404,12 +404,12 @@ th {
     border-bottom: 2px solid $table-border-color;
   }
   // Remove top border from thead by default
-   > colgroup + thead,
+   > caption + thead,
    > thead:first-child,
-  > caption + thead {
+  > colgroup + thead {
     > tr:first-child {
-       > td,
-      > th {
+       > th,
+      > td {
         border-top: 0;
       }
     }
@@ -426,12 +426,12 @@ th {
 // Condensed table w/ half padding
 
 .table-condensed {
-   > tbody,
+   > tfoot,
    > thead,
-  > tfoot {
+  > tbody {
     > tr {
-       > td,
-      > th {
+       > th,
+      > td {
         padding: $table-condensed-cell-padding;
       }
     }
@@ -444,20 +444,20 @@ th {
 .table-bordered {
   border: 1px solid $table-border-color;
 
-   > tbody,
+   > tfoot,
    > thead,
-  > tfoot {
+  > tbody {
     > tr {
-       > td,
-      > th {
+       > th,
+      > td {
         border: 1px solid $table-border-color;
       }
     }
   }
 
   > thead > tr {
-     > td,
-    > th {
+     > th,
+    > td {
       border-bottom-width: 2px;
     }
   }
@@ -527,12 +527,12 @@ table {
     > .table {
       margin-bottom: 0;
       // Ensure the content doesn't wrap
-       > tbody,
+       > tfoot,
        > thead,
-      > tfoot {
+      > tbody {
         > tr {
-           > td,
-          > th {
+           > th,
+          > td {
             white-space: nowrap;
           }
         }
@@ -542,17 +542,17 @@ table {
     > .table-bordered {
       border: 0;
       // Nuke the appropriate borders so that the parent can handle them
-       > tbody,
+       > tfoot,
        > thead,
-      > tfoot {
+      > tbody {
         > tr {
-           > td:first-child,
-          > th:first-child {
+           > th:first-child,
+          > td:first-child {
             border-left: 0;
           }
 
-           > td:last-child,
-          > th:last-child {
+           > th:last-child,
+          > td:last-child {
             border-right: 0;
           }
         }
@@ -560,11 +560,11 @@ table {
       // Only nuke the last row's bottom-border in `tbody` and `tfoot` since
       // chances are there will be only one `tr` in a `thead` and that would
       // remove the border altogether.
-       > tfoot,
-      > tbody {
+       > tbody,
+      > tfoot {
         > tr:last-child {
-           > td,
-          > th {
+           > th,
+          > td {
             border-bottom: 0;
           }
         }
@@ -618,7 +618,6 @@ table {
   }
 }
 //NOTES LIST
-
 /*.notes-list {
   .react-bs-table-tool-bar {
     .toolbar {
@@ -666,7 +665,6 @@ table {
   }
 }
 */
-
 .verify {
   .workflow-steps {
     .btn {
@@ -966,8 +964,8 @@ table {
       flex-direction: column;
       flex-grow: 0;
       flex-shrink: 0;
-      height: 1rem;
       width: 10px;
+      height: 1rem;
       margin: 0 0 0 0.5rem;
       color: $warm-gray-10;
       line-height: 1rem;
