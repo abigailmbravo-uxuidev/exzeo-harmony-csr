@@ -15,6 +15,7 @@ import SelectField from '../Form/inputs/SelectField';
 import TextField from '../Form/inputs/TextField';
 import CurrencyField from '../Form/inputs/CurrencyField';
 import BillingModal from '../../components/Common/BillingEditModal';
+import Footer from '../Common/Footer';
 
 const payments = [];
 
@@ -319,7 +320,9 @@ export class MortgageBilling extends Component {
           </div>
         </div>
         { this.props.appState.data.showBillingEditModal && <BillingModal policy={this.props.policy} billingOptions={this.props.billingOptions} handleBillingFormSubmit={handleBillingFormSubmit} hideBillingModal={() => hideBillingModal(this.props)} /> }
-
+        <div className="basic-footer">
+          <Footer />
+        </div>
       </PolicyConnect>
     );
   }

@@ -8,6 +8,7 @@ import ClearErrorConnect from '../Error/ClearError';
 import normalizePhone from '../Form/normalizePhone';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
+import Footer from '../Common/Footer';
 
 let isLoaded = false;
 
@@ -132,6 +133,9 @@ ${policyHolderMailingAddress.city} ${policyHolderMailingAddress.state}, ${policy
               </section>}
             </div>
           </div>
+        </div>
+        <div className="basic-footer">
+          <Footer />
         </div>
       </PolicyConnect>
     );
