@@ -13,6 +13,7 @@ import * as appStateActions from '../../actions/appStateActions';
 import PolicyConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
 import normalizeNumbers from '../Form/normalizeNumbers';
+import Footer from '../Common/Footer';
 
 export const handleGetPolicy = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
@@ -359,6 +360,9 @@ export class Coverage extends Component {
             </section>*/}
             </div>
           </div>
+        </div>
+        <div className="basic-footer">
+          <Footer />
         </div>
       </PolicyConnect>
     );
