@@ -13,6 +13,7 @@ import RadioField from '../Form/inputs/RadioField';
 import DateField from '../Form/inputs/DateField';
 import SelectField from '../Form/inputs/SelectField';
 import TextField from '../Form/inputs/TextField';
+import HiddenField from '../Form/inputs/HiddenField';
 import * as serviceActions from '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
@@ -35,27 +36,29 @@ export const handleInitialize = (state) => {
   return values;
 };
 
+const amountFormatter = cell => cell.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+const dateFormatter = cell => `${cell.substring(0, 10)}`;
+
 export const Payments = ({ payments }) => {
   const options = {
     defaultSortName: 'date',
     defaultSortOrder: 'desc'
   };
 
-{/*TODO: NEEDS PAYMENT SUMMARY GRID FROM Policy/MortgageBilling.jsx*/}
-
   return (
-    <BootstrapTable data={payments} options={options}>
-      <TableHeaderColumn dataField="date" width="25%" isKey>Date</TableHeaderColumn>
-      <TableHeaderColumn dataField="description" width="25%">Description</TableHeaderColumn>
-      <TableHeaderColumn dataField="notes" width="25%">Notes</TableHeaderColumn>
-      <TableHeaderColumn dataField="amount" width="25%">Amount</TableHeaderColumn>
+    <BootstrapTable className="" data={payments} options={options} striped hover>
+      <TableHeaderColumn isKey dataField="date" dataFormat={dateFormatter} className="date" columnClassName="date" width="150" dataSort>Date</TableHeaderColumn>
+      <TableHeaderColumn dataField="type" className="type" columnClassName="type" dataSort width="150" >Type</TableHeaderColumn>
+      <TableHeaderColumn dataField="description" className="description" columnClassName="description" dataSort>Description</TableHeaderColumn>
+      <TableHeaderColumn dataField="batch" className="note" columnClassName="note" dataSort width="200" >Note</TableHeaderColumn>
+      <TableHeaderColumn dataField="amount" dataFormat={amountFormatter} className="amount" columnClassName="amount" width="150" dataSort dataAlign="right">Amount</TableHeaderColumn>
     </BootstrapTable>
   );
 };
 
 
 const claimsData = [
-  {  }];
+  { }];
 
 export const Claims = ({ claims }) => {
   const options = {
@@ -135,34 +138,35 @@ export class CancelPolicy extends React.Component {
               <section>
                 <h3>Cancel Policy</h3>
                 <Form id="Cancellation" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
-                <div className="flex-parent">
-                  <div className="flex-child">
-                    <RadioField
-                      onChange={() => resetCancelReasons(this.props)}
-                      validations={['required']} name={'cancelType'} styleName={''} label={'Cancel Type'} segmented
-                      answers={cancelGroup}
-                    />
+                  <div className="flex-parent">
+                    <div className="flex-child">
+                      <RadioField
+                        onChange={() => resetCancelReasons(this.props)}
+                        validations={['required']} name={'cancelType'} styleName={''} label={'Cancel Type'} segmented
+                        answers={cancelGroup}
+                      />
+                    </div>
+                    <div className="flex-child">
+                      <DateField validations={['required']} label={'Effective Date'} name={'effectiveDate'} />
+                    </div>
                   </div>
-                  <div className="flex-child">
-                    <DateField validations={['required']} label={'Effective Date'} name={'effectiveDate'} />
+                  <div className="flex-parent">
+                    <div className="flex-child">
+                      <SelectField
+                        name="cancelReason" component="select" styleName={''} label="Cancel Reason" validations={['required']}
+                        answers={_.concat([], _.get(_.find(cancelOptions, option => option.cancelType === fieldValues.cancelType), 'cancelReason')).map(reason => ({
+                          answer: reason,
+                          label: reason
+                        }))}
+                      />
+                      {(fieldValues.cancelType === 'Underwriting Cancellation' || fieldValues.cancelType === 'Underwriting Non-Renewal') ?
+                        <TextField label={'Additional Reason'} name={'additionalReason'} /> : <HiddenField label={'Additional Reason'} name={'additionalReason'} />
+                      }
+                    </div>
                   </div>
-                </div>
-                <div className="flex-parent">
-                  <div className="flex-child">
-                    <SelectField
-                      name="cancelReason" component="select" styleName={''} label="Cancel Reason" validations={['required']}
-                      answers={_.concat([], _.get(_.find(cancelOptions, option => option.cancelType === fieldValues.cancelOptions), 'cancelReason')).map(reason => ({
-                        answer: reason,
-                        label: reason
-                      }))}
-                    />
-                  {/*TODO: Additional Reason needs to show only when Cancel Type === Underwriting Cancellation || Underwriting Non-Renewal*/}
-                  {/* option.cancelType === || && <TextField label={'Additional Reason'} name={'additionalReason'} /> */}
-                  </div>
-                </div>
-              </Form>
-            </section>
-              {/*PAYMENTS SECTION*/}
+                </Form>
+              </section>
+              {/* PAYMENTS SECTION*/}
               <section>
                 <h3>Payments</h3>
                 <div className="form-group flex-parent billing">
@@ -181,7 +185,7 @@ export class CancelPolicy extends React.Component {
                 </div>
                 <Payments payments={this.props.paymentHistory || []} />
               </section>
-              {/*CLAIMS SECTION*/}
+              {/* CLAIMS SECTION*/}
               <section>
                 <h3>Claims</h3>
                 <Claims />
@@ -191,9 +195,9 @@ export class CancelPolicy extends React.Component {
         </div>
         <div className="basic-footer btn-footer">
           <Footer />
-          {/*TODO: RESET button should reset form / CANCEL POLICY button should be disabled if form is clean/untouched*/}
+          {/* TODO: RESET button should reset form / CANCEL POLICY button should be disabled if form is clean/untouched*/}
           <div className="btn-wrapper">
-            <button type="reset" className="btn btn-secondary">Clear</button>
+            <button type="button" className="btn btn-secondary" onClick={() => this.props.reset('CancelPolicy')}>Clear</button>
             <button type="submit" className="btn btn-cancel">Cancel Policy</button>
           </div>
         </div>
