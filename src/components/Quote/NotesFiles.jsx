@@ -45,6 +45,8 @@ export const NoteList = (props) => {
     <div className="note-grid-wrapper">
       <div className="filter-buttons">
 
+        {/*TODO: Eric, just need 2 buttons with an onClick event to filter the grid by attachment count. I added the radio group component because it can have a default selected and user can only choose 1*/}
+
         <RadioField
           name={'attachmentStatus'} styleName={''} label={''} onChange={function () {}} segmented answers={[
             {
@@ -57,6 +59,7 @@ export const NoteList = (props) => {
           ]}
         />
 
+
     </div>
     <BootstrapTable
       data={Array.isArray(notes) ? notes : []}
@@ -67,7 +70,16 @@ export const NoteList = (props) => {
       <TableHeaderColumn className='created-date' columnClassName='created-date' dataField="createdDate" dataSort dataFormat={formatCreateDate}>Created</TableHeaderColumn>
       <TableHeaderColumn className='created-by' columnClassName='created-by' dataField="createdBy" dataSort dataFormat={showCreatedBy}>Author</TableHeaderColumn>
       <TableHeaderColumn className='note' columnClassName='note' dataField="content" dataSort >Note</TableHeaderColumn>
-      <TableHeaderColumn className='count' columnClassName='count' dataField="attachments" dataFormat={attachmentCount} hidden ></TableHeaderColumn>
+      {/*TODO:
+
+        Eric, below is the attachment count that we need to filter grid on - basically want to show eveything (count >= 0) or show only attachements (count > 0)
+
+        I added a hidden attribute to this field so it does not show in the UI
+
+        We'll want to default showing all (count >= 0)
+
+        */}
+      <TableHeaderColumn className='count' columnClassName='count' dataField="attachments" dataFormat={attachmentCount} filter={ { type: 'NumberFilter', delay: 1000, numberComparators: [ '=', '>', '<=' ] } } hidden ></TableHeaderColumn>
       <TableHeaderColumn className='attachments' columnClassName='attachments' dataField="attachments" dataFormat={attachmentUrl} dataSort >Attachments</TableHeaderColumn>
     </BootstrapTable>
     </div>
