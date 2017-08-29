@@ -80,28 +80,11 @@ export const closeUWConditions = (props) => {
 };
 
 const goToPage = (agentLink, props, quote) => {
-  // if (!quote || (agentLink.needsRating && quote && (!quote.rating || quote.policyHolders.length === 0))) return;
-  // const workflowId = props.appState.instanceId;
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
     { ...props.appState.data,
       activateRedirectLink: agentLink.link,
       activateRedirect: true
     });
-
-  // const steps = [
-  //   { name: 'hasUserEnteredData', data: { answer: 'No' } },
-  //   { name: 'moveTo', data: { key } }
-  // ];
-
-  // props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
-  //   .then(() => {
-  //     props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, {
-  //       ...props.appState.data,
-  //       selectedLink: key,
-  //       activateRedirectLink: link,
-  //       activateRedirect: true
-  //     });
-  //   });
 };
 
 const getDocumentId = (props) => {
