@@ -130,7 +130,7 @@
 
                 span {
                     color: $bright-blue;
-                    font-weight: $font-weight-bold;                
+                    font-weight: $font-weight-bold;
                 }
             }
 
@@ -208,4 +208,26 @@
       }
     }
   }
+}
+
+
+.notes-list {
+    .react-bs-table {
+        .created-date {
+            width: 120px;
+        }
+        .created-by {
+            width: 20%;
+        }
+        .note {
+            white-space: normal;
+        }
+        .count {
+            display: none;
+        }
+        .attachments {
+            width: 20%;
+            white-space: normal;
+        }
+    }
 }
