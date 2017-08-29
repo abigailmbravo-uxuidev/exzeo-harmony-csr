@@ -13,6 +13,7 @@ import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import RadioField from '../Form/inputs/RadioField';
+import Footer from '../Common/Footer';
 
 const handleGetQuote = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
@@ -26,7 +27,7 @@ const handleInitialize = state => ({});
 
 const SearchPanel = props => (
   <div className="search">
-    <label>Search Note Text</label>
+    <label>Search by Note Text</label>
     { props.searchField }
   </div>
 );
@@ -43,7 +44,7 @@ export const NoteList = (props) => {
 
   return (
     <div className="note-grid-wrapper">
-      <div className="filter-buttons">
+      <div className="filter-tabs">
 
         {/*TODO: Eric, just need 2 buttons with an onClick event to filter the grid by attachment count. I added the radio group component because it can have a default selected and user can only choose 1*/}
 
@@ -58,30 +59,30 @@ export const NoteList = (props) => {
             }
           ]}
         />
+      </div>
+      <BootstrapTable
+        data={Array.isArray(notes) ? notes : []}
+        options={options}
+        search
+      >
+        <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
+        <TableHeaderColumn className='created-date' columnClassName='created-date' dataField="createdDate" dataSort dataFormat={formatCreateDate} >Created</TableHeaderColumn>
+        <TableHeaderColumn className='created-by' columnClassName='created-by' dataField="createdBy" dataSort dataFormat={showCreatedBy} >Author</TableHeaderColumn>
+        <TableHeaderColumn className='note' columnClassName='note' dataField="content" dataSort >Note</TableHeaderColumn>
+        {/*TODO:
 
+          Eric, below is the attachment count that we need to filter grid on - basically want to show eveything (count >= 0) or show only attachements (count > 0)
 
-    </div>
-    <BootstrapTable
-      data={Array.isArray(notes) ? notes : []}
-      options={options}
-      search
-    >
-      <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
-      <TableHeaderColumn className='created-date' columnClassName='created-date' dataField="createdDate" dataSort dataFormat={formatCreateDate}>Created</TableHeaderColumn>
-      <TableHeaderColumn className='created-by' columnClassName='created-by' dataField="createdBy" dataSort dataFormat={showCreatedBy}>Author</TableHeaderColumn>
-      <TableHeaderColumn className='note' columnClassName='note' dataField="content" dataSort >Note</TableHeaderColumn>
-      {/*TODO:
+          I added a hidden attribute to this field so it does not show in the UI
 
-        Eric, below is the attachment count that we need to filter grid on - basically want to show eveything (count >= 0) or show only attachements (count > 0)
+          We'll want to default showing all (count >= 0)
 
-        I added a hidden attribute to this field so it does not show in the UI
+          example here: http://allenfang.github.io/react-bootstrap-table/example.html#column-filter   "Programmatically Number Filter"
 
-        We'll want to default showing all (count >= 0)
-
-        */}
-      <TableHeaderColumn className='count' columnClassName='count' dataField="attachments" dataFormat={attachmentCount} filter={ { type: 'NumberFilter', delay: 1000, numberComparators: [ '=', '>', '<=' ] } } hidden ></TableHeaderColumn>
-      <TableHeaderColumn className='attachments' columnClassName='attachments' dataField="attachments" dataFormat={attachmentUrl} dataSort >Attachments</TableHeaderColumn>
-    </BootstrapTable>
+          */}
+        <TableHeaderColumn className='count' columnClassName='count' dataField="attachments" dataFormat={attachmentCount} filter={ { type: 'NumberFilter', delay: 1000, numberComparators: [ '=', '>', '<=' ] } } hidden ></TableHeaderColumn>
+        <TableHeaderColumn className='attachments' columnClassName='attachments' dataField="attachments" dataFormat={attachmentUrl} dataSort >Attachments</TableHeaderColumn>
+      </BootstrapTable>
     </div>
   );
 };

@@ -10,6 +10,7 @@ import * as serviceActions from '../../actions/serviceActions';
 import PolicyBaseConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import RadioField from '../Form/inputs/RadioField';
 import Footer from '../Common/Footer';
 
 const handleGetPolicyData = (state) => {
@@ -22,11 +23,8 @@ const handleGetPolicyData = (state) => {
 const handleInitialize = state => ({});
 
 const SearchPanel = props => (
-  <div className="toolbar">
-    <div className="input-group">
-      <div className="btn btn-notes">Notes</div>
-      <div className="btn btn-files">Files</div>
-    </div>
+  <div className="search">
+    <label>Search by Note Text</label>
     { props.searchField }
   </div>
   );
@@ -42,18 +40,47 @@ export const NoteList = (props) => {
   const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
 
   return (
-    <BootstrapTable
-      data={Array.isArray(notes) ? notes : []}
-      options={options}
-      search
-    >
-      <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
-      {/*<TableHeaderColumn dataField="attachments" dataFormat={ attachmentCount } className="attachmentCount" dataSort dataAlign="center" width="7%"><i className="fa fa-paperclip" aria-hidden="true" /></TableHeaderColumn>*/}
-      <TableHeaderColumn dataField="createdDate" dataSort width="10%" dataFormat={ formatCreateDate }>Created</TableHeaderColumn>
-      <TableHeaderColumn dataField="createdBy" dataSort width="13%" dataFormat={ showCreatedBy }>Author</TableHeaderColumn>
-      <TableHeaderColumn dataField="content" dataSort tdStyle={{ whiteSpace: 'normal' }}>Note</TableHeaderColumn>
-      <TableHeaderColumn dataField="attachments" dataFormat={attachmentUrl} dataSort tdStyle={{ whiteSpace: 'normal' }} width="45%">Attachments</TableHeaderColumn>
-    </BootstrapTable>
+    <div className="note-grid-wrapper">
+      <div className="filter-tabs">
+
+        {/*TODO: Eric, just need 2 buttons with an onClick event to filter the grid by attachment count. I added the radio group component because it can have a default selected and user can only choose 1*/}
+
+        <RadioField
+          name={'attachmentStatus'} styleName={''} label={''} onChange={function () {}} segmented answers={[
+            {
+              answer: false,
+              label: 'All Notes'
+            }, {
+              answer: true,
+              label: 'Notes With Attachment'
+            }
+          ]}
+        />
+      </div>
+      <BootstrapTable
+        data={Array.isArray(notes) ? notes : []}
+        options={options}
+        search
+      >
+        <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
+        <TableHeaderColumn columnClassName='created-date' dataField="createdDate" dataSort dataField="createdDate" dataFormat={ formatCreateDate } >Created</TableHeaderColumn>
+        <TableHeaderColumn className='created-by' columnClassName='created-by' dataField="createdBy" dataSort dataFormat={ showCreatedBy } >Author</TableHeaderColumn>
+        <TableHeaderColumn className='note' columnClassName='note' dataField="content" dataSort >Note</TableHeaderColumn>
+          {/*TODO:
+
+            Eric, below is the attachment count that we need to filter grid on - basically want to show eveything (count >= 0) or show only attachements (count > 0)
+
+            I added a hidden attribute to this field so it does not show in the UI
+
+            We'll want to default showing all (count >= 0)
+
+            example here: http://allenfang.github.io/react-bootstrap-table/example.html#column-filter   "Programmatically Number Filter"
+
+            */}
+        <TableHeaderColumn className='count' columnClassName='count' dataField="attachments" dataFormat={attachmentCount} filter={ { type: 'NumberFilter', delay: 1000, numberComparators: [ '=', '>', '<=' ] } } hidden ></TableHeaderColumn>
+        <TableHeaderColumn className='attachments' columnClassName='attachments' dataField="attachments" dataFormat={attachmentUrl} >Attachments</TableHeaderColumn>
+      </BootstrapTable>
+    </div>
   );
 };
 
