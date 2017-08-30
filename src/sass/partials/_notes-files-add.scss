@@ -125,18 +125,17 @@
             background: $warm-gray-01;
 
             .drop-area-label {
-                cursor: pointer;
-                margin-bottom: $padding/2;
+              margin-bottom: $padding/2;
+              cursor: pointer;
 
-                span {
-                    color: $bright-blue;
-                    font-weight: $font-weight-bold;
-                }
+              span {
+                color: $bright-blue;
+                font-weight: $font-weight-bold;
+              }
             }
 
             li {
-                border-top: 1px dashed $warm-gray-02
-                ;
+              border-top: 1px dashed $warm-gray-02;
             }
           }
 
@@ -150,19 +149,19 @@
             background: rgba($warm-gray-15, .75);
 
             .dropzone-drop-area {
-                position: absolute;
-                top: $padding;
-                right: $padding;
-                bottom: $padding;
-                left: $padding;
-                padding: $padding;
-                display: flex;
-                align-items: center;
-                flex-direction: column;
-                justify-content: center;
-                border: 5px dashed $white;
-                border-radius: $border-radius;
-                font-size: $font-size-h3;
+              position: absolute;
+              top: $padding;
+              right: $padding;
+              bottom: $padding;
+              left: $padding;
+              display: flex;
+              align-items: center;
+              flex-direction: column;
+              justify-content: center;
+              padding: $padding;
+              border: 5px dashed $white;
+              border-radius: $border-radius;
+              font-size: $font-size-h3;
             }
           }
         }
@@ -210,95 +209,112 @@
   }
 }
 
-
 .notes-list {
-    .note-grid-wrapper {
-        &.filter-attachments {
-            .react-bs-table-tool-bar {
-                .search {display: none;}
-            }
-            .react-bs-table {
-                .note-type {display: none;}
-                .note {display: none;}
-                .attachments {width: auto;}
-            }
+  .note-grid-wrapper {
+    &.filter-attachments {
+      .react-bs-table-tool-bar {
+        .search {
+          display: none;
         }
-        .react-bs-table {
-            .created-date {
-                width: 120px;
-            }
-            .created-by {
-                width: 15%;
-                white-space: normal;
-            }
-            .note-type {
-                width: 15%;
-            }
-            .file-type {
-                width: 15%;
-            }
-            .note {
-                white-space: normal;
-            }
-            .count {}
-            .attachments {
-                width: 25%;
-                white-space: normal;
+      }
 
-                a {
-                    span {
-                        font-weight: $font-weight-bold;
-                    }
-                }
-            }
-
+      .react-bs-table {
+        .note-type {
+          display: none;
         }
+
+        .note {
+          display: none;
+        }
+
+        .attachments {
+          width: auto;
+        }
+      }
     }
+
+    .react-bs-table {
+      .created-date {
+        width: 120px;
+      }
+
+      .created-by {
+        width: 15%;
+        white-space: normal;
+      }
+
+      .note-type {
+        width: 15%;
+      }
+
+      .file-type {
+        width: 15%;
+      }
+
+      .note {
+        white-space: normal;
+      }
+
+      .count {}
+
+      .attachments {
+        width: 25%;
+        white-space: normal;
+
+        a {
+          span {
+            font-weight: $font-weight-bold;
+          }
+        }
+      }
+    }
+  }
 }
 
 .filter-tabs {
-    .group-label {
-        margin: 0;
-    }
+  .group-label {
+    margin: 0;
+  }
 
-    .form-group.segmented {
-        .segmented-answer-wrapper {
-            border-bottom: 2px solid $bright-blue-darken-04;
+  .form-group.segmented {
+    .segmented-answer-wrapper {
+      border-bottom: 1px solid $bright-blue-darken-04;
 
-            > div {
-                flex-grow: 0;
-                padding: 0;
+      > div {
+        flex-grow: 0;
+        padding: 0;
 
-                .label-segmented {
-                    border: none;
+        .label-segmented {
+          border: none;
 
-                    span {
-                        justify-content: flex-start;
-                        border: none;
-                        background: none;
-                        border-radius: 0;
-                        padding: $padding ($padding*2);
-                        color: $warm-gray-10;
-                        font-weight: $font-weight-normal;
-                        border-bottom: 5px solid $white;
+          span {
+            justify-content: flex-start;
+            padding: ($padding*2);
+            border: none;
+            border-bottom-width: 5px;
+            border-bottom-style: solid;
+            border-radius: 0;
+            background: none;
+            font-weight: $font-weight-normal;
+            @include button-variant($warm-gray-10, $white, rgba($bright-blue-darken-04, 0));
 
-                        &:hover {
-                            background: $warm-gray-00;
-                            border-bottom: 5px solid rgba($bright-blue-darken-04, .3);
-                        }
-                    }
-
-                    input[type="radio"] {
-                        &:checked {
-                            + span {
-                                color: $warm-gray-14;
-                                background: none;
-                                border-bottom: 5px solid $bright-blue-darken-04;
-                            }
-                        }
-                    }
-                }
+            &:hover {
+              border-bottom: 5px solid rgba($bright-blue-darken-02, .3);
+              background: $warm-gray-00;
             }
+          }
+
+          input[type="radio"] {
+            &:checked {
+              + span {
+                color: $warm-gray-14;
+                border-bottom: 5px solid $bright-blue-darken-04;
+                background: none;
+              }
+            }
+          }
         }
+      }
     }
+  }
 }
