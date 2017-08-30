@@ -217,17 +217,22 @@
             width: 120px;
         }
         .created-by {
-            width: 20%;
+            width: 15%;
+            white-space: normal;
+        }
+        .document-type {
+            width: 15%;
         }
         .note {
             white-space: normal;
         }
         .count {
-            
+
         }
         .attachments {
             width: 20%;
             white-space: normal;
         }
+
     }
 }

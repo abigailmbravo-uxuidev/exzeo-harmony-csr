@@ -34,6 +34,7 @@ export const NoteList = (props) => {
 
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
   const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
+  const documentType = contactType => contactType ? `${contactType}` : ';'
   const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
   const attachmentUrl = attachments =>
     attachments.map((attachment) => `<a target="_blank" href="${attachment.fileUrl}">${attachment.fileType}</a>`).join('<br>');
@@ -65,6 +66,7 @@ export const NoteList = (props) => {
         <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
         <TableHeaderColumn columnClassName='created-date' dataField="createdDate" dataSort dataField="createdDate" dataFormat={ formatCreateDate } >Created</TableHeaderColumn>
         <TableHeaderColumn className='created-by' columnClassName='created-by' dataField="createdBy" dataSort dataFormat={ showCreatedBy } >Author</TableHeaderColumn>
+        <TableHeaderColumn className='document-type' columnClassName='document-type' dataField="contactType" dataSort dataFormat={documentType} >Document Type</TableHeaderColumn>
         <TableHeaderColumn className='note' columnClassName='note' dataField="content" dataSort >Note</TableHeaderColumn>
           {/*TODO:
 
