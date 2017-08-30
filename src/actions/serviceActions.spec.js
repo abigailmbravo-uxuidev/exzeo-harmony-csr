@@ -113,17 +113,20 @@ describe('Service Actions', () => {
     };
 
     const form = new FormData();
-    for (let [key, value] of Object.entries(note)) {
+
+    Object.keys(note).forEach((key) => {
+      const value = note[key];
       const fieldValue = key === 'createdBy' ? JSON.stringify(value) : value;
       form.append(key, fieldValue);
-    }
+    });
+
     const url = `${process.env.REACT_APP_API_URL}/upload`;
 
     mockAdapter.onPost(url, form, {
       headers: {
-        'accept': 'application/json',
+        accept: 'application/json',
         'Accept-Language': 'en-US,en;q=0.8',
-        'Content-Type': `multipart/form-data; boundary=${ form._boundary }`
+        'Content-Type': `multipart/form-data; boundary=${form._boundary}`
       }
     }).reply(200, {
       data: [note]
@@ -134,7 +137,6 @@ describe('Service Actions', () => {
     serviceActions.addNote(store.dispatch);
 
     const result = serviceActions.addNote(note, [])(store.dispatch);
-
   });
 
   it('should call start getAgents', () => {

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import localStorage from 'localStorage';
 import moment from 'moment';
+import momentTZ from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
 import * as serviceActions from '../../actions/serviceActions';
@@ -69,7 +70,8 @@ export const handleInitialize = (state) => {
 
   values.agencyCode = _.get(quoteData, 'agencyCode');
   values.agentCode = _.get(quoteData, 'agentCode');
-  values.effectiveDate = moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD');
+
+  values.effectiveDate = moment(_.get(quoteData, 'effectiveDate') || '').utc().format('MM/DD/YYYY');
 
   values.pH1email = _.get(quoteData, 'policyHolders[0].emailAddress');
   values.pH1FirstName = _.get(quoteData, 'policyHolders[0].firstName');
@@ -185,6 +187,8 @@ export const handleFormSubmit = (data, dispatch, props) => {
     ...props.appState.data,
     submitting: true
   });
+
+  submitData.effectiveDate = momentTZ(submitData.effectiveDate).tz(props.zipCodeSettings.timezone).format();
 
   submitData.agencyCode = String(data.agencyCode);
   submitData.agentCode = String(data.agentCode);
