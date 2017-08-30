@@ -1,5 +1,5 @@
 .app-wrapper.csr.policy {
-  //main header 
+  //main header
   header {
     div[role="banner"] {
       .tab-tag {
@@ -57,7 +57,41 @@
         overflow: hidden;
         flex-grow: 1;
         flex-shrink: 1;
+        //mortgage billing
+        .mortgage-billing {
+          position: relative;
+          display: flex;
+          flex-grow: 1;
+          flex-shrink: 1;
+          flex-basis: auto;
+          flex-direction: column;
+          overflow: hidden;
 
+          .scroll {
+            flex-shrink: 1;
+            flex-grow: 1;
+
+            .flex-child {
+                &.date {
+                    flex-shrink: 0;
+                    flex-grow: 0;
+                    width: 14rem;
+                }
+                &.cash-type {
+                    flex-shrink: 0;
+                    flex-grow: 0;
+                    width: 40%;
+                }
+                &.payment-description {
+                    flex-shrink: 0;
+                    flex-grow: 0;
+                    width: 40%;
+                }
+            }
+          }
+        }
+        //mortgage billing
+        //endorsements
         .endorsements {
           position: relative;
           display: flex;
@@ -269,11 +303,12 @@
                 }
 
                 input {
-                    &[disabled="disabled"], &:disabled {
-                        background: $bright-blue-darken-03;
-                        border-color: $bright-blue-darken-03;
-                        color: $white;
-                    }
+                  &:disabled,
+                  &[disabled="disabled"] {
+                    background: $bright-blue-darken-03;
+                    border-color: $bright-blue-darken-03;
+                    color: $white;
+                  }
                 }
               }
 
@@ -294,8 +329,9 @@
           flex-shrink: 0;
           width: 240px;
           padding: 0 0 ($padding*2) ($padding*2);
+          border-left: dotted 1px $warm-gray-04;
         }
-
+        //endorsements
         .scroll {
           overflow-y: auto;
           flex-grow: 1;
@@ -437,18 +473,18 @@
                 }
 
                 .electronic-delivery {
-                    display: flex;
-                    align-items: center;
-                    flex-grow: 0;
-                    flex-shrink: 0;
-                    width: auto;
-                    font-size: $font-size-sm;
+                  display: flex;
+                  align-items: center;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  width: auto;
+                  font-size: $font-size-sm;
 
-                    label {
-                        font-size: $font-size-sm;
-                        margin-bottom: 0;
-                        margin-right: $padding;
-                    }
+                  label {
+                    font-size: $font-size-sm;
+                    margin-bottom: 0;
+                    margin-right: $padding;
+                  }
                 }
               }
             }
@@ -726,35 +762,27 @@
           }
         }
       }
-
-    }
-
-    .underwriting-validation {
-      width: 200px;
-      border-left: dotted 1px $warm-gray-04;
     }
   }
 }
 
 .cancel-policy {
   label.form-group.segmented {
-
     > label {
       margin-bottom: $padding;
       display: none;
     }
 
-    label{
+    label {
       margin-right: 0;
     }
-
   }
 
-  .note-type, .note {
+  .note,
+  .note-type {
     label {
       display: none;
     }
-
   }
 
   .note {
@@ -764,7 +792,6 @@
   }
 
   .form-group.billing {
-
     div {
       flex: 1 1 auto;
       margin: 0 ($padding*4) 0 0;
@@ -774,7 +801,7 @@
       flex: 1 1 auto;
 
       label {
-        margin-right: .5rem;
+        margin-right: 0.5rem;
         text-align: right;
       }
 
@@ -783,7 +810,6 @@
         align-items: center;
 
         label {
-
           flex: 0 1 auto;
           width: 25%;
           margin-bottom: 0;
@@ -793,15 +819,11 @@
           flex: 1 0 auto;
           width: 75%;
         }
-
-
       }
-
     }
 
     .flex-child:last-child {
       margin-right: 0;
     }
-
   }
 }
