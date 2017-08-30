@@ -73,10 +73,14 @@ export const NoteList = (props) => {
             Eric, below is the attachment count that we need to filter grid on - basically want to show eveything (count >= 0) or show only attachements (count > 0)
 
             I added a hidden attribute to this field so it does not show in the UI
- 
+
             We'll want to default showing all (count >= 0)
 
             example here: http://allenfang.github.io/react-bootstrap-table/example.html#column-filter   "Programmatically Number Filter"
+
+            ultimate goal would be to add a class to the grid wrapper div (currently has class "note-grid-wrapper") when filtered. I can handle hiding the columns and hide the search with CSS. If added class is named "filter-attachments" css will be ready.
+
+            thanks!
 
             */}
         <TableHeaderColumn className='count' columnClassName='count' dataField="attachments" dataFormat={attachmentCount} filter={ { type: 'NumberFilter', delay: 1000, numberComparators: [ '=', '>', '<=' ] } } hidden ></TableHeaderColumn>

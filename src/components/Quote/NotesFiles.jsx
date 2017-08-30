@@ -80,6 +80,10 @@ export const NoteList = (props) => {
 
           example here: http://allenfang.github.io/react-bootstrap-table/example.html#column-filter   "Programmatically Number Filter"
 
+          ultimate goal would be to add a class to the grid wrapper div (currently has class "note-grid-wrapper") when filtered. I can handle hiding the columns and hide the search with CSS. If added class is named "filter-attachments" css will be ready.
+
+          thanks!
+
           */}
         <TableHeaderColumn className='count' columnClassName='count' dataField="attachments" dataFormat={attachmentCount} filter={ { type: 'NumberFilter', delay: 1000, numberComparators: [ '=', '>', '<=' ] } } hidden ></TableHeaderColumn>
         <TableHeaderColumn className='attachments' columnClassName='attachments' dataField="attachments" dataFormat={attachmentUrl} dataSort >Attachments</TableHeaderColumn>
