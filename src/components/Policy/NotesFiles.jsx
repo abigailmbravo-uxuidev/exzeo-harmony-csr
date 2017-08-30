@@ -52,7 +52,7 @@ export const NoteList = (props) => {
               label: 'All Notes'
             }, {
               answer: true,
-              label: 'Notes With Attachment'
+              label: 'Attachments'
             }
           ]}
         />
@@ -65,6 +65,7 @@ export const NoteList = (props) => {
         <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
         <TableHeaderColumn columnClassName='created-date' dataField="createdDate" dataSort dataField="createdDate" dataFormat={ formatCreateDate } >Created</TableHeaderColumn>
         <TableHeaderColumn className='created-by' columnClassName='created-by' dataField="createdBy" dataSort dataFormat={ showCreatedBy } >Author</TableHeaderColumn>
+        {/*TODO: Hide note-type and note column when users filters grid to show only notes with attachments*/}
         <TableHeaderColumn className='note-type' columnClassName='note-type' dataField="contactType" dataSort >Note Type</TableHeaderColumn>
         <TableHeaderColumn className='note' columnClassName='note' dataField="content" dataSort >Note</TableHeaderColumn>
           {/*TODO:
@@ -72,7 +73,7 @@ export const NoteList = (props) => {
             Eric, below is the attachment count that we need to filter grid on - basically want to show eveything (count >= 0) or show only attachements (count > 0)
 
             I added a hidden attribute to this field so it does not show in the UI
-
+ 
             We'll want to default showing all (count >= 0)
 
             example here: http://allenfang.github.io/react-bootstrap-table/example.html#column-filter   "Programmatically Number Filter"

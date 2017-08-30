@@ -235,7 +235,60 @@
         .attachments {
             width: 25%;
             white-space: normal;
+
+            a {
+                span {
+                    font-weight: $font-weight-bold;
+                }
+            }
         }
 
+    }
+}
+
+.filter-tabs {
+    .group-label {
+        margin: 0;
+    }
+
+    .form-group.segmented {
+        .segmented-answer-wrapper {
+            border-bottom: 2px solid $bright-blue-darken-04;
+
+            > div {
+                flex-grow: 0;
+                padding: 0;
+
+                .label-segmented {
+                    border: none;
+
+                    span {
+                        justify-content: flex-start;
+                        border: none;
+                        background: none;
+                        border-radius: 0;
+                        padding: $padding ($padding*2);
+                        color: $warm-gray-10;
+                        font-weight: $font-weight-normal;
+                        border-bottom: 5px solid $white;
+
+                        &:hover {
+                            background: $warm-gray-00;
+                            border-bottom: 5px solid rgba($bright-blue-darken-04, .3);
+                        }
+                    }
+
+                    input[type="radio"] {
+                        &:checked {
+                            + span {
+                                color: $warm-gray-14;
+                                background: none;
+                                border-bottom: 5px solid $bright-blue-darken-04;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
