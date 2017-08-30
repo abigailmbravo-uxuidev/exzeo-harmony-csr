@@ -212,37 +212,47 @@
 
 
 .notes-list {
-    .react-bs-table {
-        .created-date {
-            width: 120px;
-        }
-        .created-by {
-            width: 15%;
-            white-space: normal;
-        }
-        .note-type {
-            width: 15%;
-        }
-        .file-type {
-            width: 15%;
-        }
-        .note {
-            white-space: normal;
-        }
-        .count {
-
-        }
-        .attachments {
-            width: 25%;
-            white-space: normal;
-
-            a {
-                span {
-                    font-weight: $font-weight-bold;
-                }
+    .note-grid-wrapper {
+        &.filter-attachments {
+            .react-bs-table-tool-bar {
+                .search {display: none;}
+            }
+            .react-bs-table {
+                .note-type {display: none;}
+                .note {display: none;}
+                .attachments {width: auto;}
             }
         }
+        .react-bs-table {
+            .created-date {
+                width: 120px;
+            }
+            .created-by {
+                width: 15%;
+                white-space: normal;
+            }
+            .note-type {
+                width: 15%;
+            }
+            .file-type {
+                width: 15%;
+            }
+            .note {
+                white-space: normal;
+            }
+            .count {}
+            .attachments {
+                width: 25%;
+                white-space: normal;
 
+                a {
+                    span {
+                        font-weight: $font-weight-bold;
+                    }
+                }
+            }
+
+        }
     }
 }
 
