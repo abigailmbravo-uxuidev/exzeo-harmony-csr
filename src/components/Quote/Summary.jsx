@@ -13,6 +13,7 @@ import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
+import Footer from '../Common/Footer';
 
 // const scheduleDateModal = (props) => {
 //   const showScheduleDateModal = props.appState.data.showScheduleDateModal;
@@ -150,18 +151,6 @@ export class Summary extends Component {
             }
             {quoteData && quoteData.underwritingExceptions && quoteData.underwritingExceptions.length === 0 &&
             <div className="detail-wrapper">
-              <h4>Share Quote</h4>
-              <div className="share-quote">
-                <Form id="Summary" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
-                  <TextField validations={['required']} label={'Name'} styleName={'share-name'} name={'name'} />
-                  <TextField validations={['required', 'email']} label={'Email Address'} styleName={'share-email'} name={'emailAddr'} />
-                  <button
-                    disabled={this.props.appState.data.submitting}
-                    form="Summary"
-                    className="btn btn-primary" type="submit"
-                  >Share</button>
-                </Form>
-              </div>
               <h4>Quote Details</h4>
               <div className="detail-group property-details">
                 <section className="display-element">
@@ -378,6 +367,20 @@ export class Summary extends Component {
             </div>
             }
           </div>
+        </div>
+        <div className="share-quote">
+          <Form id="Summary" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+            <TextField validations={['required']} label={'Email To Name'} styleName={'share-name'} name={'name'} />
+            <TextField validations={['required', 'email']} label={'Email Address'} styleName={'share-email'} name={'emailAddr'} />
+            <button
+              disabled={this.props.appState.data.submitting}
+              form="Summary"
+              className="btn btn-primary" type="submit"
+            >Share</button>
+          </Form>
+        </div>
+        <div className="basic-footer">
+          <Footer />
         </div>
       </QuoteBaseConnect>
     );
