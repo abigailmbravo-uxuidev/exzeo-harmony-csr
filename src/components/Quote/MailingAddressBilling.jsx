@@ -13,6 +13,7 @@ import RadioField from '../Form/inputs/RadioField';
 import TextField from '../Form/inputs/TextField';
 import { RadioFieldBilling, SelectFieldBilling } from '../Form/inputs';
 import normalizeNumbers from '../Form/normalizeNumbers';
+import Footer from '../Common/Footer';
 
 export const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
@@ -200,7 +201,7 @@ export const fillMailForm = (props) => {
 export class MailingAddressBilling extends Component {
 
   componentDidMount() {
-    if (this.props.appState.instanceId) {
+    if (this.props.appState.instanceId && this.props.quoteData && this.props.quoteData.rating) {
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         submitting: true
@@ -218,12 +219,31 @@ export class MailingAddressBilling extends Component {
         selectedLink: 'mailing'
       });
     });
+    } else {
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+        ...this.props.appState.data,
+        selectedLink: 'mailing',
+        activateRedirect: false        
+      });
     }
   }
 
   render() {
     const { handleSubmit, paymentPlanResult, pristine, quoteData, dirty } = this.props;
-
+    if (!quoteData.rating) {
+      return (
+        <QuoteBaseConnect>
+          <ClearErrorConnect />
+          <div className="route-content">
+            <div className="messages">
+              <div className="message error">
+                <i className="fa fa-exclamation-circle" aria-hidden="true" /> &nbsp;Mailing / Billing cannot be accessed until Premium calculated.
+            </div>
+            </div>
+          </div>
+        </QuoteBaseConnect>
+      );
+    }
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
@@ -233,9 +253,7 @@ export class MailingAddressBilling extends Component {
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
                 <h3>Mailing Address</h3>
-
                 <section className="mailing-address-details">
-
                   <RadioField
                     label={'Is the mailing address the same as the property address?'} name={'sameAsProperty'} onChange={() => fillMailForm(this.props)}
                     segmented answers={[
@@ -248,11 +266,8 @@ export class MailingAddressBilling extends Component {
                       }
                     ]}
                   />
-
                   <TextField validations={['required']} label={'Address 1'} styleName={'address-1'} name={'address1'} />
-
                   <TextField label={'Address 2'} styleName={'address-2'} name={'address2'} />
-
                   <div className="flex-parent flex-form">
                     <div className="flex-child city">
                       <TextField validations={['required']} label={'City'} styleName={''} name={'city'} />
@@ -266,16 +281,11 @@ export class MailingAddressBilling extends Component {
                       <TextField validations={['required']} label={'Zip'} styleName={''} name={'zip'} />
                     </div>
                   </div>
-
-
                 </section>
-
                 <section>
                   <h3>Billing</h3>
-
                   <div className="flex-parent">
                     <div className="flex-child">
-
                       <SelectFieldBilling
                         name="billToId"
                         component="select"
@@ -284,9 +294,7 @@ export class MailingAddressBilling extends Component {
                         validations={['required']}
                         answers={paymentPlanResult.options}
                       />
-
                       <div className="flex-child bill-plan">
-
                         <RadioFieldBilling
                           validations={['required']}
                           name={'billPlan'}
@@ -300,7 +308,6 @@ export class MailingAddressBilling extends Component {
                       </div>
                     </div>
                   </div>
-
                   <div className="flex-parent">
                     <div className="flex-child">
                       <InstallmentTerm
@@ -311,13 +318,16 @@ export class MailingAddressBilling extends Component {
                     </div>
                   </div>
                 </section>
-                <div className="btn-footer">
-                  <button className="btn btn-secondary" type="button" onClick={() => clearForm(this.props)}>Cancel</button>
-                  <button className="btn btn-primary" type="submit" form="MailingAddressBilling" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData) || !this.props.fieldValues.billToId}>Update</button>
-                </div>
               </div>
             </div>
           </Form>
+        </div>
+        <div className="basic-footer btn-footer">
+          <Footer />
+          <div className="btn-wrapper">
+            <button className="btn btn-secondary" type="button" onClick={() => clearForm(this.props)}>Cancel</button>
+            <button className="btn btn-primary" type="submit" form="MailingAddressBilling" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData) || !this.props.fieldValues.billToId}>Update</button>
+          </div>
         </div>
       </QuoteBaseConnect>
     );

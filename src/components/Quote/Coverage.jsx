@@ -22,6 +22,7 @@ import CurrencyField from '../Form/inputs/CurrencyField';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import DateField from '../Form/inputs/DateField';
+import Footer from '../Common/Footer';
 
 export const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName])
@@ -657,7 +658,7 @@ export class Coverage extends Component {
                           name="medicalPayments" disabled label={'Medical Payments to Others Limit'} styleName={''} input={{
                             name: 'medicalPayments',
                             disabled: true,
-                            value: '$2,000'
+                            value: '$ 2,000'
                           }}
                         />
                       </div>
@@ -879,17 +880,21 @@ export class Coverage extends Component {
                     </div>
                   </div>
                 </section>
-                <div className="btn-footer">
-                  <button className="btn btn-secondary" type="button" form="Coverage" onClick={() => this.props.reset('Coverage')}>
-                    Cancel
-                  </button>
-                  <button className="btn btn-primary" type="submit" form="Coverage" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}>
-                    Update
-                  </button>
-                </div>
+
               </div>
             </div>
           </Form>
+        </div>
+        <div className="basic-footer btn-footer">
+          <Footer />
+          <div className="btn-wrapper">
+            <button className="btn btn-secondary" type="button" form="Coverage" onClick={() => this.props.reset('Coverage')}>
+              Cancel
+            </button>
+            <button className="btn btn-primary" type="submit" form="Coverage" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}>
+              Update
+            </button>
+          </div>
         </div>
       </QuoteBaseConnect>
     );
