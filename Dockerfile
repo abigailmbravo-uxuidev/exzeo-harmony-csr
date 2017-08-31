@@ -2,7 +2,6 @@ FROM mhart/alpine-node:7.10.0
 MAINTAINER Exzeo
 
 ENV NODE_ENV=development
-ENV REACT_APP_API_URL=http://www.harmony-ins.com/api
 
 RUN mkdir -p /app
 RUN mkdir -p /app/src

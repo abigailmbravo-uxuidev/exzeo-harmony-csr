@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import moment from 'moment';
 import localStorage from 'localStorage';
 import { reduxForm, propTypes } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
@@ -117,7 +118,7 @@ export class Coverage extends Component {
     const discountSurcharge = [
       {
         discountSurcharge: 'Townhouse/Rowhouse',
-        value: _.get(property, 'townhouseRowhouse') ? 'No' : 'Yes'
+        value: _.get(property, 'townhouseRowhouse') === false ? 'No' : 'Yes'
       }, {
         discountSurcharge: 'Property Ever Rented',
         value: _.get(underwritingAnswers, 'rented.answer') === 'Yes' ? 'Yes' : 'No'
@@ -138,7 +139,7 @@ export class Coverage extends Component {
         value: _.get(property, 'sprinkler') === 'N' ? 'No' : _.get(property, 'sprinkler')
       }, {
         discountSurcharge: 'Wind Mit Factor',
-        value: _.get(rating, 'worksheet.elements.windMitigationDiscount') ? _.get(rating, 'worksheet.elements.windMitigationDiscount') : '0'
+        value: _.get(rating, 'worksheet.elements.windMitigationFactors.windMitigationDiscount') ? _.get(rating, 'worksheet.elements.windMitigationFactors.windMitigationDiscount') : '0'
       }
     ];
 
@@ -206,6 +207,10 @@ export class Coverage extends Component {
       {
         coverage: 'Next Payment',
         value: `$ ${normalizeNumbers(_.get(summaryLedger, 'noticeAmountDue'))}`
+      },
+      {
+        coverage: 'Payment Due',
+        value: (moment(_.get(summaryLedger, 'invoiceDueDate'))).format('L')
       },
       {
         coverage: 'Bill To',

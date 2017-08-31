@@ -39,7 +39,6 @@ const csrLinks = [{
   styleName: 'additionalInterests',
   exact: true
 }, {
-  needsRating: true,
   key: 'mailing',
   link: '/quote/billing',
   label: 'Mailing / Billing',
@@ -81,28 +80,11 @@ export const closeUWConditions = (props) => {
 };
 
 const goToPage = (agentLink, props, quote) => {
-  if (!quote || (agentLink.needsRating && quote && (!quote.rating || quote.policyHolders.length === 0))) return;
-  // const workflowId = props.appState.instanceId;
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
     { ...props.appState.data,
       activateRedirectLink: agentLink.link,
       activateRedirect: true
     });
-
-  // const steps = [
-  //   { name: 'hasUserEnteredData', data: { answer: 'No' } },
-  //   { name: 'moveTo', data: { key } }
-  // ];
-
-  // props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
-  //   .then(() => {
-  //     props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, {
-  //       ...props.appState.data,
-  //       selectedLink: key,
-  //       activateRedirectLink: link,
-  //       activateRedirect: true
-  //     });
-  //   });
 };
 
 const getDocumentId = (props) => {
@@ -135,7 +117,7 @@ export const SideNav = (props) => {
           </li> :
           <li key={index}>
             <span className={agentLink.styleName} onClick={() => goToPage(agentLink, props, quote)}>
-              <a className={(props.appState.data.selectedLink || 'customerData') === agentLink.key ? `${agentLink.styleName} active` : `${agentLink.styleName} ${agentLink.needsRating && quote && (!quote.rating || quote.policyHolders.length === 0) ? 'disabled' : ''}`}>{agentLink.label}</a>
+              <a>{agentLink.label}</a>
             </span>
           </li>
       ))}
