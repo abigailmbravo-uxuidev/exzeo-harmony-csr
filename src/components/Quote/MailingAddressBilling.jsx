@@ -201,7 +201,7 @@ export const fillMailForm = (props) => {
 export class MailingAddressBilling extends Component {
 
   componentDidMount() {
-    if (this.props.appState.instanceId) {
+    if (this.props.appState.instanceId && this.props.quoteData && this.props.quoteData.rating) {
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         submitting: true
@@ -219,12 +219,31 @@ export class MailingAddressBilling extends Component {
         selectedLink: 'mailing'
       });
     });
+    } else {
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+        ...this.props.appState.data,
+        selectedLink: 'mailing',
+        activateRedirect: false        
+      });
     }
   }
 
   render() {
     const { handleSubmit, paymentPlanResult, pristine, quoteData, dirty } = this.props;
-
+    if (!quoteData.rating) {
+      return (
+        <QuoteBaseConnect>
+          <ClearErrorConnect />
+          <div className="route-content">
+            <div className="messages">
+              <div className="message error">
+                <i className="fa fa-exclamation-circle" aria-hidden="true" /> &nbsp;Mailing / Billing cannot be accessed until Premium calculated.
+            </div>
+            </div>
+          </div>
+        </QuoteBaseConnect>
+      );
+    }
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
