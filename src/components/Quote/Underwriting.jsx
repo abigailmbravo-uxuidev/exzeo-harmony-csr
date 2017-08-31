@@ -140,6 +140,7 @@ export class Underwriting extends Component {
           <Footer />
           <div className="btn-wrapper">
             <button
+              aria-label="reset-btn form-underwriting"
               onClick={() => clearForm(this.props)}
               className="btn btn-secondary"
               type="button"
@@ -147,6 +148,7 @@ export class Underwriting extends Component {
               disabled={this.props.appState.data.submitting}
             >Cancel</button>
             <button
+              aria-label="submit-btn form-underwriting" 
               className="btn btn-primary"
               type="submit"
               form="Underwriting"

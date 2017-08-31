@@ -223,7 +223,7 @@ export class MailingAddressBilling extends Component {
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         selectedLink: 'mailing',
-        activateRedirect: false        
+        activateRedirect: false
       });
     }
   }
@@ -325,8 +325,8 @@ export class MailingAddressBilling extends Component {
         <div className="basic-footer btn-footer">
           <Footer />
           <div className="btn-wrapper">
-            <button className="btn btn-secondary" type="button" onClick={() => clearForm(this.props)}>Cancel</button>
-            <button className="btn btn-primary" type="submit" form="MailingAddressBilling" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData) || !this.props.fieldValues.billToId}>Update</button>
+            <button aria-label="reset-btn form-mailingBilling"  className="btn btn-secondary" type="button" onClick={() => clearForm(this.props)}>Cancel</button>
+            <button aria-label="submit-btn form-mailingBilling" className="btn btn-primary" type="submit" form="MailingAddressBilling" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData) || !this.props.fieldValues.billToId}>Update</button>
           </div>
         </div>
       </QuoteBaseConnect>

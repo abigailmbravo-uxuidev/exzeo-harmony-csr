@@ -191,8 +191,8 @@ export const NewNoteFileUploader = (props, { closeButtonHandler }) => {
                 <Field name="noteAttachments" component={ renderDropzone } />
             </div>
             <div className="buttons note-file-footer-button-group">
-              <button className="btn btn-secondary cancel-button" onClick={props.closeButtonHandler}>Cancel</button>
-              <button className="btn btn-primary submit-button">Save</button>
+              <button aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={props.closeButtonHandler}>Cancel</button>
+              <button  aria-label="submit-btn form-newNote" className="btn btn-primary submit-button">Save</button>
             </div>
           </div>
         </Form>
