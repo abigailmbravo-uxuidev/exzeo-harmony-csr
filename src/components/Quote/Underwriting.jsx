@@ -70,10 +70,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
 };
 
 export const clearForm = (props) => {
-  const { dispatch, questions } = props;
-  for (let i = 0; i < questions.length; i += 1) {
-    dispatch(change('Underwriting', questions[i].name, ''));
-  }
+  props.reset('Underwriting');
 };
 let setUnderwriting = false;
 export class Underwriting extends Component {
