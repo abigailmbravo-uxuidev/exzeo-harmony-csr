@@ -600,10 +600,14 @@
     .segmented {
       .segmented-answer-wrapper {
         .radio-column-3 {
-          width: 33.3%;
+          width: 33.33%;
         }
       }
     }
+  }
+
+  .sameAsProperty {
+      width: 50%;
   }
 }
 
