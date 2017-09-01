@@ -221,15 +221,10 @@ export class MortgageBilling extends Component {
                   </dl>
                 </div>
               </section>
-
-
               {/* TODO: This section needs to be hidden per role */}
               <section className="add-payment">
-
                 <h3>Add Payment</h3>
-
                 <Form id="MortgageBilling" onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
-
                   <div className="flex-parent">
                     <div className="flex-child">
                       <div className="form-group">
@@ -242,13 +237,11 @@ export class MortgageBilling extends Component {
                       </div>
                     </div>
                   </div>
-
                   <div className="flex-parent">
                     <div className="flex-child">
                       <div className="form-group">
                         <SelectField
                           name="cashType" component="select" label="Cash Type" onChange={val => getPaymentDescription(val, this.props)} validations={['required']}
-
                           answers={_.map(this.props.paymentOptions, type => ({ answer: type.paymentType }))}
                         />
                       </div>
@@ -272,24 +265,20 @@ export class MortgageBilling extends Component {
                     </div>
                   </div>
                   <div className="btn-footer">
-                    <button className="btn btn-secondary" type="button" form="MortgageBilling" onClick={this.clearForm}>Cancel</button>
-                    <button className="btn btn-primary" type="submit" form="MortgageBilling" disabled={this.props.appState.data.submitting || pristine}>Save</button>
+                    <button className="btn btn-secondary" type="button" form="MortgageBilling" onClick={this.clearForm}>Reset</button>
+                    <button className="btn btn-primary" type="submit" form="MortgageBilling" disabled={this.props.appState.data.submitting || pristine}>Apply Payment</button>
                   </div>
                 </Form>
               </section>
-
-
               <section className="additional-interests">
                 <h3>Additional Interests</h3>
-
                 <div className="results-wrapper">
-
                   <div className="button-group">
-                    <button className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
-                    <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
-                    <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
+                    <button aria-label="addMortgagee-btn form-mortgageBilling" className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
+                    <button aria-label="addAdditionalInsured-btn form-mortgageBilling" className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
+                    <button aria-label="addAdditionalInterest-btn form-mortgageBilling" className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
                     { /* <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => this.addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button> */ }
-                    <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
+                    <button aria-label="addBillpayer-btn form-mortgageBilling" className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
                   </div>
                   <ul className="results result-cards">
                     {additionalInterests && _.sortBy(additionalInterests, ['rank', 'type']).map((ai, index) =>
@@ -315,7 +304,6 @@ export class MortgageBilling extends Component {
                   </ul>
                 </div>
               </section>
-
             </div>
           </div>
         </div>

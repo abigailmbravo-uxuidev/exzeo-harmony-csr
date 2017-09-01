@@ -128,7 +128,6 @@ export class QuoteApplication extends Component {
           <Form id="Application" onSubmit={handleSubmit(() => quoteSummaryModal(this.props))} noValidate>
             <div className="scroll">
               <div className="detail-wrapper">
-
                 {underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0 &&
                 <div className="messages" >
                   <div className="message error">
@@ -136,17 +135,15 @@ export class QuoteApplication extends Component {
                   </div>
                 </div>
               }
-
               </div>
               <div className="workflow-steps">
                 <button
+                  aria-label="submit-btn form-application"
                   form="Application"
                   className="btn btn-primary" type="submit" disabled={(underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0) || checkQuoteState(quoteData)}
                 >Send to DocuSign</button>
               </div>
-
             </div>
-
           </Form>
           { appState.data.showQuoteSummaryModal && <QuoteSummaryModal verify={handleFormSubmit} showQuoteSummaryModal={() => quoteSummaryModal(this.props)} /> }
         </div>

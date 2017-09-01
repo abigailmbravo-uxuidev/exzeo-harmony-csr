@@ -797,7 +797,6 @@ export class Coverage extends Component {
                         <SelectField
                           name="roofCovering" component="select" styleName={''} label="Roof Covering" onChange={function () {}} validations={['required']}
                           answers={getAnswers('roofCovering', questions)}
-
                         />
                       </div>
                     </div>
@@ -880,7 +879,6 @@ export class Coverage extends Component {
                     </div>
                   </div>
                 </section>
-
               </div>
             </div>
           </Form>
@@ -888,10 +886,10 @@ export class Coverage extends Component {
         <div className="basic-footer btn-footer">
           <Footer />
           <div className="btn-wrapper">
-            <button className="btn btn-secondary" type="button" form="Coverage" onClick={() => this.props.reset('Coverage')}>
-              Cancel
+            <button aria-label="reset-btn form-coverage" className="btn btn-secondary" type="button" form="Coverage" onClick={() => this.props.reset('Coverage')}>
+              Reset
             </button>
-            <button className="btn btn-primary" type="submit" form="Coverage" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}>
+            <button aria-label="submit-btn form-coverage" className="btn btn-primary" type="submit" form="Coverage" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}>
               Update
             </button>
           </div>
