@@ -1389,7 +1389,7 @@ ul.list-cards {
           &:hover {
               .edit-btn {
                   color: $bright-blue-darken-04;
-                  
+
                   i {
                       color: $bright-blue-darken-04;
                   }
@@ -1446,31 +1446,7 @@ ul.list-cards {
   dt {
     color: $warm-gray-08;
   }
-
-  .share-quote {
-    display: flex;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px dashed $warm-gray-01;
-
-    .form-group {
-      margin-bottom: 0;
-
-      &.share-name {
-        margin-right: $padding;
-      }
-
-      &.share-email {
-        margin-right: $padding;
-      }
-    }
-
-    .btn {
-      align-self: flex-start;
-      margin-top: 1.75rem;
-    }
-  }
-
+  
   .detail-wrapper {
     width: 100%;
 

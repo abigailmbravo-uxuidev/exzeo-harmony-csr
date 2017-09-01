@@ -268,7 +268,7 @@
             }
 
             .flex-parent {
-              align-items: flex-end;
+              align-items: flex-start;
 
               .form-group {
                 margin: 0 $padding 0 0;
@@ -285,6 +285,10 @@
                         color: $white;
                     }
                 }
+              }
+
+              .btn {
+                  margin-top: 1.5rem;
               }
             }
           }
