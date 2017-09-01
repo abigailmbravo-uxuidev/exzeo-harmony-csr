@@ -264,20 +264,29 @@
 
         form {
           display: flex;
-          align-items: flex-end;
+          align-items: flex-start;
           align-content: space-between;
 
           .form-group {
             margin: 0 $padding 0 0;
 
+            &.error {
+                input {
+                    border-color: $red-darken-03;
+                }
+                span {
+                    color: $red-darken-03;
+                    font-weight: $font-weight-bold;
+                }
+            }
+
             label {
               color: $white;
               font-size: $font-size-sm;
             }
-
-            input {
-
-            }
+          }
+          button {
+              margin-top: 1.5rem;
           }
         }
       }

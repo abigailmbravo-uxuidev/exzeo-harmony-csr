@@ -1194,7 +1194,7 @@ export class Endorsements extends React.Component {
                     <input type="numeric" disabled onChange={function () {}} value="" />
                   </div>
                   <button aria-label="reset-btn form-endorsments"  className="btn btn-secondary">Reset</button>
-                  <button aria-label="submit-btn form-endorsments"  type="submit" className="btn btn-primary">{appState.data.isCalculated ? 'Apply Endorsement' : 'Review'}</button>
+                  <button aria-label="submit-btn form-endorsments"  type="submit" className="btn btn-primary">{appState.data.isCalculated ? 'Calculate' : 'Review'}</button>
                 </div>
               </div>
             </div>
