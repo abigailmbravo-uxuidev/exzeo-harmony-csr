@@ -57,7 +57,6 @@ export const handleInitialize = (state) => {
 
   const values = {};
   values.policyNumber = _.get(policy, 'policyNumber');
-
   values.cashDate = moment.utc().format('YYYY-MM-DD');
   values.batchNumber = moment.utc().format('YYYYMMDD');
 
@@ -118,7 +117,6 @@ export class MortgageBilling extends Component {
     const submitData = data;
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
       workflowId, { ...this.props.appState.data, submitting: true });
-
     submitData.cashDate = moment.utc(data.cashDate);
     submitData.batchNumber = String(data.batchNumber);
     submitData.amount = Number(String(data.amount).replace(/[^\d.-]/g, ''));
@@ -140,7 +138,6 @@ export class MortgageBilling extends Component {
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
       workflowId, { ...this.props.appState.data, showBillingEditModal: true });
   };
-
 
   clearForm = () => {
     const { dispatch } = this.props;
@@ -185,7 +182,7 @@ export class MortgageBilling extends Component {
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
               <section className="payment-summary">
-                <h3>Billing <button className="btn btn-link btn-sm" onClick={this.handleBillingEdit}><i className="fa fa-pencil-square"></i>Edit</button></h3>
+                <h3>Billing <button aria-label="open-btn form-editBilling" className="btn btn-link btn-sm" onClick={this.handleBillingEdit}><i className="fa fa-pencil-square"></i>Edit</button></h3>
                 <div className="payment-summary">
                   <dl>
                     <div>
@@ -265,8 +262,8 @@ export class MortgageBilling extends Component {
                     </div>
                   </div>
                   <div className="btn-footer">
-                    <button className="btn btn-secondary" type="button" form="MortgageBilling" onClick={this.clearForm}>Reset</button>
-                    <button className="btn btn-primary" type="submit" form="MortgageBilling" disabled={this.props.appState.data.submitting || pristine}>Apply Payment</button>
+                    <button aria-label="reset-btn form-addpayment" className="btn btn-secondary" type="button" form="MortgageBilling" onClick={this.clearForm}>Reset</button>
+                    <button aria-label="submit-btn form-addpayment" className="btn btn-primary" type="submit" form="MortgageBilling" disabled={this.props.appState.data.submitting || pristine}>Apply Payment</button>
                   </div>
                 </Form>
               </section>
@@ -274,11 +271,11 @@ export class MortgageBilling extends Component {
                 <h3>Additional Interests</h3>
                 <div className="results-wrapper">
                   <div className="button-group">
-                    <button aria-label="addMortgagee-btn form-mortgageBilling" className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
-                    <button aria-label="addAdditionalInsured-btn form-mortgageBilling" className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
-                    <button aria-label="addAdditionalInterest-btn form-mortgageBilling" className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
+                    <button aria-label="open-btn form-addMortgagee" className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
+                    <button aria-label="open-btn form-addAdditionalInsured" className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
+                    <button aria-label="open-btn form-addAdditionalInterest" className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
                     { /* <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => this.addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button> */ }
-                    <button aria-label="addBillpayer-btn form-mortgageBilling" className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
+                    <button aria-label="open-btn form-addBillPayer" className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
                   </div>
                   <ul className="results result-cards">
                     {additionalInterests && _.sortBy(additionalInterests, ['rank', 'type']).map((ai, index) =>

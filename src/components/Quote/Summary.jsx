@@ -145,7 +145,7 @@ export class Summary extends Component {
               <div className="messages">
                 <div className="message error">
                   <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Quote Summary cannot be sent due to Underwriting Validations.
-            </div>
+                </div>
               </div>
             </div>
             }

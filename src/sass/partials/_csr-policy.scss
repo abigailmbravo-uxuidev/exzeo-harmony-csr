@@ -114,6 +114,7 @@
                 > .form-group {
                   display: flex;
                   flex-direction: row;
+                  flex-wrap: wrap;
                   align-items: center;
                   width: 66.66%;
                   flex-grow: 0;
@@ -123,7 +124,10 @@
 
                   &.error {
                     span {
+                      flex-grow: 1;
+                      flex-shrink: 1;
                       width: 100%;
+                      padding-left: 50%;
                     }
                   }
 
@@ -137,6 +141,15 @@
 
                     label {
                       display: none;
+                    }
+
+                    &.error {
+                      span {
+                        flex-grow: 1;
+                        flex-shrink: 1;
+                        width: 100%;
+                        padding-left: 0;
+                      }
                     }
                   }
 

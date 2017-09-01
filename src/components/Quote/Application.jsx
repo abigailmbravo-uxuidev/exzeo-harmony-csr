@@ -10,6 +10,7 @@ import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import QuoteSummaryModal from '../../components/Common/QuoteSummaryModal';
+import Footer from '../Common/Footer';
 
 const handleInitialize = (state) => {
   const formValues = {
@@ -129,14 +130,12 @@ export class QuoteApplication extends Component {
             <div className="scroll">
               <div className="detail-wrapper">
                 {underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0 &&
-                <div className="messages" >
-                  <div className="message error">
-                    <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Application cannot be sent due to Underwriting Validations.
+                  <div className="messages" >
+                    <div className="message error">
+                      <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Application cannot be sent due to Underwriting Validations.
+                    </div>
                   </div>
-                </div>
-              }
-              </div>
-              <div className="workflow-steps">
+                }
                 <button
                   aria-label="submit-btn form-application"
                   form="Application"
@@ -146,6 +145,9 @@ export class QuoteApplication extends Component {
             </div>
           </Form>
           { appState.data.showQuoteSummaryModal && <QuoteSummaryModal verify={handleFormSubmit} showQuoteSummaryModal={() => quoteSummaryModal(this.props)} /> }
+        </div>
+        <div className="basic-footer">
+          <Footer />
         </div>
       </QuoteBaseConnect>
     );

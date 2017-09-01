@@ -256,8 +256,8 @@
       }
 
       .share-quote {
-        flex-grow: 1;
-        flex-shrink: 1;
+        flex-grow: 0;
+        flex-shrink: 0;
         width: auto;
         padding: $padding;
         background: mix($green-darken-04, $warm-gray-00, 70%);
