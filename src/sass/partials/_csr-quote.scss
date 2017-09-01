@@ -253,6 +253,18 @@
             overflow: hidden;
           }
         }
+
+        &.summary {
+            .detail-wrapper {
+                > div {
+                    border-bottom: 1px dashed $green-darken-04;
+
+                    &:last-child {
+                        border-bottom-width: 0;
+                    }
+                }
+            }
+        }
       }
 
       .share-quote {

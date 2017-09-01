@@ -151,7 +151,7 @@ export class Summary extends Component {
             }
             {quoteData && quoteData.underwritingExceptions && quoteData.underwritingExceptions.length === 0 &&
             <div className="detail-wrapper">
-              <h4>Quote Details</h4>
+              <h3>Quote Details</h3>
               <div className="detail-group property-details">
                 <section className="display-element">
                   <dl className="quote-number">
@@ -189,7 +189,7 @@ export class Summary extends Component {
                   </dl>
                 </section>
               </div>
-              <h4>Coverage / Rating</h4>
+              <h3>Coverage / Rating</h3>
               <div className="detail-group quote-details">
                 <section className="display-element">
                   <dl>
@@ -297,7 +297,7 @@ export class Summary extends Component {
                   {(quoteData.policyHolders && quoteData.policyHolders.length > 0) ?
                          quoteData.policyHolders.map((policyHolder, index) => (_.trim(policyHolder.firstName).length > 0 &&
                          <dl key={`ph${index}`}>
-                           <h4>{index === 0 ? 'Primary' : 'Secondary'} {'Policyholder'}</h4>
+                           <h3>{index === 0 ? 'Primary' : 'Secondary'} {'Policyholder'}</h3>
                            <div className="contact-card">
                              <div className="contact-name">
                                <dt>Policyholder Name</dt>
@@ -319,7 +319,7 @@ export class Summary extends Component {
                          </dl>)) : null}
                 </section>
               </div>
-              <h4>Mailing Address</h4>
+              <h3>Mailing Address</h3>
               <div className="detail-group mailing-address-details">
                 <section className="display-element">
                   <dl>
@@ -345,7 +345,7 @@ export class Summary extends Component {
               </div>
               <div className="detail-group additional-interests-details">
                 <section className="display-element additional-interests">
-                  <h4>Additional Interests</h4>
+                  <h3>Additional Interests</h3>
                   {(quoteData.additionalInterests && quoteData.additionalInterests.length > 0) ?
                         quoteData.additionalInterests.map((additionalInterest, index) => (_.trim(additionalInterest.name1).length > 0 &&
                         <div className="card" key={`ph${index}`}>

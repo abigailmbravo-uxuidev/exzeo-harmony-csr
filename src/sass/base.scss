@@ -245,9 +245,9 @@ html {
           }
 
           .route-content {
-              .modal {
-                  z-index: 100;
-              }
+            .modal {
+              z-index: 100;
+            }
           }
         }
       }
@@ -883,36 +883,36 @@ main[role="document"] {
 //footer
 /*------------------------------------------------------------------------------------*/
 .basic-footer {
-  margin-bottom: 0;
-  flex-shrink: 0;
-  height: auto;
-  flex-grow: 0;
-  padding: ($padding/2) $padding;
   align-items: center;
-  border-top: 1px dotted $warm-gray-04;
+  flex-grow: 0;
+  flex-shrink: 0;
   width: 100%;
+  height: auto;
+  margin-bottom: 0;
+  padding: ($padding/2) $padding;
+  border-top: 1px dotted $warm-gray-04;
 
   &.btn-footer {
-      padding: $padding;
+    padding: $padding;
 
-      footer {
-          align-self: flex-end;
-      }
+    footer {
+      align-self: flex-end;
+    }
   }
 
   footer {
-      flex-grow: 1;
-      flex-shrink: 0;
-      width: auto;
+    flex-grow: 1;
+    flex-shrink: 0;
+    width: auto;
 
-      div[role="banner"] {
-          line-height: $font-size-xs;
+    div[role="banner"] {
+      line-height: $font-size-xs;
 
-          small {
-              font-size: $font-size-xs;
-              line-height: 1;
-          }
+      small {
+        font-size: $font-size-xs;
+        line-height: 1;
       }
+    }
   }
 }
 //ROUTE SPECIFIC STYLES
@@ -1034,11 +1034,12 @@ ul.list-cards {
   }
 }
 
-.quote-list, .policy-list, .claim-list {
-  margin-bottom: $padding/2;
-  padding: $padding*2;
+.claim-list,
+.policy-list,
+.quote-list {
   flex-grow: 1;
   width: 100%;
+  margin-bottom: $padding/2;
   margin-bottom: $padding/2;
   padding: $padding*2;
 
@@ -1360,14 +1361,45 @@ ul.list-cards {
     flex-grow: 1;
     flex-shrink: 0;
     width: 100%;
-    margin-bottom: $padding*2;
-    padding-bottom: $paragraph-margin-bottom;
-    border-bottom: 1px dashed $warm-gray-02;
+    margin: $padding 0 ($padding*2);
+    padding: ($padding*2) 0 $paragraph-margin-bottom;
+    border-top: 1px dashed $green-darken-03;
 
-    .result-cards {
+    ul.results.result-cards {
       margin: 0;
       padding: 0;
       list-style: none;
+
+      li {
+        a {
+          .edit-btn {
+              display: flex;
+              align-items: center;
+              color: $bright-blue;
+              font-size: $font-size-sm;
+              font-weight: $font-weight-bold;
+            i {
+                font-size: $font-size-sm;
+                margin: 0 ($padding/2) 0 0;
+                width: auto;
+                color: $bright-blue;
+            }
+          }
+
+          &:hover {
+              .edit-btn {
+                  color: $bright-blue-darken-04;
+                  
+                  i {
+                      color: $bright-blue-darken-04;
+                  }
+                  span {
+                      text-decoration: underline;
+                  }
+              }
+          }
+        }
+      }
     }
   }
 }
@@ -1474,8 +1506,7 @@ ul.list-cards {
       }
 
       &.property-details {
-        margin-bottom: 1rem;
-        border-bottom: 1px dashed $warm-gray-01;
+        margin-bottom: $padding*2;
 
         .display-element {
           display: flex;
@@ -1497,7 +1528,6 @@ ul.list-cards {
 
       &.quote-details {
         margin-bottom: 1rem;
-        border-bottom: 1px dashed $warm-gray-01;
 
         .display-element {
           display: flex;
@@ -1536,7 +1566,6 @@ ul.list-cards {
 
       &.policyholder-details {
         margin-bottom: 1rem;
-        border-bottom: 1px dashed $warm-gray-01;
 
         .display-element {
           padding: $padding 0;
@@ -1574,7 +1603,6 @@ ul.list-cards {
 
       &.mailing-address-details {
         margin-bottom: 1rem;
-        border-bottom: 1px dashed $warm-gray-01;
 
         .display-element {
           display: flex;
@@ -1605,9 +1633,9 @@ ul.list-cards {
 
               i {
                 display: flex;
+                align-items: center;
                 flex-grow: 0;
                 flex-shrink: 0;
-                align-items: center;
                 justify-content: center;
                 width: 2rem;
                 height: 2rem;
@@ -2042,116 +2070,117 @@ ul.list-cards {
         }
       }
     }
+
     .deductibleHeader {
-        position: relative;
-        display: flex;
+      position: relative;
+      display: flex;
+      flex-grow: 0;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      height: 2.75rem;
+      margin-top: -2px;
+      color: $white;
+      border-bottom: 2px solid $white;
+      background: $warm-gray-10;
+
+      section {
+        flex-basis: auto;
         flex-grow: 0;
-        flex-shrink: 0;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        color: $white;
-        border-bottom: 2px solid $white;
-        background: $warm-gray-10;
-        margin-top: -2px;
-        height: 2.75rem;
+        flex-shrink: 1;
+        margin-right: $padding*3;
+        padding: ($padding/2) 0;
 
-        section {
-          flex-basis: auto;
-          flex-grow: 0;
-          flex-shrink: 1;
-          margin-right: $padding*3;
-          padding: ($padding/2) 0;
+        dl {
+          margin-bottom: 0;
 
-          dl {
-            margin-bottom: 0;
-
-            div {
-              dt {
-                letter-spacing: 0.05em;
-                color: $yellow-lighten-06;
-                font-size: $font-size-xs;
-                font-weight: $font-weight-normal;
-                //text-transform: uppercase;
-              }
-
-              dd {
-                margin-bottom: 0;
-                text-transform: uppercase;
-                font-size: $font-size-sm;
-                line-height: $headings-line-height;
-              }
-            }
-          }
-
-          &.propertyAddress {
-            max-width: 19rem;
-          }
-
-          &.policyHolderMailingAddress {
-            max-width: 19rem;
-          }
-
-          &.policyholder {
-            max-width: 16rem;
-          }
-
-          &.policyDetails,
-          &.quoteDetails {
-            display: flex;
-            flex-basis: 12rem;
-            width: 12rem;
-            max-width: 12rem;
-            padding: ($padding/2) ($padding/2) ($padding/2) ($padding*2);
-            background: rgba($black, .1);
-
-            dl {
-              display: flex;
-
-              > div {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-
-                dd {
-                  color: $yellow-lighten-06;
-                }
-              }
-            }
-          }
-
-          &.policyStatus {
-            //flex-grow: 1;
-          }
-
-          &.quoteStatus {
-            //flex-grow: 1;
-          }
-
-          &.quoteEffectiveDate {
-            flex-grow: 1;
-          }
-
-          &.cancellationDate {
-            flex-grow: 1;
-          }
-
-          &.premium {
-            align-self: flex-start;
-            min-width: 6rem;
-            margin: $padding/2;
-            padding: $padding;
-            color: $warm-gray-12;
-            background: $warm-gray-02;
-
+          div {
             dt {
-              color: $warm-gray-12;
+              letter-spacing: 0.05em;
+              color: $yellow-lighten-06;
+              font-size: $font-size-xs;
+              font-weight: $font-weight-normal;
+              //text-transform: uppercase;
             }
 
             dd {
-              font-size: $font-size-h4;
+              margin-bottom: 0;
+              text-transform: uppercase;
+              font-size: $font-size-sm;
+              line-height: $headings-line-height;
             }
           }
         }
+
+        &.propertyAddress {
+          max-width: 19rem;
+        }
+
+        &.policyHolderMailingAddress {
+          max-width: 19rem;
+        }
+
+        &.policyholder {
+          max-width: 16rem;
+        }
+
+        &.policyDetails,
+        &.quoteDetails {
+          display: flex;
+          flex-basis: 12rem;
+          width: 12rem;
+          max-width: 12rem;
+          padding: ($padding/2) ($padding/2) ($padding/2) ($padding*2);
+          background: rgba($black, .1);
+
+          dl {
+            display: flex;
+
+            > div {
+              display: flex;
+              flex-direction: column;
+              justify-content: space-around;
+
+              dd {
+                color: $yellow-lighten-06;
+              }
+            }
+          }
+        }
+
+        &.policyStatus {
+          //flex-grow: 1;
+        }
+
+        &.quoteStatus {
+          //flex-grow: 1;
+        }
+
+        &.quoteEffectiveDate {
+          flex-grow: 1;
+        }
+
+        &.cancellationDate {
+          flex-grow: 1;
+        }
+
+        &.premium {
+          align-self: flex-start;
+          min-width: 6rem;
+          margin: $padding/2;
+          padding: $padding;
+          color: $warm-gray-12;
+          background: $warm-gray-02;
+
+          dt {
+            color: $warm-gray-12;
+          }
+
+          dd {
+            font-size: $font-size-h4;
+          }
+        }
+      }
     }
   }
 }
@@ -2167,40 +2196,43 @@ ul.list-cards {
   width: 100%;
 
   .flex-child {
+    flex-basis: auto;
     flex-grow: 1;
     flex-shrink: 1;
-    flex-basis: auto;
     order: 0;
     padding: 0 ($padding*2) 0 0;
   }
 
   .flex-child:last-of-type {
+    flex-basis: auto;
     flex-grow: 1;
     flex-shrink: 1;
-    flex-basis: auto;
     padding: 0;
   }
 
-  .flex-2, .flex-2:last-of-type {
-    flex-grow: 0;
-    flex-shrink: 1;
+  .flex-2,
+  .flex-2:last-of-type {
     flex-basis: 50%;
-      &:last-of-type {
-    }
-  }
-
-  .flex-3, .flex-3:last-of-type {
     flex-grow: 0;
     flex-shrink: 1;
+
+    &:last-of-type {}
+  }
+
+  .flex-3,
+  .flex-3:last-of-type {
     flex-basis: 33.33%;
-    &:last-of-type {
-    }
-  }
-
-  .flex-4, .flex-4:last-of-type {
     flex-grow: 0;
     flex-shrink: 1;
+
+    &:last-of-type {}
+  }
+
+  .flex-4,
+  .flex-4:last-of-type {
     flex-basis: 25%;
+    flex-grow: 0;
+    flex-shrink: 1;
   }
 }
 
