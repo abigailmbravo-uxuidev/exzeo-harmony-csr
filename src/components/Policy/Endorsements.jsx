@@ -277,19 +277,71 @@ export const calculate = (data, dispatch, props) => {
       });
 };
 
-export const save = () => {
+export const save = (data, dispatch, props) => {
+  const submitData = {
+    companyCode: props.policy.companyCode,
+    state: props.policy.state,
+    product: props.policy.product,
+    transactionType: 'Endorsement',
+    policyNumber: props.policy.policyNumber,
+    sourceNumber: props.policy.sourceNumber,
+    effectiveDate: props.policy.effectiveDate,
+    billToType: props.policy.billToType,
+    billToId: props.policy.billToId,
+    billPlan: props.policy.billPlan,
+    agencyCode: props.policy.agencyCode,
+    agentCode: props.policy.agentCode,
+    policyHolders: props.policy.policyHolders,
+    policyHolderMailingAddress: props.policy.policyHolderMailingAddress,
+    additionalInterests: props.policy.additionalInterests,
+    coverageLimits: props.policy.coverageLimits,
+    coverageOptions: props.policy.coverageOptions,
+    deductibles: props.policy.deductibles,
+    underwritingAnswers: props.policy.underwritingAnswers,
+    rating: props.policy.rating,
+    country: props.policy.policyHolderMailingAddress.country,
+    windMitigation: props.policy.property.windMitigation,
 
+    pH1FirstName: data.pH1FirstName,
+    pH1LastName: data.pH1LastName,
+    pH1email: data.pH1email,
+    pH1primaryPhoneNumber: data.pH1primaryPhoneNumber,
+    pH1secondaryPhoneNumber: data.pH1secondaryPhoneNumber,
+    pH2FirstName: data.pH2FirstName,
+    pH2LastName: data.pH2LastName,
+    pH2email: data.pH2email,
+    pH2primaryPhoneNumber: data.pH2primaryPhoneNumber,
+    pH2secondaryPhoneNumber: data.pH2secondaryPhoneNumber,
+    floodZoneNew: data.floodZoneNew,
+    squareFeetNew: data.squareFeetNew,
+    residenceTypeNew: data.residenceTypeNew,
+    distanceToTidalWaterNew: data.distanceToTidalWaterNew,
+    propertyCityNew: data.propertyCityNew,
+    propertyZipNew: data.propertyZipNew,
+    propertyStateNew: data.propertyStateNew,
+    propertyAddress1New: data.propertyAddress1New,
+    propertyAddress2New: data.propertyAddress2New,
+    protectionClassNew: data.protectionClassNew,
+    stateNew: data.stateNew,
+    cityNew: data.cityNew,
+    zipNew: data.zipNew,
+    address2New: data.address2New,
+    address1New: data.address1New
+  };
+  props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber }).then((result) => {
+    const steps = [{
+      name: 'saveEndorsement',
+      data: submitData
+    }];
+    const startResult = result.payload ? result.payload[0].workflowData.csrQuote.data : {};
+
+    // props.actions.appStateActions.setAppState('csrQuote', startResult.modelInstanceId, { ...props.appState.data, submitting: true });
+    props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
+    });
+  });
 };
 
 export class Endorsements extends React.Component {
-
-  componentWillMount = () => {
-    // if (this.props && this.props.policy && this.props.policy.policyNumber) {
-    //   this.props.actions.cgActions.startWorkflow('endorsePolicyModel', { policyNumber: this.props.policy.policyNumber }).then(() => {
-    //   });
-    // }
-  }
-
 
   render() {
     const endorsements = [
@@ -1137,19 +1189,19 @@ export class Endorsements extends React.Component {
                     <h3>Mailing Address</h3>
                     <div className="flex-parent wrap">
                       <div className="address">
-                        <TextField label={'Address 1'} styleName={''} name={'address1'} />
+                        <TextField label={'Address 1'} styleName={''} name={'address1New'} />
                       </div>
                       <div className="address">
-                        <TextField label={'Address 2'} styleName={''} name={'address2'} />
+                        <TextField label={'Address 2'} styleName={''} name={'address2New'} />
                       </div>
                       <div className="city">
-                        <TextField label={'City'} styleName={''} name={'city'} />
+                        <TextField label={'City'} styleName={''} name={'cityNew'} />
                       </div>
                       <div className="state">
-                        <TextField label={'State'} styleName={''} name={'state'} />
+                        <TextField label={'State'} styleName={''} name={'stateNew'} />
                       </div>
                       <div className="zip">
-                        <TextField label={'Zip'} styleName={''} name={'zip'} />
+                        <TextField label={'Zip'} styleName={''} name={'zipNew'} />
                       </div>
                     </div>
                   </section>
