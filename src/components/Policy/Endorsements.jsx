@@ -313,9 +313,9 @@ export const save = (data, dispatch, props) => {
       name: 'saveEndorsement',
       data: submitData
     }];
-    const startResult = result.payload ? result.payload[0].workflowData.csrQuote.data : {};
+    const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelSave.data : {};
 
-    // props.actions.appStateActions.setAppState('csrQuote', startResult.modelInstanceId, { ...props.appState.data, submitting: true });
+    // props.actions.appStateActions.setAppState('endorsePolicyModelSave', startResult.modelInstanceId, { ...props.appState.data, submitting: true });
     props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
     });
   });
@@ -994,8 +994,9 @@ export class Endorsements extends React.Component {
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField validations={['required']} label={'BCEG'} styleName={''} name={'buildingCodeEffectivenessGrading'} disabled />
+                          <TextField label={'BCEG'} styleName={''} name={'buildingCodeEffectivenessGrading'} disabled />
                           <SelectField
+                            validations={['required']}
                             component="select" styleName={''} label={''} name={'buildingCodeEffectivenessGradingNew'} answers={[
                               {
                                 answer: '1',
