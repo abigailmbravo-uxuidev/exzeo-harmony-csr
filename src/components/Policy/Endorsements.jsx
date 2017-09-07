@@ -125,6 +125,8 @@ export const handleInitialize = (state) => {
   values.secondaryWaterResistanceNew = values.secondaryWaterResistance;
   values.openingProtection = _.get(policy, 'property.windMitigation.openingProtection');
   values.openingProtectionNew = values.openingProtection;
+  values.electronicDelivery = _.get(policy, 'policyHolders[0].electronicDelivery') || false;
+  values.electronicDeliveryNew = values.electronicDelivery;
 
 // Coverage Mid Right
   values.floridaBuildingCodeWindSpeed = _.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeed');
@@ -248,6 +250,14 @@ export const updateDependencies = (event, field, dependency, props) => {
 //   }
 // ];
 
+export const cancel = (props) => {
+  const workflowId = props.appState.instanceId;
+  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, {
+    ...props.appState.data,
+    isCalculated: false
+  });
+};
+
 export const calculate = (props) => {
   const workflowId = props.appState.instanceId;
 
@@ -262,7 +272,8 @@ export const save = (data, dispatch, props) => {
     companyCode: props.policy.companyCode,
     state: props.policy.state,
     product: props.policy.product,
-    transactionType: 'Endorsement',
+    policyTerm: props.policy.policyTerm,
+    transactionType: 'MULTIPLE ENDORSEMENTS ENDORSEMENT',
     policyNumber: props.policy.policyNumber,
     sourceNumber: props.policy.sourceNumber,
     effectiveDate: props.policy.effectiveDate,
@@ -364,16 +375,17 @@ export class Endorsements extends React.Component {
                           />
                           <CurrencyField
                             validations={['required']} styleName={''} name={'dwellingAmountNew'}
-                            min={initialValues.dwellingMin} label={''} max={initialValues.dwellingMax}
+                            min={initialValues.dwellingMin} label={''} max={initialValues.dwellingMax} disabled={appState.data.isCalculated}
                           />
                         </div>
                         <div className="form-group-double-element">
                           <CurrencyField name="otherStructuresAmount" label={'Other Structures (B)'} styleName={'coverage-b'} disabled />
-                          <CurrencyField validations={['required']} label={''} name="otherStructuresAmountNew" styleName={'coverage-b'} />
+                          <CurrencyField validations={['required']} label={''} name="otherStructuresAmountNew" styleName={'coverage-b'} disabled={appState.data.isCalculated} />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Other Structures %'} styleName={''} name={'otherStructures'} disabled />
                           <SelectField
+                            disabled={appState.data.isCalculated}
                             name="otherStructuresNew" component="select" label={''} styleName={'coverage-b-percentage'} onChange={event => updateDependencies(event, 'otherStructuresAmount', 'dwellingAmount', this.props)} validations={['required']} answers={[
                               {
                                 answer: '0',
@@ -398,11 +410,12 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="form-group-double-element">
                           <CurrencyField label={'Personal Property (C)'} styleName={'coverage-c'} name="personalPropertyAmount" disabled />
-                          <CurrencyField validations={['required']} label={''} styleName={'coverage-c'} name="personalPropertyAmountNew" />
+                          <CurrencyField validations={['required']} label={''} styleName={'coverage-c'} name="personalPropertyAmountNew" disabled={appState.data.isCalculated} />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Personal Property %'} styleName={''} name={'personalProperty'} disabled />
                           <SelectField
+                            disabled={appState.data.isCalculated}
                             name="personalPropertyNew" component="select" label={''} styleName={'coverage-c-percentage'} onChange={event => updateDependencies(event, 'personalPropertyAmount', 'dwellingAmount', this.props)} validations={['required']} answers={[
                               {
                                 answer: '0',
@@ -430,6 +443,7 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <CurrencyField label={'Personal Liability (E)'} styleName={''} name={'personalLiability'} disabled />
                           <SelectField
+                            disabled={appState.data.isCalculated}
                             name="personalLiabilityNew" component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
                               {
                                 answer: '100000',
@@ -448,6 +462,7 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <CurrencyField label={'Mold Property'} styleName={''} name={'moldProperty'} disabled />
                           <SelectField
+                            disabled={appState.data.isCalculated}
                             name="moldPropertyNew" component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
                               {
                                 answer: '10000',
@@ -465,6 +480,7 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <CurrencyField label={'Mold Liability'} styleName={''} name={'moldLiability'} disabled />
                           <SelectField
+                            disabled={appState.data.isCalculated}
                             name="moldLiabilityNew" component="select" styleName={''} label={''} onChange={function () {}} validations={['required']} answers={[
                               {
                                 answer: '50000',
@@ -479,6 +495,7 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <CurrencyField label={'AOP Deductible'} styleName={''} name={'allOtherPerils'} disabled />
                           <SelectField
+                            disabled={appState.data.isCalculated}
                             name="allOtherPerilsNew" component="select" styleName={''} label={''} onChange={function () {}} validations={['required']} answers={[
                               {
                                 answer: '500',
@@ -497,6 +514,7 @@ export class Endorsements extends React.Component {
                           <TextField label={'Hurricane Deductible'} styleName={''} name={'hurricane'} disabled />
                           <SelectField
                             label={''}
+                            disabled={appState.data.isCalculated}
                             name="hurricaneNew" component="select" styleName={''} onChange={event => updateDependencies(event, 'calculatedHurricane', 'dwellingAmount', this.props)} validations={['required']} answers={[
                               {
                                 answer: '2',
@@ -511,6 +529,7 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <TextField label={'Sinkhole Deductible'} styleName={''} name={'sinkholePerilCoverage'} disabled />
                           <SelectField
+                            disabled={appState.data.isCalculated}
                             name="sinkholePerilCoverageNew" label={''} component="select" styleName={''} onChange={function () {}} answers={[
                               {
                                 answer: false,
@@ -532,6 +551,7 @@ export class Endorsements extends React.Component {
                           <TextField label={'Personal Property Repl Cost'} styleName={''} name={'personalPropertyReplacementCostCoverage'} disabled />
                           <div className="flex-child other-coverages-property-replacement-cost">
                             <RadioField
+                              disabled={appState.data.isCalculated}
                               name={'personalPropertyReplacementCostCoverageNew'} styleName={'billPlan'} label={''} onChange={function () {}} segmented answers={[
                                 {
                                   answer: false,
@@ -547,6 +567,7 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <TextField label={'Ordinance or Law'} styleName={''} name={'ordinanceOrLaw'} disabled />
                           <SelectField
+                            disabled={appState.data.isCalculated}
                             name="ordinanceOrLawNew" label={''} component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
                               {
                                 answer: '25',
@@ -560,11 +581,11 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Incidental Occ Main'} styleName={''} name={'propertyIncidentalOccupanciesMainDwelling'} disabled />
-                          <TextField label={''} styleName={''} name={'propertyIncidentalOccupanciesMainDwellingNew'} />
+                          <TextField label={''} styleName={''} name={'propertyIncidentalOccupanciesMainDwellingNew'} disabled={appState.data.isCalculated} />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Incidental Occ Other'} styleName={''} name={'propertyIncidentalOccupanciesOtherStructures'} disabled />
-                          <TextField label={''} styleName={''} name={'propertyIncidentalOccupanciesOtherStructuresNew'} />
+                          <TextField label={''} styleName={''} name={'propertyIncidentalOccupanciesOtherStructuresNew'} disabled={appState.data.isCalculated} />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Incidental Occ Liability'} styleName={''} name={'liabilityIncidentalOccupancies'} disabled />
@@ -574,6 +595,7 @@ export class Endorsements extends React.Component {
                           <TextField label={'Townhouse / Rowhouse'} styleName={''} name={'townhouseRowhouse'} disabled />
                           <div className="flex-child">
                             <RadioField
+                              disabled={appState.data.isCalculated}
                               name={'townhouseRowhouseNew'} styleName={''} label={''} onChange={function () {}} segmented answers={[
                                 {
                                   answer: false,
@@ -590,6 +612,7 @@ export class Endorsements extends React.Component {
                           <TextField label={'Property Ever Rented'} styleName={''} name={'propertyRented'} disabled />
                           <SelectField
                             label={''}
+                            disabled={appState.data.isCalculated}
                             name={'propertyRentedNew'} styleName={''} onChange={function () {}} answers={[
                               {
                                 answer: false,
@@ -604,6 +627,7 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <TextField label={'Seasonally Occupied'} styleName={''} name={'seasonallyOccupied'} disabled />
                           <SelectField
+                            disabled={appState.data.isCalculated}
                             name={'seasonallyOccupiedNew'} label={''} styleName={''} onChange={function () {}} answers={[
                               {
                                 answer: false,
@@ -618,6 +642,7 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <TextField validations={['required']} label={'No Prior Insurance'} styleName={''} name={'noPriorInsurance'} disabled />
                           <SelectField
+                            disabled={appState.data.isCalculated}
                             name={'noPriorInsuranceNew'} label={''} styleName={''} onChange={function () {}} answers={[
                               {
                                 answer: false,
@@ -633,6 +658,7 @@ export class Endorsements extends React.Component {
                           <TextField label={'Burglar Alarm'} styleName={''} name={'burglarAlarm'} disabled />
                           <div className="flex-child discounts-burglar-alarm">
                             <RadioField
+                              disabled={appState.data.isCalculated}
                               name={'burglarAlarmNew'} styleName={''} label={''} onChange={function () {}} segmented answers={[
                                 {
                                   answer: false,
@@ -649,6 +675,7 @@ export class Endorsements extends React.Component {
                           <TextField label={'Fire Alarm'} styleName={''} name={'fireAlarm'} disabled />
                           <div className="flex-child discounts-fire-alarm">
                             <RadioField
+                              disabled={appState.data.isCalculated}
                               name={'fireAlarmNew'} styleName={''} label={''} onChange={function () {}} segmented answers={[
                                 {
                                   answer: false,
@@ -665,6 +692,7 @@ export class Endorsements extends React.Component {
                           <TextField label={'Sprinkler'} styleName={''} name={'sprinkler'} disabled />
                           <div className="flex-child discounts-sprinkler">
                             <RadioField
+                              disabled={appState.data.isCalculated}
                               name={'sprinklerNew'} label={''} styleName={''} onChange={function () {}} segmented answers={[
                                 {
                                   answer: 'N',
@@ -694,6 +722,7 @@ export class Endorsements extends React.Component {
                           <TextField label={'Roof Covering'} styleName={''} name={'roofCovering'} disabled />
                           <SelectField
                             label={''}
+                            disabled={appState.data.isCalculated}
                             name="roofCoveringNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
                               {
                                 answer: 'Non-FBC',
@@ -713,6 +742,7 @@ export class Endorsements extends React.Component {
                           <TextField label={'Roof Deck Attachment'} styleName={''} name={'roofDeckAttachment'} disabled />
                           <SelectField
                             label={''}
+                            disabled={appState.data.isCalculated}
                             name="roofDeckAttachmentNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
                               {
                                 answer: 'A'
@@ -739,6 +769,7 @@ export class Endorsements extends React.Component {
                           <TextField label={'Roof to Wall Attachment'} styleName={''} name={'roofToWallConnection'} disabled />
                           <SelectField
                             label={''}
+                            disabled={appState.data.isCalculated}
                             name="roofToWallConnectionNew" component="select" styleName={'weakestRoofWallConnect'} onChange={function () {}} validations={['required']} answers={[
                               {
                                 answer: 'Toe Nails'
@@ -762,6 +793,7 @@ export class Endorsements extends React.Component {
                           <TextField label={'Roof Geometry'} styleName={''} name={'roofGeometry'} disabled />
                           <SelectField
                             label={''}
+                            disabled={appState.data.isCalculated}
                             name="roofGeometryNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
                               {
                                 answer: 'Flat'
@@ -783,6 +815,7 @@ export class Endorsements extends React.Component {
                           <div className="form-group-double-element">
                             <RadioField
                               label={''}
+                              disabled={appState.data.isCalculated}
                               validations={['required']} name={'secondaryWaterResistanceNew'} styleName={''} onChange={function () {}} segmented answers={[
                                 {
                                   answer: 'Yes',
@@ -802,6 +835,7 @@ export class Endorsements extends React.Component {
                           <TextField label={'Opening Protection'} styleName={''} name={'openingProtection'} disabled />
                           <SelectField
                             label={''}
+                            disabled={appState.data.isCalculated}
                             name="openingProtectionNew" component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
                               {
                                 answer: 'None'
@@ -818,6 +852,23 @@ export class Endorsements extends React.Component {
                             ]}
                           />
                         </div>
+                        <div className="form-group-double-element">
+                          <TextField label={'Electronic Delivery'} styleName={''} name={'electronicDelivery'} disabled />
+                          <div className="flex-child discounts-electronic-delivery">
+                            <RadioField
+                              disabled={appState.data.isCalculated}
+                              name={'electronicDeliveryNew'} styleName={''} label={''} onChange={function () {}} segmented answers={[
+                                {
+                                  answer: false,
+                                  label: 'No'
+                                }, {
+                                  answer: true,
+                                  label: 'Yes'
+                                }
+                              ]}
+                            />
+                          </div>
+                        </div>
                       </div>
 
                       {/* Col2 */}
@@ -828,15 +879,16 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'FBC Wind Speed'} styleName={''} name={'floridaBuildingCodeWindSpeed'} disabled />
-                          <TextField validations={['required']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedNew'} />
+                          <TextField validations={['required']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedNew'} disabled={appState.data.isCalculated} />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'FBC Wind Speed Design'} styleName={''} name={'floridaBuildingCodeWindSpeedDesign'} disabled />
-                          <TextField validations={['required']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedDesignNew'} />
+                          <TextField validations={['required']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedDesignNew'} disabled={appState.data.isCalculated} />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Terrain'} styleName={''} name={'terrain'} disabled />
                           <SelectField
+                            disabled={appState.data.isCalculated}
                             name="terrainNew" component="select" label={''} styleName={'propertyTerrain'} onChange={function () {}} validations={['required']} answers={[
                               {
                                 answer: 'B',
@@ -859,6 +911,7 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <TextField label="Internal Pressure Design" styleName={''} name={'internalPressureDesign'} disabled />
                           <SelectField
+                            disabled={appState.data.isCalculated}
                             name="internalPressureDesignNew" component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
                               {
                                 answer: 'Enclosed',
@@ -879,6 +932,7 @@ export class Endorsements extends React.Component {
                           <div className="form-group-double-element">
                             <RadioField
                               label={''}
+                              disabled={appState.data.isCalculated}
                               validations={['required']} name={'windBorneDebrisRegionNew'} styleName={''} onChange={function () {}} segmented answers={[
                                 {
                                   answer: 'Yes',
@@ -919,6 +973,7 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <TextField label={'Construction'} styleName={''} name="constructionType" disabled />
                           <SelectField
+                            disabled={appState.data.isCalculated}
                             component="select" styleName={''} label={''} name={'constructionTypeNew'}
                             answers={[
                               {
@@ -950,6 +1005,7 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <TextField label={'Protection Class'} styleName={''} name={'protectionClass'} disabled />
                           <SelectField
+                            disabled={appState.data.isCalculated}
                             name="protectionClassNew" component="select" label={''} styleName={''} answers={[
                               {
                                 answer: '1',
@@ -996,6 +1052,7 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <TextField label={'BCEG'} styleName={''} name={'buildingCodeEffectivenessGrading'} disabled />
                           <SelectField
+                            disabled={appState.data.isCalculated}
                             validations={['required']}
                             component="select" styleName={''} label={''} name={'buildingCodeEffectivenessGradingNew'} answers={[
                               {
@@ -1047,6 +1104,7 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <TextField label={'Family Units'} styleName={''} name={'familyUnits'} disabled />
                           <SelectField
+                            disabled={appState.data.isCalculated}
                             name="familyUnitsNew" component="select" label={''} styleName={''} onChange={function () {}} answers={[
                               {
                                 answer: '1-2',
@@ -1068,6 +1126,7 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <TextField label={'Flood Zone'} styleName={''} name={'floodZone'} disabled />
                           <SelectField
+                            disabled={appState.data.isCalculated}
                             name="floodZoneNew" component="select" label={''} styleName={''} onChange={function () {}} answers={[
                               {
                                 answer: 'A',
@@ -1087,19 +1146,20 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Tidal Waters Dist.'} styleName={''} name={'distanceToTidalWater'} disabled />
-                          <TextField validations={['required']} label={''} styleName={''} name={'distanceToTidalWaterNew'} />
+                          <TextField validations={['required']} label={''} styleName={''} name={'distanceToTidalWaterNew'} disabled={appState.data.isCalculated} />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Fire Hydrant Dist.'} styleName={''} name={'distanceToFireHydrant'} disabled />
-                          <TextField label={''} styleName={''} name={'distanceToFireHydrantNew'} />
+                          <TextField label={''} styleName={''} name={'distanceToFireHydrantNew'} disabled={appState.data.isCalculated} />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Fire Station Dist.'} styleName={''} name={'distanceToFireStation'} disabled />
-                          <TextField label={''} styleName={''} name={'distanceToFireStationNew'} />
+                          <TextField label={''} styleName={''} name={'distanceToFireStationNew'} disabled={appState.data.isCalculated} />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Residence Type'} styleName={''} name={'residenceType'} disabled />
                           <SelectField
+                            disabled={appState.data.isCalculated}
                             name="residenceTypeNew" component="select" label={''} styleName={''} onChange={function () {}} answers={[
                               {
                                 answer: 'Single Family',
@@ -1113,11 +1173,11 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Sq. Ft. of Home'} styleName={''} name={'squareFeet'} disabled />
-                          <TextField validations={['required']} label={''} styleName={''} name={'squareFeetNew'} />
+                          <TextField validations={['required']} label={''} styleName={''} name={'squareFeetNew'} disabled={appState.data.isCalculated} />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Year Roof Built'} styleName={''} name="yearOfRoof" disabled />
-                          <TextField styleName={''} label={''} name="yearOfRoofNew" />
+                          <TextField styleName={''} label={''} name="yearOfRoofNew" disabled={appState.data.isCalculated} />
                         </div>
                       </div>
                     </div>
@@ -1137,30 +1197,30 @@ export class Endorsements extends React.Component {
                       <div className="flex-child">
                         <h3>Primary Policyholder</h3>
                         <div className="flex-parent col2">
-                          <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH1FirstName'} />
-                          <TextField validations={['required']} label={'Last Name'} styleName={''} name={'pH1LastName'} />
+                          <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH1FirstName'} disabled={appState.data.isCalculated} />
+                          <TextField validations={['required']} label={'Last Name'} styleName={''} name={'pH1LastName'} disabled={appState.data.isCalculated} />
                         </div>
                         <div className="flex-parent col2">
-                          <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH1phone'} />
-                          <PhoneField validations={['phone']} label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} />
+                          <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH1phone'} disabled={appState.data.isCalculated} />
+                          <PhoneField validations={['phone']} label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} disabled={appState.data.isCalculated} />
                         </div>
                         <div className="flex-parent">
-                          <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH1email'} />
+                          <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH1email'} disabled={appState.data.isCalculated} />
                         </div>
                       </div>
                       {/* Col2 */}
                       <div className="flex-child">
                         <h3>Secondary Policyholder</h3>
                         <div className="flex-parent col2">
-                          <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH2FirstName'} />
-                          <TextField validations={['required']} label={'Last Name'} styleName={''} name={'pH2LastName'} />
+                          <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH2FirstName'} disabled={appState.data.isCalculated} />
+                          <TextField validations={['required']} label={'Last Name'} styleName={''} name={'pH2LastName'} disabled={appState.data.isCalculated} />
                         </div>
                         <div className="flex-parent col2">
-                          <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH2phone'} />
-                          <PhoneField validations={['phone']} label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} />
+                          <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH2phone'} disabled={appState.data.isCalculated} />
+                          <PhoneField validations={['phone']} label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} disabled={appState.data.isCalculated} />
                         </div>
                         <div className="flex-parent">
-                          <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH2email'} />
+                          <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH2email'} disabled={appState.data.isCalculated} />
                         </div>
                       </div>
                     </div>
@@ -1170,19 +1230,19 @@ export class Endorsements extends React.Component {
                     <h3>Mailing Address</h3>
                     <div className="flex-parent wrap">
                       <div className="address">
-                        <TextField label={'Address 1'} styleName={''} name={'address1New'} />
+                        <TextField label={'Address 1'} styleName={''} name={'address1New'} disabled={appState.data.isCalculated} />
                       </div>
                       <div className="address">
-                        <TextField label={'Address 2'} styleName={''} name={'address2New'} />
+                        <TextField label={'Address 2'} styleName={''} name={'address2New'} disabled={appState.data.isCalculated} />
                       </div>
                       <div className="city">
-                        <TextField label={'City'} styleName={''} name={'cityNew'} />
+                        <TextField label={'City'} styleName={''} name={'cityNew'} disabled={appState.data.isCalculated} />
                       </div>
                       <div className="state">
-                        <TextField label={'State'} styleName={''} name={'stateNew'} />
+                        <TextField label={'State'} styleName={''} name={'stateNew'} disabled={appState.data.isCalculated} />
                       </div>
                       <div className="zip">
-                        <TextField label={'Zip'} styleName={''} name={'zipNew'} />
+                        <TextField label={'Zip'} styleName={''} name={'zipNew'} disabled={appState.data.isCalculated} />
                       </div>
                     </div>
                   </section>
@@ -1190,19 +1250,19 @@ export class Endorsements extends React.Component {
                     <h3>Property Address</h3>
                     <div className="flex-parent wrap">
                       <div className="address">
-                        <TextField label={'Address 1'} styleName={''} name={'propertyAddress1'} />
+                        <TextField label={'Address 1'} styleName={''} name={'propertyAddress1'} disabled={appState.data.isCalculated} />
                       </div>
                       <div className="address">
-                        <TextField label={'Address 2'} styleName={''} name={'propertyAddress2'} />
+                        <TextField label={'Address 2'} styleName={''} name={'propertyAddress2'} disabled={appState.data.isCalculated} />
                       </div>
                       <div className="city">
-                        <TextField label={'City'} styleName={''} name={'propertyCity'} />
+                        <TextField label={'City'} styleName={''} name={'propertyCity'} disabled={appState.data.isCalculated} />
                       </div>
                       <div className="state">
-                        <TextField label={'State'} styleName={''} name={'propertyState'} />
+                        <TextField label={'State'} styleName={''} name={'propertyState'} disabled={appState.data.isCalculated} />
                       </div>
                       <div className="zip">
-                        <TextField label={'Zip'} styleName={''} name={'propertyZip'} />
+                        <TextField label={'Zip'} styleName={''} name={'propertyZip'} disabled={appState.data.isCalculated} />
                       </div>
                     </div>
                   </section>
@@ -1226,7 +1286,8 @@ export class Endorsements extends React.Component {
                     <label>New Annual Premium</label>
                     <input type="numeric" disabled onChange={function () {}} value="" />
                   </div>
-                  <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link>
+                  { /* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */ }
+                  <button type="button" className="btn btn-secondary" onClick={() => cancel(this.props)}>Cancel</button>
                   {!appState.data.isCalculated && <button type="button" className="btn btn-primary" onClick={() => calculate(this.props)}>Review</button>}
                   { appState.data.isCalculated && <button type="submit" className="btn btn-primary">Save</button>}
 
