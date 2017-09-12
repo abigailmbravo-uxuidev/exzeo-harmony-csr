@@ -157,6 +157,7 @@
   align-self: center;
   flex-direction: column;
   min-width: 10rem;
+  margin-left: $padding;
 
   label {
     margin-bottom: 0;
@@ -165,6 +166,10 @@
   }
 
   span {}
+}
+
+.edit-btn {
+    margin-left: $padding;
 }
 
 .gradient-bg {
