@@ -9,6 +9,7 @@ import { reduxForm, propTypes, change, Form } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as questionsActions from '../../actions/questionsActions';
 import PolicyConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
 import normalizePhone from '../Form/normalizePhone';
@@ -19,6 +20,10 @@ import SelectField from '../Form/inputs/SelectField';
 import CurrencyField from '../Form/inputs/CurrencyField';
 import Footer from '../Common/Footer';
 import DateField from '../Form/inputs/DateField';
+
+const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
+
+const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question') || '';
 
 export const handleGetPolicy = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
@@ -298,13 +303,13 @@ export const save = (data, dispatch, props) => {
     pH1FirstName: data.pH1FirstName,
     pH1LastName: data.pH1LastName,
     pH1email: data.pH1email,
-    pH1primaryPhoneNumber: data.pH1primaryPhoneNumber,
-    pH1secondaryPhoneNumber: data.pH1secondaryPhoneNumber,
+    pH1phone: data.pH1phone,
+    pH1secondaryPhone: data.pH1secondaryPhone,
     pH2FirstName: data.pH2FirstName,
     pH2LastName: data.pH2LastName,
     pH2email: data.pH2email,
-    pH2primaryPhoneNumber: data.pH2primaryPhoneNumber,
-    pH2secondaryPhoneNumber: data.pH2secondaryPhoneNumber,
+    pH2phone: data.pH2phone,
+    pH2secondaryPhone: data.pH2secondaryPhone,
     floodZoneNew: data.floodZoneNew,
     squareFeetNew: data.squareFeetNew,
     residenceTypeNew: data.residenceTypeNew,
@@ -340,13 +345,18 @@ export const save = (data, dispatch, props) => {
     }];
     const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelSave.data : {};
 
-    // props.actions.appStateActions.setAppState('endorsePolicyModelSave', startResult.modelInstanceId, { ...props.appState.data, submitting: true });
+    props.actions.appStateActions.setAppState('endorsePolicyModelSave', startResult.modelInstanceId, { ...props.appState.data, submitting: true });
     props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
+      props.actions.appStateActions.setAppState('endorsePolicyModelSave', startResult.modelInstanceId, { ...props.appState.data, submitting: false });
     });
   });
 };
 
 export class Endorsements extends React.Component {
+
+  componentDidMount() {
+    this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
+  }
 
   render() {
     const endorsements = [
@@ -355,7 +365,7 @@ export class Endorsements extends React.Component {
     { date: '01/10/2015', amount: '-$ 35', type: '???' }
     ];
 
-    const { initialValues, handleSubmit, appState, fieldValues } = this.props;
+    const { initialValues, handleSubmit, appState, fieldValues, questions } = this.props;
     return (
       <PolicyConnect>
         <ClearErrorConnect />
@@ -404,26 +414,8 @@ export class Endorsements extends React.Component {
                               disabled: appState.data.isCalculated,
                               value: fieldValues.otherStructuresNew
                             }}
-                            component="select" label={''} styleName={'coverage-b-percentage'} onChange={event => updateDependencies(event, 'otherStructuresAmount', 'dwellingAmount', this.props)} validations={['required']} answers={[
-                              {
-                                answer: '0',
-                                label: '0%'
-                              }, {
-                                answer: '2',
-                                label: '2%'
-                              }, {
-                                answer: '5',
-                                label: '5%'
-                              },
-                              {
-                                answer: '10',
-                                label: '10%'
-                              }, {
-                                answer: 'other',
-                                label: 'Other'
-                              }
-
-                            ]}
+                            answers={getAnswers('otherStructuresAmount', questions)}
+                            component="select" label={''} styleName={'coverage-b-percentage'} onChange={event => updateDependencies(event, 'otherStructuresAmount', 'dwellingAmount', this.props)} validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
@@ -1446,11 +1438,13 @@ const mapStateToProps = state => ({
   appState: state.appState,
   fieldValues: _.get(state.form, 'Endorsements.values', {}),
   initialValues: handleInitialize(state),
-  policy: handleGetPolicy(state)
+  policy: handleGetPolicy(state),
+  questions: state.questions
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    questionsActions: bindActionCreators(questionsActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }
