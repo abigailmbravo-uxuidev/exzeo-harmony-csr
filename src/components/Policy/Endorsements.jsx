@@ -233,13 +233,16 @@ export const setPercentageOfValue = (value, percent) => Math.ceil(value * (perce
 
 export const updateDependencies = (event, field, dependency, props) => {
   const { dispatch, fieldValues } = props;
+
+  console.log(fieldValues, event.target.values);
+
   if (Number.isNaN(event.target.value)) return;
 
   const dependencyValue = String(fieldValues[dependency]).replace(/\D+/g, '');
 
   const fieldValue = setPercentageOfValue(Number(dependencyValue), Number(event.target.value));
 
-  dispatch(change('Coverage', field, Number.isNaN(fieldValue) ? '' : String(fieldValue)));
+  dispatch(change('Endorsements', field, Number.isNaN(fieldValue) ? '' : String(fieldValue)));
 };
 
 // const claims = [
@@ -404,33 +407,27 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="form-group-double-element">
                           <CurrencyField name="otherStructuresAmount" label={'Other Structures (B)'} styleName={'coverage-b'} disabled />
-                          <CurrencyField validations={['required']} label={''} name="otherStructuresAmountNew" styleName={'coverage-b'} disabled={appState.data.isCalculated} />
+                          <CurrencyField validations={['required']} label={''} name="otherStructuresAmountNew" styleName={'coverage-b'} disabled />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Other Structures %'} styleName={''} name={'otherStructures'} disabled />
                           <SelectField
-                            input={{
-                              name: 'otherStructuresNew',
-                              disabled: appState.data.isCalculated,
-                              value: fieldValues.otherStructuresNew
-                            }}
+                            isDisabled={appState.data.isCalculated}
+                            name={'otherStructuresNew'}
                             answers={getAnswers('otherStructuresAmount', questions)}
-                            component="select" label={''} styleName={'coverage-b-percentage'} onChange={event => updateDependencies(event, 'otherStructuresAmount', 'dwellingAmount', this.props)} validations={['required']}
+                            component="select" label={''} styleName={'coverage-b-percentage'} onChange={event => updateDependencies(event, 'otherStructuresAmountNew', 'dwellingAmount', this.props)} validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
                           <CurrencyField label={'Personal Property (C)'} styleName={'coverage-c'} name="personalPropertyAmount" disabled />
-                          <CurrencyField validations={['required']} label={''} styleName={'coverage-c'} name="personalPropertyAmountNew" disabled={appState.data.isCalculated} />
+                          <CurrencyField validations={['required']} label={''} styleName={'coverage-c'} name="personalPropertyAmountNew" disabled />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Personal Property %'} styleName={''} name={'personalProperty'} disabled />
                           <SelectField
-                            input={{
-                              name: 'personalPropertyNew',
-                              disabled: appState.data.isCalculated,
-                              value: fieldValues.personalPropertyNew
-                            }}
-                            component="select" label={''} styleName={'coverage-c-percentage'} onChange={event => updateDependencies(event, 'personalPropertyAmount', 'dwellingAmount', this.props)} validations={['required']} answers={[
+                            isDisabled={appState.data.isCalculated}
+                            name={'personalPropertyNew'}
+                            component="select" label={''} styleName={'coverage-c-percentage'} onChange={event => updateDependencies(event, 'personalPropertyAmountNew', 'dwellingAmount', this.props)} validations={['required']} answers={[
                               {
                                 answer: '0',
                                 label: '0%'
