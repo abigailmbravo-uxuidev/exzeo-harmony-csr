@@ -129,8 +129,8 @@ export const handleInitialize = (state) => {
   values.roofToWallConnectionNew = values.roofToWallConnection;
   values.roofGeometry = _.get(policy, 'property.windMitigation.roofGeometry');
   values.roofGeometryNew = values.roofGeometry;
-  values.secondaryWaterResistance = _.get(policy, 'property.windMitigation.secondaryWaterResistance') === true ? 'Yes' : 'No';
-  values.secondaryWaterResistanceNew = values.secondaryWaterResistance;
+  values.secondaryWaterResistance = _.get(policy, 'property.windMitigation.secondaryWaterResistance');
+  values.secondaryWaterResistanceNew = _.get(policy, 'property.windMitigation.secondaryWaterResistance');
   values.openingProtection = _.get(policy, 'property.windMitigation.openingProtection');
   values.openingProtectionNew = values.openingProtection;
   values.electronicDelivery = _.get(policy, 'policyHolders[0].electronicDelivery') || false;
@@ -694,99 +694,40 @@ export class Endorsements extends React.Component {
                           <TextField label={'Roof to Wall Attachment'} styleName={''} name={'roofToWallConnection'} disabled />
                           <SelectField
                             label={''}
-                            input={{
-                              name: 'roofToWallConnectionNew',
-                              disabled: appState.data.isCalculated,
-                              value: fieldValues.roofToWallConnectionNew
-                            }}
-                            component="select" styleName={'weakestRoofWallConnect'} onChange={function () {}} validations={['required']} answers={[
-                              {
-                                answer: 'Toe Nails'
-                              },
-                              {
-                                answer: 'Clips'
-                              },
-                              {
-                                answer: 'Single Wraps'
-                              },
-                              {
-                                answer: 'Double Wraps'
-                              },
-                              {
-                                answer: 'Other'
-                              }
-                            ]}
+                            isDisabled={appState.data.isCalculated}
+                            name={'roofToWallConnectionNew'}
+                            answers={getAnswers('roofToWallConnection', questions)}
+                            component="select" styleName={'weakestRoofWallConnect'} onChange={function () {}} validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Roof Geometry'} styleName={''} name={'roofGeometry'} disabled />
                           <SelectField
                             label={''}
-                            input={{
-                              name: 'roofGeometryNew',
-                              disabled: appState.data.isCalculated,
-                              value: fieldValues.roofGeometryNew
-                            }}
-                            component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
-                              {
-                                answer: 'Flat'
-                              },
-                              {
-                                answer: 'Gable'
-                              },
-                              {
-                                answer: 'Hip'
-                              },
-                              {
-                                answer: 'Other'
-                              }
-                            ]}
+                            isDisabled={appState.data.isCalculated}
+                            name={'roofGeometryNew'}
+                            answers={getAnswers('roofGeometry', questions)}
+                            component="select" styleName={''} onChange={function () {}} validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Secondary Water Resistance (SWR)'} styleName={''} name={'secondaryWaterResistance'} disabled />
-                          <div className="form-group-double-element">
-                            <RadioField
-                              label={''}
-                              disabled={appState.data.isCalculated}
-                              validations={['required']} name={'secondaryWaterResistanceNew'} styleName={''} onChange={function () {}} segmented answers={[
-                                {
-                                  answer: 'Yes',
-                                  label: 'Yes'
-                                }, {
-                                  answer: 'No',
-                                  label: 'No'
-                                }, {
-                                  answer: 'Other',
-                                  label: 'Other'
-                                }
-                              ]}
-                            />
-                          </div>
+                          <SelectField
+                            label={''}
+                            isDisabled={appState.data.isCalculated}
+                            name={'secondaryWaterResistanceNew'}
+                            answers={getAnswers('secondaryWaterResistance', questions)}
+                            component="select" styleName={''} onChange={function () {}} validations={['required']}
+                          />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Opening Protection'} styleName={''} name={'openingProtection'} disabled />
                           <SelectField
                             label={''}
-                            input={{
-                              name: 'openingProtectionNew',
-                              disabled: appState.data.isCalculated,
-                              value: fieldValues.openingProtectionNew
-                            }}
-                            component="select" styleName={''} onChange={function () {}} validations={['required']} answers={[
-                              {
-                                answer: 'None'
-                              },
-                              {
-                                answer: 'Basic'
-                              },
-                              {
-                                answer: 'Hurricane'
-                              },
-                              {
-                                answer: 'Other'
-                              }
-                            ]}
+                            isDisabled={appState.data.isCalculated}
+                            name={'openingProtectionNew'}
+                            answers={getAnswers('openingProtection', questions)}
+                            component="select" styleName={''} onChange={function () {}} validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
@@ -825,51 +766,19 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <TextField label={'Terrain'} styleName={''} name={'terrain'} disabled />
                           <SelectField
-                            input={{
-                              name: 'terrainNew',
-                              disabled: appState.data.isCalculated,
-                              value: fieldValues.terrainNew
-                            }}
-                            component="select" label={''} styleName={'propertyTerrain'} onChange={function () {}} validations={['required']} answers={[
-                              {
-                                answer: 'B',
-                                label: 'B'
-                              }, {
-                                answer: 'C',
-                                label: 'C'
-                              },
-                              {
-                                answer: 'HVHZ',
-                                label: 'HVHZ'
-                              },
-                              {
-                                answer: 'Other',
-                                label: 'Other'
-                              }
-                            ]}
+                            isDisabled={appState.data.isCalculated}
+                            name={'terrainNew'}
+                            answers={getAnswers('terrain', questions)}
+                            component="select" label={''} styleName={'propertyTerrain'} onChange={function () {}} validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label="Internal Pressure Design" styleName={''} name={'internalPressureDesign'} disabled />
                           <SelectField
-                            input={{
-                              name: 'internalPressureDesignNew',
-                              disabled: appState.data.isCalculated,
-                              value: fieldValues.internalPressureDesignNew
-                            }}
-                            component="select" label={''} styleName={''} onChange={function () {}} validations={['required']} answers={[
-                              {
-                                answer: 'Enclosed',
-                                label: 'Enclosed'
-                              }, {
-                                answer: 'Partial',
-                                label: 'Partial'
-                              },
-                              {
-                                answer: 'Other',
-                                label: 'Other'
-                              }
-                            ]}
+                            isDisabled={appState.data.isCalculated}
+                            name={'internalPressureDesignNew'}
+                            answers={getAnswers('internalPressureDesign', questions)}
+                            component="select" label={''} styleName={''} onChange={function () {}} validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
@@ -913,185 +822,53 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Year Home Built'} styleName={''} name="yearBuilt" disabled />
-                          <TextField styleName={''} label={''} name="yearBuiltNew" />
+                          <TextField
+                            styleName={''} label={''} name="yearBuiltNew" isDisabled={appState.data.isCalculated}
+                          />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Construction'} styleName={''} name="constructionType" disabled />
                           <SelectField
-                            input={{
-                              name: 'constructionTypeNew',
-                              disabled: appState.data.isCalculated,
-                              value: fieldValues.constructionTypeNew
-                            }}
+                            isDisabled={appState.data.isCalculated}
+                            name={'constructionTypeNew'}
+                            answers={getAnswers('constructionType', questions)}
                             component="select" styleName={''} label={''}
-                            answers={[
-                              {
-                                answer: 'FRAME',
-                                label: 'Frame'
-                              }, {
-                                answer: 'PLASTIC SIDING',
-                                label: 'Plastic Siding'
-                              },
-                              {
-                                answer: 'ALUMINUM SIDING',
-                                label: 'Aluminum Siding'
-                              },
-                              {
-                                answer: 'MASONRY',
-                                label: 'Masonry'
-                              },
-                              {
-                                answer: 'MASONRY VENEER',
-                                label: 'Masonry Veneer'
-                              },
-                              {
-                                answer: 'SUPERIOR',
-                                label: 'Superior'
-                              }
-                            ]}
                           />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Protection Class'} styleName={''} name={'protectionClass'} disabled />
                           <SelectField
-                            input={{
-                              name: 'protectionClassNew',
-                              disabled: appState.data.isCalculated,
-                              value: fieldValues.protectionClassNew
-                            }}
-                            component="select" label={''} styleName={''} answers={[
-                              {
-                                answer: '1',
-                                label: '01'
-                              }, {
-                                answer: '2',
-                                label: '02'
-                              },
-                              {
-                                answer: '3',
-                                label: '03'
-                              },
-                              {
-                                answer: '4',
-                                label: '04'
-                              },
-                              {
-                                answer: '5',
-                                label: '05'
-                              },
-                              {
-                                answer: '6',
-                                label: '06'
-                              },
-                              {
-                                answer: '7',
-                                label: '07'
-                              },
-                              {
-                                answer: '8',
-                                label: '08'
-                              },
-                              {
-                                answer: '9',
-                                label: '09'
-                              },
-                              {
-                                answer: '10',
-                                label: '10'
-                              }
-                            ]}
+                            isDisabled={appState.data.isCalculated}
+                            name={'protectionClassNew'}
+                            answers={getAnswers('protectionClass', questions)}
+                            component="select" label={''} styleName={''}
                           />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'BCEG'} styleName={''} name={'buildingCodeEffectivenessGrading'} disabled />
                           <SelectField
-                            input={{
-                              name: 'buildingCodeEffectivenessGradingNew',
-                              disabled: appState.data.isCalculated,
-                              value: fieldValues.buildingCodeEffectivenessGradingNew
-                            }}
+                            isDisabled={appState.data.isCalculated}
+                            name={'buildingCodeEffectivenessGradingNew'}
+                            answers={getAnswers('buildingCodeEffectivenessGrading', questions)}
                             validations={['required']}
-                            component="select" styleName={''} label={''} name={''} answers={[
-                              {
-                                answer: '1',
-                                label: '01'
-                              }, {
-                                answer: '2',
-                                label: '02'
-                              },
-                              {
-                                answer: '3',
-                                label: '03'
-                              },
-                              {
-                                answer: '4',
-                                label: '04'
-                              },
-                              {
-                                answer: '5',
-                                label: '05'
-                              },
-                              {
-                                answer: '6',
-                                label: '06'
-                              },
-                              {
-                                answer: '7',
-                                label: '07'
-                              },
-                              {
-                                answer: '8',
-                                label: '08'
-                              },
-                              {
-                                answer: '9',
-                                label: '09'
-                              },
-                              {
-                                answer: '98',
-                                label: '98'
-                              },
-                              {
-                                answer: '99',
-                                label: '99'
-                              }
-                            ]}
+                            component="select" styleName={''} label={''}
                           />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Family Units'} styleName={''} name={'familyUnits'} disabled />
                           <SelectField
-                            input={{
-                              name: 'familyUnitsNew',
-                              disabled: appState.data.isCalculated,
-                              value: fieldValues.familyUnitsNew
-                            }}
-                            component="select" label={''} styleName={''} onChange={function () {}} answers={[
-                              {
-                                answer: '1-2',
-                                label: '1-2'
-                              }, {
-                                answer: '3-4',
-                                label: '3-4'
-                              },
-                              {
-                                answer: '5-8',
-                                label: '5-8'
-                              }, {
-                                answer: '9+',
-                                label: '9+'
-                              }
-                            ]}
+                            isDisabled={appState.data.isCalculated}
+                            name={'familyUnitsNew'}
+                            answers={getAnswers('familyUnits', questions)}
+                            component="select" label={''} styleName={''} onChange={function () {}}
                           />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Flood Zone'} styleName={''} name={'floodZone'} disabled />
                           <SelectField
-                            input={{
-                              name: 'floodZoneNew',
-                              disabled: appState.data.isCalculated,
-                              value: fieldValues.floodZoneNew
-                            }}
+                            isDisabled={appState.data.isCalculated}
+                            name={'floodZoneNew'}
+                            answers={getAnswers('floodZone', questions)}
                             component="select" label={''} styleName={''} onChange={function () {}} answers={[
                               {
                                 answer: 'A',
@@ -1124,20 +901,10 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <TextField label={'Residence Type'} styleName={''} name={'residenceType'} disabled />
                           <SelectField
-                            input={{
-                              name: 'residenceTypeNew',
-                              disabled: appState.data.isCalculated,
-                              value: fieldValues.residenceTypeNew
-                            }}
-                            component="select" label={''} styleName={''} onChange={function () {}} answers={[
-                              {
-                                answer: 'Single Family',
-                                label: 'Single Family'
-                              }, {
-                                answer: 'Apartment',
-                                label: 'Apartment'
-                              }
-                            ]}
+                            isDisabled={appState.data.isCalculated}
+                            name={'residenceTypeNew'}
+                            answers={getAnswers('residenceTyp', questions)}
+                            component="select" label={''} styleName={''} onChange={function () {}}
                           />
                         </div>
                         <div className="form-group-double-element">
