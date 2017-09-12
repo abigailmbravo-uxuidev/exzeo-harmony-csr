@@ -21,9 +21,9 @@ import CurrencyField from '../Form/inputs/CurrencyField';
 import Footer from '../Common/Footer';
 import DateField from '../Form/inputs/DateField';
 
-const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
+export const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
-const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question') || '';
+export const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question') || '';
 
 export const handleGetPolicy = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
@@ -242,13 +242,9 @@ export const updateCalculatedSinkhole = (props) => {
 
 export const updateDependencies = (event, field, dependency, props) => {
   const { dispatch, fieldValues } = props;
-
-  console.log(fieldValues, event.target.values);
-
   if (Number.isNaN(event.target.value)) return;
 
   const dependencyValue = String(fieldValues[dependency]).replace(/\D+/g, '');
-
   const fieldValue = setPercentageOfValue(Number(dependencyValue), Number(event.target.value));
 
   dispatch(change('Endorsements', field, Number.isNaN(fieldValue) ? '' : String(fieldValue)));
