@@ -823,7 +823,7 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <TextField label={'Year Home Built'} styleName={''} name="yearBuilt" disabled />
                           <TextField
-                            styleName={''} label={''} name="yearBuiltNew" isDisabled={appState.data.isCalculated}
+                            styleName={''} label={''} name="yearBuiltNew" disabled={appState.data.isCalculated}
                           />
                         </div>
                         <div className="form-group-double-element">
