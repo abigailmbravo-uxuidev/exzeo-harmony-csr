@@ -136,18 +136,21 @@ export class QuoteApplication extends Component {
                     </div>
                   </div>
                 }
-                <button
-                  aria-label="submit-btn form-application"
-                  form="Application"
-                  className="btn btn-primary" type="submit" disabled={(underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0) || checkQuoteState(quoteData)}
-                >Send to DocuSign</button>
+
               </div>
             </div>
           </Form>
           { appState.data.showQuoteSummaryModal && <QuoteSummaryModal verify={handleFormSubmit} showQuoteSummaryModal={() => quoteSummaryModal(this.props)} /> }
         </div>
-        <div className="basic-footer">
+        <div className="basic-footer btn-footer">
           <Footer />
+            <div className="btn-wrapper">
+              <button
+                aria-label="submit-btn form-application"
+                form="Application"
+                className="btn btn-primary" type="submit" disabled={(underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0) || checkQuoteState(quoteData)}
+              >Send to DocuSign</button>
+            </div>
         </div>
       </QuoteBaseConnect>
     );

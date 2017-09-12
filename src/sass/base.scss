@@ -192,7 +192,6 @@ html {
 
     .app-wrapper {
       main {
-        .content-panel-left {}
 
         .content-wrapper {
           .workflow {
@@ -480,6 +479,8 @@ main[role="document"] {
   flex-shrink: 0;
   width: auto;
   width: 12rem;
+  overflow-y: auto;
+  overflow-x: hidden;
   color: $warm-gray-12;
   background: $warm-gray-02;
   @include transition(all .2s ease-in-out);
@@ -1446,7 +1447,7 @@ ul.list-cards {
   dt {
     color: $warm-gray-08;
   }
-  
+
   .detail-wrapper {
     width: 100%;
 
