@@ -133,8 +133,8 @@ export const handleInitialize = (state) => {
   values.secondaryWaterResistanceNew = _.get(policy, 'property.windMitigation.secondaryWaterResistance');
   values.openingProtection = _.get(policy, 'property.windMitigation.openingProtection');
   values.openingProtectionNew = values.openingProtection;
-  values.electronicDelivery = _.get(policy, 'policyHolders[0].electronicDelivery') || false;
-  values.electronicDeliveryNew = values.electronicDelivery;
+  values.electronicDelivery = _.get(policy, 'policyHolders[0].electronicDelivery') ? 'Yes' : 'No';
+  values.electronicDeliveryNew = _.get(policy, 'policyHolders[0].electronicDelivery');
 
 // Coverage Mid Right
   values.floridaBuildingCodeWindSpeed = _.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeed');
@@ -348,7 +348,10 @@ export const save = (data, dispatch, props) => {
     floridaBuildingCodeWindSpeedDesignNew: data.floridaBuildingCodeWindSpeedDesignNew,
     roofDeckAttachmentNew: data.roofDeckAttachmentNew,
     windBorneDebrisRegionNew: data.windBorneDebrisRegionNew,
-    roofToWallConnectionNew: data.roofToWallConnectionNew
+    roofToWallConnectionNew: data.roofToWallConnectionNew,
+    electronicDeliveryNew: data.electronicDeliveryNew,
+    distanceToFireStationNew: data.distanceToFireStationNew,
+    yearOfRoofNew: data.yearOfRoofNew
   };
 
   submitData.sinkholePerilCoverage = (String(data.sinkholePerilCoverage) === 'true');
@@ -366,7 +369,7 @@ export const save = (data, dispatch, props) => {
 
     props.actions.appStateActions.setAppState('endorsePolicyModelSave', startResult.modelInstanceId, { ...props.appState.data, submitting: true });
     props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
-      props.actions.appStateActions.setAppState('endorsePolicyModelSave', startResult.modelInstanceId, { ...props.appState.data, submitting: false });
+      props.actions.appStateActions.setAppState('endorsePolicyModelSave', startResult.modelInstanceId, { ...props.appState.data, submitting: false, isCalculated: false });
     });
   });
 };
@@ -850,7 +853,6 @@ export class Endorsements extends React.Component {
                             isDisabled={appState.data.isCalculated}
                             name={'buildingCodeEffectivenessGradingNew'}
                             answers={getAnswers('buildingCodeEffectivenessGrading', questions)}
-                            validations={['required']}
                             component="select" styleName={''} label={''}
                           />
                         </div>
@@ -903,7 +905,7 @@ export class Endorsements extends React.Component {
                           <SelectField
                             isDisabled={appState.data.isCalculated}
                             name={'residenceTypeNew'}
-                            answers={getAnswers('residenceTyp', questions)}
+                            answers={getAnswers('residenceType', questions)}
                             component="select" label={''} styleName={''} onChange={function () {}}
                           />
                         </div>
@@ -986,19 +988,19 @@ export class Endorsements extends React.Component {
                     <h3>Property Address</h3>
                     <div className="flex-parent wrap">
                       <div className="address">
-                        <TextField label={'Address 1'} styleName={''} name={'propertyAddress1'} disabled={appState.data.isCalculated} />
+                        <TextField label={'Address 1'} styleName={''} name={'propertyAddress1New'} disabled={appState.data.isCalculated} />
                       </div>
                       <div className="address">
-                        <TextField label={'Address 2'} styleName={''} name={'propertyAddress2'} disabled={appState.data.isCalculated} />
+                        <TextField label={'Address 2'} styleName={''} name={'propertyAddress2New'} disabled={appState.data.isCalculated} />
                       </div>
                       <div className="city">
-                        <TextField label={'City'} styleName={''} name={'propertyCity'} disabled={appState.data.isCalculated} />
+                        <TextField label={'City'} styleName={''} name={'propertyCityNew'} disabled={appState.data.isCalculated} />
                       </div>
                       <div className="state">
-                        <TextField label={'State'} styleName={''} name={'propertyState'} disabled={appState.data.isCalculated} />
+                        <TextField label={'State'} styleName={''} name={'propertyStateNew'} disabled={appState.data.isCalculated} />
                       </div>
                       <div className="zip">
-                        <TextField label={'Zip'} styleName={''} name={'propertyZip'} disabled={appState.data.isCalculated} />
+                        <TextField label={'Zip'} styleName={''} name={'propertyZipNew'} disabled={appState.data.isCalculated} />
                       </div>
                     </div>
                   </section>
