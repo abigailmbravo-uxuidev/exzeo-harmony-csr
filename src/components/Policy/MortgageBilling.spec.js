@@ -131,6 +131,9 @@ describe('Testing MortgageBilling component', () => {
     const props = {
       policy,
       actions: {
+        questionsActions: {
+          getUIQuestions() {}
+        },
         serviceActions: {
           addTransaction() { return Promise.resolve(); },
           getTransactionHistory() {},
@@ -143,7 +146,7 @@ describe('Testing MortgageBilling component', () => {
         }
       },
       handleSubmit() {},
-      fieldQuestions: [],
+      fieldValues: {},
       quoteData: {},
       dispatch: store.dispatch,
       appState: {

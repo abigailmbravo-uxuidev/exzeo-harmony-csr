@@ -312,12 +312,6 @@ export class MortgageBilling extends Component {
     const { additionalInterests } = this.props.policy;
     const { handleSubmit, pristine, fieldValues, policy, questions } = this.props;
     setRank(additionalInterests);
-    if (!this.props.getSummaryLedger) {
-      return (
-        <PolicyConnect>
-          <ClearErrorConnect />
-        </PolicyConnect>);
-    }
 
     _.forEach(getAnswers('mortgagee', questions), (answer) => {
       answer.displayText = `${answer.AIName1}, ${answer.AIAddress1}, ${answer.AICity} ${answer.AIState}, ${answer.AIZip}`;
