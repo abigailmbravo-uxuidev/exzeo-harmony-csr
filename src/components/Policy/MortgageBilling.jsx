@@ -146,7 +146,7 @@ export const handleAISubmit = (data, dispatch, props) => {
 
   const submitData = {
     ...props.policy,
-    transactionType: 'MULTIPLE ENDORSEMENTS ENDORSEMENT',
+    transactionType: data._id ? 'AI Update' : 'AI Addition', // eslint-disable-line
     additionalInterests: modifiedAIs
   };
 
@@ -194,7 +194,7 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
   }
   const submitData = {
     ...policy,
-    transactionType: 'MULTIPLE ENDORSEMENTS ENDORSEMENT',
+    transactionType: 'AI Removal',
     additionalInterests: modifiedAIs
   };
 
