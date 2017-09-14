@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import { reduxForm, Form, reset, change } from 'redux-form';
 import moment from 'moment';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import * as questionsActions from '../../actions/questionsActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
@@ -16,6 +17,8 @@ import TextField from '../Form/inputs/TextField';
 import CurrencyField from '../Form/inputs/CurrencyField';
 import BillingModal from '../../components/Common/BillingEditModal';
 import Footer from '../Common/Footer';
+import AIModal from '../../components/Common/AdditionalInterestModal';
+import AIEditModal from '../../components/Common/AdditionalInterestEditModal';
 
 const payments = [];
 
@@ -43,6 +46,21 @@ value.rank = 5; // eslint-disable-line
         break;
     }
   });
+};
+
+export const addAdditionalInterest = (type, props) => {
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data, showAdditionalInterestModal: true, addAdditionalInterestType: type });
+};
+
+export const editAdditionalInterest = (ai, props) => {
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data, showAdditionalInterestEditModal: true, selectedAI: ai, addAdditionalInterestType: ai.type });
+};
+
+export const hideAdditionalInterestModal = (props) => {
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data, showAdditionalInterestModal: false, showAdditionalInterestEditModal: false });
 };
 
 export const handleGetPolicy = (state) => {
@@ -76,9 +94,133 @@ export const hideBillingModal = (props) => {
       { ...props.appState.data, showBillingEditModal: false });
 };
 
+export const handleAISubmit = (data, dispatch, props) => {
+  const { appState, actions, policy } = props;
+  const workflowId = appState.instanceId;
+  actions.appStateActions.setAppState(appState.modelName,
+      workflowId, {
+        ...props.appState.data,
+        submittingAI: true
+      });
+  const additionalInterests = policy.additionalInterests || [];
+
+  const type = appState.data.addAdditionalInterestType;
+
+  let order = 0;
+
+  if (String(data.order) !== '0' && String(data.order) !== '1') {
+    order = _.filter(additionalInterests, ai => ai.type === type).length === 0 ? 0 : 1;
+  } else {
+    order = data.order;
+  }
+
+      // remove any existing items before submission
+  const modifiedAIs = _.cloneDeep(additionalInterests);
+
+  _.remove(modifiedAIs, ai => ai._id === data._id); // eslint-disable-line
+
+  const aiData = {
+        _id: data._id, // eslint-disable-line
+    name1: data.name1,
+    name2: data.name2,
+    referenceNumber: data.referenceNumber,
+    order,
+    active: true,
+    type,
+    phoneNumber: String(data.phoneNumber).length > 0 ? String(data.phoneNumber).replace(/[^\d]/g, '') : '',
+    mailingAddress: {
+      address1: data.address1,
+      address2: data.address2,
+      city: data.city,
+      state: data.state,
+      zip: data.zip,
+      country: {
+        code: 'USA',
+        displayText: 'United States of America'
+      }
+    }
+  };
+
+  modifiedAIs.push(aiData);
+  setRank(modifiedAIs);
+
+  const submitData = {
+    ...props.policy,
+    transactionType: 'MULTIPLE ENDORSEMENTS ENDORSEMENT',
+    additionalInterests: modifiedAIs
+  };
+
+  props.actions.cgActions.startWorkflow('endorsePolicyModelAI', { policyNumber: props.policy.policyNumber }).then((result) => {
+    const steps = [{
+      name: 'saveEndorsementAI',
+      data: submitData
+    }];
+    const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelAI.data : {};
+
+    props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
+      props.actions.appStateActions.setAppState('endorsePolicyModelAI', startResult.modelInstanceId,
+        {
+          ...props.appState.data,
+          submittingAI: false,
+          showAdditionalInterestModal: false,
+          showAdditionalInterestEditModal: false });
+    });
+  });
+};
+
+export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
+  const { appState, actions, policy } = props;
+  const workflowId = appState.instanceId;
+  actions.appStateActions.setAppState(appState.modelName,
+      workflowId, {
+        ...props.appState.data,
+        submittingAI: true,
+        showAdditionalInterestModal: appState.data.showAdditionalInterestModal,
+        showAdditionalInterestEditModal: appState.data.showAdditionalInterestEditModal
+      });
+
+  const additionalInterests = policy.additionalInterests || [];
+
+        // remove any existing items before submission
+  const modifiedAIs = _.cloneDeep(additionalInterests);
+    // remove any existing items before submission
+    _.remove(modifiedAIs, ai => ai._id === selectedAdditionalInterest._id); // eslint-disable-line
+
+  if (_.filter(modifiedAIs, ai => ai.type === selectedAdditionalInterest.type).length === 1) {
+    const index = _.findIndex(modifiedAIs, { type: selectedAdditionalInterest.type });
+    const ai = modifiedAIs[index];
+    ai.order = 0;
+    modifiedAIs.splice(index, 1, ai);
+  }
+  const submitData = {
+    ...policy,
+    transactionType: 'MULTIPLE ENDORSEMENTS ENDORSEMENT',
+    additionalInterests: modifiedAIs
+  };
+
+  props.actions.cgActions.startWorkflow('endorsePolicyModelAI', { policyNumber: props.policy.policyNumber }).then((result) => {
+    const steps = [{
+      name: 'saveEndorsementAI',
+      data: submitData
+    }];
+    const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelAI.data : {};
+    props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
+      props.actions.appStateActions.setAppState('endorsePolicyModelAI', startResult.modelInstanceId,
+        {
+          ...props.appState.data,
+          submittingAI: false,
+          showAdditionalInterestModal: false,
+          showAdditionalInterestEditModal: false });
+    });
+  });
+};
+
 export const handleBillingFormSubmit = (data, dispatch, props) => {
 
 };
+
+export const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
+
 
 export class MortgageBilling extends Component {
 
@@ -86,6 +228,7 @@ export class MortgageBilling extends Component {
     this.props.actions.serviceActions.getPaymentOptionsApplyPayments();
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
           this.props.appState.instanceId, { ...this.props.appState.data, ranService: false, paymentDescription: [], showDescription: false });
+    this.props.actions.questionsActions.getUIQuestions('additionalInterestsCSR');
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -167,7 +310,7 @@ export class MortgageBilling extends Component {
 
   render() {
     const { additionalInterests } = this.props.policy;
-    const { handleSubmit, pristine, fieldValues } = this.props;
+    const { handleSubmit, pristine, fieldValues, policy, questions } = this.props;
     setRank(additionalInterests);
     if (!this.props.getSummaryLedger) {
       return (
@@ -175,6 +318,10 @@ export class MortgageBilling extends Component {
           <ClearErrorConnect />
         </PolicyConnect>);
     }
+
+    _.forEach(getAnswers('mortgagee', questions), (answer) => {
+      answer.displayText = `${answer.AIName1}, ${answer.AIAddress1}, ${answer.AICity} ${answer.AIState}, ${answer.AIZip}`;
+    });
 
     const paymentHistory = _.orderBy(this.props.paymentHistory || [], ['date', 'createdAt'], ['desc', 'desc']);
 
@@ -285,16 +432,16 @@ export class MortgageBilling extends Component {
                 <div className="results-wrapper">
 
                   <div className="button-group">
-                    <button className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
-                    <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
-                    <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
-                    { /* <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => this.addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button> */ }
-                    <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
+                    <button disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Mortgagee').length > 1)} onClick={() => addAdditionalInterest('Mortgagee', this.props)} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
+                    <button disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Additional Insured').length > 1)} onClick={() => addAdditionalInterest('Additional Insured', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
+                    <button disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Additional Interest').length > 1)} onClick={() => addAdditionalInterest('Additional Interest', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
+                    { /* <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button> */ }
+                    <button disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Bill Payer').length > 0)} onClick={() => addAdditionalInterest('Bill Payer', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
                   </div>
                   <ul className="results result-cards">
                     {additionalInterests && _.sortBy(additionalInterests, ['rank', 'type']).map((ai, index) =>
                       <li key={index}>
-                        <a>
+                        <a onClick={() => editAdditionalInterest(ai, this.props)}>
                           {/* add className based on type - i.e. mortgagee could have class of mortgagee*/}
                           <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {ai.order + 1}</label></div>
                           <section><h4>{ai.name1}&nbsp;{ai.name2}</h4>
@@ -319,6 +466,8 @@ export class MortgageBilling extends Component {
             </div>
           </div>
         </div>
+        { this.props.appState.data.showAdditionalInterestEditModal && <AIEditModal questions={questions} selectedAI={this.props.appState.data.selectedAI} policy={this.props.policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
+        { this.props.appState.data.showAdditionalInterestModal && <AIModal questions={questions} policy={this.props.policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
         { this.props.appState.data.showBillingEditModal && <BillingModal policy={this.props.policy} billingOptions={this.props.billingOptions} handleBillingFormSubmit={handleBillingFormSubmit} hideBillingModal={() => hideBillingModal(this.props)} /> }
         <div className="basic-footer">
           <Footer />
@@ -339,6 +488,7 @@ redux mapping
 */
 
 const mapStateToProps = state => ({
+  questions: state.questions,
   fieldValues: _.get(state.form, 'MortgageBilling.values', {}),
   getSummaryLedger: state.service.getSummaryLedger,
   initialValues: handleInitialize(state),
@@ -352,6 +502,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    questionsActions: bindActionCreators(questionsActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
