@@ -284,30 +284,11 @@ export const calculate = (props) => {
 };
 
 export const save = (data, dispatch, props) => {
+  const policy = props.policy;
+  policy.transactionType = 'Endorsement';
   const submitData = {
-    companyCode: props.policy.companyCode,
-    state: props.policy.state,
-    product: props.policy.product,
-    policyTerm: props.policy.policyTerm,
-    transactionType: 'MULTIPLE ENDORSEMENTS ENDORSEMENT',
-    policyNumber: props.policy.policyNumber,
-    sourceNumber: props.policy.sourceNumber,
-    effectiveDate: props.policy.effectiveDate,
-    billToType: 'Policyholder',
-    billToId: props.policy.billToId,
-    billPlan: props.policy.billPlan,
-    agencyCode: props.policy.agencyCode,
-    agentCode: props.policy.agentCode,
-    policyHolders: props.policy.policyHolders,
-    policyHolderMailingAddress: props.policy.policyHolderMailingAddress,
-    additionalInterests: props.policy.additionalInterests,
-    coverageLimits: props.policy.coverageLimits,
-    coverageOptions: props.policy.coverageOptions,
-    deductibles: props.policy.deductibles,
-    underwritingAnswers: props.policy.underwritingAnswers,
-    rating: props.policy.rating,
-    country: props.policy.policyHolderMailingAddress.country,
-    sprinkler: props.policy.property.sprinkler,
+    ...policy,
+    country: policy.policyHolderMailingAddress.country,
     pH1FirstName: data.pH1FirstName,
     pH1LastName: data.pH1LastName,
     pH1email: data.pH1email,
@@ -333,7 +314,6 @@ export const save = (data, dispatch, props) => {
     zipNew: data.zipNew,
     address2New: data.address2New,
     address1New: data.address1New,
-    // windMitigation
     roofGeometryNew: data.roofGeometryNew,
     floridaBuildingCodeWindSpeedNew: data.floridaBuildingCodeWindSpeedNew,
     secondaryWaterResistanceNew: data.secondaryWaterResistanceNew,
@@ -349,12 +329,6 @@ export const save = (data, dispatch, props) => {
     distanceToFireStationNew: data.distanceToFireStationNew,
     yearOfRoofNew: data.yearOfRoofNew
   };
-
-  submitData.sinkholePerilCoverage = (String(data.sinkholePerilCoverage) === 'true');
-
-  if (submitData.sinkholePerilCoverage) {
-    submitData.sinkhole = 10;
-  }
 
   props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber }).then((result) => {
     const steps = [{
@@ -383,7 +357,7 @@ export class Endorsements extends React.Component {
     { date: '01/10/2015', amount: '-$ 35', type: '???' }
     ];
 
-    const { initialValues, handleSubmit, appState, fieldValues, questions } = this.props;
+    const { initialValues, handleSubmit, appState, fieldValues, questions, pristine } = this.props;
     return (
       <PolicyConnect>
         <ClearErrorConnect />
@@ -1021,7 +995,7 @@ export class Endorsements extends React.Component {
                   </div>
                   { /* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */ }
                   <button type="button" className="btn btn-secondary" onClick={() => cancel(this.props)}>Cancel</button>
-                  {!appState.data.isCalculated && <button type="button" className="btn btn-primary" onClick={() => calculate(this.props)}>Review</button>}
+                  {!appState.data.isCalculated && <button type="button" className="btn btn-primary" onClick={() => calculate(this.props)} disabled={pristine}>Review</button>}
                   { appState.data.isCalculated && <button type="submit" className="btn btn-primary">Save</button>}
 
                 </div>
