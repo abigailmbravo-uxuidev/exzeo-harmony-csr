@@ -115,8 +115,6 @@ export class Coverage extends Component {
 
     const { questions, summaryLedger, paymentOptions } = this.props;
 
-    console.log('this.props', this.props);
-
     const discountSurcharge = [
       {
         discountSurcharge: 'Townhouse/Rowhouse',
