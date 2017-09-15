@@ -162,7 +162,7 @@ export class MortgageBilling extends Component {
     if (!found) { payments.push(transaction); }
   }
 
-  amountFormatter = cell => String(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  amountFormatter = cell => cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '';
   dateFormatter = cell => `${cell.substring(0, 10)}`;
 
   render() {

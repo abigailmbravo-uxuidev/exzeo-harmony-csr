@@ -415,3 +415,27 @@ export const getBillingOptions = paymentOptions => (dispatch) => {
       ]));
     });
 };
+
+
+export const getEndorsementHistory = policyNumber => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'policy-data.services',
+    method: 'GET',
+    path: `transactionDetails/${policyNumber}?endorsement=endorsement`
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { endorsementHistory: response.data };
+    return dispatch(batchActions([
+      serviceRequest(data)
+      // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+        // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
+      ]));
+    });
+};
