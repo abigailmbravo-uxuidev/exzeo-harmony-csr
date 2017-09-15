@@ -146,6 +146,7 @@ export const handleAISubmit = (data, dispatch, props) => {
 
   const submitData = {
     ...props.policy,
+    endorsementDate: moment.utc(),
     transactionType: data._id ? 'AI Update' : 'AI Addition', // eslint-disable-line
     additionalInterests: modifiedAIs
   };
@@ -194,6 +195,7 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
   }
   const submitData = {
     ...policy,
+    endorsementDate: moment.utc(),
     transactionType: 'AI Removal',
     additionalInterests: modifiedAIs
   };
