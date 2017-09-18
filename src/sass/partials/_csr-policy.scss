@@ -266,11 +266,12 @@
                 }
 
                 input {
-                    &[disabled="disabled"], &:disabled {
-                        background: mix($bright-blue-darken-03, $warm-gray-00, 75%);
-                        border-color: mix($bright-blue-darken-03, $warm-gray-00, 60%);
-                        color: $white;
-                    }
+                  &:disabled,
+                  &[disabled="disabled"] {
+                    background: mix($bright-blue-darken-03, $warm-gray-00, 75%);
+                    border-color: mix($bright-blue-darken-03, $warm-gray-00, 60%);
+                    color: $white;
+                  }
                 }
               }
             }
@@ -430,18 +431,18 @@
                 }
 
                 .electronic-delivery {
-                    display: flex;
-                    align-items: center;
-                    flex-grow: 0;
-                    flex-shrink: 0;
-                    width: auto;
-                    font-size: $font-size-sm;
+                  display: flex;
+                  align-items: center;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  width: auto;
+                  font-size: $font-size-sm;
 
-                    label {
-                        font-size: $font-size-sm;
-                        margin-bottom: 0;
-                        margin-right: $padding;
-                    }
+                  label {
+                    font-size: $font-size-sm;
+                    margin-bottom: 0;
+                    margin-right: $padding;
+                  }
                 }
               }
             }
@@ -719,13 +720,20 @@
           }
         }
 
-        #AdditionalInterestModal, #AdditionalInterestEditModal {
+        form {
+          &.AdditionalInterestModal,
+          &.AdditionalInterestModal {
             display: flex;
             flex-grow: 1;
             flex-shrink: 1;
-            overflow: hidden;            
+            overflow: hidden;
             height: 90%;
-            max-height: 50rem;
+            max-height: 39.125rem;
+
+            &.Mortgagee {
+              max-height: 44.375rem;
+            }
+          }
         }
       }
     }
@@ -738,9 +746,7 @@
 }
 
 .cancel-policy {
-
   .form-group.billing {
-
     .flex-child {
       flex-grow: 1;
       flex-shrink: 1;

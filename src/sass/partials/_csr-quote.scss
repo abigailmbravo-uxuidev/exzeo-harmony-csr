@@ -94,6 +94,16 @@
           overflow: hidden;
           flex-grow: 1;
           flex-shrink: 1;
+
+          &.AdditionalInterestModal,
+          &.AdditionalInterestModal {
+            height: 90%;
+            max-height: 39.125rem;
+
+            &.Mortgagee {
+              max-height: 44.375rem;
+            }
+          }
         }
 
         .scroll {
@@ -275,9 +285,7 @@
               font-size: $font-size-sm;
             }
 
-            input {
-
-            }
+            input {}
           }
         }
       }

@@ -83,7 +83,7 @@ export const AdditionalInterestEditModal = (props) => {
   const { appState, handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, selectedAI, questions } = props;
   return (<div className="modal" style={{ flexDirection: 'row' }}>
 
-    <Form id="AdditionalInterestEditModal" className="AdditionalInterestModal" noValidate onSubmit={handleSubmit(verify)}>
+    <Form id="AdditionalInterestEditModal" className={`AdditionalInterestModal ${selectedAI ? selectedAI.type : ''}`} noValidate onSubmit={handleSubmit(verify)}>
       {props.appState.data.submittingAI && <Loader />}
       <div className="card">
         <div className="card-header">
