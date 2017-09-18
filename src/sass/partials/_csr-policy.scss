@@ -282,13 +282,10 @@
             width: auto;
             padding: $padding;
             background: $bright-blue-darken-04;
-
-            .btn-primary {
-              @include button-variant($bright-blue-darken-04, $white, $white);
-            }
+            background: mix($bright-blue-darken-03, $warm-gray-00, 75%);
 
             .btn-secondary {
-              @include button-variant($white, $bright-blue-darken-04, $white);
+              margin-right: $padding;
             }
 
             .flex-parent {
@@ -310,10 +307,6 @@
                     color: $white;
                   }
                 }
-              }
-
-              .btn-secondary {
-                margin-right: $padding;
               }
             }
           }

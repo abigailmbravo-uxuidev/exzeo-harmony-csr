@@ -12,6 +12,7 @@ import * as cgActions from '../../actions/cgActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import Footer from '../Common/Footer';
 
 const handleGetQuote = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName])
@@ -63,7 +64,7 @@ export const NoteList = (props) => {
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
   const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
   const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
-  const attachmentUrl = attachments => 
+  const attachmentUrl = attachments =>
     attachments.map((attachment) => `<a target="_blank" href="${attachment.fileUrl}">${attachment.fileType}</a>`).join('<br>');
   const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
 
@@ -159,6 +160,9 @@ export class NotesFiles extends Component {
               </div>
             </Form>
           </div>
+        </div>
+        <div className="basic-footer">
+          <Footer />
         </div>
       </QuoteBaseConnect>
     );

@@ -13,9 +13,11 @@ import RadioField from '../Form/inputs/RadioField';
 import DateField from '../Form/inputs/DateField';
 import SelectField from '../Form/inputs/SelectField';
 import TextField from '../Form/inputs/TextField';
+import HiddenField from '../Form/inputs/HiddenField';
 import * as serviceActions from '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
+import Footer from '../Common/Footer';
 
 export const handleGetPolicy = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
@@ -34,41 +36,29 @@ export const handleInitialize = (state) => {
   return values;
 };
 
+const amountFormatter = cell => cell.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+const dateFormatter = cell => `${cell.substring(0, 10)}`;
+
 export const Payments = ({ payments }) => {
   const options = {
     defaultSortName: 'date',
     defaultSortOrder: 'desc'
   };
+
   return (
-    <BootstrapTable data={payments} options={options}>
-      <TableHeaderColumn dataField="date" width="25%" isKey>Date</TableHeaderColumn>
-      <TableHeaderColumn dataField="description" width="25%">Description</TableHeaderColumn>
-      <TableHeaderColumn dataField="notes" width="25%">Notes</TableHeaderColumn>
-      <TableHeaderColumn dataField="amount" width="25%">Amount</TableHeaderColumn>
+    <BootstrapTable className="" data={payments} options={options} striped hover>
+      <TableHeaderColumn isKey dataField="date" dataFormat={dateFormatter} className="date" columnClassName="date" width="150" dataSort>Date</TableHeaderColumn>
+      <TableHeaderColumn dataField="type" className="type" columnClassName="type" dataSort width="150" >Type</TableHeaderColumn>
+      <TableHeaderColumn dataField="description" className="description" columnClassName="description" dataSort>Description</TableHeaderColumn>
+      <TableHeaderColumn dataField="batch" className="note" columnClassName="note" dataSort width="200" >Note</TableHeaderColumn>
+      <TableHeaderColumn dataField="amount" dataFormat={amountFormatter} className="amount" columnClassName="amount" width="150" dataSort dataAlign="right">Amount</TableHeaderColumn>
     </BootstrapTable>
   );
 };
 
 
 const claimsData = [
-  {
-    jeLossNo: '888888',
-    lossID: '44950',
-    dateLoss: '06/03/2016',
-    reportDate: '06/09/2016',
-    closeDate: '06/18/2016',
-    lossStatus: ' ',
-    lossDesc: 'Ins called in to file a claim for water damage to his living room ceiling.Ins ac handler was clogged causing the drain line to over flow and water starting coming out which effected the living room ceiling. Repairs have been made to the air handler.The damage is to the plaster on the ceiling and drywall.'
-  },
-  {
-    jeLossNo: '999999',
-    lossID: '44952',
-    dateLoss: '07/12/2016',
-    reportDate: '07/14/2016',
-    closeDate: '07/29/2016',
-    lossStatus: ' ',
-    lossDesc: 'Ins called in to file a claim for water damage to his living room ceiling.Ins ac handler was clogged causing the drain line to over flow and water starting coming out which effected the living room ceiling. Repairs have been made to the air handler.The damage is to the plaster on the ceiling and drywall.'
-  }];
+  { }];
 
 export const Claims = ({ claims }) => {
   const options = {
@@ -78,13 +68,12 @@ export const Claims = ({ claims }) => {
   return (
     // chang to props claims when endpoint is ready
     <BootstrapTable data={claimsData} options={options} >
-      <TableHeaderColumn dataField="jeLossNo" width="10%" isKey>JE Loss No</TableHeaderColumn>
-      <TableHeaderColumn dataField="lossID" width="10%">Loss ID</TableHeaderColumn>
+      <TableHeaderColumn dataField="jeLossNo" width="10%" isKey>Claim No</TableHeaderColumn>
       <TableHeaderColumn dataField="dateLoss" width="10%">Date Loss</TableHeaderColumn>
       <TableHeaderColumn dataField="reportDate" width="10%">Report Date</TableHeaderColumn>
       <TableHeaderColumn dataField="closeDate" width="10%">Close Date</TableHeaderColumn>
-      <TableHeaderColumn dataField="lossStatus" width="20%">Loss Status</TableHeaderColumn>
-      <TableHeaderColumn dataField="lossDesc" width="30%" tdStyle={{ whiteSpace: 'normal' }}>Loss Description</TableHeaderColumn>
+      <TableHeaderColumn dataField="lossStatus" width="20%">Status</TableHeaderColumn>
+      <TableHeaderColumn dataField="lossDesc" width="30%" tdStyle={{ whiteSpace: 'normal' }}>Description</TableHeaderColumn>
     </BootstrapTable>
   );
 };
@@ -146,78 +135,70 @@ export class CancelPolicy extends React.Component {
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper cancel-policy" role="group">
-              <Form id="Cancellation" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
-                <section>
+              <section>
+                <h3>Cancel Policy</h3>
+                <Form id="Cancellation" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
                   <div className="flex-parent">
-                    <h3>Cancel Policy</h3>
-                    <div className="btn-footer">
-                      <Link to={'/policy/coverage'} className="btn btn-secondary">Return</Link>
-                      <button type="submit" className="btn btn-danger">Cancel Policy</button>
-                    </div>
-                  </div>
-
-
-                  <div className="flex-parent">
-                    <div className="flex-child wind-wbdr">
+                    <div className="flex-child">
                       <RadioField
                         onChange={() => resetCancelReasons(this.props)}
-                        validations={['required']} name={'cancelOptions'} styleName={''} label={'Cancel Options'} segmented
+                        validations={['required']} name={'cancelType'} styleName={''} label={'Cancel Type'} segmented
                         answers={cancelGroup}
                       />
                     </div>
-                  </div>
-
-
-                  <div className="flex-parent">
-
-
                     <div className="flex-child">
-
                       <DateField validations={['required']} label={'Effective Date'} name={'effectiveDate'} />
-
                     </div>
-
+                  </div>
+                  <div className="flex-parent">
                     <div className="flex-child">
                       <SelectField
                         name="cancelReason" component="select" styleName={''} label="Cancel Reason" validations={['required']}
-                        answers={_.concat([], _.get(_.find(cancelOptions, option => option.cancelType === fieldValues.cancelOptions), 'cancelReason')).map(reason => ({
+                        answers={_.concat([], _.get(_.find(cancelOptions, option => option.cancelType === fieldValues.cancelType), 'cancelReason')).map(reason => ({
                           answer: reason,
                           label: reason
                         }))}
                       />
-                      <TextField label={'Additional Reason'} name={'additionalReason'} />
-
+                      {(fieldValues.cancelType === 'Underwriting Cancellation' || fieldValues.cancelType === 'Underwriting Non-Renewal') ?
+                        <TextField label={'Additional Reason'} name={'additionalReason'} /> : <HiddenField label={'Additional Reason'} name={'additionalReason'} />
+                      }
                     </div>
                   </div>
-
-
-                </section>
-              </Form>
+                </Form>
+              </section>
+              {/* PAYMENTS SECTION*/}
               <section>
                 <h3>Payments</h3>
-
                 <div className="form-group flex-parent billing">
-                  <div className="flex-child"><label>Bill To</label> <span>{_.get(_.find(_.get(this.props.paymentOptions, 'options'), option => option.billToId === _.get(this.props.summaryLedger, 'billToId')), 'displayText')}</span></div>
-                  <div className="flex-child"><label>Bill Plan</label> <span>{_.get(this.props.summaryLedger, 'billPlan')}</span></div>
-                  <div className="flex-child"><div className="form-group">
-                    <TextField disabled label={'Equity Date'} name={'equityDate'} />
-                  </div></div>
+                  <div className="flex-child">
+                    <label>Bill To</label>
+                    <div>{_.get(_.find(_.get(this.props.paymentOptions, 'options'), option => option.billToId === _.get(this.props.summaryLedger, 'billToId')), 'displayText')}</div>
+                  </div>
+                  <div className="flex-child">
+                    <label>Bill Plan</label>
+                    <div>{_.get(this.props.summaryLedger, 'billPlan')}</div>
+                  </div>
+                  <div className="flex-child">
+                    <label>Equity Date</label>
+                    <TextField disabled name={'equityDate'} />
+                  </div>
                 </div>
-
                 <Payments payments={this.props.paymentHistory || []} />
-
-
               </section>
-
+              {/* CLAIMS SECTION*/}
               <section>
                 <h3>Claims</h3>
-
                 <Claims />
-
-
               </section>
-
             </div>
+          </div>
+        </div>
+        <div className="basic-footer btn-footer">
+          <Footer />
+          {/* TODO: RESET button should reset form / CANCEL POLICY button should be disabled if form is clean/untouched*/}
+          <div className="btn-wrapper">
+            <button type="button" className="btn btn-secondary" onClick={() => this.props.reset('CancelPolicy')}>Clear</button>
+            <button type="submit" className="btn btn-cancel">Cancel Policy</button>
           </div>
         </div>
       </PolicyConnect>
