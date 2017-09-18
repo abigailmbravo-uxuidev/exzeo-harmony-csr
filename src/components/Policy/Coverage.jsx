@@ -193,24 +193,24 @@ export class Coverage extends Component {
 
     const premium = [{
       premium: 'Current Premium',
-      value: `$ ${normalizeNumbers(_.get(summaryLedger, 'currentPremium'))}`
+      value: `$ ${normalizeNumbers(_.get(summaryLedger, 'currentPremium') || 0)}`
     }, {
       premium: 'Initial Premium',
-      value: `$ ${normalizeNumbers(_.get(summaryLedger, 'initialPremium'))}`
+      value: `$ ${normalizeNumbers(_.get(summaryLedger, 'initialPremium') || 0)}`
     },
     {
       premium: 'Balance Due',
-      value: `$ ${normalizeNumbers(_.get(summaryLedger, 'balance'))}`
+      value: `$ ${normalizeNumbers(_.get(summaryLedger, 'balance') || 0)}`
     }];
 
     const billing = [
       {
         coverage: 'Next Payment',
-        value: `$ ${normalizeNumbers(_.get(summaryLedger, 'noticeAmountDue'))}`
+        value: `$ ${normalizeNumbers(_.get(summaryLedger, 'noticeAmountDue') || 0)}`
       },
       {
         coverage: 'Payment Due',
-        value: (moment(_.get(summaryLedger, 'invoiceDueDate'))).format('L')
+        value: _.get(summaryLedger, 'invoiceDueDate') ? (moment(_.get(summaryLedger, 'invoiceDueDate'))).format('L') : '-'
       },
       {
         coverage: 'Bill To',
