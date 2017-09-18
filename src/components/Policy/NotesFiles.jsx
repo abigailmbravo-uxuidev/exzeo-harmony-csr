@@ -63,7 +63,7 @@ export const NoteList = (props) => {
         search
       >
         <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
-        <TableHeaderColumn columnClassName='created-date' dataField="createdDate" dataSort dataField="createdDate" dataFormat={ formatCreateDate } >Created</TableHeaderColumn>
+        <TableHeaderColumn columnClassName='created-date' dataField="createdDate" dataSort dataFormat={ formatCreateDate } >Created</TableHeaderColumn>
         <TableHeaderColumn className='created-by' columnClassName='created-by' dataField="createdBy" dataSort dataFormat={ showCreatedBy } >Author</TableHeaderColumn>
         {/*TODO: Hide note-type and note column when users filters grid to show only notes with attachments*/}
         <TableHeaderColumn className='note-type' columnClassName='note-type' dataField="contactType" dataSort >Note Type</TableHeaderColumn>

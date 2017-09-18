@@ -13,7 +13,7 @@ import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import RadioField from '../Form/inputs/RadioField';
-import Footer from '../Common/Footer';
+import Downloader from '../Common/Downloader';
 
 const handleGetQuote = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
@@ -37,9 +37,21 @@ export const NoteList = (props) => {
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
   const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
   const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
-  const attachmentUrl = attachments =>
-    attachments.map((attachment) => `<a target="_blank" href="${attachment.fileUrl}"><span>${attachment.fileType}</span> | ${attachment.fileUrl.split('/').pop()}</a>`).join('<br>');
+  
   const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
+
+  const attachmentUrl = attachments => (
+    <span>
+      { attachments.map((attachment, i) => 
+        <Downloader 
+          filename={attachment.fileName} 
+          fileUrl={attachment.fileUrl} 
+          fileType={attachment.fileType} 
+          key={i}
+        />
+      )}
+    </span>
+  )
 
   return (
     <div className="note-grid-wrapper">
@@ -48,11 +60,12 @@ export const NoteList = (props) => {
         {/*TODO: Eric, just need 2 buttons with an onClick event to filter the grid by attachment count. I added the radio group component because it can have a default selected and user can only choose 1*/}
 
         <RadioField
-          name={'attachmentStatus'} styleName={''} label={''} onChange={function () {}} segmented answers={[
+          name={'attachmentStatus'} styleName={''} label={''} onChange={ () => {} } segmented answers={[
             {
               answer: false,
               label: 'All Notes'
-            }, {
+            }, 
+            {
               answer: true,
               label: 'Attachments'
             }

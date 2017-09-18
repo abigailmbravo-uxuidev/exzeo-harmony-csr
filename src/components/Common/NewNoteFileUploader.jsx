@@ -17,7 +17,7 @@ export const submitNote = (data, dispatch, props) => {
     noteContent: data.noteContent,
     contactType: data.contactType,
     createdAt: new Date().getTime(),
-    noteAttachments: data.noteAttachments ? data.noteAttachments.length : 0,
+    attachmentCount: data.noteAttachments ? data.noteAttachments.length : 0,
     fileType: data.fileType,
     createdBy: {
       useerId: user.user_id,
