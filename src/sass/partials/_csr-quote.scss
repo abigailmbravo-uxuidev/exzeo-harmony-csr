@@ -273,7 +273,8 @@
         flex-shrink: 0;
         width: auto;
         padding: $padding;
-        background: mix($green-darken-04, $warm-gray-00, 70%);
+        background: $warm-gray-01;
+        border-top: 1px dotted $warm-gray-04;
 
         form {
           display: flex;
@@ -309,7 +310,6 @@
             }
 
             label {
-              color: $white;
               font-size: $font-size-sm;
             }
           }

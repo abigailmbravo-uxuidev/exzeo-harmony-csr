@@ -260,8 +260,8 @@
             flex-shrink: 1;
             width: auto;
             padding: $padding;
-            background: $bright-blue-darken-04;
-            background: mix($bright-blue-darken-03, $warm-gray-00, 75%);
+            background: $warm-gray-01;
+            border-top: 1px dotted $warm-gray-04;
 
             .btn-secondary {
               margin-right: $padding;
@@ -274,14 +274,13 @@
                 margin: 0 $padding 0 0;
 
                 label {
-                  color: $white;
                   font-size: $font-size-sm;
                 }
 
                 input {
                     &[disabled="disabled"], &:disabled {
-                        background: mix($bright-blue-darken-03, $warm-gray-00, 75%);
-                        border-color: mix($bright-blue-darken-03, $warm-gray-00, 60%);
+                        background: $warm-gray-00;
+                        border-color: $warm-gray-03;
                         color: $white;
                     }
                 }
