@@ -216,7 +216,7 @@ export class MortgageBilling extends Component {
                   </div>
                   <dl className="total">
                     <div>
-                      {this.props.getSummaryLedger && `Payments Received ${this.amountFormatter(this.props.getSummaryLedger.cashReceived)}`} <br />
+                      {this.props.getSummaryLedger && `Payments Received ${this.amountFormatter(this.props.getSummaryLedger.cashReceived || '0')}`} <br />
                     </div>
                   </dl>
                 </div>
