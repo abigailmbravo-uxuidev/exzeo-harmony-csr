@@ -300,7 +300,6 @@ export class Endorsements extends React.Component {
 
   render() {
     const { initialValues, handleSubmit, appState, endorsementHistory } = this.props;
-    console.log(endorsementHistory);
     return (
       <PolicyConnect>
         <ClearErrorConnect />

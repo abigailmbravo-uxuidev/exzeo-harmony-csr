@@ -428,14 +428,12 @@ export const getEndorsementHistory = policyNumber => (dispatch) => {
     const data = { endorsementHistory: response.data };
     return dispatch(batchActions([
       serviceRequest(data)
-      // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
     ]));
   })
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
         errorActions.setAppError({ message })
-        // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
       ]));
     });
 };
