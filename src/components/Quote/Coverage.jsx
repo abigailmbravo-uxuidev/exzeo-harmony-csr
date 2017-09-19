@@ -395,7 +395,6 @@ export class Coverage extends Component {
       <QuoteBaseConnect>
         <ClearErrorConnect />
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
-
         <div className="route-content">
           <Form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
             <HiddenField name={'propertyIncidentalOccupanciesMainDwelling'} />
@@ -433,7 +432,7 @@ export class Coverage extends Component {
                 </section>
                 <section id="policyHolders" className="demographics flex-parent policyHolders">
                   <div id="policy-holder-a" className="policy-holder-a flex-child">
-                    <h3>Primary Policyholder</h3>
+                    <h3 id="primaryPolicyholder">Primary Policyholder</h3>
                     <div className="flex-parent policy-holder-a-name">
                       <div className="flex-child policy-holder-a-first-name">
                         <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH1FirstName'} />

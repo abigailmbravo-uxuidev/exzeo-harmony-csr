@@ -89,8 +89,8 @@ export const UnderwritingValidationBar = (props) => {
             </h5>
             <div>
               <ul className="fa-ul">
-                { quoteData.policyHolders && quoteData.policyHolders.length === 0 && <li key={0}><i className="fa-li fa fa-info-circle" aria-hidden="true" />Needs a Primary Policyholder</li> }
-                { !quoteData.rating && <li key={1}><i className="fa-li fa fa-info-circle" aria-hidden="true" />Needs Underwriting</li> }
+                { quoteData.policyHolders && quoteData.policyHolders.length === 0 && <li key={0}><a href="/quote/coverage#primaryPolicyholder"><i className="fa-li fa fa-info-circle" aria-hidden="true" />Needs a Primary Policyholder</a></li> }
+                { !quoteData.rating && <li key={1}><a href="/quote/underwriting"><i className="fa-li fa fa-info-circle" aria-hidden="true" />Needs Underwriting</a></li> }
               </ul>
             </div>
           </section>
