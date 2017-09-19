@@ -268,7 +268,6 @@
             }
 
             .flex-parent {
-              align-items: flex-start;
 
               .form-group {
                 margin: 0 $padding 0 0;
@@ -739,18 +738,6 @@
           }
         }
       }
-    }
-  }
-}
-
-.cancel-policy {
-
-  .form-group.billing {
-
-    .flex-child {
-      flex-grow: 1;
-      flex-shrink: 1;
-      width: auto;
     }
   }
 }

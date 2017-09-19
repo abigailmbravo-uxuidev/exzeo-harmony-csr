@@ -286,18 +286,17 @@ main[role="document"] {
 
   .content-wrapper {
     display: flex;
-    overflow-y: hidden;
+    overflow: hidden;
     align-self: stretch;
     flex-direction: column;
     flex-grow: 1;
+    flex-shrink: 1;
     flex-wrap: wrap;
     width: 100%;
 
     > div {
-      //overflow: hidden;
       width: 100%;
       height: auto;
-      //flex-grow: 1;
       &.login {
         position: absolute;
         z-index: 20;
@@ -324,146 +323,6 @@ main[role="document"] {
         flex-shrink: 0;
         width: 100%;
         background: $white;
-
-        &.workflow {
-          overflow: hidden;
-          height: 100%;
-        }
-
-        &.splash {
-          align-items: center;
-          justify-content: center;
-          border-top: $card-border-width solid $card-border-color;
-
-          .fade-in {
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            justify-content: center;
-
-            .products {
-              display: flex;
-            }
-          }
-        }
-
-        &.survey {
-          border-top: $card-border-width solid $card-border-color;
-
-          .fade-in {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-          }
-        }
-
-        &.admin {
-          padding: 0;
-
-          .fade-in {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-
-            .content {
-              display: flex;
-              flex-direction: row;
-              height: 100%;
-
-              aside {
-                display: flex;
-                overflow-y: auto;
-                flex-shrink: 0;
-
-                .side-panel {
-                  position: relative;
-                  display: flex;
-                  flex-basis: 8rem;
-                  flex-direction: column;
-                  flex-grow: 0;
-                  flex-shrink: 0;
-                  margin: ($padding*2) 0 ($padding) ($padding*3);
-                  padding: $padding;
-                  @include for-big-desktop-up {
-                    flex-basis: 17.975rem;
-                    width: 17.975rem;
-                  }
-
-                  section {
-                    flex-grow: 0;
-                    flex-shrink: 0;
-                    margin-bottom: $margin-bottom;
-                  }
-                }
-              }
-
-              section {
-                position: relative;
-                overflow-y: auto;
-                flex-grow: 1;
-
-                .content {
-                  flex-direction: column;
-                  flex-wrap: wrap;
-                  padding: ($padding*2) ($padding*4) 0;
-
-                  .admin-header {
-                    display: flex;
-                    margin-bottom: $padding;
-
-                    h1,
-                    h2,
-                    h3,
-                    h4,
-                    h5 {
-                      flex-grow: 1;
-                      margin: 0;
-                    }
-                  }
-
-                  .modal {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background: rgba($black, .5);
-                    background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, .5));
-
-                    .card {
-                      max-width: 24rem;
-                    }
-                  }
-
-                  ul.list {
-                    z-index: 1;
-                    width: 100%;
-                    margin: 0;
-                    padding: 0;
-                    list-style: none;
-
-                    &.list-cards {
-                      li {
-                        display: flex;
-                        flex-direction: row;
-
-                        i {
-                          &.fa-trash {
-                            &:hover {
-                              color: $red;
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-
-                  label {
-                    font-size: $font-size-h4;
-                  }
-                }
-              }
-            }
-          }
-        }
       }
     }
   }
@@ -501,101 +360,12 @@ main[role="document"] {
       color: $warm-gray-01;
     }
   }
-
-  .user {
-    display: flex;
-    flex-direction: column;
-    width: auto;
-    width: 12rem;
-    min-height: 4.75rem;
-    padding: ($padding/2) ($padding*2);
-    border-bottom: 2px solid $white;
-    background-color: $warm-gray-08;
-    @include transition(all .2s ease-in-out);
-
-    label {
-      margin: 0;
-      letter-spacing: 0.07em;
-      color: $white;
-      font-size: $font-size-xs;
-    }
-
-    .user-name {
-      display: flex;
-      align-items: center;
-      flex-basis: auto;
-      flex-grow: 0;
-      flex-shrink: 0;
-      margin: 0;
-      color: $white;
-      font-size: $font-size-sm;
-
-      span {
-        overflow: hidden;
-        flex-basis: 9rem;
-        flex-grow: 0;
-        flex-shrink: 0;
-        width: 9rem;
-        padding-right: $padding;
-        text-overflow: ellipsis;
-      }
-
-      i {
-        flex-basis: 1rem;
-        flex-grow: 0;
-        flex-shrink: 0;
-        text-align: center;
-        font-size: 1rem;
-      }
-    }
-  }
-
-  .logout {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 3rem;
-    width: auto;
-    height: 3rem;
-    height: auto;
-    margin: 0 ($padding);
-    padding: ($padding) 0;
-    border-radius: 50%;
-    border-radius: $btn-border-radius;
-
-    div {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      i {
-        margin-right: 0;
-        margin-right: $padding;
-      }
-
-      span {
-        display: none;
-        display: block;
-      }
-    }
-  }
 }
 //search
 /*------------------------------------------------------------------------------------*/
 @import "partials/_search"; //search partial
 
 .search {
-  z-index: 10;
-  display: flex;
-  align-items: flex-start;
-  width: 100%;
-  height: auto;
-  margin-top: 0;
-  margin-bottom: 0;
-  transition: margin 0.5s;
-  opacity: 1;
-  background: $white;
-
   .results,
   .results-wrapper {
     flex-basis: 100%;
@@ -604,280 +374,6 @@ main[role="document"] {
 
     .survey-wrapper {
       padding: $padding*2;
-    }
-  }
-}
-//workflow including stepper and left aside
-/*------------------------------------------------------------------------------------*/
-.workflow {
-  display: flex;
-  padding: 0;
-
-  .route {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: auto;
-    //workflow detail header
-    .detailHeader {
-      position: relative;
-      display: flex;
-      flex-grow: 0;
-      flex-shrink: 0;
-      justify-content: flex-start;
-      background: $warm-gray-08;
-
-      section {
-        dl {
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-start;
-          margin: ($padding/2);
-          padding: ($padding/2) $padding;
-
-          div {
-            display: flex;
-            flex-direction: column;
-
-            dt {
-              color: $white;
-              font-size: $font-size-sm;
-              font-weight: $font-weight-bold;
-            }
-
-            dd {
-              margin: 0;
-              color: $white;
-
-              + dd {
-                margin-bottom: $padding/4;
-                font-size: $font-size-sm;
-                line-height: 1;
-              }
-            }
-          }
-        }
-
-        &.quoteDetails {
-          flex-shrink: 0;
-        }
-
-        &.coverageDetails {
-          display: flex;
-          margin-right: 6.875rem;
-
-          div {
-            display: flex;
-            flex-wrap: wrap;
-
-            dt {
-              width: 100%;
-            }
-
-            dd {
-              margin-right: $padding*2;
-            }
-          }
-        }
-
-        &.premium {
-          position: absolute;
-          top: $padding/2;
-          right: $padding/2;
-          right: ($padding/2);
-          align-items: center;
-          justify-content: center;
-          min-width: 7rem;
-          margin: 0;
-          padding: ($padding/2) $padding;
-          background: $warm-gray-03;
-          box-shadow: $card-box-shadow-alt;
-
-          dl {
-            padding: 0;
-
-            div {
-              dt {
-                color: $bright-blue-darken-04;
-              }
-
-              dd {
-                color: $bright-blue-darken-04;
-                font-size: $font-size-h4;
-              }
-            }
-          }
-        }
-      }
-    }
-    //stepper header
-    .workflow-header {
-      flex-shrink: 0;
-      padding: $padding;
-      background-color: $warm-gray-01;
-
-      .rule {
-        background: $warm-gray-03;
-      }
-
-      li {
-        a {
-          color: $warm-gray-03;
-
-          i {
-            background: $warm-gray-01;
-            @include transition(all .2s ease-in-out);
-
-            &:before {}
-
-            &.chooseAddress {
-              &:before {
-                content: "\f041";
-              }
-            }
-
-            &.askAdditionalCustomerData {
-              &:before {
-                content: "\f007";
-              }
-            }
-
-            &.askUWAnswers {
-              &:before {
-                content: "\f0f6";
-              }
-            }
-
-            &.askToCustomizeDefaultQuote {}
-
-            &.customizeDefaultQuote {
-              &:before {
-                content: "\f1de";
-              }
-            }
-
-            &.shareIt {
-              &:before {
-                content: "\f1e0";
-              }
-            }
-
-            &.billingInfo {
-              &:before {
-                content: "\f155";
-              }
-            }
-
-            &.verifyWrite {
-              &:before {
-                content: "\f14a";
-              }
-            }
-          }
-
-          &.active {
-            color: $bright-blue;
-
-            &:focus,
-            &:hover {
-              color: $bright-blue-lighten-01;
-            }
-          }
-
-          &.disabled {
-            color: $warm-gray-03;
-            outline: none;
-          }
-
-          &.selected {
-            color: $warm-gray-14;
-            outline: none;
-
-            i {
-              color: $bright-blue;
-            }
-          }
-
-          &.complete {
-            color: $bright-blue-lighten-03;
-
-            &:focus,
-            &:hover {
-              color: $bright-blue;
-            }
-          }
-        }
-      }
-    }
-    //workflow main content
-    .workflow-content {
-      overflow-y: auto;
-      flex-direction: column;
-
-      aside {
-        display: flex;
-        overflow-y: auto;
-        flex-shrink: 0;
-
-        .side-panel {
-          position: relative;
-          display: flex;
-          flex-basis: 8rem;
-          flex-direction: column;
-          flex-grow: 0;
-          flex-shrink: 0;
-          width: 8rem;
-          margin: ($padding);
-          @include for-big-desktop-up {
-            flex-basis: 17.975rem;
-            width: 17.975rem;
-          }
-
-          section {
-            flex-grow: 0;
-            flex-shrink: 0;
-            margin-bottom: $margin-bottom/2;
-
-            dl {
-              display: flex;
-              flex-direction: column;
-              margin: 0;
-
-              div {
-                display: flex;
-                flex-direction: column;
-                flex-wrap: wrap;
-                margin: 0;
-
-                dt {
-                  flex-basis: auto;
-                  font-size: $font-size-sm;
-                  font-weight: $font-weight-bold;
-                }
-
-                dd {
-                  display: flex;
-                  flex-basis: auto;
-                  flex-direction: column;
-                }
-
-                &:last-child {
-                  dd {
-                    margin-bottom: 0;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-
-      > section {
-        display: flex;
-        flex-grow: 1;
-        flex-shrink: 0;
-        height: 100%;
-      }
     }
   }
 }
@@ -1953,7 +1449,7 @@ ul.list-cards {
         flex-basis: auto;
         flex-grow: 0;
         flex-shrink: 1;
-        margin-right: $padding*3;
+        margin-right: $padding*2;
         padding: ($padding/2) 0;
 
         dl {
@@ -1965,7 +1461,6 @@ ul.list-cards {
               color: $yellow-lighten-06;
               font-size: $font-size-xs;
               font-weight: $font-weight-normal;
-              //text-transform: uppercase;
             }
 
             dd {
@@ -1978,15 +1473,15 @@ ul.list-cards {
         }
 
         &.propertyAddress {
-          max-width: 19rem;
+          max-width: 17rem;
         }
 
         &.policyHolderMailingAddress {
-          max-width: 19rem;
+          max-width: 17rem;
         }
 
         &.policyholder {
-          max-width: 16rem;
+          max-width: 15rem;
         }
 
         &.policyDetails,
@@ -2013,13 +1508,9 @@ ul.list-cards {
           }
         }
 
-        &.policyStatus {
-          //flex-grow: 1;
-        }
+        &.policyStatus {}
 
-        &.quoteStatus {
-          //flex-grow: 1;
-        }
+        &.quoteStatus {}
 
         &.quoteEffectiveDate {
           flex-grow: 1;
@@ -2065,7 +1556,7 @@ ul.list-cards {
         flex-basis: auto;
         flex-grow: 0;
         flex-shrink: 1;
-        margin-right: $padding*3;
+        margin-right: $padding*2;
         padding: ($padding/2) 0;
 
         dl {
@@ -2077,7 +1568,6 @@ ul.list-cards {
               color: $yellow-lighten-06;
               font-size: $font-size-xs;
               font-weight: $font-weight-normal;
-              //text-transform: uppercase;
             }
 
             dd {
@@ -2090,15 +1580,15 @@ ul.list-cards {
         }
 
         &.propertyAddress {
-          max-width: 19rem;
+          max-width: 17rem;
         }
 
         &.policyHolderMailingAddress {
-          max-width: 19rem;
+          max-width: 17rem;
         }
 
         &.policyholder {
-          max-width: 16rem;
+          max-width: 15rem;
         }
 
         &.policyDetails,
@@ -2125,13 +1615,9 @@ ul.list-cards {
           }
         }
 
-        &.policyStatus {
-          //flex-grow: 1;
-        }
+        &.policyStatus {}
 
-        &.quoteStatus {
-          //flex-grow: 1;
-        }
+        &.quoteStatus {}
 
         &.quoteEffectiveDate {
           flex-grow: 1;
@@ -2162,7 +1648,6 @@ ul.list-cards {
   }
 }
 // Generic Global Styles
-
 .flex-parent {
   display: flex;
   align-content: space-between;

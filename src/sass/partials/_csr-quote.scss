@@ -64,16 +64,10 @@
     }
   }
   //content wrapper
-  main {
-    height: calc(100vh - 8.125rem);
-    min-height: calc(100vh - 8.125rem);
+  main[role="document"] {
 
     .content-wrapper {
-      overflow: hidden;
-      flex-grow: 1;
-      flex-shrink: 1;
       flex-wrap: nowrap;
-      width: auto;
 
       .route-content {
         display: flex;
@@ -507,11 +501,8 @@
 
 .modal.quote-summary {
   .btn-footer.flex-parent {
-    display: flex;
     align-content: center;
     align-items: flex-end;
-    flex-direction: row;
-    flex-wrap: nowrap;
     justify-content: center;
 
     .form-group {
