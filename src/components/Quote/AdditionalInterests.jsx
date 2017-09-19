@@ -11,6 +11,7 @@ import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import AdditionalInterestModal from '../../components/Common/AdditionalInterestModal';
 import AdditionalInterestEditModal from '../../components/Common/AdditionalInterestEditModal';
+import Footer from '../Common/Footer';
 
 export const applyRank = (additionalInterests) => {
     // add rank to sort by a specific way
@@ -248,13 +249,11 @@ export class AdditionalInterests extends Component {
     });
     }
   }
-
   render() {
     const { appState, quoteData, questions } = this.props;
     _.forEach(getAnswers('mortgagee', questions), (answer) => {
       answer.displayText = `${answer.AIName1}, ${answer.AIAddress1}, ${answer.AICity} ${answer.AIState}, ${answer.AIZip}`;
     });
-
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
@@ -270,8 +269,6 @@ export class AdditionalInterests extends Component {
                   { /* <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button> */ }
                   <button disabled={(quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Bill Payer').length > 0) || checkQuoteState(quoteData)} onClick={() => addAdditionalInterest('Bill Payer', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
                 </div>
-
-
                 <div className="results-wrapper">
                   <ul className="results result-cards">
                     {quoteData && quoteData.additionalInterests && _.sortBy(quoteData.additionalInterests, ['rank', 'order']).map((ai, index) =>
@@ -290,19 +287,15 @@ export class AdditionalInterests extends Component {
                     )}
                   </ul>
                 </div>
-
-
-                <div className="btn-footer">
-                  {/* <button className="btn btn-secondary" form="AddAdditionalInterestPage">Cancel</button>
-                  <button className="btn btn-primary" type="submit" form="AddAdditionalInterestPage">Update</button> */}
-                </div>
               </div>
             </div>
           </form>
           { appState.data.showAdditionalInterestEditModal && <AdditionalInterestEditModal questions={this.props.questions} selectedAI={this.props.appState.data.selectedAI} quoteData={quoteData} verify={handleFormSubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
           { appState.data.showAdditionalInterestModal && <AdditionalInterestModal questions={this.props.questions} quoteData={quoteData} verify={handleFormSubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
         </div>
-
+        <div className="basic-footer">
+          <Footer />
+        </div>
       </QuoteBaseConnect>
     );
   }

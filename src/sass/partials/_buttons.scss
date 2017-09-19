@@ -80,6 +80,8 @@ input[type="submit"] {
 // Alternate buttons
 //
 
+//button mixin: TEXT | BACKGROUND | BORDER
+//@include button-variant($btn-TEXT-color, $btn-BACKGROUND-color, $btn-BORDER-color);
 .btn,
 .btn-default,
 button,
@@ -99,6 +101,10 @@ input[type="submit"] {
   &:hover {
     @include button-variant($btn-secondary-color, rgba($btn-secondary-bg, .9), $btn-secondary-border);
   }
+}
+
+.btn-cancel {
+    @include button-variant($white, $red, $red);
 }
 
 .btn-action {
