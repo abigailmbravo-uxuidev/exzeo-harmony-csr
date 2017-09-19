@@ -37,7 +37,6 @@ export const handleGetQuoteData = (state) => {
   return quoteData;
 };
 
-
 export const handleInitialize = (state) => {
   const values = {};
   const quoteData = handleGetQuoteData(state);
@@ -54,7 +53,6 @@ export const handleInitialize = (state) => {
   }
   return values;
 };
-
 
 export const UnderwritingValidationBar = (props) => {
   const {
@@ -87,12 +85,12 @@ export const UnderwritingValidationBar = (props) => {
           {quoteData && (!quoteData.rating || quoteData.policyHolders.length === 0) &&
           <section className="msg-info">
             <h5>
-              <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Info</h5>
+              <i className="fa fa-info-circle" aria-hidden="true" />&nbsp;Info</h5>
 
             <div>
               <ul className="fa-ul">
-                { quoteData.policyHolders && quoteData.policyHolders.length === 0 && <li key={0}><i className="fa-li fa fa-exclamation-circle" aria-hidden="true" />Needs a Primary Policyholder</li> }
-                { !quoteData.rating && <li key={1}><i className="fa-li fa fa-exclamation-circle" aria-hidden="true" />Needs Underwriting</li> }
+                { quoteData.policyHolders && quoteData.policyHolders.length === 0 && <li key={0}><i className="fa-li fa fa-info-circle" aria-hidden="true" />Needs a Primary Policyholder</li> }
+                { !quoteData.rating && <li key={1}><i className="fa-li fa fa-info-circle" aria-hidden="true" />Needs Underwriting</li> }
               </ul>
             </div>
           </section>
@@ -142,7 +140,6 @@ export const UnderwritingValidationBar = (props) => {
     </Form>
   );
 };
-
 
 UnderwritingValidationBar.propTypes = {
   completedTasks: PropTypes.any, // eslint-disable-line
