@@ -20,7 +20,9 @@ const handleGetPolicyData = (state) => {
   return policyData;
 };
 
-const handleInitialize = state => ({});
+const handleInitialize = state => ({
+  attachmentStatus: false
+});
 
 const SearchPanel = props => (
   <div className="search">
@@ -28,22 +30,28 @@ const SearchPanel = props => (
     { props.searchField }
   </div>
   );
+export const filterNotesByType = (notes, type) => {
+  if (!Array.isArray(notes)) return [];
+
+  if (type) return _.filter(notes, n => n.attachments > 0);
+  return notes;
+};
 
 export const NoteList = (props) => {
-  const { notes } = props;
+  const { notes, fieldValues } = props;
 
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
   const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
   const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
   const attachmentUrl = attachments =>
-    attachments.map((attachment) => `<a target="_blank" href="${attachment.fileUrl}"><span>${attachment.fileType}</span> | ${attachment.fileUrl.split('/').pop()}</a>`).join('<br>');
+    attachments.map(attachment => `<a target="_blank" href="${attachment.fileUrl}"><span>${attachment.fileType}</span> | ${attachment.fileUrl.split('/').pop()}</a>`).join('<br>');
   const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
 
   return (
     <div className="note-grid-wrapper">
       <div className="filter-tabs">
 
-        {/*TODO: Eric, just need 2 buttons with an onClick event to filter the grid by attachment count. I added the radio group component because it can have a default selected and user can only choose 1*/}
+        {/* TODO: Eric, just need 2 buttons with an onClick event to filter the grid by attachment count. I added the radio group component because it can have a default selected and user can only choose 1*/}
 
         <RadioField
           name={'attachmentStatus'} styleName={''} label={''} onChange={function () {}} segmented answers={[
@@ -58,18 +66,18 @@ export const NoteList = (props) => {
         />
       </div>
       <BootstrapTable
-        data={Array.isArray(notes) ? notes : []}
-        options={ options }
-        search={ true }
-        multiColumnSearch={ true }
+        data={filterNotesByType(notes, fieldValues.attachmentStatus)}
+        options={options}
+        search
+        multiColumnSearch
       >
         <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
-        <TableHeaderColumn columnClassName='created-date' dataField="createdDate" dataSort dataField="createdDate" dataFormat={ formatCreateDate } >Created</TableHeaderColumn>
-        <TableHeaderColumn className='created-by' columnClassName='created-by' dataField="createdBy" dataSort dataFormat={ showCreatedBy } >Author</TableHeaderColumn>
-        {/*TODO: Hide note-type and note column when users filters grid to show only notes with attachments*/}
-        <TableHeaderColumn className='note-type' columnClassName='note-type' dataField="contactType" dataSort >Note Type</TableHeaderColumn>
-        <TableHeaderColumn className='note' columnClassName='note' dataField="content" dataSort >Note</TableHeaderColumn>
-          {/*TODO:
+        <TableHeaderColumn columnClassName="created-date" dataField="createdDate" dataSort dataField="createdDate" dataFormat={formatCreateDate} >Created</TableHeaderColumn>
+        <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataSort dataFormat={showCreatedBy} >Author</TableHeaderColumn>
+        {/* TODO: Hide note-type and note column when users filters grid to show only notes with attachments*/}
+        <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="contactType" dataSort >Note Type</TableHeaderColumn>
+        <TableHeaderColumn className="note" columnClassName="note" dataField="content" dataSort >Note</TableHeaderColumn>
+        {/* TODO:
 
             Eric, below is the attachment count that we need to filter grid on - basically want to show eveything (count >= 0) or show only attachements (count > 0)
 
@@ -84,8 +92,8 @@ export const NoteList = (props) => {
             thanks!
 
             */}
-        <TableHeaderColumn className='count' columnClassName='count' dataField="attachments" dataFormat={attachmentCount} filter={ { type: 'NumberFilter', delay: 1000, numberComparators: [ '=', '>', '<=' ] } } hidden ></TableHeaderColumn>
-        <TableHeaderColumn className='attachments' columnClassName='attachments' dataField="attachments" dataFormat={attachmentUrl} >Attachments</TableHeaderColumn>
+        <TableHeaderColumn className="count" columnClassName="count" dataField="attachments" dataFormat={attachmentCount} filter={{ type: 'NumberFilter', delay: 1000, numberComparators: ['=', '>', '<='] }} hidden />
+        <TableHeaderColumn className="attachments" columnClassName="attachments" dataField="attachments" dataFormat={attachmentUrl} >Attachments</TableHeaderColumn>
       </BootstrapTable>
     </div>
   );
