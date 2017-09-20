@@ -279,7 +279,7 @@ export class Summary extends Component {
                   {deductibles.sinkhole && <dl>
                     <div>
                       <dt>Sinkhole Deductible</dt>
-                      <dd>{deductibles.sinkhole.amount} %</dd>
+                      <dd>{deductibles.sinkhole.amount}%</dd>
                     </div>
                   </dl>
                 }
