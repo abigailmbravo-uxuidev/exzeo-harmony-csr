@@ -24,7 +24,7 @@ const handleInitialize = state => ({});
 
 const SearchPanel = props => (
   <div className="search">
-    <label>Search by Note Text</label>
+    <label>Search Table Data</label>
     { props.searchField }
   </div>
   );
@@ -59,8 +59,9 @@ export const NoteList = (props) => {
       </div>
       <BootstrapTable
         data={Array.isArray(notes) ? notes : []}
-        options={options}
-        search
+        options={ options }
+        search={ true }
+        multiColumnSearch={ true }
       >
         <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
         <TableHeaderColumn columnClassName='created-date' dataField="createdDate" dataSort dataField="createdDate" dataFormat={ formatCreateDate } >Created</TableHeaderColumn>
