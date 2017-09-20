@@ -86,7 +86,7 @@ export const NoteList = (props) => {
           thanks!
 
           */}
-        <TableHeaderColumn className='count' columnClassName='count' dataField="attachments" dataFormat={attachmentCount} filter={ { type: 'NumberFilter', delay: 1000, numberComparators: [ '=', '>', '<=' ] } } hidden ></TableHeaderColumn>
+        <TableHeaderColumn className='count' columnClassName='count' dataField="attachments" dataFormat={attachmentCount} hidden ></TableHeaderColumn>
         <TableHeaderColumn className='attachments' columnClassName='attachments' dataField="attachments" dataFormat={attachmentUrl} dataSort >Attachments</TableHeaderColumn>
       </BootstrapTable>
     </div>
