@@ -162,7 +162,7 @@ export class MortgageBilling extends Component {
     if (!found) { payments.push(transaction); }
   }
 
-  amountFormatter = cell => cell.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  amountFormatter = cell => cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '';
   dateFormatter = cell => `${cell.substring(0, 10)}`;
 
   render() {
@@ -177,6 +177,10 @@ export class MortgageBilling extends Component {
     }
 
     const paymentHistory = _.orderBy(this.props.paymentHistory || [], ['date', 'createdAt'], ['desc', 'desc']);
+
+    _.forEach(paymentHistory, (payment) => {
+      payment.amountDisplay = payment.amount.$numberDecimal;
+    });
 
     return (
       <PolicyConnect>
@@ -211,12 +215,12 @@ export class MortgageBilling extends Component {
                       <TableHeaderColumn dataField="type" className="type" columnClassName="type" dataSort width="150" >Type</TableHeaderColumn>
                       <TableHeaderColumn dataField="description" className="description" columnClassName="description" dataSort>Description</TableHeaderColumn>
                       <TableHeaderColumn dataField="batch" className="note" columnClassName="note" dataSort width="200" >Note</TableHeaderColumn>
-                      <TableHeaderColumn dataField="amount" dataFormat={this.amountFormatter} className="amount" columnClassName="amount" width="150" dataSort dataAlign="right">Amount</TableHeaderColumn>
+                      <TableHeaderColumn dataField="amountDisplay" dataFormat={this.amountFormatter} className="amount" columnClassName="amount" width="150" dataSort dataAlign="right">Amount</TableHeaderColumn>
                     </BootstrapTable>
                   </div>
                   <dl className="total">
                     <div>
-                      {this.props.getSummaryLedger && `Payments Received ${this.amountFormatter(this.props.getSummaryLedger.cashReceived || '0')}`} <br />
+                      {this.props.getSummaryLedger && `Payments Received ${this.amountFormatter(this.props.getSummaryLedger.cashReceived.$numberDecimal || '0')}`} <br />
                     </div>
                   </dl>
                 </div>

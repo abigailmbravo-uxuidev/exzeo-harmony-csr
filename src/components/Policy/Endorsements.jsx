@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { reduxForm, propTypes, change, Form } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as cgActions from '../../actions/cgActions';
+import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
 import PolicyConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
@@ -18,6 +19,7 @@ import SelectField from '../Form/inputs/SelectField';
 import CurrencyField from '../Form/inputs/CurrencyField';
 import Footer from '../Common/Footer';
 
+let isLoaded = false;
 export const handleGetPolicy = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
@@ -227,7 +229,7 @@ export const updateDependencies = (event, field, dependency, props) => {
 
   const dependencyValue = String(fieldValues[dependency]).replace(/\D+/g, '');
 
-  const fieldValue = setPercentageOfValue(Number(dependencyValue), Number(event.target.value));
+  const fieldValue = setPercentageOfValue(Number(dependencyValue, Number(event.target.value)));
 
   dispatch(change('Coverage', field, Number.isNaN(fieldValue) ? '' : String(fieldValue)));
 };
@@ -281,24 +283,23 @@ export const save = () => {
 
 };
 
+const amountFormatter = cell => cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '';
+const dateFormatter = cell => `${cell.substring(0, 10)}`;
+
 export class Endorsements extends React.Component {
 
-  componentWillMount = () => {
-    // if (this.props && this.props.policy && this.props.policy.policyNumber) {
-    //   this.props.actions.cgActions.startWorkflow('endorsePolicyModel', { policyNumber: this.props.policy.policyNumber }).then(() => {
-    //   });
-    // }
+  componentWillMount() {
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !isLoaded) {
+      isLoaded = true;
+      this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
+    }
+  }
 
   render() {
-    const endorsements = [
-    { date: '03/30/2017', amount: '-$ 85', type: '???' },
-    { date: '02/20/2016', amount: '-$ 20', type: '???' },
-    { date: '01/10/2015', amount: '-$ 35', type: '???' }
-    ];
-
-    const { initialValues, handleSubmit, appState } = this.props;
+    const { initialValues, handleSubmit, appState, endorsementHistory } = this.props;
     return (
       <PolicyConnect>
         <ClearErrorConnect />
@@ -1091,10 +1092,10 @@ export class Endorsements extends React.Component {
                   </section>
                   <section>
                     <h3>Previous Endorsements</h3>
-                    <BootstrapTable data={endorsements}>
-                      <TableHeaderColumn dataField="date" isKey>Date</TableHeaderColumn>
-                      <TableHeaderColumn dataField="amount">Amount</TableHeaderColumn>
-                      <TableHeaderColumn dataField="type">Type</TableHeaderColumn>
+                    <BootstrapTable data={endorsementHistory}>
+                      <TableHeaderColumn dataField="effectiveDate" isKey dataFormat={dateFormatter}>Date</TableHeaderColumn>
+                      <TableHeaderColumn dataField="netCharge" dataFormat={amountFormatter}>Amount</TableHeaderColumn>
+                      <TableHeaderColumn dataField="transactionType" dataAlign="right">Type</TableHeaderColumn>
                     </BootstrapTable>
                   </section>
                   <section>
@@ -1234,6 +1235,7 @@ redux mapping
 */
 const mapStateToProps = state => ({
   tasks: state.cg,
+  endorsementHistory: state.service.endorsementHistory,
   appState: state.appState,
   fieldValues: _.get(state.form, 'Endorsements.values', {}),
   initialValues: handleInitialize(state),
@@ -1242,6 +1244,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }
