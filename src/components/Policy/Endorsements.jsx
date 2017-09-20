@@ -304,12 +304,9 @@ export class Endorsements extends React.Component {
       <PolicyConnect>
         <ClearErrorConnect />
         <Form id="Endorsements" className={'content-wrapper'} onSubmit={handleSubmit(appState.data.isCalculated ? save : calculate)} >
-
           <div className="route-content">
             <div className="endorsements">
-
               <div className="endo-jump-menu">
-
                 <a href="#coverage" className="btn btn-secondary btn-xs">Coverage</a>
                 <a href="#home" className="btn btn-secondary btn-xs">Home / Location</a>
                 <a href="#policy" className="btn btn-secondary btn-xs">Policyholders</a>
