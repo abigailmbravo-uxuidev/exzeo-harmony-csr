@@ -148,6 +148,7 @@
                 > .form-group {
                   display: flex;
                   flex-direction: row;
+                  flex-wrap: wrap;
                   align-items: center;
                   width: 66.66%;
                   flex-grow: 0;
@@ -157,7 +158,10 @@
 
                   &.error {
                     span {
+                      flex-grow: 1;
+                      flex-shrink: 1;
                       width: 100%;
+                      padding-left: 50%;
                     }
                   }
 
@@ -171,6 +175,15 @@
 
                     label {
                       display: none;
+                    }
+
+                    &.error {
+                      span {
+                        flex-grow: 1;
+                        flex-shrink: 1;
+                        width: 100%;
+                        padding-left: 0;
+                      }
                     }
                   }
 
@@ -281,32 +294,33 @@
             flex-shrink: 1;
             width: auto;
             padding: $padding;
-            background: $bright-blue-darken-04;
-            background: mix($bright-blue-darken-03, $warm-gray-00, 75%);
+            background: $warm-gray-01;
+            border-top: 1px dotted $warm-gray-04;
 
             .btn-secondary {
               margin-right: $padding;
             }
 
             .flex-parent {
-              align-items: flex-end;
 
               .form-group {
                 margin: 0 $padding 0 0;
 
                 label {
-                  color: $white;
                   font-size: $font-size-sm;
                 }
 
                 input {
-                  &:disabled,
-                  &[disabled="disabled"] {
-                    background: $bright-blue-darken-03;
-                    border-color: $bright-blue-darken-03;
-                    color: $white;
-                  }
+                    &[disabled="disabled"], &:disabled {
+                        background: $warm-gray-00;
+                        border-color: $warm-gray-03;
+                        color: $white;
+                    }
                 }
+              }
+
+              .btn {
+                  margin-top: 1.5rem;
               }
             }
           }
@@ -319,10 +333,15 @@
         }
 
         .underwriting-validation {
+          flex-grow: 0;
           flex-shrink: 0;
           width: 240px;
           padding: 0 0 ($padding*2) ($padding*2);
           border-left: dotted 1px $warm-gray-04;
+
+          .uw-validation-header {
+              margin: ($padding*1.5) 0;
+          }
         }
         //endorsements
         .scroll {
@@ -740,8 +759,6 @@
                     display: flex;
                     align-items: center;
                     flex-direction: column;
-
-                    i {}
                   }
 
                   section {
@@ -758,7 +775,7 @@
     }
   }
 }
-
+//cancel policy styles
 .cancel-policy {
   label.form-group.segmented {
     > label {

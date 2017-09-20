@@ -103,10 +103,6 @@ input[type="submit"] {
   }
 }
 
-.btn-cancel {
-    @include button-variant($white, $red, $red);
-}
-
 .btn-action {
   @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
 }
