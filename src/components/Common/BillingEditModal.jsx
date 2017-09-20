@@ -64,39 +64,30 @@ export const BillingEditModal = (props) => {
         <h4>Edit Billing</h4>
       </div>
       <div className="card-block">
-        <div className="flex-parent">
-          <div className="flex-child">
-
-            <SelectFieldBilling
-              name="billToId"
-              component="select"
-              label="Bill To"
-              onChange={() => selectBillTo(props)}
-              validations={['required']}
-              answers={billingOptions.options}
-            />
-
-            <div className="flex-child">
-
-              <RadioFieldBilling
-                validations={['required']}
-                name={'billPlan'}
-                label={'Bill Plan'}
-                onChange={value => selectBillPlan(value, props)}
-                validate={[value => (value ? undefined : 'Field Required')]}
-                segmented
-                answers={_.find(billingOptions.options, ['billToId', props.fieldValues.billToId]) ?
-                       _.find(billingOptions.options, ['billToId', props.fieldValues.billToId]).payPlans : []}
-                paymentPlans={billingOptions.paymentPlans}
-              />
-            </div>
-          </div>
-        </div>
+        <SelectFieldBilling
+          name="billToId"
+          component="select"
+          label="Bill To"
+          onChange={() => selectBillTo(props)}
+          validations={['required']}
+          answers={billingOptions.options}
+        />
+        <RadioFieldBilling
+          validations={['required']}
+          name={'billPlan'}
+          label={'Bill Plan'}
+          onChange={value => selectBillPlan(value, props)}
+          validate={[value => (value ? undefined : 'Field Required')]}
+          segmented
+          answers={_.find(billingOptions.options, ['billToId', props.fieldValues.billToId]) ?
+                 _.find(billingOptions.options, ['billToId', props.fieldValues.billToId]).payPlans : []}
+          paymentPlans={billingOptions.paymentPlans}
+        />
       </div>
       <div className="card-footer">
         <div className="btn-group">
-          <button className="btn btn-secondary" type="button" onClick={() => hideBillingModal(props)}>Cancel</button>
-          <button className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Update</button>
+          <button aria-label="reset-btn form-editBilling" className="btn btn-secondary" type="button" onClick={() => hideBillingModal(props)}>Cancel</button>
+          <button aria-label="submit-btn form-editBilling" className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Update</button>
         </div>
       </div>
       </Form>

@@ -1194,8 +1194,8 @@ export class Endorsements extends React.Component {
                     <label>New Annual Premium</label>
                     <input type="numeric" disabled onChange={function () {}} value="" />
                   </div>
-                  <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link>
-                  <button type="submit" className="btn btn-primary">{appState.data.isCalculated ? 'Save' : 'Review'}</button>
+                  <button aria-label="reset-btn form-endorsments"  className="btn btn-secondary">Reset</button>
+                  <button aria-label="submit-btn form-endorsments"  type="submit" className="btn btn-primary">{appState.data.isCalculated ? 'Calculate' : 'Review'}</button>
                 </div>
               </div>
             </div>
