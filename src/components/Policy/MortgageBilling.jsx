@@ -162,7 +162,7 @@ export class MortgageBilling extends Component {
     if (!found) { payments.push(transaction); }
   }
 
-  amountFormatter = cell => cell.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  amountFormatter = cell => cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '';
   dateFormatter = cell => `${cell.substring(0, 10)}`;
 
   render() {
@@ -177,6 +177,10 @@ export class MortgageBilling extends Component {
     }
 
     const paymentHistory = _.orderBy(this.props.paymentHistory || [], ['date', 'createdAt'], ['desc', 'desc']);
+
+    _.forEach(paymentHistory, (payment) => {
+      payment.amountDisplay = payment.amount.$numberDecimal;
+    });
 
     return (
       <PolicyConnect>

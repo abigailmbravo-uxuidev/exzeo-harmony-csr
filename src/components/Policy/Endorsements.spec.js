@@ -32,6 +32,7 @@ describe('Testing Endorsements component', () => {
       actions: {
         errorActions: { dispatchClearAppError() { } },
         serviceActions: {
+          getEndorsementHistory() {},
           getBillingOptions() { },
           addTransaction() { return Promise.resolve(); },
           getTransactionHistory() {},
