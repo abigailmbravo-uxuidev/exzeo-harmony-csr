@@ -200,13 +200,13 @@ export class Coverage extends Component {
     },
     {
       premium: 'Balance Due',
-      value: `$ ${normalizeNumbers(_.get(summaryLedger, 'balance') || 0)}`
+      value: `$ ${normalizeNumbers(_.get(summaryLedger, 'balance.$numberDecimal') || 0)}`
     }];
 
     const billing = [
       {
         coverage: 'Next Payment',
-        value: `$ ${normalizeNumbers(_.get(summaryLedger, 'noticeAmountDue') || 0)}`
+        value: `$ ${normalizeNumbers(_.get(summaryLedger, 'noticeAmountDue.$numberDecimal') || 0)}`
       },
       {
         coverage: 'Payment Due',

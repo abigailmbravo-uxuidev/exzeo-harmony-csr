@@ -46,6 +46,7 @@ export const PhoneInput = ({
     <div className={formGroupStyles}>
       {Label}
       <Field
+        disabled={disabled}
         name={name}
         component="input"
         type="text"

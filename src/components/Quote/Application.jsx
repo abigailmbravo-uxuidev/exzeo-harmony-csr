@@ -10,6 +10,7 @@ import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import QuoteSummaryModal from '../../components/Common/QuoteSummaryModal';
+import Footer from '../Common/Footer';
 
 const handleInitialize = (state) => {
   const formValues = {
@@ -128,27 +129,28 @@ export class QuoteApplication extends Component {
           <Form id="Application" onSubmit={handleSubmit(() => quoteSummaryModal(this.props))} noValidate>
             <div className="scroll">
               <div className="detail-wrapper">
-
                 {underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0 &&
-                <div className="messages" >
-                  <div className="message error">
-                    <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Application cannot be sent due to Underwriting Validations.
+                  <div className="messages" >
+                    <div className="message error">
+                      <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Application cannot be sent due to Underwriting Validations.
+                    </div>
                   </div>
-                </div>
-              }
+                }
 
               </div>
-              <div className="workflow-steps">
-                <button
-                  form="Application"
-                  className="btn btn-primary" type="submit" disabled={(underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0) || checkQuoteState(quoteData)}
-                >Send to DocuSign</button>
-              </div>
-
             </div>
-
           </Form>
           { appState.data.showQuoteSummaryModal && <QuoteSummaryModal verify={handleFormSubmit} showQuoteSummaryModal={() => quoteSummaryModal(this.props)} /> }
+        </div>
+        <div className="basic-footer btn-footer">
+          <Footer />
+            <div className="btn-wrapper">
+              <button
+                aria-label="submit-btn form-application"
+                form="Application"
+                className="btn btn-primary" type="submit" disabled={(underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0) || checkQuoteState(quoteData)}
+              >Send to DocuSign</button>
+            </div>
         </div>
       </QuoteBaseConnect>
     );

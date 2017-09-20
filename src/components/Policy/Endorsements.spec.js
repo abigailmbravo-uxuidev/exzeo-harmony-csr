@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
-import { Endorsements, handleGetPolicy, calculatePercentage, handleInitialize, setPercentageOfValue, updateDependencies, calculate } from './Endorsements';
+import { Endorsements, handleGetPolicy, calculatePercentage, handleInitialize, setPercentageOfValue, updateDependencies, calculate, save, cancel, updateCalculatedSinkhole } from './Endorsements';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
@@ -32,6 +32,7 @@ describe('Testing Endorsements component', () => {
       actions: {
         errorActions: { dispatchClearAppError() { } },
         serviceActions: {
+          getEndorsementHistory() {},
           getBillingOptions() { },
           addTransaction() { return Promise.resolve(); },
           getTransactionHistory() {},
@@ -40,6 +41,7 @@ describe('Testing Endorsements component', () => {
           getPaymentOptionsApplyPayments() {}
         },
         cgActions: {
+          startWorkflow() { return Promise.resolve({ payload: [{ workflowData: { endorsePolicyModelSave: { data: {} } } }] }); },
           batchCompleteTask() { return Promise.resolve(); }
         },
         appStateActions: {
@@ -48,7 +50,10 @@ describe('Testing Endorsements component', () => {
       },
       initialValues: {},
       fieldValues: {},
-      policy: {},
+      policy: {
+        property: {},
+        policyHolderMailingAddress: {}
+      },
       handleSubmit() {},
       fieldQuestions: [],
       quoteData: {},
@@ -73,6 +78,9 @@ describe('Testing Endorsements component', () => {
     handleInitialize(initialState);
     setPercentageOfValue(234, 1);
     updateDependencies({ target: { value: '' } }, 'ds', 'sdf', props);
-    calculate({}, props.dispatch, props);
+    calculate(props);
+    cancel(props);
+    save({}, props.dispatch, props);
+    updateCalculatedSinkhole(props);
   });
 });

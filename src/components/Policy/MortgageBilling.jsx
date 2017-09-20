@@ -57,7 +57,6 @@ export const handleInitialize = (state) => {
 
   const values = {};
   values.policyNumber = _.get(policy, 'policyNumber');
-
   values.cashDate = moment.utc().format('YYYY-MM-DD');
   values.batchNumber = moment.utc().format('YYYYMMDD');
 
@@ -118,7 +117,6 @@ export class MortgageBilling extends Component {
     const submitData = data;
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
       workflowId, { ...this.props.appState.data, submitting: true });
-
     submitData.cashDate = moment.utc(data.cashDate);
     submitData.batchNumber = String(data.batchNumber);
     submitData.amount = Number(String(data.amount).replace(/[^\d.-]/g, ''));
@@ -141,7 +139,6 @@ export class MortgageBilling extends Component {
       workflowId, { ...this.props.appState.data, showBillingEditModal: true });
   };
 
-
   clearForm = () => {
     const { dispatch } = this.props;
     const workflowId = this.props.appState.instanceId;
@@ -162,7 +159,7 @@ export class MortgageBilling extends Component {
     if (!found) { payments.push(transaction); }
   }
 
-  amountFormatter = cell => cell.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  amountFormatter = cell => cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '';
   dateFormatter = cell => `${cell.substring(0, 10)}`;
 
   render() {
@@ -178,144 +175,138 @@ export class MortgageBilling extends Component {
 
     const paymentHistory = _.orderBy(this.props.paymentHistory || [], ['date', 'createdAt'], ['desc', 'desc']);
 
+    _.forEach(paymentHistory, (payment) => {
+      payment.amountDisplay = payment.amount.$numberDecimal;
+    });
+
     return (
       <PolicyConnect>
         <ClearErrorConnect />
         <div className="route-content">
-          <div className="scroll">
-            <div className="form-group survey-wrapper" role="group">
-              <section className="payment-summary">
-                <h3>Billing <button className="btn btn-link btn-sm" onClick={this.handleBillingEdit}><i className="fa fa-pencil-square" />Edit</button></h3>
-                <div className="payment-summary">
-                  <dl>
-                    <div>
-                      <dt>Bill To</dt>
-                      <dd>{this.props.policy.billToType}
-                      </dd>
+          <div className="mortgage-billing">
+            <div className="scroll">
+              <div className="form-group survey-wrapper" role="group">
+                {/* TODO: This section needs to be hidden per role */}
+                <section className="add-payment">
+                  <h3>Add Payment</h3>
+                  <Form id="MortgageBilling" onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
+                    <div className="flex-parent">
+                      <div className="flex-child date">
+                        <div className="form-group">
+                          <TextField validations={['required']} label={'Cash Date'} styleName={''} name={'cashDate'} type={'date'} onChange={e => this.setBatch(e.target.value)} />
+                        </div>
+                      </div>
+                      <div className="flex-child">
+                        <div className="form-group">
+                          <TextField validations={['matchDateMin10']} label={'Batch Number'} styleName={''} name={'batchNumber'} dateString={moment.utc(fieldValues.cashDate).format('YYYYMMDD')} />
+                        </div>
+                      </div>
                     </div>
-                  </dl>
-                  <dl>
-                    <div>
-                      <dt>Bill Plan</dt>
-                      <dd>{this.props.policy.billPlan}</dd>
+                    <div className="flex-parent">
+                      <div className="flex-child cash-type">
+                        <div className="form-group">
+                          <SelectField
+                            name="cashType" component="select" label="Cash Type" onChange={val => getPaymentDescription(val, this.props)} validations={['required']}
+                            answers={_.map(this.props.paymentOptions, type => ({ answer: type.paymentType }))}
+                          />
+                        </div>
+                      </div>
+                      <div className="flex-child payment-description">
+                        <div className="form-group">
+                          {this.props.appState.data.paymentDescription &&
+                          <SelectField
+                            name="cashDescription" component="select" label="Description" onChange={function () {}} validations={['required']}
+                            answers={_.map(this.props.appState.data.paymentDescription, description => ({ answer: description }))}
+                          />
+                          }
+                        </div>
+                      </div>
+                      <div className="flex-child">
+                        <div className="form-group">
+                          <CurrencyField
+                            validations={['range']} label="Amount" styleName={''} name={'amount'} min={-1000000} max={1000000}
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </dl>
-                </div>
-                <div className="flex-parent">
-                  <h3 className="flex-child">Payments</h3>
-                </div>
-                <div className="payment-summary grid">
-                  <div className="table-view">
-                    <BootstrapTable className="" data={paymentHistory} striped hover>
-                      <TableHeaderColumn isKey dataField="date" dataFormat={this.dateFormatter} className="date" columnClassName="date" width="150" dataSort>Date</TableHeaderColumn>
-                      <TableHeaderColumn dataField="type" className="type" columnClassName="type" dataSort width="150" >Type</TableHeaderColumn>
-                      <TableHeaderColumn dataField="description" className="description" columnClassName="description" dataSort>Description</TableHeaderColumn>
-                      <TableHeaderColumn dataField="batch" className="note" columnClassName="note" dataSort width="200" >Note</TableHeaderColumn>
-                      <TableHeaderColumn dataField="amount" dataFormat={this.amountFormatter} className="amount" columnClassName="amount" width="150" dataSort dataAlign="right">Amount</TableHeaderColumn>
-                    </BootstrapTable>
+                    <div className="btn-footer">
+                      <button className="btn btn-secondary" type="button" form="MortgageBilling" onClick={this.clearForm}>Cancel</button>
+                      <button className="btn btn-primary" type="submit" form="MortgageBilling" disabled={this.props.appState.data.submitting || pristine}>Save</button>
+                    </div>
+                  </Form>
+                </section>
+                <section className="payment-summary">
+                  <h3>Billing <button className="btn btn-link btn-sm" onClick={this.handleBillingEdit}><i className="fa fa-pencil-square"></i>Edit</button></h3>
+                  <div className="payment-summary">
+                    <dl>
+                      <div>
+                        <dt>Bill To</dt>
+                        <dd>{this.props.policy.billToType}
+                        </dd>
+                      </div>
+                    </dl>
+                    <dl>
+                      <div>
+                        <dt>Bill Plan</dt>
+                        <dd>{this.props.policy.billPlan}</dd>
+                      </div>
+                    </dl>
                   </div>
-                  <dl className="total">
-                    <div>
-                      {this.props.getSummaryLedger && `Payments Received ${this.amountFormatter(this.props.getSummaryLedger.cashReceived || '0')}`} <br />
-                    </div>
-                  </dl>
-                </div>
-              </section>
-
-
-              {/* TODO: This section needs to be hidden per role */}
-              <section className="add-payment">
-
-                <h3>Add Payment</h3>
-
-                <Form id="MortgageBilling" onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
-
                   <div className="flex-parent">
-                    <div className="flex-child">
-                      <div className="form-group">
-                        <TextField validations={['required']} label={'Cash Date'} styleName={''} name={'cashDate'} type={'date'} onChange={e => this.setBatch(e.target.value)} />
-                      </div>
-                    </div>
-                    <div className="flex-child">
-                      <div className="form-group">
-                        <TextField validations={['matchDateMin10']} label={'Batch Number'} styleName={''} name={'batchNumber'} dateString={moment.utc(fieldValues.cashDate).format('YYYYMMDD')} />
-                      </div>
-                    </div>
+                    <h3 className="flex-child">Payments</h3>
                   </div>
-
-                  <div className="flex-parent">
-                    <div className="flex-child">
-                      <div className="form-group">
-                        <SelectField
-                          name="cashType" component="select" label="Cash Type" onChange={val => getPaymentDescription(val, this.props)} validations={['required']}
-
-                          answers={_.map(this.props.paymentOptions, type => ({ answer: type.paymentType }))}
-                        />
-                      </div>
+                  <div className="payment-summary grid">
+                    <div className="table-view">
+                      <BootstrapTable className="" data={paymentHistory} striped hover>
+                        <TableHeaderColumn isKey dataField="date" dataFormat={this.dateFormatter} className="date" columnClassName="date" width="150" dataSort>Date</TableHeaderColumn>
+                        <TableHeaderColumn dataField="type" className="type" columnClassName="type" dataSort width="150" >Type</TableHeaderColumn>
+                        <TableHeaderColumn dataField="description" className="description" columnClassName="description" dataSort>Description</TableHeaderColumn>
+                        <TableHeaderColumn dataField="batch" className="note" columnClassName="note" dataSort width="200" >Note</TableHeaderColumn>
+                        <TableHeaderColumn dataField="amount" dataFormat={this.amountFormatter} className="amount" columnClassName="amount" width="150" dataSort dataAlign="right">Amount</TableHeaderColumn>
+                      </BootstrapTable>
                     </div>
-                    <div className="flex-child">
-                      <div className="form-group">
-                        {this.props.appState.data.paymentDescription &&
-                        <SelectField
-                          name="cashDescription" component="select" label="Description" onChange={function () {}} validations={['required']}
-                          answers={_.map(this.props.appState.data.paymentDescription, description => ({ answer: description }))}
-                        />
-                        }
+                    <dl className="total">
+                      <div>
+                        {this.props.getSummaryLedger && `Payments Received ${this.amountFormatter(this.props.getSummaryLedger.cashReceived)}`} <br />
                       </div>
+                    </dl>
+                  </div>
+                </section>
+                <section className="additional-interests">
+                  <h3>Additional Interests</h3>
+                  <div className="results-wrapper">
+                    <div className="button-group">
+                      <button className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
+                      <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
+                      <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
+                      { /* <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => this.addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button> */ }
+                      <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
                     </div>
-                    <div className="flex-child">
-                      <div className="form-group">
-                        <CurrencyField
-                          validations={['range']} label="Amount" styleName={''} name={'amount'} min={-1000000} max={1000000}
-                        />
-                      </div>
-                    </div>
+                    <ul className="results result-cards">
+                      {additionalInterests && _.sortBy(additionalInterests, ['rank', 'type']).map((ai, index) =>
+                        <li key={index}>
+                          <a>
+                            {/* add className based on type - i.e. mortgagee could have class of mortgagee*/}
+                            <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {ai.order + 1}</label></div>
+                            <section><h4>{ai.name1}&nbsp;{ai.name2}</h4>
+                              <p className="address">{
+                               `${ai.mailingAddress.address1},
+                                ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city},
+                                ${ai.mailingAddress.state}
+                                ${ai.mailingAddress.zip}`
+                              }</p>
+                            </section>
+                            <div className="ref-number">
+                              <label htmlFor="ref-number">Reference Number</label>
+                              <span>{` ${ai.referenceNumber || ' - '}`}</span>
+                            </div>
+                          </a>
+                        </li>
+                        )}
+                    </ul>
                   </div>
-                  <div className="btn-footer">
-                    <button className="btn btn-secondary" type="button" form="MortgageBilling" onClick={this.clearForm}>Cancel</button>
-                    <button className="btn btn-primary" type="submit" form="MortgageBilling" disabled={this.props.appState.data.submitting || pristine}>Save</button>
-                  </div>
-                </Form>
-              </section>
-
-
-              <section className="additional-interests">
-                <h3>Additional Interests</h3>
-
-                <div className="results-wrapper">
-
-                  <div className="button-group">
-                    <button className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
-                    <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
-                    <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
-                    { /* <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => this.addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button> */ }
-                    <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
-                  </div>
-                  <ul className="results result-cards">
-                    {additionalInterests && _.sortBy(additionalInterests, ['rank', 'type']).map((ai, index) =>
-                      <li key={index}>
-                        <a>
-                          {/* add className based on type - i.e. mortgagee could have class of mortgagee*/}
-                          <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {ai.order + 1}</label></div>
-                          <section><h4>{ai.name1}&nbsp;{ai.name2}</h4>
-                            <p className="address">{
-                             `${ai.mailingAddress.address1},
-                              ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city},
-                              ${ai.mailingAddress.state}
-                              ${ai.mailingAddress.zip}`
-                            }</p>
-                          </section>
-                          <div className="ref-number">
-                            <label htmlFor="ref-number">Reference Number</label>
-                            <span>{` ${ai.referenceNumber || ' - '}`}</span>
-                          </div>
-                        </a>
-                      </li>
-                      )}
-                  </ul>
-                </div>
-              </section>
-
+                </section>
+              </div>
             </div>
           </div>
         </div>

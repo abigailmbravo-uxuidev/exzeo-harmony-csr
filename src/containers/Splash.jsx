@@ -138,7 +138,9 @@ export class Splash extends Component {
                     handleSelectPolicy={this.handleSelectPolicy}
                   />
                 </div>
-                <Footer />
+                <div className="basic-footer">
+                  <Footer />
+                </div>
               </div>
             </div>
           </div>
