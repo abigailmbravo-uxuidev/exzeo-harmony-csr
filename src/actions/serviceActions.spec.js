@@ -872,4 +872,64 @@ describe('Service Actions', () => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
       });
   });
+
+  it('should call start getEndorsementHistory', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'policy-data.services',
+        method: 'GET',
+        path: 'transactionDetails/123?endorsement=endorsement'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+    serviceActions.getEndorsementHistory(store.dispatch);
+
+    return serviceActions.getEndorsementHistory('123')(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+      });
+  });
+
+  it('should fail start getEndorsementHistory', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'policy-data.services',
+        method: 'GET',
+        path: 'transactionDetails/123?endorsement=endorsement'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+    serviceActions.getEndorsementHistory(store.dispatch);
+
+    return serviceActions.getEndorsementHistory('4435')(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+      });
+  });
 });

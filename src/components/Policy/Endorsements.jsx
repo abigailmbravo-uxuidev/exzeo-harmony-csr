@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { reduxForm, propTypes, change, Form } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as cgActions from '../../actions/cgActions';
+import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as questionsActions from '../../actions/questionsActions';
 import PolicyConnect from '../../containers/Policy';
@@ -25,6 +26,7 @@ export const getAnswers = (name, questions) => _.get(_.find(questions, { name })
 
 export const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question') || '';
 
+let isLoaded = false;
 export const handleGetPolicy = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
@@ -288,6 +290,7 @@ export const save = (data, dispatch, props) => {
   policy.transactionType = 'Endorsement';
   const submitData = {
     ...policy,
+    endorsementDate: moment.utc(),
     country: policy.policyHolderMailingAddress.country,
     pH1FirstName: data.pH1FirstName,
     pH1LastName: data.pH1LastName,
@@ -344,20 +347,24 @@ export const save = (data, dispatch, props) => {
   });
 };
 
+const amountFormatter = cell => cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '';
+const dateFormatter = cell => `${cell.substring(0, 10)}`;
+
 export class Endorsements extends React.Component {
 
   componentDidMount() {
     this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
   }
 
-  render() {
-    const endorsements = [
-    { date: '03/30/2017', amount: '-$ 85', type: '???' },
-    { date: '02/20/2016', amount: '-$ 20', type: '???' },
-    { date: '01/10/2015', amount: '-$ 35', type: '???' }
-    ];
+  componentWillReceiveProps(nextProps) {
+    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !isLoaded) {
+      isLoaded = true;
+      this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
+    }
+  }
 
-    const { initialValues, handleSubmit, appState, fieldValues, questions, pristine } = this.props;
+  render() {
+    const { initialValues, handleSubmit, appState, questions, pristine, endorsementHistory } = this.props;
     return (
       <PolicyConnect>
         <ClearErrorConnect />
@@ -892,10 +899,10 @@ export class Endorsements extends React.Component {
                   </section>
                   <section>
                     <h3>Previous Endorsements</h3>
-                    <BootstrapTable data={endorsements}>
-                      <TableHeaderColumn dataField="date" isKey>Date</TableHeaderColumn>
-                      <TableHeaderColumn dataField="amount">Amount</TableHeaderColumn>
-                      <TableHeaderColumn dataField="type">Type</TableHeaderColumn>
+                    <BootstrapTable data={endorsementHistory || []}>
+                      <TableHeaderColumn dataField="effectiveDate" isKey dataFormat={dateFormatter}>Date</TableHeaderColumn>
+                      <TableHeaderColumn dataField="netCharge" dataFormat={amountFormatter}>Amount</TableHeaderColumn>
+                      <TableHeaderColumn dataField="transactionType" dataAlign="right">Type</TableHeaderColumn>
                     </BootstrapTable>
                   </section>
                   <section>
@@ -1037,6 +1044,7 @@ redux mapping
 */
 const mapStateToProps = state => ({
   tasks: state.cg,
+  endorsementHistory: state.service.endorsementHistory,
   appState: state.appState,
   fieldValues: _.get(state.form, 'Endorsements.values', {}),
   initialValues: handleInitialize(state),
@@ -1047,6 +1055,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: {
     questionsActions: bindActionCreators(questionsActions, dispatch),
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }
