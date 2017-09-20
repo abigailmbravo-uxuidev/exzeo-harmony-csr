@@ -104,7 +104,7 @@ export const SideNav = (props) => {
           }*/}
         <hr className="nav-division" />
         <li>
-          <button className="btn btn-primary btn-sm btn-block" onClick={() => NewNoteFileUploaderPopup(props)}><i className="fa fa-plus" /> Note / File</button>
+          <button aria-label="open-btn form-newNote" className="btn btn-primary btn-sm btn-block" onClick={() => NewNoteFileUploaderPopup(props)}><i className="fa fa-plus" /> Note / File</button>
         </li>
       </ul>
       { props.appState.data.showNewNoteFileUploader === true &&
