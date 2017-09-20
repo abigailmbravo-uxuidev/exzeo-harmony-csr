@@ -232,7 +232,8 @@ export class AdditionalInterests extends Component {
     if (this.props.appState.instanceId) {
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
-        submittingAI: true
+        submittingAI: true,
+        selectedLink: 'additionalInterests'
       });
       const steps = [
     { name: 'hasUserEnteredData', data: { answer: 'No' } },
