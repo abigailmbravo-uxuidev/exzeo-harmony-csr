@@ -317,11 +317,11 @@ export class Coverage extends Component {
                   <dl>
                     <div>
                       <dt>Dist. to Tidal Waters</dt>
-                      <dd>{propertyData.distanceToTidalWater}</dd>
+                      <dd>{propertyData.distanceToTidalWater} ft.</dd>
                       <dt>Dist. to Fire Hydrant</dt>
-                      <dd>{propertyData.distanceToFireHydrant ? `${propertyData.distanceToFireHydrant}` : '-'}</dd>
+                      <dd>{propertyData.distanceToFireHydrant ? `${propertyData.distanceToFireHydrant} ft.` : '-'}</dd>
                       <dt>Dist. to Fire Station</dt>
-                      <dd>{propertyData.distanceToFireStation}</dd>
+                      <dd>{propertyData.distanceToFireStation} mi.</dd>
                     </div>
                   </dl>
                   <dl>
