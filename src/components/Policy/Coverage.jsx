@@ -302,8 +302,6 @@ export class Coverage extends Component {
                       <dd>{propertyData.constructionType}</dd>
                       <dt>Year Roof Built</dt>
                       <dd>{propertyData.yearOfRoof}</dd>
-                      <dt>Territory</dt>
-                      <dd>{propertyData.territory}</dd>
                     </div>
                   </dl>
                   <dl>
@@ -314,8 +312,6 @@ export class Coverage extends Component {
                       <dd>{propertyData.buildingCodeEffectivenessGrading}</dd>
                       <dt>Family Units</dt>
                       <dd>{propertyData.familyUnits}</dd>
-                      <dt>Number of Stories</dt>
-                      <dd>-</dd>
                     </div>
                   </dl>
                   <dl>
@@ -347,6 +343,8 @@ export class Coverage extends Component {
                           href={getPropertyAppraisialLink(propertyData.physicalAddress.county, questions).answer}
                         >{getPropertyAppraisialLink(propertyData.physicalAddress.county, questions).label}</a>
                       </dd>
+                      <dt>Territory</dt>
+                      <dd>{_.get(rating, 'worksheet.elements.territoryFactors.name') || '-'}</dd>
                     </div>
                   </dl>
                 </div>
