@@ -550,7 +550,7 @@ ul.list-cards {
       display: flex;
       overflow: hidden;
       align-items: center;
-      flex-basis: 12rem;
+      flex-basis: 15rem;
       flex-wrap: wrap;
 
       i {
@@ -568,15 +568,15 @@ ul.list-cards {
         display: flex;
         overflow: hidden;
         align-items: center;
-        flex-basis: 10rem;
+        flex-basis: 13rem;
         flex-wrap: wrap;
-        height: 2.875rem;
+        //height: 2.875rem;
         padding-left: $padding;
 
         h5 {
           display: block;
           overflow: hidden;
-          flex-basis: 8.75rem;
+          flex-basis: 12rem;
           flex-grow: 0;
           flex-shrink: 0;
           margin: 0;
