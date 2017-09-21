@@ -113,17 +113,20 @@ describe('Service Actions', () => {
     };
 
     const form = new FormData();
-    for (let [key, value] of Object.entries(note)) {
+
+    Object.keys(note).forEach((key) => {
+      const value = note[key];
       const fieldValue = key === 'createdBy' ? JSON.stringify(value) : value;
       form.append(key, fieldValue);
-    }
+    });
+
     const url = `${process.env.REACT_APP_API_URL}/upload`;
 
     mockAdapter.onPost(url, form, {
       headers: {
-        'accept': 'application/json',
+        accept: 'application/json',
         'Accept-Language': 'en-US,en;q=0.8',
-        'Content-Type': `multipart/form-data; boundary=${ form._boundary }`
+        'Content-Type': `multipart/form-data; boundary=${form._boundary}`
       }
     }).reply(200, {
       data: [note]
@@ -134,7 +137,6 @@ describe('Service Actions', () => {
     serviceActions.addNote(store.dispatch);
 
     const result = serviceActions.addNote(note, [])(store.dispatch);
-
   });
 
   it('should call start getAgents', () => {
@@ -866,6 +868,66 @@ describe('Service Actions', () => {
     const store = mockStore(initialState);
 
     return serviceActions.getBillingOptions('43543534')(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+      });
+  });
+
+  it('should call start getEndorsementHistory', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'policy-data.services',
+        method: 'GET',
+        path: 'transactionDetails/123?endorsement=endorsement'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+    serviceActions.getEndorsementHistory(store.dispatch);
+
+    return serviceActions.getEndorsementHistory('123')(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+      });
+  });
+
+  it('should fail start getEndorsementHistory', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'policy-data.services',
+        method: 'GET',
+        path: 'transactionDetails/123?endorsement=endorsement'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+    serviceActions.getEndorsementHistory(store.dispatch);
+
+    return serviceActions.getEndorsementHistory('4435')(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
       });

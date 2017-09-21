@@ -282,7 +282,10 @@ export class AdditionalInterests extends Component {
                             <label htmlFor="ref-number">Reference Number</label>
                             <span>{`${ai.referenceNumber || '-'}`}</span>
                           </div>
-                          <i className="fa fa-pencil" />
+                          <span className="edit-btn">
+                            <i className="fa fa-pencil-square" />
+                            <span>EDIT</span>
+                          </span>
                         </a>
                       </li>
                     )}

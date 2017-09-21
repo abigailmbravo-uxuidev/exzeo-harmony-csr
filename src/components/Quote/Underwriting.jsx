@@ -130,8 +130,7 @@ export class Underwriting extends Component {
                     question={question}
                     values={fieldValues}
                     key={index}
-                  />
-            )}
+                  />)}
               </div>
             </div>
           </Form>
@@ -146,9 +145,9 @@ export class Underwriting extends Component {
               type="button"
               form="Underwriting"
               disabled={this.props.appState.data.submitting}
-            >Cancel</button>
+            >Reset</button>
             <button
-              aria-label="submit-btn form-underwriting" 
+              aria-label="submit-btn form-underwriting"
               className="btn btn-primary"
               type="submit"
               form="Underwriting"
