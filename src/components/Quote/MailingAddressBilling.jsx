@@ -9,7 +9,7 @@ import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
-import RadioField from '../Form/inputs/RadioField';
+import CheckField from '../Form/inputs/CheckField';
 import TextField from '../Form/inputs/TextField';
 import { RadioFieldBilling, SelectFieldBilling } from '../Form/inputs';
 import normalizeNumbers from '../Form/normalizeNumbers';
@@ -254,9 +254,9 @@ export class MailingAddressBilling extends Component {
               <div className="form-group survey-wrapper" role="group">
                 <h3>Mailing Address</h3>
                 <section className="mailing-address-details">
-                  <RadioField
+                  <CheckField
                     label={'Is the mailing address the same as the property address?'} name={'sameAsProperty'} onChange={() => fillMailForm(this.props)}
-                    segmented answers={[
+                    answers={[
                       {
                         answer: false,
                         label: 'No'
