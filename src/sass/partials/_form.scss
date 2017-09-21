@@ -877,6 +877,45 @@ label {
     }
   }
 
+  &.segmented-switch {
+      position: relative;
+      height: 50px;
+
+      label {
+          display: flex;
+          flex-direction: column;
+
+          input[type="checkbox"] {
+              display: none;
+          }
+      }
+
+      &:before {
+          content: 'YES';
+          background: $bright-blue-darken-04;
+          color: $white;
+          width: 50%;
+          display: flex;
+          align-items: center;
+          border-radius: $border-radius 0 0 $border-radius;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+      }
+      &:after {
+          content: 'NO';
+          background: $bright-blue-darken-04;
+          color: $white;
+          width: 50%;
+          display: flex;
+          align-items: center;
+          border-radius: 0 $border-radius $border-radius 0;
+          position: absolute;
+          bottom: 0;
+          right: 0;
+      }
+  }
+
   &.error {
     input,
     select,

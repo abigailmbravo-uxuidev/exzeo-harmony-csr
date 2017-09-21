@@ -255,7 +255,7 @@ export class MailingAddressBilling extends Component {
                 <h3>Mailing Address</h3>
                 <section className="mailing-address-details">
                   <CheckField
-                    label={'Is the mailing address the same as the property address?'} name={'sameAsProperty'} onChange={() => fillMailForm(this.props)}
+                    styleName={'segmented-switch'} label={'Is the mailing address the same as the property address?'} name={'sameAsProperty'} onChange={() => fillMailForm(this.props)}
                     answers={[
                       {
                         answer: false,
