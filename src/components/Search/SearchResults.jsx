@@ -52,7 +52,7 @@ export const SearchResults = (props) => {
             <div className="icon-name">
               <i className="card-icon fa fa-user-circle" />
               <div className="card-name">
-                <h5>{quote.policyHolders[0] && `${quote.policyHolders[0].firstName}`} {quote.policyHolders[0] && `${quote.policyHolders[0].lastName}`}</h5>
+                <h5 title={quote.policyHolders && quote.policyHolders.length > 0 ? quote.policyHolders[0].firstName+' '+quote.policyHolders[0].lastName : ''}>{quote.policyHolders[0] && `${quote.policyHolders[0].firstName.replace(/(^.{13}).*$/,'$1...')}`} {quote.policyHolders[0] && `${quote.policyHolders[0].lastName.replace(/(^.{13}).*$/,'$1...')}`}</h5>
               </div>
             </div>
 
@@ -116,7 +116,7 @@ export const SearchResults = (props) => {
             <div className="icon-name">
               <i className="card-icon fa fa-user-circle" />
               <div className="card-name">
-                <h5>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName}`} {policy.policyHolders[0] && `${policy.policyHolders[0].lastName}`}</h5>
+                <h5 title={policy.policyHolders[0].firstName+' '+policy.policyHolders[0].lastName}>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName.replace(/(^.{13}).*$/,'$1...')}`} {policy.policyHolders[0] && `${policy.policyHolders[0].lastName.replace(/(^.{13}).*$/,'$1...')}`}</h5>
               </div>
             </div>
             {/* <div>

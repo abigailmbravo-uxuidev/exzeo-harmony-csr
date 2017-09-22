@@ -162,7 +162,7 @@ export class MortgageBilling extends Component {
     if (!found) { payments.push(transaction); }
   }
 
-  amountFormatter = cell => cell.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  amountFormatter = cell => cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '';
   dateFormatter = cell => `${cell.substring(0, 10)}`;
 
   render() {
@@ -178,58 +178,20 @@ export class MortgageBilling extends Component {
 
     const paymentHistory = _.orderBy(this.props.paymentHistory || [], ['date', 'createdAt'], ['desc', 'desc']);
 
+    _.forEach(paymentHistory, (payment) => {
+      payment.amountDisplay = payment.amount.$numberDecimal;
+    });
+
     return (
       <PolicyConnect>
         <ClearErrorConnect />
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
-              <section className="payment-summary">
-                <h3>Billing <button className="btn btn-link btn-sm" onClick={this.handleBillingEdit}><i className="fa fa-pencil-square"></i>Edit</button></h3>
-                <div className="payment-summary">
-                  <dl>
-                    <div>
-                      <dt>Bill To</dt>
-                      <dd>{this.props.policy.billToType}
-                      </dd>
-                    </div>
-                  </dl>
-                  <dl>
-                    <div>
-                      <dt>Bill Plan</dt>
-                      <dd>{this.props.policy.billPlan}</dd>
-                    </div>
-                  </dl>
-                </div>
-                <div className="flex-parent">
-                  <h3 className="flex-child">Payments</h3>
-                </div>
-                <div className="payment-summary grid">
-                  <div className="table-view">
-                    <BootstrapTable className="" data={paymentHistory} striped hover>
-                      <TableHeaderColumn isKey dataField="date" dataFormat={this.dateFormatter} className="date" columnClassName="date" width="150" dataSort>Date</TableHeaderColumn>
-                      <TableHeaderColumn dataField="type" className="type" columnClassName="type" dataSort width="150" >Type</TableHeaderColumn>
-                      <TableHeaderColumn dataField="description" className="description" columnClassName="description" dataSort>Description</TableHeaderColumn>
-                      <TableHeaderColumn dataField="batch" className="note" columnClassName="note" dataSort width="200" >Note</TableHeaderColumn>
-                      <TableHeaderColumn dataField="amount" dataFormat={this.amountFormatter} className="amount" columnClassName="amount" width="150" dataSort dataAlign="right">Amount</TableHeaderColumn>
-                    </BootstrapTable>
-                  </div>
-                  <dl className="total">
-                    <div>
-                      {this.props.getSummaryLedger && `Payments Received ${this.amountFormatter(this.props.getSummaryLedger.cashReceived)}`} <br />
-                    </div>
-                  </dl>
-                </div>
-              </section>
-
-
               {/* TODO: This section needs to be hidden per role */}
               <section className="add-payment">
-
                 <h3>Add Payment</h3>
-
                 <Form id="MortgageBilling" onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
-
                   <div className="flex-parent">
                     <div className="flex-child">
                       <div className="form-group">
@@ -242,13 +204,11 @@ export class MortgageBilling extends Component {
                       </div>
                     </div>
                   </div>
-
                   <div className="flex-parent">
                     <div className="flex-child">
                       <div className="form-group">
                         <SelectField
                           name="cashType" component="select" label="Cash Type" onChange={val => getPaymentDescription(val, this.props)} validations={['required']}
-
                           answers={_.map(this.props.paymentOptions, type => ({ answer: type.paymentType }))}
                         />
                       </div>
@@ -277,13 +237,46 @@ export class MortgageBilling extends Component {
                   </div>
                 </Form>
               </section>
-
-
+              <section className="payment-summary">
+                <h3>Billing <button className="btn btn-link btn-sm" onClick={this.handleBillingEdit}><i className="fa fa-pencil-square" />Edit</button></h3>
+                <div className="payment-summary">
+                  <dl>
+                    <div>
+                      <dt>Bill To</dt>
+                      <dd>{this.props.policy.billToType}
+                      </dd>
+                    </div>
+                  </dl>
+                  <dl>
+                    <div>
+                      <dt>Bill Plan</dt>
+                      <dd>{this.props.policy.billPlan}</dd>
+                    </div>
+                  </dl>
+                </div>
+                <div className="flex-parent">
+                  <h3 className="flex-child">Payments</h3>
+                </div>
+                <div className="payment-summary grid">
+                  <div className="table-view">
+                    <BootstrapTable className="" data={paymentHistory} striped hover>
+                      <TableHeaderColumn isKey dataField="date" dataFormat={this.dateFormatter} className="date" columnClassName="date" width="150" dataSort>Date</TableHeaderColumn>
+                      <TableHeaderColumn dataField="type" className="type" columnClassName="type" dataSort width="150" >Type</TableHeaderColumn>
+                      <TableHeaderColumn dataField="description" className="description" columnClassName="description" dataSort>Description</TableHeaderColumn>
+                      <TableHeaderColumn dataField="batch" className="note" columnClassName="note" dataSort width="200" >Note</TableHeaderColumn>
+                      <TableHeaderColumn dataField="amountDisplay" dataFormat={this.amountFormatter} className="amount" columnClassName="amount" width="150" dataSort dataAlign="right">Amount</TableHeaderColumn>
+                    </BootstrapTable>
+                  </div>
+                  <dl className="total">
+                    <div>
+                      {this.props.getSummaryLedger && `Payments Received ${this.amountFormatter(this.props.getSummaryLedger.cashReceived.$numberDecimal || '0')}`} <br />
+                    </div>
+                  </dl>
+                </div>
+              </section>
               <section className="additional-interests">
                 <h3>Additional Interests</h3>
-
                 <div className="results-wrapper">
-
                   <div className="button-group">
                     <button className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
                     <button className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
@@ -315,7 +308,6 @@ export class MortgageBilling extends Component {
                   </ul>
                 </div>
               </section>
-
             </div>
           </div>
         </div>
