@@ -159,23 +159,19 @@ export const handleFormSubmit = (data, dispatch, props) => {
 
   actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
+        if (_.isEqual(data.address1, _.get(props.quoteData, 'property.physicalAddress.address1')) &&
+        _.isEqual(data.city, _.get(props.quoteData, 'property.physicalAddress.city')) &&
+       _.isEqual(data.state, _.get(props.quoteData, 'property.physicalAddress.state')) &&
+      _.isEqual(data.zip, _.get(props.quoteData, 'property.physicalAddress.zip'))) {
+          dispatch(change('MailingAddressBilling', 'sameAsProperty', true));
+        } else dispatch(change('MailingAddressBilling', 'sameAsProperty', false));
         props.actions.appStateActions.setAppState(props.appState.modelName,
           workflowId, { ...props.appState.data, submitting: false, selectedLink: 'mailing' });
       });
 };
 
 export const clearForm = (props) => {
-  const { dispatch } = props;
-  dispatch(change('MailingAddressBilling', 'address1', ''));
-  dispatch(change('MailingAddressBilling', 'address2', ''));
-  dispatch(change('MailingAddressBilling', 'city', ''));
-  dispatch(change('MailingAddressBilling', 'state', ''));
-  dispatch(change('MailingAddressBilling', 'zip', ''));
-  dispatch(change('MailingAddressBilling', 'billToId', ''));
-  dispatch(change('MailingAddressBilling', 'billToType', ''));
-  dispatch(change('MailingAddressBilling', 'billPlan', ''));
-  dispatch(change('MailingAddressBilling', 'billTo', ''));
-  dispatch(change('MailingAddressBilling', 'sameAsProperty', false));
+  props.reset('MailingAddressBilling');
 };
 
 export const fillMailForm = (props) => {
@@ -197,6 +193,11 @@ export const fillMailForm = (props) => {
   dispatch(change('MailingAddressBilling', 'sameAsProperty', !props.fieldValues.sameAsProperty));
 };
 
+const setPropertyToggle = (props) => {
+  const { dispatch } = props;
+
+  dispatch(change('MailingAddressBilling', 'sameAsProperty', false));
+};
 
 export class MailingAddressBilling extends Component {
 
@@ -266,19 +267,20 @@ export class MailingAddressBilling extends Component {
                       }
                     ]}
                   />
-                  <TextField validations={['required']} label={'Address 1'} styleName={'address-1'} name={'address1'} />
-                  <TextField label={'Address 2'} styleName={'address-2'} name={'address2'} />
+                  <TextField validations={['required']} label={'Address 1'} styleName={'address-1'} name={'address1'} onChange={() => setPropertyToggle(this.props)} />
+                  <TextField label={'Address 2'} styleName={'address-2'} name={'address2'} onChange={() => setPropertyToggle(this.props)} />
                   <div className="flex-parent flex-form">
                     <div className="flex-child city">
-                      <TextField validations={['required']} label={'City'} styleName={''} name={'city'} />
+                      <TextField validations={['required']} label={'City'} styleName={''} name={'city'} onChange={() => setPropertyToggle(this.props)} />
                     </div>
                     <div className="flex-child state">
                       <TextField
+                        onChange={() => setPropertyToggle(this.props)}
                         name="state" component="select" styleName={''} label="State" validations={['required']}
                       />
                     </div>
                     <div className="flex-child zip">
-                      <TextField validations={['required']} label={'Zip'} styleName={''} name={'zip'} />
+                      <TextField validations={['required']} label={'Zip'} styleName={''} name={'zip'} onChange={() => setPropertyToggle(this.props)} />
                     </div>
                   </div>
                 </section>
