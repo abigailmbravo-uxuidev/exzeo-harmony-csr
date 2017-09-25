@@ -57,7 +57,7 @@ export const handleInitialize = (state) => {
 
   const values = {};
   values.policyNumber = _.get(policy, 'policyNumber');
-
+  values.cashDescription = '';
   values.cashDate = moment.utc().format('YYYY-MM-DD');
   values.batchNumber = moment.utc().format('YYYYMMDD');
 
@@ -65,7 +65,7 @@ export const handleInitialize = (state) => {
 };
 
 export const getPaymentDescription = (event, props) => {
-  const selectedDescriptionType = _.find(props.paymentOptions, type => type.paymentType === event.target.value);
+  const selectedDescriptionType = _.find(props.paymentOptions, type => type.paymentType === event.target.value) || [];
   const { dispatch } = props;
   dispatch(change('MortgageBilling', 'cashDescription', ''));
 
