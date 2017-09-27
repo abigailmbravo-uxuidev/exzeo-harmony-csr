@@ -44,6 +44,7 @@ export const calculatePercentage = (oldFigure, newFigure) => {
 
 export const handleInitialize = (state) => {
   const policy = handleGetPolicy(state);
+  const questions = state.questions || [];
   const values = {};
   // values.agencyCode = '20000'; // _.get(policy, 'agencyCode');
   // values.agentCode = '60000'; // _.get(policy, 'agentCode');
@@ -63,12 +64,12 @@ export const handleInitialize = (state) => {
   values.dwellingAmountNew = values.dwellingAmount;
   values.otherStructuresAmount = otherStructures;
   values.otherStructuresAmountNew = values.otherStructuresAmount;
-  values.otherStructures = String(calculatePercentage(otherStructures, dwelling));
-  values.otherStructuresNew = values.otherStructures;
+  values.otherStructures = `${String(calculatePercentage(otherStructures, dwelling))}%`;
+  values.otherStructuresNew = String(calculatePercentage(otherStructures, dwelling));
   values.personalPropertyAmount = String(personalProperty);
   values.personalPropertyAmountNew = values.personalPropertyAmount;
-  values.personalProperty = String(calculatePercentage(personalProperty, dwelling));
-  values.personalPropertyNew = values.personalProperty;
+  values.personalProperty = `${String(calculatePercentage(personalProperty, dwelling))}%`;
+  values.personalPropertyNew = String(calculatePercentage(personalProperty, dwelling));
   values.lossOfUse = _.get(policy, 'coverageLimits.lossOfUse.amount');
   values.lossOfUseNew = values.lossOfUse;
   values.personalLiability = _.get(policy, 'coverageLimits.personalLiability.amount');
@@ -81,13 +82,12 @@ export const handleInitialize = (state) => {
   values.moldLiabilityNew = values.moldLiability;
   values.allOtherPerils = _.get(policy, 'deductibles.allOtherPerils.amount');
   values.allOtherPerilsNew = values.allOtherPerils;
-  values.hurricane = hurricane;
-  values.hurricaneNew = values.hurricane;
+  values.hurricane = `${hurricane}%`;
+  values.hurricaneNew = hurricane;
   values.calculatedHurricane = _.get(policy, 'deductibles.hurricane.calculatedAmount');
   values.calculatedHurricaneNew = values.calculatedHurricane;
-  values.sinkholePerilCoverage = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer');
-  values.sinkholePerilCoverageNew = values.sinkholePerilCoverage;
-
+  values.sinkholePerilCoverage = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer') ? `10% of ${getQuestionName('dwellingAmount', questions)}` : 'Coverage Excluded';
+  values.sinkholePerilCoverageNew = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer');
 // Coverage Top Right
   values.personalPropertyReplacementCostCoverage = _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer');
   values.personalPropertyReplacementCostCoverageNew = values.personalPropertyReplacementCostCoverage;
@@ -98,7 +98,7 @@ export const handleInitialize = (state) => {
   values.propertyIncidentalOccupanciesOtherStructures = false;
   values.propertyIncidentalOccupanciesOtherStructuresNew = values.propertyIncidentalOccupanciesOtherStructures;
 
-  values.liabilityIncidentalOccupancies = _.get(policy, 'coverageOptions.liabilityIncidentalOccupancies.answer');
+  values.liabilityIncidentalOccupancies = _.get(policy, 'coverageOptions.liabilityIncidentalOccupancies.answer') ? 'Yes' : 'No';
   values.liabilityIncidentalOccupanciesNew = values.liabilityIncidentalOccupancies;
 
   values.townhouseRowhouse = _.get(policy, 'property.townhouseRowhouse') ? 'Yes' : 'No';
@@ -485,7 +485,7 @@ export class Endorsements extends React.Component {
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Sinkhole Deductible'} styleName={''} name={'sinkhole'} disabled />
+                          <TextField label={'Sinkhole Deductible'} styleName={''} name={'sinkholePerilCoverage'} disabled />
                           <SelectField
                             label={''}
                             isDisabled={appState.data.isCalculated}
@@ -542,7 +542,20 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Incidental Occ Liability'} styleName={''} name={'liabilityIncidentalOccupancies'} disabled />
-                          <CurrencyField name={'liabilityIncidentalOccupanciesNew'} label={''} styleName={''} disabled />
+                          <div className="flex-child other-coverages-property-replacement-cost">
+                            <RadioField
+                              disabled={appState.data.isCalculated}
+                              name={'liabilityIncidentalOccupanciesNew'} styleName={'billPlan'} label={''} onChange={function () {}} segmented answers={[
+                                {
+                                  answer: 'No',
+                                  label: 'No'
+                                }, {
+                                  answer: 'Yes',
+                                  label: 'Yes'
+                                }
+                              ]}
+                            />
+                          </div>
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Townhouse / Rowhouse'} styleName={''} name={'townhouseRowhouse'} disabled />
