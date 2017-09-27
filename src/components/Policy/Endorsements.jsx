@@ -290,6 +290,7 @@ export const save = (data, dispatch, props) => {
   policy.transactionType = 'Endorsement';
   const submitData = {
     ...policy,
+    formListTransactionType: 'NON-PREMIUM ENDORSEMENT',
     endorsementDate: moment.utc(),
     country: policy.policyHolderMailingAddress.country,
     pH1FirstName: data.pH1FirstName,
@@ -330,7 +331,11 @@ export const save = (data, dispatch, props) => {
     roofToWallConnectionNew: data.roofToWallConnectionNew,
     electronicDeliveryNew: data.electronicDeliveryNew,
     distanceToFireStationNew: data.distanceToFireStationNew,
-    yearOfRoofNew: data.yearOfRoofNew
+    yearOfRoofNew: data.yearOfRoofNew,
+    fireAlarmNew: data.fireAlarmNew,
+    burglarAlarmNew: data.burglarAlarmNew,
+    buildingCodeEffectivenessGradingNew: data.buildingCodeEffectivenessGradingNew || null,
+    yearBuiltNew: data.yearBuiltNew || null
   };
 
   props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber }).then((result) => {
@@ -918,22 +923,22 @@ export class Endorsements extends React.Component {
                           <PhoneField validations={['phone']} label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} disabled={appState.data.isCalculated} />
                         </div>
                         <div className="flex-parent">
-                          <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH1email'} disabled={appState.data.isCalculated} />
+                          <TextField validations={['required', 'email']} label={'Email Address'} styleName={''} name={'pH1email'} disabled={appState.data.isCalculated} />
                         </div>
                       </div>
                       {/* Col2 */}
                       <div className="flex-child">
                         <h3>Secondary Policyholder</h3>
                         <div className="flex-parent col2">
-                          <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH2FirstName'} disabled={appState.data.isCalculated} />
-                          <TextField validations={['required']} label={'Last Name'} styleName={''} name={'pH2LastName'} disabled={appState.data.isCalculated} />
+                          <TextField label={'First Name'} styleName={''} name={'pH2FirstName'} disabled={appState.data.isCalculated} />
+                          <TextField label={'Last Name'} styleName={''} name={'pH2LastName'} disabled={appState.data.isCalculated} />
                         </div>
                         <div className="flex-parent col2">
-                          <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH2phone'} disabled={appState.data.isCalculated} />
+                          <PhoneField validations={['phone']} label={'Primary Phone'} styleName={''} name={'pH2phone'} disabled={appState.data.isCalculated} />
                           <PhoneField validations={['phone']} label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} disabled={appState.data.isCalculated} />
                         </div>
                         <div className="flex-parent">
-                          <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH2email'} disabled={appState.data.isCalculated} />
+                          <TextField validations={['email']} label={'Email Address'} styleName={''} name={'pH2email'} disabled={appState.data.isCalculated} />
                         </div>
                       </div>
                     </div>
