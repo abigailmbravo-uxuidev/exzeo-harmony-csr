@@ -102,7 +102,7 @@ export const handleInitialize = (state) => {
   values.liabilityIncidentalOccupanciesNew = _.get(policy, 'coverageOptions.liabilityIncidentalOccupancies.answer');
 
   values.townhouseRowhouse = _.get(policy, 'property.townhouseRowhouse') ? 'Yes' : 'No';
-  values.townhouseRowhouseNew = _.get(policy, 'property.townhouseRowhouse') || false;
+  values.townhouseRowhouseNew = !!_.get(policy, 'property.townhouseRowhouse');
   values.windExcluded = _.get(policy, 'rating.windMitigationDiscount') === 0 ? 'No' : 'Yes';
   values.windExcludedNew = values.windExcluded;
   values.propertyRented = _.get(policy, 'underwritingAnswers.rented.answer');
@@ -147,7 +147,7 @@ export const handleInitialize = (state) => {
   values.terrainNew = values.terrain;
   values.internalPressureDesign = _.get(policy, 'property.windMitigation.internalPressureDesign');
   values.internalPressureDesignNew = values.internalPressureDesign;
-  values.windBorneDebrisRegion = _.get(policy, 'property.windMitigation.windBorneDebrisRegion') === true ? 'Yes' : 'No';
+  values.windBorneDebrisRegion = _.get(policy, 'property.windMitigation.windBorneDebrisRegion');
   values.windBorneDebrisRegionNew = values.windBorneDebrisRegion;
   values.windMitFactor = _.get(policy, 'rating.windMitigationDiscount');
   values.windMitFactorNew = values.windMitFactor;
@@ -335,7 +335,10 @@ export const save = (data, dispatch, props) => {
     fireAlarmNew: data.fireAlarmNew,
     burglarAlarmNew: data.burglarAlarmNew,
     buildingCodeEffectivenessGradingNew: data.buildingCodeEffectivenessGradingNew || null,
-    yearBuiltNew: data.yearBuiltNew || null
+    yearBuiltNew: data.yearBuiltNew || null,
+    townhouseRowhouseNew: data.townhouseRowhouseNew,
+    familyUnitsNew: data.familyUnitsNew,
+    constructionTypeNew: data.constructionTypeNew
   };
 
   props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber }).then((result) => {
@@ -612,7 +615,7 @@ export class Endorsements extends React.Component {
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Seasonally Occupied'} styleName={''} name={'seasonallyOccupied'} disabled />
+                          <TextField label={'Months Occupied'} styleName={''} name={'seasonallyOccupied'} disabled />
                           <SelectField
                             isDisabled={appState.data.isCalculated}
                             name={'seasonallyOccupiedNew'}
@@ -621,13 +624,21 @@ export class Endorsements extends React.Component {
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField validations={['required']} label={'No Prior Insurance'} styleName={''} name={'noPriorInsurance'} disabled />
-                          <SelectField
-                            isDisabled={appState.data.isCalculated}
-                            name={'noPriorInsuranceNew'}
-                            answers={getAnswers('previousClaims', underwritingQuestions)}
-                            label={''} styleName={''} onChange={function () {}}
-                          />
+                          <TextField label={'No Prior Insurance'} styleName={''} name={'noPriorInsurance'} disabled />
+                          <div className="flex-child discounts-burglar-alarm">
+                            <RadioField
+                              disabled={appState.data.isCalculated}
+                              name={'noPriorInsuranceNew'} styleName={''} label={''} onChange={function () {}} segmented answers={[
+                                {
+                                  answer: 'No',
+                                  label: 'No'
+                                }, {
+                                  answer: 'Yes',
+                                  label: 'Yes'
+                                }
+                              ]}
+                            />
+                          </div>
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Burglar Alarm'} styleName={''} name={'burglarAlarm'} disabled />
@@ -878,7 +889,12 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Flood Zone'} styleName={''} name={'floodZone'} disabled />
-                          <TextField label={''} styleName={''} name={'floodZoneNew'} disabled={appState.data.isCalculated} />
+                          <SelectField
+                            isDisabled={appState.data.isCalculated}
+                            name={'floodZoneNew'}
+                            answers={getAnswers('floodZone', questions)}
+                            component="select" label={''} styleName={''} onChange={function () {}}
+                          />
                         </div>
                       </div>
                       {/* Col2 */}
@@ -900,7 +916,12 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Residence Type'} styleName={''} name={'residenceType'} disabled />
-                          <TextField label={''} styleName={''} name={'residenceTypeNew'} disabled={appState.data.isCalculated} />
+                          <SelectField
+                            isDisabled={appState.data.isCalculated}
+                            name={'residenceTypeNew'}
+                            answers={getAnswers('residenceType', questions)}
+                            component="select" label={''} styleName={''} onChange={function () {}}
+                          />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Sq. Ft. of Home'} styleName={''} name={'squareFeet'} disabled />
