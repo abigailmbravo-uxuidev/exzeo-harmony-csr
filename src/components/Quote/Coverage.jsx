@@ -248,7 +248,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
       .then(() => {
         // now update the workflow details so the recalculated rate shows
         props.actions.appStateActions.setAppState(props.appState.modelName,
-          workflowId, { ...props.appState.data, submitting: false, selectedLink: 'coverage' });
+          workflowId, { ...props.appState.data, submitting: false, selectedLink: 'customerData' });
       });
 };
 

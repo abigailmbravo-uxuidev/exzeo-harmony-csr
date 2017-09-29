@@ -57,7 +57,7 @@ export const handleInitialize = (state) => {
 
   const values = {};
   values.policyNumber = _.get(policy, 'policyNumber');
-
+  values.cashDescription = '';
   values.cashDate = moment.utc().format('YYYY-MM-DD');
   values.batchNumber = moment.utc().format('YYYYMMDD');
 
@@ -65,7 +65,9 @@ export const handleInitialize = (state) => {
 };
 
 export const getPaymentDescription = (event, props) => {
-  const selectedDescriptionType = _.find(props.paymentOptions, type => type.paymentType === event.target.value);
+  const selectedDescriptionType = _.find(props.paymentOptions, type => type.paymentType === event.target.value) || [];
+  const { dispatch } = props;
+  dispatch(change('MortgageBilling', 'cashDescription', ''));
 
   props.actions.appStateActions.setAppState(props.appState.modelName,
           props.appState.instanceId, { ...props.appState.data, ranService: false, paymentDescription: selectedDescriptionType.paymentDescription, showDescription: true });
@@ -215,12 +217,10 @@ export class MortgageBilling extends Component {
                     </div>
                     <div className="flex-child">
                       <div className="form-group">
-                        {this.props.appState.data.paymentDescription &&
                         <SelectField
                           name="cashDescription" component="select" label="Description" onChange={function () {}} validations={['required']}
-                          answers={_.map(this.props.appState.data.paymentDescription, description => ({ answer: description }))}
+                          answers={_.map(this.props.appState.data.paymentDescription || [], description => ({ answer: description }))}
                         />
-                        }
                       </div>
                     </div>
                     <div className="flex-child">

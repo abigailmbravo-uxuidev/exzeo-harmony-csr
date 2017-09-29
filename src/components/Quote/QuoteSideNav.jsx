@@ -117,7 +117,7 @@ export const SideNav = (props) => {
           </li> :
           <li key={index}>
             <span className={agentLink.styleName} onClick={() => goToPage(agentLink, props, quote)}>
-              <a>{agentLink.label}</a>
+              <a className={props.appState.data.selectedLink === agentLink.key ? `${agentLink.styleName} active` : `${agentLink.styleName}`}>{agentLink.label}</a>
             </span>
           </li>
       ))}
