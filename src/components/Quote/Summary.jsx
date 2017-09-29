@@ -135,13 +135,14 @@ export class Summary extends Component {
       deductibles = quoteData.deductibles;
     }
 
+    const filteredExceptions = _.filter(quoteData.underwritingExceptions, uw => !uw.overridden);
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
         <div className="route-content summary workflow">
 
           <div className="scroll">
-            {quoteData && quoteData.underwritingExceptions && _.filter(quoteData.underwritingExceptions, uw => !uw.overridden).length > 0 &&
+            {quoteData && quoteData.underwritingExceptions && filteredExceptions.length > 0 &&
             <div className="detail-wrapper">
               <div className="messages">
                 <div className="message error">
@@ -150,7 +151,7 @@ export class Summary extends Component {
               </div>
             </div>
             }
-            {quoteData && quoteData.underwritingExceptions && _.filter(quoteData.underwritingExceptions, uw => !uw.overridden).length === 0 &&
+            {quoteData && quoteData.underwritingExceptions && filteredExceptions.length === 0 &&
               <div className="detail-wrapper">
                 <h3>Quote Details</h3>
                 <div className="detail-group property-details">
