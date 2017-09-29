@@ -29,6 +29,7 @@ describe('Testing Endorsements component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      reset() {},
       actions: {
         errorActions: { dispatchClearAppError() { } },
         serviceActions: {
