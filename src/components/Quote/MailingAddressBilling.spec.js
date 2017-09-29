@@ -563,6 +563,7 @@ describe('Testing MailingAddressBilling component', () => {
     const store = mockStore(initialState);
 
     const props = {
+      reset() { },
       paymentPlanResult: {
         options: []
       },
@@ -636,6 +637,7 @@ describe('Testing MailingAddressBilling component', () => {
     const store = mockStore(initialState);
 
     const props = {
+      reset() {},
       fieldValues: {
         sameAsProperty: false
       },

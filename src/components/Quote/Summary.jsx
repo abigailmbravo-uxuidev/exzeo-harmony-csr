@@ -172,128 +172,128 @@ export class Summary extends Component {
                       </div>
                     </dl>
                     <dl className="property-information">
-                      <div>
-                        <dt>Year Built</dt>
-                        <dd>{property.yearBuilt}</dd>
-                      </div>
-                    </dl>
+                    <div>
+                      <dt>Year Built</dt>
+                      <dd>{property.yearBuilt}</dd>
+                    </div>
+                  </dl>
                     <dl className="effective-date">
-                      <div>
-                        <dt>Effective Date</dt>
-                        <dd>{moment.utc(quoteData.effectiveDate).format('MM/DD/YYYY')}</dd>
-                      </div>
-                    </dl>
+                    <div>
+                      <dt>Effective Date</dt>
+                      <dd>{moment.utc(quoteData.effectiveDate).format('MM/DD/YYYY')}</dd>
+                    </div>
+                  </dl>
                     <dl className="agent">
-                      <div>
-                        <dt>Agent</dt>
-                        <dd>{`${selectedAgent.firstName} ${selectedAgent.lastName}` }</dd>
-                      </div>
-                    </dl>
+                    <div>
+                      <dt>Agent</dt>
+                      <dd>{`${selectedAgent.firstName} ${selectedAgent.lastName}` }</dd>
+                    </div>
+                  </dl>
                   </section>
                 </div>
                 <h3>Coverage / Rating</h3>
                 <div className="detail-group quote-details">
-                  <section className="display-element">
-                    <dl>
-                      <div>
-                        <dt>Yearly Premium</dt>
-                        <dd>$ {quoteData.rating ? normalizeNumbers(quoteData.rating.totalPremium) : '-'}</dd>
-                      </div>
-                    </dl>
-                    <dl>
-                      <div>
-                        <dt>A. Dwelling</dt>
-                        <dd>$ {normalizeNumbers(coverageLimits.dwelling.amount)}</dd>
-                      </div>
-                    </dl>
-                    <dl>
-                      <div>
-                        <dt>B. Other Structures</dt>
-                        <dd>$ {normalizeNumbers(coverageLimits.otherStructures.amount)}</dd>
-                      </div>
-                    </dl>
-                    <dl>
-                      <div>
-                        <dt>C. Personal Property</dt>
-                        <dd>$ {normalizeNumbers(coverageLimits.personalProperty.amount)}</dd>
-                      </div>
-                    </dl>
-                    <dl>
-                      <div>
-                        <dt>D. Loss Of Use</dt>
-                        <dd>$ {normalizeNumbers(coverageLimits.lossOfUse.amount)}</dd>
-                      </div>
-                    </dl>
-                    <dl>
-                      <div>
-                        <dt>E. Personal Liability</dt>
-                        <dd>$ {normalizeNumbers(coverageLimits.personalLiability.amount)}</dd>
-                      </div>
-                    </dl>
-                    <dl>
-                      <div>
-                        <dt>F. Medical Payments</dt>
-                        <dd>$ {normalizeNumbers(coverageLimits.medicalPayments.amount)}</dd>
-                      </div>
-                    </dl>
-                    <dl>
-                      <div>
-                        <dt>Personal Property Replacement Cost</dt>
-                        <dd>{coverageOptions.personalPropertyReplacementCost && coverageOptions.personalPropertyReplacementCost.answer === true ? 'Yes' : 'No'}</dd>
-                      </div>
-                    </dl>
-                    <dl>
-                      <div>
-                        <dt>Mold Property</dt>
-                        <dd>$ {normalizeNumbers(coverageLimits.moldProperty.amount)}</dd>
-                      </div>
-                    </dl>
-                    <dl>
-                      <div>
-                        <dt>Mold Liability</dt>
-                        <dd>$ {normalizeNumbers(coverageLimits.moldLiability.amount)}</dd>
-                      </div>
-                    </dl>
-                    <dl>
-                      <div>
-                        <dt>Ordinance or Law</dt>
-                        <dd>{coverageLimits.ordinanceOrLaw.amount}%</dd>
-                      </div>
-                    </dl>
-                    <dl>
-                      <div>
-                        <dt>All Other Perils Deductible</dt>
-                        <dd>$ {normalizeNumbers(deductibles.allOtherPerils.amount)}</dd>
-                      </div>
-                    </dl>
-                    <dl>
-                      <div>
-                        <dt>Hurricane Deductible</dt>
-                        <dd>{deductibles.hurricane.amount}%</dd>
-                      </div>
-                    </dl>
-                    <dl>
-                      <div>
-                        <dt>Calculated Hurricane Deductible</dt>
-                        <dd>$ {normalizeNumbers(deductibles.hurricane.calculatedAmount)}</dd>
-                      </div>
-                    </dl>
-                    {deductibles.sinkhole && <dl>
-                      <div>
-                        <dt>Sinkhole Deductible</dt>
-                        <dd>{deductibles.sinkhole.amount} %</dd>
-                      </div>
-                    </dl>
+                <section className="display-element">
+                  <dl>
+                    <div>
+                      <dt>Yearly Premium</dt>
+                      <dd>$ {quoteData.rating ? normalizeNumbers(quoteData.rating.totalPremium) : '-'}</dd>
+                    </div>
+                  </dl>
+                  <dl>
+                    <div>
+                      <dt>A. Dwelling</dt>
+                      <dd>$ {normalizeNumbers(coverageLimits.dwelling.amount)}</dd>
+                    </div>
+                  </dl>
+                  <dl>
+                    <div>
+                      <dt>B. Other Structures</dt>
+                      <dd>$ {normalizeNumbers(coverageLimits.otherStructures.amount)}</dd>
+                    </div>
+                  </dl>
+                  <dl>
+                    <div>
+                      <dt>C. Personal Property</dt>
+                      <dd>$ {normalizeNumbers(coverageLimits.personalProperty.amount)}</dd>
+                    </div>
+                  </dl>
+                  <dl>
+                    <div>
+                      <dt>D. Loss Of Use</dt>
+                      <dd>$ {normalizeNumbers(coverageLimits.lossOfUse.amount)}</dd>
+                    </div>
+                  </dl>
+                  <dl>
+                    <div>
+                      <dt>E. Personal Liability</dt>
+                      <dd>$ {normalizeNumbers(coverageLimits.personalLiability.amount)}</dd>
+                    </div>
+                  </dl>
+                  <dl>
+                    <div>
+                      <dt>F. Medical Payments</dt>
+                      <dd>$ {normalizeNumbers(coverageLimits.medicalPayments.amount)}</dd>
+                    </div>
+                  </dl>
+                  <dl>
+                    <div>
+                      <dt>Personal Property Replacement Cost</dt>
+                      <dd>{coverageOptions.personalPropertyReplacementCost && coverageOptions.personalPropertyReplacementCost.answer === true ? 'Yes' : 'No'}</dd>
+                    </div>
+                  </dl>
+                  <dl>
+                    <div>
+                      <dt>Mold Property</dt>
+                      <dd>$ {normalizeNumbers(coverageLimits.moldProperty.amount)}</dd>
+                    </div>
+                  </dl>
+                  <dl>
+                    <div>
+                      <dt>Mold Liability</dt>
+                      <dd>$ {normalizeNumbers(coverageLimits.moldLiability.amount)}</dd>
+                    </div>
+                  </dl>
+                  <dl>
+                    <div>
+                      <dt>Ordinance or Law</dt>
+                      <dd>{coverageLimits.ordinanceOrLaw.amount}%</dd>
+                    </div>
+                  </dl>
+                  <dl>
+                    <div>
+                      <dt>All Other Perils Deductible</dt>
+                      <dd>$ {normalizeNumbers(deductibles.allOtherPerils.amount)}</dd>
+                    </div>
+                  </dl>
+                  <dl>
+                    <div>
+                      <dt>Hurricane Deductible</dt>
+                      <dd>{deductibles.hurricane.amount}%</dd>
+                    </div>
+                  </dl>
+                  <dl>
+                    <div>
+                      <dt>Calculated Hurricane Deductible</dt>
+                      <dd>$ {normalizeNumbers(deductibles.hurricane.calculatedAmount)}</dd>
+                    </div>
+                  </dl>
+                  {deductibles.sinkhole && <dl>
+                    <div>
+                      <dt>Sinkhole Deductible</dt>
+                      <dd>{deductibles.sinkhole.amount}%</dd>
+                    </div>
+                  </dl>
                 }
-                    {deductibles.sinkhole && <dl>
+                  {deductibles.sinkhole && <dl>
                       <div>
                         <dt>Calculated Sinkhole Deductible</dt>
                         <dd>$ {normalizeNumbers(deductibles.sinkhole.calculatedAmount)}</dd>
                       </div>
                     </dl>
                 }
-                  </section>
-                </div>
+                </section>
+              </div>
                 <div className="detail-group policyholder-details">
                   <section className="display-element">
                     {(quoteData.policyHolders && quoteData.policyHolders.length > 0) ?
