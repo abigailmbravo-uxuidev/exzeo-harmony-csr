@@ -1,5 +1,5 @@
 .app-wrapper.csr.policy {
-  //main header 
+  //main header
   header {
     div[role="banner"] {
       .tab-tag {
@@ -248,13 +248,10 @@
             width: auto;
             padding: $padding;
             background: $bright-blue-darken-04;
-
-            .btn-primary {
-              @include button-variant($bright-blue-darken-04, $white, $white);
-            }
+            background: mix($bright-blue-darken-03, $warm-gray-00, 75%);
 
             .btn-secondary {
-              @include button-variant($white, $bright-blue-darken-04, $white);
+              margin-right: $padding;
             }
 
             .flex-parent {
@@ -270,15 +267,11 @@
 
                 input {
                     &[disabled="disabled"], &:disabled {
-                        background: $bright-blue-darken-03;
-                        border-color: $bright-blue-darken-03;
+                        background: mix($bright-blue-darken-03, $warm-gray-00, 75%);
+                        border-color: mix($bright-blue-darken-03, $warm-gray-00, 60%);
                         color: $white;
                     }
                 }
-              }
-
-              .btn-secondary {
-                margin-right: $padding;
               }
             }
           }
@@ -294,6 +287,11 @@
           flex-shrink: 0;
           width: 240px;
           padding: 0 0 ($padding*2) ($padding*2);
+          border-left: dotted 1px $warm-gray-04;
+
+          .uw-validation-header {
+              margin: ($padding*1.5) 0;
+          }
         }
 
         .scroll {
@@ -726,82 +724,18 @@
           }
         }
       }
-
-    }
-
-    .underwriting-validation {
-      width: 200px;
-      border-left: dotted 1px $warm-gray-04;
     }
   }
 }
 
 .cancel-policy {
-  label.form-group.segmented {
-
-    > label {
-      margin-bottom: $padding;
-      display: none;
-    }
-
-    label{
-      margin-right: 0;
-    }
-
-  }
-
-  .note-type, .note {
-    label {
-      display: none;
-    }
-
-  }
-
-  .note {
-    textarea {
-      height: 120px;
-    }
-  }
 
   .form-group.billing {
 
-    div {
-      flex: 1 1 auto;
-      margin: 0 ($padding*4) 0 0;
-    }
-
     .flex-child {
-      flex: 1 1 auto;
-
-      label {
-        margin-right: .5rem;
-        text-align: right;
-      }
-
-      .form-group {
-        flex-direction: row;
-        align-items: center;
-
-        label {
-
-          flex: 0 1 auto;
-          width: 25%;
-          margin-bottom: 0;
-        }
-
-        input {
-          flex: 1 0 auto;
-          width: 75%;
-        }
-
-
-      }
-
+      flex-grow: 1;
+      flex-shrink: 1;
+      width: auto;
     }
-
-    .flex-child:last-child {
-      margin-right: 0;
-    }
-
   }
 }

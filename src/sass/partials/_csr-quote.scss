@@ -254,6 +254,33 @@
           }
         }
       }
+
+      .share-quote {
+        flex-grow: 0;
+        flex-shrink: 0;
+        width: auto;
+        padding: $padding;
+        background: mix($green-darken-04, $warm-gray-00, 70%);
+
+        form {
+          display: flex;
+          align-items: flex-end;
+          align-content: space-between;
+
+          .form-group {
+            margin: 0 $padding 0 0;
+
+            label {
+              color: $white;
+              font-size: $font-size-sm;
+            }
+
+            input {
+
+            }
+          }
+        }
+      }
     }
 
     #UnderwritingOverride {
@@ -315,13 +342,14 @@
               .override-wrapper {
                 position: relative;
                 display: flex;
-                margin: $padding 0;
-                height: auto;
-                flex-shrink: 0;
                 flex-grow: 0;
+                flex-shrink: 0;
+                height: auto;
+                margin: $padding 0;
 
                 input {
-                    display: none;
+                  display: none;
+
                   &:checked {
                     + label {
                       &:before {
@@ -333,19 +361,19 @@
                 }
 
                 label {
-                    margin-bottom: 0;
-                    position: relative;
-                    padding-left: $padding*3;
+                  position: relative;
+                  margin-bottom: 0;
+                  padding-left: $padding*3;
 
                   &:before {
-                      position: absolute;
-                      left: 0;
-                      top: -1px;
-                      width: 1.5rem;
-                      content: '\f096';
-                      color: $warm-gray-10;
-                      font-family: $font-family-icon;
-                      font-size: $font-size-h4;
+                    position: absolute;
+                    top: -1px;
+                    left: 0;
+                    width: 1.5rem;
+                    content: '\f096';
+                    color: $warm-gray-10;
+                    font-family: $font-family-icon;
+                    font-size: $font-size-h4;
                   }
                 }
               }

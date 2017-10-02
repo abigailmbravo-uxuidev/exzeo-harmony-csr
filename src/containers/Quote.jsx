@@ -7,7 +7,6 @@ import _ from 'lodash';
 import QuoteHeader from '../components/Quote/QuoteHeader';
 import QuoteSideNav from '../components/Quote/QuoteSideNav';
 import QuoteDetailHeader from '../components/Quote/DetailHeader';
-import Footer from '../components/Common/Footer';
 import UnderwritingValidationBarConnect from '../components/Quote/UnderwritingValidationBar';
 import Loader from '../components/Common/Loader';
 
@@ -38,7 +37,6 @@ export const QuoteBase = props => (
       </aside>
       <div className="content-wrapper">
         {props.children}
-        <Footer />
       </div>
       <UnderwritingValidationBarConnect />
     </main>

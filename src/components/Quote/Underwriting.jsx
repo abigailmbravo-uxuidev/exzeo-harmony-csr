@@ -11,6 +11,7 @@ import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import FieldGenerator from '../Form/FieldGenerator';
+import Footer from '../Common/Footer';
 
 export const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
@@ -70,10 +71,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
 };
 
 export const clearForm = (props) => {
-  const { dispatch, questions } = props;
-  for (let i = 0; i < questions.length; i += 1) {
-    dispatch(change('Underwriting', questions[i].name, ''));
-  }
+  props.reset('Underwriting');
 };
 let setUnderwriting = false;
 export class Underwriting extends Component {
@@ -134,25 +132,29 @@ export class Underwriting extends Component {
                     key={index}
                   />
             )}
-                <div className="btn-footer">
-                  <button
-                    onClick={() => clearForm(this.props)}
-                    className="btn btn-secondary"
-                    type="button"
-                    form="Underwriting"
-                    disabled={this.props.appState.data.submitting}
-                  >Cancel</button>
-                  <button
-                    className="btn btn-primary"
-                    type="submit"
-                    form="Underwriting"
-                    disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}
-                  >Update</button>
-
-                </div>
               </div>
             </div>
           </Form>
+        </div>
+        <div className="basic-footer btn-footer">
+          <Footer />
+          <div className="btn-wrapper">
+            <button
+              aria-label="reset-btn form-underwriting"
+              onClick={() => clearForm(this.props)}
+              className="btn btn-secondary"
+              type="button"
+              form="Underwriting"
+              disabled={this.props.appState.data.submitting}
+            >Cancel</button>
+            <button
+              aria-label="submit-btn form-underwriting" 
+              className="btn btn-primary"
+              type="submit"
+              form="Underwriting"
+              disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}
+            >Update</button>
+          </div>
         </div>
       </QuoteBaseConnect>
     );

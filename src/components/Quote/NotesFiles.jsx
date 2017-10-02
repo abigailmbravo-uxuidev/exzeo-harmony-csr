@@ -163,6 +163,9 @@ export class NotesFiles extends Component {
             </Form>
           </div>
         </div>
+        <div className="basic-footer">
+          <Footer />
+        </div>
       </QuoteBaseConnect>
     );
   }

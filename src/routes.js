@@ -110,7 +110,7 @@ class Routes extends Component {
       ), document.getElementById('modal'));
           }}
         >
-          <div>
+          <div className="routes">
             <Switch>
               <Route exact path="/" render={props => <SplashPage auth={auth} {...props} />} />
               <Route exact path="/quote/billing" render={props => <QuoteMailingAddressBilling auth={auth} {...props} />} />
