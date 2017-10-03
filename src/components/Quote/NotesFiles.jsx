@@ -14,6 +14,7 @@ import ClearErrorConnect from '../Error/ClearError';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import RadioField from '../Form/inputs/RadioField';
 import Downloader from '../Common/Downloader';
+import Footer from '../Common/Footer';
 
 const handleGetQuote = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
@@ -23,23 +24,31 @@ const handleGetQuote = (state) => {
   return quoteData;
 };
 
-const handleInitialize = state => ({});
+const handleInitialize = state => ({
+  attachmentStatus: false
+});
 
 const SearchPanel = props => (
   <div className="search">
-    <label>Search by Note Text</label>
+    <label>Search Table Data</label>
     { props.searchField }
   </div>
 );
 
+export const filterNotesByType = (notes, type) => {
+  if (!Array.isArray(notes)) return [];
+
+  if (type) return _.filter(notes, n => n.attachments > 0);
+  return notes;
+};
+
 export const NoteList = (props) => {
-  const { notes } = props;
+  const { notes, fieldValues } = props;
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
   const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
   const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
-  
   const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
-
+  const formatNote = note => note.replace(/\r|\n/g, '<br>');
   const attachmentUrl = attachments => (
     <span>
       { attachments.map((attachment, i) => 
@@ -57,7 +66,7 @@ export const NoteList = (props) => {
     <div className="note-grid-wrapper">
       <div className="filter-tabs">
 
-        {/*TODO: Eric, just need 2 buttons with an onClick event to filter the grid by attachment count. I added the radio group component because it can have a default selected and user can only choose 1*/}
+        {/* TODO: Eric, just need 2 buttons with an onClick event to filter the grid by attachment count. I added the radio group component because it can have a default selected and user can only choose 1*/}
 
         <RadioField
           name={'attachmentStatus'} styleName={''} label={''} onChange={ () => {} } segmented answers={[
@@ -73,33 +82,19 @@ export const NoteList = (props) => {
         />
       </div>
       <BootstrapTable
-        data={Array.isArray(notes) ? notes : []}
+        data={filterNotesByType(notes, fieldValues.attachmentStatus)}
         options={options}
         search
+        multiColumnSearch
       >
         <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
-        <TableHeaderColumn className='created-date' columnClassName='created-date' dataField="createdDate" dataSort dataFormat={formatCreateDate} >Created</TableHeaderColumn>
-        <TableHeaderColumn className='created-by' columnClassName='created-by' dataField="createdBy" dataSort dataFormat={showCreatedBy} >Author</TableHeaderColumn>
-        {/*TODO: Hide note-type and note column when users filters grid to show only notes with attachments*/}
-        <TableHeaderColumn className='note-type' columnClassName='note-type' dataField="contactType" dataSort >Note Type</TableHeaderColumn>
-        <TableHeaderColumn className='note' columnClassName='note' dataField="content" dataSort >Note</TableHeaderColumn>
-        {/*TODO:
-
-          Eric, below is the attachment count that we need to filter grid on - basically want to show eveything (count >= 0) or show only attachements (count > 0)
-
-          I added a hidden attribute to this field so it does not show in the UI
-
-          We'll want to default showing all (count >= 0)
-
-          example here: http://allenfang.github.io/react-bootstrap-table/example.html#column-filter   "Programmatically Number Filter"
-
-          ultimate goal would be to add a class to the grid wrapper div (currently has class "note-grid-wrapper") when filtered. I can handle hiding the columns and hide the search with CSS. If added class is named "filter-attachments" css will be ready.
-
-          thanks!
-
-          */}
-        <TableHeaderColumn className='count' columnClassName='count' dataField="attachments" dataFormat={attachmentCount} filter={ { type: 'NumberFilter', delay: 1000, numberComparators: [ '=', '>', '<=' ] } } hidden ></TableHeaderColumn>
-        <TableHeaderColumn className='attachments' columnClassName='attachments' dataField="attachments" dataFormat={attachmentUrl} dataSort >Attachments</TableHeaderColumn>
+        <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdDate" dataSort dataFormat={formatCreateDate} >Created</TableHeaderColumn>
+        <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataSort dataFormat={showCreatedBy} >Author</TableHeaderColumn>
+        {/* TODO: Hide note-type and note column when users filters grid to show only notes with attachments*/}
+        <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="contactType" dataSort >Note Type</TableHeaderColumn>
+        <TableHeaderColumn className="note" columnClassName="note" dataField="content" dataSort dataFormat={formatNote} >Note</TableHeaderColumn>
+        <TableHeaderColumn className="count" columnClassName="count" dataField="attachments" dataFormat={attachmentCount} hidden />
+        <TableHeaderColumn className="attachments" columnClassName="attachments" dataField="attachments" dataFormat={attachmentUrl} dataSort >Attachments</TableHeaderColumn>
       </BootstrapTable>
     </div>
   );

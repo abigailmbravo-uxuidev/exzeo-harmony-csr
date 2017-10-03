@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 import _ from 'lodash';
-import ConnectedApp, { NotesFiles, NoteList, isExpandableRow, Files, BSTable } from './NotesFiles';
+import ConnectedApp, { NotesFiles, NoteList, filterNotesByType } from './NotesFiles';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -76,7 +76,7 @@ describe('Testing NotesFiles component', () => {
         }
       },
       handleSubmit() { },
-      fieldQuestions: [],
+      fieldValues: {},
       quoteData: {},
       dispatch: store.dispatch,
       appState: {
@@ -94,22 +94,10 @@ describe('Testing NotesFiles component', () => {
     notesFiles.instance().componentDidMount();
 
     notesFiles.instance().componentWillReceiveProps({ quoteData: { quoteNumber: '1234' } });
-
-    Files(props);
-
-    BSTable(props);
-  });
-  it('test isExpandableRow true', () => {
-    const result = isExpandableRow({
-      id: 5
-    });
-    expect(result).toEqual(true);
   });
 
-  it('test isExpandableRow', () => {
-    const result = isExpandableRow({
-      id: 1
-    });
-    expect(result).toEqual(true);
+  it('test filterNotesByType', () => {
+    expect(filterNotesByType(null, true)).toEqual([]);
+    expect(filterNotesByType([], true)).toEqual([]);
   });
 });

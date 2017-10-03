@@ -14,7 +14,7 @@ export const submitNote = (data, dispatch, props) => {
   const noteData = {
     number: documentId,
     noteType,
-    noteContent: data.noteContent,
+    noteContent: JSON.stringify(data.noteContent),
     contactType: data.contactType,
     createdAt: new Date().getTime(),
     attachmentCount: data.noteAttachments ? data.noteAttachments.length : 0,

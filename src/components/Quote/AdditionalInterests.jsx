@@ -232,7 +232,8 @@ export class AdditionalInterests extends Component {
     if (this.props.appState.instanceId) {
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
-        submittingAI: true
+        submittingAI: true,
+        selectedLink: 'additionalInterests'
       });
       const steps = [
     { name: 'hasUserEnteredData', data: { answer: 'No' } },
@@ -281,7 +282,10 @@ export class AdditionalInterests extends Component {
                             <label htmlFor="ref-number">Reference Number</label>
                             <span>{`${ai.referenceNumber || '-'}`}</span>
                           </div>
-                          <i className="fa fa-pencil" />
+                          <span className="edit-btn">
+                            <i className="fa fa-pencil-square" />
+                            <span>EDIT</span>
+                          </span>
                         </a>
                       </li>
                     )}

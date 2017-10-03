@@ -64,16 +64,10 @@
     }
   }
   //content wrapper
-  main {
-    height: calc(100vh - 8.125rem);
-    min-height: calc(100vh - 8.125rem);
+  main[role="document"] {
 
     .content-wrapper {
-      overflow: hidden;
-      flex-grow: 1;
-      flex-shrink: 1;
       flex-wrap: nowrap;
-      width: auto;
 
       .route-content {
         display: flex;
@@ -253,31 +247,68 @@
             overflow: hidden;
           }
         }
+
+        &.summary {
+            .detail-wrapper {
+                > div {
+                    border-bottom: 1px dashed $green-darken-04;
+
+                    &:last-child {
+                        border-bottom-width: 0;
+                    }
+                }
+            }
+        }
       }
 
       .share-quote {
+        display: flex;
         flex-grow: 0;
         flex-shrink: 0;
         width: auto;
         padding: $padding;
-        background: mix($green-darken-04, $warm-gray-00, 70%);
+        background: $warm-gray-01;
+        border-top: 1px dotted $warm-gray-04;
 
         form {
           display: flex;
-          align-items: flex-end;
+          align-items: flex-start;
           align-content: space-between;
+          width: 100%;
+
+          .btn {
+            align-self: flex-start;
+            margin-top: 1.5rem;
+          }
 
           .form-group {
             margin: 0 $padding 0 0;
+            margin-bottom: 0;
+
+            &.share-name {
+              margin-right: $padding;
+            }
+
+            &.share-email {
+              margin-right: $padding;
+            }
+
+            &.error {
+                input {
+                    border-color: $red-darken-03;
+                }
+                span {
+                    color: $red-darken-03;
+                    font-weight: $font-weight-bold;
+                }
+            }
 
             label {
-              color: $white;
               font-size: $font-size-sm;
             }
-
-            input {
-
-            }
+          }
+          button {
+              margin-top: 1.5rem;
           }
         }
       }
@@ -470,11 +501,8 @@
 
 .modal.quote-summary {
   .btn-footer.flex-parent {
-    display: flex;
     align-content: center;
     align-items: flex-end;
-    flex-direction: row;
-    flex-wrap: nowrap;
     justify-content: center;
 
     .form-group {
@@ -591,10 +619,14 @@
     .segmented {
       .segmented-answer-wrapper {
         .radio-column-3 {
-          width: 33.3%;
+          width: 33.33%;
         }
       }
     }
+  }
+
+  .sameAsProperty {
+      width: 50%;
   }
 }
 

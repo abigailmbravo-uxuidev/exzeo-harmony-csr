@@ -8,6 +8,7 @@ export const SelectInput = ({
   answers,
   hint,
   input,
+  isDisabled,
   label,
   meta,
   styleName
@@ -25,7 +26,7 @@ export const SelectInput = ({
           className={Error ? 'error' : ''}
           value={value}
           name={name}
-          disabled={disabled}
+          disabled={disabled || isDisabled}
           onChange={onChange}
         >
           <option aria-label={'Please select...'} disabled value={''}>Please select...</option>

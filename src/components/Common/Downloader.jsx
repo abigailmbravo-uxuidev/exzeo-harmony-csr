@@ -7,8 +7,6 @@ export const downloadFile = (fileUrl) => {
 
   return axios.get(proxyUrl, { responseType: 'blob', params })
     .then((response) => {
-      console.log(response);
-      //const blob = new Blob(response.data, {type: response.headers['content-type']});
       const blobUrl = window.URL.createObjectURL(response.data);
       window.open(blobUrl);
     })
