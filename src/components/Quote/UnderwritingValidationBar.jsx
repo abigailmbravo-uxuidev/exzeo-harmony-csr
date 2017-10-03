@@ -20,6 +20,10 @@ export const handleFormSubmit = (data, dispatch, props) => {
       uwException.overridden = false;
     }
   }
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, {
+    ...props.appState.data,
+    overrideAction: true
+  });
   props.actions.serviceActions.saveUnderwritingExceptions(props.quoteData._id, uwExceptions);
 };
 
