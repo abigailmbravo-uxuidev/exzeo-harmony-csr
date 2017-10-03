@@ -21,7 +21,7 @@ export const SelectInput = ({
   return (
     <div className={formGroupStyles}>
       { label && <label htmlFor={name}>{label}{Hint}</label> }
-      {answers && answers.length > 0 ? (
+      {answers && answers.length >= 0 ? (
         <select
           className={Error ? 'error' : ''}
           value={value}
