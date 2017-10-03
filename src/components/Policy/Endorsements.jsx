@@ -44,6 +44,7 @@ export const calculatePercentage = (oldFigure, newFigure) => {
 
 export const handleInitialize = (state) => {
   const policy = handleGetPolicy(state);
+  const questions = state.questions || [];
   const values = {};
   // values.agencyCode = '20000'; // _.get(policy, 'agencyCode');
   // values.agentCode = '60000'; // _.get(policy, 'agentCode');
@@ -63,12 +64,12 @@ export const handleInitialize = (state) => {
   values.dwellingAmountNew = values.dwellingAmount;
   values.otherStructuresAmount = otherStructures;
   values.otherStructuresAmountNew = values.otherStructuresAmount;
-  values.otherStructures = String(calculatePercentage(otherStructures, dwelling));
-  values.otherStructuresNew = values.otherStructures;
+  values.otherStructures = `${String(calculatePercentage(otherStructures, dwelling))}%`;
+  values.otherStructuresNew = String(calculatePercentage(otherStructures, dwelling));
   values.personalPropertyAmount = String(personalProperty);
   values.personalPropertyAmountNew = values.personalPropertyAmount;
-  values.personalProperty = String(calculatePercentage(personalProperty, dwelling));
-  values.personalPropertyNew = values.personalProperty;
+  values.personalProperty = `${String(calculatePercentage(personalProperty, dwelling))}%`;
+  values.personalPropertyNew = String(calculatePercentage(personalProperty, dwelling));
   values.lossOfUse = _.get(policy, 'coverageLimits.lossOfUse.amount');
   values.lossOfUseNew = values.lossOfUse;
   values.personalLiability = _.get(policy, 'coverageLimits.personalLiability.amount');
@@ -81,28 +82,27 @@ export const handleInitialize = (state) => {
   values.moldLiabilityNew = values.moldLiability;
   values.allOtherPerils = _.get(policy, 'deductibles.allOtherPerils.amount');
   values.allOtherPerilsNew = values.allOtherPerils;
-  values.hurricane = hurricane;
-  values.hurricaneNew = values.hurricane;
+  values.hurricane = `${hurricane}%`;
+  values.hurricaneNew = hurricane;
   values.calculatedHurricane = _.get(policy, 'deductibles.hurricane.calculatedAmount');
   values.calculatedHurricaneNew = values.calculatedHurricane;
-  values.sinkholePerilCoverage = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer');
-  values.sinkholePerilCoverageNew = values.sinkholePerilCoverage;
-
+  values.sinkholePerilCoverage = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer') ? `10% of ${getQuestionName('dwellingAmount', questions)}` : 'Coverage Excluded';
+  values.sinkholePerilCoverageNew = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer');
 // Coverage Top Right
-  values.personalPropertyReplacementCostCoverage = _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer');
-  values.personalPropertyReplacementCostCoverageNew = values.personalPropertyReplacementCostCoverage;
-  values.ordinanceOrLaw = _.get(policy, 'coverageLimits.ordinanceOrLaw.amount');
-  values.ordinanceOrLawNew = values.ordinanceOrLaw;
-  values.propertyIncidentalOccupanciesMainDwelling = false;
-  values.propertyIncidentalOccupanciesMainDwellingNew = values.propertyIncidentalOccupanciesMainDwelling;
-  values.propertyIncidentalOccupanciesOtherStructures = false;
-  values.propertyIncidentalOccupanciesOtherStructuresNew = values.propertyIncidentalOccupanciesOtherStructures;
+  values.personalPropertyReplacementCostCoverage = _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer') ? 'Yes' : 'No';
+  values.personalPropertyReplacementCostCoverageNew = _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer');
+  values.ordinanceOrLaw = `${_.get(policy, 'coverageLimits.ordinanceOrLaw.amount')}%`;
+  values.ordinanceOrLawNew = _.get(policy, 'coverageLimits.ordinanceOrLaw.amount');
+  values.propertyIncidentalOccupanciesMainDwelling = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer') ? 'Yes' : 'No';
+  values.propertyIncidentalOccupanciesMainDwellingNew = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer');
+  values.propertyIncidentalOccupanciesOtherStructures = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer') ? 'Yes' : 'No';
+  values.propertyIncidentalOccupanciesOtherStructuresNew = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer');
 
-  values.liabilityIncidentalOccupancies = _.get(policy, 'coverageOptions.liabilityIncidentalOccupancies.answer');
-  values.liabilityIncidentalOccupanciesNew = values.liabilityIncidentalOccupancies;
+  values.liabilityIncidentalOccupancies = _.get(policy, 'coverageOptions.liabilityIncidentalOccupancies.answer') ? 'Yes' : 'No';
+  values.liabilityIncidentalOccupanciesNew = _.get(policy, 'coverageOptions.liabilityIncidentalOccupancies.answer');
 
   values.townhouseRowhouse = _.get(policy, 'property.townhouseRowhouse') ? 'Yes' : 'No';
-  values.townhouseRowhouseNew = _.get(policy, 'property.townhouseRowhouse') || false;
+  values.townhouseRowhouseNew = !!_.get(policy, 'property.townhouseRowhouse');
   values.windExcluded = _.get(policy, 'rating.windMitigationDiscount') === 0 ? 'No' : 'Yes';
   values.windExcludedNew = values.windExcluded;
   values.propertyRented = _.get(policy, 'underwritingAnswers.rented.answer');
@@ -111,10 +111,10 @@ export const handleInitialize = (state) => {
   values.seasonallyOccupiedNew = values.seasonallyOccupied;
   values.noPriorInsurance = _.get(policy, 'underwritingAnswers.noPriorInsuranceSurcharge.answer');
   values.noPriorInsuranceNew = values.noPriorInsurance;
-  values.burglarAlarm = _.get(policy, 'property.burglarAlarm');
-  values.burglarAlarmNew = values.burglarAlarm;
-  values.fireAlarm = _.get(policy, 'property.fireAlarm');
-  values.fireAlarmNew = values.fireAlarm;
+  values.burglarAlarm = _.get(policy, 'property.burglarAlarm') ? 'Yes' : 'No';
+  values.burglarAlarmNew = _.get(policy, 'property.burglarAlarm');
+  values.fireAlarm = _.get(policy, 'property.fireAlarm') ? 'Yes' : 'No';
+  values.fireAlarmNew = _.get(policy, 'property.fireAlarm');
   values.sprinkler = _.get(policy, 'property.sprinkler');
   values.sprinklerNew = values.sprinkler;
   values.billToType = _.get(policy, 'billToType');
@@ -136,7 +136,7 @@ export const handleInitialize = (state) => {
   values.openingProtection = _.get(policy, 'property.windMitigation.openingProtection');
   values.openingProtectionNew = values.openingProtection;
   values.electronicDelivery = _.get(policy, 'policyHolders[0].electronicDelivery') ? 'Yes' : 'No';
-  values.electronicDeliveryNew = _.get(policy, 'policyHolders[0].electronicDelivery');
+  values.electronicDeliveryNew = !!_.get(policy, 'policyHolders[0].electronicDelivery');
 
 // Coverage Mid Right
   values.floridaBuildingCodeWindSpeed = _.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeed');
@@ -147,7 +147,7 @@ export const handleInitialize = (state) => {
   values.terrainNew = values.terrain;
   values.internalPressureDesign = _.get(policy, 'property.windMitigation.internalPressureDesign');
   values.internalPressureDesignNew = values.internalPressureDesign;
-  values.windBorneDebrisRegion = _.get(policy, 'property.windMitigation.windBorneDebrisRegion') === true ? 'Yes' : 'No';
+  values.windBorneDebrisRegion = _.get(policy, 'property.windMitigation.windBorneDebrisRegion');
   values.windBorneDebrisRegionNew = values.windBorneDebrisRegion;
   values.windMitFactor = _.get(policy, 'rating.windMitigationDiscount');
   values.windMitFactorNew = values.windMitFactor;
@@ -158,10 +158,10 @@ export const handleInitialize = (state) => {
   values.constructionTypeNew = values.constructionType;
   values.yearOfRoof = _.get(policy, 'property.yearOfRoof');
   values.yearOfRoofNew = values.yearOfRoof;
-  values.protectionClass = _.get(policy, 'property.protectionClass');
-  values.protectionClassNew = values.protectionClass;
-  values.buildingCodeEffectivenessGrading = _.get(policy, 'property.buildingCodeEffectivenessGrading');
-  values.buildingCodeEffectivenessGradingNew = values.buildingCodeEffectivenessGrading;
+  values.protectionClass = String(`0${_.get(policy, 'property.protectionClass')}`).slice(-2);
+  values.protectionClassNew = _.get(policy, 'property.protectionClass');
+  values.buildingCodeEffectivenessGrading = String(`0${_.get(policy, 'property.buildingCodeEffectivenessGrading')}`).slice(-2);
+  values.buildingCodeEffectivenessGradingNew = _.get(policy, 'property.buildingCodeEffectivenessGrading');
   values.familyUnits = _.get(policy, 'property.familyUnits');
   values.familyUnitsNew = values.familyUnits;
 // Home/Location Bottom Right
@@ -269,6 +269,7 @@ export const updateDependencies = (event, field, dependency, props) => {
 // ];
 
 export const cancel = (props) => {
+  props.reset('Endorsements');
   const workflowId = props.appState.instanceId;
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, {
     ...props.appState.data,
@@ -290,6 +291,7 @@ export const save = (data, dispatch, props) => {
   policy.transactionType = 'Endorsement';
   const submitData = {
     ...policy,
+    formListTransactionType: 'NON-PREMIUM ENDORSEMENT',
     endorsementDate: moment.utc(),
     country: policy.policyHolderMailingAddress.country,
     pH1FirstName: data.pH1FirstName,
@@ -330,7 +332,14 @@ export const save = (data, dispatch, props) => {
     roofToWallConnectionNew: data.roofToWallConnectionNew,
     electronicDeliveryNew: data.electronicDeliveryNew,
     distanceToFireStationNew: data.distanceToFireStationNew,
-    yearOfRoofNew: data.yearOfRoofNew
+    yearOfRoofNew: data.yearOfRoofNew,
+    fireAlarmNew: data.fireAlarmNew,
+    burglarAlarmNew: data.burglarAlarmNew,
+    buildingCodeEffectivenessGradingNew: data.buildingCodeEffectivenessGradingNew || null,
+    yearBuiltNew: data.yearBuiltNew || null,
+    townhouseRowhouseNew: data.townhouseRowhouseNew,
+    familyUnitsNew: data.familyUnitsNew,
+    constructionTypeNew: data.constructionTypeNew
   };
 
   props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber }).then((result) => {
@@ -359,12 +368,13 @@ export class Endorsements extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !isLoaded) {
       isLoaded = true;
+      this.props.actions.serviceActions.getUnderwritingQuestions(nextProps.policy.companyCode, nextProps.policy.state, nextProps.policy.product, nextProps.policy.property);
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
     }
   }
 
   render() {
-    const { initialValues, handleSubmit, appState, questions, pristine, endorsementHistory } = this.props;
+    const { initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions } = this.props;
     return (
       <PolicyConnect>
         <ClearErrorConnect />
@@ -480,7 +490,7 @@ export class Endorsements extends React.Component {
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Sinkhole Deductible'} styleName={''} name={'sinkhole'} disabled />
+                          <TextField label={'Sinkhole Deductible'} styleName={''} name={'sinkholePerilCoverage'} disabled />
                           <SelectField
                             label={''}
                             isDisabled={appState.data.isCalculated}
@@ -529,15 +539,54 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Incidental Occ Main'} styleName={''} name={'propertyIncidentalOccupanciesMainDwelling'} disabled />
-                          <TextField label={''} styleName={''} name={'propertyIncidentalOccupanciesMainDwellingNew'} disabled={appState.data.isCalculated} />
+                          <div className="flex-child other-coverages-property-replacement-cost">
+                            <RadioField
+                              disabled={appState.data.isCalculated}
+                              name={'propertyIncidentalOccupanciesMainDwellingNew'} styleName={'billPlan'} label={''} onChange={function () {}} segmented answers={[
+                                {
+                                  answer: false,
+                                  label: 'No'
+                                }, {
+                                  answer: true,
+                                  label: 'Yes'
+                                }
+                              ]}
+                            />
+                          </div>
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Incidental Occ Other'} styleName={''} name={'propertyIncidentalOccupanciesOtherStructures'} disabled />
-                          <TextField label={''} styleName={''} name={'propertyIncidentalOccupanciesOtherStructuresNew'} disabled={appState.data.isCalculated} />
+                          <div className="flex-child other-coverages-property-replacement-cost">
+                            <RadioField
+                              disabled={appState.data.isCalculated}
+                              name={'propertyIncidentalOccupanciesOtherStructuresNew'} styleName={'billPlan'} label={''} onChange={function () {}} segmented answers={[
+                                {
+                                  answer: false,
+                                  label: 'No'
+                                }, {
+                                  answer: true,
+                                  label: 'Yes'
+                                }
+                              ]}
+                            />
+                          </div>
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Incidental Occ Liability'} styleName={''} name={'liabilityIncidentalOccupancies'} disabled />
-                          <CurrencyField name={'liabilityIncidentalOccupanciesNew'} label={''} styleName={''} disabled />
+                          <div className="flex-child other-coverages-property-replacement-cost">
+                            <RadioField
+                              disabled={appState.data.isCalculated}
+                              name={'liabilityIncidentalOccupanciesNew'} styleName={'billPlan'} label={''} onChange={function () {}} segmented answers={[
+                                {
+                                  answer: false,
+                                  label: 'No'
+                                }, {
+                                  answer: true,
+                                  label: 'Yes'
+                                }
+                              ]}
+                            />
+                          </div>
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Townhouse / Rowhouse'} styleName={''} name={'townhouseRowhouse'} disabled />
@@ -562,27 +611,35 @@ export class Endorsements extends React.Component {
                             label={''}
                             isDisabled={appState.data.isCalculated}
                             name={'propertyRentedNew'}
-                            answers={getAnswers('propertyRented', questions)}
+                            answers={getAnswers('rented', underwritingQuestions)}
                             styleName={''} onChange={function () {}}
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Seasonally Occupied'} styleName={''} name={'seasonallyOccupied'} disabled />
+                          <TextField label={'Months Occupied'} styleName={''} name={'seasonallyOccupied'} disabled />
                           <SelectField
                             isDisabled={appState.data.isCalculated}
                             name={'seasonallyOccupiedNew'}
-                            answers={getAnswers('seasonallyOccupied', questions)}
+                            answers={getAnswers('monthsOccupied', underwritingQuestions)}
                             label={''} styleName={''} onChange={function () {}}
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField validations={['required']} label={'No Prior Insurance'} styleName={''} name={'noPriorInsurance'} disabled />
-                          <SelectField
-                            isDisabled={appState.data.isCalculated}
-                            name={'noPriorInsuranceNew'}
-                            answers={getAnswers('noPriorInsurance', questions)}
-                            label={''} styleName={''} onChange={function () {}}
-                          />
+                          <TextField label={'No Prior Insurance'} styleName={''} name={'noPriorInsurance'} disabled />
+                          <div className="flex-child discounts-burglar-alarm">
+                            <RadioField
+                              disabled={appState.data.isCalculated}
+                              name={'noPriorInsuranceNew'} styleName={''} label={''} onChange={function () {}} segmented answers={[
+                                {
+                                  answer: 'No',
+                                  label: 'No'
+                                }, {
+                                  answer: 'Yes',
+                                  label: 'Yes'
+                                }
+                              ]}
+                            />
+                          </div>
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Burglar Alarm'} styleName={''} name={'burglarAlarm'} disabled />
@@ -690,13 +747,14 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Secondary Water Resistance (SWR)'} styleName={''} name={'secondaryWaterResistance'} disabled />
-                          <SelectField
-                            label={''}
-                            isDisabled={appState.data.isCalculated}
-                            name={'secondaryWaterResistanceNew'}
-                            answers={getAnswers('secondaryWaterResistance', questions)}
-                            component="select" styleName={''} onChange={function () {}} validations={['required']}
-                          />
+                          <div className="flex-child discounts-sprinkler">
+                            <RadioField
+                              disabled={appState.data.isCalculated}
+                              label={''} styleName={''} onChange={function () {}} segmented name={'secondaryWaterResistanceNew'}
+                              validations={['required']}
+                              answers={getAnswers('secondaryWaterResistance', questions)}
+                            />
+                          </div>
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Opening Protection'} styleName={''} name={'openingProtection'} disabled />
@@ -761,22 +819,12 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Wind Borne Debris Region (WBDR)'} styleName={''} name={'windBorneDebrisRegion'} disabled />
-                          <div className="form-group-double-element">
+                          <div className="flex-child discounts-sprinkler">
                             <RadioField
-                              label={''}
                               disabled={appState.data.isCalculated}
-                              validations={['required']} name={'windBorneDebrisRegionNew'} styleName={''} onChange={function () {}} segmented answers={[
-                                {
-                                  answer: 'Yes',
-                                  label: 'Yes'
-                                }, {
-                                  answer: 'No',
-                                  label: 'No'
-                                }, {
-                                  answer: 'Other',
-                                  label: 'Other'
-                                }
-                              ]}
+                              label={''} styleName={''} onChange={function () {}} segmented name={'windBorneDebrisRegionNew'}
+                              validations={['required']}
+                              answers={getAnswers('windBorneDebrisRegion', questions)}
                             />
                           </div>
                         </div>
@@ -846,15 +894,7 @@ export class Endorsements extends React.Component {
                             isDisabled={appState.data.isCalculated}
                             name={'floodZoneNew'}
                             answers={getAnswers('floodZone', questions)}
-                            component="select" label={''} styleName={''} onChange={function () {}} answers={[
-                              {
-                                answer: 'A',
-                                label: 'A'
-                              }, {
-                                answer: 'B',
-                                label: 'B'
-                              }
-                            ]}
+                            component="select" label={''} styleName={''} onChange={function () {}}
                           />
                         </div>
                       </div>
@@ -918,22 +958,22 @@ export class Endorsements extends React.Component {
                           <PhoneField validations={['phone']} label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} disabled={appState.data.isCalculated} />
                         </div>
                         <div className="flex-parent">
-                          <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH1email'} disabled={appState.data.isCalculated} />
+                          <TextField validations={['required', 'email']} label={'Email Address'} styleName={''} name={'pH1email'} disabled={appState.data.isCalculated} />
                         </div>
                       </div>
                       {/* Col2 */}
                       <div className="flex-child">
                         <h3>Secondary Policyholder</h3>
                         <div className="flex-parent col2">
-                          <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH2FirstName'} disabled={appState.data.isCalculated} />
-                          <TextField validations={['required']} label={'Last Name'} styleName={''} name={'pH2LastName'} disabled={appState.data.isCalculated} />
+                          <TextField label={'First Name'} styleName={''} name={'pH2FirstName'} disabled={appState.data.isCalculated} />
+                          <TextField label={'Last Name'} styleName={''} name={'pH2LastName'} disabled={appState.data.isCalculated} />
                         </div>
                         <div className="flex-parent col2">
-                          <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH2phone'} disabled={appState.data.isCalculated} />
+                          <PhoneField validations={['phone']} label={'Primary Phone'} styleName={''} name={'pH2phone'} disabled={appState.data.isCalculated} />
                           <PhoneField validations={['phone']} label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} disabled={appState.data.isCalculated} />
                         </div>
                         <div className="flex-parent">
-                          <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH2email'} disabled={appState.data.isCalculated} />
+                          <TextField validations={['email']} label={'Email Address'} styleName={''} name={'pH2email'} disabled={appState.data.isCalculated} />
                         </div>
                       </div>
                     </div>
@@ -1047,7 +1087,8 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'Endorsements.values', {}),
   initialValues: handleInitialize(state),
   policy: handleGetPolicy(state),
-  questions: state.questions
+  questions: state.questions,
+  underwritingQuestions: state.service.underwritingQuestions
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -1060,113 +1101,3 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Endorsements', enableReinitialize: true })(Endorsements));
-
-
-  // const discountSurcharge = [
-  //   {
-  //     discountSurcharge: 'Wind Excluded',
-  //     value: _.get(rating, 'windMitigationDiscount') === 0 ? 'No' : 'Yes'
-  //   }, {
-  //     discountSurcharge: 'Property Ever Rented',
-  //     value: _.get(underwritingAnswers, 'rented.answer')
-  //   }, {
-  //     discountSurcharge: 'Seasonally Occupied',
-  //     value: _.get(underwritingAnswers, 'monthsOccupied.answer')
-  //   }, {
-  //     discountSurcharge: 'No Prior Insurance',
-  //     value: _.get(underwritingAnswers, 'noPriorInsuranceSurcharge.answer')
-  //   }, {
-  //     discountSurcharge: 'Burglar Alarm',
-  //     value: _.get(property, 'burglarAlarm') ? 'Yes' : 'No'
-  //   }, {
-  //     discountSurcharge: 'Fire Alarm',
-  //     value: _.get(property, 'fireAlarm') ? 'Yes' : 'No'
-  //   }, {
-  //     discountSurcharge: 'Sprinkler',
-  //     value: _.get(property, 'sprinkler') === 'N' ? 'No' : 'Yes'
-  //   }, {
-  //     discountSurcharge: 'Wind Mit Factor',
-  //     value: _.get(rating, 'windMitigationDiscount')
-  //   }
-  // ];
-
-  // const coverageLimitsData = [
-  //   {
-  //     coverage: 'Dwelling',
-  //     value: `$ ${_.get(coverageLimits, 'dwelling.amount')}`
-  //   }, {
-  //     coverage: 'Other Structures',
-  //     value: `$ ${_.get(coverageLimits, 'otherStructures.amount')}`
-  //   }, {
-  //     coverage: 'Personal Property',
-  //     value: `$ ${_.get(coverageLimits, 'personalProperty.amount')}`
-  //   }, {
-  //     coverage: 'Additional Living Expenses',
-  //     value: `$ ${_.get(coverageLimits, 'lossOfUse.amount')}`
-  //   }, {
-  //     coverage: 'Personal Liability',
-  //     value: `$ ${_.get(coverageLimits, 'personalLiability.amount')}`
-  //   }, {
-  //     coverage: 'Medical Payments',
-  //     value: `$ ${_.get(coverageLimits, 'medicalPayments.amount')}`
-  //   }
-  // ];
-
-  // const coverageOptionsData = [
-  //   {
-  //     coverage: 'Mold Property Limit',
-  //     value: `$ ${_.get(coverageLimits, 'moldProperty.amount')}`
-  //   }, {
-  //     coverage: 'Mold Liability Limit',
-  //     value: `$ ${_.get(coverageLimits, 'moldLiability.amount')}`
-  //   }, {
-  //     coverage: 'Personal Property Repl Cost',
-  //     value: _.get(coverageOptions, 'personalPropertyReplacementCost.answer') ? 'Yes' : 'No'
-  //   }, {
-  //     coverage: 'Ordinance or Law Coverage',
-  //     value: `${_.get(coverageLimits, 'ordinanceOrLaw.amount')}%`
-  //   }, {
-  //     coverage: 'Incidental Occ Main',
-  //     value: _.get(coverageOptions, 'propertyIncidentalOccupanciesMainDwelling.answer') ? 'Yes' : 'No'
-  //   }, {
-  //     coverage: 'Incidental Occ Other',
-  //     value: _.get(coverageOptions, 'propertyIncidentalOccupanciesOtherStructures.answer') ? 'Yes' : 'No'
-  //   }
-  // ];
-
-  // const premium = [{
-  //   premium: 'Current Premium',
-  //   value: `$ ${_.get(rating, 'totalPremium')}`
-  // }, {
-  //   premium: 'Initial Premium',
-  //   value: `$ ${_.get(rating, 'netPremium')}`
-  // }];
-
-  // const billing = [
-  //   {
-  //     coverage: 'Balance Due',
-  //     value: `$ ${_.get(rating, 'totalPremium')}`
-  //   }, {
-  //     coverage: 'Next Payment',
-  //     value: `$ ${_.get(rating, 'totalPremium')}`
-  //   }, {
-  //     coverage: 'Bill To',
-  //     value: _.get(props.policy, 'billToType')
-  //   }, {
-  //     coverage: 'Bill Plan',
-  //     value: _.get(props.policy, 'billPlan')
-  //   }
-  // ];
-
-  // const deductibleData = [
-  //   {
-  //     displayText: 'All Other Perils',
-  //     amount: `$ ${_.get(deductibles, 'allOtherPerils.amount')}`
-  //   }, {
-  //     displayText: 'Hurricane',
-  //     amount: `${_.get(deductibles, 'hurricane.amount')}%`
-  //   }, {
-  //     displayText: 'Sinkhole',
-  //     amount: `${_.get(deductibles, 'sinkhole.amount') ? `${_.get(deductibles, 'sinkhole.amount')}%` : 'No'}`
-  //   }
-  // ];
