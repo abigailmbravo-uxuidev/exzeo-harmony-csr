@@ -451,7 +451,7 @@ export class Coverage extends Component {
                     </div>
                     <div className="flex-parent policy-holder-a-email">
                       <div className="flex-child email-address">
-                        <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH1email'} />
+                        <TextField validations={['required', 'email']} label={'Email Address'} styleName={''} name={'pH1email'} />
                       </div>
                       <div hidden className="flex-child electronicDelivery">
                         <RadioField
