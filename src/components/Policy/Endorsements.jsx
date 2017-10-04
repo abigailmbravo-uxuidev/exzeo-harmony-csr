@@ -49,8 +49,8 @@ export const handleInitialize = (state) => {
   // values.agencyCode = '20000'; // _.get(policy, 'agencyCode');
   // values.agentCode = '60000'; // _.get(policy, 'agentCode');
   // values.effectiveDate = moment.utc(_.get(policy, 'effectiveDate')).format('YYYY-MM-DD');
-  // values.dwellingMin = _.get(policy, 'coverageLimits.dwelling.minAmount');
-  // values.dwellingMax = _.get(policy, 'coverageLimits.dwelling.maxAmount');
+  values.dwellingMin = _.get(policy, 'coverageLimits.dwelling.minAmount');
+  values.dwellingMax = _.get(policy, 'coverageLimits.dwelling.maxAmount');
   // values.liabilityIncidentalOccupancies = false;
 
   const dwelling = _.get(policy, 'coverageLimits.dwelling.amount');
@@ -59,7 +59,7 @@ export const handleInitialize = (state) => {
   const hurricane = _.get(policy, 'deductibles.hurricane.amount');
 
 // Coverage Top Left
-  values.effectiveDate = moment.utc(_.get(policy, 'effectiveDate')).format('YYYY-MM-DD');
+  values.effectiveDateNew = moment.utc(_.get(policy, 'effectiveDate')).format('YYYY-MM-DD');
   values.dwellingAmount = _.get(policy, 'coverageLimits.dwelling.amount');
   values.dwellingAmountNew = values.dwellingAmount;
   values.otherStructuresAmount = otherStructures;
@@ -291,7 +291,7 @@ export const save = (data, dispatch, props) => {
   policy.transactionType = 'Endorsement';
   const submitData = {
     ...policy,
-    formListTransactionType: 'NON-PREMIUM ENDORSEMENT',
+    formListTransactionType: 'Endorsement',
     endorsementDate: moment.utc(),
     country: policy.policyHolderMailingAddress.country,
     pH1FirstName: data.pH1FirstName,
@@ -339,7 +339,28 @@ export const save = (data, dispatch, props) => {
     yearBuiltNew: data.yearBuiltNew || null,
     townhouseRowhouseNew: data.townhouseRowhouseNew,
     familyUnitsNew: data.familyUnitsNew,
-    constructionTypeNew: data.constructionTypeNew
+    constructionTypeNew: data.constructionTypeNew,
+    // Premium Coverage Limits
+    dwellingAmountNew: Math.round(Number(String(data.dwellingAmountNew).replace(/[^\d]/g, '')) / 1000) * 1000,
+    otherStructuresAmountNew: data.otherStructuresAmountNew,
+    personalPropertyAmountNew: data.personalPropertyAmountNew,
+    personalLiabilityNew: data.personalLiabilityNew,
+    medicalPaymentsNew: data.medicalPaymentsNew,
+    lossOfUseNew: data.lossOfUseNew,
+    moldPropertyNew: data.moldPropertyNew,
+    moldLiabilityNew: data.moldLiabilityNew,
+    ordinanceOrLawNew: data.ordinanceOrLawNew,
+    // Premium Coverage Options
+    sinkholePerilCoverageNew: data.sinkholePerilCoverageNew,
+    propertyIncidentalOccupanciesMainDwellingNew: data.propertyIncidentalOccupanciesMainDwellingNew,
+    propertyIncidentalOccupanciesOtherStructuresNew: data.propertyIncidentalOccupanciesOtherStructuresNew,
+    liabilityIncidentalOccupanciesNew: data.liabilityIncidentalOccupanciesNew,
+    personalPropertyReplacementCostCoverageNew: data.personalPropertyReplacementCostCoverageNew,
+    // Premium Deductibles
+    allOtherPerilsNew: data.allOtherPerilsNew,
+    hurricaneNew: data.hurricaneNew,
+    calculatedHurricaneNew: data.calculatedHurricaneNew,
+    sinkholeNew: data.sinkholePerilCoverageNew ? _.get(policy, 'deductibles.sinkhole.amount') : 0
   };
 
   props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber }).then((result) => {
@@ -375,6 +396,7 @@ export class Endorsements extends React.Component {
 
   render() {
     const { initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions } = this.props;
+    console.log(this.props);
     return (
       <PolicyConnect>
         <ClearErrorConnect />
@@ -405,7 +427,7 @@ export class Endorsements extends React.Component {
                             min={initialValues.dwellingMin} max={initialValues.dwellingMax} disabled
                           />
                           <CurrencyField
-                            validations={['required']} styleName={''} name={'dwellingAmountNew'}
+                            validations={['required', 'range']} styleName={''} name={'dwellingAmountNew'}
                             min={initialValues.dwellingMin} label={''} max={initialValues.dwellingMax} disabled={appState.data.isCalculated}
                           />
                         </div>
@@ -1024,7 +1046,7 @@ export class Endorsements extends React.Component {
               <div className="endo-results-calc">
                 <div className="flex-parent">
                   <div className="form-group">
-                    <DateField validations={['date']} label={'Effective Date'} name={'effectiveDate'} />
+                    <DateField validations={['date']} label={'Effective Date'} name={'effectiveDateNew'} />
                   </div>
                   <div className="form-group">
                     <label>New End. Amount</label>
