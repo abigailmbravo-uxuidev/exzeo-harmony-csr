@@ -252,22 +252,6 @@ export const updateDependencies = (event, field, dependency, props) => {
   dispatch(change('Endorsements', field, Number.isNaN(fieldValue) ? '' : String(fieldValue)));
 };
 
-// const claims = [
-//   {
-//     claimNumber: '17-1234567-01',
-//     lossDate: '01/01/2000',
-//     closedDate: '03/01/2000',
-//     examiner: 'William Churchhill',
-//     lossDescription: 'Desc: Noticed discoloration on floor.'
-//   }, {
-//     claimNumber: '17-6789012-01',
-//     lossDate: '01/01/2002',
-//     closedDate: '02/01/2002',
-//     examiner: 'Bob McCann',
-//     lossDescription: 'Desc: Noticed discoloration on wall.'
-//   }
-// ];
-
 export const cancel = (props) => {
   props.reset('Endorsements');
   const workflowId = props.appState.instanceId;
@@ -399,9 +383,30 @@ export class Endorsements extends React.Component {
     }
   }
 
+  updateDwellingAndDependencies = (e, value) => {
+    const { dispatch, fieldValues } = this.props;
+
+    let dwellingNumber = String(value).replace(/\D+/g, '');
+
+    if (Number.isNaN(dwellingNumber)) { return; }
+
+    dwellingNumber = Math.round(dwellingNumber / 1000) * 1000;
+
+    if (fieldValues.otherStructuresNew !== 'other') {
+      dispatch(change('Endorsements', 'otherStructuresAmountNew', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.otherStructuresNew)))));
+    }
+    if (fieldValues.personalPropertyNew !== 'other') {
+      dispatch(change('Endorsements', 'personalPropertyAmountNew', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.personalPropertyNew)))));
+    }
+    dispatch(change('Endorsements', 'calculatedHurricaneNew', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.hurricaneNew)))));
+
+    dispatch(change('Endorsements', 'lossOfUseNew', String(setPercentageOfValue(Number(dwellingNumber), 10))));
+
+    dispatch(change('Endorsements', 'calculatedSinkholeNew', String(setPercentageOfValue(Number(dwellingNumber), 10))));
+  };
+
   render() {
     const { initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions } = this.props;
-    console.log(this.props);
     return (
       <PolicyConnect>
         <ClearErrorConnect />
@@ -432,7 +437,7 @@ export class Endorsements extends React.Component {
                             min={initialValues.dwellingMin} max={initialValues.dwellingMax} disabled
                           />
                           <CurrencyField
-                            validations={['required', 'range']} styleName={''} name={'dwellingAmountNew'}
+                            validations={['required', 'range']} styleName={''} name={'dwellingAmountNew'} onChange={this.updateDwellingAndDependencies}
                             min={initialValues.dwellingMin} label={''} max={initialValues.dwellingMax} disabled={appState.data.isCalculated}
                           />
                         </div>

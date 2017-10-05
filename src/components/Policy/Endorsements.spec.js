@@ -83,5 +83,6 @@ describe('Testing Endorsements component', () => {
     cancel(props);
     save({}, props.dispatch, props);
     updateCalculatedSinkhole(props);
+    wrapper.instance().updateDwellingAndDependencies({}, '5000');
   });
 });
