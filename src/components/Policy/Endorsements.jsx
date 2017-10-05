@@ -99,16 +99,16 @@ export const handleInitialize = (state) => {
   values.propertyIncidentalOccupanciesOtherStructuresNew = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer');
 
   values.liabilityIncidentalOccupancies = _.get(policy, 'coverageOptions.liabilityIncidentalOccupancies.answer') ? 'Yes' : 'No';
-  values.liabilityIncidentalOccupanciesNew = _.get(policy, 'coverageOptions.liabilityIncidentalOccupancies.answer');
+  values.liabilityIncidentalOccupanciesNew = !!_.get(policy, 'coverageOptions.liabilityIncidentalOccupancies.answer');
 
   values.townhouseRowhouse = _.get(policy, 'property.townhouseRowhouse') ? 'Yes' : 'No';
   values.townhouseRowhouseNew = !!_.get(policy, 'property.townhouseRowhouse');
   values.windExcluded = _.get(policy, 'rating.windMitigationDiscount') === 0 ? 'No' : 'Yes';
   values.windExcludedNew = values.windExcluded;
-  values.propertyRented = _.get(policy, 'underwritingAnswers.rented.answer');
-  values.propertyRentedNew = values.propertyRented;
-  values.seasonallyOccupied = _.get(policy, 'underwritingAnswers.monthsOccupied.answer');
-  values.seasonallyOccupiedNew = values.seasonallyOccupied;
+  values.rented = _.get(policy, 'underwritingAnswers.rented.answer');
+  values.rentedNew = values.rented;
+  values.monthsOccupied = _.get(policy, 'underwritingAnswers.monthsOccupied.answer');
+  values.monthsOccupiedNew = values.monthsOccupied;
   values.noPriorInsurance = _.get(policy, 'underwritingAnswers.noPriorInsuranceSurcharge.answer');
   values.noPriorInsuranceNew = values.noPriorInsurance;
   values.burglarAlarm = _.get(policy, 'property.burglarAlarm') ? 'Yes' : 'No';
@@ -340,6 +340,7 @@ export const save = (data, dispatch, props) => {
     townhouseRowhouseNew: data.townhouseRowhouseNew,
     familyUnitsNew: data.familyUnitsNew,
     constructionTypeNew: data.constructionTypeNew,
+    sprinklerNew: data.sprinklerNew,
     // Premium Coverage Limits
     dwellingAmountNew: Math.round(Number(String(data.dwellingAmountNew).replace(/[^\d]/g, '')) / 1000) * 1000,
     otherStructuresAmountNew: data.otherStructuresAmountNew,
@@ -360,7 +361,11 @@ export const save = (data, dispatch, props) => {
     allOtherPerilsNew: data.allOtherPerilsNew,
     hurricaneNew: data.hurricaneNew,
     calculatedHurricaneNew: data.calculatedHurricaneNew,
-    sinkholeNew: data.sinkholePerilCoverageNew ? _.get(policy, 'deductibles.sinkhole.amount') : 0
+    sinkholeNew: String(data.sinkholePerilCoverageNew) === 'true' ? _.get(policy, 'deductibles.sinkhole.amount') : 0,
+    // underwriting answers
+    noPriorInsuranceNew: data.noPriorInsuranceNew,
+    monthsOccupiedNew: data.monthsOccupiedNew,
+    rentedNew: data.rentedNew
   };
 
   props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber }).then((result) => {
@@ -628,20 +633,20 @@ export class Endorsements extends React.Component {
                           </div>
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Property Ever Rented'} styleName={''} name={'propertyRented'} disabled />
+                          <TextField label={'Property Ever Rented'} styleName={''} name={'rented'} disabled />
                           <SelectField
                             label={''}
                             isDisabled={appState.data.isCalculated}
-                            name={'propertyRentedNew'}
+                            name={'rentedNew'}
                             answers={getAnswers('rented', underwritingQuestions)}
                             styleName={''} onChange={function () {}}
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Months Occupied'} styleName={''} name={'seasonallyOccupied'} disabled />
+                          <TextField label={'Months Occupied'} styleName={''} name={'monthsOccupied'} disabled />
                           <SelectField
                             isDisabled={appState.data.isCalculated}
-                            name={'seasonallyOccupiedNew'}
+                            name={'monthsOccupiedNew'}
                             answers={getAnswers('monthsOccupied', underwritingQuestions)}
                             label={''} styleName={''} onChange={function () {}}
                           />
