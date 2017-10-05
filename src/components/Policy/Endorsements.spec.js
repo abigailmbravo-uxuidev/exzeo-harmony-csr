@@ -42,7 +42,7 @@ describe('Testing Endorsements component', () => {
           getPaymentOptionsApplyPayments() {}
         },
         cgActions: {
-          startWorkflow() { return Promise.resolve({ payload: [{ workflowData: { endorsePolicyModelSave: { data: {} } } }] }); },
+          startWorkflow() { return Promise.resolve({ payload: [{ workflowData: { endorsePolicyModelSave: { data: {} }, endorsePolicyModelCalculate: { data: {} } } }] }); },
           batchCompleteTask() { return Promise.resolve(); }
         },
         appStateActions: {
@@ -56,7 +56,6 @@ describe('Testing Endorsements component', () => {
         policyHolderMailingAddress: {}
       },
       handleSubmit() {},
-      fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,
       appState: {

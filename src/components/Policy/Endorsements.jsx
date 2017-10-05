@@ -261,17 +261,9 @@ export const cancel = (props) => {
   });
 };
 
-export const calculate = (props) => {
-  const workflowId = props.appState.instanceId;
-
-  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, {
-    ...props.appState.data,
-    isCalculated: !props.appState.data.isCalculated
-  });
-};
-
-export const save = (data, dispatch, props) => {
-  const policy = props.policy;
+export const generateModel = (data, policyObject) => {
+  const policy = policyObject;
+  policy.effectiveDate = moment.utc(data.effectiveDateNew);
   policy.transactionType = 'Endorsement';
   const submitData = {
     ...policy,
@@ -351,19 +343,42 @@ export const save = (data, dispatch, props) => {
     monthsOccupiedNew: data.monthsOccupiedNew,
     rentedNew: data.rentedNew
   };
+  return submitData;
+};
 
-  props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber }).then((result) => {
-    const steps = [{
-      name: 'saveEndorsement',
-      data: submitData
-    }];
-    const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelSave.data : {};
+export const calculate = (props) => {
+  const submitData = generateModel(props.fieldValues, props.policy);
+  const workflowId = props.appState.instanceId;
+  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
 
-    props.actions.appStateActions.setAppState('endorsePolicyModelSave', startResult.modelInstanceId, { ...props.appState.data, submitting: true });
-    props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
-      props.actions.appStateActions.setAppState('endorsePolicyModelSave', startResult.modelInstanceId, { ...props.appState.data, submitting: false, isCalculated: false });
-    });
+  const steps = [{
+    name: 'askAction',
+    data: { action: 'calculate' }
+  },
+  {
+    name: 'changePolicyData',
+    data: submitData
+  }];
+
+  props.actions.cgActions.batchCompleteTask(props.appState.data.modelName, workflowId, steps).then(() => {
+    props.actions.appStateActions.setAppState(props.appState.data.modelName, workflowId, { ...props.appState.data, submitting: false, isCalculated: true });
   });
+};
+
+export const save = (data, dispatch, props) => {
+  const submitData = generateModel(data, props.policy);
+  // props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber }).then((result) => {
+  //   const steps = [{
+  //     name: 'saveEndorsement',
+  //     data: submitData
+  //   }];
+  //   const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelSave.data : {};
+
+  //   props.actions.appStateActions.setAppState('endorsePolicyModelSave', startResult.modelInstanceId, { ...props.appState.data, submitting: true });
+  //   props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
+  //     props.actions.appStateActions.setAppState('endorsePolicyModelSave', startResult.modelInstanceId, { ...props.appState.data, submitting: false, isCalculated: false });
+  //   });
+  // });
 };
 
 const amountFormatter = cell => cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '';
@@ -372,14 +387,22 @@ const dateFormatter = cell => `${cell.substring(0, 10)}`;
 export class Endorsements extends React.Component {
 
   componentDidMount() {
-    this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !isLoaded) {
       isLoaded = true;
+      console.log(nextProps.policy);
+      const workflowId = nextProps.appState.instanceId;
+      nextProps.actions.appStateActions.setAppState(nextProps.appState.modelName, workflowId, { ...nextProps.appState.data, submitting: true });
+
+      this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
       this.props.actions.serviceActions.getUnderwritingQuestions(nextProps.policy.companyCode, nextProps.policy.state, nextProps.policy.product, nextProps.policy.property);
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
+      this.props.actions.cgActions.startWorkflow('endorsePolicyModel', { policyId: nextProps.policy.policyID, policyNumber: nextProps.policy.policyNumber }).then((result) => {
+        const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModel.data : {};
+        nextProps.actions.appStateActions.setAppState('endorsePolicyModel', startResult.modelInstanceId, { ...nextProps.appState.data, submitting: false });
+      });
     }
   }
 
