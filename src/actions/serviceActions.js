@@ -204,6 +204,27 @@ export const getPolicyFromPolicyNumber = (companyCode, state, product, policyNum
     });
 };
 
+export const getPolicyFromPolicyID = policyId => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'policy-data.services',
+    method: 'GET',
+    path: `transactions/${policyId}`
+  });
+
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
+    const data = { policy: response.data.policies ? response.data.policies[0] : {} };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
 export const getTransactionHistory = policyNumber => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'billing.services',

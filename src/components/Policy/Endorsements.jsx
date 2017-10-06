@@ -15,6 +15,7 @@ import PolicyConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
 import normalizePhone from '../Form/normalizePhone';
 import TextField from '../Form/inputs/TextField';
+import DisplayField from '../Form/inputs/DisplayField';
 import RadioField from '../Form/inputs/RadioField';
 import PhoneField from '../Form/inputs/PhoneField';
 import SelectField from '../Form/inputs/SelectField';
@@ -28,10 +29,21 @@ export const getQuestionName = (name, questions) => _.get(_.find(questions, { na
 
 let isLoaded = false;
 export const handleGetPolicy = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-  const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
-  return policyData;
+  const csrQuoteTask = (state.cg && state.appState && state.cg.csrQuote) ? state.cg.csrQuote.data : null;
+  const endorsePolicyModelTask = (state.cg && state.appState && state.cg.endorsePolicyModel) ? state.cg.endorsePolicyModel.data : null;
+  if (!csrQuoteTask && !endorsePolicyModelTask) return {};
+
+  const policyDataEndorsement = endorsePolicyModelTask && _.find(endorsePolicyModelTask.model.variables, { name: 'retrievePolicy' }) ? _.find(endorsePolicyModelTask.model.variables, { name: 'retrievePolicy' }).value[0] : null;
+  const policyData = csrQuoteTask && _.find(csrQuoteTask.model.variables, { name: 'retrievePolicy' }) ? _.find(csrQuoteTask.model.variables, { name: 'retrievePolicy' }).value[0] : {};
+  return policyDataEndorsement || policyData;
+};
+
+export const handleGetRate = (state) => {
+  const taskData = (state.cg && state.appState && state.cg.endorsePolicyModel) ? state.cg.endorsePolicyModel.data : null;
+  if (!taskData) return null;
+
+  const getRate = _.find(taskData.model.variables, { name: 'getRate' }) ? _.find(taskData.model.variables, { name: 'getRate' }).value.result : null;
+  return getRate;
 };
 
 export const calculatePercentage = (oldFigure, newFigure) => {
@@ -61,7 +73,7 @@ export const handleInitialize = (state) => {
 // Coverage Top Left
   values.effectiveDateNew = moment.utc(_.get(policy, 'effectiveDate')).format('YYYY-MM-DD');
   values.dwellingAmount = _.get(policy, 'coverageLimits.dwelling.amount');
-  values.dwellingAmountNew = values.dwellingAmount;
+  values.dwellingAmountNew = _.get(policy, 'coverageLimits.dwelling.amount');
   values.otherStructuresAmount = otherStructures;
   values.otherStructuresAmountNew = values.otherStructuresAmount;
   values.otherStructures = `${String(calculatePercentage(otherStructures, dwelling))}%`;
@@ -346,10 +358,10 @@ export const generateModel = (data, policyObject) => {
   return submitData;
 };
 
-export const calculate = (props) => {
-  const submitData = generateModel(props.fieldValues, props.policy);
+export const calculate = (data, dispatch, props) => {
+  const submitData = generateModel(data, props.policy);
   const workflowId = props.appState.instanceId;
-  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
+  props.actions.appStateActions.setAppState('endorsePolicyModel', workflowId, { ...props.appState.data, submitting: true });
 
   const steps = [{
     name: 'askAction',
@@ -360,25 +372,27 @@ export const calculate = (props) => {
     data: submitData
   }];
 
-  props.actions.cgActions.batchCompleteTask(props.appState.data.modelName, workflowId, steps).then(() => {
-    props.actions.appStateActions.setAppState(props.appState.data.modelName, workflowId, { ...props.appState.data, submitting: false, isCalculated: true });
+  props.actions.cgActions.batchCompleteTask('endorsePolicyModel', workflowId, steps).then(() => {
+    props.actions.appStateActions.setAppState('endorsePolicyModel', workflowId, { ...props.appState.data, submitting: false, isCalculated: true });
   });
 };
 
 export const save = (data, dispatch, props) => {
   const submitData = generateModel(data, props.policy);
-  // props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber }).then((result) => {
-  //   const steps = [{
-  //     name: 'saveEndorsement',
-  //     data: submitData
-  //   }];
-  //   const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelSave.data : {};
+  const workflowId = props.appState.instanceId;
+  props.actions.appStateActions.setAppState('endorsePolicyModel', workflowId, { ...props.appState.data, submitting: true });
 
-  //   props.actions.appStateActions.setAppState('endorsePolicyModelSave', startResult.modelInstanceId, { ...props.appState.data, submitting: true });
-  //   props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
-  //     props.actions.appStateActions.setAppState('endorsePolicyModelSave', startResult.modelInstanceId, { ...props.appState.data, submitting: false, isCalculated: false });
-  //   });
-  // });
+  const steps = [{
+    name: 'askAction',
+    data: { action: 'save' }
+  }, {
+    name: 'premiumBearing',
+    data: { answer: 'Yes' }
+  }];
+
+  props.actions.cgActions.batchCompleteTask('endorsePolicyModel', workflowId, steps).then(() => {
+    props.actions.appStateActions.setAppState('endorsePolicyModel', workflowId, { ...props.appState.data, submitting: false, isCalculated: false });
+  });
 };
 
 const amountFormatter = cell => cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '';
@@ -392,9 +406,8 @@ export class Endorsements extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !isLoaded) {
       isLoaded = true;
-      console.log(nextProps.policy);
       const workflowId = nextProps.appState.instanceId;
-      nextProps.actions.appStateActions.setAppState(nextProps.appState.modelName, workflowId, { ...nextProps.appState.data, submitting: true });
+      nextProps.actions.appStateActions.setAppState('endorsePolicyModel', workflowId, { ...nextProps.appState.data, submitting: true });
 
       this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
       this.props.actions.serviceActions.getUnderwritingQuestions(nextProps.policy.companyCode, nextProps.policy.state, nextProps.policy.product, nextProps.policy.property);
@@ -403,6 +416,12 @@ export class Endorsements extends React.Component {
         const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModel.data : {};
         nextProps.actions.appStateActions.setAppState('endorsePolicyModel', startResult.modelInstanceId, { ...nextProps.appState.data, submitting: false });
       });
+    }
+    if (!_.isEqual(this.props.getRate, nextProps.getRate)) {
+      const { getRate } = nextProps;
+      nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', getRate && getRate.rating ? getRate.rating.worksheet.perilPremiumsSum : '-'));
+      nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', getRate && getRate.rating ? getRate.rating.worksheet.subtotalPremium : '-'));
+      nextProps.dispatch(change('Endorsements', 'newAnnualPremium', getRate && getRate.rating ? getRate.rating.worksheet.totalPremium : '-'));
     }
   }
 
@@ -433,7 +452,7 @@ export class Endorsements extends React.Component {
     return (
       <PolicyConnect>
         <ClearErrorConnect />
-        <Form id="Endorsements" className={'content-wrapper'} onSubmit={handleSubmit(save)} >
+        <Form id="Endorsements" className={'content-wrapper'} onSubmit={appState.data.isCalculated ? handleSubmit(save) : handleSubmit(calculate)} >
 
           <div className="route-content">
             <div className="endorsements">
@@ -1079,24 +1098,17 @@ export class Endorsements extends React.Component {
               <div className="endo-results-calc">
                 <div className="flex-parent">
                   <div className="form-group">
-                    <DateField validations={['date']} label={'Effective Date'} name={'effectiveDateNew'} />
+                    <DateField validations={['date']} label={'Effective Date'} name={'effectiveDateNew'} disabled={appState.data.isCalculated} />
                   </div>
-                  <div className="form-group">
-                    <label>New End. Amount</label>
-                    <input type="numeric" disabled onChange={function () {}} value="" />
-                  </div>
-                  <div className="form-group">
-                    <label>New End Premium</label>
-                    <input type="numeric" disabled onChange={function () {}} value="" />
-                  </div>
-                  <div className="form-group">
-                    <label>New Annual Premium</label>
-                    <input type="numeric" disabled onChange={function () {}} value="" />
-                  </div>
+                  <DisplayField label={'New End. Amount'} name={'newEndorsementAmount'} />
+
+                  <DisplayField label={'New End Premium'} name={'newEndorsementPremium'} />
+
+                  <DisplayField label={'New Annual Premium'} name={'newAnnualPremium'} />
+
                   { /* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */ }
                   <button type="button" className="btn btn-secondary" onClick={() => cancel(this.props)}>Cancel</button>
-                  {!appState.data.isCalculated && <button type="button" className="btn btn-primary" onClick={() => calculate(this.props)} disabled={pristine}>Review</button>}
-                  { appState.data.isCalculated && <button type="submit" className="btn btn-primary">Save</button>}
+                  <button type="submit" className="btn btn-primary" disabled={!appState.data.isCalculated && pristine}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
 
                 </div>
               </div>
@@ -1143,7 +1155,8 @@ const mapStateToProps = state => ({
   initialValues: handleInitialize(state),
   policy: handleGetPolicy(state),
   questions: state.questions,
-  underwritingQuestions: state.service.underwritingQuestions
+  underwritingQuestions: state.service.underwritingQuestions,
+  getRate: handleGetRate(state)
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -1155,4 +1168,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Endorsements', enableReinitialize: true })(Endorsements));
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Endorsements', enableReinitialize: true, keepDirtyOnReinitialize: true })(Endorsements));

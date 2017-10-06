@@ -13,7 +13,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Footer from '../Common/Footer';
 
 const handleGetPolicyData = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  const taskData = (state.cg && state.appState && state.cg.csrQuote) ? state.cg.csrQuote.data : null;
   if (!taskData) return {};
   const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
   return policyData;
@@ -55,8 +55,8 @@ export const NoteList = (props) => {
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
   const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
   const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
-  const attachmentUrl = attachments => 
-    attachments.map((attachment) => `<a target="_blank" href="${attachment.fileUrl}">${attachment.fileType}</a>`).join('<br>');
+  const attachmentUrl = attachments =>
+    attachments.map(attachment => `<a target="_blank" href="${attachment.fileUrl}">${attachment.fileType}</a>`).join('<br>');
   const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
 
   return (
@@ -68,9 +68,9 @@ export const NoteList = (props) => {
       search
     >
       <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
-      <TableHeaderColumn dataField="attachments" dataFormat={ attachmentCount } className="attachmentCount" dataSort dataAlign="center" width="7%"><i className="fa fa-paperclip" aria-hidden="true" /></TableHeaderColumn>
-      <TableHeaderColumn dataField="createdDate" dataSort width="10%" dataFormat={ formatCreateDate }>Created</TableHeaderColumn>
-      <TableHeaderColumn dataField="createdBy" dataSort width="13%" dataFormat={ showCreatedBy }>Author</TableHeaderColumn>
+      <TableHeaderColumn dataField="attachments" dataFormat={attachmentCount} className="attachmentCount" dataSort dataAlign="center" width="7%"><i className="fa fa-paperclip" aria-hidden="true" /></TableHeaderColumn>
+      <TableHeaderColumn dataField="createdDate" dataSort width="10%" dataFormat={formatCreateDate}>Created</TableHeaderColumn>
+      <TableHeaderColumn dataField="createdBy" dataSort width="13%" dataFormat={showCreatedBy}>Author</TableHeaderColumn>
       <TableHeaderColumn dataField="content" dataSort tdStyle={{ whiteSpace: 'normal' }}>Note</TableHeaderColumn>
       <TableHeaderColumn dataField="attachments" dataFormat={attachmentUrl} dataSort tdStyle={{ whiteSpace: 'normal' }} width="45%">Attachments</TableHeaderColumn>
     </BootstrapTable>
