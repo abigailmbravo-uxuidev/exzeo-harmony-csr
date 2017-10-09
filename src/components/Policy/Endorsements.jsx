@@ -371,6 +371,7 @@ export const covertToRateData = (changePolicyData) => {
         windBorneDebrisRegion: changePolicyData.windBorneDebrisRegionNew,
         roofToWallConnection: changePolicyData.roofToWallConnectionNew
       },
+      territory: changePolicyData.property.territory,
       buildingCodeEffectivenessGrading: changePolicyData.buildingCodeEffectivenessGradingNew,
       familyUnits: changePolicyData.familyUnitsNew,
       fireAlarm: changePolicyData.fireAlarmNew,
@@ -383,31 +384,31 @@ export const covertToRateData = (changePolicyData) => {
     },
     coverageLimits: {
       dwelling: {
-        amount: changePolicyData.dwellingAmountNew
+        amount: Number(changePolicyData.dwellingAmountNew)
       },
       otherStructures: {
-        amount: changePolicyData.otherStructuresAmountNew
+        amount: Number(changePolicyData.otherStructuresAmountNew)
       },
       personalProperty: {
-        amount: changePolicyData.personalPropertyAmountNew
+        amount: Number(changePolicyData.personalPropertyAmountNew)
       },
       personalLiability: {
-        amount: changePolicyData.personalLiabilityNew
+        amount: Number(changePolicyData.personalLiabilityNew)
       },
       medicalPayments: {
-        amount: changePolicyData.medicalPaymentsNew
+        amount: Number(changePolicyData.medicalPaymentsNew)
       },
       lossOfUse: {
-        amount: changePolicyData.lossOfUseNew
+        amount: Number(changePolicyData.lossOfUseNew)
       },
       moldProperty: {
-        amount: changePolicyData.moldPropertyNew
+        amount: Number(changePolicyData.moldPropertyNew)
       },
       moldLiability: {
-        amount: changePolicyData.moldLiabilityNew
+        amount: Number(changePolicyData.moldLiabilityNew)
       },
       ordinanceOrLaw: {
-        amount: changePolicyData.ordinanceOrLawNew
+        amount: Number(changePolicyData.ordinanceOrLawNew)
       }
     },
     coverageOptions: {
@@ -510,9 +511,9 @@ export class Endorsements extends React.Component {
     if (!_.isEqual(this.props.getRate, nextProps.getRate)) {
       const { getRate } = nextProps;
       console.log(getRate);
-      nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', getRate && getRate.rating ? getRate.rating.worksheet.perilPremiumsSum : '-'));
-      nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', getRate && getRate.rating ? getRate.rating.worksheet.subtotalPremium : '-'));
-      nextProps.dispatch(change('Endorsements', 'newAnnualPremium', getRate && getRate.rating ? getRate.rating.worksheet.totalPremium : '-'));
+      nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', getRate.endorsementAmount || '-'));
+      nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', getRate.newCurrentPremium || '-'));
+      nextProps.dispatch(change('Endorsements', 'newAnnualPremium', getRate.newAnnualPremium || '-'));
     }
     if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props, nextProps)) {
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
