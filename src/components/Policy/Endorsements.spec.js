@@ -36,6 +36,7 @@ describe('Testing Endorsements component', () => {
           getEndorsementHistory() {},
           getBillingOptions() { },
           addTransaction() { return Promise.resolve(); },
+          getRate() { return Promise.resolve(); },
           getTransactionHistory() {},
           getSummaryLedger() {},
           getPaymentHistory() {},
@@ -78,7 +79,7 @@ describe('Testing Endorsements component', () => {
     handleInitialize(initialState);
     setPercentageOfValue(234, 1);
     updateDependencies({ target: { value: '' } }, 'ds', 'sdf', props);
-    calculate(props);
+    calculate({}, props.dispatch, props);
     cancel(props);
     save({}, props.dispatch, props);
     updateCalculatedSinkhole(props);

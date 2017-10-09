@@ -13,7 +13,7 @@ import Footer from '../Common/Footer';
 let isLoaded = false;
 
 export const handleGetPolicy = (state) => {
-  const taskData = (state.cg && state.appState && state.cg.csrQuote) ? state.cg.csrQuote.data : null;
+  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
   const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
   return policyData;

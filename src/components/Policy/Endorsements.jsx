@@ -30,20 +30,12 @@ export const getQuestionName = (name, questions) => _.get(_.find(questions, { na
 let isLoaded = false;
 export const handleGetPolicy = (state) => {
   const csrQuoteTask = (state.cg && state.appState && state.cg.csrQuote) ? state.cg.csrQuote.data : null;
-  const endorsePolicyModelTask = (state.cg && state.appState && state.cg.endorsePolicyModel) ? state.cg.endorsePolicyModel.data : null;
+  const endorsePolicyModelTask = (state.cg && state.appState && state.cg.endorsePolicyModelSave) ? state.cg.endorsePolicyModelSave.data : null;
   if (!csrQuoteTask && !endorsePolicyModelTask) return {};
 
   const policyDataEndorsement = endorsePolicyModelTask && _.find(endorsePolicyModelTask.model.variables, { name: 'retrievePolicy' }) ? _.find(endorsePolicyModelTask.model.variables, { name: 'retrievePolicy' }).value[0] : null;
   const policyData = csrQuoteTask && _.find(csrQuoteTask.model.variables, { name: 'retrievePolicy' }) ? _.find(csrQuoteTask.model.variables, { name: 'retrievePolicy' }).value[0] : {};
   return policyDataEndorsement || policyData;
-};
-
-export const handleGetRate = (state) => {
-  const taskData = (state.cg && state.appState && state.cg.endorsePolicyModel) ? state.cg.endorsePolicyModel.data : null;
-  if (!taskData) return null;
-
-  const getRate = _.find(taskData.model.variables, { name: 'getRate' }) ? _.find(taskData.model.variables, { name: 'getRate' }).value.result : null;
-  return getRate;
 };
 
 export const calculatePercentage = (oldFigure, newFigure) => {
@@ -361,39 +353,33 @@ export const generateModel = (data, policyObject) => {
 export const calculate = (data, dispatch, props) => {
   const submitData = generateModel(data, props.policy);
   const workflowId = props.appState.instanceId;
-  props.actions.appStateActions.setAppState('endorsePolicyModel', workflowId, { ...props.appState.data, submitting: true });
 
-  const steps = [{
-    name: 'askAction',
-    data: { action: 'calculate' }
-  },
-  {
-    name: 'changePolicyData',
-    data: submitData
-  }];
+  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true, isCalculated: false });
 
-  props.actions.cgActions.batchCompleteTask('endorsePolicyModel', workflowId, steps).then(() => {
-    props.actions.appStateActions.setAppState('endorsePolicyModel', workflowId, { ...props.appState.data, submitting: false, isCalculated: true });
+  props.actions.serviceActions.getRate(submitData).then(() => {
+    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: false, isCalculated: true });
   });
 };
 
 export const save = (data, dispatch, props) => {
-  const submitData = generateModel(data, props.policy);
   const workflowId = props.appState.instanceId;
-  props.actions.appStateActions.setAppState('endorsePolicyModel', workflowId, { ...props.appState.data, submitting: true });
 
-  const steps = [{
-    name: 'askAction',
-    data: { action: 'save' }
-  }, {
-    name: 'premiumBearing',
-    data: { answer: 'Yes' }
-  }];
+  const submitData = generateModel(data, props.policy);
+  submitData.rating = props.getRate.rating;
+  props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber }).then((result) => {
+    const steps = [{
+      name: 'saveEndorsement',
+      data: submitData
+    }];
+    const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelSave.data : {};
 
-  props.actions.cgActions.batchCompleteTask('endorsePolicyModel', workflowId, steps).then(() => {
-    props.actions.appStateActions.setAppState('endorsePolicyModel', workflowId, { ...props.appState.data, submitting: false, isCalculated: false });
+    props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, submitting: true });
+    props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
+      props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, submitting: false, isCalculated: false });
+    });
   });
 };
+
 
 const amountFormatter = cell => cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '';
 const dateFormatter = cell => `${cell.substring(0, 10)}`;
@@ -407,18 +393,13 @@ export class Endorsements extends React.Component {
     if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !isLoaded) {
       isLoaded = true;
       const workflowId = nextProps.appState.instanceId;
-      nextProps.actions.appStateActions.setAppState('endorsePolicyModel', workflowId, { ...nextProps.appState.data, submitting: true });
-
       this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
       this.props.actions.serviceActions.getUnderwritingQuestions(nextProps.policy.companyCode, nextProps.policy.state, nextProps.policy.product, nextProps.policy.property);
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
-      this.props.actions.cgActions.startWorkflow('endorsePolicyModel', { policyId: nextProps.policy.policyID, policyNumber: nextProps.policy.policyNumber }).then((result) => {
-        const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModel.data : {};
-        nextProps.actions.appStateActions.setAppState('endorsePolicyModel', startResult.modelInstanceId, { ...nextProps.appState.data, submitting: false });
-      });
     }
     if (!_.isEqual(this.props.getRate, nextProps.getRate)) {
       const { getRate } = nextProps;
+      console.log(getRate);
       nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', getRate && getRate.rating ? getRate.rating.worksheet.perilPremiumsSum : '-'));
       nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', getRate && getRate.rating ? getRate.rating.worksheet.subtotalPremium : '-'));
       nextProps.dispatch(change('Endorsements', 'newAnnualPremium', getRate && getRate.rating ? getRate.rating.worksheet.totalPremium : '-'));
@@ -449,6 +430,8 @@ export class Endorsements extends React.Component {
 
   render() {
     const { initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions } = this.props;
+
+    console.log(this.props);
     return (
       <PolicyConnect>
         <ClearErrorConnect />
@@ -1108,7 +1091,7 @@ export class Endorsements extends React.Component {
 
                   { /* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */ }
                   <button type="button" className="btn btn-secondary" onClick={() => cancel(this.props)}>Cancel</button>
-                  <button type="submit" className="btn btn-primary" disabled={!appState.data.isCalculated && pristine}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
+                  <button type="submit" className="btn btn-primary" disabled={(!appState.data.isCalculated && pristine) || appState.data.submitting}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
 
                 </div>
               </div>
@@ -1156,7 +1139,7 @@ const mapStateToProps = state => ({
   policy: handleGetPolicy(state),
   questions: state.questions,
   underwritingQuestions: state.service.underwritingQuestions,
-  getRate: handleGetRate(state)
+  getRate: state.service.getRate
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -458,3 +458,25 @@ export const getEndorsementHistory = policyNumber => (dispatch) => {
       ]));
     });
 };
+
+export const getRate = policyObject => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'rating-engine.services',
+    method: 'POST',
+    path: 'ratepolicy',
+    data: policyObject
+  });
+
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
+    const data = { getRate: response.data ? response.data.result : {} };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};

@@ -6,15 +6,13 @@ import moment from 'moment';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 
-export const handleGetPolicy = (state) => {
-  const csrQuoteTask = (state.cg && state.appState && state.cg.csrQuote) ? state.cg.csrQuote.data : null;
-  const endorsePolicyModelTask = (state.cg && state.appState && state.cg.endorsePolicyModel) ? state.cg.endorsePolicyModel.data : null;
-  if (!csrQuoteTask && !endorsePolicyModelTask) return {};
-
-  const policyDataEndorsement = endorsePolicyModelTask && _.find(endorsePolicyModelTask.model.variables, { name: 'retrievePolicy' }) ? _.find(endorsePolicyModelTask.model.variables, { name: 'retrievePolicy' }).value[0] : null;
-  const policyData = csrQuoteTask && _.find(csrQuoteTask.model.variables, { name: 'retrievePolicy' }) ? _.find(csrQuoteTask.model.variables, { name: 'retrievePolicy' }).value[0] : {};
-  return policyDataEndorsement || policyData;
+const handleGetPolicy = (state) => {
+  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  if (!taskData) return {};
+  const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
+  return policyData;
 };
+
 
 const DetailHeader = (props) => {
   const { policyData } = props;
