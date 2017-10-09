@@ -350,13 +350,123 @@ export const generateModel = (data, policyObject) => {
   return submitData;
 };
 
+export const covertToRateData = (changePolicyData) => {
+  const data = {
+    effectiveDate: changePolicyData.effectiveDate,
+    policyNumber: changePolicyData.policyNumber,
+    companyCode: changePolicyData.companyCode,
+    state: changePolicyData.state,
+    product: changePolicyData.product,
+    property: {
+      windMitigation: {
+        roofGeometry: changePolicyData.roofGeometryNew,
+        floridaBuildingCodeWindSpeed: changePolicyData.floridaBuildingCodeWindSpeedNew,
+        secondaryWaterResistance: changePolicyData.secondaryWaterResistanceNew,
+        internalPressureDesign: changePolicyData.internalPressureDesignNew,
+        roofCovering: changePolicyData.roofCoveringNew,
+        openingProtection: changePolicyData.openingProtectionNew,
+        terrain: changePolicyData.terrainNew,
+        floridaBuildingCodeWindSpeedDesign: changePolicyData.floridaBuildingCodeWindSpeedDesignNew,
+        roofDeckAttachment: changePolicyData.roofDeckAttachmentNew,
+        windBorneDebrisRegion: changePolicyData.windBorneDebrisRegionNew,
+        roofToWallConnection: changePolicyData.roofToWallConnectionNew
+      },
+      buildingCodeEffectivenessGrading: changePolicyData.buildingCodeEffectivenessGradingNew,
+      familyUnits: changePolicyData.familyUnitsNew,
+      fireAlarm: changePolicyData.fireAlarmNew,
+      burglarAlarm: changePolicyData.burglarAlarmNew,
+      constructionType: changePolicyData.constructionTypeNew,
+      yearBuilt: changePolicyData.yearBuiltNew,
+      sprinkler: changePolicyData.sprinklerNew,
+      protectionClass: changePolicyData.protectionClassNew,
+      townhouseRowhouse: changePolicyData.townhouseRowhouseNew
+    },
+    coverageLimits: {
+      dwelling: {
+        amount: changePolicyData.dwellingAmountNew
+      },
+      otherStructures: {
+        amount: changePolicyData.otherStructuresAmountNew
+      },
+      personalProperty: {
+        amount: changePolicyData.personalPropertyAmountNew
+      },
+      personalLiability: {
+        amount: changePolicyData.personalLiabilityNew
+      },
+      medicalPayments: {
+        amount: changePolicyData.medicalPaymentsNew
+      },
+      lossOfUse: {
+        amount: changePolicyData.lossOfUseNew
+      },
+      moldProperty: {
+        amount: changePolicyData.moldPropertyNew
+      },
+      moldLiability: {
+        amount: changePolicyData.moldLiabilityNew
+      },
+      ordinanceOrLaw: {
+        amount: changePolicyData.ordinanceOrLawNew
+      }
+    },
+    coverageOptions: {
+      sinkholePerilCoverage: {
+        answer: changePolicyData.sinkholePerilCoverageNew
+      },
+      propertyIncidentalOccupanciesMainDwelling: {
+        answer: changePolicyData.propertyIncidentalOccupanciesMainDwellingNew
+      },
+      propertyIncidentalOccupanciesOtherStructures: {
+        answer: changePolicyData.propertyIncidentalOccupanciesOtherStructuresNew
+      },
+      liabilityIncidentalOccupancies: {
+        answer: changePolicyData.liabilityIncidentalOccupanciesNew
+      },
+      personalPropertyReplacementCost: {
+        answer: changePolicyData.personalPropertyReplacementCostCoverageNew
+      }
+    },
+    deductibles: {
+      allOtherPerils: {
+        amount: changePolicyData.allOtherPerilsNew
+      },
+      hurricane: {
+        amount: changePolicyData.hurricaneNew,
+        calculatedAmount: changePolicyData.calculatedHurricaneNew
+      },
+      sinkhole: {
+        amount: changePolicyData.sinkholeNew
+      }
+    },
+    underwritingAnswers: {
+      rented: {
+        answer: changePolicyData.rentedNew
+      },
+      monthsOccupied: {
+        answer: changePolicyData.monthsOccupiedNew
+      },
+      noPriorInsuranceSurcharge: {
+        answer: changePolicyData.noPriorInsuranceNew
+      }
+    },
+    oldTotalPremium: changePolicyData.rating.totalPremium,
+    oldCurrentPremium: changePolicyData.rating.netPremium,
+    endorsementDate: moment.utc()
+  };
+
+  return data;
+};
+
 export const calculate = (data, dispatch, props) => {
   const submitData = generateModel(data, props.policy);
   const workflowId = props.appState.instanceId;
 
+  const rateData = covertToRateData(submitData);
+
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true, isCalculated: false });
 
-  props.actions.serviceActions.getRate(submitData).then(() => {
+  props.actions.serviceActions.getRate(rateData).then(() => {
     props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: false, isCalculated: true });
   });
 };
@@ -365,6 +475,8 @@ export const save = (data, dispatch, props) => {
   const workflowId = props.appState.instanceId;
 
   const submitData = generateModel(data, props.policy);
+  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
+
   submitData.rating = props.getRate.rating;
   props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber }).then((result) => {
     const steps = [{
@@ -373,7 +485,6 @@ export const save = (data, dispatch, props) => {
     }];
     const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelSave.data : {};
 
-    props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, submitting: true });
     props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
       props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, submitting: false, isCalculated: false });
     });
@@ -395,7 +506,6 @@ export class Endorsements extends React.Component {
       const workflowId = nextProps.appState.instanceId;
       this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
       this.props.actions.serviceActions.getUnderwritingQuestions(nextProps.policy.companyCode, nextProps.policy.state, nextProps.policy.product, nextProps.policy.property);
-      this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
     }
     if (!_.isEqual(this.props.getRate, nextProps.getRate)) {
       const { getRate } = nextProps;
@@ -403,6 +513,9 @@ export class Endorsements extends React.Component {
       nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', getRate && getRate.rating ? getRate.rating.worksheet.perilPremiumsSum : '-'));
       nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', getRate && getRate.rating ? getRate.rating.worksheet.subtotalPremium : '-'));
       nextProps.dispatch(change('Endorsements', 'newAnnualPremium', getRate && getRate.rating ? getRate.rating.worksheet.totalPremium : '-'));
+    }
+    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props, nextProps)) {
+      this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
     }
   }
 

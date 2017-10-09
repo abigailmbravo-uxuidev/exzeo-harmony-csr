@@ -30,13 +30,14 @@ describe('Testing Endorsements component', () => {
     const store = mockStore(initialState);
     const props = {
       reset() {},
+      getRate: {},
       actions: {
         errorActions: { dispatchClearAppError() { } },
         serviceActions: {
           getEndorsementHistory() {},
           getBillingOptions() { },
           addTransaction() { return Promise.resolve(); },
-          getRate() { return Promise.resolve(); },
+          getRate() { return Promise.resolve({ rating: {} }); },
           getTransactionHistory() {},
           getSummaryLedger() {},
           getPaymentHistory() {},
@@ -53,6 +54,7 @@ describe('Testing Endorsements component', () => {
       initialValues: {},
       fieldValues: {},
       policy: {
+        rating: {},
         property: {},
         policyHolderMailingAddress: {}
       },

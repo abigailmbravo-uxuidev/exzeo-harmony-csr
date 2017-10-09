@@ -463,7 +463,7 @@ export const getRate = policyObject => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'rating-engine.services',
     method: 'POST',
-    path: 'ratepolicy',
+    path: 'endorsement',
     data: policyObject
   });
 

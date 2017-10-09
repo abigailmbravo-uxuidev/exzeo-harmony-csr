@@ -946,7 +946,7 @@ it('should call start getRate', () => {
     data: {
       service: 'rating-engine.services',
       method: 'POST',
-      path: 'ratepolicy',
+      path: 'endorsement',
       data: {}
     }
   };
@@ -977,7 +977,7 @@ it('should fail start getRate', () => {
     data: {
       service: 'rating-engine.services',
       method: 'POST',
-      path: 'ratepolicy',
+      path: 'endorsement',
       data: {}
     }
   };
