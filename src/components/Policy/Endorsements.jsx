@@ -291,7 +291,8 @@ export const save = (data, dispatch, props) => {
   policy.transactionType = 'Endorsement';
   const submitData = {
     ...policy,
-    formListTransactionType: 'NON-PREMIUM ENDORSEMENT',
+    effectiveDate: moment.utc(data.effectiveDate),
+    formListTransactionType: 'New Business',
     endorsementDate: moment.utc(),
     country: policy.policyHolderMailingAddress.country,
     pH1FirstName: data.pH1FirstName,
