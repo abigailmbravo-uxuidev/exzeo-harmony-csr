@@ -22,6 +22,7 @@ import SelectField from '../Form/inputs/SelectField';
 import CurrencyField from '../Form/inputs/CurrencyField';
 import Footer from '../Common/Footer';
 import DateField from '../Form/inputs/DateField';
+import Loader from '../Common/Loader';
 
 export const setCalculate = (props, reset) => {
   if (reset) props.reset('Endorsements');
@@ -472,10 +473,10 @@ export const calculate = (data, dispatch, props) => {
 
   const rateData = covertToRateData(submitData);
 
-  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true, isCalculated: false });
+  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true, isCalculated: false });
 
   props.actions.serviceActions.getRate(rateData).then(() => {
-    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: false, isCalculated: true });
+    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: false, isCalculated: true });
   });
 };
 
@@ -483,7 +484,7 @@ export const save = (data, dispatch, props) => {
   const workflowId = props.appState.instanceId;
 
   const submitData = generateModel(data, props.policy);
-  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
+  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
 
   submitData.rating = props.getRate.rating;
   props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber }).then((result) => {
@@ -493,8 +494,11 @@ export const save = (data, dispatch, props) => {
     }];
     const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelSave.data : {};
 
+    props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, isSubmitting: true });
+
     props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
-      props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, submitting: false, isCalculated: false });
+      props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, isSubmitting: false, isCalculated: false });
+      props.reset('Endorsements');
     });
   });
 };
@@ -557,6 +561,7 @@ export class Endorsements extends React.Component {
     return (
       <PolicyConnect>
         <ClearErrorConnect />
+        {this.props.appState.data.isSubmitting && <Loader />}
         <Form id="Endorsements" className={'content-wrapper'} onSubmit={appState.data.isCalculated ? handleSubmit(save) : handleSubmit(calculate)} >
 
           <div className="route-content">
@@ -1122,7 +1127,6 @@ export class Endorsements extends React.Component {
                         <h3>Secondary Policyholder</h3>
                         <div className="flex-parent col2">
                           <TextField label={'First Name'} styleName={''} name={'pH2FirstName'} onChange={() => setCalculate(this.props, false)} />
-                          \
                           <TextField label={'Last Name'} styleName={''} name={'pH2LastName'} onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="flex-parent col2">
@@ -1191,7 +1195,7 @@ export class Endorsements extends React.Component {
 
                   { /* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */ }
                   <button type="button" className="btn btn-secondary" onClick={() => setCalculate(this.props, true)}>Cancel</button>
-                  <button type="submit" className="btn btn-primary" disabled={(!appState.data.isCalculated && pristine) || appState.data.submitting}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
+                  <button type="submit" className="btn btn-primary" disabled={(!appState.data.isCalculated && pristine) || appState.data.isSubmitting}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
 
                 </div>
               </div>
@@ -1221,7 +1225,7 @@ Endorsements.propTypes = {
   appState: PropTypes.shape({
     modelName: PropTypes.string,
     instanceId: PropTypes.string,
-    data: PropTypes.shape({ submitting: PropTypes.boolean })
+    data: PropTypes.shape({ isSubmitting: PropTypes.boolean })
   })
 };
 
