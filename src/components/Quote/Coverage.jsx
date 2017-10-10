@@ -248,7 +248,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
       .then(() => {
         // now update the workflow details so the recalculated rate shows
         props.actions.appStateActions.setAppState(props.appState.modelName,
-          workflowId, { ...props.appState.data, submitting: false, selectedLink: 'coverage' });
+          workflowId, { ...props.appState.data, submitting: false, selectedLink: 'customerData' });
       });
 };
 
@@ -395,7 +395,6 @@ export class Coverage extends Component {
       <QuoteBaseConnect>
         <ClearErrorConnect />
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
-
         <div className="route-content">
           <Form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
             <HiddenField name={'propertyIncidentalOccupanciesMainDwelling'} />
@@ -433,7 +432,7 @@ export class Coverage extends Component {
                 </section>
                 <section id="policyHolders" className="demographics flex-parent policyHolders">
                   <div id="policy-holder-a" className="policy-holder-a flex-child">
-                    <h3>Primary Policyholder</h3>
+                    <h3 id="primaryPolicyholder">Primary Policyholder</h3>
                     <div className="flex-parent policy-holder-a-name">
                       <div className="flex-child policy-holder-a-first-name">
                         <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH1FirstName'} />
@@ -452,7 +451,7 @@ export class Coverage extends Component {
                     </div>
                     <div className="flex-parent policy-holder-a-email">
                       <div className="flex-child email-address">
-                        <TextField validations={['required']} label={'Email Address'} styleName={''} name={'pH1email'} />
+                        <TextField validations={['required', 'email']} label={'Email Address'} styleName={''} name={'pH1email'} />
                       </div>
                       <div hidden className="flex-child electronicDelivery">
                         <RadioField
@@ -797,7 +796,6 @@ export class Coverage extends Component {
                         <SelectField
                           name="roofCovering" component="select" styleName={''} label="Roof Covering" onChange={function () {}} validations={['required']}
                           answers={getAnswers('roofCovering', questions)}
-
                         />
                       </div>
                     </div>
@@ -880,7 +878,6 @@ export class Coverage extends Component {
                     </div>
                   </div>
                 </section>
-
               </div>
             </div>
           </Form>
@@ -888,10 +885,10 @@ export class Coverage extends Component {
         <div className="basic-footer btn-footer">
           <Footer />
           <div className="btn-wrapper">
-            <button className="btn btn-secondary" type="button" form="Coverage" onClick={() => this.props.reset('Coverage')}>
-              Cancel
+            <button aria-label="reset-btn form-coverage" className="btn btn-secondary" type="button" form="Coverage" onClick={() => this.props.reset('Coverage')}>
+              Reset
             </button>
-            <button className="btn btn-primary" type="submit" form="Coverage" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}>
+            <button aria-label="submit-btn form-coverage" className="btn btn-primary" type="submit" form="Coverage" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}>
               Update
             </button>
           </div>

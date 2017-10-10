@@ -117,7 +117,7 @@ export const SideNav = (props) => {
           </li> :
           <li key={index}>
             <span className={agentLink.styleName} onClick={() => goToPage(agentLink, props, quote)}>
-              <a>{agentLink.label}</a>
+              <a className={props.appState.data.selectedLink === agentLink.key ? `${agentLink.styleName} active` : `${agentLink.styleName}`}>{agentLink.label}</a>
             </span>
           </li>
       ))}
@@ -126,7 +126,7 @@ export const SideNav = (props) => {
           <button className="btn btn-primary btn-sm btn-block" onClick={() => NewNoteFileUploaderPopup(props)}><i className="fa fa-plus" /> Note / File</button>
         </li>
         <li>
-          <button className="btn btn-secondary btn-xs btn-block" onClick={() => UWconditionsPopup(props)}>Underwriting Conditions</button>
+          <button aria-label="open-btn form-newNote" className="btn btn-secondary btn-xs btn-block" onClick={() => UWconditionsPopup(props)}>Underwriting Conditions</button>
         </li>
       </ul>
       { props.appState.data.showNewNoteFileUploader === true &&
