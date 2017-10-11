@@ -9,26 +9,10 @@ import QuoteSideNav from '../components/Policy/PolicySideNav';
 import PolicyDetailHeader from '../components/Policy/DetailHeader';
 import Loader from '../components/Common/Loader';
 
-// import NewNoteFileUploader from '../components/Common/NewNoteFileUploader';
-
-/*
-const handleLogout = (props) => {
-  props.actions.user.logout();
-};
-*/
-
-const handleGetPolicy = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-  const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
-  return policyData;
-};
-
-
 export const Policy = props => (
   <div className="app-wrapper csr policy">
     {/* TODO: dynamically add policy # to title*/}
-    <Helmet><title>{props.policy.policyNumber ? `P: ${props.policy.policyNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
+    <Helmet><title>{props.policy && props.policy.policyNumber ? `P: ${props.policy.policyNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
     {/* <NewNoteFileUploader/>*/}
     <PolicyHeader />
     <PolicyDetailHeader />
@@ -52,6 +36,12 @@ Policy.propTypes = {
   policy: PropTypes.shape()
 };
 
-const mapStateToProps = state => ({ appState: state.appState, policy: handleGetPolicy(state) });
+const mapStateToProps = state => ({
+  policyState: state.policy,
+  tasks: state.cg,
+  appState: state.appState,
+  summaryLedger: state.service.getSummaryLedger,
+  policy: state.service.policyFromId
+});
 
 export default connect(mapStateToProps)(Policy);

@@ -17,13 +17,13 @@ export class DetailHeader extends Component {
       this.props.actions.serviceActions.getPolicyFromPolicyId(nextProps.policyState.policyId);
       this.props.actions.policyStateActions.updatePolicy(false, nextProps.policyState.policyId);
     }
-    if (!_.isEqual(this.props.policy, nextProps.policy)) {
+    if (!_.isEqual(this.props.policy, nextProps.policy) && nextProps.policy.policyNumber) {
       this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
     }
   }
   render() {
-    const { policy } = this.props;
-    if (!policy.policyID) {
+    const { policy, summaryLedger } = this.props;
+    if (!policy || !policy.policyID) {
       return (<div className="detailHeader" />);
     }
     return (<div className="detailHeader">
@@ -32,7 +32,7 @@ export class DetailHeader extends Component {
           <div>
             <dd>{_.get(policy, 'product') === 'HO3' ? `${_.get(policy, 'product')} Homeowners` : _.get(policy, 'product')}</dd>
             <dd>{_.get(policy, 'policyNumber')}</dd>
-            <dd>{_.get(policy, 'status')}</dd>
+            <dd>{`${_.get(policy, 'status')} / ${_.get(summaryLedger, 'status.displayText')}`}</dd>
           </div>
         </dl>
       </section>
@@ -101,7 +101,7 @@ export class DetailHeader extends Component {
         <dl>
           <div>
             <dt>Cancellation Date</dt>
-            <dd>{_.get(policy, 'cancellationDate') ? moment.utc(_.get(policy, 'cancellationDate')).format('MM/DD/YYYY') : '' }</dd>
+            <dd>{_.get(policy, 'cancelDate') ? moment.utc(_.get(policy, 'cancelDate')).format('MM/DD/YYYY') : '' }</dd>
           </div>
         </dl>
       </section>
@@ -109,7 +109,7 @@ export class DetailHeader extends Component {
         <dl>
           <div>
             <dt>Current Premium</dt>
-            <dd>$ {normalizeNumbers(_.get(policy, 'rating.totalPremium'))}</dd>
+            <dd>$ {summaryLedger ? normalizeNumbers(summaryLedger.currentPremium) : '-'}</dd>
           </div>
         </dl>
       </section>
@@ -127,7 +127,8 @@ const mapStateToProps = state => ({
   policyState: state.policy,
   tasks: state.cg,
   appState: state.appState,
-  policy: state.service.policyFromId || {}
+  summaryLedger: state.service.getSummaryLedger,
+  policy: state.service.policyFromId
 });
 
 const mapDispatchToProps = dispatch => ({
