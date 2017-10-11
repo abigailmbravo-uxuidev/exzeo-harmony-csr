@@ -88,11 +88,11 @@ const goToPage = (agentLink, props, quote) => {
     });
 };
 
-const getDocumentId = (props) => {
+const getQuote = (props) => {
   const taskData = (props.cg[props.appState.modelName]) ? props.cg[props.appState.modelName].data : null;
   if (!taskData) return null;
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
-    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
+  const quoteData = _.find(taskData.model.variables, { name: 'retrieveQuote' })
+    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
     : {};
   return quoteData || {};
 };
@@ -102,7 +102,7 @@ export const SideNav = (props) => {
     ? (<Redirect to={props.activateRedirectLink} />)
     : null;
 
-  const quote = getDocumentId(props);
+  const quote = getQuote(props);
 
   return (
     <nav className="site-nav">
