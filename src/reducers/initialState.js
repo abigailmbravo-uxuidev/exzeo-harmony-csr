@@ -16,6 +16,10 @@ export default {
   },
   error: {},
   questions: [],
+  policyState: {
+    policyId: null,
+    update: false
+  },
   authState: {
     userProfile: null
   }
