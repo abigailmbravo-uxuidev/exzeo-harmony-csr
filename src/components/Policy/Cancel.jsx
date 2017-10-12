@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { reduxForm, Form, change } from 'redux-form';
 import { bindActionCreators } from 'redux';
-import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import PolicyConnect from '../../containers/Policy';
