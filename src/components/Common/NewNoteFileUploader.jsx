@@ -4,7 +4,6 @@ import Dropzone from 'react-dropzone';
 import { Field, Form, reduxForm, propTypes } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 import * as cgActions from '../../actions/cgActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
