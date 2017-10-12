@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
 import { reduxForm, propTypes, change, Form } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as cgActions from '../../actions/cgActions';
@@ -391,8 +390,7 @@ export class Endorsements extends React.Component {
               </div>
               <div className="scroll">
                 <div className="form-group survey-wrapper" role="group">
-                  <section>
-                    <a name="coverage" />
+                  <section id="coverage">
                     <h3>Coverage</h3>
                     <div className="flex-parent">
                       {/* Col1 */}
@@ -838,8 +836,7 @@ export class Endorsements extends React.Component {
 
                     </div>
                   </section>
-                  <section>
-                    <a name="home" />
+                  <section id="home">
                     <h3>Home / Location</h3>
                     <div className="flex-parent">
                       {/* Col1 */}
@@ -944,8 +941,7 @@ export class Endorsements extends React.Component {
                       <TableHeaderColumn dataField="transactionType" dataAlign="right">Type</TableHeaderColumn>
                     </BootstrapTable>
                   </section>
-                  <section>
-                    <a name="policy" />
+                  <section id="policy">
                     <div className="flex-parent col2">
                       {/* Col1 */}
                       <div className="flex-child">
@@ -979,8 +975,7 @@ export class Endorsements extends React.Component {
                       </div>
                     </div>
                   </section>
-                  <section>
-                    <a name="addresses" />
+                  <section id="addresses">
                     <h3>Mailing Address</h3>
                     <div className="flex-parent wrap">
                       <div className="address">

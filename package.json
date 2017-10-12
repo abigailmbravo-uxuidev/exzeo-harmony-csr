@@ -55,7 +55,7 @@
   "scripts": {
     "build-css": "node-sass src/sass --output-style 'compressed' -o src/css",
     "watch-css": "node-sass src/sass --output-style 'compressed' -o src/css --watch --recursive",
-    "dev": "npm run build-css && react-scripts start",    
+    "dev": "npm run build-css && react-scripts start",
     "start": "react-scripts start",
     "build": "npm run build-css && react-scripts build",
     "cover": "npm test -- --coverage",
