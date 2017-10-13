@@ -121,7 +121,6 @@ export const handleFormSubmit = (data, dispatch, props) => {
 
   actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
-        console.log(props);
         props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
 
         additionalInterests = modifiedAIs;

@@ -11,7 +11,6 @@ export default function quoteStateReducer(state = initialState.quoteState, actio
       newState = (action.quoteState) ? action.quoteState : newState;
       return newState;
     case persistTypes.REHYDRATE:
-      console.log('REHYDRATE', action);
       const quote = (action.quoteState) ? action.quoteState : null;
       newState = quote || ((action.payload && action.payload.quoteState) ? action.payload.quoteState : newState);
       return newState;

@@ -247,7 +247,6 @@ export const handleFormSubmit = (data, dispatch, props) => {
 
   props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
       .then(() => {
-        console.log(props.quoteData);
         props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
         // now update the workflow details so the recalculated rate shows
         props.actions.appStateActions.setAppState(props.appState.modelName,

@@ -35,7 +35,6 @@ export const selectPolicy = (quote, props) => {
 export class DetailHeader extends Component {
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     if (nextProps.quoteState && nextProps.quoteState.update && nextProps.quoteState.quoteId) {
       this.props.actions.serviceActions.getQuote(nextProps.quoteState.quoteId);
       this.props.actions.quoteStateActions.getLatestQuote(false, nextProps.quoteState.quoteId);
