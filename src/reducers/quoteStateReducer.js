@@ -7,11 +7,11 @@ import initialState from './initialState';
 export default function quoteStateReducer(state = initialState.quoteState, action) {
   let newState = {};
   switch (action.type) {
-    case types.APP_ERROR:
-      newState = { ...state, ...action.quoteState };
+    case types.GET_QUOTE:
+      newState = (action.quoteState) ? action.quoteState : newState;
       return newState;
     case persistTypes.REHYDRATE:
-      newState = (action.payload && action.payload.quote) ? action.payload.quote : newState;
+      newState = (action.quoteState) ? action.quoteState : newState;
       return newState;
     default:
       return state;

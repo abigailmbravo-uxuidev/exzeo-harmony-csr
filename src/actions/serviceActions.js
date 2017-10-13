@@ -436,3 +436,24 @@ export const getEndorsementHistory = policyNumber => (dispatch) => {
       ]));
     });
 };
+
+export const getQuote = quoteId => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'quote-data.services',
+    method: 'GET',
+    path: quoteId
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { quote: response.data ? response.data.result : {} };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
