@@ -11,24 +11,24 @@ import * as serviceActions from '../../actions/serviceActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 
 
-export const selectquote = (quote, props) => {
+export const selectPolicy = (quote, props) => {
   if (!quote.quoteNumber) return;
 
-  props.actions.serviceActions.getquoteFromquoteNumber(quote.companyCode, quote.state, quote.product, quote.quoteNumber).then((result) => {
+  props.actions.serviceActions.getPolicyFromPolicyNumber(quote.companyCode, quote.state, quote.product, quote.policyNumber).then((result) => {
     const lastSearchData = {
       firstName: '',
       lastName: '',
       address: '',
       quoteNumber: '',
-      quoteNumber: encodeURIComponent(quote.quoteNumber),
+      policyNumber: encodeURIComponent(quote.policyNumber),
       zip: '',
-      searchType: 'quote'
+      searchType: 'policy'
     };
 
     localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
     localStorage.setItem('isNewTab', true);
-    localStorage.setItem('quoteID', result.payload[0].data.quote.quoteID);
-    window.open('/quote/coverage', '_blank');
+    localStorage.setItem('policyID', result.payload[0].data.policy.policyID);
+    window.open('/policy/coverage', '_blank');
   });
 };
 
@@ -52,7 +52,7 @@ export class DetailHeader extends Component {
           <div>
             <dd>{quoteData.product === 'HO3' ? `${quoteData.product} Homeowners` : quoteData.product}</dd>
             <dd>{(quoteData.quoteNumber ? quoteData.quoteNumber : '-')}</dd>
-            <dd>{quoteData.quoteState === 'quote Issued' ? <button className="btn btn-link" onClick={() => selectquote(quoteData, this.props)}>{quoteData.quoteState}</button> : quoteData.quoteState}</dd>
+            <dd>{quoteData.quoteState === 'quote Issued' ? <button className="btn btn-link" onClick={() => selectPolicy(quoteData, this.props)}>{quoteData.quoteState}</button> : quoteData.quoteState}</dd>
           </div>
         </dl>
       </section>
@@ -137,7 +137,6 @@ const mapStateToProps = state => ({
   quoteState: state.quoteState,
   tasks: state.cg,
   appState: state.appState,
-  summaryLedger: state.service.getSummaryLedger,
   quoteData: state.service.quote
 });
 
