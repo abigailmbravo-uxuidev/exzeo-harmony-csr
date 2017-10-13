@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { QuoteApplication, handleFormSubmit, handleGetQuoteData, quoteSummaryModal, handleGetUnderwritingExceptions } from './Application';
+import ConnectedApp, { QuoteApplication, handleFormSubmit, quoteSummaryModal, handleGetUnderwritingExceptions } from './Application';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -12,7 +12,8 @@ describe('Testing Coverage component', () => {
   it('should test connected app', () => {
     const initialState = {
       service: {
-        transactions: {}
+        transactions: {},
+        quote: { underwritingExceptions: [] }
       },
       cg: {
         bb: {
@@ -58,6 +59,10 @@ describe('Testing Coverage component', () => {
   });
   it('should test handleFormSubmit', () => {
     const initialState = {
+      service: {
+        transactions: {},
+        quote: { underwritingExceptions: [] }
+      },
       cg: {
         bb: {
           data: {
@@ -126,7 +131,6 @@ describe('Testing Coverage component', () => {
     };
 
     handleFormSubmit({}, store.dispatch, props);
-    handleGetQuoteData(initialState);
     quoteSummaryModal(props);
     handleGetUnderwritingExceptions(initialState);
   });

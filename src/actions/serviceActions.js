@@ -367,7 +367,7 @@ export const saveUnderwritingExceptions = (id, underwritingExceptions) => (dispa
   };
   const axiosConfig = runnerSetup(body);
 
-  return axios(axiosConfig).then((response) => {
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
     const data = { transactions: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
