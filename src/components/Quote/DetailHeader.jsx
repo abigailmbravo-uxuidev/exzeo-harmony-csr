@@ -56,26 +56,26 @@ export class DetailHeader extends Component {
           </div>
         </dl>
       </section>
-      <section id="quoteholder" className="quoteholder">
+      <section id="policyHolder" className="policyHolder">
         <dl>
           <div>
-            <dt>quoteholder</dt>
-            <dd>{quoteData && quoteData.quoteHolders &&
-                 quoteData.quoteHolders[0] ? `${quoteData.quoteHolders[0].firstName} ${quoteData.quoteHolders[0].lastName}` : '-'}</dd>
-            <dd>{quoteData.quoteHolders && quoteData.quoteHolders[0] ? normalizePhone(quoteData.quoteHolders[0].primaryPhoneNumber) : '' }</dd>
+            <dt>policyHolder</dt>
+            <dd>{quoteData && quoteData.policyHolders &&
+                 quoteData.policyHolders[0] ? `${quoteData.policyHolders[0].firstName} ${quoteData.policyHolders[0].lastName}` : '-'}</dd>
+            <dd>{quoteData.policyHolders && quoteData.policyHolders[0] ? normalizePhone(quoteData.policyHolders[0].primaryPhoneNumber) : '' }</dd>
           </div>
         </dl>
       </section>
-      {quoteData.quoteHolderMailingAddress && <section id="quoteHolderMailingAddress" className="quoteHolderMailingAddress">
+      {quoteData.policyHolderMailingAddress && <section id="policyHolderMailingAddress" className="policyHolderMailingAddress">
         <dl>
           <div>
             <dt>Mailing Address</dt>
-            <dd>{quoteData.quoteHolderMailingAddress.address1}</dd>
-            <dd>{quoteData.quoteHolderMailingAddress.address2}</dd>
+            <dd>{quoteData.policyHolderMailingAddress.address1}</dd>
+            <dd>{quoteData.policyHolderMailingAddress.address2}</dd>
             <dd>
-              {quoteData.quoteHolderMailingAddress.city},&nbsp;
-                     {quoteData.quoteHolderMailingAddress.state}&nbsp;
-              {quoteData.quoteHolderMailingAddress.zip}
+              {quoteData.policyHolderMailingAddress.city},&nbsp;
+                     {quoteData.policyHolderMailingAddress.state}&nbsp;
+              {quoteData.policyHolderMailingAddress.zip}
             </dd>
           </div>
         </dl>
