@@ -729,6 +729,9 @@ describe('Testing Coverage component', () => {
 
       },
       actions: {
+        quoteStateActions: {
+          getLatestQuote() {}
+        },
         serviceActions: {
           getAgencies() {},
           getAgentsByAgency() {}
