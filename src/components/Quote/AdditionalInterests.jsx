@@ -9,6 +9,7 @@ import * as questionsActions from '../../actions/questionsActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
+import * as quoteStateActions from '../../actions/quoteStateActions';
 import AdditionalInterestModal from '../../components/Common/AdditionalInterestModal';
 import AdditionalInterestEditModal from '../../components/Common/AdditionalInterestEditModal';
 import Footer from '../Common/Footer';
@@ -36,20 +37,6 @@ export const applyRank = (additionalInterests) => {
         break;
     }
   });
-};
-export const handleGetQuoteData = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
-    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
-    : {};
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
-    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
-    : quoteEnd;
-
-  applyRank(quoteData.additionalInterests);
-
-  return quoteData;
 };
 
 const handleInitialize = () => {
@@ -134,6 +121,9 @@ export const handleFormSubmit = (data, dispatch, props) => {
 
   actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
+        console.log(props);
+        props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
+
         additionalInterests = modifiedAIs;
         // now update the workflow details so the recalculated rate shows
         actions.appStateActions.setAppState(appState.modelName,
@@ -207,6 +197,8 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
 
   actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
+        props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
+
         additionalInterests = modifiedAIs;
         props.actions.appStateActions.setAppState(props.appState.modelName,
           workflowId, { ...props.appState.data,
@@ -327,14 +319,15 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'AdditionalLinterests.values', {}),
   initialValues: handleInitialize(state),
   showAdditionalInterestModal: state.appState.data.showAdditionalInterestModal,
-  quoteData: handleGetQuoteData(state)
+  quoteData: state.service.quote || {}
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
     questionsActions: bindActionCreators(questionsActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
+    appStateActions: bindActionCreators(appStateActions, dispatch),
+    quoteStateActions: bindActionCreators(quoteStateActions, dispatch)
   }
 });
 

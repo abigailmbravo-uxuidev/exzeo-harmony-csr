@@ -175,7 +175,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   initialValues: handleInitialize(state),
   fieldValues: _.get(state.form, 'Underwriting.values', {}),
-  quoteData: state.service.quote,
+  quoteData: state.service.quote || {},
   activateRedirect: state.appState.data.activateRedirect,
   underwritingQuestions: state.service.underwritingQuestions
 });
