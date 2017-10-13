@@ -337,6 +337,9 @@ describe('Testing Coverage component', () => {
 
       },
       actions: {
+        quoteStateActions: {
+          getLatestQuote() {}
+        },
         cgActions: {
           startWorkflow() { return Promise.resolve(() => {}); },
           batchCompleteTask() { return Promise.resolve(() => {}); }
@@ -435,6 +438,9 @@ describe('Testing Coverage component', () => {
       fieldQuestions: [],
       dispatch: store.dispatch,
       actions: {
+        quoteStateActions: {
+          getLatestQuote() {}
+        },
         appStateActions: {
           setAppState() { }
         },
@@ -564,6 +570,9 @@ describe('Testing Coverage component', () => {
       fieldQuestions: [],
       dispatch: store.dispatch,
       actions: {
+        quoteStateActions: {
+          getLatestQuote() {}
+        },
         serviceActions: {
           getAgentsByAgency(companyCode, state, agencyCode) { return Promise.resolve(() => {}); }
         },
