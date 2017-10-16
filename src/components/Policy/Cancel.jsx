@@ -207,7 +207,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   fieldValues: _.get(state.form, 'CancelPolicy.values', {}),
   initialValues: handleInitialize(state),
-  policy: state.service.policyFromId || {},
+  policy: state.service.latestPolicy || {},
   paymentHistory: state.service.paymentHistory,
   summaryLedger: state.service.getSummaryLedger,
   paymentOptions: state.service.billingOptions

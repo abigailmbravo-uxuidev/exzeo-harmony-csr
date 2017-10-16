@@ -12,10 +12,9 @@ import * as policyStateActions from '../../actions/policyStateActions';
 export class DetailHeader extends Component {
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
-    if (nextProps.policyState.update && nextProps.policyState.policyId) {
-      this.props.actions.serviceActions.getPolicyFromPolicyId(nextProps.policyState.policyId);
-      this.props.actions.policyStateActions.updatePolicy(false, nextProps.policyState.policyId);
+    if (nextProps.policyState.update && nextProps.policyState.policyNumber) {
+      this.props.actions.serviceActions.getLatestPolicy(nextProps.policyState.policyNumber);
+      this.props.actions.policyStateActions.updatePolicy(false, nextProps.policyState.policyNumber);
     }
     if (!_.isEqual(this.props.policy, nextProps.policy) && nextProps.policy.policyNumber) {
       this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
@@ -128,7 +127,7 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   summaryLedger: state.service.getSummaryLedger,
-  policy: state.service.policyFromId
+  policy: state.service.latestPolicy
 });
 
 const mapDispatchToProps = dispatch => ({

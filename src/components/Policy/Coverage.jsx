@@ -22,7 +22,7 @@ export const getPropertyAppraisialLink = (county, questions) => {
   return _.find(answers, { label: county }) || {};
 };
 
-const handleInitialize = state => state.service.policyFromId;
+const handleInitialize = state => state.service.latestPolicy;
 
 export class Coverage extends Component {
 
@@ -31,16 +31,16 @@ export class Coverage extends Component {
     const isNewTab = localStorage.getItem('isNewTab') === 'true';
     if (isNewTab) {
       localStorage.setItem('isNewTab', false);
-      const policyId = localStorage.getItem('policyID');
-      this.props.actions.policyStateActions.updatePolicy(true, policyId);
+      const policyNumber = localStorage.getItem('policyNumber');
+      this.props.actions.policyStateActions.updatePolicy(true, policyNumber);
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     if (!_.isEqual(this.props, nextProps)) {
       if (nextProps.policy.policyNumber) {
         this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
+        this.props.actions.policyStateActions.updatePolicy(true, nextProps.policy.policyNumber);
 
         const paymentOptions = {
           effectiveDate: nextProps.policy.effectiveDate,
@@ -357,7 +357,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   fieldValues: _.get(state.form, 'Coverage.values', {}),
   initialValues: handleInitialize(state),
-  policy: state.service.policyFromId || {},
+  policy: state.service.latestPolicy || {},
   questions: state.questions
 
 });

@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
-import { Endorsements, handleGetPolicy, calculatePercentage, handleInitialize, setPercentageOfValue, updateDependencies, calculate, save, cancel, updateCalculatedSinkhole } from './Endorsements';
+import { Endorsements, calculatePercentage, handleInitialize, setPercentageOfValue, updateDependencies, calculate, save, cancel, updateCalculatedSinkhole, getNewPolicyNumber } from './Endorsements';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
@@ -13,6 +13,9 @@ const mockStore = configureStore(middlewares);
 describe('Testing Endorsements component', () => {
   it('should test connected app', () => {
     const initialState = {
+      service: {
+        latestPolicy: {}
+      },
       cg: {
         bb: {
           data: {
@@ -74,7 +77,6 @@ describe('Testing Endorsements component', () => {
     const wrapper = shallow(<Endorsements store={store} {...props} />);
     expect(wrapper);
 
-    handleGetPolicy(initialState);
     calculatePercentage(100, 200);
     handleInitialize(initialState);
     setPercentageOfValue(234, 1);
@@ -83,5 +85,6 @@ describe('Testing Endorsements component', () => {
     cancel(props);
     save({}, props.dispatch, props);
     updateCalculatedSinkhole(props);
+    getNewPolicyNumber(initialState);
   });
 });

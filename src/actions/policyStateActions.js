@@ -1,14 +1,14 @@
 import * as types from './actionTypes';
 
-export const updatePolicy = (update, policyId) => {
+export const updatePolicy = (update, policyNumber) => {
   const stateObj = {
     type: types.POLICYID,
     policyState: {
-      policyId,
+      policyNumber,
       update
     }
   };
   return stateObj;
 };
 
-export const dispatchGetLatestPolicy = (update, policyId) => dispatch => dispatch(updatePolicy(update, policyId));
+export const dispatchGetLatestPolicy = (update, policyNumber) => dispatch => dispatch(updatePolicy(update, policyNumber));

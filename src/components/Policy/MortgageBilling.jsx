@@ -46,7 +46,7 @@ value.rank = 5; // eslint-disable-line
 };
 
 export const handleInitialize = (state) => {
-  const policy = state.service.policyFromId || {};
+  const policy = state.service.latestPolicy || {};
   const values = {};
   values.policyNumber = _.get(policy, 'policyNumber');
   values.cashDescription = '';
@@ -326,7 +326,7 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'MortgageBilling.values', {}),
   getSummaryLedger: state.service.getSummaryLedger,
   initialValues: handleInitialize(state),
-  policy: state.service.policyFromId || {},
+  policy: state.service.latestPolicy || {},
   tasks: state.cg,
   appState: state.appState,
   paymentHistory: state.service.paymentHistory,

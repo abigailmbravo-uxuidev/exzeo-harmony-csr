@@ -1,4 +1,5 @@
 import axios from 'axios';
+import _ from 'lodash';
 import { batchActions } from 'redux-batched-actions';
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
@@ -190,7 +191,7 @@ export const getPolicyFromPolicyNumber = (companyCode, state, product, policyNum
   });
 
   return Promise.resolve(axios(axiosConfig)).then((response) => {
-    const data = { policy: response.data.policies ? response.data.policies[0] : {} };
+    const data = { policy: response.data.policies ? _.maxBy(response.data.policies[0], 'policyVersion') : {} };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));
@@ -203,16 +204,15 @@ export const getPolicyFromPolicyNumber = (companyCode, state, product, policyNum
     });
 };
 
-export const getPolicyFromPolicyId = policyId => (dispatch) => {
+export const getLatestPolicy = policyNumber => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'policy-data.services',
     method: 'GET',
-    path: `transactions/${policyId}`
+    path: `transactions/${policyNumber}/latest`
   });
 
   return Promise.resolve(axios(axiosConfig)).then((response) => {
-    console.log(response);
-    const data = { policyFromId: response ? response.data[0] : {} };
+    const data = { latestPolicy: response ? response.data : {} };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));

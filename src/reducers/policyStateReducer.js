@@ -6,14 +6,11 @@ export default function policyStateReducer(state = initialState.policyState, act
   let newState = state;
   switch (action.type) {
     case types.POLICYID:
-      console.log('action', action);
       newState = (action.policyState) ? action.policyState : newState;
       return newState;
     case persistTypes.REHYDRATE:
-      const rehydrate = (action.payload && action.payload.policy && action.payload.policy.policyId) ? action.payload.policy : null;
-      newState = rehydrate || ((action.policyState) ? action.policyState : newState);
-      console.log('REHYDRATE', newState);
-
+      const policy = (action.policyState) ? action.policyState : null;
+      newState = policy || ((action.payload && action.payload.policyState) ? action.payload.policyState : newState);
       return newState;
     default:
       return state;

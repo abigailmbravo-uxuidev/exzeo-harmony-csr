@@ -26,7 +26,7 @@ export const getAnswers = (name, questions) => _.get(_.find(questions, { name })
 
 export const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question') || '';
 
-export const handleGetEndorsmentId = (state) => {
+export const getNewPolicyNumber = (state) => {
   const taskData = (state.cg && state.appState && state.cg.endorsePolicyModelSave)
       ? state.cg.endorsePolicyModelSave.data
       : null;
@@ -35,7 +35,7 @@ export const handleGetEndorsmentId = (state) => {
   const policy = _.find(taskData.model.variables, { name: 'retrievePolicy' })
       ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0]
       : null;
-  return policy ? policy.policyID : null;
+  return policy ? policy.policyNumber : null;
 };
 
 export const calculatePercentage = (oldFigure, newFigure) => {
@@ -47,7 +47,7 @@ export const calculatePercentage = (oldFigure, newFigure) => {
 };
 
 export const handleInitialize = (state) => {
-  const policy = state.service.policyFromId || {};
+  const policy = state.service.latestPolicy || {};
   const questions = state.questions || [];
   const values = {};
   // values.agencyCode = '20000'; // _.get(policy, 'agencyCode');
@@ -375,8 +375,8 @@ export class Endorsements extends React.Component {
       this.props.actions.serviceActions.getUnderwritingQuestions(nextProps.policy.companyCode, nextProps.policy.state, nextProps.policy.product, nextProps.policy.property);
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
     }
-    if (!_.isEqual(this.props.newPolicyId, nextProps.newPolicyId)) {
-      this.props.actions.policyStateActions.updatePolicy(true, nextProps.newPolicyId);
+    if (!_.isEqual(this.props.newPolicyNumber, nextProps.newPolicyNumber)) {
+      this.props.actions.policyStateActions.updatePolicy(true, nextProps.newPolicyNumber);
     }
   }
 
@@ -1089,10 +1089,10 @@ const mapStateToProps = state => ({
   appState: state.appState,
   fieldValues: _.get(state.form, 'Endorsements.values', {}),
   initialValues: handleInitialize(state),
-  policy: state.service.policyFromId || {},
+  policy: state.service.latestPolicy || {},
   questions: state.questions,
   underwritingQuestions: state.service.underwritingQuestions,
-  newPolicyId: handleGetEndorsmentId(state)
+  newPolicyNumber: getNewPolicyNumber(state)
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -17,7 +17,7 @@ export default {
   error: {},
   questions: [],
   policyState: {
-    policyId: null,
+    policyNumber: null,
     update: false
   },
   authState: {

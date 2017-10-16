@@ -9,7 +9,6 @@ import { enableBatching } from 'redux-batched-actions';
 import rootReducer from './../reducers';
 
 export default function configureStore(initialState) {
-  console.log(initialState);
   return createStore(
     enableBatching(rootReducer),
     initialState,

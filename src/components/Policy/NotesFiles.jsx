@@ -148,7 +148,7 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'NotesFiles.values', {}),
   initialValues: handleInitialize(state),
   notes: state.service.notes,
-  policy: state.service.policyFromId || {}
+  policy: state.service.latestPolicy || {}
 });
 
 const mapDispatchToProps = dispatch => ({
