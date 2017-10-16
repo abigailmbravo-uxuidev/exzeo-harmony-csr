@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { batchActions } from 'redux-batched-actions';
-import _ from 'lodash';
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
 
