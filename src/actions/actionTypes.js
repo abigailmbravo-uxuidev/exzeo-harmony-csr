@@ -27,4 +27,4 @@ export const GET_QUESTIONS = 'GET_QUESTIONS';
 
 export const AUTH = 'AUTH';
 
-export const POLICYID = 'POLICYID';
+export const GET_POLICY = 'GET_POLICY';

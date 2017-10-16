@@ -9,7 +9,7 @@ import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import { RadioFieldBilling, SelectFieldBilling } from '../Form/inputs';
 
-const handleInitialize = (state) => {
+export const handleInitialize = (state) => {
   const policyData = state.service.latestPolicy;
   const values = {};
 

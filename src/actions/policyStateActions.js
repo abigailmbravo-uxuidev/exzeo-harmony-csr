@@ -2,7 +2,7 @@ import * as types from './actionTypes';
 
 export const updatePolicy = (update, policyNumber) => {
   const stateObj = {
-    type: types.POLICYID,
+    type: types.GET_POLICY,
     policyState: {
       policyNumber,
       update

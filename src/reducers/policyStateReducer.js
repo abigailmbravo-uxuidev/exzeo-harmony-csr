@@ -5,7 +5,7 @@ import initialState from './initialState';
 export default function policyStateReducer(state = initialState.policyState, action) {
   let newState = state;
   switch (action.type) {
-    case types.POLICYID:
+    case types.GET_POLICY:
       newState = (action.policyState) ? action.policyState : newState;
       return newState;
     case persistTypes.REHYDRATE:
