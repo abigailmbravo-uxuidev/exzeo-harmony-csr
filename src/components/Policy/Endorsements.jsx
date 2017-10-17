@@ -765,23 +765,6 @@ export class Endorsements extends React.Component {
                             component="select" styleName={''} onChange={function () {}} validations={['required']}
                           />
                         </div>
-                        <div className="form-group-double-element">
-                          <TextField label={'Electronic Delivery'} styleName={''} name={'electronicDelivery'} disabled />
-                          <div className="flex-child discounts-electronic-delivery">
-                            <RadioField
-                              disabled={appState.data.isCalculated}
-                              name={'electronicDeliveryNew'} styleName={''} label={''} onChange={function () {}} segmented answers={[
-                                {
-                                  answer: false,
-                                  label: 'No'
-                                }, {
-                                  answer: true,
-                                  label: 'Yes'
-                                }
-                              ]}
-                            />
-                          </div>
-                        </div>
                       </div>
 
                       {/* Col2 */}
@@ -954,8 +937,22 @@ export class Endorsements extends React.Component {
                           <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH1phone'} disabled={appState.data.isCalculated} />
                           <PhoneField validations={['phone']} label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} disabled={appState.data.isCalculated} />
                         </div>
-                        <div className="flex-parent">
+                        <div className="flex-parent col2">
                           <TextField validations={['required', 'email']} label={'Email Address'} styleName={''} name={'pH1email'} disabled={appState.data.isCalculated} />
+                          { /*
+                            <RadioField
+                            disabled={appState.data.isCalculated}
+                            name={'electronicDeliveryNew'} styleName={''} label={'Electronic Delivery of Policy Documents'} onChange={function () {}} segmented answers={[
+                              {
+                                answer: false,
+                                label: 'No'
+                              }, {
+                                answer: true,
+                                label: 'Yes'
+                              }
+                            ]}
+                          />
+                          */ }
                         </div>
                       </div>
                       {/* Col2 */}
@@ -969,7 +966,7 @@ export class Endorsements extends React.Component {
                           <PhoneField validations={['phone']} label={'Primary Phone'} styleName={''} name={'pH2phone'} disabled={appState.data.isCalculated} />
                           <PhoneField validations={['phone']} label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} disabled={appState.data.isCalculated} />
                         </div>
-                        <div className="flex-parent">
+                        <div className="flex-parent col2">
                           <TextField validations={['email']} label={'Email Address'} styleName={''} name={'pH2email'} disabled={appState.data.isCalculated} />
                         </div>
                       </div>
