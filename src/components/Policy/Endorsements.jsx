@@ -286,6 +286,10 @@ export const calculate = (props) => {
 };
 
 export const save = (data, dispatch, props) => {
+  const workflowId = props.appState.instanceId;
+
+  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
+
   const policy = props.policy;
   policy.transactionType = 'Endorsement';
   const submitData = {
@@ -348,8 +352,6 @@ export const save = (data, dispatch, props) => {
       data: submitData
     }];
     const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelSave.data : {};
-
-    props.actions.appStateActions.setAppState('endorsePolicyModelSave', startResult.modelInstanceId, { ...props.appState.data, submitting: true });
     props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
       props.actions.appStateActions.setAppState('endorsePolicyModelSave', startResult.modelInstanceId, { ...props.appState.data, submitting: false, isCalculated: false });
     });
@@ -1037,7 +1039,7 @@ export class Endorsements extends React.Component {
                   { /* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */ }
                   <button type="button" className="btn btn-secondary" onClick={() => cancel(this.props)}>Cancel</button>
                   {!appState.data.isCalculated && <button type="button" className="btn btn-primary" onClick={() => calculate(this.props)} disabled={pristine}>Review</button>}
-                  { appState.data.isCalculated && <button type="submit" className="btn btn-primary">Save</button>}
+                  { appState.data.isCalculated && <button type="submit" className="btn btn-primary" disabled={appState.data.submitting}>Save</button>}
 
                 </div>
               </div>
