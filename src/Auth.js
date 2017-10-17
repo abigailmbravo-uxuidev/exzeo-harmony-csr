@@ -111,9 +111,9 @@ export default class Auth {
         delete this.userProfile['https://heimdall.security/groups'];
         delete this.userProfile['https://heimdall.security/roles'];
         delete this.userProfile['https://heimdall.security/username'];
+        localStorage.setItem('user_profile', JSON.stringify(profile));
       }
-
-      localStorage.setItem('user_profile', JSON.stringify(profile));
+      
       cb(err, profile);
     });
   }
