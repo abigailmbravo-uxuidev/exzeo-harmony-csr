@@ -68,7 +68,7 @@ class Routes extends Component {
         if (!auth.checkIfCSRGroup()) {
           history.push('/accessDenied?error=Please login with the proper credentials.');
         }
-        this.props.actions.authActions.dispatchUserProfile(profile);
+        if (!err) this.props.actions.authActions.dispatchUserProfile(profile);
       });
     } else if (!isAuthenticated() && checkPublicPath(window.location.pathname)) {
       history.push('/login');
