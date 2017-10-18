@@ -48,6 +48,7 @@ export const TextInput = ({
         disabled={disabled}
         name={name}
         {...input}
+        tabIndex={'0'}
         type={type}
       />
       {Error}

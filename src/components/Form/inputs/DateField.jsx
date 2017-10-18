@@ -41,6 +41,7 @@ export const DateInput = ({
     <div className={formGroupStyles} id={name}>
       {Label}
       <input
+        tabIndex={'0'}
         {...input}
         type={'date'}
         min={min ? moment.utc(min).format('YYYY-MM-DD') : null}

@@ -144,13 +144,14 @@ export class QuoteApplication extends Component {
         </div>
         <div className="basic-footer btn-footer">
           <Footer />
-            <div className="btn-wrapper">
-              <button
-                aria-label="submit-btn form-application"
-                form="Application"
-                className="btn btn-primary" type="submit" disabled={(underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0) || checkQuoteState(quoteData)}
-              >Send to DocuSign</button>
-            </div>
+          <div className="btn-wrapper">
+            <button
+              tabIndex={'0'}
+              aria-label="submit-btn form-application"
+              form="Application"
+              className="btn btn-primary" type="submit" disabled={(underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0) || checkQuoteState(quoteData)}
+            >Send to DocuSign</button>
+          </div>
         </div>
       </QuoteBaseConnect>
     );

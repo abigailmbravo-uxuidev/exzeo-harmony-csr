@@ -24,6 +24,7 @@ export const SelectInput = ({
       {answers && answers.length >= 0 ? (
         <select
           className={Error ? 'error' : ''}
+          tabIndex={'0'}
           value={value}
           name={name}
           disabled={disabled || isDisabled}

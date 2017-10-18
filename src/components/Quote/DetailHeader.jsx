@@ -53,7 +53,7 @@ export const DetailHeader = (props) => {
         <div>
           <dd>{quoteData.product === 'HO3' ? `${quoteData.product} Homeowners` : quoteData.product}</dd>
           <dd>{(quoteData.quoteNumber ? quoteData.quoteNumber : '-')}</dd>
-          <dd>{quoteData.quoteState === 'Policy Issued' ? <button className="btn btn-link" onClick={() => selectPolicy(quoteData, props)}>{quoteData.quoteState}</button> : quoteData.quoteState}</dd>
+          <dd>{quoteData.quoteState === 'Policy Issued' ? <button tabIndex={'0'} className="btn btn-link" onClick={() => selectPolicy(quoteData, props)}>{quoteData.quoteState}</button> : quoteData.quoteState}</dd>
         </div>
       </dl>
     </section>
