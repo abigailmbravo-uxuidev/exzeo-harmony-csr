@@ -1,6 +1,6 @@
 {
   "name": "harmony-csr",
-  "version": "0.7.0",
+  "version": "0.7.6",
   "private": true,
   "dependencies": {
     "auth0-js": "^8.7.0",
@@ -17,7 +17,7 @@
     "jwt-decode": "^2.2.0",
     "localStorage": "^1.0.3",
     "lodash": "^4.17.4",
-    "moment": "^2.18.1",
+    "moment": "2.18.1",
     "node-sass": "^4.5.0",
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
@@ -55,7 +55,8 @@
   "scripts": {
     "build-css": "node-sass src/sass --output-style 'compressed' -o src/css",
     "watch-css": "node-sass src/sass --output-style 'compressed' -o src/css --watch --recursive",
-    "start": "npm run build-css && react-scripts start",
+    "dev": "npm run build-css && react-scripts start",
+    "start": "react-scripts start",
     "build": "npm run build-css && react-scripts build",
     "cover": "npm test -- --coverage",
     "test": "react-scripts test --env=jsdom --coverage",
