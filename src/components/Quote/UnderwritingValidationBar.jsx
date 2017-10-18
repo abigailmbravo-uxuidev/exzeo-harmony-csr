@@ -127,7 +127,6 @@ export const UnderwritingValidationBar = (props) => {
                     <i className="fa-li fa fa-exclamation-triangle" aria-hidden="true" />
                     <span>{underwritingException.internalMessage}</span>
                     <CheckField
-                      isSwitch
                       label={'Override'}
                       name={underwritingException._id}
                       id={underwritingException._id}
