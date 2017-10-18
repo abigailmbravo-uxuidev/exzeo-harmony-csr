@@ -1037,9 +1037,9 @@ export class Endorsements extends React.Component {
                     <input type="numeric" disabled onChange={function () {}} value="" />
                   </div>
                   { /* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */ }
-                  <button type="button" className="btn btn-secondary" onClick={() => cancel(this.props)}>Cancel</button>
-                  {!appState.data.isCalculated && <button type="button" className="btn btn-primary" onClick={() => calculate(this.props)} disabled={pristine}>Review</button>}
-                  { appState.data.isCalculated && <button type="submit" className="btn btn-primary" disabled={appState.data.submitting}>Save</button>}
+                  <button tabIndex={'0'} type="button" className="btn btn-secondary" onClick={() => cancel(this.props)}>Cancel</button>
+                  {!appState.data.isCalculated && <button tabIndex={'0'} type="button" className="btn btn-primary" onClick={() => calculate(this.props)} disabled={pristine}>Review</button>}
+                  { appState.data.isCalculated && <button tabIndex={'0'} type="submit" className="btn btn-primary" disabled={appState.data.submitting}>Save</button>}
 
                 </div>
               </div>

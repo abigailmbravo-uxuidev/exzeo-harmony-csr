@@ -95,8 +95,8 @@ export const AdditionalInterestModal = (props) => {
           </div>
           <div className="card-footer">
             <div className="btn-group">
-              <button className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal(props)}>Cancel</button>
-              <button className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Save</button>
+              <button tabIndex={'0'} className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal(props)}>Cancel</button>
+              <button tabIndex={'0'} className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Save</button>
             </div>
           </div>
         </div>
