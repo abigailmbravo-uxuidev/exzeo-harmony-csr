@@ -113,7 +113,7 @@ export default class Auth {
         delete this.userProfile['https://heimdall.security/username'];
         localStorage.setItem('user_profile', JSON.stringify(profile));
       }
-      
+
       cb(err, profile);
     });
   }
