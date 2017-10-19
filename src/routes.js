@@ -57,7 +57,7 @@ const checkPublicPath = (path) => {
 
 class Routes extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     const { isAuthenticated, userProfile, getProfile } = auth;
     if (isAuthenticated() && !userProfile && checkPublicPath(window.location.pathname)) {

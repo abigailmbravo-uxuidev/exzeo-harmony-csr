@@ -51,7 +51,7 @@ export class DetailHeader extends Component {
           <div>
             <dd>{quoteData.product === 'HO3' ? `${quoteData.product} Homeowners` : quoteData.product}</dd>
             <dd>{(quoteData.quoteNumber ? quoteData.quoteNumber : '-')}</dd>
-            <dd>{quoteData.quoteState === 'quote Issued' ? <button className="btn btn-link" onClick={() => selectPolicy(quoteData, this.props)}>{quoteData.quoteState}</button> : quoteData.quoteState}</dd>
+            <dd>{quoteData.quoteState === 'Policy Issued' ? <button className="btn btn-link" onClick={() => selectPolicy(quoteData, this.props)}>{quoteData.quoteState}</button> : quoteData.quoteState}</dd>
           </div>
         </dl>
       </section>
