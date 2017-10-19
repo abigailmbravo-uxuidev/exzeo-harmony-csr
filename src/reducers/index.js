@@ -7,6 +7,7 @@ import appState from './appStateReducer';
 import error from './errorReducer';
 import service from './serviceReducer';
 import questions from './questionsReducer';
+import quoteState from './quoteStateReducer';
 
 const rootReducer = combineReducers({
   form: formReducer,
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
   authState,
   appState,
   questions,
-  error
+  error,
+  quoteState
 });
 
 export default rootReducer;
