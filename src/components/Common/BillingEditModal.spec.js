@@ -48,7 +48,6 @@ describe('Testing BillingEditModal component', () => {
       ...propTypes
     };
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
-    console.log('hhhhhhhh', wrapper.instance().props.appState)
     expect(wrapper.instance().props.fieldQuestions).toEqual([]);
   });
 });

@@ -12,6 +12,7 @@ import * as cgActions from '../../actions/cgActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import * as quoteStateActions from '../../actions/quoteStateActions';
 import RadioField from '../Form/inputs/RadioField';
 import Downloader from '../Common/Downloader';
 import Footer from '../Common/Footer';
@@ -47,15 +48,17 @@ export const NoteList = (props) => {
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
   const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
   const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
+  const attachmentUrl = attachments =>
+    attachments.map(attachment => `<a target="_blank" href="${attachment.fileUrl}">${attachment.fileType}</a>`).join('<br>');
   const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
   const formatNote = note => note.replace(/\r|\n/g, '<br>');
   const attachmentUrl = attachments => (
     <span>
-      { attachments.map((attachment, i) => 
-        <Downloader 
-          filename={attachment.fileName} 
-          fileUrl={attachment.fileUrl} 
-          fileType={attachment.fileType} 
+      { attachments.map((attachment, i) =>
+        <Downloader
+          filename={attachment.fileName}
+          fileUrl={attachment.fileUrl}
+          fileType={attachment.fileType}
           key={i}
         />
       )}
@@ -73,7 +76,7 @@ export const NoteList = (props) => {
             {
               answer: false,
               label: 'All Notes'
-            }, 
+            },
             {
               answer: true,
               label: 'Attachments'
@@ -118,6 +121,8 @@ export class NotesFiles extends Component {
 
       this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
     .then(() => {
+      this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
+
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         selectedLink: 'notes'
@@ -131,6 +136,7 @@ export class NotesFiles extends Component {
       if (nextProps.quoteData && nextProps.quoteData.quoteNumber) {
         const quoteNumber = nextProps.quoteData.quoteNumber;
         this.props.actions.serviceActions.getNotes(quoteNumber);
+        this.props.actions.quoteStateActions.getLatestQuote(true, nextProps.quoteData._id);
       }
     }
   }
@@ -186,11 +192,12 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'NotesFiles.values', {}),
   initialValues: handleInitialize(state),
   notes: state.service.notes,
-  quoteData: handleGetQuote(state)
+  quoteData: state.service.quote || {}
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch)
