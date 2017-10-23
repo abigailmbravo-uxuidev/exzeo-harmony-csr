@@ -45,11 +45,10 @@ export const filterNotesByType = (notes, type) => {
 
 export const NoteList = (props) => {
   const { notes, fieldValues } = props;
+
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
   const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
   const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
-  const attachmentUrl = attachments =>
-    attachments.map(attachment => `<a target="_blank" href="${attachment.fileUrl}">${attachment.fileType}</a>`).join('<br>');
   const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
   const formatNote = note => note.replace(/\r|\n/g, '<br>');
   const attachmentUrl = attachments => (
