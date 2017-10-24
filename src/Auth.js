@@ -98,6 +98,10 @@ export default class Auth {
 
   getProfile(cb) {
     const accessToken = this.getAccessToken();
+
+    const profileString = localStorage.getItem('user_profile');
+    if (profileString) return JSON.parse(profileString);
+
     this.auth0.client.userInfo(accessToken, (err, profile) => {
       if (profile) {
         this.userProfile = profile;
@@ -107,7 +111,9 @@ export default class Auth {
         delete this.userProfile['https://heimdall.security/groups'];
         delete this.userProfile['https://heimdall.security/roles'];
         delete this.userProfile['https://heimdall.security/username'];
+        localStorage.setItem('user_profile', JSON.stringify(profile));
       }
+
       cb(err, profile);
     });
   }
@@ -117,6 +123,7 @@ export default class Auth {
     localStorage.removeItem('access_token');
     localStorage.removeItem('expires_at');
     localStorage.removeItem('id_token');
+    localStorage.removeItem('user_profile');
     localStorage.setItem('csr_loggedOut', true);
     this.userProfile = null;
     this.auth0.logout({ returnTo: `${process.env.REACT_APP_AUTH0_PRIMARY_URL}/loggedOut`, clientID: process.env.REACT_APP_AUTH0_CLIENT_ID, federated: true });

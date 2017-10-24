@@ -389,7 +389,7 @@ export const saveUnderwritingExceptions = (id, underwritingExceptions) => (dispa
   };
   const axiosConfig = runnerSetup(body);
 
-  return axios(axiosConfig).then((response) => {
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
     const data = { transactions: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
@@ -447,6 +447,27 @@ export const getEndorsementHistory = policyNumber => (dispatch) => {
 
   return axios(axiosConfig).then((response) => {
     const data = { endorsementHistory: response.data };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
+export const getQuote = quoteId => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'quote-data.services',
+    method: 'GET',
+    path: quoteId
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { quote: response.data ? response.data.result : {} };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));

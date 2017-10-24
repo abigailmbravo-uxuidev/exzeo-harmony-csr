@@ -15,6 +15,10 @@ export default {
     location: null
   },
   error: {},
+  quoteState: {
+    quoteId: null,
+    update: false
+  },
   questions: [],
   policyState: {
     policyNumber: null,

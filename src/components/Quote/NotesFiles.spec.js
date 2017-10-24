@@ -65,6 +65,9 @@ describe('Testing NotesFiles component', () => {
     const props = {
       notes: [],
       actions: {
+        quoteStateActions: {
+          getLatestQuote() {}
+        },
         serviceActions: {
           getNotes() {}
         },
