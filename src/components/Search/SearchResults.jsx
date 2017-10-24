@@ -106,6 +106,7 @@ export const SearchResults = (props) => {
         }
       }
     }
+
     return (
       <div className="policy-list">
         {
@@ -169,11 +170,7 @@ SearchResults.propTypes = {
       dontSeeAddress: PropTypes.bool
     })
   }),
-  tasks: PropTypes.shape(),
-  handleSelectAddress: PropTypes.func,
-  handleSelectQuote: PropTypes.func,
-  handleNewQuote: PropTypes.func,
-  handleSelectPolicy: PropTypes.func
+  tasks: PropTypes.shape()
 };
 
 const mapStateToProps = state => ({

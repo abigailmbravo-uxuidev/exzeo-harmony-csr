@@ -45,16 +45,8 @@ value.rank = 5; // eslint-disable-line
   });
 };
 
-export const handleGetPolicy = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-  const quoteData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
-  return quoteData;
-};
-
 export const handleInitialize = (state) => {
-  const policy = handleGetPolicy(state);
-
+  const policy = state.service.latestPolicy || {};
   const values = {};
   values.policyNumber = _.get(policy, 'policyNumber');
   values.cashDescription = '';
@@ -334,7 +326,7 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'MortgageBilling.values', {}),
   getSummaryLedger: state.service.getSummaryLedger,
   initialValues: handleInitialize(state),
-  policy: handleGetPolicy(state),
+  policy: state.service.latestPolicy || {},
   tasks: state.cg,
   appState: state.appState,
   paymentHistory: state.service.paymentHistory,

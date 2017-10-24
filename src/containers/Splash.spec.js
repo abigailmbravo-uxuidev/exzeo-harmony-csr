@@ -487,7 +487,7 @@ describe('Testing Splash component', () => {
     localStorage.setItem('lastSearchData', JSON.stringify(taskData));
 
     handleNewTab(policy);
-    expect(localStorage.getItem('policyID')).toEqual(policy.policyID);
+    expect(localStorage.getItem('policyNumber')).toEqual(policy.policyNumber);
   });
 
   it('should test mount', () => {

@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
-import ConnectedApp, { Coverage, getPropertyAppraisialLink, handleGetPolicy } from './Coverage';
+import ConnectedApp, { Coverage, getPropertyAppraisialLink } from './Coverage';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
@@ -39,6 +39,9 @@ describe('Testing Coverage component', () => {
         rating: {}
       },
       actions: {
+        policyStateActions: {
+          updatePolicy() {}
+        },
         appStateActions: {
           setAppState() { }
         },
@@ -76,8 +79,6 @@ describe('Testing Coverage component', () => {
     wrapper2.instance().componentWillReceiveProps({ policy: { policyNumber: '324324', rating: { worksheet: { fees: {} } } } });
 
     wrapper2.instance().componentDidMount();
-
-    handleGetPolicy(initialState);
   });
 
   it('should test getPropertyAppraisialLink', () => {

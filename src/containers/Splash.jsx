@@ -15,8 +15,8 @@ import Loader from '../components/Common/Loader';
 
 const workflowModelName = 'csrQuote';
 const workflowData = {
-    dsUrl: `${process.env.REACT_APP_API_URL}/ds`
-  };
+  dsUrl: `${process.env.REACT_APP_API_URL}/ds`
+};
 
 export const handleNewTab = (searchData) => {
   localStorage.setItem('isNewTab', true);
@@ -31,7 +31,7 @@ export const handleNewTab = (searchData) => {
     localStorage.setItem('quoteId', searchData._id);
     window.open('/quote/coverage', '_blank');
   } else if (lastSearchData.searchType === 'policy') {
-    localStorage.setItem('policyID', searchData.policyID);
+    localStorage.setItem('policyNumber', searchData.policyNumber);
     window.open('/policy/coverage', '_blank');
   }
 };
