@@ -11,6 +11,7 @@ import * as serviceActions from '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as questionsActions from '../../actions/questionsActions';
+import * as quoteStateActions from '../../actions/quoteStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import TextField from '../Form/inputs/TextField';
@@ -246,6 +247,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
 
   props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
       .then(() => {
+        props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
         // now update the workflow details so the recalculated rate shows
         props.actions.appStateActions.setAppState(props.appState.modelName,
           workflowId, { ...props.appState.data, submitting: false, selectedLink: 'customerData' });
@@ -272,6 +274,9 @@ export class Coverage extends Component {
 
         if (lastSearchData.searchType === 'quote') {
           const quoteId = localStorage.getItem('quoteId');
+
+          this.props.actions.quoteStateActions.getLatestQuote(true, quoteId);
+
           steps.push({
             name: 'chooseQuote',
             data: {
@@ -338,6 +343,9 @@ export class Coverage extends Component {
         this.props.actions.serviceActions.getAgencies(quoteData.companyCode, quoteData.state);
         this.props.actions.serviceActions.getAgentsByAgency(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
         setAgents = true;
+      }
+      if (!_.isEqual(this.props.quoteData, nextProps.quoteData)) {
+        this.props.actions.quoteStateActions.getLatestQuote(true, nextProps.quoteData._id);
       }
     }
   }
@@ -932,6 +940,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     questionsActions: bindActionCreators(questionsActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),

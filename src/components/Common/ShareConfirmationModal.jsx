@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as quoteStateActions from '../../actions/quoteStateActions';
 
 const ShareConfirmation = ({ hideShareConfirmationModal }) => <div className="modal quote-summary">
   <div className="card">
@@ -32,6 +33,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }

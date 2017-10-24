@@ -14,15 +14,8 @@ import ClearErrorConnect from '../Error/ClearError';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import RadioField from '../Form/inputs/RadioField';
 import Downloader from '../Common/Downloader';
+import * as quoteStateActions from '../../actions/quoteStateActions';
 import Footer from '../Common/Footer';
-
-const handleGetQuote = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' }) ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result : {};
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result : quoteEnd;
-  return quoteData;
-};
 
 const handleInitialize = state => ({
   attachmentStatus: false
@@ -118,6 +111,8 @@ export class NotesFiles extends Component {
 
       this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
     .then(() => {
+      this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
+
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         selectedLink: 'notes'
@@ -131,6 +126,7 @@ export class NotesFiles extends Component {
       if (nextProps.quoteData && nextProps.quoteData.quoteNumber) {
         const quoteNumber = nextProps.quoteData.quoteNumber;
         this.props.actions.serviceActions.getNotes(quoteNumber);
+        this.props.actions.quoteStateActions.getLatestQuote(true, nextProps.quoteData._id);
       }
     }
   }
@@ -186,11 +182,12 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'NotesFiles.values', {}),
   initialValues: handleInitialize(state),
   notes: state.service.notes,
-  quoteData: handleGetQuote(state)
+  quoteData: state.service.quote || {}
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch)

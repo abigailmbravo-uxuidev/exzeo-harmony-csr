@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { handleFormSubmit, handleGetQuoteData, selectBillTo, clearForm, fillMailForm } from './MailingAddressBilling';
+import ConnectedApp, { handleFormSubmit, selectBillTo, clearForm, fillMailForm } from './MailingAddressBilling';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -308,6 +308,9 @@ const quoteData = {
 describe('Testing MailingAddressBilling component', () => {
   it('should test connected app', () => {
     const initialState = {
+      service: {
+        quote: quoteData
+      },
       cg: {
         bb: {
           data: {
@@ -323,6 +326,11 @@ describe('Testing MailingAddressBilling component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      actions: {
+        quoteStateActions: {
+          getLatestQuote() {}
+        }
+      },
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,
@@ -338,6 +346,9 @@ describe('Testing MailingAddressBilling component', () => {
   });
   it('should test handleGetQuoteData', () => {
     const initialState = {
+      service: {
+        quote: quoteData
+      },
       cg: {
         bb: {
           data: {
@@ -363,10 +374,8 @@ describe('Testing MailingAddressBilling component', () => {
         modelName: 'bb'
       }
     };
-    let quote = {};
 
-    quote = handleGetQuoteData(initialState);
-    expect(quote).toEqual(quoteData);
+    expect(initialState.service.quote).toEqual(quoteData);
   });
 
   it('should test handleFormSubmit', () => {
@@ -412,6 +421,9 @@ describe('Testing MailingAddressBilling component', () => {
       fieldQuestions: [],
       dispatch: store.dispatch,
       actions: {
+        quoteStateActions: {
+          getLatestQuote() {}
+        },
         appStateActions: {
           setAppState() { }
         },
@@ -570,6 +582,9 @@ describe('Testing MailingAddressBilling component', () => {
       fieldQuestions: [],
       dispatch: store.dispatch,
       actions: {
+        quoteStateActions: {
+          getLatestQuote() {}
+        },
         appStateActions: {
           setAppState() { }
         },
@@ -647,6 +662,9 @@ describe('Testing MailingAddressBilling component', () => {
       fieldQuestions: [],
       dispatch: store.dispatch,
       actions: {
+        quoteStateActions: {
+          getLatestQuote() {}
+        },
         appStateActions: {
           setAppState() { }
         },
@@ -725,6 +743,9 @@ describe('Testing MailingAddressBilling component', () => {
       fieldQuestions: [],
       dispatch: store.dispatch,
       actions: {
+        quoteStateActions: {
+          getLatestQuote() {}
+        },
         appStateActions: {
           setAppState() { }
         },
