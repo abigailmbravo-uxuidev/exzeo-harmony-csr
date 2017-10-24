@@ -226,18 +226,18 @@ export const getTransactionHistory = policyNumber => (dispatch) => {
     });
 };
 
-export const addTransaction = (props, submitData) => (dispatch) => {
+export const addTransaction = submitData => (dispatch) => {
   const body = {
     service: 'billing.services',
     method: 'POST',
     path: 'post-payment-transaction',
     data: {
-      companyCode: props.auth.userProfile.groups[0].companyCode,
-      state: props.policy.state,
-      product: props.policy.product,
-      policyNumber: props.policy.policyNumber,
-      policyTerm: props.policy.policyTerm,
-      policyAccountCode: props.policy.policyAccountCode,
+      companyCode: submitData.companyCode,
+      state: submitData.policy.state,
+      product: submitData.policy.product,
+      policyNumber: submitData.policy.policyNumber,
+      policyTerm: submitData.policy.policyTerm,
+      policyAccountCode: submitData.policy.policyAccountCode,
       date: submitData.cashDate,
       type: submitData.cashType,
       description: submitData.cashDescription,
