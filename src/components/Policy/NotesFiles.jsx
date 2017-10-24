@@ -48,11 +48,11 @@ export const NoteList = (props) => {
   const formatNote = note => note.replace(/\r|\n/g, '<br>');
   const attachmentUrl = attachments => (
     <span>
-      { attachments.map((attachment, i) => 
-        <Downloader 
-          filename={attachment.fileName} 
-          fileUrl={attachment.fileUrl} 
-          fileType={attachment.fileType} 
+      { attachments.map((attachment, i) =>
+        <Downloader
+          filename={attachment.fileName}
+          fileUrl={attachment.fileUrl}
+          fileType={attachment.fileType}
           key={i}
         />
       )}
@@ -153,11 +153,12 @@ NotesFiles.propTypes = {
 // redux mapping
 // ------------------------------------------------
 const mapStateToProps = state => ({
+  tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'NotesFiles.values', {}),
   initialValues: handleInitialize(state),
   notes: state.service.notes,
-  policyData: handleGetPolicyData(state)
+  quoteData: state.service.quote || {}
 });
 
 const mapDispatchToProps = dispatch => ({
