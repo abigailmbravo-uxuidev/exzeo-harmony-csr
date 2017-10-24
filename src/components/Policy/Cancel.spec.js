@@ -73,7 +73,8 @@ describe('Testing Cancel component', () => {
       serviceActions: {
         getPaymentHistory() { return Promise.resolve(); },
         getBillingOptions() { return Promise.resolve(); },
-        getSummaryLedger() { return Promise.resolve(); }
+        getSummaryLedger() { return Promise.resolve(); },
+        getCancelOptions() { return Promise.resolve(); }
       }
     },
       policy: { policyNumber: '1234', rating: { worksheet: { fees: {} } } } });

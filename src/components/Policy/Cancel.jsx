@@ -32,6 +32,8 @@ export const handleInitialize = (state) => {
 
   values.equityDate = summaryLedger.equityDate ? moment.utc(summaryLedger.equityDate).format('MM/DD/YYYY') : '';
 
+  values.effectiveDate = moment.utc().format('YYYY-MM-DD');
+
   return values;
 };
 
@@ -85,29 +87,16 @@ export const resetCancelReasons = (props) => {
   props.dispatch(change('CancelPolicy', 'cancelReason', ''));
 };
 
-const cancelOptions = [
-  {
-    cancelType: 'Voluntary Cancellation',
-    cancelReason: ['Continuous Wind Coverage - 3 Yrs', 'Duplicate - Similar Coverage', 'Insured Deceased', 'Mortgage Satisfied', 'Other', 'Property Demolished', 'Property Foreclosed', 'Reason Not Provided', 'Rewritten - Similar Coverage', 'Sold']
-  },
-  {
-    cancelType: 'Underwriting Cancellation',
-    cancelReason: ['Claims Frequency', 'Claims Severity', 'Condition of Roof', 'Empty Pool', 'Existing/Unrepaired Damage', 'Failure to Comply with Underwriting Request', 'Ineligible Breed of Dog', 'Ineligible Ownership', 'Ineligible Protection Class', 'Ineligible Risk', 'Insured Deceased', 'No Insurable Interest', 'Policy Limits Paid', 'Property in Disrepair', 'Risk Management', 'Slide/Diving Board', 'Tenant Occupied', 'Trampoline', 'Unsecured Pool', 'Vacant']
-  },
-  {
-    cancelType: 'Underwriting Non-Renewal',
-    cancelReason: ['Claims Frequency', 'Claims Severity', 'Condition of Roof', 'Empty Pool', 'Existing/Unrepaired Damage', 'Failure to Comply with Underwriting Request', 'Ineligible Breed of Dog', 'Ineligible Ownership', 'Ineligible Protection Class', 'Ineligible Risk', 'Insured Deceased', 'No Insurable Interest', 'Policy Limits Paid', 'Property in Disrepair', 'Risk Management', 'Slide/Diving Board', 'Tenant Occupied', 'Trampoline', 'Unsecured Pool', 'Vacant']
-  }
-];
-
 let isLoded = false;
 export class CancelPolicy extends React.Component {
-  componentWillReceiveProps = (nextProps) => {
+  componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props, nextProps)) {
       if (nextProps.policy.policyNumber && !isLoded) {
         isLoded = true;
         nextProps.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
         nextProps.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
+        nextProps.actions.serviceActions.getCancelOptions();
+
         const paymentOptions = {
           effectiveDate: nextProps.policy.effectiveDate,
           policyHolders: nextProps.policy.policyHolders,
@@ -125,18 +114,19 @@ export class CancelPolicy extends React.Component {
   }
 
   render() {
-    const { handleSubmit, fieldValues } = this.props;
+    const { handleSubmit, fieldValues, cancelOptions, pristine } = this.props;
 
     const cancelGroup = _.map(cancelOptions, option => ({ answer: option.cancelType }));
     return (
       <PolicyConnect>
         <ClearErrorConnect />
-        <div className="route-content">
-          <div className="scroll">
-            <div className="form-group survey-wrapper cancel-policy" role="group">
-              <section>
-                <h3>Cancel Policy</h3>
-                <Form id="Cancellation" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+        <Form id="CancelPolicy" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+          <div className="route-content">
+            <div className="scroll">
+              <div className="form-group survey-wrapper cancel-policy" role="group">
+                <section>
+                  <h3>Cancel Policy</h3>
+
                   <div className="flex-parent">
                     <div className="flex-child">
                       <RadioField
@@ -163,43 +153,44 @@ export class CancelPolicy extends React.Component {
                       }
                     </div>
                   </div>
-                </Form>
-              </section>
-              {/* PAYMENTS SECTION*/}
-              <section>
-                <h3>Payments</h3>
-                <div className="form-group flex-parent billing">
-                  <div className="flex-child">
-                    <label>Bill To</label>
-                    <div>{_.get(_.find(_.get(this.props.paymentOptions, 'options'), option => option.billToId === _.get(this.props.summaryLedger, 'billToId')), 'displayText')}</div>
+
+                </section>
+                {/* PAYMENTS SECTION*/}
+                <section>
+                  <h3>Payments</h3>
+                  <div className="form-group flex-parent billing">
+                    <div className="flex-child">
+                      <label>Bill To</label>
+                      <div>{_.get(_.find(_.get(this.props.paymentOptions, 'options'), option => option.billToId === _.get(this.props.summaryLedger, 'billToId')), 'displayText')}</div>
+                    </div>
+                    <div className="flex-child">
+                      <label>Bill Plan</label>
+                      <div>{_.get(this.props.summaryLedger, 'billPlan')}</div>
+                    </div>
+                    <div className="flex-child">
+                      <label>Equity Date</label>
+                      <TextField disabled name={'equityDate'} />
+                    </div>
                   </div>
-                  <div className="flex-child">
-                    <label>Bill Plan</label>
-                    <div>{_.get(this.props.summaryLedger, 'billPlan')}</div>
-                  </div>
-                  <div className="flex-child">
-                    <label>Equity Date</label>
-                    <TextField disabled name={'equityDate'} />
-                  </div>
-                </div>
-                <Payments payments={this.props.paymentHistory || []} />
-              </section>
-              {/* CLAIMS SECTION*/}
-              <section>
-                <h3>Claims</h3>
-                <Claims />
-              </section>
+                  <Payments payments={this.props.paymentHistory || []} />
+                </section>
+                {/* CLAIMS SECTION*/}
+                <section>
+                  <h3>Claims</h3>
+                  <Claims />
+                </section>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="basic-footer btn-footer">
-          <Footer />
-          {/* TODO: RESET button should reset form / CANCEL POLICY button should be disabled if form is clean/untouched*/}
-          <div className="btn-wrapper">
-            <button aria-label="reset-btn form-cancel" type="button" className="btn btn-secondary" onClick={() => this.props.reset('CancelPolicy')}>Reset</button>
-            <button aria-label="reset-btn form-cancel" type="submit" className="btn btn-primary">Cancel Policy</button>
+          <div className="basic-footer btn-footer">
+            <Footer />
+            {/* TODO: RESET button should reset form / CANCEL POLICY button should be disabled if form is clean/untouched*/}
+            <div className="btn-wrapper">
+              <button disabled={pristine} aria-label="reset-btn form-cancel" type="button" className="btn btn-secondary" onClick={() => this.props.reset('CancelPolicy')}>Reset</button>
+              <button disabled={pristine} aria-label="reset-btn form-cancel" type="submit" className="btn btn-primary">Cancel Policy</button>
+            </div>
           </div>
-        </div>
+        </Form>
       </PolicyConnect>
     );
   }
@@ -217,7 +208,8 @@ const mapStateToProps = state => ({
   policy: handleGetPolicy(state),
   paymentHistory: state.service.paymentHistory,
   summaryLedger: state.service.getSummaryLedger,
-  paymentOptions: state.service.billingOptions
+  paymentOptions: state.service.billingOptions,
+  cancelOptions: state.service.cancelOptions || []
 });
 
 const mapDispatchToProps = dispatch => ({

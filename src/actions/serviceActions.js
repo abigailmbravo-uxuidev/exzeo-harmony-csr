@@ -457,3 +457,25 @@ export const getQuote = quoteId => (dispatch) => {
       ]));
     });
 };
+
+export const getCancelOptions = () => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'policy-data.services',
+    method: 'GET',
+    path: 'cancelOptions'
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { cancelOptions: response.data.cancelOptions };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
