@@ -308,7 +308,7 @@ describe('Testing UnderwritingValidationBar component', () => {
   it('should test connected app', () => {
     const initialState = {
       service: {
-
+        quote: quoteData
       },
       cg: {
         bb: {
@@ -338,8 +338,9 @@ describe('Testing UnderwritingValidationBar component', () => {
     const store = mockStore(initialState);
     const props = {
       actions: {
+        quoteStateActions: { getLatestQuote() {} },
         serviceActions: {
-          saveUnderwritingExceptions() {}
+          saveUnderwritingExceptions() { return Promise.resolve(() => {}); }
         },
         appStateActions: {
           setAppState() { }

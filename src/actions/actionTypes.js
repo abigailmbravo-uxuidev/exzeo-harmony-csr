@@ -26,3 +26,4 @@ export const APP_ERROR_CLEAR = 'APP_ERROR_CLEAR';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
 
 export const AUTH = 'AUTH';
+export const GET_QUOTE = 'GET_QUOTE';

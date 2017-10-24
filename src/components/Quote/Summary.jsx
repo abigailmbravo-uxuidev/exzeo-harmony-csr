@@ -10,6 +10,7 @@ import * as cgActions from '../../actions/cgActions';
 import TextField from '../Form/inputs/TextField';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
+import * as quoteStateActions from '../../actions/quoteStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import normalizePhone from '../Form/normalizePhone';
@@ -22,19 +23,6 @@ import Footer from '../Common/Footer';
 // };
 
 const handlePrimarySecondaryTitles = (type, order) => `${type} ${order + 1}`;
-
-const handleGetQuoteData = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-
-  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
-    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
-    : {};
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
-    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
-    : quoteEnd;
-  return quoteData;
-};
 
 const handleInitialize = () => {
   const values = {};
@@ -92,6 +80,7 @@ export class Summary extends Component {
 
       this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
     .then(() => {
+      this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         selectedLink: 'summary'
@@ -105,6 +94,7 @@ export class Summary extends Component {
       const quoteData = nextProps.quoteData;
       if (quoteData && quoteData.companyCode && quoteData.state) {
         this.props.actions.serviceActions.getAgents(quoteData.companyCode, quoteData.state);
+        this.props.actions.quoteStateActions.getLatestQuote(true, quoteData._id);
       }
     }
   }
@@ -197,100 +187,100 @@ export class Summary extends Component {
                   <section className="display-element">
                     <dl>
                       <div>
-                      <dt>Yearly Premium</dt>
-                      <dd>$ {quoteData.rating ? normalizeNumbers(quoteData.rating.totalPremium) : '-'}</dd>
-                    </div>
+                        <dt>Yearly Premium</dt>
+                        <dd>$ {quoteData.rating ? normalizeNumbers(quoteData.rating.totalPremium) : '-'}</dd>
+                      </div>
                     </dl>
                     <dl>
                       <div>
-                      <dt>A. Dwelling</dt>
-                      <dd>$ {normalizeNumbers(coverageLimits.dwelling.amount)}</dd>
-                    </div>
+                        <dt>A. Dwelling</dt>
+                        <dd>$ {normalizeNumbers(coverageLimits.dwelling.amount)}</dd>
+                      </div>
                     </dl>
                     <dl>
                       <div>
-                      <dt>B. Other Structures</dt>
-                      <dd>$ {normalizeNumbers(coverageLimits.otherStructures.amount)}</dd>
-                    </div>
+                        <dt>B. Other Structures</dt>
+                        <dd>$ {normalizeNumbers(coverageLimits.otherStructures.amount)}</dd>
+                      </div>
                     </dl>
                     <dl>
                       <div>
-                      <dt>C. Personal Property</dt>
-                      <dd>$ {normalizeNumbers(coverageLimits.personalProperty.amount)}</dd>
-                    </div>
+                        <dt>C. Personal Property</dt>
+                        <dd>$ {normalizeNumbers(coverageLimits.personalProperty.amount)}</dd>
+                      </div>
                     </dl>
                     <dl>
                       <div>
-                      <dt>D. Loss Of Use</dt>
-                      <dd>$ {normalizeNumbers(coverageLimits.lossOfUse.amount)}</dd>
-                    </div>
+                        <dt>D. Loss Of Use</dt>
+                        <dd>$ {normalizeNumbers(coverageLimits.lossOfUse.amount)}</dd>
+                      </div>
                     </dl>
                     <dl>
                       <div>
-                      <dt>E. Personal Liability</dt>
-                      <dd>$ {normalizeNumbers(coverageLimits.personalLiability.amount)}</dd>
-                    </div>
+                        <dt>E. Personal Liability</dt>
+                        <dd>$ {normalizeNumbers(coverageLimits.personalLiability.amount)}</dd>
+                      </div>
                     </dl>
                     <dl>
                       <div>
-                      <dt>F. Medical Payments</dt>
-                      <dd>$ {normalizeNumbers(coverageLimits.medicalPayments.amount)}</dd>
-                    </div>
+                        <dt>F. Medical Payments</dt>
+                        <dd>$ {normalizeNumbers(coverageLimits.medicalPayments.amount)}</dd>
+                      </div>
                     </dl>
                     <dl>
                       <div>
-                      <dt>Personal Property Replacement Cost</dt>
-                      <dd>{coverageOptions.personalPropertyReplacementCost && coverageOptions.personalPropertyReplacementCost.answer === true ? 'Yes' : 'No'}</dd>
-                    </div>
+                        <dt>Personal Property Replacement Cost</dt>
+                        <dd>{coverageOptions.personalPropertyReplacementCost && coverageOptions.personalPropertyReplacementCost.answer === true ? 'Yes' : 'No'}</dd>
+                      </div>
                     </dl>
                     <dl>
                       <div>
-                      <dt>Mold Property</dt>
-                      <dd>$ {normalizeNumbers(coverageLimits.moldProperty.amount)}</dd>
-                    </div>
+                        <dt>Mold Property</dt>
+                        <dd>$ {normalizeNumbers(coverageLimits.moldProperty.amount)}</dd>
+                      </div>
                     </dl>
                     <dl>
                       <div>
-                      <dt>Mold Liability</dt>
-                      <dd>$ {normalizeNumbers(coverageLimits.moldLiability.amount)}</dd>
-                    </div>
+                        <dt>Mold Liability</dt>
+                        <dd>$ {normalizeNumbers(coverageLimits.moldLiability.amount)}</dd>
+                      </div>
                     </dl>
                     <dl>
                       <div>
-                      <dt>Ordinance or Law</dt>
-                      <dd>{coverageLimits.ordinanceOrLaw.amount}%</dd>
-                    </div>
+                        <dt>Ordinance or Law</dt>
+                        <dd>{coverageLimits.ordinanceOrLaw.amount}%</dd>
+                      </div>
                     </dl>
                     <dl>
                       <div>
-                      <dt>All Other Perils Deductible</dt>
-                      <dd>$ {normalizeNumbers(deductibles.allOtherPerils.amount)}</dd>
-                    </div>
+                        <dt>All Other Perils Deductible</dt>
+                        <dd>$ {normalizeNumbers(deductibles.allOtherPerils.amount)}</dd>
+                      </div>
                     </dl>
                     <dl>
                       <div>
-                      <dt>Hurricane Deductible</dt>
-                      <dd>{deductibles.hurricane.amount}%</dd>
-                    </div>
+                        <dt>Hurricane Deductible</dt>
+                        <dd>{deductibles.hurricane.amount}%</dd>
+                      </div>
                     </dl>
                     <dl>
                       <div>
-                      <dt>Calculated Hurricane Deductible</dt>
-                      <dd>$ {normalizeNumbers(deductibles.hurricane.calculatedAmount)}</dd>
-                    </div>
+                        <dt>Calculated Hurricane Deductible</dt>
+                        <dd>$ {normalizeNumbers(deductibles.hurricane.calculatedAmount)}</dd>
+                      </div>
                     </dl>
                     {deductibles.sinkhole && <dl>
                       <div>
-                      <dt>Sinkhole Deductible</dt>
-                      <dd>{deductibles.sinkhole.amount}%</dd>
-                    </div>
+                        <dt>Sinkhole Deductible</dt>
+                        <dd>{deductibles.sinkhole.amount}%</dd>
+                      </div>
                     </dl>
                 }
                     {deductibles.sinkhole && <dl>
                       <div>
-                      <dt>Calculated Sinkhole Deductible</dt>
-                      <dd>$ {normalizeNumbers(deductibles.sinkhole.calculatedAmount)}</dd>
-                    </div>
+                        <dt>Calculated Sinkhole Deductible</dt>
+                        <dd>$ {normalizeNumbers(deductibles.sinkhole.calculatedAmount)}</dd>
+                      </div>
                     </dl>
                 }
                   </section>
@@ -419,11 +409,12 @@ const mapStateToProps = state => ({
   initialValues: handleInitialize(state),
   showScheduleDateModal: state.appState.data ? state.appState.data.showScheduleDateModal : false,
   showShareConfirmationModal: state.appState.data ? state.appState.data.showShareConfirmationModal : false,
-  quoteData: state.appState.data && state.appState.data.overrideAction && state.service.transactions ? state.service.transactions : handleGetQuoteData(state)
+  quoteData: state.service.quote || {}
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)

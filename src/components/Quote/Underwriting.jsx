@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { reduxForm, Form, propTypes } from 'redux-form';
 import * as cgActions from '../../actions/cgActions';
+import * as quoteStateActions from '../../actions/quoteStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
@@ -13,23 +14,9 @@ import ClearErrorConnect from '../Error/ClearError';
 import FieldGenerator from '../Form/FieldGenerator';
 import Footer from '../Common/Footer';
 
-export const handleGetQuoteData = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (taskData) {
-    const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
-    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
-    : {};
-    const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
-    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
-    : quoteEnd;
-    return quoteData;
-  }
-  return {};
-};
-
 export const handleInitialize = (state) => {
   const questions = state.service.underwritingQuestions ? state.service.underwritingQuestions : [];
-  const data = handleGetQuoteData(state);
+  const data = state.service.quote;
   const values = {};
 
   questions.forEach((question) => {
@@ -62,6 +49,8 @@ export const handleFormSubmit = (data, dispatch, props) => {
 
   actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
+        props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
+
         // now update the workflow details so the recalculated rate shows
         props.actions.appStateActions.setAppState(props.appState.modelName,
           workflowId, { ...props.appState.data,
@@ -103,6 +92,7 @@ export class Underwriting extends Component {
       const quoteData = nextProps.quoteData;
       if (quoteData.companyCode && quoteData.state && quoteData.agencyCode && !setUnderwriting) {
         this.props.actions.serviceActions.getUnderwritingQuestions(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property);
+        nextProps.actions.quoteStateActions.getLatestQuote(true, nextProps.quoteData._id);
         setUnderwriting = true;
       }
     }
@@ -187,13 +177,14 @@ const mapStateToProps = state => ({
   appState: state.appState,
   initialValues: handleInitialize(state),
   fieldValues: _.get(state.form, 'Underwriting.values', {}),
-  quoteData: handleGetQuoteData(state),
+  quoteData: state.service.quote || {},
   activateRedirect: state.appState.data.activateRedirect,
   underwritingQuestions: state.service.underwritingQuestions
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
