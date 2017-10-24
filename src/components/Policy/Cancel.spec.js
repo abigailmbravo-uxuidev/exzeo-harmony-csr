@@ -45,6 +45,9 @@ describe('Testing Cancel component', () => {
     const store = mockStore(initialState);
     const props = {
       actions: {
+        policyStateActions: {
+          updatePolicy() {}
+        },
         serviceActions: {
           getBillingOptions() { return Promise.resolve(); },
           getSummaryLedger() { return Promise.resolve(); }
@@ -70,6 +73,9 @@ describe('Testing Cancel component', () => {
     expect(wrapper);
 
     wrapper.instance().componentWillReceiveProps({ actions: {
+      policyStateActions: {
+        updatePolicy() {}
+      },
       serviceActions: {
         getPaymentHistory() { return Promise.resolve(); },
         getBillingOptions() { return Promise.resolve(); },

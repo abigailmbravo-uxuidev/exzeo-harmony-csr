@@ -16,6 +16,7 @@ import HiddenField from '../Form/inputs/HiddenField';
 import * as serviceActions from '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as policyStateActions from '../../actions/policyStateActions';
 import Footer from '../Common/Footer';
 
 export const handleInitialize = (state) => {
@@ -89,6 +90,7 @@ export class CancelPolicy extends React.Component {
         nextProps.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
         nextProps.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
         nextProps.actions.serviceActions.getCancelOptions();
+        this.props.actions.policyStateActions.updatePolicy(true, nextProps.policy.policyNumber);
 
         const paymentOptions = {
           effectiveDate: nextProps.policy.effectiveDate,
@@ -207,6 +209,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    policyStateActions: bindActionCreators(policyStateActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
