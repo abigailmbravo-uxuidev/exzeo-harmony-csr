@@ -44,6 +44,7 @@ describe('Testing Cancel component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      userProfile: {},
       actions: {
         policyStateActions: {
           updatePolicy() {}

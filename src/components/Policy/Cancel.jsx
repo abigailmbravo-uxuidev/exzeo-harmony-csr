@@ -75,6 +75,16 @@ export const Claims = ({ claims }) => {
 
 export const handleFormSubmit = (data, dispatch, props) => {
   alert('Policy Canceled');
+
+  const { policy } = props;
+
+  const request = policy;
+  request.updatedAt = moment.utc();
+  request.updatedBy = { userId: props.userProfile.sub, userName: props.userProfile.username };
+  request.createdAt = request.updatedAt;
+  request.createdBy = request.updatedBy;
+
+  console.log(request);
 };
 
 export const resetCancelReasons = (props) => {
@@ -196,6 +206,7 @@ CancelPolicy.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  userProfile: state.authState.userProfile,
   tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'CancelPolicy.values', {}),
