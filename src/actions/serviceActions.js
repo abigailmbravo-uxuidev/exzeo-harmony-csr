@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { batchActions } from 'redux-batched-actions';
-import _ from 'lodash';
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
 
@@ -389,7 +388,7 @@ export const saveUnderwritingExceptions = (id, underwritingExceptions) => (dispa
   };
   const axiosConfig = runnerSetup(body);
 
-  return axios(axiosConfig).then((response) => {
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
     const data = { transactions: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
@@ -469,6 +468,27 @@ export const getRate = policyObject => (dispatch) => {
 
   return Promise.resolve(axios(axiosConfig)).then((response) => {
     const data = { getRate: response.data ? response.data.result : {} };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
+export const getQuote = quoteId => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'quote-data.services',
+    method: 'GET',
+    path: quoteId
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { quote: response.data ? response.data.result : {} };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));
