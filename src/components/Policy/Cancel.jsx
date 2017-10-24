@@ -83,6 +83,9 @@ export const handleFormSubmit = (data, dispatch, props) => {
   request.updatedBy = { userId: props.userProfile.sub, userName: props.userProfile.username };
   request.createdAt = request.updatedAt;
   request.createdBy = request.updatedBy;
+  request.transactionType = `Pending ${data.cancelType}`;
+  request.cancelReason = data.cancelReason;
+  request.effectiveDate = data.effectiveDate;
 
   console.log(request);
 };
