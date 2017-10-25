@@ -20,6 +20,7 @@ import SelectField from '../Form/inputs/SelectField';
 import CurrencyField from '../Form/inputs/CurrencyField';
 import Footer from '../Common/Footer';
 import DateField from '../Form/inputs/DateField';
+import { Prompt } from 'react-router-dom';
 
 export const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
@@ -365,6 +366,10 @@ export class Endorsements extends React.Component {
 
   componentDidMount() {
     this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
+    if (this.props.appState && this.props.appState.instanceId) {
+      const workflowId = this.props.appState.instanceId;
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, workflowId, { ...this.props.appState.data, isCalculated: false });
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -376,10 +381,11 @@ export class Endorsements extends React.Component {
   }
 
   render() {
-    const { initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions } = this.props;
+    const { initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, dirty } = this.props;
     return (
       <PolicyConnect>
         <ClearErrorConnect />
+        <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         <Form id="Endorsements" className={'content-wrapper'} onSubmit={handleSubmit(save)} >
 
           <div className="route-content">
