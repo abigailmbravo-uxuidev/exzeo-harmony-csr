@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import localStorage from 'localStorage';
@@ -138,7 +137,9 @@ export class Splash extends Component {
                     handleSelectPolicy={this.handleSelectPolicy}
                   />
                 </div>
-                <Footer />
+                <div className="basic-footer">
+                  <Footer />
+                </div>
               </div>
             </div>
           </div>

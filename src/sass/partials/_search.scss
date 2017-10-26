@@ -1,11 +1,16 @@
 .search {
+  z-index: 10;
   position: relative;
   display: flex;
   overflow: hidden;
   flex-direction: column;
   flex-grow: 1;
   flex-shrink: 1;
+  align-items: flex-start;
+  margin-top: 0;
   margin-bottom: 0;
+  width: 100%;
+  height: auto;
 
   form {
     width: 100%;
@@ -138,8 +143,6 @@
       }
 
       input {
-        //border-top-right-radius: 0;
-        //border-bottom-right-radius: 0;
         flex: 1;
         height: 38px;
         padding: 0.25rem 0.5rem;

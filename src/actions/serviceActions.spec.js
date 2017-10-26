@@ -629,7 +629,8 @@ describe('Service Actions', () => {
     submitData.amount = Number(String('400').replace(/[^\d.-]/g, ''));
     submitData.cashType = String('Electronic Deposit');
     submitData.cashDescription = String('Payment Received');
-
+    submitData.companyCode = props.auth.userProfile.groups[0].companyCode;
+    submitData.policy = props.policy;
     const mockAdapter = new MockAdapter(axios);
 
     const axiosOptions = {
@@ -643,12 +644,12 @@ describe('Service Actions', () => {
         method: 'POST',
         path: 'post-payment-transaction',
         data: {
-          companyCode: props.auth.userProfile.groups[0].companyCode,
-          state: props.policy.state,
-          product: props.policy.product,
-          policyNumber: props.policy.policyNumber,
-          policyTerm: props.policy.policyTerm,
-          policyAccountCode: props.policy.policyAccountCode,
+          companyCode: submitData.companyCode,
+          state: submitData.policy.state,
+          product: submitData.policy.product,
+          policyNumber: submitData.policy.policyNumber,
+          policyTerm: submitData.policy.policyTerm,
+          policyAccountCode: submitData.policy.policyAccountCode,
           date: submitData.cashDate,
           type: submitData.cashType,
           description: submitData.cashDescription,
@@ -665,7 +666,7 @@ describe('Service Actions', () => {
     const initialState = {};
     const store = mockStore(initialState);
 
-    return serviceActions.addTransaction(props, submitData)(store.dispatch)
+    return serviceActions.addTransaction(submitData)(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
       });
@@ -868,6 +869,126 @@ describe('Service Actions', () => {
     const store = mockStore(initialState);
 
     return serviceActions.getBillingOptions('43543534')(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+      });
+  });
+
+  it('should call start getEndorsementHistory', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'policy-data.services',
+        method: 'GET',
+        path: 'transactionDetails/123?endorsement=endorsement'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+    serviceActions.getEndorsementHistory(store.dispatch);
+
+    return serviceActions.getEndorsementHistory('123')(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+      });
+  });
+
+  it('should fail start getEndorsementHistory', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'policy-data.services',
+        method: 'GET',
+        path: 'transactionDetails/123?endorsement=endorsement'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+    serviceActions.getEndorsementHistory(store.dispatch);
+
+    return serviceActions.getEndorsementHistory('4435')(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+      });
+  });
+
+  it('should call start getQuote', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'quote-data.services',
+        method: 'GET',
+        path: '1234'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+    serviceActions.getQuote(store.dispatch);
+
+    return serviceActions.getQuote('1234')(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+      });
+  });
+
+  it('should fail start getQuote', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'quote-data.services',
+        method: 'GET',
+        path: '543543543'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+    serviceActions.getQuote(store.dispatch);
+
+    return serviceActions.getQuote(null)(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
       });

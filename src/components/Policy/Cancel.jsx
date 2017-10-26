@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { reduxForm, Form, change } from 'redux-form';
 import { bindActionCreators } from 'redux';
-import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import PolicyConnect from '../../containers/Policy';
@@ -197,8 +196,8 @@ export class CancelPolicy extends React.Component {
           <Footer />
           {/* TODO: RESET button should reset form / CANCEL POLICY button should be disabled if form is clean/untouched*/}
           <div className="btn-wrapper">
-            <button type="button" className="btn btn-secondary" onClick={() => this.props.reset('CancelPolicy')}>Clear</button>
-            <button type="submit" className="btn btn-cancel">Cancel Policy</button>
+            <button aria-label="reset-btn form-cancel" type="button" className="btn btn-secondary" onClick={() => this.props.reset('CancelPolicy')}>Reset</button>
+            <button aria-label="reset-btn form-cancel" type="submit" className="btn btn-primary">Cancel Policy</button>
           </div>
         </div>
       </PolicyConnect>

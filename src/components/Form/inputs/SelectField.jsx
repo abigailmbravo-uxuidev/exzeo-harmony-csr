@@ -8,6 +8,7 @@ export const SelectInput = ({
   answers,
   hint,
   input,
+  isDisabled,
   label,
   meta,
   styleName
@@ -20,12 +21,12 @@ export const SelectInput = ({
   return (
     <div className={formGroupStyles}>
       { label && <label htmlFor={name}>{label}{Hint}</label> }
-      {answers && answers.length > 0 ? (
+      {answers && answers.length >= 0 ? (
         <select
           className={Error ? 'error' : ''}
           value={value}
           name={name}
-          disabled={disabled}
+          disabled={disabled || isDisabled}
           onChange={onChange}
         >
           <option aria-label={'Please select...'} disabled value={''}>Please select...</option>

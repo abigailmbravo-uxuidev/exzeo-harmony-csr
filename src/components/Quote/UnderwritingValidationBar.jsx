@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Form, Field } from 'redux-form';
@@ -7,6 +8,7 @@ import moment from 'moment';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
+import * as quoteStateActions from '../../actions/quoteStateActions';
 
 export const handleFormSubmit = (data, dispatch, props) => {
   const uwExceptions = props.quoteData.underwritingExceptions || [];
@@ -15,32 +17,19 @@ export const handleFormSubmit = (data, dispatch, props) => {
     if (uwException.canOverride && data[uwException._id] === true) {
       uwException.overridden = true;
       uwException.overriddenAt = moment.utc();
-      uwException.overriddenBy = { userId: props.userProfile.user_id, userName: props.userProfile.username };
+      uwException.overriddenBy = { userId: props.userProfile.sub, userName: props.userProfile.username };
     } else if (uwException.canOverride) {
       uwException.overridden = false;
     }
   }
-  props.actions.serviceActions.saveUnderwritingExceptions(props.quoteData._id, uwExceptions);
+  props.actions.serviceActions.saveUnderwritingExceptions(props.quoteData._id, uwExceptions).then(() => {
+    props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
+  });
 };
-
-export const handleGetQuoteData = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName])
-    ? state.cg[state.appState.modelName].data
-    : null;
-  if (!taskData) { return {}; }
-  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
-    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
-    : {};
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
-    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
-    : quoteEnd;
-  return quoteData;
-};
-
 
 export const handleInitialize = (state) => {
   const values = {};
-  const quoteData = handleGetQuoteData(state);
+  const quoteData = state.service.quote || {};
 
   if (!quoteData) return values;
 
@@ -54,7 +43,6 @@ export const handleInitialize = (state) => {
   }
   return values;
 };
-
 
 export const UnderwritingValidationBar = (props) => {
   const {
@@ -87,12 +75,12 @@ export const UnderwritingValidationBar = (props) => {
           {quoteData && (!quoteData.rating || quoteData.policyHolders.length === 0) &&
           <section className="msg-info">
             <h5>
-              <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Info</h5>
-
+              <i className="fa fa-info-circle" aria-hidden="true" /><span>Info</span>
+            </h5>
             <div>
               <ul className="fa-ul">
-                { quoteData.policyHolders && quoteData.policyHolders.length === 0 && <li key={0}><i className="fa-li fa fa-exclamation-circle" aria-hidden="true" />Needs a Primary Policyholder</li> }
-                { !quoteData.rating && <li key={1}><i className="fa-li fa fa-exclamation-circle" aria-hidden="true" />Needs Underwriting</li> }
+                { quoteData.policyHolders && quoteData.policyHolders.length === 0 && <li key={0}><a href="/quote/coverage#primaryPolicyholder"><i className="fa-li fa fa-info-circle" aria-hidden="true" />Needs a Primary Policyholder</a></li> }
+                { !quoteData.rating && <li key={1}><a href="/quote/underwriting"><i className="fa-li fa fa-info-circle" aria-hidden="true" />Needs Underwriting</a></li> }
               </ul>
             </div>
           </section>
@@ -143,7 +131,6 @@ export const UnderwritingValidationBar = (props) => {
   );
 };
 
-
 UnderwritingValidationBar.propTypes = {
   completedTasks: PropTypes.any, // eslint-disable-line
   actions: PropTypes.shape(),
@@ -163,13 +150,14 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   completedTasks: state.completedTasks,
-  quoteData: handleGetQuoteData(state),
+  quoteData: state.service.quote || {},
   fieldValues: _.get(state.form, 'UnderwritingOverride.values', {}),
   initialValues: handleInitialize(state)
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)

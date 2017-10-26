@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
-
+import _ from 'lodash';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 
@@ -52,7 +52,7 @@ export const SearchResults = (props) => {
             <div className="icon-name">
               <i className="card-icon fa fa-user-circle" />
               <div className="card-name">
-                <h5>{quote.policyHolders[0] && `${quote.policyHolders[0].firstName}`} {quote.policyHolders[0] && `${quote.policyHolders[0].lastName}`}</h5>
+                <h5 title={quote.policyHolders && quote.policyHolders.length > 0 ? `${quote.policyHolders[0].firstName} ${quote.policyHolders[0].lastName}` : ''}>{quote.policyHolders[0] && `${quote.policyHolders[0].firstName.replace(/(^.{13}).*$/, '$1...')}`} {quote.policyHolders[0] && `${quote.policyHolders[0].lastName.replace(/(^.{13}).*$/, '$1...')}`}</h5>
               </div>
             </div>
 
@@ -93,8 +93,19 @@ export const SearchResults = (props) => {
     props.tasks[props.appState.modelName].data.activeTask &&
     props.tasks[props.appState.modelName].data.activeTask.name === 'choosePolicy'
   ) {
-    const policyResults = props.tasks[props.appState.modelName].data.previousTask ? props.tasks[props.appState.modelName].data.previousTask.value.policies : [];
+    const defaultPolicyResults = props.tasks[props.appState.modelName].data.previousTask ? props.tasks[props.appState.modelName].data.previousTask.value.policies : [];
 
+    const policyResults = [];
+
+    if (defaultPolicyResults && defaultPolicyResults.length > 0) {
+      for (let i = 0; i < defaultPolicyResults.length; i += 1) {
+        const currentPolicy = defaultPolicyResults[i];
+        const selectedPolicies = _.filter(defaultPolicyResults, policy => policy && policy.policyNumber === currentPolicy.policyNumber);
+        if (!_.some(policyResults, p => p && p.policyNumber === currentPolicy.policyNumber) && selectedPolicies.length > 0) {
+          policyResults.push(_.maxBy(selectedPolicies, 'policyVersion'));
+        }
+      }
+    }
     return (
       <div className="policy-list">
         {
@@ -102,7 +113,7 @@ export const SearchResults = (props) => {
             <div className="icon-name">
               <i className="card-icon fa fa-user-circle" />
               <div className="card-name">
-                <h5>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName}`} {policy.policyHolders[0] && `${policy.policyHolders[0].lastName}`}</h5>
+                <h5 title={`${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName.replace(/(^.{13}).*$/, '$1...')}`} {policy.policyHolders[0] && `${policy.policyHolders[0].lastName.replace(/(^.{13}).*$/, '$1...')}`}</h5>
               </div>
             </div>
             {/* <div>
@@ -126,7 +137,7 @@ export const SearchResults = (props) => {
                         ${policy.property.physicalAddress.city}, ${policy.property.physicalAddress.state}
                         ${policy.property.physicalAddress.zip}
                         `}</span>
-                    <span className="quote-state">{policy.quoteState}</span>
+                    <span className="quote-state">{policy.status}</span>
                     <span
                       className="effctive-date"
                     >{moment.utc(policy.effectiveDate).format('MM/DD/YYYY')}</span>

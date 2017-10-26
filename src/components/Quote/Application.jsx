@@ -7,9 +7,11 @@ import { Redirect } from 'react-router';
 import _ from 'lodash';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as quoteStateActions from '../../actions/quoteStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import QuoteSummaryModal from '../../components/Common/QuoteSummaryModal';
+import Footer from '../Common/Footer';
 
 const handleInitialize = (state) => {
   const formValues = {
@@ -18,31 +20,7 @@ const handleInitialize = (state) => {
   return formValues;
 };
 
-export const handleGetQuoteData = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
-  ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
-  : {};
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
-  ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
-  : quoteEnd;
-  return quoteData;
-};
-
-export const handleGetUnderwritingExceptions = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return [];
-  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
-    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
-    : {};
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
-    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
-    : quoteEnd;
-
-  const underwritingExceptions = quoteData && quoteData.underwritingExceptions ? quoteData.underwritingExceptions : [];
-  return underwritingExceptions;
-};
+export const handleGetUnderwritingExceptions = state => state.service.quote && state.service.quote.underwritingExceptions ? state.service.quote.underwritingExceptions : [];
 
 export const handleFormSubmit = (data, dispatch, props) => {
   const { appState, actions } = props;
@@ -54,7 +32,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
       props.appState.instanceId,
     {
       ...props.appState.data,
-      submitting: true
+      applicationSubmitting: true
     });
 
   const steps = [
@@ -73,7 +51,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
         ...props.appState.data,
         activateRedirectLink: '/quote/coverage',
         activateRedirect: true,
-        submitting: false
+        applicationSubmitting: false
       });
   });
 };
@@ -128,27 +106,28 @@ export class QuoteApplication extends Component {
           <Form id="Application" onSubmit={handleSubmit(() => quoteSummaryModal(this.props))} noValidate>
             <div className="scroll">
               <div className="detail-wrapper">
-
                 {underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0 &&
-                <div className="messages" >
-                  <div className="message error">
-                    <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Application cannot be sent due to Underwriting Validations.
+                  <div className="messages" >
+                    <div className="message error">
+                      <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Application cannot be sent due to Underwriting Validations.
+                    </div>
                   </div>
-                </div>
-              }
+                }
 
               </div>
-              <div className="workflow-steps">
-                <button
-                  form="Application"
-                  className="btn btn-primary" type="submit" disabled={(underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0) || checkQuoteState(quoteData)}
-                >Send to DocuSign</button>
-              </div>
-
             </div>
-
           </Form>
           { appState.data.showQuoteSummaryModal && <QuoteSummaryModal verify={handleFormSubmit} showQuoteSummaryModal={() => quoteSummaryModal(this.props)} /> }
+        </div>
+        <div className="basic-footer btn-footer">
+          <Footer />
+          <div className="btn-wrapper">
+            <button
+              aria-label="submit-btn form-application"
+              form="Application"
+              className="btn btn-primary" type="submit" disabled={(underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0) || checkQuoteState(quoteData)}
+            >Send to DocuSign</button>
+          </div>
         </div>
       </QuoteBaseConnect>
     );
@@ -181,11 +160,12 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'QuoteApplication.values', {}),
   underwritingExceptions: handleGetUnderwritingExceptions(state),
   initialValues: handleInitialize(state),
-  quoteData: state.service.transactions || handleGetQuoteData(state)
+  quoteData: state.service.quote || {}
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }

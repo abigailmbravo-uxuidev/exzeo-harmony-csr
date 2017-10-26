@@ -56,7 +56,9 @@ const checkPublicPath = (path) => {
 };
 
 class Routes extends Component {
-  componentWillMount() {
+  constructor(props) {
+    super(props);
+
     const { isAuthenticated, userProfile, getProfile } = auth;
     if (isAuthenticated() && !userProfile && checkPublicPath(window.location.pathname)) {
       const idToken = localStorage.getItem('id_token');
@@ -66,7 +68,7 @@ class Routes extends Component {
         if (!auth.checkIfCSRGroup()) {
           history.push('/accessDenied?error=Please login with the proper credentials.');
         }
-        this.props.actions.authActions.dispatchUserProfile(profile);
+        if (!err) this.props.actions.authActions.dispatchUserProfile(profile);
       });
     } else if (!isAuthenticated() && checkPublicPath(window.location.pathname)) {
       history.push('/login');
@@ -110,7 +112,7 @@ class Routes extends Component {
       ), document.getElementById('modal'));
           }}
         >
-          <div>
+          <div className="routes">
             <Switch>
               <Route exact path="/" render={props => <SplashPage auth={auth} {...props} />} />
               <Route exact path="/quote/billing" render={props => <QuoteMailingAddressBilling auth={auth} {...props} />} />
