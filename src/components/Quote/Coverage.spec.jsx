@@ -21,7 +21,7 @@ const quoteData = {
   billToId: '5866c036a46eb72908f3f547',
   billPlan: 'Annual',
   eligibility: 'Yes',
-  effectiveDate: '2017-01-04T20:14:46.793Z',
+  effectiveDate: '2017-01-04',
   endDate: '2018-01-04T20:14:46.793Z',
   agencyId: '20000',
   agentId: '60000',
@@ -435,6 +435,7 @@ describe('Testing Coverage component', () => {
     const store = mockStore(initialState);
 
     const props = {
+      zipCodeSettings: { timezone: 'American/NewYork' },
       fieldQuestions: [],
       dispatch: store.dispatch,
       actions: {
@@ -516,6 +517,7 @@ describe('Testing Coverage component', () => {
     const store = mockStore(initialState);
 
     const props = {
+      zipCodeSettings: { timezone: 'American/NewYork' },
       agencies: [{
         _id: '3a5ba179de46e8f2c',
         companyCode: 'TTIC',
@@ -638,6 +640,7 @@ describe('Testing Coverage component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      zipCodeSettings: { timezone: 'American/NewYork' },
       initialValues: {},
       fieldValues: {
         dwellingAmount: '',

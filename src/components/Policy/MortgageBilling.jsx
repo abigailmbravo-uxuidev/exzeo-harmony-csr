@@ -121,13 +121,14 @@ export class MortgageBilling extends Component {
     const submitData = data;
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
       workflowId, { ...this.props.appState.data, submitting: true });
-
     submitData.cashDate = moment.utc(data.cashDate);
     submitData.batchNumber = String(data.batchNumber);
     submitData.amount = Number(String(data.amount).replace(/[^\d.-]/g, ''));
     submitData.cashType = String(data.cashType);
     submitData.cashDescription = String(data.cashDescription);
-    this.props.actions.serviceActions.addTransaction(this.props, submitData)
+    submitData.companyCode = this.props.auth.userProfile.groups[0].companyCode;
+    submitData.policy = this.props.policy;
+    this.props.actions.serviceActions.addTransaction(submitData)
     .then(() => {
       this.props.actions.serviceActions.getPaymentHistory(this.props.policy.policyNumber);
       this.props.actions.serviceActions.getSummaryLedger(this.props.policy.policyNumber);
@@ -332,6 +333,7 @@ redux mapping
 */
 
 const mapStateToProps = state => ({
+  auth: state.authState,
   fieldValues: _.get(state.form, 'MortgageBilling.values', {}),
   getSummaryLedger: state.service.getSummaryLedger,
   initialValues: handleInitialize(state),
