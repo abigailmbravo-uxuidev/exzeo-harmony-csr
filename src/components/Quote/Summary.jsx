@@ -87,15 +87,9 @@ export class Summary extends Component {
       });
     });
     }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!_.isEqual(this.props, nextProps)) {
-      const quoteData = nextProps.quoteData;
-      if (quoteData && quoteData.companyCode && quoteData.state) {
-        this.props.actions.serviceActions.getAgents(quoteData.companyCode, quoteData.state);
-        this.props.actions.quoteStateActions.getLatestQuote(true, quoteData._id);
-      }
+    if (this.props.quoteData && this.props.quoteData.companyCode && this.props.quoteData.state) {
+      this.props.actions.serviceActions.getAgents(this.props.quoteData.companyCode, this.props.quoteData.state);
+      this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
     }
   }
 
