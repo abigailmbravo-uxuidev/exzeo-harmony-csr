@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import classNames from 'classnames';
 import FieldHint from './FieldHint';
@@ -42,8 +43,8 @@ export const DateInput = ({
       <input
         {...input}
         type={'date'}
-        min={min ? moment.utc(min).format('YYYY-MM-DD') : null}
-        max={min ? moment.utc(max).format('YYYY-MM-DD') : null}
+        min={min}
+        max={max}
       />
       {Error}
     </div>

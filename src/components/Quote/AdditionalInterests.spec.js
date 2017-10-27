@@ -309,6 +309,9 @@ const quoteData = {
 describe('Testing AdditionalInterests component', () => {
   it('should test connected app', () => {
     const initialState = {
+      service: {
+        quote: quoteData
+      },
       cg: {
         bb: {
           data: {
@@ -365,6 +368,9 @@ describe('Testing AdditionalInterests component', () => {
 
   it('should test handleGetQuoteData', () => {
     const initialState = {
+      service: {
+        quote: quoteData
+      },
       cg: {
         bb: {
           data: {
@@ -390,8 +396,7 @@ describe('Testing AdditionalInterests component', () => {
         modelName: 'bb'
       }
     };
-    const quote = handleGetQuoteData(initialState);
-    expect(quote).toEqual(quoteData);
+    expect(initialState.service.quote).toEqual(quoteData);
   });
 
   it('should test deleteAdditionalInterest', () => {
@@ -426,6 +431,9 @@ describe('Testing AdditionalInterests component', () => {
       fieldQuestions: [],
       dispatch: store.dispatch,
       actions: {
+        quoteStateActions: {
+          getLatestQuote() {}
+        },
         appStateActions: {
           setAppState() { }
         },
@@ -496,6 +504,9 @@ describe('Testing AdditionalInterests component', () => {
       fieldQuestions: [],
       dispatch: store.dispatch,
       actions: {
+        quoteStateActions: {
+          getLatestQuote() {}
+        },
         appStateActions: {
           setAppState() { }
         },
@@ -567,6 +578,9 @@ describe('Testing AdditionalInterests component', () => {
       fieldQuestions: [],
       dispatch: store.dispatch,
       actions: {
+        quoteStateActions: {
+          getLatestQuote() {}
+        },
         appStateActions: {
           setAppState() { }
         },
@@ -638,6 +652,9 @@ describe('Testing AdditionalInterests component', () => {
       fieldQuestions: [],
       dispatch: store.dispatch,
       actions: {
+        quoteStateActions: {
+          getLatestQuote() {}
+        },
         appStateActions: {
           setAppState() { }
         },
@@ -710,6 +727,9 @@ describe('Testing AdditionalInterests component', () => {
       fieldQuestions: [],
       dispatch: store.dispatch,
       actions: {
+        quoteStateActions: {
+          getLatestQuote() {}
+        },
         questionsActions: {
           getUIQuestions() {}
         },

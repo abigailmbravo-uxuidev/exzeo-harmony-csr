@@ -231,6 +231,11 @@ describe('Testing MortgageBilling component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      auth: {
+        userProfile: {
+          groups: [{ companyCode: 'TTIC' }]
+        }
+      },
       policy,
       actions: {
         questionsActions: {

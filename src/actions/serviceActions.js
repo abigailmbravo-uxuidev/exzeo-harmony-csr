@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { batchActions } from 'redux-batched-actions';
-import _ from 'lodash';
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
 
@@ -227,18 +226,18 @@ export const getTransactionHistory = policyNumber => (dispatch) => {
     });
 };
 
-export const addTransaction = (props, submitData) => (dispatch) => {
+export const addTransaction = submitData => (dispatch) => {
   const body = {
     service: 'billing.services',
     method: 'POST',
     path: 'post-payment-transaction',
     data: {
-      companyCode: props.auth.userProfile.groups[0].companyCode,
-      state: props.policy.state,
-      product: props.policy.product,
-      policyNumber: props.policy.policyNumber,
-      policyTerm: props.policy.policyTerm,
-      policyAccountCode: props.policy.policyAccountCode,
+      companyCode: submitData.companyCode,
+      state: submitData.policy.state,
+      product: submitData.policy.product,
+      policyNumber: submitData.policy.policyNumber,
+      policyTerm: submitData.policy.policyTerm,
+      policyAccountCode: submitData.policy.policyAccountCode,
       date: submitData.cashDate,
       type: submitData.cashType,
       description: submitData.cashDescription,
@@ -368,7 +367,7 @@ export const saveUnderwritingExceptions = (id, underwritingExceptions) => (dispa
   };
   const axiosConfig = runnerSetup(body);
 
-  return axios(axiosConfig).then((response) => {
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
     const data = { transactions: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
@@ -426,6 +425,27 @@ export const getEndorsementHistory = policyNumber => (dispatch) => {
 
   return axios(axiosConfig).then((response) => {
     const data = { endorsementHistory: response.data };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
+export const getQuote = quoteId => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'quote-data.services',
+    method: 'GET',
+    path: quoteId
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { quote: response.data ? response.data.result : {} };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));

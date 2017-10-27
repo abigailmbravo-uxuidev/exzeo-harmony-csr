@@ -365,6 +365,11 @@ describe('Testing Underwriting component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      actions: {
+        quoteStateActions: {
+          getLatestQuote() {}
+        }
+      },
       underwritingQuestions,
       fieldQuestions: [],
       quoteData: {},
@@ -434,6 +439,9 @@ describe('Testing Underwriting component', () => {
       fieldQuestions: [],
       dispatch: store.dispatch,
       actions: {
+        quoteStateActions: {
+          getLatestQuote() {}
+        },
         appStateActions: {
           setAppState() { }
         },
@@ -507,6 +515,9 @@ describe('Testing Underwriting component', () => {
       fieldQuestions: [],
       dispatch: store.dispatch,
       actions: {
+        quoteStateActions: {
+          getLatestQuote() {}
+        },
         serviceActions: {
           getUnderwritingQuestions() {}
         },
@@ -539,7 +550,7 @@ describe('Testing Underwriting component', () => {
   it('should test handleGetQuoteData', () => {
     const initialState = {
       service: {
-
+        quote: quoteData
       },
       cg: {
         bb: {
@@ -568,13 +579,14 @@ describe('Testing Underwriting component', () => {
     };
     let quote = {};
 
-    quote = handleGetQuoteData(initialState);
+    quote = initialState.service.quote;
     expect(quote).toEqual(quoteData);
   });
 
   it('should test handleGetQuoteData', () => {
     const initialState = {
       service: {
+        quote: quoteData,
         underwritingQuestions
       },
       cg: {

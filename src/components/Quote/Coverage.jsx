@@ -5,12 +5,14 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import localStorage from 'localStorage';
 import moment from 'moment';
+import momentTZ from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
 import * as serviceActions from '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as questionsActions from '../../actions/questionsActions';
+import * as quoteStateActions from '../../actions/quoteStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import TextField from '../Form/inputs/TextField';
@@ -70,7 +72,8 @@ export const handleInitialize = (state) => {
 
   values.agencyCode = _.get(quoteData, 'agencyCode');
   values.agentCode = _.get(quoteData, 'agentCode');
-  values.effectiveDate = moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD');
+
+  values.effectiveDate = moment(_.get(quoteData, 'effectiveDate')).utc().format('YYYY-MM-DD');
 
   values.pH1email = _.get(quoteData, 'policyHolders[0].emailAddress');
   values.pH1FirstName = _.get(quoteData, 'policyHolders[0].firstName');
@@ -187,6 +190,8 @@ export const handleFormSubmit = (data, dispatch, props) => {
     submitting: true
   });
 
+  submitData.effectiveDate = momentTZ(submitData.effectiveDate).tz(props.zipCodeSettings.timezone).format();
+
   submitData.agencyCode = String(data.agencyCode);
   submitData.agentCode = String(data.agentCode);
   submitData.dwellingAmount = Math.round(Number(String(data.dwellingAmount).replace(/[^\d]/g, '')) / 1000) * 1000;
@@ -246,6 +251,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
 
   props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
       .then(() => {
+        props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
         // now update the workflow details so the recalculated rate shows
         props.actions.appStateActions.setAppState(props.appState.modelName,
           workflowId, { ...props.appState.data, submitting: false, selectedLink: 'customerData' });
@@ -272,6 +278,9 @@ export class Coverage extends Component {
 
         if (lastSearchData.searchType === 'quote') {
           const quoteId = localStorage.getItem('quoteId');
+
+          this.props.actions.quoteStateActions.getLatestQuote(true, quoteId);
+
           steps.push({
             name: 'chooseQuote',
             data: {
@@ -338,6 +347,9 @@ export class Coverage extends Component {
         this.props.actions.serviceActions.getAgencies(quoteData.companyCode, quoteData.state);
         this.props.actions.serviceActions.getAgentsByAgency(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
         setAgents = true;
+      }
+      if (!_.isEqual(this.props.quoteData, nextProps.quoteData)) {
+        this.props.actions.quoteStateActions.getLatestQuote(true, nextProps.quoteData._id);
       }
     }
   }
@@ -932,6 +944,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     questionsActions: bindActionCreators(questionsActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),

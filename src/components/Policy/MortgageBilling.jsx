@@ -110,10 +110,8 @@ export const handleAISubmit = (data, dispatch, props) => {
 
   let order = 0;
 
-  if (String(data.order) !== '0' && String(data.order) !== '1') {
+  if (data.order !== 0 && data.order !== 1) {
     order = _.filter(additionalInterests, ai => ai.type === type).length === 0 ? 0 : 1;
-  } else {
-    order = data.order;
   }
 
       // remove any existing items before submission
@@ -265,13 +263,14 @@ export class MortgageBilling extends Component {
     const submitData = data;
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
       workflowId, { ...this.props.appState.data, submitting: true });
-
     submitData.cashDate = moment.utc(data.cashDate);
     submitData.batchNumber = String(data.batchNumber);
     submitData.amount = Number(String(data.amount).replace(/[^\d.-]/g, ''));
     submitData.cashType = String(data.cashType);
     submitData.cashDescription = String(data.cashDescription);
-    this.props.actions.serviceActions.addTransaction(this.props, submitData)
+    submitData.companyCode = this.props.auth.userProfile.groups[0].companyCode;
+    submitData.policy = this.props.policy;
+    this.props.actions.serviceActions.addTransaction(submitData)
     .then(() => {
       this.props.actions.serviceActions.getPaymentHistory(this.props.policy.policyNumber);
       this.props.actions.serviceActions.getSummaryLedger(this.props.policy.policyNumber);
@@ -477,6 +476,7 @@ redux mapping
 
 const mapStateToProps = state => ({
   questions: state.questions,
+  auth: state.authState,
   fieldValues: _.get(state.form, 'MortgageBilling.values', {}),
   getSummaryLedger: state.service.getSummaryLedger,
   initialValues: handleInitialize(state),
