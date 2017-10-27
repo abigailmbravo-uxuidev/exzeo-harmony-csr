@@ -26,7 +26,6 @@ export default class Auth {
     this.handleAuthentication = this.handleAuthentication.bind(this);
     this.isAuthenticated = this.isAuthenticated.bind(this);
     this.getAccessToken = this.getAccessToken.bind(this);
-    // this.getProfile = this.getProfile.bind(this);
 
     const csrLoggedOut = localStorage.getItem('csr_loggedOut');
     // check if the user is actually logged out from another sso site
@@ -67,28 +66,19 @@ export default class Auth {
     const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
     const payload = jwtDecode(authResult.idToken);
     const profile = {
+      name: payload.name,
       email: payload.email,
-      egg: true,
       sub: payload.sub,
       username: payload.username,
       groups: payload['https://heimdall.security/groups'],
       roles: payload['https://heimdall.security/roles'],
     };
-    
+
     localStorage.setItem('user_profile', JSON.stringify(profile));
     localStorage.setItem('access_token', authResult.accessToken);
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
     localStorage.removeItem('csr_loggedOut');
-  }
-
-  checkIfCSRGroup() {
-    const groups = this.userProfile.groups;
-    if (!groups) {
-      return false;
-    }
-    const csrGroup = _.chain(groups).flatten().filter(item => (item.name === 'TTICCSR' && item.companyCode === 'TTIC')).value();
-    return (csrGroup && csrGroup.length > 0);
   }
 
   getIdToken = () => {
@@ -105,28 +95,6 @@ export default class Auth {
       throw new Error('No access token found');
     }
     return accessToken;
-  }
-
-  getProfile(cb) {
-    const accessToken = this.getAccessToken();
-
-    const profileString = localStorage.getItem('user_profile');
-    if (profileString) return JSON.parse(profileString);
-
-    this.auth0.client.userInfo(accessToken, (err, profile) => {
-      if (profile) {
-        this.userProfile = profile;
-        this.userProfile.groups = profile['https://heimdall.security/groups'];
-        this.userProfile.roles = profile['https://heimdall.security/roles'];
-        this.userProfile.username = profile['https://heimdall.security/username'];
-        delete this.userProfile['https://heimdall.security/groups'];
-        delete this.userProfile['https://heimdall.security/roles'];
-        delete this.userProfile['https://heimdall.security/username'];
-        localStorage.setItem('user_profile', JSON.stringify(profile));
-      }
-
-      cb(err, profile);
-    });
   }
 
   logout() {

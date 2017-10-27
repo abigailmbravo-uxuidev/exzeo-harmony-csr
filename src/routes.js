@@ -56,20 +56,16 @@ const checkPublicPath = (path) => {
 };
 
 class Routes extends Component {
-  constructor(props) {
-    super(props);
-
+  componentWillMount() {
     const { isAuthenticated } = auth;
     if (isAuthenticated() && checkPublicPath(window.location.pathname)) {
       const idToken = localStorage.getItem('id_token');
       axios.defaults.headers.common['authorization'] = `bearer ${idToken}`; // eslint-disable-line
       
-      if (!props.authState.userProfile) {
+      if (!this.props.authState.userProfile) {
         const profile = JSON.parse(localStorage.getItem('user_profile'));
-        console.log('dispatchUserProfile', profile)
-        props.actions.authActions.dispatchUserProfile(profile);
+        this.props.actions.authActions.dispatchUserProfile(profile);
       }
-      
     } else if (!isAuthenticated() && checkPublicPath(window.location.pathname)) {
       history.push('/login');
       axios.defaults.headers.common['authorization'] = undefined; // eslint-disable-line
