@@ -26,7 +26,7 @@ export default class Auth {
     this.handleAuthentication = this.handleAuthentication.bind(this);
     this.isAuthenticated = this.isAuthenticated.bind(this);
     this.getAccessToken = this.getAccessToken.bind(this);
-    this.getProfile = this.getProfile.bind(this);
+    // this.getProfile = this.getProfile.bind(this);
 
     const csrLoggedOut = localStorage.getItem('csr_loggedOut');
     // check if the user is actually logged out from another sso site
@@ -65,6 +65,17 @@ export default class Auth {
   setSession = (authResult) => {
     // Set the time that the access token will expire at
     const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
+    const payload = jwtDecode(authResult.idToken);
+    const profile = {
+      email: payload.email,
+      egg: true,
+      sub: payload.sub,
+      username: payload.username,
+      groups: payload['https://heimdall.security/groups'],
+      roles: payload['https://heimdall.security/roles'],
+    };
+    
+    localStorage.setItem('user_profile', JSON.stringify(profile));
     localStorage.setItem('access_token', authResult.accessToken);
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);

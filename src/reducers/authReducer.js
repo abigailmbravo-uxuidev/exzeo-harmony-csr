@@ -4,6 +4,7 @@ import initialState from './initialState';
 
 export default function authReducer(state = initialState.authState, action) {
   let newState = state;
+  console.log('authReducerz', state)
   switch (action.type) {
     case types.AUTH:
       newState = { ...state, ...action.authState };
