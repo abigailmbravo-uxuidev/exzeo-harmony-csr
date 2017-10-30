@@ -113,7 +113,7 @@ export class DetailHeader extends Component {
         <dl>
           <div>
             <dt>Effective Date</dt>
-            <dd>{moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD')}</dd>
+            <dd>{moment.utc(_.get(quoteData, 'effectiveDate')).format('MM/DD/YYYY')}</dd>
           </div>
         </dl>
       </section>
@@ -147,4 +147,3 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailHeader);
-
