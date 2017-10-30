@@ -40,8 +40,6 @@ export class Coverage extends Component {
     if (!_.isEqual(this.props, nextProps)) {
       if (nextProps.policy.policyNumber) {
         this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
-        this.props.actions.policyStateActions.updatePolicy(true, nextProps.policy.policyNumber);
-
         const paymentOptions = {
           effectiveDate: nextProps.policy.effectiveDate,
           policyHolders: nextProps.policy.policyHolders,
