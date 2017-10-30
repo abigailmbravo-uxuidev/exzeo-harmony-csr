@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { reduxForm, propTypes, change, Form } from 'redux-form';
 import { shallow, mount } from 'enzyme';
-import { Endorsements, handleGetPolicy, calculatePercentage, handleInitialize, setPercentageOfValue, updateDependencies, calculate, save, setCalculate, updateCalculatedSinkhole } from './Endorsements';
+import { Endorsements, calculatePercentage, handleInitialize, setPercentageOfValue, updateDependencies, calculate, save, setCalculate, updateCalculatedSinkhole, getNewPolicyNumber } from './Endorsements';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
@@ -13,6 +13,9 @@ const mockStore = configureStore(middlewares);
 describe('Testing Endorsements component', () => {
   it('should test connected app', () => {
     const initialState = {
+      service: {
+        latestPolicy: {}
+      },
       cg: {
         bb: {
           data: {
@@ -83,7 +86,6 @@ describe('Testing Endorsements component', () => {
     const wrapper = shallow(<Endorsements store={store} {...props} />);
     expect(wrapper);
 
-    handleGetPolicy(initialState);
     calculatePercentage(100, 200);
     handleInitialize(initialState);
     setPercentageOfValue(234, 1);
@@ -168,5 +170,6 @@ describe('Testing Endorsements component', () => {
     wrapper.find('[name="effectiveDateNew"]').simulate('change', { target: { value: '10/27/2017' } });
     wrapper.find('button.btn-secondary').simulate('click');
     wrapper.find('button.btn-primary').simulate('click');
+    getNewPolicyNumber(initialState);
   });
 });

@@ -3,26 +3,26 @@ import * as types from './../actions/actionTypes';
 import initialState from './initialState';
 import serviceReducer from './serviceReducer';
 
-describe('Service Reducer', () => {
-  it('should call quoteStateReducer SERVICE_REQUEST', () => {
-    const inputProps = { transaction: {} };
+describe('serviceReducer', () => {
+  it('should call serviceReducer SERVICE_REQUEST', () => {
+    const state = initialState.service;
+    const inputProps = { };
     const action = {
       type: types.SERVICE_REQUEST,
-      data: inputProps
+      service: inputProps
     };
 
-    expect(serviceReducer(inputProps, action)).toEqual(inputProps);
+    expect(serviceReducer(state, action)).toEqual(inputProps);
   });
-  it('should call errorReducer REHYDRATE', () => {
+  it('should call serviceReducer REHYDRATE', () => {
     const state = initialState.service;
-    const inputProps = {};
+    const inputProps = { };
     const action = {
       type: persistTypes.REHYDRATE,
       payload: {
-        data: inputProps
+        service: inputProps
       }
     };
-
     expect(serviceReducer(state, action)).toEqual(inputProps);
   });
 });

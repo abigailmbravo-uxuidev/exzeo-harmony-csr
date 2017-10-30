@@ -20,6 +20,10 @@ export default {
     update: false
   },
   questions: [],
+  policyState: {
+    policyNumber: null,
+    update: false
+  },
   authState: {
     userProfile: null
   }

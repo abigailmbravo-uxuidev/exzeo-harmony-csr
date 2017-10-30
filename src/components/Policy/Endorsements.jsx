@@ -23,6 +23,7 @@ import CurrencyField from '../Form/inputs/CurrencyField';
 import Footer from '../Common/Footer';
 import DateField from '../Form/inputs/DateField';
 import Loader from '../Common/Loader';
+import * as policyStateActions from '../../actions/policyStateActions';
 
 export const setCalculate = (props, reset) => {
   if (reset) props.reset('Endorsements');
@@ -34,20 +35,20 @@ export const setCalculate = (props, reset) => {
     isCalculated: false
   });
 };
-
 export const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 export const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question') || '';
 
-let isLoaded = false;
-export const handleGetPolicy = (state) => {
-  const csrQuoteTask = (state.cg && state.appState && state.cg.csrQuote) ? state.cg.csrQuote.data : null;
-  const endorsePolicyModelTask = (state.cg && state.appState && state.cg.endorsePolicyModelSave) ? state.cg.endorsePolicyModelSave.data : null;
-  if (!csrQuoteTask && !endorsePolicyModelTask) return {};
+export const getNewPolicyNumber = (state) => {
+  const taskData = (state.cg && state.appState && state.cg.endorsePolicyModelSave)
+      ? state.cg.endorsePolicyModelSave.data
+      : null;
+  if (!taskData) { return null; }
 
-  const policyDataEndorsement = endorsePolicyModelTask && _.find(endorsePolicyModelTask.model.variables, { name: 'retrievePolicy' }) ? _.find(endorsePolicyModelTask.model.variables, { name: 'retrievePolicy' }).value[0] : null;
-  const policyData = csrQuoteTask && _.find(csrQuoteTask.model.variables, { name: 'retrievePolicy' }) ? _.find(csrQuoteTask.model.variables, { name: 'retrievePolicy' }).value[0] : {};
-  return policyDataEndorsement || policyData;
+  const policy = _.find(taskData.model.variables, { name: 'retrievePolicy' })
+      ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0]
+      : null;
+  return policy ? policy.policyNumber : null;
 };
 
 export const calculatePercentage = (oldFigure, newFigure) => {
@@ -59,7 +60,7 @@ export const calculatePercentage = (oldFigure, newFigure) => {
 };
 
 export const handleInitialize = (state) => {
-  const policy = handleGetPolicy(state);
+  const policy = state.service.latestPolicy || {};
   const questions = state.questions || [];
   const values = {};
   // values.agencyCode = '20000'; // _.get(policy, 'agencyCode');
@@ -513,8 +514,7 @@ export class Endorsements extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !isLoaded) {
-      isLoaded = true;
+    if (!_.isEqual(this.props.policy, nextProps.policy) && nextProps.policy && nextProps.policy.policyNumber) {
       const workflowId = nextProps.appState.instanceId;
       this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
       this.props.actions.serviceActions.getUnderwritingQuestions(nextProps.policy.companyCode, nextProps.policy.state, nextProps.policy.product, nextProps.policy.property);
@@ -528,6 +528,9 @@ export class Endorsements extends React.Component {
     }
     if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props, nextProps)) {
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
+    }
+    if (!_.isEqual(this.props.newPolicyNumber, nextProps.newPolicyNumber)) {
+      this.props.actions.policyStateActions.updatePolicy(true, nextProps.newPolicyNumber);
     }
   }
 
@@ -1238,14 +1241,16 @@ const mapStateToProps = state => ({
   appState: state.appState,
   fieldValues: _.get(state.form, 'Endorsements.values', {}),
   initialValues: handleInitialize(state),
-  policy: handleGetPolicy(state),
+  policy: state.service.latestPolicy || {},
   questions: state.questions,
   underwritingQuestions: state.service.underwritingQuestions,
-  getRate: state.service.getRate
+  getRate: state.service.getRate,
+  newPolicyNumber: getNewPolicyNumber(state)
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    policyStateActions: bindActionCreators(policyStateActions, dispatch),
     questionsActions: bindActionCreators(questionsActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
