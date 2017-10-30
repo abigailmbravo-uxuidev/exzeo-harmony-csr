@@ -511,12 +511,11 @@ const dateFormatter = cell => `${cell.substring(0, 10)}`;
 export class Endorsements extends React.Component {
 
   componentDidMount() {
+    this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
   }
 
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props.policy, nextProps.policy) && nextProps.policy && nextProps.policy.policyNumber) {
-      const workflowId = nextProps.appState.instanceId;
-      this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
       this.props.actions.serviceActions.getUnderwritingQuestions(nextProps.policy.companyCode, nextProps.policy.state, nextProps.policy.product, nextProps.policy.property);
     }
     if (!_.isEqual(this.props.getRate, nextProps.getRate)) {
@@ -526,7 +525,7 @@ export class Endorsements extends React.Component {
       nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', getRate.newCurrentPremium || '-'));
       nextProps.dispatch(change('Endorsements', 'newAnnualPremium', getRate.newAnnualPremium || '-'));
     }
-    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props, nextProps)) {
+    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
     }
     if (!_.isEqual(this.props.newPolicyNumber, nextProps.newPolicyNumber)) {
