@@ -239,7 +239,11 @@ describe('Testing MortgageBilling component', () => {
         questionsActions: {
           getUIQuestions() {}
         },
+        policyStateActions: {
+          updatePolicy() {}
+        },
         serviceActions: {
+          createTransaction() { return Promise.resolve(); },
           addTransaction() { return Promise.resolve(); },
           getTransactionHistory() {},
           getSummaryLedger() {},
