@@ -20,17 +20,22 @@ import SelectField from '../Form/inputs/SelectField';
 import CurrencyField from '../Form/inputs/CurrencyField';
 import Footer from '../Common/Footer';
 import DateField from '../Form/inputs/DateField';
+import * as policyStateActions from '../../actions/policyStateActions';
 
 export const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 export const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question') || '';
 
-let isLoaded = false;
-export const handleGetPolicy = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-  const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
-  return policyData;
+export const getNewPolicyNumber = (state) => {
+  const taskData = (state.cg && state.appState && state.cg.endorsePolicyModelSave)
+      ? state.cg.endorsePolicyModelSave.data
+      : null;
+  if (!taskData) { return null; }
+
+  const policy = _.find(taskData.model.variables, { name: 'retrievePolicy' })
+      ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0]
+      : null;
+  return policy ? policy.policyNumber : null;
 };
 
 export const calculatePercentage = (oldFigure, newFigure) => {
@@ -42,7 +47,7 @@ export const calculatePercentage = (oldFigure, newFigure) => {
 };
 
 export const handleInitialize = (state) => {
-  const policy = handleGetPolicy(state);
+  const policy = state.service.latestPolicy || {};
   const questions = state.questions || [];
   const values = {};
   // values.agencyCode = '20000'; // _.get(policy, 'agencyCode');
@@ -368,10 +373,12 @@ export class Endorsements extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !isLoaded) {
-      isLoaded = true;
+    if (!_.isEqual(this.props.policy, nextProps.policy) && nextProps.policy && nextProps.policy.policyNumber) {
       this.props.actions.serviceActions.getUnderwritingQuestions(nextProps.policy.companyCode, nextProps.policy.state, nextProps.policy.product, nextProps.policy.property);
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
+    }
+    if (!_.isEqual(this.props.newPolicyNumber, nextProps.newPolicyNumber)) {
+      this.props.actions.policyStateActions.updatePolicy(true, nextProps.newPolicyNumber);
     }
   }
 
@@ -1081,13 +1088,15 @@ const mapStateToProps = state => ({
   appState: state.appState,
   fieldValues: _.get(state.form, 'Endorsements.values', {}),
   initialValues: handleInitialize(state),
-  policy: handleGetPolicy(state),
+  policy: state.service.latestPolicy || {},
   questions: state.questions,
-  underwritingQuestions: state.service.underwritingQuestions
+  underwritingQuestions: state.service.underwritingQuestions,
+  newPolicyNumber: getNewPolicyNumber(state)
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    policyStateActions: bindActionCreators(policyStateActions, dispatch),
     questionsActions: bindActionCreators(questionsActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),

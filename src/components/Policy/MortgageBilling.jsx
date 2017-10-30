@@ -10,6 +10,7 @@ import * as questionsActions from '../../actions/questionsActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
+import * as policyStateActions from '../../actions/policyStateActions';
 import PolicyConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
 import SelectField from '../Form/inputs/SelectField';
@@ -63,16 +64,8 @@ export const hideAdditionalInterestModal = (props) => {
       { ...props.appState.data, showAdditionalInterestModal: false, showAdditionalInterestEditModal: false });
 };
 
-export const handleGetPolicy = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-  const quoteData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
-  return quoteData;
-};
-
 export const handleInitialize = (state) => {
-  const policy = handleGetPolicy(state);
-
+  const policy = state.service.latestPolicy || {};
   const values = {};
   values.policyNumber = _.get(policy, 'policyNumber');
   values.cashDescription = '';
@@ -120,7 +113,7 @@ export const handleAISubmit = (data, dispatch, props) => {
   _.remove(modifiedAIs, ai => ai._id === data._id); // eslint-disable-line
 
   const aiData = {
-        _id: data._id, // eslint-disable-line
+    additionalInterestId: data._id, // eslint-disable-line
     name1: data.name1,
     name2: data.name2,
     referenceNumber: data.referenceNumber,
@@ -145,28 +138,38 @@ export const handleAISubmit = (data, dispatch, props) => {
   setRank(modifiedAIs);
 
   const submitData = {
+    ...aiData,
     ...props.policy,
     endorsementDate: moment.utc(),
     transactionType: data._id ? 'AI Update' : 'AI Addition', // eslint-disable-line
     additionalInterests: modifiedAIs
   };
 
-  props.actions.cgActions.startWorkflow('endorsePolicyModelAI', { policyNumber: props.policy.policyNumber }).then((result) => {
-    const steps = [{
-      name: 'saveEndorsementAI',
-      data: submitData
-    }];
-    const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelAI.data : {};
-
-    props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
-      props.actions.appStateActions.setAppState('endorsePolicyModelAI', startResult.modelInstanceId,
-        {
-          ...props.appState.data,
-          submittingAI: false,
-          showAdditionalInterestModal: false,
-          showAdditionalInterestEditModal: false });
-    });
+  props.actions.serviceActions.createTransaction(submitData).then(() => {
+    props.actions.policyStateActions.updatePolicy(true, props.policy.policyNumber);
+    props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data,
+        submittingAI: false,
+        showAdditionalInterestModal: false,
+        showAdditionalInterestEditModal: false });
   });
+
+  // props.actions.cgActions.startWorkflow('endorsePolicyModelAI', { policyNumber: props.policy.policyNumber }).then((result) => {
+  //   const steps = [{
+  //     name: 'saveEndorsementAI',
+  //     data: submitData
+  //   }];
+  //   const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelAI.data : {};
+
+  //   props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
+  //     props.actions.appStateActions.setAppState('endorsePolicyModelAI', startResult.modelInstanceId,
+  //       {
+  //         ...props.appState.data,
+  //         submittingAI: false,
+  //         showAdditionalInterestModal: false,
+  //         showAdditionalInterestEditModal: false });
+  //   });
+  // });
 };
 
 export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
@@ -194,27 +197,37 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
     modifiedAIs.splice(index, 1, ai);
   }
   const submitData = {
+    additionalInterestId: selectedAdditionalInterest._id,
     ...policy,
     endorsementDate: moment.utc(),
-    transactionType: 'AI Removal',
-    additionalInterests: modifiedAIs
+    transactionType: 'AI Removal'
   };
 
-  props.actions.cgActions.startWorkflow('endorsePolicyModelAI', { policyNumber: props.policy.policyNumber }).then((result) => {
-    const steps = [{
-      name: 'saveEndorsementAI',
-      data: submitData
-    }];
-    const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelAI.data : {};
-    props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
-      props.actions.appStateActions.setAppState('endorsePolicyModelAI', startResult.modelInstanceId,
-        {
-          ...props.appState.data,
-          submittingAI: false,
-          showAdditionalInterestModal: false,
-          showAdditionalInterestEditModal: false });
-    });
+  props.actions.serviceActions.createTransaction(submitData).then(() => {
+    props.actions.policyStateActions.updatePolicy(true, props.policy.policyNumber);
+    props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data,
+        submittingAI: false,
+        showAdditionalInterestModal: false,
+        showAdditionalInterestEditModal: false });
   });
+
+
+  // props.actions.cgActions.startWorkflow('endorsePolicyModelAI', { policyNumber: props.policy.policyNumber }).then((result) => {
+  //   const steps = [{
+  //     name: 'saveEndorsementAI',
+  //     data: submitData
+  //   }];
+  //   const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelAI.data : {};
+  //   props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
+  //     props.actions.appStateActions.setAppState('endorsePolicyModelAI', startResult.modelInstanceId,
+  //       {
+  //         ...props.appState.data,
+  //         submittingAI: false,
+  //         showAdditionalInterestModal: false,
+  //         showAdditionalInterestEditModal: false });
+  //   });
+  // });
 };
 
 export const handleBillingFormSubmit = (data, dispatch, props) => {
@@ -480,7 +493,7 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'MortgageBilling.values', {}),
   getSummaryLedger: state.service.getSummaryLedger,
   initialValues: handleInitialize(state),
-  policy: handleGetPolicy(state),
+  policy: state.service.latestPolicy || {},
   tasks: state.cg,
   appState: state.appState,
   paymentHistory: state.service.paymentHistory,
@@ -490,6 +503,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    policyStateActions: bindActionCreators(policyStateActions, dispatch),
     questionsActions: bindActionCreators(questionsActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),

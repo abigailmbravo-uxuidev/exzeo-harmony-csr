@@ -1,12 +1,10 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
-import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 import _ from 'lodash';
-import ConnectedApp, {
+import {
   MortgageBilling,
   setRank,
-   handleGetPolicy,
     handleInitialize,
     addAdditionalInterest,
     editAdditionalInterest,
@@ -268,7 +266,6 @@ describe('Testing MortgageBilling component', () => {
     };
     const wrapper = shallow(<MortgageBilling store={store} {...props} />);
     expect(wrapper);
-    handleGetPolicy(initialState);
     handleInitialize(initialState);
 
 

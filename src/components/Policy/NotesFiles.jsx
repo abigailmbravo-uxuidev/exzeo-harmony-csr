@@ -12,13 +12,6 @@ import ClearErrorConnect from '../Error/ClearError';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Footer from '../Common/Footer';
 
-const handleGetPolicyData = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-  const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
-  return policyData;
-};
-
 const handleInitialize = state => ({});
 
 const SearchPanel = props => (
@@ -55,8 +48,8 @@ export const NoteList = (props) => {
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
   const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
   const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
-  const attachmentUrl = attachments => 
-    attachments.map((attachment) => `<a target="_blank" href="${attachment.fileUrl}">${attachment.fileType}</a>`).join('<br>');
+  const attachmentUrl = attachments =>
+    attachments.map(attachment => `<a target="_blank" href="${attachment.fileUrl}">${attachment.fileType}</a>`).join('<br>');
   const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
 
   return (
@@ -68,9 +61,9 @@ export const NoteList = (props) => {
       search
     >
       <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
-      <TableHeaderColumn dataField="attachments" dataFormat={ attachmentCount } className="attachmentCount" dataSort dataAlign="center" width="7%"><i className="fa fa-paperclip" aria-hidden="true" /></TableHeaderColumn>
-      <TableHeaderColumn dataField="createdDate" dataSort width="10%" dataFormat={ formatCreateDate }>Created</TableHeaderColumn>
-      <TableHeaderColumn dataField="createdBy" dataSort width="13%" dataFormat={ showCreatedBy }>Author</TableHeaderColumn>
+      <TableHeaderColumn dataField="attachments" dataFormat={attachmentCount} className="attachmentCount" dataSort dataAlign="center" width="7%"><i className="fa fa-paperclip" aria-hidden="true" /></TableHeaderColumn>
+      <TableHeaderColumn dataField="createdDate" dataSort width="10%" dataFormat={formatCreateDate}>Created</TableHeaderColumn>
+      <TableHeaderColumn dataField="createdBy" dataSort width="13%" dataFormat={showCreatedBy}>Author</TableHeaderColumn>
       <TableHeaderColumn dataField="content" dataSort tdStyle={{ whiteSpace: 'normal' }}>Note</TableHeaderColumn>
       <TableHeaderColumn dataField="attachments" dataFormat={attachmentUrl} dataSort tdStyle={{ whiteSpace: 'normal' }} width="45%">Attachments</TableHeaderColumn>
     </BootstrapTable>
@@ -97,8 +90,8 @@ export class NotesFiles extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props, nextProps)) {
-      if (nextProps.policyData && nextProps.policyData.policyNumber) {
-        const ids = [nextProps.policyData.policyNumber, nextProps.policyData.sourceNumber];
+      if (nextProps.policy && nextProps.policy.policyNumber) {
+        const ids = [nextProps.policy.policyNumber, nextProps.policy.sourceNumber];
         this.props.actions.serviceActions.getNotes(ids.toString());
       }
     }
@@ -139,7 +132,7 @@ export class NotesFiles extends Component {
 
 NotesFiles.propTypes = {
   ...propTypes,
-  policyData: PropTypes.shape(),
+  policy: PropTypes.shape(),
   appState: PropTypes.shape({
     modelName: PropTypes.string,
     instanceId: PropTypes.string,
@@ -155,7 +148,7 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'NotesFiles.values', {}),
   initialValues: handleInitialize(state),
   notes: state.service.notes,
-  policyData: handleGetPolicyData(state)
+  policy: state.service.latestPolicy || {}
 });
 
 const mapDispatchToProps = dispatch => ({

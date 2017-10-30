@@ -9,9 +9,11 @@ import { reduxForm, Form, propTypes, change } from 'redux-form';
 import TextField from '../Form/inputs/TextField';
 import PhoneField from '../Form/inputs/PhoneField';
 import HiddenField from '../Form/inputs/HiddenField';
+import * as questionsActions from '../../actions/questionsActions';
 import * as cgActions from '../../actions/cgActions';
-import * as quoteStateActions from '../../actions/quoteStateActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as serviceActions from '../../actions/serviceActions';
+import * as policyStateActions from '../../actions/policyStateActions';
 import normalizePhone from '../Form/normalizePhone';
 import Loader from './Loader';
 
@@ -162,7 +164,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
+    policyStateActions: bindActionCreators(policyStateActions, dispatch),
+    questionsActions: bindActionCreators(questionsActions, dispatch),
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }
