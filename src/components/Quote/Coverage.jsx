@@ -189,7 +189,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
     ...props.appState.data,
     submitting: true
   });
-  submitData.effectiveDate = momentTZ(submitData.effectiveDate).tz(props.zipCodeSettings.timezone).utc();
+  submitData.effectiveDate = momentTZ.tz(momentTZ.utc(submitData.effectiveDate).format('YYYY-MM-DD'), props.zipCodeSettings.timezone);
 
   submitData.agencyCode = String(data.agencyCode);
   submitData.agentCode = String(data.agentCode);
