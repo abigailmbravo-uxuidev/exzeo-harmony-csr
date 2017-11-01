@@ -512,12 +512,12 @@ export class Endorsements extends React.Component {
 
   componentDidMount() {
     this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
+    if (this.props && this.props.policy && this.props.policy.policyNumber) {
+      this.props.actions.serviceActions.getUnderwritingQuestions(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!_.isEqual(this.props.policy, nextProps.policy) && nextProps.policy && nextProps.policy.policyNumber) {
-      this.props.actions.serviceActions.getUnderwritingQuestions(nextProps.policy.companyCode, nextProps.policy.state, nextProps.policy.product, nextProps.policy.property);
-    }
     if (!_.isEqual(this.props.getRate, nextProps.getRate)) {
       const { getRate } = nextProps;
       console.log(getRate);
@@ -932,22 +932,6 @@ export class Endorsements extends React.Component {
                             component="select" styleName={''} onChange={() => setCalculate(this.props, false)} validations={['required']}
                           />
                         </div>
-                        <div className="form-group-double-element">
-                          <TextField label={'Electronic Delivery'} styleName={''} name={'electronicDelivery'} disabled />
-                          <div className="flex-child discounts-electronic-delivery">
-                            <RadioField
-                              name={'electronicDeliveryNew'} styleName={''} label={''} onChange={() => setCalculate(this.props, false)} segmented answers={[
-                                {
-                                  answer: false,
-                                  label: 'No'
-                                }, {
-                                  answer: true,
-                                  label: 'Yes'
-                                }
-                              ]}
-                            />
-                          </div>
-                        </div>
                       </div>
 
                       {/* Col2 */}
@@ -1118,8 +1102,19 @@ export class Endorsements extends React.Component {
                           <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH1phone'} onChange={() => setCalculate(this.props, false)} />
                           <PhoneField validations={['phone']} label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} onChange={() => setCalculate(this.props, false)} />
                         </div>
-                        <div className="flex-parent">
+                        <div className="flex-parent col2">
                           <TextField validations={['required', 'email']} label={'Email Address'} styleName={''} name={'pH1email'} onChange={() => setCalculate(this.props, false)} />
+                          <RadioField
+                            name={'electronicDeliveryNew'} styleName={''} label={'Electronic Delivery'} onChange={() => setCalculate(this.props, false)} segmented answers={[
+                              {
+                                answer: false,
+                                label: 'No'
+                              }, {
+                                answer: true,
+                                label: 'Yes'
+                              }
+                            ]}
+                          />
                         </div>
                       </div>
                       {/* Col2 */}
@@ -1133,7 +1128,7 @@ export class Endorsements extends React.Component {
                           <PhoneField validations={['phone']} label={'Primary Phone'} styleName={''} name={'pH2phone'} onChange={() => setCalculate(this.props, false)} />
                           <PhoneField validations={['phone']} label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} onChange={() => setCalculate(this.props, false)} />
                         </div>
-                        <div className="flex-parent">
+                        <div className="flex-parent col2">
                           <TextField validations={['email']} label={'Email Address'} styleName={''} name={'pH2email'} onChange={() => setCalculate(this.props, false)} />
                         </div>
                       </div>
