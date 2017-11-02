@@ -499,7 +499,6 @@ export const save = (data, dispatch, props) => {
 
     props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
       props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, isSubmitting: false, isCalculated: false });
-      props.reset('Endorsements');
     });
   });
 };
