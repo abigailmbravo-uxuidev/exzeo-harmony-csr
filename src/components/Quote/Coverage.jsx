@@ -484,15 +484,15 @@ export class Coverage extends Component {
                     <h3>Secondary Policyholder</h3>
                     <div className="flex-parent policy-holder-b-name">
                       <div className="flex-child policy-holder-b-first-name">
-                        <TextField label={'First Name'} styleName={''} name={'pH2FirstName'} />
+                        <TextField label={'First Name'} dependsOn={['pH2LastName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2FirstName'} />
                       </div>
                       <div className="flex-child policy-holder-b-last-name">
-                        <TextField label={'Last Name'} styleName={''} name={'pH2LastName'} />
+                        <TextField label={'Last Name'} dependsOn={['pH2FirstName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2LastName'} />
                       </div>
                     </div>
                     <div className="flex-parent policy-holder-b-phone">
                       <div className="flex-child policy-holder-b-primary-phone">
-                        <PhoneField label={'Primary Phone'} styleName={''} name={'pH2phone'} validations={['phone']} />
+                        <PhoneField label={'Primary Phone'} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2email']} styleName={''} name={'pH2phone'} validations={['phone']} />
                       </div>
                       <div className="flex-child policy-holder-b-secondary-phone">
                         <PhoneField label={'Secondary Phone'} styleName={''} name={'pH2phone2'} validations={['phone']} />
@@ -500,7 +500,7 @@ export class Coverage extends Component {
                     </div>
                     <div className="flex-parent policy-holder-b-email">
                       <div className="flex-child email-address">
-                        <TextField validations={['email']} label={'Email Address'} styleName={''} name={'pH2email'} />
+                        <TextField validations={['email']} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2phone']} label={'Email Address'} styleName={''} name={'pH2email'} />
                       </div>
                     </div>
                   </div>
