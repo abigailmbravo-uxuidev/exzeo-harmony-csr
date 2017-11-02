@@ -961,15 +961,15 @@ export class Endorsements extends React.Component {
                       <div className="flex-child">
                         <h3>Secondary Policyholder</h3>
                         <div className="flex-parent col2">
-                          <TextField label={'First Name'} styleName={''} name={'pH2FirstName'} disabled={appState.data.isCalculated} />
-                          <TextField label={'Last Name'} styleName={''} name={'pH2LastName'} disabled={appState.data.isCalculated} />
+                          <TextField label={'First Name'} dependsOn={['pH2LastName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2FirstName'} disabled={appState.data.isCalculated} />
+                          <TextField label={'Last Name'} dependsOn={['pH2FirstName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2LastName'} disabled={appState.data.isCalculated} />
                         </div>
                         <div className="flex-parent col2">
-                          <PhoneField validations={['phone']} label={'Primary Phone'} styleName={''} name={'pH2phone'} disabled={appState.data.isCalculated} />
+                          <PhoneField validations={['phone']} label={'Primary Phone'} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2email']} styleName={''} name={'pH2phone'} disabled={appState.data.isCalculated} />
                           <PhoneField validations={['phone']} label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} disabled={appState.data.isCalculated} />
                         </div>
                         <div className="flex-parent col2">
-                          <TextField validations={['email']} label={'Email Address'} styleName={''} name={'pH2email'} disabled={appState.data.isCalculated} />
+                          <TextField validations={['email']} label={'Email Address'} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2phone']} styleName={''} name={'pH2email'} disabled={appState.data.isCalculated} />
                         </div>
                       </div>
                     </div>
