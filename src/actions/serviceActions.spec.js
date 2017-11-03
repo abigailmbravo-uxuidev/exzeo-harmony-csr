@@ -629,7 +629,8 @@ describe('Service Actions', () => {
     submitData.amount = Number(String('400').replace(/[^\d.-]/g, ''));
     submitData.cashType = String('Electronic Deposit');
     submitData.cashDescription = String('Payment Received');
-
+    submitData.companyCode = props.auth.userProfile.groups[0].companyCode;
+    submitData.policy = props.policy;
     const mockAdapter = new MockAdapter(axios);
 
     const axiosOptions = {
@@ -643,12 +644,12 @@ describe('Service Actions', () => {
         method: 'POST',
         path: 'post-payment-transaction',
         data: {
-          companyCode: props.auth.userProfile.groups[0].companyCode,
-          state: props.policy.state,
-          product: props.policy.product,
-          policyNumber: props.policy.policyNumber,
-          policyTerm: props.policy.policyTerm,
-          policyAccountCode: props.policy.policyAccountCode,
+          companyCode: submitData.companyCode,
+          state: submitData.policy.state,
+          product: submitData.policy.product,
+          policyNumber: submitData.policy.policyNumber,
+          policyTerm: submitData.policy.policyTerm,
+          policyAccountCode: submitData.policy.policyAccountCode,
           date: submitData.cashDate,
           type: submitData.cashType,
           description: submitData.cashDescription,
@@ -665,7 +666,7 @@ describe('Service Actions', () => {
     const initialState = {};
     const store = mockStore(initialState);
 
-    return serviceActions.addTransaction(props, submitData)(store.dispatch)
+    return serviceActions.addTransaction(submitData)(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
       });
