@@ -17,7 +17,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
     if (uwException.canOverride && data[uwException._id] === true) {
       uwException.overridden = true;
       uwException.overriddenAt = moment.utc();
-      uwException.overriddenBy = { userId: props.userProfile.sub, userName: props.userProfile.username };
+      uwException.overriddenBy = { userId: props.userProfile.sub, userName: props.userProfile.name };
     } else if (uwException.canOverride) {
       uwException.overridden = false;
     }
