@@ -417,7 +417,7 @@ export class Coverage extends Component {
                   <h3>Produced By</h3>
                   <div className="flex-parent produced-by-wrapper">
                     <div className="flex-child effectiveDate">
-                      <DateField validations={['date']} label={'Effective Date'} name={'effectiveDate'} min={zipCodeSettings ? zipCodeSettings.minEffectiveDate : null} max={zipCodeSettings ? zipCodeSettings.maxEffectiveDate : null} />
+                      <DateField validations={['required']} label={'Effective Date'} name={'effectiveDate'} />
                     </div>
                     <div className="flex-child agencyCode">
                       <SelectField
