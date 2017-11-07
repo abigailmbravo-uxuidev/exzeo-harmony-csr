@@ -399,7 +399,7 @@ export class Endorsements extends React.Component {
               </div>
               <div className="scroll">
                 <div className="form-group survey-wrapper" role="group">
-                  <section id="coverage">
+                  <section name="coverage"  id="coverage">
                     <h3>Coverage</h3>
                     <div className="flex-parent">
                       {/* Col1 */}
@@ -828,7 +828,7 @@ export class Endorsements extends React.Component {
 
                     </div>
                   </section>
-                  <section id="home">
+                  <section name="home" id="home">
                     <h3>Home / Location</h3>
                     <div className="flex-parent">
                       {/* Col1 */}
@@ -933,7 +933,7 @@ export class Endorsements extends React.Component {
                       <TableHeaderColumn dataField="transactionType" dataAlign="right">Type</TableHeaderColumn>
                     </BootstrapTable>
                   </section>
-                  <section id="policy">
+                  <section name="policy" id="policy">
                     <div className="flex-parent col2">
                       {/* Col1 */}
                       <div className="flex-child">
@@ -981,7 +981,7 @@ export class Endorsements extends React.Component {
                       </div>
                     </div>
                   </section>
-                  <section id="addresses">
+                  <section name="addresses" id="addresses">
                     <h3>Mailing Address</h3>
                     <div className="flex-parent wrap">
                       <div className="address">

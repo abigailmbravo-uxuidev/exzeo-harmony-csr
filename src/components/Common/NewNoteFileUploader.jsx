@@ -13,10 +13,10 @@ export const submitNote = (data, dispatch, props) => {
   const noteData = {
     number: documentId,
     noteType,
-    noteContent: data.noteContent,
+    noteContent: JSON.stringify(data.noteContent),
     contactType: data.contactType,
     createdAt: new Date().getTime(),
-    noteAttachments: data.noteAttachments ? data.noteAttachments.length : 0,
+    attachmentCount: data.noteAttachments ? data.noteAttachments.length : 0,
     fileType: data.fileType,
     createdBy: {
       useerId: user.user_id,
@@ -191,7 +191,7 @@ export const NewNoteFileUploader = (props, { closeButtonHandler }) => {
             </div>
             <div className="buttons note-file-footer-button-group">
               <button aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={props.closeButtonHandler}>Cancel</button>
-              <button aria-label="submit-btn form-newNote" className="btn btn-primary submit-button">Save</button>
+              <button  aria-label="submit-btn form-newNote" className="btn btn-primary submit-button">Save</button>
             </div>
           </div>
         </Form>

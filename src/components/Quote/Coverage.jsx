@@ -61,11 +61,13 @@ export function calculatePercentage(oldFigure, newFigure) {
 
   return percentChange;
 }
+const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 export const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
 
 export const handleInitialize = (state) => {
   const quoteData = handleGetQuoteData(state);
+  const questions = state.questions;
   const values = {};
 
   values.electronicDelivery = _.get(quoteData, 'policyHolders[0].electronicDelivery') || false;
@@ -120,14 +122,15 @@ export const handleInitialize = (state) => {
 
   const otherStructures = _.get(quoteData, 'coverageLimits.otherStructures.amount');
   const dwelling = _.get(quoteData, 'coverageLimits.dwelling.amount');
+
   const personalProperty = _.get(quoteData, 'coverageLimits.personalProperty.amount');
   const hurricane = _.get(quoteData, 'deductibles.hurricane.amount');
 
   values.otherStructuresAmount = otherStructures;
   values.otherStructures = String(calculatePercentage(otherStructures, dwelling));
   values.personalLiability = _.get(quoteData, 'coverageLimits.personalLiability.amount');
-  values.personalPropertyAmount = String(personalProperty);
-  values.personalProperty = String(calculatePercentage(personalProperty, dwelling));
+  values.personalPropertyAmount = String(_.get(quoteData, 'coverageLimits.personalProperty.amount'));
+  values.personalProperty = _.map(getAnswers('personalPropertyAmount', questions), 'answer').includes(calculatePercentage(personalProperty, dwelling)) ? String(calculatePercentage(personalProperty, dwelling)) : undefined;
   values.personalPropertyReplacementCostCoverage = _.get(quoteData, 'coverageOptions.personalPropertyReplacementCost.answer');
 
   values.sinkholePerilCoverage = _.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer');
@@ -159,7 +162,6 @@ export const handleInitialize = (state) => {
 };
 
 const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
-const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question') || '';
 
@@ -189,8 +191,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
     ...props.appState.data,
     submitting: true
   });
-
-  submitData.effectiveDate = momentTZ(submitData.effectiveDate).tz(props.zipCodeSettings.timezone).format();
+  submitData.effectiveDate = momentTZ.tz(momentTZ.utc(submitData.effectiveDate).format('YYYY-MM-DD'), props.zipCodeSettings.timezone).format();
 
   submitData.agencyCode = String(data.agencyCode);
   submitData.agentCode = String(data.agentCode);
@@ -357,6 +358,7 @@ export class Coverage extends Component {
   updateDwellingAndDependencies = (e, value) => {
     const { dispatch, fieldValues } = this.props;
 
+    if (!value) return;
     let dwellingNumber = String(value).replace(/\D+/g, '');
 
     if (Number.isNaN(dwellingNumber)) { return; }
