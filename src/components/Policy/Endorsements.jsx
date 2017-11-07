@@ -346,7 +346,8 @@ export const save = (data, dispatch, props) => {
     constructionTypeNew: data.constructionTypeNew
   };
 
-  props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber }).then((result) => {
+  props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID })
+  .then((result) => {
     const steps = [{
       name: 'saveEndorsement',
       data: submitData
