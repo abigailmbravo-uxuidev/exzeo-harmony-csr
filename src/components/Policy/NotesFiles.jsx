@@ -14,8 +14,9 @@ import RadioField from '../Form/inputs/RadioField';
 import Downloader from '../Common/Downloader';
 import Footer from '../Common/Footer';
 
-const handleInitialize = state => ({});
-
+const handleInitialize = state => ({
+  attachmentStatus: false
+});
 const SearchPanel = props => (
   <div className="search">
     <label>Search Table Data</label>
