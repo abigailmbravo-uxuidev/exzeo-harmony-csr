@@ -276,12 +276,11 @@ export const updateDependencies = (event, field, dependency, props) => {
 
 export const generateModel = (data, policyObject) => {
   const policy = policyObject;
-  policy.effectiveDate = moment.utc(data.effectiveDateNew);
   policy.transactionType = 'Endorsement';
   const submitData = {
     ...policy,
     formListTransactionType: 'Endorsement',
-    endorsementDate: moment.utc(),
+    endorsementDate: moment.utc(data.effectiveDateNew),
     country: policy.policyHolderMailingAddress.country,
     pH1FirstName: data.pH1FirstName,
     pH1LastName: data.pH1LastName,
@@ -556,7 +555,7 @@ export class Endorsements extends React.Component {
   };
 
   render() {
-    const { initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions } = this.props;
+    const { initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, policy } = this.props;
     return (
       <PolicyConnect>
         <ClearErrorConnect />
@@ -1179,7 +1178,12 @@ export class Endorsements extends React.Component {
               <div className="endo-results-calc">
                 <div className="flex-parent">
                   <div className="form-group">
-                    <DateField validations={['date']} label={'Effective Date'} name={'effectiveDateNew'} onChange={() => setCalculate(this.props, false)} />
+                    <DateField
+                      validations={['date']} label={'Endorsement Effective Date'} name={'effectiveDateNew'}
+                      min={moment.utc(policy.effectiveDate).format('YYYY-MM-DD')}
+                      max={moment.utc(policy.endDate).format('YYYY-MM-DD')}
+                      onChange={() => setCalculate(this.props, false)}
+                    />
                   </div>
                   <DisplayField label={'New End. Amount'} name={'newEndorsementAmount'} />
 
