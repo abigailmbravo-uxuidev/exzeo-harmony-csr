@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
+import { Link, Prompt } from 'react-router-dom';
 import { reduxForm, propTypes, change, Form } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as cgActions from '../../actions/cgActions';
@@ -510,6 +510,10 @@ export class Endorsements extends React.Component {
 
   componentDidMount() {
     this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
+    if (this.props.appState && this.props.appState.instanceId) {
+      const workflowId = this.props.appState.instanceId;
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, workflowId, { ...this.props.appState.data, isCalculated: false });
+    }
     if (this.props && this.props.policy && this.props.policy.policyNumber) {
       this.props.actions.serviceActions.getUnderwritingQuestions(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property);
     }
@@ -554,10 +558,11 @@ export class Endorsements extends React.Component {
   };
 
   render() {
-    const { initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, policy } = this.props;
+    const { initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, policy, dirty } = this.props;
     return (
       <PolicyConnect>
         <ClearErrorConnect />
+        <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         {this.props.appState.data.isSubmitting && <Loader />}
         <Form id="Endorsements" className={'content-wrapper'} onSubmit={appState.data.isCalculated ? handleSubmit(save) : handleSubmit(calculate)} >
 
