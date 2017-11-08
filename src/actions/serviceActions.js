@@ -225,6 +225,27 @@ export const getLatestPolicy = policyNumber => (dispatch) => {
     });
 };
 
+export const getPolicyFromPolicyID = policyId => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'policy-data.services',
+    method: 'GET',
+    path: `transactions/${policyId}`
+  });
+
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
+    const data = { policy: response.data.policies ? response.data.policies[0] : {} };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
 export const getTransactionHistory = policyNumber => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'billing.services',
@@ -447,6 +468,28 @@ export const getEndorsementHistory = policyNumber => (dispatch) => {
 
   return axios(axiosConfig).then((response) => {
     const data = { endorsementHistory: response.data };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
+export const getRate = policyObject => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'rating-engine.services',
+    method: 'POST',
+    path: 'endorsement',
+    data: policyObject
+  });
+
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
+    const data = { getRate: response.data ? response.data.result : {} };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));
