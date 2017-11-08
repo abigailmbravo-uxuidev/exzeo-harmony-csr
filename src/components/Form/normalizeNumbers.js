@@ -2,8 +2,12 @@ const normalizeNumbers = (value, previousValue) => {
   if (!value) {
     return value;
   }
-  const numToString = value.toString();
-  if (!previousValue || value.length > previousValue.length) {
+  let numberValue = value;
+  if (!isNaN(value)) {
+    numberValue = Math.round(value * 100) / 100;
+  }
+  const numToString = numberValue.toString();
+  if (!previousValue || numberValue.length > previousValue.length) {
     // typing forward
     return `${numToString.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
   }
