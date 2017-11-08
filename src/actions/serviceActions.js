@@ -523,9 +523,60 @@ export const getQuote = quoteId => (dispatch) => {
     });
 };
 
+export const createTransaction = submitData => (dispatch) => {
+  const body = {
+    service: 'policy-data.services',
+    method: 'POST',
+    path: 'transaction',
+    data: submitData
+  };
+  const axiosConfig = runnerSetup(body);
+
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
+    const data = { addTransaction: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
 export const saveBillingInfo = (id, billToType, billToId, billPlan) => (dispatch) => {
   const body = {
     service: 'quote-data.services',
+    method: 'put',
+    path: String(' '),
+    data: {
+      _id: id,
+      billToType,
+      billToId,
+      billPlan
+    }
+  };
+  const axiosConfig = runnerSetup(body);
+
+  return axios(axiosConfig).then((response) => {
+    const data = { transactions: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
+export const saveBillingInfoPolicy = (id, billToType, billToId, billPlan) => (dispatch) => {
+  const body = {
+    service: 'policy-data.services',
     method: 'put',
     path: String(' '),
     data: {

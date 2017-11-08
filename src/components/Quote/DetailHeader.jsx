@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import _ from 'lodash';
 import localStorage from 'localStorage';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import normalizePhone from '../Form/normalizePhone';
-import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 
@@ -62,7 +60,7 @@ export class DetailHeader extends Component {
       <section id="policyHolder" className="policyHolder">
         <dl>
           <div>
-            <dt>policyholder</dt>
+            <dt>Policyholder</dt>
             <dd>{quoteData && quoteData.policyHolders &&
                  quoteData.policyHolders[0] ? `${quoteData.policyHolders[0].firstName} ${quoteData.policyHolders[0].lastName}` : '-'}</dd>
             <dd>{quoteData.policyHolders && quoteData.policyHolders[0] ? normalizePhone(quoteData.policyHolders[0].primaryPhoneNumber) : '' }</dd>
@@ -151,4 +149,3 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailHeader);
-
