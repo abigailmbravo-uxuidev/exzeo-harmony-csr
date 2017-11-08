@@ -266,12 +266,15 @@ export class AdditionalInterests extends Component {
 
     if (nextProps.billingOptions && !_.isEqual(this.props.billingOptions, nextProps.billingOptions) &&
     nextProps.appState.data.addAdditionalInterestType === 'Bill Payer') {
-      // update billToType
-      console.log(nextProps.billingOptions);
+      const billPayer = nextProps.billingOptions.options[0];
+      nextProps.actions.serviceActions.saveBillingInfo(nextProps.quoteData._id, billPayer.billToType, billPayer.billToId, 'Annual');
+
+      // update billToType to BP
     } else if (nextProps.billingOptions && !_.isEqual(this.props.billingOptions, nextProps.billingOptions) &&
     nextProps.appState.data.deleteAdditionalInterestType === 'Bill Payer') {
-      // update billToType
-      console.log(nextProps.billingOptions);
+      // update billToType to PH
+      const policyHolder = _.find(nextProps.billingOptions.options, bo => bo.billToType === 'Policyholder');
+      nextProps.actions.serviceActions.saveBillingInfo(nextProps.quoteData._id, policyHolder.billToType, policyHolder.billToId, 'Annual');
     }
   }
   render() {
