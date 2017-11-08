@@ -10,84 +10,81 @@ import * as serviceActions from '../../actions/serviceActions';
 import PolicyBaseConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import RadioField from '../Form/inputs/RadioField';
+import Downloader from '../Common/Downloader';
 import Footer from '../Common/Footer';
 
-const handleGetPolicyData = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-  const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
-  return policyData;
-};
-
-const handleInitialize = state => ({});
-
+const handleInitialize = state => ({
+  attachmentStatus: false
+});
 const SearchPanel = props => (
-  <div className="toolbar">
-    <div className="input-group">
-      <div className="btn btn-notes">Notes</div>
-      <div className="btn btn-files">Files</div>
-    </div>
+  <div className="search">
+    <label>Search Table Data</label>
     { props.searchField }
   </div>
   );
+export const filterNotesByType = (notes, type) => {
+  if (!Array.isArray(notes)) return [];
 
-/*
-TODO:
-This will be used to display attachments
-Need to set expandableRow in the BootstrapTable component
-*/
-export const BSTable = props => props.notes ?
-  (
-    <BootstrapTable data={props.notes}>
-      <TableHeaderColumn dataField="fileList" isKey>Attachment List</TableHeaderColumn>
-    </BootstrapTable>
-  ) : (<p>?</p>);
-
-export const isExpandableRow = (row) => {
-  if (row.id < 2) return true;
-  return true;
+  if (type) return _.filter(notes, n => n.attachments > 0);
+  return notes;
 };
 
 export const NoteList = (props) => {
-  const { notes } = props;
+  const { notes, fieldValues } = props;
 
-  const expandComponent = row => (<BSTable data={row.expand} />);
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
   const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
   const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
-  const attachmentUrl = attachments => 
-    attachments.map((attachment) => `<a target="_blank" href="${attachment.fileUrl}">${attachment.fileType}</a>`).join('<br>');
   const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
-
-  return (
-    <BootstrapTable
-      data={Array.isArray(notes) ? notes : []}
-      options={options}
-      expandableRow={false}
-      expandComponent={expandComponent}
-      search
-    >
-      <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
-      <TableHeaderColumn dataField="attachments" dataFormat={ attachmentCount } className="attachmentCount" dataSort dataAlign="center" width="7%"><i className="fa fa-paperclip" aria-hidden="true" /></TableHeaderColumn>
-      <TableHeaderColumn dataField="createdDate" dataSort width="10%" dataFormat={ formatCreateDate }>Created</TableHeaderColumn>
-      <TableHeaderColumn dataField="createdBy" dataSort width="13%" dataFormat={ showCreatedBy }>Author</TableHeaderColumn>
-      <TableHeaderColumn dataField="content" dataSort tdStyle={{ whiteSpace: 'normal' }}>Note</TableHeaderColumn>
-      <TableHeaderColumn dataField="attachments" dataFormat={attachmentUrl} dataSort tdStyle={{ whiteSpace: 'normal' }} width="45%">Attachments</TableHeaderColumn>
-    </BootstrapTable>
+  const formatNote = note => note.replace(/\r|\n/g, '<br>');
+  const attachmentUrl = attachments => (
+    <span>
+      { attachments.map((attachment, i) =>
+        <Downloader
+          filename={attachment.fileName}
+          fileUrl={attachment.fileUrl}
+          fileType={attachment.fileType}
+          key={i}
+        />
+      )}
+    </span>
   );
-};
 
-const Files = (props) => {
-  const options = { searchPanel: props => (<SearchPanel {...props} />) };
   return (
-    <BootstrapTable data={[]} options={options} search>
-      <TableHeaderColumn dataField="id" isKey hidden>ID</TableHeaderColumn>
-      <TableHeaderColumn dataField="format" dataSort width="10%">Format</TableHeaderColumn>
-      <TableHeaderColumn dataField="type" dataSort width="20%">Type</TableHeaderColumn>
-      <TableHeaderColumn dataField="fileName" dataSort tdStyle={{ whiteSpace: 'normal' }} width="30%">File Name</TableHeaderColumn>
-      <TableHeaderColumn dataField="created" dataSort width="15%">Created</TableHeaderColumn>
-      <TableHeaderColumn dataField="author" dataSort width="15%">Author</TableHeaderColumn>
-    </BootstrapTable>
+    <div className="note-grid-wrapper">
+      <div className="filter-tabs">
+
+        {/* TODO: Eric, just need 2 buttons with an onClick event to filter the grid by attachment count. I added the radio group component because it can have a default selected and user can only choose 1*/}
+
+        <RadioField
+          name={'attachmentStatus'} styleName={''} label={''} onChange={function () {}} segmented answers={[
+            {
+              answer: false,
+              label: 'All Notes'
+            }, {
+              answer: true,
+              label: 'Attachments'
+            }
+          ]}
+        />
+      </div>
+      <BootstrapTable
+        data={filterNotesByType(notes, fieldValues.attachmentStatus)}
+        options={options}
+        search
+        multiColumnSearch
+      >
+        <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
+        <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdDate" dataSort dataFormat={formatCreateDate} >Created</TableHeaderColumn>
+        <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataSort dataFormat={showCreatedBy} >Author</TableHeaderColumn>
+        {/* TODO: Hide note-type and note column when users filters grid to show only notes with attachments*/}
+        <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="contactType" dataSort >Note Type</TableHeaderColumn>
+        <TableHeaderColumn className="note" columnClassName="note" dataField="content" dataSort dataFormat={formatNote} >Note</TableHeaderColumn>
+        <TableHeaderColumn className="count" columnClassName="count" dataField="attachments" dataFormat={attachmentCount} hidden />
+        <TableHeaderColumn className="attachments" columnClassName="attachments" dataField="attachments" dataFormat={attachmentUrl} dataSort >Attachments</TableHeaderColumn>
+      </BootstrapTable>
+    </div>
   );
 };
 
@@ -97,8 +94,8 @@ export class NotesFiles extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props, nextProps)) {
-      if (nextProps.policyData && nextProps.policyData.policyNumber) {
-        const ids = [nextProps.policyData.policyNumber, nextProps.policyData.sourceNumber];
+      if (nextProps.policy && nextProps.policy.policyNumber) {
+        const ids = [nextProps.policy.policyNumber, nextProps.policy.sourceNumber];
         this.props.actions.serviceActions.getNotes(ids.toString());
       }
     }
@@ -120,9 +117,6 @@ export class NotesFiles extends Component {
                     <div className="notes-list">
                       <NoteList {...this.props} />
                     </div>
-                    <div className="file-list" hidden>
-                      <Files />
-                    </div>
                   </section>
                 </div>
               </div>
@@ -139,7 +133,7 @@ export class NotesFiles extends Component {
 
 NotesFiles.propTypes = {
   ...propTypes,
-  policyData: PropTypes.shape(),
+  policy: PropTypes.shape(),
   appState: PropTypes.shape({
     modelName: PropTypes.string,
     instanceId: PropTypes.string,
@@ -151,11 +145,12 @@ NotesFiles.propTypes = {
 // redux mapping
 // ------------------------------------------------
 const mapStateToProps = state => ({
+  tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'NotesFiles.values', {}),
   initialValues: handleInitialize(state),
   notes: state.service.notes,
-  policyData: handleGetPolicyData(state)
+  policy: state.service.latestPolicy || {}
 });
 
 const mapDispatchToProps = dispatch => ({

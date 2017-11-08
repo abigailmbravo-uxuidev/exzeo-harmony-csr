@@ -1468,6 +1468,8 @@ ul.list-cards {
               text-transform: uppercase;
               font-size: $font-size-sm;
               line-height: $headings-line-height;
+              text-overflow: ellipsis;
+              overflow: hidden;
             }
           }
         }
