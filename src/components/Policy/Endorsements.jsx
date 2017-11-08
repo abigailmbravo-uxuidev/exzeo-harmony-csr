@@ -279,6 +279,7 @@ export const generateModel = (data, policyObject) => {
   policy.transactionType = 'Endorsement';
   const submitData = {
     ...policy,
+    policyID: props.policy._id,
     formListTransactionType: 'Endorsement',
     endorsementDate: moment.utc(data.effectiveDateNew),
     country: policy.policyHolderMailingAddress.country,
@@ -487,8 +488,8 @@ export const save = (data, dispatch, props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
 
   submitData.rating = props.getRate.rating;
-  props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber }).then((result) => {
-    const steps = [{
+  props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID })
+  const steps = [{
       name: 'saveEndorsement',
       data: submitData
     }];
