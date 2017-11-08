@@ -475,10 +475,6 @@ export const calculate = (data, dispatch, props) => {
 
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true, isCalculated: false });
 
-<<<<<<< HEAD
-  props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID })
-  .then((result) => {
-=======
   props.actions.serviceActions.getRate(rateData).then(() => {
     props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: false, isCalculated: true });
   });
@@ -492,7 +488,6 @@ export const save = (data, dispatch, props) => {
 
   submitData.rating = props.getRate.rating;
   props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber }).then((result) => {
->>>>>>> develop
     const steps = [{
       name: 'saveEndorsement',
       data: submitData
