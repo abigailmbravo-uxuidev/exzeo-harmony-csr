@@ -153,23 +153,6 @@ export const handleAISubmit = (data, dispatch, props) => {
         showAdditionalInterestModal: false,
         showAdditionalInterestEditModal: false });
   });
-
-  // props.actions.cgActions.startWorkflow('endorsePolicyModelAI', { policyNumber: props.policy.policyNumber }).then((result) => {
-  //   const steps = [{
-  //     name: 'saveEndorsementAI',
-  //     data: submitData
-  //   }];
-  //   const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelAI.data : {};
-
-  //   props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
-  //     props.actions.appStateActions.setAppState('endorsePolicyModelAI', startResult.modelInstanceId,
-  //       {
-  //         ...props.appState.data,
-  //         submittingAI: false,
-  //         showAdditionalInterestModal: false,
-  //         showAdditionalInterestEditModal: false });
-  //   });
-  // });
 };
 
 export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
@@ -211,23 +194,6 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
         showAdditionalInterestModal: false,
         showAdditionalInterestEditModal: false });
   });
-
-
-  // props.actions.cgActions.startWorkflow('endorsePolicyModelAI', { policyNumber: props.policy.policyNumber }).then((result) => {
-  //   const steps = [{
-  //     name: 'saveEndorsementAI',
-  //     data: submitData
-  //   }];
-  //   const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelAI.data : {};
-  //   props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
-  //     props.actions.appStateActions.setAppState('endorsePolicyModelAI', startResult.modelInstanceId,
-  //       {
-  //         ...props.appState.data,
-  //         submittingAI: false,
-  //         showAdditionalInterestModal: false,
-  //         showAdditionalInterestEditModal: false });
-  //   });
-  // });
 };
 
 export const handleBillingFormSubmit = (data, dispatch, props) => {
