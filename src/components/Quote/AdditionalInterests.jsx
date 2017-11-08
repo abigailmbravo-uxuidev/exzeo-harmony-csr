@@ -10,6 +10,7 @@ import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import * as quoteStateActions from '../../actions/quoteStateActions';
+import * as serviceActions from '../../actions/serviceActions';
 import AdditionalInterestModal from '../../components/Common/AdditionalInterestModal';
 import AdditionalInterestEditModal from '../../components/Common/AdditionalInterestEditModal';
 import Footer from '../Common/Footer';
@@ -135,20 +136,6 @@ export const handleFormSubmit = (data, dispatch, props) => {
             showAdditionalInterestModal: false,
             showAdditionalInterestEditModal: false });
       });
-  if (type === 'Bill Payer') {
-    const paymentOptions = {
-      effectiveDate: props.quoteData.effectiveDate,
-      policyHolders: props.quoteData.policyHolders,
-      additionalInterests,
-      netPremium: props.quoteData.rating.netPremium,
-      fees: {
-        empTrustFee: props.quoteData.rating.worksheet.fees.empTrustFee,
-        mgaPolicyFee: props.quoteData.rating.worksheet.fees.mgaPolicyFee
-      },
-      totalPremium: props.quoteData.rating.totalPremium
-    };
-    props.actions.serviceActions.getBillingOptions(paymentOptions);
-  }
 };
 
 const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
@@ -226,21 +213,6 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
             showAdditionalInterestModal: false,
             showAdditionalInterestEditModal: false });
       });
-
-  if (selectedAdditionalInterest.type === 'Bill Payer') {
-    const paymentOptions = {
-      effectiveDate: props.quoteData.effectiveDate,
-      policyHolders: props.quoteData.policyHolders,
-      additionalInterests,
-      netPremium: props.quoteData.rating.netPremium,
-      fees: {
-        empTrustFee: props.quoteData.rating.worksheet.fees.empTrustFee,
-        mgaPolicyFee: props.quoteData.rating.worksheet.fees.mgaPolicyFee
-      },
-      totalPremium: props.quoteData.rating.totalPremium
-    };
-    props.actions.serviceActions.getBillingOptions(paymentOptions);
-  }
 };
 
 const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
@@ -277,12 +249,29 @@ export class AdditionalInterests extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (!_.isEqual(this.props.quoteData.additionalInterests, nextProps.quoteData.additionalInterests)) {
+      const paymentOptions = {
+        effectiveDate: nextProps.quoteData.effectiveDate,
+        policyHolders: nextProps.quoteData.policyHolders,
+        additionalInterests: nextProps.quoteData.additionalInterests,
+        netPremium: nextProps.quoteData.rating.netPremium,
+        fees: {
+          empTrustFee: nextProps.quoteData.rating.worksheet.fees.empTrustFee,
+          mgaPolicyFee: nextProps.quoteData.rating.worksheet.fees.mgaPolicyFee
+        },
+        totalPremium: nextProps.quoteData.rating.totalPremium
+      };
+      nextProps.actions.serviceActions.getBillingOptions(paymentOptions);
+    }
+
     if (nextProps.billingOptions && !_.isEqual(this.props.billingOptions, nextProps.billingOptions) &&
     nextProps.appState.data.addAdditionalInterestType === 'Bill Payer') {
       // update billToType
+      console.log(nextProps.billingOptions);
     } else if (nextProps.billingOptions && !_.isEqual(this.props.billingOptions, nextProps.billingOptions) &&
-    nextProps.appState.data.addAdditionalInterestType === 'Bill Payer') {
+    nextProps.appState.data.deleteAdditionalInterestType === 'Bill Payer') {
       // update billToType
+      console.log(nextProps.billingOptions);
     }
   }
   render() {
@@ -386,6 +375,7 @@ const mapDispatchToProps = dispatch => ({
     questionsActions: bindActionCreators(questionsActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch),
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     quoteStateActions: bindActionCreators(quoteStateActions, dispatch)
   }
 });

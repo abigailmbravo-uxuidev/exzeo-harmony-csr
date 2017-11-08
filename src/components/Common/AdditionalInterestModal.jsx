@@ -11,6 +11,7 @@ import PhoneField from '../Form/inputs/PhoneField';
 import * as cgActions from '../../actions/cgActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as serviceActions from '../../actions/serviceActions';
 import Loader from './Loader';
 
 const handleInitialize = () => ({
@@ -127,6 +128,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
