@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { CancelPolicy, handleGetPolicy, handleInitialize, Payments, Claims, handleFormSubmit, resetCancelReasons } from './Cancel';
+import ConnectedApp, { CancelPolicy, handleInitialize, Payments, Claims, handleFormSubmit, resetCancelReasons } from './Cancel';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -78,7 +78,6 @@ describe('Testing Cancel component', () => {
     },
       policy: { policyNumber: '1234', rating: { worksheet: { fees: {} } } } });
 
-    handleGetPolicy(initialState);
     handleInitialize(initialState);
 
     Payments({});

@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { NoteList, isExpandableRow } from './NotesFiles';
+import ConnectedApp, { NoteList, filterNotesByType } from './NotesFiles';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -66,7 +66,7 @@ describe('Testing NotesFiles component', () => {
     const store = mockStore(initialState);
     const props = {
       handleSubmit() { },
-      fieldQuestions: [],
+      fieldValues: {},
       quoteData: {},
       dispatch: store.dispatch,
       appState: {
@@ -79,17 +79,8 @@ describe('Testing NotesFiles component', () => {
     expect(wrapper);
   });
 
-  it('test isExpandableRow true', () => {
-    const result = isExpandableRow({
-      id: 5
-    });
-    expect(result).toEqual(true);
-  });
-
-  it('test isExpandableRow', () => {
-    const result = isExpandableRow({
-      id: 1
-    });
-    expect(result).toEqual(true);
+  it('test filterNotesByType', () => {
+    expect(filterNotesByType(null, true)).toEqual([]);
+    expect(filterNotesByType([], true)).toEqual([]);
   });
 });

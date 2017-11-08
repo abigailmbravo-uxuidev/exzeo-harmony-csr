@@ -12,23 +12,16 @@ import Footer from '../Common/Footer';
 
 let isLoaded = false;
 
-export const handleGetPolicy = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-  const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
-  return policyData;
-};
-
 
 // turn this into class and use the service runner
 export class PolicyholderAgent extends Component {
 
   componentWillReceiveProps(nextProps) {
-    const policyData = nextProps.policy;
-    if (policyData && policyData.companyCode && policyData.state && policyData.agencyCode && !isLoaded) {
+    const policy = nextProps.policy;
+    if (policy && policy.companyCode && policy.state && policy.agencyCode && !isLoaded) {
       isLoaded = true;
-      nextProps.actions.serviceActions.getAgents(policyData.companyCode, policyData.state);
-      nextProps.actions.serviceActions.getAgency(policyData.companyCode, policyData.state, policyData.agencyCode);
+      nextProps.actions.serviceActions.getAgents(policy.companyCode, policy.state);
+      nextProps.actions.serviceActions.getAgency(policy.companyCode, policy.state, policy.agencyCode);
     }
   }
 
@@ -149,7 +142,7 @@ PolicyholderAgent.propTypes = {
 const mapStateToProps = state => ({
   agents: state.service.agents,
   agency: state.service.agency,
-  policy: handleGetPolicy(state)
+  policy: state.service.latestPolicy || {}
 });
 
 const mapDispatchToProps = dispatch => ({
