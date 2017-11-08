@@ -128,11 +128,27 @@ export const handleFormSubmit = (data, dispatch, props) => {
         actions.appStateActions.setAppState(appState.modelName,
           workflowId, { ...appState.data,
             selectedMortgageeOption: null,
+            addAdditionalInterestType: type,
+            deleteAdditionalInterestType: '',
             selectedLink: 'additionalInterests',
             submittingAI: false,
             showAdditionalInterestModal: false,
             showAdditionalInterestEditModal: false });
       });
+  if (type === 'Bill Payer') {
+    const paymentOptions = {
+      effectiveDate: props.quoteData.effectiveDate,
+      policyHolders: props.quoteData.policyHolders,
+      additionalInterests,
+      netPremium: props.quoteData.rating.netPremium,
+      fees: {
+        empTrustFee: props.quoteData.rating.worksheet.fees.empTrustFee,
+        mgaPolicyFee: props.quoteData.rating.worksheet.fees.mgaPolicyFee
+      },
+      totalPremium: props.quoteData.rating.totalPremium
+    };
+    props.actions.serviceActions.getBillingOptions(paymentOptions);
+  }
 };
 
 const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
@@ -162,6 +178,7 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
       workflowId, {
         ...props.appState.data,
         submittingAI: true,
+        deleteAdditionalInterestType: selectedAdditionalInterest.type,
         showAdditionalInterestModal: appState.data.showAdditionalInterestModal,
         showAdditionalInterestEditModal: appState.data.showAdditionalInterestEditModal
       });
@@ -202,11 +219,28 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
         props.actions.appStateActions.setAppState(props.appState.modelName,
           workflowId, { ...props.appState.data,
             selectedLink: 'additionalInterests',
+            addAdditionalInterestType: '',
+            deleteAdditionalInterestType: selectedAdditionalInterest.type,
             submittingAI: false,
             selectedMortgageeOption: null,
             showAdditionalInterestModal: false,
             showAdditionalInterestEditModal: false });
       });
+
+  if (selectedAdditionalInterest.type === 'Bill Payer') {
+    const paymentOptions = {
+      effectiveDate: props.quoteData.effectiveDate,
+      policyHolders: props.quoteData.policyHolders,
+      additionalInterests,
+      netPremium: props.quoteData.rating.netPremium,
+      fees: {
+        empTrustFee: props.quoteData.rating.worksheet.fees.empTrustFee,
+        mgaPolicyFee: props.quoteData.rating.worksheet.fees.mgaPolicyFee
+      },
+      totalPremium: props.quoteData.rating.totalPremium
+    };
+    props.actions.serviceActions.getBillingOptions(paymentOptions);
+  }
 };
 
 const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
@@ -241,11 +275,35 @@ export class AdditionalInterests extends Component {
     });
     }
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.billingOptions && !_.isEqual(this.props.billingOptions, nextProps.billingOptions) &&
+    nextProps.appState.data.addAdditionalInterestType === 'Bill Payer') {
+      // update billToType
+    } else if (nextProps.billingOptions && !_.isEqual(this.props.billingOptions, nextProps.billingOptions) &&
+    nextProps.appState.data.addAdditionalInterestType === 'Bill Payer') {
+      // update billToType
+    }
+  }
   render() {
     const { appState, quoteData, questions } = this.props;
     _.forEach(getAnswers('mortgagee', questions), (answer) => {
       answer.displayText = `${answer.AIName1}, ${answer.AIAddress1}, ${answer.AICity} ${answer.AIState}, ${answer.AIZip}`;
     });
+    if (!quoteData.rating) {
+      return (
+        <QuoteBaseConnect>
+          <ClearErrorConnect />
+          <div className="route-content">
+            <div className="messages">
+              <div className="message error">
+                <i className="fa fa-exclamation-circle" aria-hidden="true" /> &nbsp;Additional Interests cannot be accessed until Premium calculated.
+            </div>
+            </div>
+          </div>
+        </QuoteBaseConnect>
+      );
+    }
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
@@ -319,7 +377,8 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'AdditionalLinterests.values', {}),
   initialValues: handleInitialize(state),
   showAdditionalInterestModal: state.appState.data.showAdditionalInterestModal,
-  quoteData: state.service.quote || {}
+  quoteData: state.service.quote || {},
+  billingOptions: state.service.billingOptions
 });
 
 const mapDispatchToProps = dispatch => ({
