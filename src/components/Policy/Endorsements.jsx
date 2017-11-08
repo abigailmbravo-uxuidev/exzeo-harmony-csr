@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
+import { Link, Prompt } from 'react-router-dom';
 import { reduxForm, propTypes, change, Form } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as cgActions from '../../actions/cgActions';
@@ -279,6 +279,7 @@ export const generateModel = (data, policyObject) => {
   policy.transactionType = 'Endorsement';
   const submitData = {
     ...policy,
+    policyID: policy._id,
     formListTransactionType: 'Endorsement',
     endorsementDate: moment.utc(data.effectiveDateNew),
     country: policy.policyHolderMailingAddress.country,
@@ -487,7 +488,7 @@ export const save = (data, dispatch, props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
 
   submitData.rating = props.getRate.rating;
-  props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber }).then((result) => {
+  props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID }).then((result) => {
     const steps = [{
       name: 'saveEndorsement',
       data: submitData
@@ -510,6 +511,10 @@ export class Endorsements extends React.Component {
 
   componentDidMount() {
     this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
+    if (this.props.appState && this.props.appState.instanceId) {
+      const workflowId = this.props.appState.instanceId;
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, workflowId, { ...this.props.appState.data, isCalculated: false });
+    }
     if (this.props && this.props.policy && this.props.policy.policyNumber) {
       this.props.actions.serviceActions.getUnderwritingQuestions(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property);
     }
@@ -554,10 +559,11 @@ export class Endorsements extends React.Component {
   };
 
   render() {
-    const { initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, policy } = this.props;
+    const { initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, policy, dirty } = this.props;
     return (
       <PolicyConnect>
         <ClearErrorConnect />
+        <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         {this.props.appState.data.isSubmitting && <Loader />}
         <Form id="Endorsements" className={'content-wrapper'} onSubmit={appState.data.isCalculated ? handleSubmit(save) : handleSubmit(calculate)} >
 
@@ -1115,15 +1121,15 @@ export class Endorsements extends React.Component {
                       <div className="flex-child">
                         <h3>Secondary Policyholder</h3>
                         <div className="flex-parent col2">
-                          <TextField label={'First Name'} styleName={''} name={'pH2FirstName'} onChange={() => setCalculate(this.props, false)} />
-                          <TextField label={'Last Name'} styleName={''} name={'pH2LastName'} onChange={() => setCalculate(this.props, false)} />
+                          <TextField label={'First Name'} dependsOn={['pH2LastName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2FirstName'} onChange={() => setCalculate(this.props, false)} />
+                          <TextField label={'Last Name'} dependsOn={['pH2FirstName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2LastName'} onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="flex-parent col2">
-                          <PhoneField validations={['phone']} label={'Primary Phone'} styleName={''} name={'pH2phone'} onChange={() => setCalculate(this.props, false)} />
+                          <PhoneField validations={['phone']} label={'Primary Phone'} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2email']} styleName={''} name={'pH2phone'} onChange={() => setCalculate(this.props, false)} />
                           <PhoneField validations={['phone']} label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="flex-parent col2">
-                          <TextField validations={['email']} label={'Email Address'} styleName={''} name={'pH2email'} onChange={() => setCalculate(this.props, false)} />
+                          <TextField validations={['email']} label={'Email Address'} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2phone']} styleName={''} name={'pH2email'} onChange={() => setCalculate(this.props, false)} />
                         </div>
                       </div>
                     </div>
