@@ -17,7 +17,6 @@ import RadioField from '../Form/inputs/RadioField';
 import Downloader from '../Common/Downloader';
 import Footer from '../Common/Footer';
 
-
 const handleInitialize = state => ({
   attachmentStatus: false
 });
