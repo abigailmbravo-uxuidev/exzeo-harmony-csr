@@ -308,6 +308,9 @@ const quoteData = {
 describe('Testing DetailHeader component', () => {
   it('should test connected app', () => {
     const initialState = {
+      service: {
+        quote: quoteData
+      },
       cg: {
         bb: {
           data: {
@@ -349,10 +352,12 @@ describe('Testing DetailHeader component', () => {
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
     expect(wrapper.instance().props.quoteData).toEqual(quoteData);
     selectPolicy(wrapper.instance().props.quoteData, props);
-    handleGetQuote(initialState);
   });
   it('should test mount', () => {
     const initialState = {
+      service: {
+        quote: quoteData
+      },
       cg: {
         bb: {
           data: {

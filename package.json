@@ -1,6 +1,6 @@
 {
   "name": "harmony-csr",
-  "version": "0.7.5",
+  "version": "0.8.3",
   "private": true,
   "dependencies": {
     "auth0-js": "^8.7.0",
@@ -17,11 +17,12 @@
     "jwt-decode": "^2.2.0",
     "localStorage": "^1.0.3",
     "lodash": "^4.17.4",
-    "moment": "2.18.1",
+    "moment": "^2.18.1",
+    "moment-timezone": "^0.5.13",
     "node-sass": "^4.5.0",
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
-    "react-bootstrap-table": "^3.2.1",
+    "react-bootstrap-table": "^4.0.3",
     "react-cookie": "^2.0.7",
     "react-dom": "^15.5.4",
     "react-dropzone": "^4.1.0",

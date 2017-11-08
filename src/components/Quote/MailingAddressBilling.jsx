@@ -8,6 +8,7 @@ import moment from 'moment';
 import { reduxForm, Form, change, propTypes } from 'redux-form';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as quoteStateActions from '../../actions/quoteStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import CheckField from '../Form/inputs/CheckField';
@@ -16,18 +17,6 @@ import { RadioFieldBilling, SelectFieldBilling } from '../Form/inputs';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
 
-export const handleGetQuoteData = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
-    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
-    : {};
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
-    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
-    : quoteEnd;
-  return quoteData;
-};
-
 const handleGetPaymentPlans = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return {};
@@ -35,8 +24,8 @@ const handleGetPaymentPlans = (state) => {
   return paymentPlanResult;
 };
 
-const handleInitialize = (state) => {
-  const quoteData = handleGetQuoteData(state);
+export const handleInitialize = (state) => {
+  const quoteData = state.service.quote || {};
   const values = {};
   values.address1 = _.get(quoteData, 'policyHolderMailingAddress.address1');
   values.address2 = _.get(quoteData, 'policyHolderMailingAddress.address2');
@@ -69,7 +58,7 @@ _.isEqual(_.get(quoteData, 'policyHolderMailingAddress.zip'), _.get(quoteData, '
   return values;
 };
 
-const getSelectedPlan = (answer) => {
+export const getSelectedPlan = (answer) => {
   let selection;
 
   if (answer === 'Annual') {
@@ -82,7 +71,7 @@ const getSelectedPlan = (answer) => {
   return selection;
 };
 
-const InstallmentTerm = ({ paymentPlans, payPlans }) => (<div className="installment-term">
+export const InstallmentTerm = ({ paymentPlans, payPlans }) => (<div className="installment-term">
   {payPlans && payPlans.map((payPlan, index) => {
     const paymentPlan = paymentPlans[getSelectedPlan(payPlan)];
     return (
@@ -160,6 +149,8 @@ export const handleFormSubmit = (data, dispatch, props) => {
 
   actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
       .then(() => {
+        props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
+
         if (_.isEqual(data.address1, _.get(props.quoteData, 'property.physicalAddress.address1')) &&
         _.isEqual(data.city, _.get(props.quoteData, 'property.physicalAddress.city')) &&
        _.isEqual(data.state, _.get(props.quoteData, 'property.physicalAddress.state')) &&
@@ -204,6 +195,8 @@ export class MailingAddressBilling extends Component {
 
   componentDidMount() {
     if (this.props.appState.instanceId && this.props.quoteData && this.props.quoteData.rating) {
+      this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
+
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         submitting: true
@@ -361,12 +354,13 @@ const mapStateToProps = state => ({
   appState: state.appState,
   fieldValues: _.get(state.form, 'MailingAddressBilling.values', {}),
   initialValues: handleInitialize(state),
-  quoteData: handleGetQuoteData(state),
+  quoteData: state.service.quote || {},
   paymentPlanResult: handleGetPaymentPlans(state)
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }

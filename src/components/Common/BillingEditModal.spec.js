@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { BillingEditModal, selectBillPlan, selectBillTo } from './BillingEditModal';
+import ConnectedApp, { BillingEditModal, selectBillPlan, selectBillTo, handleInitialize } from './BillingEditModal';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -22,7 +22,10 @@ describe('Testing BillingEditModal component', () => {
           }
         }
       },
-      service: {},
+      service: {
+        latestPolicy: {},
+        billingOptions: { options: [{ billToId: '23432432432432432', billToType: 'Annual' }] }
+      },
       appState: {
         data: {
           selectedAI: {
@@ -37,18 +40,22 @@ describe('Testing BillingEditModal component', () => {
     };
     const store = mockStore(initialState);
     const props = {
-      fieldQuestions: [],
+      handleSubmit() {},
+      billingOptions: initialState.service.billingOptions,
+      fieldValues: {},
       quoteData: {},
       dispatch: store.dispatch,
       appState: {
         data: {
           submitting: false
         }
-      },
-      ...propTypes
+      }
     };
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
-    console.log('hhhhhhhh', wrapper.instance().props.appState)
-    expect(wrapper.instance().props.fieldQuestions).toEqual([]);
+    expect(wrapper.instance().props.fieldValues).toEqual({});
+    selectBillPlan('Annual', props);
+    selectBillTo({ target: { value: '' } }, props);
+    handleInitialize(initialState);
+    BillingEditModal(props);
   });
 });

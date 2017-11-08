@@ -8,6 +8,7 @@ import moment from 'moment';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
+import * as quoteStateActions from '../../actions/quoteStateActions';
 
 export const handleFormSubmit = (data, dispatch, props) => {
   const uwExceptions = props.quoteData.underwritingExceptions || [];
@@ -16,35 +17,19 @@ export const handleFormSubmit = (data, dispatch, props) => {
     if (uwException.canOverride && data[uwException._id] === true) {
       uwException.overridden = true;
       uwException.overriddenAt = moment.utc();
-      uwException.overriddenBy = { userId: props.userProfile.user_id, userName: props.userProfile.username };
+      uwException.overriddenBy = { userId: props.userProfile.sub, userName: props.userProfile.username };
     } else if (uwException.canOverride) {
       uwException.overridden = false;
     }
   }
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, {
-    ...props.appState.data,
-    overrideAction: true
+  props.actions.serviceActions.saveUnderwritingExceptions(props.quoteData._id, uwExceptions).then(() => {
+    props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
   });
-  props.actions.serviceActions.saveUnderwritingExceptions(props.quoteData._id, uwExceptions);
-};
-
-export const handleGetQuoteData = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName])
-    ? state.cg[state.appState.modelName].data
-    : null;
-  if (!taskData) { return {}; }
-  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
-    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
-    : {};
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
-    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
-    : quoteEnd;
-  return quoteData;
 };
 
 export const handleInitialize = (state) => {
   const values = {};
-  const quoteData = handleGetQuoteData(state);
+  const quoteData = state.service.quote || {};
 
   if (!quoteData) return values;
 
@@ -165,13 +150,14 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   completedTasks: state.completedTasks,
-  quoteData: handleGetQuoteData(state),
+  quoteData: state.service.quote || {},
   fieldValues: _.get(state.form, 'UnderwritingOverride.values', {}),
   initialValues: handleInitialize(state)
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
