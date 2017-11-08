@@ -60,7 +60,7 @@ export class DetailHeader extends Component {
       <section id="policyHolder" className="policyHolder">
         <dl>
           <div>
-            <dt>policyholder</dt>
+            <dt>Policyholder</dt>
             <dd>{quoteData && quoteData.policyHolders &&
                  quoteData.policyHolders[0] ? `${quoteData.policyHolders[0].firstName} ${quoteData.policyHolders[0].lastName}` : '-'}</dd>
             <dd>{quoteData.policyHolders && quoteData.policyHolders[0] ? normalizePhone(quoteData.policyHolders[0].primaryPhoneNumber) : '' }</dd>
@@ -149,4 +149,3 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailHeader);
-
