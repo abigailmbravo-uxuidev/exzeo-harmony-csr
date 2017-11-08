@@ -1,4 +1,5 @@
 import axios from 'axios';
+import _ from 'lodash';
 import { batchActions } from 'redux-batched-actions';
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
@@ -187,6 +188,48 @@ export const getPolicyFromPolicyNumber = (companyCode, state, product, policyNum
     service: 'policy-data.services',
     method: 'GET',
     path: `transactions?companyCode=${companyCode}&state=${state}&product=${product}&policyNumber=${policyNumber}`
+  });
+
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
+    const data = { policy: response.data.policies ? _.maxBy(response.data.policies[0], 'policyVersion') : {} };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
+export const getLatestPolicy = policyNumber => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'policy-data.services',
+    method: 'GET',
+    path: `transactions/${policyNumber}/latest`
+  });
+
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
+    const data = { latestPolicy: response ? response.data : {} };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
+export const getPolicyFromPolicyID = policyId => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'policy-data.services',
+    method: 'GET',
+    path: `transactions/${policyId}`
   });
 
   return Promise.resolve(axios(axiosConfig)).then((response) => {
@@ -425,6 +468,28 @@ export const getEndorsementHistory = policyNumber => (dispatch) => {
 
   return axios(axiosConfig).then((response) => {
     const data = { endorsementHistory: response.data };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
+export const getRate = policyObject => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'rating-engine.services',
+    method: 'POST',
+    path: 'endorsement',
+    data: policyObject
+  });
+
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
+    const data = { getRate: response.data ? response.data.result : {} };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));

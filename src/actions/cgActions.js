@@ -124,7 +124,7 @@ export const startWorkflow = (modelName, data, dispatchAppState = true) => (disp
       if (dispatchAppState) {
         return dispatch(batchActions([start(modelName, responseData),
           errorActions.clearAppError(),
-          appStateActions.setAppState(modelName, instanceId, {})
+          appStateActions.setAppState(modelName, instanceId, { isSubmitting: true })
         ]));
       }
       dispatch(errorActions.clearAppError());
