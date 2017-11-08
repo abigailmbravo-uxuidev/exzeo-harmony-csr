@@ -13,6 +13,8 @@ import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as policyStateActions from '../../actions/policyStateActions';
+import * as quoteStateActions from '../../actions/quoteStateActions';
+
 import Loader from './Loader';
 
 const handleInitialize = () => ({
@@ -129,14 +131,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-<<<<<<< HEAD
     serviceActions: bindActionCreators(serviceActions, dispatch),
     quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
-=======
     policyStateActions: bindActionCreators(policyStateActions, dispatch),
     questionsActions: bindActionCreators(questionsActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch),
->>>>>>> develop
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }
