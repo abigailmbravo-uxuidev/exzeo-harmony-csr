@@ -14,17 +14,9 @@ import RadioField from '../Form/inputs/RadioField';
 import Downloader from '../Common/Downloader';
 import Footer from '../Common/Footer';
 
-const handleGetPolicyData = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-  const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
-  return policyData;
-};
-
 const handleInitialize = state => ({
   attachmentStatus: false
 });
-
 const SearchPanel = props => (
   <div className="search">
     <label>Search Table Data</label>
@@ -48,16 +40,16 @@ export const NoteList = (props) => {
   const formatNote = note => note.replace(/\r|\n/g, '<br>');
   const attachmentUrl = attachments => (
     <span>
-      { attachments.map((attachment, i) => 
-        <Downloader 
-          filename={attachment.fileName} 
-          fileUrl={attachment.fileUrl} 
-          fileType={attachment.fileType} 
+      { attachments.map((attachment, i) =>
+        <Downloader
+          filename={attachment.fileName}
+          fileUrl={attachment.fileUrl}
+          fileType={attachment.fileType}
           key={i}
         />
       )}
     </span>
-  )
+  );
 
   return (
     <div className="note-grid-wrapper">
@@ -83,7 +75,7 @@ export const NoteList = (props) => {
         search
         multiColumnSearch
       >
-         <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
+        <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
         <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdDate" dataSort dataFormat={formatCreateDate} >Created</TableHeaderColumn>
         <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataSort dataFormat={showCreatedBy} >Author</TableHeaderColumn>
         {/* TODO: Hide note-type and note column when users filters grid to show only notes with attachments*/}
@@ -102,8 +94,8 @@ export class NotesFiles extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props, nextProps)) {
-      if (nextProps.policyData && nextProps.policyData.policyNumber) {
-        const ids = [nextProps.policyData.policyNumber, nextProps.policyData.sourceNumber];
+      if (nextProps.policy && nextProps.policy.policyNumber) {
+        const ids = [nextProps.policy.policyNumber, nextProps.policy.sourceNumber];
         this.props.actions.serviceActions.getNotes(ids.toString());
       }
     }
@@ -141,7 +133,7 @@ export class NotesFiles extends Component {
 
 NotesFiles.propTypes = {
   ...propTypes,
-  policyData: PropTypes.shape(),
+  policy: PropTypes.shape(),
   appState: PropTypes.shape({
     modelName: PropTypes.string,
     instanceId: PropTypes.string,
@@ -153,11 +145,12 @@ NotesFiles.propTypes = {
 // redux mapping
 // ------------------------------------------------
 const mapStateToProps = state => ({
+  tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'NotesFiles.values', {}),
   initialValues: handleInitialize(state),
   notes: state.service.notes,
-  policyData: handleGetPolicyData(state)
+  policy: state.service.latestPolicy || {}
 });
 
 const mapDispatchToProps = dispatch => ({

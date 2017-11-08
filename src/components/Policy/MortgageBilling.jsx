@@ -45,16 +45,8 @@ value.rank = 5; // eslint-disable-line
   });
 };
 
-export const handleGetPolicy = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-  const quoteData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
-  return quoteData;
-};
-
 export const handleInitialize = (state) => {
-  const policy = handleGetPolicy(state);
-
+  const policy = state.service.latestPolicy || {};
   const values = {};
   values.policyNumber = _.get(policy, 'policyNumber');
   values.cashDescription = '';
@@ -120,13 +112,14 @@ export class MortgageBilling extends Component {
     const submitData = data;
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
       workflowId, { ...this.props.appState.data, submitting: true });
-
     submitData.cashDate = moment.utc(data.cashDate);
     submitData.batchNumber = String(data.batchNumber);
     submitData.amount = Number(String(data.amount).replace(/[^\d.-]/g, ''));
     submitData.cashType = String(data.cashType);
     submitData.cashDescription = String(data.cashDescription);
-    this.props.actions.serviceActions.addTransaction(this.props, submitData)
+    submitData.companyCode = this.props.auth.userProfile.groups[0].companyCode;
+    submitData.policy = this.props.policy;
+    this.props.actions.serviceActions.addTransaction(submitData)
     .then(() => {
       this.props.actions.serviceActions.getPaymentHistory(this.props.policy.policyNumber);
       this.props.actions.serviceActions.getSummaryLedger(this.props.policy.policyNumber);
@@ -331,10 +324,11 @@ redux mapping
 */
 
 const mapStateToProps = state => ({
+  auth: state.authState,
   fieldValues: _.get(state.form, 'MortgageBilling.values', {}),
   getSummaryLedger: state.service.getSummaryLedger,
   initialValues: handleInitialize(state),
-  policy: handleGetPolicy(state),
+  policy: state.service.latestPolicy || {},
   tasks: state.cg,
   appState: state.appState,
   paymentHistory: state.service.paymentHistory,

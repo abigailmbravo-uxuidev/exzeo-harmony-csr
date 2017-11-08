@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 import _ from 'lodash';
-import ConnectedApp, { MortgageBilling, setRank, handleGetPolicy, handleInitialize } from './MortgageBilling';
+import ConnectedApp, { MortgageBilling, setRank, handleInitialize } from './MortgageBilling';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -129,6 +129,11 @@ describe('Testing MortgageBilling component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      auth: {
+        userProfile: {
+          groups: [{ companyCode: 'TTIC' }]
+        }
+      },
       policy,
       actions: {
         serviceActions: {
@@ -154,7 +159,6 @@ describe('Testing MortgageBilling component', () => {
     };
     const wrapper = shallow(<MortgageBilling store={store} {...props} />);
     expect(wrapper);
-    handleGetPolicy(initialState);
     handleInitialize(initialState);
 
     wrapper.instance().handleFormSubmit({ body });

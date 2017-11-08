@@ -23,9 +23,13 @@ export const selectPolicy = (quote, props) => {
       searchType: 'policy'
     };
 
+    const policy = result.payload && result.payload[0] && result.payload[0].data ? result.payload[0].data.policy : null;
+
+    if (!policy) return;
+
     localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
     localStorage.setItem('isNewTab', true);
-    localStorage.setItem('policyID', result.payload[0].data.policy.policyID);
+    localStorage.setItem('policyNumber', policy.policyNumber);
     window.open('/policy/coverage', '_blank');
   });
 };
