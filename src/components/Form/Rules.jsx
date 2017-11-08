@@ -1,4 +1,5 @@
 import validator from 'validator';
+import moment from 'moment';
 
 const rules = {
   required: value => (value || value === 0 ? undefined : 'Field Required'),
@@ -30,7 +31,10 @@ export function combineRules(validations, variables) {
         ruleArray.push(range);
       } else if (validations[i] === 'date' && variables && variables.min && variables.max) {
         const range = (values) => {
-          const valid = new Date(values) <= new Date(variables.max) && new Date(values) >= new Date(variables.min) ? undefined : 'Not a valid date range';
+          const min = new Date(moment.utc(variables.min).format('MM/DD/YYYY'));
+          const max = new Date(moment.utc(variables.max).format('MM/DD/YYYY'));
+          const value = new Date(moment.utc(values).format('MM/DD/YYYY'));
+          const valid = value <= max && value >= min ? undefined : 'Not a valid date range';
           return valid;
         };
         ruleArray.push(range);
