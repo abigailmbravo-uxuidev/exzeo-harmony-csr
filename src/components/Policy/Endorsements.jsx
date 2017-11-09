@@ -276,12 +276,14 @@ export const updateDependencies = (event, field, dependency, props) => {
 
 export const generateModel = (data, policyObject) => {
   const policy = policyObject;
+  const offset = new Date(policy.effectiveDate).getTimezoneOffset() / 60;
+
   policy.transactionType = 'Endorsement';
   const submitData = {
     ...policy,
     policyID: policy._id,
     formListTransactionType: 'Endorsement',
-    endorsementDate: moment.utc(data.effectiveDateNew),
+    endorsementDate: moment.utc(data.effectiveDateNew).utcOffset(offset),
     country: policy.policyHolderMailingAddress.country,
     pH1FirstName: data.pH1FirstName,
     pH1LastName: data.pH1LastName,
