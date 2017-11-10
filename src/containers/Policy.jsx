@@ -41,7 +41,7 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   summaryLedger: state.service.getSummaryLedger,
-  policy: state.service.latestPolicy
+  policy: state.service.latestPolicy || {}
 });
 
 export default connect(mapStateToProps)(Policy);
