@@ -537,6 +537,11 @@ export class Endorsements extends React.Component {
     }
     if (!_.isEqual(this.props.newPolicyNumber, nextProps.newPolicyNumber)) {
       this.props.actions.policyStateActions.updatePolicy(true, nextProps.newPolicyNumber);
+      const effectiveDateNew = moment.utc(_.get(nextProps.policy, 'effectiveDate')).format('YYYY-MM-DD');
+      nextProps.dispatch(change('Endorsements', 'effectiveDateNew', effectiveDateNew));
+      nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', ''));
+      nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', ''));
+      nextProps.dispatch(change('Endorsements', 'newAnnualPremium', ''));
     }
   }
 
