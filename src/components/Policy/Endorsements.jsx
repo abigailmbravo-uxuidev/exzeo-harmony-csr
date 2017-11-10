@@ -283,6 +283,7 @@ export const generateModel = (data, policyObject) => {
     ...policy,
     policyID: policy._id,
     formListTransactionType: 'Endorsement',
+    endorsementAmountNew: data.newEndorsementAmount,
     endorsementDate: moment.utc(data.effectiveDateNew).utcOffset(offset),
     country: policy.policyHolderMailingAddress.country,
     pH1FirstName: data.pH1FirstName,
