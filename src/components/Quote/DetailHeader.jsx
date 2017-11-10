@@ -9,29 +9,23 @@ import * as serviceActions from '../../actions/serviceActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 
 
-export const selectPolicy = (quote, props) => {
-  if (!quote.quoteNumber) return;
+export const selectPolicy = (quote) => {
+  if (!quote.policyNumber) return;
 
-  props.actions.serviceActions.getPolicyFromPolicyNumber(quote.companyCode, quote.state, quote.product, quote.policyNumber).then((result) => {
-    const lastSearchData = {
-      firstName: '',
-      lastName: '',
-      address: '',
-      quoteNumber: '',
-      policyNumber: encodeURIComponent(quote.policyNumber),
-      zip: '',
-      searchType: 'policy'
-    };
+  const lastSearchData = {
+    firstName: '',
+    lastName: '',
+    address: '',
+    quoteNumber: '',
+    policyNumber: quote.policyNumber,
+    zip: '',
+    searchType: 'policy'
+  };
 
-    const policy = result.payload && result.payload[0] && result.payload[0].data ? result.payload[0].data.policy : null;
-
-    if (!policy) return;
-
-    localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
-    localStorage.setItem('isNewTab', true);
-    localStorage.setItem('policyNumber', policy.policyNumber);
-    window.open('/policy/coverage', '_blank');
-  });
+  localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
+  localStorage.setItem('isNewTab', true);
+  localStorage.setItem('policyNumber', quote.policyNumber);
+  window.open('/policy/coverage', '_blank');
 };
 
 export class DetailHeader extends Component {
@@ -53,7 +47,7 @@ export class DetailHeader extends Component {
           <div>
             <dd>{quoteData.product === 'HO3' ? `${quoteData.product} Homeowners` : quoteData.product}</dd>
             <dd>{(quoteData.quoteNumber ? quoteData.quoteNumber : '-')}</dd>
-            <dd>{quoteData.quoteState === 'Policy Issued' ? <button className="btn btn-link" onClick={() => selectPolicy(quoteData, this.props)}>{quoteData.quoteState}</button> : quoteData.quoteState}</dd>
+            <dd>{quoteData.quoteState === 'Policy Issued' ? <button className="btn btn-link" onClick={() => selectPolicy(quoteData)}>{quoteData.quoteState}</button> : quoteData.quoteState}</dd>
           </div>
         </dl>
       </section>

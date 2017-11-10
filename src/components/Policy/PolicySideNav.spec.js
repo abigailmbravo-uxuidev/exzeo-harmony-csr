@@ -11,6 +11,9 @@ const mockStore = configureStore(middlewares);
 describe('Testing PolicySideNav component', () => {
   it('should test connected app', () => {
     const initialState = {
+      service: {
+        latestPolicy: {}
+      },
       cg: {
         bb: {
           data: {
@@ -27,6 +30,9 @@ describe('Testing PolicySideNav component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      policy: {
+
+      },
       actions: {
         cgActions: {
           batchCompleteTask() { return Promise.resolve(); }
