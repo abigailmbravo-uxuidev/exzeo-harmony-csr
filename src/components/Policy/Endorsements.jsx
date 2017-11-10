@@ -1104,17 +1104,7 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="flex-parent col2">
                           <TextField validations={['required', 'email']} label={'Email Address'} styleName={''} name={'pH1email'} onChange={() => setCalculate(this.props, false)} />
-                          <RadioField
-                            name={'electronicDeliveryNew'} styleName={''} label={'Electronic Delivery'} onChange={() => setCalculate(this.props, false)} segmented answers={[
-                              {
-                                answer: false,
-                                label: 'No'
-                              }, {
-                                answer: true,
-                                label: 'Yes'
-                              }
-                            ]}
-                          />
+                          {/* electronic delivery question placeholder */ }
                         </div>
                       </div>
                       {/* Col2 */}
