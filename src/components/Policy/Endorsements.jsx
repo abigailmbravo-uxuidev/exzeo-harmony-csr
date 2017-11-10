@@ -276,12 +276,14 @@ export const updateDependencies = (event, field, dependency, props) => {
 
 export const generateModel = (data, policyObject) => {
   const policy = policyObject;
+  const offset = new Date(policy.effectiveDate).getTimezoneOffset() / 60;
+
   policy.transactionType = 'Endorsement';
   const submitData = {
     ...policy,
     policyID: policy._id,
     formListTransactionType: 'Endorsement',
-    endorsementDate: moment.utc(data.effectiveDateNew),
+    endorsementDate: moment.utc(data.effectiveDateNew).utcOffset(offset),
     country: policy.policyHolderMailingAddress.country,
     pH1FirstName: data.pH1FirstName,
     pH1LastName: data.pH1LastName,
@@ -359,7 +361,10 @@ export const generateModel = (data, policyObject) => {
   return submitData;
 };
 
-export const covertToRateData = (changePolicyData) => {
+export const covertToRateData = (changePolicyData, props) => {
+  console.log(props.summaryLedger);
+  const offset = new Date(changePolicyData.effectiveDate).getTimezoneOffset() / 60;
+
   const data = {
     effectiveDate: changePolicyData.effectiveDate,
     policyNumber: changePolicyData.policyNumber,
@@ -461,8 +466,8 @@ export const covertToRateData = (changePolicyData) => {
       }
     },
     oldTotalPremium: changePolicyData.rating.totalPremium,
-    oldCurrentPremium: changePolicyData.rating.netPremium,
-    endorsementDate: moment.utc()
+    oldCurrentPremium: props.summaryLedger.currentPremium,
+    endorsementDate: moment.utc(changePolicyData.effectiveDateNew).utcOffset(offset)
   };
 
   return data;
@@ -472,7 +477,7 @@ export const calculate = (data, dispatch, props) => {
   const submitData = generateModel(data, props.policy);
   const workflowId = props.appState.instanceId;
 
-  const rateData = covertToRateData(submitData);
+  const rateData = covertToRateData(submitData, props);
 
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true, isCalculated: false });
 
@@ -1243,7 +1248,8 @@ const mapStateToProps = state => ({
   questions: state.questions,
   underwritingQuestions: state.service.underwritingQuestions,
   getRate: state.service.getRate,
-  newPolicyNumber: getNewPolicyNumber(state)
+  newPolicyNumber: getNewPolicyNumber(state),
+  summaryLedger: state.service.getSummaryLedger || {}
 });
 
 const mapDispatchToProps = dispatch => ({

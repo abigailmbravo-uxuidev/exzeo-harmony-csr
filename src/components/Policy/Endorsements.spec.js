@@ -32,6 +32,7 @@ describe('Testing Endorsements component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      summaryLedger: {},
       reset() {},
       getRate: {},
       actions: {
