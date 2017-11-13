@@ -576,7 +576,11 @@ export class Endorsements extends React.Component {
         <ClearErrorConnect />
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         {this.props.appState.data.isSubmitting && <Loader />}
-        <Form id="Endorsements" className={'content-wrapper'} onSubmit={appState.data.isCalculated ? handleSubmit(save) : handleSubmit(calculate)} >
+        <Form
+          id="Endorsements" className={'content-wrapper'} onKeyPress={(e) => {
+            if (e.key === 'Enter') e.preventDefault();
+          }} onSubmit={appState.data.isCalculated ? handleSubmit(save) : handleSubmit(calculate)}
+        >
 
           <div className="route-content">
             <div className="endorsements">
@@ -766,6 +770,7 @@ export class Endorsements extends React.Component {
                           <TextField label={'Incidental Occ Liability'} styleName={''} name={'liabilityIncidentalOccupancies'} disabled />
                           <div className="flex-child other-coverages-property-replacement-cost">
                             <RadioField
+                              disabled
                               onChange={() => setCalculate(this.props, false)}
                               name={'liabilityIncidentalOccupanciesNew'} styleName={'billPlan'} label={''} segmented answers={[
                                 {
@@ -1115,17 +1120,7 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="flex-parent col2">
                           <TextField validations={['required', 'email']} label={'Email Address'} styleName={''} name={'pH1email'} onChange={() => setCalculate(this.props, false)} />
-                          <RadioField
-                            name={'electronicDeliveryNew'} styleName={''} label={'Electronic Delivery'} onChange={() => setCalculate(this.props, false)} segmented answers={[
-                              {
-                                answer: false,
-                                label: 'No'
-                              }, {
-                                answer: true,
-                                label: 'Yes'
-                              }
-                            ]}
-                          />
+                          {/* electronic delivery question placeholder */ }
                         </div>
                       </div>
                       {/* Col2 */}
@@ -1197,7 +1192,7 @@ export class Endorsements extends React.Component {
                       onChange={() => setCalculate(this.props, false)}
                     />
                   </div>
-                  <DisplayField label={'New End. Amount'} name={'newEndorsementAmount'} />
+                  <DisplayField label={'New End Amount'} name={'newEndorsementAmount'} />
 
                   <DisplayField label={'New End Premium'} name={'newEndorsementPremium'} />
 

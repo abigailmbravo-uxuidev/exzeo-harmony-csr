@@ -126,7 +126,8 @@ describe('Testing Endorsements component', () => {
     wrapper.find('[name="roofToWallConnectionNew"]').simulate('change', { target: { value: 'Other' } });
     wrapper.find('[name="secondaryWaterResistanceNew"]').simulate('change', { target: { value: 'Other' } });
     wrapper.find('[name="openingProtectionNew"]').simulate('change', { target: { value: 'Other' } });
-    wrapper.find('[name="electronicDeliveryNew"]').simulate('change', { target: { value: false } });
+    // hidden
+    // wrapper.find('[name="electronicDeliveryNew"]').simulate('change', { target: { value: false } });
     wrapper.find('[name="floridaBuildingCodeWindSpeedNew"]').simulate('change', { target: { value: '140' } });
     wrapper.find('[name="floridaBuildingCodeWindSpeedDesignNew"]').simulate('change', { target: { value: '140' } });
     wrapper.find('[name="terrainNew"]').simulate('change', { target: { value: 'C' } });
