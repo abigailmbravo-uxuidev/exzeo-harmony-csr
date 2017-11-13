@@ -1197,7 +1197,7 @@ export class Endorsements extends React.Component {
                       onChange={() => setCalculate(this.props, false)}
                     />
                   </div>
-                  <DisplayField label={'New End. Amount'} name={'newEndorsementAmount'} />
+                  <DisplayField label={'New End Amount'} name={'newEndorsementAmount'} />
 
                   <DisplayField label={'New End Premium'} name={'newEndorsementPremium'} />
 
