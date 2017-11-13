@@ -576,7 +576,11 @@ export class Endorsements extends React.Component {
         <ClearErrorConnect />
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         {this.props.appState.data.isSubmitting && <Loader />}
-        <Form id="Endorsements" className={'content-wrapper'} onSubmit={appState.data.isCalculated ? handleSubmit(save) : handleSubmit(calculate)} >
+        <Form
+          id="Endorsements" className={'content-wrapper'} onKeyPress={(e) => {
+            if (e.key === 'Enter') e.preventDefault();
+          }} onSubmit={appState.data.isCalculated ? handleSubmit(save) : handleSubmit(calculate)}
+        >
 
           <div className="route-content">
             <div className="endorsements">
