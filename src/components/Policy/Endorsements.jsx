@@ -770,6 +770,7 @@ export class Endorsements extends React.Component {
                           <TextField label={'Incidental Occ Liability'} styleName={''} name={'liabilityIncidentalOccupancies'} disabled />
                           <div className="flex-child other-coverages-property-replacement-cost">
                             <RadioField
+                              disabled
                               onChange={() => setCalculate(this.props, false)}
                               name={'liabilityIncidentalOccupanciesNew'} styleName={'billPlan'} label={''} segmented answers={[
                                 {
