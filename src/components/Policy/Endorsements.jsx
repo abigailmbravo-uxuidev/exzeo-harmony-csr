@@ -24,6 +24,7 @@ import Footer from '../Common/Footer';
 import DateField from '../Form/inputs/DateField';
 import Loader from '../Common/Loader';
 import * as policyStateActions from '../../actions/policyStateActions';
+import normalizeNumbers from '../Form/normalizeNumbers';
 
 export const setCalculate = (props, reset) => {
   if (reset) props.reset('Endorsements');
@@ -184,9 +185,9 @@ export const handleInitialize = (state) => {
 // Home/Location Bottom Right
   values.distanceToTidalWater = _.get(policy, 'property.distanceToTidalWater');
   values.distanceToTidalWaterNew = values.distanceToTidalWater;
-  values.distanceToFireHydrant = _.get(policy, 'property.distanceToFireHydrant');
+  values.distanceToFireHydrant = normalizeNumbers(_.get(policy, 'property.distanceToFireHydrant'));
   values.distanceToFireHydrantNew = values.distanceToFireHydrant;
-  values.distanceToFireStation = _.get(policy, 'property.distanceToFireStation');
+  values.distanceToFireStation = normalizeNumbers(_.get(policy, 'property.distanceToFireStation'));
   values.distanceToFireStationNew = values.distanceToFireStation;
   values.residenceType = _.get(policy, 'property.residenceType');
   values.residenceTypeNew = values.residenceType;
