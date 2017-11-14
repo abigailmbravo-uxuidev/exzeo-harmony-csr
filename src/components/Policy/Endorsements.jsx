@@ -428,7 +428,7 @@ export const covertToRateData = (changePolicyData, props) => {
     },
     coverageOptions: {
       sinkholePerilCoverage: {
-        answer: changePolicyData.sinkholePerilCoverageNew
+        answer: String(changePolicyData.sinkholePerilCoverageNew) === 'true'
       },
       propertyIncidentalOccupanciesMainDwelling: {
         answer: changePolicyData.propertyIncidentalOccupanciesMainDwellingNew
@@ -445,14 +445,15 @@ export const covertToRateData = (changePolicyData, props) => {
     },
     deductibles: {
       allOtherPerils: {
-        amount: changePolicyData.allOtherPerilsNew
+        amount: Number(changePolicyData.allOtherPerilsNew)
       },
       hurricane: {
-        amount: changePolicyData.hurricaneNew,
-        calculatedAmount: changePolicyData.calculatedHurricaneNew
+        amount: Number(changePolicyData.hurricaneNew),
+        calculatedAmount: Number(setPercentageOfValue(Number(changePolicyData.dwellingAmountNew), Number(changePolicyData.hurricaneNew)))
       },
       sinkhole: {
-        amount: changePolicyData.sinkholeNew
+        amount: Number(changePolicyData.sinkholeNew),
+        calculatedAmount: Number(setPercentageOfValue(Number(changePolicyData.dwellingAmountNew), Number(changePolicyData.sinkholeNew)))
       }
     },
     underwritingAnswers: {
@@ -494,6 +495,7 @@ export const save = (data, dispatch, props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
 
   submitData.rating = props.getRate.rating;
+
   props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID }).then((result) => {
     const steps = [{
       name: 'saveEndorsement',
