@@ -11,6 +11,7 @@ import * as cgActions from '../../actions/cgActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as questionsActions from '../../actions/questionsActions';
+import * as errorActions from '../../actions/errorActions';
 import PolicyConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
 import normalizePhone from '../Form/normalizePhone';
@@ -24,6 +25,7 @@ import Footer from '../Common/Footer';
 import DateField from '../Form/inputs/DateField';
 import Loader from '../Common/Loader';
 import * as policyStateActions from '../../actions/policyStateActions';
+import * as actionTypes from '../../actions/actionTypes';
 
 export const setCalculate = (props, reset) => {
   if (reset) props.reset('Endorsements');
@@ -43,7 +45,7 @@ export const getNewPolicyNumber = (state) => {
   const taskData = (state.cg && state.appState && state.cg.endorsePolicyModelSave)
       ? state.cg.endorsePolicyModelSave.data
       : null;
-  if (!taskData) { return null; }
+  if (!taskData || !taskData.model || !taskData.model.variables) { return null; }
 
   const policy = _.find(taskData.model.variables, { name: 'retrievePolicy' })
       ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0]
@@ -482,8 +484,10 @@ export const calculate = (data, dispatch, props) => {
 
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true, isCalculated: false });
 
-  props.actions.serviceActions.getRate(rateData).then(() => {
-    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: false, isCalculated: true });
+  props.actions.serviceActions.getRate(rateData).then((result) => {
+    if (result.payload && result.payload[0] && result.payload[0].type === actionTypes.APP_ERROR) {
+      props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: false, isCalculated: false });
+    } else props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: false, isCalculated: true });
   });
 };
 
@@ -543,6 +547,14 @@ export class Endorsements extends React.Component {
       nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', ''));
       nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', ''));
       nextProps.dispatch(change('Endorsements', 'newAnnualPremium', ''));
+    }
+    if (this.props.tasks && this.props.tasks.endorsePolicyModelSave && this.props.tasks.endorsePolicyModelSave.data &&
+      nextProps.tasks && nextProps.tasks.endorsePolicyModelSave && nextProps.tasks.endorsePolicyModelSave.data &&
+      !_.isEqual(this.props.tasks.endorsePolicyModelSave.data, nextProps.tasks.endorsePolicyModelSave.data)) {
+      if (nextProps.tasks.endorsePolicyModelSave.data.result && nextProps.tasks.endorsePolicyModelSave.data.result.status !== 200) {
+        nextProps.dispatch(errorActions.setAppError({ message: nextProps.tasks.endorsePolicyModelSave.data.result.result }));
+        setCalculate(nextProps);
+      }
     }
   }
 
@@ -1255,6 +1267,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    errorActions: bindActionCreators(errorActions, dispatch),
     policyStateActions: bindActionCreators(policyStateActions, dispatch),
     questionsActions: bindActionCreators(questionsActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
