@@ -363,7 +363,6 @@ export const generateModel = (data, policyObject) => {
 };
 
 export const covertToRateData = (changePolicyData, props) => {
-  console.log(props.summaryLedger);
   const offset = new Date(changePolicyData.effectiveDate).getTimezoneOffset() / 60;
 
   const data = {
