@@ -284,7 +284,7 @@ export const generateModel = (data, policyObject) => {
     policyID: policy._id,
     formListTransactionType: 'Endorsement',
     endorsementAmountNew: data.newEndorsementAmount,
-    endorsementDate: moment.utc(data.effectiveDateNew).utcOffset(offset),
+    endorsementDate: moment(data.effectiveDateNew).utcOffset(offset),
     country: policy.policyHolderMailingAddress.country,
     pH1FirstName: data.pH1FirstName,
     pH1LastName: data.pH1LastName,
@@ -468,7 +468,7 @@ export const covertToRateData = (changePolicyData, props) => {
     },
     oldTotalPremium: changePolicyData.rating.totalPremium,
     oldCurrentPremium: props.summaryLedger.currentPremium,
-    endorsementDate: moment.utc(changePolicyData.effectiveDateNew).utcOffset(offset)
+    endorsementDate: moment(changePolicyData.effectiveDateNew).utcOffset(offset)
   };
 
   return data;
