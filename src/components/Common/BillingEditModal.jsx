@@ -9,15 +9,8 @@ import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import { RadioFieldBilling, SelectFieldBilling } from '../Form/inputs';
 
-const handleGetPolicy = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-  const quoteData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
-  return quoteData;
-};
-
-const handleInitialize = (state) => {
-  const policyData = handleGetPolicy(state);
+export const handleInitialize = (state) => {
+  const policyData = state.service.latestPolicy;
   const values = {};
 
   values.billToId = _.get(policyData, 'billToId');
@@ -115,7 +108,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   selectedAI: state.appState.data.selectedAI,
   initialValues: handleInitialize(state),
-  policy: handleGetPolicy(state),
+  policy: state.service.latestPolicy,
   fieldValues: _.get(state.form, 'BillingEditModal.values', {})
 });
 

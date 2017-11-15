@@ -13,14 +13,14 @@ export const submitNote = (data, dispatch, props) => {
   const noteData = {
     number: documentId,
     noteType,
-    noteContent: data.noteContent,
+    noteContent: JSON.stringify(data.noteContent),
     contactType: data.contactType,
     createdAt: new Date().getTime(),
-    noteAttachments: data.noteAttachments ? data.noteAttachments.length : 0,
+    attachmentCount: data.noteAttachments ? data.noteAttachments.length : 0,
     fileType: data.fileType,
     createdBy: {
-      useerId: user.user_id,
-      userName: user.username
+      useerId: user.sub,
+      userName: user.name
     }
   };
 

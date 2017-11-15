@@ -11,6 +11,9 @@ const mockStore = configureStore(middlewares);
 describe('Testing Policy component', () => {
   it('should test connected app', () => {
     const initialState = {
+      service: {
+        latestPolicy: {}
+      },
       cg: {
         bb: {
           data: {
@@ -26,6 +29,11 @@ describe('Testing Policy component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      actions: {
+        serviceActions: {
+          getSummaryLedger() { return Promise.resolve(); }
+        }
+      },
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,

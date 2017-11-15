@@ -88,22 +88,11 @@ const goToPage = (agentLink, props, quote) => {
     });
 };
 
-const getDocumentId = (props) => {
-  const taskData = (props.cg[props.appState.modelName]) ? props.cg[props.appState.modelName].data : null;
-  if (!taskData) return null;
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
-    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
-    : {};
-  return quoteData || {};
-};
 
 export const SideNav = (props) => {
   const redirect = (props.activateRedirect)
     ? (<Redirect to={props.activateRedirectLink} />)
     : null;
-
-  const quote = getDocumentId(props);
-
 
   const onKeyPress = (event, agentLink) => {
     if (event.charCode === 13) {
@@ -111,6 +100,7 @@ export const SideNav = (props) => {
     }
   };
 
+  const quote = props.quoteData;
   return (
     <nav className="site-nav">
       { redirect }
@@ -170,7 +160,8 @@ const mapStateToProps = state => ({
   completedTasks: state.completedTasks,
   activateRedirectLink: state.appState.data.activateRedirectLink,
   activateRedirect: state.appState.data.activateRedirect,
-  cg: state.cg
+  cg: state.cg,
+  quoteData: state.service.quote || {}
 });
 
 const mapDispatchToProps = dispatch => ({
