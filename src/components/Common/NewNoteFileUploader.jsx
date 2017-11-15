@@ -4,6 +4,7 @@ import Dropzone from 'react-dropzone';
 import { Field, Form, reduxForm, propTypes } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import * as cgActions from '../../actions/cgActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
@@ -13,9 +14,9 @@ export const submitNote = (data, dispatch, props) => {
   const noteData = {
     number: documentId,
     noteType,
-    noteContent: JSON.stringify(data.noteContent),
+    noteContent: data.noteContent,
     contactType: data.contactType,
-    createdAt: new Date().getTime(),
+    createdAt:  moment().unix(),
     attachmentCount: data.noteAttachments ? data.noteAttachments.length : 0,
     fileType: data.fileType,
     createdBy: {

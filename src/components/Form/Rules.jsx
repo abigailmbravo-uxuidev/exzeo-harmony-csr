@@ -55,7 +55,7 @@ export function combineRules(validations, variables) {
         if (allValues[field]) return 'Field Required';
       }
       return undefined;
-    }
+    };
     ruleArray.push(checkFields);
   }
   return ruleArray;
