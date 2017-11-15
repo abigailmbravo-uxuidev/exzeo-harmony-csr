@@ -8,6 +8,7 @@ export const downloadFile = (fileUrl) => {
   return axios.get(proxyUrl, { responseType: 'blob', params })
     .then((response) => {
       const blobUrl = window.URL.createObjectURL(response.data);
+      console.log(response.data)
       window.open(blobUrl);
     })
     .catch((err) => {
