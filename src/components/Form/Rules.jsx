@@ -47,6 +47,17 @@ export function combineRules(validations, variables) {
       }
     }
   }
+
+  if (variables.dependsOn) {
+    const checkFields = (value, allValues) => {
+      if (value && value.length > 0) return undefined;
+      for (const field of variables.dependsOn) {
+        if (allValues[field]) return 'Field Required';
+      }
+      return undefined;
+    }
+    ruleArray.push(checkFields);
+  }
   return ruleArray;
 }
 

@@ -296,6 +296,8 @@ export class AdditionalInterests extends Component {
         </QuoteBaseConnect>
       );
     }
+
+    applyRank(quoteData.additionalInterests);
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />

@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
+import { Link, Prompt } from 'react-router-dom';
 import { reduxForm, propTypes, change, Form } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as cgActions from '../../actions/cgActions';
@@ -276,11 +276,15 @@ export const updateDependencies = (event, field, dependency, props) => {
 
 export const generateModel = (data, policyObject) => {
   const policy = policyObject;
+  const offset = new Date(policy.effectiveDate).getTimezoneOffset() / 60;
+
   policy.transactionType = 'Endorsement';
   const submitData = {
     ...policy,
+    policyID: policy._id,
     formListTransactionType: 'Endorsement',
-    endorsementDate: moment.utc(data.effectiveDateNew),
+    endorsementAmountNew: data.newEndorsementAmount,
+    endorsementDate: moment.utc(data.effectiveDateNew).utcOffset(offset),
     country: policy.policyHolderMailingAddress.country,
     pH1FirstName: data.pH1FirstName,
     pH1LastName: data.pH1LastName,
@@ -358,7 +362,10 @@ export const generateModel = (data, policyObject) => {
   return submitData;
 };
 
-export const covertToRateData = (changePolicyData) => {
+export const covertToRateData = (changePolicyData, props) => {
+  console.log(props.summaryLedger);
+  const offset = new Date(changePolicyData.effectiveDate).getTimezoneOffset() / 60;
+
   const data = {
     effectiveDate: changePolicyData.effectiveDate,
     policyNumber: changePolicyData.policyNumber,
@@ -460,8 +467,8 @@ export const covertToRateData = (changePolicyData) => {
       }
     },
     oldTotalPremium: changePolicyData.rating.totalPremium,
-    oldCurrentPremium: changePolicyData.rating.netPremium,
-    endorsementDate: moment.utc()
+    oldCurrentPremium: props.summaryLedger.currentPremium,
+    endorsementDate: moment.utc(changePolicyData.effectiveDateNew).utcOffset(offset)
   };
 
   return data;
@@ -471,7 +478,7 @@ export const calculate = (data, dispatch, props) => {
   const submitData = generateModel(data, props.policy);
   const workflowId = props.appState.instanceId;
 
-  const rateData = covertToRateData(submitData);
+  const rateData = covertToRateData(submitData, props);
 
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true, isCalculated: false });
 
@@ -487,7 +494,7 @@ export const save = (data, dispatch, props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
 
   submitData.rating = props.getRate.rating;
-  props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber }).then((result) => {
+  props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID }).then((result) => {
     const steps = [{
       name: 'saveEndorsement',
       data: submitData
@@ -510,6 +517,10 @@ export class Endorsements extends React.Component {
 
   componentDidMount() {
     this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
+    if (this.props.appState && this.props.appState.instanceId) {
+      const workflowId = this.props.appState.instanceId;
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, workflowId, { ...this.props.appState.data, isCalculated: false });
+    }
     if (this.props && this.props.policy && this.props.policy.policyNumber) {
       this.props.actions.serviceActions.getUnderwritingQuestions(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property);
     }
@@ -527,6 +538,11 @@ export class Endorsements extends React.Component {
     }
     if (!_.isEqual(this.props.newPolicyNumber, nextProps.newPolicyNumber)) {
       this.props.actions.policyStateActions.updatePolicy(true, nextProps.newPolicyNumber);
+      const effectiveDateNew = moment.utc(_.get(nextProps.policy, 'effectiveDate')).format('YYYY-MM-DD');
+      nextProps.dispatch(change('Endorsements', 'effectiveDateNew', effectiveDateNew));
+      nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', ''));
+      nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', ''));
+      nextProps.dispatch(change('Endorsements', 'newAnnualPremium', ''));
     }
   }
 
@@ -554,12 +570,17 @@ export class Endorsements extends React.Component {
   };
 
   render() {
-    const { initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, policy } = this.props;
+    const { initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, policy, dirty } = this.props;
     return (
       <PolicyConnect>
         <ClearErrorConnect />
+        <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         {this.props.appState.data.isSubmitting && <Loader />}
-        <Form id="Endorsements" className={'content-wrapper'} onSubmit={appState.data.isCalculated ? handleSubmit(save) : handleSubmit(calculate)} >
+        <Form
+          id="Endorsements" className={'content-wrapper'} onKeyPress={(e) => {
+            if (e.key === 'Enter') e.preventDefault();
+          }} onSubmit={appState.data.isCalculated ? handleSubmit(save) : handleSubmit(calculate)}
+        >
 
           <div className="route-content">
             <div className="endorsements">
@@ -749,6 +770,7 @@ export class Endorsements extends React.Component {
                           <TextField label={'Incidental Occ Liability'} styleName={''} name={'liabilityIncidentalOccupancies'} disabled />
                           <div className="flex-child other-coverages-property-replacement-cost">
                             <RadioField
+                              disabled
                               onChange={() => setCalculate(this.props, false)}
                               name={'liabilityIncidentalOccupanciesNew'} styleName={'billPlan'} label={''} segmented answers={[
                                 {
@@ -1098,32 +1120,22 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="flex-parent col2">
                           <TextField validations={['required', 'email']} label={'Email Address'} styleName={''} name={'pH1email'} onChange={() => setCalculate(this.props, false)} />
-                          <RadioField
-                            name={'electronicDeliveryNew'} styleName={''} label={'Electronic Delivery'} onChange={() => setCalculate(this.props, false)} segmented answers={[
-                              {
-                                answer: false,
-                                label: 'No'
-                              }, {
-                                answer: true,
-                                label: 'Yes'
-                              }
-                            ]}
-                          />
+                          {/* electronic delivery question placeholder */ }
                         </div>
                       </div>
                       {/* Col2 */}
                       <div className="flex-child">
                         <h3>Secondary Policyholder</h3>
                         <div className="flex-parent col2">
-                          <TextField label={'First Name'} styleName={''} name={'pH2FirstName'} onChange={() => setCalculate(this.props, false)} />
-                          <TextField label={'Last Name'} styleName={''} name={'pH2LastName'} onChange={() => setCalculate(this.props, false)} />
+                          <TextField label={'First Name'} dependsOn={['pH2LastName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2FirstName'} onChange={() => setCalculate(this.props, false)} />
+                          <TextField label={'Last Name'} dependsOn={['pH2FirstName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2LastName'} onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="flex-parent col2">
-                          <PhoneField validations={['phone']} label={'Primary Phone'} styleName={''} name={'pH2phone'} onChange={() => setCalculate(this.props, false)} />
+                          <PhoneField validations={['phone']} label={'Primary Phone'} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2email']} styleName={''} name={'pH2phone'} onChange={() => setCalculate(this.props, false)} />
                           <PhoneField validations={['phone']} label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="flex-parent col2">
-                          <TextField validations={['email']} label={'Email Address'} styleName={''} name={'pH2email'} onChange={() => setCalculate(this.props, false)} />
+                          <TextField validations={['email']} label={'Email Address'} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2phone']} styleName={''} name={'pH2email'} onChange={() => setCalculate(this.props, false)} />
                         </div>
                       </div>
                     </div>
@@ -1180,7 +1192,7 @@ export class Endorsements extends React.Component {
                       onChange={() => setCalculate(this.props, false)}
                     />
                   </div>
-                  <DisplayField label={'New End. Amount'} name={'newEndorsementAmount'} />
+                  <DisplayField label={'New End Amount'} name={'newEndorsementAmount'} />
 
                   <DisplayField label={'New End Premium'} name={'newEndorsementPremium'} />
 
@@ -1237,7 +1249,8 @@ const mapStateToProps = state => ({
   questions: state.questions,
   underwritingQuestions: state.service.underwritingQuestions,
   getRate: state.service.getRate,
-  newPolicyNumber: getNewPolicyNumber(state)
+  newPolicyNumber: getNewPolicyNumber(state),
+  summaryLedger: state.service.getSummaryLedger || {}
 });
 
 const mapDispatchToProps = dispatch => ({

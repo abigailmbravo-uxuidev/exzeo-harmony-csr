@@ -42,7 +42,6 @@ export const TextInput = ({
     <div className={formGroupStyles}>
       {Label}
       <input
-        dateString={dateString}
         min={min}
         max={max}
         disabled={disabled}
