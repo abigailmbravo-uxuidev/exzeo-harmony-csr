@@ -366,7 +366,6 @@ export const generateModel = (data, policyObject) => {
 };
 
 export const covertToRateData = (changePolicyData, props) => {
-  console.log(props.summaryLedger);
   const offset = new Date(changePolicyData.effectiveDate).getTimezoneOffset() / 60;
 
   const data = {
@@ -526,6 +525,7 @@ export class Endorsements extends React.Component {
     }
     if (this.props && this.props.policy && this.props.policy.policyNumber) {
       this.props.actions.serviceActions.getUnderwritingQuestions(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property);
+      this.props.actions.serviceActions.getEndorsementHistory(this.props.policy.policyNumber);
     }
   }
 
