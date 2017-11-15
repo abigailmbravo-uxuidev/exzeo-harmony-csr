@@ -8,9 +8,12 @@ import _ from 'lodash';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
 import TextField from '../Form/inputs/TextField';
 import PhoneField from '../Form/inputs/PhoneField';
+import * as questionsActions from '../../actions/questionsActions';
 import * as cgActions from '../../actions/cgActions';
-import * as quoteStateActions from '../../actions/quoteStateActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as serviceActions from '../../actions/serviceActions';
+import * as policyStateActions from '../../actions/policyStateActions';
+import * as quoteStateActions from '../../actions/quoteStateActions';
 import Loader from './Loader';
 
 const handleInitialize = () => ({
@@ -56,7 +59,7 @@ export const AdditionalInterestModal = (props) => {
   const { appState, handleSubmit, verify, hideAdditionalInterestModal, questions } = props;
   return (
     <div className="modal" style={{ flexDirection: 'row' }}>
-      <Form id="AdditionalInterestModal" className="AdditionalInterestModal" noValidate onSubmit={handleSubmit(verify)}>
+      <Form id="AdditionalInterestModal" className={`AdditionalInterestModal ${appState.data.addAdditionalInterestType}`} noValidate onSubmit={handleSubmit(verify)}>
         {props.appState.data.submittingAI && <Loader />}
         <div className="card">
           <div className="card-header">
@@ -128,6 +131,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: {
     quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
+    policyStateActions: bindActionCreators(policyStateActions, dispatch),
+    questionsActions: bindActionCreators(questionsActions, dispatch),
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }

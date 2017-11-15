@@ -3,10 +3,10 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { 
-  NewNoteFileUploaderPopup, 
-  closeNewNoteFileUploader, 
-  SideNav, 
+import ConnectedApp, {
+  NewNoteFileUploaderPopup,
+  closeNewNoteFileUploader,
+  SideNav,
   UWconditionsPopup,
   closeUWConditions
 } from './QuoteSideNav';
@@ -17,6 +17,7 @@ const mockStore = configureStore(middlewares);
 describe('Testing QuoteSideNav component', () => {
   it('should test connected app', () => {
     const initialState = {
+      service: {},
       cg: {
         bb: {
           data: {

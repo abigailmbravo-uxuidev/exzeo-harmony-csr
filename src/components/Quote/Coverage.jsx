@@ -61,11 +61,13 @@ export function calculatePercentage(oldFigure, newFigure) {
 
   return percentChange;
 }
+const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 export const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
 
 export const handleInitialize = (state) => {
   const quoteData = handleGetQuoteData(state);
+  const questions = state.questions;
   const values = {};
 
   values.electronicDelivery = _.get(quoteData, 'policyHolders[0].electronicDelivery') || false;
@@ -120,14 +122,15 @@ export const handleInitialize = (state) => {
 
   const otherStructures = _.get(quoteData, 'coverageLimits.otherStructures.amount');
   const dwelling = _.get(quoteData, 'coverageLimits.dwelling.amount');
+
   const personalProperty = _.get(quoteData, 'coverageLimits.personalProperty.amount');
   const hurricane = _.get(quoteData, 'deductibles.hurricane.amount');
 
   values.otherStructuresAmount = otherStructures;
   values.otherStructures = String(calculatePercentage(otherStructures, dwelling));
   values.personalLiability = _.get(quoteData, 'coverageLimits.personalLiability.amount');
-  values.personalPropertyAmount = String(personalProperty);
-  values.personalProperty = String(calculatePercentage(personalProperty, dwelling));
+  values.personalPropertyAmount = String(_.get(quoteData, 'coverageLimits.personalProperty.amount'));
+  values.personalProperty = _.map(getAnswers('personalPropertyAmount', questions), 'answer').includes(calculatePercentage(personalProperty, dwelling)) ? String(calculatePercentage(personalProperty, dwelling)) : undefined;
   values.personalPropertyReplacementCostCoverage = _.get(quoteData, 'coverageOptions.personalPropertyReplacementCost.answer');
 
   values.sinkholePerilCoverage = _.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer');
@@ -159,7 +162,6 @@ export const handleInitialize = (state) => {
 };
 
 const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
-const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question') || '';
 
@@ -356,6 +358,7 @@ export class Coverage extends Component {
   updateDwellingAndDependencies = (e, value) => {
     const { dispatch, fieldValues } = this.props;
 
+    if (!value) return;
     let dwellingNumber = String(value).replace(/\D+/g, '');
 
     if (Number.isNaN(dwellingNumber)) { return; }
@@ -483,15 +486,15 @@ export class Coverage extends Component {
                     <h3>Secondary Policyholder</h3>
                     <div className="flex-parent policy-holder-b-name">
                       <div className="flex-child policy-holder-b-first-name">
-                        <TextField label={'First Name'} styleName={''} name={'pH2FirstName'} />
+                        <TextField label={'First Name'} dependsOn={['pH2LastName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2FirstName'} />
                       </div>
                       <div className="flex-child policy-holder-b-last-name">
-                        <TextField label={'Last Name'} styleName={''} name={'pH2LastName'} />
+                        <TextField label={'Last Name'} dependsOn={['pH2FirstName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2LastName'} />
                       </div>
                     </div>
                     <div className="flex-parent policy-holder-b-phone">
                       <div className="flex-child policy-holder-b-primary-phone">
-                        <PhoneField label={'Primary Phone'} styleName={''} name={'pH2phone'} validations={['phone']} />
+                        <PhoneField label={'Primary Phone'} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2email']} styleName={''} name={'pH2phone'} validations={['phone']} />
                       </div>
                       <div className="flex-child policy-holder-b-secondary-phone">
                         <PhoneField label={'Secondary Phone'} styleName={''} name={'pH2phone2'} validations={['phone']} />
@@ -499,7 +502,7 @@ export class Coverage extends Component {
                     </div>
                     <div className="flex-parent policy-holder-b-email">
                       <div className="flex-child email-address">
-                        <TextField validations={['email']} label={'Email Address'} styleName={''} name={'pH2email'} />
+                        <TextField validations={['email']} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2phone']} label={'Email Address'} styleName={''} name={'pH2email'} />
                       </div>
                     </div>
                   </div>

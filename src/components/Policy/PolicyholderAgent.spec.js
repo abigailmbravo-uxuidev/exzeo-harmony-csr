@@ -5,7 +5,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
 
-import { PolicyholderAgent, handleGetPolicy } from './PolicyholderAgent';
+import { PolicyholderAgent } from './PolicyholderAgent';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
@@ -180,34 +180,5 @@ describe('Testing Coverage component', () => {
     expect(shallowWrapper);
 
     shallowWrapper.instance().componentWillReceiveProps({ policy, actions: props.actions });
-  });
-  it('should test handleGetPolicy', () => {
-    const initialState = {
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {
-              variables: [
-                { name: 'retrievePolicy',
-                  value: {
-                    result: policy
-                  } }]
-            },
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        data: {
-          showAdditionalInterestModal: false
-        },
-        modelName: 'bb'
-      }
-    };
-    let p = {};
-
-    p = handleGetPolicy(initialState);
-    expect(policy).toEqual(policy);
   });
 });

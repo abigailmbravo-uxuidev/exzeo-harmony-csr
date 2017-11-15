@@ -106,6 +106,7 @@ export const SearchResults = (props) => {
         }
       }
     }
+
     return (
       <div className="policy-list">
         {
