@@ -993,66 +993,150 @@ describe('Service Actions', () => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
       });
   });
-});
 
-it('should call start getRate', () => {
-  const mockAdapter = new MockAdapter(axios);
+  it('should call start getRate', () => {
+    const mockAdapter = new MockAdapter(axios);
 
-  const axiosOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    url: `${process.env.REACT_APP_API_URL}/svc`,
-    data: {
-      service: 'rating-engine.services',
+    const axiosOptions = {
       method: 'POST',
-      path: 'endorsement',
-      data: {}
-    }
-  };
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'rating-engine.services',
+        method: 'POST',
+        path: 'endorsement',
+        data: {}
+      }
+    };
 
-  mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-    data: []
-  });
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
 
-  const initialState = {};
-  const store = mockStore(initialState);
-  serviceActions.getRate(store.dispatch);
+    const initialState = {};
+    const store = mockStore(initialState);
+    serviceActions.getRate(store.dispatch);
 
-  return serviceActions.getRate({})(store.dispatch)
+    return serviceActions.getRate({})(store.dispatch)
     .then(() => {
       expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
     });
-});
-
-it('should fail start getRate', () => {
-  const mockAdapter = new MockAdapter(axios);
-
-  const axiosOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    url: `${process.env.REACT_APP_API_URL}/svc`,
-    data: {
-      service: 'rating-engine.services',
-      method: 'POST',
-      path: 'endorsement',
-      data: {}
-    }
-  };
-
-  mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-    data: []
   });
 
-  const initialState = {};
-  const store = mockStore(initialState);
-  serviceActions.getRate(store.dispatch);
+  it('should fail start getRate', () => {
+    const mockAdapter = new MockAdapter(axios);
 
-  return serviceActions.getRate(null)(store.dispatch)
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'rating-engine.services',
+        method: 'POST',
+        path: 'endorsement',
+        data: {}
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+    serviceActions.getRate(store.dispatch);
+
+    return serviceActions.getRate(null)(store.dispatch)
     .then(() => {
       expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
     });
+  });
+
+  const ai = {
+    additionalInterestId: '123',
+    name1: 'data.name1',
+    name2: 'data.name2',
+    referenceNumber: 'data.referenceNumber',
+    order: 0,
+    active: true,
+    type: 'Additional Interest',
+    phoneNumber: '555-555-5555',
+    mailingAddress: {
+      address1: 'data.address1',
+      address2: 'data.address2',
+      city: 'data.city',
+      state: 'FL',
+      zip: '33607',
+      country: {
+        code: 'USA',
+        displayText: 'United States of America'
+      }
+    }
+  };
+
+  it('should call start getRate', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'policy-data.services',
+        method: 'POST',
+        path: 'transaction',
+        data: ai
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+    serviceActions.getRate(store.dispatch);
+
+    return serviceActions.createTransaction(ai)(store.dispatch)
+    .then(() => {
+      expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+    });
+  });
+
+  it('should fail start getRate', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'policy-data.services',
+        method: 'POST',
+        path: 'transaction',
+        data: ai
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+    serviceActions.getRate(store.dispatch);
+
+    return serviceActions.createTransaction({})(store.dispatch)
+    .then(() => {
+      expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+    });
+  });
 });
