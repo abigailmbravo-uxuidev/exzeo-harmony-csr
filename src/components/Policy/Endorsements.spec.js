@@ -32,7 +32,7 @@ describe('Testing Endorsements component', () => {
     };
     const store = mockStore(initialState);
     const props = {
-      getZipcodeSettings: {},
+      zipcodeSettings: {},
       summaryLedger: {},
       reset() {},
       getRate: {},

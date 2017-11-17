@@ -280,7 +280,7 @@ export const updateDependencies = (event, field, dependency, props) => {
 
 export const generateModel = (data, policyObject, props) => {
   const policy = policyObject;
-  const endorseDate = moment.tz(moment.utc(policy.effectiveDate).format('YYYY-MM-DD'), props.getZipcodeSettings.timezone).format();
+  const endorseDate = moment.tz(moment.utc(data.effectiveDateNew).format('YYYY-MM-DD'), props.zipcodeSettings.timezone).format();
 
   policy.transactionType = 'Endorsement';
   const submitData = {
@@ -1267,7 +1267,7 @@ const mapStateToProps = state => ({
   getRate: state.service.getRate,
   newPolicyNumber: getNewPolicyNumber(state),
   summaryLedger: state.service.getSummaryLedger || {},
-  getZipcodeSettings: state.service.getZipcodeSettings
+  zipcodeSettings: state.service.getZipcodeSettings
 });
 
 const mapDispatchToProps = dispatch => ({
