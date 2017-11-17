@@ -1057,7 +1057,7 @@ it('should fail start getRate', () => {
     });
 });
 
-it('should call start getRate', () => {
+it('should call start getZipcodeSettings', () => {
   const mockAdapter = new MockAdapter(axios);
 
   const axiosOptions = {
