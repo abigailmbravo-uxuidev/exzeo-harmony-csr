@@ -527,7 +527,7 @@ export const getZipcodeSettings = (companyCode, state, product, zip) => (dispatc
   const axiosConfig = runnerSetup({
     service: 'underwriting.services',
     method: 'GET',
-    path: `zip-code?companyCode=TTIC&state=${state}&product=${product}&zip=${zip}`
+    path: `zip-code?companyCode=${companyCode}&state=${state}&product=${product}&zip=${zip}`
   });
 
   return axios(axiosConfig).then((response) => {
