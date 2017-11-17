@@ -207,7 +207,6 @@ export const handleInitialize = (state) => {
   values.pH1LastName = _.get(policy, 'policyHolders[0].lastName');
   values.pH1LastNameNew = values.pH1LastName;
   values.pH1phone = normalizePhone(_.get(policy, 'policyHolders[0].primaryPhoneNumber') || '');
-  values.pH1phoneNew = values.pH1phone;
   values.pH1secondaryPhone = normalizePhone(_.get(policy, 'policyHolders[0].secondaryPhoneNumber') || '');
   values.pH1secondaryPhoneNew = values.pH1secondaryPhone;
 
@@ -219,9 +218,7 @@ export const handleInitialize = (state) => {
   values.pH2LastName = _.get(policy, 'policyHolders[1].lastName');
   values.pH2LastNameNew = values.pH2LastName;
   values.pH2phone = normalizePhone(_.get(policy, 'policyHolders[1].primaryPhoneNumber') || '');
-  values.pH2phoneNew = values.pH2phone;
   values.pH2secondaryPhone = normalizePhone(_.get(policy, 'policyHolders[1].secondaryPhoneNumber') || '');
-  values.pH2secondaryPhoneNew = values.pH2secondaryPhone;
 
   // Mailing/Billing
   values.address1 = _.get(policy, 'policyHolderMailingAddress.address1');
@@ -293,13 +290,13 @@ export const generateModel = (data, policyObject) => {
     pH1FirstName: data.pH1FirstName,
     pH1LastName: data.pH1LastName,
     pH1email: data.pH1email,
-    pH1phone: data.pH1phone,
-    pH1secondaryPhone: data.pH1secondaryPhone,
+    pH1phone: data.pH1phone ? data.pH1phone.replace(/[^\d]/g, '') : '',
+    pH1secondaryPhone: data.pH1secondaryPhone ? data.pH1secondaryPhone.replace(/[^\d]/g, '') : '',
     pH2FirstName: data.pH2FirstName,
     pH2LastName: data.pH2LastName,
     pH2email: data.pH2email,
-    pH2phone: data.pH2phone,
-    pH2secondaryPhone: data.pH2secondaryPhone,
+    pH2phone: data.pH2phone ? data.pH2phone.replace(/[^\d]/g, '') : '',
+    pH2secondaryPhone: data.pH2secondaryPhone ? data.pH2secondaryPhone.replace(/[^\d]/g, '') : '',
     floodZoneNew: data.floodZoneNew,
     squareFeetNew: data.squareFeetNew,
     residenceTypeNew: data.residenceTypeNew,
@@ -538,9 +535,9 @@ export class Endorsements extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props.getRate, nextProps.getRate)) {
       const { getRate } = nextProps;
-      nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', getRate.endorsementAmount || '-'));
-      nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', getRate.newCurrentPremium || '-'));
-      nextProps.dispatch(change('Endorsements', 'newAnnualPremium', getRate.newAnnualPremium || '-'));
+      nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', getRate.endorsementAmount || 0));
+      nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', getRate.newCurrentPremium || 0));
+      nextProps.dispatch(change('Endorsements', 'newAnnualPremium', getRate.newAnnualPremium || 0));
     }
     if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
