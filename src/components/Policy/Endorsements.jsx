@@ -80,7 +80,7 @@ export const handleInitialize = (state) => {
   const hurricane = _.get(policy, 'deductibles.hurricane.amount');
 
 // Coverage Top Left
-  values.effectiveDateNew = moment.utc(_.get(policy, 'effectiveDate')).format('YYYY-MM-DD');
+  values.endorsmentDateNew = moment.utc(_.get(policy, 'effectiveDate')).format('YYYY-MM-DD');
   values.dwellingAmount = _.get(policy, 'coverageLimits.dwelling.amount');
   values.dwellingAmountNew = _.get(policy, 'coverageLimits.dwelling.amount');
   values.otherStructuresAmount = otherStructures;
@@ -280,7 +280,7 @@ export const updateDependencies = (event, field, dependency, props) => {
 
 export const generateModel = (data, policyObject, props) => {
   const policy = policyObject;
-  const endorseDate = moment.tz(moment.utc(data.effectiveDateNew).format('YYYY-MM-DD'), props.zipcodeSettings.timezone).format();
+  const endorseDate = moment.tz(moment.utc(data.endorsmentDateNew).format('YYYY-MM-DD'), props.zipcodeSettings.timezone).format();
 
   policy.transactionType = 'Endorsement';
   const submitData = {
@@ -546,8 +546,8 @@ export class Endorsements extends React.Component {
     }
     if (!_.isEqual(this.props.newPolicyNumber, nextProps.newPolicyNumber)) {
       this.props.actions.policyStateActions.updatePolicy(true, nextProps.newPolicyNumber);
-      const effectiveDateNew = moment.utc(_.get(nextProps.policy, 'effectiveDate')).format('YYYY-MM-DD');
-      nextProps.dispatch(change('Endorsements', 'effectiveDateNew', effectiveDateNew));
+      const endorsmentDateNew = moment.utc(_.get(nextProps.policy, 'effectiveDate')).format('YYYY-MM-DD');
+      nextProps.dispatch(change('Endorsements', 'endorsmentDateNew', endorsmentDateNew));
       nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', ''));
       nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', ''));
       nextProps.dispatch(change('Endorsements', 'newAnnualPremium', ''));
@@ -1202,7 +1202,7 @@ export class Endorsements extends React.Component {
                 <div className="flex-parent">
                   <div className="form-group">
                     <DateField
-                      validations={['date']} label={'Endorsement Effective Date'} name={'effectiveDateNew'}
+                      validations={['date']} label={'Endorsement Effective Date'} name={'endorsmentDateNew'}
                       min={moment.utc(policy.effectiveDate).format('YYYY-MM-DD')}
                       max={moment.utc(policy.endDate).format('YYYY-MM-DD')}
                       onChange={() => setCalculate(this.props, false)}
