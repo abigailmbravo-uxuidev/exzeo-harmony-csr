@@ -1056,3 +1056,62 @@ it('should fail start getRate', () => {
       expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
     });
 });
+
+it('should call start getRate', () => {
+  const mockAdapter = new MockAdapter(axios);
+
+  const axiosOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    url: `${process.env.REACT_APP_API_URL}/svc`,
+    data: {
+      service: 'underwriting.services',
+      method: 'GET',
+      path: 'zip-code?companyCode=TTIC&state=FL&product=HO3&zip=33607'
+    }
+  };
+
+  mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+    data: []
+  });
+
+  const initialState = {};
+  const store = mockStore(initialState);
+  serviceActions.getZipcodeSettings(store.dispatch);
+
+  return serviceActions.getZipcodeSettings('TTIC', 'FL', 'HO3', '33607')(store.dispatch)
+    .then(() => {
+      expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+    });
+});
+
+it('should fail start getZipcodeSettings', () => {
+  const mockAdapter = new MockAdapter(axios);
+  const axiosOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    url: `${process.env.REACT_APP_API_URL}/svc`,
+    data: {
+      service: 'underwriting.services',
+      method: 'GET',
+      path: 'zip-code?companyCode=TTIC&state=FL&product=HO3&zip=33607'
+    }
+  };
+
+  mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+    data: []
+  });
+
+  const initialState = {};
+  const store = mockStore(initialState);
+  serviceActions.getZipcodeSettings(store.dispatch);
+
+  return serviceActions.getZipcodeSettings(null)(store.dispatch)
+    .then(() => {
+      expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+    });
+});

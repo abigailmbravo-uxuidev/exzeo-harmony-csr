@@ -32,12 +32,14 @@ describe('Testing Endorsements component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      getZipcodeSettings: {},
       summaryLedger: {},
       reset() {},
       getRate: {},
       actions: {
         errorActions: { dispatchClearAppError() { } },
         serviceActions: {
+          getZipcodeSettings() {},
           getUnderwritingQuestions() {},
           getEndorsementHistory() {},
           getBillingOptions() { },
