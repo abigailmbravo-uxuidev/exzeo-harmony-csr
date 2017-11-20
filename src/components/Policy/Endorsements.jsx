@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
 import { reduxForm, propTypes, change, Form } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
@@ -80,7 +80,7 @@ export const handleInitialize = (state) => {
   const hurricane = _.get(policy, 'deductibles.hurricane.amount');
 
 // Coverage Top Left
-  values.effectiveDateNew = moment.utc(_.get(policy, 'effectiveDate')).format('YYYY-MM-DD');
+  values.endorsementDateNew = moment.utc(_.get(policy, 'effectiveDate')).format('YYYY-MM-DD');
   values.dwellingAmount = _.get(policy, 'coverageLimits.dwelling.amount');
   values.dwellingAmountNew = _.get(policy, 'coverageLimits.dwelling.amount');
   values.otherStructuresAmount = otherStructures;
@@ -275,9 +275,9 @@ export const updateDependencies = (event, field, dependency, props) => {
 };
 
 
-export const generateModel = (data, policyObject) => {
+export const generateModel = (data, policyObject, props) => {
   const policy = policyObject;
-  const offset = new Date(policy.effectiveDate).getTimezoneOffset() / 60;
+  const endorseDate = moment.tz(moment.utc(data.endorsementDateNew).format('YYYY-MM-DD'), props.zipcodeSettings.timezone).format();
 
   policy.transactionType = 'Endorsement';
   const submitData = {
@@ -285,7 +285,7 @@ export const generateModel = (data, policyObject) => {
     policyID: policy._id,
     formListTransactionType: 'Endorsement',
     endorsementAmountNew: data.newEndorsementAmount,
-    endorsementDate: moment(data.effectiveDateNew).utcOffset(offset),
+    endorsementDate: endorseDate,
     country: policy.policyHolderMailingAddress.country,
     pH1FirstName: data.pH1FirstName,
     pH1LastName: data.pH1LastName,
@@ -365,8 +365,6 @@ export const generateModel = (data, policyObject) => {
 };
 
 export const covertToRateData = (changePolicyData, props) => {
-  const offset = new Date(changePolicyData.effectiveDate).getTimezoneOffset() / 60;
-
   const data = {
     effectiveDate: changePolicyData.effectiveDate,
     policyNumber: changePolicyData.policyNumber,
@@ -470,14 +468,14 @@ export const covertToRateData = (changePolicyData, props) => {
     },
     oldTotalPremium: changePolicyData.rating.totalPremium,
     oldCurrentPremium: props.summaryLedger.currentPremium,
-    endorsementDate: moment(changePolicyData.effectiveDateNew).utcOffset(offset)
+    endorsementDate: changePolicyData.endorsementDate
   };
 
   return data;
 };
 
 export const calculate = (data, dispatch, props) => {
-  const submitData = generateModel(data, props.policy);
+  const submitData = generateModel(data, props.policy, props);
   const workflowId = props.appState.instanceId;
 
   const rateData = covertToRateData(submitData, props);
@@ -494,7 +492,7 @@ export const calculate = (data, dispatch, props) => {
 export const save = (data, dispatch, props) => {
   const workflowId = props.appState.instanceId;
 
-  const submitData = generateModel(data, props.policy);
+  const submitData = generateModel(data, props.policy, props);
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
 
   submitData.rating = props.getRate.rating;
@@ -529,23 +527,30 @@ export class Endorsements extends React.Component {
     if (this.props && this.props.policy && this.props.policy.policyNumber) {
       this.props.actions.serviceActions.getUnderwritingQuestions(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property);
       this.props.actions.serviceActions.getEndorsementHistory(this.props.policy.policyNumber);
+      this.props.actions.serviceActions.getZipcodeSettings(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property.physicalAddress.zip);
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!_.isEqual(this.props.getRate, nextProps.getRate)) {
+    if (!_.isEqual(this.props.getRate, nextProps.getRate) && nextProps.getRate) {
       const { getRate } = nextProps;
+<<<<<<< HEAD
       nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', getRate.endorsementAmount || 0));
       nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', getRate.newCurrentPremium || 0));
       nextProps.dispatch(change('Endorsements', 'newAnnualPremium', getRate.newAnnualPremium || 0));
+=======
+      nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', getRate.endorsementAmount || ''));
+      nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', getRate.newCurrentPremium || ''));
+      nextProps.dispatch(change('Endorsements', 'newAnnualPremium', getRate.newAnnualPremium || ''));
+>>>>>>> develop
     }
     if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
     }
     if (!_.isEqual(this.props.newPolicyNumber, nextProps.newPolicyNumber)) {
       this.props.actions.policyStateActions.updatePolicy(true, nextProps.newPolicyNumber);
-      const effectiveDateNew = moment.utc(_.get(nextProps.policy, 'effectiveDate')).format('YYYY-MM-DD');
-      nextProps.dispatch(change('Endorsements', 'effectiveDateNew', effectiveDateNew));
+      const endorsementDateNew = moment.utc(_.get(nextProps.policy, 'effectiveDate')).format('YYYY-MM-DD');
+      nextProps.dispatch(change('Endorsements', 'endorsementDateNew', endorsementDateNew));
       nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', ''));
       nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', ''));
       nextProps.dispatch(change('Endorsements', 'newAnnualPremium', ''));
@@ -1200,7 +1205,7 @@ export class Endorsements extends React.Component {
                 <div className="flex-parent">
                   <div className="form-group">
                     <DateField
-                      validations={['date']} label={'Endorsement Effective Date'} name={'effectiveDateNew'}
+                      validations={['date']} label={'Endorsement Effective Date'} name={'endorsementDateNew'}
                       min={moment.utc(policy.effectiveDate).format('YYYY-MM-DD')}
                       max={moment.utc(policy.endDate).format('YYYY-MM-DD')}
                       onChange={() => setCalculate(this.props, false)}
@@ -1264,7 +1269,8 @@ const mapStateToProps = state => ({
   underwritingQuestions: state.service.underwritingQuestions,
   getRate: state.service.getRate,
   newPolicyNumber: getNewPolicyNumber(state),
-  summaryLedger: state.service.getSummaryLedger || {}
+  summaryLedger: state.service.getSummaryLedger || {},
+  zipcodeSettings: state.service.getZipcodeSettings
 });
 
 const mapDispatchToProps = dispatch => ({
