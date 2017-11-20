@@ -32,12 +32,14 @@ describe('Testing Endorsements component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      zipcodeSettings: {},
       summaryLedger: {},
       reset() {},
       getRate: {},
       actions: {
         errorActions: { dispatchClearAppError() { } },
         serviceActions: {
+          getZipcodeSettings() {},
           getUnderwritingQuestions() {},
           getEndorsementHistory() {},
           getBillingOptions() { },
@@ -169,7 +171,7 @@ describe('Testing Endorsements component', () => {
     wrapper.find('[name="propertyCityNew"]').simulate('change', { target: { value: 'ABC' } });
     wrapper.find('[name="propertyStateNew"]').simulate('change', { target: { value: 'FL' } });
     wrapper.find('[name="propertyZipNew"]').simulate('change', { target: { value: '33627' } });
-    wrapper.find('[name="effectiveDateNew"]').simulate('change', { target: { value: '10/27/2017' } });
+    wrapper.find('[name="endorsementDateNew"]').simulate('change', { target: { value: '10/27/2017' } });
     wrapper.find('button.btn-secondary').simulate('click');
     wrapper.find('button.btn-primary').simulate('click');
     getNewPolicyNumber(initialState);
