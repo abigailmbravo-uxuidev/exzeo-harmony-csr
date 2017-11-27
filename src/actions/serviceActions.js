@@ -545,3 +545,24 @@ export const createTransaction = submitData => (dispatch) => {
         ]));
       });
 };
+
+export const getZipcodeSettings = (companyCode, state, product, zip) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'underwriting.services',
+    method: 'GET',
+    path: `zip-code?companyCode=${companyCode}&state=${state}&product=${product}&zip=${zip}`
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { getZipcodeSettings: response.data && response.data.result ? response.data.result[0] : {} };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
