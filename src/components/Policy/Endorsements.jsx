@@ -374,26 +374,26 @@ export const covertToRateData = (changePolicyData, props) => {
     property: {
       windMitigation: {
         roofGeometry: changePolicyData.roofGeometryNew,
-        floridaBuildingCodeWindSpeed: changePolicyData.floridaBuildingCodeWindSpeedNew,
+        floridaBuildingCodeWindSpeed: Number(changePolicyData.floridaBuildingCodeWindSpeedNew),
         secondaryWaterResistance: changePolicyData.secondaryWaterResistanceNew,
         internalPressureDesign: changePolicyData.internalPressureDesignNew,
         roofCovering: changePolicyData.roofCoveringNew,
         openingProtection: changePolicyData.openingProtectionNew,
         terrain: changePolicyData.terrainNew,
-        floridaBuildingCodeWindSpeedDesign: changePolicyData.floridaBuildingCodeWindSpeedDesignNew,
+        floridaBuildingCodeWindSpeedDesign: Number(changePolicyData.floridaBuildingCodeWindSpeedDesignNew),
         roofDeckAttachment: changePolicyData.roofDeckAttachmentNew,
         windBorneDebrisRegion: changePolicyData.windBorneDebrisRegionNew,
         roofToWallConnection: changePolicyData.roofToWallConnectionNew
       },
       territory: changePolicyData.property.territory,
-      buildingCodeEffectivenessGrading: changePolicyData.buildingCodeEffectivenessGradingNew,
+      buildingCodeEffectivenessGrading: Number(changePolicyData.buildingCodeEffectivenessGradingNew),
       familyUnits: changePolicyData.familyUnitsNew,
       fireAlarm: changePolicyData.fireAlarmNew,
       burglarAlarm: changePolicyData.burglarAlarmNew,
       constructionType: changePolicyData.constructionTypeNew,
-      yearBuilt: changePolicyData.yearBuiltNew,
+      yearBuilt: Number(changePolicyData.yearBuiltNew),
       sprinkler: changePolicyData.sprinklerNew,
-      protectionClass: changePolicyData.protectionClassNew,
+      protectionClass: Number(changePolicyData.protectionClassNew),
       townhouseRowhouse: changePolicyData.townhouseRowhouseNew
     },
     coverageLimits: {
@@ -496,6 +496,7 @@ export const save = (data, dispatch, props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
 
   submitData.rating = props.getRate.rating;
+  submitData.summaryLedger = props.summaryLedger;
 
   props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID }).then((result) => {
     const steps = [{
@@ -633,7 +634,7 @@ export class Endorsements extends React.Component {
 
                             name={'otherStructuresNew'}
                             answers={getAnswers('otherStructuresAmount', questions)}
-                            component="select" label={''} styleName={'coverage-b-percentage'} onChange={event => updateDependencies(event, 'otherStructuresAmountNew', 'dwellingAmount', this.props)} validations={['required']}
+                            component="select" label={''} styleName={'coverage-b-percentage'} onChange={event => updateDependencies(event, 'otherStructuresAmountNew', 'dwellingAmountNew', this.props)} validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
@@ -645,7 +646,7 @@ export class Endorsements extends React.Component {
                           <SelectField
                             name={'personalPropertyNew'}
                             answers={getAnswers('personalPropertyAmount', questions)}
-                            component="select" label={''} styleName={'coverage-c-percentage'} onChange={event => updateDependencies(event, 'personalPropertyAmountNew', 'dwellingAmount', this.props)} validations={['required']}
+                            component="select" label={''} styleName={'coverage-c-percentage'} onChange={event => updateDependencies(event, 'personalPropertyAmountNew', 'dwellingAmountNew', this.props)} validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
@@ -696,7 +697,7 @@ export class Endorsements extends React.Component {
                             label={''}
                             name={'hurricaneNew'}
                             answers={getAnswers('hurricane', questions)}
-                            component="select" styleName={''} onChange={event => updateDependencies(event, 'calculatedHurricane', 'dwellingAmount', this.props)} validations={['required']}
+                            component="select" styleName={''} onChange={event => updateDependencies(event, 'calculatedHurricane', 'dwellingAmountNew', this.props)} validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
@@ -973,11 +974,11 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'FBC Wind Speed'} styleName={''} name={'floridaBuildingCodeWindSpeed'} disabled />
-                          <TextField validations={['required']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedNew'} onChange={() => setCalculate(this.props, false)} />
+                          <TextField validations={['required', 'numbersOnly']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedNew'} onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'FBC Wind Speed Design'} styleName={''} name={'floridaBuildingCodeWindSpeedDesign'} disabled />
-                          <TextField validations={['required']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedDesignNew'} onChange={() => setCalculate(this.props, false)} />
+                          <TextField validations={['required', 'numbersOnly']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedDesignNew'} onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Terrain'} styleName={''} name={'terrain'} disabled />
@@ -1025,6 +1026,7 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <TextField label={'Year Home Built'} styleName={''} name="yearBuilt" disabled />
                           <TextField
+                            validations={['numbersOnly']}
                             styleName={''} label={''} name="yearBuiltNew" onChange={() => setCalculate(this.props, false)}
                           />
                         </div>
