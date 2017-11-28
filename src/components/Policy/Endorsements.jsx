@@ -30,7 +30,11 @@ import * as actionTypes from '../../actions/actionTypes';
 import normalizeNumbers from '../Form/normalizeNumbers';
 
 export const setCalculate = (props, reset) => {
-  if (reset) props.reset('Endorsements');
+  if (reset) {
+    props.reset('Endorsements');
+  }
+  props.actions.serviceActions.clearRate();
+
   const workflowId = props.appState.instanceId;
   if (!props.appState.data.isCalculated) return;
 
@@ -284,7 +288,7 @@ export const generateModel = (data, policyObject, props) => {
     ...policy,
     policyID: policy._id,
     formListTransactionType: 'Endorsement',
-    endorsementAmountNew: data.newEndorsementAmount,
+    endorsementAmountNew: data.newEndorsementAmount || 0,
     endorsementDate: endorseDate,
     country: policy.policyHolderMailingAddress.country,
     pH1FirstName: data.pH1FirstName,
@@ -495,7 +499,6 @@ export const calculate = (data, dispatch, props) => {
 
 export const save = (data, dispatch, props) => {
   const workflowId = props.appState.instanceId;
-
   const submitData = generateModel(data, props.policy, props);
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
 
@@ -539,9 +542,9 @@ export class Endorsements extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props.getRate, nextProps.getRate) && nextProps.getRate) {
       const { getRate } = nextProps;
-      nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', getRate.endorsementAmount || 0));
-      nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', getRate.newCurrentPremium || 0));
-      nextProps.dispatch(change('Endorsements', 'newAnnualPremium', getRate.newAnnualPremium || 0));
+      nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', getRate.endorsementAmount || ''));
+      nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', getRate.newCurrentPremium || ''));
+      nextProps.dispatch(change('Endorsements', 'newAnnualPremium', getRate.newAnnualPremium || ''));
     }
     if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);

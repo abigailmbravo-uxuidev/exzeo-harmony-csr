@@ -48,7 +48,8 @@ describe('Testing Endorsements component', () => {
           getTransactionHistory() {},
           getSummaryLedger() {},
           getPaymentHistory() {},
-          getPaymentOptionsApplyPayments() {}
+          getPaymentOptionsApplyPayments() {},
+          clearRate() {}
         },
         cgActions: {
           startWorkflow() { return Promise.resolve({ payload: [{ workflowData: { endorsePolicyModelSave: { data: {} }, endorsePolicyModelCalculate: { data: {} } } }] }); },

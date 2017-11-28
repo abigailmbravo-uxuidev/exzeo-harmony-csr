@@ -502,6 +502,10 @@ export const getRate = policyObject => (dispatch) => {
     });
 };
 
+export const clearRate = () => dispatch => dispatch(batchActions([
+  serviceRequest({ getRate: {} })
+]));
+
 export const getQuote = quoteId => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'quote-data.services',
