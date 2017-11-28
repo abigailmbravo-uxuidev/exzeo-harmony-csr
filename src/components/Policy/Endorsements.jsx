@@ -496,6 +496,7 @@ export const save = (data, dispatch, props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
 
   submitData.rating = props.getRate.rating;
+  submitData.summaryLedger = props.summaryLedger;
 
   props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID }).then((result) => {
     const steps = [{
