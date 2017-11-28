@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { batchActions } from 'redux-batched-actions';
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
+import { dispatchAppState } from './appStateActions';
 
 export const handleError = (error) => {
   const message = error.response && error.response.data && error.response.data.error
@@ -501,6 +502,10 @@ export const getRate = policyObject => (dispatch) => {
       ]));
     });
 };
+
+export const clearRate = () => dispatch => dispatch(batchActions([
+  serviceRequest({ getRate: {} })
+]));
 
 export const getQuote = quoteId => (dispatch) => {
   const axiosConfig = runnerSetup({
