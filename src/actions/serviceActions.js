@@ -523,6 +523,29 @@ export const getQuote = quoteId => (dispatch) => {
     });
 };
 
+export const createTransaction = submitData => (dispatch) => {
+  const body = {
+    service: 'policy-data.services',
+    method: 'POST',
+    path: 'transaction',
+    data: submitData
+  };
+  const axiosConfig = runnerSetup(body);
+
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
+    const data = { addTransaction: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+      .catch((error) => {
+        const message = handleError(error);
+        return dispatch(batchActions([
+          errorActions.setAppError({ message })
+        ]));
+      });
+};
+
 export const getZipcodeSettings = (companyCode, state, product, zip) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'underwriting.services',
