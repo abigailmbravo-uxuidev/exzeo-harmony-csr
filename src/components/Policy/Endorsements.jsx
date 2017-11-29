@@ -29,6 +29,13 @@ import * as policyStateActions from '../../actions/policyStateActions';
 import * as actionTypes from '../../actions/actionTypes';
 import normalizeNumbers from '../Form/normalizeNumbers';
 
+export const scrollToView = (elementName) => {
+  const element = document.getElementById(elementName);
+  if (element) {
+    element.scrollIntoView(true);
+  }
+};
+
 export const setCalculate = (props, reset) => {
   if (reset) {
     props.reset('Endorsements');
@@ -606,10 +613,10 @@ export class Endorsements extends React.Component {
           <div className="route-content">
             <div className="endorsements">
               <div className="endo-jump-menu">
-                <a href="#coverage" className="btn btn-secondary btn-xs">Coverage</a>
-                <a href="#home" className="btn btn-secondary btn-xs">Home / Location</a>
-                <a href="#policy" className="btn btn-secondary btn-xs">Policyholders</a>
-                <a href="#addresses" className="btn btn-secondary btn-xs">Addresses</a>
+                <button type="button" onClick={() => scrollToView('coverage')} className="btn btn-secondary btn-xs">Coverage</button>
+                <button type="button" onClick={() => scrollToView('home')} className="btn btn-secondary btn-xs">Home / Location</button>
+                <button type="button" onClick={() => scrollToView('policy')} className="btn btn-secondary btn-xs">Policyholders</button>
+                <button type="button" onClick={() => scrollToView('addresses')} className="btn btn-secondary btn-xs">Addresses</button>
               </div>
               <div className="scroll">
                 <div className="form-group survey-wrapper" role="group">
