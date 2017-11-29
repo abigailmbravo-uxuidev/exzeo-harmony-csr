@@ -67,6 +67,19 @@ export const calculatePercentage = (oldFigure, newFigure) => {
   return percentChange;
 };
 
+export const setEndorsementDate = (effectiveDate, endPolicyDate) => {
+  const effDate = moment.utc(effectiveDate).format('YYYY-MM-DD');
+  const endDate = moment.utc(endPolicyDate).format('YYYY-MM-DD');
+  const today = moment.utc().format('YYYY-MM-DD');
+
+  if (today <= effDate) {
+    return effDate;
+  } else if (today >= effDate && today < endDate) {
+    return today;
+  }
+  return endDate;
+};
+
 export const handleInitialize = (state) => {
   const policy = state.service.latestPolicy || {};
   const questions = state.questions || [];
@@ -84,7 +97,7 @@ export const handleInitialize = (state) => {
   const hurricane = _.get(policy, 'deductibles.hurricane.amount');
 
 // Coverage Top Left
-  values.endorsementDateNew = moment.utc(_.get(policy, 'effectiveDate')).format('YYYY-MM-DD');
+  values.endorsementDateNew = setEndorsementDate(_.get(policy, 'effectiveDate'), _.get(policy, 'endDate'));
   values.dwellingAmount = _.get(policy, 'coverageLimits.dwelling.amount');
   values.dwellingAmountNew = _.get(policy, 'coverageLimits.dwelling.amount');
   values.otherStructuresAmount = otherStructures;
@@ -190,11 +203,11 @@ export const handleInitialize = (state) => {
   values.familyUnits = _.get(policy, 'property.familyUnits');
   values.familyUnitsNew = values.familyUnits;
 // Home/Location Bottom Right
-  values.distanceToTidalWater = normalizeNumbers(_.get(policy, 'property.distanceToTidalWater'));
+  values.distanceToTidalWater = _.get(policy, 'property.distanceToTidalWater');
   values.distanceToTidalWaterNew = values.distanceToTidalWater;
-  values.distanceToFireHydrant = normalizeNumbers(_.get(policy, 'property.distanceToFireHydrant'));
+  values.distanceToFireHydrant = _.get(policy, 'property.distanceToFireHydrant');
   values.distanceToFireHydrantNew = values.distanceToFireHydrant;
-  values.distanceToFireStation = normalizeNumbers(_.get(policy, 'property.distanceToFireStation'));
+  values.distanceToFireStation = _.get(policy, 'property.distanceToFireStation');
   values.distanceToFireStationNew = values.distanceToFireStation;
   values.residenceType = _.get(policy, 'property.residenceType');
   values.residenceTypeNew = values.residenceType;
@@ -551,7 +564,7 @@ export class Endorsements extends React.Component {
     }
     if (!_.isEqual(this.props.newPolicyNumber, nextProps.newPolicyNumber)) {
       this.props.actions.policyStateActions.updatePolicy(true, nextProps.newPolicyNumber);
-      const endorsementDateNew = moment.utc(_.get(nextProps.policy, 'effectiveDate')).format('YYYY-MM-DD');
+      const endorsementDateNew = setEndorsementDate(_.get(nextProps.policy, 'effectiveDate'), _.get(nextProps.policy, 'endDate'));
       nextProps.dispatch(change('Endorsements', 'endorsementDateNew', endorsementDateNew));
       nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', ''));
       nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', ''));
