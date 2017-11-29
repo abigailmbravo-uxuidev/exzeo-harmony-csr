@@ -29,6 +29,13 @@ import * as policyStateActions from '../../actions/policyStateActions';
 import * as actionTypes from '../../actions/actionTypes';
 import normalizeNumbers from '../Form/normalizeNumbers';
 
+export const scrollToView = (elementName) => {
+  const element = document.getElementById(elementName);
+  if (element) {
+    element.scrollIntoView(true);
+  }
+};
+
 export const setCalculate = (props, reset) => {
   if (reset) {
     props.reset('Endorsements');
@@ -561,6 +568,7 @@ export class Endorsements extends React.Component {
     }
     if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
+      setCalculate(nextProps, true);
     }
     if (!_.isEqual(this.props.newPolicyNumber, nextProps.newPolicyNumber)) {
       this.props.actions.policyStateActions.updatePolicy(true, nextProps.newPolicyNumber);
@@ -619,10 +627,10 @@ export class Endorsements extends React.Component {
           <div className="route-content">
             <div className="endorsements">
               <div className="endo-jump-menu">
-                <a href="#coverage" className="btn btn-secondary btn-xs">Coverage</a>
-                <a href="#home" className="btn btn-secondary btn-xs">Home / Location</a>
-                <a href="#policy" className="btn btn-secondary btn-xs">Policyholders</a>
-                <a href="#addresses" className="btn btn-secondary btn-xs">Addresses</a>
+                <button id="coverage-scroll" type="button" onClick={() => scrollToView('coverage')} className="btn btn-secondary btn-xs">Coverage</button>
+                <button id="home-scroll" type="button" onClick={() => scrollToView('home')} className="btn btn-secondary btn-xs">Home / Location</button>
+                <button id="policy-scroll" ttype="button" onClick={() => scrollToView('policy')} className="btn btn-secondary btn-xs">Policyholders</button>
+                <button id="addresses-scroll" ttype="button" onClick={() => scrollToView('addresses')} className="btn btn-secondary btn-xs">Addresses</button>
               </div>
               <div className="scroll">
                 <div className="form-group survey-wrapper" role="group">
@@ -1234,7 +1242,7 @@ export class Endorsements extends React.Component {
                   <DisplayField label={'New Annual Premium'} name={'newAnnualPremium'} />
 
                   { /* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */ }
-                  <button type="button" className="btn btn-secondary" onClick={() => setCalculate(this.props, true)}>Cancel</button>
+                  <button id="cancel-button" type="button" className="btn btn-secondary" onClick={() => setCalculate(this.props, true)}>Cancel</button>
                   <button type="submit" className="btn btn-primary" disabled={(!appState.data.isCalculated && pristine) || appState.data.isSubmitting}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
 
                 </div>
