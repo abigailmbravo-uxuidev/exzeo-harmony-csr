@@ -1,5 +1,4 @@
 import auth0 from 'auth0-js';
-import _ from 'lodash';
 import jwtDecode from 'jwt-decode';
 
 import history from './history';

@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import _ from 'lodash';
-
 import PolicyHeader from '../components/Policy/PolicyHeader';
 import QuoteSideNav from '../components/Policy/PolicySideNav';
 import PolicyDetailHeader from '../components/Policy/DetailHeader';

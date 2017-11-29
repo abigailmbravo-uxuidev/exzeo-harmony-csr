@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import moment from 'moment';
-import { Link, Prompt } from 'react-router-dom';
-import { reduxForm, propTypes, change, Form } from 'redux-form';
+import moment from 'moment-timezone';
+import { Prompt } from 'react-router-dom';
+import { reduxForm, propTypes, change, Form, submit } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as cgActions from '../../actions/cgActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as questionsActions from '../../actions/questionsActions';
+import * as errorActions from '../../actions/errorActions';
 import PolicyConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
 import normalizePhone from '../Form/normalizePhone';
@@ -20,13 +21,20 @@ import RadioField from '../Form/inputs/RadioField';
 import PhoneField from '../Form/inputs/PhoneField';
 import SelectField from '../Form/inputs/SelectField';
 import CurrencyField from '../Form/inputs/CurrencyField';
+import NumberField from '../Form/inputs/NumberField';
 import Footer from '../Common/Footer';
 import DateField from '../Form/inputs/DateField';
 import Loader from '../Common/Loader';
 import * as policyStateActions from '../../actions/policyStateActions';
+import * as actionTypes from '../../actions/actionTypes';
+import normalizeNumbers from '../Form/normalizeNumbers';
 
 export const setCalculate = (props, reset) => {
-  if (reset) props.reset('Endorsements');
+  if (reset) {
+    props.reset('Endorsements');
+  }
+  props.actions.serviceActions.clearRate();
+
   const workflowId = props.appState.instanceId;
   if (!props.appState.data.isCalculated) return;
 
@@ -43,7 +51,7 @@ export const getNewPolicyNumber = (state) => {
   const taskData = (state.cg && state.appState && state.cg.endorsePolicyModelSave)
       ? state.cg.endorsePolicyModelSave.data
       : null;
-  if (!taskData) { return null; }
+  if (!taskData || !taskData.model || !taskData.model.variables) { return null; }
 
   const policy = _.find(taskData.model.variables, { name: 'retrievePolicy' })
       ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0]
@@ -76,7 +84,7 @@ export const handleInitialize = (state) => {
   const hurricane = _.get(policy, 'deductibles.hurricane.amount');
 
 // Coverage Top Left
-  values.effectiveDateNew = moment.utc(_.get(policy, 'effectiveDate')).format('YYYY-MM-DD');
+  values.endorsementDateNew = moment.utc(_.get(policy, 'effectiveDate')).format('YYYY-MM-DD');
   values.dwellingAmount = _.get(policy, 'coverageLimits.dwelling.amount');
   values.dwellingAmountNew = _.get(policy, 'coverageLimits.dwelling.amount');
   values.otherStructuresAmount = otherStructures;
@@ -112,7 +120,7 @@ export const handleInitialize = (state) => {
   values.ordinanceOrLawNew = _.get(policy, 'coverageLimits.ordinanceOrLaw.amount');
   values.propertyIncidentalOccupanciesMainDwelling = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer') ? 'Yes' : 'No';
   values.propertyIncidentalOccupanciesMainDwellingNew = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer');
-  values.propertyIncidentalOccupanciesOtherStructures = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer') ? 'Yes' : 'No';
+  values.propertyIncidentalOccupanciesOtherStructures = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer') ? 'Yes' : 'No';
   values.propertyIncidentalOccupanciesOtherStructuresNew = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer');
 
   values.liabilityIncidentalOccupancies = _.get(policy, 'coverageOptions.liabilityIncidentalOccupancies.answer') ? 'Yes' : 'No';
@@ -182,11 +190,11 @@ export const handleInitialize = (state) => {
   values.familyUnits = _.get(policy, 'property.familyUnits');
   values.familyUnitsNew = values.familyUnits;
 // Home/Location Bottom Right
-  values.distanceToTidalWater = _.get(policy, 'property.distanceToTidalWater');
+  values.distanceToTidalWater = normalizeNumbers(_.get(policy, 'property.distanceToTidalWater'));
   values.distanceToTidalWaterNew = values.distanceToTidalWater;
-  values.distanceToFireHydrant = _.get(policy, 'property.distanceToFireHydrant');
+  values.distanceToFireHydrant = normalizeNumbers(_.get(policy, 'property.distanceToFireHydrant'));
   values.distanceToFireHydrantNew = values.distanceToFireHydrant;
-  values.distanceToFireStation = _.get(policy, 'property.distanceToFireStation');
+  values.distanceToFireStation = normalizeNumbers(_.get(policy, 'property.distanceToFireStation'));
   values.distanceToFireStationNew = values.distanceToFireStation;
   values.residenceType = _.get(policy, 'property.residenceType');
   values.residenceTypeNew = values.residenceType;
@@ -203,7 +211,6 @@ export const handleInitialize = (state) => {
   values.pH1LastName = _.get(policy, 'policyHolders[0].lastName');
   values.pH1LastNameNew = values.pH1LastName;
   values.pH1phone = normalizePhone(_.get(policy, 'policyHolders[0].primaryPhoneNumber') || '');
-  values.pH1phoneNew = values.pH1phone;
   values.pH1secondaryPhone = normalizePhone(_.get(policy, 'policyHolders[0].secondaryPhoneNumber') || '');
   values.pH1secondaryPhoneNew = values.pH1secondaryPhone;
 
@@ -215,9 +222,7 @@ export const handleInitialize = (state) => {
   values.pH2LastName = _.get(policy, 'policyHolders[1].lastName');
   values.pH2LastNameNew = values.pH2LastName;
   values.pH2phone = normalizePhone(_.get(policy, 'policyHolders[1].primaryPhoneNumber') || '');
-  values.pH2phoneNew = values.pH2phone;
   values.pH2secondaryPhone = normalizePhone(_.get(policy, 'policyHolders[1].secondaryPhoneNumber') || '');
-  values.pH2secondaryPhoneNew = values.pH2secondaryPhone;
 
   // Mailing/Billing
   values.address1 = _.get(policy, 'policyHolderMailingAddress.address1');
@@ -274,32 +279,32 @@ export const updateDependencies = (event, field, dependency, props) => {
 };
 
 
-export const generateModel = (data, policyObject) => {
+export const generateModel = (data, policyObject, props) => {
   const policy = policyObject;
-  const offset = new Date(policy.effectiveDate).getTimezoneOffset() / 60;
+  const endorseDate = moment.tz(moment.utc(data.endorsementDateNew).format('YYYY-MM-DD'), props.zipcodeSettings.timezone).format();
 
   policy.transactionType = 'Endorsement';
   const submitData = {
     ...policy,
     policyID: policy._id,
     formListTransactionType: 'Endorsement',
-    endorsementAmountNew: data.newEndorsementAmount,
-    endorsementDate: moment.utc(data.effectiveDateNew).utcOffset(offset),
+    endorsementAmountNew: data.newEndorsementAmount || 0,
+    endorsementDate: endorseDate,
     country: policy.policyHolderMailingAddress.country,
     pH1FirstName: data.pH1FirstName,
     pH1LastName: data.pH1LastName,
     pH1email: data.pH1email,
-    pH1phone: data.pH1phone,
-    pH1secondaryPhone: data.pH1secondaryPhone,
+    pH1phone: data.pH1phone ? data.pH1phone.replace(/[^\d]/g, '') : '',
+    pH1secondaryPhone: data.pH1secondaryPhone ? data.pH1secondaryPhone.replace(/[^\d]/g, '') : '',
     pH2FirstName: data.pH2FirstName,
     pH2LastName: data.pH2LastName,
     pH2email: data.pH2email,
-    pH2phone: data.pH2phone,
-    pH2secondaryPhone: data.pH2secondaryPhone,
+    pH2phone: data.pH2phone ? data.pH2phone.replace(/[^\d]/g, '') : '',
+    pH2secondaryPhone: data.pH2secondaryPhone ? data.pH2secondaryPhone.replace(/[^\d]/g, '') : '',
     floodZoneNew: data.floodZoneNew,
     squareFeetNew: data.squareFeetNew,
     residenceTypeNew: data.residenceTypeNew,
-    distanceToTidalWaterNew: data.distanceToTidalWaterNew,
+    distanceToTidalWaterNew: data.distanceToTidalWaterNew ? Number(data.distanceToTidalWaterNew.replace(/,|\.$/g, '')) : 0,
     propertyCityNew: data.propertyCityNew,
     propertyZipNew: data.propertyZipNew,
     propertyStateNew: data.propertyStateNew,
@@ -323,7 +328,8 @@ export const generateModel = (data, policyObject) => {
     windBorneDebrisRegionNew: data.windBorneDebrisRegionNew,
     roofToWallConnectionNew: data.roofToWallConnectionNew,
     electronicDeliveryNew: data.electronicDeliveryNew,
-    distanceToFireStationNew: data.distanceToFireStationNew,
+    distanceToFireStationNew: data.distanceToFireStationNew ? Number(data.distanceToFireStationNew.replace(/,|\.$/g, '')) : 0,
+    distanceToFireHydrantNew: data.distanceToFireHydrantNew ? Number(data.distanceToFireHydrantNew.replace(/,|\.$/g, '')) : 0,
     yearOfRoofNew: data.yearOfRoofNew,
     fireAlarmNew: data.fireAlarmNew,
     burglarAlarmNew: data.burglarAlarmNew,
@@ -363,9 +369,6 @@ export const generateModel = (data, policyObject) => {
 };
 
 export const covertToRateData = (changePolicyData, props) => {
-  console.log(props.summaryLedger);
-  const offset = new Date(changePolicyData.effectiveDate).getTimezoneOffset() / 60;
-
   const data = {
     effectiveDate: changePolicyData.effectiveDate,
     policyNumber: changePolicyData.policyNumber,
@@ -375,26 +378,26 @@ export const covertToRateData = (changePolicyData, props) => {
     property: {
       windMitigation: {
         roofGeometry: changePolicyData.roofGeometryNew,
-        floridaBuildingCodeWindSpeed: changePolicyData.floridaBuildingCodeWindSpeedNew,
+        floridaBuildingCodeWindSpeed: Number(changePolicyData.floridaBuildingCodeWindSpeedNew),
         secondaryWaterResistance: changePolicyData.secondaryWaterResistanceNew,
         internalPressureDesign: changePolicyData.internalPressureDesignNew,
         roofCovering: changePolicyData.roofCoveringNew,
         openingProtection: changePolicyData.openingProtectionNew,
         terrain: changePolicyData.terrainNew,
-        floridaBuildingCodeWindSpeedDesign: changePolicyData.floridaBuildingCodeWindSpeedDesignNew,
+        floridaBuildingCodeWindSpeedDesign: Number(changePolicyData.floridaBuildingCodeWindSpeedDesignNew),
         roofDeckAttachment: changePolicyData.roofDeckAttachmentNew,
         windBorneDebrisRegion: changePolicyData.windBorneDebrisRegionNew,
         roofToWallConnection: changePolicyData.roofToWallConnectionNew
       },
       territory: changePolicyData.property.territory,
-      buildingCodeEffectivenessGrading: changePolicyData.buildingCodeEffectivenessGradingNew,
+      buildingCodeEffectivenessGrading: Number(changePolicyData.buildingCodeEffectivenessGradingNew),
       familyUnits: changePolicyData.familyUnitsNew,
       fireAlarm: changePolicyData.fireAlarmNew,
       burglarAlarm: changePolicyData.burglarAlarmNew,
       constructionType: changePolicyData.constructionTypeNew,
-      yearBuilt: changePolicyData.yearBuiltNew,
+      yearBuilt: Number(changePolicyData.yearBuiltNew),
       sprinkler: changePolicyData.sprinklerNew,
-      protectionClass: changePolicyData.protectionClassNew,
+      protectionClass: Number(changePolicyData.protectionClassNew),
       townhouseRowhouse: changePolicyData.townhouseRowhouseNew
     },
     coverageLimits: {
@@ -428,7 +431,7 @@ export const covertToRateData = (changePolicyData, props) => {
     },
     coverageOptions: {
       sinkholePerilCoverage: {
-        answer: changePolicyData.sinkholePerilCoverageNew
+        answer: String(changePolicyData.sinkholePerilCoverageNew) === 'true'
       },
       propertyIncidentalOccupanciesMainDwelling: {
         answer: changePolicyData.propertyIncidentalOccupanciesMainDwellingNew
@@ -445,14 +448,15 @@ export const covertToRateData = (changePolicyData, props) => {
     },
     deductibles: {
       allOtherPerils: {
-        amount: changePolicyData.allOtherPerilsNew
+        amount: Number(changePolicyData.allOtherPerilsNew)
       },
       hurricane: {
-        amount: changePolicyData.hurricaneNew,
-        calculatedAmount: changePolicyData.calculatedHurricaneNew
+        amount: Number(changePolicyData.hurricaneNew),
+        calculatedAmount: Number(setPercentageOfValue(Number(changePolicyData.dwellingAmountNew), Number(changePolicyData.hurricaneNew)))
       },
       sinkhole: {
-        amount: changePolicyData.sinkholeNew
+        amount: Number(changePolicyData.sinkholeNew),
+        calculatedAmount: Number(setPercentageOfValue(Number(changePolicyData.dwellingAmountNew), Number(changePolicyData.sinkholeNew)))
       }
     },
     underwritingAnswers: {
@@ -468,32 +472,39 @@ export const covertToRateData = (changePolicyData, props) => {
     },
     oldTotalPremium: changePolicyData.rating.totalPremium,
     oldCurrentPremium: props.summaryLedger.currentPremium,
-    endorsementDate: moment.utc(changePolicyData.effectiveDateNew).utcOffset(offset)
+    endorsementDate: changePolicyData.endorsementDate
   };
 
   return data;
 };
 
 export const calculate = (data, dispatch, props) => {
-  const submitData = generateModel(data, props.policy);
+  const submitData = generateModel(data, props.policy, props);
   const workflowId = props.appState.instanceId;
+
+  const setLiabilityIncidentalOccupanciesNew = submitData.propertyIncidentalOccupanciesMainDwellingNew || submitData.propertyIncidentalOccupanciesOtherStructuresNew;
+  submitData.liabilityIncidentalOccupanciesNew = setLiabilityIncidentalOccupanciesNew;
+  props.dispatch(change('Endorsements', 'liabilityIncidentalOccupanciesNew', setLiabilityIncidentalOccupanciesNew));
 
   const rateData = covertToRateData(submitData, props);
 
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true, isCalculated: false });
 
-  props.actions.serviceActions.getRate(rateData).then(() => {
-    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: false, isCalculated: true });
+  props.actions.serviceActions.getRate(rateData).then((result) => {
+    if (result.payload && result.payload[0] && result.payload[0].type === actionTypes.APP_ERROR) {
+      props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: false, isCalculated: false });
+    } else props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: false, isCalculated: true });
   });
 };
 
 export const save = (data, dispatch, props) => {
   const workflowId = props.appState.instanceId;
-
-  const submitData = generateModel(data, props.policy);
+  const submitData = generateModel(data, props.policy, props);
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
 
   submitData.rating = props.getRate.rating;
+  submitData.summaryLedger = props.summaryLedger;
+
   props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID }).then((result) => {
     const steps = [{
       name: 'saveEndorsement',
@@ -523,26 +534,36 @@ export class Endorsements extends React.Component {
     }
     if (this.props && this.props.policy && this.props.policy.policyNumber) {
       this.props.actions.serviceActions.getUnderwritingQuestions(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property);
+      this.props.actions.serviceActions.getEndorsementHistory(this.props.policy.policyNumber);
+      this.props.actions.serviceActions.getZipcodeSettings(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property.physicalAddress.zip);
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!_.isEqual(this.props.getRate, nextProps.getRate)) {
+    if (!_.isEqual(this.props.getRate, nextProps.getRate) && nextProps.getRate) {
       const { getRate } = nextProps;
-      nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', getRate.endorsementAmount || '-'));
-      nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', getRate.newCurrentPremium || '-'));
-      nextProps.dispatch(change('Endorsements', 'newAnnualPremium', getRate.newAnnualPremium || '-'));
+      nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', getRate.endorsementAmount || ''));
+      nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', getRate.newCurrentPremium || ''));
+      nextProps.dispatch(change('Endorsements', 'newAnnualPremium', getRate.newAnnualPremium || ''));
     }
     if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
     }
     if (!_.isEqual(this.props.newPolicyNumber, nextProps.newPolicyNumber)) {
       this.props.actions.policyStateActions.updatePolicy(true, nextProps.newPolicyNumber);
-      const effectiveDateNew = moment.utc(_.get(nextProps.policy, 'effectiveDate')).format('YYYY-MM-DD');
-      nextProps.dispatch(change('Endorsements', 'effectiveDateNew', effectiveDateNew));
+      const endorsementDateNew = moment.utc(_.get(nextProps.policy, 'effectiveDate')).format('YYYY-MM-DD');
+      nextProps.dispatch(change('Endorsements', 'endorsementDateNew', endorsementDateNew));
       nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', ''));
       nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', ''));
       nextProps.dispatch(change('Endorsements', 'newAnnualPremium', ''));
+    }
+    if (this.props.tasks && this.props.tasks.endorsePolicyModelSave && this.props.tasks.endorsePolicyModelSave.data &&
+      nextProps.tasks && nextProps.tasks.endorsePolicyModelSave && nextProps.tasks.endorsePolicyModelSave.data &&
+      !_.isEqual(this.props.tasks.endorsePolicyModelSave.data, nextProps.tasks.endorsePolicyModelSave.data)) {
+      if (nextProps.tasks.endorsePolicyModelSave.data.result && nextProps.tasks.endorsePolicyModelSave.data.result.status !== 200) {
+        nextProps.dispatch(errorActions.setAppError({ message: nextProps.tasks.endorsePolicyModelSave.data.result.result }));
+        setCalculate(nextProps);
+      }
     }
   }
 
@@ -576,7 +597,11 @@ export class Endorsements extends React.Component {
         <ClearErrorConnect />
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         {this.props.appState.data.isSubmitting && <Loader />}
-        <Form id="Endorsements" className={'content-wrapper'} onSubmit={appState.data.isCalculated ? handleSubmit(save) : handleSubmit(calculate)} >
+        <Form
+          id="Endorsements" className={'content-wrapper'} onKeyPress={(e) => {
+            if (e.key === 'Enter') e.preventDefault();
+          }} onSubmit={appState.data.isCalculated ? handleSubmit(save) : handleSubmit(calculate)}
+        >
 
           <div className="route-content">
             <div className="endorsements">
@@ -616,7 +641,7 @@ export class Endorsements extends React.Component {
 
                             name={'otherStructuresNew'}
                             answers={getAnswers('otherStructuresAmount', questions)}
-                            component="select" label={''} styleName={'coverage-b-percentage'} onChange={event => updateDependencies(event, 'otherStructuresAmountNew', 'dwellingAmount', this.props)} validations={['required']}
+                            component="select" label={''} styleName={'coverage-b-percentage'} onChange={event => updateDependencies(event, 'otherStructuresAmountNew', 'dwellingAmountNew', this.props)} validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
@@ -628,7 +653,7 @@ export class Endorsements extends React.Component {
                           <SelectField
                             name={'personalPropertyNew'}
                             answers={getAnswers('personalPropertyAmount', questions)}
-                            component="select" label={''} styleName={'coverage-c-percentage'} onChange={event => updateDependencies(event, 'personalPropertyAmountNew', 'dwellingAmount', this.props)} validations={['required']}
+                            component="select" label={''} styleName={'coverage-c-percentage'} onChange={event => updateDependencies(event, 'personalPropertyAmountNew', 'dwellingAmountNew', this.props)} validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
@@ -679,7 +704,7 @@ export class Endorsements extends React.Component {
                             label={''}
                             name={'hurricaneNew'}
                             answers={getAnswers('hurricane', questions)}
-                            component="select" styleName={''} onChange={event => updateDependencies(event, 'calculatedHurricane', 'dwellingAmount', this.props)} validations={['required']}
+                            component="select" styleName={''} onChange={event => updateDependencies(event, 'calculatedHurricane', 'dwellingAmountNew', this.props)} validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
@@ -766,6 +791,7 @@ export class Endorsements extends React.Component {
                           <TextField label={'Incidental Occ Liability'} styleName={''} name={'liabilityIncidentalOccupancies'} disabled />
                           <div className="flex-child other-coverages-property-replacement-cost">
                             <RadioField
+                              disabled
                               onChange={() => setCalculate(this.props, false)}
                               name={'liabilityIncidentalOccupanciesNew'} styleName={'billPlan'} label={''} segmented answers={[
                                 {
@@ -955,11 +981,11 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'FBC Wind Speed'} styleName={''} name={'floridaBuildingCodeWindSpeed'} disabled />
-                          <TextField validations={['required']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedNew'} onChange={() => setCalculate(this.props, false)} />
+                          <TextField validations={['required', 'numbersOnly']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedNew'} onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'FBC Wind Speed Design'} styleName={''} name={'floridaBuildingCodeWindSpeedDesign'} disabled />
-                          <TextField validations={['required']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedDesignNew'} onChange={() => setCalculate(this.props, false)} />
+                          <TextField validations={['required', 'numbersOnly']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedDesignNew'} onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Terrain'} styleName={''} name={'terrain'} disabled />
@@ -1007,6 +1033,7 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <TextField label={'Year Home Built'} styleName={''} name="yearBuilt" disabled />
                           <TextField
+                            validations={['numbersOnly']}
                             styleName={''} label={''} name="yearBuiltNew" onChange={() => setCalculate(this.props, false)}
                           />
                         </div>
@@ -1063,15 +1090,15 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Tidal Waters Dist.'} styleName={''} name={'distanceToTidalWater'} disabled />
-                          <TextField validations={['required']} label={''} styleName={''} name={'distanceToTidalWaterNew'} onChange={() => setCalculate(this.props, false)} />
+                          <NumberField label={''} styleName={''} name={'distanceToTidalWaterNew'} onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Fire Hydrant Dist.'} styleName={''} name={'distanceToFireHydrant'} disabled />
-                          <TextField label={''} styleName={''} name={'distanceToFireHydrantNew'} onChange={() => setCalculate(this.props, false)} />
+                          <NumberField label={''} styleName={''} name={'distanceToFireHydrantNew'} onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Fire Station Dist.'} styleName={''} name={'distanceToFireStation'} disabled />
-                          <TextField label={''} styleName={''} name={'distanceToFireStationNew'} onChange={() => setCalculate(this.props, false)} />
+                          <NumberField label={''} styleName={''} name={'distanceToFireStationNew'} onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Residence Type'} styleName={''} name={'residenceType'} disabled />
@@ -1115,17 +1142,7 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="flex-parent col2">
                           <TextField validations={['required', 'email']} label={'Email Address'} styleName={''} name={'pH1email'} onChange={() => setCalculate(this.props, false)} />
-                          <RadioField
-                            name={'electronicDeliveryNew'} styleName={''} label={'Electronic Delivery'} onChange={() => setCalculate(this.props, false)} segmented answers={[
-                              {
-                                answer: false,
-                                label: 'No'
-                              }, {
-                                answer: true,
-                                label: 'Yes'
-                              }
-                            ]}
-                          />
+                          {/* electronic delivery question placeholder */ }
                         </div>
                       </div>
                       {/* Col2 */}
@@ -1191,13 +1208,13 @@ export class Endorsements extends React.Component {
                 <div className="flex-parent">
                   <div className="form-group">
                     <DateField
-                      validations={['date']} label={'Endorsement Effective Date'} name={'effectiveDateNew'}
+                      validations={['date']} label={'Endorsement Effective Date'} name={'endorsementDateNew'}
                       min={moment.utc(policy.effectiveDate).format('YYYY-MM-DD')}
                       max={moment.utc(policy.endDate).format('YYYY-MM-DD')}
                       onChange={() => setCalculate(this.props, false)}
                     />
                   </div>
-                  <DisplayField label={'New End. Amount'} name={'newEndorsementAmount'} />
+                  <DisplayField label={'New End Amount'} name={'newEndorsementAmount'} />
 
                   <DisplayField label={'New End Premium'} name={'newEndorsementPremium'} />
 
@@ -1255,11 +1272,13 @@ const mapStateToProps = state => ({
   underwritingQuestions: state.service.underwritingQuestions,
   getRate: state.service.getRate,
   newPolicyNumber: getNewPolicyNumber(state),
-  summaryLedger: state.service.getSummaryLedger || {}
+  summaryLedger: state.service.getSummaryLedger || {},
+  zipcodeSettings: state.service.getZipcodeSettings
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    errorActions: bindActionCreators(errorActions, dispatch),
     policyStateActions: bindActionCreators(policyStateActions, dispatch),
     questionsActions: bindActionCreators(questionsActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),

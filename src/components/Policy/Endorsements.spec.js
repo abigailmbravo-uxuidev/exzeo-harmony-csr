@@ -32,12 +32,14 @@ describe('Testing Endorsements component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      zipcodeSettings: {},
       summaryLedger: {},
       reset() {},
       getRate: {},
       actions: {
         errorActions: { dispatchClearAppError() { } },
         serviceActions: {
+          getZipcodeSettings() {},
           getUnderwritingQuestions() {},
           getEndorsementHistory() {},
           getBillingOptions() { },
@@ -46,7 +48,8 @@ describe('Testing Endorsements component', () => {
           getTransactionHistory() {},
           getSummaryLedger() {},
           getPaymentHistory() {},
-          getPaymentOptionsApplyPayments() {}
+          getPaymentOptionsApplyPayments() {},
+          clearRate() {}
         },
         cgActions: {
           startWorkflow() { return Promise.resolve({ payload: [{ workflowData: { endorsePolicyModelSave: { data: {} }, endorsePolicyModelCalculate: { data: {} } } }] }); },
@@ -126,7 +129,8 @@ describe('Testing Endorsements component', () => {
     wrapper.find('[name="roofToWallConnectionNew"]').simulate('change', { target: { value: 'Other' } });
     wrapper.find('[name="secondaryWaterResistanceNew"]').simulate('change', { target: { value: 'Other' } });
     wrapper.find('[name="openingProtectionNew"]').simulate('change', { target: { value: 'Other' } });
-    wrapper.find('[name="electronicDeliveryNew"]').simulate('change', { target: { value: false } });
+    // hidden
+    // wrapper.find('[name="electronicDeliveryNew"]').simulate('change', { target: { value: false } });
     wrapper.find('[name="floridaBuildingCodeWindSpeedNew"]').simulate('change', { target: { value: '140' } });
     wrapper.find('[name="floridaBuildingCodeWindSpeedDesignNew"]').simulate('change', { target: { value: '140' } });
     wrapper.find('[name="terrainNew"]').simulate('change', { target: { value: 'C' } });
@@ -168,7 +172,7 @@ describe('Testing Endorsements component', () => {
     wrapper.find('[name="propertyCityNew"]').simulate('change', { target: { value: 'ABC' } });
     wrapper.find('[name="propertyStateNew"]').simulate('change', { target: { value: 'FL' } });
     wrapper.find('[name="propertyZipNew"]').simulate('change', { target: { value: '33627' } });
-    wrapper.find('[name="effectiveDateNew"]').simulate('change', { target: { value: '10/27/2017' } });
+    wrapper.find('[name="endorsementDateNew"]').simulate('change', { target: { value: '10/27/2017' } });
     wrapper.find('button.btn-secondary').simulate('click');
     wrapper.find('button.btn-primary').simulate('click');
     getNewPolicyNumber(initialState);

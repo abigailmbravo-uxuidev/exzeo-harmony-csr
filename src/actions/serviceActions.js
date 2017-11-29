@@ -502,6 +502,10 @@ export const getRate = policyObject => (dispatch) => {
     });
 };
 
+export const clearRate = () => dispatch => dispatch(batchActions([
+  serviceRequest({ getRate: {} })
+]));
+
 export const getQuote = quoteId => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'quote-data.services',
@@ -523,7 +527,6 @@ export const getQuote = quoteId => (dispatch) => {
     });
 };
 
-
 export const createTransaction = submitData => (dispatch) => {
   const body = {
     service: 'policy-data.services',
@@ -535,6 +538,27 @@ export const createTransaction = submitData => (dispatch) => {
 
   return Promise.resolve(axios(axiosConfig)).then((response) => {
     const data = { addTransaction: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+      .catch((error) => {
+        const message = handleError(error);
+        return dispatch(batchActions([
+          errorActions.setAppError({ message })
+        ]));
+      });
+};
+
+export const getZipcodeSettings = (companyCode, state, product, zip) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'underwriting.services',
+    method: 'GET',
+    path: `zip-code?companyCode=${companyCode}&state=${state}&product=${product}&zip=${zip}`
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { getZipcodeSettings: response.data && response.data.result ? response.data.result[0] : {} };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));

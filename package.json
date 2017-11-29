@@ -1,6 +1,6 @@
 {
   "name": "harmony-csr",
-  "version": "0.8.4",
+  "version": "0.8.10",
   "private": true,
   "dependencies": {
     "auth0-js": "8.10.1",
@@ -19,7 +19,7 @@
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.13",
-    "node-sass": "^4.5.0",
+    "node-sass": "4.6.1",
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "react-bootstrap-table": "^4.0.3",

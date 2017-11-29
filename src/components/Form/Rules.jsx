@@ -12,7 +12,8 @@ const rules = {
   onlyAlphaNumeric: value => (!value || value.match(/^[\w\-\s]+$/g) ? undefined : 'Invalid characters'),
   invalidCharacters: value => (!value.match(/\/|\\/) ? undefined : 'Invalid characters'),
   numberDashesOnly: value => (value.match(/^(\d+-?)+\d+$/) ? undefined : 'Only numbers and dashes allowed'),
-  numbersOnly: value => ((!value || validator.isNumeric(value)) ? undefined : 'Not a valid zip code')
+  zipNumbersOnly: value => ((!value || validator.isNumeric(String(value))) ? undefined : 'Not a valid zip code'),
+  numbersOnly: value => ((!value || validator.isNumeric(String(value))) ? undefined : 'Not a valid number')
 };
 
 export function combineRules(validations, variables) {
@@ -55,7 +56,7 @@ export function combineRules(validations, variables) {
         if (allValues[field]) return 'Field Required';
       }
       return undefined;
-    }
+    };
     ruleArray.push(checkFields);
   }
   return ruleArray;
