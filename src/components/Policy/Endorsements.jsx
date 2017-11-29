@@ -613,10 +613,10 @@ export class Endorsements extends React.Component {
           <div className="route-content">
             <div className="endorsements">
               <div className="endo-jump-menu">
-                <button type="button" onClick={() => scrollToView('coverage')} className="btn btn-secondary btn-xs">Coverage</button>
-                <button type="button" onClick={() => scrollToView('home')} className="btn btn-secondary btn-xs">Home / Location</button>
-                <button type="button" onClick={() => scrollToView('policy')} className="btn btn-secondary btn-xs">Policyholders</button>
-                <button type="button" onClick={() => scrollToView('addresses')} className="btn btn-secondary btn-xs">Addresses</button>
+                <button id="coverage-scroll" type="button" onClick={() => scrollToView('coverage')} className="btn btn-secondary btn-xs">Coverage</button>
+                <button id="home-scroll" type="button" onClick={() => scrollToView('home')} className="btn btn-secondary btn-xs">Home / Location</button>
+                <button id="policy-scroll" ttype="button" onClick={() => scrollToView('policy')} className="btn btn-secondary btn-xs">Policyholders</button>
+                <button id="addresses-scroll" ttype="button" onClick={() => scrollToView('addresses')} className="btn btn-secondary btn-xs">Addresses</button>
               </div>
               <div className="scroll">
                 <div className="form-group survey-wrapper" role="group">
@@ -1228,7 +1228,7 @@ export class Endorsements extends React.Component {
                   <DisplayField label={'New Annual Premium'} name={'newAnnualPremium'} />
 
                   { /* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */ }
-                  <button type="button" className="btn btn-secondary" onClick={() => setCalculate(this.props, true)}>Cancel</button>
+                  <button id="cancel-button" type="button" className="btn btn-secondary" onClick={() => setCalculate(this.props, true)}>Cancel</button>
                   <button type="submit" className="btn btn-primary" disabled={(!appState.data.isCalculated && pristine) || appState.data.isSubmitting}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
 
                 </div>

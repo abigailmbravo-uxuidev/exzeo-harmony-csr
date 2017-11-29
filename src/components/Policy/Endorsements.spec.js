@@ -173,8 +173,14 @@ describe('Testing Endorsements component', () => {
     wrapper.find('[name="propertyStateNew"]').simulate('change', { target: { value: 'FL' } });
     wrapper.find('[name="propertyZipNew"]').simulate('change', { target: { value: '33627' } });
     wrapper.find('[name="endorsementDateNew"]').simulate('change', { target: { value: '10/27/2017' } });
-    wrapper.find('button.btn-secondary').simulate('click');
     wrapper.find('button.btn-primary').simulate('click');
+
+    wrapper.find('button#coverage-scroll').simulate('click');
+    wrapper.find('button#home-scroll').simulate('click');
+    wrapper.find('button#policy-scroll').simulate('click');
+    wrapper.find('button#addresses-scroll').simulate('click');
+    wrapper.find('button#cancel-button').simulate('click');
+
     getNewPolicyNumber(initialState);
   });
 });
