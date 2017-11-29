@@ -1,6 +1,6 @@
 {
   "name": "harmony-csr",
-  "version": "0.8.10",
+  "version": "0.8.11",
   "private": true,
   "dependencies": {
     "auth0-js": "8.10.1",

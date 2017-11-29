@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { reduxForm, propTypes, change, Form } from 'redux-form';
 import { shallow, mount } from 'enzyme';
-import { Endorsements, calculatePercentage, handleInitialize, setPercentageOfValue, updateDependencies, calculate, save, setCalculate, updateCalculatedSinkhole, getNewPolicyNumber } from './Endorsements';
+import { Endorsements, calculatePercentage, handleInitialize, setPercentageOfValue, updateDependencies, calculate, save, setCalculate, updateCalculatedSinkhole, getNewPolicyNumber, setEndorsementDate } from './Endorsements';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
@@ -101,6 +101,9 @@ describe('Testing Endorsements component', () => {
     wrapper.instance().updateDwellingAndDependencies({}, '5000');
     props.getRate = { worksheet: {} };
     wrapper.instance().componentWillReceiveProps(props);
+
+    const endsDate = setEndorsementDate('2016-11-27', '2017-11-26');
+    expect(endsDate).toEqual('2017-11-26');
 
     wrapper.find('[name="otherStructuresNew"]').simulate('change', { target: { value: '4,540' } });
     wrapper.find('[name="personalPropertyNew"]').simulate('change', { target: { value: '4,540' } });
