@@ -29,6 +29,13 @@ import * as policyStateActions from '../../actions/policyStateActions';
 import * as actionTypes from '../../actions/actionTypes';
 import normalizeNumbers from '../Form/normalizeNumbers';
 
+export const scrollToView = (elementName) => {
+  const element = document.getElementById(elementName);
+  if (element) {
+    element.scrollIntoView(true);
+  }
+};
+
 export const setCalculate = (props, reset) => {
   if (reset) {
     props.reset('Endorsements');
@@ -141,7 +148,7 @@ export const handleInitialize = (state) => {
 
   values.townhouseRowhouse = _.get(policy, 'property.townhouseRowhouse') ? 'Yes' : 'No';
   values.townhouseRowhouseNew = !!_.get(policy, 'property.townhouseRowhouse');
-  values.windExcluded = _.get(policy, 'rating.windMitigationDiscount') === 0 ? 'No' : 'Yes';
+  values.windExcluded = _.get(policy, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount') === 0 ? 'No' : 'Yes';
   values.windExcludedNew = values.windExcluded;
   values.rented = _.get(policy, 'underwritingAnswers.rented.answer');
   values.rentedNew = values.rented;
@@ -187,7 +194,7 @@ export const handleInitialize = (state) => {
   values.internalPressureDesignNew = values.internalPressureDesign;
   values.windBorneDebrisRegion = _.get(policy, 'property.windMitigation.windBorneDebrisRegion');
   values.windBorneDebrisRegionNew = values.windBorneDebrisRegion;
-  values.windMitFactor = _.get(policy, 'rating.windMitigationDiscount');
+  values.windMitFactor = _.get(policy, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
   values.windMitFactorNew = values.windMitFactor;
 // Home/Location Bottom Left
   values.yearBuilt = _.get(policy, 'property.yearBuilt');
@@ -317,7 +324,7 @@ export const generateModel = (data, policyObject, props) => {
     floodZoneNew: data.floodZoneNew,
     squareFeetNew: data.squareFeetNew,
     residenceTypeNew: data.residenceTypeNew,
-    distanceToTidalWaterNew: data.distanceToTidalWaterNew ? Number(data.distanceToTidalWaterNew.replace(/,|\.$/g, '')) : 0,
+    distanceToTidalWaterNew: data.distanceToTidalWaterNew ? Number(String(data.distanceToTidalWaterNew).replace(/,|\.$/g, '')) : 0,
     propertyCityNew: data.propertyCityNew,
     propertyZipNew: data.propertyZipNew,
     propertyStateNew: data.propertyStateNew,
@@ -341,8 +348,8 @@ export const generateModel = (data, policyObject, props) => {
     windBorneDebrisRegionNew: data.windBorneDebrisRegionNew,
     roofToWallConnectionNew: data.roofToWallConnectionNew,
     electronicDeliveryNew: data.electronicDeliveryNew,
-    distanceToFireStationNew: data.distanceToFireStationNew ? Number(data.distanceToFireStationNew.replace(/,|\.$/g, '')) : 0,
-    distanceToFireHydrantNew: data.distanceToFireHydrantNew ? Number(data.distanceToFireHydrantNew.replace(/,|\.$/g, '')) : 0,
+    distanceToFireStationNew: data.distanceToFireStationNew ? Number(String(data.distanceToFireStationNew).replace(/,|\.$/g, '')) : 0,
+    distanceToFireHydrantNew: data.distanceToFireHydrantNew ? Number(String(data.distanceToFireHydrantNew).replace(/,|\.$/g, '')) : 0,
     yearOfRoofNew: data.yearOfRoofNew,
     fireAlarmNew: data.fireAlarmNew,
     burglarAlarmNew: data.burglarAlarmNew,
@@ -561,6 +568,7 @@ export class Endorsements extends React.Component {
     }
     if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
+      setCalculate(nextProps, true);
     }
     if (!_.isEqual(this.props.newPolicyNumber, nextProps.newPolicyNumber)) {
       this.props.actions.policyStateActions.updatePolicy(true, nextProps.newPolicyNumber);
@@ -619,10 +627,10 @@ export class Endorsements extends React.Component {
           <div className="route-content">
             <div className="endorsements">
               <div className="endo-jump-menu">
-                <a href="#coverage" className="btn btn-secondary btn-xs">Coverage</a>
-                <a href="#home" className="btn btn-secondary btn-xs">Home / Location</a>
-                <a href="#policy" className="btn btn-secondary btn-xs">Policyholders</a>
-                <a href="#addresses" className="btn btn-secondary btn-xs">Addresses</a>
+                <button id="coverage-scroll" type="button" onClick={() => scrollToView('coverage')} className="btn btn-secondary btn-xs">Coverage</button>
+                <button id="home-scroll" type="button" onClick={() => scrollToView('home')} className="btn btn-secondary btn-xs">Home / Location</button>
+                <button id="policy-scroll" ttype="button" onClick={() => scrollToView('policy')} className="btn btn-secondary btn-xs">Policyholders</button>
+                <button id="addresses-scroll" ttype="button" onClick={() => scrollToView('addresses')} className="btn btn-secondary btn-xs">Addresses</button>
               </div>
               <div className="scroll">
                 <div className="form-group survey-wrapper" role="group">
@@ -1234,7 +1242,7 @@ export class Endorsements extends React.Component {
                   <DisplayField label={'New Annual Premium'} name={'newAnnualPremium'} />
 
                   { /* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */ }
-                  <button type="button" className="btn btn-secondary" onClick={() => setCalculate(this.props, true)}>Cancel</button>
+                  <button id="cancel-button" type="button" className="btn btn-secondary" onClick={() => setCalculate(this.props, true)}>Cancel</button>
                   <button type="submit" className="btn btn-primary" disabled={(!appState.data.isCalculated && pristine) || appState.data.isSubmitting}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
 
                 </div>
