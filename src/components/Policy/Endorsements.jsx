@@ -302,6 +302,7 @@ export const updateDependencies = (event, field, dependency, props) => {
 export const generateModel = (data, policyObject, props) => {
   const policy = policyObject;
   const endorseDate = moment.tz(moment.utc(data.endorsementDateNew).format('YYYY-MM-DD'), props.zipcodeSettings.timezone).format();
+  const sinkholeAmount = _.get(policy, 'deductibles.sinkhole.amount') || 10;
 
   policy.transactionType = 'Endorsement';
   const submitData = {
@@ -379,7 +380,7 @@ export const generateModel = (data, policyObject, props) => {
     allOtherPerilsNew: data.allOtherPerilsNew,
     hurricaneNew: data.hurricaneNew,
     calculatedHurricaneNew: data.calculatedHurricaneNew,
-    sinkholeNew: String(data.sinkholePerilCoverageNew) === 'true' ? _.get(policy, 'deductibles.sinkhole.amount') : 0,
+    sinkholeNew: String(data.sinkholePerilCoverageNew) === 'true' ? sinkholeAmount : 0,
     // underwriting answers
     noPriorInsuranceNew: data.noPriorInsuranceNew,
     monthsOccupiedNew: data.monthsOccupiedNew,
