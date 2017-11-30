@@ -92,20 +92,23 @@ class Routes extends Component {
       <div>
         <Modal
           isOpen={this.props.error.message !== undefined}
-          contentLabel="Example Modal"
+          contentLabel="Error Modal"
           style={this.modalStyles}
           className="card"
         >
           <div className="card-header"><h4><i className="fa fa-exclamation-circle" />&nbsp;Error</h4></div>
           <div className="card-block">{ this.props.error.message }</div>
-          <div className="card-footer"><button className="btn-primary" onClick={this.clearError}>close</button></div>
-
+          <div className="card-footer">
+            <div>Request ID: { this.props.error.requestId }</div>
+            <button className="btn-primary" onClick={this.clearError}>close</button>
+          </div>
         </Modal>
+
         <Router
           getUserConfirmation={(message, callback) => {
             ReactDOM.render((
               <ConfirmPopup {...this.props} message={message} setBackStep={this.setBackStep} callback={callback} />
-      ), document.getElementById('modal'));
+            ), document.getElementById('modal'));
           }}
         >
           <div className="routes">
