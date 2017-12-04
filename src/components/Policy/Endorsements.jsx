@@ -312,6 +312,8 @@ export const generateModel = (data, policyObject, props) => {
     endorsementAmountNew: data.newEndorsementAmount || 0,
     endorsementDate: endorseDate,
     country: policy.policyHolderMailingAddress.country,
+    pH1Id: _.get(policy, 'policyHolders[0]._id') || '',
+    pH2Id: _.get(policy, 'policyHolders[1]._id') || '',
     pH1FirstName: data.pH1FirstName,
     pH1LastName: data.pH1LastName,
     pH1email: data.pH1email,
