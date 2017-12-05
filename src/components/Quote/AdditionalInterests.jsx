@@ -77,7 +77,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
       _id: data._id, // eslint-disable-line
     name1: data.name1,
     name2: data.name2,
-    referenceNumber: data.referenceNumber,
+    referenceNumber: data.referenceNumber || '',
     order,
     active: true,
     type,

@@ -99,7 +99,7 @@ export const handleAISubmit = (data, dispatch, props) => {
       });
   const additionalInterests = policy.additionalInterests || [];
 
-  const type = appState.data.addAdditionalInterestType;
+  const type = data.aiType || appState.data.addAdditionalInterestType;
 
   let order = 0;
 
@@ -118,7 +118,7 @@ export const handleAISubmit = (data, dispatch, props) => {
     additionalInterestId: data._id, // eslint-disable-line
     name1: data.name1,
     name2: data.name2,
-    referenceNumber: data.referenceNumber,
+    referenceNumber: data.referenceNumber || '',
     order,
     active: true,
     type,
@@ -209,6 +209,15 @@ export const handleBillingFormSubmit = (data, dispatch, props) => {
 
 export const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
+export const checkValidTypes = (additionalInterests) => {
+  const ais = [];
+  if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee').length <= 1) ais.push({ answer: 'Mortgagee' });
+  if (_.filter(additionalInterests, ai => ai.type === 'Additional Insured').length <= 1) ais.push({ answer: 'Additional Insured' });
+  if (_.filter(additionalInterests, ai => ai.type === 'Additional Interest').length <= 1) ais.push({ answer: 'Additional Interest' });
+  if (_.filter(additionalInterests, ai => ai.type === 'Lienholder').length <= 1) ais.push({ answer: 'Lienholder' });
+  if (_.filter(additionalInterests, ai => ai.type === 'Bill Payer').length === 0) ais.push({ answer: 'Bill Payer' });
+  return ais;
+};
 
 export class MortgageBilling extends Component {
 
@@ -311,6 +320,8 @@ export class MortgageBilling extends Component {
     _.forEach(paymentHistory, (payment) => {
       payment.amountDisplay = payment.amount.$numberDecimal;
     });
+
+    const validAdditionalInterestTypes = checkValidTypes(additionalInterests);
 
     return (
       <PolicyConnect>
@@ -438,7 +449,7 @@ export class MortgageBilling extends Component {
               </section>
             </div>
           </div>
-          { this.props.appState.data.showAdditionalInterestEditModal && <AIEditModal questions={questions} selectedAI={this.props.appState.data.selectedAI} policy={this.props.policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
+          { this.props.appState.data.showAdditionalInterestEditModal && <AIEditModal validAdditionalInterestTypes={validAdditionalInterestTypes} isEndorsement questions={questions} selectedAI={this.props.appState.data.selectedAI} policy={this.props.policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
           { this.props.appState.data.showAdditionalInterestModal && <AIModal questions={questions} policy={this.props.policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
         </div>
         { this.props.appState.data.showBillingEditModal && <BillingModal policy={this.props.policy} billingOptions={this.props.billingOptions} handleBillingFormSubmit={handleBillingFormSubmit} hideBillingModal={() => hideBillingModal(this.props)} /> }
