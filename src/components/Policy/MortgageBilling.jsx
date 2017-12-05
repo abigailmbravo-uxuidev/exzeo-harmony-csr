@@ -103,8 +103,10 @@ export const handleAISubmit = (data, dispatch, props) => {
 
   let order = 0;
 
-  if (data.order !== 0 && data.order !== 1) {
+  if (String(data.order) !== '0' && String(data.order) !== '1') {
     order = _.filter(additionalInterests, ai => ai.type === type).length === 0 ? 0 : 1;
+  } else {
+    order = data.order;
   }
 
       // remove any existing items before submission
