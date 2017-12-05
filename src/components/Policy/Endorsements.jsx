@@ -306,6 +306,8 @@ export const updatepersonalPropertyDependnecies = (event, field, dependency, pro
 
   if (Number(event.target.value) === 0) {
     dispatch(change('Endorsements', 'personalPropertyReplacementCostCoverageNew', false));
+  } else {
+    dispatch(change('Endorsements', 'personalPropertyReplacementCostCoverageNew', _.get(props.policy, 'coverageOptions.personalPropertyReplacementCost.answer') || false));
   }
 
   const dependencyValue = String(fieldValues[dependency]).replace(/\D+/g, '');
