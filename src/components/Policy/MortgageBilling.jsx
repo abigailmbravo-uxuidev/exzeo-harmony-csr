@@ -209,13 +209,13 @@ export const handleBillingFormSubmit = (data, dispatch, props) => {
 
 export const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
-export const checkValidTypes = (additionalInterests) => {
+export const checkValidTypes = (additionalInterests, selectedAI) => {
   const ais = [];
-  if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee').length <= 1) ais.push({ answer: 'Mortgagee' });
-  if (_.filter(additionalInterests, ai => ai.type === 'Additional Insured').length <= 1) ais.push({ answer: 'Additional Insured' });
-  if (_.filter(additionalInterests, ai => ai.type === 'Additional Interest').length <= 1) ais.push({ answer: 'Additional Interest' });
-  if (_.filter(additionalInterests, ai => ai.type === 'Lienholder').length <= 1) ais.push({ answer: 'Lienholder' });
-  if (_.filter(additionalInterests, ai => ai.type === 'Bill Payer').length === 0) ais.push({ answer: 'Bill Payer' });
+  if (selectedAI.type === 'Mortgagee' || _.filter(additionalInterests, ai => ai.type === 'Mortgagee').length <= 1) ais.push({ answer: 'Mortgagee' });
+  if (selectedAI.type === 'Additional Insured' || _.filter(additionalInterests, ai => ai.type === 'Additional Insured').length <= 1) ais.push({ answer: 'Additional Insured' });
+  if (selectedAI.type === 'Additional Interest' || _.filter(additionalInterests, ai => ai.type === 'Additional Interest').length <= 1) ais.push({ answer: 'Additional Interest' });
+  if (selectedAI.type === 'Lienholder' || _.filter(additionalInterests, ai => ai.type === 'Lienholder').length <= 1) ais.push({ answer: 'Lienholder' });
+  if (selectedAI.type === 'Bill Payer' || _.filter(additionalInterests, ai => ai.type === 'Bill Payer').length === 0) ais.push({ answer: 'Bill Payer' });
   return ais;
 };
 
@@ -321,7 +321,7 @@ export class MortgageBilling extends Component {
       payment.amountDisplay = payment.amount.$numberDecimal;
     });
 
-    const validAdditionalInterestTypes = checkValidTypes(additionalInterests);
+    const validAdditionalInterestTypes = checkValidTypes(additionalInterests, this.props.appState.data.selectedAI || {});
 
     return (
       <PolicyConnect>
