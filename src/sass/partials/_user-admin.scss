@@ -1,0 +1,50 @@
+
+//add to search.scss
+.search-tools {
+    display: flex;
+    align-items: flex-end;
+    flex-grow: 1;
+
+    .search-inputs {
+
+        .user-name-search {
+            flex-basis: auto;
+            flex-grow: 1;
+            flex-shrink: 1;
+            margin-right: $padding;
+        }
+    }
+}
+
+.search-inputs {
+    .agency-id-search {
+        flex-basis: 10rem;
+        flex-grow: 0;
+        flex-shrink: 0;
+        margin-right: $padding;
+    }
+    .agency-name-search {
+        flex-basis: auto;
+        flex-grow: 1;
+        flex-shrink: 1;
+        margin-right: $padding;
+    }
+    .agency-address-search {
+        flex-basis: auto;
+        flex-grow: 1;
+        flex-shrink: 1;
+        margin-right: $padding;
+    }
+    .agency-reg-lic-fein-search {
+        flex-basis: 10rem;
+        flex-grow: 0;
+        flex-shrink: 0;
+        margin-right: $padding;
+    }
+    .agency-phone-search {
+        flex-basis: 10rem;
+        flex-grow: 0;
+        flex-shrink: 0;
+        margin-right: $padding;
+    }
+}

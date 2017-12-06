@@ -162,6 +162,14 @@ const SearchForm = (props) => {
               {
                 answer: 'policy',
                 label: 'Policy Search'
+              },
+              {
+                answer: 'user',
+                label: 'User Search'
+              },
+              {
+                answer: 'agency',
+                label: 'Agency Search'
               }
             ]}
           />
@@ -202,7 +210,6 @@ const SearchForm = (props) => {
           </button>
         </div>
         }
-
         {fieldValues.searchType === 'policy' && <div className="search-inputs fade-in">
 
           {generateField('firstName', 'First Name Search', 'First Name', formErrors, 'first-name-search')}
@@ -220,7 +227,43 @@ const SearchForm = (props) => {
           </button>
         </div>
         }
+        {/*<!-- Should be available only in user admin  -->*/}
+        {fieldValues.searchType === 'user' && <div className="search-tools">
+            <div className="search-inputs fade-in">
 
+              {generateField('user', 'Search for user by name', 'User Name', formErrors, 'user-name-search')}
+
+              <button
+                className="btn btn-success multi-input"
+                type="submit"
+                form="SearchBar"
+                disabled={props.appState.data.submitting || formErrors}
+              >
+                <i className="fa fa-search" />Search
+              </button>
+            </div>
+            <div className="filters fade-in">FILTERS HERE</div>
+          </div>
+        }
+        {fieldValues.searchType === 'agency' && <div className="search-inputs fade-in">
+
+          {generateField('agencyID', 'Agency ID Search', 'Agency ID', formErrors, 'agency-id-search')}
+          {generateField('AgencyName', 'Agency Name Search', 'Agency Name', formErrors, 'agency-name-search')}
+          {generateField('address', 'Agency Address Search', 'Agency Address', formErrors, 'agency-address-search')}
+          {generateField('regLicFein', 'Reg/Lic/FEIN No Search', 'Reg/Lic or FEIN Number', formErrors, 'agency-reg-lic-fein-search')}
+          {generateField('phone', 'Phone No Search', 'Agency Phone Number', formErrors, 'agency-phone-search')}
+
+          <button
+            className="btn btn-success multi-input"
+            type="submit"
+            form="SearchBar"
+            disabled={props.appState.data.submitting || formErrors}
+          >
+            <i className="fa fa-search" />Search
+          </button>
+        </div>
+        }
+        {/*<!-- End should be available only in user admin  -->*/}
       </div>
     </Form>
   );
