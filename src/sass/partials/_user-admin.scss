@@ -1,50 +1,218 @@
-
 //add to search.scss
+
 .search-tools {
-    display: flex;
-    align-items: flex-end;
-    flex-grow: 1;
+  display: flex;
+  align-items: flex-end;
+  flex-grow: 1;
 
-    .search-inputs {
-
-        .user-name-search {
-            flex-basis: auto;
-            flex-grow: 1;
-            flex-shrink: 1;
-            margin-right: $padding;
-        }
+  .search-inputs {
+    .user-name-search {
+      flex-basis: auto;
+      flex-grow: 1;
+      flex-shrink: 1;
+      margin-right: $padding;
     }
+  }
 }
 
 .search-inputs {
-    .agency-id-search {
-        flex-basis: 10rem;
-        flex-grow: 0;
-        flex-shrink: 0;
-        margin-right: $padding;
-    }
-    .agency-name-search {
-        flex-basis: auto;
-        flex-grow: 1;
-        flex-shrink: 1;
-        margin-right: $padding;
-    }
-    .agency-address-search {
-        flex-basis: auto;
-        flex-grow: 1;
-        flex-shrink: 1;
-        margin-right: $padding;
-    }
-    .agency-reg-lic-fein-search {
-        flex-basis: 10rem;
-        flex-grow: 0;
-        flex-shrink: 0;
-        margin-right: $padding;
-    }
-    .agency-phone-search {
-        flex-basis: 10rem;
-        flex-grow: 0;
-        flex-shrink: 0;
-        margin-right: $padding;
-    }
+  .agency-id-search {
+    flex-basis: 10rem;
+    flex-grow: 0;
+    flex-shrink: 0;
+    margin-right: $padding;
+  }
+
+  .agency-name-search {
+    flex-basis: auto;
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin-right: $padding;
+  }
+
+  .agency-address-search {
+    flex-basis: auto;
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin-right: $padding;
+  }
+
+  .agency-reg-lic-fein-search {
+    flex-basis: 10rem;
+    flex-grow: 0;
+    flex-shrink: 0;
+    margin-right: $padding;
+  }
+
+  .agency-phone-search {
+    flex-basis: 10rem;
+    flex-grow: 0;
+    flex-shrink: 0;
+    margin-right: $padding;
+  }
 }
+//end add to search.scss
+//results list cards
+
+.user-list {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 100%;
+  margin-bottom: $padding/2;
+  margin-bottom: $padding/2;
+  padding: $padding*2;
+
+  .card {
+    &.agency {
+      //took code from _csr-policy.scss
+      &.contact {
+        flex-direction: row;
+        margin: 0 (-$padding/2) ($padding);
+        padding: $padding ($padding*1.5);
+
+        &.agency {
+          .contact-title {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 0;
+            flex-shrink: 0;
+            justify-content: center;
+            width: 6rem;
+
+            i {
+              text-align: center;
+              color: $bright-blue-darken-04;
+              font-size: $font-size-h2;
+            }
+
+            label {
+              margin-bottom: 0;
+              text-align: center;
+              font-size: $font-size-sm;
+            }
+          }
+
+          .contact-details {
+            flex-grow: 1;
+            margin-left: $padding*2;
+
+            h4 {
+              margin-bottom: 0;
+              color: $warm-gray-08;
+
+              &.agency {
+                  font-weight: $font-weight-normal;
+
+                  .agency-display-name, .agency-code {
+                      font-weight: $font-weight-bold;
+                  }
+
+                  .agency-legal-name {}
+              }
+            }
+
+            p {
+              margin-bottom: 0;
+              color: $warm-gray-10;
+            }
+
+            .additional-contacts {
+              display: flex;
+              flex-wrap: wrap;
+              margin-top: 1rem;
+              border-top: 1px dotted $warm-gray-01;
+
+              ul {
+                margin: 1rem 0 0;
+                padding: 0;
+                list-style: none;
+
+                li {
+                  display: flex;
+                  align-items: center;
+                  padding: 0;
+
+                  &:last-child {
+                    padding-bottom: 0;
+                  }
+
+                  p {
+                    display: flex;
+                    align-items: center;
+                    margin-right: $padding*2;
+
+                    small {
+                      margin-right: $padding;
+                      padding: 0 0.2rem;
+                      color: $white;
+                      border-radius: 2px;
+                      background: $warm-gray-08;
+                      font-size: 70%;
+
+                      sup {
+                        top: -.5em;
+                        font-size: 50%;
+                      }
+
+                      i {
+                        margin-right: 0;
+                        margin-left: 0.1rem;
+                        color: $white;
+                      }
+                    }
+
+                    i {
+                      margin-right: $padding;
+                      color: $warm-gray-08;
+
+                      &.fa-phone-square {
+                        font-size: 112%;
+                        margin-top: 3%;
+                      }
+                    }
+
+                    h5 {
+                      flex-basis: auto;
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      margin: 0 $padding 0 0;
+                      color: $warm-gray-08;
+                    }
+                  }
+
+                  div {
+                    display: flex;
+                    align-items: center;
+                    margin-right: $padding*2;
+
+                    h5 {
+                      margin: 0 $padding 0 0;
+                      color: $warm-gray-08;
+                    }
+
+                    span {
+                      width: auto;
+                      white-space: nowrap;
+                    }
+
+                    i {
+                      color: $warm-gray-08;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .btn.agency {
+    align-self: center;
+    width: 12rem;
+    margin: 1rem;
+  }
+}
+//end results list cards
