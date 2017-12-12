@@ -7,7 +7,6 @@ import {reduxForm, propTypes} from 'redux-form';
 import * as cgActions from '../actions/cgActions';
 import * as appStateActions from '../actions/appStateActions';
 import PolicyConnect from './Policy';
-import ClearErrorConnect from '../components/Error/ClearError';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 
 const handleInitialize = (state) => {
@@ -191,7 +190,6 @@ need to pull it from another place in the model
 export const Coverage = (props) => {
   return (
     <PolicyConnect>
-      <ClearErrorConnect/>
       <div className="route-content">
         <div className="scroll">
           <div className="form-group survey-wrapper" role="group">

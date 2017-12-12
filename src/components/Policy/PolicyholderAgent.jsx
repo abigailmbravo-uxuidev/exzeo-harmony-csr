@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import PolicyConnect from '../../containers/Policy';
-import ClearErrorConnect from '../Error/ClearError';
 import normalizePhone from '../Form/normalizePhone';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
@@ -41,7 +40,6 @@ policyHolderMailingAddress
 
     return (
       <PolicyConnect>
-        <ClearErrorConnect />
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
