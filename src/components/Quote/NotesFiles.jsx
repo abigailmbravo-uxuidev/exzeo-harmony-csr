@@ -3,14 +3,12 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { Prompt } from 'react-router-dom';
 import moment from 'moment';
 import { reduxForm, Form, propTypes } from 'redux-form';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
 import QuoteBaseConnect from '../../containers/Quote';
-import ClearErrorConnect from '../Error/ClearError';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 import RadioField from '../Form/inputs/RadioField';
@@ -132,11 +130,10 @@ export class NotesFiles extends Component {
   }
 
   render() {
-    const { handleSubmit, dirty } = this.props;
+    const { handleSubmit } = this.props;
 
     return (
       <QuoteBaseConnect>
-        <ClearErrorConnect />
         <div className="route-content">
           <div className="scroll">
             <Form id="NotesFiles" onSubmit={handleSubmit(handleFormSubmit)} noValidate>

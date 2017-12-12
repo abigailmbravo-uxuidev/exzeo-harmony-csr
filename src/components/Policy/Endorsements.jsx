@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
-import { reduxForm, propTypes, change, Form, submit } from 'redux-form';
+import { reduxForm, propTypes, change, Form } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as cgActions from '../../actions/cgActions';
 import * as serviceActions from '../../actions/serviceActions';
@@ -13,7 +13,6 @@ import * as appStateActions from '../../actions/appStateActions';
 import * as questionsActions from '../../actions/questionsActions';
 import * as errorActions from '../../actions/errorActions';
 import PolicyConnect from '../../containers/Policy';
-import ClearErrorConnect from '../Error/ClearError';
 import normalizePhone from '../Form/normalizePhone';
 import TextField from '../Form/inputs/TextField';
 import DisplayField from '../Form/inputs/DisplayField';
@@ -27,7 +26,6 @@ import DateField from '../Form/inputs/DateField';
 import Loader from '../Common/Loader';
 import * as policyStateActions from '../../actions/policyStateActions';
 import * as actionTypes from '../../actions/actionTypes';
-import normalizeNumbers from '../Form/normalizeNumbers';
 
 export const scrollToView = (elementName) => {
   const element = document.getElementById(elementName);
@@ -553,7 +551,7 @@ export class Endorsements extends React.Component {
       const workflowId = this.props.appState.instanceId;
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, workflowId, { ...this.props.appState.data, isCalculated: false });
     }
-    if (this.props && this.props.policy && this.props.policy.policyNumber) {
+    if (this.props && this.props.policy && this.props.policy.policyNumber && this.props.policy.property && this.props.policy.property.physicalAddress) {
       this.props.actions.serviceActions.getUnderwritingQuestions(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property);
       this.props.actions.serviceActions.getEndorsementHistory(this.props.policy.policyNumber);
       this.props.actions.serviceActions.getZipcodeSettings(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property.physicalAddress.zip);
@@ -616,7 +614,6 @@ export class Endorsements extends React.Component {
     const { initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, policy, dirty } = this.props;
     return (
       <PolicyConnect>
-        <ClearErrorConnect />
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         {this.props.appState.data.isSubmitting && <Loader />}
         <Form

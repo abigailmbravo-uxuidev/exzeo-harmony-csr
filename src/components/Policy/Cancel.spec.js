@@ -56,7 +56,7 @@ describe('Testing Cancel component', () => {
       fieldValues: {
 
       },
-      handleSubmit() {},
+      handleSubmit: fn => fn,
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,
@@ -66,7 +66,7 @@ describe('Testing Cancel component', () => {
         }
       }
     };
-    const wrapper = shallow(<CancelPolicy store={store} {...props} />);
+    const wrapper = shallow(<CancelPolicy label="test" store={store} {...props} />);
     expect(wrapper);
 
     wrapper.instance().componentWillReceiveProps({ actions: {

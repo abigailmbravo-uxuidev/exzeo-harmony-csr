@@ -10,7 +10,6 @@ import * as quoteStateActions from '../../actions/quoteStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
-import ClearErrorConnect from '../Error/ClearError';
 import FieldGenerator from '../Form/FieldGenerator';
 import Footer from '../Common/Footer';
 
@@ -102,7 +101,6 @@ export class Underwriting extends Component {
     const { fieldValues, handleSubmit, pristine, quoteData, underwritingQuestions, dirty } = this.props;
     return (
       <QuoteBaseConnect>
-        <ClearErrorConnect />
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
 
         <div className="route-content">

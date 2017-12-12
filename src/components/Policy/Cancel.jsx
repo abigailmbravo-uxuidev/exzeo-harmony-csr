@@ -7,7 +7,6 @@ import { bindActionCreators } from 'redux';
 import _ from 'lodash';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import PolicyConnect from '../../containers/Policy';
-import ClearErrorConnect from '../Error/ClearError';
 import RadioField from '../Form/inputs/RadioField';
 import DateField from '../Form/inputs/DateField';
 import SelectField from '../Form/inputs/SelectField';
@@ -123,7 +122,6 @@ export class CancelPolicy extends React.Component {
     const cancelGroup = _.map(cancelOptions, option => ({ answer: option.cancelType }));
     return (
       <PolicyConnect>
-        <ClearErrorConnect />
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper cancel-policy" role="group">
