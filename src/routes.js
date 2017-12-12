@@ -14,7 +14,6 @@ import AccessDenied from './containers/AccessDenied';
 import LoggedOut from './containers/LoggedOut';
 import Callback from './containers/Callback';
 import SplashPage from './containers/Splash';
-import AppErrorPage from './containers/AppError';
 import NotFoundPage from './containers/NotFound';
 import QuoteCoverage from './components/Quote/Coverage';
 import QuoteUnderwriting from './components/Quote/Underwriting';
@@ -52,7 +51,7 @@ const handleAuthentication = (nextState, replace) => {
 };
 
 const checkPublicPath = (path) => {
-  const publicPaths = ['/login', '/logout', '/error', '/accessDenied', '/loggedOut', '/callback'];
+  const publicPaths = ['/login', '/logout', '/accessDenied', '/loggedOut', '/callback'];
   return (publicPaths.indexOf(path) === -1);
 };
 

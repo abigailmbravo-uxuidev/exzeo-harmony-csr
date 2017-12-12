@@ -350,7 +350,7 @@ describe('Testing UnderwritingValidationBar component', () => {
           batchCompleteTask() { return Promise.resolve(() => {}); }
         }
       },
-      handleSubmit() { },
+      handleSubmit: fn => fn,
       quoteData: {
         underwritingExceptions: [{ _id: 'name', canOverride: true, fields: [{ name: 'rating.netPremium', value: 'null' }] }],
         policyHolders: []

@@ -346,50 +346,6 @@ describe('Testing Summary component', () => {
     expect(wrapper);
   });
 
-  it('should test Summary', () => {
-    const initialState = {
-      service: {
-        notes: []
-      },
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {
-              variables: [
-                { name: 'retrieveQuote',
-                  value: {
-                    result: quoteData
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: quoteData
-                    } }]
-            },
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        data: { activateRedirect: false },
-        modelName: 'bb'
-      }
-    };
-    const store = mockStore(initialState);
-    const props = {
-      handleSubmit() { },
-      fieldQuestions: [],
-      quoteData,
-      dispatch: store.dispatch,
-      appState: {
-        data: {
-          submitting: false
-        }
-      }
-    };
-    const wrapper = shallow(<Summary {...props} />);
-    expect(wrapper.instance().props).toEqual(props);
-  });
-
   it('should test handleFormSubmit', () => {
     const initialState = {
       cg: {

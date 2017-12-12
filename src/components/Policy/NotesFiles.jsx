@@ -9,7 +9,6 @@ import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as errorActions from '../../actions/errorActions';
 import PolicyBaseConnect from '../../containers/Policy';
-import ClearErrorConnect from '../Error/ClearError';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import RadioField from '../Form/inputs/RadioField';
 import Downloader from '../Common/Downloader';
@@ -110,7 +109,6 @@ export class NotesFiles extends Component {
 
     return (
       <PolicyBaseConnect>
-        <ClearErrorConnect />
         <div className="route-content">
           <div className="scroll">
             <Form id="NotesFiles" onSubmit={handleSubmit(handleFormSubmit)} noValidate>

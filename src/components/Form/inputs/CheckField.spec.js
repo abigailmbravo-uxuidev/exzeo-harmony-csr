@@ -5,16 +5,15 @@ import FieldHint from './FieldHint';
 
 describe('CheckInput', () => {
   it('should render "checkbox input" when nothing is provided, with default props', () => {
-    const wrapper = shallow(<CheckInput />);
+    const wrapper = shallow(<CheckInput name="test" label="test" />);
 
-    expect(wrapper.instance().props.input.value).toEqual(false);
-    expect(wrapper.instance().props.input.onChange);
+    expect(wrapper.find('input').prop('value')).toEqual(false);
+    expect(wrapper.find('input').prop('onChange'));
     expect(wrapper.containsMatchingElement(<input type="checkbox" />)).toEqual(true);
   });
 
   it('should render "checkbox input" with label, when label and name are provided', () => {
     const inputProps = {
-      label: 'Test',
       input: {
         name: 'testing',
         hint: 'Test Hint'

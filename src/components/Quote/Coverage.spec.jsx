@@ -333,9 +333,7 @@ describe('Testing Coverage component', () => {
     };
     const store = mockStore(initialState);
     const props = {
-      handleSubmit: function name() {
-
-      },
+      handleSubmit: fn => fn,
       actions: {
         quoteStateActions: {
           getLatestQuote() {}
@@ -649,9 +647,7 @@ describe('Testing Coverage component', () => {
       agency: {
         agencyCode: 20000
       },
-      handleSubmit: function name() {
-
-      },
+      handleSubmit: fn => fn,
       actions: {
         serviceActions: {
           getAgencies() {},
@@ -728,9 +724,7 @@ describe('Testing Coverage component', () => {
       agency: {
         agencyCode: 20000
       },
-      handleSubmit: function name() {
-
-      },
+      handleSubmit: fn => fn,
       actions: {
         quoteStateActions: {
           getLatestQuote() {}
@@ -800,9 +794,7 @@ describe('Testing Coverage component', () => {
       agency: {
         agencyCode: 20000
       },
-      handleSubmit: function name() {
-
-      },
+      handleSubmit: fn => fn,
       actions: {
         serviceActions: {
           getAgencies() {},
