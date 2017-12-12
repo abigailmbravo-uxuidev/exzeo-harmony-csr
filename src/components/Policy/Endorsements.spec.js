@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { reduxForm, propTypes, change, Form } from 'redux-form';
 import { shallow, mount } from 'enzyme';
-import { Endorsements, calculatePercentage, handleInitialize, setPercentageOfValue, updateDependencies, calculate, save, setCalculate, updateCalculatedSinkhole, getNewPolicyNumber } from './Endorsements';
+import { Endorsements, calculatePercentage, handleInitialize, setPercentageOfValue, updateDependencies, calculate, save, setCalculate, updateCalculatedSinkhole, getNewPolicyNumber, setEndorsementDate } from './Endorsements';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
@@ -48,7 +48,8 @@ describe('Testing Endorsements component', () => {
           getTransactionHistory() {},
           getSummaryLedger() {},
           getPaymentHistory() {},
-          getPaymentOptionsApplyPayments() {}
+          getPaymentOptionsApplyPayments() {},
+          clearRate() {}
         },
         cgActions: {
           startWorkflow() { return Promise.resolve({ payload: [{ workflowData: { endorsePolicyModelSave: { data: {} }, endorsePolicyModelCalculate: { data: {} } } }] }); },
@@ -100,6 +101,9 @@ describe('Testing Endorsements component', () => {
     wrapper.instance().updateDwellingAndDependencies({}, '5000');
     props.getRate = { worksheet: {} };
     wrapper.instance().componentWillReceiveProps(props);
+
+    const endsDate = setEndorsementDate('2016-11-27', '2017-11-26');
+    expect(endsDate).toEqual('2017-11-26');
 
     wrapper.find('[name="otherStructuresNew"]').simulate('change', { target: { value: '4,540' } });
     wrapper.find('[name="personalPropertyNew"]').simulate('change', { target: { value: '4,540' } });
@@ -172,8 +176,14 @@ describe('Testing Endorsements component', () => {
     wrapper.find('[name="propertyStateNew"]').simulate('change', { target: { value: 'FL' } });
     wrapper.find('[name="propertyZipNew"]').simulate('change', { target: { value: '33627' } });
     wrapper.find('[name="endorsementDateNew"]').simulate('change', { target: { value: '10/27/2017' } });
-    wrapper.find('button.btn-secondary').simulate('click');
     wrapper.find('button.btn-primary').simulate('click');
+
+    wrapper.find('button#coverage-scroll').simulate('click');
+    wrapper.find('button#home-scroll').simulate('click');
+    wrapper.find('button#policy-scroll').simulate('click');
+    wrapper.find('button#addresses-scroll').simulate('click');
+    wrapper.find('button#cancel-button').simulate('click');
+
     getNewPolicyNumber(initialState);
   });
 });

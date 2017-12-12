@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { Prompt } from 'react-router-dom';
 import moment from 'moment';
 import { reduxForm, Form, propTypes } from 'redux-form';
 import * as appStateActions from '../../actions/appStateActions';
@@ -30,8 +29,7 @@ const SearchPanel = props => (
 
 export const filterNotesByType = (notes, type) => {
   if (!Array.isArray(notes)) return [];
-
-  if (type) return _.filter(notes, n => n.attachments > 0);
+  if (type) return notes.filter(n => n.attachments.length > 0);
   return notes;
 };
 
@@ -47,7 +45,7 @@ export const NoteList = (props) => {
     <span>
       { attachments.map((attachment, i) =>
         <Downloader
-          filename={attachment.fileName}
+          fileName={attachment.fileName}
           fileUrl={attachment.fileUrl}
           fileType={attachment.fileType}
           key={i}
@@ -84,7 +82,6 @@ export const NoteList = (props) => {
         <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
         <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdDate" dataSort dataFormat={formatCreateDate} >Created</TableHeaderColumn>
         <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataSort dataFormat={showCreatedBy} >Author</TableHeaderColumn>
-        {/* TODO: Hide note-type and note column when users filters grid to show only notes with attachments*/}
         <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="contactType" dataSort >Note Type</TableHeaderColumn>
         <TableHeaderColumn className="note" columnClassName="note" dataField="content" dataSort dataFormat={formatNote} >Note</TableHeaderColumn>
         <TableHeaderColumn className="count" columnClassName="count" dataField="attachments" dataFormat={attachmentCount} hidden />
@@ -134,12 +131,11 @@ export class NotesFiles extends Component {
   }
 
   render() {
-    const { handleSubmit, dirty } = this.props;
+    const { handleSubmit } = this.props;
 
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
-        <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         <div className="route-content">
           <div className="scroll">
             <Form id="NotesFiles" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
