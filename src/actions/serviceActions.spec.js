@@ -1,6 +1,5 @@
 import configureStore from 'redux-mock-store';
 import axios from 'axios';
-import moment from 'moment';
 import MockAdapter from 'axios-mock-adapter';
 import * as types from './actionTypes';
 import * as serviceActions from './serviceActions';
@@ -624,7 +623,7 @@ describe('Service Actions', () => {
 
     const submitData = {};
 
-    submitData.cashDate = moment.utc('07-27-2017').format('YYYY-MM-DD');
+    submitData.cashDate = '2017-07-27';
     submitData.batchNumber = String('2017072701');
     submitData.amount = Number(String('400').replace(/[^\d.-]/g, ''));
     submitData.cashType = String('Electronic Deposit');

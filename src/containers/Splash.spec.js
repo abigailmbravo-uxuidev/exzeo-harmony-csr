@@ -381,59 +381,7 @@ const policy = {
   product: 'HO3'
 };
 
-function wrapWithContext(context, contextTypes, children) {
-  const wrapperWithContext = React.createClass({ //eslint-disable-line
-    childContextTypes: contextTypes,
-    getChildContext() { return context; },
-    render() { return React.createElement('div', null, children); }
-  });
-
-  return React.createElement(wrapperWithContext);
-}
-
 describe('Testing Splash component', () => {
-  it('should test Splash', () => {
-    const initialState = {
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {},
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        modelName: 'bb'
-      }
-    };
-    const store = mockStore(initialState);
-    const props = {
-      actions: {
-        cgActions: {
-          batchCompleteTask() { return Promise.resolve(); }
-        },
-        appStateActions: {
-          setAppState() {}
-        }
-      },
-      fieldQuestions: [],
-      quoteData,
-      dispatch: store.dispatch,
-      appState: {
-        data: {
-          submitting: false
-        }
-      },
-      ...propTypes
-    };
-    const wrapper = shallow(<Splash store={store} {...props} />);
-    expect(wrapper);
-    wrapper.instance().handleSelectQuote(props.quoteData, props);
-    wrapper.instance().handleSelectAddress(props.quoteData.property, props);
-    wrapper.instance().handleSelectPolicy(policy, props);
-  });
-
   it('should test handleNewTab address', () => {
     const taskData = {
       firstName: '',

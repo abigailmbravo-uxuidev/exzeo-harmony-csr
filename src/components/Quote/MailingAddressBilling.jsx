@@ -10,7 +10,6 @@ import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
-import ClearErrorConnect from '../Error/ClearError';
 import CheckField from '../Form/inputs/CheckField';
 import TextField from '../Form/inputs/TextField';
 import { RadioFieldBilling, SelectFieldBilling } from '../Form/inputs';
@@ -228,7 +227,6 @@ export class MailingAddressBilling extends Component {
     if (!quoteData.rating) {
       return (
         <QuoteBaseConnect>
-          <ClearErrorConnect />
           <div className="route-content">
             <div className="messages">
               <div className="message error">
@@ -241,7 +239,6 @@ export class MailingAddressBilling extends Component {
     }
     return (
       <QuoteBaseConnect>
-        <ClearErrorConnect />
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         <div className="route-content">
           <Form id="MailingAddressBilling" onSubmit={handleSubmit(handleFormSubmit)} noValidate>

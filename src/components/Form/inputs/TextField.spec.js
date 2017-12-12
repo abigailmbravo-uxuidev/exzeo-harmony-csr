@@ -11,7 +11,7 @@ describe('TextInput', () => {
         name: 'testing'
       }
     };
-    const wrapper = shallow(<TextInput {...inputProps} />);
+    const wrapper = shallow(<TextInput name="Test" {...inputProps} />);
 
     expect(wrapper.containsAnyMatchingElements([
       <input type="text" name={inputProps.input.name} />,
@@ -28,7 +28,7 @@ describe('TextInput', () => {
       hint: 'Test Hint'
 
     };
-    const wrapper = shallow(<TextInput {...inputProps} />);
+    const wrapper = shallow(<TextInput name="Test" {...inputProps} />);
 
     expect(wrapper.find(FieldHint).length).toEqual(1);
     expect(wrapper.containsAnyMatchingElements([
@@ -48,7 +48,7 @@ describe('TextInput', () => {
       const inputProps = {
         type
       };
-      const wrapper = shallow(<TextInput {...inputProps} />);
+      const wrapper = shallow(<TextInput name="Test" {...inputProps} />);
       expect(wrapper.find('input').prop('type')).toEqual(type);
     });
   });
@@ -59,7 +59,7 @@ describe('TextInput', () => {
         disabled: true
       }
     };
-    const wrapper = shallow(<TextInput {...inputProps} />);
+    const wrapper = shallow(<TextInput name="Test" {...inputProps} />);
     expect(wrapper.find('input').prop('disabled')).toEqual(true);
   });
 
@@ -70,7 +70,7 @@ describe('TextInput', () => {
         error: 'Error'
       }
     };
-    const wrapper = shallow(<TextInput {...inputProps} />);
+    const wrapper = shallow(<TextInput name="Test" {...inputProps} />);
 
     expect(wrapper.containsAnyMatchingElements([
       <input type="text" />,
@@ -85,7 +85,7 @@ describe('TextInput', () => {
         warning: 'Error'
       }
     };
-    const wrapper = shallow(<TextInput {...inputProps} />);
+    const wrapper = shallow(<TextInput name="Test" {...inputProps} />);
 
     expect(wrapper.containsAnyMatchingElements([
       <input type="text" />,
@@ -100,18 +100,10 @@ describe('TextInput', () => {
         hint: 'Test Hint'
       }
     };
-    const wrapper = shallow(<TextInput {...inputProps} />);
+    const wrapper = shallow(<TextInput name="Test" {...inputProps} />);
     expect(wrapper.find(FieldHint).length).toEqual(0);
   });
 
-  // it('should render "text input" without error, when meta with !touched is provided');
-  // it('should render "text input" without error, when meta with !touched, error are provided');
-  // it('should render "text input" without error, when meta with !touched, warning are provided');
-  // it('should render with "form-group" classname when nothing is provided');
-  // it('should render with "form-group {name}" classname when name is provided');
-  // it('should render with "form-group disabled" classname when disabled is provided');
-  // it('should render with "form-group valid" classname when touched and !error are provided');
-  // it('should render with "form-group error" classname when touched and error are provided');
   // TODO: Check renders
   // TODO: Check classnames
   // TODO: Check props

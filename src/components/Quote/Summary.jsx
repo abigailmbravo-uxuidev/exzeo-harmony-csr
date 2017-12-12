@@ -12,7 +12,6 @@ import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
-import ClearErrorConnect from '../Error/ClearError';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
@@ -123,7 +122,6 @@ export class Summary extends Component {
     const filteredExceptions = _.filter(quoteData.underwritingExceptions, uw => !uw.overridden);
     return (
       <QuoteBaseConnect>
-        <ClearErrorConnect />
         <div className="route-content summary workflow">
 
           <div className="scroll">
