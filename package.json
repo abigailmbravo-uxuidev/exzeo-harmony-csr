@@ -6,7 +6,10 @@
     "auth0-js": "8.10.1",
     "axios": "^0.15.2",
     "classnames": "^2.2.5",
+<<<<<<< HEAD
     "eslint": "^4.13.1",
+=======
+>>>>>>> Updated React to 16. Fixed tests. Removed Error component.
     "font-awesome": "^4.7.0",
     "history": "^4.6.2",
     "immutable": "^3.8.2",
