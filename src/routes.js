@@ -61,7 +61,7 @@ class Routes extends Component {
     if (isAuthenticated() && checkPublicPath(window.location.pathname)) {
       const idToken = localStorage.getItem('id_token');
       axios.defaults.headers.common['authorization'] = `bearer ${idToken}`; // eslint-disable-line
-      
+
       if (!this.props.authState.userProfile) {
         const profile = JSON.parse(localStorage.getItem('user_profile'));
         this.props.actions.authActions.dispatchUserProfile(profile);
@@ -98,9 +98,9 @@ class Routes extends Component {
           appElement={document.getElementById('root')}
         >
           <div className="card-header"><h4><i className="fa fa-exclamation-circle" />&nbsp;Error</h4></div>
-          <div className="card-block">{ this.props.error.message }</div>
+          <div className="card-block"><p>{ this.props.error.message }</p></div>
           <div className="card-footer">
-            {this.props.error.requestId && <div>Request ID: { this.props.error.requestId }</div>}
+            {this.props.error.requestId && <div className="footer-message"><p>Request ID: { this.props.error.requestId }</p></div>}
             <button className="btn-primary" onClick={this.clearError}>close</button>
           </div>
         </Modal>
