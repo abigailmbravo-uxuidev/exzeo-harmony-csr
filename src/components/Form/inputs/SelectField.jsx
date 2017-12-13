@@ -28,6 +28,7 @@ export const SelectInput = ({
           name={name}
           disabled={disabled || isDisabled}
           onChange={onChange}
+          aria-valuetext={value}
         >
           <option aria-label={'Please select...'} disabled value={''}>Please select...</option>
           {answers.map((answer, index) => (
