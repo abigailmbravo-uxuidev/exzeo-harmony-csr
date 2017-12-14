@@ -12,6 +12,7 @@ import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as quoteStateActions from '../../actions/quoteStateActions';
+import * as errorActions from '../../actions/errorActions';
 import RadioField from '../Form/inputs/RadioField';
 import Downloader from '../Common/Downloader';
 import Footer from '../Common/Footer';
@@ -48,6 +49,7 @@ export const NoteList = (props) => {
           fileName={attachment.fileName}
           fileUrl={attachment.fileUrl}
           fileType={attachment.fileType}
+          errorHandler={(err) => props.actions.errorActions.setAppError(err)}
           key={i}
         />
       )}
@@ -57,9 +59,6 @@ export const NoteList = (props) => {
   return (
     <div className="note-grid-wrapper">
       <div className="filter-tabs">
-
-        {/* TODO: Eric, just need 2 buttons with an onClick event to filter the grid by attachment count. I added the radio group component because it can have a default selected and user can only choose 1*/}
-
         <RadioField
           name={'attachmentStatus'} styleName={''} label={''} onChange={ () => {} } segmented answers={[
             {
@@ -180,7 +179,8 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'NotesFiles.values', {}),
   initialValues: handleInitialize(state),
   notes: state.service.notes,
-  quoteData: state.service.quote || {}
+  quoteData: state.service.quote || {},
+  error: state.error
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -188,7 +188,8 @@ const mapDispatchToProps = dispatch => ({
     quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch)
+    serviceActions: bindActionCreators(serviceActions, dispatch),
+    errorActions: bindActionCreators(errorActions, dispatch)
   }
 });
 
