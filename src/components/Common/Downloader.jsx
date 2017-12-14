@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 
 export const downloadFile = (fileUrl, fileName, errorHandler) => {
-  const proxyUrl = `${process.env.REACT_APP_API_URL}/downloadc`;
+  const proxyUrl = `${process.env.REACT_APP_API_URL}/download`;
   const params = { url: fileUrl };
 
   return axios.get(proxyUrl, { responseType: 'blob', params })
