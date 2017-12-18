@@ -8,6 +8,7 @@ import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import * as serviceActions from '../../actions/serviceActions';
 import * as policyStateActions from '../../actions/policyStateActions';
+import EditEffectiveDataPopUp from './EditEffectiveDatePopup'
 
 export class DetailHeader extends Component {
 
@@ -112,6 +113,7 @@ export class DetailHeader extends Component {
           </div>
         </dl>
       </section>
+      <EditEffectiveDataPopUp />
     </div>);
   }
 

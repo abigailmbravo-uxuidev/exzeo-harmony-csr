@@ -42,8 +42,8 @@
     "redux-thunk": "^2.2.0",
     "validator": "^7.0.0"
   },
-  "devDependencies": {
     "axios-mock-adapter": "^1.8.1",
+  "devDependencies": {
     "babel-jest": "^19.0.0",
     "enzyme": "^2.8.0",
     "istanbul": "^0.4.5",
