@@ -23,7 +23,6 @@ export const showEffectiveDatePopUp = (props) => {
 };
 
 export const changeEffectiveDate = (data, dispatch, props) => {
-  console.log('test');
   const workflowId = props.appState.instanceId;
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
 
