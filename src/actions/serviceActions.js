@@ -255,7 +255,7 @@ export const getEffectiveDateChangeReasons = () => (dispatch) => {
   });
 
   return Promise.resolve(axios(axiosConfig)).then((response) => {
-    const data = { effectiveDateReasons: response.data.effectiveDateReasons ? response.data.effectiveDateReasons[0] : {} };
+    const data = { effectiveDateReasons: response.data.effectiveDateReasons ? response.data.effectiveDateReasons: [] };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));
