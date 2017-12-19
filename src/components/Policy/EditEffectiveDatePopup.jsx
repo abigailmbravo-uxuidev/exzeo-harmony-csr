@@ -23,7 +23,6 @@ export const reasonAnswers = (reasons) => {
 
 const handleInitialize = (state) => {
   const policy = state.service.latestPolicy || {};
-  console.log(policy)
 
   return {
     effectiveDate: moment.utc(policy.effectiveDate).format('YYYY-MM-DD'),
