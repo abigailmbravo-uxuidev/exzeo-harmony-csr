@@ -20,6 +20,7 @@ export const reasonAnswers = (reasons) => {
 export const EditEffectiveDatePopup = (props) => {
   const { effectiveDateReasons, latestPolicy  } = props;
   const reasons = reasonAnswers(effectiveDateReasons);
+  // Effective Date Change business rules
   const effectiveDate = latestPolicy.effectiveDate;
   return (
       <div className="modal quote-summary">
