@@ -5,10 +5,14 @@ import { connect } from 'react-redux';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment-timezone';
+import * as questionsActions from '../../actions/questionsActions';
+import * as cgActions from '../../actions/cgActions';
+import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
+import * as policyStateActions from '../../actions/policyStateActions';
 import DateField from '../Form/inputs/DateField';
 import SelectField from '../Form/inputs/SelectField';
-
+import Loader from '../Common/Loader';
 
 export const reasonAnswers = (reasons) => {
     const reformattedReasons = _.concat([], reasons).map((reason) => {
@@ -17,22 +21,33 @@ export const reasonAnswers = (reasons) => {
     return reformattedReasons || [];
 }
 
+const handleInitialize = (state) => {
+  const policy = state.service.latestPolicy || {};
+  console.log(policy)
+
+  return {
+    effectiveDate: moment.utc(policy.effectiveDate).format('YYYY-MM-DD'),
+    effectiveDateChangeReason: ''
+  };
+};
+
 export const EditEffectiveDatePopup = (props) => {
-  const { effectiveDateReasons, latestPolicy  } = props;
+  const { effectiveDateReasons, latestPolicy, hideEffectiveDateModal, handleSubmit, changeEffectiveDateSubmit, pristine  } = props;
   const reasons = reasonAnswers(effectiveDateReasons);
   // Effective Date Change business rules
   const effectiveDate = latestPolicy.effectiveDate;
   return (
-      <div className="modal quote-summary">
+      <div id="effective-date" className="modal effective-date">
+        {props.appState.data.submitting && <Loader />}
         <div className="card unsaved-changes">
-          <form>
+          <Form id="EditEffectiveDatePopup" noValidate onSubmit={handleSubmit(changeEffectiveDateSubmit)}>
             <div className="card-header">
               <h4>Edit Effective Date</h4>
             </div>
             <div className="card-block">
-              <DateField label={'Effective Date'} name={'effectiveDate'}  />
+              <DateField label={'Effective Date'} name={'effectiveDate'} validations={['required']}  />
                 <SelectField
-                  name="personalPropertyNew" component="select" label={'Reason For Change'} styleName={''} validations={['required']} answers={reasons}
+                  name="effectiveDateChangeReason" component="select" label={'Reason For Change'} styleName={''} validations={['required']} answers={reasons}
                 />
             </div>
             <div className="card-footer">
@@ -40,20 +55,20 @@ export const EditEffectiveDatePopup = (props) => {
                 <button
                   className="btn btn-secondary"
                   type="button"
-                  onClick=""
+                  onClick={hideEffectiveDateModal}
                 >
                   Cancel
                 </button>
                 <button
+                  disabled={props.appState.data.submitting || pristine}
                   className="btn btn-primary"
-                  type="button"
-                  onClick=""
+                  type="submit"
                 >
                   Update
                 </button>
               </div>
             </div>
-          </form>
+          </Form>
         </div>
       </div>
     );
@@ -67,12 +82,19 @@ export const EditEffectiveDatePopup = (props) => {
   
   const mapStateToProps = state => ({
     effectiveDateReasons: state.service.effectiveDateReasons,
-    latestPolicy: state.service.latestPolicy
+    latestPolicy: state.service.latestPolicy,
+    tasks: state.cg,
+    appState: state.appState,
+    initialValues: handleInitialize(state)
   });
 
   const mapDispatchToProps = dispatch => ({
-    actions: {      
-      serviceActions: bindActionCreators(serviceActions, dispatch)
+    actions: {
+      policyStateActions: bindActionCreators(policyStateActions, dispatch),
+      questionsActions: bindActionCreators(questionsActions, dispatch),
+      serviceActions: bindActionCreators(serviceActions, dispatch),
+      cgActions: bindActionCreators(cgActions, dispatch),
+      appStateActions: bindActionCreators(appStateActions, dispatch)
     }
   });
   

@@ -28,7 +28,6 @@ export class Coverage extends Component {
 
   componentDidMount() {
     this.props.actions.questionsActions.getUIQuestions('propertyAppraisalCSR');
-    this.props.actions.serviceActions.getEffectiveDateChangeReasons();
     const isNewTab = localStorage.getItem('isNewTab') === 'true';
     if (isNewTab) {
       localStorage.setItem('isNewTab', false);
