@@ -27,12 +27,12 @@ export const changeEffectiveDate = (data, dispatch, props) => {
   const workflowId = props.appState.instanceId;
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
 
-  props.actions.cgActions.startWorkflow('teststub', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID }).then((result) => {
+  props.actions.cgActions.startWorkflow('effectiveDateChangeModel', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID }).then((result) => {
     const steps = [{
       name: 'saveEffectiveDate',
       data: { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID, effectiveDateChangeReason : data.effectiveDateChangeReason, effectiveDate: data.effectiveDate }
     }];
-    const startResult = result.payload ? result.payload[0].workflowData.teststub.data : {};
+    const startResult = result.payload ? result.payload[0].workflowData.effectiveDateChangeModel.data : {};
 
     props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, submitting: true });
 
