@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import moment from 'moment-timezone';
 import { Helmet } from 'react-helmet';
 import PolicyHeader from '../components/Policy/PolicyHeader';
 import QuoteSideNav from '../components/Policy/PolicySideNav';
@@ -10,7 +11,7 @@ import Loader from '../components/Common/Loader';
 import * as appStateActions from '../actions/appStateActions';
 import * as serviceActions from '../actions/serviceActions';
 import * as policyStateActions from '../actions/policyStateActions';
-import EditEffectiveDataPopUp from '../components/Policy/EditEffectiveDatePopup'
+import EditEffectiveDataPopUp from '../components/Policy/EditEffectiveDatePopup';
 
 export const hideEffectiveDatePopUp = (props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
@@ -23,13 +24,15 @@ export const showEffectiveDatePopUp = (props) => {
 };
 
 export const changeEffectiveDate = (data, dispatch, props) => {
+  const zipCode = props.actions.serviceActions.getZipcodeSettings(props.policy.companyCode, props.policy.state, props.policy.product, props.policy.property.physicalAddress.zip);
+  const effectiveDateUTC = moment.tz(moment.utc(data.effectiveDate).format('YYYY-MM-DD'), zipCode.timezone).format();
   const workflowId = props.appState.instanceId;
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
 
   props.actions.cgActions.startWorkflow('effectiveDateChangeModel', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID }).then((result) => {
     const steps = [{
       name: 'saveEffectiveDate',
-      data: { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID, effectiveDateChangeReason : data.effectiveDateChangeReason, effectiveDate: data.effectiveDate }
+      data: { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID, effectiveDateChangeReason: data.effectiveDateChangeReason, effectiveDate: effectiveDateUTC }
     }];
     const startResult = result.payload ? result.payload[0].workflowData.effectiveDateChangeModel.data : {};
 
@@ -57,7 +60,7 @@ export const Policy = props => (
       <div className="content-wrapper">
         {props.children}
       </div>
-            {props.appState.data.showEffectiveDateChangePopUp && <EditEffectiveDataPopUp {...props} changeEffectiveDateSubmit={changeEffectiveDate} hideEffectiveDateModal={() => hideEffectiveDatePopUp(props)} />}
+      {props.appState.data.showEffectiveDateChangePopUp && <EditEffectiveDataPopUp {...props} changeEffectiveDateSubmit={changeEffectiveDate} hideEffectiveDateModal={() => hideEffectiveDatePopUp(props)} />}
     </main>
   </div>
 );
@@ -75,7 +78,8 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   summaryLedger: state.service.getSummaryLedger,
-  policy: state.service.latestPolicy || {}
+  policy: state.service.latestPolicy || {},
+  zipCodeSetting: state.service.latestPolicy
 });
 
 const mapDispatchToProps = dispatch => ({
