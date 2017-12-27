@@ -1175,9 +1175,10 @@ export class Endorsements extends React.Component {
                   <section>
                     <h3>Previous Endorsements</h3>
                     <BootstrapTable data={endorsementHistory || []}>
-                      <TableHeaderColumn dataField="effectiveDate" isKey dataFormat={dateFormatter}>Date</TableHeaderColumn>
-                      <TableHeaderColumn dataField="netCharge" dataFormat={amountFormatter}>Amount</TableHeaderColumn>
-                      <TableHeaderColumn dataField="transactionType" dataAlign="right">Type</TableHeaderColumn>
+                      <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="effectiveDate" isKey dataFormat={dateFormatter}>Effective Date</TableHeaderColumn>
+                      <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="netCharge" dataFormat={amountFormatter}>Amount</TableHeaderColumn>
+                      <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="transactionType">Type</TableHeaderColumn>
+                      <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="createdAt" dataFormat={dateFormatter}>Processed Date</TableHeaderColumn>
                     </BootstrapTable>
                   </section>
                   <section name="policy" id="policy">
