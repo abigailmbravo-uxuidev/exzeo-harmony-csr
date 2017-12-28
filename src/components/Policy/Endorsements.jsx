@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
-import { reduxForm, propTypes, change, Form, submit } from 'redux-form';
+import { reduxForm, propTypes, change, Form } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as cgActions from '../../actions/cgActions';
 import * as serviceActions from '../../actions/serviceActions';
@@ -27,7 +27,6 @@ import DateField from '../Form/inputs/DateField';
 import Loader from '../Common/Loader';
 import * as policyStateActions from '../../actions/policyStateActions';
 import * as actionTypes from '../../actions/actionTypes';
-import normalizeNumbers from '../Form/normalizeNumbers';
 
 export const scrollToView = (elementName) => {
   const element = document.getElementById(elementName);
