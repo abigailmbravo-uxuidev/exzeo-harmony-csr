@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import moment from 'moment';
-import { Link, Prompt } from 'react-router-dom';
+import moment from 'moment-timezone';
+import { Prompt } from 'react-router-dom';
 import { reduxForm, propTypes, change, Form } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as cgActions from '../../actions/cgActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as questionsActions from '../../actions/questionsActions';
+import * as errorActions from '../../actions/errorActions';
 import PolicyConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
 import normalizePhone from '../Form/normalizePhone';
@@ -20,13 +21,26 @@ import RadioField from '../Form/inputs/RadioField';
 import PhoneField from '../Form/inputs/PhoneField';
 import SelectField from '../Form/inputs/SelectField';
 import CurrencyField from '../Form/inputs/CurrencyField';
+import NumberField from '../Form/inputs/NumberField';
 import Footer from '../Common/Footer';
 import DateField from '../Form/inputs/DateField';
 import Loader from '../Common/Loader';
 import * as policyStateActions from '../../actions/policyStateActions';
+import * as actionTypes from '../../actions/actionTypes';
+
+export const scrollToView = (elementName) => {
+  const element = document.getElementById(elementName);
+  if (element) {
+    element.scrollIntoView(true);
+  }
+};
 
 export const setCalculate = (props, reset) => {
-  if (reset) props.reset('Endorsements');
+  if (reset) {
+    props.reset('Endorsements');
+  }
+  props.actions.serviceActions.clearRate();
+
   const workflowId = props.appState.instanceId;
   if (!props.appState.data.isCalculated) return;
 
@@ -43,7 +57,7 @@ export const getNewPolicyNumber = (state) => {
   const taskData = (state.cg && state.appState && state.cg.endorsePolicyModelSave)
       ? state.cg.endorsePolicyModelSave.data
       : null;
-  if (!taskData) { return null; }
+  if (!taskData || !taskData.model || !taskData.model.variables) { return null; }
 
   const policy = _.find(taskData.model.variables, { name: 'retrievePolicy' })
       ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0]
@@ -57,6 +71,19 @@ export const calculatePercentage = (oldFigure, newFigure) => {
     percentChange = (oldFigure / newFigure) * 100;
   }
   return percentChange;
+};
+
+export const setEndorsementDate = (effectiveDate, endPolicyDate) => {
+  const effDate = moment.utc(effectiveDate).format('YYYY-MM-DD');
+  const endDate = moment.utc(endPolicyDate).format('YYYY-MM-DD');
+  const today = moment.utc().format('YYYY-MM-DD');
+
+  if (today <= effDate) {
+    return effDate;
+  } else if (today >= effDate && today < endDate) {
+    return today;
+  }
+  return endDate;
 };
 
 export const handleInitialize = (state) => {
@@ -76,7 +103,7 @@ export const handleInitialize = (state) => {
   const hurricane = _.get(policy, 'deductibles.hurricane.amount');
 
 // Coverage Top Left
-  values.effectiveDateNew = moment.utc(_.get(policy, 'effectiveDate')).format('YYYY-MM-DD');
+  values.endorsementDateNew = setEndorsementDate(_.get(policy, 'effectiveDate'), _.get(policy, 'endDate'));
   values.dwellingAmount = _.get(policy, 'coverageLimits.dwelling.amount');
   values.dwellingAmountNew = _.get(policy, 'coverageLimits.dwelling.amount');
   values.otherStructuresAmount = otherStructures;
@@ -112,7 +139,7 @@ export const handleInitialize = (state) => {
   values.ordinanceOrLawNew = _.get(policy, 'coverageLimits.ordinanceOrLaw.amount');
   values.propertyIncidentalOccupanciesMainDwelling = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer') ? 'Yes' : 'No';
   values.propertyIncidentalOccupanciesMainDwellingNew = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer');
-  values.propertyIncidentalOccupanciesOtherStructures = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer') ? 'Yes' : 'No';
+  values.propertyIncidentalOccupanciesOtherStructures = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer') ? 'Yes' : 'No';
   values.propertyIncidentalOccupanciesOtherStructuresNew = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer');
 
   values.liabilityIncidentalOccupancies = _.get(policy, 'coverageOptions.liabilityIncidentalOccupancies.answer') ? 'Yes' : 'No';
@@ -120,7 +147,7 @@ export const handleInitialize = (state) => {
 
   values.townhouseRowhouse = _.get(policy, 'property.townhouseRowhouse') ? 'Yes' : 'No';
   values.townhouseRowhouseNew = !!_.get(policy, 'property.townhouseRowhouse');
-  values.windExcluded = _.get(policy, 'rating.windMitigationDiscount') === 0 ? 'No' : 'Yes';
+  values.windExcluded = _.get(policy, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount') === 0 ? 'No' : 'Yes';
   values.windExcludedNew = values.windExcluded;
   values.rented = _.get(policy, 'underwritingAnswers.rented.answer');
   values.rentedNew = values.rented;
@@ -166,7 +193,7 @@ export const handleInitialize = (state) => {
   values.internalPressureDesignNew = values.internalPressureDesign;
   values.windBorneDebrisRegion = _.get(policy, 'property.windMitigation.windBorneDebrisRegion');
   values.windBorneDebrisRegionNew = values.windBorneDebrisRegion;
-  values.windMitFactor = _.get(policy, 'rating.windMitigationDiscount');
+  values.windMitFactor = _.get(policy, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
   values.windMitFactorNew = values.windMitFactor;
 // Home/Location Bottom Left
   values.yearBuilt = _.get(policy, 'property.yearBuilt');
@@ -203,7 +230,6 @@ export const handleInitialize = (state) => {
   values.pH1LastName = _.get(policy, 'policyHolders[0].lastName');
   values.pH1LastNameNew = values.pH1LastName;
   values.pH1phone = normalizePhone(_.get(policy, 'policyHolders[0].primaryPhoneNumber') || '');
-  values.pH1phoneNew = values.pH1phone;
   values.pH1secondaryPhone = normalizePhone(_.get(policy, 'policyHolders[0].secondaryPhoneNumber') || '');
   values.pH1secondaryPhoneNew = values.pH1secondaryPhone;
 
@@ -215,9 +241,7 @@ export const handleInitialize = (state) => {
   values.pH2LastName = _.get(policy, 'policyHolders[1].lastName');
   values.pH2LastNameNew = values.pH2LastName;
   values.pH2phone = normalizePhone(_.get(policy, 'policyHolders[1].primaryPhoneNumber') || '');
-  values.pH2phoneNew = values.pH2phone;
   values.pH2secondaryPhone = normalizePhone(_.get(policy, 'policyHolders[1].secondaryPhoneNumber') || '');
-  values.pH2secondaryPhoneNew = values.pH2secondaryPhone;
 
   // Mailing/Billing
   values.address1 = _.get(policy, 'policyHolderMailingAddress.address1');
@@ -274,32 +298,33 @@ export const updateDependencies = (event, field, dependency, props) => {
 };
 
 
-export const generateModel = (data, policyObject) => {
+export const generateModel = (data, policyObject, props) => {
   const policy = policyObject;
-  const offset = new Date(policy.effectiveDate).getTimezoneOffset() / 60;
+  const endorseDate = moment.tz(moment.utc(data.endorsementDateNew).format('YYYY-MM-DD'), props.zipcodeSettings.timezone).format();
+  const sinkholeAmount = _.get(policy, 'deductibles.sinkhole.amount') || 10;
 
   policy.transactionType = 'Endorsement';
   const submitData = {
     ...policy,
     policyID: policy._id,
     formListTransactionType: 'Endorsement',
-    endorsementAmountNew: data.newEndorsementAmount,
-    endorsementDate: moment.utc(data.effectiveDateNew).utcOffset(offset),
+    endorsementAmountNew: data.newEndorsementAmount || 0,
+    endorsementDate: endorseDate,
     country: policy.policyHolderMailingAddress.country,
     pH1FirstName: data.pH1FirstName,
     pH1LastName: data.pH1LastName,
     pH1email: data.pH1email,
-    pH1phone: data.pH1phone,
-    pH1secondaryPhone: data.pH1secondaryPhone,
+    pH1phone: data.pH1phone ? data.pH1phone.replace(/[^\d]/g, '') : '',
+    pH1secondaryPhone: data.pH1secondaryPhone ? data.pH1secondaryPhone.replace(/[^\d]/g, '') : '',
     pH2FirstName: data.pH2FirstName,
     pH2LastName: data.pH2LastName,
     pH2email: data.pH2email,
-    pH2phone: data.pH2phone,
-    pH2secondaryPhone: data.pH2secondaryPhone,
+    pH2phone: data.pH2phone ? data.pH2phone.replace(/[^\d]/g, '') : '',
+    pH2secondaryPhone: data.pH2secondaryPhone ? data.pH2secondaryPhone.replace(/[^\d]/g, '') : '',
     floodZoneNew: data.floodZoneNew,
     squareFeetNew: data.squareFeetNew,
     residenceTypeNew: data.residenceTypeNew,
-    distanceToTidalWaterNew: data.distanceToTidalWaterNew,
+    distanceToTidalWaterNew: data.distanceToTidalWaterNew ? Number(String(data.distanceToTidalWaterNew).replace(/,|\.$/g, '')) : 0,
     propertyCityNew: data.propertyCityNew,
     propertyZipNew: data.propertyZipNew,
     propertyStateNew: data.propertyStateNew,
@@ -323,7 +348,8 @@ export const generateModel = (data, policyObject) => {
     windBorneDebrisRegionNew: data.windBorneDebrisRegionNew,
     roofToWallConnectionNew: data.roofToWallConnectionNew,
     electronicDeliveryNew: data.electronicDeliveryNew,
-    distanceToFireStationNew: data.distanceToFireStationNew,
+    distanceToFireStationNew: data.distanceToFireStationNew ? Number(String(data.distanceToFireStationNew).replace(/,|\.$/g, '')) : 0,
+    distanceToFireHydrantNew: data.distanceToFireHydrantNew ? Number(String(data.distanceToFireHydrantNew).replace(/,|\.$/g, '')) : 0,
     yearOfRoofNew: data.yearOfRoofNew,
     fireAlarmNew: data.fireAlarmNew,
     burglarAlarmNew: data.burglarAlarmNew,
@@ -353,7 +379,7 @@ export const generateModel = (data, policyObject) => {
     allOtherPerilsNew: data.allOtherPerilsNew,
     hurricaneNew: data.hurricaneNew,
     calculatedHurricaneNew: data.calculatedHurricaneNew,
-    sinkholeNew: String(data.sinkholePerilCoverageNew) === 'true' ? _.get(policy, 'deductibles.sinkhole.amount') : 0,
+    sinkholeNew: String(data.sinkholePerilCoverageNew) === 'true' ? sinkholeAmount : 0,
     // underwriting answers
     noPriorInsuranceNew: data.noPriorInsuranceNew,
     monthsOccupiedNew: data.monthsOccupiedNew,
@@ -363,9 +389,6 @@ export const generateModel = (data, policyObject) => {
 };
 
 export const covertToRateData = (changePolicyData, props) => {
-  console.log(props.summaryLedger);
-  const offset = new Date(changePolicyData.effectiveDate).getTimezoneOffset() / 60;
-
   const data = {
     effectiveDate: changePolicyData.effectiveDate,
     policyNumber: changePolicyData.policyNumber,
@@ -375,26 +398,26 @@ export const covertToRateData = (changePolicyData, props) => {
     property: {
       windMitigation: {
         roofGeometry: changePolicyData.roofGeometryNew,
-        floridaBuildingCodeWindSpeed: changePolicyData.floridaBuildingCodeWindSpeedNew,
+        floridaBuildingCodeWindSpeed: Number(changePolicyData.floridaBuildingCodeWindSpeedNew),
         secondaryWaterResistance: changePolicyData.secondaryWaterResistanceNew,
         internalPressureDesign: changePolicyData.internalPressureDesignNew,
         roofCovering: changePolicyData.roofCoveringNew,
         openingProtection: changePolicyData.openingProtectionNew,
         terrain: changePolicyData.terrainNew,
-        floridaBuildingCodeWindSpeedDesign: changePolicyData.floridaBuildingCodeWindSpeedDesignNew,
+        floridaBuildingCodeWindSpeedDesign: Number(changePolicyData.floridaBuildingCodeWindSpeedDesignNew),
         roofDeckAttachment: changePolicyData.roofDeckAttachmentNew,
         windBorneDebrisRegion: changePolicyData.windBorneDebrisRegionNew,
         roofToWallConnection: changePolicyData.roofToWallConnectionNew
       },
       territory: changePolicyData.property.territory,
-      buildingCodeEffectivenessGrading: changePolicyData.buildingCodeEffectivenessGradingNew,
+      buildingCodeEffectivenessGrading: Number(changePolicyData.buildingCodeEffectivenessGradingNew),
       familyUnits: changePolicyData.familyUnitsNew,
       fireAlarm: changePolicyData.fireAlarmNew,
       burglarAlarm: changePolicyData.burglarAlarmNew,
       constructionType: changePolicyData.constructionTypeNew,
-      yearBuilt: changePolicyData.yearBuiltNew,
+      yearBuilt: Number(changePolicyData.yearBuiltNew),
       sprinkler: changePolicyData.sprinklerNew,
-      protectionClass: changePolicyData.protectionClassNew,
+      protectionClass: Number(changePolicyData.protectionClassNew),
       townhouseRowhouse: changePolicyData.townhouseRowhouseNew
     },
     coverageLimits: {
@@ -428,7 +451,7 @@ export const covertToRateData = (changePolicyData, props) => {
     },
     coverageOptions: {
       sinkholePerilCoverage: {
-        answer: changePolicyData.sinkholePerilCoverageNew
+        answer: String(changePolicyData.sinkholePerilCoverageNew) === 'true'
       },
       propertyIncidentalOccupanciesMainDwelling: {
         answer: changePolicyData.propertyIncidentalOccupanciesMainDwellingNew
@@ -445,14 +468,15 @@ export const covertToRateData = (changePolicyData, props) => {
     },
     deductibles: {
       allOtherPerils: {
-        amount: changePolicyData.allOtherPerilsNew
+        amount: Number(changePolicyData.allOtherPerilsNew)
       },
       hurricane: {
-        amount: changePolicyData.hurricaneNew,
-        calculatedAmount: changePolicyData.calculatedHurricaneNew
+        amount: Number(changePolicyData.hurricaneNew),
+        calculatedAmount: Number(setPercentageOfValue(Number(changePolicyData.dwellingAmountNew), Number(changePolicyData.hurricaneNew)))
       },
       sinkhole: {
-        amount: changePolicyData.sinkholeNew
+        amount: Number(changePolicyData.sinkholeNew),
+        calculatedAmount: Number(setPercentageOfValue(Number(changePolicyData.dwellingAmountNew), Number(changePolicyData.sinkholeNew)))
       }
     },
     underwritingAnswers: {
@@ -468,32 +492,39 @@ export const covertToRateData = (changePolicyData, props) => {
     },
     oldTotalPremium: changePolicyData.rating.totalPremium,
     oldCurrentPremium: props.summaryLedger.currentPremium,
-    endorsementDate: moment.utc(changePolicyData.effectiveDateNew).utcOffset(offset)
+    endorsementDate: changePolicyData.endorsementDate
   };
 
   return data;
 };
 
 export const calculate = (data, dispatch, props) => {
-  const submitData = generateModel(data, props.policy);
+  const submitData = generateModel(data, props.policy, props);
   const workflowId = props.appState.instanceId;
+
+  const setLiabilityIncidentalOccupanciesNew = submitData.propertyIncidentalOccupanciesMainDwellingNew || submitData.propertyIncidentalOccupanciesOtherStructuresNew;
+  submitData.liabilityIncidentalOccupanciesNew = setLiabilityIncidentalOccupanciesNew;
+  props.dispatch(change('Endorsements', 'liabilityIncidentalOccupanciesNew', setLiabilityIncidentalOccupanciesNew));
 
   const rateData = covertToRateData(submitData, props);
 
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true, isCalculated: false });
 
-  props.actions.serviceActions.getRate(rateData).then(() => {
-    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: false, isCalculated: true });
+  props.actions.serviceActions.getRate(rateData).then((result) => {
+    if (result.payload && result.payload[0] && result.payload[0].type === actionTypes.APP_ERROR) {
+      props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: false, isCalculated: false });
+    } else props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: false, isCalculated: true });
   });
 };
 
 export const save = (data, dispatch, props) => {
   const workflowId = props.appState.instanceId;
-
-  const submitData = generateModel(data, props.policy);
+  const submitData = generateModel(data, props.policy, props);
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
 
   submitData.rating = props.getRate.rating;
+  submitData.summaryLedger = props.summaryLedger;
+
   props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID }).then((result) => {
     const steps = [{
       name: 'saveEndorsement',
@@ -523,26 +554,37 @@ export class Endorsements extends React.Component {
     }
     if (this.props && this.props.policy && this.props.policy.policyNumber) {
       this.props.actions.serviceActions.getUnderwritingQuestions(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property);
+      this.props.actions.serviceActions.getEndorsementHistory(this.props.policy.policyNumber);
+      this.props.actions.serviceActions.getZipcodeSettings(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property.physicalAddress.zip);
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!_.isEqual(this.props.getRate, nextProps.getRate)) {
+    if (!_.isEqual(this.props.getRate, nextProps.getRate) && nextProps.getRate) {
       const { getRate } = nextProps;
-      nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', getRate.endorsementAmount || '-'));
-      nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', getRate.newCurrentPremium || '-'));
-      nextProps.dispatch(change('Endorsements', 'newAnnualPremium', getRate.newAnnualPremium || '-'));
+      nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', getRate.endorsementAmount || ''));
+      nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', getRate.newCurrentPremium || ''));
+      nextProps.dispatch(change('Endorsements', 'newAnnualPremium', getRate.newAnnualPremium || ''));
     }
     if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
+      setCalculate(nextProps, true);
     }
     if (!_.isEqual(this.props.newPolicyNumber, nextProps.newPolicyNumber)) {
       this.props.actions.policyStateActions.updatePolicy(true, nextProps.newPolicyNumber);
-      const effectiveDateNew = moment.utc(_.get(nextProps.policy, 'effectiveDate')).format('YYYY-MM-DD');
-      nextProps.dispatch(change('Endorsements', 'effectiveDateNew', effectiveDateNew));
+      const endorsementDateNew = setEndorsementDate(_.get(nextProps.policy, 'effectiveDate'), _.get(nextProps.policy, 'endDate'));
+      nextProps.dispatch(change('Endorsements', 'endorsementDateNew', endorsementDateNew));
       nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', ''));
       nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', ''));
       nextProps.dispatch(change('Endorsements', 'newAnnualPremium', ''));
+    }
+    if (this.props.tasks && this.props.tasks.endorsePolicyModelSave && this.props.tasks.endorsePolicyModelSave.data &&
+      nextProps.tasks && nextProps.tasks.endorsePolicyModelSave && nextProps.tasks.endorsePolicyModelSave.data &&
+      !_.isEqual(this.props.tasks.endorsePolicyModelSave.data, nextProps.tasks.endorsePolicyModelSave.data)) {
+      if (nextProps.tasks.endorsePolicyModelSave.data.result && nextProps.tasks.endorsePolicyModelSave.data.result.status !== 200) {
+        nextProps.dispatch(errorActions.setAppError({ message: nextProps.tasks.endorsePolicyModelSave.data.result.result }));
+        setCalculate(nextProps);
+      }
     }
   }
 
@@ -585,10 +627,10 @@ export class Endorsements extends React.Component {
           <div className="route-content">
             <div className="endorsements">
               <div className="endo-jump-menu">
-                <a href="#coverage" className="btn btn-secondary btn-xs">Coverage</a>
-                <a href="#home" className="btn btn-secondary btn-xs">Home / Location</a>
-                <a href="#policy" className="btn btn-secondary btn-xs">Policyholders</a>
-                <a href="#addresses" className="btn btn-secondary btn-xs">Addresses</a>
+                <button id="coverage-scroll" type="button" onClick={() => scrollToView('coverage')} className="btn btn-secondary btn-xs">Coverage</button>
+                <button id="home-scroll" type="button" onClick={() => scrollToView('home')} className="btn btn-secondary btn-xs">Home / Location</button>
+                <button id="policy-scroll" ttype="button" onClick={() => scrollToView('policy')} className="btn btn-secondary btn-xs">Policyholders</button>
+                <button id="addresses-scroll" ttype="button" onClick={() => scrollToView('addresses')} className="btn btn-secondary btn-xs">Addresses</button>
               </div>
               <div className="scroll">
                 <div className="form-group survey-wrapper" role="group">
@@ -620,7 +662,7 @@ export class Endorsements extends React.Component {
 
                             name={'otherStructuresNew'}
                             answers={getAnswers('otherStructuresAmount', questions)}
-                            component="select" label={''} styleName={'coverage-b-percentage'} onChange={event => updateDependencies(event, 'otherStructuresAmountNew', 'dwellingAmount', this.props)} validations={['required']}
+                            component="select" label={''} styleName={'coverage-b-percentage'} onChange={event => updateDependencies(event, 'otherStructuresAmountNew', 'dwellingAmountNew', this.props)} validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
@@ -632,7 +674,7 @@ export class Endorsements extends React.Component {
                           <SelectField
                             name={'personalPropertyNew'}
                             answers={getAnswers('personalPropertyAmount', questions)}
-                            component="select" label={''} styleName={'coverage-c-percentage'} onChange={event => updateDependencies(event, 'personalPropertyAmountNew', 'dwellingAmount', this.props)} validations={['required']}
+                            component="select" label={''} styleName={'coverage-c-percentage'} onChange={event => updateDependencies(event, 'personalPropertyAmountNew', 'dwellingAmountNew', this.props)} validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
@@ -683,7 +725,7 @@ export class Endorsements extends React.Component {
                             label={''}
                             name={'hurricaneNew'}
                             answers={getAnswers('hurricane', questions)}
-                            component="select" styleName={''} onChange={event => updateDependencies(event, 'calculatedHurricane', 'dwellingAmount', this.props)} validations={['required']}
+                            component="select" styleName={''} onChange={event => updateDependencies(event, 'calculatedHurricane', 'dwellingAmountNew', this.props)} validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
@@ -960,11 +1002,11 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'FBC Wind Speed'} styleName={''} name={'floridaBuildingCodeWindSpeed'} disabled />
-                          <TextField validations={['required']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedNew'} onChange={() => setCalculate(this.props, false)} />
+                          <TextField validations={['required', 'numbersOnly']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedNew'} onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'FBC Wind Speed Design'} styleName={''} name={'floridaBuildingCodeWindSpeedDesign'} disabled />
-                          <TextField validations={['required']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedDesignNew'} onChange={() => setCalculate(this.props, false)} />
+                          <TextField validations={['required', 'numbersOnly']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedDesignNew'} onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Terrain'} styleName={''} name={'terrain'} disabled />
@@ -1012,6 +1054,7 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <TextField label={'Year Home Built'} styleName={''} name="yearBuilt" disabled />
                           <TextField
+                            validations={['numbersOnly']}
                             styleName={''} label={''} name="yearBuiltNew" onChange={() => setCalculate(this.props, false)}
                           />
                         </div>
@@ -1068,15 +1111,15 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Tidal Waters Dist.'} styleName={''} name={'distanceToTidalWater'} disabled />
-                          <TextField validations={['required']} label={''} styleName={''} name={'distanceToTidalWaterNew'} onChange={() => setCalculate(this.props, false)} />
+                          <NumberField label={''} styleName={''} name={'distanceToTidalWaterNew'} onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Fire Hydrant Dist.'} styleName={''} name={'distanceToFireHydrant'} disabled />
-                          <TextField label={''} styleName={''} name={'distanceToFireHydrantNew'} onChange={() => setCalculate(this.props, false)} />
+                          <NumberField label={''} styleName={''} name={'distanceToFireHydrantNew'} onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Fire Station Dist.'} styleName={''} name={'distanceToFireStation'} disabled />
-                          <TextField label={''} styleName={''} name={'distanceToFireStationNew'} onChange={() => setCalculate(this.props, false)} />
+                          <NumberField label={''} styleName={''} name={'distanceToFireStationNew'} onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="form-group-double-element">
                           <TextField label={'Residence Type'} styleName={''} name={'residenceType'} disabled />
@@ -1186,7 +1229,7 @@ export class Endorsements extends React.Component {
                 <div className="flex-parent">
                   <div className="form-group">
                     <DateField
-                      validations={['date']} label={'Endorsement Effective Date'} name={'effectiveDateNew'}
+                      validations={['date']} label={'Endorsement Effective Date'} name={'endorsementDateNew'}
                       min={moment.utc(policy.effectiveDate).format('YYYY-MM-DD')}
                       max={moment.utc(policy.endDate).format('YYYY-MM-DD')}
                       onChange={() => setCalculate(this.props, false)}
@@ -1201,7 +1244,6 @@ export class Endorsements extends React.Component {
                   { /* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */ }
                   <button type="button" tabIndex={'0'} className="btn btn-secondary" onClick={() => setCalculate(this.props, true)}>Cancel</button>
                   <button type="submit" tabIndex={'0'} className="btn btn-primary" disabled={(!appState.data.isCalculated && pristine) || appState.data.isSubmitting}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
-
                 </div>
               </div>
             </div>
@@ -1250,11 +1292,13 @@ const mapStateToProps = state => ({
   underwritingQuestions: state.service.underwritingQuestions,
   getRate: state.service.getRate,
   newPolicyNumber: getNewPolicyNumber(state),
-  summaryLedger: state.service.getSummaryLedger || {}
+  summaryLedger: state.service.getSummaryLedger || {},
+  zipcodeSettings: state.service.getZipcodeSettings
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    errorActions: bindActionCreators(errorActions, dispatch),
     policyStateActions: bindActionCreators(policyStateActions, dispatch),
     questionsActions: bindActionCreators(questionsActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),

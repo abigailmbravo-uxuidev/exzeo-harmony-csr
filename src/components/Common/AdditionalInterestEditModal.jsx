@@ -123,7 +123,7 @@ export const AdditionalInterestEditModal = (props) => {
             <TextField
               label={'State'} styleName={'state'} name={'state'} validations={['required']}
             />
-            <TextField label={'Zip Code'} styleName={''} name={'zip'} validations={['required', 'numbersOnly']} />
+            <TextField label={'Zip Code'} styleName={''} name={'zip'} validations={['required', 'zipNumbersOnly']} />
           </div>
           <div className="flex-form">
             <PhoneField label={'Phone Number'} styleName={'phone'} name={'phoneNumber'} validations={['phone']} />

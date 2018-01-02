@@ -137,10 +137,13 @@ export const handleAISubmit = (data, dispatch, props) => {
   modifiedAIs.push(aiData);
   setRank(modifiedAIs);
 
+  const offset = new Date(props.policy.effectiveDate).getTimezoneOffset() / 60;
+
+
   const submitData = {
     ...aiData,
     ...props.policy,
-    endorsementDate: moment.utc(),
+    endorsementDate: moment(props.policy.effectiveDate).utcOffset(offset),
     transactionType: data._id ? 'AI Update' : 'AI Addition', // eslint-disable-line
     additionalInterests: modifiedAIs
   };
@@ -179,10 +182,12 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
     ai.order = 0;
     modifiedAIs.splice(index, 1, ai);
   }
+  const offset = new Date(props.policy.effectiveDate).getTimezoneOffset() / 60;
+
   const submitData = {
     additionalInterestId: selectedAdditionalInterest._id,
     ...policy,
-    endorsementDate: moment.utc(),
+    endorsementDate: moment(props.policy.effectiveDate).utcOffset(offset),
     transactionType: 'AI Removal'
   };
 

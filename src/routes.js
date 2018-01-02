@@ -61,7 +61,7 @@ class Routes extends Component {
     if (isAuthenticated() && checkPublicPath(window.location.pathname)) {
       const idToken = localStorage.getItem('id_token');
       axios.defaults.headers.common['authorization'] = `bearer ${idToken}`; // eslint-disable-line
-      
+
       if (!this.props.authState.userProfile) {
         const profile = JSON.parse(localStorage.getItem('user_profile'));
         this.props.actions.authActions.dispatchUserProfile(profile);
@@ -92,20 +92,24 @@ class Routes extends Component {
       <div>
         <Modal
           isOpen={this.props.error.message !== undefined}
-          contentLabel="Example Modal"
+          contentLabel="Error Modal"
           style={this.modalStyles}
           className="card"
+          appElement={document.getElementById('root')}
         >
           <div className="card-header"><h4><i className="fa fa-exclamation-circle" />&nbsp;Error</h4></div>
-          <div className="card-block">{ this.props.error.message }</div>
-          <div className="card-footer"><button className="btn-primary" onClick={this.clearError}>close</button></div>
-
+          <div className="card-block"><p>{ this.props.error.message }</p></div>
+          <div className="card-footer">
+            {this.props.error.requestId && <div className="footer-message"><p>Request ID: { this.props.error.requestId }</p></div>}
+            <button className="btn-primary" onClick={this.clearError}>close</button>
+          </div>
         </Modal>
+
         <Router
           getUserConfirmation={(message, callback) => {
             ReactDOM.render((
               <ConfirmPopup {...this.props} message={message} setBackStep={this.setBackStep} callback={callback} />
-      ), document.getElementById('modal'));
+            ), document.getElementById('modal'));
           }}
         >
           <div className="routes">
