@@ -27,7 +27,6 @@ import DateField from '../Form/inputs/DateField';
 import Loader from '../Common/Loader';
 import * as policyStateActions from '../../actions/policyStateActions';
 import * as actionTypes from '../../actions/actionTypes';
-import normalizeNumbers from '../Form/normalizeNumbers';
 
 export const scrollToView = (elementName) => {
   const element = document.getElementById(elementName);
