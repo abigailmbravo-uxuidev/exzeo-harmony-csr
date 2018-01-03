@@ -9,8 +9,6 @@ import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import * as serviceActions from '../../actions/serviceActions';
 import * as policyStateActions from '../../actions/policyStateActions';
-import EditEffectiveDataPopUp from './EditEffectiveDatePopup'
-import Loader from '../Common/Loader';
 
 export const showEffectiveDatePopUp = (props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
