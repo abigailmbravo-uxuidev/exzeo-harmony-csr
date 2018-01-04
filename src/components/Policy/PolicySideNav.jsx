@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { reduxForm, propTypes } from 'redux-form';
-import _ from 'lodash';
 import * as appStateActions from '../../actions/appStateActions';
 import * as cgActions from '../../actions/cgActions';
 import NewNoteFileUploader from '../Common/NewNoteFileUploader';
@@ -66,15 +65,8 @@ export const closeNewNoteFileUploader = (props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showNewNoteFileUploader: false });
 };
 
-const getDocumentId = (props) => {
-  const taskData = (props.cg && props.appState && props.cg[props.appState.modelName]) ? props.cg[props.appState.modelName].data : null;
-  if (!taskData) return {};
-  const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
-  return policyData.policyNumber;
-};
-
 export const SideNav = (props) => {
-  const documentId = getDocumentId(props);
+  const documentId = props.policy.policyNumber;
 
   return (
     <nav className="site-nav">
@@ -135,7 +127,8 @@ const mapStateToProps = state => ({
   completedTasks: state.completedTasks,
   activateRedirectLink: state.appState.data.activateRedirectLink,
   activateRedirect: state.appState.data.activateRedirect,
-  cg: state.cg
+  cg: state.cg,
+  policy: state.service.latestPolicy || {}
 });
 
 const mapDispatchToProps = dispatch => ({

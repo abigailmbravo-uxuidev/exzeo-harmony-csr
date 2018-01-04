@@ -91,12 +91,21 @@ describe('Rules', () => {
     });
   });
 
-  describe('numbersOnly', () => {
-    it('should return undefined for numbersOnly', () => {
-      expect(rules.numbersOnly('456')).toBeUndefined();
+  describe('zipNumbersOnly', () => {
+    it('should return undefined for zipNumbersOnly', () => {
+      expect(rules.zipNumbersOnly('456')).toBeUndefined();
     });
     it('should return Not a valid zip code', () => {
-      expect(rules.numbersOnly('|/&')).toEqual('Not a valid zip code');
+      expect(rules.zipNumbersOnly('|/&')).toEqual('Not a valid zip code');
+    });
+  });
+
+  describe('numbersOnly', () => {
+    it('should return undefined for numbersOnly', () => {
+      expect(rules.numbersOnly('543543456')).toBeUndefined();
+    });
+    it('should return Not a valid number', () => {
+      expect(rules.numbersOnly('|/&')).toEqual('Not a valid number');
     });
   });
 

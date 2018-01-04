@@ -4,6 +4,7 @@ import Dropzone from 'react-dropzone';
 import { Field, Form, reduxForm, propTypes } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import * as cgActions from '../../actions/cgActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
@@ -15,12 +16,12 @@ export const submitNote = (data, dispatch, props) => {
     noteType,
     noteContent: data.noteContent,
     contactType: data.contactType,
-    createdAt: new Date().getTime(),
-    noteAttachments: data.noteAttachments ? data.noteAttachments.length : 0,
+    createdAt:  moment().unix(),
+    attachmentCount: data.noteAttachments ? data.noteAttachments.length : 0,
     fileType: data.fileType,
     createdBy: {
-      useerId: user.user_id,
-      userName: user.username
+      useerId: user.sub,
+      userName: user.name
     }
   };
 
@@ -191,7 +192,7 @@ export const NewNoteFileUploader = (props, { closeButtonHandler }) => {
             </div>
             <div className="buttons note-file-footer-button-group">
               <button aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={props.closeButtonHandler}>Cancel</button>
-              <button aria-label="submit-btn form-newNote" className="btn btn-primary submit-button">Save</button>
+              <button  aria-label="submit-btn form-newNote" className="btn btn-primary submit-button">Save</button>
             </div>
           </div>
         </Form>
