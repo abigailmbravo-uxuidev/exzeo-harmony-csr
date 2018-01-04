@@ -10,7 +10,6 @@ import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 
-
 export const selectPolicy = (quote, props) => {
   if (!quote.quoteNumber) return;
 
