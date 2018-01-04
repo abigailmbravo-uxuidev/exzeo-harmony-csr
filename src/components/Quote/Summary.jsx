@@ -360,6 +360,7 @@ export class Summary extends Component {
             <TextField validations={['required']} label={'Email To Name'} styleName={'share-name'} name={'name'} />
             <TextField validations={['required', 'email']} label={'Email Address'} styleName={'share-email'} name={'emailAddr'} />
             <button
+              tabIndex={'0'}
               aria-label="submit-btn form-share"
               disabled={this.props.appState.data.submitting}
               form="Summary"
