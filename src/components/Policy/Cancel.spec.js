@@ -46,6 +46,13 @@ describe('Testing Cancel component', () => {
     const props = {
       userProfile: {},
       actions: {
+        cgActions: {
+          batchCompleteTask() { return Promise.resolve(); },
+          startWorkflow() { return Promise.resolve({ payload: [{ workflowData: { cancelPolicyModel: { data: {} }, cancelPolicy: { data: {} } } }] }); }
+        },
+        appStateActions: {
+          setAppState() {}
+        },
         policyStateActions: {
           updatePolicy() {}
         },
@@ -60,6 +67,7 @@ describe('Testing Cancel component', () => {
       fieldValues: {
 
       },
+      summaryLedger: { status: { code: 0 } },
       handleSubmit() {},
       fieldQuestions: [],
       quoteData: {},

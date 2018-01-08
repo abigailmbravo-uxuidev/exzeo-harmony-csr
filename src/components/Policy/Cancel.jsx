@@ -18,6 +18,7 @@ import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as policyStateActions from '../../actions/policyStateActions';
 import Footer from '../Common/Footer';
+import Loader from '../Common/Loader';
 
 export const handleInitialize = (state) => {
   const values = {};
@@ -74,20 +75,35 @@ export const Claims = ({ claims }) => {
 };
 
 export const handleFormSubmit = (data, dispatch, props) => {
-  alert('Policy Canceled');
+  const { policy, summaryLedger } = props;
 
-  const { policy } = props;
+  const submitData = {
+    policyID: policy.policyID,
+    policyNumber: policy.policyNumber,
+    cancelDate: data.effectiveDate,
+    cancelReason: data.cancelReason,
+    transactionType: `Pending ${data.cancelType}`,
+    equityDate: data.equityDate,
+    billingStatus: summaryLedger.status.code
+  };
 
-  const request = policy;
-  request.updatedAt = moment.utc();
-  request.updatedBy = { userId: props.userProfile.sub, userName: props.userProfile.username };
-  request.createdAt = request.updatedAt;
-  request.createdBy = request.updatedBy;
-  request.transactionType = `Pending ${data.cancelType}`;
-  request.cancelReason = data.cancelReason;
-  request.effectiveDate = data.effectiveDate;
+  const workflowId = props.appState.instanceId;
+  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
 
-  console.log(request);
+
+  props.actions.cgActions.startWorkflow('cancelPolicyModel', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID }).then((result) => {
+    const steps = [{
+      name: 'cancelPolicy',
+      data: submitData
+    }];
+    const startResult = result.payload ? result.payload[0].workflowData.cancelPolicyModel.data : {};
+
+    props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, isSubmitting: true });
+
+    props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
+      props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, isSubmitting: false });
+    });
+  });
 };
 
 export const resetCancelReasons = (props) => {
@@ -124,6 +140,7 @@ export class CancelPolicy extends React.Component {
     return (
       <PolicyConnect>
         <ClearErrorConnect />
+        {this.props.appState.data.isSubmitting && <Loader />}
         <Form id="CancelPolicy" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
           <div className="route-content">
             <div className="scroll">
