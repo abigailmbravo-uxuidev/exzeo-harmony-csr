@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 const RadioOption = ({
@@ -18,7 +19,7 @@ const RadioOption = ({
     onKeyPress={event => onKeyPress(event, answer.answer)}
     onClick={() => onChange(answer.answer)}
   >
-    {answer.image && <img src={answer.image} role="presentation" />}
+    {answer.image && <img src={answer.image} alt="presentation" />}
     <label
       className={classNames(
         { 'label-segmented': segmented },
