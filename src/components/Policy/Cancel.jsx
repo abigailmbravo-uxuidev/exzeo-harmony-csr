@@ -94,30 +94,26 @@ export const resetCancelReasons = (props) => {
   props.dispatch(change('CancelPolicy', 'cancelReason', ''));
 };
 
-let isLoded = false;
 export class CancelPolicy extends React.Component {
   componentWillReceiveProps(nextProps) {
-    if (!_.isEqual(this.props, nextProps)) {
-      if (nextProps.policy.policyNumber && !isLoded) {
-        isLoded = true;
-        nextProps.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
-        nextProps.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
-        nextProps.actions.serviceActions.getCancelOptions();
-        this.props.actions.policyStateActions.updatePolicy(true, nextProps.policy.policyNumber);
+    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
+      nextProps.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
+      nextProps.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
+      nextProps.actions.serviceActions.getCancelOptions();
+      this.props.actions.policyStateActions.updatePolicy(true, nextProps.policy.policyNumber);
 
-        const paymentOptions = {
-          effectiveDate: nextProps.policy.effectiveDate,
-          policyHolders: nextProps.policy.policyHolders,
-          additionalInterests: nextProps.policy.additionalInterests,
-          netPremium: nextProps.policy.rating.netPremium,
-          fees: {
-            empTrustFee: nextProps.policy.rating.worksheet.fees.empTrustFee,
-            mgaPolicyFee: nextProps.policy.rating.worksheet.fees.mgaPolicyFee
-          },
-          totalPremium: nextProps.policy.rating.totalPremium
-        };
-        this.props.actions.serviceActions.getBillingOptions(paymentOptions);
-      }
+      const paymentOptions = {
+        effectiveDate: nextProps.policy.effectiveDate,
+        policyHolders: nextProps.policy.policyHolders,
+        additionalInterests: nextProps.policy.additionalInterests,
+        netPremium: nextProps.policy.rating.netPremium,
+        fees: {
+          empTrustFee: nextProps.policy.rating.worksheet.fees.empTrustFee,
+          mgaPolicyFee: nextProps.policy.rating.worksheet.fees.mgaPolicyFee
+        },
+        totalPremium: nextProps.policy.rating.totalPremium
+      };
+      this.props.actions.serviceActions.getBillingOptions(paymentOptions);
     }
   }
 
