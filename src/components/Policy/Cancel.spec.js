@@ -48,7 +48,7 @@ describe('Testing Cancel component', () => {
       actions: {
         cgActions: {
           batchCompleteTask() { return Promise.resolve(); },
-          startWorkflow() { return Promise.resolve({ payload: [{ workflowData: { cancelPolicyModel: { data: {} }, cancelPolicy: { data: {} } } }] }); }
+          startWorkflow() { return Promise.resolve({ payload: [{ workflowData: { cancelPolicyModelUI: { data: {} }, cancelPolicy: { data: {} } } }] }); }
         },
         appStateActions: {
           setAppState() {}

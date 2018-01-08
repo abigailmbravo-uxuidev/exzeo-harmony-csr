@@ -91,17 +91,18 @@ export const handleFormSubmit = (data, dispatch, props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
 
 
-  props.actions.cgActions.startWorkflow('cancelPolicyModel', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID }).then((result) => {
+  props.actions.cgActions.startWorkflow('cancelPolicyModelUI', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID }).then((result) => {
     const steps = [{
-      name: 'cancelPolicy',
+      name: 'cancelPolicySubmit',
       data: submitData
     }];
-    const startResult = result.payload ? result.payload[0].workflowData.cancelPolicyModel.data : {};
+    const startResult = result.payload ? result.payload[0].workflowData.cancelPolicyModelUI.data : {};
 
     props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, isSubmitting: true });
 
     props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
       props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, isSubmitting: false });
+      props.actions.policyStateActions.updatePolicy(true, policy.policyNumber);
     });
   });
 };
