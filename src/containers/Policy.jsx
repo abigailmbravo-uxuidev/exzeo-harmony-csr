@@ -24,8 +24,8 @@ export const showEffectiveDatePopUp = (props) => {
 };
 
 export const changeEffectiveDate = (data, dispatch, props) => {
-  const zipCode = props.actions.serviceActions.getZipcodeSettings(props.policy.companyCode, props.policy.state, props.policy.product, props.policy.property.physicalAddress.zip);
-  const effectiveDateUTC = moment.tz(moment.utc(data.effectiveDate).format('YYYY-MM-DD'), zipCode.timezone).format();
+  props.actions.serviceActions.getZipcodeSettings(props.policy.companyCode, props.policy.state, props.policy.product, props.policy.property.physicalAddress.zip);
+  const effectiveDateUTC = moment.tz(moment.utc(data.effectiveDate).format('YYYY-MM-DD'), props.zipCodeSetting.timezone).format();
   const workflowId = props.appState.instanceId;
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
 
@@ -79,7 +79,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   summaryLedger: state.service.getSummaryLedger,
   policy: state.service.latestPolicy || {},
-  zipCodeSetting: state.service.latestPolicy
+  zipCodeSetting: state.service.getZipcodeSettings
 });
 
 const mapDispatchToProps = dispatch => ({
