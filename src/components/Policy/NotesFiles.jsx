@@ -10,77 +10,78 @@ import * as serviceActions from '../../actions/serviceActions';
 import PolicyBaseConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import RadioField from '../Form/inputs/RadioField';
+import Downloader from '../Common/Downloader';
 import Footer from '../Common/Footer';
 
-const handleInitialize = state => ({});
+const handleInitialize = state => ({
+  attachmentStatus: false
+});
 
 const SearchPanel = props => (
-  <div className="toolbar">
-    <div className="input-group">
-      <div className="btn btn-notes">Notes</div>
-      <div className="btn btn-files">Files</div>
-    </div>
+  <div className="search">
+    <label>Search Table Data</label>
     { props.searchField }
   </div>
   );
 
-/*
-TODO:
-This will be used to display attachments
-Need to set expandableRow in the BootstrapTable component
-*/
-export const BSTable = props => props.notes ?
-  (
-    <BootstrapTable data={props.notes}>
-      <TableHeaderColumn dataField="fileList" isKey>Attachment List</TableHeaderColumn>
-    </BootstrapTable>
-  ) : (<p>?</p>);
-
-export const isExpandableRow = (row) => {
-  if (row.id < 2) return true;
-  return true;
+export const filterNotesByType = (notes, type) => {
+  if (!Array.isArray(notes)) return [];
+  if (type) return notes.filter(n => n.attachments.length > 0);
+  return notes;
 };
 
 export const NoteList = (props) => {
-  const { notes } = props;
+  const { notes, fieldValues } = props;
 
-  const expandComponent = row => (<BSTable data={row.expand} />);
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
   const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
   const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
-  const attachmentUrl = attachments =>
-    attachments.map(attachment => `<a target="_blank" href="${attachment.fileUrl}">${attachment.fileType}</a>`).join('<br>');
   const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
-
-  return (
-    <BootstrapTable
-      data={Array.isArray(notes) ? notes : []}
-      options={options}
-      expandableRow={false}
-      expandComponent={expandComponent}
-      search
-    >
-      <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
-      <TableHeaderColumn dataField="attachments" dataFormat={attachmentCount} className="attachmentCount" dataSort dataAlign="center" width="7%"><i className="fa fa-paperclip" aria-hidden="true" /></TableHeaderColumn>
-      <TableHeaderColumn dataField="createdDate" dataSort width="10%" dataFormat={formatCreateDate}>Created</TableHeaderColumn>
-      <TableHeaderColumn dataField="createdBy" dataSort width="13%" dataFormat={showCreatedBy}>Author</TableHeaderColumn>
-      <TableHeaderColumn dataField="content" dataSort tdStyle={{ whiteSpace: 'normal' }}>Note</TableHeaderColumn>
-      <TableHeaderColumn dataField="attachments" dataFormat={attachmentUrl} dataSort tdStyle={{ whiteSpace: 'normal' }} width="45%">Attachments</TableHeaderColumn>
-    </BootstrapTable>
+  const formatNote = note => note.replace(/\r|\n/g, '<br>');
+  const attachmentUrl = attachments => (
+    <span>
+      { attachments.map((attachment, i) =>
+        <Downloader
+          fileName={attachment.fileName}
+          fileUrl={attachment.fileUrl}
+          fileType={attachment.fileType}
+          key={i}
+        />
+      )}
+    </span>
   );
-};
 
-const Files = (props) => {
-  const options = { searchPanel: props => (<SearchPanel {...props} />) };
   return (
-    <BootstrapTable data={[]} options={options} search>
-      <TableHeaderColumn dataField="id" isKey hidden>ID</TableHeaderColumn>
-      <TableHeaderColumn dataField="format" dataSort width="10%">Format</TableHeaderColumn>
-      <TableHeaderColumn dataField="type" dataSort width="20%">Type</TableHeaderColumn>
-      <TableHeaderColumn dataField="fileName" dataSort tdStyle={{ whiteSpace: 'normal' }} width="30%">File Name</TableHeaderColumn>
-      <TableHeaderColumn dataField="created" dataSort width="15%">Created</TableHeaderColumn>
-      <TableHeaderColumn dataField="author" dataSort width="15%">Author</TableHeaderColumn>
-    </BootstrapTable>
+    <div className="note-grid-wrapper">
+      <div className="filter-tabs">
+        <RadioField
+          name={'attachmentStatus'} styleName={''} label={''} onChange={function () {}} segmented answers={[
+            {
+              answer: false,
+              label: 'All Notes'
+            }, {
+              answer: true,
+              label: 'Attachments'
+            }
+          ]}
+        />
+      </div>
+      <BootstrapTable
+        data={filterNotesByType(notes, fieldValues.attachmentStatus)}
+        options={options}
+        search
+        multiColumnSearch
+      >
+        <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
+        <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdDate" dataSort dataFormat={formatCreateDate} >Created</TableHeaderColumn>
+        <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataSort dataFormat={showCreatedBy} >Author</TableHeaderColumn>
+        <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="contactType" dataSort >Note Type</TableHeaderColumn>
+        <TableHeaderColumn className="note" columnClassName="note" dataField="content" dataSort dataFormat={formatNote} >Note</TableHeaderColumn>
+        <TableHeaderColumn className="count" columnClassName="count" dataField="attachments" dataFormat={attachmentCount} hidden />
+        <TableHeaderColumn className="attachments" columnClassName="attachments" dataField="attachments" dataFormat={attachmentUrl} dataSort >Attachments</TableHeaderColumn>
+      </BootstrapTable>
+    </div>
   );
 };
 
@@ -113,9 +114,6 @@ export class NotesFiles extends Component {
                     <div className="notes-list">
                       <NoteList {...this.props} />
                     </div>
-                    <div className="file-list" hidden>
-                      <Files />
-                    </div>
                   </section>
                 </div>
               </div>
@@ -144,6 +142,7 @@ NotesFiles.propTypes = {
 // redux mapping
 // ------------------------------------------------
 const mapStateToProps = state => ({
+  tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'NotesFiles.values', {}),
   initialValues: handleInitialize(state),

@@ -24,7 +24,7 @@ const handleGetPaymentPlans = (state) => {
   return paymentPlanResult;
 };
 
-const handleInitialize = (state) => {
+export const handleInitialize = (state) => {
   const quoteData = state.service.quote || {};
   const values = {};
   values.address1 = _.get(quoteData, 'policyHolderMailingAddress.address1');
@@ -58,7 +58,7 @@ _.isEqual(_.get(quoteData, 'policyHolderMailingAddress.zip'), _.get(quoteData, '
   return values;
 };
 
-const getSelectedPlan = (answer) => {
+export const getSelectedPlan = (answer) => {
   let selection;
 
   if (answer === 'Annual') {
@@ -71,7 +71,7 @@ const getSelectedPlan = (answer) => {
   return selection;
 };
 
-const InstallmentTerm = ({ paymentPlans, payPlans }) => (<div className="installment-term">
+export const InstallmentTerm = ({ paymentPlans, payPlans }) => (<div className="installment-term">
   {payPlans && payPlans.map((payPlan, index) => {
     const paymentPlan = paymentPlans[getSelectedPlan(payPlan)];
     return (
@@ -321,8 +321,8 @@ export class MailingAddressBilling extends Component {
         <div className="basic-footer btn-footer">
           <Footer />
           <div className="btn-wrapper">
-            <button aria-label="reset-btn form-mailingBilling" className="btn btn-secondary" type="button" onClick={() => clearForm(this.props)}>Reset</button>
-            <button aria-label="submit-btn form-mailingBilling" className="btn btn-primary" type="submit" form="MailingAddressBilling" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData) || !this.props.fieldValues.billToId}>Update</button>
+            <button tabIndex={'0'} aria-label="reset-btn form-mailingBilling" className="btn btn-secondary" type="button" onClick={() => clearForm(this.props)}>Reset</button>
+            <button tabIndex={'0'} aria-label="submit-btn form-mailingBilling" className="btn btn-primary" type="submit" form="MailingAddressBilling" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData) || !this.props.fieldValues.billToId}>Update</button>
           </div>
         </div>
       </QuoteBaseConnect>

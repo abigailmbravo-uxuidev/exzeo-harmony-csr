@@ -48,6 +48,7 @@ export class ConfirmPopup extends Component {
             Yes
           </button>
               <button
+                tabIndex={'0'}
                 className="btn btn-secondary"
                 type="button"
                 onClick={this.no}

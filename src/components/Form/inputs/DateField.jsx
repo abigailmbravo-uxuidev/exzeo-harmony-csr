@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import classNames from 'classnames';
 import FieldHint from './FieldHint';
 import reduxFormField from './reduxFormField';
@@ -41,6 +40,7 @@ export const DateInput = ({
     <div className={formGroupStyles} id={name}>
       {Label}
       <input
+        tabIndex={'0'}
         {...input}
         type={'date'}
         min={min}

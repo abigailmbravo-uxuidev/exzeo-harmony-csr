@@ -12,6 +12,7 @@ export const DisplayInput = ({
       {label}
     </label>
     <input
+      tabIndex={'0'}
       type="text"
       name={input.name}
       value={displayValue || (!Number.isNaN(Number(input.value)) ? `$ ${input.value}`.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : input.value)}

@@ -40,8 +40,6 @@ export class Coverage extends Component {
     if (!_.isEqual(this.props, nextProps)) {
       if (nextProps.policy.policyNumber) {
         this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
-        this.props.actions.policyStateActions.updatePolicy(true, nextProps.policy.policyNumber);
-
         const paymentOptions = {
           effectiveDate: nextProps.policy.effectiveDate,
           policyHolders: nextProps.policy.policyHolders,
@@ -272,9 +270,9 @@ export class Coverage extends Component {
                   <dl>
                     <div>
                       <dt>Dist. to Tidal Waters</dt>
-                      <dd>{propertyData.distanceToTidalWater} ft.</dd>
+                      <dd>{normalizeNumbers(propertyData.distanceToTidalWater)} ft.</dd>
                       <dt>Dist. to Fire Hydrant</dt>
-                      <dd>{propertyData.distanceToFireHydrant ? `${propertyData.distanceToFireHydrant} ft.` : '-'}</dd>
+                      <dd>{propertyData.distanceToFireHydrant ? `${normalizeNumbers(propertyData.distanceToFireHydrant)} ft.` : '-'}</dd>
                       <dt>Dist. to Fire Station</dt>
                       <dd>{propertyData.distanceToFireStation} mi.</dd>
                     </div>
@@ -349,8 +347,6 @@ redux mapping
 ------------------------------------------------
 */
 const mapStateToProps = state => ({
-  policyId: state.policy.policyId,
-  updatePolicy: state.policy.updatePolicy,
   paymentOptions: state.service.billingOptions,
   summaryLedger: state.service.getSummaryLedger,
   tasks: state.cg,
