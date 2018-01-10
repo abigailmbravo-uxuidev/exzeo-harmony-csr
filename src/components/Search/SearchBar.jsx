@@ -170,8 +170,8 @@ const SearchForm = (props) => {
                 label: 'Policy Search'
               },
               {
-                answer: 'user',
-                label: 'User Search'
+                answer: 'agent',
+                label: 'Agent Search'
               },
               {
                 answer: 'agency',
