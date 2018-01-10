@@ -299,7 +299,7 @@ describe('Testing MortgageBilling component', () => {
         serviceActions: { addTransaction() { return Promise.resolve(); },
           getTransactionHistory() {},
           getSummaryLedger() {},
-          getBillingOptions() {},
+          getBillingOptionsForPolicy() {},
           getPaymentHistory() {},
           getPaymentOptionsApplyPayments() {} } } });
   });

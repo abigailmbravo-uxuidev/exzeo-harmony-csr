@@ -53,7 +53,7 @@ describe('Testing Coverage component', () => {
           getUIQuestions() {}
         },
         serviceActions: {
-          getBillingOptions() { return Promise.resolve(); },
+          getBillingOptionsForPolicy() { return Promise.resolve(); },
           getSummaryLedger() { return Promise.resolve(); }
         },
         errorActions: { dispatchClearAppError() { } }

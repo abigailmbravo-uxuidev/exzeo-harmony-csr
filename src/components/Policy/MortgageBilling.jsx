@@ -23,7 +23,7 @@ import AIEditModal from '../../components/Common/AdditionalInterestEditModal';
 
 const payments = [];
 
-let isLoded = false;
+const isLoded = false;
 
 export const setRank = (additionalInterests) => {
   _.forEach(additionalInterests, (value) => {
@@ -229,27 +229,20 @@ export class MortgageBilling extends Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    if (!_.isEqual(this.props, nextProps)) {
-      if (nextProps.policy && nextProps.policy.policyNumber && !isLoded) {
-        isLoded = true;
-        nextProps.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
-        nextProps.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
+    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
+      nextProps.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
+      nextProps.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
 
-        const paymentOptions = {
-          effectiveDate: nextProps.policy.effectiveDate,
-          policyHolders: nextProps.policy.policyHolders,
-          additionalInterests: nextProps.policy.additionalInterests,
-          netPremium: nextProps.policy.rating.netPremium,
-          fees: {
-            empTrustFee: nextProps.policy.rating.worksheet.fees.empTrustFee,
-            mgaPolicyFee: nextProps.policy.rating.worksheet.fees.mgaPolicyFee
-          },
-          totalPremium: nextProps.policy.rating.totalPremium
-        };
-        nextProps.actions.serviceActions.getBillingOptions(paymentOptions);
-        nextProps.actions.appStateActions.setAppState(nextProps.appState.modelName,
-          nextProps.appState.instanceId, { ...nextProps.appState.data, ranService: true });
-      }
+      const paymentOptions = {
+        effectiveDate: nextProps.policy.effectiveDate,
+        policyHolders: nextProps.policy.policyHolders,
+        additionalInterests: nextProps.policy.additionalInterests,
+        currentPremium: nextProps.getSummaryLedger.currentPremium,
+        fullyEarnedFees: nextProps.policy.rating.worksheet.fees.empTrustFee + nextProps.policy.rating.worksheet.fees.mgaPolicyFee
+      };
+      nextProps.actions.serviceActions.getBillingOptionsForPolicy(paymentOptions);
+      nextProps.actions.appStateActions.setAppState(nextProps.appState.modelName,
+        nextProps.appState.instanceId, { ...nextProps.appState.data, ranService: true });
     }
   }
 
