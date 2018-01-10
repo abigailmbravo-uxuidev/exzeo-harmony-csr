@@ -104,7 +104,7 @@ export const handleAISubmit = (data, dispatch, props) => {
   let order = 0;
 
   if (String(data.order) !== '0' && String(data.order) !== '1') {
-    order = _.filter(additionalInterests, ai => ai.type === type).length === 0 ? 0 : 1;
+    order = _.filter(additionalInterests, ai => ai.type === type && ai.active).length === 0 ? 0 : 1;
   } else {
     order = data.order;
   }
@@ -211,11 +211,11 @@ export const getAnswers = (name, questions) => _.get(_.find(questions, { name })
 
 export const checkValidTypes = (additionalInterests, selectedAI) => {
   const ais = [];
-  if (selectedAI.type === 'Mortgagee' || _.filter(additionalInterests, ai => ai.type === 'Mortgagee').length <= 1) ais.push({ answer: 'Mortgagee' });
-  if (selectedAI.type === 'Additional Insured' || _.filter(additionalInterests, ai => ai.type === 'Additional Insured').length <= 1) ais.push({ answer: 'Additional Insured' });
-  if (selectedAI.type === 'Additional Interest' || _.filter(additionalInterests, ai => ai.type === 'Additional Interest').length <= 1) ais.push({ answer: 'Additional Interest' });
-  if (selectedAI.type === 'Lienholder' || _.filter(additionalInterests, ai => ai.type === 'Lienholder').length <= 1) ais.push({ answer: 'Lienholder' });
-  if (selectedAI.type === 'Bill Payer' || _.filter(additionalInterests, ai => ai.type === 'Bill Payer').length === 0) ais.push({ answer: 'Bill Payer' });
+  if (selectedAI.type === 'Mortgagee' || _.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length <= 1) ais.push({ answer: 'Mortgagee' });
+  if (selectedAI.type === 'Additional Insured' || _.filter(additionalInterests, ai => ai.type === 'Additional Insured' && ai.active).length <= 1) ais.push({ answer: 'Additional Insured' });
+  if (selectedAI.type === 'Additional Interest' || _.filter(additionalInterests, ai => ai.type === 'Additional Interest' && ai.active).length <= 1) ais.push({ answer: 'Additional Interest' });
+  if (selectedAI.type === 'Lienholder' || _.filter(additionalInterests, ai => ai.type === 'Lienholder' && ai.active).length <= 1) ais.push({ answer: 'Lienholder' });
+  if (selectedAI.type === 'Bill Payer' || _.filter(additionalInterests, ai => ai.type === 'Bill Payer' && ai.active).length === 0) ais.push({ answer: 'Bill Payer' });
   return ais;
 };
 
@@ -410,16 +410,16 @@ export class MortgageBilling extends Component {
                 <h3>Additional Interests</h3>
                 <div className="results-wrapper">
                   <div className="button-group">
-                    <button disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Mortgagee').length > 1)} onClick={() => addAdditionalInterest('Mortgagee', this.props)} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
-                    <button disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Additional Insured').length > 1)} onClick={() => addAdditionalInterest('Additional Insured', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
-                    <button disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Additional Interest').length > 1)} onClick={() => addAdditionalInterest('Additional Interest', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
+                    <button disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length > 1)} onClick={() => addAdditionalInterest('Mortgagee', this.props)} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
+                    <button disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Additional Insured' && ai.active).length > 1)} onClick={() => addAdditionalInterest('Additional Insured', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
+                    <button disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Additional Interest' && ai.active).length > 1)} onClick={() => addAdditionalInterest('Additional Interest', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
                     { /* <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button> */ }
-                    <button disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Bill Payer').length > 0)} onClick={() => addAdditionalInterest('Bill Payer', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
+                    <button disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Bill Payer' && ai.active).length > 0)} onClick={() => addAdditionalInterest('Bill Payer', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
                   </div>
                   <ul className="results result-cards">
                     {additionalInterests && _.sortBy(additionalInterests, ['rank', 'type']).map((ai, index) =>
                       <li key={index}>
-                        <a onClick={() => editAdditionalInterest(ai, this.props)}>
+                        { ai.active && <a onClick={() => editAdditionalInterest(ai, this.props)}>
                           {/* add className based on type - i.e. mortgagee could have class of mortgagee*/}
                           <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {ai.order + 1}</label></div>
                           <section><h4>{ai.name1}&nbsp;{ai.name2}</h4>
@@ -434,7 +434,22 @@ export class MortgageBilling extends Component {
                             <label htmlFor="ref-number">Reference Number</label>
                             <span>{` ${ai.referenceNumber || ' - '}`}</span>
                           </div>
-                        </a>
+                        </a>}
+                        { !ai.active && <a style={{ cursor: 'default' }}>
+                          <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {'Inactive'}</label></div>
+                          <section><h4>{ai.name1}&nbsp;{ai.name2} (Inactive)</h4>
+                            <p className="address">{
+                           `${ai.mailingAddress.address1},
+                            ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city},
+                            ${ai.mailingAddress.state}
+                            ${ai.mailingAddress.zip}`
+                          }</p>
+                          </section>
+                          <div className="ref-number">
+                            <label htmlFor="ref-number">Reference Number</label>
+                            <span>{` ${ai.referenceNumber || ' - '}`}</span>
+                          </div>
+                        </a>}
                       </li>
                       )}
                   </ul>
