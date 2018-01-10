@@ -123,6 +123,7 @@ export class QuoteApplication extends Component {
           <Footer />
           <div className="btn-wrapper">
             <button
+              tabIndex={'0'}
               aria-label="submit-btn form-application"
               form="Application"
               className="btn btn-primary" type="submit" disabled={(underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0) || checkQuoteState(quoteData)}

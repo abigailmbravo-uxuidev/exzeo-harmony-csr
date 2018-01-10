@@ -22,6 +22,7 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
   const workflowId = props.appState.instanceId;
   const taskName = userTasks.handleSearchBarSubmit;
   const modelName = props.appState.modelName;
+  const searchType = props.fieldValues.searchType;
   const taskData = {
     firstName: (encodeURIComponent(data.firstName) !== 'undefined' ? encodeURIComponent(data.firstName) : ''),
     lastName: (encodeURIComponent(data.lastName) !== 'undefined' ? encodeURIComponent(data.lastName) : ''),
@@ -30,8 +31,13 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
     policyNumber: (encodeURIComponent(data.policyNumber) !== 'undefined' ? encodeURIComponent(data.policyNumber) : ''),
     zip: (encodeURIComponent(data.zip) !== 'undefined' ? encodeURIComponent(data.zip) : ''),
     quoteState: (encodeURIComponent(data.quoteState) !== 'undefined' ? encodeURIComponent(data.quoteState) : ''),
-    searchType: props.fieldValues.searchType
+    searchType
   };
+
+  if (searchType === 'policy') {
+    // 60 days past only
+    taskData.resultStart = 60;
+  }
 
   localStorage.setItem('lastSearchData', JSON.stringify(taskData));
 
