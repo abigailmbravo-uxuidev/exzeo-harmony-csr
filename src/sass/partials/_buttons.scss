@@ -52,6 +52,10 @@ input[type="submit"] {
   &.btn-xs {
     padding: ($padding/2) $padding;
     font-size: $font-size-xs;
+
+    i {
+        margin-right: $padding/2;
+    }
   }
 
   &.focus {
