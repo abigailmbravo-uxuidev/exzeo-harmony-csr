@@ -1,23 +1,17 @@
 import React from 'react';
 import axios from 'axios';
 
-export const downloadFile = (fileUrl, fileName, errorHandler) => {
+export const downloadFile = (fileUrl) => {
   const proxyUrl = `${process.env.REACT_APP_API_URL}/download`;
   const params = { url: fileUrl };
 
   return axios.get(proxyUrl, { responseType: 'blob', params })
     .then((response) => {
       const blobUrl = window.URL.createObjectURL(response.data);
-      const link = window.document.createElement('a');
-      link.href = blobUrl;
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
+      window.open(blobUrl);
     })
     .catch((err) => {
-      return errorHandler({ message: err.response.statusText });
+      console.log(err);
     });
 };
 
