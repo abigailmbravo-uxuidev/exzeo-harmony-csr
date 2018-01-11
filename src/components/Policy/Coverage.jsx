@@ -33,6 +33,7 @@ export class Coverage extends Component {
       localStorage.setItem('isNewTab', false);
       const policyNumber = localStorage.getItem('policyNumber');
       this.props.actions.policyStateActions.updatePolicy(true, policyNumber);
+      this.props.actions.serviceActions.getCancelOptions();
     }
   }
 
