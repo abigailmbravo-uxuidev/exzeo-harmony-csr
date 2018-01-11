@@ -9,7 +9,6 @@ import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 import PolicyBaseConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
-
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import RadioField from '../Form/inputs/RadioField';
 import Downloader from '../Common/Downloader';
