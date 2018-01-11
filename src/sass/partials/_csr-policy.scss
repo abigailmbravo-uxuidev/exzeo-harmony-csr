@@ -57,6 +57,14 @@
         overflow: hidden;
         flex-grow: 1;
         flex-shrink: 1;
+
+        form {
+            display: flex;
+            overflow: hidden;
+            flex-grow: 1;
+            flex-shrink: 1;
+        }
+
         //mortgage billing
         .mortgage-billing {
           position: relative;

@@ -7,6 +7,7 @@ import moment from 'moment';
 import { reduxForm, Form, propTypes } from 'redux-form';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
+import * as errorActions from '../../actions/errorActions';
 import PolicyBaseConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
@@ -47,6 +48,7 @@ export const NoteList = (props) => {
           fileName={attachment.fileName}
           fileUrl={attachment.fileUrl}
           fileType={attachment.fileType}
+          errorHandler={(err) => props.actions.errorActions.setAppError(err)}
           key={i}
         />
       )}
@@ -155,7 +157,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: {
     appStateActions: bindActionCreators(appStateActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch)
+    serviceActions: bindActionCreators(serviceActions, dispatch),
+    errorActions: bindActionCreators(errorActions, dispatch)
   }
 });
 
