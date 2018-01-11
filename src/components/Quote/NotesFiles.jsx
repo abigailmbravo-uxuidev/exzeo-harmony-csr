@@ -39,7 +39,6 @@ export const NoteList = (props) => {
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
   const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
   const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
-  const fileName = attachments => attachments ? `${attachments.fileName}` : '';
   const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
   const formatNote = note => note.replace(/\r|\n/g, '<br>');
   const attachmentType = attachments => attachments.length > 0 ? attachments[0].fileType : '';

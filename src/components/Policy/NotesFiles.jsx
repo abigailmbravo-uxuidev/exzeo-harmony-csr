@@ -7,10 +7,8 @@ import moment from 'moment';
 import { reduxForm, Form, propTypes } from 'redux-form';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
-import * as cgActions from '../../actions/cgActions';
 import PolicyBaseConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
-
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import RadioField from '../Form/inputs/RadioField';
 import Downloader from '../Common/Downloader';
@@ -39,7 +37,6 @@ export const NoteList = (props) => {
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
   const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
   const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
-  const fileName = attachments => attachments ? `${attachments.fileName}` : '';
   const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
   const formatNote = note => note.replace(/\r|\n/g, '<br>');
   const attachmentType = attachments => attachments.length > 0 ? attachments[0].fileType : '';
