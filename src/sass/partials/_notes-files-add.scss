@@ -266,15 +266,18 @@
         white-space: normal;
       }
 
-      .count {}
-
       .attachments {
         width: 20%;
         white-space: normal;
 
-        a {
-          span {
-            font-weight: $font-weight-bold;
+        span {
+          div {
+            cursor: pointer;
+            color: $bright-blue-lighten-01;
+
+            &:hover {
+              color: $bright-blue-darken-02;
+            }
           }
         }
       }

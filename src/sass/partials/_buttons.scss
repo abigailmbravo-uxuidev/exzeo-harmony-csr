@@ -58,6 +58,10 @@ input[type="submit"] {
     }
   }
 
+  &.no-padding {
+      padding: 0;
+  }
+
   &.focus {
     text-decoration: none;
   }
@@ -132,6 +136,15 @@ input[type="submit"] {
 
   &:hover {
     text-decoration: none;
+  }
+
+  &.btn-alt-light {
+      color: $bright-blue-lighten-02;
+
+      &:hover {
+          text-decoration: none;
+          color: $bright-blue-lighten-01;
+      }
   }
 }
 // Remove all backgrounds
