@@ -1,6 +1,6 @@
 /*editor error animate*/
 //** Unit-less `line-height` for use in components like buttons.
-$line-height-base: 1.428571429 !default; // 20/14
+//$line-height-base: 1.45 from _variables.scss
 //** Computed "line-height" (`font-size` * `line-height`) for use with `margin`, `padding`, etc.
 $line-height-computed: floor(($font-size-base * $line-height-base)) !default; // ~20px
 //== Tables
@@ -78,8 +78,6 @@ $table-border-color: $warm-gray-07 !default; //== Media queries breakpoints
 
         > th {
           display: table-cell;
-
-          .order {}
         }
       }
     }
@@ -605,66 +603,19 @@ table {
       font-size: $font-size-base;
 
       th {
-        padding: ($padding*1.5) ($padding*2);
+        padding: $padding ($padding*1.5);
         border: none;
       }
 
       td {
-        padding: ($padding*1.5) ($padding*2);
+        padding: $padding ($padding*1.5);
         border: none;
         font-size: $font-size-base;
       }
     }
   }
 }
-//NOTES LIST
-/*.notes-list {
-  .react-bs-table-tool-bar {
-    .toolbar {
-      .input-group {
-        .btn-notes {
-          color: $white;
-          background: $bright-blue-darken-04;
-        }
-      }
-    }
-  }
 
-  .react-bs-table {
-    .table-bordered {
-      > tbody {
-        > tr:nth-of-type(even) {
-          background-color: transparent;
-        }
-
-        tr {
-          td {
-            thead > tr,
-            thead > tr > th {
-              background: transparent;
-            }
-
-            .react-bs-table-container {
-              border: solid 2px $warm-gray-01;
-            }
-          }
-        }
-
-        // tr:nth-child(4n+3),
-        // tr:nth-child(4n+4) {
-        //   background-color: $warm-gray-01;
-        //
-        //   td {
-        //     .react-bs-table-container {
-        //       border: solid 2px $white;
-        //     }
-        //   }
-        // }
-      }
-    }
-  }
-}
-*/
 .verify {
   .workflow-steps {
     .btn {

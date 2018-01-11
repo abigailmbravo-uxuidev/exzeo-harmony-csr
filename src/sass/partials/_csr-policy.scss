@@ -714,12 +714,12 @@
                 .coverage,
                 .discountSurcharge {
                   width: 60%;
-                  padding: ($padding*1.5) ($padding*2);
+                  padding: $padding ($padding*1.5);
                 }
 
                 .value {
                   width: 40%;
-                  padding: ($padding*1.5) ($padding*2);
+                  padding: $padding ($padding*1.5);
                 }
               }
             }

@@ -16,9 +16,9 @@ export const downloadFile = (fileUrl) => {
 };
 
 const Downloader = props => {
-  const { fileName, fileUrl, fileType } = props;
+  const { fileName, fileUrl } = props;
   return (
-    <div onClick={ () => downloadFile(fileUrl) }>{ fileName } - { fileType }</div>
+    <div onClick={ () => downloadFile(fileUrl) }>{ fileName }</div>
   )
 }
 
