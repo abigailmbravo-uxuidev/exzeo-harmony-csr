@@ -11,6 +11,7 @@ import SelectField from '../Form/inputs/SelectField';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as errorActions from '../../actions/errorActions';
+import * as serviceActions from '../../actions/serviceActions';
 
 const userTasks = {
   handleSearchBarSubmit: 'search'
@@ -19,6 +20,12 @@ const userTasks = {
 const handleInitialize = () => ({ searchType: 'quote' });
 
 export const handleSearchBarSubmit = (data, dispatch, props) => {
+  // props.actions.serviceActions.getAgencies(user.companyCode, user.state, '').then((response) => {
+  //   if (response.payload && response.payload[0].data.agencies) {
+  //     console.log(response.payload[0].data.agencies);
+  //   }
+  //   console.log(response.payload[0].data.agencies);
+  // });
   const workflowId = props.appState.instanceId;
   const taskName = userTasks.handleSearchBarSubmit;
   const modelName = props.appState.modelName;
@@ -253,8 +260,8 @@ const SearchForm = (props) => {
         }
         {fieldValues.searchType === 'agency' && <div className="search-inputs fade-in">
 
-          {generateField('agencyID', 'Agency ID Search', 'Agency ID', formErrors, 'agency-id-search')}
-          {generateField('AgencyName', 'Agency Name Search', 'Agency Name', formErrors, 'agency-name-search')}
+          {generateField('agencyCode', 'Agency ID Search', 'Agency ID', formErrors, 'agency-id-search')}
+          {generateField('displayName', 'Agency Name Search', 'Agency Name', formErrors, 'agency-name-search')}
           {generateField('address', 'Agency Address Search', 'Agency Address', formErrors, 'agency-address-search')}
           {generateField('regLicFein', 'Reg/Lic/FEIN No Search', 'Reg/Lic or FEIN Number', formErrors, 'agency-reg-lic-fein-search')}
           {generateField('phone', 'Phone No Search', 'Agency Phone Number', formErrors, 'agency-phone-search')}
@@ -272,7 +279,7 @@ const SearchForm = (props) => {
         {fieldValues.searchType === 'agent' && <div className="search-inputs fade-in">
 
           {generateField('agentID', 'Agent ID Search', 'Agent ID', formErrors, 'agency-id-search')}
-          {generateField('AgentName', 'Agent Name Search', 'Agent Name', formErrors, 'agency-name-search')}
+          {generateField('agentName', 'Agent Name Search', 'Agent Name', formErrors, 'agency-name-search')}
           {generateField('address', 'Agent Address Search', 'Agent Address', formErrors, 'agency-address-search')}
           {generateField('regLicFein', 'Reg/Lic/FEIN No Search', 'Reg/Lic or FEIN Number', formErrors, 'agency-reg-lic-fein-search')}
           {generateField('phone', 'Phone No Search', 'Agent Phone Number', formErrors, 'agency-phone-search')}
@@ -328,7 +335,8 @@ const mapDispatchToProps = dispatch => ({
   actions: {
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch),
-    errorActions: bindActionCreators(errorActions, dispatch)
+    errorActions: bindActionCreators(errorActions, dispatch),
+    serviceActions: bindActionCreators(serviceActions, dispatch),
   }
 });
 
