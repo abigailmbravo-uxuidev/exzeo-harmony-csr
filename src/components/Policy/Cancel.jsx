@@ -83,7 +83,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
     cancelDate: data.effectiveDate,
     cancelReason: data.cancelReason,
     transactionType: `Pending ${data.cancelType}`,
-    equityDate: data.equityDate,
+    equityDate: moment.utc(data.equityDate),
     billingStatus: summaryLedger.status.code
   };
 
@@ -101,6 +101,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
     props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, isSubmitting: true });
 
     props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
+      props.reset('CancelPolicy');
       props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, isSubmitting: false });
       props.actions.policyStateActions.updatePolicy(true, policy.policyNumber);
     });
@@ -113,11 +114,14 @@ export const resetCancelReasons = (props) => {
 
 export class CancelPolicy extends React.Component {
   componentWillReceiveProps(nextProps) {
-    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
+    if (nextProps && nextProps.policy && nextProps.policy.policyNumber &&
+      (!_.isEqual(this.props.summaryLedger, nextProps.summaryLedger) ||
+      !_.isEqual(this.props.cancelOptions, nextProps.cancelOptions) ||
+      !_.isEqual(this.props.paymentOptions, nextProps.paymentOptions) ||
+      !_.isEqual(this.props.summaryLedger, nextProps.summaryLedger))) {
       nextProps.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
       nextProps.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
       nextProps.actions.serviceActions.getCancelOptions();
-      this.props.actions.policyStateActions.updatePolicy(true, nextProps.policy.policyNumber);
 
       const paymentOptions = {
         effectiveDate: nextProps.policy.effectiveDate,

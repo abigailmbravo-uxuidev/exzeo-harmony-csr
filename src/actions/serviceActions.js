@@ -5,10 +5,9 @@ import * as types from './actionTypes';
 import * as errorActions from './errorActions';
 
 export const handleError = (error) => {
-  const message = error.response && error.response.data && error.response.data.error
-   ? error.response.data.error.message
-   : 'An error happened';
-  return (error.message) ? error.message : message;
+  const errorData = error.response && error.response.data ? error.response.data
+   : { message: 'An error happened' };
+  return errorData;
 };
 
 export const serviceRequest = data => ({
@@ -39,9 +38,9 @@ export const getNotes = id => (dispatch) => {
     ]));
   })
   .catch((error) => {
-    const message = handleError(error);
+    const errorData = handleError(error);
     return dispatch(batchActions([
-      errorActions.setAppError({ message })
+      errorActions.setAppError({ ...errorData })
     ]));
   });
 };
@@ -70,9 +69,9 @@ export const addNote = (data, files) => (dispatch) => {
   })
   .then(response => dispatch(getNotes(response.data.number)))
   .catch((error) => {
-    const message = handleError(error);
+    const errorData = handleError(error);
     return dispatch(batchActions([
-      errorActions.setAppError({ message })
+      errorActions.setAppError({ ...errorData })
     ]));
   });
 };
@@ -91,9 +90,9 @@ export const getAgents = (companyCode, state) => (dispatch) => {
     ]));
   })
     .catch((error) => {
-      const message = handleError(error);
+      const errorData = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError({ ...errorData })
       ]));
     });
 };
@@ -112,9 +111,9 @@ export const getAgency = (companyCode, state, agencyCode) => (dispatch) => {
     ]));
   })
     .catch((error) => {
-      const message = handleError(error);
+      const errorData = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError({ ...errorData })
       ]));
     });
 };
@@ -133,9 +132,9 @@ export const getAgentsByAgency = (companyCode, state, agencyCode) => (dispatch) 
     ]));
   })
     .catch((error) => {
-      const message = handleError(error);
+      const errorData = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError({ ...errorData })
       ]));
     });
 };
@@ -155,9 +154,9 @@ export const getAgencies = (companyCode, state) => (dispatch) => {
     ]));
   })
     .catch((error) => {
-      const message = handleError(error);
+      const errorData = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError({ ...errorData })
       ]));
     });
 };
@@ -176,9 +175,9 @@ export const currentAgent = (companyCode, state, agentCode) => (dispatch) => {
     ]));
   })
     .catch((error) => {
-      const message = handleError(error);
+      const errorData = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError({ ...errorData })
       ]));
     });
 };
@@ -197,9 +196,9 @@ export const getPolicyFromPolicyNumber = (companyCode, state, product, policyNum
     ]));
   })
     .catch((error) => {
-      const message = handleError(error);
+      const errorData = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError({ ...errorData })
       ]));
     });
 };
@@ -218,9 +217,9 @@ export const getLatestPolicy = policyNumber => (dispatch) => {
     ]));
   })
     .catch((error) => {
-      const message = handleError(error);
+      const errorData = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError({ ...errorData })
       ]));
     });
 };
@@ -239,9 +238,9 @@ export const getPolicyFromPolicyID = policyId => (dispatch) => {
     ]));
   })
     .catch((error) => {
-      const message = handleError(error);
+      const errorData = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError({ ...errorData })
       ]));
     });
 };
@@ -261,9 +260,9 @@ export const getEffectiveDateChangeReasons = () => (dispatch) => {
     ]));
   })
     .catch((error) => {
-      const message = handleError(error);
+      const errorData = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError({ ...errorData })
       ]));
     });
 };
@@ -283,9 +282,9 @@ export const getTransactionHistory = policyNumber => (dispatch) => {
     ]));
   })
     .catch((error) => {
-      const message = handleError(error);
+      const errorData = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError({ ...errorData })
         // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
       ]));
     });
@@ -319,9 +318,9 @@ export const addTransaction = submitData => (dispatch) => {
     ]));
   })
     .catch((error) => {
-      const message = handleError(error);
+      const errorData = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError({ ...errorData })
       ]));
     });
 };
@@ -350,9 +349,9 @@ export const getUnderwritingQuestions = (companyCode, state, product, property) 
     ]));
   })
     .catch((error) => {
-      const message = handleError(error);
+      const errorData = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError({ ...errorData })
       ]));
     });
 };
@@ -371,9 +370,9 @@ export const getSummaryLedger = policyNumber => (dispatch) => {
     ]));
   })
     .catch((error) => {
-      const message = handleError(error);
+      const errorData = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError({ ...errorData })
       ]));
     });
 };
@@ -392,9 +391,9 @@ export const getPaymentOptionsApplyPayments = () => (dispatch) => {
     ]));
   })
     .catch((error) => {
-      const message = handleError(error);
+      const errorData = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError({ ...errorData })
       ]));
     });
 };
@@ -413,9 +412,9 @@ export const getPaymentHistory = policyNumber => (dispatch) => {
     ]));
   })
     .catch((error) => {
-      const message = handleError(error);
+      const errorData = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError({ ...errorData })
       ]));
     });
 };
@@ -439,9 +438,9 @@ export const saveUnderwritingExceptions = (id, underwritingExceptions) => (dispa
     ]));
   })
     .catch((error) => {
-      const message = handleError(error);
+      const errorData = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError({ ...errorData })
       ]));
     });
 };
@@ -473,9 +472,9 @@ export const getBillingOptions = paymentOptions => (dispatch) => {
     ]));
   })
     .catch((error) => {
-      const message = handleError(error);
+      const errorData = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError({ ...errorData })
       ]));
     });
 };
@@ -495,9 +494,9 @@ export const getEndorsementHistory = policyNumber => (dispatch) => {
     ]));
   })
     .catch((error) => {
-      const message = handleError(error);
+      const errorData = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError({ ...errorData })
       ]));
     });
 };
@@ -517,9 +516,9 @@ export const getRate = policyObject => (dispatch) => {
     ]));
   })
     .catch((error) => {
-      const message = handleError(error);
+      const errorData = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError({ ...errorData })
       ]));
     });
 };
@@ -542,9 +541,9 @@ export const getQuote = quoteId => (dispatch) => {
     ]));
   })
     .catch((error) => {
-      const message = handleError(error);
+      const errorData = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError({ ...errorData })
       ]));
     });
 };
@@ -563,9 +562,9 @@ export const getCancelOptions = () => (dispatch) => {
     ]));
   })
     .catch((error) => {
-      const message = handleError(error);
+      const errorData = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError({ ...errorData })
       ]));
     });
 };
@@ -586,9 +585,9 @@ export const createTransaction = submitData => (dispatch) => {
     ]));
   })
       .catch((error) => {
-        const message = handleError(error);
+        const errorData = handleError(error);
         return dispatch(batchActions([
-          errorActions.setAppError({ message })
+          errorActions.setAppError({ ...errorData })
         ]));
       });
 };
@@ -607,9 +606,9 @@ export const getZipcodeSettings = (companyCode, state, product, zip) => (dispatc
     ]));
   })
     .catch((error) => {
-      const message = handleError(error);
+      const errorData = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError({ ...errorData })
       ]));
     });
 };
