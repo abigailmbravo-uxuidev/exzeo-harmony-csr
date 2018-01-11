@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
 import * as cgActions from '../../actions/cgActions';
@@ -15,6 +15,9 @@ export const SearchResults = (props) => {
   const activeTask = model.data && model.data.activeTask
     ? model.data.activeTask
     : {};
+
+    console.log(localStorage.getItem('lastSearchData'));
+
 
   if (previousTask && previousTask.name === 'searchAddress' && activeTask.name !== 'askToSearchAgain') {
     const addresses = previousTask.value.result.IndexResult;
@@ -178,7 +181,7 @@ export const SearchResults = (props) => {
 
   //TODO RESULT CARD AND ADD CARD EXAMPLES FOR AGENCY AND USER ADMIN ONLY
 
-  else {
+  
       return (
         <div className="user-list">
           <div className="agency contact card" >
@@ -222,7 +225,7 @@ export const SearchResults = (props) => {
           <button className="btn btn-primary btn-sm agency"><i className="fa fa-plus"></i>Agency</button>
         </div>
       );
-    }
+    
 
   return <span/>;
 };
@@ -231,7 +234,7 @@ SearchResults.propTypes = {
   appState: PropTypes.shape({
     modelName: PropTypes.string,
     instanceId: PropTypes.string,
-    data: PropTypes.shape({dontSeeAddress: PropTypes.bool})
+    data: PropTypes.shape({ dontSeeAddress: PropTypes.bool })
   }),
   tasks: PropTypes.shape(),
   handleSelectAddress: PropTypes.func,
@@ -240,7 +243,7 @@ SearchResults.propTypes = {
   handleSelectPolicy: PropTypes.func
 };
 
-const mapStateToProps = state => ({tasks: state.cg, appState: state.appState});
+const mapStateToProps = state => ({ tasks: state.cg, appState: state.appState });
 
 const mapDispatchToProps = dispatch => ({
   actions: {

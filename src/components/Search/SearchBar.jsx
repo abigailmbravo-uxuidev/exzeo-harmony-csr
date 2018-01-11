@@ -20,6 +20,7 @@ const userTasks = {
 const handleInitialize = () => ({ searchType: 'quote' });
 
 export const handleSearchBarSubmit = (data, dispatch, props) => {
+  console.log(data);
   // props.actions.serviceActions.getAgencies(user.companyCode, user.state, '').then((response) => {
   //   if (response.payload && response.payload[0].data.agencies) {
   //     console.log(response.payload[0].data.agencies);
@@ -41,12 +42,22 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
     searchType
   };
 
+  const agencyAgentData = {
+    agentName: (encodeURIComponent(data.agentName) !== 'undefined' ? encodeURIComponent(data.agentName) : ''),
+    displayName: (encodeURIComponent(data.displayName) !== 'undefined' ? encodeURIComponent(data.displayName) : ''),
+    address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(String(data.address).trim()) : ''),
+    licFein: (encodeURIComponent(data.licFein) !== 'undefined' ? encodeURIComponent(data.licFein) : ''),
+    agentCode: (encodeURIComponent(data.agentCode) !== 'undefined' ? encodeURIComponent(data.agentCode) : ''),
+    agencyCode: (encodeURIComponent(data.agencyCode) !== 'undefined' ? encodeURIComponent(data.agencyCode) : ''),
+    searchType
+  };
+
   if (searchType === 'policy') {
     // 60 days past only
     taskData.resultStart = 60;
   }
 
-  localStorage.setItem('lastSearchData', JSON.stringify(taskData));
+  localStorage.setItem('lastSearchData', JSON.stringify(agencyAgentData));
 
 
   props.actions.errorActions.clearAppError();
@@ -78,6 +89,27 @@ export const validate = (values) => {
     const onlyAlphaNumeric = Rules.onlyAlphaNumeric(values.lastName);
     if (onlyAlphaNumeric) {
       errors.lastName = onlyAlphaNumeric;
+    }
+  }
+
+  if (values.agentName) {
+    const onlyAlphaNumeric = Rules.onlyAlphaNumeric(values.agentName);
+    if (onlyAlphaNumeric) {
+      errors.agentName = onlyAlphaNumeric;
+    }
+  }
+
+  if (values.agentCode) {
+    const numbersOnly = Rules.numbersOnly(values.agentCode);
+    if (numbersOnly) {
+      errors.agentCode = numbersOnly;
+    }
+  }
+
+  if (values.agencyCode) {
+    const numbersOnly = Rules.numbersOnly(values.agencyCode);
+    if (numbersOnly) {
+      errors.agencyCode = numbersOnly;
     }
   }
 
@@ -263,7 +295,7 @@ const SearchForm = (props) => {
           {generateField('agencyCode', 'Agency ID Search', 'Agency ID', formErrors, 'agency-id-search')}
           {generateField('displayName', 'Agency Name Search', 'Agency Name', formErrors, 'agency-name-search')}
           {generateField('address', 'Agency Address Search', 'Agency Address', formErrors, 'agency-address-search')}
-          {generateField('regLicFein', 'Reg/Lic/FEIN No Search', 'Reg/Lic or FEIN Number', formErrors, 'agency-reg-lic-fein-search')}
+          {generateField('licFein', 'Lic/FEIN No Search', 'Lic or FEIN Number', formErrors, 'agency-reg-lic-fein-search')}
           {generateField('phone', 'Phone No Search', 'Agency Phone Number', formErrors, 'agency-phone-search')}
 
           <button
@@ -278,10 +310,10 @@ const SearchForm = (props) => {
         }
         {fieldValues.searchType === 'agent' && <div className="search-inputs fade-in">
 
-          {generateField('agentID', 'Agent ID Search', 'Agent ID', formErrors, 'agency-id-search')}
+          {generateField('agentCode', 'Agent ID Search', 'Agent ID', formErrors, 'agency-id-search')}
           {generateField('agentName', 'Agent Name Search', 'Agent Name', formErrors, 'agency-name-search')}
           {generateField('address', 'Agent Address Search', 'Agent Address', formErrors, 'agency-address-search')}
-          {generateField('regLicFein', 'Reg/Lic/FEIN No Search', 'Reg/Lic or FEIN Number', formErrors, 'agency-reg-lic-fein-search')}
+          {generateField('licFein', 'Lic/FEIN No Search', 'Lic or FEIN Number', formErrors, 'agency-reg-lic-fein-search')}
           {generateField('phone', 'Phone No Search', 'Agent Phone Number', formErrors, 'agency-phone-search')}
 
           <button
@@ -336,7 +368,7 @@ const mapDispatchToProps = dispatch => ({
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch),
     errorActions: bindActionCreators(errorActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch),
+    serviceActions: bindActionCreators(serviceActions, dispatch)
   }
 });
 
