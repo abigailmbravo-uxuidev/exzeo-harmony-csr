@@ -1505,6 +1505,10 @@ ul.list-cards {
 
               dd {
                 color: $yellow-lighten-06;
+
+                &.policy-status, &.quote-status {
+                    font-size: $font-size-xs;
+                }
               }
             }
           }

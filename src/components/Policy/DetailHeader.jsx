@@ -40,7 +40,7 @@ export class DetailHeader extends Component {
           <div>
             <dd>{_.get(policy, 'product') === 'HO3' ? `${_.get(policy, 'product')} Homeowners` : _.get(policy, 'product')}</dd>
             <dd>{_.get(policy, 'policyNumber')}</dd>
-            <dd>{`${_.get(policy, 'status')} / ${_.get(summaryLedger, 'status.displayText')}`}</dd>
+            <dd className="policy-status">{`${_.get(policy, 'status')} / ${_.get(summaryLedger, 'status.displayText')}`}</dd>
           </div>
         </dl>
       </section>
