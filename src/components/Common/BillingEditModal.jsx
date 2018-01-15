@@ -80,8 +80,8 @@ export const BillingEditModal = (props) => {
         </div>
         <div className="card-footer">
           <div className="btn-group">
-            <button aria-label="reset-btn form-editBilling" className="btn btn-secondary" type="button" onClick={() => hideBillingModal(props)}>Cancel</button>
-            <button aria-label="submit-btn form-editBilling" className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Update</button>
+            <button tabIndex={'0'} aria-label="reset-btn form-editBilling" className="btn btn-secondary" type="button" onClick={() => hideBillingModal(props)}>Cancel</button>
+            <button tabIndex={'0'} aria-label="submit-btn form-editBilling" className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Update</button>
           </div>
         </div>
       </Form>

@@ -321,8 +321,8 @@ export class MailingAddressBilling extends Component {
         <div className="basic-footer btn-footer">
           <Footer />
           <div className="btn-wrapper">
-            <button aria-label="reset-btn form-mailingBilling" className="btn btn-secondary" type="button" onClick={() => clearForm(this.props)}>Reset</button>
-            <button aria-label="submit-btn form-mailingBilling" className="btn btn-primary" type="submit" form="MailingAddressBilling" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData) || !this.props.fieldValues.billToId}>Update</button>
+            <button tabIndex={'0'} aria-label="reset-btn form-mailingBilling" className="btn btn-secondary" type="button" onClick={() => clearForm(this.props)}>Reset</button>
+            <button tabIndex={'0'} aria-label="submit-btn form-mailingBilling" className="btn btn-primary" type="submit" form="MailingAddressBilling" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData) || !this.props.fieldValues.billToId}>Update</button>
           </div>
         </div>
       </QuoteBaseConnect>

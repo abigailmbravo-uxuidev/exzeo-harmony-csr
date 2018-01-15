@@ -17,16 +17,17 @@ import Footer from '../Common/Footer';
 const handleInitialize = state => ({
   attachmentStatus: false
 });
+
 const SearchPanel = props => (
   <div className="search">
     <label>Search Table Data</label>
     { props.searchField }
   </div>
   );
+
 export const filterNotesByType = (notes, type) => {
   if (!Array.isArray(notes)) return [];
-
-  if (type) return _.filter(notes, n => n.attachments > 0);
+  if (type) return notes.filter(n => n.attachments.length > 0);
   return notes;
 };
 
@@ -42,7 +43,7 @@ export const NoteList = (props) => {
     <span>
       { attachments.map((attachment, i) =>
         <Downloader
-          filename={attachment.fileName}
+          fileName={attachment.fileName}
           fileUrl={attachment.fileUrl}
           fileType={attachment.fileType}
           key={i}
@@ -54,9 +55,6 @@ export const NoteList = (props) => {
   return (
     <div className="note-grid-wrapper">
       <div className="filter-tabs">
-
-        {/* TODO: Eric, just need 2 buttons with an onClick event to filter the grid by attachment count. I added the radio group component because it can have a default selected and user can only choose 1*/}
-
         <RadioField
           name={'attachmentStatus'} styleName={''} label={''} onChange={function () {}} segmented answers={[
             {
@@ -78,7 +76,6 @@ export const NoteList = (props) => {
         <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
         <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdDate" dataSort dataFormat={formatCreateDate} >Created</TableHeaderColumn>
         <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataSort dataFormat={showCreatedBy} >Author</TableHeaderColumn>
-        {/* TODO: Hide note-type and note column when users filters grid to show only notes with attachments*/}
         <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="contactType" dataSort >Note Type</TableHeaderColumn>
         <TableHeaderColumn className="note" columnClassName="note" dataField="content" dataSort dataFormat={formatNote} >Note</TableHeaderColumn>
         <TableHeaderColumn className="count" columnClassName="count" dataField="attachments" dataFormat={attachmentCount} hidden />

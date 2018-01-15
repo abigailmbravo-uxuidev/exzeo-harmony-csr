@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { reduxForm, propTypes } from 'redux-form';
-import _ from 'lodash';
 import * as appStateActions from '../../actions/appStateActions';
 import * as cgActions from '../../actions/cgActions';
 import NewNoteFileUploader from '../Common/NewNoteFileUploader';

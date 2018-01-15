@@ -90,7 +90,7 @@ export const AdditionalInterestModal = (props) => {
               <TextField
                 label={'State'} styleName={'state'} name={'state'} validations={['required']}
               />
-              <TextField label={'Zip Code'} styleName={'zip'} name={'zip'} validations={['required', 'numbersOnly']} />
+              <TextField label={'Zip Code'} styleName={'zip'} name={'zip'} validations={['required', 'zipNumbersOnly']} />
             </div>
             <div className="flex-form">
               <PhoneField label={'Phone Number'} styleName={'phone'} name={'phoneNumber'} validations={['phone']} />
@@ -99,8 +99,8 @@ export const AdditionalInterestModal = (props) => {
           </div>
           <div className="card-footer">
             <div className="btn-group">
-              <button className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal(props)}>Cancel</button>
-              <button className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Save</button>
+              <button tabIndex={'0'} className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal(props)}>Cancel</button>
+              <button tabIndex={'0'} className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Save</button>
             </div>
           </div>
         </div>
