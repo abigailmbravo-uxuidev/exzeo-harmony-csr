@@ -184,20 +184,19 @@ export const SearchResults = (props) => {
   if (searchData && searchData.searchType === 'agency') {
     const agencyResults = props.agencies ? props.agencies : [];
 
-    return (<div className="agency-list">
+    return (<div className="user-list agency-list">
       {
-        agencyResults && agencyResults.map((agency, index) => <div className="card" key={index}>
-          <div className="icon-name">
-            <i className="card-icon fa fa-user-circle" />
+        agencyResults && agencyResults.map((agency, index) => <div className="agency contact card" key={index}>
+          <div className="contact-title">
+            <i className="fa fa-address-book" />
+            <label>Agency</label>
+          </div>
+          <div className="contact-details">
             <div className="card-name">
-              <p>
-                {agency.displayName}
-                {agency.agencyCode}
-                {agency.physicalAddress.address1}
-                {agency.physicalAddress.address2}
-                {agency.physicalAddress.city}
-                {agency.physicalAddress.state}
-                {agency.physicalAddress.zip}
+              <h4 className="agency"><span className="agency-code">{agency.agencyCode}</span> - <span className="agency-display-name">{agency.displayName}</span> | <span className="agency-legal-name">{agency.legalName}</span></h4>
+              <p>{agency.physicalAddress.address1}{agency.physicalAddress.address2 ? ', ' : ' ' } {agency.physicalAddress.address2}, {agency.physicalAddress.city}, {agency.physicalAddress.state} {agency.physicalAddress.zip}</p>
+
+                <p>
                 {agency.licenseNumber}
                 {agency.taxIdNumber}
                 {agency.primaryPhoneNumber}
@@ -221,7 +220,7 @@ export const SearchResults = (props) => {
   if (searchData && searchData.searchType === 'agent') {
     const agentResults = props.agents ? props.agents : [];
 
-    return (<div className="agency-list">
+    return (<div className="agent-list">
       {
         agentResults && agentResults.map((agent, index) => <div className="card" key={index}>
           <div className="icon-name">
