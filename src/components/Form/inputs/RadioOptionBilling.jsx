@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 const RadioOptionBilling = ({
+  onKeyPress,
   onChange,
   answer,
   name,
@@ -12,25 +13,27 @@ const RadioOptionBilling = ({
 }) => (
   <div
     className={classNames(
-        `radio-column-${size}`,
-        { selected: value === answer }
-    )}
+      `radio-column-${size}`,
+      { selected: value === answer }
+  )}
+    onKeyPress={event => onKeyPress(event, answer)}
     onClick={() => onChange(answer)}
   >
     <label
       className={classNames(
-      'label-segmented': segmented,
+      { 'label-segmented': segmented },
       { selected: value === answer },
-    )} htmlFor={name}
+    )}
+      htmlFor={name}
     >
       <input
         onChange={() => onChange(answer)}
         name={name}
         type="radio"
         checked={String(value) === String(answer)}
-        value={answer}
+        value={answer.answer}
       />
-      <span>{answer}</span>
+      <span tabIndex={'0'}>{answer}</span>
     </label>
   </div>
 );

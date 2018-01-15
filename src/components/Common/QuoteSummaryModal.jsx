@@ -25,8 +25,8 @@ const QuoteSummary = ({ appState, handleSubmit, verify, showQuoteSummaryModal })
       </div>
       <div className="card-footer">
         <div className="btn-footer">
-          <button className="btn btn-secondary" type="button" onClick={() => showQuoteSummaryModal(false)}>Cancel</button>
-          <button className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Send</button>
+          <button tabIndex={'0'} className="btn btn-secondary" type="button" onClick={() => showQuoteSummaryModal(false)}>Cancel</button>
+          <button tabIndex={'0'} className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Send</button>
         </div>
       </div>
     </div>

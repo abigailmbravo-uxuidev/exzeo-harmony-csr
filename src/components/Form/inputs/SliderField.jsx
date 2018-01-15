@@ -48,6 +48,7 @@ export const SliderInput = ({
         </div>
         <span className="range-value">
           <input
+            tabIndex={'0'}
             type="text"
             value={`$ ${value}`.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}
             onChange={handleChange}
