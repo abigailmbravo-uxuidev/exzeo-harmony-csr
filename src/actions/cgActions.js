@@ -17,17 +17,6 @@ export const start = (modelName, workflowData) => {
   return stateObj;
 };
 
-// export const activeTask = (modelName, workflowData) => {
-//   const newWorkflowData = {};
-//   newWorkflowData[modelName] = {};
-//   newWorkflowData[modelName].data = workflowData;
-//   const stateObj = {
-//     type: types.CG_ACTIVE_TASK,
-//     workflowData: newWorkflowData
-//   };
-//   return stateObj;
-// };
-
 export const complete = (modelName, workflowData) => {
   const newWorkflowData = {};
   newWorkflowData[modelName] = {};
@@ -58,13 +47,10 @@ const checkCGError = (responseData) => {
   }
 };
 
-const handleError = (dispatch, modelName, workflowId, error) => {
-  const message = error.response && error.response.data && error.response.data.error
-    ? error.response.data.error.message
-    : 'There was an error.';
-  // dispatch the error
+const handleError = (dispatch, modelName, workflowId, err) => {
+  const error = err.response && err.response.data ? err.response.data : err;
   return dispatch(batchActions([
-    errorActions.setAppError({ message }),
+    errorActions.setAppError({ ...error }),
     appStateActions.setAppState(modelName, workflowId, { submitting: false })
   ]));
 };
@@ -124,7 +110,7 @@ export const startWorkflow = (modelName, data, dispatchAppState = true) => (disp
       if (dispatchAppState) {
         return dispatch(batchActions([start(modelName, responseData),
           errorActions.clearAppError(),
-          appStateActions.setAppState(modelName, instanceId, {})
+          appStateActions.setAppState(modelName, instanceId, { isSubmitting: true })
         ]));
       }
       dispatch(errorActions.clearAppError());

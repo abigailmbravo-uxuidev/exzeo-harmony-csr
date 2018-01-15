@@ -18,13 +18,6 @@ import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import Footer from '../Common/Footer';
 
-export const handleGetPolicy = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-  const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
-  return policyData;
-};
-
 export const handleInitialize = (state) => {
   const values = {};
 
@@ -196,8 +189,8 @@ export class CancelPolicy extends React.Component {
           <Footer />
           {/* TODO: RESET button should reset form / CANCEL POLICY button should be disabled if form is clean/untouched*/}
           <div className="btn-wrapper">
-            <button aria-label="reset-btn form-cancel" type="button" className="btn btn-secondary" onClick={() => this.props.reset('CancelPolicy')}>Reset</button>
-            <button aria-label="reset-btn form-cancel" type="submit" className="btn btn-primary">Cancel Policy</button>
+            <button tabIndex={'0'} aria-label="reset-btn form-cancel" type="button" className="btn btn-secondary" onClick={() => this.props.reset('CancelPolicy')}>Reset</button>
+            <button tabIndex={'0'} aria-label="reset-btn form-cancel" type="submit" className="btn btn-primary">Cancel Policy</button>
           </div>
         </div>
       </PolicyConnect>
@@ -214,7 +207,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   fieldValues: _.get(state.form, 'CancelPolicy.values', {}),
   initialValues: handleInitialize(state),
-  policy: handleGetPolicy(state),
+  policy: state.service.latestPolicy || {},
   paymentHistory: state.service.paymentHistory,
   summaryLedger: state.service.getSummaryLedger,
   paymentOptions: state.service.billingOptions

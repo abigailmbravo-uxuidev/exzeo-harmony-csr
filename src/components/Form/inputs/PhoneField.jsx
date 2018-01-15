@@ -16,13 +16,11 @@ export const PhoneInput = ({
   type,
   disabled,
   validations,
+  dependsOn,
   name
 }) => {
   const { touched, error, warning } = meta;
-
-  const ruleArray = combineRules(validations, { });
-
-
+  const ruleArray = combineRules(validations, { dependsOn });
   const formGroupStyles = classNames(
     'form-group',
     styleName,
@@ -31,13 +29,10 @@ export const PhoneInput = ({
     { valid: touched && !error },
     { error: touched && error },
   );
-
   const Hint = hint && (<FieldHint name={name} hint={hint} />);
-
   const Error = touched && (error || warning) && (
     <span>{error || warning}</span>
   );
-
   const Label = label && (<label htmlFor={name}>
     {label}{Hint}
   </label>);
@@ -46,6 +41,7 @@ export const PhoneInput = ({
     <div className={formGroupStyles}>
       {Label}
       <Field
+        tabIndex={'0'}
         disabled={disabled}
         name={name}
         component="input"

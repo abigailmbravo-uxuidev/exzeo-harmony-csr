@@ -9,9 +9,12 @@ import { reduxForm, Form, propTypes, change } from 'redux-form';
 import TextField from '../Form/inputs/TextField';
 import PhoneField from '../Form/inputs/PhoneField';
 import HiddenField from '../Form/inputs/HiddenField';
+import * as questionsActions from '../../actions/questionsActions';
 import * as cgActions from '../../actions/cgActions';
-import * as quoteStateActions from '../../actions/quoteStateActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as serviceActions from '../../actions/serviceActions';
+import * as policyStateActions from '../../actions/policyStateActions';
+import * as quoteStateActions from '../../actions/quoteStateActions';
 import normalizePhone from '../Form/normalizePhone';
 import Loader from './Loader';
 
@@ -85,7 +88,7 @@ export const AdditionalInterestEditModal = (props) => {
   const { appState, handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, selectedAI, questions } = props;
   return (<div className="modal" style={{ flexDirection: 'row' }}>
 
-    <Form id="AdditionalInterestEditModal" className="AdditionalInterestModal" noValidate onSubmit={handleSubmit(verify)}>
+    <Form id="AdditionalInterestEditModal" className={`AdditionalInterestModal ${selectedAI ? selectedAI.type : ''}`} noValidate onSubmit={handleSubmit(verify)}>
       {props.appState.data.submittingAI && <Loader />}
       <div className="card">
         <div className="card-header">
@@ -120,7 +123,7 @@ export const AdditionalInterestEditModal = (props) => {
             <TextField
               label={'State'} styleName={'state'} name={'state'} validations={['required']}
             />
-            <TextField label={'Zip Code'} styleName={''} name={'zip'} validations={['required', 'numbersOnly']} />
+            <TextField label={'Zip Code'} styleName={''} name={'zip'} validations={['required', 'zipNumbersOnly']} />
           </div>
           <div className="flex-form">
             <PhoneField label={'Phone Number'} styleName={'phone'} name={'phoneNumber'} validations={['phone']} />
@@ -129,9 +132,9 @@ export const AdditionalInterestEditModal = (props) => {
         </div>
         <div className="card-footer">
           <div className="btn-group">
-            <button className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal(props)}>Cancel</button>
-            <button className="btn btn-secondary" type="button" disabled={appState.data.submittingAI} onClick={() => deleteAdditionalInterest(selectedAI, props)}>Delete</button>
-            <button className="btn btn-primary" type="submit" disabled={appState.data.submittingAI}>Update</button>
+            <button tabIndex={'0'} className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal(props)}>Cancel</button>
+            <button tabIndex={'0'} className="btn btn-secondary" type="button" disabled={appState.data.submittingAI} onClick={() => deleteAdditionalInterest(selectedAI, props)}>Delete</button>
+            <button tabIndex={'0'} className="btn btn-primary" type="submit" disabled={appState.data.submittingAI}>Update</button>
           </div>
         </div>
       </div>
@@ -163,6 +166,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: {
     quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
+    policyStateActions: bindActionCreators(policyStateActions, dispatch),
+    questionsActions: bindActionCreators(questionsActions, dispatch),
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }

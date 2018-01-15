@@ -4,6 +4,7 @@ import Dropzone from 'react-dropzone';
 import { Field, Form, reduxForm, propTypes } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import * as cgActions from '../../actions/cgActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
@@ -15,12 +16,12 @@ export const submitNote = (data, dispatch, props) => {
     noteType,
     noteContent: data.noteContent,
     contactType: data.contactType,
-    createdAt: new Date().getTime(),
-    noteAttachments: data.noteAttachments ? data.noteAttachments.length : 0,
+    createdAt:  moment().unix(),
+    attachmentCount: data.noteAttachments ? data.noteAttachments.length : 0,
     fileType: data.fileType,
     createdBy: {
-      useerId: user.user_id,
-      userName: user.username
+      useerId: user.sub,
+      userName: user.name
     }
   };
 
@@ -51,10 +52,10 @@ const renderNotes = ({ input, label, type, meta: { touched, error } }) => (
 
 class renderDropzone extends React.Component {
   constructor() {
-    super()
+    super();
     this.state = {
       dropzoneActive: false
-    }
+    };
   }
 
   onDragEnter = () => this.setState({ dropzoneActive: true });
@@ -70,7 +71,7 @@ class renderDropzone extends React.Component {
 
   render() {
     const { dropzoneActive } = this.state;
-    const files = this.props.input.value ||  [];
+    const files = this.props.input.value || [];
 
     return (
       <div className="dropzone-wrapper">
@@ -82,83 +83,83 @@ class renderDropzone extends React.Component {
         >
           <ul className="upload-list">
             <div className="drop-area-label">Drop files here or <span>click</span> to select files.</div>
-            { files.map((f, i) => <li key={ i }>{f.name} - {f.size} bytes</li>) }
+            { files.map((f, i) => <li key={i}>{f.name} - {f.size} bytes</li>) }
           </ul>
           { dropzoneActive && <div className="dropzone-overlay"><div className="dropzone-drop-area">Drop files...</div></div> }
         </Dropzone>
       </div>
     );
   }
-};
+}
 
 export const NewNoteFileUploader = (props, { closeButtonHandler }) => {
   // TODO: Pull this from the list service
   const contactTypeOptions = {
-    'Quote Note': [ 'Agent', 'Policyholder', 'Inspector', 'Other' ],
-    'Policy Note': [ 'Agent', 'Policyholder', 'Lienholder', 'Claims', 'Inspector', 'Other' ]
+    'Quote Note': ['Agent', 'Policyholder', 'Inspector', 'Other'],
+    'Policy Note': ['Agent', 'Policyholder', 'Lienholder', 'Claims', 'Inspector', 'Other']
   };
 
   const docTypeOptions = {
     'Quote Note': [
-      "4-pt Inspection",
-      "Claims Documentation",
-      "Consent To Rate Form",
-      "Correspondence",
-      "Elevation Certificate",
-      "Flood Selection Form",
-      "Flood Waiver Form",
-      "HUD Statement",
-      "New Business Application",
-      "Other",
-      "Proof Of Prior Insurance",
-      "Proof Of Repair",
-      "Property Inspection",
-      "Protection Device Certificate",
-      "Quote Summary",
-      "Replacement Cost Estimator",
-      "Roof Inspection/permit",
-      "Sinkhole Loss Questionnaire",
-      "Sinkhole Selection/rejection Form",
-      "Wind Exclusion",
-      "Wind Mitigation"
+      '4-pt Inspection',
+      'Claims Documentation',
+      'Consent To Rate Form',
+      'Correspondence',
+      'Elevation Certificate',
+      'Flood Selection Form',
+      'Flood Waiver Form',
+      'HUD Statement',
+      'New Business Application',
+      'Other',
+      'Proof Of Prior Insurance',
+      'Proof Of Repair',
+      'Property Inspection',
+      'Protection Device Certificate',
+      'Quote Summary',
+      'Replacement Cost Estimator',
+      'Roof Inspection/permit',
+      'Sinkhole Loss Questionnaire',
+      'Sinkhole Selection/rejection Form',
+      'Wind Exclusion',
+      'Wind Mitigation'
     ],
     'Policy Note': [
-      "4-pt Inspection",
-      "AI Change",
-      "AOR Change",
-      "Cancellation Request",
-      "Cancellation/non-renewal Notice",
-      "Claims Documentation",
-      "Consent To Rate Form",
-      "Correspondence",
-      "DEC Page",
-      "Electronic Payment Receipt",
-      "Elevation Certificate",
-      "Endorsement",
-      "Financial Document",
-      "Policy Packet",
-      "Flood Selection Form",
-      "Flood Waiver Form",
-      "HUD Statement",
-      "New Business Application",
-      "Occupancy Letter",
-      "Other",
-      "Proof Of Prior Insurance",
-      "Proof Of Repair",
-      "Property Inspection",
-      "Protection Device Certificate",
-      "Reinstatement Notice",
-      "Renewal Application",
-      "Replacement Cost Estimator",
-      "Returned Mail",
-      "Returned Renewal Application",
-      "Roof Inspection/permit",
-      "Sinkhole Loss Questionnaire",
-      "Sinkhole Selection/rejection Form",
-      "Statement Of No Loss",
-      "UW Condition Letter",
-      "Wind Exclusion",
-      "Wind Mitigation"
+      '4-pt Inspection',
+      'AI Change',
+      'AOR Change',
+      'Cancellation Request',
+      'Cancellation/non-renewal Notice',
+      'Claims Documentation',
+      'Consent To Rate Form',
+      'Correspondence',
+      'DEC Page',
+      'Electronic Payment Receipt',
+      'Elevation Certificate',
+      'Endorsement',
+      'Financial Document',
+      'Policy Packet',
+      'Flood Selection Form',
+      'Flood Waiver Form',
+      'HUD Statement',
+      'New Business Application',
+      'Occupancy Letter',
+      'Other',
+      'Proof Of Prior Insurance',
+      'Proof Of Repair',
+      'Property Inspection',
+      'Protection Device Certificate',
+      'Reinstatement Notice',
+      'Renewal Application',
+      'Replacement Cost Estimator',
+      'Returned Mail',
+      'Returned Renewal Application',
+      'Roof Inspection/permit',
+      'Sinkhole Loss Questionnaire',
+      'Sinkhole Selection/rejection Form',
+      'Statement Of No Loss',
+      'UW Condition Letter',
+      'Wind Exclusion',
+      'Wind Mitigation'
     ]
   };
 
@@ -183,15 +184,15 @@ export const NewNoteFileUploader = (props, { closeButtonHandler }) => {
                 { contactTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
               </Field>
               <Field name="noteContent" component={renderNotes} label="Note Content" />
-                <label>Document Type</label>
-                <Field component="select" name="fileType" disabled={!docTypes.length}>
-                  { docTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
-                </Field>
-                <Field name="noteAttachments" component={ renderDropzone } />
+              <label>Document Type</label>
+              <Field component="select" name="fileType" disabled={!docTypes.length}>
+                { docTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
+              </Field>
+              <Field name="noteAttachments" component={renderDropzone} />
             </div>
             <div className="buttons note-file-footer-button-group">
-              <button aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={props.closeButtonHandler}>Cancel</button>
-              <button aria-label="submit-btn form-newNote" className="btn btn-primary submit-button">Save</button>
+              <button tabIndex={'0'} aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={props.closeButtonHandler}>Cancel</button>
+              <button tabIndex={'0'} aria-label="submit-btn form-newNote" className="btn btn-primary submit-button">Save</button>
             </div>
           </div>
         </Form>

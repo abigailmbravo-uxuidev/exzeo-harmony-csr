@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import NumberFormat from 'react-number-format';
 import FieldHint from './FieldHint';
 import reduxFormField from './reduxFormField';
 
-export const TextInput = ({
-  dateString,
+export const NumberInput = ({
+  validations,
   input,
   hint,
   label,
@@ -14,10 +15,10 @@ export const TextInput = ({
   type,
   disabled,
   min,
-  max,
-  name
+  max
 }) => {
   const { touched, error, warning } = meta;
+  const { name, value, onChange } = input;
 
   const formGroupStyles = classNames(
     'form-group',
@@ -41,13 +42,18 @@ export const TextInput = ({
   return (
     <div className={formGroupStyles}>
       {Label}
-      <input
+      <NumberFormat
+        {...input}
+        fixedDecimalScale
+        displayType={'input'}
+        thousandSeparator
+        prefix={''}
         min={min}
         max={max}
         disabled={disabled}
         name={name}
-        {...input}
-        tabIndex={'0'}
+        value={value}
+        onChange={onChange}
         type={type}
       />
       {Error}
@@ -55,7 +61,7 @@ export const TextInput = ({
   );
 };
 
-TextInput.propTypes = {
+NumberInput.propTypes = {
 
   /**
    * Hint for the user
@@ -112,7 +118,7 @@ TextInput.propTypes = {
 
 };
 
-TextInput.defaultProps = {
+NumberInput.defaultProps = {
   hint: '',
   input: {},
   meta: {},
@@ -120,4 +126,4 @@ TextInput.defaultProps = {
   styleName: ''
 };
 
-export default reduxFormField(TextInput);
+export default reduxFormField(NumberInput);

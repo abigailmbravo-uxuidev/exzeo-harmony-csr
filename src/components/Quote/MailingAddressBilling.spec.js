@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { handleFormSubmit, selectBillTo, clearForm, fillMailForm } from './MailingAddressBilling';
+import { MailingAddressBilling, handleFormSubmit, selectBillTo, clearForm, fillMailForm, handleInitialize, getSelectedPlan, InstallmentTerm } from './MailingAddressBilling';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -308,6 +308,16 @@ const quoteData = {
 describe('Testing MailingAddressBilling component', () => {
   it('should test connected app', () => {
     const initialState = {
+      quoteData: {
+        billToId: '598b4570efb84c0013f7ed3c'
+      },
+      paymentPlans: {
+        options: [{
+          billToId: '598b4570efb84c0013f7ed3c',
+          billToType: 'Policyholder',
+          displayText: 'Policyholder: gdfg fgfdg'
+        }]
+      },
       service: {
         quote: quoteData
       },
@@ -326,23 +336,45 @@ describe('Testing MailingAddressBilling component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      handleSubmit() {},
+      paymentPlanResult: {
+        options: [{
+          billToId: '598b4570efb84c0013f7ed3c',
+          billToType: 'Policyholder',
+          displayText: 'Policyholder: gdfg fgfdg'
+        }]
+      },
+      quoteData: {
+        rating: {}
+      },
       actions: {
+        appStateActions: {
+          setAppState() {}
+        },
         quoteStateActions: {
           getLatestQuote() {}
+        },
+        cgActions: {
+          batchCompleteTask() { return Promise.resolve(() => {}); }
         }
       },
-      fieldQuestions: [],
-      quoteData: {},
+      fieldValues: {},
       dispatch: store.dispatch,
       appState: {
+        instanceId: '1',
         data: {
           submitting: false
         }
-      },
-      ...propTypes
+      }
     };
-    const wrapper = shallow(<ConnectedApp store={store} {...props} />);
+    const wrapper = shallow(<MailingAddressBilling store={store} {...props} />);
     expect(wrapper);
+    wrapper.instance().componentDidMount();
+    handleInitialize(initialState);
+    getSelectedPlan('Annual');
+    getSelectedPlan('Semi-Annual');
+    getSelectedPlan('Quarterly');
+    InstallmentTerm({ paymentPlans: [], payPlans: ['Quarterly'] });
   });
   it('should test handleGetQuoteData', () => {
     const initialState = {

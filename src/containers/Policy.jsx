@@ -1,34 +1,54 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import moment from 'moment-timezone';
 import { Helmet } from 'react-helmet';
-import _ from 'lodash';
-
 import PolicyHeader from '../components/Policy/PolicyHeader';
 import QuoteSideNav from '../components/Policy/PolicySideNav';
 import PolicyDetailHeader from '../components/Policy/DetailHeader';
 import Loader from '../components/Common/Loader';
+import * as appStateActions from '../actions/appStateActions';
+import * as serviceActions from '../actions/serviceActions';
+import * as policyStateActions from '../actions/policyStateActions';
+import EditEffectiveDataPopUp from '../components/Policy/EditEffectiveDatePopup';
 
-// import NewNoteFileUploader from '../components/Common/NewNoteFileUploader';
-
-/*
-const handleLogout = (props) => {
-  props.actions.user.logout();
-};
-*/
-
-const handleGetPolicy = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-  const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
-  return policyData;
+export const hideEffectiveDatePopUp = (props) => {
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data, showEffectiveDateChangePopUp: false });
 };
 
+export const showEffectiveDatePopUp = (props) => {
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data, showEffectiveDateChangePopUp: true });
+};
+
+export const changeEffectiveDate = (data, dispatch, props) => {
+  props.actions.serviceActions.getZipcodeSettings(props.policy.companyCode, props.policy.state, props.policy.product, props.policy.property.physicalAddress.zip);
+  const effectiveDateUTC = moment.tz(moment.utc(data.effectiveDate).format('YYYY-MM-DD'), props.zipCodeSetting.timezone).format();
+  const workflowId = props.appState.instanceId;
+  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
+
+  props.actions.cgActions.startWorkflow('effectiveDateChangeModel', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID }).then((result) => {
+    const steps = [{
+      name: 'saveEffectiveDate',
+      data: { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID, effectiveDateChangeReason: data.effectiveDateChangeReason, effectiveDate: effectiveDateUTC }
+    }];
+    const startResult = result.payload ? result.payload[0].workflowData.effectiveDateChangeModel.data : {};
+
+    props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, submitting: true });
+
+    props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
+      props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, submitting: false, showEffectiveDateChangePopUp: false });
+      props.actions.policyStateActions.updatePolicy(true, props.policy.policyNumber);
+    });
+  });
+};
 
 export const Policy = props => (
   <div className="app-wrapper csr policy">
     {/* TODO: dynamically add policy # to title*/}
-    <Helmet><title>{props.policy.policyNumber ? `P: ${props.policy.policyNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
+    <Helmet><title>{props.policy && props.policy.policyNumber ? `P: ${props.policy.policyNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
     {/* <NewNoteFileUploader/>*/}
     <PolicyHeader />
     <PolicyDetailHeader />
@@ -40,6 +60,7 @@ export const Policy = props => (
       <div className="content-wrapper">
         {props.children}
       </div>
+      {props.appState.data.showEffectiveDateChangePopUp && <EditEffectiveDataPopUp {...props} changeEffectiveDateSubmit={changeEffectiveDate} hideEffectiveDateModal={() => hideEffectiveDatePopUp(props)} />}
     </main>
   </div>
 );
@@ -52,6 +73,21 @@ Policy.propTypes = {
   policy: PropTypes.shape()
 };
 
-const mapStateToProps = state => ({ appState: state.appState, policy: handleGetPolicy(state) });
+const mapStateToProps = state => ({
+  policyState: state.policy,
+  tasks: state.cg,
+  appState: state.appState,
+  summaryLedger: state.service.getSummaryLedger,
+  policy: state.service.latestPolicy || {},
+  zipCodeSetting: state.service.getZipcodeSettings
+});
 
-export default connect(mapStateToProps)(Policy);
+const mapDispatchToProps = dispatch => ({
+  actions: {
+    policyStateActions: bindActionCreators(policyStateActions, dispatch),
+    serviceActions: bindActionCreators(serviceActions, dispatch),
+    appStateActions: bindActionCreators(appStateActions, dispatch)
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Policy);

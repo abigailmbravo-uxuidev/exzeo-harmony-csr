@@ -11,82 +11,35 @@ import * as questionsActions from '../../actions/questionsActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as policyStateActions from '../../actions/policyStateActions';
 import PolicyConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
-
-export const handleGetPolicy = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-  const policyData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
-  return policyData;
-};
-
-// const claims = [
-//   {
-//     claimNumber: '17-1234567-01',
-//     lossDate: '01/01/2000',
-//     closedDate: '03/01/2000',
-//     examiner: 'William Churchhill',
-//     lossDescription: 'Desc: Noticed discoloration on floor.'
-//   }, {
-//     claimNumber: '17-6789012-01',
-//     lossDate: '01/01/2002',
-//     closedDate: '02/01/2002',
-//     examiner: 'Bob McCann',
-//     lossDescription: 'Desc: Noticed discoloration on wall.'
-//   }
-// ];
 
 export const getPropertyAppraisialLink = (county, questions) => {
   const answers = _.get(_.find(questions, { name: 'propertyAppraisal' }), 'answers') || [];
   return _.find(answers, { label: county }) || {};
 };
 
-const handleInitialize = state => handleGetPolicy(state);
-let isLoded = false;
+const handleInitialize = state => state.service.latestPolicy;
 
 export class Coverage extends Component {
 
   componentDidMount() {
     this.props.actions.questionsActions.getUIQuestions('propertyAppraisalCSR');
     const isNewTab = localStorage.getItem('isNewTab') === 'true';
-
     if (isNewTab) {
       localStorage.setItem('isNewTab', false);
-
-      this.props.actions.cgActions.startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` }).then((result) => {
-        const steps = [];
-        const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData'));
-
-        steps.push({ name: 'search', data: lastSearchData });
-
-        const policyId = localStorage.getItem('policyID');
-        steps.push({
-          name: 'choosePolicy',
-          data: {
-            policyId
-          }
-        });
-
-        const startResult = result.payload[0].workflowData ? result.payload[0].workflowData.csrQuote.data : {};
-
-        this.props.actions.appStateActions.setAppState('csrQuote', startResult.modelInstanceId, { ...this.props.appState.data, submitting: true });
-        this.props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
-          this.props.actions.appStateActions.setAppState('csrQuote',
-          startResult.modelInstanceId, { ...this.props.appState.data, submitting: false });
-        });
-      });
+      const policyNumber = localStorage.getItem('policyNumber');
+      this.props.actions.policyStateActions.updatePolicy(true, policyNumber);
     }
   }
 
-  componentWillReceiveProps = (nextProps) => {
+  componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props, nextProps)) {
-      if (nextProps.policy.policyNumber && !isLoded) {
-        isLoded = true;
+      if (nextProps.policy.policyNumber) {
         this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
-
         const paymentOptions = {
           effectiveDate: nextProps.policy.effectiveDate,
           policyHolders: nextProps.policy.policyHolders,
@@ -317,9 +270,9 @@ export class Coverage extends Component {
                   <dl>
                     <div>
                       <dt>Dist. to Tidal Waters</dt>
-                      <dd>{propertyData.distanceToTidalWater} ft.</dd>
+                      <dd>{normalizeNumbers(propertyData.distanceToTidalWater)} ft.</dd>
                       <dt>Dist. to Fire Hydrant</dt>
-                      <dd>{propertyData.distanceToFireHydrant ? `${propertyData.distanceToFireHydrant} ft.` : '-'}</dd>
+                      <dd>{propertyData.distanceToFireHydrant ? `${normalizeNumbers(propertyData.distanceToFireHydrant)} ft.` : '-'}</dd>
                       <dt>Dist. to Fire Station</dt>
                       <dd>{propertyData.distanceToFireStation} mi.</dd>
                     </div>
@@ -400,13 +353,14 @@ const mapStateToProps = state => ({
   appState: state.appState,
   fieldValues: _.get(state.form, 'Coverage.values', {}),
   initialValues: handleInitialize(state),
-  policy: handleGetPolicy(state),
+  policy: state.service.latestPolicy || {},
   questions: state.questions
 
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    policyStateActions: bindActionCreators(policyStateActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     questionsActions: bindActionCreators(questionsActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),

@@ -1,35 +1,30 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import _ from 'lodash';
 import localStorage from 'localStorage';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import normalizePhone from '../Form/normalizePhone';
-import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
-
 
 export const selectPolicy = (quote, props) => {
   if (!quote.quoteNumber) return;
 
-  props.actions.serviceActions.getPolicyFromPolicyNumber(quote.companyCode, quote.state, quote.product, quote.policyNumber).then((result) => {
-    const lastSearchData = {
-      firstName: '',
-      lastName: '',
-      address: '',
-      quoteNumber: '',
-      policyNumber: encodeURIComponent(quote.policyNumber),
-      zip: '',
-      searchType: 'policy'
-    };
+  const lastSearchData = {
+    firstName: '',
+    lastName: '',
+    address: '',
+    quoteNumber: '',
+    policyNumber: quote.policyNumber,
+    zip: '',
+    searchType: 'policy'
+  };
 
-    localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
-    localStorage.setItem('isNewTab', true);
-    localStorage.setItem('policyID', result.payload[0].data.policy.policyID);
-    window.open('/policy/coverage', '_blank');
-  });
+  localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
+  localStorage.setItem('isNewTab', true);
+  localStorage.setItem('policyNumber', quote.policyNumber);
+  window.open('/policy/coverage', '_blank');
 };
 
 export class DetailHeader extends Component {
@@ -51,14 +46,14 @@ export class DetailHeader extends Component {
           <div>
             <dd>{quoteData.product === 'HO3' ? `${quoteData.product} Homeowners` : quoteData.product}</dd>
             <dd>{(quoteData.quoteNumber ? quoteData.quoteNumber : '-')}</dd>
-            <dd>{quoteData.quoteState === 'Policy Issued' ? <button className="btn btn-link" onClick={() => selectPolicy(quoteData, this.props)}>{quoteData.quoteState}</button> : quoteData.quoteState}</dd>
+            <dd>{quoteData.quoteState === 'Policy Issued' ? <button className="btn btn-link" onClick={() => selectPolicy(quoteData)}>{quoteData.quoteState}</button> : quoteData.quoteState}</dd>
           </div>
         </dl>
       </section>
       <section id="policyHolder" className="policyHolder">
         <dl>
           <div>
-            <dt>policyholder</dt>
+            <dt>Policyholder</dt>
             <dd>{quoteData && quoteData.policyHolders &&
                  quoteData.policyHolders[0] ? `${quoteData.policyHolders[0].firstName} ${quoteData.policyHolders[0].lastName}` : '-'}</dd>
             <dd>{quoteData.policyHolders && quoteData.policyHolders[0] ? normalizePhone(quoteData.policyHolders[0].primaryPhoneNumber) : '' }</dd>
@@ -113,7 +108,7 @@ export class DetailHeader extends Component {
         <dl>
           <div>
             <dt>Effective Date</dt>
-            <dd>{moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD')}</dd>
+            <dd>{moment.utc(_.get(quoteData, 'effectiveDate')).format('MM/DD/YYYY')}</dd>
           </div>
         </dl>
       </section>
@@ -147,4 +142,3 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailHeader);
-

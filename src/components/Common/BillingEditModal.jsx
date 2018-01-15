@@ -9,15 +9,8 @@ import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import { RadioFieldBilling, SelectFieldBilling } from '../Form/inputs';
 
-const handleGetPolicy = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-  const quoteData = _.find(taskData.model.variables, { name: 'retrievePolicy' }) ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0] : {};
-  return quoteData;
-};
-
-const handleInitialize = (state) => {
-  const policyData = handleGetPolicy(state);
+export const handleInitialize = (state) => {
+  const policyData = state.service.latestPolicy;
   const values = {};
 
   values.billToId = _.get(policyData, 'billToId');
@@ -61,36 +54,36 @@ export const BillingEditModal = (props) => {
   return (<div className="modal" style={{ flexDirection: 'row' }}>
     <div className="card card-billing-edit-modal">
       <Form id="BillingEditModal" className="BillingEditModal" noValidate onSubmit={handleSubmit(handleBillingFormSubmit)}>
-      <div className="card-header">
-        <h4>Edit Billing</h4>
-      </div>
-      <div className="card-block">
-        <SelectFieldBilling
-          name="billToId"
-          component="select"
-          label="Bill To"
-          onChange={() => selectBillTo(props)}
-          validations={['required']}
-          answers={billingOptions.options}
-        />
-        <RadioFieldBilling
-          validations={['required']}
-          name={'billPlan'}
-          label={'Bill Plan'}
-          onChange={value => selectBillPlan(value, props)}
-          validate={[value => (value ? undefined : 'Field Required')]}
-          segmented
-          answers={_.find(billingOptions.options, ['billToId', props.fieldValues.billToId]) ?
-                 _.find(billingOptions.options, ['billToId', props.fieldValues.billToId]).payPlans : []}
-          paymentPlans={billingOptions.paymentPlans}
-        />
-      </div>
-      <div className="card-footer">
-        <div className="btn-group">
-          <button aria-label="reset-btn form-editBilling" className="btn btn-secondary" type="button" onClick={() => hideBillingModal(props)}>Cancel</button>
-          <button aria-label="submit-btn form-editBilling" className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Update</button>
+        <div className="card-header">
+          <h4>Edit Billing</h4>
         </div>
-      </div>
+        <div className="card-block">
+          <SelectFieldBilling
+            name="billToId"
+            component="select"
+            label="Bill To"
+            onChange={() => selectBillTo(props)}
+            validations={['required']}
+            answers={billingOptions.options}
+          />
+          <RadioFieldBilling
+            validations={['required']}
+            name={'billPlan'}
+            label={'Bill Plan'}
+            onChange={value => selectBillPlan(value, props)}
+            validate={[value => (value ? undefined : 'Field Required')]}
+            segmented
+            answers={_.find(billingOptions.options, ['billToId', props.fieldValues.billToId]) ?
+                 _.find(billingOptions.options, ['billToId', props.fieldValues.billToId]).payPlans : []}
+            paymentPlans={billingOptions.paymentPlans}
+          />
+        </div>
+        <div className="card-footer">
+          <div className="btn-group">
+            <button tabIndex={'0'} aria-label="reset-btn form-editBilling" className="btn btn-secondary" type="button" onClick={() => hideBillingModal(props)}>Cancel</button>
+            <button tabIndex={'0'} aria-label="submit-btn form-editBilling" className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Update</button>
+          </div>
+        </div>
       </Form>
     </div>
   </div>);
@@ -115,7 +108,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   selectedAI: state.appState.data.selectedAI,
   initialValues: handleInitialize(state),
-  policy: handleGetPolicy(state),
+  policy: state.service.latestPolicy,
   fieldValues: _.get(state.form, 'BillingEditModal.values', {})
 });
 
