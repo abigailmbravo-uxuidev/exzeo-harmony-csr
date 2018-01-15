@@ -288,6 +288,7 @@ describe('Testing MortgageBilling component', () => {
     wrapper.instance().dateFormatter('123');
 
     wrapper.instance().componentWillReceiveProps({
+      getSummaryLedger() {},
       policy: { policyNumber: '1234', rating: { worksheet: { fees: {} } } },
       appState: {
 
