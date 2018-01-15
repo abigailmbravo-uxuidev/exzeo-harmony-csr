@@ -12,6 +12,7 @@ describe('Testing Policy component', () => {
   it('should test connected app', () => {
     const initialState = {
       service: {
+        latestPolicy: {}
       },
       cg: {
         bb: {

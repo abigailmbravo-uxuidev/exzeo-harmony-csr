@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { reduxForm, propTypes } from 'redux-form';
-import _ from 'lodash';
 import * as appStateActions from '../../actions/appStateActions';
 import UWconditions from '../Common/UWconditions';
 import * as cgActions from '../../actions/cgActions';
@@ -88,22 +87,19 @@ const goToPage = (agentLink, props, quote) => {
     });
 };
 
-const getQuote = (props) => {
-  const taskData = (props.cg[props.appState.modelName]) ? props.cg[props.appState.modelName].data : null;
-  if (!taskData) return null;
-  const quoteData = _.find(taskData.model.variables, { name: 'retrieveQuote' })
-    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
-    : {};
-  return quoteData || {};
-};
 
 export const SideNav = (props) => {
   const redirect = (props.activateRedirect)
     ? (<Redirect to={props.activateRedirectLink} />)
     : null;
 
-  const quote = getQuote(props);
+  const onKeyPress = (event, agentLink) => {
+    if (event.charCode === 13) {
+      goToPage(agentLink, props, quote);
+    }
+  };
 
+  const quote = props.quoteData;
   return (
     <nav className="site-nav">
       { redirect }
@@ -117,17 +113,17 @@ export const SideNav = (props) => {
             </a>
           </li> :
           <li key={index}>
-            <span className={agentLink.styleName} onClick={() => goToPage(agentLink, props, quote)}>
+            <span tabIndex={'0'} onKeyPress={event => onKeyPress(event, agentLink)} className={agentLink.styleName} onClick={() => goToPage(agentLink, props, quote)}>
               <a className={props.appState.data.selectedLink === agentLink.key ? `${agentLink.styleName} active` : `${agentLink.styleName}`}>{agentLink.label}</a>
             </span>
           </li>
       ))}
         <hr className="nav-division" />
         <li>
-          <button className="btn btn-primary btn-sm btn-block" onClick={() => NewNoteFileUploaderPopup(props)}><i className="fa fa-plus" /> Note / File</button>
+          <button tabIndex={'0'} className="btn btn-primary btn-sm btn-block" onClick={() => NewNoteFileUploaderPopup(props)}><i className="fa fa-plus" /> Note / File</button>
         </li>
         <li>
-          <button aria-label="open-btn form-newNote" className="btn btn-secondary btn-xs btn-block" onClick={() => UWconditionsPopup(props)}>Underwriting Conditions</button>
+          <button tabIndex={'0'} aria-label="open-btn form-newNote" className="btn btn-secondary btn-xs btn-block" onClick={() => UWconditionsPopup(props)}>Underwriting Conditions</button>
         </li>
       </ul>
       { props.appState.data.showNewNoteFileUploader === true &&
@@ -163,7 +159,8 @@ const mapStateToProps = state => ({
   completedTasks: state.completedTasks,
   activateRedirectLink: state.appState.data.activateRedirectLink,
   activateRedirect: state.appState.data.activateRedirect,
-  cg: state.cg
+  cg: state.cg,
+  quoteData: state.service.quote || {}
 });
 
 const mapDispatchToProps = dispatch => ({

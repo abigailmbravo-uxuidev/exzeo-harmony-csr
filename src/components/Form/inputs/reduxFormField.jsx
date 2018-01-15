@@ -80,10 +80,11 @@ export default function reduxFormField(fieldComponent) {
         validations,
         min,
         max,
+        dependsOn,
         dateString
       } = this.props;
 
-      const ruleArray = combineRules(validations, { min, max, dateString });
+      const ruleArray = combineRules(validations, { min, max, dependsOn, dateString });
 
       return (
         <Field

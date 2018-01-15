@@ -56,20 +56,16 @@ const checkPublicPath = (path) => {
 };
 
 class Routes extends Component {
-  constructor(props) {
-    super(props);
-
-    const { isAuthenticated, userProfile, getProfile } = auth;
-    if (isAuthenticated() && !userProfile && checkPublicPath(window.location.pathname)) {
+  componentWillMount() {
+    const { isAuthenticated } = auth;
+    if (isAuthenticated() && checkPublicPath(window.location.pathname)) {
       const idToken = localStorage.getItem('id_token');
       axios.defaults.headers.common['authorization'] = `bearer ${idToken}`; // eslint-disable-line
 
-      getProfile((err, profile) => {
-        if (!auth.checkIfCSRGroup()) {
-          history.push('/accessDenied?error=Please login with the proper credentials.');
-        }
-        if (!err) this.props.actions.authActions.dispatchUserProfile(profile);
-      });
+      if (!this.props.authState.userProfile) {
+        const profile = JSON.parse(localStorage.getItem('user_profile'));
+        this.props.actions.authActions.dispatchUserProfile(profile);
+      }
     } else if (!isAuthenticated() && checkPublicPath(window.location.pathname)) {
       history.push('/login');
       axios.defaults.headers.common['authorization'] = undefined; // eslint-disable-line
@@ -96,20 +92,24 @@ class Routes extends Component {
       <div>
         <Modal
           isOpen={this.props.error.message !== undefined}
-          contentLabel="Example Modal"
+          contentLabel="Error Modal"
           style={this.modalStyles}
           className="card"
+          appElement={document.getElementById('root')}
         >
           <div className="card-header"><h4><i className="fa fa-exclamation-circle" />&nbsp;Error</h4></div>
-          <div className="card-block">{ this.props.error.message }</div>
-          <div className="card-footer"><button className="btn-primary" onClick={this.clearError}>close</button></div>
-
+          <div className="card-block"><p>{ this.props.error.message }</p></div>
+          <div className="card-footer">
+            {this.props.error.requestId && <div className="footer-message"><p>Request ID: { this.props.error.requestId }</p></div>}
+            <button className="btn-primary" onClick={this.clearError}>close</button>
+          </div>
         </Modal>
+
         <Router
           getUserConfirmation={(message, callback) => {
             ReactDOM.render((
               <ConfirmPopup {...this.props} message={message} setBackStep={this.setBackStep} callback={callback} />
-      ), document.getElementById('modal'));
+            ), document.getElementById('modal'));
           }}
         >
           <div className="routes">
@@ -159,7 +159,8 @@ class Routes extends Component {
 
 const mapStateToProps = state => ({
   error: state.error,
-  appState: state.appState
+  appState: state.appState,
+  authState: state.authState
 });
 
 const mapDispatchToProps = dispatch => ({

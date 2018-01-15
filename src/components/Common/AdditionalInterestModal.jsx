@@ -14,6 +14,7 @@ import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as policyStateActions from '../../actions/policyStateActions';
+import * as quoteStateActions from '../../actions/quoteStateActions';
 import Loader from './Loader';
 
 export const handleGetQuoteData = (state) => {
@@ -115,7 +116,7 @@ export const AdditionalInterestModal = (props) => {
               <TextField
                 label={'State'} styleName={'state'} name={'state'} validations={['required']}
               />
-              <TextField label={'Zip Code'} styleName={'zip'} name={'zip'} validations={['required', 'numbersOnly']} />
+              <TextField label={'Zip Code'} styleName={'zip'} name={'zip'} validations={['required', 'zipNumbersOnly']} />
             </div>
             <div className="flex-form">
               <PhoneField label={'Phone Number'} styleName={'phone'} name={'phoneNumber'} validations={['phone']} />
@@ -128,8 +129,8 @@ export const AdditionalInterestModal = (props) => {
           </div>
           <div className="card-footer">
             <div className="btn-group">
-              <button className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal(props)}>Cancel</button>
-              <button className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Save</button>
+              <button tabIndex={'0'} className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal(props)}>Cancel</button>
+              <button tabIndex={'0'} className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Save</button>
             </div>
           </div>
         </div>
@@ -160,6 +161,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
     policyStateActions: bindActionCreators(policyStateActions, dispatch),
     questionsActions: bindActionCreators(questionsActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),

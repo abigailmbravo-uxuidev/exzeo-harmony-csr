@@ -228,6 +228,7 @@ export class AdditionalInterests extends Component {
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         submittingAI: true,
+        submitting: true,
         selectedLink: 'additionalInterests'
       });
       const steps = [
@@ -250,6 +251,8 @@ export class AdditionalInterests extends Component {
     _.forEach(getAnswers('mortgagee', questions), (answer) => {
       answer.displayText = `${answer.AIName1}, ${answer.AIAddress1}, ${answer.AICity} ${answer.AIState}, ${answer.AIZip}`;
     });
+
+    applyRank(quoteData.additionalInterests);
     return (
       <QuoteBaseConnect>
         <ClearErrorConnect />
