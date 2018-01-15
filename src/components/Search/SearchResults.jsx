@@ -6,6 +6,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as serviceActions from '../../actions/serviceActions';
 
 export const SearchResults = (props) => {
   const model = props.tasks[props.appState.modelName] || {};
@@ -16,8 +17,7 @@ export const SearchResults = (props) => {
     ? model.data.activeTask
     : {};
 
-    console.log(localStorage.getItem('lastSearchData'));
-
+  const searchData = JSON.parse(localStorage.getItem('lastSearchData'));
 
   if (previousTask && previousTask.name === 'searchAddress' && activeTask.name !== 'askToSearchAgain') {
     const addresses = previousTask.value.result.IndexResult;
@@ -33,13 +33,13 @@ export const SearchResults = (props) => {
               }
 
               <a id={address.physicalAddress.address1} aria-label={address.physicalAddress.address1} className={address.physicalAddress.address1} value={address.physicalAddress.address1} onClick={() => props.handleNewTab(address, props)} tabIndex="-1">
-                <i className="card-icon fa fa-map-marker"/>
+                <i className="card-icon fa fa-map-marker" />
                 <section>
                   <h4>{address.physicalAddress.address1}</h4>
                   <p>{address.physicalAddress.city}, {address.physicalAddress.state}
                     {address.physicalAddress.zip}</p>
                 </section>
-                <i className="fa fa-chevron-circle-right"/>
+                <i className="fa fa-chevron-circle-right" />
               </a>
             </li>))
             : null
@@ -64,11 +64,13 @@ export const SearchResults = (props) => {
       {
         quoteResults && quoteResults.map((quote, index) => <div id={quote._id} className="card" key={index}>
           <div className="icon-name">
-            <i className="card-icon fa fa-user-circle"/>
+            <i className="card-icon fa fa-user-circle" />
             <div className="card-name">
-              <h5 title={quote.policyHolders && quote.policyHolders.length > 0
+              <h5
+                title={quote.policyHolders && quote.policyHolders.length > 0
                   ? `${quote.policyHolders[0].firstName} ${quote.policyHolders[0].lastName}`
-                  : ''}>{quote.policyHolders[0] && `${quote.policyHolders[0].firstName.replace(/(^.{13}).*$/, '$1...')}`}
+                  : ''}
+              >{quote.policyHolders[0] && `${quote.policyHolders[0].firstName.replace(/(^.{13}).*$/, '$1...')}`}
                 {quote.policyHolders[0] && `${quote.policyHolders[0].lastName.replace(/(^.{13}).*$/, '$1...')}`}</h5>
             </div>
           </div>
@@ -130,7 +132,7 @@ export const SearchResults = (props) => {
       {
         policyResults && policyResults.map((policy, index) => <div id={policy._id} className="card" key={index}>
           <div className="icon-name">
-            <i className="card-icon fa fa-user-circle"/>
+            <i className="card-icon fa fa-user-circle" />
             <div className="card-name">
               <h5 title={`${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName.replace(/(^.{13}).*$/, '$1...')}`}
                 {policy.policyHolders[0] && `${policy.policyHolders[0].lastName.replace(/(^.{13}).*$/, '$1...')}`}</h5>
@@ -179,17 +181,89 @@ export const SearchResults = (props) => {
     </div>);
   }
 
-  //TODO RESULT CARD AND ADD CARD EXAMPLES FOR AGENCY AND USER ADMIN ONLY
+  if (searchData && searchData.searchType === 'agency') {
+    const agencyResults = props.agencies ? props.agencies : [];
 
-  
-      return (
-        <div className="user-list">
-          <div className="agency contact card" >
-            <div className="contact-title">
-              <i className="fa fa-address-book"></i>
+    return (<div className="agency-list">
+      {
+        agencyResults && agencyResults.map((agency, index) => <div className="card" key={index}>
+          <div className="icon-name">
+            <i className="card-icon fa fa-user-circle" />
+            <div className="card-name">
+              <p>
+                {agency.displayName}
+                {agency.agencyCode}
+                {agency.physicalAddress.address1}
+                {agency.physicalAddress.address2}
+                {agency.physicalAddress.city}
+                {agency.physicalAddress.state}
+                {agency.physicalAddress.zip}
+                {agency.licenseNumber}
+                {agency.taxIdNumber}
+                {agency.primaryPhoneNumber}
+                {agency.secondaryPhoneNumber}
+                {agency.faxNumber}
+                {agency.contactEmailAddress}
+                {agency.customerServiceEmailAddress}
+                {agency.tier}
+                {agency.status}
+                {agency.websiteUrl}
+                {agency.contactFirstName}
+                {agency.contactLastName}
+              </p>
+            </div>
+          </div>
+        </div>)
+      }
+    </div>);
+  }
+
+  if (searchData && searchData.searchType === 'agent') {
+    const agentResults = props.agents ? props.agents : [];
+
+    return (<div className="agency-list">
+      {
+        agentResults && agentResults.map((agent, index) => <div className="card" key={index}>
+          <div className="icon-name">
+            <i className="card-icon fa fa-user-circle" />
+            <div className="card-name">
+              <p>
+                {agent.firstName}
+                {agent.lastName}
+                {agent.agentCode}
+                {agent.mailingAddress.address1}
+                {agent.mailingAddress.address2}
+                {agent.mailingAddress.city}
+                {agent.mailingAddress.state}
+                {agent.mailingAddress.zip}
+                {agent.licenseNumber}
+                {agent.primaryPhoneNumber}
+                {agent.secondaryPhoneNumber}
+                {agent.faxNumber}
+                {agent.emailAddress}
+                {agent.customerServiceEmailAddress}
+                {agent.status}
+                {agent.appointed ? <i className="card-icon fa fa-user-circle" /> : null }
+                {agent.agentOfRecord ? <i className="card-icon fa fa-user-circle" /> : null }
+              </p>
+            </div>
+          </div>
+        </div>)
+      }
+    </div>);
+  }
+
+  // TODO RESULT CARD AND ADD CARD EXAMPLES FOR AGENCY AND USER ADMIN ONLY
+
+
+  return (
+    <div className="user-list">
+      <div className="agency contact card" >
+        <div className="contact-title">
+              <i className="fa fa-address-book" />
               <label>Agency</label>
             </div>
-            <div className="contact-details">
+        <div className="contact-details">
               <h4 className="agency"><span className="agency-code">16666</span> - <span className="agency-display-name">TYPTAP MANAGEMENT COMPANY</span> | <span className="agency-legal-name">TYPTAP MANAGEMENT COMPANY</span></h4>
               <p>3001 S.E. MARICAMP ROAD, OCALA, FL 34471</p>
               <div className="additional-contacts">
@@ -221,13 +295,13 @@ export const SearchResults = (props) => {
                 </ul>
               </div>
             </div>
-          </div>
-          <button className="btn btn-primary btn-sm agency"><i className="fa fa-plus"></i>Agency</button>
-        </div>
-      );
-    
+      </div>
+      <button className="btn btn-primary btn-sm agency"><i className="fa fa-plus" />Agency</button>
+    </div>
+  );
 
-  return <span/>;
+
+  return <span />;
 };
 
 SearchResults.propTypes = {
@@ -243,12 +317,13 @@ SearchResults.propTypes = {
   handleSelectPolicy: PropTypes.func
 };
 
-const mapStateToProps = state => ({ tasks: state.cg, appState: state.appState });
+const mapStateToProps = state => ({ tasks: state.cg, appState: state.appState, agencies: state.service.agencies, agents: state.service.agents });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
     cgActions: bindActionCreators(cgActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
+    appStateActions: bindActionCreators(appStateActions, dispatch),
+    serviceActions: bindActionCreators(serviceActions, dispatch)
   }
 });
 

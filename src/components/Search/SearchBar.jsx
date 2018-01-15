@@ -20,13 +20,6 @@ const userTasks = {
 const handleInitialize = () => ({ searchType: 'quote' });
 
 export const handleSearchBarSubmit = (data, dispatch, props) => {
-  console.log(data);
-  // props.actions.serviceActions.getAgencies(user.companyCode, user.state, '').then((response) => {
-  //   if (response.payload && response.payload[0].data.agencies) {
-  //     console.log(response.payload[0].data.agencies);
-  //   }
-  //   console.log(response.payload[0].data.agencies);
-  // });
   const workflowId = props.appState.instanceId;
   const taskName = userTasks.handleSearchBarSubmit;
   const modelName = props.appState.modelName;
@@ -43,12 +36,15 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
   };
 
   const agencyAgentData = {
-    agentName: (encodeURIComponent(data.agentName) !== 'undefined' ? encodeURIComponent(data.agentName) : ''),
+    firstName: (encodeURIComponent(data.firstName) !== 'undefined' ? encodeURIComponent(data.firstName) : ''),
+    lastName: (encodeURIComponent(data.lastName) !== 'undefined' ? encodeURIComponent(data.lastName) : ''),
     displayName: (encodeURIComponent(data.displayName) !== 'undefined' ? encodeURIComponent(data.displayName) : ''),
     address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(String(data.address).trim()) : ''),
-    licFein: (encodeURIComponent(data.licFein) !== 'undefined' ? encodeURIComponent(data.licFein) : ''),
+    licNumber: (encodeURIComponent(data.licNumber) !== 'undefined' ? encodeURIComponent(data.licNumber) : ''),
+    fein: (encodeURIComponent(data.fein) !== 'undefined' ? encodeURIComponent(data.fein) : ''),
     agentCode: (encodeURIComponent(data.agentCode) !== 'undefined' ? encodeURIComponent(data.agentCode) : ''),
     agencyCode: (encodeURIComponent(data.agencyCode) !== 'undefined' ? encodeURIComponent(data.agencyCode) : ''),
+    phone: (encodeURIComponent(data.phone) !== 'undefined' ? encodeURIComponent(data.phone) : ''),
     searchType
   };
 
@@ -57,8 +53,20 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
     taskData.resultStart = 60;
   }
 
-  localStorage.setItem('lastSearchData', JSON.stringify(agencyAgentData));
+  if (searchType === 'agency') {
+    props.actions.serviceActions.getAgencies('TTIC', 'FL', agencyAgentData.displayName, agencyAgentData.agencyCode, agencyAgentData.address, agencyAgentData.licNumber, agencyAgentData.fein, agencyAgentData.phone);
+  }
 
+  if (searchType === 'agent') {
+    props.actions.serviceActions.getAgents('TTIC', 'FL', agencyAgentData.firstName, agencyAgentData.lastName, agencyAgentData.agentCode, agencyAgentData.address, agencyAgentData.licNumber);
+  }
+
+  if (searchType !== 'agency' && searchType !== 'agent') {
+    localStorage.setItem('lastSearchData', JSON.stringify(taskData));
+  } else {
+    localStorage.setItem('lastSearchData', JSON.stringify(agencyAgentData));
+    return;
+  }
 
   props.actions.errorActions.clearAppError();
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
@@ -186,6 +194,8 @@ const SearchForm = (props) => {
     props.reset(props.form);
     props.actions.cgActions.clearSearchResults(modelName, data);
     props.actions.errorActions.clearAppError();
+    props.actions.serviceActions.clearAgencies();
+    props.actions.serviceActions.clearAgent();
   };
 
   return (
@@ -295,7 +305,8 @@ const SearchForm = (props) => {
           {generateField('agencyCode', 'Agency ID Search', 'Agency ID', formErrors, 'agency-id-search')}
           {generateField('displayName', 'Agency Name Search', 'Agency Name', formErrors, 'agency-name-search')}
           {generateField('address', 'Agency Address Search', 'Agency Address', formErrors, 'agency-address-search')}
-          {generateField('licFein', 'Lic/FEIN No Search', 'Lic or FEIN Number', formErrors, 'agency-reg-lic-fein-search')}
+          {generateField('licNumber', 'Lic No Search', 'Lic Number', formErrors, 'agency-reg-lic-fein-search')}
+          {generateField('fein', 'FEIN No Search', 'FEIN Number', formErrors, 'agency-reg-lic-fein-search')}
           {generateField('phone', 'Phone No Search', 'Agency Phone Number', formErrors, 'agency-phone-search')}
 
           <button
@@ -311,10 +322,10 @@ const SearchForm = (props) => {
         {fieldValues.searchType === 'agent' && <div className="search-inputs fade-in">
 
           {generateField('agentCode', 'Agent ID Search', 'Agent ID', formErrors, 'agency-id-search')}
-          {generateField('agentName', 'Agent Name Search', 'Agent Name', formErrors, 'agency-name-search')}
+          {generateField('firstName', 'First Name Search', 'First Name', formErrors, 'first-name-search')}
+          {generateField('lastName', 'Last Name Search', 'Last Name', formErrors, 'last-name-search')}
           {generateField('address', 'Agent Address Search', 'Agent Address', formErrors, 'agency-address-search')}
-          {generateField('licFein', 'Lic/FEIN No Search', 'Lic or FEIN Number', formErrors, 'agency-reg-lic-fein-search')}
-          {generateField('phone', 'Phone No Search', 'Agent Phone Number', formErrors, 'agency-phone-search')}
+          {generateField('licNumber', 'Lic No Search', 'Lic Number', formErrors, 'agency-reg-lic-fein-search')}
 
           <button
             className="btn btn-success multi-input"
@@ -360,7 +371,9 @@ const mapStateToProps = state => ({
   initialValues: handleInitialize(state),
   error: state.error,
   cleanForm: state.pristine,
-  questions: state.questions
+  questions: state.questions,
+  agencies: state.agencies,
+  agents: state.agents
 });
 
 const mapDispatchToProps = dispatch => ({

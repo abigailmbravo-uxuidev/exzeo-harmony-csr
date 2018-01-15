@@ -77,11 +77,11 @@ export const addNote = (data, files) => (dispatch) => {
   });
 };
 
-export const getAgents = (companyCode, state) => (dispatch) => {
+export const getAgents = (companyCode, state, firstName, lastName, agentCode, address, licNumber) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'agency.services',
     method: 'GET',
-    path: `v1/agents/${companyCode}/${state}`
+    path: `v1/agents/${companyCode}/${state}?firstName=${firstName}&lastName=${lastName}&agentCode=${agentCode}&mailingAddress=${address}&licenseNumber=${licNumber}`
   });
 
   return axios(axiosConfig).then((response) => {
@@ -97,6 +97,14 @@ export const getAgents = (companyCode, state) => (dispatch) => {
       ]));
     });
 };
+
+export const clearAgent = () => (dispatch) => {
+  const data = { agents: [] };
+  return dispatch(batchActions([
+    serviceRequest(data)
+  ]));
+};
+
 
 export const getAgency = (companyCode, state, agencyCode) => (dispatch) => {
   const axiosConfig = runnerSetup({
@@ -140,11 +148,11 @@ export const getAgentsByAgency = (companyCode, state, agencyCode) => (dispatch) 
     });
 };
 
-export const getAgencies = (companyCode, state) => (dispatch) => {
+export const getAgencies = (companyCode, state, displayName, agencyCode, address, licNumber, fein, phone) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'agency.services',
     method: 'GET',
-    path: `v1/agencies/${companyCode}/${state}`
+    path: `v1/agencies/${companyCode}/${state}?displayName=${displayName}&agencyCode=${agencyCode}&mailingAddress=${address}&licenseNumber=${licNumber}&taxIdNumber=${fein}&primaryPhoneNumber=${phone}`
   });
 
   return axios(axiosConfig).then((response) => {
@@ -161,6 +169,14 @@ export const getAgencies = (companyCode, state) => (dispatch) => {
       ]));
     });
 };
+
+export const clearAgencies = () => (dispatch) => {
+  const data = { agencies: [] };
+  return dispatch(batchActions([
+    serviceRequest(data)
+  ]));
+};
+
 
 export const currentAgent = (companyCode, state, agentCode) => (dispatch) => {
   const axiosConfig = runnerSetup({
