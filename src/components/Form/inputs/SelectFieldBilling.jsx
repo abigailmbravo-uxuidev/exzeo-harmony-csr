@@ -26,6 +26,7 @@ export const SelectFieldBilling = ({
       </label>
       {answers && answers.length > 0 ? (
         <select
+          tabIndex={'0'}
           className={Error ? 'error' : ''}
           value={value}
           name={name}

@@ -246,6 +246,28 @@ export const getPolicyFromPolicyID = policyId => (dispatch) => {
     });
 };
 
+
+export const getEffectiveDateChangeReasons = () => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'policy-data.services',
+    method: 'GET',
+    path: `effectiveDateChangeReasons`
+  });
+
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
+    const data = { effectiveDateReasons: response.data.effectiveDateReasons ? response.data.effectiveDateReasons: [] };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
 export const getTransactionHistory = policyNumber => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'billing.services',
