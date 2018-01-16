@@ -8,6 +8,7 @@ import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 import normalizePhone from '../Form/normalizePhone';
+
 export const SearchResults = (props) => {
   const model = props.tasks[props.appState.modelName] || {};
   const previousTask = model.data && model.data.previousTask
@@ -186,64 +187,69 @@ export const SearchResults = (props) => {
 
     return (<div className="user-list agency-list">
       {
-        agencyResults && agencyResults.map((agency, index) => <div className="agency contact card" key={index}>
-          <div className="contact-title">
-            <i className="fa fa-address-book" />
-            <label>Agency</label>
-          </div>
-          <div className="contact-details">
-            <div className="card-name">
-              <h4 className="agency"><span className="agency-code">{agency.agencyCode}</span> | <span className="agency-display-name">{agency.displayName}</span> | <span className="agency-legal-name">{agency.legalName}</span> | <span className="agency-license">{agency.licenseNumber}</span></h4>
-              <p className="contact-address">
-                {agency.physicalAddress.address1},&nbsp;
+        agencyResults && agencyResults.map((agency, index) => <a id={agency.agencyCode} onClick={() => props.handleNewTab(agency, props)} tabIndex="-1">
+          <div className="agency contact card" key={index}>
+
+            <div className="contact-title">
+              <i className="fa fa-address-book" />
+              <label>Agency</label>
+            </div>
+            <div className="contact-details">
+              <div className="card-name">
+
+                <h4 className="agency"><span className="agency-code">{agency.agencyCode}</span> | <span className="agency-display-name">{agency.displayName}</span> | <span className="agency-legal-name">{agency.legalName}</span> | <span className="agency-license">{agency.licenseNumber}</span></h4>
+
+                <p className="contact-address">
+                  {agency.physicalAddress.address1},&nbsp;
                 {agency.physicalAddress.address2}{agency.physicalAddress.address2 ? ', ' : ' ' }
-                {agency.physicalAddress.city},&nbsp;
+                  {agency.physicalAddress.city},&nbsp;
                 {agency.physicalAddress.state}&nbsp;
-                {agency.physicalAddress.zip}
-                {agency.status ? <small><label>STATUS:&nbsp;</label>{agency.status}</small> : null}
-                {agency.tier ? <small><label>TIER:&nbsp;</label>{agency.tier}</small> : null}
-                {agency.websiteUrl ? <small><label>WEBSITE:&nbsp;</label><a href={`${agency.websiteUrl}`} target="_blank">{agency.websiteUrl}</a></small> : null}
-              </p>
-              <div className="additional-contacts">
-                <ul>
-                  <li>
-                    <div>
-                      <h5>{agency.contactFirstName} {agency.contactLastName}</h5>
-                    </div>
-                    <div className="contact-methods">
-                      {agency.primaryPhoneNumber ?
-                      <p className="phone">
-                        <i className="fa fa-phone-square" />
-                        <a href={`tel:${agency.primaryPhoneNumber}`}>{normalizePhone(agency.primaryPhoneNumber)}</a>
-                      </p> : null }
-                      {agency.secondaryPhoneNumber ?
-                      <p className="phone">
-                        <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
-                        <a href={`tel:${agency.secondaryPhoneNumber}`}>{normalizePhone(agency.secondaryPhoneNumber)}</a>
-                      </p> : null }
-                      {agency.faxNumber ?
-                      <p className="fax">
-                        <i className="fa fa-fax" />
-                        <a href={`tel:${agency.faxNumber}`}>{normalizePhone(agency.faxNumber)}</a>
-                      </p> : null }
-                      {agency.contactEmailAddress ?
-                      <p>
-                        <i className="fa fa-envelope" />
-                        <a href={`mailto:${agency.contactEmailAddress}`}>{agency.contactEmailAddress}</a>
-                      </p> : null }
-                      {agency.customerServiceEmailAddress ?
-                      <p className="phone">
-                        <span className="contact-divider">|</span>
-                        <small>CSR <i className="fa fa-envelope" /></small>
-                        <a href={`mailto:${agency.customerServiceEmailAddress}`}>{agency.customerServiceEmailAddress}</a>
-                      </p> : null }
-                    </div>
-                  </li>
-                </ul>
+                  {agency.physicalAddress.zip}
+                  {agency.status ? <small><label>STATUS:&nbsp;</label>{agency.status}</small> : null}
+                  {agency.tier ? <small><label>TIER:&nbsp;</label>{agency.tier}</small> : null}
+                  {agency.websiteUrl ? <small><label>WEBSITE:&nbsp;</label><a href={`${agency.websiteUrl}`} target="_blank">{agency.websiteUrl}</a></small> : null}
+                </p>
+                <div className="additional-contacts">
+                  <ul>
+                    <li>
+                      <div>
+                        <h5>{agency.contactFirstName} {agency.contactLastName}</h5>
+                      </div>
+                      <div className="contact-methods">
+                        {agency.primaryPhoneNumber ?
+                          <p className="phone">
+                            <i className="fa fa-phone-square" />
+                            <a href={`tel:${agency.primaryPhoneNumber}`}>{normalizePhone(agency.primaryPhoneNumber)}</a>
+                          </p> : null }
+                        {agency.secondaryPhoneNumber ?
+                          <p className="phone">
+                            <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
+                            <a href={`tel:${agency.secondaryPhoneNumber}`}>{normalizePhone(agency.secondaryPhoneNumber)}</a>
+                          </p> : null }
+                        {agency.faxNumber ?
+                          <p className="fax">
+                            <i className="fa fa-fax" />
+                            <a href={`tel:${agency.faxNumber}`}>{normalizePhone(agency.faxNumber)}</a>
+                          </p> : null }
+                        {agency.contactEmailAddress ?
+                          <p>
+                            <i className="fa fa-envelope" />
+                            <a href={`mailto:${agency.contactEmailAddress}`}>{agency.contactEmailAddress}</a>
+                          </p> : null }
+                        {agency.customerServiceEmailAddress ?
+                          <p className="phone">
+                            <span className="contact-divider">|</span>
+                            <small>CSR <i className="fa fa-envelope" /></small>
+                            <a href={`mailto:${agency.customerServiceEmailAddress}`}>{agency.customerServiceEmailAddress}</a>
+                          </p> : null }
+                      </div>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
-        </div>)
+        </a>)
       }
     </div>);
   }
@@ -254,12 +260,12 @@ export const SearchResults = (props) => {
     return (<div className="user-list agent-list">
       {
         agentResults && agentResults.map((agent, index) => <div className="agency agent contact card" key={index}>
-            <div className="contact-title">
-              <i className="fa fa-address-card margin bottom" />
-                {agent.agentOfRecord ? <small><i className="card-icon fa fa-bookmark" /><label>AOR</label></small> : null }
-                {agent.appointed ? <small><i className="card-icon fa fa-certificate" /><label>Appointed</label></small> : null }
-            </div>
-            <div className="contact-details">
+          <div className="contact-title">
+            <i className="fa fa-address-card margin bottom" />
+            {agent.agentOfRecord ? <small><i className="card-icon fa fa-bookmark" /><label>AOR</label></small> : null }
+            {agent.appointed ? <small><i className="card-icon fa fa-certificate" /><label>Appointed</label></small> : null }
+          </div>
+          <div className="contact-details">
             <div className="card-name">
               <h4 className="agent"><span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{agent.firstName} {agent.lastName}</span> | <span className="agent-license">{agent.licenseNumber}</span></h4>
               <p className="contact-address">
@@ -275,25 +281,25 @@ export const SearchResults = (props) => {
                   <li>
                     <div className="contact-methods">
                       {agent.primaryPhoneNumber ?
-                      <p className="phone">
-                        <i className="fa fa-phone-square" />
-                        <a href={`tel:${agent.primaryPhoneNumber}`}>{normalizePhone(agent.primaryPhoneNumber)}</a>
-                      </p> : null }
-                      {agent.secondaryPhoneNumber?
-                      <p className="phone">
-                        <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
-                        <a href={`tel:${agent.secondaryPhoneNumber}`}>{normalizePhone(agent.secondaryPhoneNumber)}</a>
-                      </p> : null }
+                        <p className="phone">
+                          <i className="fa fa-phone-square" />
+                          <a href={`tel:${agent.primaryPhoneNumber}`}>{normalizePhone(agent.primaryPhoneNumber)}</a>
+                        </p> : null }
+                      {agent.secondaryPhoneNumber ?
+                        <p className="phone">
+                          <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
+                          <a href={`tel:${agent.secondaryPhoneNumber}`}>{normalizePhone(agent.secondaryPhoneNumber)}</a>
+                        </p> : null }
                       {agent.faxNumber ?
-                      <p className="fax">
-                        <i className="fa fa-fax" />
-                        <a href={`tel:${agent.faxNumber}`}>{normalizePhone(agent.faxNumber)}</a>
-                      </p> : null }
+                        <p className="fax">
+                          <i className="fa fa-fax" />
+                          <a href={`tel:${agent.faxNumber}`}>{normalizePhone(agent.faxNumber)}</a>
+                        </p> : null }
                       {agent.emailAddress ?
-                      <p>
-                        <i className="fa fa-envelope" />
-                        <a href={`mailto:${agent.emailAddress}`}>{agent.emailAddress}</a>
-                      </p> : null }
+                        <p>
+                          <i className="fa fa-envelope" />
+                          <a href={`mailto:${agent.emailAddress}`}>{agent.emailAddress}</a>
+                        </p> : null }
                     </div>
                   </li>
                 </ul>
@@ -302,7 +308,8 @@ export const SearchResults = (props) => {
           </div>
         </div>)
       }
-    </div>);
+    </div>
+    );
   }
   return <span />;
 };
