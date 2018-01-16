@@ -42,7 +42,7 @@ export class Staff extends Component {
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
-              <p>{'HELP'}</p>
+              <p>{}</p>
             </div>
           </div>
         </div>

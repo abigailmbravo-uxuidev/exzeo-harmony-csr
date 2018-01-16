@@ -151,7 +151,7 @@ describe('Service Actions', () => {
       data: {
         service: 'agency.services',
         method: 'GET',
-        path: 'v1/agents/TTIC/FL'
+        path: 'v1/agencies/TTIC/FL?displayName=&agencyCode=&mailingAddress=&licenseNumber=&taxIdNumber=&primaryPhoneNumber='
       }
     };
 
@@ -163,7 +163,7 @@ describe('Service Actions', () => {
     const store = mockStore(initialState);
     serviceActions.getAgents(store.dispatch);
 
-    return serviceActions.getAgents('TTIC', 'FL')(store.dispatch)
+    return serviceActions.getAgents('TTIC', 'FL', '', '', '', '', '', '')(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
       });
