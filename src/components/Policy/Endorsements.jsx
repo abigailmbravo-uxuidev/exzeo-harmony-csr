@@ -88,6 +88,7 @@ export const setEndorsementDate = (effectiveDate, endPolicyDate) => {
 
 export const handleInitialize = (state) => {
   const policy = state.service.latestPolicy || {};
+  const rating = state.service.getRate || {};
   const questions = state.questions || [];
   const values = {};
   // values.agencyCode = '20000'; // _.get(policy, 'agencyCode');
@@ -193,7 +194,9 @@ export const handleInitialize = (state) => {
   values.internalPressureDesignNew = values.internalPressureDesign;
   values.windBorneDebrisRegion = _.get(policy, 'property.windMitigation.windBorneDebrisRegion');
   values.windBorneDebrisRegionNew = values.windBorneDebrisRegion;
-  values.windMitFactor = _.get(policy, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
+  const windMitigationDiscount = _.get(policy, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
+  const updatedRatingWindMitDiscount = _.get(rating, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
+  values.windMitFactor = updatedRatingWindMitDiscount || windMitigationDiscount;
   values.windMitFactorNew = values.windMitFactor;
 // Home/Location Bottom Left
   values.yearBuilt = _.get(policy, 'property.yearBuilt');
@@ -209,11 +212,11 @@ export const handleInitialize = (state) => {
   values.familyUnits = _.get(policy, 'property.familyUnits');
   values.familyUnitsNew = values.familyUnits;
 // Home/Location Bottom Right
-  values.distanceToTidalWater = _.get(policy, 'property.distanceToTidalWater');
+  values.distanceToTidalWater = Number(_.get(policy, 'property.distanceToTidalWater')).toLocaleString();
   values.distanceToTidalWaterNew = values.distanceToTidalWater;
-  values.distanceToFireHydrant = _.get(policy, 'property.distanceToFireHydrant');
+  values.distanceToFireHydrant = Number(_.get(policy, 'property.distanceToFireHydrant')).toLocaleString();
   values.distanceToFireHydrantNew = values.distanceToFireHydrant;
-  values.distanceToFireStation = _.get(policy, 'property.distanceToFireStation');
+  values.distanceToFireStation = Number(_.get(policy, 'property.distanceToFireStation')).toLocaleString();
   values.distanceToFireStationNew = values.distanceToFireStation;
   values.residenceType = _.get(policy, 'property.residenceType');
   values.residenceTypeNew = values.residenceType;
@@ -300,7 +303,7 @@ export const updateDependencies = (event, field, dependency, props) => {
 
 export const generateModel = (data, policyObject, props) => {
   const policy = policyObject;
-  const endorseDate = moment.tz(moment.utc(data.endorsementDateNew).format('YYYY-MM-DD'), props.zipcodeSettings.timezone).format();
+  const endorseDate = moment.tz(moment.utc(data.endorsementDateNew).format('YYYY-MM-DD'), props.zipcodeSettings.timezone).utc().format();
   const sinkholeAmount = _.get(policy, 'deductibles.sinkhole.amount') || 10;
 
   policy.transactionType = 'Endorsement';
@@ -311,6 +314,8 @@ export const generateModel = (data, policyObject, props) => {
     endorsementAmountNew: data.newEndorsementAmount || 0,
     endorsementDate: endorseDate,
     country: policy.policyHolderMailingAddress.country,
+    pH1Id: _.get(policy, 'policyHolders[0]._id') || '',
+    pH2Id: _.get(policy, 'policyHolders[1]._id') || '',
     pH1FirstName: data.pH1FirstName,
     pH1LastName: data.pH1LastName,
     pH1email: data.pH1email,
@@ -550,7 +555,7 @@ export class Endorsements extends React.Component {
     this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
     if (this.props.appState && this.props.appState.instanceId) {
       const workflowId = this.props.appState.instanceId;
-      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, workflowId, { ...this.props.appState.data, isCalculated: false });
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, workflowId, { ...this.props.appState.data, isCalculated: false, isSubmitting: false });
     }
     if (this.props && this.props.policy && this.props.policy.policyNumber) {
       this.props.actions.serviceActions.getUnderwritingQuestions(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property);
@@ -560,11 +565,12 @@ export class Endorsements extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!_.isEqual(this.props.getRate, nextProps.getRate) && nextProps.getRate) {
+    if (!_.isEqual(this.props.getRate, nextProps.getRate) && nextProps.getRate && nextProps.getRate.newAnnualPremium) {
       const { getRate } = nextProps;
-      nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', getRate.endorsementAmount || ''));
+      nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', getRate.endorsementAmount || 0));
       nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', getRate.newCurrentPremium || ''));
       nextProps.dispatch(change('Endorsements', 'newAnnualPremium', getRate.newAnnualPremium || ''));
+      nextProps.dispatch(change('Endorsements', 'windMitFactorNew', _.get(getRate, 'worksheet.elements.windMitigationFactors.windMitigationDiscount')));
     }
     if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
@@ -620,7 +626,7 @@ export class Endorsements extends React.Component {
         {this.props.appState.data.isSubmitting && <Loader />}
         <Form
           id="Endorsements" className={'content-wrapper'} onKeyPress={(e) => {
-            if (e.key === 'Enter') e.preventDefault();
+            if (e.key === 'Enter' && e.target.type !== 'submit') e.preventDefault();
           }} onSubmit={appState.data.isCalculated ? handleSubmit(save) : handleSubmit(calculate)}
         >
 
@@ -629,8 +635,8 @@ export class Endorsements extends React.Component {
               <div className="endo-jump-menu">
                 <button id="coverage-scroll" type="button" onClick={() => scrollToView('coverage')} className="btn btn-secondary btn-xs">Coverage</button>
                 <button id="home-scroll" type="button" onClick={() => scrollToView('home')} className="btn btn-secondary btn-xs">Home / Location</button>
-                <button id="policy-scroll" ttype="button" onClick={() => scrollToView('policy')} className="btn btn-secondary btn-xs">Policyholders</button>
-                <button id="addresses-scroll" ttype="button" onClick={() => scrollToView('addresses')} className="btn btn-secondary btn-xs">Addresses</button>
+                <button id="policy-scroll" type="button" onClick={() => scrollToView('policy')} className="btn btn-secondary btn-xs">Policyholders</button>
+                <button id="addresses-scroll" type="button" onClick={() => scrollToView('addresses')} className="btn btn-secondary btn-xs">Addresses</button>
               </div>
               <div className="scroll">
                 <div className="form-group survey-wrapper" role="group">
@@ -1242,8 +1248,9 @@ export class Endorsements extends React.Component {
                   <DisplayField label={'New Annual Premium'} name={'newAnnualPremium'} />
 
                   { /* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */ }
-                  <button id="cancel-button" type="button" tabIndex={'0'} className="btn btn-secondary" onClick={() => setCalculate(this.props, true)}>Cancel</button>
+                  <button id="cancel-button" tabIndex={'0'} type="button" className="btn btn-secondary" onKeyPress={(event) => { if (event.charCode === 13) { setCalculate(this.props, true); } }} onClick={() => setCalculate(this.props, true)}>Cancel</button>
                   <button type="submit" tabIndex={'0'} className="btn btn-primary" disabled={(!appState.data.isCalculated && pristine) || appState.data.isSubmitting}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
+
                 </div>
               </div>
             </div>
@@ -1307,4 +1314,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Endorsements', enableReinitialize: true, keepDirtyOnReinitialize: true })(Endorsements));
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Endorsements', enableReinitialize: true })(Endorsements));

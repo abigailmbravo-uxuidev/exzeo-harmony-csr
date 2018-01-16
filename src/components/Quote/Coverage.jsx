@@ -191,7 +191,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
     ...props.appState.data,
     submitting: true
   });
-  submitData.effectiveDate = momentTZ.tz(momentTZ.utc(submitData.effectiveDate).format('YYYY-MM-DD'), props.zipCodeSettings.timezone).format();
+  submitData.effectiveDate = momentTZ.tz(momentTZ.utc(submitData.effectiveDate).format('YYYY-MM-DD'), props.zipCodeSettings.timezone).utc().format();
 
   submitData.agencyCode = String(data.agencyCode);
   submitData.agentCode = String(data.agentCode);
@@ -420,7 +420,7 @@ export class Coverage extends Component {
                   <h3>Produced By</h3>
                   <div className="flex-parent produced-by-wrapper">
                     <div className="flex-child effectiveDate">
-                      <DateField validations={['date']} label={'Effective Date'} name={'effectiveDate'} min={zipCodeSettings ? zipCodeSettings.minEffectiveDate : null} max={zipCodeSettings ? zipCodeSettings.maxEffectiveDate : null} />
+                      <DateField validations={['required', 'date']} label={'Effective Date'} name={'effectiveDate'} />
                     </div>
                     <div className="flex-child agencyCode">
                       <SelectField
