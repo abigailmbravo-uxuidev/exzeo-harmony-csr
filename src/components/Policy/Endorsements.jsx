@@ -626,7 +626,7 @@ export class Endorsements extends React.Component {
         {this.props.appState.data.isSubmitting && <Loader />}
         <Form
           id="Endorsements" className={'content-wrapper'} onKeyPress={(e) => {
-            if (e.key === 'Enter') e.preventDefault();
+            if (e.key === 'Enter' && e.target.type !== 'submit') e.preventDefault();
           }} onSubmit={appState.data.isCalculated ? handleSubmit(save) : handleSubmit(calculate)}
         >
 
@@ -1248,8 +1248,9 @@ export class Endorsements extends React.Component {
                   <DisplayField label={'New Annual Premium'} name={'newAnnualPremium'} />
 
                   { /* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */ }
-                  <button id="cancel-button" type="button" tabIndex={'0'} className="btn btn-secondary" onClick={() => setCalculate(this.props, true)}>Cancel</button>
+                  <button id="cancel-button" tabIndex={'0'} type="button" className="btn btn-secondary" onKeyPress={(event) => { if (event.charCode === 13) { setCalculate(this.props, true); } }} onClick={() => setCalculate(this.props, true)}>Cancel</button>
                   <button type="submit" tabIndex={'0'} className="btn btn-primary" disabled={(!appState.data.isCalculated && pristine) || appState.data.isSubmitting}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
+
                 </div>
               </div>
             </div>
