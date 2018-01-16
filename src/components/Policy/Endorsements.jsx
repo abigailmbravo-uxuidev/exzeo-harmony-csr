@@ -88,6 +88,7 @@ export const setEndorsementDate = (effectiveDate, endPolicyDate) => {
 
 export const handleInitialize = (state) => {
   const policy = state.service.latestPolicy || {};
+  const rating = state.service.getRate || {};
   const questions = state.questions || [];
   const values = {};
   // values.agencyCode = '20000'; // _.get(policy, 'agencyCode');
@@ -193,7 +194,9 @@ export const handleInitialize = (state) => {
   values.internalPressureDesignNew = values.internalPressureDesign;
   values.windBorneDebrisRegion = _.get(policy, 'property.windMitigation.windBorneDebrisRegion');
   values.windBorneDebrisRegionNew = values.windBorneDebrisRegion;
-  values.windMitFactor = _.get(policy, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
+  const windMitigationDiscount = _.get(policy, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
+  const updatedRatingWindMitDiscount = _.get(rating, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
+  values.windMitFactor = updatedRatingWindMitDiscount || windMitigationDiscount;
   values.windMitFactorNew = values.windMitFactor;
 // Home/Location Bottom Left
   values.yearBuilt = _.get(policy, 'property.yearBuilt');
@@ -209,11 +212,11 @@ export const handleInitialize = (state) => {
   values.familyUnits = _.get(policy, 'property.familyUnits');
   values.familyUnitsNew = values.familyUnits;
 // Home/Location Bottom Right
-  values.distanceToTidalWater = _.get(policy, 'property.distanceToTidalWater');
+  values.distanceToTidalWater = Number(_.get(policy, 'property.distanceToTidalWater')).toLocaleString();
   values.distanceToTidalWaterNew = values.distanceToTidalWater;
-  values.distanceToFireHydrant = _.get(policy, 'property.distanceToFireHydrant');
+  values.distanceToFireHydrant = Number(_.get(policy, 'property.distanceToFireHydrant')).toLocaleString();
   values.distanceToFireHydrantNew = values.distanceToFireHydrant;
-  values.distanceToFireStation = _.get(policy, 'property.distanceToFireStation');
+  values.distanceToFireStation = Number(_.get(policy, 'property.distanceToFireStation')).toLocaleString();
   values.distanceToFireStationNew = values.distanceToFireStation;
   values.residenceType = _.get(policy, 'property.residenceType');
   values.residenceTypeNew = values.residenceType;
@@ -300,7 +303,7 @@ export const updateDependencies = (event, field, dependency, props) => {
 
 export const generateModel = (data, policyObject, props) => {
   const policy = policyObject;
-  const endorseDate = moment.tz(moment.utc(data.endorsementDateNew).format('YYYY-MM-DD'), props.zipcodeSettings.timezone).format();
+  const endorseDate = moment.tz(moment.utc(data.endorsementDateNew).format('YYYY-MM-DD'), props.zipcodeSettings.timezone).utc().format();
   const sinkholeAmount = _.get(policy, 'deductibles.sinkhole.amount') || 10;
 
   policy.transactionType = 'Endorsement';
@@ -565,6 +568,7 @@ export class Endorsements extends React.Component {
       nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', getRate.endorsementAmount || 0));
       nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', getRate.newCurrentPremium || ''));
       nextProps.dispatch(change('Endorsements', 'newAnnualPremium', getRate.newAnnualPremium || ''));
+      nextProps.dispatch(change('Endorsements', 'windMitFactorNew', _.get(getRate, 'worksheet.elements.windMitigationFactors.windMitigationDiscount')));
     }
     if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
