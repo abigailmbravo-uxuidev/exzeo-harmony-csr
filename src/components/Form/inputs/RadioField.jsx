@@ -27,13 +27,19 @@ export const RadioInput = ({
     disabled ? 'disabled' : '',
   );
 
-  const labelStyles = classNames('group-label', { 'label-segmented': segmented }, { 'disabled': disabled });
+  const labelStyles = classNames('group-label', { 'label-segmented': segmented }, { disabled });
 
   const answerWrapperStyles = classNames('segmented-answer-wrapper', { error: touched && error });
 
   const Hint = hint && (<FieldHint name={name} hint={hint} />);
 
   const DisplayField = displayValue && (<input type="text" value={displayValue} readOnly />);
+
+  const onKeyPress = (event, answer) => {
+    if (event.charCode === 13) {
+      onChange(answer);
+    }
+  };
 
   return (
     <div className={formGroupStyles} role="group">
@@ -47,8 +53,10 @@ export const RadioInput = ({
           <RadioOption
             answer={answer}
             key={index}
+            tabIndex={'0'}
             size={answers.length}
             onChange={onChange}
+            onKeyPress={onKeyPress}
             name={name}
             segmented={segmented}
             disabled={disabled}

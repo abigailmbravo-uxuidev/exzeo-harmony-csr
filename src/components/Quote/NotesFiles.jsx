@@ -41,7 +41,7 @@ export const NoteList = (props) => {
   const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
   const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
   const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
-  const formatNote = note => note.replace(/\r|\n/g, '<br>');
+  const formatNote = note => note ? note.replace(/\r|\n/g, '<br>') : '';
   const attachmentUrl = attachments => (
     <span>
       { attachments.map((attachment, i) =>
@@ -101,22 +101,22 @@ export class NotesFiles extends Component {
         submitting: true
       });
       const steps = [
-    { name: 'hasUserEnteredData', data: { answer: 'No' } },
-    { name: 'moveTo', data: { key: 'notes' } }
+        { name: 'hasUserEnteredData', data: { answer: 'No' } },
+        { name: 'moveTo', data: { key: 'notes' } }
       ];
       const workflowId = this.props.appState.instanceId;
 
       this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
-    .then(() => {
-      if (this.props.quoteData && this.props.quoteData._id) {
-        this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
-      }
+      .then(() => {
+        if (this.props.quoteData && this.props.quoteData._id) {
+          this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
+        }
 
-      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
-        ...this.props.appState.data,
-        selectedLink: 'notes'
+        this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+          ...this.props.appState.data,
+          selectedLink: 'notes'
+        });
       });
-    });
     }
   }
 

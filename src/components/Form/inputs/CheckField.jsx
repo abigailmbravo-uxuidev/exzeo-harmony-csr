@@ -30,11 +30,17 @@ export const CheckInput = ({
 
   const Hint = hint && (<FieldHint name={name} hint={hint} />);
 
-  const Switch = isSwitch && (<div className="switch-div" />);
+  const onKeyPress = (event, answer) => {
+    if (event.charCode === 13) {
+      onChange(answer);
+    }
+  };
+
+  const Switch = isSwitch && (<div className="switch-div" tabIndex={'0'} onKeyPress={event => onKeyPress(event, !value)} />);
 
   return (
     <div className={formGroupStyles} >
-      <label htmlFor={name} onClick={() => onChange(!value)}>
+      <label htmlFor={name} onClick={() => onChange(!value)} tabIndex={'0'} onKeyPress={event => onKeyPress(event, !value)}>
         {label}{Hint}
         <input
           {...input}

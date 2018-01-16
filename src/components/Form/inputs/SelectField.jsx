@@ -24,11 +24,11 @@ export const SelectInput = ({
       {answers && answers.length >= 0 ? (
         <select
           className={Error ? 'error' : ''}
+          tabIndex={'0'}
           value={value}
           name={name}
           disabled={disabled || isDisabled}
           onChange={onChange}
-          aria-valuetext={value}
         >
           <option aria-label={'Please select...'} disabled value={''}>Please select...</option>
           {answers.map((answer, index) => (
