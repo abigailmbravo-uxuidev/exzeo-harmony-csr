@@ -308,6 +308,9 @@ const quoteData = {
 describe('Testing SearchBar component', () => {
   it('should test connected app', () => {
     const initialState = {
+      service: {
+        agencies: []
+      },
       cg: {
         bb: {
           data: {

@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
+import localStorage from 'localStorage';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
@@ -99,10 +100,10 @@ export const SearchResults = (props) => {
                   <span className="effctive-date">{moment.utc(quote.effectiveDate).format('MM/DD/YYYY')}</span>
                   <span className="started-on">{moment.utc(quote.createdAt).format('MM/DD/YYYY')}</span>
                   <span className="premium">$ {
-                      quote.rating
-                        ? quote.rating.totalPremium
-                        : '-'
-                    }</span>
+                    quote.rating
+                      ? quote.rating.totalPremium
+                      : '-'
+                  }</span>
                 </a>
               </li>
             </ul>
@@ -159,10 +160,10 @@ export const SearchResults = (props) => {
                 <a id={policy.policyNumber + policy.property.physicalAddress.address1} className={`${policy.policyNumber + policy.property.physicalAddress.address1} row`} aria-label={policy.policyNumber + policy.property.physicalAddress.address1} value={policy.policyNumber + policy.property.physicalAddress.address1} onClick={() => props.handleNewTab(policy, props)} tabIndex="-1">
                   <span className="quote-no">{policy.policyNumber}</span>
                   <span className="property-address">{
-                      `${policy.property.physicalAddress.address1}
+                    `${policy.property.physicalAddress.address1}
                         ${policy.property.physicalAddress.city}, ${policy.property.physicalAddress.state}
                         ${policy.property.physicalAddress.zip}`
-                    }</span>
+                  }</span>
                   <span className="quote-state">{policy.status}</span>
                   <span className="effctive-date">{moment.utc(policy.effectiveDate).format('MM/DD/YYYY')}</span>
                   {/* <span
@@ -201,9 +202,9 @@ export const SearchResults = (props) => {
 
                 <p className="contact-address">
                   {agency.physicalAddress.address1},&nbsp;
-                {agency.physicalAddress.address2}{agency.physicalAddress.address2 ? ', ' : ' ' }
+                  {agency.physicalAddress.address2}{agency.physicalAddress.address2 ? ', ' : ' ' }
                   {agency.physicalAddress.city},&nbsp;
-                {agency.physicalAddress.state}&nbsp;
+                  {agency.physicalAddress.state}&nbsp;
                   {agency.physicalAddress.zip}
                   {agency.status ? <small><label>STATUS:&nbsp;</label>{agency.status}</small> : null}
                   {agency.tier ? <small><label>TIER:&nbsp;</label>{agency.tier}</small> : null}
