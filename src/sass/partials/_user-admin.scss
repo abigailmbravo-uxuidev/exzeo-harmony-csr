@@ -115,16 +115,26 @@
             p {
               margin-bottom: 0;
               color: $warm-gray-10;
+
+              &.contact-address {
+                  small {
+                      label {
+                          font-size: $font-size-xs;
+                          margin: 0 0 0 $padding;
+                          font-weight: $font-weight-bold;
+                      }
+                  }
+              }
             }
 
             .additional-contacts {
               display: flex;
               flex-wrap: wrap;
-              margin-top: 1rem;
+              margin-top: $padding;
               border-top: 1px dotted $warm-gray-01;
 
               ul {
-                margin: 1rem 0 0;
+                margin: $padding 0 0;
                 padding: 0;
                 list-style: none;
 
@@ -141,6 +151,10 @@
                     display: flex;
                     align-items: center;
                     margin-right: $padding*2;
+
+                    .contact-divider {
+                        margin: 0 ($padding*2) 0 0;
+                    }
 
                     small {
                       margin-right: $padding;
