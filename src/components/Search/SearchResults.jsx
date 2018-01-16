@@ -251,86 +251,59 @@ export const SearchResults = (props) => {
   if (searchData && searchData.searchType === 'agent') {
     const agentResults = props.agents ? props.agents : [];
 
-    return (<div className="agent-list">
+    return (<div className="user-list agent-list">
       {
-        agentResults && agentResults.map((agent, index) => <div className="card" key={index}>
-          <div className="icon-name">
-            <i className="card-icon fa fa-user-circle" />
+        agentResults && agentResults.map((agent, index) => <div className="agency agent contact card" key={index}>
+            <div className="contact-title">
+              <i className="fa fa-address-card margin bottom" />
+                {agent.agentOfRecord ? <small><i className="card-icon fa fa-bookmark" /><label>AOR</label></small> : null }
+                {agent.appointed ? <small><i className="card-icon fa fa-certificate" /><label>Appointed</label></small> : null }
+            </div>
+            <div className="contact-details">
             <div className="card-name">
-              <p>
-                {agent.firstName}
-                {agent.lastName}
-                {agent.agentCode}
-                {agent.mailingAddress.address1}
-                {agent.mailingAddress.address2}
-                {agent.mailingAddress.city}
-                {agent.mailingAddress.state}
+              <h4 className="agent"><span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{agent.firstName} {agent.lastName}</span> | <span className="agent-license">{agent.licenseNumber}</span></h4>
+              <p className="contact-address">
+                {agent.mailingAddress.address1},&nbsp;
+                {agent.mailingAddress.address2}{agent.mailingAddress.address2 ? ', ' : ' ' }
+                {agent.mailingAddress.city},&nbsp;
+                {agent.mailingAddress.state}&nbsp;
                 {agent.mailingAddress.zip}
-                {agent.licenseNumber}
-                {agent.primaryPhoneNumber}
-                {agent.secondaryPhoneNumber}
-                {agent.faxNumber}
-                {agent.emailAddress}
-                {agent.customerServiceEmailAddress}
-                {agent.status}
-                {agent.appointed ? <i className="card-icon fa fa-user-circle" /> : null }
-                {agent.agentOfRecord ? <i className="card-icon fa fa-user-circle" /> : null }
+                {agent.status ? <small><label>STATUS:&nbsp;</label>{agent.status}</small> : null}
               </p>
+              <div className="additional-contacts">
+                <ul>
+                  <li>
+                    <div className="contact-methods">
+                      {agent.primaryPhoneNumber ?
+                      <p className="phone">
+                        <i className="fa fa-phone-square" />
+                        <a href={`tel:${agent.primaryPhoneNumber}`}>{normalizePhone(agent.primaryPhoneNumber)}</a>
+                      </p> : null }
+                      {agent.secondaryPhoneNumber?
+                      <p className="phone">
+                        <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
+                        <a href={`tel:${agent.secondaryPhoneNumber}`}>{normalizePhone(agent.secondaryPhoneNumber)}</a>
+                      </p> : null }
+                      {agent.faxNumber ?
+                      <p className="fax">
+                        <i className="fa fa-fax" />
+                        <a href={`tel:${agent.faxNumber}`}>{normalizePhone(agent.faxNumber)}</a>
+                      </p> : null }
+                      {agent.emailAddress ?
+                      <p>
+                        <i className="fa fa-envelope" />
+                        <a href={`mailto:${agent.emailAddress}`}>{agent.emailAddress}</a>
+                      </p> : null }
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>)
       }
     </div>);
   }
-
-  // TODO RESULT CARD AND ADD CARD EXAMPLES FOR AGENCY AND USER ADMIN ONLY
-
-
-  return (
-    <div className="user-list">
-      <div className="agency contact card" >
-        <div className="contact-title">
-              <i className="fa fa-address-book" />
-              <label>Agency</label>
-            </div>
-        <div className="contact-details">
-              <h4 className="agency"><span className="agency-code">16666</span> - <span className="agency-display-name">TYPTAP MANAGEMENT COMPANY</span> | <span className="agency-legal-name">TYPTAP MANAGEMENT COMPANY</span></h4>
-              <p>3001 S.E. MARICAMP ROAD, OCALA, FL 34471</p>
-              <div className="additional-contacts">
-                <ul>
-                  <li>
-                    <div>
-                      <h5>WALLY WAGONER</h5>
-                      <span>Contact</span>
-                    </div>
-                    <div className="contact-methods">
-                      <p className="phone">
-                        <i className="fa fa-phone-square" />
-                        <a href="tel:3525099008">(352) 509-9008</a>
-                      </p>
-                      <p className="phone">
-                        <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
-                        <a href="tel:8442897968">(844) 289-7968</a>
-                      </p>
-                      <p className="fax">
-                        <i className="fa fa-fax" />
-                        <a href="tel:3525334073">(352) 533-4073</a>
-                      </p>
-                      <p>
-                        <i className="fa fa-envelope" />
-                        <a href="mailto:test@typtap.com">test@typtap.com</a>
-                      </p>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-      </div>
-      <button className="btn btn-primary btn-sm agency"><i className="fa fa-plus" />Agency</button>
-    </div>
-  );
-
-
   return <span />;
 };
 

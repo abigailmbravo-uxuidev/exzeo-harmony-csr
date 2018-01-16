@@ -91,6 +91,34 @@
               text-align: center;
               font-size: $font-size-sm;
             }
+
+            small {
+                display: flex;
+                flex-direction: column;
+
+                i {
+                    font-size: $font-size-sm;
+                }
+                label {
+                    font-size: $font-size-xs;
+                }
+            }
+          }
+
+          &.agent {
+              .contact-title {
+                  i {
+                      margin-bottom: $padding*.75;
+                  }
+                  small {
+                      i {
+                          margin: 0;
+                      }
+                      label {
+                          margin-bottom: $padding/4;
+                      }
+                  }
+              }
           }
 
           .contact-details {
@@ -101,12 +129,14 @@
               margin-bottom: 0;
               color: $warm-gray-08;
 
-              &.agency {
+              &.agency, &.agent {
                   font-weight: $font-weight-normal;
 
-                  .agency-display-name, .agency-code {
+                  .agency-display-name, .agent-name  {
                       font-weight: $font-weight-bold;
                   }
+
+                  .agency-code {}
 
                   .agency-legal-name {}
               }
