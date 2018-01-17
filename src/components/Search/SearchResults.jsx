@@ -188,7 +188,8 @@ export const SearchResults = (props) => {
 
     return (<div className="user-list agency-list">
       {
-        agencyResults && agencyResults.map((agency, index) => <a id={agency.agencyCode} onClick={() => props.handleNewTab(agency, props)} tabIndex="-1">
+        agencyResults && agencyResults.map((agency, index) => <div className="card-wrapper">
+          <span className="fa fa-chevron-circle-right" id={agency.agencyCode} onClick={() => props.handleNewTab(agency, props)} tabIndex="-1"></span>
           <div className="agency contact card" key={index}>
 
             <div className="contact-title">
@@ -250,7 +251,7 @@ export const SearchResults = (props) => {
               </div>
             </div>
           </div>
-        </a>)
+        </div>)
       }
     </div>);
   }
