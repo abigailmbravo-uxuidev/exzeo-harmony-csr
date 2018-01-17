@@ -197,7 +197,7 @@ export const handleInitialize = (state) => {
   const windMitigationDiscount = _.get(policy, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
   const updatedRatingWindMitDiscount = _.get(rating, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
   values.windMitFactor = windMitigationDiscount;
-  values.windMitFactorNew = String(updatedRatingWindMitDiscount) !== 'undefined' ? updatedRatingWindMitDiscount : windMitigationDiscount;
+  values.windMitFactorNew = (updatedRatingWindMitDiscount === undefined || updatedRatingWindMitDiscount === null) ? windMitigationDiscount : updatedRatingWindMitDiscount;
   // Home/Location Bottom Left
   values.yearBuilt = _.get(policy, 'property.yearBuilt');
   values.yearBuiltNew = values.yearBuilt;
