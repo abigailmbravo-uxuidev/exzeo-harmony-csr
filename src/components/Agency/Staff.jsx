@@ -27,7 +27,7 @@ export class Staff extends Component {
       localStorage.setItem('isNewTab', false);
       const agencyCode = localStorage.getItem('agencyCode');
       this.props.actions.serviceActions.getAgency('TTIC', 'FL', agencyCode);
-      this.props.actions.serviceActions.getAgentsByAgency('TTIC', 'FL', 20000);
+      this.props.actions.serviceActions.getAgentsByAgency('TTIC', 'FL', agencyCode);
     }
   }
 
