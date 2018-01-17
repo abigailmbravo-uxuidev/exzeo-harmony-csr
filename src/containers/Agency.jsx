@@ -12,7 +12,7 @@ import * as serviceActions from '../actions/serviceActions';
 export const Agency = props => (
   <div className="app-wrapper csr policy">
     {/* TODO: dynamically add policy # to title*/}
-    <Helmet><title>{'Harmony - CSR Portal'}</title></Helmet>
+    <Helmet><title>{props.agency && props.agency.agencyCode ? `A: ${props.agency.agencyCode}` : 'Harmony - CSR Portal'}</title></Helmet>
     <AgencyHeader />
     <AgencyDetailHeader />
     <main role="document">
