@@ -53,6 +53,7 @@ describe('Testing Coverage component', () => {
           getUIQuestions() {}
         },
         serviceActions: {
+          getCancelOptions() { return Promise.resolve(); },
           getBillingOptions() { return Promise.resolve(); },
           getSummaryLedger() { return Promise.resolve(); }
         },
@@ -76,7 +77,28 @@ describe('Testing Coverage component', () => {
 
     const wrapper2 = shallow(<Coverage store={store} {...props} />);
 
-    wrapper2.instance().componentWillReceiveProps({ policy: { policyNumber: '324324', rating: { worksheet: { fees: {} } } } });
+    wrapper2.instance().componentWillReceiveProps({ actions: {
+      policyStateActions: {
+        updatePolicy() {}
+      },
+      appStateActions: {
+        setAppState() { }
+      },
+      cgActions: {
+        batchCompleteTask() { return Promise.resolve({ payload: [{ data: { policy: { } } }] }); },
+        startWorkflow() { return Promise.resolve({ payload: [{ data: { policy: { } } }] }); }
+      },
+      questionsActions: {
+        getUIQuestions() {}
+      },
+      serviceActions: {
+        getCancelOptions() { return Promise.resolve(); },
+        getBillingOptions() { return Promise.resolve(); },
+        getSummaryLedger() { return Promise.resolve(); }
+      },
+      errorActions: { dispatchClearAppError() { } }
+    },
+    policy: { policyNumber: '324324', rating: { worksheet: { fees: {} } } } });
 
     wrapper2.instance().componentDidMount();
   });
