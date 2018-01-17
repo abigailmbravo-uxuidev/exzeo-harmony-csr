@@ -55,13 +55,13 @@ export const getQuestionName = (name, questions) => _.get(_.find(questions, { na
 
 export const getNewPolicyNumber = (state) => {
   const taskData = (state.cg && state.appState && state.cg.endorsePolicyModelSave)
-      ? state.cg.endorsePolicyModelSave.data
-      : null;
+    ? state.cg.endorsePolicyModelSave.data
+    : null;
   if (!taskData || !taskData.model || !taskData.model.variables) { return null; }
 
   const policy = _.find(taskData.model.variables, { name: 'retrievePolicy' })
-      ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0]
-      : null;
+    ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0]
+    : null;
   return policy ? policy.policyNumber : null;
 };
 
@@ -103,7 +103,7 @@ export const handleInitialize = (state) => {
   const personalProperty = _.get(policy, 'coverageLimits.personalProperty.amount');
   const hurricane = _.get(policy, 'deductibles.hurricane.amount');
 
-// Coverage Top Left
+  // Coverage Top Left
   values.endorsementDateNew = setEndorsementDate(_.get(policy, 'effectiveDate'), _.get(policy, 'endDate'));
   values.dwellingAmount = _.get(policy, 'coverageLimits.dwelling.amount');
   values.dwellingAmountNew = _.get(policy, 'coverageLimits.dwelling.amount');
@@ -133,7 +133,7 @@ export const handleInitialize = (state) => {
   values.calculatedHurricaneNew = values.calculatedHurricane;
   values.sinkholePerilCoverage = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer') ? `10% of ${getQuestionName('dwellingAmount', questions)}` : 'Coverage Excluded';
   values.sinkholePerilCoverageNew = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer');
-// Coverage Top Right
+  // Coverage Top Right
   values.personalPropertyReplacementCostCoverage = _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer') ? 'Yes' : 'No';
   values.personalPropertyReplacementCostCoverageNew = _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer');
   values.ordinanceOrLaw = `${_.get(policy, 'coverageLimits.ordinanceOrLaw.amount')}%`;
@@ -167,7 +167,7 @@ export const handleInitialize = (state) => {
   values.billPlan = _.get(policy, 'billPlan');
   values.billPlanNew = values.billPlan;
 
-// Coverage Mid Left
+  // Coverage Mid Left
   values.roofCovering = _.get(policy, 'property.windMitigation.roofCovering');
   values.roofCoveringNew = values.roofCovering;
   values.roofDeckAttachment = _.get(policy, 'property.windMitigation.roofDeckAttachment');
@@ -183,7 +183,7 @@ export const handleInitialize = (state) => {
   values.electronicDelivery = _.get(policy, 'policyHolders[0].electronicDelivery') ? 'Yes' : 'No';
   values.electronicDeliveryNew = !!_.get(policy, 'policyHolders[0].electronicDelivery');
 
-// Coverage Mid Right
+  // Coverage Mid Right
   values.floridaBuildingCodeWindSpeed = _.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeed');
   values.floridaBuildingCodeWindSpeedNew = values.floridaBuildingCodeWindSpeed;
   values.floridaBuildingCodeWindSpeedDesign = _.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign');
@@ -196,9 +196,9 @@ export const handleInitialize = (state) => {
   values.windBorneDebrisRegionNew = values.windBorneDebrisRegion;
   const windMitigationDiscount = _.get(policy, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
   const updatedRatingWindMitDiscount = _.get(rating, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
-  values.windMitFactor = updatedRatingWindMitDiscount || windMitigationDiscount;
-  values.windMitFactorNew = values.windMitFactor;
-// Home/Location Bottom Left
+  values.windMitFactor = windMitigationDiscount;
+  values.windMitFactorNew = String(updatedRatingWindMitDiscount) !== 'undefined' ? updatedRatingWindMitDiscount : windMitigationDiscount;
+  // Home/Location Bottom Left
   values.yearBuilt = _.get(policy, 'property.yearBuilt');
   values.yearBuiltNew = values.yearBuilt;
   values.constructionType = _.get(policy, 'property.constructionType');
@@ -211,7 +211,7 @@ export const handleInitialize = (state) => {
   values.buildingCodeEffectivenessGradingNew = _.get(policy, 'property.buildingCodeEffectivenessGrading');
   values.familyUnits = _.get(policy, 'property.familyUnits');
   values.familyUnitsNew = values.familyUnits;
-// Home/Location Bottom Right
+  // Home/Location Bottom Right
   values.distanceToTidalWater = Number(_.get(policy, 'property.distanceToTidalWater')).toLocaleString();
   values.distanceToTidalWaterNew = values.distanceToTidalWater;
   values.distanceToFireHydrant = Number(_.get(policy, 'property.distanceToFireHydrant')).toLocaleString();
@@ -225,7 +225,7 @@ export const handleInitialize = (state) => {
   values.floodZone = _.get(policy, 'property.floodZone');
   values.floodZoneNew = values.floodZone;
 
-// Policyholder 1
+  // Policyholder 1
   values.pH1email = _.get(policy, 'policyHolders[0].emailAddress');
   values.pH1emailNew = values.pH1email;
   values.pH1FirstName = _.get(policy, 'policyHolders[0].firstName');
@@ -236,7 +236,7 @@ export const handleInitialize = (state) => {
   values.pH1secondaryPhone = normalizePhone(_.get(policy, 'policyHolders[0].secondaryPhoneNumber') || '');
   values.pH1secondaryPhoneNew = values.pH1secondaryPhone;
 
-// Policyholder 2
+  // Policyholder 2
   values.pH2email = _.get(policy, 'policyHolders[1].emailAddress');
   values.pH2emailNew = values.pH2email;
   values.pH2FirstName = _.get(policy, 'policyHolders[1].firstName');
@@ -258,7 +258,7 @@ export const handleInitialize = (state) => {
   values.zip = _.get(policy, 'policyHolderMailingAddress.zip');
   values.zipNew = values.zip;
 
-// Property
+  // Property
   values.propertyAddress1 = _.get(policy, 'property.physicalAddress.address1');
   values.propertyAddress1New = values.propertyAddress1;
   values.propertyAddress2 = _.get(policy, 'property.physicalAddress.address2');
@@ -546,11 +546,10 @@ export const save = (data, dispatch, props) => {
 };
 
 
-const amountFormatter = cell => cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '';
+const amountFormatter = cell => (cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '');
 const dateFormatter = cell => `${cell.substring(0, 10)}`;
 
 export class Endorsements extends React.Component {
-
   componentDidMount() {
     this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
     if (this.props.appState && this.props.appState.instanceId) {
@@ -1314,4 +1313,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Endorsements', enableReinitialize: true })(Endorsements));
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Endorsements', enableReinitialize: true, keepDirtyOnReinitialize: true })(Endorsements));
