@@ -43,6 +43,7 @@ describe('Testing Cancel component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      reset() {},
       userProfile: {},
       actions: {
         cgActions: {
