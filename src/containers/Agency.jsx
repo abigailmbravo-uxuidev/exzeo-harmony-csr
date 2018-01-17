@@ -7,6 +7,7 @@ import AgencyHeader from '../components/Agency/AgencyHeader';
 import AgencySideNav from '../components/Agency/AgencySideNav';
 import AgencyDetailHeader from '../components/Agency/DetailHeader';
 import Loader from '../components/Common/Loader';
+import * as appStateActions from '../actions/appStateActions';
 import * as serviceActions from '../actions/serviceActions';
 
 export const Agency = props => (
@@ -16,7 +17,7 @@ export const Agency = props => (
     <AgencyHeader />
     <AgencyDetailHeader />
     <main role="document">
-      {/* props.appState.data.submitting && <Loader />*/}
+      { !props.agency && <Loader />}
       <aside className="content-panel-left">
         <AgencySideNav />
       </aside>
@@ -41,7 +42,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    serviceActions: bindActionCreators(serviceActions, dispatch)
+    serviceActions: bindActionCreators(serviceActions, dispatch),
+    appStateActions: bindActionCreators(appStateActions, dispatch)
   }
 });
 

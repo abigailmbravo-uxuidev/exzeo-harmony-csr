@@ -54,11 +54,22 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
   }
 
   if (searchType === 'agency') {
-    props.actions.serviceActions.getAgencies('TTIC', 'FL', agencyAgentData.displayName, agencyAgentData.agencyCode, agencyAgentData.address, agencyAgentData.licNumber, agencyAgentData.fein, agencyAgentData.phone);
+    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, agentSubmitting: true });
+
+    props.actions.serviceActions.getAgencies('TTIC', 'FL', agencyAgentData.displayName,
+    agencyAgentData.agencyCode, agencyAgentData.address, agencyAgentData.licNumber,
+    agencyAgentData.fein, agencyAgentData.phone).then(() => {
+      props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, agentSubmitting: false });
+    });
   }
 
   if (searchType === 'agent') {
-    props.actions.serviceActions.getAgents('TTIC', 'FL', agencyAgentData.firstName, agencyAgentData.lastName, agencyAgentData.agentCode, agencyAgentData.address, agencyAgentData.licNumber);
+    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, agentSubmitting: true });
+
+    props.actions.serviceActions.getAgents('TTIC', 'FL', agencyAgentData.firstName, agencyAgentData.lastName,
+     agencyAgentData.agentCode, agencyAgentData.address, agencyAgentData.licNumber).then(() => {
+       props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, agentSubmitting: false });
+     });
   }
 
   if (searchType !== 'agency' && searchType !== 'agent') {

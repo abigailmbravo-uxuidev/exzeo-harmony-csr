@@ -84,7 +84,7 @@ export const getAgents = (companyCode, state, firstName, lastName, agentCode, ad
     path: `v1/agents/${companyCode}/${state}?firstName=${firstName}&lastName=${lastName}&agentCode=${agentCode}&mailingAddress=${address}&licenseNumber=${licNumber}`
   });
 
-  return axios(axiosConfig).then((response) => {
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
     const data = { agents: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
@@ -155,7 +155,7 @@ export const getAgencies = (companyCode, state, displayName, agencyCode, address
     path: `v1/agencies/${companyCode}/${state}?displayName=${displayName}&agencyCode=${agencyCode}&mailingAddress=${address}&licenseNumber=${licNumber}&taxIdNumber=${fein}&primaryPhoneNumber=${phone}`
   });
 
-  return axios(axiosConfig).then((response) => {
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
     const result = response.data && response.data.result ? response.data.result.sort() : [];
     const data = { agencies: result };
     return dispatch(batchActions([

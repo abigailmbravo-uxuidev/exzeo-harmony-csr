@@ -9,6 +9,7 @@ import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 import normalizePhone from '../Form/normalizePhone';
+import Loader from '../Common/Loader';
 
 export const SearchResults = (props) => {
   const model = props.tasks[props.appState.modelName] || {};
@@ -187,9 +188,10 @@ export const SearchResults = (props) => {
     const agencyResults = props.agencies ? props.agencies : [];
 
     return (<div className="user-list agency-list">
+      { props.appState.data && props.appState.data.agentSubmitting && <Loader />}
       {
         agencyResults && agencyResults.map((agency, index) => <div className="card-wrapper">
-          <span className="fa fa-chevron-circle-right" id={agency.agencyCode} onClick={() => props.handleNewTab(agency, props)} tabIndex="-1"></span>
+          <span className="fa fa-chevron-circle-right" id={agency.agencyCode} onClick={() => props.handleNewTab(agency, props)} tabIndex="-1" />
           <div className="agency contact card" key={index}>
 
             <div className="contact-title">
@@ -260,6 +262,7 @@ export const SearchResults = (props) => {
     const agentResults = props.agents ? props.agents : [];
 
     return (<div className="user-list agent-list">
+      { props.appState.data && props.appState.data.agentSubmitting && <Loader />}
       {
         agentResults && agentResults.map((agent, index) => <div className="agency agent contact card" key={index}>
           <div className="contact-title">
