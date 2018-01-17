@@ -22,12 +22,12 @@ export class DetailHeader extends Component {
         <section id="agencyDetails" className="agencyDetails">
           <dl>
             <div>
-              <dd>{agency.agencyCode}</dd>
+              <dd className="font-size-base">{agency.agencyCode}</dd>
               <dd>{agency.displayName}</dd>
             </div>
           </dl>
         </section>
-        <section id="agencyDetails" className="agencyDetails">
+        <section id="" className="">
           <dl>
             <div>
               <dd>{agency.status}</dd>
@@ -36,7 +36,7 @@ export class DetailHeader extends Component {
             </div>
           </dl>
         </section>
-        <section id="agencyDetails" className="agencyDetails">
+        <section id="" className="">
           <dl>
             <div>
               <dd>{agency.legalName}</dd>
@@ -49,7 +49,7 @@ export class DetailHeader extends Component {
             </div>
           </dl>
         </section>
-        <section id="agencyDetails" className="agencyDetails">
+        <section id="" className="">
           <dl>
             <div>
               <dd>{agency.mailingAddress.address1}</dd>

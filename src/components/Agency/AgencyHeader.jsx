@@ -5,7 +5,7 @@ const AgencyHeader = () => (
   <header>
     <div role="banner">
       <div className="tab-tag">
-        <span>Agency</span>
+        <span>AGENCY</span>
       </div>
       <a href="/" id="logo" className="logo">
         <img src={logo} alt="Harmony" />
