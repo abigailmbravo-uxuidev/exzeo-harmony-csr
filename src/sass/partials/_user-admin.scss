@@ -63,9 +63,53 @@
   margin-bottom: $padding/2;
   padding: $padding*2;
 
+  &.agency-list {
+      .card-wrapper {
+          position: relative;
+          display: flex;
+          align-items: center;
+          margin-bottom: $padding;
+
+          span.fa-chevron-circle-right {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              right: 0;
+              cursor: pointer;
+              position: absolute;
+              width: 4rem;
+              height: 100%;
+              font-size: $font-size-h2;
+              color: $bright-blue-darken-01;
+              z-index: 11;
+              @include transition(all .2s ease-in-out);
+
+              &:hover {
+                  transform: scale(1.004);
+                  color: $bright-blue-darken-04;
+                  right: -.04rem;
+                  font-size: 1.96rem;
+
+                  ~ .contact.card {
+                      z-index: 2;
+                      transform: scale(1.004);
+                      box-shadow: $card-box-shadow-hover;
+                  }
+              }
+          }
+          .contact.card {
+              flex-grow: 1;
+              flex-shrink: 1;
+              width: 100%;
+              margin-bottom: 0;
+              padding-right: 4rem;
+              @include transition(all .2s ease-in-out);
+          }
+      }
+  }
+
   .card {
     &.agency {
-      //took code from _csr-policy.scss
       &.contact {
         flex-direction: row;
         margin: 0 (-$padding/2) ($padding);
