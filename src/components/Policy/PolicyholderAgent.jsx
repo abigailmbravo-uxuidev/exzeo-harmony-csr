@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -12,7 +11,7 @@ import Footer from '../Common/Footer';
 // turn this into class and use the service runner
 export class PolicyholderAgent extends Component {
 
-  componentDidMount(nextProps) {
+  componentDidMount() {
     const policy = this.props.policy;
     const actions = this.props.actions.serviceActions;
 
@@ -29,11 +28,10 @@ export class PolicyholderAgent extends Component {
     } = this.props.policy;
 
     const { agency, agents, policy } = this.props;
-
     let selectedAgent;
 
     if (agents && agents.length > 0 && policy && policy.agentCode) {
-      selectedAgent = _.find(agents, a => a.agentCode === policy.agentCode);
+      selectedAgent = agents.find(a => a.agentCode === policy.agentCode);
     }
 
     return (
