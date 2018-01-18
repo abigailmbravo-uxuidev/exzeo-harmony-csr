@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -15,27 +14,26 @@ let isLoaded = false;
 // turn this into class and use the service runner
 export class PolicyholderAgent extends Component {
 
-  componentWillReceiveProps(nextProps) {
-    const policy = nextProps.policy;
+  componentDidMount() {
+    const policy = this.props.policy;
     if (policy && policy.companyCode && policy.state && policy.agencyCode && !isLoaded) {
       isLoaded = true;
-      nextProps.actions.serviceActions.getAgents(policy.companyCode, policy.state);
-      nextProps.actions.serviceActions.getAgency(policy.companyCode, policy.state, policy.agencyCode);
+      this.props.actions.serviceActions.getAgents(policy.companyCode, policy.state);
+      this.props.actions.serviceActions.getAgency(policy.companyCode, policy.state, policy.agencyCode);
     }
   }
 
   render() {
     const {
-policyHolders,
-policyHolderMailingAddress
-} = this.props.policy;
+      policyHolders,
+      policyHolderMailingAddress
+    } = this.props.policy;
 
     const { agency, agents, policy } = this.props;
-
     let selectedAgent;
 
     if (agents && agents.length > 0 && policy && policy.agentCode) {
-      selectedAgent = _.find(agents, a => a.agentCode === policy.agentCode);
+      selectedAgent = agents.find(a => a.agentCode === policy.agentCode);
     }
 
     return (

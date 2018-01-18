@@ -403,7 +403,7 @@ export class Coverage extends Component {
   }
 
   render() {
-    const { quoteData, fieldValues, handleSubmit, initialValues, pristine, agents, agencies, questions, zipCodeSettings, dirty } = this.props;
+    const { quoteData, fieldValues, handleSubmit, initialValues, pristine, agents, agencies, questions, dirty } = this.props;
     return (
       <QuoteBaseConnect>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
