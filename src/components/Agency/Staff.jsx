@@ -118,9 +118,10 @@ export class Staff extends Component {
                 </div>
               </div>
             </section>
+            <h3>Agents</h3>
+            <section>
             {
-              agents.length > 0 ? agents.map((agent, index) => (<section>
-                <h3>Agents</h3>
+              agents.length > 0 ? agents.map((agent, index) => (
                 <div className="agency agent contact card" key={index}>
                   <div className="contact-title">
                     <i className="fa fa-address-card margin bottom"/> {
@@ -184,8 +185,8 @@ export class Staff extends Component {
                       </div>
                     </div>
                   </div>
-                </section>)) : null
-            }
+                )) : null
+            }</section>
           </div>
         </div>
       </div>
