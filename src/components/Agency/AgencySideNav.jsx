@@ -26,17 +26,17 @@ const csrLinks = [{
   exact: true
 }, {
   key: 'notes',
-  link: '/policy/notes',
+  link: '/agency/staff',
   label: 'Notes / Files',
   styleName: 'notes disabled',
   exact: true
 }];
 
 
-export const SideNav = (props) => (
-    <nav className="site-nav">
-      <ul>
-        {csrLinks && csrLinks.length > 0 && csrLinks.map((agentLink, index) => (
+export const SideNav = props => (
+  <nav className="site-nav">
+    <ul>
+      {csrLinks && csrLinks.length > 0 && csrLinks.map((agentLink, index) => (
         agentLink.outside ?
           <li key={index}>
             {/* <a className={agentLink.styleName} href={agentLink.link}>*/}
@@ -50,8 +50,8 @@ export const SideNav = (props) => (
             </span>
           </li>
       ))}
-      </ul>
-    </nav>);
+    </ul>
+  </nav>);
 
 // TODO: Needs to be connected to wherever it's gonnna get nav links from
 SideNav.propTypes = {
