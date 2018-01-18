@@ -26,7 +26,7 @@ const csrLinks = [{
   exact: true
 }, {
   key: 'notes',
-  link: '/agency/staff',
+  link: '#',
   label: 'Notes / Files',
   styleName: 'notes disabled',
   exact: true
