@@ -14,7 +14,7 @@ import ClearErrorConnect from '../Error/ClearError';
 import Footer from '../Common/Footer';
 import normalizePhone from '../Form/normalizePhone';
 
-const handleInitialize = state => ({
+export const handleInitialize = state => ({
   agency: state.service.getAgency,
   agents: state.service.getAgentsByAgency
 });
@@ -33,7 +33,6 @@ export class Staff extends Component {
 
   render() {
     const { agency, agents } = this.props;
-    console.log(agents);
     if (!agency) {
       return (<AgencyConnect>
         <ClearErrorConnect />

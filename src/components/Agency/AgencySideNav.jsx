@@ -33,8 +33,7 @@ const csrLinks = [{
 }];
 
 
-export const SideNav = (props) => {
-  return (
+export const SideNav = (props) => (
     <nav className="site-nav">
       <ul>
         {csrLinks && csrLinks.length > 0 && csrLinks.map((agentLink, index) => (
@@ -53,7 +52,6 @@ export const SideNav = (props) => {
       ))}
       </ul>
     </nav>);
-};
 
 // TODO: Needs to be connected to wherever it's gonnna get nav links from
 SideNav.propTypes = {

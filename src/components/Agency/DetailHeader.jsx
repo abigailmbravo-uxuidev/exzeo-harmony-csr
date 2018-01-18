@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
-import _ from 'lodash';
 import { connect } from 'react-redux';
-import moment from 'moment';
-import normalizePhone from '../Form/normalizePhone';
-import normalizeNumbers from '../Form/normalizeNumbers';
+
 import * as serviceActions from '../../actions/serviceActions';
 
 
@@ -13,7 +10,6 @@ export class DetailHeader extends Component {
 
   render() {
     const { agency } = this.props;
-    console.log(agency);
     if (!agency || !agency.agencyCode) {
       return (<div className="detailHeader" />);
     }

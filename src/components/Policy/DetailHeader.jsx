@@ -9,7 +9,7 @@ import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import * as serviceActions from '../../actions/serviceActions';
 import * as policyStateActions from '../../actions/policyStateActions';
-import EditEffectiveDataPopUp from './EditEffectiveDatePopup'
+import EditEffectiveDataPopUp from './EditEffectiveDatePopup';
 import Loader from '../Common/Loader';
 
 export const showEffectiveDatePopUp = (props) => {
@@ -17,7 +17,7 @@ export const showEffectiveDatePopUp = (props) => {
       { ...props.appState.data, showEffectiveDateChangePopUp: true });
 };
 
-export class DetailHeader extends Component { 
+export class DetailHeader extends Component {
 
   componentDidMount() {
     this.props.actions.serviceActions.getEffectiveDateChangeReasons();
