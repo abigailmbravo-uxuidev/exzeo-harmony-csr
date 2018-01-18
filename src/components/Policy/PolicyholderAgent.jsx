@@ -16,10 +16,12 @@ export class PolicyholderAgent extends Component {
 
   componentDidMount() {
     const policy = this.props.policy;
+    const actions = this.props.actions.serviceActions;
+    
     if (policy && policy.companyCode && policy.state && policy.agencyCode && !isLoaded) {
       isLoaded = true;
-      this.props.actions.serviceActions.getAgents(policy.companyCode, policy.state);
-      this.props.actions.serviceActions.getAgency(policy.companyCode, policy.state, policy.agencyCode);
+      actions.getAgents(policy.companyCode, policy.state);
+      actions.getAgency(policy.companyCode, policy.state, policy.agencyCode);
     }
   }
 
