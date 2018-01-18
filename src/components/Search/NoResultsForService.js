@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import * as cgActions from '../../actions/cgActions';
+import * as appStateActions from '../../actions/appStateActions';
 
 export const NoResults = (props) => {
   const model = props.tasks[props.appState.modelName] || {};
   const previousTask = model.data && model.data.previousTask ? model.data.previousTask : {};
   const activeTask = model.data && model.data.activeTask ? model.data.activeTask : {};
-
   /**
   /* Error Message
   */
@@ -25,36 +26,24 @@ export const NoResults = (props) => {
   /**
   /* No Message
   */
-  if (activeTask.name === 'askToSearchAgain') {
-    return (
-      <div className="result-cards">
-        <div className="card">
-          <div className="card-header"><h4><i className="fa fa-frown-o " /> No Results Found</h4></div>
-          <div className="card-block">
-            {
-              (previousTask && previousTask.name === 'searchAddress' ?
-                <p>There are no quotes found matching that search criteria. Please try to search again, or start a new quote.</p>
-              :
-                <p>We&#39;re sorry we couldn&#39;t find any results matching your search parameters. Please
+
+  return (
+    <div className="result-cards">
+      <div className="card">
+        <div className="card-header"><h4><i className="fa fa-frown-o " /> No Results Found</h4></div>
+        <div className="card-block">
+          {
+              (<p>We&#39;re sorry we couldn&#39;t find any results matching your search parameters. Please
                   check your spelling and try a new search. You can also try a
                   less specific search (such as street number and name).</p>
               )
             }
-          </div>
         </div>
       </div>
-    );
-  }
-
-  return <span />;
+    </div>
+  );
 };
 
-NoResults.propTypes = {
-  appState: PropTypes.shape({
-    modelName: PropTypes.string
-  }),
-  tasks: PropTypes.shape()
-};
 
 const mapStateToProps = state => ({
   tasks: state.cg,
