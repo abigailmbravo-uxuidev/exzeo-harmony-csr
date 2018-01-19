@@ -8,6 +8,7 @@
 @import "partials/mixins/_tab-focus";
 @import "partials/mixins/_buttons";
 @import "partials/mixins/_forms";
+@import "partials/utilities/_helper";
 @import "partials/_animations";
 /*Correct and normalize browser rendering*/
 @import "partials/_normalize";
@@ -19,12 +20,14 @@
 @import "partials/_tabs";
 @import "partials/_workflow";
 @import "partials/_notes-files-add";
+@import "partials/_csr-agency";
 @import "partials/_csr-quote";
 @import "partials/_csr-policy";
 @import "partials/_additional-interests";
 @import "partials/_csr-claim";
 @import "partials/_error";
 @import "partials/_dropzone";
+@import "partials/_user-admin";
 @import "https://fonts.googleapis.com/css?family=Roboto:100,300,500"; //base
 //links
 /*------------------------------------------------------------------------------------*/
@@ -562,6 +565,7 @@ ul.list-cards {
         height: 2rem;
         margin: 0;
         font-size: $font-size-h2;
+        color: $bright-blue-darken-04;
       }
 
       .card-name {
@@ -1445,6 +1449,13 @@ ul.list-cards {
       border-bottom: 2px solid $white;
       background: $warm-gray-08;
 
+      a {
+          color: $bright-blue-lighten-02;
+          &:hover {
+              color: $bright-blue;
+          }
+      }
+
       section {
         flex-basis: auto;
         flex-grow: 0;
@@ -1486,6 +1497,7 @@ ul.list-cards {
           max-width: 15rem;
         }
 
+        &.agencyDetails,
         &.policyDetails,
         &.quoteDetails {
           display: flex;
@@ -1505,6 +1517,10 @@ ul.list-cards {
 
               dd {
                 color: $yellow-lighten-06;
+
+                &.font-size-base {
+                    font-size: $font-size-base;
+                }
               }
             }
           }

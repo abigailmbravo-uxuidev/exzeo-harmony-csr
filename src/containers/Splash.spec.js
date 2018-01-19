@@ -492,6 +492,9 @@ describe('Testing Splash component', () => {
 
   it('should test mount', () => {
     const initialState = {
+      service: {
+        agencies: []
+      },
       cg: {
         bb: {
           data: {
