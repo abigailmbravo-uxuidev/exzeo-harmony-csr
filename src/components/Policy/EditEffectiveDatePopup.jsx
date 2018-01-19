@@ -19,7 +19,7 @@ export const reasonAnswers = (reasons) => {
   return reformattedReasons || [];
 };
 
-const handleInitialize = (state) => {
+export const handleInitialize = (state) => {
   const policy = state.service.latestPolicy || {};
 
   return {

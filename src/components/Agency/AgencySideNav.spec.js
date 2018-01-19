@@ -3,16 +3,16 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { Policy, changeEffectiveDate, showEffectiveDatePopUp, hideEffectiveDatePopUp } from './Policy';
+import ConnectedApp, { SideNav } from './AgencySideNav';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 
-describe('Testing Policy component', () => {
+describe('Testing AgencySideNav component', () => {
   it('should test connected app', () => {
     const initialState = {
       service: {
-        latestPolicy: {}
+        agency: {}
       },
       cg: {
         bb: {
@@ -24,49 +24,36 @@ describe('Testing Policy component', () => {
         }
       },
       appState: {
+        data: { activateRedirect: false },
         modelName: 'bb'
       }
     };
     const store = mockStore(initialState);
     const props = {
-      zipCodeSetting: {},
-      policy: {
-        policyNumber: '1234',
-        property: {
-          physicalAddress: {
+      agnecy: {
 
-          }
-        }
       },
       actions: {
-        policyStateActions: {
-          updatePolicy() {}
-        },
         cgActions: {
-          startWorkflow() { return Promise.resolve({ payload: [{ workflowData: { effectiveDateChangeModel: { data: {} }, endorsePolicyModelCalculate: { data: {} } } }] }); },
           batchCompleteTask() { return Promise.resolve(); }
         },
         appStateActions: {
-          setAppState() {}
-        },
-        serviceActions: {
-          getZipcodeSettings() { return Promise.resolve(); },
-          getSummaryLedger() { return Promise.resolve(); }
+          setAppState() { }
         }
       },
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,
       appState: {
+        instanceId: 1,
         data: {
           submitting: false
         }
-      },
-      ...propTypes
+      }
     };
-    const wrapper = shallow(<Policy store={store} {...props} />);
+    const wrapper = shallow(<ConnectedApp store={store} {...props} />);
     expect(wrapper);
-    changeEffectiveDate({}, props.dispatch, props);
-    wrapper.instance().componentDidMount();
+
+    SideNav(props);
   });
 });
