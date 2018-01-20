@@ -15,7 +15,7 @@ export const showEffectiveDatePopUp = (props) => {
       { ...props.appState.data, showEffectiveDateChangePopUp: true });
 };
 
-export class DetailHeader extends Component { 
+export class DetailHeader extends Component {
 
   componentDidMount() {
     this.props.actions.serviceActions.getEffectiveDateChangeReasons();
