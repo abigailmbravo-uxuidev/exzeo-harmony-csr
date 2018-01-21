@@ -32,12 +32,37 @@ export const getNotes = id => (dispatch) => {
     path: `history?number=${id}`
   });
 
-  return axios(axiosConfig).then((response) => {
-    const data = { notes: response.data.result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
+  const docsRequest = runnerSetup({
+    service: 'file-index.services',
+    method: 'GET',
+    path: `v1/fileindex/${pid}`
+  });
+
+  return Promise.all([
+    axios(notesRequest),
+    axios(docsRequest)
+  ])
+  .then(axios.spread((notesResult, docsResult) => {
+    const notes = notesResult.data.result;
+    docsResult.data.result.forEach(doc => {
+      const newNote = { 
+        '_id': doc.envelopeId ? doc.envelopeId : doc.fileUrl,
+        contactType: 'system',
+        createdBy: {userName: 'System', userId: doc.createdBy},
+        createdDate:  moment.unix(doc.createdDate),
+        attachments: [
+          {
+            fileType: 'System',
+            fileName: doc.fileName,
+            fileUrl: doc.fileUrl
+          }
+        ]
+      };
+      notes.push(newNote)
+    });
+
+    return dispatch(serviceRequest({notes}));
+  }))
   .catch((error) => {
     const message = handleError(error);
     return dispatch(batchActions([
@@ -121,9 +146,7 @@ export const searchAgents = (companyCode, state, firstName, lastName, agentCode,
 
 export const clearAgent = () => (dispatch) => {
   const data = { agents: [] };
-  return dispatch(batchActions([
-    serviceRequest(data)
-  ]));
+  return dispatch(serviceRequest(data));
 };
 
 
