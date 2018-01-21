@@ -34,7 +34,7 @@ describe('Service Actions', () => {
       createdBy: {},
       updatedBy: {}
     };
-    const axiosOptions = {
+    const axiosNotesOptions = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -47,17 +47,29 @@ describe('Service Actions', () => {
       }
     };
 
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: [note]
-    });
+    const axiosDocsOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'file-index.services',
+        method: 'GET',
+        path: `v1/fileindex/test`
+      }
+    };
+    
+    mockAdapter
+      .onPost(axiosNotesOptions.url).reply(200, { result: [note] })
+      .onPost(axiosDocsOptions.url).reply(200, { result: [note] })
 
     const initialState = {};
     const store = mockStore(initialState);
-    serviceActions.getNotes(store.dispatch);
 
     return serviceActions.getNotes('test')(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
       });
   });
 
@@ -72,7 +84,7 @@ describe('Service Actions', () => {
       createdBy: {},
       updatedBy: {}
     };
-    const axiosOptions = {
+    const axiosNotesOptions = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -85,9 +97,24 @@ describe('Service Actions', () => {
       }
     };
 
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: [note]
-    });
+    const axiosDocsOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'file-index.services',
+        method: 'GET',
+        path: `v1/fileindex/test`
+      }
+    };
+
+    Promise.all([
+      mockAdapter
+      .onPost(axiosNotesOptions).reply(200, { data: [note]})
+      .onPost(axiosDocsOptions).reply(200, { data: []})
+    ]);
 
     const initialState = {};
     const store = mockStore(initialState);
@@ -95,7 +122,7 @@ describe('Service Actions', () => {
 
     return serviceActions.getNotes('4435')(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
   });
 
@@ -137,6 +164,14 @@ describe('Service Actions', () => {
     serviceActions.addNote(store.dispatch);
 
     const result = serviceActions.addNote(note, [])(store.dispatch);
+  });
+
+  it('should clear agent', () => {
+    const initialState = {service: { agents: ['Test Agent'] } };
+    const store = mockStore(initialState);
+    const agent = serviceActions.clearAgent()(store.dispatch);
+    expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
+    expect(store.getActions()[0].data).toEqual({ agents: [] });
   });
 
   it('should call start getAgents', () => {

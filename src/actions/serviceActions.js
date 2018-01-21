@@ -40,7 +40,7 @@ export const getNotes = (id, policyId) => (dispatch) => {
     path: `v1/fileindex/${pid}`
   });
 
-  axios.all([
+  return Promise.all([
     axios(notesRequest),
     axios(docsRequest)
   ])
@@ -125,9 +125,7 @@ export const getAgents = (companyCode, state, firstName, lastName, agentCode, ad
 
 export const clearAgent = () => (dispatch) => {
   const data = { agents: [] };
-  return dispatch(batchActions([
-    serviceRequest(data)
-  ]));
+  return dispatch(serviceRequest(data));
 };
 
 
