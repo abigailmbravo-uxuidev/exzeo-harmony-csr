@@ -77,7 +77,28 @@ export const addNote = (data, files) => (dispatch) => {
   });
 };
 
-export const getAgents = (companyCode, state, firstName, lastName, agentCode, address, licNumber) => (dispatch) => {
+export const getAgents = (companyCode, state) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'agency.services',
+    method: 'GET',
+    path: `v1/agents/${companyCode}/${state}`
+  });
+
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
+    const data = { agents: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+  .catch((error) => {
+    const message = handleError(error);
+    return dispatch(batchActions([
+      errorActions.setAppError({ message })
+    ]));
+  });
+};
+
+export const searchAgents = (companyCode, state, firstName, lastName, agentCode, address, licNumber) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'agency.services',
     method: 'GET',
@@ -90,12 +111,12 @@ export const getAgents = (companyCode, state, firstName, lastName, agentCode, ad
       serviceRequest(data)
     ]));
   })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError({ message })
-      ]));
-    });
+  .catch((error) => {
+    const message = handleError(error);
+    return dispatch(batchActions([
+      errorActions.setAppError({ message })
+    ]));
+  });
 };
 
 export const clearAgent = () => (dispatch) => {

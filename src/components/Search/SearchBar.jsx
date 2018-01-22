@@ -66,7 +66,7 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
   if (searchType === 'agent') {
     props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, agentSubmitting: true });
 
-    props.actions.serviceActions.getAgents('TTIC', 'FL', agencyAgentData.firstName, agencyAgentData.lastName,
+    props.actions.serviceActions.searchAgents('TTIC', 'FL', agencyAgentData.firstName, agencyAgentData.lastName,
      agencyAgentData.agentCode, agencyAgentData.address, agencyAgentData.licNumber).then(() => {
        props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, agentSubmitting: false });
      });
