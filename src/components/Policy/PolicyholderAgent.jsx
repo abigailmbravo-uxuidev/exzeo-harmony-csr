@@ -10,26 +10,24 @@ import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 import Footer from '../Common/Footer';
 
-let isLoaded = false;
-
-
 // turn this into class and use the service runner
 export class PolicyholderAgent extends Component {
 
-  componentWillReceiveProps(nextProps) {
-    const policy = nextProps.policy;
-    if (policy && policy.companyCode && policy.state && policy.agencyCode && !isLoaded) {
-      isLoaded = true;
-      nextProps.actions.serviceActions.getAgents(policy.companyCode, policy.state);
-      nextProps.actions.serviceActions.getAgency(policy.companyCode, policy.state, policy.agencyCode);
+  componentDidMount(nextProps) {
+    const policy = this.props.policy;
+    const actions = this.props.actions.serviceActions;
+
+    if (policy && policy.companyCode && policy.state && policy.agencyCode) {
+      actions.getAgents(policy.companyCode, policy.state);
+      actions.getAgency(policy.companyCode, policy.state, policy.agencyCode);
     }
   }
 
   render() {
     const {
-policyHolders,
-policyHolderMailingAddress
-} = this.props.policy;
+      policyHolders,
+      policyHolderMailingAddress
+    } = this.props.policy;
 
     const { agency, agents, policy } = this.props;
 

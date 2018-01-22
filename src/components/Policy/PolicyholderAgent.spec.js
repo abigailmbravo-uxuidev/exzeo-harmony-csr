@@ -179,6 +179,6 @@ describe('Testing Coverage component', () => {
     const shallowWrapper = shallow(<PolicyholderAgent store={store} {...props} />);
     expect(shallowWrapper);
 
-    shallowWrapper.instance().componentWillReceiveProps({ policy, actions: props.actions });
+    shallowWrapper.instance().componentDidMount({ policy, actions: props.actions });
   });
 });
