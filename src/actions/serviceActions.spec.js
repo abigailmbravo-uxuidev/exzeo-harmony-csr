@@ -151,7 +151,7 @@ describe('Service Actions', () => {
       data: {
         service: 'agency.services',
         method: 'GET',
-        path: 'v1/agents/TTIC/FL?firstName=&lastName=&agentCode=&mailingAddress=&licenseNumber='
+        path: 'v1/agents/TTIC/FL'
       }
     };
 

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { reduxForm, Form, Field } from 'redux-form';
+import { reduxForm, Form } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
 import * as cgActions from '../../actions/cgActions';
