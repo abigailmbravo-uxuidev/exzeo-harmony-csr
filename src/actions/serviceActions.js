@@ -169,7 +169,7 @@ export const getAgentsByAgency = (companyCode, state, agencyCode) => (dispatch) 
     });
 };
 
-export const getAgencies = (companyCode, state, displayName, agencyCode, address, licNumber, fein, phone) => (dispatch) => {
+export const searchAgencies = (companyCode, state, displayName, agencyCode, address, licNumber, fein, phone) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'agency.services',
     method: 'GET',
@@ -288,11 +288,11 @@ export const getEffectiveDateChangeReasons = () => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'policy-data.services',
     method: 'GET',
-    path: `effectiveDateChangeReasons`
+    path: 'effectiveDateChangeReasons'
   });
 
   return Promise.resolve(axios(axiosConfig)).then((response) => {
-    const data = { effectiveDateReasons: response.data.effectiveDateReasons ? response.data.effectiveDateReasons: [] };
+    const data = { effectiveDateReasons: response.data.effectiveDateReasons ? response.data.effectiveDateReasons : [] };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));
@@ -618,6 +618,28 @@ export const getZipcodeSettings = (companyCode, state, product, zip) => (dispatc
 
   return axios(axiosConfig).then((response) => {
     const data = { getZipcodeSettings: response.data && response.data.result ? response.data.result[0] : {} };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
+export const getAgencies = (companyCode, state) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'agency.services',
+    method: 'GET',
+    path: `v1/agencies/${companyCode}/${state}`
+  });
+
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
+    const result = response.data && response.data.result ? response.data.result.sort() : [];
+    const data = { agencies: result };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));
