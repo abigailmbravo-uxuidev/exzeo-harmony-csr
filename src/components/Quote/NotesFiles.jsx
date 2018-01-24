@@ -41,7 +41,7 @@ export const NoteList = (props) => {
   const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
   const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
   const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
-  const formatNote = note => note.replace(/\r|\n/g, '<br>');
+  const formatNote = note => note ? note.replace(/\r|\n/g, '<br>') : '';
   const attachmentUrl = attachments => (
     <span>
       { attachments.map((attachment, i) =>

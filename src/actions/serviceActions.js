@@ -1,5 +1,6 @@
 import axios from 'axios';
 import _ from 'lodash';
+import moment from 'moment';
 import { batchActions } from 'redux-batched-actions';
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
@@ -25,8 +26,9 @@ export const runnerSetup = data => ({
   data
 });
 
-export const getNotes = id => (dispatch) => {
-  const axiosConfig = runnerSetup({
+export const getNotes = (id, policyId) => (dispatch) => {
+  const pid = policyId ? policyId : id;
+  const notesRequest = runnerSetup({
     service: 'transaction-logs.services',
     method: 'GET',
     path: `history?number=${id}`
@@ -65,9 +67,7 @@ export const getNotes = id => (dispatch) => {
   }))
   .catch((error) => {
     const message = handleError(error);
-    return dispatch(batchActions([
-      errorActions.setAppError({ message })
-    ]));
+    dispatch(errorActions.setAppError({ message }));
   });
 };
 
