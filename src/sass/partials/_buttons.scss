@@ -52,6 +52,14 @@ input[type="submit"] {
   &.btn-xs {
     padding: ($padding/2) $padding;
     font-size: $font-size-xs;
+
+    i {
+        margin-right: $padding/2;
+    }
+  }
+
+  &.no-padding {
+      padding: 0;
   }
 
   &.focus {
@@ -128,6 +136,15 @@ input[type="submit"] {
 
   &:hover {
     text-decoration: none;
+  }
+
+  &.btn-alt-light {
+      color: $bright-blue-lighten-02;
+
+      &:hover {
+          text-decoration: none;
+          color: $bright-blue-lighten-01;
+      }
   }
 }
 // Remove all backgrounds

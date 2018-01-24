@@ -73,7 +73,7 @@
               .contact-details {
                 h4 {
                   margin-bottom: 0;
-                  color: $warm-gray-08;
+                  color: $warm-gray-10;
 
                   &.agency,
                   &.agent {
@@ -95,6 +95,16 @@
                       font-weight: $font-weight-normal;
                     }
                   }
+                }
+
+                .contact-address {
+                    small {
+                        margin-left: $padding;
+
+                        label {
+                            font-size: $font-size-xs;
+                        }
+                    }
                 }
 
                 .additional-contacts {
@@ -259,7 +269,7 @@
 
                   h4 {
                     margin-bottom: 0;
-                    color: $warm-gray-08;
+                    color: $warm-gray-10;
 
                     &.agency {
                       font-weight: $font-weight-normal;

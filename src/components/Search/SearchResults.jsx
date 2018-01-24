@@ -73,8 +73,8 @@ export const SearchResults = (props) => {
                 title={quote.policyHolders && quote.policyHolders.length > 0
                   ? `${quote.policyHolders[0].firstName} ${quote.policyHolders[0].lastName}`
                   : ''}
-              >{quote.policyHolders[0] && `${quote.policyHolders[0].firstName.replace(/(^.{13}).*$/, '$1...')}`}
-                {quote.policyHolders[0] && `${quote.policyHolders[0].lastName.replace(/(^.{13}).*$/, '$1...')}`}</h5>
+              >{quote.policyHolders[0] && `${quote.policyHolders[0].firstName.replace(/(^.{20}).*$/, '$1...')}`}<br/>
+            {quote.policyHolders[0] && `${quote.policyHolders[0].lastName.replace(/(^.{20}).*$/, '$1...')}`}</h5>
             </div>
           </div>
 
@@ -114,7 +114,8 @@ export const SearchResults = (props) => {
     </div>);
   }
 
-  if (props.tasks[props.appState.modelName] && props.tasks[props.appState.modelName].data.activeTask && props.tasks[props.appState.modelName].data.activeTask.name === 'choosePolicy') {
+  if (props.tasks[props.appState.modelName] && props.tasks[props.appState.modelName].data.activeTask 
+    && props.tasks[props.appState.modelName].data.activeTask.name === 'choosePolicy' && searchData.searchType === 'policy') {
     const defaultPolicyResults = props.tasks[props.appState.modelName].data.previousTask
       ? props.tasks[props.appState.modelName].data.previousTask.value.policies
       : [];
@@ -137,8 +138,8 @@ export const SearchResults = (props) => {
           <div className="icon-name">
             <i className="card-icon fa fa-user-circle" />
             <div className="card-name">
-              <h5 title={`${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName.replace(/(^.{13}).*$/, '$1...')}`}
-                {policy.policyHolders[0] && `${policy.policyHolders[0].lastName.replace(/(^.{13}).*$/, '$1...')}`}</h5>
+              <h5 title={`${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName.replace(/(^.{20}).*$/, '$1...')}`}<br/>
+                {policy.policyHolders[0] && `${policy.policyHolders[0].lastName.replace(/(^.{20}).*$/, '$1...')}`}</h5>
             </div>
           </div>
           {/* <div>
@@ -190,9 +191,9 @@ export const SearchResults = (props) => {
     return (<div className="user-list agency-list">
       { props.appState.data && props.appState.data.agentSubmitting && <Loader />}
       {
-        agencyResults && agencyResults.map((agency, index) => <div className="card-wrapper">
+        agencyResults && agencyResults.map((agency, index) => <div className="card-wrapper" key={index}>
           <span className="fa fa-chevron-circle-right" id={agency.agencyCode} onClick={() => props.handleNewTab(agency, props)} tabIndex="-1" />
-          <div className="agency contact card" key={index}>
+          <div className="agency contact card">
 
             <div className="contact-title">
               <i className="fa fa-address-book" />
