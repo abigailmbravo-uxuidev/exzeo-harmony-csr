@@ -17,8 +17,7 @@ const Header = props => (
       </a>
       <button className="btn-icon btn-ellipsis-v"><i className="fa fa-ellipsis-v" /></button>
       <nav className="fade-in">
-        <a href="" className="active">Agency</a>
-        <a href="" className="">Policy</a>
+        <a href="" className="active">Policy</a>
         { /* <a href="">User Management</a> */ }
         <div className="user-name">{ props.authState && props.authState.userProfile ? props.authState.userProfile.name : ''}</div>
         <button tabIndex={'0'} className="btn btn-action"><i className="fa fa-gear" /></button>
