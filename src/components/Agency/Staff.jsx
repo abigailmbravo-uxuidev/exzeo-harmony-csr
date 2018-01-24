@@ -51,8 +51,7 @@ export class Staff extends Component {
                   <label>Contact</label>
                 </div>
                 <div className="contact-details">
-                  <h4>{agency.contactFirstName}
-                    {agency.contactLastName}</h4>
+                  <h4>{`${agency.contactFirstName} ${agency.contactLastName}`}</h4>
                   <div className="additional-contacts">
                     <ul>
                       <li>
@@ -101,8 +100,7 @@ export class Staff extends Component {
                   <label>Principal</label>
                 </div>
                 <div className="contact-details">
-                  <h4>{agency.principalFirstName}
-                    {agency.principalLastName}</h4>
+                  <h4>{`${agency.principalFirstName} ${agency.principalLastName}`}</h4>
                   <div className="additional-contacts">
                     <ul>
                       <li>
@@ -140,17 +138,13 @@ export class Staff extends Component {
                   <div className="contact-details">
                     <div className="card-name">
                         <h4 className="agent">
-                          <span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{agent.firstName}
-                            {agent.lastName}</span> | <span className="agent-license">{agent.licenseNumber}</span>
+                          <span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span> | <span className="agent-license">{agent.licenseNumber}</span>
                         </h4>
                         <p className="contact-address">
-                          {agent.mailingAddress.address1},&nbsp; {agent.mailingAddress.address2}{
-                            agent.mailingAddress.address2 ? ', ' : ' '
-                          }
-                          {agent.mailingAddress.city},&nbsp; {agent.mailingAddress.state}&nbsp; {agent.mailingAddress.zip}
-                          {
-                            agent.status ? <small><label>STATUS:&nbsp;</label>{agent.status}</small> : null
-                          }
+                          {agent.mailingAddress.address1},&nbsp;
+                          {agent.mailingAddress.address2}{agent.mailingAddress.address2 ? ', ' : ' '}
+                          {`${agent.mailingAddress.city}, ${agent.mailingAddress.state} ${agent.mailingAddress.zip}`}
+                          {agent.status ? <small className="agent-status"><label>STATUS:&nbsp;</label>{agent.status}</small> : null}
                         </p>
                         <div className="additional-contacts">
                           <ul>
