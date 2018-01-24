@@ -57,6 +57,14 @@
         overflow: hidden;
         flex-grow: 1;
         flex-shrink: 1;
+
+        form {
+            display: flex;
+            overflow: hidden;
+            flex-grow: 1;
+            flex-shrink: 1;
+        }
+
         //mortgage billing
         .mortgage-billing {
           position: relative;
@@ -726,12 +734,12 @@
                 .coverage,
                 .discountSurcharge {
                   width: 60%;
-                  padding: ($padding*1.5) ($padding*2);
+                  padding: $padding ($padding*1.5);
                 }
 
                 .value {
                   width: 40%;
-                  padding: ($padding*1.5) ($padding*2);
+                  padding: $padding ($padding*1.5);
                 }
               }
             }

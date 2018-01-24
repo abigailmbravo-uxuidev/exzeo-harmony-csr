@@ -40,7 +40,7 @@ export class DetailHeader extends Component {
           <div>
             <dd>{_.get(policy, 'product') === 'HO3' ? `${_.get(policy, 'product')} Homeowners` : _.get(policy, 'product')}</dd>
             <dd>{_.get(policy, 'policyNumber')}</dd>
-            <dd>{`${_.get(policy, 'status')} / ${_.get(summaryLedger, 'status.displayText')}`}</dd>
+            <dd className="policy-status">{`${_.get(policy, 'status')} / ${_.get(summaryLedger, 'status.displayText')}`}</dd>
           </div>
         </dl>
       </section>
@@ -100,7 +100,7 @@ export class DetailHeader extends Component {
       <section id="policyEffectiveDate" className="policyEffectiveDate">
         <dl>
           <div>
-            <dt>Effective Date <button className="btn btn-link btn-xs btn-alt-light" onClick={() => showEffectiveDatePopUp(this.props)}><i className="fa fa-pencil-square" />Edit</button></dt>
+            <dt>Effective Date <button className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showEffectiveDatePopUp(this.props)}><i className="fa fa-pencil-square" />Edit</button></dt>
             <dd>{moment.utc(_.get(policy, 'effectiveDate')).format('MM/DD/YYYY')}</dd>
           </div>
         </dl>

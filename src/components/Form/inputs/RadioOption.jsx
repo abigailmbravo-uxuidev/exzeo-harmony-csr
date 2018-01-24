@@ -19,7 +19,7 @@ const RadioOption = ({
     onKeyPress={event => onKeyPress(event, answer.answer)}
     onClick={() => onChange(answer.answer)}
   >
-    {answer.image && <img src={answer.image} alt="presentation" />}
+    {answer.image && <img src={answer.image} alt={answer.answer} role="presentation" />}
     <label
       className={classNames(
         { 'label-segmented': segmented },
