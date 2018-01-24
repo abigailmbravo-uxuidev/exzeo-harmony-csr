@@ -12,6 +12,7 @@ import QuoteBaseConnect from '../../containers/Quote';
 import ClearErrorConnect from '../Error/ClearError';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as quoteStateActions from '../../actions/quoteStateActions';
+import * as errorActions from '../../actions/errorActions';
 import RadioField from '../Form/inputs/RadioField';
 import Downloader from '../Common/Downloader';
 import Footer from '../Common/Footer';
@@ -29,8 +30,11 @@ const SearchPanel = props => (
 
 export const filterNotesByType = (notes, type) => {
   if (!Array.isArray(notes)) return [];
-  if (type) return notes.filter(n => n.attachments.length > 0);
-  return notes;
+  if (type) {
+    return notes.filter(n => n.attachments.length > 0);
+  } else {
+    return notes.filter(n => n.content);
+  }
 };
 
 export const NoteList = (props) => {
@@ -40,7 +44,7 @@ export const NoteList = (props) => {
   const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
   const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
   const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
-  const formatNote = note => note.replace(/\r|\n/g, '<br>');
+  const formatNote = note => note ? note.replace(/\r|\n/g, '<br>') : '';
   const attachmentUrl = attachments => (
     <span>
       { attachments.map((attachment, i) =>
@@ -48,6 +52,7 @@ export const NoteList = (props) => {
           fileName={attachment.fileName}
           fileUrl={attachment.fileUrl}
           fileType={attachment.fileType}
+          errorHandler={(err) => props.actions.errorActions.setAppError(err)}
           key={i}
         />
       )}
@@ -57,9 +62,6 @@ export const NoteList = (props) => {
   return (
     <div className="note-grid-wrapper">
       <div className="filter-tabs">
-
-        {/* TODO: Eric, just need 2 buttons with an onClick event to filter the grid by attachment count. I added the radio group component because it can have a default selected and user can only choose 1*/}
-
         <RadioField
           name={'attachmentStatus'} styleName={''} label={''} onChange={ () => {} } segmented answers={[
             {
@@ -102,22 +104,22 @@ export class NotesFiles extends Component {
         submitting: true
       });
       const steps = [
-    { name: 'hasUserEnteredData', data: { answer: 'No' } },
-    { name: 'moveTo', data: { key: 'notes' } }
+        { name: 'hasUserEnteredData', data: { answer: 'No' } },
+        { name: 'moveTo', data: { key: 'notes' } }
       ];
       const workflowId = this.props.appState.instanceId;
 
       this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
-    .then(() => {
-      if (this.props.quoteData && this.props.quoteData._id) {
-        this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
-      }
+      .then(() => {
+        if (this.props.quoteData && this.props.quoteData._id) {
+          this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
+        }
 
-      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
-        ...this.props.appState.data,
-        selectedLink: 'notes'
+        this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+          ...this.props.appState.data,
+          selectedLink: 'notes'
+        });
       });
-    });
     }
   }
 
@@ -180,7 +182,8 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'NotesFiles.values', {}),
   initialValues: handleInitialize(state),
   notes: state.service.notes,
-  quoteData: state.service.quote || {}
+  quoteData: state.service.quote || {},
+  error: state.error
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -188,7 +191,8 @@ const mapDispatchToProps = dispatch => ({
     quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch)
+    serviceActions: bindActionCreators(serviceActions, dispatch),
+    errorActions: bindActionCreators(errorActions, dispatch)
   }
 });
 

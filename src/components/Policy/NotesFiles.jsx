@@ -7,6 +7,7 @@ import moment from 'moment';
 import { reduxForm, Form, propTypes } from 'redux-form';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
+import * as errorActions from '../../actions/errorActions';
 import PolicyBaseConnect from '../../containers/Policy';
 import ClearErrorConnect from '../Error/ClearError';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
@@ -27,8 +28,11 @@ const SearchPanel = props => (
 
 export const filterNotesByType = (notes, type) => {
   if (!Array.isArray(notes)) return [];
-  if (type) return notes.filter(n => n.attachments.length > 0);
-  return notes;
+  if (type) {
+    return notes.filter(n => n.attachments.length > 0);
+  } else {
+    return notes.filter(n => n.content);
+  }
 };
 
 export const NoteList = (props) => {
@@ -38,7 +42,7 @@ export const NoteList = (props) => {
   const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
   const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
   const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
-  const formatNote = note => note.replace(/\r|\n/g, '<br>');
+  const formatNote = note => note ? note.replace(/\r|\n/g, '<br>') : '';
   const attachmentUrl = attachments => (
     <span>
       { attachments.map((attachment, i) =>
@@ -46,6 +50,7 @@ export const NoteList = (props) => {
           fileName={attachment.fileName}
           fileUrl={attachment.fileUrl}
           fileType={attachment.fileType}
+          errorHandler={(err) => props.actions.errorActions.setAppError(err)}
           key={i}
         />
       )}
@@ -93,7 +98,7 @@ export class NotesFiles extends Component {
     if (!_.isEqual(this.props, nextProps)) {
       if (nextProps.policy && nextProps.policy.policyNumber) {
         const ids = [nextProps.policy.policyNumber, nextProps.policy.sourceNumber];
-        this.props.actions.serviceActions.getNotes(ids.toString());
+        this.props.actions.serviceActions.getNotes(ids.toString(), nextProps.policy.policyNumber);
       }
     }
   }
@@ -153,7 +158,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: {
     appStateActions: bindActionCreators(appStateActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch)
+    serviceActions: bindActionCreators(serviceActions, dispatch),
+    errorActions: bindActionCreators(errorActions, dispatch)
   }
 });
 
