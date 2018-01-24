@@ -114,7 +114,8 @@ export const SearchResults = (props) => {
     </div>);
   }
 
-  if (props.tasks[props.appState.modelName] && props.tasks[props.appState.modelName].data.activeTask && props.tasks[props.appState.modelName].data.activeTask.name === 'choosePolicy') {
+  if (props.tasks[props.appState.modelName] && props.tasks[props.appState.modelName].data.activeTask 
+    && props.tasks[props.appState.modelName].data.activeTask.name === 'choosePolicy' && searchData.searchType === 'policy') {
     const defaultPolicyResults = props.tasks[props.appState.modelName].data.previousTask
       ? props.tasks[props.appState.modelName].data.previousTask.value.policies
       : [];
@@ -190,9 +191,9 @@ export const SearchResults = (props) => {
     return (<div className="user-list agency-list">
       { props.appState.data && props.appState.data.agentSubmitting && <Loader />}
       {
-        agencyResults && agencyResults.map((agency, index) => <div className="card-wrapper">
+        agencyResults && agencyResults.map((agency, index) => <div className="card-wrapper" key={index}>
           <span className="fa fa-chevron-circle-right" id={agency.agencyCode} onClick={() => props.handleNewTab(agency, props)} tabIndex="-1" />
-          <div className="agency contact card" key={index}>
+          <div className="agency contact card">
 
             <div className="contact-title">
               <i className="fa fa-address-book" />
