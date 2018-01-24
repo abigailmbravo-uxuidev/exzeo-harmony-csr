@@ -115,7 +115,7 @@ export const SearchResults = (props) => {
   }
 
   if (props.tasks[props.appState.modelName] && props.tasks[props.appState.modelName].data.activeTask 
-    && props.tasks[props.appState.modelName].data.activeTask.name === 'choosePolicy' && searchData && searchData.searchType === 'policy') {
+    && props.tasks[props.appState.modelName].data.activeTask.name === 'choosePolicy' && searchData.searchType === 'policy') {
     const defaultPolicyResults = props.tasks[props.appState.modelName].data.previousTask
       ? props.tasks[props.appState.modelName].data.previousTask.value.policies
       : [];
