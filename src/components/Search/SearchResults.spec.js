@@ -2,6 +2,7 @@ import React from 'react';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
+import localStorage from 'localStorage';
 
 import ConnectedApp, { SearchResults } from './SearchResults';
 
@@ -547,6 +548,7 @@ describe('Testing SearchBar component', () => {
       },
       ...propTypes
     };
+    localStorage.setItem('lastSearchData', JSON.stringify({ searchType: 'policy' }));
     SearchResults(props);
   });
 });

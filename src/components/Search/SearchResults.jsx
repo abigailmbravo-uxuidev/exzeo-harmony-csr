@@ -19,7 +19,7 @@ export const SearchResults = (props) => {
   const activeTask = model.data && model.data.activeTask
     ? model.data.activeTask
     : {};
-
+console.log('localStorage', localStorage)
   const searchData = JSON.parse(localStorage.getItem('lastSearchData'));
 
   if (previousTask && previousTask.name === 'searchAddress' && activeTask.name !== 'askToSearchAgain') {
