@@ -14,7 +14,7 @@ export const downloadFile = (fileUrl, fileName, errorHandler) => {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-
+      return true;
     })
     .catch((err) => {
       return errorHandler({ message: err.response.statusText });
