@@ -97,6 +97,16 @@
                   }
                 }
 
+                .contact-address {
+                    small {
+                        margin-left: $padding;
+
+                        label {
+                            font-size: $font-size-xs;
+                        }
+                    }
+                }
+
                 .additional-contacts {
                   display: flex;
                   flex-wrap: wrap;
