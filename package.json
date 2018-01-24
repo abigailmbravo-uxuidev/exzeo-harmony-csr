@@ -3,6 +3,8 @@
   "version": "0.9.1",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome": "^1.0.0",
+    "@fortawesome/react-fontawesome": "0.0.14",
     "auth0-js": "8.10.1",
     "axios": "^0.15.2",
     "classnames": "^2.2.5",
@@ -43,7 +45,6 @@
     "validator": "^7.0.0",
     "axios-mock-adapter": "^1.8.1"
   },
-    
   "devDependencies": {
     "babel-jest": "^19.0.0",
     "enzyme": "^2.8.0",
