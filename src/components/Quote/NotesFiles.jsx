@@ -30,8 +30,11 @@ const SearchPanel = props => (
 
 export const filterNotesByType = (notes, type) => {
   if (!Array.isArray(notes)) return [];
-  if (type) return notes.filter(n => n.attachments.length > 0);
-  return notes;
+  if (type) {
+    return notes.filter(n => n.attachments.length > 0);
+  } else {
+    return notes.filter(n => n.content);
+  }
 };
 
 export const NoteList = (props) => {
