@@ -2,15 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-// import _ from 'lodash';
-// import moment from 'moment';
 import localStorage from 'localStorage';
 import { reduxForm, propTypes } from 'redux-form';
-// import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as serviceActions from '../../actions/serviceActions';
 import AgencyConnect from '../../containers/Agency';
-import ClearErrorConnect from '../Error/ClearError';
-// import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
 import normalizePhone from '../Form/normalizePhone';
 
@@ -34,12 +29,9 @@ export class Staff extends Component {
   render() {
     const { agency, agents } = this.props;
     if (!agency) {
-      return (<AgencyConnect>
-        <ClearErrorConnect />
-      </AgencyConnect>);
+      return (<AgencyConnect></AgencyConnect>);
     }
     return (<AgencyConnect>
-      <ClearErrorConnect />
       <div className="route-content">
         <div className="scroll">
           <div className="form-group survey-wrapper" role="group">

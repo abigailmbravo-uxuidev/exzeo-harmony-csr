@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import PolicyConnect from '../../containers/Policy';
-import ClearErrorConnect from '../Error/ClearError';
 import normalizePhone from '../Form/normalizePhone';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
@@ -13,7 +11,7 @@ import Footer from '../Common/Footer';
 // turn this into class and use the service runner
 export class PolicyholderAgent extends Component {
 
-  componentDidMount(nextProps) {
+  componentDidMount() {
     const policy = this.props.policy;
     const actions = this.props.actions.serviceActions;
 
@@ -30,16 +28,14 @@ export class PolicyholderAgent extends Component {
     } = this.props.policy;
 
     const { agency, agents, policy } = this.props;
-
     let selectedAgent;
 
     if (agents && agents.length > 0 && policy && policy.agentCode) {
-      selectedAgent = _.find(agents, a => a.agentCode === policy.agentCode);
+      selectedAgent = agents.find(a => a.agentCode === policy.agentCode);
     }
 
     return (
       <PolicyConnect>
-        <ClearErrorConnect />
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">

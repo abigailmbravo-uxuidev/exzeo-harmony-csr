@@ -8,16 +8,6 @@ import ConnectedApp, { Base } from './Base';
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 
-function wrapWithContext(context, contextTypes, children) {
-  const wrapperWithContext = React.createClass({ //eslint-disable-line
-    childContextTypes: contextTypes,
-    getChildContext() { return context; },
-    render() { return React.createElement('div', null, children); }
-  });
-
-  return React.createElement(wrapperWithContext);
-}
-
 describe('Testing Base component', () => {
   it('should test props and render', () => {
     const initialState = {};
@@ -41,8 +31,7 @@ describe('Testing Base component', () => {
     };
 
     const context = { router: {} };
-    const contextTypes = { router: React.PropTypes.object };
-    const wrapper = wrapWithContext(context, contextTypes, <Base {...props} />, React);
+    const wrapper = shallow(<Base {...props} />);
     expect(wrapper);
   });
 
