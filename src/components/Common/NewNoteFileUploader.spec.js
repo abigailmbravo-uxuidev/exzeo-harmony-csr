@@ -3,9 +3,9 @@ import configureStore from 'redux-mock-store';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { propTypes } from 'redux-form';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import * as serviceActions from '../../actions/serviceActions';
-import ConnectedApp, { submitNote, minimzeButtonHandler, NewNoteFileUploader } from './NewNoteFileUploader';
+import ConnectedApp, { submitNote, minimzeButtonHandler, validate, RenderDropzone, renderNotes, NewNoteFileUploader } from './NewNoteFileUploader';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -145,5 +145,55 @@ describe('Testing NewNoteFileUploader component', () => {
     };
 
     NewNoteFileUploader(props, { function() {} });
+  });
+
+  it('should test RenderDropzone', () => {
+    const props = {
+      input: {
+        name: 'upload',
+        value: [],
+        onChange() { this.value }
+      }
+    }
+
+    const wrapper = shallow(<RenderDropzone {...props} />);
+    const onDragEnter = wrapper.instance().onDragEnter();
+    const onDragLeave = wrapper.instance().onDragLeave();
+    const onDrop = wrapper.instance().onDrop([]);
+    expect(wrapper);
+  });
+
+  it('note should be valid', () => {
+    const valid = validate({noteContent: 'Testst Content'});
+    expect(valid).toEqual({});
+  });
+
+  it('note should not be valid', () => {
+    const valid = validate({});
+    expect(valid).toEqual({ noteContent: 'Note Content Required' });
+  });
+
+  it('should render Notes', () => {
+    const note  = { 
+      input:'test', 
+      label: 'test', 
+      type: 'textarea', 
+      meta: { touched: false, error: null } 
+    }
+    const renderNote = renderNotes(note);
+    expect(renderNote.type).toEqual('div');
+    expect(renderNote.props.className).toEqual(' text-area-wrapper');
+  });
+
+  it('should render Notes error', () => {
+    const note  = { 
+      input:'test', 
+      label: 'test', 
+      type: 'textarea', 
+      meta: { touched: true, error: true } 
+    }
+    const renderNote = renderNotes(note);
+    expect(renderNote.type).toEqual('div');
+    expect(renderNote.props.className).toEqual('error text-area-wrapper');
   });
 });

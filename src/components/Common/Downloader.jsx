@@ -22,7 +22,7 @@ export const downloadFile = (fileUrl, fileName, errorHandler) => {
 };
 
 const Downloader = props => {
-  const { fileName, fileUrl, fileType, errorHandler } = props;
+  const { fileName, fileUrl, errorHandler } = props;
   return (
     <div className="btn btn-link" onClick={ () => downloadFile(fileUrl, fileName, errorHandler) }>{ fileName }</div>
   )

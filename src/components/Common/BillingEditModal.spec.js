@@ -40,7 +40,8 @@ describe('Testing BillingEditModal component', () => {
     };
     const store = mockStore(initialState);
     const props = {
-      handleSubmit() {},
+      handleSubmit: fn => fn,
+      handleBillingFormSubmit: fn => fn,
       billingOptions: initialState.service.billingOptions,
       fieldValues: {},
       quoteData: {},

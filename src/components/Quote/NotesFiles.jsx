@@ -9,7 +9,6 @@ import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
 import QuoteBaseConnect from '../../containers/Quote';
-import ClearErrorConnect from '../Error/ClearError';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 import * as errorActions from '../../actions/errorActions';
@@ -52,7 +51,6 @@ export const NoteList = (props) => {
         <Downloader
           fileName={attachment.fileName}
           fileUrl={attachment.fileUrl}
-          fileType={attachment.fileType}
           errorHandler={(err) => props.actions.errorActions.setAppError(err)}
           key={i}
         />
@@ -138,7 +136,6 @@ export class NotesFiles extends Component {
 
     return (
       <QuoteBaseConnect>
-        <ClearErrorConnect />
         <div className="route-content">
           <div className="scroll">
             <Form id="NotesFiles" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
