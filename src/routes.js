@@ -98,16 +98,11 @@ class Routes extends Component {
           appElement={document.getElementById('root')}
         >
           <div className="card-header"><h4><i className="fa fa-exclamation-circle" />&nbsp;Error</h4></div>
-<<<<<<< HEAD
           <div className="card-block"><p>{ this.props.error.message }</p></div>
           <div className="card-footer">
             {this.props.error.requestId && <div className="footer-message"><p>Request ID: { this.props.error.requestId }</p></div>}
             <button className="btn-primary" onClick={this.clearError}>close</button>
           </div>
-=======
-          <div className="card-block">{ this.props.error.message }</div>
-          <div className="card-footer"><button className="btn-primary" onClick={this.clearError}>close</button></div>
->>>>>>> Updated React to 16. Fixed tests. Removed Error component.
         </Modal>
 
         <Router
@@ -135,7 +130,6 @@ class Routes extends Component {
               <Route exact path="/policy/endorsements" render={props => <PolicyEndorsements auth={auth} {...props} />} />
               <Route exact path="/agency/staff" render={props => <AgencyStaff auth={auth} {...props} />} />
               <Route exact path="/login" render={props => <LoginPage auth={auth} {...props} />} />
-              <Route exact path="/error" render={props => <AppErrorPage auth={auth} {...props} />} />
               <Route exact path="/accessDenied" render={props => <AccessDenied auth={auth} {...props} />} />
               <Route exact path="/loggedOut" render={props => <LoggedOut auth={auth} {...props} />} />
               <Route

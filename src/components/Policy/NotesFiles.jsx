@@ -49,7 +49,6 @@ export const NoteList = (props) => {
         <Downloader
           fileName={attachment.fileName}
           fileUrl={attachment.fileUrl}
-          fileType={attachment.fileType}
           errorHandler={(err) => props.actions.errorActions.setAppError(err)}
           key={i}
         />

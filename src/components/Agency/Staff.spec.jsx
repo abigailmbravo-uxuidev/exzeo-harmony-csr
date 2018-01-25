@@ -4,7 +4,7 @@ import localStorage from 'localStorage';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
-import { shallow, mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import ConnectedApp, { Staff, handleInitialize } from './Staff';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
@@ -34,10 +34,16 @@ describe('Testing Staff component', () => {
     const store = mockStore(initialState);
     const props = {
       initialValues: {},
-      agents: {
-
-      },
+      agents: [{ name: 'test', status: true, agentOfRecord: true, appointed: true, mailingAddress: {} }],
       agency: {
+        name: 'Test Agency',
+        contactFirstName: "Test",
+        contactLastName: "Test",
+        phone: '555-555-5555',
+        primaryPhoneNumber: '555-555-5555',
+        secondaryPhoneNumber: '555-555-5555',
+        faxNumber: '555-555-5555',
+        customerServiceEmailAddress: 'test@test.com'
       },
       actions: {
         policyStateActions: {
@@ -49,8 +55,7 @@ describe('Testing Staff component', () => {
         serviceActions: {
           getAgency() {},
           getAgentsByAgency() {}
-        },
-        errorActions: { dispatchClearAppError() { } }
+        }
       },
       fieldQuestions: [],
       quoteData: {},
@@ -63,9 +68,7 @@ describe('Testing Staff component', () => {
       ...propTypes
     };
 
-    localStorage.setItem('lastSearchData', JSON.stringify({
-      searchType: 'agency'
-    }));
+    localStorage.setItem('isNewTab', true);
 
     const wrapper2 = shallow(<Staff store={store} {...props} />);
     wrapper2.instance().componentDidMount();

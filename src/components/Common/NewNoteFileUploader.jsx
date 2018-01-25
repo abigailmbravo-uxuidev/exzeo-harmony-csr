@@ -43,14 +43,14 @@ export const validate = (values) => {
   return errors;
 };
 
-const renderNotes = ({ input, label, type, meta: { touched, error } }) => (
+export const renderNotes = ({ input, label, type, meta: { touched, error } }) => (
   <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
     <textarea {...input} placeholder={label} rows="10" cols="40" />
     { touched && error && <span className="error-message">{ error }</span> }
   </div>
-  );
+);
 
-class renderDropzone extends React.Component {
+export class RenderDropzone extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -188,7 +188,7 @@ export const NewNoteFileUploader = (props, { closeButtonHandler }) => {
               <Field component="select" name="fileType" disabled={!docTypes.length}>
                 { docTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
               </Field>
-              <Field name="noteAttachments" component={renderDropzone} />
+              <Field name="noteAttachments" component={RenderDropzone} />
             </div>
             <div className="buttons note-file-footer-button-group">
               <button tabIndex={'0'} aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={props.closeButtonHandler}>Cancel</button>

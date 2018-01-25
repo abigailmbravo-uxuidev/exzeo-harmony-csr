@@ -1,7 +1,7 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import ConnectedApp from './DetailHeader';
 
@@ -29,7 +29,7 @@ describe('Testing DetailHeader component', () => {
     const store = mockStore(initialState);
     const props = {
       fieldQuestions: [],
-      agency: {},
+      agency: { agencyCode: 'TTIC' },
       dispatch: store.dispatch,
       appState: {
         data: {
@@ -38,7 +38,8 @@ describe('Testing DetailHeader component', () => {
       },
       ...propTypes
     };
-    const wrapper = shallow(<ConnectedApp store={store} {...props} />);
+    const wrapper = mount(<ConnectedApp store={store} {...props} />);
+
     expect(wrapper);
   });
 });

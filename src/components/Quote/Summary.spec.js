@@ -21,6 +21,7 @@ const quoteData = {
   endDate: '2018-01-04T20:14:46.793Z',
   agencyId: '20000',
   agentId: '60000',
+  agentCode: '60000',
   property: {
     id: '12089DF01D986BF1A',
     source: 'CasaClue',
@@ -308,13 +309,8 @@ const quoteData = {
 describe('Testing Summary component', () => {
   it('should test connected app', () => {
     const initialState = {
-      service: {
-
-      },
-      actions: {
-        serviceActions: {
-        }
-      },
+      service: {},
+      actions: { serviceActions: {} },
       cg: {
         bb: {
           data: {
@@ -331,15 +327,15 @@ describe('Testing Summary component', () => {
     };
     const store = mockStore(initialState);
     const props = {
-      agents: [{ firstName: '' }],
+      agents: [{ agentCode: '60000', firstName: 'Ted' }],
       fieldQuestions: [],
-      quoteData: {},
       dispatch: store.dispatch,
       appState: {
         data: {
           submitting: false
         }
       },
+      quoteData,
       ...propTypes
     };
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
@@ -415,8 +411,6 @@ describe('Testing Summary component', () => {
       ...propTypes
     };
 
-    handleFormSubmit({
-
-    }, store.dispatch, props);
+    handleFormSubmit({}, store.dispatch, props);
   });
 });
