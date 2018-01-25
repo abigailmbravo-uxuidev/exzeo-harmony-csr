@@ -160,7 +160,6 @@ describe('Testing NewNoteFileUploader component', () => {
     const onDragEnter = wrapper.instance().onDragEnter();
     const onDragLeave = wrapper.instance().onDragLeave();
     const onDrop = wrapper.instance().onDrop([]);
-    console.log('ergz', wrapper.instance())
     expect(wrapper);
   });
 
