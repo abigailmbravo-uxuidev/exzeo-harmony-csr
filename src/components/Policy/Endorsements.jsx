@@ -26,7 +26,7 @@ import DateField from '../Form/inputs/DateField';
 import Loader from '../Common/Loader';
 import * as policyStateActions from '../../actions/policyStateActions';
 import * as actionTypes from '../../actions/actionTypes';
-
+import { premiumEndorsmentList } from './endorsementTypes'
 export const scrollToView = (elementName) => {
   const element = document.getElementById(elementName);
   if (element) {
@@ -548,7 +548,6 @@ export const save = (data, dispatch, props) => {
 const premiumAmountFormatter = cell => Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 const dateFormatter = cell => `${cell.substring(0, 10)}`;
 
-const PREMIUM_ENDORSEMENTS = ['Coverage Endorsement', 'Deductible Endorsement', 'Surcharge Endorsement', 'Discount Endorsement', 'Wind Mitigation Endorsement', 'Home / Location Endorsement' ,'Multiple Endorsements Endorsement']
 
 export class Endorsements extends React.Component {
   componentDidMount() {
@@ -1148,7 +1147,7 @@ export class Endorsements extends React.Component {
                   <section>
                     <h3>Previous Endorsements</h3>
                     <BootstrapTable data={_.map(endorsementHistory, endorsement => {
-                      endorsement.netCharge = _.includes(PREMIUM_ENDORSEMENTS, endorsement.transactionType) ? premiumAmountFormatter(endorsement.netCharge): '';
+                      endorsement.netCharge = _.includes(premiumEndorsmentList, endorsement.transactionType) ? premiumAmountFormatter(endorsement.netCharge): '';
                       return endorsement;
                     })}>
                       <TableHeaderColumn dataField="effectiveDate" isKey dataFormat={dateFormatter}>Date</TableHeaderColumn>
