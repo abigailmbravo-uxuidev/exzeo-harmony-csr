@@ -5,7 +5,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
 import localStorage from 'localStorage';
-import ConnectedApp, { Splash, handleNewTab } from './Splash';
+import ConnectedApp, { Splash, handleNewTab, handleSelectQuote } from './Splash';
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
@@ -462,6 +462,9 @@ describe('Testing Splash component', () => {
     const store = mockStore(initialState);
     const props = {
       actions: {
+        appStateActions: {
+          setAppState(){}
+        },
         questionsActions: {
           getUIQuestions() { }
         },
@@ -489,6 +492,24 @@ describe('Testing Splash component', () => {
     </Provider>);
     expect(wrapper.find(Splash).props()).toEqual(props);
 
+    const wrapperComponent = shallow( <Splash {...props} />);
     wrapper.setProps({});
+    wrapperComponent.instance().handleSelectQuote(quoteData, props)
+    wrapperComponent.instance().handleSelectAddress({
+      id: 1,
+      physicalAddress: {
+        address1: '123 this way dr',
+        city: 'Tampa',
+        state: 'FL',
+        zip: '33611',
+        country: {
+          code: 'US',
+          displayText: 'United States'
+        }
+      }
+    }, props);
+    wrapperComponent.instance().handleSelectPolicy(policy, props)
+
+
   });
 });
