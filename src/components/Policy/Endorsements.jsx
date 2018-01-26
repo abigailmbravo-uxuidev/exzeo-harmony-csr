@@ -545,8 +545,10 @@ export const save = (data, dispatch, props) => {
 };
 
 
-const amountFormatter = cell => (cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '');
+const premiumAmountFormatter = cell => Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 const dateFormatter = cell => `${cell.substring(0, 10)}`;
+
+const PREMIUM_ENDORSEMENTS = ['Coverage Endorsement', 'Deductible Endorsement', 'Surcharge Endorsement', 'Discount Endorsement', 'Wind Mitigation Endorsement', 'Home / Location Endorsement' ,'Multiple Endorsements Endorsement']
 
 export class Endorsements extends React.Component {
   componentDidMount() {
@@ -1145,9 +1147,12 @@ export class Endorsements extends React.Component {
                   </section>
                   <section>
                     <h3>Previous Endorsements</h3>
-                    <BootstrapTable data={endorsementHistory || []}>
+                    <BootstrapTable data={_.map(endorsementHistory, endorsement => {
+                      endorsement.netCharge = _.includes(PREMIUM_ENDORSEMENTS, endorsement.transactionType) ? premiumAmountFormatter(endorsement.netCharge): '';
+                      return endorsement;
+                    })}>
                       <TableHeaderColumn dataField="effectiveDate" isKey dataFormat={dateFormatter}>Date</TableHeaderColumn>
-                      <TableHeaderColumn dataField="netCharge" dataFormat={amountFormatter}>Amount</TableHeaderColumn>
+                      <TableHeaderColumn dataField="netCharge">Amount</TableHeaderColumn>
                       <TableHeaderColumn dataField="transactionType" dataAlign="right">Type</TableHeaderColumn>
                     </BootstrapTable>
                   </section>
@@ -1287,7 +1292,7 @@ redux mapping
 */
 const mapStateToProps = state => ({
   tasks: state.cg,
-  endorsementHistory: state.service.endorsementHistory,
+  endorsementHistory: state.service.endorsementHistory || [],
   appState: state.appState,
   fieldValues: _.get(state.form, 'Endorsements.values', {}),
   initialValues: handleInitialize(state),
