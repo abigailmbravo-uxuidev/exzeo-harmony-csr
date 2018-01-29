@@ -10,6 +10,7 @@ import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 import normalizePhone from '../Form/normalizePhone';
 import Loader from '../Common/Loader';
+import NoResults from './NoResultsForService';
 
 export const SearchResults = (props) => {
   const model = props.tasks[props.appState.modelName] || {};
@@ -73,8 +74,8 @@ export const SearchResults = (props) => {
                 title={quote.policyHolders && quote.policyHolders.length > 0
                   ? `${quote.policyHolders[0].firstName} ${quote.policyHolders[0].lastName}`
                   : ''}
-              >{quote.policyHolders[0] && `${quote.policyHolders[0].firstName.replace(/(^.{20}).*$/, '$1...')}`}<br/>
-            {quote.policyHolders[0] && `${quote.policyHolders[0].lastName.replace(/(^.{20}).*$/, '$1...')}`}</h5>
+              >{quote.policyHolders[0] && `${quote.policyHolders[0].firstName.replace(/(^.{20}).*$/, '$1...')}`}<br />
+                {quote.policyHolders[0] && `${quote.policyHolders[0].lastName.replace(/(^.{20}).*$/, '$1...')}`}</h5>
             </div>
           </div>
 
@@ -138,7 +139,7 @@ export const SearchResults = (props) => {
           <div className="icon-name">
             <i className="card-icon fa fa-user-circle" />
             <div className="card-name">
-              <h5 title={`${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName.replace(/(^.{20}).*$/, '$1...')}`}<br/>
+              <h5 title={`${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName.replace(/(^.{20}).*$/, '$1...')}`}<br />
                 {policy.policyHolders[0] && `${policy.policyHolders[0].lastName.replace(/(^.{20}).*$/, '$1...')}`}</h5>
             </div>
           </div>
@@ -187,7 +188,12 @@ export const SearchResults = (props) => {
 
   if (searchData && searchData.searchType === 'agency') {
     const agencyResults = props.agencies ? props.agencies : [];
-
+    console.log(props.appState.data);
+    if (agencyResults.length <= 0 && searchData.searchType === 'agency' &&  props.appState.data && !props.appState.data.agentSubmitting) {
+      return (
+        <NoResults />
+      )
+    } else {     
     return (<div className="user-list agency-list">
       { props.appState.data && props.appState.data.agentSubmitting && <Loader />}
       {
@@ -211,7 +217,7 @@ export const SearchResults = (props) => {
                   {agency.physicalAddress.state}&nbsp;
                   {agency.physicalAddress.zip}
                   {agency.status ? <span className="additional-data status"><label>STATUS:&nbsp;</label>{agency.status}</span> : null}
-                  {agency.tier  || agency.tier >= 0 ? <span className="additional-data tier"><label>TIER:&nbsp;</label>{agency.tier}</span> : <span className="additional-data tier"><label>TIER:&nbsp;</label></span>}
+                  {agency.tier || agency.tier >= 0 ? <span className="additional-data tier"><label>TIER:&nbsp;</label>{agency.tier}</span> : <span className="additional-data tier"><label>TIER:&nbsp;</label></span>}
                   {agency.websiteUrl ? <span className="additional-data website"><label>WEBSITE:&nbsp;</label><a href={`${agency.websiteUrl}`} target="_blank">{agency.websiteUrl}</a></span> : null}
                 </div>
                 <div className="additional-contacts">
@@ -255,13 +261,18 @@ export const SearchResults = (props) => {
             </div>
           </div>
         </div>)
-      }
+      }      
     </div>);
+    }
   }
 
   if (searchData && searchData.searchType === 'agent') {
     const agentResults = props.agents ? props.agents : [];
-
+    if (props.appState.data && !props.appState.data.agentSubmitting && agentResults.length <= 0 && searchData.searchType === 'agent') {
+      return (
+        <NoResults />
+      )
+    } else {
     return (<div className="user-list agent-list">
       { props.appState.data && props.appState.data.agentSubmitting && <Loader />}
       {
@@ -313,9 +324,10 @@ export const SearchResults = (props) => {
             </div>
           </div>
         </div>)
-      }
+            }      
     </div>
     );
+  }
   }
   return <span />;
 };
