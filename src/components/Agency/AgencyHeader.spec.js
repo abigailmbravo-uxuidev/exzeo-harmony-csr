@@ -3,25 +3,12 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { ClearError } from './ClearError';
+import ConnectedApp from './AgencyHeader';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 
-describe('Testing ClearError component', () => {
-  it('should test props and render', () => {
-    const props = {
-      actions: {
-        errorActions: {
-          dispatchClearAppError: () => {}
-        }
-      },
-      ...propTypes
-    };
-    const wrapper = shallow(<ClearError {...props} />);
-    expect(wrapper);
-  });
-
+describe('Testing AgencyHeader component', () => {
   it('should test connected app', () => {
     const initialState = {
       cg: {
@@ -34,6 +21,7 @@ describe('Testing ClearError component', () => {
         }
       },
       appState: {
+        data: { showLoader: false },
         modelName: 'bb'
       }
     };

@@ -15,6 +15,7 @@ export const TextInput = ({
   disabled,
   min,
   max,
+  dependsOn,
   name
 }) => {
   const { touched, error, warning } = meta;
@@ -91,6 +92,8 @@ TextInput.propTypes = {
    */
   max: PropTypes.number,
   min: PropTypes.number,
+
+  dependsOn: PropTypes.array,
 
   /**
    * Answer Type from original question

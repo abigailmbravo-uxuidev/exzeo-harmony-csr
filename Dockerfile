@@ -1,4 +1,4 @@
-FROM mhart/alpine-node:7
+FROM mhart/alpine-node:8
 MAINTAINER Exzeo
 
 ENV NODE_ENV=production
@@ -19,6 +19,6 @@ WORKDIR /app
 RUN apk update && apk --no-cache add bash libc6-compat && \
   npm install && \
   npm run build && \
-  npm cache clean
+  npm cache clean --force
 
 CMD ["npm", "start"]

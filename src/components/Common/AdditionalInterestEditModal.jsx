@@ -106,7 +106,7 @@ export const AdditionalInterestEditModal = (props) => {
               name="mortgage"
               searchable
               labelKey="displayText"
-              autofocus
+              autoFocus
               value={appState.data.selectedMortgageeOption}
               options={getAnswers('mortgagee', questions)}
               onChange={val => setMortgageeValues(val, props)}

@@ -8,7 +8,6 @@ import * as cgActions from '../../actions/cgActions';
 import * as questionsActions from '../../actions/questionsActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
-import ClearErrorConnect from '../Error/ClearError';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 import AdditionalInterestModal from '../../components/Common/AdditionalInterestModal';
@@ -301,7 +300,6 @@ export class AdditionalInterests extends Component {
     applyRank(quoteData.additionalInterests);
     return (
       <QuoteBaseConnect>
-        <ClearErrorConnect />
         <div className="route-content">
           <form id="AddAdditionalInterestPage">
             <div className="scroll">

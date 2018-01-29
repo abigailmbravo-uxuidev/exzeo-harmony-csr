@@ -9,15 +9,13 @@ import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import * as serviceActions from '../../actions/serviceActions';
 import * as policyStateActions from '../../actions/policyStateActions';
-import EditEffectiveDataPopUp from './EditEffectiveDatePopup'
-import Loader from '../Common/Loader';
 
 export const showEffectiveDatePopUp = (props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
       { ...props.appState.data, showEffectiveDateChangePopUp: true });
 };
 
-export class DetailHeader extends Component { 
+export class DetailHeader extends Component {
 
   componentDidMount() {
     this.props.actions.serviceActions.getEffectiveDateChangeReasons();
@@ -42,7 +40,7 @@ export class DetailHeader extends Component {
           <div>
             <dd>{_.get(policy, 'product') === 'HO3' ? `${_.get(policy, 'product')} Homeowners` : _.get(policy, 'product')}</dd>
             <dd>{_.get(policy, 'policyNumber')}</dd>
-            <dd>{`${_.get(policy, 'status')} / ${_.get(summaryLedger, 'status.displayText')}`}</dd>
+            <dd className="policy-status">{`${_.get(policy, 'status')} / ${_.get(summaryLedger, 'status.displayText')}`}</dd>
           </div>
         </dl>
       </section>
@@ -102,7 +100,7 @@ export class DetailHeader extends Component {
       <section id="policyEffectiveDate" className="policyEffectiveDate">
         <dl>
           <div>
-            <dt>Effective Date <button className="btn btn-link btn-xs btn-alt-light" onClick={() => showEffectiveDatePopUp(this.props)}><i className="fa fa-pencil-square" />Edit</button></dt>
+            <dt>Effective Date <button className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showEffectiveDatePopUp(this.props)}><i className="fa fa-pencil-square" />Edit</button></dt>
             <dd>{moment.utc(_.get(policy, 'effectiveDate')).format('MM/DD/YYYY')}</dd>
           </div>
         </dl>
