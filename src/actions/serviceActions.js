@@ -1,5 +1,6 @@
 import axios from 'axios';
 import _ from 'lodash';
+import moment from 'moment';
 import { batchActions } from 'redux-batched-actions';
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
@@ -24,19 +25,45 @@ export const runnerSetup = data => ({
   data
 });
 
-export const getNotes = id => (dispatch) => {
-  const axiosConfig = runnerSetup({
+export const getNotes = (id, policyId) => (dispatch) => {
+  const pid = policyId ? policyId : id;
+  const notesRequest = runnerSetup({
     service: 'transaction-logs.services',
     method: 'GET',
     path: `history?number=${id}`
   });
 
-  return axios(axiosConfig).then((response) => {
-    const data = { notes: response.data.result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
+  const docsRequest = runnerSetup({
+    service: 'file-index.services',
+    method: 'GET',
+    path: `v1/fileindex/${pid}`
+  });
+
+  return Promise.all([
+    axios(notesRequest),
+    axios(docsRequest)
+  ])
+  .then(axios.spread((notesResult, docsResult) => {
+    const notes = notesResult.data.result;
+    docsResult.data.result.forEach(doc => {
+      const newNote = { 
+        '_id': doc.envelopeId ? doc.envelopeId : doc.fileUrl,
+        contactType: 'system',
+        createdBy: {userName: 'System', userId: doc.createdBy},
+        createdDate:  moment.unix(doc.createdDate),
+        attachments: [
+          {
+            fileType: 'System',
+            fileName: doc.fileName,
+            fileUrl: doc.fileUrl
+          }
+        ]
+      };
+      notes.push(newNote)
+    });
+
+    return dispatch(serviceRequest({notes}));
+  }))
   .catch((error) => {
     const errorData = handleError(error);
     return dispatch(batchActions([
@@ -83,7 +110,7 @@ export const getAgents = (companyCode, state) => (dispatch) => {
     path: `v1/agents/${companyCode}/${state}`
   });
 
-  return axios(axiosConfig).then((response) => {
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
     const data = { agents: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
@@ -96,6 +123,33 @@ export const getAgents = (companyCode, state) => (dispatch) => {
       ]));
     });
 };
+
+export const searchAgents = (companyCode, state, firstName, lastName, agentCode, address, licNumber) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'agency.services',
+    method: 'GET',
+    path: `v1/agents/${companyCode}/${state}?firstName=${firstName}&lastName=${lastName}&agentCode=${agentCode}&mailingAddress=${address}&licenseNumber=${licNumber}`
+  });
+
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
+    const data = { agents: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+  .catch((error) => {
+    const message = handleError(error);
+    return dispatch(batchActions([
+      errorActions.setAppError({ message })
+    ]));
+  });
+};
+
+export const clearAgent = () => (dispatch) => {
+  const data = { agents: [] };
+  return dispatch(serviceRequest(data));
+};
+
 
 export const getAgency = (companyCode, state, agencyCode) => (dispatch) => {
   const axiosConfig = runnerSetup({
@@ -139,14 +193,14 @@ export const getAgentsByAgency = (companyCode, state, agencyCode) => (dispatch) 
     });
 };
 
-export const getAgencies = (companyCode, state) => (dispatch) => {
+export const searchAgencies = (companyCode, state, displayName, agencyCode, address, licNumber, fein, phone) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'agency.services',
     method: 'GET',
-    path: `v1/agencies/${companyCode}/${state}`
+    path: `v1/agencies/${companyCode}/${state}?displayName=${displayName}&agencyCode=${agencyCode}&mailingAddress=${address}&licenseNumber=${licNumber}&taxIdNumber=${fein}&primaryPhoneNumber=${phone}`
   });
 
-  return axios(axiosConfig).then((response) => {
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
     const result = response.data && response.data.result ? response.data.result.sort() : [];
     const data = { agencies: result };
     return dispatch(batchActions([
@@ -160,6 +214,14 @@ export const getAgencies = (companyCode, state) => (dispatch) => {
       ]));
     });
 };
+
+export const clearAgencies = () => (dispatch) => {
+  const data = { agencies: [] };
+  return dispatch(batchActions([
+    serviceRequest(data)
+  ]));
+};
+
 
 export const currentAgent = (companyCode, state, agentCode) => (dispatch) => {
   const axiosConfig = runnerSetup({
@@ -613,3 +675,24 @@ export const getZipcodeSettings = (companyCode, state, product, zip) => (dispatc
     });
 };
 
+export const getAgencies = (companyCode, state) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'agency.services',
+    method: 'GET',
+    path: `v1/agencies/${companyCode}/${state}`
+  });
+
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
+    const result = response.data && response.data.result ? response.data.result.sort() : [];
+    const data = { agencies: result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};

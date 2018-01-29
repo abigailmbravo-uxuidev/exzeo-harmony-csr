@@ -10,16 +10,6 @@ import { PolicyholderAgent } from './PolicyholderAgent';
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
 
-function wrapWithContext(context, contextTypes, children) {
-  const wrapperWithContext = React.createClass({ //eslint-disable-line
-    childContextTypes: contextTypes,
-    getChildContext() { return context; },
-    render() { return React.createElement('div', null, children); }
-  });
-
-  return React.createElement(wrapperWithContext);
-}
-
 const policy = {
   companyCode: 'TTIC',
   state: 'FL',
@@ -171,14 +161,9 @@ describe('Testing Coverage component', () => {
       }
     };
 
-    const context = { router: {} };
-    const contextTypes = { router: React.PropTypes.object };
-    const wrapper = wrapWithContext(context, contextTypes, <PolicyholderAgent />, React);
-    expect(wrapper);
-
     const shallowWrapper = shallow(<PolicyholderAgent store={store} {...props} />);
     expect(shallowWrapper);
 
-    shallowWrapper.instance().componentWillReceiveProps({ policy, actions: props.actions });
+    shallowWrapper.instance().componentDidMount({ policy, actions: props.actions });
   });
 });

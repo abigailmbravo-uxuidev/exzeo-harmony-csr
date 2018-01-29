@@ -1,0 +1,671 @@
+.app-wrapper.csr.agency {
+  //main header
+  header {
+    div[role="banner"] {
+      .tab-tag {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 12rem;
+        height: 3.25rem;
+        margin: (-$padding) ($padding*2) (-$padding) (-$padding*2);
+        padding: 0 ($padding*2);
+        color: $white;
+        border-right: 1px dotted mix($bright-blue-darken-02, $green, 40%);
+        background: mix($bright-blue-darken-02, $green, 80%);
+
+        span {
+          font-size: 1.125rem;
+        }
+      }
+
+      .policy-description {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        flex-shrink: 0;
+        color: $white;
+        font-size: $font-size-h5;
+
+        label {
+          margin-bottom: 0;
+          padding: 0 $padding 0 ($padding*4);
+          color: $warm-gray-07;
+          font-weight: $font-weight-normal;
+        }
+      }
+    }
+  }
+  //detail header
+  .detailHeader {
+    width: 100%;
+  }
+  //content wrapper
+  main[role="document"] {
+    height: calc(100vh - 8.5rem);
+    min-height: calc(100vh - 8.5rem);
+
+    .content-wrapper {
+      overflow: hidden;
+      flex-grow: 1;
+      flex-shrink: 1;
+      flex-wrap: nowrap;
+      width: auto;
+
+      .route-content {
+        display: flex;
+        overflow: hidden;
+        flex-grow: 1;
+        flex-shrink: 1;
+
+        .scroll {
+          overflow-y: auto;
+          flex-grow: 1;
+          flex-shrink: 0;
+          width: 100%;
+
+          .card {
+            &.contact {
+              flex-direction: row;
+              margin: 0 (-$padding/2) ($padding);
+              padding: $padding ($padding*1.5);
+
+              .contact-details {
+                h4 {
+                  margin-bottom: 0;
+                  color: $warm-gray-10;
+
+                  &.agency,
+                  &.agent {
+                    font-weight: $font-weight-normal;
+
+                    .agency-display-name,
+                    .agent-name {
+                      font-weight: $font-weight-bold;
+                    }
+
+                    .agency-code,
+                    .agent-code {
+                      font-weight: $font-weight-normal;
+                    }
+
+                    .agency-legal-name {}
+
+                    .agent-license {
+                      font-weight: $font-weight-normal;
+                    }
+                  }
+                }
+
+                .contact-address {
+                    small {
+                        margin-left: $padding;
+
+                        label {
+                            font-size: $font-size-xs;
+                        }
+                    }
+                }
+
+                .additional-contacts {
+                  display: flex;
+                  flex-wrap: wrap;
+                  margin-top: $padding;
+                  border-top: 1px dotted $warm-gray-01;
+
+                  ul {
+                    margin: $padding 0 0;
+                    padding: 0;
+                    list-style: none;
+
+                    li {
+                      display: flex;
+                      align-items: center;
+                      padding: 0;
+
+                      &:last-child {
+                        padding-bottom: 0;
+                    }
+
+                      p {
+                        display: flex;
+                        align-items: center;
+                        margin-right: $padding*2;
+                        margin-bottom: 0;
+
+                        .contact-divider {
+                          margin: 0 ($padding*2) 0 0;
+                        }
+
+                        small {
+                          margin-right: $padding;
+                          padding: 0 0.2rem;
+                          color: $white;
+                          border-radius: 2px;
+                          background: $warm-gray-08;
+                          font-size: 70%;
+
+                          sup {
+                            top: -.5em;
+                            font-size: 50%;
+                          }
+
+                          i {
+                            margin-right: 0;
+                            margin-left: 0.1rem;
+                            color: $white;
+                          }
+                        }
+
+                        i {
+                          margin-right: $padding;
+                          color: $warm-gray-08;
+
+                          &.fa-phone-square {
+                            margin-top: 3%;
+                            font-size: 112%;
+                          }
+                        }
+
+                        h5 {
+                          flex-basis: auto;
+                          flex-grow: 0;
+                          flex-shrink: 0;
+                          margin: 0 $padding 0 0;
+                          color: $warm-gray-08;
+                        }
+                      }
+
+                      div {
+                        display: flex;
+                        align-items: center;
+                        margin-right: $padding*2;
+
+                        h5 {
+                          margin: 0 $padding 0 0;
+                          color: $warm-gray-08;
+                        }
+
+                        span {
+                          width: auto;
+                          white-space: nowrap;
+                        }
+
+                        i {
+                          color: $warm-gray-08;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+
+              .contact-title {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 0;
+                flex-shrink: 0;
+                justify-content: center;
+                width: 6rem;
+
+                i {
+                  margin-bottom: $padding*.75;
+                  text-align: center;
+                  color: $bright-blue-darken-04;
+                  font-size: $font-size-h2;
+                }
+
+                label {
+                  margin-bottom: 0;
+                  text-align: center;
+                  font-size: $font-size-sm;
+                }
+              }
+
+              &.agency,
+              &.agent,
+              &.primary-policyholder,
+              &.secondary-policyholder {
+                .contact-title {
+                  display: flex;
+                  flex-direction: column;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  justify-content: center;
+                  width: 6rem;
+
+                  i {
+                    margin-bottom: $padding*.75;
+                    text-align: center;
+                    color: $bright-blue-darken-04;
+                    font-size: $font-size-h2;
+                  }
+
+                  label {
+                    margin-bottom: 0;
+                    text-align: center;
+                    font-size: $font-size-sm;
+                  }
+
+                  > small {
+                    display: flex;
+                    flex-direction: column;
+
+                    i {
+                      margin: 0;
+                      font-size: $font-size-sm;
+                    }
+
+                    label {
+                      margin-bottom: $padding/4;
+                      font-size: $font-size-xs;
+                    }
+                  }
+                }
+
+                .contact-details {
+                  flex-grow: 1;
+                  margin-left: $padding*2;
+
+                  h4 {
+                    margin-bottom: 0;
+                    color: $warm-gray-10;
+
+                    &.agency {
+                      font-weight: $font-weight-normal;
+
+                      .agency-display-name {
+                        font-weight: $font-weight-bold;
+                      }
+
+                      .agency-legal-name {}
+                    }
+                  }
+
+                  p {
+                    margin-bottom: 0;
+                    color: $warm-gray-10;
+                  }
+
+                  .contact-methods {
+                    display: flex;
+                    flex-wrap: wrap;
+
+                    p {
+                      display: flex;
+                      align-items: center;
+                      margin-right: $padding*2;
+
+                      small {
+                        margin-right: $padding;
+                        padding: 0 0.2rem;
+                        color: $white;
+                        border-radius: 2px;
+                        background: $warm-gray-08;
+                        font-size: 70%;
+
+                        sup {
+                          top: -.5em;
+                          font-size: 50%;
+                        }
+
+                        i {
+                          margin-right: 0;
+                          margin-left: 0.1rem;
+                          color: $white;
+                        }
+                      }
+
+                      i {
+                        margin-right: $padding;
+                        color: $warm-gray-08;
+
+                        &.fa-phone-square {
+                          margin-top: 3%;
+                          font-size: 112%;
+                        }
+                      }
+
+                      h5 {
+                        flex-basis: auto;
+                        flex-grow: 0;
+                        flex-shrink: 0;
+                        margin: 0 $padding 0 0;
+                        color: $warm-gray-08;
+                      }
+                    }
+                  }
+
+                  .additional-contacts {
+                    margin-top: 1rem;
+                    border-top: 1px dotted $warm-gray-01;
+
+                    ul {
+                      margin: 1rem 0 0;
+                      padding: 0;
+                      list-style: none;
+
+                      li {
+                        display: flex;
+                        align-items: center;
+                        padding: 0;
+
+                        &:last-child {
+                          padding-bottom: 0;
+                        }
+
+                        div {
+                          display: flex;
+                          align-items: center;
+                          margin-right: $padding*2;
+
+                          h5 {
+                            margin: 0 $padding 0 0;
+                            color: $warm-gray-08;
+                          }
+
+                          span {
+                            width: auto;
+                            white-space: nowrap;
+                          }
+
+                          i {
+                            color: $warm-gray-08;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+
+                .electronic-delivery {
+                  display: flex;
+                  align-items: center;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  width: auto;
+                  font-size: $font-size-sm;
+
+                  label {
+                    margin-right: $padding;
+                    margin-bottom: 0;
+                    font-size: $font-size-sm;
+                  }
+                }
+              }
+            }
+          }
+
+          .card-multi {
+            display: block;
+
+            .card-multi-split {
+              display: flex;
+              align-content: stretch;
+              margin-bottom: ($padding*2);
+              padding-bottom: ($padding*2);
+              border-bottom: 1px dashed $warm-gray-01;
+
+              .contact-details {
+                flex: 1 1 auto;
+              }
+
+              a {
+                flex: 0 0 auto;
+
+                i.fa-pencil {
+                  color: $bright-blue-darken-04;
+                  font-size: 1.25rem;
+                }
+              }
+            }
+          }
+
+          .card-multi:last-of-type {
+            margin-bottom: 0;
+          }
+        }
+
+        .survey-wrapper {
+          flex-direction: column;
+        }
+
+        .form-group {
+          section {
+            margin-bottom: $padding*2;
+            padding-bottom: $padding*2;
+            border-bottom: 1px dashed mix($bright-blue-darken-02, $green, 80%);
+
+            &:last-child {
+              margin-bottom: 0;
+              border-bottom-width: 0;
+            }
+
+            dl {
+              div {
+                margin-right: $padding*4;
+
+                dt {
+                  margin-bottom: $padding;
+                  color: $warm-gray-08;
+                  font-size: $font-size-h5;
+                }
+
+                dd {
+                  display: inline-flex;
+                  margin-bottom: $padding*2;
+                  color: $warm-gray-10;
+                }
+              }
+            }
+
+            h4 {
+              font-weight: normal;
+            }
+
+            .property-info {
+              justify-content: space-between;
+            }
+
+            .payment-summary,
+            .property-info {
+              display: flex;
+
+              &.grid {
+                display: block;
+
+                .react-bs-table {
+                  margin: 0;
+                }
+
+                .total {
+                  > div {
+                    margin: 0;
+                    padding: ($padding) ($padding*2);
+                    text-align: right;
+                    color: $bright-blue-darken-04;
+                    border-top: $border-width dotted $border-color;
+                    font-weight: bold;
+                  }
+                }
+              }
+            }
+
+            &.payment-summary {
+              .payment-summary {
+                * {
+                  white-space: normal;
+                }
+
+                .date {
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  width: 120px;
+                }
+
+                .type {
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  width: 200px;
+                }
+
+                .description {
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  width: 230px;
+                }
+
+                .note {
+                  flex-grow: 1;
+                  flex-shrink: 1;
+                }
+
+                .amount {
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  width: 200px;
+
+                  > div {
+                    text-align: right;
+                  }
+                }
+              }
+            }
+
+            .property-info {
+              justify-content: space-between;
+            }
+
+            .table-striped > tbody > tr:nth-of-type(odd):hover {
+              background: $white;
+            }
+
+            .table-striped > tbody > tr:nth-of-type(even):hover {
+              background: $warm-gray-01;
+            }
+
+            .react-bs-table .table-bordered > tbody > tr:nth-of-type(even):hover > td {
+              background: $warm-gray-01;
+            }
+
+            .responsive-tables {
+              display: flex;
+              flex-direction: row;
+              width: 100%;
+
+              .card-view,
+              .table-view {
+                &:first-child {
+                  .react-bs-table-container {
+                    .react-bs-table {
+                      margin-left: 0;
+                    }
+                  }
+                }
+
+                &:last-child {
+                  .react-bs-table-container {
+                    .react-bs-table {
+                      margin-right: 0;
+                    }
+                  }
+                }
+              }
+
+              .table-view {
+                width: 33.33%;
+
+                .deductible {
+                  thead tr th {
+                    background: rgba($orange-lighten-04, .3);
+                  }
+
+                  tbody tr:nth-of-type(even) > td {
+                    background: rgba($orange-lighten-04, .2);
+                  }
+                }
+
+                .premium {
+                  thead tr th {
+                    background: rgba($yellow-lighten-04, .3);
+                  }
+
+                  tbody tr:nth-of-type(even) > td {
+                    background: rgba($yellow-lighten-04, .2);
+                  }
+                }
+
+                .billing {
+                  thead tr th {
+                    background: rgba($green-lighten-04, .3);
+                  }
+
+                  tbody tr:nth-of-type(even) > td {
+                    background: rgba($green-lighten-04, .2);
+                  }
+                }
+
+                .coverage,
+                .discountSurcharge {
+                  width: 60%;
+                  padding: ($padding*1.5) ($padding*2);
+                }
+
+                .value {
+                  width: 40%;
+                  padding: ($padding*1.5) ($padding*2);
+                }
+              }
+            }
+
+            .table-view.claims {
+              margin: 0 0 ($padding*2);
+
+              .claimNumber {
+                width: 10%;
+              }
+
+              .lossDate {
+                width: 10%;
+              }
+
+              .closedDate {
+                width: 10%;
+              }
+
+              .examiner {
+                width: 20%;
+              }
+
+              .lossDescription {
+                width: 60%;
+              }
+            }
+          }
+
+          .results-wrapper {
+            ul {
+              padding: 0;
+
+              li {
+                a {
+                  .card-icon {
+                    display: flex;
+                    align-items: center;
+                    flex-direction: column;
+                  }
+
+                  section {
+                    margin: 0 0 0 ($padding*2);
+                    padding: 0;
+                    border-bottom-width: 0;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

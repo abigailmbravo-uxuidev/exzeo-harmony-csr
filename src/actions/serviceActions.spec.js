@@ -1,6 +1,5 @@
 import configureStore from 'redux-mock-store';
 import axios from 'axios';
-import moment from 'moment';
 import MockAdapter from 'axios-mock-adapter';
 import * as types from './actionTypes';
 import * as serviceActions from './serviceActions';
@@ -34,7 +33,7 @@ describe('Service Actions', () => {
       createdBy: {},
       updatedBy: {}
     };
-    const axiosOptions = {
+    const axiosNotesOptions = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -47,55 +46,29 @@ describe('Service Actions', () => {
       }
     };
 
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: [note]
-    });
+    const axiosDocsOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'file-index.services',
+        method: 'GET',
+        path: `v1/fileindex/test`
+      }
+    };
+    
+    mockAdapter
+      .onPost(axiosNotesOptions.url).reply(200, { result: [note] })
+      .onPost(axiosDocsOptions.url).reply(200, { result: [note] })
 
     const initialState = {};
     const store = mockStore(initialState);
-    serviceActions.getNotes(store.dispatch);
 
     return serviceActions.getNotes('test')(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
-      });
-  });
-
-  it('should fail start getNotes', () => {
-    const mockAdapter = new MockAdapter(axios);
-    const note = {
-      noteType: 'test',
-      noteContent: 'test',
-      contactType: 'Agent',
-      createdAt: new Date().getTime(),
-      noteAttachments: [],
-      createdBy: {},
-      updatedBy: {}
-    };
-    const axiosOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'transaction-logs.services',
-        method: 'GET',
-        path: 'history?number=test'
-      }
-    };
-
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: [note]
-    });
-
-    const initialState = {};
-    const store = mockStore(initialState);
-    serviceActions.getNotes(store.dispatch);
-
-    return serviceActions.getNotes('4435')(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
       });
   });
 
@@ -139,6 +112,14 @@ describe('Service Actions', () => {
     const result = serviceActions.addNote(note, [])(store.dispatch);
   });
 
+  it('should clear agent', () => {
+    const initialState = {service: { agents: ['Test Agent'] } };
+    const store = mockStore(initialState);
+    const agent = serviceActions.clearAgent()(store.dispatch);
+    expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
+    expect(store.getActions()[0].data).toEqual({ agents: [] });
+  });
+
   it('should call start getAgents', () => {
     const mockAdapter = new MockAdapter(axios);
 
@@ -163,7 +144,7 @@ describe('Service Actions', () => {
     const store = mockStore(initialState);
     serviceActions.getAgents(store.dispatch);
 
-    return serviceActions.getAgents('TTIC', 'FL')(store.dispatch)
+    return serviceActions.getAgents('TTIC', 'FL', '', '', '', '', '', '')(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
       });
@@ -200,7 +181,7 @@ describe('Service Actions', () => {
       });
   });
 
-  it('should call start getAgencies', () => {
+  it('should call start searchAgencies', () => {
     const mockAdapter = new MockAdapter(axios);
 
     const axiosOptions = {
@@ -212,7 +193,7 @@ describe('Service Actions', () => {
       data: {
         service: 'agency.services',
         method: 'GET',
-        path: 'v1/agencies/TTIC/FL'
+        path: 'v1/agencies/TTIC/FL?displayName=&agencyCode=&mailingAddress=&licenseNumber=&taxIdNumber=&primaryPhoneNumber='
       }
     };
 
@@ -222,15 +203,15 @@ describe('Service Actions', () => {
 
     const initialState = {};
     const store = mockStore(initialState);
-    serviceActions.getAgencies(store.dispatch);
+    serviceActions.searchAgencies(store.dispatch);
 
-    return serviceActions.getAgencies('TTIC', 'FL')(store.dispatch)
+    return serviceActions.searchAgencies('TTIC', 'FL', '', '', '', '', '', '')(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
       });
   });
 
-  it('should fail start getAgencies', () => {
+  it('should fail start searchAgencies', () => {
     const mockAdapter = new MockAdapter(axios);
 
     const axiosOptions = {
@@ -252,9 +233,9 @@ describe('Service Actions', () => {
 
     const initialState = {};
     const store = mockStore(initialState);
-    serviceActions.getAgencies(store.dispatch);
+    serviceActions.searchAgencies(store.dispatch);
 
-    return serviceActions.getAgencies('454545', 'FL')(store.dispatch)
+    return serviceActions.searchAgencies('454545', 'FL')(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
       });
@@ -624,7 +605,7 @@ describe('Service Actions', () => {
 
     const submitData = {};
 
-    submitData.cashDate = moment.utc('07-27-2017').format('YYYY-MM-DD');
+    submitData.cashDate = '2017-07-27';
     submitData.batchNumber = String('2017072701');
     submitData.amount = Number(String('400').replace(/[^\d.-]/g, ''));
     submitData.cashType = String('Electronic Deposit');
@@ -1020,9 +1001,9 @@ describe('Service Actions', () => {
     serviceActions.getRate(store.dispatch);
 
     return serviceActions.getRate({})(store.dispatch)
-    .then(() => {
-      expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
-    });
+      .then(() => {
+        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+      });
   });
 
   it('should fail start getRate', () => {
@@ -1051,9 +1032,9 @@ describe('Service Actions', () => {
     serviceActions.getRate(store.dispatch);
 
     return serviceActions.getRate(null)(store.dispatch)
-    .then(() => {
-      expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
-    });
+      .then(() => {
+        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+      });
   });
 
   const ai = {
@@ -1104,9 +1085,9 @@ describe('Service Actions', () => {
     serviceActions.getRate(store.dispatch);
 
     return serviceActions.createTransaction(ai)(store.dispatch)
-    .then(() => {
-      expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
-    });
+      .then(() => {
+        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+      });
   });
 
   it('should fail start getRate', () => {
@@ -1135,69 +1116,130 @@ describe('Service Actions', () => {
     serviceActions.getRate(store.dispatch);
 
     return serviceActions.createTransaction({})(store.dispatch)
-    .then(() => {
-      expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+      .then(() => {
+        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+      });
+  });
+
+  it('should call start getZipcodeSettings', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'underwriting.services',
+        method: 'GET',
+        path: 'zip-code?companyCode=TTIC&state=FL&product=HO3&zip=33607'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
     });
-  });
-});
 
-it('should call start getZipcodeSettings', () => {
-  const mockAdapter = new MockAdapter(axios);
+    const initialState = {};
+    const store = mockStore(initialState);
+    serviceActions.getZipcodeSettings(store.dispatch);
 
-  const axiosOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    url: `${process.env.REACT_APP_API_URL}/svc`,
-    data: {
-      service: 'underwriting.services',
-      method: 'GET',
-      path: 'zip-code?companyCode=TTIC&state=FL&product=HO3&zip=33607'
-    }
-  };
-
-  mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-    data: []
-  });
-
-  const initialState = {};
-  const store = mockStore(initialState);
-  serviceActions.getZipcodeSettings(store.dispatch);
-
-  return serviceActions.getZipcodeSettings('TTIC', 'FL', 'HO3', '33607')(store.dispatch)
+    return serviceActions.getZipcodeSettings('TTIC', 'FL', 'HO3', '33607')(store.dispatch)
     .then(() => {
       expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
     });
-});
-
-it('should fail start getZipcodeSettings', () => {
-  const mockAdapter = new MockAdapter(axios);
-  const axiosOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    url: `${process.env.REACT_APP_API_URL}/svc`,
-    data: {
-      service: 'underwriting.services',
-      method: 'GET',
-      path: 'zip-code?companyCode=TTIC&state=FL&product=HO3&zip=33607'
-    }
-  };
-
-  mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-    data: []
   });
 
-  const initialState = {};
-  const store = mockStore(initialState);
-  serviceActions.getZipcodeSettings(store.dispatch);
+  it('should fail start getZipcodeSettings', () => {
+    const mockAdapter = new MockAdapter(axios);
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'underwriting.services',
+        method: 'GET',
+        path: 'zip-code?companyCode=TTIC&state=FL&product=HO3&zip=33607'
+      }
+    };
 
-  return serviceActions.getZipcodeSettings(null)(store.dispatch)
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+    serviceActions.getZipcodeSettings(store.dispatch);
+
+    return serviceActions.getZipcodeSettings(null)(store.dispatch)
     .then(() => {
       expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
     });
+  });
+
+
+  it('should call start getAgencies', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'agency.services',
+        method: 'GET',
+        path: 'v1/agencies/TTIC/FL'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+    serviceActions.getAgencies(store.dispatch);
+
+    return serviceActions.getAgencies('TTIC', 'FL')(store.dispatch)
+    .then(() => {
+      expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+    });
+  });
+
+  it('should fail start getAgencies', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'agency.services',
+        method: 'GET',
+        path: 'v1/agencies/TTIC/FL'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+    serviceActions.getAgencies(store.dispatch);
+
+    return serviceActions.getAgencies(null, 'FL')(store.dispatch)
+    .then(() => {
+      expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+    });
+  });
 });
 
 it('should call start getCancelOptions', () => {

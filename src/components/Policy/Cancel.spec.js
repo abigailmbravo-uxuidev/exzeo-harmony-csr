@@ -78,7 +78,7 @@ describe('Testing Cancel component', () => {
         }
       }
     };
-    const wrapper = shallow(<CancelPolicy store={store} {...props} />);
+    const wrapper = shallow(<CancelPolicy label="test" store={store} {...props} />);
     expect(wrapper);
 
     wrapper.instance().componentWillReceiveProps({ actions: {

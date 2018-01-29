@@ -7,7 +7,6 @@ import { bindActionCreators } from 'redux';
 import _ from 'lodash';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import PolicyConnect from '../../containers/Policy';
-import ClearErrorConnect from '../Error/ClearError';
 import RadioField from '../Form/inputs/RadioField';
 import DateField from '../Form/inputs/DateField';
 import SelectField from '../Form/inputs/SelectField';
@@ -52,11 +51,8 @@ export const Payments = ({ payments }) => {
   );
 };
 
-
-const claimsData = [
-  { }];
-
 export const Claims = ({ claims }) => {
+  const claimsData = [];
   const options = {
     defaultSortName: 'jeLossNo',
     defaultSortOrder: 'desc'
@@ -64,7 +60,7 @@ export const Claims = ({ claims }) => {
   return (
     // chang to props claims when endpoint is ready
     <BootstrapTable data={claimsData} options={options} >
-      <TableHeaderColumn dataField="jeLossNo" width="10%" isKey>Claim No</TableHeaderColumn>
+      <TableHeaderColumn isKey dataField="jeLossNo" width="10%">Claim No</TableHeaderColumn>
       <TableHeaderColumn dataField="dateLoss" width="10%">Date Loss</TableHeaderColumn>
       <TableHeaderColumn dataField="reportDate" width="10%">Report Date</TableHeaderColumn>
       <TableHeaderColumn dataField="closeDate" width="10%">Close Date</TableHeaderColumn>
@@ -144,7 +140,6 @@ export class CancelPolicy extends React.Component {
     const cancelGroup = _.map(cancelOptions, option => ({ answer: option.cancelType }));
     return (
       <PolicyConnect>
-        <ClearErrorConnect />
         {this.props.appState.data.isSubmitting && <Loader />}
         <Form id="CancelPolicy" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
           <div className="route-content">

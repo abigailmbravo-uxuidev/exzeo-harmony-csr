@@ -1,35 +1,19 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
+import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { CheckError } from './CheckError';
+import ConnectedApp, { SideNav } from './AgencySideNav';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 
-describe('Testing CheckError component', () => {
-  it('should test props and render', () => {
-    const initialState = {};
-    const store = mockStore(initialState);
-    const props = {
-      fieldQuestions: [],
-      error: {
-        message: 'something went wrong'
-      },
-      dispatch: store.dispatch,
-      appState: {
-        data: {
-          submitting: false
-        },
-        modelName: 'bb'
-      }
-    };
-    const wrapper = shallow(<CheckError {...props} />);
-    expect(wrapper);
-  });
-
+describe('Testing AgencySideNav component', () => {
   it('should test connected app', () => {
     const initialState = {
+      service: {
+        agency: {}
+      },
       cg: {
         bb: {
           data: {
@@ -40,15 +24,28 @@ describe('Testing CheckError component', () => {
         }
       },
       appState: {
+        data: { activateRedirect: false },
         modelName: 'bb'
       }
     };
     const store = mockStore(initialState);
     const props = {
+      agnecy: {
+
+      },
+      actions: {
+        cgActions: {
+          batchCompleteTask() { return Promise.resolve(); }
+        },
+        appStateActions: {
+          setAppState() { }
+        }
+      },
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,
       appState: {
+        instanceId: 1,
         data: {
           submitting: false
         }
@@ -56,5 +53,7 @@ describe('Testing CheckError component', () => {
     };
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
     expect(wrapper);
+
+    SideNav(props);
   });
 });
