@@ -23,8 +23,6 @@ import AIEditModal from '../../components/Common/AdditionalInterestEditModal';
 
 const payments = [];
 
-const isLoded = false;
-
 export const setRank = (additionalInterests) => {
   _.forEach(additionalInterests, (value) => {
     switch (value.type) {
