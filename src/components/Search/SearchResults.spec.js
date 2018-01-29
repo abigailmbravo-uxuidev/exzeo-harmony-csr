@@ -2,6 +2,7 @@ import React from 'react';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
+import localStorage from 'localStorage';
 
 import ConnectedApp, { SearchResults } from './SearchResults';
 
@@ -308,6 +309,9 @@ const quoteData = {
 describe('Testing SearchBar component', () => {
   it('should test connected app', () => {
     const initialState = {
+      service: {
+        agencies: []
+      },
       cg: {
         bb: {
           data: {
@@ -544,6 +548,250 @@ describe('Testing SearchBar component', () => {
       },
       ...propTypes
     };
+    localStorage.setItem('lastSearchData', JSON.stringify({ searchType: 'policy' }));
+    SearchResults(props);
+  });
+  
+  it('should test props for SearchResults agency', () => {
+    const initialState = {
+      cg: {
+        bb: {
+          data: {
+            previousTask: {
+              name: 'searchPolicy',
+              value: {
+                result: {
+                  policies: [{
+                    policyTerm: 1,
+                    updatedAt: '2017-06-30T14:59:40.455Z',
+                    policyHolders: [
+                      {
+                        _id: '5956661c34e29b001392cb14',
+                        emailAddress: 'sangramp@exzeo.com',
+                        primaryPhoneNumber: '7878787878',
+                        lastName: 'Pundir',
+                        firstName: 'Sangram',
+                        entityType: 'Person',
+                        order: 0,
+                        electronicDelivery: false
+                      }
+                    ],
+                    state: 'FL',
+                    companyCode: 'TTIC',
+                    policyNumber: '12-1001692-01',
+                    policyID: '5956675cfbb0bc00128146df',
+                    effectiveDate: '2017-07-05T00:00:00.000Z',
+                    property: {
+                      fireAlarm: false,
+                      windMitigation: {
+                        roofGeometry: 'Other',
+                        floridaBuildingCodeWindSpeed: 110,
+                        _id: '5956662034e29b001392cb2e',
+                        secondaryWaterResistance: true,
+                        internalPressureDesign: 'Other',
+                        roofCovering: 'Other',
+                        openingProtection: 'Other',
+                        terrain: 'B',
+                        floridaBuildingCodeWindSpeedDesign: 110,
+                        roofDeckAttachment: 'Other',
+                        windBorneDebrisRegion: true,
+                        roofToWallConnection: 'Other'
+                      },
+                      floodZone: 'X',
+                      source: 'CasaClue',
+                      squareFeet: 1859,
+                      poolSecured: true,
+                      gatedCommunity: false,
+                      residenceType: 'SINGLE FAMILY',
+                      _id: '5956662034e29b001392cb2d',
+                      distanceToTidalWater: 249480,
+                      buildingCodeEffectivenessGrading: 99,
+                      familyUnits: '1-2',
+                      burglarAlarm: false,
+                      constructionType: 'MASONRY',
+                      trampoline: false,
+                      divingBoard: false,
+                      distanceToFireStation: 0.82,
+                      id: '120955451A785575A',
+                      yearBuilt: 2007,
+                      territory: '090-0',
+                      sprinkler: 'N',
+                      pool: false,
+                      yearOfRoof: null,
+                      physicalAddress: {
+                        city: 'WINTER GARDEN',
+                        latitude: 28.53985,
+                        zip: '34787',
+                        state: 'FL',
+                        _id: '595665f934e29b001392ca68',
+                        address2: '',
+                        longitude: -81.59015,
+                        county: 'ORANGE',
+                        address1: '344 WINTER NELLIS CIR'
+                      },
+                      distanceToFireHydrant: 1000,
+                      protectionClass: 5,
+                      townhouseRowhouse: false
+                    },
+                    product: 'HO3'
+                  }]
+                }
+              }
+            },
+            activeTask: {
+              name: 'choosePolicy',
+              value: {
+                result: {
+                }
+              }
+            },
+            modelInstanceId: '123',
+            model: {},
+            uiQuestions: []
+          }
+        }
+      },
+      appState: {
+        modelName: 'bb'
+      }
+    };
+    const store = mockStore(initialState);
+    const props = {
+      handleNewTab(address, prop) { },
+      tasks: { ...initialState.cg },
+      fieldQuestions: [],
+      quoteData: {},
+      dispatch: store.dispatch,
+      appState: {
+        modelName: 'bb',
+        data: {
+          submitting: false
+        }
+      },
+      ...propTypes
+    };
+    localStorage.setItem('lastSearchData', JSON.stringify({ searchType: 'agency' }));
+    SearchResults(props);
+  });
+  it('should test props for SearchResults agents', () => {
+    const initialState = {
+      cg: {
+        bb: {
+          data: {
+            previousTask: {
+              name: 'searchPolicy',
+              value: {
+                result: {
+                  policies: [{
+                    policyTerm: 1,
+                    updatedAt: '2017-06-30T14:59:40.455Z',
+                    policyHolders: [
+                      {
+                        _id: '5956661c34e29b001392cb14',
+                        emailAddress: 'sangramp@exzeo.com',
+                        primaryPhoneNumber: '7878787878',
+                        lastName: 'Pundir',
+                        firstName: 'Sangram',
+                        entityType: 'Person',
+                        order: 0,
+                        electronicDelivery: false
+                      }
+                    ],
+                    state: 'FL',
+                    companyCode: 'TTIC',
+                    policyNumber: '12-1001692-01',
+                    policyID: '5956675cfbb0bc00128146df',
+                    effectiveDate: '2017-07-05T00:00:00.000Z',
+                    property: {
+                      fireAlarm: false,
+                      windMitigation: {
+                        roofGeometry: 'Other',
+                        floridaBuildingCodeWindSpeed: 110,
+                        _id: '5956662034e29b001392cb2e',
+                        secondaryWaterResistance: true,
+                        internalPressureDesign: 'Other',
+                        roofCovering: 'Other',
+                        openingProtection: 'Other',
+                        terrain: 'B',
+                        floridaBuildingCodeWindSpeedDesign: 110,
+                        roofDeckAttachment: 'Other',
+                        windBorneDebrisRegion: true,
+                        roofToWallConnection: 'Other'
+                      },
+                      floodZone: 'X',
+                      source: 'CasaClue',
+                      squareFeet: 1859,
+                      poolSecured: true,
+                      gatedCommunity: false,
+                      residenceType: 'SINGLE FAMILY',
+                      _id: '5956662034e29b001392cb2d',
+                      distanceToTidalWater: 249480,
+                      buildingCodeEffectivenessGrading: 99,
+                      familyUnits: '1-2',
+                      burglarAlarm: false,
+                      constructionType: 'MASONRY',
+                      trampoline: false,
+                      divingBoard: false,
+                      distanceToFireStation: 0.82,
+                      id: '120955451A785575A',
+                      yearBuilt: 2007,
+                      territory: '090-0',
+                      sprinkler: 'N',
+                      pool: false,
+                      yearOfRoof: null,
+                      physicalAddress: {
+                        city: 'WINTER GARDEN',
+                        latitude: 28.53985,
+                        zip: '34787',
+                        state: 'FL',
+                        _id: '595665f934e29b001392ca68',
+                        address2: '',
+                        longitude: -81.59015,
+                        county: 'ORANGE',
+                        address1: '344 WINTER NELLIS CIR'
+                      },
+                      distanceToFireHydrant: 1000,
+                      protectionClass: 5,
+                      townhouseRowhouse: false
+                    },
+                    product: 'HO3'
+                  }]
+                }
+              }
+            },
+            activeTask: {
+              name: 'choosePolicy',
+              value: {
+                result: {
+                }
+              }
+            },
+            modelInstanceId: '123',
+            model: {},
+            uiQuestions: []
+          }
+        }
+      },
+      appState: {
+        modelName: 'bb'
+      }
+    };
+    const store = mockStore(initialState);
+    const props = {
+      handleNewTab(address, prop) { },
+      tasks: { ...initialState.cg },
+      fieldQuestions: [],
+      quoteData: {},
+      dispatch: store.dispatch,
+      appState: {
+        modelName: 'bb',
+        data: {
+          submitting: false
+        }
+      },
+      ...propTypes
+    };
+    localStorage.setItem('lastSearchData', JSON.stringify({ searchType: 'agent' }));
     SearchResults(props);
   });
 });

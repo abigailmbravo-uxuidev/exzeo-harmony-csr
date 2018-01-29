@@ -8,9 +8,8 @@ import normalizePhone from '../Form/normalizePhone';
 import * as serviceActions from '../../actions/serviceActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 
-
-export const selectPolicy = (quote) => {
-  if (!quote.policyNumber) return;
+export const selectPolicy = (quote, props) => {
+  if (!quote.quoteNumber) return;
 
   const lastSearchData = {
     firstName: '',
@@ -47,7 +46,7 @@ export class DetailHeader extends Component {
           <div>
             <dd>{quoteData.product === 'HO3' ? `${quoteData.product} Homeowners` : quoteData.product}</dd>
             <dd>{(quoteData.quoteNumber ? quoteData.quoteNumber : '-')}</dd>
-            <dd>{quoteData.quoteState === 'Policy Issued' ? <button className="btn btn-link" onClick={() => selectPolicy(quoteData)}>{quoteData.quoteState}</button> : quoteData.quoteState}</dd>
+            <dd className="quote-status">{quoteData.quoteState === 'Policy Issued' ? <button className="btn btn-link" onClick={() => selectPolicy(quoteData)}>{quoteData.quoteState}</button> : quoteData.quoteState}</dd>
           </div>
         </dl>
       </section>
@@ -109,7 +108,7 @@ export class DetailHeader extends Component {
         <dl>
           <div>
             <dt>Effective Date</dt>
-            <dd>{moment.utc(_.get(quoteData, 'effectiveDate')).format('YYYY-MM-DD')}</dd>
+            <dd>{moment.utc(_.get(quoteData, 'effectiveDate')).format('MM/DD/YYYY')}</dd>
           </div>
         </dl>
       </section>

@@ -7,8 +7,8 @@ import moment from 'moment';
 import { reduxForm, Form, propTypes } from 'redux-form';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
+import * as errorActions from '../../actions/errorActions';
 import PolicyBaseConnect from '../../containers/Policy';
-import ClearErrorConnect from '../Error/ClearError';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import RadioField from '../Form/inputs/RadioField';
 import Downloader from '../Common/Downloader';
@@ -27,8 +27,11 @@ const SearchPanel = props => (
 
 export const filterNotesByType = (notes, type) => {
   if (!Array.isArray(notes)) return [];
-  if (type) return notes.filter(n => n.attachments.length > 0);
-  return notes;
+  if (type) {
+    return notes.filter(n => n.attachments.length > 0);
+  } else {
+    return notes.filter(n => n.content);
+  }
 };
 
 export const NoteList = (props) => {
@@ -37,15 +40,16 @@ export const NoteList = (props) => {
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
   const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
   const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
+  const attachmentType = attachments => attachments.length > 0 ? attachments[0].fileType : '';
   const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
-  const formatNote = note => note.replace(/\r|\n/g, '<br>');
+  const formatNote = note => note ? note.replace(/\r|\n/g, '<br>') : '';
   const attachmentUrl = attachments => (
     <span>
       { attachments.map((attachment, i) =>
         <Downloader
           fileName={attachment.fileName}
           fileUrl={attachment.fileUrl}
-          fileType={attachment.fileType}
+          errorHandler={(err) => props.actions.errorActions.setAppError(err)}
           key={i}
         />
       )}
@@ -59,10 +63,10 @@ export const NoteList = (props) => {
           name={'attachmentStatus'} styleName={''} label={''} onChange={function () {}} segmented answers={[
             {
               answer: false,
-              label: 'All Notes'
+              label: 'Notes'
             }, {
               answer: true,
-              label: 'Attachments'
+              label: 'Documents'
             }
           ]}
         />
@@ -76,10 +80,11 @@ export const NoteList = (props) => {
         <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
         <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdDate" dataSort dataFormat={formatCreateDate} >Created</TableHeaderColumn>
         <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataSort dataFormat={showCreatedBy} >Author</TableHeaderColumn>
-        <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="contactType" dataSort >Note Type</TableHeaderColumn>
-        <TableHeaderColumn className="note" columnClassName="note" dataField="content" dataSort dataFormat={formatNote} >Note</TableHeaderColumn>
+        {!fieldValues.attachmentStatus && <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="contactType" dataSort >Note Type</TableHeaderColumn>}
+        {!fieldValues.attachmentStatus && <TableHeaderColumn className="note" columnClassName="note" dataField="content" dataSort dataFormat={formatNote} >Note</TableHeaderColumn>}
         <TableHeaderColumn className="count" columnClassName="count" dataField="attachments" dataFormat={attachmentCount} hidden />
-        <TableHeaderColumn className="attachments" columnClassName="attachments" dataField="attachments" dataFormat={attachmentUrl} dataSort >Attachments</TableHeaderColumn>
+        <TableHeaderColumn className="file-type" columnClassName="file-type" dataField="attachments" dataSort dataFormat={attachmentType} >File Type</TableHeaderColumn>
+        <TableHeaderColumn className="attachments" columnClassName="attachments" dataField="attachments" dataFormat={attachmentUrl} dataSort >Documents</TableHeaderColumn>
       </BootstrapTable>
     </div>
   );
@@ -93,7 +98,7 @@ export class NotesFiles extends Component {
     if (!_.isEqual(this.props, nextProps)) {
       if (nextProps.policy && nextProps.policy.policyNumber) {
         const ids = [nextProps.policy.policyNumber, nextProps.policy.sourceNumber];
-        this.props.actions.serviceActions.getNotes(ids.toString());
+        this.props.actions.serviceActions.getNotes(ids.toString(), nextProps.policy.policyNumber);
       }
     }
   }
@@ -103,7 +108,6 @@ export class NotesFiles extends Component {
 
     return (
       <PolicyBaseConnect>
-        <ClearErrorConnect />
         <div className="route-content">
           <div className="scroll">
             <Form id="NotesFiles" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
@@ -153,7 +157,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: {
     appStateActions: bindActionCreators(appStateActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch)
+    serviceActions: bindActionCreators(serviceActions, dispatch),
+    errorActions: bindActionCreators(errorActions, dispatch)
   }
 });
 

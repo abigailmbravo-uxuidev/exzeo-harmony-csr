@@ -55,6 +55,7 @@ export function combineRules(validations, variables) {
       for (const field of variables.dependsOn) {
         if (allValues[field]) return 'Field Required';
       }
+      
       return undefined;
     };
     ruleArray.push(checkFields);

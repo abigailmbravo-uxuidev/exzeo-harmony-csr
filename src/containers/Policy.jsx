@@ -24,8 +24,7 @@ export const showEffectiveDatePopUp = (props) => {
 };
 
 export const changeEffectiveDate = (data, dispatch, props) => {
-  const zipCode = props.actions.serviceActions.getZipcodeSettings(props.policy.companyCode, props.policy.state, props.policy.product, props.policy.property.physicalAddress.zip);
-  const effectiveDateUTC = moment.tz(moment.utc(data.effectiveDate).format('YYYY-MM-DD'), zipCode.timezone).format();
+  const effectiveDateUTC = moment.tz(moment.utc(data.effectiveDate).format('YYYY-MM-DD'), props.zipCodeSetting.timezone).format();
   const workflowId = props.appState.instanceId;
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
 
@@ -45,25 +44,37 @@ export const changeEffectiveDate = (data, dispatch, props) => {
   });
 };
 
-export const Policy = props => (
-  <div className="app-wrapper csr policy">
-    {/* TODO: dynamically add policy # to title*/}
-    <Helmet><title>{props.policy && props.policy.policyNumber ? `P: ${props.policy.policyNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
-    {/* <NewNoteFileUploader/>*/}
-    <PolicyHeader />
-    <PolicyDetailHeader />
-    <main role="document">
-      {props.appState.data.submitting && <Loader />}
-      <aside className="content-panel-left">
-        <QuoteSideNav />
-      </aside>
-      <div className="content-wrapper">
-        {props.children}
+export class Policy extends React.Component {
+
+  componentDidMount() {
+    if (this.props && this.props.policy && this.props.policy.policyNumber) {
+      this.props.actions.serviceActions.getZipcodeSettings(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property.physicalAddress.zip);
+    }
+  }
+
+  render() {
+    const { policy, appState, children } = this.props;
+    return (
+      <div className="app-wrapper csr policy">
+        {/* TODO: dynamically add policy # to title*/}
+        <Helmet><title>{policy && policy.policyNumber ? `P: ${policy.policyNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
+        {/* <NewNoteFileUploader/>*/}
+        <PolicyHeader />
+        <PolicyDetailHeader />
+        <main role="document">
+          {appState.data.submitting && <Loader />}
+          <aside className="content-panel-left">
+            <QuoteSideNav />
+          </aside>
+          <div className="content-wrapper">
+            {children}
+          </div>
+          {appState.data.showEffectiveDateChangePopUp && <EditEffectiveDataPopUp {...this.props} changeEffectiveDateSubmit={changeEffectiveDate} hideEffectiveDateModal={() => hideEffectiveDatePopUp(this.props)} />}
+        </main>
       </div>
-      {props.appState.data.showEffectiveDateChangePopUp && <EditEffectiveDataPopUp {...props} changeEffectiveDateSubmit={changeEffectiveDate} hideEffectiveDateModal={() => hideEffectiveDatePopUp(props)} />}
-    </main>
-  </div>
-);
+    );
+  }
+}
 
 Policy.propTypes = {
   children: PropTypes.oneOfType([
@@ -79,7 +90,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   summaryLedger: state.service.getSummaryLedger,
   policy: state.service.latestPolicy || {},
-  zipCodeSetting: state.service.latestPolicy
+  zipCodeSetting: state.service.getZipcodeSettings
 });
 
 const mapDispatchToProps = dispatch => ({

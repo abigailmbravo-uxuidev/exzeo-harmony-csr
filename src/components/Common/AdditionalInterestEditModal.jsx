@@ -106,7 +106,7 @@ export const AdditionalInterestEditModal = (props) => {
               name="mortgage"
               searchable
               labelKey="displayText"
-              autofocus
+              autoFocus
               value={appState.data.selectedMortgageeOption}
               options={getAnswers('mortgagee', questions)}
               onChange={val => setMortgageeValues(val, props)}
@@ -132,9 +132,9 @@ export const AdditionalInterestEditModal = (props) => {
         </div>
         <div className="card-footer">
           <div className="btn-group">
-            <button className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal(props)}>Cancel</button>
-            <button className="btn btn-secondary" type="button" disabled={appState.data.submittingAI} onClick={() => deleteAdditionalInterest(selectedAI, props)}>Delete</button>
-            <button className="btn btn-primary" type="submit" disabled={appState.data.submittingAI}>Update</button>
+            <button tabIndex={'0'} className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal(props)}>Cancel</button>
+            <button tabIndex={'0'} className="btn btn-secondary" type="button" disabled={appState.data.submittingAI} onClick={() => deleteAdditionalInterest(selectedAI, props)}>Delete</button>
+            <button tabIndex={'0'} className="btn btn-primary" type="submit" disabled={appState.data.submittingAI}>Update</button>
           </div>
         </div>
       </div>

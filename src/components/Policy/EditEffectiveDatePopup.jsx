@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { reduxForm, Form, propTypes, change } from 'redux-form';
+import { reduxForm, Form } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment-timezone';
 import * as questionsActions from '../../actions/questionsActions';
@@ -19,7 +19,7 @@ export const reasonAnswers = (reasons) => {
   return reformattedReasons || [];
 };
 
-const handleInitialize = (state) => {
+export const handleInitialize = (state) => {
   const policy = state.service.latestPolicy || {};
 
   return {

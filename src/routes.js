@@ -14,7 +14,6 @@ import AccessDenied from './containers/AccessDenied';
 import LoggedOut from './containers/LoggedOut';
 import Callback from './containers/Callback';
 import SplashPage from './containers/Splash';
-import AppErrorPage from './containers/AppError';
 import NotFoundPage from './containers/NotFound';
 import QuoteCoverage from './components/Quote/Coverage';
 import QuoteUnderwriting from './components/Quote/Underwriting';
@@ -28,6 +27,7 @@ import PolicyPolicyholderAgent from './components/Policy/PolicyholderAgent';
 import PolicyMortgageBilling from './components/Policy/MortgageBilling';
 import PolicyNotesFiles from './components/Policy/NotesFiles';
 import PolicyEndorsements from './components/Policy/Endorsements';
+import AgencyStaff from './components/Agency/Staff';
 import * as appStateActions from './actions/appStateActions';
 import PolicyCancel from './components/Policy/Cancel';
 import * as errorActions from './actions/errorActions';
@@ -51,7 +51,7 @@ const handleAuthentication = (nextState, replace) => {
 };
 
 const checkPublicPath = (path) => {
-  const publicPaths = ['/login', '/logout', '/error', '/accessDenied', '/loggedOut', '/callback'];
+  const publicPaths = ['/login', '/logout', '/accessDenied', '/loggedOut', '/callback'];
   return (publicPaths.indexOf(path) === -1);
 };
 
@@ -128,8 +128,8 @@ class Routes extends Component {
               <Route exact path="/policy/notes" render={props => <PolicyNotesFiles auth={auth} {...props} />} />
               <Route exact path="/policy/cancel" render={props => <PolicyCancel auth={auth} {...props} />} />
               <Route exact path="/policy/endorsements" render={props => <PolicyEndorsements auth={auth} {...props} />} />
+              <Route exact path="/agency/staff" render={props => <AgencyStaff auth={auth} {...props} />} />
               <Route exact path="/login" render={props => <LoginPage auth={auth} {...props} />} />
-              <Route exact path="/error" render={props => <AppErrorPage auth={auth} {...props} />} />
               <Route exact path="/accessDenied" render={props => <AccessDenied auth={auth} {...props} />} />
               <Route exact path="/loggedOut" render={props => <LoggedOut auth={auth} {...props} />} />
               <Route

@@ -6,21 +6,14 @@ import { reduxForm, Form, propTypes, reset } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
 import * as cgActions from '../../actions/cgActions';
-// import ScheduleDate from '../Common/ScheduleDate';
 import TextField from '../Form/inputs/TextField';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
-import ClearErrorConnect from '../Error/ClearError';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
-
-// const scheduleDateModal = (props) => {
-//   const showScheduleDateModal = props.appState.data.showScheduleDateModal;
-//   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { showScheduleDateModal: !showScheduleDateModal });
-// };
 
 const handlePrimarySecondaryTitles = (type, order) => `${type} ${order + 1}`;
 
@@ -123,7 +116,6 @@ export class Summary extends Component {
     const filteredExceptions = _.filter(quoteData.underwritingExceptions, uw => !uw.overridden);
     return (
       <QuoteBaseConnect>
-        <ClearErrorConnect />
         <div className="route-content summary workflow">
 
           <div className="scroll">
@@ -360,6 +352,7 @@ export class Summary extends Component {
             <TextField validations={['required']} label={'Email To Name'} styleName={'share-name'} name={'name'} />
             <TextField validations={['required', 'email']} label={'Email Address'} styleName={'share-email'} name={'emailAddr'} />
             <button
+              tabIndex={'0'}
               aria-label="submit-btn form-share"
               disabled={this.props.appState.data.submitting}
               form="Summary"
@@ -378,9 +371,7 @@ export class Summary extends Component {
 Summary.contextTypes = {
   router: PropTypes.object
 };
-// ------------------------------------------------
-// Property type definitions
-// ------------------------------------------------
+
 Summary.propTypes = {
   ...propTypes,
   handleSubmit: PropTypes.func,
@@ -391,9 +382,6 @@ Summary.propTypes = {
   })
 };
 
-// ------------------------------------------------
-// redux mapping
-// ------------------------------------------------
 const mapStateToProps = state => ({
   agents: state.service.agents,
   tasks: state.cg,

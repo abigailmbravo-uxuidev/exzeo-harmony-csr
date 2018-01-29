@@ -52,6 +52,8 @@ describe('Testing AdditionalInterestModal component', () => {
           submitting: false
         }
       },
+      handleSubmit: fn => fn,
+      verify: fn => fn,
       quoteData: {
         AdditionalInterests: [{
           id: '049a50b23c21c2ae3',
@@ -106,7 +108,8 @@ describe('Testing AdditionalInterestModal component', () => {
     };
     const store = mockStore(initialState);
     const props = {
-      handleSubmit() {},
+      handleSubmit: fn => fn,
+      verify: fn => fn,
       selectedAI: {
         type: 'Mortgagee',
         phoneNumber: '43543543535',
@@ -187,6 +190,8 @@ describe('Testing AdditionalInterestModal component', () => {
           submitting: false
         }
       },
+      handleSubmit: fn => fn,
+      verify: fn => fn,
       quoteData: {
         AdditionalInterests: [{
           id: '049a50b23c21c2ae3',

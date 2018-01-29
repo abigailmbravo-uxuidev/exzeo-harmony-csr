@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '../components/Common/Header';
 import SearchBar from '../components/Search/SearchBar';
 
-const Base = (props) => {
+export const Base = (props) => {
   const { isAuthenticated } = props.auth;
   return (<div className="app-wrapper csr">
     <Header {...props} />
