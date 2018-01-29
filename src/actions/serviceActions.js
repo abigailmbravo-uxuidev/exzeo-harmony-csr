@@ -447,17 +447,6 @@ export const saveUnderwritingExceptions = (id, underwritingExceptions) => (dispa
 };
 
 export const getBillingOptions = paymentOptions => (dispatch) => {
-        // const paymentOptions = {
-        //   effectiveDate: nextProps.policy.effectiveDate,
-        //   policyHolders: nextProps.policy.policyHolders,
-        //   additionalInterests: nextProps.policy.additionalInterests,
-        //   netPremium: nextProps.policy.rating.netPremium,
-        //   fees: {
-        //     empTrustFee: nextProps.policy.rating.worksheet.fees.empTrustFee,
-        //     mgaPolicyFee: nextProps.policy.rating.worksheet.fees.mgaPolicyFee
-        //   },
-        //   totalPremium: nextProps.policy.rating.totalPremium
-        // };
 
   const axiosConfig = runnerSetup({
     service: 'billing.services',
@@ -482,13 +471,6 @@ export const getBillingOptions = paymentOptions => (dispatch) => {
 
 
 export const getBillingOptionsForPolicy = paymentOptions => (dispatch) => {
-  // const paymentOptions = {
-  //   effectiveDate: nextProps.policy.effectiveDate,
-  //   policyHolders: nextProps.policy.policyHolders,
-  //   additionalInterests: nextProps.policy.additionalInterests,
-  //   fullyEarnedFees: nextProps.policy.rating.worksheet.fees.empTrustFee + nextProps.policy.rating.worksheet.fees.mgaPolicyFee,
-  //   currentPremium: nextProps.policy.rating.netPremium
-  // };
 
   const axiosConfig = runnerSetup({
     service: 'billing.services',
