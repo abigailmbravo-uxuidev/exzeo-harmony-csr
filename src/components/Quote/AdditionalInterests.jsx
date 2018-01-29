@@ -285,7 +285,6 @@ export class AdditionalInterests extends Component {
     if (!quoteData.rating) {
       return (
         <QuoteBaseConnect>
-          <ClearErrorConnect />
           <div className="route-content">
             <div className="messages">
               <div className="message error">
