@@ -8,9 +8,11 @@ import * as serviceActions from '../../actions/serviceActions';
 export class DetailHeader extends Component {
 
   render() {
+    console.log(this.props.agency);
     const { agency } = this.props;
     if (!agency || !agency.agencyCode) {
       return (<div className="detailHeader" />);
+      console.log(agency);
     }
     return (
       <div className="detailHeader">
@@ -32,10 +34,7 @@ export class DetailHeader extends Component {
                   <dt>Status</dt>
                   <dd>{agency.status}</dd>
                 </section>
-                <section>
-                  <dt>Tier</dt>
-                  <dd>{agency.tier}</dd>
-                </section>
+                {agency.tier  || agency.tier >= 0 ? <section><dt>Tier</dt><dd>{agency.tier}</dd></section> : <section><dt>Tier</dt><dd></dd></section>}
                 <section>
                   <dt>Website</dt>
                   <dd><a href={agency.websiteUrl} target="_blank">{agency.websiteUrl}</a></dd>

@@ -124,7 +124,7 @@ export class CancelPolicy extends React.Component {
             <div className="form-group survey-wrapper cancel-policy" role="group">
               <section>
                 <h3>Cancel Policy</h3>
-                <Form id="Cancellation" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+                <Form id="Cancellation" className="cancel-type" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
                   <div className="flex-parent">
                     <div className="flex-child">
                       <RadioField

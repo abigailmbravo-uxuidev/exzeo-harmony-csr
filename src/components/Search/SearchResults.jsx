@@ -114,7 +114,7 @@ export const SearchResults = (props) => {
     </div>);
   }
 
-  if (props.tasks[props.appState.modelName] && props.tasks[props.appState.modelName].data.activeTask 
+  if (props.tasks[props.appState.modelName] && props.tasks[props.appState.modelName].data.activeTask
     && props.tasks[props.appState.modelName].data.activeTask.name === 'choosePolicy' && searchData.searchType === 'policy') {
     const defaultPolicyResults = props.tasks[props.appState.modelName].data.previousTask
       ? props.tasks[props.appState.modelName].data.previousTask.value.policies
@@ -192,7 +192,7 @@ export const SearchResults = (props) => {
       { props.appState.data && props.appState.data.agentSubmitting && <Loader />}
       {
         agencyResults && agencyResults.map((agency, index) => <div className="card-wrapper" key={index}>
-          <span className="fa fa-chevron-circle-right" id={agency.agencyCode} onClick={() => props.handleNewTab(agency, props)} tabIndex="-1" />
+          <span className="fa fa-chevron-circle-right" id={`agency-code-${agency.agencyCode}`} onClick={() => props.handleNewTab(agency, props)} tabIndex="-1" />
           <div className="agency contact card">
 
             <div className="contact-title">
@@ -204,16 +204,16 @@ export const SearchResults = (props) => {
 
                 <h4 className="agency"><span className="agency-code">{agency.agencyCode}</span> | <span className="agency-display-name">{agency.displayName}</span> | <span className="agency-legal-name">{agency.legalName}</span> | <span className="agency-license">{agency.licenseNumber}</span></h4>
 
-                <p className="contact-address">
+                <div className="contact-address">
                   {agency.physicalAddress.address1},&nbsp;
                   {agency.physicalAddress.address2}{agency.physicalAddress.address2 ? ', ' : ' ' }
                   {agency.physicalAddress.city},&nbsp;
                   {agency.physicalAddress.state}&nbsp;
                   {agency.physicalAddress.zip}
-                  {agency.status ? <small><label>STATUS:&nbsp;</label>{agency.status}</small> : null}
-                  {agency.tier ? <small><label>TIER:&nbsp;</label>{agency.tier}</small> : null}
-                  {agency.websiteUrl ? <small><label>WEBSITE:&nbsp;</label><a href={`${agency.websiteUrl}`} target="_blank">{agency.websiteUrl}</a></small> : null}
-                </p>
+                  {agency.status ? <span className="additional-data status"><label>STATUS:&nbsp;</label>{agency.status}</span> : null}
+                  {agency.tier  || agency.tier >= 0 ? <span className="additional-data tier"><label>TIER:&nbsp;</label>{agency.tier}</span> : <span className="additional-data tier"><label>TIER:&nbsp;</label></span>}
+                  {agency.websiteUrl ? <span className="additional-data website"><label>WEBSITE:&nbsp;</label><a href={`${agency.websiteUrl}`} target="_blank">{agency.websiteUrl}</a></span> : null}
+                </div>
                 <div className="additional-contacts">
                   <ul>
                     <li>
@@ -274,14 +274,14 @@ export const SearchResults = (props) => {
           <div className="contact-details">
             <div className="card-name">
               <h4 className="agent"><span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{agent.firstName} {agent.lastName}</span> | <span className="agent-license">{agent.licenseNumber}</span></h4>
-              <p className="contact-address">
+              <div className="contact-address">
                 {agent.mailingAddress.address1},&nbsp;
                 {agent.mailingAddress.address2}{agent.mailingAddress.address2 ? ', ' : ' ' }
                 {agent.mailingAddress.city},&nbsp;
                 {agent.mailingAddress.state}&nbsp;
                 {agent.mailingAddress.zip}
-                {agent.status ? <small><label>STATUS:&nbsp;</label>{agent.status}</small> : null}
-              </p>
+                {agent.status ? <span className="additional-data status"><label>STATUS:&nbsp;</label>{agent.status}</span> : null}
+              </div>
               <div className="additional-contacts">
                 <ul>
                   <li>
