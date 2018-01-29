@@ -93,7 +93,6 @@ const cancelOptions = [
   }
 ];
 
-const isLoded = false;
 export class CancelPolicy extends React.Component {
   componentWillReceiveProps = (nextProps) => {
     if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
