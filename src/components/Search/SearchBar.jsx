@@ -202,7 +202,7 @@ const SearchForm = (props) => {
     const modelName = props.appState.modelName;
     const data = props.tasks[modelName].data;
 
-    const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData'));
+    const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData')) || {};
     lastSearchData.searchType = '';
     localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
     props.reset(props.form);

@@ -217,7 +217,7 @@ export const SearchResults = (props) => {
                   {agency.physicalAddress.state}&nbsp;
                   {agency.physicalAddress.zip}
                   {agency.status ? <span className="additional-data status"><label>STATUS:&nbsp;</label>{agency.status}</span> : null}
-                  {agency.tier || agency.tier >= 0 ? <span className="additional-data tier"><label>TIER:&nbsp;</label>{agency.tier}</span> : <span className="additional-data tier"><label>TIER:&nbsp;</label></span>}
+                  <span className="additional-data tier"><label>TIER:&nbsp;</label>{agency.tier >= 0 ? agency.tier : ''}</span>
                   {agency.websiteUrl ? <span className="additional-data website"><label>WEBSITE:&nbsp;</label><a href={`${agency.websiteUrl}`} target="_blank">{agency.websiteUrl}</a></span> : null}
                 </div>
                 <div className="additional-contacts">
