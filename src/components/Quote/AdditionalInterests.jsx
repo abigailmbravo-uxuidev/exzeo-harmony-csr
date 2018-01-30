@@ -80,8 +80,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
     name1: data.name1,
     name2: data.name2,
     referenceNumber: data.referenceNumber || '',
-    referenceNumber: data.referenceNumber,
-    order: Number(order), // had a conflict with order
+    order: order,
     active: true,
     type,
     phoneNumber: String(data.phoneNumber).length > 0 ? String(data.phoneNumber).replace(/[^\d]/g, '') : '',
