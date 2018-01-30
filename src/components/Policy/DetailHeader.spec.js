@@ -4,6 +4,7 @@ import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
 import ConnectedApp, { DetailHeader } from './DetailHeader';
+import { getLatestPolicy } from '../../actions/serviceActions';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -62,8 +63,12 @@ describe('Testing DetailHeader component', () => {
     const store = mockStore(initialState);
     const props = {
       actions: {
+        policyStateActions: {
+          updatePolicy() {}
+        },
         serviceActions: {
-          getEffectiveDateChangeReasons() {}
+          getEffectiveDateChangeReasons() {},
+          getLatestPolicy() {},
         }
       },
       fieldQuestions: [],
@@ -79,5 +84,7 @@ describe('Testing DetailHeader component', () => {
     const wrapper = shallow(<DetailHeader store={store} {...props} />);
     expect(wrapper);
     wrapper.instance().componentDidMount();
+    wrapper.instance().componentWillReceiveProps({ policyState: { update: true, policyNumber: '123'} , ...props });
+
   });
 });
