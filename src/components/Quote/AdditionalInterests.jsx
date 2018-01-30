@@ -60,7 +60,9 @@ export const handleFormSubmit = (data, dispatch, props) => {
 
   let order = 0;
 
-  if (String(data.order) !== '0' && String(data.order) !== '1') {
+  const isMortgagee = type === 'Mortgagee';
+
+  if (!isMortgagee && String(data.order) !== '0' && String(data.order) !== '1') {
     order = _.filter(additionalInterests, ai => ai.type === type).length === 0 ? 0 : 1;
   } else {
     order = data.order;
@@ -77,7 +79,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
     name1: data.name1,
     name2: data.name2,
     referenceNumber: data.referenceNumber,
-    order,
+    order: Number(order),
     active: true,
     type,
     phoneNumber: String(data.phoneNumber).length > 0 ? String(data.phoneNumber).replace(/[^\d]/g, '') : '',
@@ -94,14 +96,16 @@ export const handleFormSubmit = (data, dispatch, props) => {
     }
   };
 
+  if (isMortgagee) {
+    _.forEach(_.filter(modifiedAIs, ai => ai.type === type), (mortgagee) => {
+      if (Number(order) === 0) mortgagee.order = 1;
+      else mortgagee.order = 0;
+    });
+  }
+
   modifiedAIs.push(aiData);
 
-    // TODO I need to take the form data then push to the additional interest array in the quote then submit the array as data
-
-    // TODO Clear out old form data
-
   applyRank(modifiedAIs);
-
 
   const steps = [
     {
@@ -286,8 +290,8 @@ export class AdditionalInterests extends Component {
               </div>
             </div>
           </form>
-          { appState.data.showAdditionalInterestEditModal && <AdditionalInterestEditModal questions={this.props.questions} selectedAI={this.props.appState.data.selectedAI} quoteData={quoteData} verify={handleFormSubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
-          { appState.data.showAdditionalInterestModal && <AdditionalInterestModal questions={this.props.questions} quoteData={quoteData} verify={handleFormSubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
+          { appState.data.showAdditionalInterestEditModal && <AdditionalInterestEditModal additionalInterests={this.props.quoteData.additionalInterests} questions={this.props.questions} selectedAI={this.props.appState.data.selectedAI} quoteData={quoteData} verify={handleFormSubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
+          { appState.data.showAdditionalInterestModal && <AdditionalInterestModal additionalInterests={this.props.quoteData.additionalInterests} questions={this.props.questions} quoteData={quoteData} verify={handleFormSubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
         </div>
         <div className="basic-footer">
           <Footer />
