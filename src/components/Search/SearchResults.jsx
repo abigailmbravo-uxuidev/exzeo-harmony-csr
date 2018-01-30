@@ -188,12 +188,12 @@ export const SearchResults = (props) => {
 
   if (searchData && searchData.searchType === 'agency') {
     const agencyResults = props.agencies ? props.agencies : [];
-    console.log(props.appState.data);
+
     if (agencyResults.length <= 0 && searchData.searchType === 'agency' &&  props.appState.data && !props.appState.data.agentSubmitting) {
       return (
         <NoResults />
       )
-    } else {     
+    } else {
     return (<div className="user-list agency-list">
       { props.appState.data && props.appState.data.agentSubmitting && <Loader />}
       {
@@ -261,7 +261,7 @@ export const SearchResults = (props) => {
             </div>
           </div>
         </div>)
-      }      
+      }
     </div>);
     }
   }
@@ -324,7 +324,7 @@ export const SearchResults = (props) => {
             </div>
           </div>
         </div>)
-            }      
+            }
     </div>
     );
   }

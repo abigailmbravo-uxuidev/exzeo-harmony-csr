@@ -8,11 +8,9 @@ import * as serviceActions from '../../actions/serviceActions';
 export class DetailHeader extends Component {
 
   render() {
-    console.log(this.props.agency);
     const { agency } = this.props;
     if (!agency || !agency.agencyCode) {
       return (<div className="detailHeader" />);
-      console.log(agency);
     }
     return (
       <div className="detailHeader">
