@@ -462,6 +462,9 @@ describe('Testing Splash component', () => {
     const store = mockStore(initialState);
     const props = {
       actions: {
+        appStateActions: {
+          setAppState() {}
+        },
         questionsActions: {
           getUIQuestions() { }
         },
@@ -490,5 +493,15 @@ describe('Testing Splash component', () => {
     expect(wrapper.find(Splash).props()).toEqual(props);
 
     wrapper.setProps({});
+
+    const wrapper2 = shallow(<Splash store={store} {...props} />)
+
+    wrapper2.instance().handleSelectQuote(quoteData, props);
+    wrapper2.instance().handleSelectAddress({ physicalAddress: {
+      state: 'FL'
+    }}, props)
+    wrapper2.instance().handleSelectPolicy(policy, props);
+
+
   });
 });

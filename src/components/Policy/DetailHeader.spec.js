@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { DetailHeader } from './DetailHeader';
+import ConnectedApp, { DetailHeader, showEffectiveDatePopUp } from './DetailHeader';
 import { getLatestPolicy } from '../../actions/serviceActions';
 
 const middlewares = [];
@@ -62,7 +62,14 @@ describe('Testing DetailHeader component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      policy: {
+        policyID: '234',
+        product: 'HO3'
+      },
       actions: {
+        appStateActions: {
+          setAppState() {}
+        },
         policyStateActions: {
           updatePolicy() {}
         },
@@ -84,7 +91,14 @@ describe('Testing DetailHeader component', () => {
     const wrapper = shallow(<DetailHeader store={store} {...props} />);
     expect(wrapper);
     wrapper.instance().componentDidMount();
-    wrapper.instance().componentWillReceiveProps({ policyState: { update: true, policyNumber: '123'} , ...props });
+    wrapper.instance().componentWillReceiveProps({ 
+      policy: {
+        policyID: '234',
+        product: 'HO3',
+        cancelDate: '2018-04-04'
+      },
+      policyState: { update: true, policyNumber: '123'} , ...props });
+      wrapper.find('button#effective-date').simulate('click');
 
   });
 });
