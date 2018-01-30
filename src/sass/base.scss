@@ -8,6 +8,7 @@
 @import "partials/mixins/_tab-focus";
 @import "partials/mixins/_buttons";
 @import "partials/mixins/_forms";
+@import "partials/utilities/_helper";
 @import "partials/_animations";
 /*Correct and normalize browser rendering*/
 @import "partials/_normalize";
@@ -19,19 +20,21 @@
 @import "partials/_tabs";
 @import "partials/_workflow";
 @import "partials/_notes-files-add";
+@import "partials/_csr-agency";
 @import "partials/_csr-quote";
 @import "partials/_csr-policy";
 @import "partials/_additional-interests";
 @import "partials/_csr-claim";
 @import "partials/_error";
 @import "partials/_dropzone";
+@import "partials/_user-admin";
 @import "https://fonts.googleapis.com/css?family=Roboto:100,300,500"; //base
 //links
 /*------------------------------------------------------------------------------------*/
 a {
   text-decoration: none;
   color: $bright-blue-lighten-01;
-  @include transition(all .2s ease-in-out);
+  @include transition(all 0.2s ease-in-out);
 
   &:hover {
     text-decoration: none;
@@ -192,7 +195,6 @@ html {
 
     .app-wrapper {
       main {
-
         .content-wrapper {
           .workflow {
             .route {
@@ -297,6 +299,7 @@ main[role="document"] {
     > div {
       width: 100%;
       height: auto;
+
       &.login {
         position: absolute;
         z-index: 20;
@@ -331,6 +334,8 @@ main[role="document"] {
 /*------------------------------------------------------------------------------------*/
 .content-panel-left {
   display: flex;
+  overflow-x: hidden;
+  overflow-y: auto;
   align-self: stretch;
   flex-basis: 12rem;
   flex-direction: column;
@@ -338,11 +343,9 @@ main[role="document"] {
   flex-shrink: 0;
   width: auto;
   width: 12rem;
-  overflow-y: auto;
-  overflow-x: hidden;
   color: $warm-gray-12;
   background: $warm-gray-02;
-  @include transition(all .2s ease-in-out);
+  @include transition(all 0.2s ease-in-out);
 
   .csr {
     display: flex;
@@ -561,6 +564,7 @@ ul.list-cards {
         justify-content: center;
         height: 2rem;
         margin: 0;
+        color: $bright-blue-darken-04;
         font-size: $font-size-h2;
       }
 
@@ -570,10 +574,9 @@ ul.list-cards {
         align-items: center;
         flex-basis: 13rem;
         flex-wrap: wrap;
-        //height: 2.875rem;
         padding-left: $padding;
 
-        h5 {
+        h5, h4, h3, h2, h1 {
           display: block;
           overflow: hidden;
           flex-basis: 12rem;
@@ -581,7 +584,9 @@ ul.list-cards {
           flex-shrink: 0;
           margin: 0;
           white-space: pre-wrap;
+          text-transform: uppercase;
           text-overflow: ellipsis;
+          color: $warm-gray-10;
           line-height: $line-height-base;
         }
       }
@@ -870,30 +875,32 @@ ul.list-cards {
       li {
         a {
           .edit-btn {
-              display: flex;
-              align-items: center;
+            display: flex;
+            align-items: center;
+            color: $bright-blue;
+            font-size: $font-size-sm;
+            font-weight: $font-weight-bold;
+
+            i {
+              width: auto;
+              margin: 0 ($padding/2) 0 0;
               color: $bright-blue;
               font-size: $font-size-sm;
-              font-weight: $font-weight-bold;
-            i {
-                font-size: $font-size-sm;
-                margin: 0 ($padding/2) 0 0;
-                width: auto;
-                color: $bright-blue;
             }
           }
 
           &:hover {
-              .edit-btn {
-                  color: $bright-blue-darken-04;
+            .edit-btn {
+              color: $bright-blue-darken-04;
 
-                  i {
-                      color: $bright-blue-darken-04;
-                  }
-                  span {
-                      text-decoration: underline;
-                  }
+              i {
+                color: $bright-blue-darken-04;
               }
+
+              span {
+                text-decoration: underline;
+              }
+            }
           }
         }
       }
@@ -1248,7 +1255,7 @@ ul.list-cards {
         margin-right: $padding;
         border: 5px solid $bright-blue-darken-01;
         border-radius: 50%;
-        background-image: url('../img/csr.jpg');
+        background-image: url("../img/csr.jpg");
         background-position: right center;
         background-size: cover;
       }
@@ -1445,6 +1452,14 @@ ul.list-cards {
       border-bottom: 2px solid $white;
       background: $warm-gray-08;
 
+      a {
+        color: $bright-blue-lighten-02;
+
+        &:hover {
+          color: $bright-blue;
+        }
+      }
+
       section {
         flex-basis: auto;
         flex-grow: 0;
@@ -1464,12 +1479,12 @@ ul.list-cards {
             }
 
             dd {
+              overflow: hidden;
               margin-bottom: 0;
               text-transform: uppercase;
+              text-overflow: ellipsis;
               font-size: $font-size-sm;
               line-height: $headings-line-height;
-              text-overflow: ellipsis;
-              overflow: hidden;
             }
           }
         }
@@ -1486,6 +1501,7 @@ ul.list-cards {
           max-width: 15rem;
         }
 
+        &.agencyDetails,
         &.policyDetails,
         &.quoteDetails {
           display: flex;
@@ -1505,6 +1521,10 @@ ul.list-cards {
 
               dd {
                 color: $yellow-lighten-06;
+
+                &.font-size-base {
+                  font-size: $font-size-base;
+                }
               }
             }
           }
@@ -1650,6 +1670,7 @@ ul.list-cards {
   }
 }
 // Generic Global Styles
+
 .flex-parent {
   display: flex;
   align-content: space-between;

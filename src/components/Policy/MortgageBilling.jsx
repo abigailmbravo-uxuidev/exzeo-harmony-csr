@@ -12,7 +12,6 @@ import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as policyStateActions from '../../actions/policyStateActions';
 import PolicyConnect from '../../containers/Policy';
-import ClearErrorConnect from '../Error/ClearError';
 import SelectField from '../Form/inputs/SelectField';
 import TextField from '../Form/inputs/TextField';
 import CurrencyField from '../Form/inputs/CurrencyField';
@@ -316,7 +315,6 @@ export class MortgageBilling extends Component {
 
     return (
       <PolicyConnect>
-        <ClearErrorConnect />
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">

@@ -43,7 +43,7 @@ RadioOptionBilling.propTypes = {
   /**
    * Answer used to generate option
    */
-  answer: PropTypes.string,
+  answer: PropTypes.any,
 
   /**
    * Name for option

@@ -13,7 +13,6 @@ import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as policyStateActions from '../../actions/policyStateActions';
 import PolicyConnect from '../../containers/Policy';
-import ClearErrorConnect from '../Error/ClearError';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
 
@@ -185,13 +184,10 @@ export class Coverage extends Component {
 
     const propertyData = property || {};
     if (!this.props.policy.policyID) {
-      return (<PolicyConnect>
-        <ClearErrorConnect />
-      </PolicyConnect>);
+      return (<PolicyConnect></PolicyConnect>);
     }
     return (
       <PolicyConnect>
-        <ClearErrorConnect />
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">

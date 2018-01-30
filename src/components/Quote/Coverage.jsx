@@ -14,7 +14,6 @@ import * as appStateActions from '../../actions/appStateActions';
 import * as questionsActions from '../../actions/questionsActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
-import ClearErrorConnect from '../Error/ClearError';
 import TextField from '../Form/inputs/TextField';
 import PhoneField from '../Form/inputs/PhoneField';
 import HiddenField from '../Form/inputs/HiddenField';
@@ -191,7 +190,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
     ...props.appState.data,
     submitting: true
   });
-  submitData.effectiveDate = momentTZ.tz(momentTZ.utc(submitData.effectiveDate).format('YYYY-MM-DD'), props.zipCodeSettings.timezone).format();
+  submitData.effectiveDate = momentTZ.tz(momentTZ.utc(submitData.effectiveDate).format('YYYY-MM-DD'), props.zipCodeSettings.timezone).utc().format();
 
   submitData.agencyCode = String(data.agencyCode);
   submitData.agentCode = String(data.agentCode);
@@ -404,10 +403,9 @@ export class Coverage extends Component {
   }
 
   render() {
-    const { quoteData, fieldValues, handleSubmit, initialValues, pristine, agents, agencies, questions, zipCodeSettings, dirty } = this.props;
+    const { quoteData, fieldValues, handleSubmit, initialValues, pristine, agents, agencies, questions, dirty } = this.props;
     return (
       <QuoteBaseConnect>
-        <ClearErrorConnect />
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         <div className="route-content">
           <Form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
@@ -420,7 +418,7 @@ export class Coverage extends Component {
                   <h3>Produced By</h3>
                   <div className="flex-parent produced-by-wrapper">
                     <div className="flex-child effectiveDate">
-                      <DateField validations={['date']} label={'Effective Date'} name={'effectiveDate'} min={zipCodeSettings ? zipCodeSettings.minEffectiveDate : null} max={zipCodeSettings ? zipCodeSettings.maxEffectiveDate : null} />
+                      <DateField validations={['required', 'date']} label={'Effective Date'} name={'effectiveDate'} />
                     </div>
                     <div className="flex-child agencyCode">
                       <SelectField
