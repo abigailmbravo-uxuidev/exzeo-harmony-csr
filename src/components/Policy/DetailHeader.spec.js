@@ -42,7 +42,7 @@ describe('Testing DetailHeader component', () => {
     expect(wrapper);
   });
 
-  it('should test connected app', () => {
+  it('should test DetailHeader', () => {
     const initialState = {
       service: {
       },
@@ -62,8 +62,8 @@ describe('Testing DetailHeader component', () => {
     const store = mockStore(initialState);
     const props = {
       actions: {
-      serviceActions:{
-        getEffectiveDateChangeReasons() {}
+        serviceActions: {
+          getEffectiveDateChangeReasons() {}
         }
       },
       fieldQuestions: [],
@@ -78,5 +78,6 @@ describe('Testing DetailHeader component', () => {
     };
     const wrapper = shallow(<DetailHeader store={store} {...props} />);
     expect(wrapper);
+    wrapper.instance().componentDidMount();
   });
 });
