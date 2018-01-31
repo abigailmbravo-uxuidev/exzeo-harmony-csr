@@ -6,6 +6,7 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import { connect } from 'react-redux';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
+import { batchActions } from 'redux-batched-actions';
 import TextField from '../Form/inputs/TextField';
 import PhoneField from '../Form/inputs/PhoneField';
 import HiddenField from '../Form/inputs/HiddenField';
@@ -70,19 +71,23 @@ export const setMortgageeValues = (val, props) => {
   const selectedMortgagee = val;
 
   if (selectedMortgagee) {
-    props.dispatch(change('AdditionalInterestEditModal', 'name1', _.get(selectedMortgagee, 'AIName1')));
-    props.dispatch(change('AdditionalInterestEditModal', 'name2', _.get(selectedMortgagee, 'AIName2')));
-    props.dispatch(change('AdditionalInterestEditModal', 'address1', _.get(selectedMortgagee, 'AIAddress1')));
-    props.dispatch(change('AdditionalInterestEditModal', 'city', _.get(selectedMortgagee, 'AICity')));
-    props.dispatch(change('AdditionalInterestEditModal', 'state', _.get(selectedMortgagee, 'AIState')));
-    props.dispatch(change('AdditionalInterestEditModal', 'zip', String(_.get(selectedMortgagee, 'AIZip'))));
+    props.dispatch(batchActions([
+      change('AdditionalInterestEditModal', 'name1', _.get(selectedMortgagee, 'AIName1')),
+      change('AdditionalInterestEditModal', 'name2', _.get(selectedMortgagee, 'AIName2')),
+      change('AdditionalInterestEditModal', 'address1', _.get(selectedMortgagee, 'AIAddress1')),
+      change('AdditionalInterestEditModal', 'city', _.get(selectedMortgagee, 'AICity')),
+      change('AdditionalInterestEditModal', 'state', _.get(selectedMortgagee, 'AIState')),
+      change('AdditionalInterestEditModal', 'zip', String(_.get(selectedMortgagee, 'AIZip')))
+    ]));
   } else {
-    props.dispatch(change('AdditionalInterestEditModal', 'name1', ''));
-    props.dispatch(change('AdditionalInterestEditModal', 'name2', ''));
-    props.dispatch(change('AdditionalInterestEditModal', 'address1', ''));
-    props.dispatch(change('AdditionalInterestEditModal', 'city', ''));
-    props.dispatch(change('AdditionalInterestEditModal', 'state', ''));
-    props.dispatch(change('AdditionalInterestEditModal', 'zip', ''));
+    props.dispatch(batchActions([
+      change('AdditionalInterestEditModal', 'name1', ''),
+      change('AdditionalInterestEditModal', 'name2', ''),
+      change('AdditionalInterestEditModal', 'address1', ''),
+      change('AdditionalInterestEditModal', 'city', ''),
+      change('AdditionalInterestEditModal', 'state', ''),
+      change('AdditionalInterestEditModal', 'zip', '')
+    ]));
   }
 };
 
