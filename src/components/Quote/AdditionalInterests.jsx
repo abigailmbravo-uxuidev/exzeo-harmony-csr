@@ -62,8 +62,8 @@ export const handleFormSubmit = (data, dispatch, props) => {
   let order = 0;
 
   const isMortgagee = type === 'Mortgagee';
-
-  if (!isMortgagee && String(data.order) !== '0' && String(data.order) !== '1') {
+  // type mortgagee allows the user to select order and the AI edit will pass in order
+  if (!isMortgagee && !data._id) {
     order = _.filter(additionalInterests, ai => ai.type === type).length === 0 ? 0 : 1;
   } else {
     order = data.order;
