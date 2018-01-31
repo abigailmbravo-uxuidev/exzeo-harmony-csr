@@ -42,6 +42,7 @@ const handleInitialize = (state) => {
       zip: String(selectedAI.mailingAddress.zip),
       referenceNumber: selectedAI.referenceNumber,
       type: selectedAI.type,
+      aiType: selectedAI.type,
       order: selectedAI.order
     };
   }
@@ -86,7 +87,7 @@ export const setMortgageeValues = (val, props) => {
 };
 
 export const AdditionalInterestEditModal = (props) => {
-  const { appState, handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, selectedAI, questions, additionalInterests } = props;
+  const { appState, handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, selectedAI, questions, isEndorsement, validAdditionalInterestTypes, additionalInterests } = props;
 
   const mortgageeOrderAnswers = _.cloneDeep(getAnswers('order', questions));
 
@@ -141,6 +142,15 @@ export const AdditionalInterestEditModal = (props) => {
               answers={mortgageeOrderAnswers}
             />}
           </div>
+          {isEndorsement &&
+            <div className="flex-form">
+              <SelectField
+                name={'aiType'}
+                answers={validAdditionalInterestTypes}
+                label={''} component="select" styleName={''} validations={['required']}
+              />
+            </div>
+          }
         </div>
         <div className="card-footer">
           <div className="btn-group">

@@ -330,6 +330,23 @@ export const updateDependencies = (event, field, dependency, props) => {
   dispatch(change('Endorsements', field, Number.isNaN(fieldValue) ? '' : String(fieldValue)));
 };
 
+export const updatepersonalPropertyDependnecies = (event, field, dependency, props) => {
+  setCalculate(props, false);
+
+  const { dispatch, fieldValues } = props;
+  if (Number.isNaN(event.target.value)) return;
+
+  if (Number(event.target.value) === 0) {
+    dispatch(change('Endorsements', 'personalPropertyReplacementCostCoverageNew', false));
+  } else {
+    dispatch(change('Endorsements', 'personalPropertyReplacementCostCoverageNew', _.get(props.policy, 'coverageOptions.personalPropertyReplacementCost.answer') || false));
+  }
+
+  const dependencyValue = String(fieldValues[dependency]).replace(/\D+/g, '');
+  const fieldValue = setPercentageOfValue(Number(dependencyValue), Number(event.target.value));
+
+  dispatch(change('Endorsements', field, Number.isNaN(fieldValue) ? '' : String(fieldValue)));
+};
 
 export const generateModel = (data, policyObject, props) => {
   const policy = policyObject;
@@ -621,6 +638,11 @@ export class Endorsements extends React.Component {
         setCalculate(nextProps);
       }
     }
+    if (_.isEqual(this.props.fieldValues.propertyIncidentalOccupanciesMainDwellingNew, nextProps.fieldValues.propertyIncidentalOccupanciesMainDwellingNew) ||
+    _.isEqual(this.props.fieldValues.propertyIncidentalOccupanciesOtherStructuresNew, nextProps.fieldValues.propertyIncidentalOccupanciesOtherStructuresNew)) {
+      const setLiabilityIncidentalOccupanciesNew = nextProps.fieldValues.propertyIncidentalOccupanciesMainDwellingNew || nextProps.fieldValues.propertyIncidentalOccupanciesOtherStructuresNew;
+      nextProps.dispatch(change('Endorsements', 'liabilityIncidentalOccupanciesNew', setLiabilityIncidentalOccupanciesNew));
+    }
   }
 
   updateDwellingAndDependencies = (e, value) => {
@@ -647,7 +669,7 @@ export class Endorsements extends React.Component {
   };
 
   render() {
-    const { initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, policy, dirty } = this.props;
+    const { initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, policy, dirty, fieldValues } = this.props;
     return (
       <PolicyConnect>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
@@ -708,7 +730,7 @@ export class Endorsements extends React.Component {
                           <SelectField
                             name={'personalPropertyNew'}
                             answers={getAnswers('personalPropertyAmount', questions)}
-                            component="select" label={''} styleName={'coverage-c-percentage'} onChange={event => updateDependencies(event, 'personalPropertyAmountNew', 'dwellingAmountNew', this.props)} validations={['required']}
+                            component="select" label={''} styleName={'coverage-c-percentage'} onChange={event => updatepersonalPropertyDependnecies(event, 'personalPropertyAmountNew', 'dwellingAmountNew', this.props)} validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
@@ -787,6 +809,7 @@ export class Endorsements extends React.Component {
                           <TextField label={'Personal Property Repl Cost'} styleName={''} name={'personalPropertyReplacementCostCoverage'} disabled />
                           <div className="flex-child other-coverages-property-replacement-cost">
                             <RadioField
+                              disabled={String(fieldValues.personalPropertyNew) === '0'}
                               name={'personalPropertyReplacementCostCoverageNew'} styleName={'billPlan'} label={''} onChange={() => setCalculate(this.props, false)} segmented answers={[
                                 {
                                   answer: false,

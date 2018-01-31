@@ -404,5 +404,11 @@ describe('Testing DetailHeader component', () => {
     const shallowWrapper = shallow(<DetailHeader store={store} {...props} />);
 
     shallowWrapper.instance().componentWillReceiveProps({ quoteState: { update: true, quoteId : '123'}, ...props });
+    const wrapper2 = shallow(<DetailHeader store={store} {...props} />);
+
+    wrapper2.instance().componentWillReceiveProps({ quoteState: {
+      update: true,
+      quoteId: '123'
+    }, ...props})
   });
 });

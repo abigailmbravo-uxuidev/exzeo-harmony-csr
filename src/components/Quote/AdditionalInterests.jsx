@@ -79,8 +79,8 @@ export const handleFormSubmit = (data, dispatch, props) => {
       _id: data._id, // eslint-disable-line
     name1: data.name1,
     name2: data.name2,
-    referenceNumber: data.referenceNumber,
-    order: Number(order),
+    referenceNumber: data.referenceNumber || '',
+    order: order,
     active: true,
     type,
     phoneNumber: String(data.phoneNumber).length > 0 ? String(data.phoneNumber).replace(/[^\d]/g, '') : '',
