@@ -153,6 +153,10 @@ describe('Testing NewNoteFileUploader component', () => {
         name: 'upload',
         value: [],
         onChange() { this.value }
+      },
+      meta: { 
+        touched: true, 
+        error: 'test'
       }
     }
 
@@ -164,7 +168,7 @@ describe('Testing NewNoteFileUploader component', () => {
   });
 
   it('note should be valid', () => {
-    const valid = validate({noteContent: 'Testst Content'});
+    const valid = validate({noteContent: 'Test Content'});
     expect(valid).toEqual({});
   });
 

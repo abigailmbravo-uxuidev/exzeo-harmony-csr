@@ -66,6 +66,8 @@ export default class Auth {
     const payload = jwtDecode(authResult.idToken);
     const profile = {
       name: payload.name,
+      given_name: payload['https://heimdall.security/given_name'],
+      family_name: payload['https://heimdall.security/family_name'],
       email: payload.email,
       sub: payload.sub,
       username: payload.username,
