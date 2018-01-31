@@ -26,6 +26,8 @@ import DateField from '../Form/inputs/DateField';
 import Loader from '../Common/Loader';
 import * as policyStateActions from '../../actions/policyStateActions';
 import * as actionTypes from '../../actions/actionTypes';
+import { premiumEndorsmentList } from './endorsementTypes'
+import { batchActions } from 'redux-batched-actions';
 
 export const scrollToView = (elementName) => {
   const element = document.getElementById(elementName);
@@ -63,17 +65,21 @@ export const clearSecondaryPolicyholder = (value, props) => {
     const pH2LastName = _.get(policy, 'policyHolders[1].lastName');
     const pH2phone = normalizePhone(_.get(policy, 'policyHolders[1].primaryPhoneNumber') || '');
     const pH2secondaryPhone = normalizePhone(_.get(policy, 'policyHolders[1].secondaryPhoneNumber') || '');
-    dispatch(change('Endorsements', 'pH2email', pH2email));
-    dispatch(change('Endorsements', 'pH2FirstName', pH2FirstName));
-    dispatch(change('Endorsements', 'pH2LastName', pH2LastName));
-    dispatch(change('Endorsements', 'pH2phone', pH2phone));
-    dispatch(change('Endorsements', 'pH2secondaryPhone', pH2secondaryPhone));
+    dispatch(batchActions([
+      change('Endorsements', 'pH2email', pH2email),
+      change('Endorsements', 'pH2FirstName', pH2FirstName),
+      change('Endorsements', 'pH2LastName', pH2LastName),
+      change('Endorsements', 'pH2phone', pH2phone),
+      change('Endorsements', 'pH2secondaryPhone', pH2secondaryPhone)
+    ]));
   } else {
-    dispatch(change('Endorsements', 'pH2email', ''));
-    dispatch(change('Endorsements', 'pH2FirstName', ''));
-    dispatch(change('Endorsements', 'pH2LastName', ''));
-    dispatch(change('Endorsements', 'pH2phone', ''));
-    dispatch(change('Endorsements', 'pH2secondaryPhone', ''));
+    dispatch(batchActions([
+      change('Endorsements', 'pH2email', ''),
+      change('Endorsements', 'pH2FirstName', ''),
+      change('Endorsements', 'pH2LastName', ''),
+      change('Endorsements', 'pH2phone', ''),
+      change('Endorsements', 'pH2secondaryPhone', '')
+    ]));
   }
 };
 
@@ -593,8 +599,9 @@ export const save = (data, dispatch, props) => {
 };
 
 
-const amountFormatter = cell => (cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '');
+const premiumAmountFormatter = cell => Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 const dateFormatter = cell => `${cell.substring(0, 10)}`;
+
 
 export class Endorsements extends React.Component {
   componentDidMount() {
@@ -613,10 +620,13 @@ export class Endorsements extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props.getRate, nextProps.getRate) && nextProps.getRate && nextProps.getRate.newAnnualPremium) {
       const { getRate } = nextProps;
-      nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', getRate.endorsementAmount || 0));
-      nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', getRate.newCurrentPremium || ''));
-      nextProps.dispatch(change('Endorsements', 'newAnnualPremium', getRate.newAnnualPremium || ''));
-      nextProps.dispatch(change('Endorsements', 'windMitFactorNew', _.get(getRate, 'worksheet.elements.windMitigationFactors.windMitigationDiscount')));
+      
+      nextProps.dispatch(batchActions([
+        change('Endorsements', 'newEndorsementAmount', getRate.endorsementAmount || 0),
+        change('Endorsements', 'newEndorsementPremium', getRate.newCurrentPremium || ''),
+        change('Endorsements', 'newAnnualPremium', getRate.newAnnualPremium || ''),
+        change('Endorsements', 'windMitFactorNew', _.get(getRate, 'worksheet.elements.windMitigationFactors.windMitigationDiscount'))
+      ]));
     }
     if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
@@ -625,10 +635,13 @@ export class Endorsements extends React.Component {
     if (!_.isEqual(this.props.newPolicyNumber, nextProps.newPolicyNumber)) {
       this.props.actions.policyStateActions.updatePolicy(true, nextProps.newPolicyNumber);
       const endorsementDateNew = setEndorsementDate(_.get(nextProps.policy, 'effectiveDate'), _.get(nextProps.policy, 'endDate'));
-      nextProps.dispatch(change('Endorsements', 'endorsementDateNew', endorsementDateNew));
-      nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', ''));
-      nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', ''));
-      nextProps.dispatch(change('Endorsements', 'newAnnualPremium', ''));
+
+      nextProps.dispatch(batchActions([
+        change('Endorsements', 'endorsementDateNew', endorsementDateNew),
+        change('Endorsements', 'newEndorsementAmount', ''),
+        change('Endorsements', 'newEndorsementPremium', ''),
+        change('Endorsements', 'newAnnualPremium', '')
+      ]));
     }
     if (this.props.tasks && this.props.tasks.endorsePolicyModelSave && this.props.tasks.endorsePolicyModelSave.data &&
       nextProps.tasks && nextProps.tasks.endorsePolicyModelSave && nextProps.tasks.endorsePolicyModelSave.data &&
@@ -1199,11 +1212,14 @@ export class Endorsements extends React.Component {
                   </section>
                   <section>
                     <h3>Previous Endorsements</h3>
-                    <BootstrapTable data={endorsementHistory || []}>
-                      <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="effectiveDate" isKey dataFormat={dateFormatter}>Effective Date</TableHeaderColumn>
-                      <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="netCharge" dataFormat={amountFormatter}>Amount</TableHeaderColumn>
-                      <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="transactionType">Type</TableHeaderColumn>
-                      <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="createdAt" dataFormat={dateFormatter}>Processed Date</TableHeaderColumn>
+                    <BootstrapTable data={_.map(endorsementHistory, endorsement => {
+                      endorsement.netCharge = _.includes(premiumEndorsmentList, endorsement.transactionType) ? premiumAmountFormatter(endorsement.netCharge): '';
+                      return endorsement;
+                    })}>
+                    <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="effectiveDate" isKey dataFormat={dateFormatter}>Effective Date</TableHeaderColumn>
+                    <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="netCharge">Amount</TableHeaderColumn>
+                    <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="transactionType">Type</TableHeaderColumn>
+                    <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="createdAt" dataFormat={dateFormatter}>Processed Date</TableHeaderColumn>
                     </BootstrapTable>
                   </section>
                   <section name="policy" id="policy">
@@ -1357,7 +1373,7 @@ redux mapping
 */
 const mapStateToProps = state => ({
   tasks: state.cg,
-  endorsementHistory: state.service.endorsementHistory,
+  endorsementHistory: state.service.endorsementHistory || [],
   appState: state.appState,
   fieldValues: _.get(state.form, 'Endorsements.values', {}),
   initialValues: handleInitialize(state),
