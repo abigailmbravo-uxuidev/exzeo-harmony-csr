@@ -66,7 +66,7 @@ describe('Testing DetailHeader component', () => {
         policyStateActions: {
           updatePolicy() { }
         },
-        serviceActions:{
+        serviceActions: {
           getLatestPolicy() {},
           getEffectiveDateChangeReasons() {}
         }
@@ -84,5 +84,6 @@ describe('Testing DetailHeader component', () => {
     const wrapper = shallow(<DetailHeader store={store} {...props} />);
     expect(wrapper);
     wrapper.instance().componentWillReceiveProps({ ...props, policyState: { update: true, policyNumber : '123'} })
+    wrapper.instance().componentDidMount();
   });
 });

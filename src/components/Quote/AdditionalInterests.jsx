@@ -9,6 +9,7 @@ import * as questionsActions from '../../actions/questionsActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import * as quoteStateActions from '../../actions/quoteStateActions';
+import * as serviceActions from '../../actions/serviceActions';
 import AdditionalInterestModal from '../../components/Common/AdditionalInterestModal';
 import AdditionalInterestEditModal from '../../components/Common/AdditionalInterestEditModal';
 import Footer from '../Common/Footer';
@@ -60,7 +61,9 @@ export const handleFormSubmit = (data, dispatch, props) => {
 
   let order = 0;
 
-  if (String(data.order) !== '0' && String(data.order) !== '1') {
+  const isMortgagee = type === 'Mortgagee';
+
+  if (!isMortgagee && String(data.order) !== '0' && String(data.order) !== '1') {
     order = _.filter(additionalInterests, ai => ai.type === type).length === 0 ? 0 : 1;
   } else {
     order = data.order;
@@ -77,7 +80,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
     name1: data.name1,
     name2: data.name2,
     referenceNumber: data.referenceNumber,
-    order,
+    order: Number(order),
     active: true,
     type,
     phoneNumber: String(data.phoneNumber).length > 0 ? String(data.phoneNumber).replace(/[^\d]/g, '') : '',
@@ -94,14 +97,16 @@ export const handleFormSubmit = (data, dispatch, props) => {
     }
   };
 
+  if (isMortgagee) {
+    _.forEach(_.filter(modifiedAIs, ai => ai.type === type), (mortgagee) => {
+      if (Number(order) === 0) mortgagee.order = 1;
+      else mortgagee.order = 0;
+    });
+  }
+
   modifiedAIs.push(aiData);
 
-    // TODO I need to take the form data then push to the additional interest array in the quote then submit the array as data
-
-    // TODO Clear out old form data
-
   applyRank(modifiedAIs);
-
 
   const steps = [
     {
@@ -127,6 +132,8 @@ export const handleFormSubmit = (data, dispatch, props) => {
         actions.appStateActions.setAppState(appState.modelName,
           workflowId, { ...appState.data,
             selectedMortgageeOption: null,
+            addAdditionalInterestType: type,
+            deleteAdditionalInterestType: '',
             selectedLink: 'additionalInterests',
             submittingAI: false,
             showAdditionalInterestModal: false,
@@ -161,6 +168,7 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
       workflowId, {
         ...props.appState.data,
         submittingAI: true,
+        deleteAdditionalInterestType: selectedAdditionalInterest.type,
         showAdditionalInterestModal: appState.data.showAdditionalInterestModal,
         showAdditionalInterestEditModal: appState.data.showAdditionalInterestEditModal
       });
@@ -201,6 +209,8 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
         props.actions.appStateActions.setAppState(props.appState.modelName,
           workflowId, { ...props.appState.data,
             selectedLink: 'additionalInterests',
+            addAdditionalInterestType: '',
+            deleteAdditionalInterestType: selectedAdditionalInterest.type,
             submittingAI: false,
             selectedMortgageeOption: null,
             showAdditionalInterestModal: false,
@@ -241,11 +251,54 @@ export class AdditionalInterests extends Component {
     });
     }
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (!_.isEqual(this.props.quoteData.additionalInterests, nextProps.quoteData.additionalInterests)) {
+      const paymentOptions = {
+        effectiveDate: nextProps.quoteData.effectiveDate,
+        policyHolders: nextProps.quoteData.policyHolders,
+        additionalInterests: nextProps.quoteData.additionalInterests,
+        netPremium: nextProps.quoteData.rating.netPremium,
+        fees: {
+          empTrustFee: nextProps.quoteData.rating.worksheet.fees.empTrustFee,
+          mgaPolicyFee: nextProps.quoteData.rating.worksheet.fees.mgaPolicyFee
+        },
+        totalPremium: nextProps.quoteData.rating.totalPremium
+      };
+      nextProps.actions.serviceActions.getBillingOptions(paymentOptions);
+    }
+
+    if (nextProps.billingOptions && !_.isEqual(this.props.billingOptions, nextProps.billingOptions) &&
+    nextProps.appState.data.addAdditionalInterestType === 'Bill Payer') {
+      const billPayer = nextProps.billingOptions.options[0];
+      nextProps.actions.serviceActions.saveBillingInfo(nextProps.quoteData._id, billPayer.billToType, billPayer.billToId, 'Annual');
+
+      // update billToType to BP
+    } else if (nextProps.billingOptions && !_.isEqual(this.props.billingOptions, nextProps.billingOptions) &&
+    nextProps.appState.data.deleteAdditionalInterestType === 'Bill Payer') {
+      // update billToType to PH
+      const policyHolder = _.find(nextProps.billingOptions.options, bo => bo.billToType === 'Policyholder');
+      nextProps.actions.serviceActions.saveBillingInfo(nextProps.quoteData._id, policyHolder.billToType, policyHolder.billToId, 'Annual');
+    }
+  }
   render() {
     const { appState, quoteData, questions } = this.props;
     _.forEach(getAnswers('mortgagee', questions), (answer) => {
       answer.displayText = `${answer.AIName1}, ${answer.AIAddress1}, ${answer.AICity} ${answer.AIState}, ${answer.AIZip}`;
     });
+    if (!quoteData.rating) {
+      return (
+        <QuoteBaseConnect>
+          <div className="route-content">
+            <div className="messages">
+              <div className="message error">
+                <i className="fa fa-exclamation-circle" aria-hidden="true" /> &nbsp;Additional Interests cannot be accessed until Premium calculated.
+            </div>
+            </div>
+          </div>
+        </QuoteBaseConnect>
+      );
+    }
 
     applyRank(quoteData.additionalInterests);
     return (
@@ -286,8 +339,8 @@ export class AdditionalInterests extends Component {
               </div>
             </div>
           </form>
-          { appState.data.showAdditionalInterestEditModal && <AdditionalInterestEditModal questions={this.props.questions} selectedAI={this.props.appState.data.selectedAI} quoteData={quoteData} verify={handleFormSubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
-          { appState.data.showAdditionalInterestModal && <AdditionalInterestModal questions={this.props.questions} quoteData={quoteData} verify={handleFormSubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
+          { appState.data.showAdditionalInterestEditModal && <AdditionalInterestEditModal additionalInterests={this.props.quoteData.additionalInterests} questions={this.props.questions} selectedAI={this.props.appState.data.selectedAI} quoteData={quoteData} verify={handleFormSubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
+          { appState.data.showAdditionalInterestModal && <AdditionalInterestModal additionalInterests={this.props.quoteData.additionalInterests} questions={this.props.questions} quoteData={quoteData} verify={handleFormSubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
         </div>
         <div className="basic-footer">
           <Footer />
@@ -320,7 +373,8 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'AdditionalLinterests.values', {}),
   initialValues: handleInitialize(state),
   showAdditionalInterestModal: state.appState.data.showAdditionalInterestModal,
-  quoteData: state.service.quote || {}
+  quoteData: state.service.quote || {},
+  billingOptions: state.service.billingOptions
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -328,6 +382,7 @@ const mapDispatchToProps = dispatch => ({
     questionsActions: bindActionCreators(questionsActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch),
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     quoteStateActions: bindActionCreators(quoteStateActions, dispatch)
   }
 });

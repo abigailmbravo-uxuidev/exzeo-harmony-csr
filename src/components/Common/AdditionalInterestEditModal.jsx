@@ -9,6 +9,7 @@ import { reduxForm, Form, propTypes, change } from 'redux-form';
 import TextField from '../Form/inputs/TextField';
 import PhoneField from '../Form/inputs/PhoneField';
 import HiddenField from '../Form/inputs/HiddenField';
+import SelectField from '../Form/inputs/SelectField';
 import * as questionsActions from '../../actions/questionsActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
@@ -85,7 +86,14 @@ export const setMortgageeValues = (val, props) => {
 };
 
 export const AdditionalInterestEditModal = (props) => {
-  const { appState, handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, selectedAI, questions } = props;
+  const { appState, handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, selectedAI, questions, additionalInterests } = props;
+
+  const mortgageeOrderAnswers = _.cloneDeep(getAnswers('order', questions));
+
+  if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee').length < 2) {
+    _.remove(mortgageeOrderAnswers, answer => Number(answer.answer) === 1);
+  }
+
   return (<div className="modal" style={{ flexDirection: 'row' }}>
 
     <Form id="AdditionalInterestEditModal" className={`AdditionalInterestModal ${selectedAI ? selectedAI.type : ''}`} noValidate onSubmit={handleSubmit(verify)}>
@@ -128,6 +136,10 @@ export const AdditionalInterestEditModal = (props) => {
           <div className="flex-form">
             <PhoneField label={'Phone Number'} styleName={'phone'} name={'phoneNumber'} validations={['phone']} />
             <TextField label={'Reference Number'} styleName={''} name={'referenceNumber'} />
+            { appState.data.addAdditionalInterestType === 'Mortgagee' && <SelectField
+              name="order" component="select" styleName={''} label="Order" onChange={function () {}} validations={['required']}
+              answers={mortgageeOrderAnswers}
+            />}
           </div>
         </div>
         <div className="card-footer">
@@ -165,10 +177,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
     policyStateActions: bindActionCreators(policyStateActions, dispatch),
     questionsActions: bindActionCreators(questionsActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }
