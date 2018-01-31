@@ -81,7 +81,7 @@ export const setMortgageeValues = (val, props) => {
 export const AdditionalInterestModal = (props) => {
   const { appState, handleSubmit, verify, hideAdditionalInterestModal, questions, additionalInterests } = props;
 
-  const mortgageeOrderAnswers = _.cloneDeep(getAnswers('order', questions)) || [{answer: '0', label: 'First Mortgagee'}, {answer: '1',label: 'Second Mortgagee'}];
+  const mortgageeOrderAnswers = _.cloneDeep(getAnswers('order', questions));
 
   if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee').length === 0) {
     _.remove(mortgageeOrderAnswers, answer => Number(answer.answer) === 1);
