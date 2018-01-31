@@ -81,11 +81,6 @@ export const getPaymentDescription = (event, props) => {
           props.appState.instanceId, { ...props.appState.data, ranService: false, paymentDescription: selectedDescriptionType.paymentDescription, showDescription: true });
 };
 
-export const hideBillingModal = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
-      { ...props.appState.data, showBillingEditModal: false });
-};
-
 export const handleAISubmit = (data, dispatch, props) => {
   const { appState, actions, policy } = props;
   const workflowId = appState.instanceId;
@@ -201,7 +196,22 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
 };
 
 export const handleBillingFormSubmit = (data, dispatch, props) => {
+  const { actions, policy } = props;
+  const updateData = {
+    policyNumber: policy.policyNumber,
+    policyTransactionId: policy.policyID,
+    billToType: data.billToType,
+    billToId: data.billToId,
+    billPlan: data.billPlan,
+    transactionType: "Bill Plan Update",
+    timezone: "America/New_York"
+  };
+  actions.serviceActions.updateBillPlan(updateData).then(() => hideBillingModal(props));
+};
 
+export const hideBillingModal = (props) => {
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data, showBillingEditModal: false });
 };
 
 export const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
