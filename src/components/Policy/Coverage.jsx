@@ -340,7 +340,7 @@ redux mapping
 */
 const mapStateToProps = state => ({
   paymentOptions: state.service.billingOptions,
-  summaryLedger: state.service.getSummaryLedger,
+  summaryLedger: state.service.getSummaryLedger || {},
   tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'Coverage.values', {}),

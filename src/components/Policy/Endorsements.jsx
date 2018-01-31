@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
-import { reduxForm, propTypes, change, Form } from 'redux-form';
+import { reduxForm, propTypes, change, Form, Field } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as cgActions from '../../actions/cgActions';
 import * as serviceActions from '../../actions/serviceActions';
@@ -27,6 +27,8 @@ import Loader from '../Common/Loader';
 import * as policyStateActions from '../../actions/policyStateActions';
 import * as actionTypes from '../../actions/actionTypes';
 import { premiumEndorsmentList } from './endorsementTypes'
+import { batchActions } from 'redux-batched-actions';
+
 export const scrollToView = (elementName) => {
   const element = document.getElementById(elementName);
   if (element) {
@@ -48,6 +50,40 @@ export const setCalculate = (props, reset) => {
     isCalculated: false
   });
 };
+
+export const setPHToggle = (props) => {
+  const { dispatch } = props;
+  dispatch(change('Endorsements', 'clearFields', false));
+  setCalculate(props, false);
+};
+
+export const clearSecondaryPolicyholder = (value, props) => {
+  const { dispatch, policy } = props;
+  if (!value) {
+    const pH2email = _.get(policy, 'policyHolders[1].emailAddress');
+    const pH2FirstName = _.get(policy, 'policyHolders[1].firstName');
+    const pH2LastName = _.get(policy, 'policyHolders[1].lastName');
+    const pH2phone = normalizePhone(_.get(policy, 'policyHolders[1].primaryPhoneNumber') || '');
+    const pH2secondaryPhone = normalizePhone(_.get(policy, 'policyHolders[1].secondaryPhoneNumber') || '');
+    dispatch(batchActions([
+      change('Endorsements', 'pH2email', pH2email),
+      change('Endorsements', 'pH2FirstName', pH2FirstName),
+      change('Endorsements', 'pH2LastName', pH2LastName),
+      change('Endorsements', 'pH2phone', pH2phone),
+      change('Endorsements', 'pH2secondaryPhone', pH2secondaryPhone)
+    ]));
+  } else {
+    dispatch(batchActions([
+      change('Endorsements', 'pH2email', ''),
+      change('Endorsements', 'pH2FirstName', ''),
+      change('Endorsements', 'pH2LastName', ''),
+      change('Endorsements', 'pH2phone', ''),
+      change('Endorsements', 'pH2secondaryPhone', '')
+    ]));
+  }
+};
+
+
 export const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 export const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question') || '';
@@ -102,7 +138,8 @@ export const handleInitialize = (state) => {
   const personalProperty = _.get(policy, 'coverageLimits.personalProperty.amount');
   const hurricane = _.get(policy, 'deductibles.hurricane.amount');
 
-  // Coverage Top Left
+// Coverage Top Left
+  values.clearFields = false;
   values.endorsementDateNew = setEndorsementDate(_.get(policy, 'effectiveDate'), _.get(policy, 'endDate'));
   values.dwellingAmount = _.get(policy, 'coverageLimits.dwelling.amount');
   values.dwellingAmountNew = _.get(policy, 'coverageLimits.dwelling.amount');
@@ -583,10 +620,13 @@ export class Endorsements extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props.getRate, nextProps.getRate) && nextProps.getRate && nextProps.getRate.newAnnualPremium) {
       const { getRate } = nextProps;
-      nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', getRate.endorsementAmount || 0));
-      nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', getRate.newCurrentPremium || ''));
-      nextProps.dispatch(change('Endorsements', 'newAnnualPremium', getRate.newAnnualPremium || ''));
-      nextProps.dispatch(change('Endorsements', 'windMitFactorNew', _.get(getRate, 'worksheet.elements.windMitigationFactors.windMitigationDiscount')));
+      
+      nextProps.dispatch(batchActions([
+        change('Endorsements', 'newEndorsementAmount', getRate.endorsementAmount || 0),
+        change('Endorsements', 'newEndorsementPremium', getRate.newCurrentPremium || ''),
+        change('Endorsements', 'newAnnualPremium', getRate.newAnnualPremium || ''),
+        change('Endorsements', 'windMitFactorNew', _.get(getRate, 'worksheet.elements.windMitigationFactors.windMitigationDiscount'))
+      ]));
     }
     if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
@@ -595,10 +635,13 @@ export class Endorsements extends React.Component {
     if (!_.isEqual(this.props.newPolicyNumber, nextProps.newPolicyNumber)) {
       this.props.actions.policyStateActions.updatePolicy(true, nextProps.newPolicyNumber);
       const endorsementDateNew = setEndorsementDate(_.get(nextProps.policy, 'effectiveDate'), _.get(nextProps.policy, 'endDate'));
-      nextProps.dispatch(change('Endorsements', 'endorsementDateNew', endorsementDateNew));
-      nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', ''));
-      nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', ''));
-      nextProps.dispatch(change('Endorsements', 'newAnnualPremium', ''));
+
+      nextProps.dispatch(batchActions([
+        change('Endorsements', 'endorsementDateNew', endorsementDateNew),
+        change('Endorsements', 'newEndorsementAmount', ''),
+        change('Endorsements', 'newEndorsementPremium', ''),
+        change('Endorsements', 'newAnnualPremium', '')
+      ]));
     }
     if (this.props.tasks && this.props.tasks.endorsePolicyModelSave && this.props.tasks.endorsePolicyModelSave.data &&
       nextProps.tasks && nextProps.tasks.endorsePolicyModelSave && nextProps.tasks.endorsePolicyModelSave.data &&
@@ -670,7 +713,7 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="form-group-double-element">
                           <CurrencyField
-                            label={'Dwelling (A)'} styleName={''} name={'dwellingAmount'}
+                            label={`Dwelling (A) ($ ${String(initialValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $ ${String(initialValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`} styleName={''} name={'dwellingAmount'}
                             min={initialValues.dwellingMin} max={initialValues.dwellingMax} disabled
                           />
                           <CurrencyField
@@ -1173,9 +1216,10 @@ export class Endorsements extends React.Component {
                       endorsement.netCharge = _.includes(premiumEndorsmentList, endorsement.transactionType) ? premiumAmountFormatter(endorsement.netCharge): '';
                       return endorsement;
                     })}>
-                      <TableHeaderColumn dataField="effectiveDate" isKey dataFormat={dateFormatter}>Date</TableHeaderColumn>
-                      <TableHeaderColumn dataField="netCharge">Amount</TableHeaderColumn>
-                      <TableHeaderColumn dataField="transactionType" dataAlign="right">Type</TableHeaderColumn>
+                    <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="effectiveDate" isKey dataFormat={dateFormatter}>Effective Date</TableHeaderColumn>
+                    <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="netCharge">Amount</TableHeaderColumn>
+                    <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="transactionType">Type</TableHeaderColumn>
+                    <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="createdAt" dataFormat={dateFormatter}>Processed Date</TableHeaderColumn>
                     </BootstrapTable>
                   </section>
                   <section name="policy" id="policy">
@@ -1198,17 +1242,32 @@ export class Endorsements extends React.Component {
                       </div>
                       {/* Col2 */}
                       <div className="flex-child">
-                        <h3>Secondary Policyholder</h3>
-                        <div className="flex-parent col2">
-                          <TextField label={'First Name'} dependsOn={['pH2LastName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2FirstName'} onChange={() => setCalculate(this.props, false)} />
-                          <TextField label={'Last Name'} dependsOn={['pH2FirstName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2LastName'} onChange={() => setCalculate(this.props, false)} />
+                        <div className="flex-parent policy-holder-b-name">
+                          <div className="flex-child policy-holder-b-first-name">
+                            <h3>Secondary Policyholder
+                        </h3>
+                          </div>
+                          <div className="flex-child">
+                            <Field
+                              onChange={event => clearSecondaryPolicyholder(String(event.target.value) === 'false', this.props)}
+                              name={'clearFields'}
+                              id={'clearFields'}
+                              component="input"
+                              type="checkbox"
+                            />
+                            <label htmlFor={'clearFields'}>Clear Secondary Policyholder </label>
+                          </div>
                         </div>
                         <div className="flex-parent col2">
-                          <PhoneField validations={['phone']} label={'Primary Phone'} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2email']} styleName={''} name={'pH2phone'} onChange={() => setCalculate(this.props, false)} />
-                          <PhoneField validations={['phone']} label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} onChange={() => setCalculate(this.props, false)} />
+                          <TextField label={'First Name'} dependsOn={['pH2LastName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2FirstName'} onChange={() => setPHToggle(this.props)} />
+                          <TextField label={'Last Name'} dependsOn={['pH2FirstName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2LastName'} onChange={() => setPHToggle(this.props)} />
                         </div>
                         <div className="flex-parent col2">
-                          <TextField validations={['email']} label={'Email Address'} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2phone']} styleName={''} name={'pH2email'} onChange={() => setCalculate(this.props, false)} />
+                          <PhoneField validations={['phone']} label={'Primary Phone'} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2email']} styleName={''} name={'pH2phone'} onChange={() => setPHToggle(this.props)} />
+                          <PhoneField validations={['phone']} label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} onChange={() => setPHToggle(this.props)} />
+                        </div>
+                        <div className="flex-parent col2">
+                          <TextField validations={['email']} label={'Email Address'} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2phone']} styleName={''} name={'pH2email'} onChange={() => setPHToggle(this.props)} />
                         </div>
                       </div>
                     </div>

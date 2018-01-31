@@ -43,7 +43,7 @@ describe('Testing DetailHeader component', () => {
     expect(wrapper);
   });
 
-  it('should test DetailHeader', () => {
+  it('should test connected app', () => {
     const initialState = {
       service: {
       },
@@ -62,6 +62,7 @@ describe('Testing DetailHeader component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      policyState: {},
       policy: {
         policyID: '234',
         product: 'HO3'
@@ -75,7 +76,7 @@ describe('Testing DetailHeader component', () => {
         },
         serviceActions: {
           getEffectiveDateChangeReasons() {},
-          getLatestPolicy() {},
+          getLatestPolicy() {}
         }
       },
       fieldQuestions: [],

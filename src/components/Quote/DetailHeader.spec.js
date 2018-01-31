@@ -374,11 +374,12 @@ describe('Testing DetailHeader component', () => {
     const store = mockStore(initialState);
     const props = {
       actions: {
-        quoteStateActions: { 
+        quoteStateActions: {
           getLatestQuote(){ }
         },
         serviceActions: {
-          getQuote() {}
+          getQuote() {},
+          getPolicyFromPolicyNumber() { return Promise.resolve({ payload: [{ data: { policy: {} } }] }); }
         },
         appStateActions: {
           setAppState() {}
@@ -400,6 +401,9 @@ describe('Testing DetailHeader component', () => {
 
     selectPolicy(quoteData, props);
 
+    const shallowWrapper = shallow(<DetailHeader store={store} {...props} />);
+
+    shallowWrapper.instance().componentWillReceiveProps({ quoteState: { update: true, quoteId : '123'}, ...props });
     const wrapper2 = shallow(<DetailHeader store={store} {...props} />);
 
     wrapper2.instance().componentWillReceiveProps({ quoteState: {
