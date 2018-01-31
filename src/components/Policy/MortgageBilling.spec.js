@@ -288,6 +288,7 @@ describe('Testing MortgageBilling component', () => {
     wrapper.instance().dateFormatter('123');
 
     wrapper.instance().componentWillReceiveProps({
+      getSummaryLedger() {},
       policy: { policyNumber: '1234', rating: { worksheet: { fees: {} } } },
       appState: {
 
@@ -299,7 +300,7 @@ describe('Testing MortgageBilling component', () => {
         serviceActions: { addTransaction() { return Promise.resolve(); },
           getTransactionHistory() {},
           getSummaryLedger() {},
-          getBillingOptions() {},
+          getBillingOptionsForPolicy() {},
           getPaymentHistory() {},
           getPaymentOptionsApplyPayments() {} } } });
   });
