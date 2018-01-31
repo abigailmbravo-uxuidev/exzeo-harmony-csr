@@ -51,7 +51,7 @@ module.exports = function (wallaby) {
     setup: () => {
       wallaby.testFramework.configure({
         // as in node_modules/react-scripts/utils/createJestConfig.js
-        setupFiles: [require('path').join(wallaby.localProjectDir, 'src/setupTests.js'), require('path').join(wallaby.localProjectDir, 'node_modules/react-scripts/config/polyfills.js')],
+        setupFiles: [require('path').join(wallaby.localProjectDir, './src/setupTests.js'), require('path').join(wallaby.localProjectDir, 'node_modules/react-scripts/config/polyfills.js')],
         moduleNameMapper: {
           '^.+\\.(jpg|jpeg|png|gif|svg)$': require.resolve('react-scripts/config/jest/fileTransform.js'),
           '^.+\\.css$': require.resolve('react-scripts/config/jest/cssTransform.js')

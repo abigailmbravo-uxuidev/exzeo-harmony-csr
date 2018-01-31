@@ -374,8 +374,11 @@ describe('Testing DetailHeader component', () => {
     const store = mockStore(initialState);
     const props = {
       actions: {
+        quoteStateActions: { 
+          getLatestQuote(){ }
+        },
         serviceActions: {
-          getPolicyFromPolicyNumber() { return Promise.resolve({ payload: [{ data: { policy: {} } }] }); }
+          getQuote() {}
         },
         appStateActions: {
           setAppState() {}
@@ -396,5 +399,12 @@ describe('Testing DetailHeader component', () => {
     expect(wrapper);
 
     selectPolicy(quoteData, props);
+
+    const wrapper2 = shallow(<DetailHeader store={store} {...props} />);
+
+    wrapper2.instance().componentWillReceiveProps({ quoteState: {
+      update: true,
+      quoteId: '123'
+    }, ...props})
   });
 });

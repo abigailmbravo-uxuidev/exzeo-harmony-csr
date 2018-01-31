@@ -463,7 +463,7 @@ describe('Testing Splash component', () => {
     const props = {
       actions: {
         appStateActions: {
-          setAppState(){}
+          setAppState() {}
         },
         questionsActions: {
           getUIQuestions() { }
@@ -494,21 +494,14 @@ describe('Testing Splash component', () => {
 
     const wrapperComponent = shallow( <Splash {...props} />);
     wrapper.setProps({});
-    wrapperComponent.instance().handleSelectQuote(quoteData, props)
-    wrapperComponent.instance().handleSelectAddress({
-      id: 1,
-      physicalAddress: {
-        address1: '123 this way dr',
-        city: 'Tampa',
-        state: 'FL',
-        zip: '33611',
-        country: {
-          code: 'US',
-          displayText: 'United States'
-        }
-      }
-    }, props);
-    wrapperComponent.instance().handleSelectPolicy(policy, props)
+
+    const wrapper2 = shallow(<Splash store={store} {...props} />)
+
+    wrapper2.instance().handleSelectQuote(quoteData, props);
+    wrapper2.instance().handleSelectAddress({ physicalAddress: {
+      state: 'FL'
+    }}, props)
+    wrapper2.instance().handleSelectPolicy(policy, props);
 
 
   });

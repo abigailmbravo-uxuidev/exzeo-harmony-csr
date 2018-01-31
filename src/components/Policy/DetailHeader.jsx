@@ -100,7 +100,7 @@ export class DetailHeader extends Component {
       <section id="policyEffectiveDate" className="policyEffectiveDate">
         <dl>
           <div>
-            <dt>Effective Date <button className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showEffectiveDatePopUp(this.props)}><i className="fa fa-pencil-square" />Edit</button></dt>
+            <dt>Effective Date <button id="effective-date" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showEffectiveDatePopUp(this.props)}><i className="fa fa-pencil-square" />Edit</button></dt>
             <dd>{moment.utc(_.get(policy, 'effectiveDate')).format('MM/DD/YYYY')}</dd>
           </div>
         </dl>

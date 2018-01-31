@@ -46,6 +46,7 @@ describe('Testing Cancel component', () => {
     const props = {
       actions: {
         serviceActions: {
+          getBillingOptionsForPolicy() { return Promise.resolve(); },
           getBillingOptions() { return Promise.resolve(); },
           getSummaryLedger() { return Promise.resolve(); }
         }
@@ -69,13 +70,16 @@ describe('Testing Cancel component', () => {
     const wrapper = shallow(<CancelPolicy label="test" store={store} {...props} />);
     expect(wrapper);
 
-    wrapper.instance().componentWillReceiveProps({ actions: {
-      serviceActions: {
-        getPaymentHistory() { return Promise.resolve(); },
-        getBillingOptions() { return Promise.resolve(); },
-        getSummaryLedger() { return Promise.resolve(); }
-      }
-    },
+    wrapper.instance().componentWillReceiveProps({
+      summaryLedger: {},
+      actions: {
+        serviceActions: {
+          getBillingOptionsForPolicy() { return Promise.resolve(); },
+          getPaymentHistory() { return Promise.resolve(); },
+          getBillingOptions() { return Promise.resolve(); },
+          getSummaryLedger() { return Promise.resolve(); }
+        }
+      },
       policy: { policyNumber: '1234', rating: { worksheet: { fees: {} } } } });
 
     handleInitialize(initialState);
