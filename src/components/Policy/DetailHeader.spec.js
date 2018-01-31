@@ -43,7 +43,7 @@ describe('Testing DetailHeader component', () => {
     expect(wrapper);
   });
 
-  it('should test DetailHeader', () => {
+  it('should test connected app', () => {
     const initialState = {
       service: {
       },
@@ -62,16 +62,7 @@ describe('Testing DetailHeader component', () => {
     };
     const store = mockStore(initialState);
     const props = {
-<<<<<<< HEAD
       policyState: {},
-      actions: {
-        policyStateActions: {
-          updatePolicy() { }
-        },
-        serviceActions: {
-          getLatestPolicy() {},
-          getEffectiveDateChangeReasons() {}
-=======
       policy: {
         policyID: '234',
         product: 'HO3'
@@ -85,8 +76,7 @@ describe('Testing DetailHeader component', () => {
         },
         serviceActions: {
           getEffectiveDateChangeReasons() {},
-          getLatestPolicy() {},
->>>>>>> develop
+          getLatestPolicy() {}
         }
       },
       fieldQuestions: [],
@@ -101,7 +91,6 @@ describe('Testing DetailHeader component', () => {
     };
     const wrapper = shallow(<DetailHeader store={store} {...props} />);
     expect(wrapper);
-    wrapper.instance().componentWillReceiveProps({ ...props, policyState: { update: true, policyNumber : '123'} })
     wrapper.instance().componentDidMount();
     wrapper.instance().componentWillReceiveProps({ 
       policy: {
