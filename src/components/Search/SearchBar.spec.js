@@ -152,12 +152,16 @@ describe('Testing SearchBar component', () => {
       lastName: '$#%$#%',
       policyNumber: '%^%$^$%',
       quoteNumber: '%^$%^$%^',
-      address: '/'
+      address: '/',
+      agencyCode: '@12345',
+      agentCode: '@1556544'
     };
     const errors = validate(values);
     expect(errors.firstName).toEqual('Invalid characters');
     expect(errors.lastName).toEqual('Invalid characters');
     expect(errors.quoteNumber).toEqual('Only numbers and dashes allowed');
+    expect(errors.agencyCode).toEqual('Not a valid number');
+    expect(errors.agentCode).toEqual('Not a valid number');
     expect(errors.policyNumber).toEqual('Only numbers and dashes allowed');
     expect(errors.zip).toEqual('Invalid characters');
     expect(errors.address).toEqual('Invalid characters');
