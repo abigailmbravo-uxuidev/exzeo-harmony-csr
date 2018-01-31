@@ -507,7 +507,6 @@ export const saveUnderwritingExceptions = (id, underwritingExceptions) => (dispa
 };
 
 export const getBillingOptions = paymentOptions => (dispatch) => {
-
   const axiosConfig = runnerSetup({
     service: 'billing.services',
     method: 'POST',
@@ -529,6 +528,24 @@ export const getBillingOptions = paymentOptions => (dispatch) => {
     });
 };
 
+export const updateBillPlan = paymentPlan => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'billing.services',
+    method: 'POST',
+    path: 'post-bill-plan-update',
+    data: paymentPlan
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { billingOptions: response.data.result };
+    console.log('res:', data)
+    // return dispatch(serviceRequest(data));
+  })
+  .catch((error) => {
+    const message = handleError(error);
+    return dispatch(errorActions.setAppError({ message }));
+  });
+};
 
 export const getBillingOptionsForPolicy = paymentOptions => (dispatch) => {
 
