@@ -1,27 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
-import _ from 'lodash';
 import 'react-select/dist/react-select.css';
 import { connect } from 'react-redux';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as serviceActions from '../../actions/serviceActions';
 import { RadioFieldBilling, SelectFieldBilling } from '../Form/inputs';
 
 export const handleInitialize = (state) => {
   const policyData = state.service.latestPolicy;
-  const values = {};
-
-  values.billToId = _.get(policyData, 'billToId');
-  values.billToType = _.get(policyData, 'billToType');
-  values.billPlan = _.get(policyData, 'billPlan');
+  const values = {
+    billToId: policyData.billToId,
+    billToType: policyData.billToType,
+    billPlan: policyData.billPlan
+  };
 
   const paymentPlans = state.service.billingOptions;
 
   if (paymentPlans && paymentPlans.options && paymentPlans.options.length === 1 && !values.billTo && !values.billPlan) {
-    values.billToId = _.get(paymentPlans.options[0], 'billToId');
-    values.billToType = _.get(paymentPlans.options[0], 'billToType');
+    values.billToId = paymentPlans.options[0].billToId;
+    values.billToType = paymentPlans.options[0].billToType;
     values.billPlan = 'Annual';
   }
 
@@ -30,9 +30,7 @@ export const handleInitialize = (state) => {
 
 export const selectBillPlan = (value, props) => {
   const { billingOptions, dispatch, fieldValues } = props;
-
-  const currentPaymentPlan = _.find(billingOptions.options, ['billToId', fieldValues.billToId]) ?
-    _.find(billingOptions.options, ['billToId', fieldValues.billToId]) : {};
+  const currentPaymentPlan = billingOptions.options.find(option => option.billToId === fieldValues.billToId);
 
   dispatch(change('BillingEditModal', 'billToId', currentPaymentPlan.billToId));
   dispatch(change('BillingEditModal', 'billToType', currentPaymentPlan.billToType));
@@ -41,8 +39,7 @@ export const selectBillPlan = (value, props) => {
 
 export const selectBillTo = (event, props) => {
   const { billingOptions, dispatch } = props;
-  const currentPaymentPlan = _.find(billingOptions.options, ['billToId', event.target.value]) ?
-    _.find(billingOptions.options, ['billToId', event.target.value]) : {};
+  const currentPaymentPlan = billingOptions.options.find(opt => opt.billToId === event.target.value);
 
   dispatch(change('BillingEditModal', 'billToId', currentPaymentPlan.billToId));
   dispatch(change('BillingEditModal', 'billToType', currentPaymentPlan.billToType));
@@ -50,7 +47,9 @@ export const selectBillTo = (event, props) => {
 };
 
 export const BillingEditModal = (props) => {
-  const { appState, handleSubmit, handleBillingFormSubmit, hideBillingModal, billingOptions } = props;
+  const { appState, handleSubmit, handleBillingFormSubmit, hideBillingModal, billingOptions, fieldValues } = props;
+  const options = billingOptions.options.find(option => option.billToId === fieldValues.billToId);
+
   return (<div className="modal" style={{ flexDirection: 'row' }}>
     <div className="card card-billing-edit-modal">
       <Form id="BillingEditModal" className="BillingEditModal" noValidate onSubmit={handleSubmit(handleBillingFormSubmit)}>
@@ -62,7 +61,7 @@ export const BillingEditModal = (props) => {
             name="billToId"
             component="select"
             label="Bill To"
-            onChange={() => selectBillTo(props)}
+            onChange={(e) => selectBillTo(e, props)}
             validations={['required']}
             answers={billingOptions.options}
           />
@@ -73,15 +72,26 @@ export const BillingEditModal = (props) => {
             onChange={value => selectBillPlan(value, props)}
             validate={[value => (value ? undefined : 'Field Required')]}
             segmented
-            answers={_.find(billingOptions.options, ['billToId', props.fieldValues.billToId]) ?
-                 _.find(billingOptions.options, ['billToId', props.fieldValues.billToId]).payPlans : []}
+            answers={options ? options.payPlans : []}
             paymentPlans={billingOptions.paymentPlans}
           />
         </div>
         <div className="card-footer">
           <div className="btn-group">
-            <button tabIndex={'0'} aria-label="reset-btn form-editBilling" className="btn btn-secondary" type="button" onClick={() => hideBillingModal(props)}>Cancel</button>
-            <button tabIndex={'0'} aria-label="submit-btn form-editBilling" className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Update</button>
+            <button 
+              tabIndex={'0'} 
+              aria-label="reset-btn form-editBilling" 
+              className="btn btn-secondary" 
+              type="button" 
+              onClick={() => hideBillingModal(props)}>Cancel
+            </button>
+            <button 
+              tabIndex={'0'} 
+              aria-label="submit-btn form-editBilling" 
+              className="btn btn-primary" 
+              type="submit" 
+              disabled={appState.data.submitting}>Update
+            </button>
           </div>
         </div>
       </Form>
@@ -109,19 +119,17 @@ const mapStateToProps = state => ({
   selectedAI: state.appState.data.selectedAI,
   initialValues: handleInitialize(state),
   policy: state.service.latestPolicy,
-  fieldValues: _.get(state.form, 'BillingEditModal.values', {})
+  fieldValues: state.form.BillingEditModal ? state.form.BillingEditModal.values : {}
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
     cgActions: bindActionCreators(cgActions, dispatch),
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }
 });
 
-// ------------------------------------------------
-// wire up redux form with the redux connect
-// ------------------------------------------------
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
   form: 'BillingEditModal', enableReinitialize: true
 })(BillingEditModal));
