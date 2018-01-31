@@ -1,6 +1,6 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
-import SelectFieldBilling from './SelectFieldBilling';
+import { shallow } from 'enzyme';
+import SelectFieldBill, { SelectFieldBilling } from './SelectFieldBilling';
 
 describe('SelectFieldBilling', () => {
   it('should render "select input" when nothing is provided', () => {
@@ -8,7 +8,7 @@ describe('SelectFieldBilling', () => {
       name: 'test',
       label: 'test'
     };
-    const wrapper = shallow(<SelectFieldBilling {...inputProps} />);
+    const wrapper = shallow(<SelectFieldBill {...inputProps} />);
     expect(wrapper.find('option').length).toEqual(0);
   });
 
@@ -25,13 +25,26 @@ describe('SelectFieldBilling', () => {
       }]
     };
 
-    const wrapper = shallow(<SelectFieldBilling {...inputProps} />);
+    const wrapper = shallow(<SelectFieldBill {...inputProps} />);
     expect(wrapper.prop('answers').length).toEqual(3);
     // Need to take into account blank option
   });
 
-  // TODO: Check renders
-  // TODO: Check classnames
-  // TODO: Check props
-  // TODO: Check event handlers
+  it('should render "select input" with answers when answers are provided', () => {
+    const inputProps = {
+      meta: {},
+      name: 'test',
+      label: 'test',
+      answers: [{
+        answer: 'One'
+      }, {
+        answer: 'Two'
+      }, {
+        answer: 'Three'
+      }]
+    };
+
+    const wrapper = shallow(<SelectFieldBilling {...inputProps} />);
+    expect(wrapper);
+  });
 });

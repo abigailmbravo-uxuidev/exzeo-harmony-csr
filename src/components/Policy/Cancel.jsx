@@ -123,14 +123,10 @@ export class CancelPolicy extends React.Component {
         effectiveDate: nextProps.policy.effectiveDate,
         policyHolders: nextProps.policy.policyHolders,
         additionalInterests: nextProps.policy.additionalInterests,
-        netPremium: nextProps.policy.rating.netPremium,
-        fees: {
-          empTrustFee: nextProps.policy.rating.worksheet.fees.empTrustFee,
-          mgaPolicyFee: nextProps.policy.rating.worksheet.fees.mgaPolicyFee
-        },
-        totalPremium: nextProps.policy.rating.totalPremium
+        currentPremium: nextProps.summaryLedger.currentPremium,
+        fullyEarnedFees: nextProps.policy.rating.worksheet.fees.empTrustFee + nextProps.policy.rating.worksheet.fees.mgaPolicyFee
       };
-      this.props.actions.serviceActions.getBillingOptions(paymentOptions);
+      nextProps.actions.serviceActions.getBillingOptionsForPolicy(paymentOptions);
     }
   }
 

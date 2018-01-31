@@ -54,7 +54,7 @@ describe('Testing Coverage component', () => {
         },
         serviceActions: {
           getCancelOptions() { return Promise.resolve(); },
-          getBillingOptions() { return Promise.resolve(); },
+          getBillingOptionsForPolicy() { return Promise.resolve(); },
           getSummaryLedger() { return Promise.resolve(); }
         },
         errorActions: { dispatchClearAppError() { } }
@@ -99,6 +99,7 @@ describe('Testing Coverage component', () => {
       errorActions: { dispatchClearAppError() { } }
     },
     policy: { policyNumber: '324324', rating: { worksheet: { fees: {} } } } });
+    wrapper2.instance().componentWillReceiveProps({ ...props, policy: { policyNumber: '324324', rating: { worksheet: { fees: {} } } } });
 
     wrapper2.instance().componentDidMount();
   });

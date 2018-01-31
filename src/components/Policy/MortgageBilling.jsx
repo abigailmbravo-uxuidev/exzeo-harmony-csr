@@ -22,8 +22,6 @@ import AIEditModal from '../../components/Common/AdditionalInterestEditModal';
 
 const payments = [];
 
-let isLoded = false;
-
 export const setRank = (additionalInterests) => {
   _.forEach(additionalInterests, (value) => {
     switch (value.type) {
@@ -98,12 +96,14 @@ export const handleAISubmit = (data, dispatch, props) => {
       });
   const additionalInterests = policy.additionalInterests || [];
 
-  const type = appState.data.addAdditionalInterestType;
+  const type = data.aiType || appState.data.addAdditionalInterestType;
 
   let order = 0;
 
-  if (data.order !== 0 && data.order !== 1) {
-    order = _.filter(additionalInterests, ai => ai.type === type).length === 0 ? 0 : 1;
+  if (String(data.order) !== '0' && String(data.order) !== '1') {
+    order = _.filter(additionalInterests, ai => ai.type === type && ai.active).length === 0 ? 0 : 1;
+  } else {
+    order = data.order;
   }
 
       // remove any existing items before submission
@@ -115,7 +115,7 @@ export const handleAISubmit = (data, dispatch, props) => {
     additionalInterestId: data._id, // eslint-disable-line
     name1: data.name1,
     name2: data.name2,
-    referenceNumber: data.referenceNumber,
+    referenceNumber: data.referenceNumber || '',
     order,
     active: true,
     type,
@@ -206,6 +206,15 @@ export const handleBillingFormSubmit = (data, dispatch, props) => {
 
 export const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
+export const checkValidTypes = (additionalInterests, selectedAI) => {
+  const ais = [];
+  if (selectedAI.type === 'Mortgagee' || _.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length <= 1) ais.push({ answer: 'Mortgagee' });
+  if (selectedAI.type === 'Additional Insured' || _.filter(additionalInterests, ai => ai.type === 'Additional Insured' && ai.active).length <= 1) ais.push({ answer: 'Additional Insured' });
+  if (selectedAI.type === 'Additional Interest' || _.filter(additionalInterests, ai => ai.type === 'Additional Interest' && ai.active).length <= 1) ais.push({ answer: 'Additional Interest' });
+  if (selectedAI.type === 'Lienholder' || _.filter(additionalInterests, ai => ai.type === 'Lienholder' && ai.active).length <= 1) ais.push({ answer: 'Lienholder' });
+  if (selectedAI.type === 'Bill Payer' || _.filter(additionalInterests, ai => ai.type === 'Bill Payer' && ai.active).length === 0) ais.push({ answer: 'Bill Payer' });
+  return ais;
+};
 
 export class MortgageBilling extends Component {
 
@@ -217,27 +226,20 @@ export class MortgageBilling extends Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    if (!_.isEqual(this.props, nextProps)) {
-      if (nextProps.policy && nextProps.policy.policyNumber && !isLoded) {
-        isLoded = true;
-        nextProps.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
-        nextProps.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
+    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
+      nextProps.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
+      nextProps.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
 
-        const paymentOptions = {
-          effectiveDate: nextProps.policy.effectiveDate,
-          policyHolders: nextProps.policy.policyHolders,
-          additionalInterests: nextProps.policy.additionalInterests,
-          netPremium: nextProps.policy.rating.netPremium,
-          fees: {
-            empTrustFee: nextProps.policy.rating.worksheet.fees.empTrustFee,
-            mgaPolicyFee: nextProps.policy.rating.worksheet.fees.mgaPolicyFee
-          },
-          totalPremium: nextProps.policy.rating.totalPremium
-        };
-        nextProps.actions.serviceActions.getBillingOptions(paymentOptions);
-        nextProps.actions.appStateActions.setAppState(nextProps.appState.modelName,
-          nextProps.appState.instanceId, { ...nextProps.appState.data, ranService: true });
-      }
+      const paymentOptions = {
+        effectiveDate: nextProps.policy.effectiveDate,
+        policyHolders: nextProps.policy.policyHolders,
+        additionalInterests: nextProps.policy.additionalInterests,
+        currentPremium: nextProps.getSummaryLedger.currentPremium,
+        fullyEarnedFees: nextProps.policy.rating.worksheet.fees.empTrustFee + nextProps.policy.rating.worksheet.fees.mgaPolicyFee
+      };
+      nextProps.actions.serviceActions.getBillingOptionsForPolicy(paymentOptions);
+      nextProps.actions.appStateActions.setAppState(nextProps.appState.modelName,
+        nextProps.appState.instanceId, { ...nextProps.appState.data, ranService: true });
     }
   }
 
@@ -308,6 +310,8 @@ export class MortgageBilling extends Component {
     _.forEach(paymentHistory, (payment) => {
       payment.amountDisplay = payment.amount.$numberDecimal;
     });
+
+    const validAdditionalInterestTypes = checkValidTypes(additionalInterests, this.props.appState.data.selectedAI || {});
 
     return (
       <PolicyConnect>
@@ -411,7 +415,7 @@ export class MortgageBilling extends Component {
                   <ul className="results result-cards">
                     {additionalInterests && _.sortBy(additionalInterests, ['rank', 'type']).map((ai, index) =>
                       <li key={index}>
-                        <a onClick={() => editAdditionalInterest(ai, this.props)}>
+                        { ai.active && <a onClick={() => editAdditionalInterest(ai, this.props)}>
                           {/* add className based on type - i.e. mortgagee could have class of mortgagee*/}
                           <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {ai.order + 1}</label></div>
                           <section><h4>{ai.name1}&nbsp;{ai.name2}</h4>
@@ -426,7 +430,22 @@ export class MortgageBilling extends Component {
                             <label htmlFor="ref-number">Reference Number</label>
                             <span>{` ${ai.referenceNumber || ' - '}`}</span>
                           </div>
-                        </a>
+                        </a>}
+                        { !ai.active && <a style={{ cursor: 'default' }}>
+                          <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {'Inactive'}</label></div>
+                          <section><h4>{ai.name1}&nbsp;{ai.name2} (Inactive)</h4>
+                            <p className="address">{
+                           `${ai.mailingAddress.address1},
+                            ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city},
+                            ${ai.mailingAddress.state}
+                            ${ai.mailingAddress.zip}`
+                          }</p>
+                          </section>
+                          <div className="ref-number">
+                            <label htmlFor="ref-number">Reference Number</label>
+                            <span>{` ${ai.referenceNumber || ' - '}`}</span>
+                          </div>
+                        </a>}
                       </li>
                       )}
                   </ul>
@@ -434,7 +453,7 @@ export class MortgageBilling extends Component {
               </section>
             </div>
           </div>
-          { this.props.appState.data.showAdditionalInterestEditModal && <AIEditModal questions={questions} selectedAI={this.props.appState.data.selectedAI} policy={this.props.policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
+          { this.props.appState.data.showAdditionalInterestEditModal && <AIEditModal validAdditionalInterestTypes={validAdditionalInterestTypes} isEndorsement questions={questions} selectedAI={this.props.appState.data.selectedAI} policy={this.props.policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
           { this.props.appState.data.showAdditionalInterestModal && <AIModal questions={questions} policy={this.props.policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
         </div>
         { this.props.appState.data.showBillingEditModal && <BillingModal policy={this.props.policy} billingOptions={this.props.billingOptions} handleBillingFormSubmit={handleBillingFormSubmit} hideBillingModal={() => hideBillingModal(this.props)} /> }

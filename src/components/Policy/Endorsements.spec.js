@@ -42,7 +42,7 @@ describe('Testing Endorsements component', () => {
           getZipcodeSettings() {},
           getUnderwritingQuestions() {},
           getEndorsementHistory() {},
-          getBillingOptions() { },
+          getBillingOptionsForPolicy() { },
           addTransaction() { return Promise.resolve(); },
           getRate() { return Promise.resolve({ rating: {} }); },
           getTransactionHistory() {},
