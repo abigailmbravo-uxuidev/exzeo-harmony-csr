@@ -507,17 +507,6 @@ export const saveUnderwritingExceptions = (id, underwritingExceptions) => (dispa
 };
 
 export const getBillingOptions = paymentOptions => (dispatch) => {
-        // const paymentOptions = {
-        //   effectiveDate: nextProps.policy.effectiveDate,
-        //   policyHolders: nextProps.policy.policyHolders,
-        //   additionalInterests: nextProps.policy.additionalInterests,
-        //   netPremium: nextProps.policy.rating.netPremium,
-        //   fees: {
-        //     empTrustFee: nextProps.policy.rating.worksheet.fees.empTrustFee,
-        //     mgaPolicyFee: nextProps.policy.rating.worksheet.fees.mgaPolicyFee
-        //   },
-        //   totalPremium: nextProps.policy.rating.totalPremium
-        // };
 
   const axiosConfig = runnerSetup({
     service: 'billing.services',
@@ -540,6 +529,29 @@ export const getBillingOptions = paymentOptions => (dispatch) => {
     });
 };
 
+
+export const getBillingOptionsForPolicy = paymentOptions => (dispatch) => {
+
+  const axiosConfig = runnerSetup({
+    service: 'billing.services',
+    method: 'POST',
+    path: 'payment-options-for-policy',
+    data: paymentOptions
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { billingOptions: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+.catch((error) => {
+  const message = handleError(error);
+  return dispatch(batchActions([
+    errorActions.setAppError({ message })
+  ]));
+});
+};
 
 export const getEndorsementHistory = policyNumber => (dispatch) => {
   const axiosConfig = runnerSetup({

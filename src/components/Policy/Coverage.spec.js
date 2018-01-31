@@ -53,7 +53,7 @@ describe('Testing Coverage component', () => {
           getUIQuestions() {}
         },
         serviceActions: {
-          getBillingOptions() { return Promise.resolve(); },
+          getBillingOptionsForPolicy() { return Promise.resolve(); },
           getSummaryLedger() { return Promise.resolve(); }
         },
         errorActions: { dispatchClearAppError() { } }
@@ -76,7 +76,7 @@ describe('Testing Coverage component', () => {
 
     const wrapper2 = shallow(<Coverage store={store} {...props} />);
 
-    wrapper2.instance().componentWillReceiveProps({ policy: { policyNumber: '324324', rating: { worksheet: { fees: {} } } } });
+    wrapper2.instance().componentWillReceiveProps({ ...props, policy: { policyNumber: '324324', rating: { worksheet: { fees: {} } } } });
 
     wrapper2.instance().componentDidMount();
   });
