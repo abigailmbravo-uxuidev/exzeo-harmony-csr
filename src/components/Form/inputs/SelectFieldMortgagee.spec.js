@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import SelectFieldMortgagee from './SelectFieldMortgagee';
+import SelectFieldMortgagee, { SelectInputMortgagee } from './SelectFieldMortgagee';
 
 describe('SelectFieldMortgagee', () => {
   it('should render "select input" when nothing is provided', () => {
@@ -21,4 +21,10 @@ describe('SelectFieldMortgagee', () => {
     expect(wrapper.prop('answers').length).toEqual(3);
     expect(wrapper.prop('answers')[0].AIName1).toEqual('AMERICA\'S SERVICING');
   });
+
+  it('should render SelectInputMortgagee', () => {
+    const wrapper = shallow(<SelectInputMortgagee meta={{}} name="Test" label="test" />);
+    expect(wrapper.find('option').length).toEqual(0);
+  });
+
 });

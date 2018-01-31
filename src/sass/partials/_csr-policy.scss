@@ -797,6 +797,10 @@
 }
 //cancel policy styles
 .cancel-policy {
+  form.cancel-type {
+      flex-direction: column;
+  }
+
   label.form-group.segmented {
     > label {
       margin-bottom: $padding;

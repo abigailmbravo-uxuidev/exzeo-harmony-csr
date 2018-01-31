@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { reduxForm, propTypes, change, Form } from 'redux-form';
 import { shallow, mount } from 'enzyme';
-import { Endorsements, calculatePercentage, handleInitialize, setPercentageOfValue, updateDependencies, calculate, save, setCalculate, updateCalculatedSinkhole, getNewPolicyNumber, setEndorsementDate } from './Endorsements';
+import { Endorsements, calculatePercentage, handleInitialize, setPercentageOfValue, updateDependencies, calculate, save, setCalculate, updateCalculatedSinkhole, getNewPolicyNumber, setEndorsementDate ,clearSecondaryPolicyholder } from './Endorsements';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
@@ -42,7 +42,7 @@ describe('Testing Endorsements component', () => {
           getZipcodeSettings() {},
           getUnderwritingQuestions() {},
           getEndorsementHistory() {},
-          getBillingOptions() { },
+          getBillingOptionsForPolicy() { },
           addTransaction() { return Promise.resolve(); },
           getRate() { return Promise.resolve({ rating: {} }); },
           getTransactionHistory() {},
@@ -185,5 +185,9 @@ describe('Testing Endorsements component', () => {
     wrapper.find('button#cancel-button').simulate('click');
 
     getNewPolicyNumber(initialState);
+
+    clearSecondaryPolicyholder(false, props)
+    clearSecondaryPolicyholder(true, props)
+
   });
 });

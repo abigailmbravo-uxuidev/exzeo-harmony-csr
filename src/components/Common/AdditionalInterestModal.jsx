@@ -7,6 +7,7 @@ import 'react-select/dist/react-select.css';
 import _ from 'lodash';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
 import TextField from '../Form/inputs/TextField';
+import SelectField from '../Form/inputs/SelectField';
 import PhoneField from '../Form/inputs/PhoneField';
 import * as questionsActions from '../../actions/questionsActions';
 import * as cgActions from '../../actions/cgActions';
@@ -16,18 +17,35 @@ import * as policyStateActions from '../../actions/policyStateActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 import Loader from './Loader';
 
-const handleInitialize = () => ({
-  name1: '',
-  name2: '',
-  phoneNumber: '',
-  address1: '',
-  address2: '',
-  city: '',
-  state: '',
-  zip: '',
-  referenceNumber: '',
-  type: ''
-});
+export const handleGetQuoteData = (state) => {
+  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
+  if (!taskData) return {};
+  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
+    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
+    : {};
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
+    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
+    : quoteEnd;
+
+  return quoteData;
+};
+
+const handleInitialize = (state) => {
+  const quoteData = handleGetQuoteData(state);
+  return {
+    name1: '',
+    name2: '',
+    phoneNumber: '',
+    address1: '',
+    address2: '',
+    city: '',
+    state: '',
+    zip: '',
+    referenceNumber: '',
+    type: '',
+    order: state.appState.data.addAdditionalInterestType === 'Mortgagee' && _.filter(quoteData.additionalInterests || [], ai => ai.type === 'Mortgagee').length === 1 ? 1 : 0
+  };
+};
 const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 export const setMortgageeValues = (val, props) => {
@@ -56,7 +74,15 @@ export const setMortgageeValues = (val, props) => {
 
 
 export const AdditionalInterestModal = (props) => {
-  const { appState, handleSubmit, verify, hideAdditionalInterestModal, questions } = props;
+  const { appState, handleSubmit, verify, hideAdditionalInterestModal, questions, additionalInterests } = props;
+
+  const mortgageeOrderAnswers = _.cloneDeep(getAnswers('order', questions));
+
+  if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee').length === 0) {
+    _.remove(mortgageeOrderAnswers, answer => Number(answer.answer) === 1);
+  } else if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee').length === 1) {
+    _.remove(mortgageeOrderAnswers, answer => Number(answer.answer) === 0);
+  }
   return (
     <div className="modal" style={{ flexDirection: 'row' }}>
       <Form id="AdditionalInterestModal" className={`AdditionalInterestModal ${appState.data.addAdditionalInterestType}`} noValidate onSubmit={handleSubmit(verify)}>
@@ -95,6 +121,10 @@ export const AdditionalInterestModal = (props) => {
             <div className="flex-form">
               <PhoneField label={'Phone Number'} styleName={'phone'} name={'phoneNumber'} validations={['phone']} />
               <TextField label={'Reference Number'} styleName={'reference-number'} name={'referenceNumber'} />
+              { appState.data.addAdditionalInterestType === 'Mortgagee' && <SelectField
+                name="order" component="select" styleName={''} label="Order" onChange={function () {}} validations={['required']}
+                answers={mortgageeOrderAnswers}
+              />}
             </div>
           </div>
           <div className="card-footer">
@@ -125,15 +155,16 @@ AdditionalInterestModal.propTypes = {
 const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
-  initialValues: handleInitialize(state)
+  initialValues: handleInitialize(state),
+  quoteData: handleGetQuoteData(state)
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
     policyStateActions: bindActionCreators(policyStateActions, dispatch),
     questionsActions: bindActionCreators(questionsActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }

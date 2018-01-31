@@ -89,27 +89,20 @@ const cancelOptions = [
   }
 ];
 
-let isLoded = false;
 export class CancelPolicy extends React.Component {
   componentWillReceiveProps = (nextProps) => {
-    if (!_.isEqual(this.props, nextProps)) {
-      if (nextProps.policy.policyNumber && !isLoded) {
-        isLoded = true;
-        nextProps.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
-        nextProps.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
-        const paymentOptions = {
-          effectiveDate: nextProps.policy.effectiveDate,
-          policyHolders: nextProps.policy.policyHolders,
-          additionalInterests: nextProps.policy.additionalInterests,
-          netPremium: nextProps.policy.rating.netPremium,
-          fees: {
-            empTrustFee: nextProps.policy.rating.worksheet.fees.empTrustFee,
-            mgaPolicyFee: nextProps.policy.rating.worksheet.fees.mgaPolicyFee
-          },
-          totalPremium: nextProps.policy.rating.totalPremium
-        };
-        this.props.actions.serviceActions.getBillingOptions(paymentOptions);
-      }
+    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
+      nextProps.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
+      nextProps.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
+
+      const paymentOptions = {
+        effectiveDate: nextProps.policy.effectiveDate,
+        policyHolders: nextProps.policy.policyHolders,
+        additionalInterests: nextProps.policy.additionalInterests,
+        currentPremium: nextProps.summaryLedger.currentPremium,
+        fullyEarnedFees: nextProps.policy.rating.worksheet.fees.empTrustFee + nextProps.policy.rating.worksheet.fees.mgaPolicyFee
+      };
+      nextProps.actions.serviceActions.getBillingOptionsForPolicy(paymentOptions);
     }
   }
 
@@ -124,7 +117,7 @@ export class CancelPolicy extends React.Component {
             <div className="form-group survey-wrapper cancel-policy" role="group">
               <section>
                 <h3>Cancel Policy</h3>
-                <Form id="Cancellation" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+                <Form id="Cancellation" className="cancel-type" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
                   <div className="flex-parent">
                     <div className="flex-child">
                       <RadioField

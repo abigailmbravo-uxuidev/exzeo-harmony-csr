@@ -408,9 +408,13 @@ describe('Testing Summary component', () => {
           active: true
         }]
       },
-      ...propTypes
+      handleSubmit() {}
     };
 
     handleFormSubmit({}, store.dispatch, props);
+
+    const wrapper = shallow(<Summary store={store} {...props} />);
+    expect(wrapper);
+    wrapper.instance().componentDidMount();
   });
 });
