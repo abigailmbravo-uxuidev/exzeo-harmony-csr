@@ -240,21 +240,12 @@ export const handleBillingFormSubmit = (data, dispatch, props) => {
   const { actions, policy } = props;
   const updateData = {
     policyNumber: policy.policyNumber,
-<<<<<<< HEAD
     policyID: policy.policyID,
     transactionType: 'Bill Plan Update',
     billingStatus: 2,
     billToId: data.billToId,
     billPlan: data.billPlan,
-    billToType: data.billToType,
-=======
-    policyTransactionId: policy.policyID,
-    billToType: data.billToType,
-    billToId: data.billToId,
-    billPlan: data.billPlan,
-    transactionType: "Bill Plan Update",
-    timezone: "America/New_York"
->>>>>>> Added updateBillPlan service action. Hooked up Edit Billing Modal to service action.
+    billToType: data.billToType
   };
   actions.serviceActions.updateBillPlan(updateData).then(() => hideBillingModal(props));
 };

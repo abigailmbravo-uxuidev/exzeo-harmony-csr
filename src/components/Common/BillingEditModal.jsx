@@ -39,28 +39,12 @@ export const setFormValues = (billingOptions, billToId, billplan, dispatch) => {
 
 export const selectBillPlan = (value, props) => {
   const { billingOptions, dispatch, fieldValues } = props;
-<<<<<<< HEAD
   setFormValues(billingOptions, fieldValues.billToId, value, dispatch);
-=======
-  const currentPaymentPlan = billingOptions.options.find(option => option.billToId === fieldValues.billToId);
-
-  dispatch(change('BillingEditModal', 'billToId', currentPaymentPlan.billToId));
-  dispatch(change('BillingEditModal', 'billToType', currentPaymentPlan.billToType));
-  dispatch(change('BillingEditModal', 'billPlan', value));
->>>>>>> Added updateBillPlan service action. Hooked up Edit Billing Modal to service action.
 };
 
 export const selectBillTo = (event, props) => {
   const { billingOptions, dispatch } = props;
-<<<<<<< HEAD
   setFormValues(billingOptions, event.target.value, 'Annual', dispatch);
-=======
-  const currentPaymentPlan = billingOptions.options.find(opt => opt.billToId === event.target.value);
-
-  dispatch(change('BillingEditModal', 'billToId', currentPaymentPlan.billToId));
-  dispatch(change('BillingEditModal', 'billToType', currentPaymentPlan.billToType));
-  dispatch(change('BillingEditModal', 'billPlan', 'Annual'));
->>>>>>> Added updateBillPlan service action. Hooked up Edit Billing Modal to service action.
 };
 
 export const BillingEditModal = (props) => {
