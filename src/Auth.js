@@ -1,6 +1,6 @@
 import auth0 from 'auth0-js';
 import jwtDecode from 'jwt-decode';
-
+import _ from 'lodash';
 import history from './history';
 
 export default class Auth {
@@ -51,9 +51,16 @@ export default class Auth {
 
   handleAuthentication() {
     this.auth0.parseHash(window.location.hash, (err, authResult) => {
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        this.setSession(authResult);
-        history.replace('/');
+       if (authResult && authResult.accessToken && authResult.idToken) {
+          const payload = jwtDecode(authResult.idToken);
+          // check to see if the user exists in a CSR group
+          if(_.some(_.union([], _.get(payload, 'https://heimdall.security/groups')), 'isCSR')){
+            this.setSession(authResult);
+            history.replace('/');
+          }
+          else{
+          history.replace(`/accessDenied?error=${'Not Authorized'}`);
+          }
       } else if (err) {
         history.replace(`/accessDenied?error=${err.errorDescription}`);
       }
@@ -72,12 +79,11 @@ export default class Auth {
       groups: payload['https://heimdall.security/groups'],
       roles: payload['https://heimdall.security/roles'],
     };
-
-    localStorage.setItem('user_profile', JSON.stringify(profile));
-    localStorage.setItem('access_token', authResult.accessToken);
-    localStorage.setItem('id_token', authResult.idToken);
-    localStorage.setItem('expires_at', expiresAt);
-    localStorage.removeItem('csr_loggedOut');
+      localStorage.setItem('user_profile', JSON.stringify(profile));
+      localStorage.setItem('access_token', authResult.accessToken);
+      localStorage.setItem('id_token', authResult.idToken);
+      localStorage.setItem('expires_at', expiresAt);
+      localStorage.removeItem('csr_loggedOut');
   }
 
   getIdToken = () => {
