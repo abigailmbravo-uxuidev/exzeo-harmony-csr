@@ -12,6 +12,7 @@ import * as appStateActions from '../actions/appStateActions';
 import * as serviceActions from '../actions/serviceActions';
 import * as policyStateActions from '../actions/policyStateActions';
 import EditEffectiveDataPopUp from '../components/Policy/EditEffectiveDatePopup';
+import ReinstatePolicyPopup from '../components/Policy/ReinstatePolicyPopup';
 
 export const hideEffectiveDatePopUp = (props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
@@ -22,6 +23,15 @@ export const showEffectiveDatePopUp = (props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
       { ...props.appState.data, showEffectiveDateChangePopUp: true });
 };
+
+export const hideReinstatePolicyPopUp = (props) => {
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data, showReinstatePolicyPopUp: false });
+};
+
+export const reinstatePolicySubmit = (data, dispatch, props) => {
+
+}
 
 export const changeEffectiveDate = (data, dispatch, props) => {
   const effectiveDateUTC = moment.tz(moment.utc(data.effectiveDate).format('YYYY-MM-DD'), props.zipCodeSetting.timezone).format();
@@ -69,6 +79,7 @@ export class Policy extends React.Component {
           <div className="content-wrapper">
             {children}
           </div>
+          {appState.data.showReinstatePolicyPopUp && <ReinstatePolicyPopup {...this.props} reinstatePolicySubmit={reinstatePolicySubmit} hideReinstatePolicyModal={() => hideReinstatePolicyPopUp(this.props)} />}
           {appState.data.showEffectiveDateChangePopUp && <EditEffectiveDataPopUp {...this.props} changeEffectiveDateSubmit={changeEffectiveDate} hideEffectiveDateModal={() => hideEffectiveDatePopUp(this.props)} />}
         </main>
       </div>
