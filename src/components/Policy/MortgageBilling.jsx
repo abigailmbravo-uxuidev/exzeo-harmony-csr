@@ -248,12 +248,12 @@ export const handleBillingFormSubmit = (data, dispatch, props) => {
   const { actions, policy } = props;
   const updateData = {
     policyNumber: policy.policyNumber,
-    policyTransactionId: policy.policyID,
-    billToType: data.billToType,
+    policyID: policy.policyID,
+    transactionType: 'Bill Plan Update',
+    billingStatus: 2,
     billToId: data.billToId,
     billPlan: data.billPlan,
-    transactionType: "Bill Plan Update",
-    timezone: "America/New_York"
+    billToType: data.billToType,
   };
   actions.serviceActions.updateBillPlan(updateData).then(() => hideBillingModal(props));
 };

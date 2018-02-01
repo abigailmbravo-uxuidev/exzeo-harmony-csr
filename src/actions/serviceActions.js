@@ -530,16 +530,15 @@ export const getBillingOptions = paymentOptions => (dispatch) => {
 
 export const updateBillPlan = paymentPlan => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'billing.services',
+    service: 'policy-data.services',
     method: 'POST',
-    path: 'post-bill-plan-update',
+    path: 'transaction',
     data: paymentPlan
   });
 
   return axios(axiosConfig).then((response) => {
-    const data = { billingOptions: response.data.result };
-    console.log('res:', data)
-    // return dispatch(serviceRequest(data));
+    const data = response.data.result;
+    dispatch(getLatestPolicy(data.policyNumber));
   })
   .catch((error) => {
     const message = handleError(error);

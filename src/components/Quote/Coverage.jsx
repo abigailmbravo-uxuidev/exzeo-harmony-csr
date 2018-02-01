@@ -20,7 +20,6 @@ import PhoneField from '../Form/inputs/PhoneField';
 import HiddenField from '../Form/inputs/HiddenField';
 import SelectField from '../Form/inputs/SelectField';
 import RadioField from '../Form/inputs/RadioField';
-import CheckField from '../Form/inputs/CheckField';
 import CurrencyField from '../Form/inputs/CurrencyField';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';

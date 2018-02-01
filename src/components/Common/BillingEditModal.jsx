@@ -28,22 +28,23 @@ export const handleInitialize = (state) => {
   return values;
 };
 
+export const setFormValues = (billingOptions, billToId, billplan, dispatch) => {
+  const currentPaymentPlan = billingOptions.options.find(option => option.billToId === billToId);
+  if (currentPaymentPlan) {
+    dispatch(change('BillingEditModal', 'billToId', currentPaymentPlan.billToId));
+    dispatch(change('BillingEditModal', 'billToType', currentPaymentPlan.billToType));
+    dispatch(change('BillingEditModal', 'billPlan', billplan));
+  }
+};
+
 export const selectBillPlan = (value, props) => {
   const { billingOptions, dispatch, fieldValues } = props;
-  const currentPaymentPlan = billingOptions.options.find(option => option.billToId === fieldValues.billToId);
-
-  dispatch(change('BillingEditModal', 'billToId', currentPaymentPlan.billToId));
-  dispatch(change('BillingEditModal', 'billToType', currentPaymentPlan.billToType));
-  dispatch(change('BillingEditModal', 'billPlan', value));
+  setFormValues(billingOptions, fieldValues.billToId, value, dispatch);
 };
 
 export const selectBillTo = (event, props) => {
   const { billingOptions, dispatch } = props;
-  const currentPaymentPlan = billingOptions.options.find(opt => opt.billToId === event.target.value);
-
-  dispatch(change('BillingEditModal', 'billToId', currentPaymentPlan.billToId));
-  dispatch(change('BillingEditModal', 'billToType', currentPaymentPlan.billToType));
-  dispatch(change('BillingEditModal', 'billPlan', 'Annual'));
+  setFormValues(billingOptions, event.target.value, 'Annual', dispatch);
 };
 
 export const BillingEditModal = (props) => {
