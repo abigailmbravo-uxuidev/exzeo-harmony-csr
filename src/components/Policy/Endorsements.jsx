@@ -683,6 +683,11 @@ export class Endorsements extends React.Component {
 
   render() {
     const { initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, policy, dirty, fieldValues } = this.props;
+
+    const mappedEndorsementHistory = _.map(endorsementHistory, endorsement => {
+      endorsement.netChargeFormat = _.includes(premiumEndorsmentList, endorsement.transactionType) ? premiumAmountFormatter(endorsement.netCharge): '';
+      return endorsement;
+    });
     return (
       <PolicyConnect>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
@@ -1212,12 +1217,9 @@ export class Endorsements extends React.Component {
                   </section>
                   <section>
                     <h3>Previous Endorsements</h3>
-                    <BootstrapTable data={_.map(endorsementHistory, endorsement => {
-                      endorsement.netCharge = _.includes(premiumEndorsmentList, endorsement.transactionType) ? premiumAmountFormatter(endorsement.netCharge): '';
-                      return endorsement;
-                    })}>
+                    <BootstrapTable data={mappedEndorsementHistory}>
                     <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="effectiveDate" isKey dataFormat={dateFormatter}>Effective Date</TableHeaderColumn>
-                    <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="netCharge">Amount</TableHeaderColumn>
+                    <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="netChargeFormat">Amount</TableHeaderColumn>
                     <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="transactionType">Type</TableHeaderColumn>
                     <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="createdAt" dataFormat={dateFormatter}>Processed Date</TableHeaderColumn>
                     </BootstrapTable>
