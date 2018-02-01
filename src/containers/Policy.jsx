@@ -30,7 +30,7 @@ export const hideReinstatePolicyPopUp = (props) => {
 };
 
 export const reinstatePolicySubmit = (data, dispatch, props) => {
-
+  hideReinstatePolicyPopUp(props)
 }
 
 export const changeEffectiveDate = (data, dispatch, props) => {
