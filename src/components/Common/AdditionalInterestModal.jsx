@@ -79,7 +79,9 @@ export const setMortgageeValues = (val, props) => {
 
 
 export const AdditionalInterestModal = (props) => {
-  const { appState, handleSubmit, verify, hideAdditionalInterestModal, questions, additionalInterests, fieldValues } = props;
+  const {
+    appState, handleSubmit, verify, hideAdditionalInterestModal, questions, additionalInterests, fieldValues
+  } = props;
 
   const mortgageeOrderAnswers = _.cloneDeep(getAnswers('order', questions));
 
@@ -97,8 +99,9 @@ export const AdditionalInterestModal = (props) => {
             <h4><i className={`fa fa-circle ${appState.data.addAdditionalInterestType}`} /> {appState.data.addAdditionalInterestType}</h4>
           </div>
           <div className="card-block">
-            { appState.data.addAdditionalInterestType === 'Mortgagee' && <span>
-              <label htmlFor={'mortgage'}>
+            { appState.data.addAdditionalInterestType === 'Mortgagee' &&
+            <span>
+              <label htmlFor="mortgage">
                 Top Mortgagees
               </label>
               <Select
@@ -112,30 +115,37 @@ export const AdditionalInterestModal = (props) => {
               />
             </span>
          }
-            <TextField label={'Name 1'} styleName={'name-1'} name={'name1'} validations={['required']} />
-            <TextField label={'Name 2'} styleName={'name-2'} name={'name2'} />
-            <TextField label={'Address 1'} styleName={'address-1'} name={'address1'} validations={['required']} />
-            <TextField label={'Address 2'} styleName={'address-2'} name={'address2'} />
+            <TextField label="Name 1" styleName="name-1" name="name1" validations={['required']} />
+            <TextField label="Name 2" styleName="name-2" name="name2" />
+            <TextField label="Address 1" styleName="address-1" name="address1" validations={['required']} />
+            <TextField label="Address 2" styleName="address-2" name="address2" />
             <div className="flex-form">
-              <TextField label={'City'} styleName={'city'} name={'city'} validations={['required']} />
+              <TextField label="City" styleName="city" name="city" validations={['required']} />
               <TextField
-                label={'State'} styleName={'state'} name={'state'} validations={['required']}
+                label="State"
+                styleName="state"
+                name="state"
+                validations={['required']}
               />
-              <TextField label={'Zip Code'} styleName={'zip'} name={'zip'} validations={['required', 'zipNumbersOnly']} />
+              <TextField label="Zip Code" styleName="zip" name="zip" validations={['required', 'zipNumbersOnly']} />
             </div>
             <div className="flex-form">
-              <PhoneField label={'Phone Number'} styleName={'phone'} name={'phoneNumber'} validations={['phone']} />
-              <TextField label={'Reference Number'} styleName={'reference-number'} name={'referenceNumber'} />
-              { appState.data.addAdditionalInterestType === 'Mortgagee' && <SelectField
-                name="order" component="select" styleName={''} label="Order" onChange={function () {}} validations={['required']}
+              <PhoneField label="Phone Number" styleName="phone" name="phoneNumber" validations={['phone']} />
+              <TextField label="Reference Number" styleName="reference-number" name="referenceNumber" />
+              { appState.data.addAdditionalInterestType === 'Mortgagee' && fieldValues.aiType === 'Mortgagee' && <SelectField
+                name="order"
+                component="select"
+                styleName=""
+                label="Order"
+                validations={['required']}
                 answers={mortgageeOrderAnswers}
               />}
             </div>
           </div>
           <div className="card-footer">
             <div className="btn-group">
-              <button tabIndex={'0'} className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal(props)}>Cancel</button>
-              <button tabIndex={'0'} className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Save</button>
+              <button tabIndex="0" className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal(props)}>Cancel</button>
+              <button tabIndex="0" className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Save</button>
             </div>
           </div>
         </div>
@@ -145,15 +155,14 @@ export const AdditionalInterestModal = (props) => {
 
 AdditionalInterestModal.propTypes = {
   ...propTypes,
-  showAdditionalInterestModalModal: PropTypes.func,
-  verify: PropTypes.func,
+  verify: PropTypes.func.isRequired,
   appState: PropTypes.shape({
     modelName: PropTypes.string,
     data: PropTypes.shape({
-      recalc: PropTypes.boolean,
-      submitting: PropTypes.boolean
-    })
-  })
+      recalc: PropTypes.bool,
+      submitting: PropTypes.bool
+    }).isRequired
+  }).isRequired
 };
 
 

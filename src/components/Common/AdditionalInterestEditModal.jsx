@@ -24,7 +24,7 @@ const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answ
 
 
 const handleInitialize = (state) => {
-  const selectedAI = state.appState.data.selectedAI;
+  const { selectedAI } = state.appState.data;
 
   if (selectedAI) {
     const mortgagee = _.get(_.find(getAnswers('mortgagee', state.questions), a => a.AIName1 === selectedAI.name1 &&
@@ -92,7 +92,9 @@ export const setMortgageeValues = (val, props) => {
 };
 
 export const AdditionalInterestEditModal = (props) => {
-  const { appState, handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, selectedAI, questions, isEndorsement, validAdditionalInterestTypes, additionalInterests, fieldValues } = props;
+  const {
+    appState, handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, selectedAI, questions, isEndorsement, validAdditionalInterestTypes, additionalInterests, fieldValues
+  } = props;
 
   const mortgageeOrderAnswers = _.cloneDeep(getAnswers('order', questions));
 
@@ -100,86 +102,97 @@ export const AdditionalInterestEditModal = (props) => {
     _.remove(mortgageeOrderAnswers, answer => Number(answer.answer) === 1);
   }
 
-  return (<div className="modal" style={{ flexDirection: 'row' }}>
+  return (
+    <div className="modal" style={{ flexDirection: 'row' }}>
+      <Form id="AdditionalInterestEditModal" className={`AdditionalInterestModal ${selectedAI ? selectedAI.type : ''}`} noValidate onSubmit={handleSubmit(verify)}>
+        {props.appState.data.submittingAI && <Loader />}
+        <div className="card">
+          <div className="card-header">
+            <h4><i className={`fa fa-circle ${selectedAI ? selectedAI.type : ''}`} /> {selectedAI ? selectedAI.type : ''}</h4>
+          </div>
+          <div className="card-block">
+            <HiddenField name="_id" />
+            <HiddenField name="order" />
 
-    <Form id="AdditionalInterestEditModal" className={`AdditionalInterestModal ${selectedAI ? selectedAI.type : ''}`} noValidate onSubmit={handleSubmit(verify)}>
-      {props.appState.data.submittingAI && <Loader />}
-      <div className="card">
-        <div className="card-header">
-          <h4><i className={`fa fa-circle ${selectedAI ? selectedAI.type : ''}`} /> {selectedAI ? selectedAI.type : ''}</h4>
-        </div>
-        <div className="card-block">
-          <HiddenField name={'_id'} />
-          <HiddenField name={'order'} />
-
-          { appState.data.addAdditionalInterestType === 'Mortgagee' && <span>
-            <label htmlFor={'mortgage'}>
+            { appState.data.addAdditionalInterestType === 'Mortgagee' &&
+            <span>
+              <label htmlFor="mortgage">
                 Top Mortgagees
               </label>
-            <Select
-              name="mortgage"
-              searchable
-              labelKey="displayText"
-              autoFocus
-              value={appState.data.selectedMortgageeOption}
-              options={getAnswers('mortgagee', questions)}
-              onChange={val => setMortgageeValues(val, props)}
-            />
-          </span>
+              <Select
+                name="mortgage"
+                searchable
+                labelKey="displayText"
+                autoFocus
+                value={appState.data.selectedMortgageeOption}
+                options={getAnswers('mortgagee', questions)}
+                onChange={val => setMortgageeValues(val, props)}
+              />
+            </span>
          }
-          <TextField label={'Name 1'} styleName={'name-1'} name={'name1'} validations={['required']} />
-          <TextField label={'Name 2'} styleName={''} name={'name2'} />
+            <TextField label="Name 1" styleName="name-1" name="name1" validations={['required']} />
+            <TextField label="Name 2" styleName="" name="name2" />
 
-          <TextField label={'Address 1'} styleName={''} name={'address1'} validations={['required']} />
-          <TextField label={'Address 2'} styleName={''} name={'address2'} />
-          <div className="flex-form">
-            <TextField label={'City'} styleName={'city'} name={'city'} validations={['required']} />
-            <TextField
-              label={'State'} styleName={'state'} name={'state'} validations={['required']}
-            />
-            <TextField label={'Zip Code'} styleName={''} name={'zip'} validations={['required', 'zipNumbersOnly']} />
-          </div>
-          <div className="flex-form">
-            <PhoneField label={'Phone Number'} styleName={'phone'} name={'phoneNumber'} validations={['phone']} />
-            <TextField label={'Reference Number'} styleName={''} name={'referenceNumber'} />
-            { appState.data.addAdditionalInterestType === 'Mortgagee' && fieldValues.aiType === 'Mortgagee' && <SelectField
-              name="order" component="select" styleName={''} label="Order" onChange={function () {}} validations={['required']}
-              answers={mortgageeOrderAnswers}
-            />}
-          </div>
-          {isEndorsement && 
+            <TextField label="Address 1" styleName="" name="address1" validations={['required']} />
+            <TextField label="Address 2" styleName="" name="address2" />
+            <div className="flex-form">
+              <TextField label="City" styleName="city" name="city" validations={['required']} />
+              <TextField
+                label="State"
+                styleName="state"
+                name="state"
+                validations={['required']}
+              />
+              <TextField label="Zip Code" styleName="" name="zip" validations={['required', 'zipNumbersOnly']} />
+            </div>
+            <div className="flex-form">
+              <PhoneField label="Phone Number" styleName="phone" name="phoneNumber" validations={['phone']} />
+              <TextField label="Reference Number" styleName="" name="referenceNumber" />
+              { appState.data.addAdditionalInterestType === 'Mortgagee' && fieldValues.aiType === 'Mortgagee' && <SelectField
+                name="order"
+                component="select"
+                styleName=""
+                label="Order"
+                validations={['required']}
+                answers={mortgageeOrderAnswers}
+              />}
+            </div>
+            {isEndorsement &&
             <div className="flex-form">
               <SelectField
-                name={'aiType'}
+                name="aiType"
                 answers={validAdditionalInterestTypes}
-                label={''} component="select" styleName={''} validations={['required']}
+                label=""
+                component="select"
+                styleName=""
+                validations={['required']}
               />
             </div>
           }
-        </div>
-        <div className="card-footer">
-          <div className="btn-group">
-            <button tabIndex={'0'} className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal(props)}>Cancel</button>
-            <button tabIndex={'0'} className="btn btn-secondary" type="button" disabled={appState.data.submittingAI} onClick={() => deleteAdditionalInterest(selectedAI, props)}>Delete</button>
-            <button tabIndex={'0'} className="btn btn-primary" type="submit" disabled={appState.data.submittingAI}>Update</button>
+          </div>
+          <div className="card-footer">
+            <div className="btn-group">
+              <button tabIndex="0" className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal(props)}>Cancel</button>
+              <button tabIndex="0" className="btn btn-secondary" type="button" disabled={appState.data.submittingAI} onClick={() => deleteAdditionalInterest(selectedAI, props)}>Delete</button>
+              <button tabIndex="0" className="btn btn-primary" type="submit" disabled={appState.data.submittingAI}>Update</button>
+            </div>
           </div>
         </div>
-      </div>
-    </Form>
-  </div>);
+      </Form>
+    </div>
+  );
 };
 
 AdditionalInterestEditModal.propTypes = {
   ...propTypes,
-  showAdditionalInterestEditModalModal: PropTypes.func,
-  verify: PropTypes.func,
+  verify: PropTypes.func.isRequired,
   appState: PropTypes.shape({
     modelName: PropTypes.string,
     data: PropTypes.shape({
-      recalc: PropTypes.boolean,
-      submittingAI: PropTypes.boolean
-    })
-  })
+      recalc: PropTypes.bool,
+      submittingAI: PropTypes.bool
+    }).isRequired
+  }).isRequired
 };
 
 
@@ -188,7 +201,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   selectedAI: state.appState.data.selectedAI,
   initialValues: handleInitialize(state),
-  fieldValues: _.get(state.form, 'AdditionalInterestEditModal.values', {}),
+  fieldValues: _.get(state.form, 'AdditionalInterestEditModal.values', {})
 });
 
 const mapDispatchToProps = dispatch => ({
