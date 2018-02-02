@@ -32,14 +32,11 @@ export class Coverage extends Component {
       localStorage.setItem('isNewTab', false);
       const policyNumber = localStorage.getItem('policyNumber');
       this.props.actions.policyStateActions.updatePolicy(true, policyNumber);
-      this.props.actions.serviceActions.getSummaryLedger(policyNumber);
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
-      nextProps.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
-
+    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.summaryLedger, nextProps.summaryLedger) && nextProps.summaryLedger.currentPremium) {
       const paymentOptions = {
         effectiveDate: nextProps.policy.effectiveDate,
         policyHolders: nextProps.policy.policyHolders,
