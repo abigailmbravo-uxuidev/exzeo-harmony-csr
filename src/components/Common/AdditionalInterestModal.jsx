@@ -132,7 +132,7 @@ export const AdditionalInterestModal = (props) => {
             <div className="flex-form">
               <PhoneField label="Phone Number" styleName="phone" name="phoneNumber" validations={['phone']} />
               <TextField label="Reference Number" styleName="reference-number" name="referenceNumber" />
-              { appState.data.addAdditionalInterestType === 'Mortgagee' && fieldValues.aiType === 'Mortgagee' && <SelectField
+              { appState.data.addAdditionalInterestType === 'Mortgagee' && <SelectField
                 name="order"
                 component="select"
                 styleName=""
@@ -170,7 +170,8 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   initialValues: handleInitialize(state),
-  quoteData: handleGetQuoteData(state)
+  quoteData: handleGetQuoteData(state),
+  fieldValues: _.get(state.form, 'AdditionalInterestModal.values', {})
 });
 
 const mapDispatchToProps = dispatch => ({

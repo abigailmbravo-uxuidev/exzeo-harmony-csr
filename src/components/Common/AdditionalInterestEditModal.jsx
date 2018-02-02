@@ -148,7 +148,7 @@ export const AdditionalInterestEditModal = (props) => {
             <div className="flex-form">
               <PhoneField label="Phone Number" styleName="phone" name="phoneNumber" validations={['phone']} />
               <TextField label="Reference Number" styleName="" name="referenceNumber" />
-              { appState.data.addAdditionalInterestType === 'Mortgagee' && fieldValues.aiType === 'Mortgagee' && <SelectField
+              { appState.data.addAdditionalInterestType === 'Mortgagee' && <SelectField
                 name="order"
                 component="select"
                 styleName=""
