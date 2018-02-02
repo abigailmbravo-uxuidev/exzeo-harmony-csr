@@ -124,21 +124,12 @@ export class DetailHeader extends Component {
           <section id="cancellationDate" className="cancellationDate">
           <dl>
           <div>
-            <dt>Expiration Date</dt>
+            <dt>Expiration <button id="effective-date" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showReinstatePolicyPopUp(this.props)}><i className="fa fa-thumbs-up" />Reinstate</button></dt>
             <dd>{_.get(policy, 'cancelDate') ? moment.utc(_.get(policy, 'cancelDate')).format('MM/DD/YYYY') : '' }</dd>
           </div>
         </dl>
         </section>
         }
-        { _.get(policy, 'status') === 'Cancelled' &&
-        <section id="reinstatePolicy" className="cancellationDate">
-        <dl>
-        <div>
-          <dt><button id="effective-date" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showReinstatePolicyPopUp(this.props)}><i className="fa fa-thumbs-up" />Reinstate</button></dt>
-        </div>
-      </dl>
-      </section>
-      }
       <section id="premium" className="premium">
         <dl>
           <div>
