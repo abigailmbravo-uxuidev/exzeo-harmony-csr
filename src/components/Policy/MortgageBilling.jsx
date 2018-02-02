@@ -100,7 +100,9 @@ export const handleAISubmit = (data, dispatch, props) => {
 
   let order = 0;
 
-  if (String(data.order) !== '0' && String(data.order) !== '1') {
+  const isMortgagee = type === 'Mortgagee';
+  // type mortgagee allows the user to select order and the AI edit will pass in order
+  if (!isMortgagee && !data._id) {
     order = _.filter(additionalInterests, ai => ai.type === type && ai.active).length === 0 ? 0 : 1;
   } else {
     order = data.order;
@@ -406,11 +408,11 @@ export class MortgageBilling extends Component {
                 <h3>Additional Interests</h3>
                 <div className="results-wrapper">
                   <div className="button-group">
-                    <button tabIndex={'0'} disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Mortgagee').length > 1)} onClick={() => addAdditionalInterest('Mortgagee', this.props)} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
-                    <button tabIndex={'0'} disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Additional Insured').length > 1)} onClick={() => addAdditionalInterest('Additional Insured', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
-                    <button tabIndex={'0'} disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Additional Interest').length > 1)} onClick={() => addAdditionalInterest('Additional Interest', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
+                    <button tabIndex={'0'} disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length > 1)} onClick={() => addAdditionalInterest('Mortgagee', this.props)} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
+                    <button tabIndex={'0'} disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Additional Insured' && ai.active).length > 1)} onClick={() => addAdditionalInterest('Additional Insured', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
+                    <button tabIndex={'0'} disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Additional Interest' && ai.active).length > 1)} onClick={() => addAdditionalInterest('Additional Interest', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
                     { /* <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button> */ }
-                    <button tabIndex={'0'} disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Bill Payer').length > 0)} onClick={() => addAdditionalInterest('Bill Payer', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
+                    <button tabIndex={'0'} disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Bill Payer' && ai.active).length > 0)} onClick={() => addAdditionalInterest('Bill Payer', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
                   </div>
                   <ul className="results result-cards">
                     {additionalInterests && _.sortBy(additionalInterests, ['rank', 'type']).map((ai, index) =>
@@ -453,8 +455,8 @@ export class MortgageBilling extends Component {
               </section>
             </div>
           </div>
-          { this.props.appState.data.showAdditionalInterestEditModal && <AIEditModal validAdditionalInterestTypes={validAdditionalInterestTypes} isEndorsement questions={questions} selectedAI={this.props.appState.data.selectedAI} policy={this.props.policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
-          { this.props.appState.data.showAdditionalInterestModal && <AIModal questions={questions} policy={this.props.policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
+          { this.props.appState.data.showAdditionalInterestEditModal && <AIEditModal additionalInterests={additionalInterests} validAdditionalInterestTypes={validAdditionalInterestTypes} isEndorsement questions={questions} selectedAI={this.props.appState.data.selectedAI} policy={this.props.policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
+          { this.props.appState.data.showAdditionalInterestModal && <AIModal additionalInterests={additionalInterests} questions={questions} policy={this.props.policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
         </div>
         { this.props.appState.data.showBillingEditModal && <BillingModal policy={this.props.policy} billingOptions={this.props.billingOptions} handleBillingFormSubmit={handleBillingFormSubmit} hideBillingModal={() => hideBillingModal(this.props)} /> }
         <div className="basic-footer">

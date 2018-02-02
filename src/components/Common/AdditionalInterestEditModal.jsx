@@ -92,11 +92,11 @@ export const setMortgageeValues = (val, props) => {
 };
 
 export const AdditionalInterestEditModal = (props) => {
-  const { appState, handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, selectedAI, questions, isEndorsement, validAdditionalInterestTypes, additionalInterests } = props;
+  const { appState, handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, selectedAI, questions, isEndorsement, validAdditionalInterestTypes, additionalInterests, fieldValues } = props;
 
   const mortgageeOrderAnswers = _.cloneDeep(getAnswers('order', questions));
 
-  if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee').length < 2) {
+  if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length < 2) {
     _.remove(mortgageeOrderAnswers, answer => Number(answer.answer) === 1);
   }
 
@@ -142,12 +142,12 @@ export const AdditionalInterestEditModal = (props) => {
           <div className="flex-form">
             <PhoneField label={'Phone Number'} styleName={'phone'} name={'phoneNumber'} validations={['phone']} />
             <TextField label={'Reference Number'} styleName={''} name={'referenceNumber'} />
-            { appState.data.addAdditionalInterestType === 'Mortgagee' && <SelectField
+            { appState.data.addAdditionalInterestType === 'Mortgagee' && fieldValues.aiType === 'Mortgagee' && <SelectField
               name="order" component="select" styleName={''} label="Order" onChange={function () {}} validations={['required']}
               answers={mortgageeOrderAnswers}
             />}
           </div>
-          {isEndorsement &&
+          {isEndorsement && 
             <div className="flex-form">
               <SelectField
                 name={'aiType'}
@@ -187,7 +187,8 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   selectedAI: state.appState.data.selectedAI,
-  initialValues: handleInitialize(state)
+  initialValues: handleInitialize(state),
+  fieldValues: _.get(state.form, 'AdditionalInterestEditModal.values', {}),
 });
 
 const mapDispatchToProps = dispatch => ({
