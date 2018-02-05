@@ -157,7 +157,7 @@ export const AdditionalInterestEditModal = (props) => {
               <SelectField
                 name="aiType"
                 answers={validAdditionalInterestTypes}
-                label=""
+                label="Type"
                 component="select"
                 styleName=""
                 validations={['required']}
