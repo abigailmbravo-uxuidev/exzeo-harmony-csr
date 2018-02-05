@@ -67,6 +67,8 @@ export const hideAdditionalInterestModal = (props) => {
     props.appState.modelName, props.appState.instanceId,
     { ...props.appState.data, showAdditionalInterestModal: false, showAdditionalInterestEditModal: false }
   );
+  props.dispatch(props.reset('AdditionalInterestModal'));
+  props.dispatch(props.reset('AdditionalInterestEditModal'));
 };
 
 export const editAIOnEnter = (event, ai, props) => {
@@ -104,6 +106,7 @@ export const hideBillingModal = (props) => {
     props.appState.modelName, props.appState.instanceId,
     { ...props.appState.data, showBillingEditModal: false }
   );
+  props.dispatch(props.reset('MortgageBilling'));
 };
 
 export const handleAISubmit = (data, dispatch, props) => {
@@ -179,6 +182,8 @@ export const handleAISubmit = (data, dispatch, props) => {
         showAdditionalInterestEditModal: false
       }
     );
+    props.dispatch(props.reset('AdditionalInterestModal'));
+    props.dispatch(props.reset('AdditionalInterestEditModal'));
   });
 };
 
@@ -228,6 +233,8 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
         showAdditionalInterestEditModal: false
       }
     );
+    props.dispatch(props.reset('AdditionalInterestModal'));
+    props.dispatch(props.reset('AdditionalInterestEditModal'));
   });
 };
 

@@ -2,11 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Select from 'react-select';
-import 'react-select/dist/react-select.css';
 import _ from 'lodash';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
 import { batchActions } from 'redux-batched-actions';
+import ReactSelectField from '../Form/inputs/ReactSelectField';
 import TextField from '../Form/inputs/TextField';
 import SelectField from '../Form/inputs/SelectField';
 import PhoneField from '../Form/inputs/PhoneField';
@@ -100,20 +99,16 @@ export const AdditionalInterestModal = (props) => {
           </div>
           <div className="card-block">
             { appState.data.addAdditionalInterestType === 'Mortgagee' &&
-            <span>
-              <label htmlFor="mortgage">
-                Top Mortgagees
-              </label>
-              <Select
-                name="mortgage"
-                searchable
-                labelKey="displayText"
-                autoFocus
-                value={appState.data.selectedMortgageeOption}
-                options={getAnswers('mortgagee', questions)}
-                onChange={val => setMortgageeValues(val, props)}
-              />
-            </span>
+            <ReactSelectField
+              label="Top Mortgagees"
+              name="mortgage"
+              searchable
+              labelKey="displayText"
+              autoFocus
+              value={appState.data.selectedMortgageeOption}
+              answers={getAnswers('mortgagee', questions)}
+              onChange={val => setMortgageeValues(val, props)}
+            />
          }
             <TextField label="Name 1" styleName="name-1" name="name1" validations={['required']} />
             <TextField label="Name 2" styleName="name-2" name="name2" />

@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import _ from 'lodash';
-import Select from 'react-select';
-import 'react-select/dist/react-select.css';
 import { connect } from 'react-redux';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
 import { batchActions } from 'redux-batched-actions';
@@ -11,6 +9,7 @@ import TextField from '../Form/inputs/TextField';
 import PhoneField from '../Form/inputs/PhoneField';
 import HiddenField from '../Form/inputs/HiddenField';
 import SelectField from '../Form/inputs/SelectField';
+import ReactSelectField from '../Form/inputs/ReactSelectField';
 import * as questionsActions from '../../actions/questionsActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
@@ -115,20 +114,16 @@ export const AdditionalInterestEditModal = (props) => {
             <HiddenField name="order" />
 
             { appState.data.addAdditionalInterestType === 'Mortgagee' &&
-            <span>
-              <label htmlFor="mortgage">
-                Top Mortgagees
-              </label>
-              <Select
-                name="mortgage"
-                searchable
-                labelKey="displayText"
-                autoFocus
-                value={appState.data.selectedMortgageeOption}
-                options={getAnswers('mortgagee', questions)}
-                onChange={val => setMortgageeValues(val, props)}
-              />
-            </span>
+            <ReactSelectField
+              label="Top Mortgagees"
+              name="mortgage"
+              searchable
+              labelKey="displayText"
+              autoFocus
+              value={appState.data.selectedMortgageeOption}
+              answers={getAnswers('mortgagee', questions)}
+              onChange={val => setMortgageeValues(val, props)}
+            />
          }
             <TextField label="Name 1" styleName="name-1" name="name1" validations={['required']} />
             <TextField label="Name 2" styleName="" name="name2" />
