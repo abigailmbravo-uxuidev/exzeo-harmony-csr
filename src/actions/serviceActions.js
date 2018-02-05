@@ -135,7 +135,6 @@ export const searchAgents = (companyCode, state, firstName, lastName, agentCode,
     ]));
   })
   .catch((error) => {
-    console.log('qqqqq', error)
     const message = handleError(error);
     return dispatch(batchActions([
       errorActions.setAppError({ message })
