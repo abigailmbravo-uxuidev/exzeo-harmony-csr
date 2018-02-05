@@ -6,7 +6,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
-import ConnectedApp, { Coverage, handleAgencyChange, handleFormSubmit, handleGetQuoteData, handleInitialize, handleGetZipCodeSettings } from './Coverage';
+import ConnectedApp, { Coverage, handleAgencyChange, handleFormSubmit, handleGetQuoteData, handleInitialize, handleGetZipCodeSettings, clearSecondaryPolicyholder } from './Coverage';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
@@ -691,6 +691,8 @@ describe('Testing Coverage component', () => {
 
     handleInitialize(initialState);
     handleGetZipCodeSettings(initialState);
+    clearSecondaryPolicyholder(false, props);
+    clearSecondaryPolicyholder(true, props)
   });
 
   it('should test componentWillMount', () => {
