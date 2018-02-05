@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import ReactSelectField from './ReactSelectField';
-import FieldHint from './FieldHint';
+import ReactSelectField, { ReactSelectInput } from './ReactSelectField';
 
 describe('ReactSelectField', () => {
   it('should render "select input" when nothing is provided', () => {
@@ -11,6 +10,10 @@ describe('ReactSelectField', () => {
 
   it('should render "select input" with answers when answers are provided', () => {
     const inputProps = {
+      meta: {
+        touched: false
+
+      },
       name: 'test',
       label: 'test',
       answers: [{
@@ -22,7 +25,8 @@ describe('ReactSelectField', () => {
       }]
     };
 
-    const wrapper = shallow(<ReactSelectField {...inputProps} />);
-    expect(wrapper.prop('answers').length).toEqual(3);
+    shallow(<ReactSelectInput {...inputProps} />);
+    const wrapperInstance = shallow(<ReactSelectField {...inputProps} />);
+    expect(wrapperInstance.instance().props.answers.length).toEqual(3);
   });
 });
