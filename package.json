@@ -8,6 +8,7 @@
     "auth0-js": "8.10.1",
     "axios": "~0.15.2",
     "classnames": "~2.2.5",
+    "eslint": "~4.13.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-react": "^1.1.7",
     "font-awesome": "~4.7.0",
@@ -39,7 +40,6 @@
     "redux-form": "~6.6.3",
     "redux-persist": "~4.10.2",
     "redux-thunk": "~2.2.0",
-    "save-dev": "^2.0.0",
     "validator": "~7.2.0"
   },
   "devDependencies": {
