@@ -485,7 +485,7 @@ export class MortgageBilling extends Component {
                     <button tabIndex="0" disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Bill Payer' && ai.active).length > 0)} onClick={() => addAdditionalInterest('Bill Payer', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
                   </div>
                   <ul className="results result-cards">
-                    {additionalInterests && _.sortBy(additionalInterests, ['sortInactive', 'rank']).map((ai, index) =>
+                    {additionalInterests && _.sortBy(additionalInterests, ['sortInactive', 'rank', 'order']).map((ai, index) =>
                       (
                         <li key={index}>
                           { ai.active &&
