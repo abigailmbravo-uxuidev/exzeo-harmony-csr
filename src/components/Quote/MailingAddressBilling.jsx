@@ -9,6 +9,7 @@ import { reduxForm, Form, change, propTypes } from 'redux-form';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
+import * as serviceActions from '../../actions/serviceActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import CheckField from '../Form/inputs/CheckField';
 import TextField from '../Form/inputs/TextField';
@@ -206,6 +207,19 @@ export class MailingAddressBilling extends Component {
       ];
       const workflowId = this.props.appState.instanceId;
 
+      const paymentOptions = {
+        effectiveDate: this.props.quoteData.effectiveDate,
+        policyHolders: this.props.quoteData.policyHolders,
+        additionalInterests: this.props.quoteData.additionalInterests,
+        netPremium: this.props.quoteData.rating.netPremium,
+        fees: {
+          empTrustFee: this.props.quoteData.rating.worksheet.fees.empTrustFee,
+          mgaPolicyFee: this.props.quoteData.rating.worksheet.fees.mgaPolicyFee
+        },
+        totalPremium: this.props.quoteData.rating.totalPremium
+      };
+      this.props.actions.serviceActions.getBillingOptions(paymentOptions);
+
       this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
     .then(() => {
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
@@ -223,7 +237,10 @@ export class MailingAddressBilling extends Component {
   }
 
   render() {
-    const { handleSubmit, paymentPlanResult, pristine, quoteData, dirty } = this.props;
+    const { handleSubmit, billingOptions, pristine, quoteData, dirty } = this.props;
+    let { paymentPlanResult } = this.props;
+    if (Object.keys(paymentPlanResult).length === 0 && billingOptions) paymentPlanResult = billingOptions;
+    
     if (!quoteData.rating) {
       return (
         <QuoteBaseConnect>
@@ -352,12 +369,14 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'MailingAddressBilling.values', {}),
   initialValues: handleInitialize(state),
   quoteData: state.service.quote || {},
+  billingOptions: state.service.billingOptions,
   paymentPlanResult: handleGetPaymentPlans(state)
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
     quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }
