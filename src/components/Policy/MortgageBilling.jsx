@@ -46,19 +46,41 @@ value.rank = 5; // eslint-disable-line
   });
 };
 
+export const setIsActive = (additionalInterests) => {
+  _.forEach(additionalInterests, (value) => {
+    value.sortInactive = !value.active;
+  });
+};
+
 export const addAdditionalInterest = (type, props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
-      { ...props.appState.data, showAdditionalInterestModal: true, addAdditionalInterestType: type });
+  props.actions.appStateActions.setAppState(
+    props.appState.modelName, props.appState.instanceId,
+    { ...props.appState.data, showAdditionalInterestModal: true, addAdditionalInterestType: type }
+  );
 };
 
 export const editAdditionalInterest = (ai, props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
-      { ...props.appState.data, showAdditionalInterestEditModal: true, selectedAI: ai, addAdditionalInterestType: ai.type });
+  props.actions.appStateActions.setAppState(
+    props.appState.modelName, props.appState.instanceId,
+    {
+      ...props.appState.data, showAdditionalInterestEditModal: true, selectedAI: ai, addAdditionalInterestType: ai.type
+    }
+  );
 };
 
 export const hideAdditionalInterestModal = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
-      { ...props.appState.data, showAdditionalInterestModal: false, showAdditionalInterestEditModal: false });
+  props.actions.appStateActions.setAppState(
+    props.appState.modelName, props.appState.instanceId,
+    { ...props.appState.data, showAdditionalInterestModal: false, showAdditionalInterestEditModal: false }
+  );
+  props.dispatch(props.reset('AdditionalInterestModal'));
+  props.dispatch(props.reset('AdditionalInterestEditModal'));
+};
+
+export const editAIOnEnter = (event, ai, props) => {
+  if (event.key === 'Enter') {
+    editAdditionalInterest(ai, props);
+  }
 };
 
 export const handleInitialize = (state) => {
@@ -77,36 +99,44 @@ export const getPaymentDescription = (event, props) => {
   const { dispatch } = props;
   dispatch(change('MortgageBilling', 'cashDescription', ''));
 
-  props.actions.appStateActions.setAppState(props.appState.modelName,
-          props.appState.instanceId, { ...props.appState.data, ranService: false, paymentDescription: selectedDescriptionType.paymentDescription, showDescription: true });
+  props.actions.appStateActions.setAppState(
+    props.appState.modelName,
+    props.appState.instanceId, {
+      ...props.appState.data, ranService: false, paymentDescription: selectedDescriptionType.paymentDescription, showDescription: true
+    }
+  );
 };
 
 export const hideBillingModal = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
-      { ...props.appState.data, showBillingEditModal: false });
+  props.actions.appStateActions.setAppState(
+    props.appState.modelName, props.appState.instanceId,
+    { ...props.appState.data, showBillingEditModal: false }
+  );
+  props.dispatch(props.reset('MortgageBilling'));
 };
 
 export const handleAISubmit = (data, dispatch, props) => {
   const { appState, actions, policy } = props;
   const workflowId = appState.instanceId;
-  actions.appStateActions.setAppState(appState.modelName,
-      workflowId, {
-        ...props.appState.data,
-        submittingAI: true
-      });
+  actions.appStateActions.setAppState(
+    appState.modelName,
+    workflowId, {
+      ...props.appState.data,
+      submittingAI: true
+    }
+  );
   const additionalInterests = policy.additionalInterests || [];
 
   const type = data.aiType || appState.data.addAdditionalInterestType;
 
-  let order = 0;
+  let { order } = data;
 
-  if (String(data.order) !== '0' && String(data.order) !== '1') {
+  const isMortgagee = type === 'Mortgagee';
+  // type mortgagee allows the user to select order and the AI edit will pass in order
+  if (!isMortgagee && !data._id) {
     order = _.filter(additionalInterests, ai => ai.type === type && ai.active).length === 0 ? 0 : 1;
-  } else {
-    order = data.order;
   }
-
-      // remove any existing items before submission
+  // remove any existing items before submission
   const modifiedAIs = _.cloneDeep(additionalInterests);
 
   _.remove(modifiedAIs, ai => ai._id === data._id); // eslint-disable-line
@@ -149,30 +179,38 @@ export const handleAISubmit = (data, dispatch, props) => {
 
   props.actions.serviceActions.createTransaction(submitData).then(() => {
     props.actions.policyStateActions.updatePolicy(true, props.policy.policyNumber);
-    props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
-      { ...props.appState.data,
+    props.actions.appStateActions.setAppState(
+      props.appState.modelName, props.appState.instanceId,
+      {
+        ...props.appState.data,
         submittingAI: false,
         showAdditionalInterestModal: false,
-        showAdditionalInterestEditModal: false });
+        showAdditionalInterestEditModal: false
+      }
+    );
+    props.dispatch(props.reset('AdditionalInterestModal'));
+    props.dispatch(props.reset('AdditionalInterestEditModal'));
   });
 };
 
 export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
   const { appState, actions, policy } = props;
   const workflowId = appState.instanceId;
-  actions.appStateActions.setAppState(appState.modelName,
-      workflowId, {
-        ...props.appState.data,
-        submittingAI: true,
-        showAdditionalInterestModal: appState.data.showAdditionalInterestModal,
-        showAdditionalInterestEditModal: appState.data.showAdditionalInterestEditModal
-      });
+  actions.appStateActions.setAppState(
+    appState.modelName,
+    workflowId, {
+      ...props.appState.data,
+      submittingAI: true,
+      showAdditionalInterestModal: appState.data.showAdditionalInterestModal,
+      showAdditionalInterestEditModal: appState.data.showAdditionalInterestEditModal
+    }
+  );
 
   const additionalInterests = policy.additionalInterests || [];
 
-        // remove any existing items before submission
+  // remove any existing items before submission
   const modifiedAIs = _.cloneDeep(additionalInterests);
-    // remove any existing items before submission
+  // remove any existing items before submission
     _.remove(modifiedAIs, ai => ai._id === selectedAdditionalInterest._id); // eslint-disable-line
 
   if (_.filter(modifiedAIs, ai => ai.type === selectedAdditionalInterest.type).length === 1) {
@@ -192,11 +230,17 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
 
   props.actions.serviceActions.createTransaction(submitData).then(() => {
     props.actions.policyStateActions.updatePolicy(true, props.policy.policyNumber);
-    props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
-      { ...props.appState.data,
+    props.actions.appStateActions.setAppState(
+      props.appState.modelName, props.appState.instanceId,
+      {
+        ...props.appState.data,
         submittingAI: false,
         showAdditionalInterestModal: false,
-        showAdditionalInterestEditModal: false });
+        showAdditionalInterestEditModal: false
+      }
+    );
+    props.dispatch(props.reset('AdditionalInterestModal'));
+    props.dispatch(props.reset('AdditionalInterestEditModal'));
   });
 };
 
@@ -217,11 +261,14 @@ export const checkValidTypes = (additionalInterests, selectedAI) => {
 };
 
 export class MortgageBilling extends Component {
-
   componentWillMount = () => {
     this.props.actions.serviceActions.getPaymentOptionsApplyPayments();
-    this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-          this.props.appState.instanceId, { ...this.props.appState.data, ranService: false, paymentDescription: [], showDescription: false });
+    this.props.actions.appStateActions.setAppState(
+      this.props.appState.modelName,
+      this.props.appState.instanceId, {
+        ...this.props.appState.data, ranService: false, paymentDescription: [], showDescription: false
+      }
+    );
     this.props.actions.questionsActions.getUIQuestions('additionalInterestsCSR');
   }
 
@@ -238,48 +285,12 @@ export class MortgageBilling extends Component {
         fullyEarnedFees: nextProps.policy.rating.worksheet.fees.empTrustFee + nextProps.policy.rating.worksheet.fees.mgaPolicyFee
       };
       nextProps.actions.serviceActions.getBillingOptionsForPolicy(paymentOptions);
-      nextProps.actions.appStateActions.setAppState(nextProps.appState.modelName,
-        nextProps.appState.instanceId, { ...nextProps.appState.data, ranService: true });
+      nextProps.actions.appStateActions.setAppState(
+        nextProps.appState.modelName,
+        nextProps.appState.instanceId, { ...nextProps.appState.data, ranService: true }
+      );
     }
   }
-
-  handleFormSubmit = (data) => {
-    const workflowId = this.props.appState.instanceId;
-    const submitData = data;
-    this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-      workflowId, { ...this.props.appState.data, submitting: true });
-    submitData.cashDate = moment.utc(data.cashDate);
-    submitData.batchNumber = String(data.batchNumber);
-    submitData.amount = Number(String(data.amount).replace(/[^\d.-]/g, ''));
-    submitData.cashType = String(data.cashType);
-    submitData.cashDescription = String(data.cashDescription);
-    submitData.companyCode = this.props.auth.userProfile.groups[0].companyCode;
-    submitData.policy = this.props.policy;
-    this.props.actions.serviceActions.addTransaction(submitData)
-    .then(() => {
-      this.props.actions.serviceActions.getPaymentHistory(this.props.policy.policyNumber);
-      this.props.actions.serviceActions.getSummaryLedger(this.props.policy.policyNumber);
-      this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-        this.props.appState.instanceId, { ...this.props.appState.data });
-    });
-
-    this.clearForm();
-  };
-
-  handleBillingEdit = () => {
-    const workflowId = this.props.appState.instanceId;
-    this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-      workflowId, { ...this.props.appState.data, showBillingEditModal: true });
-  };
-
-
-  clearForm = () => {
-    const { dispatch } = this.props;
-    const workflowId = this.props.appState.instanceId;
-    dispatch(reset('MortgageBilling'));
-    this.props.actions.appStateActions.setAppState(this.props.appState.modelName,
-      workflowId, { ...this.props.appState.data, submitting: false });
-  };
 
   setBatch = (value) => {
     const { dispatch } = this.props;
@@ -288,18 +299,67 @@ export class MortgageBilling extends Component {
     dispatch(change('MortgageBilling', 'batchNumber', moment.utc(value).format('YYYYMMDD')));
   }
 
+  handleFormSubmit = (data) => {
+    const workflowId = this.props.appState.instanceId;
+    const submitData = data;
+    this.props.actions.appStateActions.setAppState(
+      this.props.appState.modelName,
+      workflowId, { ...this.props.appState.data, submitting: true }
+    );
+    submitData.cashDate = moment.utc(data.cashDate);
+    submitData.batchNumber = String(data.batchNumber);
+    submitData.amount = Number(String(data.amount).replace(/[^\d.-]/g, ''));
+    submitData.cashType = String(data.cashType);
+    submitData.cashDescription = String(data.cashDescription);
+    submitData.companyCode = this.props.auth.userProfile.groups[0].companyCode;
+    submitData.policy = this.props.policy;
+    this.props.actions.serviceActions.addTransaction(submitData)
+      .then(() => {
+        this.props.actions.serviceActions.getPaymentHistory(this.props.policy.policyNumber);
+        this.props.actions.serviceActions.getSummaryLedger(this.props.policy.policyNumber);
+        this.props.actions.appStateActions.setAppState(
+          this.props.appState.modelName,
+          this.props.appState.instanceId, { ...this.props.appState.data }
+        );
+      });
+
+    this.clearForm();
+  };
+
+  handleBillingEdit = () => {
+    const workflowId = this.props.appState.instanceId;
+    this.props.actions.appStateActions.setAppState(
+      this.props.appState.modelName,
+      workflowId, { ...this.props.appState.data, showBillingEditModal: true }
+    );
+  };
+
+
+  clearForm = () => {
+    const { dispatch } = this.props;
+    const workflowId = this.props.appState.instanceId;
+    dispatch(reset('MortgageBilling'));
+    this.props.actions.appStateActions.setAppState(
+      this.props.appState.modelName,
+      workflowId, { ...this.props.appState.data, submitting: false }
+    );
+  };
+
   checkPayments = (batchNumber, transaction) => {
     const found = payments.some(payment => payment.batchNumber === batchNumber);
     if (!found) { payments.push(transaction); }
   }
 
-  amountFormatter = cell => cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '';
+  amountFormatter = cell => (cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '');
   dateFormatter = cell => `${cell.substring(0, 10)}`;
 
   render() {
     const { additionalInterests } = this.props.policy;
-    const { handleSubmit, pristine, fieldValues, policy, questions } = this.props;
+    const {
+      handleSubmit, pristine, fieldValues, policy, questions
+    } = this.props;
     setRank(additionalInterests);
+    setIsActive(additionalInterests);
 
     _.forEach(getAnswers('mortgagee', questions), (answer) => {
       answer.displayText = `${answer.AIName1}, ${answer.AIAddress1}, ${answer.AICity} ${answer.AIState}, ${answer.AIZip}`;
@@ -325,12 +385,12 @@ export class MortgageBilling extends Component {
                   <div className="flex-parent">
                     <div className="flex-child">
                       <div className="form-group">
-                        <TextField validations={['required']} label={'Cash Date'} styleName={''} name={'cashDate'} type={'date'} onChange={e => this.setBatch(e.target.value)} />
+                        <TextField validations={['required']} label="Cash Date" styleName="" name="cashDate" type="date" onChange={e => this.setBatch(e.target.value)} />
                       </div>
                     </div>
                     <div className="flex-child">
                       <div className="form-group">
-                        <TextField validations={['matchDateMin10']} label={'Batch Number'} styleName={''} name={'batchNumber'} dateString={moment.utc(fieldValues.cashDate).format('YYYYMMDD')} />
+                        <TextField validations={['matchDateMin10']} label="Batch Number" styleName="" name="batchNumber" dateString={moment.utc(fieldValues.cashDate).format('YYYYMMDD')} />
                       </div>
                     </div>
                   </div>
@@ -338,7 +398,11 @@ export class MortgageBilling extends Component {
                     <div className="flex-child">
                       <div className="form-group">
                         <SelectField
-                          name="cashType" component="select" label="Cash Type" onChange={val => getPaymentDescription(val, this.props)} validations={['required']}
+                          name="cashType"
+                          component="select"
+                          label="Cash Type"
+                          onChange={val => getPaymentDescription(val, this.props)}
+                          validations={['required']}
                           answers={_.map(this.props.paymentOptions, type => ({ answer: type.paymentType }))}
                         />
                       </div>
@@ -346,7 +410,10 @@ export class MortgageBilling extends Component {
                     <div className="flex-child">
                       <div className="form-group">
                         <SelectField
-                          name="cashDescription" component="select" label="Description" onChange={function () {}} validations={['required']}
+                          name="cashDescription"
+                          component="select"
+                          label="Description"
+                          validations={['required']}
                           answers={_.map(this.props.appState.data.paymentDescription || [], description => ({ answer: description }))}
                         />
                       </div>
@@ -354,7 +421,12 @@ export class MortgageBilling extends Component {
                     <div className="flex-child">
                       <div className="form-group">
                         <CurrencyField
-                          validations={['range']} label="Amount" styleName={''} name={'amount'} min={-1000000} max={1000000}
+                          validations={['range']}
+                          label="Amount"
+                          styleName=""
+                          name="amount"
+                          min={-1000000}
+                          max={1000000}
                         />
                       </div>
                     </div>
@@ -406,55 +478,59 @@ export class MortgageBilling extends Component {
                 <h3>Additional Interests</h3>
                 <div className="results-wrapper">
                   <div className="button-group">
-                    <button tabIndex={'0'} disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Mortgagee').length > 1)} onClick={() => addAdditionalInterest('Mortgagee', this.props)} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
-                    <button tabIndex={'0'} disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Additional Insured').length > 1)} onClick={() => addAdditionalInterest('Additional Insured', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
-                    <button tabIndex={'0'} disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Additional Interest').length > 1)} onClick={() => addAdditionalInterest('Additional Interest', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
+                    <button tabIndex="0" disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length > 1)} onClick={() => addAdditionalInterest('Mortgagee', this.props)} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
+                    <button tabIndex="0" disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Additional Insured' && ai.active).length > 1)} onClick={() => addAdditionalInterest('Additional Insured', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
+                    <button tabIndex="0" disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Additional Interest' && ai.active).length > 1)} onClick={() => addAdditionalInterest('Additional Interest', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
                     { /* <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button> */ }
-                    <button tabIndex={'0'} disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Bill Payer').length > 0)} onClick={() => addAdditionalInterest('Bill Payer', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
+                    <button tabIndex="0" disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Bill Payer' && ai.active).length > 0)} onClick={() => addAdditionalInterest('Bill Payer', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
                   </div>
                   <ul className="results result-cards">
-                    {additionalInterests && _.sortBy(additionalInterests, ['rank', 'type']).map((ai, index) =>
-                      <li key={index}>
-                        { ai.active && <a onClick={() => editAdditionalInterest(ai, this.props)}>
-                          {/* add className based on type - i.e. mortgagee could have class of mortgagee*/}
-                          <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {ai.order + 1}</label></div>
-                          <section><h4>{ai.name1}&nbsp;{ai.name2}</h4>
-                            <p className="address">{
+                    {additionalInterests && _.sortBy(additionalInterests, ['sortInactive', 'rank', 'order']).map((ai, index) =>
+                      (
+                        <li key={index}>
+                          { ai.active &&
+                          <a onKeyPress={event => editAIOnEnter(event, ai, this.props)} onClick={() => editAdditionalInterest(ai, this.props)}>
+                            {/* add className based on type - i.e. mortgagee could have class of mortgagee */}
+                            <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {ai.order + 1}</label></div>
+                            <section><h4>{ai.name1}&nbsp;{ai.name2}</h4>
+                              <p className="address">{
                              `${ai.mailingAddress.address1},
                               ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city},
                               ${ai.mailingAddress.state}
                               ${ai.mailingAddress.zip}`
-                            }</p>
-                          </section>
-                          <div className="ref-number">
-                            <label htmlFor="ref-number">Reference Number</label>
-                            <span>{` ${ai.referenceNumber || ' - '}`}</span>
-                          </div>
-                        </a>}
-                        { !ai.active && <a style={{ cursor: 'default' }}>
-                          <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {'Inactive'}</label></div>
-                          <section><h4>{ai.name1}&nbsp;{ai.name2} (Inactive)</h4>
-                            <p className="address">{
+                            }
+                              </p>
+                            </section>
+                            <div className="ref-number">
+                              <label htmlFor="ref-number">Reference Number</label>
+                              <span>{` ${ai.referenceNumber || ' - '}`}</span>
+                            </div>
+                          </a>}
+                          { !ai.active &&
+                          <a style={{ cursor: 'not-allowed' }}>
+                            <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {'Inactive'}</label></div>
+                            <section><h4>{ai.name1}&nbsp;{ai.name2} (Inactive)</h4>
+                              <p className="address">{
                            `${ai.mailingAddress.address1},
                             ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city},
                             ${ai.mailingAddress.state}
                             ${ai.mailingAddress.zip}`
-                          }</p>
-                          </section>
-                          <div className="ref-number">
-                            <label htmlFor="ref-number">Reference Number</label>
-                            <span>{` ${ai.referenceNumber || ' - '}`}</span>
-                          </div>
-                        </a>}
-                      </li>
-                      )}
+                          }
+                              </p>
+                            </section>
+                            <div className="ref-number">
+                              <label htmlFor="ref-number">Reference Number</label>
+                              <span>{` ${ai.referenceNumber || ' - '}`}</span>
+                            </div>
+                          </a>}
+                        </li>))}
                   </ul>
                 </div>
               </section>
             </div>
           </div>
-          { this.props.appState.data.showAdditionalInterestEditModal && <AIEditModal validAdditionalInterestTypes={validAdditionalInterestTypes} isEndorsement questions={questions} selectedAI={this.props.appState.data.selectedAI} policy={this.props.policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
-          { this.props.appState.data.showAdditionalInterestModal && <AIModal questions={questions} policy={this.props.policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
+          { this.props.appState.data.showAdditionalInterestEditModal && <AIEditModal additionalInterests={additionalInterests} validAdditionalInterestTypes={validAdditionalInterestTypes} isEndorsement questions={questions} selectedAI={this.props.appState.data.selectedAI} policy={this.props.policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
+          { this.props.appState.data.showAdditionalInterestModal && <AIModal additionalInterests={additionalInterests} questions={questions} policy={this.props.policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
         </div>
         { this.props.appState.data.showBillingEditModal && <BillingModal policy={this.props.policy} billingOptions={this.props.billingOptions} handleBillingFormSubmit={handleBillingFormSubmit} hideBillingModal={() => hideBillingModal(this.props)} /> }
         <div className="basic-footer">
@@ -466,7 +542,7 @@ export class MortgageBilling extends Component {
 }
 
 MortgageBilling.propTypes = {
-  policy: PropTypes.shape()
+  policy: PropTypes.shape().isRequired
 };
 
 /**
