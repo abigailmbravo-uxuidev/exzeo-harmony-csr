@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import localStorage from 'localStorage';
 import { connect } from 'react-redux';
-import { reduxForm, Form, Field, propTypes, getFormSyncErrors } from 'redux-form';
+import { reduxForm, Form, Field, propTypes, getFormSyncErrors, change } from 'redux-form';
 import ReactTooltip from 'react-tooltip';
 import _ from 'lodash';
 import Rules from '../Form/Rules';
@@ -12,12 +12,65 @@ import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as errorActions from '../../actions/errorActions';
 import * as serviceActions from '../../actions/serviceActions';
+import * as searchActions from '../../actions/searchActions';
+import TextField from '../Form/inputs/TextField';
 
 const userTasks = {
   handleSearchBarSubmit: 'search'
 };
 
-const handleInitialize = () => ({ searchType: 'quote' });
+export const resetSearch = (props) => {
+  props.actions.serviceActions.clearPolicyResults();
+};
+
+export const changePage = (props, isNext) => {
+  const { fieldValues } = props;
+
+  const taskData = {
+    firstName: (encodeURIComponent(fieldValues.firstName) !== 'undefined' ? encodeURIComponent(fieldValues.firstName) : ''),
+    lastName: (encodeURIComponent(fieldValues.lastName) !== 'undefined' ? encodeURIComponent(fieldValues.lastName) : ''),
+    address: (encodeURIComponent(fieldValues.address) !== 'undefined' ? encodeURIComponent(String(fieldValues.address).trim()) : ''),
+    policyNumber: (encodeURIComponent(fieldValues.policyNumber) !== 'undefined' ? encodeURIComponent(fieldValues.policyNumber) : ''),
+    searchType: 'policy',
+    isLoading: true,
+    hasSearched: true
+  };
+
+
+  taskData.pageNumber = isNext ? Number(fieldValues.pageNumber) + 1 : Number(fieldValues.pageNumber) - 1;
+
+  props.actions.searchActions.setPolicySearch(taskData);
+
+
+  props.actions.serviceActions.searchPolicy(taskData.policyNumber, taskData.firstName, taskData.lastName, taskData.address, taskData.pageNumber, 25, fieldValues.sortBy).then(() => {
+    taskData.isLoading = false;
+    props.actions.searchActions.setPolicySearch(taskData);
+  });
+};
+
+const handleInitialize = () => ({ searchType: 'quote', sortBy: 'policyNumber' });
+
+export const handlePolicySearchSubmit = (data, dispatch, props) => {
+  const taskData = {
+    firstName: (encodeURIComponent(data.firstName) !== 'undefined' ? encodeURIComponent(data.firstName) : ''),
+    lastName: (encodeURIComponent(data.lastName) !== 'undefined' ? encodeURIComponent(data.lastName) : ''),
+    address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(String(data.address).trim()) : ''),
+    policyNumber: (encodeURIComponent(data.policyNumber) !== 'undefined' ? encodeURIComponent(data.policyNumber) : ''),
+    searchType: 'policy',
+    isLoading: true,
+    hasSearched: true,
+    page: 1
+  };
+
+  props.actions.searchActions.setPolicySearch(taskData);
+
+  props.actions.serviceActions.searchPolicy(taskData.policyNumber, taskData.firstName, taskData.lastName, taskData.address, taskData.page, 25, data.sortBy).then(() => {
+    taskData.isLoading = false;
+    props.actions.searchActions.setPolicySearch(taskData);
+  });
+};
+
+
 
 export const handleSearchBarSubmit = (data, dispatch, props) => {
   const workflowId = props.appState.instanceId;
@@ -190,30 +243,55 @@ const generateField = (name, placeholder, labelText, formErrors, formGroupCss) =
 
 const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
-const SearchForm = (props) => {
+export class SearchForm extends Component {
+
+  componentWillReceiveProps(nextProps) {
+    const { dispatch } = nextProps;
+
+    if (!_.isEqual(this.props.policyResults, nextProps.policyResults)) {
+      const totalPages = Math.ceil(nextProps.policyResults.totalNumberOfRecords / nextProps.policyResults.pageSize);
+      const pageNumber = nextProps.policyResults.currentPage;
+      dispatch(change('SearchBar', 'pageNumber', pageNumber));
+      dispatch(change('SearchBar', 'totalPages', totalPages));
+      nextProps.actions.searchActions.setPolicySearch({ ...nextProps.search, totalPages, pageNumber });
+    }
+  }
+
+  render() {
+    
   const {
+    appState,
     questions,
     handleSubmit,
     formErrors,
-    fieldValues
-  } = props;
+    fieldValues,
+    policyResults,
+    form,
+    actions,
+    tasks,
+    reset
+  } = this.props;
 
   const clearForm = (event, newValue, previousValue) => {
-    const modelName = props.appState.modelName;
-    const data = props.tasks[modelName].data;
+    const modelName = appState.modelName;
+    const data = tasks[modelName].data;
 
     const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData')) || {};
     lastSearchData.searchType = '';
     localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
-    props.reset(props.form);
-    props.actions.cgActions.clearSearchResults(modelName, data);
-    props.actions.errorActions.clearAppError();
-    props.actions.serviceActions.clearAgencies();
-    props.actions.serviceActions.clearAgent();
+    reset(form);
+    actions.cgActions.clearSearchResults(modelName, data);
+    actions.errorActions.clearAppError();
+    actions.serviceActions.clearAgencies();
+    actions.serviceActions.clearAgent();
   };
 
+  let searchHandler = handleSearchBarSubmit;
+
+  if(fieldValues.searchType === 'policy') searchHandler = handlePolicySearchSubmit
+
   return (
-    <Form id="SearchBar" onSubmit={handleSubmit(handleSearchBarSubmit)} noValidate>
+    <Form id="SearchBar" onSubmit={handleSubmit(searchHandler)} noValidate>
       <div className="search-input-wrapper">
         <div className="form-group search-context">
           <SelectField
@@ -242,14 +320,14 @@ const SearchForm = (props) => {
               }
             ]}
           />
-        </div>
+          </div>
         {fieldValues.searchType === 'address' && <div className="search-inputs fade-in">
           {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
           <button
             className="btn btn-success multi-input"
             type="submit"
             form="SearchBar"
-            disabled={props.appState.data.submitting || formErrors || !fieldValues.address || !String(fieldValues.address).trim()}
+            disabled={appState.data.submitting || formErrors || !fieldValues.address || !String(fieldValues.address).trim()}
           >
             <i className="fa fa-search" />Search
           </button>
@@ -273,7 +351,7 @@ const SearchForm = (props) => {
             className="btn btn-success multi-input"
             type="submit"
             form="SearchBar"
-            disabled={props.appState.data.submitting || formErrors}
+            disabled={appState.data.submitting || formErrors}
           >
             <i className="fa fa-search" />Search
           </button>
@@ -281,6 +359,24 @@ const SearchForm = (props) => {
         }
         {fieldValues.searchType === 'policy' && <div className="search-inputs fade-in">
 
+        <SelectField
+        name="sortBy" component="select" styleName={'search-context'} label="Sort By" validations={['required']}
+        onChange={() => resetSearch(this.props)}
+        answers={[
+          {
+            answer: 'policyNumber',
+            label: 'Policy Number'
+          },
+          {
+            answer: 'firstName',
+            label: 'First Name'
+          },
+          {
+            answer: 'lastName',
+            label: 'Last Name'
+          }
+        ]}
+      />
           {generateField('firstName', 'First Name Search', 'First Name', formErrors, 'first-name-search')}
           {generateField('lastName', 'Last Name Search', 'Last Name', formErrors, 'last-name-search')}
           {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
@@ -290,12 +386,40 @@ const SearchForm = (props) => {
             className="btn btn-success multi-input"
             type="submit"
             form="SearchBar"
-            disabled={props.appState.data.submitting || formErrors}
+            disabled={appState.data.submitting || formErrors}
           >
             <i className="fa fa-search" />Search
           </button>
         </div>
         }
+        { fieldValues.searchType === 'policy' && policyResults && policyResults.policies && policyResults.policies.length  && <div className="pagination-wrapper">
+        <button
+          onClick={() => changePage(this.props, false)}
+          disabled={String(fieldValues.pageNumber) === '1'}
+          tabIndex="0"
+          className="btn multi-input"
+          type="button"
+          form="SearchBar"
+        >
+          <span className="fa fa-chevron-circle-left" />
+        </button>
+        <div className="pagination-count">
+          <TextField size="2" name={'pageNumber'} label={'Page'} readOnly />
+          <span className="pagination-operand">of</span>
+          <TextField size="2" name={'totalPages'} label={''} readOnly />
+        </div>
+        <button
+          onClick={() => changePage(this.props, true)}
+          disabled={String(fieldValues.pageNumber) === String(fieldValues.totalPages)}
+          tabIndex="0"
+          className="btn multi-input"
+          type="button"
+          form="SearchBar"
+        >
+          <span className="fa fa-chevron-circle-right" />
+        </button>
+      </div>
+      }
         {/* <!-- Should be available only in user admin  -->*/}
         {fieldValues.searchType === 'user' && <div className="search-tools">
           <div className="search-inputs fade-in">
@@ -306,7 +430,7 @@ const SearchForm = (props) => {
               className="btn btn-success multi-input"
               type="submit"
               form="SearchBar"
-              disabled={props.appState.data.submitting || formErrors}
+              disabled={appState.data.submitting || formErrors}
             >
               <i className="fa fa-search" />Search
               </button>
@@ -327,7 +451,7 @@ const SearchForm = (props) => {
             className="btn btn-success multi-input"
             type="submit"
             form="SearchBar"
-            disabled={props.appState.data.submitting || formErrors}
+            disabled={appState.data.submitting || formErrors}
           >
             <i className="fa fa-search" />Search
           </button>
@@ -345,7 +469,7 @@ const SearchForm = (props) => {
             className="btn btn-success multi-input"
             type="submit"
             form="SearchBar"
-            disabled={props.appState.data.submitting || formErrors}
+            disabled={appState.data.submitting || formErrors}
           >
             <i className="fa fa-search" />Search
         </button>
@@ -355,9 +479,10 @@ const SearchForm = (props) => {
       </div>
     </Form>
   );
+  };
 };
 
-const SearchBar = props => SearchForm(props);
+const SearchBar = props => new SearchForm(props);
 
 SearchBar.propTypes = {
   ...propTypes,
@@ -387,7 +512,9 @@ const mapStateToProps = state => ({
   cleanForm: state.pristine,
   questions: state.questions,
   agencies: state.agencies,
-  agents: state.agents
+  agents: state.agents,
+  policyResults: state.service.policyResults,
+  search: state.search
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -395,7 +522,8 @@ const mapDispatchToProps = dispatch => ({
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch),
     errorActions: bindActionCreators(errorActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch)
+    serviceActions: bindActionCreators(serviceActions, dispatch),
+    searchActions: bindActionCreators(searchActions, dispatch)
   }
 });
 
