@@ -34,7 +34,7 @@ export const SearchResults = (props) => {
     const { defaultPolicyResults } = props;
     const policyResults = [];
   
-    const policies = defaultPolicyResults.policies || [];
+    const policies = _.get(defaultPolicyResults, 'policies') || [];
 
     for (let i = 0; i < policies.length; i += 1) {
       const currentPolicy = policies[i];
