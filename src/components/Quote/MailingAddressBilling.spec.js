@@ -319,6 +319,13 @@ describe('Testing MailingAddressBilling component', () => {
         }]
       },
       service: {
+        billingOptions: {
+          options: [{
+            billToId: '598b4570efb84c0013f7ed3c',
+            billToType: 'Policyholder',
+            displayText: 'Policyholder: gdfg fgfdg'
+          }]
+        },
         quote: quoteData
       },
       cg: {
@@ -337,7 +344,7 @@ describe('Testing MailingAddressBilling component', () => {
     const store = mockStore(initialState);
     const props = {
       handleSubmit() {},
-      paymentPlanResult: {
+      billingOptions: {
         options: [{
           billToId: '598b4570efb84c0013f7ed3c',
           billToType: 'Policyholder',
@@ -446,7 +453,7 @@ describe('Testing MailingAddressBilling component', () => {
       fieldValues: {
         billToId: '598b4570efb84c0013f7ed3c'
       },
-      paymentPlanResult: {
+      billingOptions: {
         options: [{
           billToId: '598b4570efb84c0013f7ed3c',
           billToType: 'Policyholder',
