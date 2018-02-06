@@ -66,15 +66,14 @@ export const setMortgageeValues = (val, props) => {
 };
 
 export const getMortgageeAnswers = (questions, additionalInterests) => {
-  const mortgageeOrderAnswers = _.cloneDeep(getAnswers('order', questions));
+  let mortgageeOrderAnswers = _.cloneDeep(getAnswers('order', questions));
 
-  if (additionalInterests && _.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length === 0) {
-    _.remove(mortgageeOrderAnswers, answer => Number(answer.answer) === 1);
-  } else if (additionalInterests && _.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length === 1) {
-    _.remove(mortgageeOrderAnswers, answer => Number(answer.answer) === 0);
+  if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 0) {
+    mortgageeOrderAnswers = mortgageeOrderAnswers.filter(answer =>  Number(answer.answer) === 0)
+  } else if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 1) {
+    mortgageeOrderAnswers = mortgageeOrderAnswers.filter(answer =>  Number(answer.answer) === 1)
   }
   return mortgageeOrderAnswers;
-
 }
 
 export const AdditionalInterestModal = (props) => {
