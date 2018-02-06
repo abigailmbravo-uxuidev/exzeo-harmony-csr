@@ -5,12 +5,20 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
 import localStorage from 'localStorage';
+import { Link } from 'react-router-dom';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 import normalizePhone from '../Form/normalizePhone';
 import Loader from '../Common/Loader';
 import NoResults from './NoResultsForService';
+import NoPolicyResultsConnect from './NoPolicyResults';
+
+const onKeypressPolicy = (event, policy, props) => {
+  if (event.charCode === 13) {
+    //  handleSelectPolicy(policy, props);
+  }
+};
 
 export const SearchResults = (props) => {
   const model = props.tasks[props.appState.modelName] || {};
@@ -22,6 +30,60 @@ export const SearchResults = (props) => {
     : {};
 
   const searchData = JSON.parse(localStorage.getItem('lastSearchData'));
+  if (props.search && props.search.searchType === 'policy') {
+    const { defaultPolicyResults } = props;
+    const policyResults = [];
+  
+    const policies = defaultPolicyResults.policies || [];
+
+    for (let i = 0; i < policies.length; i += 1) {
+      const currentPolicy = policies[i];
+      const selectedPolicies = _.filter(policies, policy => policy && policy.policyNumber === currentPolicy.policyNumber);
+      if (!_.some(policyResults, p => p && p.policyNumber === currentPolicy.policyNumber) && selectedPolicies.length > 0) {
+        policyResults.push(_.maxBy(selectedPolicies, 'policyVersion'));
+      }
+    }
+    return (
+      <div className="quote-list">
+        {props.search && props.search.isLoading && <Loader />}
+        {
+          policyResults && policyResults.length > 0 && policyResults.map((policy, index) => (<div tabIndex={0} onKeyPress={event => onKeypressPolicy(event, policy, props)} id={policy.PolicyID} className="card" key={index}>
+            <div className="icon-name">
+              <i className="card-icon fa fa-user-circle" />
+              <div className="card-name">
+                <h4 title={policy.policyHolders && policy.policyHolders.length > 0 ? `${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}` : ''}>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}</h4>
+              </div>
+            </div>
+            <section>
+              <ul id="policy-search-results" className="policy-search-results">
+                <li className="header">
+                  <span className="policy-no">Policy No.</span>
+                  <span className="property-address">Property Address</span>
+                  <span className="quote-state">Policy Status</span>
+                  <span className="effctive-date">Effective Date</span>
+                </li>
+                <li>
+                  <Link to={{ pathname: '/policy/coverage', state: { policyNumber: policy.policyNumber } }} className={`${policy.policyNumber + policy.property.physicalAddress.address1} row`}>
+                    <span className="quote-no">{policy.policyNumber}</span>
+                    <span className="property-address">{
+                  `${policy.property.physicalAddress.address1}
+                      ${policy.property.physicalAddress.city}, ${policy.property.physicalAddress.state}
+                      ${policy.property.physicalAddress.zip}`
+                }</span>
+                    <span className="quote-state">{policy.status}</span>
+                    <span className="effctive-date">{moment.utc(policy.effectiveDate).format('MM/DD/YYYY')}</span>
+                  </Link>
+                </li>
+              </ul>
+            </section>
+          </div>))
+      }
+        {
+          props.search && props.search.hasSearched && policyResults && policyResults.length === 0 && <NoPolicyResultsConnect />
+      }
+      </div>
+    );
+  }
 
   if (previousTask && previousTask.name === 'searchAddress' && activeTask.name !== 'askToSearchAgain') {
     const addresses = previousTask.value.result.IndexResult;
@@ -106,77 +168,6 @@ export const SearchResults = (props) => {
                       ? quote.rating.totalPremium
                       : '-'
                   }</span>
-                </a>
-              </li>
-            </ul>
-          </section>
-        </div>)
-      }
-    </div>);
-  }
-
-  if (props.tasks[props.appState.modelName] && props.tasks[props.appState.modelName].data.activeTask
-    && props.tasks[props.appState.modelName].data.activeTask.name === 'choosePolicy' && searchData.searchType === 'policy') {
-    const defaultPolicyResults = props.tasks[props.appState.modelName].data.previousTask
-      ? props.tasks[props.appState.modelName].data.previousTask.value.policies
-      : [];
-
-    const policyResults = [];
-
-    if (defaultPolicyResults && defaultPolicyResults.length > 0) {
-      for (let i = 0; i < defaultPolicyResults.length; i += 1) {
-        const currentPolicy = defaultPolicyResults[i];
-        const selectedPolicies = _.filter(defaultPolicyResults, policy => policy && policy.policyNumber === currentPolicy.policyNumber);
-        if (!_.some(policyResults, p => p && p.policyNumber === currentPolicy.policyNumber) && selectedPolicies.length > 0) {
-          policyResults.push(_.maxBy(selectedPolicies, 'policyVersion'));
-        }
-      }
-    }
-
-    return (<div className="policy-list">
-      {
-        policyResults && policyResults.map((policy, index) => <div id={policy._id} className="card" key={index}>
-          <div className="icon-name">
-            <i className="card-icon fa fa-user-circle" />
-            <div className="card-name">
-              <h5 title={`${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName.replace(/(^.{20}).*$/, '$1...')}`}<br />
-                {policy.policyHolders[0] && `${policy.policyHolders[0].lastName.replace(/(^.{20}).*$/, '$1...')}`}</h5>
-            </div>
-          </div>
-          {/* <div>
-                <button className="row" onClick={() => props.handleSelectPolicy(policy, props)}  tabIndex="-1">Open New Tab</button>
-              </div>*/
-          }
-          <section>
-            <ul id="policy-search-results" className="policy-search-results">
-              <li className="header">
-                <span className="policy-no">Policy No.</span>
-                <span className="property-address">Property Address</span>
-                <span className="quote-state">Policy Status</span>
-                <span className="effctive-date">Effective Date</span>
-                {/* <span className="started-on">Started On</span>
-                  <span className="premium">Premium</span>
-                  */
-                }
-              </li>
-              <li>
-                <a id={policy.policyNumber + policy.property.physicalAddress.address1} className={`${policy.policyNumber + policy.property.physicalAddress.address1} row`} aria-label={policy.policyNumber + policy.property.physicalAddress.address1} value={policy.policyNumber + policy.property.physicalAddress.address1} onClick={() => props.handleNewTab(policy, props)} tabIndex="-1">
-                  <span className="quote-no">{policy.policyNumber}</span>
-                  <span className="property-address">{
-                    `${policy.property.physicalAddress.address1}
-                        ${policy.property.physicalAddress.city}, ${policy.property.physicalAddress.state}
-                        ${policy.property.physicalAddress.zip}`
-                  }</span>
-                  <span className="quote-state">{policy.status}</span>
-                  <span className="effctive-date">{moment.utc(policy.effectiveDate).format('MM/DD/YYYY')}</span>
-                  {/* <span
-                      className="started-on"
-                    >{moment.utc(policy.createdAt).format('MM/DD/YYYY')}</span>
-                    <span
-                      className="premium"
-                    >$ {policy.rating ? policy.rating.totalPremium : '-'}</span>
-                  */
-                  }
                 </a>
               </li>
             </ul>
@@ -345,7 +336,8 @@ SearchResults.propTypes = {
   handleSelectPolicy: PropTypes.func
 };
 
-const mapStateToProps = state => ({ tasks: state.cg, appState: state.appState, agencies: state.service.agencies, agents: state.service.agents });
+const mapStateToProps = state => ({ tasks: state.cg, appState: state.appState, agencies: state.service.agencies, agents: state.service.agents, defaultPolicyResults: state.service.policyResults, search: state.search,
+});
 
 const mapDispatchToProps = dispatch => ({
   actions: {
