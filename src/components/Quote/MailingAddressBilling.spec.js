@@ -345,7 +345,7 @@ describe('Testing MailingAddressBilling component', () => {
         }]
       },
       quoteData: {
-        rating: {}
+        rating: { worksheet: { fees: {} } }
       },
       actions: {
         appStateActions: {
@@ -356,6 +356,9 @@ describe('Testing MailingAddressBilling component', () => {
         },
         cgActions: {
           batchCompleteTask() { return Promise.resolve(() => {}); }
+        },
+        serviceActions: {
+          getBillingOptions() { return Promise.resolve(() => {}); }
         }
       },
       fieldValues: {},
