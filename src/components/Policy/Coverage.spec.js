@@ -77,7 +77,9 @@ describe('Testing Coverage component', () => {
 
     const wrapper2 = shallow(<Coverage store={store} {...props} />);
 
-    wrapper2.instance().componentWillReceiveProps({ actions: {
+    wrapper2.instance().componentWillReceiveProps({ 
+      summaryLedger: { currentPremium : 100},
+      actions: {
       policyStateActions: {
         updatePolicy() {}
       },
@@ -93,7 +95,7 @@ describe('Testing Coverage component', () => {
       },
       serviceActions: {
         getCancelOptions() { return Promise.resolve(); },
-        getBillingOptions() { return Promise.resolve(); },
+        getBillingOptionsForPolicy() { return Promise.resolve(); },
         getSummaryLedger() { return Promise.resolve(); }
       },
       errorActions: { dispatchClearAppError() { } }
