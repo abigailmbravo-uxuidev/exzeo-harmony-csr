@@ -23,22 +23,23 @@ import AIEditModal from '../../components/Common/AdditionalInterestEditModal';
 const payments = [];
 
 export const setRank = (additionalInterests) => {
-  _.forEach(additionalInterests, (value) => {
+  if (!additionalInterests) return;
+  additionalInterests.forEach(value => {
     switch (value.type) {
       case 'Mortgagee':
-value.rank = 1; // eslint-disable-line
+        value.rank = 1; // eslint-disable-line
         break;
       case 'Additional Insured':
-value.rank = 2; // eslint-disable-line
+        value.rank = 2; // eslint-disable-line
         break;
       case 'Additional Interest':
-value.rank = 3; // eslint-disable-line
+        value.rank = 3; // eslint-disable-line
         break;
       case 'Lienholder':
-value.rank = 4; // eslint-disable-line
+        value.rank = 4; // eslint-disable-line
         break;
       case 'Bill Payer':
-value.rank = 5; // eslint-disable-line
+        value.rank = 5; // eslint-disable-line
         break;
       default:
         break;
@@ -47,9 +48,8 @@ value.rank = 5; // eslint-disable-line
 };
 
 export const setIsActive = (additionalInterests) => {
-  _.forEach(additionalInterests, (value) => {
-    value.sortInactive = !value.active;
-  });
+  if (!additionalInterests) return;
+  additionalInterests.forEach(value => value.sortInactive = !value.active);
 };
 
 export const addAdditionalInterest = (type, props) => {
@@ -86,7 +86,7 @@ export const editAIOnEnter = (event, ai, props) => {
 export const handleInitialize = (state) => {
   const policy = state.service.latestPolicy || {};
   const values = {};
-  values.policyNumber = _.get(policy, 'policyNumber');
+  values.policyNumber = policy ? policy.policyNumber : null;
   values.cashDescription = '';
   values.cashDate = moment.utc().format('YYYY-MM-DD');
   values.batchNumber = moment.utc().format('YYYYMMDD');
@@ -354,10 +354,8 @@ export class MortgageBilling extends Component {
   dateFormatter = cell => `${cell.substring(0, 10)}`;
 
   render() {
-    const { additionalInterests } = this.props.policy;
-    const {
-      handleSubmit, pristine, fieldValues, policy, questions
-    } = this.props;
+    const { additionalInterests, policyHolders } = this.props.policy;
+    const { handleSubmit, pristine, fieldValues, policy, questions } = this.props;
     setRank(additionalInterests);
     setIsActive(additionalInterests);
 
@@ -372,6 +370,19 @@ export class MortgageBilling extends Component {
     });
 
     const validAdditionalInterestTypes = checkValidTypes(additionalInterests, this.props.appState.data.selectedAI || {});
+    
+    
+    let billToName;
+    if (policyHolders && additionalInterests) {
+      let billTo;
+      if (policy.billToType === 'Policyholder') {
+        billTo = policyHolders.find(ph => ph._id === policy.billToId);
+        billToName = `${billTo.firstName} ${billTo.lastName}`
+      } else {
+        billTo = billTo ? billTo : additionalInterests.find(ai => ai._id === policy.billToId);
+        billToName = billTo.name1;
+      }
+    }
 
     return (
       <PolicyConnect>
@@ -443,14 +454,14 @@ export class MortgageBilling extends Component {
                   <dl>
                     <div>
                       <dt>Bill To</dt>
-                      <dd>{this.props.policy.billToType}
+                      <dd>{billToName}
                       </dd>
                     </div>
                   </dl>
                   <dl>
                     <div>
                       <dt>Bill Plan</dt>
-                      <dd>{this.props.policy.billPlan}</dd>
+                      <dd>{policy.billPlan}</dd>
                     </div>
                   </dl>
                 </div>
@@ -529,10 +540,10 @@ export class MortgageBilling extends Component {
               </section>
             </div>
           </div>
-          { this.props.appState.data.showAdditionalInterestEditModal && <AIEditModal additionalInterests={additionalInterests} validAdditionalInterestTypes={validAdditionalInterestTypes} isEndorsement questions={questions} selectedAI={this.props.appState.data.selectedAI} policy={this.props.policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
-          { this.props.appState.data.showAdditionalInterestModal && <AIModal additionalInterests={additionalInterests} questions={questions} policy={this.props.policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
+          { this.props.appState.data.showAdditionalInterestEditModal && <AIEditModal additionalInterests={additionalInterests} validAdditionalInterestTypes={validAdditionalInterestTypes} isEndorsement questions={questions} selectedAI={this.props.appState.data.selectedAI} policy={policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
+          { this.props.appState.data.showAdditionalInterestModal && <AIModal additionalInterests={additionalInterests} questions={questions} policy={policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
         </div>
-        { this.props.appState.data.showBillingEditModal && <BillingModal policy={this.props.policy} billingOptions={this.props.billingOptions} handleBillingFormSubmit={handleBillingFormSubmit} hideBillingModal={() => hideBillingModal(this.props)} /> }
+        { this.props.appState.data.showBillingEditModal && <BillingModal policy={policy} billingOptions={this.props.billingOptions} handleBillingFormSubmit={handleBillingFormSubmit} hideBillingModal={() => hideBillingModal(this.props)} /> }
         <div className="basic-footer">
           <Footer />
         </div>
