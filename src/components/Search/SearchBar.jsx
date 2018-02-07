@@ -68,6 +68,7 @@ export const handlePolicySearchSubmit = (data, dispatch, props) => {
   };
 
   props.actions.searchActions.setSearch(taskData);
+  localStorage.setItem('lastSearchData', JSON.stringify(taskData));
 
   props.actions.serviceActions.searchPolicy(taskData, data.sortBy).then(() => {
     taskData.isLoading = false;
