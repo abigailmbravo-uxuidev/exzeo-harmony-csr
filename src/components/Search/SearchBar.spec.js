@@ -11,6 +11,8 @@ const mockStore = configureStore(middlewares);
 describe('Testing SearchBar component', () => {
   it('should test connected app', () => {
     const initialState = {
+      service:{
+      },
       cg: {
         bb: {
           data: {
@@ -95,6 +97,9 @@ describe('Testing SearchBar component', () => {
       fieldQuestions: [],
       dispatch: store.dispatch,
       actions: {
+        searchActions:{
+          setSearch(){}
+        },
         appStateActions: {
           setAppState() { }
         },

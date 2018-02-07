@@ -30,5 +30,4 @@ export const AUTH = 'AUTH';
 export const GET_POLICY = 'GET_POLICY';
 export const GET_QUOTE = 'GET_QUOTE';
 
-export const POLICY_SEARCH = 'POLICY_SEARCH';
-export const QUOTE_SEARCH = 'QUOTE_SEARCH';
+export const SEARCH = 'SEARCH';

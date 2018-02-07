@@ -715,12 +715,13 @@ export const getAgencies = (companyCode, state) => (dispatch) => {
     });
 };
 
-export const searchPolicy = (policyNumber, firstName, lastName, address, pageNumber, pageSize, sort) => (dispatch) => {
-  const formattedAddress = address.replace(' ', '&#32;');
+export const searchPolicy = (taskData, sort) => (dispatch) => {
+  const formattedAddress = taskData.address ? taskData.address.replace(' ', '&#32;') : '';
+  const sortDirection = sort === 'policyNumber' ? 'desc' : 'asc';
   const axiosConfig = runnerSetup({
     service: 'policy-data.services',
     method: 'GET',
-    path: `/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=${policyNumber}&firstName=${firstName}&lastName=${lastName}&propertyAddress=${formattedAddress.replace(' ', '&#32;')}&active=true&page=${pageNumber}&pageSize=${pageSize}&sort=${sort}&sortDirection=asc`
+    path: `/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=${taskData.policyNumber}&firstName=${taskData.firstName}&lastName=${taskData.lastName}&propertyAddress=${formattedAddress.replace(' ', '&#32;')}&active=true&page=${taskData.pageNumber}&pageSize=${taskData.pageSize}&resultStart=${taskData.resultStart}&sort=${sort}&sortDirection=${sortDirection}`
   });
 
   return Promise.resolve(axios(axiosConfig)).then((response) => {

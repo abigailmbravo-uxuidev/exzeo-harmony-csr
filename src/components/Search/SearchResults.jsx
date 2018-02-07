@@ -9,15 +9,15 @@ import { Link } from 'react-router-dom';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
+import * as searchActions from '../../actions/searchActions';
 import normalizePhone from '../Form/normalizePhone';
 import Loader from '../Common/Loader';
 import NoResults from './NoResultsForService';
 import NoPolicyResultsConnect from './NoPolicyResults';
 
-const onKeypressPolicy = (event, policy, props) => {
+export const onKeypressPolicy = (event, policy, props) => {
   if (event.charCode === 13) {
-    //  handleSelectPolicy(policy, props);
-  }
+    props.handleNewTab(policy, props)  }
 };
 
 export const SearchResults = (props) => {
@@ -43,6 +43,8 @@ export const SearchResults = (props) => {
         policyResults.push(_.maxBy(selectedPolicies, 'policyVersion'));
       }
     }
+
+    console.log(props.search);
     return (
       <div className="quote-list">
         {props.search && props.search.isLoading && <Loader />}
@@ -63,7 +65,7 @@ export const SearchResults = (props) => {
                   <span className="effctive-date">Effective Date</span>
                 </li>
                 <li>
-                  <Link to={{ pathname: '/policy/coverage', state: { policyNumber: policy.policyNumber } }} className={`${policy.policyNumber + policy.property.physicalAddress.address1} row`}>
+                  <a onClick={() => props.handleNewTab(policy, props)} className={`${policy.policyNumber + policy.property.physicalAddress.address1} row`}>
                     <span className="quote-no">{policy.policyNumber}</span>
                     <span className="property-address">{
                   `${policy.property.physicalAddress.address1}
@@ -72,14 +74,14 @@ export const SearchResults = (props) => {
                 }</span>
                     <span className="quote-state">{policy.status}</span>
                     <span className="effctive-date">{moment.utc(policy.effectiveDate).format('MM/DD/YYYY')}</span>
-                  </Link>
+                  </a>
                 </li>
               </ul>
             </section>
           </div>))
       }
         {
-          props.search && props.search.hasSearched && policyResults && policyResults.length === 0 && <NoPolicyResultsConnect />
+          props.search && props.search.hasSearched && !props.search.isLoading && policyResults && policyResults.length === 0 && <NoPolicyResultsConnect />
       }
       </div>
     );
@@ -343,7 +345,8 @@ const mapDispatchToProps = dispatch => ({
   actions: {
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch)
+    serviceActions: bindActionCreators(serviceActions, dispatch),
+    searchActions: bindActionCreators(searchActions, dispatch)
   }
 });
 

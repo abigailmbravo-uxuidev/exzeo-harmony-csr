@@ -19,8 +19,9 @@ const userTasks = {
   handleSearchBarSubmit: 'search'
 };
 
-export const resetSearch = (props) => {
-  props.actions.serviceActions.clearPolicyResults();
+export const resetPolicySearch = (props) => {
+   props.actions.searchActions.setSearch({ searchType : 'policy', hasSearched: false});
+   props.actions.serviceActions.clearPolicyResults();
 };
 
 export const changePage = (props, isNext) => {
@@ -33,18 +34,20 @@ export const changePage = (props, isNext) => {
     policyNumber: (encodeURIComponent(fieldValues.policyNumber) !== 'undefined' ? encodeURIComponent(fieldValues.policyNumber) : ''),
     searchType: 'policy',
     isLoading: true,
-    hasSearched: true
+    hasSearched: true,
+    resultStart: 60,
+    pageSize: 25
   };
 
 
   taskData.pageNumber = isNext ? Number(fieldValues.pageNumber) + 1 : Number(fieldValues.pageNumber) - 1;
 
-  props.actions.searchActions.setPolicySearch(taskData);
+  props.actions.searchActions.setSearch(taskData);
 
 
-  props.actions.serviceActions.searchPolicy(taskData.policyNumber, taskData.firstName, taskData.lastName, taskData.address, taskData.pageNumber, 25, fieldValues.sortBy).then(() => {
+  props.actions.serviceActions.searchPolicy(taskData, fieldValues.sortBy).then(() => {
     taskData.isLoading = false;
-    props.actions.searchActions.setPolicySearch(taskData);
+    props.actions.searchActions.setSearch(taskData);
   });
 };
 
@@ -59,14 +62,16 @@ export const handlePolicySearchSubmit = (data, dispatch, props) => {
     searchType: 'policy',
     isLoading: true,
     hasSearched: true,
-    page: 1
+    pageNumber: 1,
+    resultStart: 60,
+    pageSize: 25
   };
 
-  props.actions.searchActions.setPolicySearch(taskData);
+  props.actions.searchActions.setSearch(taskData);
 
-  props.actions.serviceActions.searchPolicy(taskData.policyNumber, taskData.firstName, taskData.lastName, taskData.address, taskData.page, 25, data.sortBy).then(() => {
+  props.actions.serviceActions.searchPolicy(taskData, data.sortBy).then(() => {
     taskData.isLoading = false;
-    props.actions.searchActions.setPolicySearch(taskData);
+    props.actions.searchActions.setSearch(taskData);
   });
 };
 
@@ -101,11 +106,6 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
     searchType
   };
 
-  if (searchType === 'policy') {
-    // 60 days past only
-    taskData.resultStart = 60;
-  }
-
   if (searchType === 'agency') {
     props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, agentSubmitting: true });
 
@@ -127,8 +127,10 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
 
   if (searchType !== 'agency' && searchType !== 'agent') {
     localStorage.setItem('lastSearchData', JSON.stringify(taskData));
+    props.actions.searchActions.setSearch(taskData);
   } else {
     localStorage.setItem('lastSearchData', JSON.stringify(agencyAgentData));
+    props.actions.searchActions.setSearch(agencyAgentData);
     return;
   }
 
@@ -248,18 +250,19 @@ export class SearchForm extends Component {
   componentWillReceiveProps(nextProps) {
     const { dispatch } = nextProps;
 
-    if (!_.isEqual(this.props.policyResults, nextProps.policyResults)) {
+    if (nextProps.search.hasSearched && !_.isEqual(this.props.policyResults, nextProps.policyResults)) {
       const totalPages = Math.ceil(nextProps.policyResults.totalNumberOfRecords / nextProps.policyResults.pageSize);
       const pageNumber = nextProps.policyResults.currentPage;
       dispatch(change('SearchBar', 'pageNumber', pageNumber));
       dispatch(change('SearchBar', 'totalPages', totalPages));
-      nextProps.actions.searchActions.setPolicySearch({ ...nextProps.search, totalPages, pageNumber });
+      nextProps.actions.searchActions.setSearch({ ...nextProps.search, totalPages, pageNumber });
     }
   }
 
   render() {
     
   const {
+    search,
     appState,
     questions,
     handleSubmit,
@@ -284,6 +287,7 @@ export class SearchForm extends Component {
     actions.errorActions.clearAppError();
     actions.serviceActions.clearAgencies();
     actions.serviceActions.clearAgent();
+    resetPolicySearch(this.props);
   };
 
   let searchHandler = handleSearchBarSubmit;
@@ -361,7 +365,7 @@ export class SearchForm extends Component {
 
         <SelectField
         name="sortBy" component="select" styleName={'search-context'} label="Sort By" validations={['required']}
-        onChange={() => resetSearch(this.props)}
+        onChange={() => resetPolicySearch(this.props)}
         answers={[
           {
             answer: 'policyNumber',
@@ -392,7 +396,7 @@ export class SearchForm extends Component {
           </button>
         </div>
         }
-        { fieldValues.searchType === 'policy' && policyResults && policyResults.policies && policyResults.policies.length  && <div className="pagination-wrapper">
+        { fieldValues.searchType === 'policy' && policyResults && policyResults.policies && policyResults.policies.length > 0 && <div className="pagination-wrapper">
         <button
           onClick={() => changePage(this.props, false)}
           disabled={String(fieldValues.pageNumber) === '1'}
