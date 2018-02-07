@@ -397,7 +397,7 @@ export class SearchForm extends Component {
           </button>
         </div>
         }
-        { fieldValues.searchType === 'policy' && policyResults && policyResults.policies && policyResults.policies.length > 0 && <div className="pagination-wrapper">
+        { fieldValues.searchType === 'policy' && policyResults && policyResults.policies && policyResults.policies.length > 0 && fieldValues.totalPages > 1 && <div className="pagination-wrapper">
         <button
           onClick={() => changePage(this.props, false)}
           disabled={String(fieldValues.pageNumber) === '1'}
