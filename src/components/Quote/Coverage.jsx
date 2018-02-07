@@ -59,6 +59,20 @@ export const clearSecondaryPolicyholder = (value, props) => {
   }
 };
 
+export const handleGetQuoteData = (state) => { 
+  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) 
+    ? state.cg[state.appState.modelName].data 
+    : null; 
+  if (!taskData) { return {}; } 
+  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' }) 
+    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result 
+    : {}; 
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) 
+    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result 
+    : quoteEnd; 
+  return quoteData; 
+};
+
 export const handleGetZipCodeSettings = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
   if (!taskData) return null;
@@ -85,7 +99,7 @@ const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answ
 export const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
 
 export const handleInitialize = (state) => {
-  const quoteData = state.service.quote;
+  const quoteData = handleGetQuoteData(state); 
   const questions = state.questions;
   const values = {};
   values.clearFields = false;
@@ -998,7 +1012,7 @@ const mapStateToProps = state => ({
   agencies: state.service.agencies,
   fieldValues: _.get(state.form, 'Coverage.values', {}),
   initialValues: handleInitialize(state),
-  quoteData: state.service.quote,
+  quoteData: handleGetQuoteData(state), 
   zipCodeSettings: handleGetZipCodeSettings(state),
   questions: state.questions
 });
