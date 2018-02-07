@@ -61,7 +61,6 @@ export const handleFormSubmit = (data, dispatch, props) => {
 export const clearForm = (props) => {
   props.reset('Underwriting');
 };
-let setUnderwriting = false;
 export class Underwriting extends Component {
 
   componentDidMount() {
@@ -78,22 +77,15 @@ export class Underwriting extends Component {
 
       this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
     .then(() => {
+      const { quoteData } = this.props;
+      this.props.actions.serviceActions.getUnderwritingQuestions(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property);
+      this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
+
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         selectedLink: 'underwriting'
       });
     });
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!_.isEqual(this.props, nextProps)) {
-      const quoteData = nextProps.quoteData;
-      if (quoteData.companyCode && quoteData.state && quoteData.agencyCode && !setUnderwriting) {
-        this.props.actions.serviceActions.getUnderwritingQuestions(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property);
-        nextProps.actions.quoteStateActions.getLatestQuote(true, nextProps.quoteData._id);
-        setUnderwriting = true;
-      }
     }
   }
 

@@ -22,7 +22,8 @@ const handleInitialize = (state) => {
 export const handleGetUnderwritingExceptions = state => state.service.quote && state.service.quote.underwritingExceptions ? state.service.quote.underwritingExceptions : [];
 
 export const handleFormSubmit = (data, dispatch, props) => {
-  const { appState, actions } = props;
+  const { appState, actions, quoteData } = props;
+
 
   const workflowId = appState.instanceId;
 
@@ -43,15 +44,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
   ];
   actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
   .then(() => {
-    props.actions.appStateActions.setAppState(
-      appState.modelName,
-      props.appState.instanceId,
-      {
-        ...props.appState.data,
-        activateRedirectLink: '/quote/coverage',
-        activateRedirect: true,
-        applicationSubmitting: false
-      });
+    props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
   });
 };
 
@@ -82,6 +75,7 @@ export class QuoteApplication extends Component {
 
       this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
     .then(() => {
+      this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         selectedLink: 'application'
@@ -115,7 +109,7 @@ export class QuoteApplication extends Component {
               </div>
             </div>
           </Form>
-          { appState.data.showQuoteSummaryModal && <QuoteSummaryModal verify={handleFormSubmit} showQuoteSummaryModal={() => quoteSummaryModal(this.props)} /> }
+          { appState.data.showQuoteSummaryModal && <QuoteSummaryModal {...this.props} verify={handleFormSubmit} showQuoteSummaryModal={() => quoteSummaryModal(this.props)} /> }
         </div>
         <div className="basic-footer btn-footer">
           <Footer />
@@ -156,7 +150,7 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   showQuoteSummaryModal: state.appState.data.showQuoteSummaryModal,
-  fieldValues: _.get(state.form, 'QuoteApplication.values', {}),
+  fieldValues: _.get(state.form, 'Application.values', {}),
   underwritingExceptions: handleGetUnderwritingExceptions(state),
   initialValues: handleInitialize(state),
   quoteData: state.service.quote || {}

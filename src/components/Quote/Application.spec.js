@@ -34,6 +34,9 @@ describe('Testing Coverage component', () => {
     const store = mockStore(initialState);
     const props = {
       actions: {
+        quoteStateActions: {
+          getLatestQuote(){}
+        },
         appStateActions: {
           setAppState() { }
         },
@@ -94,6 +97,9 @@ describe('Testing Coverage component', () => {
       fieldQuestions: [],
       dispatch: store.dispatch,
       actions: {
+        quoteStateActions: {
+          getLatestQuote(){}
+        },
         appStateActions: {
           setAppState() { }
         },

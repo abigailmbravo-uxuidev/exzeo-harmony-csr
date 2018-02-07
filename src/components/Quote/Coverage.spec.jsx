@@ -7,6 +7,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
 import ConnectedApp, { Coverage, handleAgencyChange, handleFormSubmit, handleGetQuoteData, handleInitialize, handleGetZipCodeSettings, clearSecondaryPolicyholder } from './Coverage';
+import { quoteSummaryModal } from './Application';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
@@ -367,7 +368,7 @@ describe('Testing Coverage component', () => {
   it('should test handleGetQuoteData', () => {
     const initialState = {
       service: {
-
+        quote: quoteData
       },
       cg: {
         bb: {
@@ -396,7 +397,7 @@ describe('Testing Coverage component', () => {
     };
     let quote = {};
 
-    quote = handleGetQuoteData(initialState);
+    quote = initialState.service.quote;
     expect(quote).toEqual(quoteData);
   });
 

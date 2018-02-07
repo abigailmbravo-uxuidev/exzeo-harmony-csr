@@ -544,7 +544,6 @@ describe('Testing Underwriting component', () => {
       <Underwriting store={store} {...props} />);
 
     wrapper.instance().componentDidMount();
-    wrapper.instance().componentWillReceiveProps(props);
   });
 
   it('should test handleGetQuoteData', () => {
