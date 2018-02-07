@@ -7,7 +7,8 @@ import localStorage from 'localStorage';
 import moment from 'moment';
 import momentTZ from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
-import { reduxForm, Form, propTypes, change } from 'redux-form';
+import { batchActions } from 'redux-batched-actions';
+import { reduxForm, Form, propTypes, change, Field } from 'redux-form';
 import * as serviceActions from '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
@@ -19,12 +20,43 @@ import PhoneField from '../Form/inputs/PhoneField';
 import HiddenField from '../Form/inputs/HiddenField';
 import SelectField from '../Form/inputs/SelectField';
 import RadioField from '../Form/inputs/RadioField';
+import CheckField from '../Form/inputs/CheckField';
 import CurrencyField from '../Form/inputs/CurrencyField';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import DateField from '../Form/inputs/DateField';
 import Footer from '../Common/Footer';
 
+const setPHToggle = (props) => {
+  const { dispatch } = props;
+  dispatch(change('Coverage', 'clearFields', false));
+};
+
+export const clearSecondaryPolicyholder = (value, props) => {
+  const { dispatch, quoteData } = props;
+  if (!value) {
+    const pH2email = _.get(quoteData, 'policyHolders[1].emailAddress');
+    const pH2FirstName = _.get(quoteData, 'policyHolders[1].firstName');
+    const pH2LastName = _.get(quoteData, 'policyHolders[1].lastName');
+    const pH2phone = normalizePhone(_.get(quoteData, 'policyHolders[1].primaryPhoneNumber') || '');
+    const pH2phone2 = normalizePhone(_.get(quoteData, 'policyHolders[1].secondaryPhoneNumber') || '');
+    dispatch(batchActions([
+      change('Coverage', 'pH2email', pH2email),
+      change('Coverage', 'pH2FirstName', pH2FirstName),
+      change('Coverage', 'pH2LastName', pH2LastName),
+      change('Coverage', 'pH2phone', pH2phone),
+      change('Coverage', 'pH2phone2', pH2phone2)
+    ]));
+  } else {
+    dispatch(batchActions([
+      change('Coverage', 'pH2email', ''),
+      change('Coverage', 'pH2FirstName', ''),
+      change('Coverage', 'pH2LastName', ''),
+      change('Coverage', 'pH2phone', ''),
+      change('Coverage', 'pH2phone2', '')
+    ]));
+  }
+};
 export const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName])
     ? state.cg[state.appState.modelName].data
@@ -68,7 +100,7 @@ export const handleInitialize = (state) => {
   const quoteData = handleGetQuoteData(state);
   const questions = state.questions;
   const values = {};
-
+  values.clearFields = false;
   values.electronicDelivery = _.get(quoteData, 'policyHolders[0].electronicDelivery') || false;
 
   values.agencyCode = _.get(quoteData, 'agencyCode');
@@ -161,13 +193,17 @@ export const handleInitialize = (state) => {
 };
 
 const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
+const checkSentToDocusign = state => state === 'Application Sent DocuSign';
 
 const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question') || '';
 
 export const handleAgencyChange = (props, agencyCode, isInit) => {
   if (!isInit) {
-    props.dispatch(change('Coverage', 'agencyCode', agencyCode));
-    props.dispatch(change('Coverage', 'agentCode', ''));
+    
+    props.dispatch(batchActions([
+      change('Coverage', 'agencyCode', agencyCode),
+      change('Coverage', 'agentCode', '')
+    ]));
   }
 
   if (agencyCode) {
@@ -370,11 +406,12 @@ export class Coverage extends Component {
     if (fieldValues.personalProperty !== 'other') {
       dispatch(change('Coverage', 'personalPropertyAmount', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.personalProperty)))));
     }
-    dispatch(change('Coverage', 'calculatedHurricane', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.hurricane)))));
 
-    dispatch(change('Coverage', 'lossOfUse', String(setPercentageOfValue(Number(dwellingNumber), 10))));
-
-    dispatch(change('Coverage', 'calculatedSinkhole', String(setPercentageOfValue(Number(dwellingNumber), 10))));
+    dispatch(batchActions([
+      change('Coverage', 'calculatedHurricane', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.hurricane)))),
+      change('Coverage', 'lossOfUse', String(setPercentageOfValue(Number(dwellingNumber), 10))),
+      change('Coverage', 'calculatedSinkhole', String(setPercentageOfValue(Number(dwellingNumber), 10)))
+    ]));
   }
 
   updateDependencies = (event, field, dependency) => {
@@ -481,26 +518,57 @@ export class Coverage extends Component {
                     </div>
                   </div>
                   <div id="policy-holder-b" className="policy-holder-b flex-child">
-                    <h3>Secondary Policyholder</h3>
                     <div className="flex-parent policy-holder-b-name">
                       <div className="flex-child policy-holder-b-first-name">
-                        <TextField label={'First Name'} dependsOn={['pH2LastName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2FirstName'} />
+                        <h3>Secondary Policyholder
+                        </h3>
+                      </div>
+                      <div className="flex-child">
+                        <Field
+                          disabled={checkSentToDocusign(quoteData.quoteState)}
+                          onChange={event => clearSecondaryPolicyholder(String(event.target.value) === 'false', this.props)}
+                          name={'clearFields'}
+                          id={'clearFields'}
+                          component="input"
+                          type="checkbox"
+                        />
+                        <label htmlFor={'clearFields'}> Remove</label>
+                      </div>
+                    </div>
+                    <div className="flex-parent policy-holder-b-name">
+                      <div className="flex-child policy-holder-b-first-name">
+                        <TextField
+                          onChange={() => setPHToggle(this.props)}
+                          label={'First Name'} dependsOn={['pH2LastName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2FirstName'}
+                        />
                       </div>
                       <div className="flex-child policy-holder-b-last-name">
-                        <TextField label={'Last Name'} dependsOn={['pH2FirstName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2LastName'} />
+                        <TextField
+                          onChange={() => setPHToggle(this.props)}
+                          label={'Last Name'} dependsOn={['pH2FirstName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2LastName'}
+                        />
                       </div>
                     </div>
                     <div className="flex-parent policy-holder-b-phone">
                       <div className="flex-child policy-holder-b-primary-phone">
-                        <PhoneField label={'Primary Phone'} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2email']} styleName={''} name={'pH2phone'} validations={['phone']} />
+                        <PhoneField
+                          onChange={() => setPHToggle(this.props)}
+                          label={'Primary Phone'} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2email']} styleName={''} name={'pH2phone'} validations={['phone']}
+                        />
                       </div>
                       <div className="flex-child policy-holder-b-secondary-phone">
-                        <PhoneField label={'Secondary Phone'} styleName={''} name={'pH2phone2'} validations={['phone']} />
+                        <PhoneField
+                          onChange={() => setPHToggle(this.props)}
+                          label={'Secondary Phone'} styleName={''} name={'pH2phone2'} validations={['phone']}
+                        />
                       </div>
                     </div>
                     <div className="flex-parent policy-holder-b-email">
                       <div className="flex-child email-address">
-                        <TextField validations={['email']} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2phone']} label={'Email Address'} styleName={''} name={'pH2email'} />
+                        <TextField
+                          onChange={() => setPHToggle(this.props)}
+                          validations={['email']} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2phone']} label={'Email Address'} styleName={''} name={'pH2email'}
+                        />
                       </div>
                     </div>
                   </div>

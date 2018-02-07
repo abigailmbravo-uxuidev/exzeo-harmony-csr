@@ -98,8 +98,9 @@
                 }
 
                 .contact-address {
-                    small {
+                    .additional-data {
                         margin-left: $padding;
+                        font-size: $font-size-sm;
 
                         label {
                             font-size: $font-size-xs;
@@ -668,4 +669,24 @@
       }
     }
   }
+}
+//search cards
+.user-list {
+    .card {
+        &.contact {
+            .contact-details {
+                .card-name {
+                    .contact-address {
+                        .additional-data {
+                            margin-left: $padding;
+                            font-size: $font-size-sm;
+                            label {
+                                font-size: $font-size-xs;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

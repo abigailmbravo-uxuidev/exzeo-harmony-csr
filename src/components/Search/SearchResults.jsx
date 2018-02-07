@@ -10,6 +10,7 @@ import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 import normalizePhone from '../Form/normalizePhone';
 import Loader from '../Common/Loader';
+import NoResults from './NoResultsForService';
 
 export const SearchResults = (props) => {
   const model = props.tasks[props.appState.modelName] || {};
@@ -73,8 +74,8 @@ export const SearchResults = (props) => {
                 title={quote.policyHolders && quote.policyHolders.length > 0
                   ? `${quote.policyHolders[0].firstName} ${quote.policyHolders[0].lastName}`
                   : ''}
-              >{quote.policyHolders[0] && `${quote.policyHolders[0].firstName.replace(/(^.{20}).*$/, '$1...')}`}<br/>
-            {quote.policyHolders[0] && `${quote.policyHolders[0].lastName.replace(/(^.{20}).*$/, '$1...')}`}</h5>
+              >{quote.policyHolders[0] && `${quote.policyHolders[0].firstName.replace(/(^.{20}).*$/, '$1...')}`}<br />
+                {quote.policyHolders[0] && `${quote.policyHolders[0].lastName.replace(/(^.{20}).*$/, '$1...')}`}</h5>
             </div>
           </div>
 
@@ -114,7 +115,7 @@ export const SearchResults = (props) => {
     </div>);
   }
 
-  if (props.tasks[props.appState.modelName] && props.tasks[props.appState.modelName].data.activeTask 
+  if (props.tasks[props.appState.modelName] && props.tasks[props.appState.modelName].data.activeTask
     && props.tasks[props.appState.modelName].data.activeTask.name === 'choosePolicy' && searchData.searchType === 'policy') {
     const defaultPolicyResults = props.tasks[props.appState.modelName].data.previousTask
       ? props.tasks[props.appState.modelName].data.previousTask.value.policies
@@ -138,7 +139,7 @@ export const SearchResults = (props) => {
           <div className="icon-name">
             <i className="card-icon fa fa-user-circle" />
             <div className="card-name">
-              <h5 title={`${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName.replace(/(^.{20}).*$/, '$1...')}`}<br/>
+              <h5 title={`${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName.replace(/(^.{20}).*$/, '$1...')}`}<br />
                 {policy.policyHolders[0] && `${policy.policyHolders[0].lastName.replace(/(^.{20}).*$/, '$1...')}`}</h5>
             </div>
           </div>
@@ -188,11 +189,16 @@ export const SearchResults = (props) => {
   if (searchData && searchData.searchType === 'agency') {
     const agencyResults = props.agencies ? props.agencies : [];
 
+    if (agencyResults.length <= 0 && searchData.searchType === 'agency' &&  props.appState.data && !props.appState.data.agentSubmitting) {
+      return (
+        <NoResults />
+      )
+    } else {
     return (<div className="user-list agency-list">
       { props.appState.data && props.appState.data.agentSubmitting && <Loader />}
       {
         agencyResults && agencyResults.map((agency, index) => <div className="card-wrapper" key={index}>
-          <span className="fa fa-chevron-circle-right" id={agency.agencyCode} onClick={() => props.handleNewTab(agency, props)} tabIndex="-1" />
+          <span className="fa fa-chevron-circle-right" id={`agency-code-${agency.agencyCode}`} onClick={() => props.handleNewTab(agency, props)} tabIndex="-1" />
           <div className="agency contact card">
 
             <div className="contact-title">
@@ -204,16 +210,16 @@ export const SearchResults = (props) => {
 
                 <h4 className="agency"><span className="agency-code">{agency.agencyCode}</span> | <span className="agency-display-name">{agency.displayName}</span> | <span className="agency-legal-name">{agency.legalName}</span> | <span className="agency-license">{agency.licenseNumber}</span></h4>
 
-                <p className="contact-address">
+                <div className="contact-address">
                   {agency.physicalAddress.address1},&nbsp;
                   {agency.physicalAddress.address2}{agency.physicalAddress.address2 ? ', ' : ' ' }
                   {agency.physicalAddress.city},&nbsp;
                   {agency.physicalAddress.state}&nbsp;
                   {agency.physicalAddress.zip}
-                  {agency.status ? <small><label>STATUS:&nbsp;</label>{agency.status}</small> : null}
-                  {agency.tier ? <small><label>TIER:&nbsp;</label>{agency.tier}</small> : null}
-                  {agency.websiteUrl ? <small><label>WEBSITE:&nbsp;</label><a href={`${agency.websiteUrl}`} target="_blank">{agency.websiteUrl}</a></small> : null}
-                </p>
+                  {agency.status ? <span className="additional-data status"><label>STATUS:&nbsp;</label>{agency.status}</span> : null}
+                  <span className="additional-data tier"><label>TIER:&nbsp;</label>{agency.tier >= 0 ? agency.tier : ''}</span>
+                  {agency.websiteUrl ? <span className="additional-data website"><label>WEBSITE:&nbsp;</label><a href={`${agency.websiteUrl}`} target="_blank">{agency.websiteUrl}</a></span> : null}
+                </div>
                 <div className="additional-contacts">
                   <ul>
                     <li>
@@ -257,11 +263,16 @@ export const SearchResults = (props) => {
         </div>)
       }
     </div>);
+    }
   }
 
   if (searchData && searchData.searchType === 'agent') {
     const agentResults = props.agents ? props.agents : [];
-
+    if (props.appState.data && !props.appState.data.agentSubmitting && agentResults.length <= 0 && searchData.searchType === 'agent') {
+      return (
+        <NoResults />
+      )
+    } else {
     return (<div className="user-list agent-list">
       { props.appState.data && props.appState.data.agentSubmitting && <Loader />}
       {
@@ -274,14 +285,14 @@ export const SearchResults = (props) => {
           <div className="contact-details">
             <div className="card-name">
               <h4 className="agent"><span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{agent.firstName} {agent.lastName}</span> | <span className="agent-license">{agent.licenseNumber}</span></h4>
-              <p className="contact-address">
+              <div className="contact-address">
                 {agent.mailingAddress.address1},&nbsp;
                 {agent.mailingAddress.address2}{agent.mailingAddress.address2 ? ', ' : ' ' }
                 {agent.mailingAddress.city},&nbsp;
                 {agent.mailingAddress.state}&nbsp;
                 {agent.mailingAddress.zip}
-                {agent.status ? <small><label>STATUS:&nbsp;</label>{agent.status}</small> : null}
-              </p>
+                {agent.status ? <span className="additional-data status"><label>STATUS:&nbsp;</label>{agent.status}</span> : null}
+              </div>
               <div className="additional-contacts">
                 <ul>
                   <li>
@@ -313,9 +324,10 @@ export const SearchResults = (props) => {
             </div>
           </div>
         </div>)
-      }
+            }
     </div>
     );
+  }
   }
   return <span />;
 };

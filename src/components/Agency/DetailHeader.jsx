@@ -32,10 +32,7 @@ export class DetailHeader extends Component {
                   <dt>Status</dt>
                   <dd>{agency.status}</dd>
                 </section>
-                <section>
-                  <dt>Tier</dt>
-                  <dd>{agency.tier}</dd>
-                </section>
+                <section><dt>Tier</dt><dd>{agency.tier >= 0 ? agency.tier : ''}</dd></section>
                 <section>
                   <dt>Website</dt>
                   <dd><a href={agency.websiteUrl} target="_blank">{agency.websiteUrl}</a></dd>

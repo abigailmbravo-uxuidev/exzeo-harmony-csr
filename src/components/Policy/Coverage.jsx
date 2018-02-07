@@ -38,9 +38,7 @@ export class Coverage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
-      nextProps.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
-
+    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.summaryLedger, nextProps.summaryLedger) && nextProps.summaryLedger.currentPremium) {
       const paymentOptions = {
         effectiveDate: nextProps.policy.effectiveDate,
         policyHolders: nextProps.policy.policyHolders,
@@ -341,7 +339,7 @@ redux mapping
 */
 const mapStateToProps = state => ({
   paymentOptions: state.service.billingOptions,
-  summaryLedger: state.service.getSummaryLedger,
+  summaryLedger: state.service.getSummaryLedger || {},
   tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'Coverage.values', {}),

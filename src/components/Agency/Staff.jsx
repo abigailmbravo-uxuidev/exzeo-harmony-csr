@@ -132,12 +132,12 @@ export class Staff extends Component {
                         <h4 className="agent">
                           <span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span> | <span className="agent-license">{agent.licenseNumber}</span>
                         </h4>
-                        <p className="contact-address">
+                        <div className="contact-address">
                           {agent.mailingAddress.address1},&nbsp;
                           {agent.mailingAddress.address2}{agent.mailingAddress.address2 ? ', ' : ' '}
                           {`${agent.mailingAddress.city}, ${agent.mailingAddress.state} ${agent.mailingAddress.zip}`}
-                          {agent.status ? <small className="agent-status"><label>STATUS:&nbsp;</label>{agent.status}</small> : null}
-                        </p>
+                          {agent.status ? <span className="agent-status additional-data status"><label>STATUS:&nbsp;</label>{agent.status}</span> : null}
+                        </div>
                         <div className="additional-contacts">
                           <ul>
                             <li>
