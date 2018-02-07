@@ -1394,7 +1394,7 @@ export class Endorsements extends React.Component {
                               component="input"
                               type="checkbox"
                             />
-                            <label htmlFor="clearFields">Clear Secondary Policyholder </label>
+                            <label htmlFor="clearFields"> Remove</label>
                           </div>
                         </div>
                         <div className="flex-parent col2">
