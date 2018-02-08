@@ -41,7 +41,7 @@ export const NoteList = (props) => {
   const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
   const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
   const attachmentType = attachments => attachments.length > 0 ? attachments[0].fileType : '';
-  const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
+  const formatCreatedDate = createdDate => moment.utc(createdDate).format('MM/DD/YYYY  h:m A');
   const formatNote = note => note ? note.replace(/\r|\n/g, '<br>') : '';
   const attachmentUrl = attachments => (
     <span>
@@ -78,7 +78,7 @@ export const NoteList = (props) => {
         multiColumnSearch
       >
         <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
-        <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdDate" dataSort dataFormat={formatCreateDate} >Created</TableHeaderColumn>
+        <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdDate" dataSort dataFormat={formatCreatedDate} >Created</TableHeaderColumn>
         <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataSort dataFormat={showCreatedBy} >Author</TableHeaderColumn>
         {!fieldValues.attachmentStatus && <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="contactType" dataSort >Note Type</TableHeaderColumn>}
         {!fieldValues.attachmentStatus && <TableHeaderColumn className="note" columnClassName="note" dataField="content" dataSort dataFormat={formatNote} >Note</TableHeaderColumn>}

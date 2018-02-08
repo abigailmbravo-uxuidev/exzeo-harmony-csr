@@ -5,11 +5,11 @@ import { batchActions } from 'redux-batched-actions';
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
 
-export const handleError = (error) => {
-  const message = error.response && error.response.data && error.response.data.error
-   ? error.response.data.error.message
-   : 'An error happened';
-  return (error.message) ? error.message : message;
+export const handleError = (err) => {
+  let error = err.response && err.response.data ? err.response.data : err;
+  if (typeof error === 'string') error = { message: error }
+  if (!error.message) error.message = 'There was an error.';
+  return { ...error };
 };
 
 export const serviceRequest = data => ({
@@ -44,7 +44,7 @@ export const getNotes = (id, policyId) => (dispatch) => {
     axios(notesRequest),
     axios(docsRequest)
   ])
-  .then(axios.spread((notesResult, docsResult) => {
+  .then(([notesResult, docsResult]) => {
     const notes = notesResult.data.result;
     docsResult.data.result.forEach(doc => {
       const newNote = { 
@@ -64,10 +64,10 @@ export const getNotes = (id, policyId) => (dispatch) => {
     });
 
     return dispatch(serviceRequest({notes}));
-  }))
+  })
   .catch((error) => {
     const message = handleError(error);
-    dispatch(errorActions.setAppError({ message }));
+    dispatch(errorActions.setAppError(message));
   });
 };
 
@@ -97,7 +97,7 @@ export const addNote = (data, files) => (dispatch) => {
   .catch((error) => {
     const message = handleError(error);
     return dispatch(batchActions([
-      errorActions.setAppError({ message })
+      errorActions.setAppError(message)
     ]));
   });
 };
@@ -109,7 +109,7 @@ export const getAgents = (companyCode, state) => (dispatch) => {
     path: `v1/agents/${companyCode}/${state}`
   });
 
-  return Promise.resolve(axios(axiosConfig)).then((response) => {
+  return axios(axiosConfig).then((response) => {
     const data = { agents: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
@@ -118,7 +118,7 @@ export const getAgents = (companyCode, state) => (dispatch) => {
   .catch((error) => {
     const message = handleError(error);
     return dispatch(batchActions([
-      errorActions.setAppError({ message })
+      errorActions.setAppError(message)
     ]));
   });
 };
@@ -130,7 +130,7 @@ export const searchAgents = (companyCode, state, firstName, lastName, agentCode,
     path: `v1/agents/${companyCode}/${state}?firstName=${firstName}&lastName=${lastName}&agentCode=${agentCode}&mailingAddress=${address}&licenseNumber=${licNumber}`
   });
 
-  return Promise.resolve(axios(axiosConfig)).then((response) => {
+  return axios(axiosConfig).then((response) => {
     const data = { agents: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
@@ -139,7 +139,7 @@ export const searchAgents = (companyCode, state, firstName, lastName, agentCode,
   .catch((error) => {
     const message = handleError(error);
     return dispatch(batchActions([
-      errorActions.setAppError({ message })
+      errorActions.setAppError(message)
     ]));
   });
 };
@@ -166,7 +166,7 @@ export const getAgency = (companyCode, state, agencyCode) => (dispatch) => {
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError(message)
       ]));
     });
 };
@@ -178,7 +178,7 @@ export const getAgentsByAgency = (companyCode, state, agencyCode) => (dispatch) 
     path: `v1/agents/${companyCode}/${state}?agencyCode=${agencyCode}`
   });
 
-  return Promise.resolve(axios(axiosConfig)).then((response) => {
+  return axios(axiosConfig).then((response) => {
     const data = { agents: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
@@ -187,7 +187,7 @@ export const getAgentsByAgency = (companyCode, state, agencyCode) => (dispatch) 
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError(message)
       ]));
     });
 };
@@ -199,7 +199,7 @@ export const searchAgencies = (companyCode, state, displayName, agencyCode, addr
     path: `v1/agencies/${companyCode}/${state}?displayName=${displayName}&agencyCode=${agencyCode}&mailingAddress=${address}&licenseNumber=${licNumber}&taxIdNumber=${fein}&primaryPhoneNumber=${phone}`
   });
 
-  return Promise.resolve(axios(axiosConfig)).then((response) => {
+  return axios(axiosConfig).then((response) => {
     const result = response.data && response.data.result ? response.data.result.sort() : [];
     const data = { agencies: result };
     return dispatch(batchActions([
@@ -209,7 +209,7 @@ export const searchAgencies = (companyCode, state, displayName, agencyCode, addr
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError(message)
       ]));
     });
 };
@@ -238,7 +238,7 @@ export const currentAgent = (companyCode, state, agentCode) => (dispatch) => {
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError(message)
       ]));
     });
 };
@@ -250,7 +250,7 @@ export const getPolicyFromPolicyNumber = (companyCode, state, product, policyNum
     path: `transactions?companyCode=${companyCode}&state=${state}&product=${product}&policyNumber=${policyNumber}`
   });
 
-  return Promise.resolve(axios(axiosConfig)).then((response) => {
+  return axios(axiosConfig).then((response) => {
     const data = { policy: response.data.policies ? _.maxBy(response.data.policies[0], 'policyVersion') : {} };
     return dispatch(batchActions([
       serviceRequest(data)
@@ -259,7 +259,7 @@ export const getPolicyFromPolicyNumber = (companyCode, state, product, policyNum
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError(message)
       ]));
     });
 };
@@ -271,7 +271,7 @@ export const getLatestPolicy = policyNumber => (dispatch) => {
     path: `transactions/${policyNumber}/latest`
   });
 
-  return Promise.resolve(axios(axiosConfig)).then((response) => {
+  return axios(axiosConfig).then((response) => {
     const data = { latestPolicy: response ? response.data : {} };
     return dispatch(batchActions([
       serviceRequest(data)
@@ -280,7 +280,7 @@ export const getLatestPolicy = policyNumber => (dispatch) => {
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError(message)
       ]));
     });
 };
@@ -292,7 +292,7 @@ export const getPolicyFromPolicyID = policyId => (dispatch) => {
     path: `transactions/${policyId}`
   });
 
-  return Promise.resolve(axios(axiosConfig)).then((response) => {
+  return axios(axiosConfig).then((response) => {
     const data = { policy: response.data.policies ? response.data.policies[0] : {} };
     return dispatch(batchActions([
       serviceRequest(data)
@@ -301,7 +301,7 @@ export const getPolicyFromPolicyID = policyId => (dispatch) => {
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError(message)
       ]));
     });
 };
@@ -314,7 +314,7 @@ export const getEffectiveDateChangeReasons = () => (dispatch) => {
     path: 'effectiveDateChangeReasons'
   });
 
-  return Promise.resolve(axios(axiosConfig)).then((response) => {
+  return axios(axiosConfig).then((response) => {
     const data = { effectiveDateReasons: response.data.effectiveDateReasons ? response.data.effectiveDateReasons : [] };
     return dispatch(batchActions([
       serviceRequest(data)
@@ -323,7 +323,7 @@ export const getEffectiveDateChangeReasons = () => (dispatch) => {
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError(message)
       ]));
     });
 };
@@ -345,7 +345,7 @@ export const getTransactionHistory = policyNumber => (dispatch) => {
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError(message)
         // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
       ]));
     });
@@ -381,7 +381,7 @@ export const addTransaction = submitData => (dispatch) => {
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError(message)
       ]));
     });
 };
@@ -412,7 +412,7 @@ export const getUnderwritingQuestions = (companyCode, state, product, property) 
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError(message)
       ]));
     });
 };
@@ -433,7 +433,7 @@ export const getSummaryLedger = policyNumber => (dispatch) => {
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError(message)
       ]));
     });
 };
@@ -454,7 +454,7 @@ export const getPaymentOptionsApplyPayments = () => (dispatch) => {
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError(message)
       ]));
     });
 };
@@ -475,7 +475,7 @@ export const getPaymentHistory = policyNumber => (dispatch) => {
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError(message)
       ]));
     });
 };
@@ -492,7 +492,7 @@ export const saveUnderwritingExceptions = (id, underwritingExceptions) => (dispa
   };
   const axiosConfig = runnerSetup(body);
 
-  return Promise.resolve(axios(axiosConfig)).then((response) => {
+  return axios(axiosConfig).then((response) => {
     const data = { transactions: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
@@ -501,7 +501,7 @@ export const saveUnderwritingExceptions = (id, underwritingExceptions) => (dispa
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError(message)
       ]));
     });
 };
@@ -524,7 +524,7 @@ export const getBillingOptions = paymentOptions => (dispatch) => {
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError(message)
       ]));
     });
 };
@@ -548,7 +548,7 @@ export const getBillingOptionsForPolicy = paymentOptions => (dispatch) => {
 .catch((error) => {
   const message = handleError(error);
   return dispatch(batchActions([
-    errorActions.setAppError({ message })
+    errorActions.setAppError(message)
   ]));
 });
 };
@@ -569,7 +569,7 @@ export const getEndorsementHistory = policyNumber => (dispatch) => {
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError(message)
       ]));
     });
 };
@@ -582,7 +582,7 @@ export const getRate = policyObject => (dispatch) => {
     data: policyObject
   });
 
-  return Promise.resolve(axios(axiosConfig)).then((response) => {
+  return axios(axiosConfig).then((response) => {
     const data = { getRate: response.data ? response.data.result : {} };
     return dispatch(batchActions([
       serviceRequest(data)
@@ -591,7 +591,7 @@ export const getRate = policyObject => (dispatch) => {
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError(message)
       ]));
     });
 };
@@ -616,7 +616,7 @@ export const getQuote = quoteId => (dispatch) => {
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError(message)
       ]));
     });
 };
@@ -630,7 +630,7 @@ export const createTransaction = submitData => (dispatch) => {
   };
   const axiosConfig = runnerSetup(body);
 
-  return Promise.resolve(axios(axiosConfig)).then((response) => {
+  return axios(axiosConfig).then((response) => {
     const data = { addTransaction: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
@@ -639,7 +639,7 @@ export const createTransaction = submitData => (dispatch) => {
       .catch((error) => {
         const message = handleError(error);
         return dispatch(batchActions([
-          errorActions.setAppError({ message })
+          errorActions.setAppError(message)
         ]));
       });
 };
@@ -660,7 +660,7 @@ export const getZipcodeSettings = (companyCode, state, product, zip) => (dispatc
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError(message)
       ]));
     });
 };
@@ -688,7 +688,7 @@ export const saveBillingInfo = (id, billToType, billToId, billPlan) => (dispatch
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError(message)
       ]));
     });
 };
@@ -700,7 +700,7 @@ export const getAgencies = (companyCode, state) => (dispatch) => {
     path: `v1/agencies/${companyCode}/${state}`
   });
 
-  return Promise.resolve(axios(axiosConfig)).then((response) => {
+  return axios(axiosConfig).then((response) => {
     const result = response.data && response.data.result ? response.data.result.sort() : [];
     const data = { agencies: result };
     return dispatch(batchActions([
@@ -710,7 +710,7 @@ export const getAgencies = (companyCode, state) => (dispatch) => {
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
-        errorActions.setAppError({ message })
+        errorActions.setAppError(message)
       ]));
     });
 };

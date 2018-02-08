@@ -20,12 +20,12 @@ import PhoneField from '../Form/inputs/PhoneField';
 import HiddenField from '../Form/inputs/HiddenField';
 import SelectField from '../Form/inputs/SelectField';
 import RadioField from '../Form/inputs/RadioField';
-import CheckField from '../Form/inputs/CheckField';
 import CurrencyField from '../Form/inputs/CurrencyField';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import DateField from '../Form/inputs/DateField';
 import Footer from '../Common/Footer';
+import Loader from '../Common/Loader';
 
 const setPHToggle = (props) => {
   const { dispatch } = props;
@@ -57,18 +57,19 @@ export const clearSecondaryPolicyholder = (value, props) => {
     ]));
   }
 };
-export const handleGetQuoteData = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName])
-    ? state.cg[state.appState.modelName].data
-    : null;
-  if (!taskData) { return {}; }
-  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
-    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
-    : {};
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
-    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
-    : quoteEnd;
-  return quoteData;
+
+export const handleGetQuoteData = (state) => { 
+  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) 
+    ? state.cg[state.appState.modelName].data 
+    : null; 
+  if (!taskData) { return {}; } 
+  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' }) 
+    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result 
+    : {}; 
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) 
+    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result 
+    : quoteEnd; 
+  return quoteData; 
 };
 
 export const handleGetZipCodeSettings = (state) => {
@@ -97,7 +98,7 @@ const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answ
 export const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
 
 export const handleInitialize = (state) => {
-  const quoteData = handleGetQuoteData(state);
+  const quoteData = handleGetQuoteData(state); 
   const questions = state.questions;
   const values = {};
   values.clearFields = false;
@@ -360,6 +361,7 @@ export class Coverage extends Component {
       const workflowId = this.props.appState.instanceId;
       this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
     .then(() => {
+      this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         selectedLink: 'customerData'
@@ -379,7 +381,7 @@ export class Coverage extends Component {
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props, nextProps)) {
       const quoteData = nextProps.quoteData;
-      if (quoteData.companyCode && quoteData.state && quoteData.agencyCode && !setAgents) {
+      if (quoteData && quoteData.companyCode && quoteData.state && quoteData.agencyCode && !setAgents) {
         this.props.actions.serviceActions.getAgencies(quoteData.companyCode, quoteData.state);
         this.props.actions.serviceActions.getAgentsByAgency(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
         setAgents = true;
@@ -441,6 +443,10 @@ export class Coverage extends Component {
 
   render() {
     const { quoteData, fieldValues, handleSubmit, initialValues, pristine, agents, agencies, questions, dirty } = this.props;
+
+    if(!quoteData) {
+      return (<QuoteBaseConnect></QuoteBaseConnect>)
+    }
     return (
       <QuoteBaseConnect>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
@@ -1005,7 +1011,7 @@ const mapStateToProps = state => ({
   agencies: state.service.agencies,
   fieldValues: _.get(state.form, 'Coverage.values', {}),
   initialValues: handleInitialize(state),
-  quoteData: handleGetQuoteData(state),
+  quoteData: handleGetQuoteData(state), 
   zipCodeSettings: handleGetZipCodeSettings(state),
   questions: state.questions
 });

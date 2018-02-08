@@ -9,19 +9,13 @@ import { reduxForm, Form, change, propTypes } from 'redux-form';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
+import * as serviceActions from '../../actions/serviceActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import CheckField from '../Form/inputs/CheckField';
 import TextField from '../Form/inputs/TextField';
 import { RadioFieldBilling, SelectFieldBilling } from '../Form/inputs';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
-
-const handleGetPaymentPlans = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-  const paymentPlanResult = _.find(taskData.model.variables, { name: 'billingOptionsForMailing' }) ? _.find(taskData.model.variables, { name: 'billingOptionsForMailing' }).value.result : {};
-  return paymentPlanResult;
-};
 
 export const handleInitialize = (state) => {
   const quoteData = state.service.quote || {};
@@ -41,12 +35,12 @@ _.isEqual(_.get(quoteData, 'policyHolderMailingAddress.zip'), _.get(quoteData, '
     values.sameAsProperty = true;
   }
 
-  const paymentPlans = handleGetPaymentPlans(state);
-  const selectedBilling = _.find(paymentPlans.options, ['billToId', _.get(quoteData, 'billToId')]);
+  const billingOptions = state.service.billingOptions || {};
+  const selectedBilling = _.find(billingOptions.options, ['billToId', _.get(quoteData, 'billToId')]);
 
-  if (paymentPlans && paymentPlans.options && paymentPlans.options.length === 1 && !_.get(quoteData, 'billToId') && !_.get(quoteData, 'billPlan')) {
-    values.billToId = _.get(paymentPlans.options[0], 'billToId');
-    values.billToType = _.get(paymentPlans.options[0], 'billToType');
+  if (billingOptions && billingOptions.options && billingOptions.options.length === 1 && !_.get(quoteData, 'billToId') && !_.get(quoteData, 'billPlan')) {
+    values.billToId = _.get(billingOptions.options[0], 'billToId');
+    values.billToType = _.get(billingOptions.options[0], 'billToType');
     values.billPlan = 'Annual';
   } else if (selectedBilling) {
     values.billToId = selectedBilling.billToId;
@@ -124,13 +118,13 @@ export const selectBillTo = (props) => {
 };
 
 export const handleFormSubmit = (data, dispatch, props) => {
-  const { appState, actions, paymentPlanResult, fieldValues } = props;
+  const { appState, actions, billingOptions, fieldValues } = props;
   const workflowId = appState.instanceId;
   actions.appStateActions.setAppState(appState.modelName, workflowId, { ...appState.data, submitting: true });
 
   const submitData = fieldValues;
 
-  const selectedBilling = _.find(paymentPlanResult.options, ['billToId', submitData.billToId]);
+  const selectedBilling = _.find(billingOptions.options, ['billToId', submitData.billToId]);
 
   submitData.billToType = selectedBilling.billToType;
 
@@ -194,8 +188,6 @@ export class MailingAddressBilling extends Component {
 
   componentDidMount() {
     if (this.props.appState.instanceId && this.props.quoteData && this.props.quoteData.rating) {
-      this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
-
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         submitting: true
@@ -206,8 +198,22 @@ export class MailingAddressBilling extends Component {
       ];
       const workflowId = this.props.appState.instanceId;
 
+      const paymentOptions = {
+        effectiveDate: this.props.quoteData.effectiveDate,
+        policyHolders: this.props.quoteData.policyHolders,
+        additionalInterests: this.props.quoteData.additionalInterests,
+        netPremium: this.props.quoteData.rating.netPremium,
+        fees: {
+          empTrustFee: this.props.quoteData.rating.worksheet.fees.empTrustFee,
+          mgaPolicyFee: this.props.quoteData.rating.worksheet.fees.mgaPolicyFee
+        },
+        totalPremium: this.props.quoteData.rating.totalPremium
+      };
+      this.props.actions.serviceActions.getBillingOptions(paymentOptions);
+
       this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
     .then(() => {
+      this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         selectedLink: 'mailing'
@@ -223,7 +229,8 @@ export class MailingAddressBilling extends Component {
   }
 
   render() {
-    const { handleSubmit, paymentPlanResult, pristine, quoteData, dirty } = this.props;
+    const { handleSubmit, billingOptions, pristine, quoteData, dirty } = this.props;
+    
     if (!quoteData.rating) {
       return (
         <QuoteBaseConnect>
@@ -285,7 +292,7 @@ export class MailingAddressBilling extends Component {
                         label="Bill To"
                         onChange={() => selectBillTo(this.props)}
                         validations={['required']}
-                        answers={paymentPlanResult.options}
+                        answers={billingOptions.options}
                       />
                       <div className="flex-child bill-plan">
                         <RadioFieldBilling
@@ -294,9 +301,9 @@ export class MailingAddressBilling extends Component {
                           label={'Bill Plan'}
                           validate={[value => (value ? undefined : 'Field Required')]}
                           segmented
-                          answers={_.find(paymentPlanResult.options, ['billToId', this.props.fieldValues.billToId]) ?
-                         _.find(paymentPlanResult.options, ['billToId', this.props.fieldValues.billToId]).payPlans : []}
-                          paymentPlans={paymentPlanResult.paymentPlans}
+                          answers={_.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]) ?
+                         _.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]).payPlans : []}
+                          paymentPlans={billingOptions.paymentPlans}
                         />
                       </div>
                     </div>
@@ -304,9 +311,9 @@ export class MailingAddressBilling extends Component {
                   <div className="flex-parent">
                     <div className="flex-child">
                       <InstallmentTerm
-                        payPlans={_.find(paymentPlanResult.options, ['billToId', this.props.fieldValues.billToId]) ?
-                                   _.find(paymentPlanResult.options, ['billToId', this.props.fieldValues.billToId]).payPlans : []}
-                        paymentPlans={paymentPlanResult.paymentPlans}
+                        payPlans={_.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]) ?
+                                   _.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]).payPlans : []}
+                        paymentPlans={billingOptions.paymentPlans}
                       />
                     </div>
                   </div>
@@ -352,12 +359,13 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'MailingAddressBilling.values', {}),
   initialValues: handleInitialize(state),
   quoteData: state.service.quote || {},
-  paymentPlanResult: handleGetPaymentPlans(state)
+  billingOptions: state.service.billingOptions || {}
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
     quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }

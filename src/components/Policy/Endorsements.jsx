@@ -142,7 +142,7 @@ export const handleInitialize = (state) => {
   values.clearFields = false;
   values.endorsementDateNew = setEndorsementDate(_.get(policy, 'effectiveDate'), _.get(policy, 'endDate'));
   values.dwellingAmount = _.get(policy, 'coverageLimits.dwelling.amount');
-  values.dwellingAmountNew = _.get(policy, 'coverageLimits.dwelling.amount');
+  values.dwellingAmountNew =`$ ${Number(_.get(policy, 'coverageLimits.dwelling.amount')).toLocaleString()}`;
   values.otherStructuresAmount = otherStructures;
   values.otherStructuresAmountNew = values.otherStructuresAmount;
   values.otherStructures = `${String(calculatePercentage(otherStructures, dwelling))}%`;
@@ -419,8 +419,8 @@ export const generateModel = (data, policyObject, props) => {
     sprinklerNew: data.sprinklerNew,
     // Premium Coverage Limits
     dwellingAmountNew: Math.round(Number(String(data.dwellingAmountNew).replace(/[^\d]/g, '')) / 1000) * 1000,
-    otherStructuresAmountNew: data.otherStructuresAmountNew,
-    personalPropertyAmountNew: data.personalPropertyAmountNew,
+    otherStructuresAmountNew: Number(data.otherStructuresAmountNew),
+    personalPropertyAmountNew: Number(data.personalPropertyAmountNew),
     personalLiabilityNew: data.personalLiabilityNew,
     medicalPaymentsNew: data.medicalPaymentsNew,
     lossOfUseNew: data.lossOfUseNew,
@@ -1394,7 +1394,7 @@ export class Endorsements extends React.Component {
                               component="input"
                               type="checkbox"
                             />
-                            <label htmlFor="clearFields">Clear Secondary Policyholder </label>
+                            <label htmlFor="clearFields"> Remove</label>
                           </div>
                         </div>
                         <div className="flex-parent col2">
