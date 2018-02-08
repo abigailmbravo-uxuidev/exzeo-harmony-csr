@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
 import localStorage from 'localStorage';
-import { Link } from 'react-router-dom';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
@@ -43,8 +42,6 @@ export const SearchResults = (props) => {
         policyResults.push(_.maxBy(selectedPolicies, 'policyVersion'));
       }
     }
-
-    console.log(props.search);
     return (
       <div className="quote-list">
         {props.search && props.search.isLoading && <Loader />}

@@ -263,7 +263,6 @@ export class SearchForm extends Component {
   render() {
 
   const {
-    search,
     appState,
     questions,
     handleSubmit,
@@ -415,7 +414,7 @@ export class SearchForm extends Component {
         </div>
         <button
           onClick={() => changePage(this.props, true)}
-          disabled="{String(fieldValues.pageNumber) === String(fieldValues.totalPages)}"
+          disabled={String(fieldValues.pageNumber) === String(fieldValues.totalPages)}
           tabIndex="0"
           className="btn multi-input"
           type="button"

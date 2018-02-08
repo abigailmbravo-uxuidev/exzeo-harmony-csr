@@ -1,7 +1,3 @@
-import {
-  Map
-} from 'immutable';
-
 export default {
   search: {},
   workflowData: {},
