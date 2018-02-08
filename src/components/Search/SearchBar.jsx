@@ -261,7 +261,7 @@ export class SearchForm extends Component {
   }
 
   render() {
-    
+
   const {
     search,
     appState,
@@ -362,7 +362,7 @@ export class SearchForm extends Component {
           </button>
         </div>
         }
-        {fieldValues.searchType === 'policy' && <div className="search-inputs fade-in">
+        {fieldValues.searchType === 'policy' && <div className="search-inputs fade-in p">
 
         <SelectField
         name="sortBy" component="select" styleName={'search-context'} label="Sort By" validations={['required']}
@@ -409,13 +409,13 @@ export class SearchForm extends Component {
           <span className="fa fa-chevron-circle-left" />
         </button>
         <div className="pagination-count">
-          <TextField size="2" name={'pageNumber'} label={'Page'} readOnly />
+          <TextField size="2" styleName="pageNumber" name={'pageNumber'} label={'Page'} disabled />
           <span className="pagination-operand">of</span>
-          <TextField size="2" name={'totalPages'} label={''} readOnly />
+          <TextField size="2" styleName="totalPages" name={'totalPages'} label={''} disabled />
         </div>
         <button
           onClick={() => changePage(this.props, true)}
-          disabled={String(fieldValues.pageNumber) === String(fieldValues.totalPages)}
+          disabled="{String(fieldValues.pageNumber) === String(fieldValues.totalPages)}"
           tabIndex="0"
           className="btn multi-input"
           type="button"
