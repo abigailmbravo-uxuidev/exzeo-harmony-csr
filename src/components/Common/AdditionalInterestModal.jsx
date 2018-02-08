@@ -16,22 +16,11 @@ import * as serviceActions from '../../actions/serviceActions';
 import * as policyStateActions from '../../actions/policyStateActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 import Loader from './Loader';
-
-export const handleGetQuoteData = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
-  if (!taskData) return {};
-  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
-    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
-    : {};
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
-    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
-    : quoteEnd;
-
-  return quoteData;
-};
+import { addAdditionalInterest } from '../Policy/MortgageBilling';
+import { start } from '../../actions/cgActions';
 
 const handleInitialize = (state) => {
-  const quoteData = handleGetQuoteData(state);
+  const mortgageeOrderAnswers = getMortgageeAnswers(state.questions, _.get(state, 'service.latestPolicy.additionalInterests') || _.get(state, 'service.quote.additionalInterests') || null);
   return {
     name1: '',
     name2: '',
@@ -43,7 +32,7 @@ const handleInitialize = (state) => {
     zip: '',
     referenceNumber: '',
     type: '',
-    order: state.appState.data.addAdditionalInterestType === 'Mortgagee' && _.filter(quoteData.additionalInterests || [], ai => ai.type === 'Mortgagee').length === 1 ? 1 : 0
+    order: mortgageeOrderAnswers.length === 1  ? mortgageeOrderAnswers[0].answer : ''
   };
 };
 const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
@@ -76,19 +65,23 @@ export const setMortgageeValues = (val, props) => {
   }
 };
 
+export const getMortgageeAnswers = (questions, additionalInterests) => {
+  let mortgageeOrderAnswers = _.cloneDeep(getAnswers('order', questions));
+
+  if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 0) {
+    mortgageeOrderAnswers = mortgageeOrderAnswers.filter(answer =>  Number(answer.answer) === 0)
+  } else if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 1) {
+    mortgageeOrderAnswers = mortgageeOrderAnswers.filter(answer =>  Number(answer.answer) === 1)
+  }
+  return mortgageeOrderAnswers;
+}
 
 export const AdditionalInterestModal = (props) => {
   const {
     appState, handleSubmit, verify, hideAdditionalInterestModal, questions, additionalInterests, fieldValues
   } = props;
 
-  const mortgageeOrderAnswers = _.cloneDeep(getAnswers('order', questions));
-
-  if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length === 0) {
-    _.remove(mortgageeOrderAnswers, answer => Number(answer.answer) === 1);
-  } else if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length === 1) {
-    _.remove(mortgageeOrderAnswers, answer => Number(answer.answer) === 0);
-  }
+  const mortgageeOrderAnswers = getMortgageeAnswers(questions, additionalInterests);
   return (
     <div className="modal" style={{ flexDirection: 'row' }}>
       <Form id="AdditionalInterestModal" className={`AdditionalInterestModal ${appState.data.addAdditionalInterestType}`} noValidate onSubmit={handleSubmit(verify)}>
@@ -165,7 +158,6 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   initialValues: handleInitialize(state),
-  quoteData: handleGetQuoteData(state),
   fieldValues: _.get(state.form, 'AdditionalInterestModal.values', {})
 });
 
