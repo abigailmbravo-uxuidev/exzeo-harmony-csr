@@ -9,7 +9,6 @@ import NoteList from '../Common/NoteList';
 import Footer from '../Common/Footer';
 
 export class NotesFiles extends Component {
-
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props, nextProps)) {
       if (nextProps.quoteData && nextProps.quoteData.quoteNumber) {
@@ -41,7 +40,6 @@ NotesFiles.propTypes = {
 
 const mapStateToProps = state => ({
   notes: state.service.notes,
-  quoteData: state.service.quote || {},
   error: state.error
 });
 
