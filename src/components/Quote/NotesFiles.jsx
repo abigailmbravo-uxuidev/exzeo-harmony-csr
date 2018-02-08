@@ -10,7 +10,6 @@ import NoteList from '../Common/NoteList';
 import Footer from '../Common/Footer';
 
 export class NotesFiles extends Component {
-
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props, nextProps)) {
       if (nextProps.quoteData && nextProps.quoteData.quoteNumber) {
@@ -21,7 +20,6 @@ export class NotesFiles extends Component {
   }
 
   render() {
-
     return (
       <QuoteBaseConnect>
         <div className="route-content">
@@ -38,20 +36,11 @@ export class NotesFiles extends Component {
 }
 
 NotesFiles.propTypes = {
-  quoteData: PropTypes.shape(),
-  tasks: PropTypes.shape(),
-  appState: PropTypes.shape({
-    modelName: PropTypes.string,
-    instanceId: PropTypes.string,
-    data: PropTypes.shape({ submitting: PropTypes.boolean })
-  })
+  quoteData: PropTypes.shape()
 };
 
 const mapStateToProps = state => ({
-  tasks: state.cg,
-  appState: state.appState,
   notes: state.service.notes,
-  quoteData: state.service.quote || {},
   error: state.error
 });
 

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
+import { NavLink } from 'react-router-dom';
 import { reduxForm, propTypes } from 'redux-form';
 import * as appStateActions from '../../actions/appStateActions';
 import UWconditions from '../Common/UWconditions';
@@ -79,25 +80,10 @@ export const closeUWConditions = (props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showUWconditions: false });
 };
 
-const goToPage = (agentLink, props, quote) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
-    { ...props.appState.data,
-      activateRedirectLink: agentLink.link,
-      activateRedirect: true
-    });
-};
-
-
 export const SideNav = (props) => {
   const redirect = (props.activateRedirect)
     ? (<Redirect to={props.activateRedirectLink} />)
     : null;
-
-  const onKeyPress = (event, agentLink) => {
-    if (event.charCode === 13) {
-      goToPage(agentLink, props, quote);
-    }
-  };
 
   const quote = props.quoteData;
   return (
@@ -113,8 +99,8 @@ export const SideNav = (props) => {
             </a>
           </li> :
           <li key={index}>
-            <span tabIndex={'0'} onKeyPress={event => onKeyPress(event, agentLink)} className={agentLink.styleName} onClick={() => goToPage(agentLink, props, quote)}>
-              <a className={props.appState.data.selectedLink === agentLink.key ? `${agentLink.styleName} active` : `${agentLink.styleName}`}>{agentLink.label}</a>
+            <span className={agentLink.styleName}>
+              <NavLink to={agentLink.link} activeClassName="active" exact>{agentLink.label}</NavLink>
             </span>
           </li>
       ))}
