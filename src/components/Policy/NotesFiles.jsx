@@ -57,7 +57,7 @@ export const NoteList = (props) => {
   );
 
   return (
-    <div className="note-grid-wrapper">
+    <div className="note-grid-wrapper btn-tabs">
       <div className="filter-tabs">
         <RadioField
           name={'attachmentStatus'} styleName={''} label={''} onChange={function () {}} segmented answers={[
