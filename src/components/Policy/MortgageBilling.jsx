@@ -99,12 +99,8 @@ export const getPaymentDescription = (event, props) => {
   const { dispatch } = props;
   dispatch(change('MortgageBilling', 'cashDescription', ''));
 
-  props.actions.appStateActions.setAppState(
-    props.appState.modelName,
-    props.appState.instanceId, {
-      ...props.appState.data, ranService: false, paymentDescription: selectedDescriptionType.paymentDescription, showDescription: true
-    }
-  );
+  props.actions.appStateActions.setAppState(props.appState.modelName,
+          props.appState.instanceId, { ...props.appState.data, ranService: false, paymentDescription: selectedDescriptionType.paymentDescription, showDescription: true });
 };
 
 export const handleAISubmit = (data, dispatch, props) => {
