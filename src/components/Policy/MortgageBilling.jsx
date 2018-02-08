@@ -382,7 +382,7 @@ export class MortgageBilling extends Component {
         billToName = billTo.name1;
       }
     }
-    
+
     return (
       <PolicyConnect>
         <div className="route-content">
