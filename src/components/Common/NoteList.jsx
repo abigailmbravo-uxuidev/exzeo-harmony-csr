@@ -39,10 +39,10 @@ export const Notes = (props) => {
   );
 
   return (
-    <div className="note-grid-wrapper">
+    <div className="note-grid-wrapper btn-tabs">
       <div className="filter-tabs">
-        <button type="button" className={`btn btn-sm ${!attachmentStatus ? 'btn-primary' : ''}`} onClick={() => setNoteStatus(false)}>Notes</button> 
-        <button type="button" className={`btn btn-sm ${attachmentStatus ? 'btn-primary' : ''}`} onClick={() => setNoteStatus(true)}>Documents</button>
+        <button type="button" className={`btn btn-tab ${!attachmentStatus ? 'selected' : ''}`} onClick={() => setNoteStatus(false)}>Notes</button>
+        <button type="button" className={`btn btn-tab ${attachmentStatus ? 'selected' : ''}`} onClick={() => setNoteStatus(true)}>Documents</button>
       </div>
       <BootstrapTable
         data={filterNotesByType(notes, attachmentStatus)}

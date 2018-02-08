@@ -36,3 +36,73 @@ nav {
     }
   }
 }
+
+.btn-tabs {
+    .filter-tabs {
+        border-bottom: .125rem solid $bright-blue-darken-04;
+        margin: 0 0 ($padding*2);
+        .btn-tab {
+            background: rgba($warm-gray-01, 0);
+            border-width: 0;
+            font-size: $font-size-sm;
+            text-transform: none;
+            border-radius: 0;
+
+            &:hover {
+                background: rgba($warm-gray-01, .5);
+            }
+
+            &.selected {
+                border-bottom: .25rem solid $bright-blue-darken-04;
+                padding-bottom: 2px;
+            }
+        }
+    }
+}
+
+
+
+.filter-tabs {
+
+  .form-group.segmented {
+    .segmented-answer-wrapper {
+      border-bottom: 1px solid $bright-blue-darken-04;
+
+      > div {
+        flex-grow: 0;
+        padding: 0;
+
+        .label-segmented {
+          border: none;
+
+          span {
+            justify-content: flex-start;
+            padding: ($padding*2);
+            border: none;
+            border-bottom-width: 5px;
+            border-bottom-style: solid;
+            border-radius: 0;
+            background: none;
+            font-weight: $font-weight-normal;
+            @include button-variant($warm-gray-10, $white, rgba($bright-blue-darken-04, 0));
+
+            &:hover {
+              border-bottom: 5px solid rgba($bright-blue-darken-02, .3);
+              background: $warm-gray-00;
+            }
+          }
+
+          input[type="radio"] {
+            &:checked {
+              + span {
+                color: $warm-gray-14;
+                border-bottom: 5px solid $bright-blue-darken-04;
+                background: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
