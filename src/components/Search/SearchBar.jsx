@@ -275,10 +275,10 @@ export class SearchForm extends Component {
     reset
   } = this.props;
 
-  const clearForm = (event, newValue, previousValue) => {
+  const clearForm = () => {
     const modelName = appState.modelName;
     const data = tasks[modelName].data;
-
+  
     const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData')) || {};
     lastSearchData.searchType = '';
     localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
@@ -299,6 +299,7 @@ export class SearchForm extends Component {
       <div className="search-input-wrapper">
         <div className="form-group search-context">
           <SelectField
+            id="searchType"
             name="searchType" component="select" styleName={''} label="Search Context" validations={['required']}
             onChange={clearForm}
             answers={[
@@ -387,6 +388,7 @@ export class SearchForm extends Component {
           {generateField('policyNumber', 'Policy No Search', 'Policy Number', formErrors, 'policy-no-search')}
 
           <button
+            id={'searchPolicySubmit'}
             className="btn btn-success multi-input"
             type="submit"
             form="SearchBar"
@@ -486,7 +488,7 @@ export class SearchForm extends Component {
   };
 };
 
-const SearchBar = props => new SearchForm(props);
+export const SearchBar = props => new SearchForm(props);
 
 SearchBar.propTypes = {
   ...propTypes,

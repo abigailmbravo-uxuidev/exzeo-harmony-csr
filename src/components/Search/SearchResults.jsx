@@ -42,6 +42,7 @@ export const SearchResults = (props) => {
         policyResults.push(_.maxBy(selectedPolicies, 'policyVersion'));
       }
     }
+
     return (
       <div className="quote-list">
         {props.search && props.search.isLoading && <Loader />}
@@ -62,7 +63,7 @@ export const SearchResults = (props) => {
                   <span className="effctive-date">Effective Date</span>
                 </li>
                 <li>
-                  <a onClick={() => props.handleNewTab(policy, props)} className={`${policy.policyNumber + policy.property.physicalAddress.address1} row`}>
+                  <a id={policy.PolicyID} onClick={() => props.handleNewTab(policy, props)} className={`${policy.policyNumber + policy.property.physicalAddress.address1} row`}>
                     <span className="quote-no">{policy.policyNumber}</span>
                     <span className="property-address">{
                   `${policy.property.physicalAddress.address1}
