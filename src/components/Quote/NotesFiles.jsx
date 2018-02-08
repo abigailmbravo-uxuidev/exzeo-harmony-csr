@@ -10,9 +10,13 @@ import Footer from '../Common/Footer';
 
 export class NotesFiles extends Component {
 
-  componentDidMount () {
-    const { quoteData } = this.props;
-    if (quoteData && quoteData.quoteNumber) this.props.actions.serviceActions.getNotes(quoteData.quoteNumber);
+  componentWillReceiveProps(nextProps) {
+    if (!_.isEqual(this.props, nextProps)) {
+      if (nextProps.quoteData && nextProps.quoteData.quoteNumber) {
+        const quoteNumber = nextProps.quoteData.quoteNumber;
+        this.props.actions.serviceActions.getNotes(quoteNumber);
+      }
+    }
   }
 
   render() {

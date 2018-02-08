@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import moment from 'moment';
+import { reduxForm, Form } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import RadioField from '../Form/inputs/RadioField';
 import Downloader from './Downloader';
 
-export const SearchPanel = props => (
+const handleInitialize = state => ({
+  attachmentStatus: false
+});
+
+const SearchPanel = props => (
   <div className="search">
     <label>Search Table Data</label>
     { props.searchField }
@@ -13,11 +20,15 @@ export const SearchPanel = props => (
 
 export const filterNotesByType = (notes, type) => {
   if (!Array.isArray(notes)) return [];
-  return type ? notes.filter(n => n.attachments.length > 0) : notes.filter(n => n.content);
+  if (type) {
+    return notes.filter(n => n.attachments.length > 0);
+  } else {
+    return notes.filter(n => n.content);
+  }
 };
 
 export const Notes = (props) => {
-  const { notes, attachmentStatus, setNoteStatus } = props;
+  const { notes, fieldValues } = props;
 
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
   const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
@@ -36,25 +47,34 @@ export const Notes = (props) => {
         />
       )}
     </span>
-  );
+  )
 
   return (
-    <div className="note-grid-wrapper btn-tabs">
+    <div className="note-grid-wrapper">
       <div className="filter-tabs">
-        <button type="button" className={`btn btn-tab ${!attachmentStatus ? 'selected' : ''}`} onClick={() => setNoteStatus(false)}>Notes</button>
-        <button type="button" className={`btn btn-tab ${attachmentStatus ? 'selected' : ''}`} onClick={() => setNoteStatus(true)}>Documents</button>
+        <RadioField
+          name={'attachmentStatus'} styleName={''} label={''} onChange={ () => {} } segmented answers={[
+            {
+              answer: false,
+              label: 'Notes'
+            }, {
+              answer: true,
+              label: 'Documents'
+            }
+          ]}
+        />
       </div>
       <BootstrapTable
-        data={filterNotesByType(notes, attachmentStatus)}
+        data={filterNotesByType(notes, fieldValues.attachmentStatus)}
         options={options}
         search
         multiColumnSearch
       >
-        <TableHeaderColumn dataField="_id" isKey hidden>ID</TableHeaderColumn>
+        <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
         <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdDate" dataSort dataFormat={formatCreateDate} >Created</TableHeaderColumn>
         <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataSort dataFormat={showCreatedBy} >Author</TableHeaderColumn>
-        {!attachmentStatus && <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="contactType" dataSort >Note Type</TableHeaderColumn>}
-        {!attachmentStatus && <TableHeaderColumn className="note" columnClassName="note" dataField="content" dataSort dataFormat={formatNote} >Note</TableHeaderColumn>}
+        {!fieldValues.attachmentStatus && <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="contactType" dataSort >Note Type</TableHeaderColumn>}
+        {!fieldValues.attachmentStatus && <TableHeaderColumn className="note" columnClassName="note" dataField="content" dataSort dataFormat={formatNote} >Note</TableHeaderColumn>}
         <TableHeaderColumn className="count" columnClassName="count" dataField="attachments" dataFormat={attachmentCount} hidden />
         <TableHeaderColumn className="file-type" columnClassName="file-type" dataField="attachments" dataSort dataFormat={attachmentType} >File Type</TableHeaderColumn>
         <TableHeaderColumn className="attachments" columnClassName="attachments" dataField="attachments" dataFormat={attachmentUrl} dataSort >Attachments</TableHeaderColumn>
@@ -64,36 +84,34 @@ export const Notes = (props) => {
 };
 
 export class NoteList extends Component {
-  state = { attachmentStatus: false };
-  setNoteStatus = (status) => this.setState({ attachmentStatus: status });
-
-  render () {
+  render() {
     return (
     <div>
-      <form id="NotesFiles" onSubmit={() => null} noValidate>
+      <Form id="NotesFiles" onSubmit={() => null} noValidate>
         <div className="scroll">
           <div className="form-group survey-wrapper" role="group">
             <h3>History</h3>
             <section>
               <div className="notes-list">
-                <Notes {...this.props} attachmentStatus={this.state.attachmentStatus} setNoteStatus={this.setNoteStatus} />
+                <Notes {...this.props} />
               </div>
             </section>
           </div>
         </div>
-      </form>
+      </Form>
     </div>
     );
   }
 }
 
 NoteList.propTypes = {
-  notes: PropTypes.array,
-  actions: PropTypes.shape({
-    errorActions: PropTypes.shape({
-      setAppError: PropTypes.func.isRequired
-    })
-  })
+  notes: PropTypes.array
 };
 
-export default NoteList;
+const mapStateToProps = state => ({
+  fieldValues: state.form && state.form.NotesFiles ? state.form.NotesFiles.values : {},
+  initialValues: handleInitialize(state),
+  error: state.error
+});
+
+export default connect(mapStateToProps)(reduxForm({ form: 'NotesFiles', enableReinitialize: true })(NoteList));
