@@ -15,16 +15,6 @@ export class NotesFiles extends Component {
     if (quoteData && quoteData.quoteNumber) this.props.actions.serviceActions.getNotes(quoteData.quoteNumber);
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log('receiving...')
-    if (!_.isEqual(this.props, nextProps)) {
-      if (nextProps.quoteData && nextProps.quoteData.quoteNumber) {
-        const quoteNumber = nextProps.quoteData.quoteNumber;
-        this.props.actions.serviceActions.getNotes(quoteNumber);
-      }
-    }
-  }
-
   render() {
     return (
       <QuoteBaseConnect>
