@@ -107,14 +107,6 @@ export const getPaymentDescription = (event, props) => {
   );
 };
 
-export const hideBillingModal = (props) => {
-  props.actions.appStateActions.setAppState(
-    props.appState.modelName, props.appState.instanceId,
-    { ...props.appState.data, showBillingEditModal: false }
-  );
-  props.dispatch(props.reset('MortgageBilling'));
-};
-
 export const handleAISubmit = (data, dispatch, props) => {
   const { appState, actions, policy } = props;
   const workflowId = appState.instanceId;
