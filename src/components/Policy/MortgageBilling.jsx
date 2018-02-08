@@ -372,7 +372,6 @@ export class MortgageBilling extends Component {
     });
 
     const validAdditionalInterestTypes = checkValidTypes(additionalInterests, this.props.appState.data.selectedAI || {});
-
     return (
       <PolicyConnect>
         <div className="route-content">

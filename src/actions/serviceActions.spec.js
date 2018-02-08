@@ -181,6 +181,35 @@ describe('Service Actions', () => {
       });
   });
 
+  it('should call start searchAgents', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'agency.services',
+        method: 'GET',
+        path: 'v1/agents/TTIC/FL?firstName=Test&lastName=Test&agentCode=003&mailingAddress=123Main&licenseNumber=licNumber'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    return serviceActions.searchAgents('TTIC', 'FL', 'Test', 'Test', '003', '123Main', 'licNumber')(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+      });
+  });
+
   it('should call start searchAgencies', () => {
     const mockAdapter = new MockAdapter(axios);
 
