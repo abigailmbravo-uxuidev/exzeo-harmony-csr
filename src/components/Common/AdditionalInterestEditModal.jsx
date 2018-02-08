@@ -92,7 +92,7 @@ export const setMortgageeValues = (val, props) => {
 
 export const AdditionalInterestEditModal = (props) => {
   const {
-    appState, handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, selectedAI, questions, isEndorsement, validAdditionalInterestTypes, additionalInterests, fieldValues
+    appState, handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, selectedAI, questions, isEndorsement, validAdditionalInterestTypes, additionalInterests
   } = props;
 
   const mortgageeOrderAnswers = _.cloneDeep(getAnswers('order', questions));
