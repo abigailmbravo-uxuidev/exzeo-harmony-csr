@@ -26,11 +26,24 @@ export const showEffectiveDatePopUp = (props) => {
 
 export const hideReinstatePolicyPopUp = (props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
-      { ...props.appState.data, showReinstatePolicyPopUp: false });
+      { ...props.appState.data, showReinstatePolicyPopUp: false, submitting: false });
 };
 
 export const reinstatePolicySubmit = (data, dispatch, props) => {
-  hideReinstatePolicyPopUp(props)
+
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, submitting: true });
+
+  const { policy, summaryLedger } = props;
+  const submitData = {
+    "policyID": policy.policyID,
+    "policyNumber": policy.policyNumber, 
+    "billingStatus": summaryLedger.status.code, 
+    "transactionType":  "Reinstatement"
+    };
+    props.actions.serviceActions.createTransaction(submitData).then(() => {
+      hideReinstatePolicyPopUp(props);
+      props.actions.policyStateActions.updatePolicy(true, policy.policyNumber);
+    });
 }
 
 export const changeEffectiveDate = (data, dispatch, props) => {
