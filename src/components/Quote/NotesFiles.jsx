@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 import * as serviceActions from '../../actions/serviceActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import * as errorActions from '../../actions/errorActions';
@@ -14,16 +13,6 @@ export class NotesFiles extends Component {
   componentDidMount () {
     const { quoteData } = this.props;
     if (quoteData && quoteData.quoteNumber) this.props.actions.serviceActions.getNotes(quoteData.quoteNumber);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    console.log('receiving...')
-    if (!_.isEqual(this.props, nextProps)) {
-      if (nextProps.quoteData && nextProps.quoteData.quoteNumber) {
-        const quoteNumber = nextProps.quoteData.quoteNumber;
-        this.props.actions.serviceActions.getNotes(quoteNumber);
-      }
-    }
   }
 
   render() {
