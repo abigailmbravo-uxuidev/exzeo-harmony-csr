@@ -78,7 +78,7 @@ export const getMortgageeAnswers = (questions, additionalInterests) => {
 
 export const AdditionalInterestModal = (props) => {
   const {
-    appState, handleSubmit, verify, hideAdditionalInterestModal, questions, additionalInterests, fieldValues
+    appState, handleSubmit, verify, hideAdditionalInterestModal, questions, additionalInterests
   } = props;
 
   const mortgageeOrderAnswers = getMortgageeAnswers(questions, additionalInterests);
