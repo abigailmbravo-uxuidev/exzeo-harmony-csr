@@ -31,11 +31,10 @@ export const handleFormSubmit = (data, dispatch, props) => {
 export const handleInitialize = (state) => {
   const values = {};
   const quoteData = state.service.quote || {};
-
+  
   if (!quoteData) return values;
 
   const underwritingExceptions = quoteData && quoteData.underwritingExceptions ? quoteData.underwritingExceptions : [];
-
   for (let i = 0; i < underwritingExceptions.length; i += 1) {
     const uwException = underwritingExceptions[i];
     if (uwException.canOverride) {
@@ -67,6 +66,8 @@ export const UnderwritingValidationBar = (props) => {
       }
     });
   }
+
+  console.log(underwritingExceptions)
 
   return (
     <Form id="UnderwritingOverride" onSubmit={handleSubmit(handleFormSubmit)} noValidate>

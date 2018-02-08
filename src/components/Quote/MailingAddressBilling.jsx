@@ -188,8 +188,6 @@ export class MailingAddressBilling extends Component {
 
   componentDidMount() {
     if (this.props.appState.instanceId && this.props.quoteData && this.props.quoteData.rating) {
-      this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
-
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         submitting: true
@@ -215,6 +213,7 @@ export class MailingAddressBilling extends Component {
 
       this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
     .then(() => {
+      this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         selectedLink: 'mailing'
