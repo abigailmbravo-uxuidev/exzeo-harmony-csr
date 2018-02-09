@@ -8,9 +8,16 @@ import moment from 'moment';
 import * as cgActions from '../../actions/cgActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as errorActions from '../../actions/errorActions';
 
 export const submitNote = (data, dispatch, props) => {
-  const { user, noteType, documentId } = props;
+  const { actions, user, noteType, documentId } = props;
+  if(!user.given_name || !user.family_name) {
+    const message = 'There was a problem with your user profile. Please logout of Harmony and try logging in again.';
+    props.closeButtonHandler();
+    actions.errorActions.setAppError({ message });
+    return false;
+  }
   const noteData = {
     number: documentId,
     noteType,
@@ -219,7 +226,8 @@ const mapDispatchToProps = dispatch => ({
   actions: {
     cgActions: bindActionCreators(cgActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
+    appStateActions: bindActionCreators(appStateActions, dispatch),
+    errorActions: bindActionCreators(errorActions, dispatch)
   }
 });
 
