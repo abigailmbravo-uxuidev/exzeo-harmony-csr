@@ -4,7 +4,7 @@ import moment from 'moment';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Downloader from './Downloader';
 
-const SearchPanel = props => (
+export const SearchPanel = props => (
   <div className="search">
     <label>Search Table Data</label>
     { props.searchField }
@@ -50,7 +50,7 @@ export const Notes = (props) => {
         search
         multiColumnSearch
       >
-        <TableHeaderColumn dataField="_id"isKey hidden>ID</TableHeaderColumn>
+        <TableHeaderColumn dataField="_id" isKey hidden>ID</TableHeaderColumn>
         <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdDate" dataSort dataFormat={formatCreateDate} >Created</TableHeaderColumn>
         <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataSort dataFormat={showCreatedBy} >Author</TableHeaderColumn>
         {!attachmentStatus && <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="contactType" dataSort >Note Type</TableHeaderColumn>}
@@ -88,7 +88,12 @@ export class NoteList extends Component {
 }
 
 NoteList.propTypes = {
-  notes: PropTypes.array
+  notes: PropTypes.array,
+  actions: PropTypes.shape({
+    errorActions: PropTypes.shape({
+      setAppError: PropTypes.func.isRequired
+    })
+  })
 };
 
 export default NoteList;
