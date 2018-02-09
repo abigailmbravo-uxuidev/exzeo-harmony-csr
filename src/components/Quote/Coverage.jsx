@@ -25,7 +25,6 @@ import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import DateField from '../Form/inputs/DateField';
 import Footer from '../Common/Footer';
-import Loader from '../Common/Loader';
 
 const setPHToggle = (props) => {
   const { dispatch } = props;

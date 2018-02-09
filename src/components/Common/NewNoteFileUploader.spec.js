@@ -76,6 +76,9 @@ describe('Testing NewNoteFileUploader component', () => {
         },
         serviceActions: {
           addNote() {}
+        },
+        errorActions: {
+          setAppError() {}
         }
       },
       fieldQuestions: [],

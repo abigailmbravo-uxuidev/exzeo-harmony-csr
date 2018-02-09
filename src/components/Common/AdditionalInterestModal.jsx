@@ -16,8 +16,6 @@ import * as serviceActions from '../../actions/serviceActions';
 import * as policyStateActions from '../../actions/policyStateActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 import Loader from './Loader';
-import { addAdditionalInterest } from '../Policy/MortgageBilling';
-import { start } from '../../actions/cgActions';
 
 const handleInitialize = (state) => {
   const mortgageeOrderAnswers = getMortgageeAnswers(state.questions, _.get(state, 'service.latestPolicy.additionalInterests') || _.get(state, 'service.quote.additionalInterests') || null);

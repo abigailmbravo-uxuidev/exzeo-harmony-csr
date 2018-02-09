@@ -67,8 +67,6 @@ export const UnderwritingValidationBar = (props) => {
     });
   }
 
-  console.log(underwritingExceptions)
-
   return (
     <Form id="UnderwritingOverride" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
       <aside className="underwriting-validation">
