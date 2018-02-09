@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 import _ from 'lodash';
-import ConnectedApp, { NotesFiles, NoteList, filterNotesByType } from './NotesFiles';
+import ConnectedApp, { NotesFiles } from './NotesFiles';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -89,18 +89,9 @@ describe('Testing NotesFiles component', () => {
         }
       }
     };
-    const wrapper = shallow(<NoteList {...props} />);
-    expect(wrapper);
 
     const notesFiles = shallow(<NotesFiles store={store} {...props} />);
     expect(notesFiles);
-    notesFiles.instance().componentDidMount();
-
-    notesFiles.instance().componentWillReceiveProps({ quoteData: { quoteNumber: '1234' } });
-  });
-
-  it('test filterNotesByType', () => {
-    expect(filterNotesByType(null, true)).toEqual([]);
-    expect(filterNotesByType([], true)).toEqual([]);
+    notesFiles.instance().componentDidMount({ quoteData: { quoteNumber: '1234' } });
   });
 });
