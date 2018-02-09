@@ -650,6 +650,9 @@ describe('Testing Coverage component', () => {
       },
       handleSubmit: fn => fn,
       actions: {
+        quoteStateActions: {
+          getLatestQuote() {}
+        },
         serviceActions: {
           getAgencies() {},
           getAgentsByAgency() {}
@@ -799,6 +802,9 @@ describe('Testing Coverage component', () => {
       },
       handleSubmit: fn => fn,
       actions: {
+        quoteStateActions: {
+          getLatestQuote() {}
+        },
         serviceActions: {
           getAgencies() {},
           getAgentsByAgency() {}

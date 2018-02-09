@@ -22,7 +22,7 @@ const handleInitialize = (state) => {
 export const handleGetUnderwritingExceptions = state => state.service.quote && state.service.quote.underwritingExceptions ? state.service.quote.underwritingExceptions : [];
 
 export const handleFormSubmit = (data, dispatch, props) => {
-  const { appState, actions, quoteData } = props;
+  const { appState, actions } = props;
 
 
   const workflowId = appState.instanceId;
