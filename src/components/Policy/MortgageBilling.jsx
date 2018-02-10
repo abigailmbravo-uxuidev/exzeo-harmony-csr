@@ -261,7 +261,8 @@ export const checkValidTypes = (additionalInterests, selectedAI) => {
 };
 
 export class MortgageBilling extends Component {
-  componentWillMount = () => {
+  componentDidMount = () => {
+    this.props.actions.serviceActions.getPaymentHistory(this.props.policy.policyNumber);
     this.props.actions.serviceActions.getPaymentOptionsApplyPayments();
     this.props.actions.appStateActions.setAppState(
       this.props.appState.modelName,
@@ -425,6 +426,18 @@ export class MortgageBilling extends Component {
                           label="Description"
                           validations={['required']}
                           answers={_.map(this.props.appState.data.paymentDescription || [], description => ({ answer: description }))}
+                        />
+                      </div>
+                    </div>
+                    <div className="flex-child">
+                      <div className="form-group">
+                        <CurrencyField
+                          validations={['range']}
+                          label="Amount"
+                          styleName=""
+                          name="amount"
+                          min={-1000000}
+                          max={1000000}
                         />
                       </div>
                     </div>
