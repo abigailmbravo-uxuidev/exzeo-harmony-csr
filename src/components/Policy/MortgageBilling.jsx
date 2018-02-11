@@ -441,18 +441,6 @@ export class MortgageBilling extends Component {
                         />
                       </div>
                     </div>
-                    <div className="flex-child">
-                      <div className="form-group">
-                        <CurrencyField
-                          validations={['range']}
-                          label="Amount"
-                          styleName=""
-                          name="amount"
-                          min={-1000000}
-                          max={1000000}
-                        />
-                      </div>
-                    </div>
                   </div>
                   <div className="btn-footer">
                     <button className="btn btn-secondary" type="button" form="MortgageBilling" onClick={this.clearForm}>Cancel</button>
