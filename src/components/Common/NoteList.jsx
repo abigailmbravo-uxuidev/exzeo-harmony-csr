@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+<<<<<<< HEAD
 import moment from 'moment-timezone';
+=======
+import moment from 'moment';
+>>>>>>> 56d71de4f2794839a55fa58d74dfa8d82248edcc
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Downloader from './Downloader';
 
