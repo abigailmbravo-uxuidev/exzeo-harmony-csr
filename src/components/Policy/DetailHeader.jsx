@@ -4,13 +4,22 @@ import { bindActionCreators } from 'redux';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import * as appStateActions from '../../actions/appStateActions';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import * as serviceActions from '../../actions/serviceActions';
 import * as policyStateActions from '../../actions/policyStateActions';
 
+export const showEffectiveDatePopUp = (props) => {
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data, showEffectiveDateChangePopUp: true });
+};
+
 export class DetailHeader extends Component {
 
+  componentDidMount() {
+    this.props.actions.serviceActions.getEffectiveDateChangeReasons();
+  }
   componentWillReceiveProps(nextProps) {
     if (nextProps.policyState.update && nextProps.policyState.policyNumber) {
       this.props.actions.serviceActions.getLatestPolicy(nextProps.policyState.policyNumber);
@@ -31,7 +40,7 @@ export class DetailHeader extends Component {
           <div>
             <dd>{_.get(policy, 'product') === 'HO3' ? `${_.get(policy, 'product')} Homeowners` : _.get(policy, 'product')}</dd>
             <dd>{_.get(policy, 'policyNumber')}</dd>
-            <dd>{`${_.get(policy, 'status')} / ${_.get(summaryLedger, 'status.displayText')}`}</dd>
+            <dd className="policy-status">{`${_.get(policy, 'status')} / ${_.get(summaryLedger, 'status.displayText')}`}</dd>
           </div>
         </dl>
       </section>
@@ -91,7 +100,7 @@ export class DetailHeader extends Component {
       <section id="policyEffectiveDate" className="policyEffectiveDate">
         <dl>
           <div>
-            <dt>Effective Date</dt>
+            <dt>Effective Date <button id="effective-date" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showEffectiveDatePopUp(this.props)}><i className="fa fa-pencil-square" />Edit</button></dt>
             <dd>{moment.utc(_.get(policy, 'effectiveDate')).format('MM/DD/YYYY')}</dd>
           </div>
         </dl>
@@ -112,6 +121,7 @@ export class DetailHeader extends Component {
           </div>
         </dl>
       </section>
+
     </div>);
   }
 
@@ -133,7 +143,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: {
     policyStateActions: bindActionCreators(policyStateActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch)
+    serviceActions: bindActionCreators(serviceActions, dispatch),
+    appStateActions: bindActionCreators(appStateActions, dispatch)
   }
 });
 

@@ -5,7 +5,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
 import localStorage from 'localStorage';
-import ConnectedApp, { Splash, handleNewTab } from './Splash';
+import ConnectedApp, { Splash, handleNewTab, handleSelectQuote } from './Splash';
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
@@ -381,59 +381,7 @@ const policy = {
   product: 'HO3'
 };
 
-function wrapWithContext(context, contextTypes, children) {
-  const wrapperWithContext = React.createClass({ //eslint-disable-line
-    childContextTypes: contextTypes,
-    getChildContext() { return context; },
-    render() { return React.createElement('div', null, children); }
-  });
-
-  return React.createElement(wrapperWithContext);
-}
-
 describe('Testing Splash component', () => {
-  it('should test Splash', () => {
-    const initialState = {
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {},
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        modelName: 'bb'
-      }
-    };
-    const store = mockStore(initialState);
-    const props = {
-      actions: {
-        cgActions: {
-          batchCompleteTask() { return Promise.resolve(); }
-        },
-        appStateActions: {
-          setAppState() {}
-        }
-      },
-      fieldQuestions: [],
-      quoteData,
-      dispatch: store.dispatch,
-      appState: {
-        data: {
-          submitting: false
-        }
-      },
-      ...propTypes
-    };
-    const wrapper = shallow(<Splash store={store} {...props} />);
-    expect(wrapper);
-    wrapper.instance().handleSelectQuote(props.quoteData, props);
-    wrapper.instance().handleSelectAddress(props.quoteData.property, props);
-    wrapper.instance().handleSelectPolicy(policy, props);
-  });
-
   it('should test handleNewTab address', () => {
     const taskData = {
       firstName: '',
@@ -492,6 +440,9 @@ describe('Testing Splash component', () => {
 
   it('should test mount', () => {
     const initialState = {
+      service: {
+        agencies: []
+      },
       cg: {
         bb: {
           data: {
@@ -511,6 +462,9 @@ describe('Testing Splash component', () => {
     const store = mockStore(initialState);
     const props = {
       actions: {
+        appStateActions: {
+          setAppState() {}
+        },
         questionsActions: {
           getUIQuestions() { }
         },
@@ -538,6 +492,17 @@ describe('Testing Splash component', () => {
     </Provider>);
     expect(wrapper.find(Splash).props()).toEqual(props);
 
+    const wrapperComponent = shallow( <Splash {...props} />);
     wrapper.setProps({});
+
+    const wrapper2 = shallow(<Splash store={store} {...props} />)
+
+    wrapper2.instance().handleSelectQuote(quoteData, props);
+    wrapper2.instance().handleSelectAddress({ physicalAddress: {
+      state: 'FL'
+    }}, props)
+    wrapper2.instance().handleSelectPolicy(policy, props);
+
+
   });
 });

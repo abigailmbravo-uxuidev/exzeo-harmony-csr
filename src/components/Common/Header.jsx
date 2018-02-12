@@ -17,12 +17,11 @@ const Header = props => (
       </a>
       <button className="btn-icon btn-ellipsis-v"><i className="fa fa-ellipsis-v" /></button>
       <nav className="fade-in">
-        <a href="" className="active">Policy Management</a>
-        { /* <a href="">Agency Management</a>
-        <a href="">User Management</a> */ }
+        <a href="" className="active">Policy</a>
+        { /* <a href="">User Management</a> */ }
         <div className="user-name">{ props.authState && props.authState.userProfile ? props.authState.userProfile.name : ''}</div>
-        <button className="btn btn-action"><i className="fa fa-gear" /></button>
-        <button className="btn logout btn-action" type="button" onClick={() => handleLogout(props.auth)}><i className="fa fa-sign-out" /></button>
+        <button tabIndex={'0'} className="btn btn-action"><i className="fa fa-gear" /></button>
+        <button tabIndex={'0'} className="btn logout btn-action" type="button" onClick={() => handleLogout(props.auth)}><i className="fa fa-sign-out" /></button>
       </nav>
     </div>
   </header>

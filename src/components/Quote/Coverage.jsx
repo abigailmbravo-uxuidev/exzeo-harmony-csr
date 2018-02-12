@@ -7,14 +7,14 @@ import localStorage from 'localStorage';
 import moment from 'moment';
 import momentTZ from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
-import { reduxForm, Form, propTypes, change } from 'redux-form';
+import { batchActions } from 'redux-batched-actions';
+import { reduxForm, Form, propTypes, change, Field } from 'redux-form';
 import * as serviceActions from '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as questionsActions from '../../actions/questionsActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
-import ClearErrorConnect from '../Error/ClearError';
 import TextField from '../Form/inputs/TextField';
 import PhoneField from '../Form/inputs/PhoneField';
 import HiddenField from '../Form/inputs/HiddenField';
@@ -26,18 +26,49 @@ import normalizeNumbers from '../Form/normalizeNumbers';
 import DateField from '../Form/inputs/DateField';
 import Footer from '../Common/Footer';
 
-export const handleGetQuoteData = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName])
-    ? state.cg[state.appState.modelName].data
-    : null;
-  if (!taskData) { return {}; }
-  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
-    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
-    : {};
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
-    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
-    : quoteEnd;
-  return quoteData;
+const setPHToggle = (props) => {
+  const { dispatch } = props;
+  dispatch(change('Coverage', 'clearFields', false));
+};
+
+export const clearSecondaryPolicyholder = (value, props) => {
+  const { dispatch, quoteData } = props;
+  if (!value) {
+    const pH2email = _.get(quoteData, 'policyHolders[1].emailAddress');
+    const pH2FirstName = _.get(quoteData, 'policyHolders[1].firstName');
+    const pH2LastName = _.get(quoteData, 'policyHolders[1].lastName');
+    const pH2phone = normalizePhone(_.get(quoteData, 'policyHolders[1].primaryPhoneNumber') || '');
+    const pH2phone2 = normalizePhone(_.get(quoteData, 'policyHolders[1].secondaryPhoneNumber') || '');
+    dispatch(batchActions([
+      change('Coverage', 'pH2email', pH2email),
+      change('Coverage', 'pH2FirstName', pH2FirstName),
+      change('Coverage', 'pH2LastName', pH2LastName),
+      change('Coverage', 'pH2phone', pH2phone),
+      change('Coverage', 'pH2phone2', pH2phone2)
+    ]));
+  } else {
+    dispatch(batchActions([
+      change('Coverage', 'pH2email', ''),
+      change('Coverage', 'pH2FirstName', ''),
+      change('Coverage', 'pH2LastName', ''),
+      change('Coverage', 'pH2phone', ''),
+      change('Coverage', 'pH2phone2', '')
+    ]));
+  }
+};
+
+export const handleGetQuoteData = (state) => { 
+  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) 
+    ? state.cg[state.appState.modelName].data 
+    : null; 
+  if (!taskData) { return {}; } 
+  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' }) 
+    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result 
+    : {}; 
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) 
+    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result 
+    : quoteEnd; 
+  return quoteData; 
 };
 
 export const handleGetZipCodeSettings = (state) => {
@@ -66,10 +97,10 @@ const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answ
 export const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
 
 export const handleInitialize = (state) => {
-  const quoteData = handleGetQuoteData(state);
+  const quoteData = handleGetQuoteData(state); 
   const questions = state.questions;
   const values = {};
-
+  values.clearFields = false;
   values.electronicDelivery = _.get(quoteData, 'policyHolders[0].electronicDelivery') || false;
 
   values.agencyCode = _.get(quoteData, 'agencyCode');
@@ -162,13 +193,17 @@ export const handleInitialize = (state) => {
 };
 
 const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
+const checkSentToDocusign = state => state === 'Application Sent DocuSign';
 
 const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question') || '';
 
 export const handleAgencyChange = (props, agencyCode, isInit) => {
   if (!isInit) {
-    props.dispatch(change('Coverage', 'agencyCode', agencyCode));
-    props.dispatch(change('Coverage', 'agentCode', ''));
+    
+    props.dispatch(batchActions([
+      change('Coverage', 'agencyCode', agencyCode),
+      change('Coverage', 'agentCode', '')
+    ]));
   }
 
   if (agencyCode) {
@@ -191,7 +226,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
     ...props.appState.data,
     submitting: true
   });
-  submitData.effectiveDate = momentTZ.tz(momentTZ.utc(submitData.effectiveDate).format('YYYY-MM-DD'), props.zipCodeSettings.timezone).format();
+  submitData.effectiveDate = momentTZ.tz(momentTZ.utc(submitData.effectiveDate).format('YYYY-MM-DD'), props.zipCodeSettings.timezone).utc().format();
 
   submitData.agencyCode = String(data.agencyCode);
   submitData.agentCode = String(data.agentCode);
@@ -325,6 +360,7 @@ export class Coverage extends Component {
       const workflowId = this.props.appState.instanceId;
       this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
     .then(() => {
+      this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         selectedLink: 'customerData'
@@ -344,7 +380,7 @@ export class Coverage extends Component {
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props, nextProps)) {
       const quoteData = nextProps.quoteData;
-      if (quoteData.companyCode && quoteData.state && quoteData.agencyCode && !setAgents) {
+      if (quoteData && quoteData.companyCode && quoteData.state && quoteData.agencyCode && !setAgents) {
         this.props.actions.serviceActions.getAgencies(quoteData.companyCode, quoteData.state);
         this.props.actions.serviceActions.getAgentsByAgency(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
         setAgents = true;
@@ -371,11 +407,12 @@ export class Coverage extends Component {
     if (fieldValues.personalProperty !== 'other') {
       dispatch(change('Coverage', 'personalPropertyAmount', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.personalProperty)))));
     }
-    dispatch(change('Coverage', 'calculatedHurricane', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.hurricane)))));
 
-    dispatch(change('Coverage', 'lossOfUse', String(setPercentageOfValue(Number(dwellingNumber), 10))));
-
-    dispatch(change('Coverage', 'calculatedSinkhole', String(setPercentageOfValue(Number(dwellingNumber), 10))));
+    dispatch(batchActions([
+      change('Coverage', 'calculatedHurricane', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.hurricane)))),
+      change('Coverage', 'lossOfUse', String(setPercentageOfValue(Number(dwellingNumber), 10))),
+      change('Coverage', 'calculatedSinkhole', String(setPercentageOfValue(Number(dwellingNumber), 10)))
+    ]));
   }
 
   updateDependencies = (event, field, dependency) => {
@@ -404,10 +441,13 @@ export class Coverage extends Component {
   }
 
   render() {
-    const { quoteData, fieldValues, handleSubmit, initialValues, pristine, agents, agencies, questions, zipCodeSettings, dirty } = this.props;
+    const { quoteData, fieldValues, handleSubmit, initialValues, pristine, agents, agencies, questions, dirty } = this.props;
+
+    if(!quoteData) {
+      return (<QuoteBaseConnect></QuoteBaseConnect>)
+    }
     return (
       <QuoteBaseConnect>
-        <ClearErrorConnect />
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         <div className="route-content">
           <Form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
@@ -420,7 +460,7 @@ export class Coverage extends Component {
                   <h3>Produced By</h3>
                   <div className="flex-parent produced-by-wrapper">
                     <div className="flex-child effectiveDate">
-                      <DateField validations={['date']} label={'Effective Date'} name={'effectiveDate'} min={zipCodeSettings ? zipCodeSettings.minEffectiveDate : null} max={zipCodeSettings ? zipCodeSettings.maxEffectiveDate : null} />
+                      <DateField validations={['required', 'date']} label={'Effective Date'} name={'effectiveDate'} />
                     </div>
                     <div className="flex-child agencyCode">
                       <SelectField
@@ -483,26 +523,57 @@ export class Coverage extends Component {
                     </div>
                   </div>
                   <div id="policy-holder-b" className="policy-holder-b flex-child">
-                    <h3>Secondary Policyholder</h3>
                     <div className="flex-parent policy-holder-b-name">
                       <div className="flex-child policy-holder-b-first-name">
-                        <TextField label={'First Name'} dependsOn={['pH2LastName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2FirstName'} />
+                        <h3>Secondary Policyholder
+                        </h3>
+                      </div>
+                      <div className="flex-child">
+                        <Field
+                          disabled={checkSentToDocusign(quoteData.quoteState)}
+                          onChange={event => clearSecondaryPolicyholder(String(event.target.value) === 'false', this.props)}
+                          name={'clearFields'}
+                          id={'clearFields'}
+                          component="input"
+                          type="checkbox"
+                        />
+                        <label htmlFor={'clearFields'}> Remove</label>
+                      </div>
+                    </div>
+                    <div className="flex-parent policy-holder-b-name">
+                      <div className="flex-child policy-holder-b-first-name">
+                        <TextField
+                          onChange={() => setPHToggle(this.props)}
+                          label={'First Name'} dependsOn={['pH2LastName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2FirstName'}
+                        />
                       </div>
                       <div className="flex-child policy-holder-b-last-name">
-                        <TextField label={'Last Name'} dependsOn={['pH2FirstName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2LastName'} />
+                        <TextField
+                          onChange={() => setPHToggle(this.props)}
+                          label={'Last Name'} dependsOn={['pH2FirstName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2LastName'}
+                        />
                       </div>
                     </div>
                     <div className="flex-parent policy-holder-b-phone">
                       <div className="flex-child policy-holder-b-primary-phone">
-                        <PhoneField label={'Primary Phone'} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2email']} styleName={''} name={'pH2phone'} validations={['phone']} />
+                        <PhoneField
+                          onChange={() => setPHToggle(this.props)}
+                          label={'Primary Phone'} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2email']} styleName={''} name={'pH2phone'} validations={['phone']}
+                        />
                       </div>
                       <div className="flex-child policy-holder-b-secondary-phone">
-                        <PhoneField label={'Secondary Phone'} styleName={''} name={'pH2phone2'} validations={['phone']} />
+                        <PhoneField
+                          onChange={() => setPHToggle(this.props)}
+                          label={'Secondary Phone'} styleName={''} name={'pH2phone2'} validations={['phone']}
+                        />
                       </div>
                     </div>
                     <div className="flex-parent policy-holder-b-email">
                       <div className="flex-child email-address">
-                        <TextField validations={['email']} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2phone']} label={'Email Address'} styleName={''} name={'pH2email'} />
+                        <TextField
+                          onChange={() => setPHToggle(this.props)}
+                          validations={['email']} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2phone']} label={'Email Address'} styleName={''} name={'pH2email'}
+                        />
                       </div>
                     </div>
                   </div>
@@ -899,10 +970,10 @@ export class Coverage extends Component {
         <div className="basic-footer btn-footer">
           <Footer />
           <div className="btn-wrapper">
-            <button aria-label="reset-btn form-coverage" className="btn btn-secondary" type="button" form="Coverage" onClick={() => this.props.reset('Coverage')}>
+            <button tabIndex={'0'} aria-label="reset-btn form-coverage" className="btn btn-secondary" type="button" form="Coverage" onClick={() => this.props.reset('Coverage')}>
               Reset
             </button>
-            <button aria-label="submit-btn form-coverage" className="btn btn-primary" type="submit" form="Coverage" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}>
+            <button tabIndex={'0'} aria-label="submit-btn form-coverage" className="btn btn-primary" type="submit" form="Coverage" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}>
               Update
             </button>
           </div>
@@ -939,7 +1010,7 @@ const mapStateToProps = state => ({
   agencies: state.service.agencies,
   fieldValues: _.get(state.form, 'Coverage.values', {}),
   initialValues: handleInitialize(state),
-  quoteData: handleGetQuoteData(state),
+  quoteData: handleGetQuoteData(state), 
   zipCodeSettings: handleGetZipCodeSettings(state),
   questions: state.questions
 });

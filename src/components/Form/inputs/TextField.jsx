@@ -15,6 +15,7 @@ export const TextInput = ({
   disabled,
   min,
   max,
+  dependsOn,
   name
 }) => {
   const { touched, error, warning } = meta;
@@ -47,6 +48,7 @@ export const TextInput = ({
         disabled={disabled}
         name={name}
         {...input}
+        tabIndex={'0'}
         type={type}
       />
       {Error}
@@ -90,6 +92,8 @@ TextInput.propTypes = {
    */
   max: PropTypes.number,
   min: PropTypes.number,
+
+  dependsOn: PropTypes.array,
 
   /**
    * Answer Type from original question

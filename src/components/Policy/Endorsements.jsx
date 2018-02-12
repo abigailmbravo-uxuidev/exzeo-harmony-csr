@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
-import { reduxForm, propTypes, change, Form, submit } from 'redux-form';
+import { reduxForm, propTypes, change, Form, Field } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import * as cgActions from '../../actions/cgActions';
 import * as serviceActions from '../../actions/serviceActions';
@@ -13,7 +13,6 @@ import * as appStateActions from '../../actions/appStateActions';
 import * as questionsActions from '../../actions/questionsActions';
 import * as errorActions from '../../actions/errorActions';
 import PolicyConnect from '../../containers/Policy';
-import ClearErrorConnect from '../Error/ClearError';
 import normalizePhone from '../Form/normalizePhone';
 import TextField from '../Form/inputs/TextField';
 import DisplayField from '../Form/inputs/DisplayField';
@@ -27,7 +26,8 @@ import DateField from '../Form/inputs/DateField';
 import Loader from '../Common/Loader';
 import * as policyStateActions from '../../actions/policyStateActions';
 import * as actionTypes from '../../actions/actionTypes';
-import normalizeNumbers from '../Form/normalizeNumbers';
+import { premiumEndorsmentList } from './endorsementTypes';
+import { batchActions } from 'redux-batched-actions';
 
 export const scrollToView = (elementName) => {
   const element = document.getElementById(elementName);
@@ -50,19 +50,53 @@ export const setCalculate = (props, reset) => {
     isCalculated: false
   });
 };
+
+export const setPHToggle = (props) => {
+  const { dispatch } = props;
+  dispatch(change('Endorsements', 'clearFields', false));
+  setCalculate(props, false);
+};
+
+export const clearSecondaryPolicyholder = (value, props) => {
+  const { dispatch, policy } = props;
+  if (!value) {
+    const pH2email = _.get(policy, 'policyHolders[1].emailAddress');
+    const pH2FirstName = _.get(policy, 'policyHolders[1].firstName');
+    const pH2LastName = _.get(policy, 'policyHolders[1].lastName');
+    const pH2phone = normalizePhone(_.get(policy, 'policyHolders[1].primaryPhoneNumber') || '');
+    const pH2secondaryPhone = normalizePhone(_.get(policy, 'policyHolders[1].secondaryPhoneNumber') || '');
+    dispatch(batchActions([
+      change('Endorsements', 'pH2email', pH2email),
+      change('Endorsements', 'pH2FirstName', pH2FirstName),
+      change('Endorsements', 'pH2LastName', pH2LastName),
+      change('Endorsements', 'pH2phone', pH2phone),
+      change('Endorsements', 'pH2secondaryPhone', pH2secondaryPhone)
+    ]));
+  } else {
+    dispatch(batchActions([
+      change('Endorsements', 'pH2email', ''),
+      change('Endorsements', 'pH2FirstName', ''),
+      change('Endorsements', 'pH2LastName', ''),
+      change('Endorsements', 'pH2phone', ''),
+      change('Endorsements', 'pH2secondaryPhone', '')
+    ]));
+  }
+};
+
+
 export const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 export const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question') || '';
 
 export const getNewPolicyNumber = (state) => {
   const taskData = (state.cg && state.appState && state.cg.endorsePolicyModelSave)
-      ? state.cg.endorsePolicyModelSave.data
-      : null;
+    ? state.cg.endorsePolicyModelSave.data
+    : null;
   if (!taskData || !taskData.model || !taskData.model.variables) { return null; }
 
   const policy = _.find(taskData.model.variables, { name: 'retrievePolicy' })
-      ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0]
-      : null;
+    ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0]
+    : null;
   return policy ? policy.policyNumber : null;
 };
 
@@ -89,6 +123,7 @@ export const setEndorsementDate = (effectiveDate, endPolicyDate) => {
 
 export const handleInitialize = (state) => {
   const policy = state.service.latestPolicy || {};
+  const rating = state.service.getRate || {};
   const questions = state.questions || [];
   const values = {};
   // values.agencyCode = '20000'; // _.get(policy, 'agencyCode');
@@ -103,10 +138,11 @@ export const handleInitialize = (state) => {
   const personalProperty = _.get(policy, 'coverageLimits.personalProperty.amount');
   const hurricane = _.get(policy, 'deductibles.hurricane.amount');
 
-// Coverage Top Left
+  // Coverage Top Left
+  values.clearFields = false;
   values.endorsementDateNew = setEndorsementDate(_.get(policy, 'effectiveDate'), _.get(policy, 'endDate'));
   values.dwellingAmount = _.get(policy, 'coverageLimits.dwelling.amount');
-  values.dwellingAmountNew = _.get(policy, 'coverageLimits.dwelling.amount');
+  values.dwellingAmountNew =`$ ${Number(_.get(policy, 'coverageLimits.dwelling.amount')).toLocaleString()}`;
   values.otherStructuresAmount = otherStructures;
   values.otherStructuresAmountNew = values.otherStructuresAmount;
   values.otherStructures = `${String(calculatePercentage(otherStructures, dwelling))}%`;
@@ -133,7 +169,7 @@ export const handleInitialize = (state) => {
   values.calculatedHurricaneNew = values.calculatedHurricane;
   values.sinkholePerilCoverage = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer') ? `10% of ${getQuestionName('dwellingAmount', questions)}` : 'Coverage Excluded';
   values.sinkholePerilCoverageNew = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer');
-// Coverage Top Right
+  // Coverage Top Right
   values.personalPropertyReplacementCostCoverage = _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer') ? 'Yes' : 'No';
   values.personalPropertyReplacementCostCoverageNew = _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer');
   values.ordinanceOrLaw = `${_.get(policy, 'coverageLimits.ordinanceOrLaw.amount')}%`;
@@ -167,7 +203,7 @@ export const handleInitialize = (state) => {
   values.billPlan = _.get(policy, 'billPlan');
   values.billPlanNew = values.billPlan;
 
-// Coverage Mid Left
+  // Coverage Mid Left
   values.roofCovering = _.get(policy, 'property.windMitigation.roofCovering');
   values.roofCoveringNew = values.roofCovering;
   values.roofDeckAttachment = _.get(policy, 'property.windMitigation.roofDeckAttachment');
@@ -183,7 +219,7 @@ export const handleInitialize = (state) => {
   values.electronicDelivery = _.get(policy, 'policyHolders[0].electronicDelivery') ? 'Yes' : 'No';
   values.electronicDeliveryNew = !!_.get(policy, 'policyHolders[0].electronicDelivery');
 
-// Coverage Mid Right
+  // Coverage Mid Right
   values.floridaBuildingCodeWindSpeed = _.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeed');
   values.floridaBuildingCodeWindSpeedNew = values.floridaBuildingCodeWindSpeed;
   values.floridaBuildingCodeWindSpeedDesign = _.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign');
@@ -194,9 +230,11 @@ export const handleInitialize = (state) => {
   values.internalPressureDesignNew = values.internalPressureDesign;
   values.windBorneDebrisRegion = _.get(policy, 'property.windMitigation.windBorneDebrisRegion');
   values.windBorneDebrisRegionNew = values.windBorneDebrisRegion;
-  values.windMitFactor = _.get(policy, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
-  values.windMitFactorNew = values.windMitFactor;
-// Home/Location Bottom Left
+  const windMitigationDiscount = _.get(policy, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
+  const updatedRatingWindMitDiscount = _.get(rating, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
+  values.windMitFactor = windMitigationDiscount;
+  values.windMitFactorNew = (updatedRatingWindMitDiscount === undefined || updatedRatingWindMitDiscount === null) ? windMitigationDiscount : updatedRatingWindMitDiscount;
+  // Home/Location Bottom Left
   values.yearBuilt = _.get(policy, 'property.yearBuilt');
   values.yearBuiltNew = values.yearBuilt;
   values.constructionType = _.get(policy, 'property.constructionType');
@@ -209,12 +247,12 @@ export const handleInitialize = (state) => {
   values.buildingCodeEffectivenessGradingNew = _.get(policy, 'property.buildingCodeEffectivenessGrading');
   values.familyUnits = _.get(policy, 'property.familyUnits');
   values.familyUnitsNew = values.familyUnits;
-// Home/Location Bottom Right
-  values.distanceToTidalWater = _.get(policy, 'property.distanceToTidalWater');
+  // Home/Location Bottom Right
+  values.distanceToTidalWater = Number(_.get(policy, 'property.distanceToTidalWater')).toLocaleString();
   values.distanceToTidalWaterNew = values.distanceToTidalWater;
-  values.distanceToFireHydrant = _.get(policy, 'property.distanceToFireHydrant');
+  values.distanceToFireHydrant = Number(_.get(policy, 'property.distanceToFireHydrant')).toLocaleString();
   values.distanceToFireHydrantNew = values.distanceToFireHydrant;
-  values.distanceToFireStation = _.get(policy, 'property.distanceToFireStation');
+  values.distanceToFireStation = Number(_.get(policy, 'property.distanceToFireStation')).toLocaleString();
   values.distanceToFireStationNew = values.distanceToFireStation;
   values.residenceType = _.get(policy, 'property.residenceType');
   values.residenceTypeNew = values.residenceType;
@@ -223,7 +261,7 @@ export const handleInitialize = (state) => {
   values.floodZone = _.get(policy, 'property.floodZone');
   values.floodZoneNew = values.floodZone;
 
-// Policyholder 1
+  // Policyholder 1
   values.pH1email = _.get(policy, 'policyHolders[0].emailAddress');
   values.pH1emailNew = values.pH1email;
   values.pH1FirstName = _.get(policy, 'policyHolders[0].firstName');
@@ -234,7 +272,7 @@ export const handleInitialize = (state) => {
   values.pH1secondaryPhone = normalizePhone(_.get(policy, 'policyHolders[0].secondaryPhoneNumber') || '');
   values.pH1secondaryPhoneNew = values.pH1secondaryPhone;
 
-// Policyholder 2
+  // Policyholder 2
   values.pH2email = _.get(policy, 'policyHolders[1].emailAddress');
   values.pH2emailNew = values.pH2email;
   values.pH2FirstName = _.get(policy, 'policyHolders[1].firstName');
@@ -256,7 +294,7 @@ export const handleInitialize = (state) => {
   values.zip = _.get(policy, 'policyHolderMailingAddress.zip');
   values.zipNew = values.zip;
 
-// Property
+  // Property
   values.propertyAddress1 = _.get(policy, 'property.physicalAddress.address1');
   values.propertyAddress1New = values.propertyAddress1;
   values.propertyAddress2 = _.get(policy, 'property.physicalAddress.address2');
@@ -298,10 +336,27 @@ export const updateDependencies = (event, field, dependency, props) => {
   dispatch(change('Endorsements', field, Number.isNaN(fieldValue) ? '' : String(fieldValue)));
 };
 
+export const updatepersonalPropertyDependnecies = (event, field, dependency, props) => {
+  setCalculate(props, false);
+
+  const { dispatch, fieldValues } = props;
+  if (Number.isNaN(event.target.value)) return;
+
+  if (Number(event.target.value) === 0) {
+    dispatch(change('Endorsements', 'personalPropertyReplacementCostCoverageNew', false));
+  } else {
+    dispatch(change('Endorsements', 'personalPropertyReplacementCostCoverageNew', _.get(props.policy, 'coverageOptions.personalPropertyReplacementCost.answer') || false));
+  }
+
+  const dependencyValue = String(fieldValues[dependency]).replace(/\D+/g, '');
+  const fieldValue = setPercentageOfValue(Number(dependencyValue), Number(event.target.value));
+
+  dispatch(change('Endorsements', field, Number.isNaN(fieldValue) ? '' : String(fieldValue)));
+};
 
 export const generateModel = (data, policyObject, props) => {
   const policy = policyObject;
-  const endorseDate = moment.tz(moment.utc(data.endorsementDateNew).format('YYYY-MM-DD'), props.zipcodeSettings.timezone).format();
+  const endorseDate = moment.tz(moment.utc(data.endorsementDateNew).format('YYYY-MM-DD'), props.zipcodeSettings.timezone).utc().format();
   const sinkholeAmount = _.get(policy, 'deductibles.sinkhole.amount') || 10;
 
   policy.transactionType = 'Endorsement';
@@ -312,6 +367,8 @@ export const generateModel = (data, policyObject, props) => {
     endorsementAmountNew: data.newEndorsementAmount || 0,
     endorsementDate: endorseDate,
     country: policy.policyHolderMailingAddress.country,
+    pH1Id: _.get(policy, 'policyHolders[0]._id') || '',
+    pH2Id: _.get(policy, 'policyHolders[1]._id') || '',
     pH1FirstName: data.pH1FirstName,
     pH1LastName: data.pH1LastName,
     pH1email: data.pH1email,
@@ -362,8 +419,8 @@ export const generateModel = (data, policyObject, props) => {
     sprinklerNew: data.sprinklerNew,
     // Premium Coverage Limits
     dwellingAmountNew: Math.round(Number(String(data.dwellingAmountNew).replace(/[^\d]/g, '')) / 1000) * 1000,
-    otherStructuresAmountNew: data.otherStructuresAmountNew,
-    personalPropertyAmountNew: data.personalPropertyAmountNew,
+    otherStructuresAmountNew: Number(data.otherStructuresAmountNew),
+    personalPropertyAmountNew: Number(data.personalPropertyAmountNew),
     personalLiabilityNew: data.personalLiabilityNew,
     medicalPaymentsNew: data.medicalPaymentsNew,
     lossOfUseNew: data.lossOfUseNew,
@@ -542,18 +599,18 @@ export const save = (data, dispatch, props) => {
 };
 
 
-const amountFormatter = cell => cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '';
+const premiumAmountFormatter = cell => Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 const dateFormatter = cell => `${cell.substring(0, 10)}`;
 
-export class Endorsements extends React.Component {
 
+export class Endorsements extends React.Component {
   componentDidMount() {
     this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
     if (this.props.appState && this.props.appState.instanceId) {
       const workflowId = this.props.appState.instanceId;
-      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, workflowId, { ...this.props.appState.data, isCalculated: false });
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, workflowId, { ...this.props.appState.data, isCalculated: false, isSubmitting: false });
     }
-    if (this.props && this.props.policy && this.props.policy.policyNumber) {
+    if (this.props && this.props.policy && this.props.policy.policyNumber && this.props.policy.property && this.props.policy.property.physicalAddress) {
       this.props.actions.serviceActions.getUnderwritingQuestions(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property);
       this.props.actions.serviceActions.getEndorsementHistory(this.props.policy.policyNumber);
       this.props.actions.serviceActions.getZipcodeSettings(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property.physicalAddress.zip);
@@ -561,11 +618,15 @@ export class Endorsements extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!_.isEqual(this.props.getRate, nextProps.getRate) && nextProps.getRate) {
+    if (!_.isEqual(this.props.getRate, nextProps.getRate) && nextProps.getRate && nextProps.getRate.newAnnualPremium) {
       const { getRate } = nextProps;
-      nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', getRate.endorsementAmount || ''));
-      nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', getRate.newCurrentPremium || ''));
-      nextProps.dispatch(change('Endorsements', 'newAnnualPremium', getRate.newAnnualPremium || ''));
+
+      nextProps.dispatch(batchActions([
+        change('Endorsements', 'newEndorsementAmount', getRate.endorsementAmount || 0),
+        change('Endorsements', 'newEndorsementPremium', getRate.newCurrentPremium || ''),
+        change('Endorsements', 'newAnnualPremium', getRate.newAnnualPremium || ''),
+        change('Endorsements', 'windMitFactorNew', _.get(getRate, 'worksheet.elements.windMitigationFactors.windMitigationDiscount'))
+      ]));
     }
     if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
@@ -574,10 +635,13 @@ export class Endorsements extends React.Component {
     if (!_.isEqual(this.props.newPolicyNumber, nextProps.newPolicyNumber)) {
       this.props.actions.policyStateActions.updatePolicy(true, nextProps.newPolicyNumber);
       const endorsementDateNew = setEndorsementDate(_.get(nextProps.policy, 'effectiveDate'), _.get(nextProps.policy, 'endDate'));
-      nextProps.dispatch(change('Endorsements', 'endorsementDateNew', endorsementDateNew));
-      nextProps.dispatch(change('Endorsements', 'newEndorsementAmount', ''));
-      nextProps.dispatch(change('Endorsements', 'newEndorsementPremium', ''));
-      nextProps.dispatch(change('Endorsements', 'newAnnualPremium', ''));
+
+      nextProps.dispatch(batchActions([
+        change('Endorsements', 'endorsementDateNew', endorsementDateNew),
+        change('Endorsements', 'newEndorsementAmount', ''),
+        change('Endorsements', 'newEndorsementPremium', ''),
+        change('Endorsements', 'newAnnualPremium', '')
+      ]));
     }
     if (this.props.tasks && this.props.tasks.endorsePolicyModelSave && this.props.tasks.endorsePolicyModelSave.data &&
       nextProps.tasks && nextProps.tasks.endorsePolicyModelSave && nextProps.tasks.endorsePolicyModelSave.data &&
@@ -586,6 +650,11 @@ export class Endorsements extends React.Component {
         nextProps.dispatch(errorActions.setAppError({ message: nextProps.tasks.endorsePolicyModelSave.data.result.result }));
         setCalculate(nextProps);
       }
+    }
+    if (_.isEqual(this.props.fieldValues.propertyIncidentalOccupanciesMainDwellingNew, nextProps.fieldValues.propertyIncidentalOccupanciesMainDwellingNew) ||
+    _.isEqual(this.props.fieldValues.propertyIncidentalOccupanciesOtherStructuresNew, nextProps.fieldValues.propertyIncidentalOccupanciesOtherStructuresNew)) {
+      const setLiabilityIncidentalOccupanciesNew = nextProps.fieldValues.propertyIncidentalOccupanciesMainDwellingNew || nextProps.fieldValues.propertyIncidentalOccupanciesOtherStructuresNew;
+      nextProps.dispatch(change('Endorsements', 'liabilityIncidentalOccupanciesNew', setLiabilityIncidentalOccupanciesNew));
     }
   }
 
@@ -613,16 +682,25 @@ export class Endorsements extends React.Component {
   };
 
   render() {
-    const { initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, policy, dirty } = this.props;
+    const {
+      initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, policy, dirty, fieldValues
+    } = this.props;
+
+    const mappedEndorsementHistory = _.map(endorsementHistory, (endorsement) => {
+      endorsement.netChargeFormat = _.includes(premiumEndorsmentList, endorsement.transactionType) ? premiumAmountFormatter(endorsement.netCharge) : '';
+      return endorsement;
+    });
     return (
       <PolicyConnect>
-        <ClearErrorConnect />
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         {this.props.appState.data.isSubmitting && <Loader />}
         <Form
-          id="Endorsements" className={'content-wrapper'} onKeyPress={(e) => {
-            if (e.key === 'Enter') e.preventDefault();
-          }} onSubmit={appState.data.isCalculated ? handleSubmit(save) : handleSubmit(calculate)}
+          id="Endorsements"
+          className="content-wrapper"
+          onKeyPress={(e) => {
+            if (e.key === 'Enter' && e.target.type !== 'submit') e.preventDefault();
+          }}
+          onSubmit={appState.data.isCalculated ? handleSubmit(save) : handleSubmit(calculate)}
         >
 
           <div className="route-content">
@@ -630,8 +708,8 @@ export class Endorsements extends React.Component {
               <div className="endo-jump-menu">
                 <button id="coverage-scroll" type="button" onClick={() => scrollToView('coverage')} className="btn btn-secondary btn-xs">Coverage</button>
                 <button id="home-scroll" type="button" onClick={() => scrollToView('home')} className="btn btn-secondary btn-xs">Home / Location</button>
-                <button id="policy-scroll" ttype="button" onClick={() => scrollToView('policy')} className="btn btn-secondary btn-xs">Policyholders</button>
-                <button id="addresses-scroll" ttype="button" onClick={() => scrollToView('addresses')} className="btn btn-secondary btn-xs">Addresses</button>
+                <button id="policy-scroll" type="button" onClick={() => scrollToView('policy')} className="btn btn-secondary btn-xs">Policyholders</button>
+                <button id="addresses-scroll" type="button" onClick={() => scrollToView('addresses')} className="btn btn-secondary btn-xs">Addresses</button>
               </div>
               <div className="scroll">
                 <div className="form-group survey-wrapper" role="group">
@@ -645,95 +723,133 @@ export class Endorsements extends React.Component {
                         </div>
                         <div className="form-group-double-element">
                           <CurrencyField
-                            label={'Dwelling (A)'} styleName={''} name={'dwellingAmount'}
-                            min={initialValues.dwellingMin} max={initialValues.dwellingMax} disabled
+                            label={`Dwelling (A) ($ ${String(initialValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $ ${String(initialValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`}
+                            styleName=""
+                            name="dwellingAmount"
+                            min={initialValues.dwellingMin}
+                            max={initialValues.dwellingMax}
+                            disabled
                           />
                           <CurrencyField
-                            validations={['required', 'range']} styleName={''} name={'dwellingAmountNew'} onChange={this.updateDwellingAndDependencies}
-                            min={initialValues.dwellingMin} label={''} max={initialValues.dwellingMax}
+                            validations={['required', 'range']}
+                            styleName=""
+                            name="dwellingAmountNew"
+                            onChange={this.updateDwellingAndDependencies}
+                            min={initialValues.dwellingMin}
+                            label=""
+                            max={initialValues.dwellingMax}
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <CurrencyField name="otherStructuresAmount" label={'Other Structures (B)'} styleName={'coverage-b'} disabled />
-                          <CurrencyField validations={['required']} label={''} name="otherStructuresAmountNew" styleName={'coverage-b'} disabled />
+                          <CurrencyField name="otherStructuresAmount" label="Other Structures (B)" styleName="coverage-b" disabled />
+                          <CurrencyField validations={['required']} label="" name="otherStructuresAmountNew" styleName="coverage-b" disabled />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Other Structures %'} styleName={''} name={'otherStructures'} disabled />
+                          <TextField label="Other Structures %" styleName="" name="otherStructures" disabled />
                           <SelectField
 
-                            name={'otherStructuresNew'}
+                            name="otherStructuresNew"
                             answers={getAnswers('otherStructuresAmount', questions)}
-                            component="select" label={''} styleName={'coverage-b-percentage'} onChange={event => updateDependencies(event, 'otherStructuresAmountNew', 'dwellingAmountNew', this.props)} validations={['required']}
+                            component="select"
+                            label=""
+                            styleName="coverage-b-percentage"
+                            onChange={event => updateDependencies(event, 'otherStructuresAmountNew', 'dwellingAmountNew', this.props)}
+                            validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <CurrencyField label={'Personal Property (C)'} styleName={'coverage-c'} name="personalPropertyAmount" disabled />
-                          <CurrencyField validations={['required']} label={''} styleName={'coverage-c'} name="personalPropertyAmountNew" disabled />
+                          <CurrencyField label="Personal Property (C)" styleName="coverage-c" name="personalPropertyAmount" disabled />
+                          <CurrencyField validations={['required']} label="" styleName="coverage-c" name="personalPropertyAmountNew" disabled />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Personal Property %'} styleName={''} name={'personalProperty'} disabled />
+                          <TextField label="Personal Property %" styleName="" name="personalProperty" disabled />
                           <SelectField
-                            name={'personalPropertyNew'}
+                            name="personalPropertyNew"
                             answers={getAnswers('personalPropertyAmount', questions)}
-                            component="select" label={''} styleName={'coverage-c-percentage'} onChange={event => updateDependencies(event, 'personalPropertyAmountNew', 'dwellingAmountNew', this.props)} validations={['required']}
+                            component="select"
+                            label=""
+                            styleName="coverage-c-percentage"
+                            onChange={event => updatepersonalPropertyDependnecies(event, 'personalPropertyAmountNew', 'dwellingAmountNew', this.props)}
+                            validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <CurrencyField label={'Loss of Use (D)'} styleName={''} name={'lossOfUse'} disabled />
-                          <CurrencyField validations={['required']} styleName={''} label={''} name={'lossOfUseNew'} disabled />
+                          <CurrencyField label="Loss of Use (D)" styleName="" name="lossOfUse" disabled />
+                          <CurrencyField validations={['required']} styleName="" label="" name="lossOfUseNew" disabled />
                         </div>
                         <div className="form-group-double-element">
-                          <CurrencyField label={'Personal Liability (E)'} styleName={''} name={'personalLiability'} disabled />
+                          <CurrencyField label="Personal Liability (E)" styleName="" name="personalLiability" disabled />
                           <SelectField
                             onChange={() => setCalculate(this.props, false)}
-                            name={'personalLiabilityNew'}
+                            name="personalLiabilityNew"
                             answers={getAnswers('personalLiability', questions)}
-                            component="select" label={''} styleName={''} validations={['required']}
+                            component="select"
+                            label=""
+                            styleName=""
+                            validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <CurrencyField label={'Medical Payments (F)'} styleName={''} name={'medicalPayments'} disabled />
-                          <CurrencyField validations={['required']} name={'medicalPaymentsNew'} label={''} styleName={''} disabled />
+                          <CurrencyField label="Medical Payments (F)" styleName="" name="medicalPayments" disabled />
+                          <CurrencyField validations={['required']} name="medicalPaymentsNew" label="" styleName="" disabled />
                         </div>
                         <div className="form-group-double-element">
-                          <CurrencyField label={'Mold Property'} styleName={''} name={'moldProperty'} disabled />
+                          <CurrencyField label="Mold Property" styleName="" name="moldProperty" disabled />
                           <SelectField
-                            name={'moldPropertyNew'}
+                            name="moldPropertyNew"
                             answers={getAnswers('moldProperty', questions)}
-                            component="select" label={''} styleName={''} onChange={() => setCalculate(this.props, false)}validations={['required']}
+                            component="select"
+                            label=""
+                            styleName=""
+                            onChange={() => setCalculate(this.props, false)}
+                            validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <CurrencyField label={'Mold Liability'} styleName={''} name={'moldLiability'} disabled />
+                          <CurrencyField label="Mold Liability" styleName="" name="moldLiability" disabled />
                           <SelectField
-                            name={'moldLiabilityNew'}
+                            name="moldLiabilityNew"
                             answers={getAnswers('moldLiability', questions)}
-                            component="select" styleName={''} label={''} onChange={() => setCalculate(this.props, false)} validations={['required']}
+                            component="select"
+                            styleName=""
+                            label=""
+                            onChange={() => setCalculate(this.props, false)}
+                            validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <CurrencyField label={'AOP Deductible'} styleName={''} name={'allOtherPerils'} disabled />
+                          <CurrencyField label="AOP Deductible" styleName="" name="allOtherPerils" disabled />
                           <SelectField
                             onChange={() => setCalculate(this.props, false)}
-                            name={'allOtherPerilsNew'}
+                            name="allOtherPerilsNew"
                             answers={getAnswers('allOtherPerils', questions)}
-                            component="select" styleName={''} label={''} validations={['required']}
+                            component="select"
+                            styleName=""
+                            label=""
+                            validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Hurricane Deductible'} styleName={''} name={'hurricane'} disabled />
+                          <TextField label="Hurricane Deductible" styleName="" name="hurricane" disabled />
                           <SelectField
-                            label={''}
-                            name={'hurricaneNew'}
+                            label=""
+                            name="hurricaneNew"
                             answers={getAnswers('hurricane', questions)}
-                            component="select" styleName={''} onChange={event => updateDependencies(event, 'calculatedHurricane', 'dwellingAmountNew', this.props)} validations={['required']}
+                            component="select"
+                            styleName=""
+                            onChange={event => updateDependencies(event, 'calculatedHurricane', 'dwellingAmountNew', this.props)}
+                            validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Sinkhole Deductible'} styleName={''} name={'sinkholePerilCoverage'} disabled />
+                          <TextField label="Sinkhole Deductible" styleName="" name="sinkholePerilCoverage" disabled />
                           <SelectField
-                            label={''}
-                            name="sinkholePerilCoverageNew" component="select" styleName={''} onChange={() => updateCalculatedSinkhole(this.props)} answers={[
+                            label=""
+                            name="sinkholePerilCoverageNew"
+                            component="select"
+                            styleName=""
+                            onChange={() => updateCalculatedSinkhole(this.props)}
+                            answers={[
                               {
                                 answer: false,
                                 label: 'Coverage Excluded'
@@ -751,10 +867,16 @@ export class Endorsements extends React.Component {
                           <label /><label>Current</label><label>New</label>
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Personal Property Repl Cost'} styleName={''} name={'personalPropertyReplacementCostCoverage'} disabled />
+                          <TextField label="Personal Property Repl Cost" styleName="" name="personalPropertyReplacementCostCoverage" disabled />
                           <div className="flex-child other-coverages-property-replacement-cost">
                             <RadioField
-                              name={'personalPropertyReplacementCostCoverageNew'} styleName={'billPlan'} label={''} onChange={() => setCalculate(this.props, false)} segmented answers={[
+                              disabled={String(fieldValues.personalPropertyNew) === '0'}
+                              name="personalPropertyReplacementCostCoverageNew"
+                              styleName="billPlan"
+                              label=""
+                              onChange={() => setCalculate(this.props, false)}
+                              segmented
+                              answers={[
                                 {
                                   answer: false,
                                   label: 'No'
@@ -767,20 +889,27 @@ export class Endorsements extends React.Component {
                           </div>
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Ordinance or Law'} styleName={''} name={'ordinanceOrLaw'} disabled />
+                          <TextField label="Ordinance or Law" styleName="" name="ordinanceOrLaw" disabled />
                           <SelectField
                             onChange={() => setCalculate(this.props, false)}
-                            name={'ordinanceOrLawNew'}
+                            name="ordinanceOrLawNew"
                             answers={getAnswers('ordinanceOrLaw', questions)}
-                            label={''} component="select" styleName={''} validations={['required']}
+                            label=""
+                            component="select"
+                            styleName=""
+                            validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Incidental Occ Main'} styleName={''} name={'propertyIncidentalOccupanciesMainDwelling'} disabled />
+                          <TextField label="Incidental Occ Main" styleName="" name="propertyIncidentalOccupanciesMainDwelling" disabled />
                           <div className="flex-child other-coverages-property-replacement-cost">
                             <RadioField
                               onChange={() => setCalculate(this.props, false)}
-                              name={'propertyIncidentalOccupanciesMainDwellingNew'} styleName={'billPlan'} label={''} segmented answers={[
+                              name="propertyIncidentalOccupanciesMainDwellingNew"
+                              styleName="billPlan"
+                              label=""
+                              segmented
+                              answers={[
                                 {
                                   answer: false,
                                   label: 'No'
@@ -793,11 +922,15 @@ export class Endorsements extends React.Component {
                           </div>
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Incidental Occ Other'} styleName={''} name={'propertyIncidentalOccupanciesOtherStructures'} disabled />
+                          <TextField label="Incidental Occ Other" styleName="" name="propertyIncidentalOccupanciesOtherStructures" disabled />
                           <div className="flex-child other-coverages-property-replacement-cost">
                             <RadioField
                               onChange={() => setCalculate(this.props, false)}
-                              name={'propertyIncidentalOccupanciesOtherStructuresNew'} styleName={'billPlan'} label={''} segmented answers={[
+                              name="propertyIncidentalOccupanciesOtherStructuresNew"
+                              styleName="billPlan"
+                              label=""
+                              segmented
+                              answers={[
                                 {
                                   answer: false,
                                   label: 'No'
@@ -810,12 +943,16 @@ export class Endorsements extends React.Component {
                           </div>
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Incidental Occ Liability'} styleName={''} name={'liabilityIncidentalOccupancies'} disabled />
+                          <TextField label="Incidental Occ Liability" styleName="" name="liabilityIncidentalOccupancies" disabled />
                           <div className="flex-child other-coverages-property-replacement-cost">
                             <RadioField
                               disabled
                               onChange={() => setCalculate(this.props, false)}
-                              name={'liabilityIncidentalOccupanciesNew'} styleName={'billPlan'} label={''} segmented answers={[
+                              name="liabilityIncidentalOccupanciesNew"
+                              styleName="billPlan"
+                              label=""
+                              segmented
+                              answers={[
                                 {
                                   answer: false,
                                   label: 'No'
@@ -828,11 +965,15 @@ export class Endorsements extends React.Component {
                           </div>
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Townhouse / Rowhouse'} styleName={''} name={'townhouseRowhouse'} disabled />
+                          <TextField label="Townhouse / Rowhouse" styleName="" name="townhouseRowhouse" disabled />
                           <div className="flex-child">
                             <RadioField
                               onChange={() => setCalculate(this.props, false)}
-                              name={'townhouseRowhouseNew'} styleName={''} label={''} segmented answers={[
+                              name="townhouseRowhouseNew"
+                              styleName=""
+                              label=""
+                              segmented
+                              answers={[
                                 {
                                   answer: false,
                                   label: 'No'
@@ -845,27 +986,35 @@ export class Endorsements extends React.Component {
                           </div>
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Property Ever Rented'} styleName={''} name={'rented'} disabled />
+                          <TextField label="Property Ever Rented" styleName="" name="rented" disabled />
                           <SelectField
-                            label={''}
-                            name={'rentedNew'}
+                            label=""
+                            name="rentedNew"
                             answers={getAnswers('rented', underwritingQuestions)}
-                            styleName={''} onChange={() => setCalculate(this.props, false)}
+                            styleName=""
+                            onChange={() => setCalculate(this.props, false)}
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Months Occupied'} styleName={''} name={'monthsOccupied'} disabled />
+                          <TextField label="Months Occupied" styleName="" name="monthsOccupied" disabled />
                           <SelectField
-                            name={'monthsOccupiedNew'}
+                            name="monthsOccupiedNew"
                             answers={getAnswers('monthsOccupied', underwritingQuestions)}
-                            label={''} styleName={''} onChange={() => setCalculate(this.props, false)}
+                            label=""
+                            styleName=""
+                            onChange={() => setCalculate(this.props, false)}
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'No Prior Insurance'} styleName={''} name={'noPriorInsurance'} disabled />
+                          <TextField label="No Prior Insurance" styleName="" name="noPriorInsurance" disabled />
                           <div className="flex-child discounts-burglar-alarm">
                             <RadioField
-                              name={'noPriorInsuranceNew'} styleName={''} label={''} onChange={() => setCalculate(this.props, false)} segmented answers={[
+                              name="noPriorInsuranceNew"
+                              styleName=""
+                              label=""
+                              onChange={() => setCalculate(this.props, false)}
+                              segmented
+                              answers={[
                                 {
                                   answer: 'No',
                                   label: 'No'
@@ -878,10 +1027,15 @@ export class Endorsements extends React.Component {
                           </div>
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Burglar Alarm'} styleName={''} name={'burglarAlarm'} disabled />
+                          <TextField label="Burglar Alarm" styleName="" name="burglarAlarm" disabled />
                           <div className="flex-child discounts-burglar-alarm">
                             <RadioField
-                              name={'burglarAlarmNew'} styleName={''} label={''} onChange={() => setCalculate(this.props, false)} segmented answers={[
+                              name="burglarAlarmNew"
+                              styleName=""
+                              label=""
+                              onChange={() => setCalculate(this.props, false)}
+                              segmented
+                              answers={[
                                 {
                                   answer: false,
                                   label: 'No'
@@ -894,10 +1048,15 @@ export class Endorsements extends React.Component {
                           </div>
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Fire Alarm'} styleName={''} name={'fireAlarm'} disabled />
+                          <TextField label="Fire Alarm" styleName="" name="fireAlarm" disabled />
                           <div className="flex-child discounts-fire-alarm">
                             <RadioField
-                              name={'fireAlarmNew'} styleName={''} label={''} onChange={() => setCalculate(this.props, false)} segmented answers={[
+                              name="fireAlarmNew"
+                              styleName=""
+                              label=""
+                              onChange={() => setCalculate(this.props, false)}
+                              segmented
+                              answers={[
                                 {
                                   answer: false,
                                   label: 'No'
@@ -910,10 +1069,15 @@ export class Endorsements extends React.Component {
                           </div>
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Sprinkler'} styleName={''} name={'sprinkler'} disabled />
+                          <TextField label="Sprinkler" styleName="" name="sprinkler" disabled />
                           <div className="flex-child discounts-sprinkler">
                             <RadioField
-                              name={'sprinklerNew'} label={''} styleName={''} onChange={() => setCalculate(this.props, false)} segmented answers={[
+                              name="sprinklerNew"
+                              label=""
+                              styleName=""
+                              onChange={() => setCalculate(this.props, false)}
+                              segmented
+                              answers={[
                                 {
                                   answer: 'N',
                                   label: 'No'
@@ -939,58 +1103,77 @@ export class Endorsements extends React.Component {
                           <label /><label>Current</label><label>New</label>
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Roof Covering'} styleName={''} name={'roofCovering'} disabled />
+                          <TextField label="Roof Covering" styleName="" name="roofCovering" disabled />
                           <SelectField
-                            label={''}
-                            name={'roofCoveringNew'}
+                            label=""
+                            name="roofCoveringNew"
                             answers={getAnswers('roofCovering', questions)}
-                            component="select" styleName={''} onChange={() => setCalculate(this.props, false)} validations={['required']}
+                            component="select"
+                            styleName=""
+                            onChange={() => setCalculate(this.props, false)}
+                            validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Roof Deck Attachment'} styleName={''} name={'roofDeckAttachment'} disabled />
+                          <TextField label="Roof Deck Attachment" styleName="" name="roofDeckAttachment" disabled />
                           <SelectField
-                            label={''}
-                            name={'roofDeckAttachmentNew'}
+                            label=""
+                            name="roofDeckAttachmentNew"
                             answers={getAnswers('roofDeckAttachment', questions)}
-                            component="select" styleName={''} onChange={() => setCalculate(this.props, false)} validations={['required']}
+                            component="select"
+                            styleName=""
+                            onChange={() => setCalculate(this.props, false)}
+                            validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Roof to Wall Attachment'} styleName={''} name={'roofToWallConnection'} disabled />
+                          <TextField label="Roof to Wall Attachment" styleName="" name="roofToWallConnection" disabled />
                           <SelectField
-                            label={''}
-                            name={'roofToWallConnectionNew'}
+                            label=""
+                            name="roofToWallConnectionNew"
                             answers={getAnswers('roofToWallConnection', questions)}
-                            component="select" styleName={'weakestRoofWallConnect'} onChange={() => setCalculate(this.props, false)} validations={['required']}
+                            component="select"
+                            styleName="weakestRoofWallConnect"
+                            onChange={() => setCalculate(this.props, false)}
+                            validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Roof Geometry'} styleName={''} name={'roofGeometry'} disabled />
+                          <TextField label="Roof Geometry" styleName="" name="roofGeometry" disabled />
                           <SelectField
-                            label={''}
-                            name={'roofGeometryNew'}
+                            label=""
+                            name="roofGeometryNew"
                             answers={getAnswers('roofGeometry', questions)}
-                            component="select" styleName={''} onChange={() => setCalculate(this.props, false)} validations={['required']}
+                            component="select"
+                            styleName=""
+                            onChange={() => setCalculate(this.props, false)}
+                            validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Secondary Water Resistance (SWR)'} styleName={''} name={'secondaryWaterResistance'} disabled />
+                          <TextField label="Secondary Water Resistance (SWR)" styleName="" name="secondaryWaterResistance" disabled />
                           <div className="flex-child discounts-sprinkler">
                             <RadioField
-                              label={''} styleName={''} onChange={() => setCalculate(this.props, false)} segmented name={'secondaryWaterResistanceNew'}
+                              label=""
+                              styleName=""
+                              onChange={() => setCalculate(this.props, false)}
+                              segmented
+                              name="secondaryWaterResistanceNew"
                               validations={['required']}
                               answers={getAnswers('secondaryWaterResistance', questions)}
                             />
                           </div>
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Opening Protection'} styleName={''} name={'openingProtection'} disabled />
+                          <TextField label="Opening Protection" styleName="" name="openingProtection" disabled />
                           <SelectField
-                            label={''}
-                            name={'openingProtectionNew'}
+                            label=""
+                            name="openingProtectionNew"
                             answers={getAnswers('openingProtection', questions)}
-                            component="select" styleName={''} onChange={() => setCalculate(this.props, false)} validations={['required']}
+                            component="select"
+                            styleName=""
+                            onChange={() => setCalculate(this.props, false)}
+                            validations={['required']}
                           />
                         </div>
                       </div>
@@ -1002,42 +1185,54 @@ export class Endorsements extends React.Component {
                           <label /><label>Current</label><label>New</label>
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'FBC Wind Speed'} styleName={''} name={'floridaBuildingCodeWindSpeed'} disabled />
-                          <TextField validations={['required', 'numbersOnly']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedNew'} onChange={() => setCalculate(this.props, false)} />
+                          <TextField label="FBC Wind Speed" styleName="" name="floridaBuildingCodeWindSpeed" disabled />
+                          <TextField validations={['required', 'numbersOnly']} label="" styleName="" name="floridaBuildingCodeWindSpeedNew" onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'FBC Wind Speed Design'} styleName={''} name={'floridaBuildingCodeWindSpeedDesign'} disabled />
-                          <TextField validations={['required', 'numbersOnly']} label={''} styleName={''} name={'floridaBuildingCodeWindSpeedDesignNew'} onChange={() => setCalculate(this.props, false)} />
+                          <TextField label="FBC Wind Speed Design" styleName="" name="floridaBuildingCodeWindSpeedDesign" disabled />
+                          <TextField validations={['required', 'numbersOnly']} label="" styleName="" name="floridaBuildingCodeWindSpeedDesignNew" onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Terrain'} styleName={''} name={'terrain'} disabled />
+                          <TextField label="Terrain" styleName="" name="terrain" disabled />
                           <SelectField
-                            name={'terrainNew'}
+                            name="terrainNew"
                             answers={getAnswers('terrain', questions)}
-                            component="select" label={''} styleName={'propertyTerrain'} onChange={() => setCalculate(this.props, false)} validations={['required']}
+                            component="select"
+                            label=""
+                            styleName="propertyTerrain"
+                            onChange={() => setCalculate(this.props, false)}
+                            validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label="Internal Pressure Design" styleName={''} name={'internalPressureDesign'} disabled />
+                          <TextField label="Internal Pressure Design" styleName="" name="internalPressureDesign" disabled />
                           <SelectField
-                            name={'internalPressureDesignNew'}
+                            name="internalPressureDesignNew"
                             answers={getAnswers('internalPressureDesign', questions)}
-                            component="select" label={''} styleName={''} onChange={() => setCalculate(this.props, false)} validations={['required']}
+                            component="select"
+                            label=""
+                            styleName=""
+                            onChange={() => setCalculate(this.props, false)}
+                            validations={['required']}
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Wind Borne Debris Region (WBDR)'} styleName={''} name={'windBorneDebrisRegion'} disabled />
+                          <TextField label="Wind Borne Debris Region (WBDR)" styleName="" name="windBorneDebrisRegion" disabled />
                           <div className="flex-child discounts-sprinkler">
                             <RadioField
-                              label={''} styleName={''} onChange={() => setCalculate(this.props, false)} segmented name={'windBorneDebrisRegionNew'}
+                              label=""
+                              styleName=""
+                              onChange={() => setCalculate(this.props, false)}
+                              segmented
+                              name="windBorneDebrisRegionNew"
                               validations={['required']}
                               answers={getAnswers('windBorneDebrisRegion', questions)}
                             />
                           </div>
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Wind Mit Factor'} styleName={''} name={'windMitFactor'} disabled />
-                          <TextField validations={['required']} styleName={''} label={''} name={'windMitFactorNew'} disabled />
+                          <TextField label="Wind Mit Factor" styleName="" name="windMitFactor" disabled />
+                          <TextField validations={['required']} styleName="" label="" name="windMitFactorNew" disabled />
                         </div>
 
                       </div>
@@ -1053,55 +1248,68 @@ export class Endorsements extends React.Component {
                           <label /><label>Current</label><label>New</label>
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Year Home Built'} styleName={''} name="yearBuilt" disabled />
+                          <TextField label="Year Home Built" styleName="" name="yearBuilt" disabled />
                           <TextField
                             validations={['numbersOnly']}
-                            styleName={''} label={''} name="yearBuiltNew" onChange={() => setCalculate(this.props, false)}
+                            styleName=""
+                            label=""
+                            name="yearBuiltNew"
+                            onChange={() => setCalculate(this.props, false)}
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Construction'} styleName={''} name="constructionType" disabled />
+                          <TextField label="Construction" styleName="" name="constructionType" disabled />
                           <SelectField
                             onChange={() => setCalculate(this.props, false)}
-                            name={'constructionTypeNew'}
+                            name="constructionTypeNew"
                             answers={getAnswers('constructionType', questions)}
-                            component="select" styleName={''} label={''}
+                            component="select"
+                            styleName=""
+                            label=""
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Protection Class'} styleName={''} name={'protectionClass'} disabled />
+                          <TextField label="Protection Class" styleName="" name="protectionClass" disabled />
                           <SelectField
                             onChange={() => setCalculate(this.props, false)}
-                            name={'protectionClassNew'}
+                            name="protectionClassNew"
                             answers={getAnswers('protectionClass', questions)}
-                            component="select" label={''} styleName={''}
+                            component="select"
+                            label=""
+                            styleName=""
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'BCEG'} styleName={''} name={'buildingCodeEffectivenessGrading'} disabled />
+                          <TextField label="BCEG" styleName="" name="buildingCodeEffectivenessGrading" disabled />
                           <SelectField
                             onChange={() => setCalculate(this.props, false)}
-                            name={'buildingCodeEffectivenessGradingNew'}
+                            name="buildingCodeEffectivenessGradingNew"
                             answers={getAnswers('buildingCodeEffectivenessGrading', questions)}
-                            component="select" styleName={''} label={''}
+                            component="select"
+                            styleName=""
+                            label=""
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Family Units'} styleName={''} name={'familyUnits'} disabled />
+                          <TextField label="Family Units" styleName="" name="familyUnits" disabled />
                           <SelectField
                             onChange={() => setCalculate(this.props, false)}
-                            name={'familyUnitsNew'}
+                            name="familyUnitsNew"
                             answers={getAnswers('familyUnits', questions)}
-                            component="select" label={''} styleName={''}
+                            component="select"
+                            label=""
+                            styleName=""
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Flood Zone'} styleName={''} name={'floodZone'} disabled />
+                          <TextField label="Flood Zone" styleName="" name="floodZone" disabled />
                           <SelectField
                             onChange={() => setCalculate(this.props, false)}
-                            name={'floodZoneNew'}
+                            name="floodZoneNew"
                             answers={getAnswers('floodZone', questions)}
-                            component="select" label={''} styleName={''}
+                            component="select"
+                            label=""
+                            styleName=""
                           />
                         </div>
                       </div>
@@ -1111,42 +1319,46 @@ export class Endorsements extends React.Component {
                           <label /><label>Current</label><label>New</label>
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Tidal Waters Dist.'} styleName={''} name={'distanceToTidalWater'} disabled />
-                          <NumberField label={''} styleName={''} name={'distanceToTidalWaterNew'} onChange={() => setCalculate(this.props, false)} />
+                          <TextField label="Tidal Waters Dist." styleName="" name="distanceToTidalWater" disabled />
+                          <NumberField label="" styleName="" name="distanceToTidalWaterNew" onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Fire Hydrant Dist.'} styleName={''} name={'distanceToFireHydrant'} disabled />
-                          <NumberField label={''} styleName={''} name={'distanceToFireHydrantNew'} onChange={() => setCalculate(this.props, false)} />
+                          <TextField label="Fire Hydrant Dist." styleName="" name="distanceToFireHydrant" disabled />
+                          <NumberField label="" styleName="" name="distanceToFireHydrantNew" onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Fire Station Dist.'} styleName={''} name={'distanceToFireStation'} disabled />
-                          <NumberField label={''} styleName={''} name={'distanceToFireStationNew'} onChange={() => setCalculate(this.props, false)} />
+                          <TextField label="Fire Station Dist." styleName="" name="distanceToFireStation" disabled />
+                          <NumberField label="" styleName="" name="distanceToFireStationNew" onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Residence Type'} styleName={''} name={'residenceType'} disabled />
+                          <TextField label="Residence Type" styleName="" name="residenceType" disabled />
                           <SelectField
-                            name={'residenceTypeNew'}
+                            name="residenceTypeNew"
                             answers={getAnswers('residenceType', questions)}
-                            component="select" label={''} styleName={''} onChange={() => setCalculate(this.props, false)}
+                            component="select"
+                            label=""
+                            styleName=""
+                            onChange={() => setCalculate(this.props, false)}
                           />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Sq. Ft. of Home'} styleName={''} name={'squareFeet'} disabled />
-                          <TextField validations={['required']} label={''} styleName={''} name={'squareFeetNew'} onChange={() => setCalculate(this.props, false)} />
+                          <TextField label="Sq. Ft. of Home" styleName="" name="squareFeet" disabled />
+                          <TextField validations={['required']} label="" styleName="" name="squareFeetNew" onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="form-group-double-element">
-                          <TextField label={'Year Roof Built'} styleName={''} name="yearOfRoof" disabled />
-                          <TextField styleName={''} label={''} name="yearOfRoofNew" onChange={() => setCalculate(this.props, false)} />
+                          <TextField label="Year Roof Built" styleName="" name="yearOfRoof" disabled />
+                          <TextField styleName="" label="" name="yearOfRoofNew" onChange={() => setCalculate(this.props, false)} />
                         </div>
                       </div>
                     </div>
                   </section>
                   <section>
                     <h3>Previous Endorsements</h3>
-                    <BootstrapTable data={endorsementHistory || []}>
-                      <TableHeaderColumn dataField="effectiveDate" isKey dataFormat={dateFormatter}>Date</TableHeaderColumn>
-                      <TableHeaderColumn dataField="netCharge" dataFormat={amountFormatter}>Amount</TableHeaderColumn>
-                      <TableHeaderColumn dataField="transactionType" dataAlign="right">Type</TableHeaderColumn>
+                    <BootstrapTable data={mappedEndorsementHistory}>
+                      <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="effectiveDate" isKey dataFormat={dateFormatter}>Effective Date</TableHeaderColumn>
+                      <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="netChargeFormat">Amount</TableHeaderColumn>
+                      <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="transactionType">Type</TableHeaderColumn>
+                      <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="createdAt" dataFormat={dateFormatter}>Processed Date</TableHeaderColumn>
                     </BootstrapTable>
                   </section>
                   <section name="policy" id="policy">
@@ -1155,31 +1367,46 @@ export class Endorsements extends React.Component {
                       <div className="flex-child">
                         <h3>Primary Policyholder</h3>
                         <div className="flex-parent col2">
-                          <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH1FirstName'} onChange={() => setCalculate(this.props, false)} />
-                          <TextField validations={['required']} label={'Last Name'} styleName={''} name={'pH1LastName'} onChange={() => setCalculate(this.props, false)} />
+                          <TextField validations={['required']} label="First Name" styleName="" name="pH1FirstName" onChange={() => setCalculate(this.props, false)} />
+                          <TextField validations={['required']} label="Last Name" styleName="" name="pH1LastName" onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="flex-parent col2">
-                          <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH1phone'} onChange={() => setCalculate(this.props, false)} />
-                          <PhoneField validations={['phone']} label={'Secondary Phone'} styleName={''} name={'pH1secondaryPhone'} onChange={() => setCalculate(this.props, false)} />
+                          <PhoneField validations={['required', 'phone']} label="Primary Phone" styleName="" name="pH1phone" onChange={() => setCalculate(this.props, false)} />
+                          <PhoneField validations={['phone']} label="Secondary Phone" styleName="" name="pH1secondaryPhone" onChange={() => setCalculate(this.props, false)} />
                         </div>
                         <div className="flex-parent col2">
-                          <TextField validations={['required', 'email']} label={'Email Address'} styleName={''} name={'pH1email'} onChange={() => setCalculate(this.props, false)} />
+                          <TextField validations={['required', 'email']} label="Email Address" styleName="" name="pH1email" onChange={() => setCalculate(this.props, false)} />
                           {/* electronic delivery question placeholder */ }
                         </div>
                       </div>
                       {/* Col2 */}
                       <div className="flex-child">
-                        <h3>Secondary Policyholder</h3>
-                        <div className="flex-parent col2">
-                          <TextField label={'First Name'} dependsOn={['pH2LastName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2FirstName'} onChange={() => setCalculate(this.props, false)} />
-                          <TextField label={'Last Name'} dependsOn={['pH2FirstName', 'pH2email', 'pH2phone']} styleName={''} name={'pH2LastName'} onChange={() => setCalculate(this.props, false)} />
+                        <div className="flex-parent policy-holder-b-name">
+                          <div className="flex-child policy-holder-b-first-name">
+                            <h3>Secondary Policyholder
+                            </h3>
+                          </div>
+                          <div className="flex-child">
+                            <Field
+                              onChange={event => clearSecondaryPolicyholder(String(event.target.value) === 'false', this.props)}
+                              name="clearFields"
+                              id="clearFields"
+                              component="input"
+                              type="checkbox"
+                            />
+                            <label htmlFor="clearFields"> Remove</label>
+                          </div>
                         </div>
                         <div className="flex-parent col2">
-                          <PhoneField validations={['phone']} label={'Primary Phone'} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2email']} styleName={''} name={'pH2phone'} onChange={() => setCalculate(this.props, false)} />
-                          <PhoneField validations={['phone']} label={'Secondary Phone'} styleName={''} name={'pH2secondaryPhone'} onChange={() => setCalculate(this.props, false)} />
+                          <TextField label="First Name" dependsOn={['pH2LastName', 'pH2email', 'pH2phone']} styleName="" name="pH2FirstName" onChange={() => setPHToggle(this.props)} />
+                          <TextField label="Last Name" dependsOn={['pH2FirstName', 'pH2email', 'pH2phone']} styleName="" name="pH2LastName" onChange={() => setPHToggle(this.props)} />
                         </div>
                         <div className="flex-parent col2">
-                          <TextField validations={['email']} label={'Email Address'} dependsOn={['pH2FirstName', 'pH2LastName', 'pH2phone']} styleName={''} name={'pH2email'} onChange={() => setCalculate(this.props, false)} />
+                          <PhoneField validations={['phone']} label="Primary Phone" dependsOn={['pH2FirstName', 'pH2LastName', 'pH2email']} styleName="" name="pH2phone" onChange={() => setPHToggle(this.props)} />
+                          <PhoneField validations={['phone']} label="Secondary Phone" styleName="" name="pH2secondaryPhone" onChange={() => setPHToggle(this.props)} />
+                        </div>
+                        <div className="flex-parent col2">
+                          <TextField validations={['email']} label="Email Address" dependsOn={['pH2FirstName', 'pH2LastName', 'pH2phone']} styleName="" name="pH2email" onChange={() => setPHToggle(this.props)} />
                         </div>
                       </div>
                     </div>
@@ -1188,19 +1415,19 @@ export class Endorsements extends React.Component {
                     <h3>Mailing Address</h3>
                     <div className="flex-parent wrap">
                       <div className="address">
-                        <TextField label={'Address 1'} styleName={''} name={'address1New'} onChange={() => setCalculate(this.props, false)} />
+                        <TextField label="Address 1" styleName="" name="address1New" onChange={() => setCalculate(this.props, false)} />
                       </div>
                       <div className="address">
-                        <TextField label={'Address 2'} styleName={''} name={'address2New'} onChange={() => setCalculate(this.props, false)} />
+                        <TextField label="Address 2" styleName="" name="address2New" onChange={() => setCalculate(this.props, false)} />
                       </div>
                       <div className="city">
-                        <TextField label={'City'} styleName={''} name={'cityNew'} onChange={() => setCalculate(this.props, false)} />
+                        <TextField label="City" styleName="" name="cityNew" onChange={() => setCalculate(this.props, false)} />
                       </div>
                       <div className="state">
-                        <TextField label={'State'} styleName={''} name={'stateNew'} onChange={() => setCalculate(this.props, false)} />
+                        <TextField label="State" styleName="" name="stateNew" onChange={() => setCalculate(this.props, false)} />
                       </div>
                       <div className="zip">
-                        <TextField label={'Zip'} styleName={''} name={'zipNew'} onChange={() => setCalculate(this.props, false)} />
+                        <TextField label="Zip" styleName="" name="zipNew" onChange={() => setCalculate(this.props, false)} />
                       </div>
                     </div>
                   </section>
@@ -1208,19 +1435,19 @@ export class Endorsements extends React.Component {
                     <h3>Property Address</h3>
                     <div className="flex-parent wrap">
                       <div className="address">
-                        <TextField label={'Address 1'} styleName={''} name={'propertyAddress1New'} onChange={() => setCalculate(this.props, false)} />
+                        <TextField label="Address 1" styleName="" name="propertyAddress1New" onChange={() => setCalculate(this.props, false)} />
                       </div>
                       <div className="address">
-                        <TextField label={'Address 2'} styleName={''} name={'propertyAddress2New'} onChange={() => setCalculate(this.props, false)} />
+                        <TextField label="Address 2" styleName="" name="propertyAddress2New" onChange={() => setCalculate(this.props, false)} />
                       </div>
                       <div className="city">
-                        <TextField label={'City'} styleName={''} name={'propertyCityNew'} onChange={() => setCalculate(this.props, false)} />
+                        <TextField label="City" styleName="" name="propertyCityNew" onChange={() => setCalculate(this.props, false)} />
                       </div>
                       <div className="state">
-                        <TextField label={'State'} styleName={''} name={'propertyStateNew'} onChange={() => setCalculate(this.props, false)} />
+                        <TextField label="State" styleName="" name="propertyStateNew" onChange={() => setCalculate(this.props, false)} />
                       </div>
                       <div className="zip">
-                        <TextField label={'Zip'} styleName={''} name={'propertyZipNew'} onChange={() => setCalculate(this.props, false)} />
+                        <TextField label="Zip" styleName="" name="propertyZipNew" onChange={() => setCalculate(this.props, false)} />
                       </div>
                     </div>
                   </section>
@@ -1230,21 +1457,23 @@ export class Endorsements extends React.Component {
                 <div className="flex-parent">
                   <div className="form-group">
                     <DateField
-                      validations={['date']} label={'Endorsement Effective Date'} name={'endorsementDateNew'}
+                      validations={['date']}
+                      label="Endorsement Effective Date"
+                      name="endorsementDateNew"
                       min={moment.utc(policy.effectiveDate).format('YYYY-MM-DD')}
                       max={moment.utc(policy.endDate).format('YYYY-MM-DD')}
                       onChange={() => setCalculate(this.props, false)}
                     />
                   </div>
-                  <DisplayField label={'New End Amount'} name={'newEndorsementAmount'} />
+                  <DisplayField label="New End Amount" name="newEndorsementAmount" />
 
-                  <DisplayField label={'New End Premium'} name={'newEndorsementPremium'} />
+                  <DisplayField label="New End Premium" name="newEndorsementPremium" />
 
-                  <DisplayField label={'New Annual Premium'} name={'newAnnualPremium'} />
+                  <DisplayField label="New Annual Premium" name="newAnnualPremium" />
 
                   { /* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */ }
-                  <button id="cancel-button" type="button" className="btn btn-secondary" onClick={() => setCalculate(this.props, true)}>Cancel</button>
-                  <button type="submit" className="btn btn-primary" disabled={(!appState.data.isCalculated && pristine) || appState.data.isSubmitting}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
+                  <button id="cancel-button" tabIndex="0" type="button" className="btn btn-secondary" onKeyPress={(event) => { if (event.charCode === 13) { setCalculate(this.props, true); } }} onClick={() => setCalculate(this.props, true)}>Cancel</button>
+                  <button type="submit" tabIndex="0" className="btn btn-primary" disabled={(!appState.data.isCalculated && pristine) || appState.data.isSubmitting}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
 
                 </div>
               </div>
@@ -1270,12 +1499,12 @@ Property type definitions
 */
 Endorsements.propTypes = {
   ...propTypes,
-  tasks: PropTypes.shape(),
+  tasks: PropTypes.shape().isRequired,
   appState: PropTypes.shape({
     modelName: PropTypes.string,
     instanceId: PropTypes.string,
-    data: PropTypes.shape({ isSubmitting: PropTypes.boolean })
-  })
+    data: PropTypes.shape({ isSubmitting: PropTypes.bool })
+  }).isRequired
 };
 
 /**
@@ -1285,7 +1514,7 @@ redux mapping
 */
 const mapStateToProps = state => ({
   tasks: state.cg,
-  endorsementHistory: state.service.endorsementHistory,
+  endorsementHistory: state.service.endorsementHistory || [],
   appState: state.appState,
   fieldValues: _.get(state.form, 'Endorsements.values', {}),
   initialValues: handleInitialize(state),

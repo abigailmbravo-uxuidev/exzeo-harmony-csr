@@ -10,7 +10,6 @@ import * as quoteStateActions from '../../actions/quoteStateActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
-import ClearErrorConnect from '../Error/ClearError';
 import FieldGenerator from '../Form/FieldGenerator';
 import Footer from '../Common/Footer';
 
@@ -62,7 +61,6 @@ export const handleFormSubmit = (data, dispatch, props) => {
 export const clearForm = (props) => {
   props.reset('Underwriting');
 };
-let setUnderwriting = false;
 export class Underwriting extends Component {
 
   componentDidMount() {
@@ -79,6 +77,10 @@ export class Underwriting extends Component {
 
       this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
     .then(() => {
+      const { quoteData } = this.props;
+      this.props.actions.serviceActions.getUnderwritingQuestions(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property);
+      this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
+
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         selectedLink: 'underwriting'
@@ -87,22 +89,10 @@ export class Underwriting extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!_.isEqual(this.props, nextProps)) {
-      const quoteData = nextProps.quoteData;
-      if (quoteData.companyCode && quoteData.state && quoteData.agencyCode && !setUnderwriting) {
-        this.props.actions.serviceActions.getUnderwritingQuestions(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property);
-        nextProps.actions.quoteStateActions.getLatestQuote(true, nextProps.quoteData._id);
-        setUnderwriting = true;
-      }
-    }
-  }
-
   render() {
     const { fieldValues, handleSubmit, pristine, quoteData, underwritingQuestions, dirty } = this.props;
     return (
       <QuoteBaseConnect>
-        <ClearErrorConnect />
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
 
         <div className="route-content">
@@ -129,6 +119,7 @@ export class Underwriting extends Component {
           <Footer />
           <div className="btn-wrapper">
             <button
+              tabIndex={'0'}
               aria-label="reset-btn form-underwriting"
               onClick={() => clearForm(this.props)}
               className="btn btn-secondary"
@@ -137,6 +128,7 @@ export class Underwriting extends Component {
               disabled={this.props.appState.data.submitting}
             >Reset</button>
             <button
+              tabIndex={'0'}
               aria-label="submit-btn form-underwriting"
               className="btn btn-primary"
               type="submit"

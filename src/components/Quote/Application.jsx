@@ -9,7 +9,6 @@ import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
-import ClearErrorConnect from '../Error/ClearError';
 import QuoteSummaryModal from '../../components/Common/QuoteSummaryModal';
 import Footer from '../Common/Footer';
 
@@ -24,6 +23,7 @@ export const handleGetUnderwritingExceptions = state => state.service.quote && s
 
 export const handleFormSubmit = (data, dispatch, props) => {
   const { appState, actions } = props;
+
 
   const workflowId = appState.instanceId;
 
@@ -44,15 +44,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
   ];
   actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
   .then(() => {
-    props.actions.appStateActions.setAppState(
-      appState.modelName,
-      props.appState.instanceId,
-      {
-        ...props.appState.data,
-        activateRedirectLink: '/quote/coverage',
-        activateRedirect: true,
-        applicationSubmitting: false
-      });
+    props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
   });
 };
 
@@ -83,6 +75,7 @@ export class QuoteApplication extends Component {
 
       this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
     .then(() => {
+      this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         selectedLink: 'application'
@@ -101,7 +94,6 @@ export class QuoteApplication extends Component {
     return (
       <QuoteBaseConnect>
         { redirect }
-        <ClearErrorConnect />
         <div className="route-content verify workflow">
           <Form id="Application" onSubmit={handleSubmit(() => quoteSummaryModal(this.props))} noValidate>
             <div className="scroll">
@@ -117,12 +109,13 @@ export class QuoteApplication extends Component {
               </div>
             </div>
           </Form>
-          { appState.data.showQuoteSummaryModal && <QuoteSummaryModal verify={handleFormSubmit} showQuoteSummaryModal={() => quoteSummaryModal(this.props)} /> }
+          { appState.data.showQuoteSummaryModal && <QuoteSummaryModal {...this.props} verify={handleFormSubmit} showQuoteSummaryModal={() => quoteSummaryModal(this.props)} /> }
         </div>
         <div className="basic-footer btn-footer">
           <Footer />
           <div className="btn-wrapper">
             <button
+              tabIndex={'0'}
               aria-label="submit-btn form-application"
               form="Application"
               className="btn btn-primary" type="submit" disabled={(underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0) || checkQuoteState(quoteData)}
@@ -157,7 +150,7 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   showQuoteSummaryModal: state.appState.data.showQuoteSummaryModal,
-  fieldValues: _.get(state.form, 'QuoteApplication.values', {}),
+  fieldValues: _.get(state.form, 'Application.values', {}),
   underwritingExceptions: handleGetUnderwritingExceptions(state),
   initialValues: handleInitialize(state),
   quoteData: state.service.quote || {}

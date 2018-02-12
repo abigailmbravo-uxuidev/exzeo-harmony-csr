@@ -11,6 +11,7 @@ import SelectField from '../Form/inputs/SelectField';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as errorActions from '../../actions/errorActions';
+import * as serviceActions from '../../actions/serviceActions';
 
 const userTasks = {
   handleSearchBarSubmit: 'search'
@@ -34,13 +35,49 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
     searchType
   };
 
+  const agencyAgentData = {
+    firstName: (encodeURIComponent(data.firstName) !== 'undefined' ? encodeURIComponent(data.firstName) : ''),
+    lastName: (encodeURIComponent(data.lastName) !== 'undefined' ? encodeURIComponent(data.lastName) : ''),
+    displayName: (encodeURIComponent(data.displayName) !== 'undefined' ? encodeURIComponent(data.displayName) : ''),
+    address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(String(data.address).trim()) : ''),
+    licNumber: (encodeURIComponent(data.licNumber) !== 'undefined' ? encodeURIComponent(data.licNumber) : ''),
+    fein: (encodeURIComponent(data.fein) !== 'undefined' ? encodeURIComponent(data.fein) : ''),
+    agentCode: (encodeURIComponent(data.agentCode) !== 'undefined' ? encodeURIComponent(data.agentCode) : ''),
+    agencyCode: (encodeURIComponent(data.agencyCode) !== 'undefined' ? encodeURIComponent(data.agencyCode) : ''),
+    phone: (encodeURIComponent(data.phone) !== 'undefined' ? encodeURIComponent(data.phone) : ''),
+    searchType
+  };
+
   if (searchType === 'policy') {
     // 60 days past only
     taskData.resultStart = 60;
   }
 
-  localStorage.setItem('lastSearchData', JSON.stringify(taskData));
+  if (searchType === 'agency') {
+    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, agentSubmitting: true });
 
+    props.actions.serviceActions.searchAgencies('TTIC', 'FL', agencyAgentData.displayName,
+    agencyAgentData.agencyCode, agencyAgentData.address, agencyAgentData.licNumber,
+    agencyAgentData.fein, agencyAgentData.phone).then(() => {
+      props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, agentSubmitting: false });
+    });
+  }
+
+  if (searchType === 'agent') {
+    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, agentSubmitting: true });
+
+    props.actions.serviceActions.searchAgents('TTIC', 'FL', agencyAgentData.firstName, agencyAgentData.lastName,
+     agencyAgentData.agentCode, agencyAgentData.address, agencyAgentData.licNumber).then(() => {
+       props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, agentSubmitting: false });
+     });
+  }
+
+  if (searchType !== 'agency' && searchType !== 'agent') {
+    localStorage.setItem('lastSearchData', JSON.stringify(taskData));
+  } else {
+    localStorage.setItem('lastSearchData', JSON.stringify(agencyAgentData));
+    return;
+  }
 
   props.actions.errorActions.clearAppError();
   props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
@@ -71,6 +108,27 @@ export const validate = (values) => {
     const onlyAlphaNumeric = Rules.onlyAlphaNumeric(values.lastName);
     if (onlyAlphaNumeric) {
       errors.lastName = onlyAlphaNumeric;
+    }
+  }
+
+  if (values.agentName) {
+    const onlyAlphaNumeric = Rules.onlyAlphaNumeric(values.agentName);
+    if (onlyAlphaNumeric) {
+      errors.agentName = onlyAlphaNumeric;
+    }
+  }
+
+  if (values.agentCode) {
+    const numbersOnly = Rules.numbersOnly(values.agentCode);
+    if (numbersOnly) {
+      errors.agentCode = numbersOnly;
+    }
+  }
+
+  if (values.agencyCode) {
+    const numbersOnly = Rules.numbersOnly(values.agencyCode);
+    if (numbersOnly) {
+      errors.agencyCode = numbersOnly;
     }
   }
 
@@ -144,9 +202,14 @@ const SearchForm = (props) => {
     const modelName = props.appState.modelName;
     const data = props.tasks[modelName].data;
 
+    const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData')) || {};
+    lastSearchData.searchType = '';
+    localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
     props.reset(props.form);
     props.actions.cgActions.clearSearchResults(modelName, data);
     props.actions.errorActions.clearAppError();
+    props.actions.serviceActions.clearAgencies();
+    props.actions.serviceActions.clearAgent();
   };
 
   return (
@@ -168,6 +231,14 @@ const SearchForm = (props) => {
               {
                 answer: 'policy',
                 label: 'Policy Search'
+              },
+              {
+                answer: 'agent',
+                label: 'Agent Search'
+              },
+              {
+                answer: 'agency',
+                label: 'Agency Search'
               }
             ]}
           />
@@ -208,7 +279,6 @@ const SearchForm = (props) => {
           </button>
         </div>
         }
-
         {fieldValues.searchType === 'policy' && <div className="search-inputs fade-in">
 
           {generateField('firstName', 'First Name Search', 'First Name', formErrors, 'first-name-search')}
@@ -226,7 +296,62 @@ const SearchForm = (props) => {
           </button>
         </div>
         }
+        {/* <!-- Should be available only in user admin  -->*/}
+        {fieldValues.searchType === 'user' && <div className="search-tools">
+          <div className="search-inputs fade-in">
 
+            {generateField('user', 'Search for user by name', 'User Name', formErrors, 'user-name-search')}
+
+            <button
+              className="btn btn-success multi-input"
+              type="submit"
+              form="SearchBar"
+              disabled={props.appState.data.submitting || formErrors}
+            >
+              <i className="fa fa-search" />Search
+              </button>
+          </div>
+          <div className="filters fade-in">FILTERS HERE</div>
+          </div>
+        }
+        {fieldValues.searchType === 'agency' && <div className="search-inputs fade-in">
+
+          {generateField('agencyCode', 'Agency ID Search', 'Agency ID', formErrors, 'agency-id-search')}
+          {generateField('displayName', 'Agency Name Search', 'Agency Name', formErrors, 'agency-name-search')}
+          {generateField('address', 'Agency Address Search', 'Agency Address', formErrors, 'agency-address-search')}
+          {generateField('licNumber', 'Lic No Search', 'Lic Number', formErrors, 'agency-reg-lic-fein-search')}
+          {generateField('fein', 'FEIN No Search', 'FEIN Number', formErrors, 'agency-reg-lic-fein-search')}
+          {generateField('phone', 'Phone No Search', 'Agency Phone Number', formErrors, 'agency-phone-search')}
+
+          <button
+            className="btn btn-success multi-input"
+            type="submit"
+            form="SearchBar"
+            disabled={props.appState.data.submitting || formErrors}
+          >
+            <i className="fa fa-search" />Search
+          </button>
+        </div>
+        }
+        {fieldValues.searchType === 'agent' && <div className="search-inputs fade-in">
+
+          {generateField('agentCode', 'Agent ID Search', 'Agent ID', formErrors, 'agency-id-search')}
+          {generateField('firstName', 'First Name Search', 'First Name', formErrors, 'first-name-search')}
+          {generateField('lastName', 'Last Name Search', 'Last Name', formErrors, 'last-name-search')}
+          {generateField('address', 'Agent Address Search', 'Agent Address', formErrors, 'agency-address-search')}
+          {generateField('licNumber', 'Lic No Search', 'Lic Number', formErrors, 'agency-reg-lic-fein-search')}
+
+          <button
+            className="btn btn-success multi-input"
+            type="submit"
+            form="SearchBar"
+            disabled={props.appState.data.submitting || formErrors}
+          >
+            <i className="fa fa-search" />Search
+        </button>
+        </div>
+      }
+        {/* <!-- End should be available only in user admin  -->*/}
       </div>
     </Form>
   );
@@ -260,14 +385,17 @@ const mapStateToProps = state => ({
   initialValues: handleInitialize(state),
   error: state.error,
   cleanForm: state.pristine,
-  questions: state.questions
+  questions: state.questions,
+  agencies: state.agencies,
+  agents: state.agents
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch),
-    errorActions: bindActionCreators(errorActions, dispatch)
+    errorActions: bindActionCreators(errorActions, dispatch),
+    serviceActions: bindActionCreators(serviceActions, dispatch)
   }
 });
 

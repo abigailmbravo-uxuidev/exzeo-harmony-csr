@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
-import { shallow, mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import ConnectedApp, { DetailHeader, selectPolicy, handleGetQuote } from './DetailHeader';
 
 const middlewares = [];
@@ -374,7 +374,11 @@ describe('Testing DetailHeader component', () => {
     const store = mockStore(initialState);
     const props = {
       actions: {
+        quoteStateActions: {
+          getLatestQuote(){ }
+        },
         serviceActions: {
+          getQuote() {},
           getPolicyFromPolicyNumber() { return Promise.resolve({ payload: [{ data: { policy: {} } }] }); }
         },
         appStateActions: {
@@ -396,5 +400,15 @@ describe('Testing DetailHeader component', () => {
     expect(wrapper);
 
     selectPolicy(quoteData, props);
+
+    const shallowWrapper = shallow(<DetailHeader store={store} {...props} />);
+
+    shallowWrapper.instance().componentWillReceiveProps({ quoteState: { update: true, quoteId : '123'}, ...props });
+    const wrapper2 = shallow(<DetailHeader store={store} {...props} />);
+
+    wrapper2.instance().componentWillReceiveProps({ quoteState: {
+      update: true,
+      quoteId: '123'
+    }, ...props})
   });
 });

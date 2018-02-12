@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { reduxForm, Form, Field } from 'redux-form';
+import { reduxForm, Form } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
+import CheckField from '../Form/inputs/CheckField';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 
 export const handleFormSubmit = (data, dispatch, props) => {
@@ -30,11 +31,10 @@ export const handleFormSubmit = (data, dispatch, props) => {
 export const handleInitialize = (state) => {
   const values = {};
   const quoteData = state.service.quote || {};
-
+  
   if (!quoteData) return values;
 
   const underwritingExceptions = quoteData && quoteData.underwritingExceptions ? quoteData.underwritingExceptions : [];
-
   for (let i = 0; i < underwritingExceptions.length; i += 1) {
     const uwException = underwritingExceptions[i];
     if (uwException.canOverride) {
@@ -102,7 +102,7 @@ export const UnderwritingValidationBar = (props) => {
           {underwritingExceptions && _.filter(underwritingExceptions, { canOverride: true }).length > 0 &&
           <section className="msg-caution">
             <h5>
-              <i className="fa fa-exclamation-triangle" aria-hidden="true" /><span>Caution</span>{ hasOverrideExceptions && !pristine && <button className="btn btn-sm btn-primary" type="submit">Save</button> }
+              <i className="fa fa-exclamation-triangle" aria-hidden="true" /><span>Caution</span>{ hasOverrideExceptions && !pristine && <button tabIndex={'0'} className="btn btn-sm btn-primary" type="submit">Save</button> }
             </h5>
             <div>
               <ul className="fa-ul">
@@ -110,15 +110,11 @@ export const UnderwritingValidationBar = (props) => {
                   <li className={underwritingException.overridden ? 'overridden' : ''} key={index}>
                     <i className="fa-li fa fa-exclamation-triangle" aria-hidden="true" />
                     <span>{underwritingException.internalMessage}</span>
-                    <div className="override-wrapper">
-                      <Field
-                        name={underwritingException._id}
-                        id={underwritingException._id}
-                        component="input"
-                        type="checkbox"
-                      />
-                      <label htmlFor={underwritingException._id}>Override </label>
-                    </div>
+                    <CheckField
+                      label={'Override'}
+                      name={underwritingException._id}
+                      id={underwritingException._id}
+                    />
                   </li>
                 ))}
               </ul>

@@ -14,7 +14,6 @@ import AccessDenied from './containers/AccessDenied';
 import LoggedOut from './containers/LoggedOut';
 import Callback from './containers/Callback';
 import SplashPage from './containers/Splash';
-import AppErrorPage from './containers/AppError';
 import NotFoundPage from './containers/NotFound';
 import QuoteCoverage from './components/Quote/Coverage';
 import QuoteUnderwriting from './components/Quote/Underwriting';
@@ -28,6 +27,7 @@ import PolicyPolicyholderAgent from './components/Policy/PolicyholderAgent';
 import PolicyMortgageBilling from './components/Policy/MortgageBilling';
 import PolicyNotesFiles from './components/Policy/NotesFiles';
 import PolicyEndorsements from './components/Policy/Endorsements';
+import AgencyStaff from './components/Agency/Staff';
 import * as appStateActions from './actions/appStateActions';
 import PolicyCancel from './components/Policy/Cancel';
 import * as errorActions from './actions/errorActions';
@@ -51,7 +51,7 @@ const handleAuthentication = (nextState, replace) => {
 };
 
 const checkPublicPath = (path) => {
-  const publicPaths = ['/login', '/logout', '/error', '/accessDenied', '/loggedOut', '/callback'];
+  const publicPaths = ['/login', '/logout', '/accessDenied', '/loggedOut', '/callback'];
   return (publicPaths.indexOf(path) === -1);
 };
 
@@ -61,7 +61,7 @@ class Routes extends Component {
     if (isAuthenticated() && checkPublicPath(window.location.pathname)) {
       const idToken = localStorage.getItem('id_token');
       axios.defaults.headers.common['authorization'] = `bearer ${idToken}`; // eslint-disable-line
-      
+
       if (!this.props.authState.userProfile) {
         const profile = JSON.parse(localStorage.getItem('user_profile'));
         this.props.actions.authActions.dispatchUserProfile(profile);
@@ -92,20 +92,24 @@ class Routes extends Component {
       <div>
         <Modal
           isOpen={this.props.error.message !== undefined}
-          contentLabel="Example Modal"
+          contentLabel="Error Modal"
           style={this.modalStyles}
           className="card"
+          appElement={document.getElementById('root')}
         >
           <div className="card-header"><h4><i className="fa fa-exclamation-circle" />&nbsp;Error</h4></div>
-          <div className="card-block">{ this.props.error.message }</div>
-          <div className="card-footer"><button className="btn-primary" onClick={this.clearError}>close</button></div>
-
+          <div className="card-block"><p>{ this.props.error.message }</p></div>
+          <div className="card-footer">
+            {this.props.error.requestId && <div className="footer-message"><p>Request ID: { this.props.error.requestId }</p></div>}
+            <button className="btn-primary" onClick={this.clearError}>close</button>
+          </div>
         </Modal>
+
         <Router
           getUserConfirmation={(message, callback) => {
             ReactDOM.render((
               <ConfirmPopup {...this.props} message={message} setBackStep={this.setBackStep} callback={callback} />
-      ), document.getElementById('modal'));
+            ), document.getElementById('modal'));
           }}
         >
           <div className="routes">
@@ -124,8 +128,8 @@ class Routes extends Component {
               <Route exact path="/policy/notes" render={props => <PolicyNotesFiles auth={auth} {...props} />} />
               <Route exact path="/policy/cancel" render={props => <PolicyCancel auth={auth} {...props} />} />
               <Route exact path="/policy/endorsements" render={props => <PolicyEndorsements auth={auth} {...props} />} />
+              <Route exact path="/agency/staff" render={props => <AgencyStaff auth={auth} {...props} />} />
               <Route exact path="/login" render={props => <LoginPage auth={auth} {...props} />} />
-              <Route exact path="/error" render={props => <AppErrorPage auth={auth} {...props} />} />
               <Route exact path="/accessDenied" render={props => <AccessDenied auth={auth} {...props} />} />
               <Route exact path="/loggedOut" render={props => <LoggedOut auth={auth} {...props} />} />
               <Route

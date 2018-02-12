@@ -26,6 +26,9 @@ describe('Testing AccessDenied component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      auth: {
+        logout() {}
+      },
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,
@@ -38,5 +41,6 @@ describe('Testing AccessDenied component', () => {
     };
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
     expect(wrapper);
+    wrapper.find('button').simulate('click');
   });
 });

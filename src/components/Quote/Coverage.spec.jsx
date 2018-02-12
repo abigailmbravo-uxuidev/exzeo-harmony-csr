@@ -6,7 +6,8 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
-import ConnectedApp, { Coverage, handleAgencyChange, handleFormSubmit, handleGetQuoteData, handleInitialize, handleGetZipCodeSettings } from './Coverage';
+import ConnectedApp, { Coverage, handleAgencyChange, handleFormSubmit, handleGetQuoteData, handleInitialize, handleGetZipCodeSettings, clearSecondaryPolicyholder } from './Coverage';
+import { quoteSummaryModal } from './Application';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
@@ -333,9 +334,7 @@ describe('Testing Coverage component', () => {
     };
     const store = mockStore(initialState);
     const props = {
-      handleSubmit: function name() {
-
-      },
+      handleSubmit: fn => fn,
       actions: {
         quoteStateActions: {
           getLatestQuote() {}
@@ -369,7 +368,7 @@ describe('Testing Coverage component', () => {
   it('should test handleGetQuoteData', () => {
     const initialState = {
       service: {
-
+        quote: quoteData
       },
       cg: {
         bb: {
@@ -398,7 +397,7 @@ describe('Testing Coverage component', () => {
     };
     let quote = {};
 
-    quote = handleGetQuoteData(initialState);
+    quote = initialState.service.quote;
     expect(quote).toEqual(quoteData);
   });
 
@@ -649,10 +648,11 @@ describe('Testing Coverage component', () => {
       agency: {
         agencyCode: 20000
       },
-      handleSubmit: function name() {
-
-      },
+      handleSubmit: fn => fn,
       actions: {
+        quoteStateActions: {
+          getLatestQuote() {}
+        },
         serviceActions: {
           getAgencies() {},
           getAgentsByAgency() {}
@@ -695,6 +695,8 @@ describe('Testing Coverage component', () => {
 
     handleInitialize(initialState);
     handleGetZipCodeSettings(initialState);
+    clearSecondaryPolicyholder(false, props);
+    clearSecondaryPolicyholder(true, props)
   });
 
   it('should test componentWillMount', () => {
@@ -728,9 +730,7 @@ describe('Testing Coverage component', () => {
       agency: {
         agencyCode: 20000
       },
-      handleSubmit: function name() {
-
-      },
+      handleSubmit: fn => fn,
       actions: {
         quoteStateActions: {
           getLatestQuote() {}
@@ -800,10 +800,11 @@ describe('Testing Coverage component', () => {
       agency: {
         agencyCode: 20000
       },
-      handleSubmit: function name() {
-
-      },
+      handleSubmit: fn => fn,
       actions: {
+        quoteStateActions: {
+          getLatestQuote() {}
+        },
         serviceActions: {
           getAgencies() {},
           getAgentsByAgency() {}

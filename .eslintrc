@@ -1,7 +1,8 @@
 {
   "parser": "babel-eslint",
-  "extends": "airbnb",
+  "extends": ["airbnb"],
   "rules": {
+    "no-underscore-dangle": [0, { "allow": [] }],
     "comma-dangle":  [2, "never"],
     "import/no-extraneous-dependencies": 0,
     "no-unused-expressions": 0,
@@ -14,11 +15,15 @@
     "jsx-a11y/anchor-has-content": 0,
     "import/no-unresolved": 0,
     "import/extensions": 0,
-    "max-len": [1, { "code": 200 }]
+    "max-len": [1, { "code": 200 }],
+    "react/no-array-index-key": 0,
+    "jsx-a11y/label-has-for" : 0,
+    "jsx-a11y/anchor-is-valid" : 0,
+    "no-param-reassign": ["error", { "props": false }]
   },
   "globals": {
-    "expect": 0,
-    "sinon": 0
+    "expect": false,
+    "sinon": false
   },
   "env": {
     "browser": true,

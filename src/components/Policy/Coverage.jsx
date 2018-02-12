@@ -13,7 +13,6 @@ import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as policyStateActions from '../../actions/policyStateActions';
 import PolicyConnect from '../../containers/Policy';
-import ClearErrorConnect from '../Error/ClearError';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
 
@@ -33,26 +32,21 @@ export class Coverage extends Component {
       localStorage.setItem('isNewTab', false);
       const policyNumber = localStorage.getItem('policyNumber');
       this.props.actions.policyStateActions.updatePolicy(true, policyNumber);
+      this.props.actions.serviceActions.getCancelOptions();
+      this.props.actions.serviceActions.getSummaryLedger(policyNumber);
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!_.isEqual(this.props, nextProps)) {
-      if (nextProps.policy.policyNumber) {
-        this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
-        const paymentOptions = {
-          effectiveDate: nextProps.policy.effectiveDate,
-          policyHolders: nextProps.policy.policyHolders,
-          additionalInterests: nextProps.policy.additionalInterests,
-          netPremium: nextProps.policy.rating.netPremium,
-          fees: {
-            empTrustFee: nextProps.policy.rating.worksheet.fees.empTrustFee,
-            mgaPolicyFee: nextProps.policy.rating.worksheet.fees.mgaPolicyFee
-          },
-          totalPremium: nextProps.policy.rating.totalPremium
-        };
-        this.props.actions.serviceActions.getBillingOptions(paymentOptions);
-      }
+    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.summaryLedger, nextProps.summaryLedger) && nextProps.summaryLedger.currentPremium) {
+      const paymentOptions = {
+        effectiveDate: nextProps.policy.effectiveDate,
+        policyHolders: nextProps.policy.policyHolders,
+        additionalInterests: nextProps.policy.additionalInterests,
+        currentPremium: nextProps.summaryLedger.currentPremium,
+        fullyEarnedFees: nextProps.policy.rating.worksheet.fees.empTrustFee + nextProps.policy.rating.worksheet.fees.mgaPolicyFee
+      };
+      nextProps.actions.serviceActions.getBillingOptionsForPolicy(paymentOptions);
     }
   }
 
@@ -189,13 +183,10 @@ export class Coverage extends Component {
 
     const propertyData = property || {};
     if (!this.props.policy.policyID) {
-      return (<PolicyConnect>
-        <ClearErrorConnect />
-      </PolicyConnect>);
+      return (<PolicyConnect></PolicyConnect>);
     }
     return (
       <PolicyConnect>
-        <ClearErrorConnect />
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
@@ -348,7 +339,7 @@ redux mapping
 */
 const mapStateToProps = state => ({
   paymentOptions: state.service.billingOptions,
-  summaryLedger: state.service.getSummaryLedger,
+  summaryLedger: state.service.getSummaryLedger || {},
   tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'Coverage.values', {}),

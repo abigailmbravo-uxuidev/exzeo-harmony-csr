@@ -21,7 +21,7 @@ export function combineRules(validations, variables) {
 
   if (validations) {
     for (let i = 0; i < validations.length; i += 1) {
-      if (!variables || (!variables.min && !variables.max && !variables.dateString)) {
+      if ((!variables || (!variables.min && !variables.max && !variables.dateString)) && rules[validations[i]]) {
         ruleArray.push(rules[`${validations[i]}`]);
       } else if (validations[i] === 'range' && variables && variables.min && variables.max) {
         const range = (values) => {
@@ -55,6 +55,7 @@ export function combineRules(validations, variables) {
       for (const field of variables.dependsOn) {
         if (allValues[field]) return 'Field Required';
       }
+      
       return undefined;
     };
     ruleArray.push(checkFields);

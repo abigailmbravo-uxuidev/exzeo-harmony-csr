@@ -44,6 +44,7 @@ export const CurrencyInput = ({
       {Label}
       <NumberFormat
         {...input}
+        tabIndex={'0'}
         displayType={'input'}
         thousandSeparator
         prefix={'$ '}

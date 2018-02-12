@@ -5,13 +5,13 @@ import _ from 'lodash';
 import {
   MortgageBilling,
   setRank,
-    handleInitialize,
-    addAdditionalInterest,
-    editAdditionalInterest,
-    hideAdditionalInterestModal,
-    handleAISubmit,
-    deleteAdditionalInterest
-  } from './MortgageBilling';
+  handleInitialize,
+  addAdditionalInterest,
+  editAdditionalInterest,
+  hideAdditionalInterestModal,
+  handleAISubmit,
+  deleteAdditionalInterest
+} from './MortgageBilling';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -229,6 +229,7 @@ describe('Testing MortgageBilling component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      reset() {},
       auth: {
         userProfile: {
           groups: [{ companyCode: 'TTIC' }]
@@ -261,7 +262,7 @@ describe('Testing MortgageBilling component', () => {
       handleSubmit() {},
       fieldValues: {},
       quoteData: {},
-      dispatch: store.dispatch,
+      dispatch() {},
       appState: {
         data: {
           submitting: false
@@ -288,6 +289,7 @@ describe('Testing MortgageBilling component', () => {
     wrapper.instance().dateFormatter('123');
 
     wrapper.instance().componentWillReceiveProps({
+      getSummaryLedger() {},
       policy: { policyNumber: '1234', rating: { worksheet: { fees: {} } } },
       appState: {
 
@@ -296,12 +298,16 @@ describe('Testing MortgageBilling component', () => {
         appStateActions: {
           setAppState() {}
         },
-        serviceActions: { addTransaction() { return Promise.resolve(); },
+        serviceActions: {
+          addTransaction() { return Promise.resolve(); },
           getTransactionHistory() {},
           getSummaryLedger() {},
-          getBillingOptions() {},
+          getBillingOptionsForPolicy() {},
           getPaymentHistory() {},
-          getPaymentOptionsApplyPayments() {} } } });
+          getPaymentOptionsApplyPayments() {}
+        }
+      }
+    });
   });
 
   it('test setRank', () => {
