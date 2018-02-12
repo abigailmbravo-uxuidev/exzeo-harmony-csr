@@ -261,7 +261,8 @@ export const checkValidTypes = (additionalInterests, selectedAI) => {
 };
 
 export class MortgageBilling extends Component {
-  componentWillMount = () => {
+  componentDidMount = () => {
+    this.props.actions.serviceActions.getPaymentHistory(this.props.policy.policyNumber);
     this.props.actions.serviceActions.getPaymentOptionsApplyPayments();
     this.props.actions.appStateActions.setAppState(
       this.props.appState.modelName,

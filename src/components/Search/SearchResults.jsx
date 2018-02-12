@@ -338,11 +338,7 @@ SearchResults.propTypes = {
     instanceId: PropTypes.string,
     data: PropTypes.shape({ dontSeeAddress: PropTypes.bool })
   }),
-  tasks: PropTypes.shape(),
-  handleSelectAddress: PropTypes.func,
-  handleSelectQuote: PropTypes.func,
-  handleNewQuote: PropTypes.func,
-  handleSelectPolicy: PropTypes.func
+  tasks: PropTypes.shape()
 };
 
 const mapStateToProps = state => ({ tasks: state.cg, appState: state.appState, agencies: state.service.agencies, agents: state.service.agents });

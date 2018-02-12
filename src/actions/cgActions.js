@@ -48,9 +48,10 @@ const checkCGError = (responseData) => {
 };
 
 const handleError = (dispatch, modelName, workflowId, err) => {
-  const error = err.response && err.response.data ? err.response.data : err;
+  const error = err.response && err.response.data && err.response.data.result ? err.response.data.result : err;
+  const requestId = err.response && err.response.data ? err.response.data.requestId : '';
   return dispatch(batchActions([
-    errorActions.setAppError({ ...error }),
+    errorActions.setAppError({ message: error.result, status: error.status, requestId }),
     appStateActions.setAppState(modelName, workflowId, { submitting: false })
   ]));
 };
