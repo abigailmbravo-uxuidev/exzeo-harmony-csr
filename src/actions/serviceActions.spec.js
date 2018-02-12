@@ -72,59 +72,6 @@ describe('Service Actions', () => {
       });
   });
 
-  it('should fail start getNotes', () => {
-    const mockAdapter = new MockAdapter(axios);
-    const note = {
-      noteType: 'test',
-      noteContent: 'test',
-      contactType: 'Agent',
-      createdAt: new Date().getTime(),
-      noteAttachments: [],
-      createdBy: {},
-      updatedBy: {}
-    };
-    const axiosNotesOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'transaction-logs.services',
-        method: 'GET',
-        path: 'history?number=test'
-      }
-    };
-
-    const axiosDocsOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'file-index.services',
-        method: 'GET',
-        path: `v1/fileindex/test`
-      }
-    };
-
-    Promise.all([
-      mockAdapter
-      .onPost(axiosNotesOptions).reply(200, { data: [note]})
-      .onPost(axiosDocsOptions).reply(200, { data: []})
-    ]);
-
-    const initialState = {};
-    const store = mockStore(initialState);
-    serviceActions.getNotes(store.dispatch);
-
-    return serviceActions.getNotes('4435')(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
-      });
-  });
-
   it('should call start addNotes', () => {
     const mockAdapter = new MockAdapter(axios);
     const createdAt = new Date().getTime();
@@ -1321,5 +1268,35 @@ describe('Service Actions', () => {
     .then(() => {
       expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
     });
+  });
+});
+
+it('should call start getCancelOptions', () => {
+  const mockAdapter = new MockAdapter(axios);
+
+  const axiosOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    url: `${process.env.REACT_APP_API_URL}/svc`,
+    data: {
+      service: 'policy-data.services',
+      method: 'GET',
+      path: 'cancelOptions'
+    }
+  };
+
+  mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+    data: []
+  });
+
+  const initialState = {};
+  const store = mockStore(initialState);
+  serviceActions.getEndorsementHistory(store.dispatch);
+
+  return serviceActions.getCancelOptions()(store.dispatch)
+  .then(() => {
+    expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
   });
 });
