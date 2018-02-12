@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Downloader from './Downloader';
 
@@ -23,7 +23,7 @@ export const Notes = (props) => {
   const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
   const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
   const attachmentType = attachments => attachments.length > 0 ? attachments[0].fileType : '';
-  const formatCreateDate = createDate => moment.utc(createDate).format('MM/DD/YYYY');
+  const formatCreatedDate = createdDate => `${moment.tz(moment.utc(createdDate), 'America/New_York').format('MM/DD/YYYY h:mm A')} EST`;
   const formatNote = note => note ? note.replace(/\r|\n/g, '<br>') : '';
   const attachmentUrl = attachments => (
     <span>
@@ -51,7 +51,7 @@ export const Notes = (props) => {
         multiColumnSearch
       >
         <TableHeaderColumn dataField="_id" isKey hidden>ID</TableHeaderColumn>
-        <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdDate" dataSort dataFormat={formatCreateDate} >Created</TableHeaderColumn>
+        <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdDate" dataSort dataFormat={formatCreatedDate} >Created</TableHeaderColumn>
         <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataSort dataFormat={showCreatedBy} >Author</TableHeaderColumn>
         {!attachmentStatus && <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="contactType" dataSort >Note Type</TableHeaderColumn>}
         {!attachmentStatus && <TableHeaderColumn className="note" columnClassName="note" dataField="content" dataSort dataFormat={formatNote} >Note</TableHeaderColumn>}
