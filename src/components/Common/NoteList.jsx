@@ -4,7 +4,7 @@ import moment from 'moment-timezone';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Downloader from './Downloader';
 
-export const SearchPanel = props => (
+export const SearchPanel = (props) => (
   <div className="search">
     <label>Search Table Data</label>
     { props.searchField }
@@ -65,7 +65,7 @@ export const Notes = (props) => {
 
 export class NoteList extends Component {
   state = { attachmentStatus: false };
-  setNoteStatus = (status) => this.setState({ attachmentStatus: status });
+  setNoteStatus = status => this.setState({ attachmentStatus: status });
 
   render () {
     return (
