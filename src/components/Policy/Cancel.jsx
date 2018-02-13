@@ -31,7 +31,7 @@ export const handleInitialize = (state) => {
   return values;
 };
 
-const amountFormatter = cell => cell.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+const amountFormatter = cell => cell.$numberDecimal ? Number(cell.$numberDecimal).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '';
 const dateFormatter = cell => `${cell.substring(0, 10)}`;
 
 export const Payments = ({ payments }) => {
