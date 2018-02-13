@@ -1393,6 +1393,7 @@ export class Endorsements extends React.Component {
                               id="clearFields"
                               component="input"
                               type="checkbox"
+                              disabled={!(policy && policy.policyHolders && policy.policyHolders[1])}
                             />
                             <label htmlFor="clearFields"> Remove</label>
                           </div>
