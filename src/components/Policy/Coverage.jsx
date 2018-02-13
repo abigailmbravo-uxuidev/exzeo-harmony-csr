@@ -26,27 +26,30 @@ const handleInitialize = state => state.service.latestPolicy;
 export class Coverage extends Component {
 
   componentDidMount() {
-    this.props.actions.questionsActions.getUIQuestions('propertyAppraisalCSR');
+    const { actions } = this.props;
+
+   actions.questionsActions.getUIQuestions('propertyAppraisalCSR');
     const isNewTab = localStorage.getItem('isNewTab') === 'true';
     if (isNewTab) {
       localStorage.setItem('isNewTab', false);
       const policyNumber = localStorage.getItem('policyNumber');
-      this.props.actions.policyStateActions.updatePolicy(true, policyNumber);
-      this.props.actions.serviceActions.getCancelOptions();
-      this.props.actions.serviceActions.getSummaryLedger(policyNumber);
+      actions.policyStateActions.updatePolicy(true, policyNumber);
+      actions.serviceActions.getCancelOptions();
+      actions.serviceActions.getSummaryLedger(policyNumber);
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.summaryLedger, nextProps.summaryLedger) && nextProps.summaryLedger.currentPremium) {
+    const { actions, paymentOptions, policy, summaryLedger} = nextProps;
+    if (policy && policy.policyNumber && summaryLedger.currentPremium && !paymentOptions) {
       const paymentOptions = {
-        effectiveDate: nextProps.policy.effectiveDate,
-        policyHolders: nextProps.policy.policyHolders,
-        additionalInterests: nextProps.policy.additionalInterests,
-        currentPremium: nextProps.summaryLedger.currentPremium,
-        fullyEarnedFees: nextProps.policy.rating.worksheet.fees.empTrustFee + nextProps.policy.rating.worksheet.fees.mgaPolicyFee
+        effectiveDate: policy.effectiveDate,
+        policyHolders: policy.policyHolders,
+        additionalInterests: policy.additionalInterests,
+        currentPremium: summaryLedger.currentPremium,
+        fullyEarnedFees: policy.rating.worksheet.fees.empTrustFee + policy.rating.worksheet.fees.mgaPolicyFee
       };
-      nextProps.actions.serviceActions.getBillingOptionsForPolicy(paymentOptions);
+      actions.serviceActions.getBillingOptionsForPolicy(paymentOptions);
     }
   }
 
