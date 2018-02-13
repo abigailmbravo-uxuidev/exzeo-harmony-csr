@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { reduxForm, Form, change } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import _ from 'lodash';
@@ -76,10 +76,10 @@ export const handleFormSubmit = (data, dispatch, props) => {
   const submitData = {
     policyID: policy.policyID,
     policyNumber: policy.policyNumber,
-    cancelDate: data.effectiveDate,
+    cancelDate: moment.tz(moment.utc(data.effectiveDate).format('YYYY-MM-DD'), props.zipCodeSettings.timezone).utc().format(),
     cancelReason: data.cancelReason,
     transactionType: `Pending ${data.cancelType}`,
-    equityDate: moment.utc(data.equityDate),
+    equityDate: moment.tz(moment.utc(data.equityDate).format('YYYY-MM-DD'), props.zipCodeSettings.timezone).utc().format(),
     billingStatus: summaryLedger.status.code
   };
 
@@ -114,10 +114,13 @@ export class CancelPolicy extends React.Component {
       (!_.isEqual(this.props.summaryLedger, nextProps.summaryLedger) ||
       !_.isEqual(this.props.cancelOptions, nextProps.cancelOptions) ||
       !_.isEqual(this.props.paymentOptions, nextProps.paymentOptions) ||
-      !_.isEqual(this.props.summaryLedger, nextProps.summaryLedger))) {
+      !_.isEqual(this.props.summaryLedger, nextProps.summaryLedger) || 
+      !_.isEqual(this.props.zipCodeSettings, nextProps.zipCodeSettings))) {
       nextProps.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
       nextProps.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
       nextProps.actions.serviceActions.getCancelOptions();
+      nextProps.actions.serviceActions.getZipcodeSettings(nextProps.policy.companyCode,nextProps.policy.state, nextProps.policy.product, nextProps.policy.property.physicalAddress.zip);
+
 
       const paymentOptions = {
         effectiveDate: nextProps.policy.effectiveDate,
@@ -227,7 +230,8 @@ const mapStateToProps = state => ({
   paymentHistory: state.service.paymentHistory,
   summaryLedger: state.service.getSummaryLedger,
   paymentOptions: state.service.billingOptions,
-  cancelOptions: state.service.cancelOptions || []
+  cancelOptions: state.service.cancelOptions || [],
+  zipCodeSettings: state.service.getZipcodeSettings
 });
 
 const mapDispatchToProps = dispatch => ({
