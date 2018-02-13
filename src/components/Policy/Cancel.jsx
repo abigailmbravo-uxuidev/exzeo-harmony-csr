@@ -20,15 +20,11 @@ import Footer from '../Common/Footer';
 import Loader from '../Common/Loader';
 
 export const handleInitialize = (state) => {
-  const values = {};
-
   const summaryLedger = state.service.getSummaryLedger || {};
-
-  values.equityDate = summaryLedger.equityDate ? moment.utc(summaryLedger.equityDate).format('MM/DD/YYYY') : '';
-
-  values.effectiveDate = moment.utc().format('YYYY-MM-DD');
-
-  return values;
+  return ({
+    equityDate: summaryLedger.equityDate ? moment.utc(summaryLedger.equityDate).format('MM/DD/YYYY') : '',
+    effectiveDate: moment.utc().format('YYYY-MM-DD')
+  });
 };
 
 const amountFormatter = cell => cell.$numberDecimal ? Number(cell.$numberDecimal).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '';
@@ -110,23 +106,21 @@ export const resetCancelReasons = (props) => {
 
 export class CancelPolicy extends React.Component {
   componentWillReceiveProps(nextProps) {
-    if (nextProps && nextProps.policy && nextProps.policy.policyNumber &&
-      (!_.isEqual(this.props.summaryLedger, nextProps.summaryLedger) ||
-      !_.isEqual(this.props.cancelOptions, nextProps.cancelOptions) ||
-      !_.isEqual(this.props.paymentOptions, nextProps.paymentOptions) ||
-      !_.isEqual(this.props.summaryLedger, nextProps.summaryLedger))) {
-      nextProps.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
-      nextProps.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
-      nextProps.actions.serviceActions.getCancelOptions();
+    const { actions, policy, summaryLedger } = nextProps;
+    if (policy && policy.policyNumber) {
+      actions.serviceActions.getSummaryLedger(policy.policyNumber);
+      serviceActions.getPaymentHistory(policy.policyNumber);
+      actions.serviceActions.getCancelOptions();
 
       const paymentOptions = {
-        effectiveDate: nextProps.policy.effectiveDate,
-        policyHolders: nextProps.policy.policyHolders,
-        additionalInterests: nextProps.policy.additionalInterests,
-        currentPremium: nextProps.summaryLedger.currentPremium,
-        fullyEarnedFees: nextProps.policy.rating.worksheet.fees.empTrustFee + nextProps.policy.rating.worksheet.fees.mgaPolicyFee
+        effectiveDate: policy.effectiveDate,
+        policyHolders: policy.policyHolders,
+        additionalInterests: policy.additionalInterests,
+        currentPremium: summaryLedger.currentPremium,
+        fullyEarnedFees: policy.rating.worksheet.fees.empTrustFee + policy.rating.worksheet.fees.mgaPolicyFee
       };
-      nextProps.actions.serviceActions.getBillingOptionsForPolicy(paymentOptions);
+
+      actions.serviceActions.getBillingOptionsForPolicy(paymentOptions);
     }
   }
 
@@ -186,7 +180,7 @@ export class CancelPolicy extends React.Component {
                     </div>
                     <div className="flex-child">
                       <label>Equity Date</label>
-                      <TextField disabled name={'equityDate'} />
+                      <TextField disabled label="equityDate" name={'equityDate'} />
                     </div>
                   </div>
                   <Payments payments={this.props.paymentHistory || []} />
