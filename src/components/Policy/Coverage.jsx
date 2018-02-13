@@ -28,7 +28,7 @@ export class Coverage extends Component {
   componentDidMount() {
     const { actions } = this.props;
 
-   actions.questionsActions.getUIQuestions('propertyAppraisalCSR');
+    actions.questionsActions.getUIQuestions('propertyAppraisalCSR');
     const isNewTab = localStorage.getItem('isNewTab') === 'true';
     if (isNewTab) {
       localStorage.setItem('isNewTab', false);
@@ -40,8 +40,8 @@ export class Coverage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { actions, paymentOptions, policy, summaryLedger} = nextProps;
-    if (policy && policy.policyNumber && summaryLedger.currentPremium && !paymentOptions) {
+    const { actions, policy, summaryLedger} = nextProps;
+    if (policy && policy.policyNumber && summaryLedger.currentPremium) {
       const paymentOptions = {
         effectiveDate: policy.effectiveDate,
         policyHolders: policy.policyHolders,
