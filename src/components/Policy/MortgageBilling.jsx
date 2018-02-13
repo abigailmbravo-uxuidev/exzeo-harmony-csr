@@ -376,7 +376,7 @@ export class MortgageBilling extends Component {
       let billTo;
       if (policy.billToType === 'Policyholder') {
         billTo = policyHolders.find(ph => ph._id === policy.billToId);
-        billToName = `${policy.billToType}:  ${billTo.firstName} ${billTo.lastName}`
+        billToName = `${policy.billToType}: ${billTo.firstName} ${billTo.lastName}`
       } else {
         billTo = billTo ? billTo : additionalInterests.find(ai => ai._id === policy.billToId);
         billToName = `${policy.billToType}: ${billTo.name1}`;
