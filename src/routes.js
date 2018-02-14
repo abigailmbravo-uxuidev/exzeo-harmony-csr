@@ -22,6 +22,7 @@ import QuoteMailingAddressBilling from './components/Quote/MailingAddressBilling
 import QuoteNotesFiles from './components/Quote/NotesFiles';
 import QuoteSummary from './components/Quote/Summary';
 import QuoteApplication from './components/Quote/Application';
+import Reports from './containers/Reports';
 import PolicyCoverage from './components/Policy/Coverage';
 import PolicyPolicyholderAgent from './components/Policy/PolicyholderAgent';
 import PolicyMortgageBilling from './components/Policy/MortgageBilling';
@@ -129,6 +130,7 @@ class Routes extends Component {
               <Route exact path="/policy/cancel" render={props => <PolicyCancel auth={auth} {...props} />} />
               <Route exact path="/policy/endorsements" render={props => <PolicyEndorsements auth={auth} {...props} />} />
               <Route exact path="/agency/staff" render={props => <AgencyStaff auth={auth} {...props} />} />
+              <Route exact path="/reports" render={props => <Reports auth={auth} {...props} />} />
               <Route exact path="/login" render={props => <LoginPage auth={auth} {...props} />} />
               <Route exact path="/accessDenied" render={props => <AccessDenied auth={auth} {...props} />} />
               <Route exact path="/loggedOut" render={props => <LoggedOut auth={auth} {...props} />} />
