@@ -563,12 +563,6 @@ MortgageBilling.propTypes = {
   policy: PropTypes.shape().isRequired
 };
 
-/**
-------------------------------------------------
-redux mapping
-------------------------------------------------
-*/
-
 const mapStateToProps = state => ({
   questions: state.questions,
   auth: state.authState,
