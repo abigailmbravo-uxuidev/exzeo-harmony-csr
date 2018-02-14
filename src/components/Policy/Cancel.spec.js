@@ -43,6 +43,7 @@ describe('Testing Cancel component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      zipCodeSettings : { timezone: 'America/New_York'},
       reset() {},
       userProfile: {},
       actions: {
@@ -83,6 +84,7 @@ describe('Testing Cancel component', () => {
     expect(wrapper);
 
     wrapper.instance().componentWillReceiveProps({
+      zipCodeSettings : { timezone: 'America/New_York'},
       summaryLedger: {},
       actions: {
         policyStateActions: {
@@ -93,10 +95,11 @@ describe('Testing Cancel component', () => {
           getBillingOptionsForPolicy() { return Promise.resolve(); },
           getPaymentHistory() { return Promise.resolve(); },
           getBillingOptions() { return Promise.resolve(); },
-          getSummaryLedger() { return Promise.resolve(); }
+          getSummaryLedger() { return Promise.resolve(); },
+          getZipcodeSettings() { }
         }
       },
-      policy: { policyNumber: '1234', rating: { worksheet: { fees: {} } } } });
+      policy: { property: { physicalAddress: { zip: 33607 }}, policyNumber: '1234', rating: { worksheet: { fees: {} } } } });
 
     handleInitialize(initialState);
 
