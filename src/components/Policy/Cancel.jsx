@@ -131,7 +131,7 @@ export class CancelPolicy extends React.Component {
     return (
       <PolicyConnect>
         {this.props.appState.data.isSubmitting && <Loader />}
-        <Form id="CancelPolicy" className="" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+        <Form id="CancelPolicy" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
           <div className="route-content">
             <div className="scroll">
               <div className="form-group survey-wrapper cancel-policy" role="group">
@@ -150,7 +150,7 @@ export class CancelPolicy extends React.Component {
                       <DateField validations={['required']} label={'Effective Date'} name={'effectiveDate'} />
                     </div>
                   </div>
-                  <div className="flex-parent">                    
+                  <div className="flex-parent">
                     <div className="flex-child">
                       <SelectField
                         name="cancelReason" component="select" styleName={''} label="Cancel Reason" validations={['required']}
