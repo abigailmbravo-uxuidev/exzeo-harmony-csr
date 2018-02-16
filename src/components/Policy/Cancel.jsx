@@ -146,7 +146,7 @@ export class CancelPolicy extends React.Component {
                         answers={cancelGroup}
                       />
                     </div>
-                    <div className="flex-child">
+                    <div className="flex-child date">
                       <DateField validations={['required']} label={'Effective Date'} name={'effectiveDate'} />
                     </div>
                   </div>
@@ -178,9 +178,8 @@ export class CancelPolicy extends React.Component {
                       <label>Bill Plan</label>
                       <div>{_.get(this.props.summaryLedger, 'billPlan')}</div>
                     </div>
-                    <div className="flex-child">
-                      <label>Equity Date</label>
-                      <TextField disabled label="equityDate" name={'equityDate'} />
+                    <div className="flex-child date">
+                      <TextField disabled label="Equity Date" name={'equityDate'} />
                     </div>
                   </div>
                   <Payments payments={this.props.paymentHistory || []} />

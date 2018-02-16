@@ -59,42 +59,43 @@
         flex-shrink: 1;
 
         form {
-            display: flex;
-            overflow: hidden;
-            flex-grow: 1;
-            flex-shrink: 1;
+          display: flex;
+          overflow: hidden;
+          flex-grow: 1;
+          flex-shrink: 1;
         }
-
         //mortgage billing
         .mortgage-billing {
           position: relative;
           display: flex;
-          flex-grow: 1;
-          flex-shrink: 1;
+          overflow: hidden;
           flex-basis: auto;
           flex-direction: column;
-          overflow: hidden;
+          flex-grow: 1;
+          flex-shrink: 1;
 
           .scroll {
-            flex-shrink: 1;
             flex-grow: 1;
+            flex-shrink: 1;
 
             .flex-child {
-                &.date {
-                    flex-shrink: 0;
-                    flex-grow: 0;
-                    width: 14rem;
-                }
-                &.cash-type {
-                    flex-shrink: 0;
-                    flex-grow: 0;
-                    width: 40%;
-                }
-                &.payment-description {
-                    flex-shrink: 0;
-                    flex-grow: 0;
-                    width: 40%;
-                }
+              &.date {
+                flex-grow: 0;
+                flex-shrink: 0;
+                width: 14rem;
+              }
+
+              &.cash-type {
+                flex-grow: 0;
+                flex-shrink: 0;
+                width: 40%;
+              }
+
+              &.payment-description {
+                flex-grow: 0;
+                flex-shrink: 0;
+                width: 40%;
+              }
             }
           }
         }
@@ -103,11 +104,11 @@
         .endorsements {
           position: relative;
           display: flex;
-          flex-grow: 1;
-          flex-shrink: 1;
+          overflow: hidden;
           flex-basis: auto;
           flex-direction: column;
-          overflow: hidden;
+          flex-grow: 1;
+          flex-shrink: 1;
 
           .endo-jump-menu {
             display: flex;
@@ -118,16 +119,16 @@
             background: $white;
 
             * {
+              flex-basis: auto;
               flex-grow: 1;
               flex-shrink: 1;
-              flex-basis: auto;
               margin: 0 ($padding);
             }
           }
 
           .scroll {
-            flex-shrink: 1;
             flex-grow: 1;
+            flex-shrink: 1;
 
             .flex-child.col3 {
               width: 50%;
@@ -155,12 +156,12 @@
 
                 > .form-group {
                   display: flex;
-                  flex-direction: row;
-                  flex-wrap: wrap;
                   align-items: center;
-                  width: 66.66%;
+                  flex-direction: row;
                   flex-grow: 0;
                   flex-shrink: 0;
+                  flex-wrap: wrap;
+                  width: 66.66%;
                   margin: 0;
                   padding: 0 $padding;
 
@@ -174,12 +175,12 @@
                   }
 
                   &:last-child {
-                    width: 33.33%;
+                    flex-direction: column;
                     flex-grow: 0;
                     flex-shrink: 0;
+                    width: 33.33%;
                     margin: 0;
                     padding: 0;
-                    flex-direction: column;
 
                     label {
                       display: none;
@@ -200,8 +201,8 @@
                     flex-shrink: 0;
                     width: 50%;
                     margin: 0;
-                    text-align: right;
                     padding-right: $padding;
+                    text-align: right;
                     @media (max-width: 1600px) {
                       font-size: $font-size-sm;
                     }
@@ -302,15 +303,14 @@
             flex-shrink: 1;
             width: auto;
             padding: $padding;
-            background: $warm-gray-01;
             border-top: 1px dotted $warm-gray-04;
+            background: $warm-gray-01;
 
             .btn-secondary {
               margin-right: $padding;
             }
 
             .flex-parent {
-
               .form-group {
                 margin: 0 $padding 0 0;
 
@@ -319,16 +319,17 @@
                 }
 
                 input {
-                    &[disabled="disabled"], &:disabled {
-                        background: $warm-gray-00;
-                        border-color: $warm-gray-03;
-                        color: $white;
-                    }
+                  &[disabled="disabled"],
+                  &:disabled {
+                    color: $white;
+                    border-color: $warm-gray-03;
+                    background: $warm-gray-00;
+                  }
                 }
               }
 
               .btn {
-                  margin-top: 1.5rem;
+                margin-top: 1.5rem;
               }
             }
           }
@@ -348,10 +349,10 @@
           border-left: dotted 1px $warm-gray-04;
 
           .uw-validation-header {
-              margin: ($padding*1.5) 0;
+            margin: ($padding*1.5) 0;
           }
         }
-        //endorsements
+
         .scroll {
           overflow-y: auto;
           flex-grow: 1;
@@ -371,10 +372,10 @@
                 .contact-title {
                   display: flex;
                   flex-direction: column;
-                  width: 6rem;
-                  justify-content: center;
                   flex-grow: 0;
                   flex-shrink: 0;
+                  justify-content: center;
+                  width: 6rem;
 
                   i {
                     text-align: center;
@@ -383,9 +384,9 @@
                   }
 
                   label {
+                    margin-bottom: 0;
                     text-align: center;
                     font-size: $font-size-sm;
-                    margin-bottom: 0;
                   }
                 }
 
@@ -398,13 +399,13 @@
                     color: $warm-gray-10;
 
                     &.agency {
-                        font-weight: $font-weight-normal;
+                      font-weight: $font-weight-normal;
 
-                        .agency-display-name {
-                            font-weight: $font-weight-bold;
-                        }
+                      .agency-display-name {
+                        font-weight: $font-weight-bold;
+                      }
 
-                        .agency-legal-name {}
+                      .agency-legal-name {}
                     }
                   }
 
@@ -447,8 +448,8 @@
                         color: $warm-gray-08;
 
                         &.fa-phone-square {
-                          font-size: 112%;
                           margin-top: 3%;
+                          font-size: 112%;
                         }
                       }
 
@@ -513,9 +514,9 @@
                   font-size: $font-size-sm;
 
                   label {
-                    font-size: $font-size-sm;
-                    margin-bottom: 0;
                     margin-right: $padding;
+                    margin-bottom: 0;
+                    font-size: $font-size-sm;
                   }
                 }
               }
@@ -624,21 +625,21 @@
                 }
 
                 .date {
-                  width: 120px;
                   flex-grow: 0;
                   flex-shrink: 0;
+                  width: 120px;
                 }
 
                 .type {
-                  width: 200px;
                   flex-grow: 0;
                   flex-shrink: 0;
+                  width: 200px;
                 }
 
                 .description {
-                  width: 230px;
                   flex-grow: 0;
                   flex-shrink: 0;
+                  width: 230px;
                 }
 
                 .note {
@@ -647,9 +648,9 @@
                 }
 
                 .amount {
-                  width: 200px;
                   flex-grow: 0;
                   flex-shrink: 0;
+                  width: 200px;
 
                   > div {
                     text-align: right;
@@ -792,72 +793,20 @@
           }
         }
       }
-    }
-  }
-}
-//cancel policy styles
-.cancel-policy {
-  form.cancel-type {
-      flex-direction: column;
-  }
+      //cancel policy
+      form#CancelPolicy {
+        display: flex;
+        overflow: hidden;
+        flex-direction: column;
+        flex-grow: 1;
+        flex-shrink: 1;
 
-  label.form-group.segmented {
-    > label {
-      margin-bottom: $padding;
-      display: none;
-    }
-
-    label {
-      margin-right: 0;
-    }
-  }
-
-  .note,
-  .note-type {
-    label {
-      display: none;
-    }
-  }
-
-  .note {
-    textarea {
-      height: 120px;
-    }
-  }
-
-  .form-group.billing {
-    div {
-      flex: 1 1 auto;
-      margin: 0 ($padding*4) 0 0;
-    }
-
-    .flex-child {
-      flex: 1 1 auto;
-
-      label {
-        margin-right: 0.5rem;
-        text-align: right;
-      }
-
-      .form-group {
-        flex-direction: row;
-        align-items: center;
-
-        label {
-          flex: 0 1 auto;
-          width: 25%;
-          margin-bottom: 0;
-        }
-
-        input {
-          flex: 1 0 auto;
-          width: 75%;
+        .date {
+          flex-grow: 0;
+          flex-shrink: 0;
+          width: 11rem;
         }
       }
-    }
-
-    .flex-child:last-child {
-      margin-right: 0;
     }
   }
 }
