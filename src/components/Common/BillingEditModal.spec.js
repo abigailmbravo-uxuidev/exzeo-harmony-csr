@@ -24,7 +24,14 @@ describe('Testing BillingEditModal component', () => {
       },
       service: {
         latestPolicy: {},
-        billingOptions: { options: [{ billToId: '23432432432432432', billToType: 'Annual' }] }
+        billingOptions: { 
+          options: [{ billToId: '23432432432432430', billToType: 'Annual' }],
+          paymentPlans: {
+            annual: {},
+            semiAnnual: {},
+            quaterly: {}
+          }
+        }
       },
       appState: {
         data: {
@@ -36,14 +43,15 @@ describe('Testing BillingEditModal component', () => {
           showAdditionalInterestModal: false
         },
         modelName: 'bb'
-      }
+      },
+      form: {}
     };
     const store = mockStore(initialState);
     const props = {
       handleSubmit: fn => fn,
       handleBillingFormSubmit: fn => fn,
       billingOptions: initialState.service.billingOptions,
-      fieldValues: {},
+      fieldValues: { billToId: '23432432432432430' },
       quoteData: {},
       dispatch: store.dispatch,
       appState: {
@@ -52,8 +60,9 @@ describe('Testing BillingEditModal component', () => {
         }
       }
     };
+    const event =  { target: { value: '23432432432432430' } }
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
-    expect(wrapper.instance().props.fieldValues).toEqual({});
+    expect(wrapper.instance().props.fieldValues).toEqual({ billToId: '23432432432432430' });
     selectBillPlan('Annual', props);
     selectBillTo({ target: { value: '' } }, props);
     handleInitialize(initialState);

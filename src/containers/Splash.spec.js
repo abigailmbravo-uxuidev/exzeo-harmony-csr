@@ -1,5 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
@@ -487,8 +488,8 @@ describe('Testing Splash component', () => {
         }
       }
     };
-    const wrapper = mount(<Provider store={store}>
-      <Splash {...props} />
+    const wrapper = mount(<Provider store={store}><Router>
+      <Splash {...props} /></Router>
     </Provider>);
     expect(wrapper.find(Splash).props()).toEqual(props);
 

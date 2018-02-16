@@ -107,14 +107,6 @@ export const getPaymentDescription = (event, props) => {
   );
 };
 
-export const hideBillingModal = (props) => {
-  props.actions.appStateActions.setAppState(
-    props.appState.modelName, props.appState.instanceId,
-    { ...props.appState.data, showBillingEditModal: false }
-  );
-  props.dispatch(props.reset('MortgageBilling'));
-};
-
 export const handleAISubmit = (data, dispatch, props) => {
   const { appState, actions, policy } = props;
   const workflowId = appState.instanceId;
@@ -245,7 +237,22 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
 };
 
 export const handleBillingFormSubmit = (data, dispatch, props) => {
+  const { actions, policy } = props;
+  const updateData = {
+    policyNumber: policy.policyNumber,
+    policyID: policy.policyID,
+    transactionType: 'Bill Plan Update',
+    billingStatus: 2,
+    billToId: data.billToId,
+    billPlan: data.billPlan,
+    billToType: data.billToType
+  };
+  actions.serviceActions.updateBillPlan(updateData).then(() => hideBillingModal(props));
+};
 
+export const hideBillingModal = (props) => {
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data, showBillingEditModal: false });
 };
 
 export const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
@@ -555,12 +562,6 @@ export class MortgageBilling extends Component {
 MortgageBilling.propTypes = {
   policy: PropTypes.shape().isRequired
 };
-
-/**
-------------------------------------------------
-redux mapping
-------------------------------------------------
-*/
 
 const mapStateToProps = state => ({
   questions: state.questions,
