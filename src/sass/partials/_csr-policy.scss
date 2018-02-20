@@ -590,12 +590,14 @@
               font-weight: normal;
             }
 
-            .property-info {
+            .property-info,
+            .wind-mitigation {
               justify-content: space-between;
             }
 
             .payment-summary,
-            .property-info {
+            .property-info,
+            .wind-mitigation {
               display: flex;
 
               &.grid {
@@ -659,7 +661,8 @@
               }
             }
 
-            .property-info {
+            .property-info,
+            .wind-mitigation {
               justify-content: space-between;
             }
 
@@ -730,6 +733,13 @@
                   tbody tr:nth-of-type(even) > td {
                     background: rgba($green-lighten-04, .2);
                   }
+
+                  .coverage {
+                      width: 30%;
+                  }
+                  .value {
+                      width: 70%;
+                  }
                 }
 
                 .coverage,
@@ -740,6 +750,7 @@
 
                 .value {
                   width: 40%;
+                  white-space: normal;
                   padding: $padding ($padding*1.5);
                 }
               }
