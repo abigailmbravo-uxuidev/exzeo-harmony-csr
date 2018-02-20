@@ -735,10 +735,11 @@
                   }
 
                   .coverage {
-                      width: 30%;
+                    width: 30%;
                   }
+
                   .value {
-                      width: 70%;
+                    width: 70%;
                   }
                 }
 
@@ -750,8 +751,8 @@
 
                 .value {
                   width: 40%;
-                  white-space: normal;
                   padding: $padding ($padding*1.5);
+                  white-space: normal;
                 }
               }
             }
