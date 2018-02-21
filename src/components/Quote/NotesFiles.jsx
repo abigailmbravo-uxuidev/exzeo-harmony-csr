@@ -68,12 +68,13 @@ export const NoteList = (props) => {
               label: 'Notes'
             }, {
               answer: true,
-              label: 'Documents'
+              label: 'Files'
             }
           ]}
         />
       </div>
       <BootstrapTable
+        className={fieldValues.attachmentStatus ? 'files compact-table' : 'notes compact-table'}
         data={filterNotesByType(notes, fieldValues.attachmentStatus)}
         options={options}
         search
@@ -86,7 +87,7 @@ export const NoteList = (props) => {
         {!fieldValues.attachmentStatus && <TableHeaderColumn className="note" columnClassName="note" dataField="content" dataSort dataFormat={formatNote} >Note</TableHeaderColumn>}
         <TableHeaderColumn className="count" columnClassName="count" dataField="attachments" dataFormat={attachmentCount} hidden />
         <TableHeaderColumn className="file-type" columnClassName="file-type" dataField="attachments" dataSort dataFormat={attachmentType} >File Type</TableHeaderColumn>
-        <TableHeaderColumn className="attachments" columnClassName="attachments" dataField="attachments" dataFormat={attachmentUrl} dataSort >Attachments</TableHeaderColumn>
+        <TableHeaderColumn className="attachments" columnClassName="attachments" dataField="attachments" dataFormat={attachmentUrl} dataSort >Files</TableHeaderColumn>
       </BootstrapTable>
     </div>
   );
