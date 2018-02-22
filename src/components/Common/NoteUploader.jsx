@@ -135,13 +135,8 @@ export class Uploader extends Component {
       })
     };
 
-    this.uppy.setMeta(noteData);
-
-    this.uppy.upload()
-      .then(result => props.closeButtonHandler())
-      .catch(err => actions.errorActions.setAppError({ err }))
-    // props.actions.serviceActions.addNote(noteData, attachments);
-    // props.closeButtonHandler();
+    props.actions.serviceActions.addNote(noteData, attachments);
+    props.closeButtonHandler();
   };
 
   componentWillMount () {
