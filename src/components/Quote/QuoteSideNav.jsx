@@ -7,7 +7,7 @@ import { reduxForm, propTypes } from 'redux-form';
 import * as appStateActions from '../../actions/appStateActions';
 import UWconditions from '../Common/UWconditions';
 import * as cgActions from '../../actions/cgActions';
-import NewNoteFileUploader from '../Common/NewNoteFileUploader';
+import NoteUploader from '../Common/NoteUploader';
 
 
 // Example of a possible schema
@@ -127,7 +127,7 @@ export const SideNav = (props) => {
         </li>
       </ul>
       { props.appState.data.showNewNoteFileUploader === true &&
-        <NewNoteFileUploader noteType="Quote Note" documentId={quote.quoteNumber} closeButtonHandler={() => closeNewNoteFileUploader(props)} />
+        <NoteUploader noteType="Quote Note" documentId={quote.quoteNumber} closeButtonHandler={() => closeNewNoteFileUploader(props)} />
       }
       { props.appState.data.showUWconditions === true &&
         <UWconditions
