@@ -683,7 +683,7 @@ export class Coverage extends Component {
                     <h3>Coverages</h3>
                     <div className="flex-parent coverages-row-1">
                       <div className="flex-child coverages-dwelling-limit">
-                        <CurrencyField validations={['required', 'range']} label={`${getQuestionName('dwellingAmount', questions)} ($ ${String(fieldValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $ ${String(fieldValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`} styleName={''} name={'dwellingAmount'} min={initialValues.dwellingMin} max={initialValues.dwellingMax} onChange={this.updateDwellingAndDependencies} />
+                        <CurrencyField validations={['required']} label={`${getQuestionName('dwellingAmount', questions)} ($ ${String(fieldValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $ ${String(fieldValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`} styleName={''} name={'dwellingAmount'} min={initialValues.dwellingMin} max={initialValues.dwellingMax} onChange={this.updateDwellingAndDependencies} />
                       </div>
                     </div>
                     <div className="flex-parent coverages-row-2">
