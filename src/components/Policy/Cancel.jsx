@@ -105,6 +105,12 @@ export const resetCancelReasons = (props) => {
 };
 
 export class CancelPolicy extends React.Component {
+  componentDidMount(){
+    if (this.props.appState && this.props.appState.instanceId) {
+      const workflowId = this.props.appState.instanceId;
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, workflowId, { ...this.props.appState.data, isSubmitting: false });
+    }  
+  }
   componentWillReceiveProps(nextProps) {
     const { actions, policy, summaryLedger } = nextProps;
     if (policy && policy.policyNumber) {
