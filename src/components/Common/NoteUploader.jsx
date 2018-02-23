@@ -11,7 +11,6 @@ import * as cgActions from '../../actions/cgActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as errorActions from '../../actions/errorActions';
-import 'uppy/dist/uppy.min.css';
 
 export const minimzeButtonHandler = (props) => {
   if (props.appState.data.minimize) {
@@ -142,7 +141,7 @@ export class Uploader extends Component {
   componentWillMount () {
     const idToken = localStorage.getItem('id_token');
 
-    this.uppy = new Uppy({ 
+    this.uppy = new Uppy({
       autoProceed: false,
       restrictions: {
         maxFileSize: 1000000,
@@ -180,8 +179,7 @@ export class Uploader extends Component {
         </div>
         <div className="mainContainer">
           <Form id="NewNoteFileUploader" onSubmit={this.props.handleSubmit(this.submitNote)} noValidate>
-            <div className="content state-initial">
-              <div>
+              <div className="content">
                 <label>Note Type</label>
                 <Field component="select" name="contactType" disabled={!this.contactTypes.length}>
                   { this.contactTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
@@ -191,18 +189,19 @@ export class Uploader extends Component {
                 <Field component="select" name="fileType" disabled={!this.docTypes.length}>
                   { this.docTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
                 </Field>
-                <Dashboard
-                  uppy={this.uppy}
-                  maxHeight={350}
-                  showProgressDetails={true}
-                  hideUploadButton={true}
-                />
+                <div className="file-uploader">
+                  <Dashboard
+                    uppy={this.uppy}
+                    maxHeight={350}
+                    showProgressDetails={true}
+                    hideUploadButton={true}
+                  />
+              </div>
               </div>
               <div className="buttons note-file-footer-button-group">
                 <button tabIndex={'0'} aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={this.props.closeButtonHandler}>Cancel</button>
                 <button tabIndex={'0'} aria-label="submit-btn form-newNote" className="btn btn-primary submit-button">Save</button>
               </div>
-            </div>
           </Form>
         </div>
       </div>
