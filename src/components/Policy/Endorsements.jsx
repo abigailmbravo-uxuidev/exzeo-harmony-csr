@@ -256,8 +256,8 @@ export const handleInitialize = (state) => {
   values.distanceToFireStationNew = values.distanceToFireStation;
   values.residenceType = _.get(policy, 'property.residenceType');
   values.residenceTypeNew = values.residenceType;
-  values.squareFeet = String(_.get(policy, 'property.squareFeet'));
-  values.squareFeetNew = values.squareFeet;
+  values.squareFeet = _.get(policy, 'property.squareFeet');
+  values.squareFeetNew = Number(values.squareFeet);
   values.floodZone = _.get(policy, 'property.floodZone');
   values.floodZoneNew = values.floodZone;
 
@@ -380,7 +380,7 @@ export const generateModel = (data, policyObject, props) => {
     pH2phone: data.pH2phone ? data.pH2phone.replace(/[^\d]/g, '') : '',
     pH2secondaryPhone: data.pH2secondaryPhone ? data.pH2secondaryPhone.replace(/[^\d]/g, '') : '',
     floodZoneNew: data.floodZoneNew,
-    squareFeetNew: data.squareFeetNew,
+    squareFeetNew: Number(data.squareFeetNew),
     residenceTypeNew: data.residenceTypeNew,
     distanceToTidalWaterNew: data.distanceToTidalWaterNew ? Number(String(data.distanceToTidalWaterNew).replace(/,|\.$/g, '')) : 0,
     propertyCityNew: data.propertyCityNew,
@@ -388,31 +388,31 @@ export const generateModel = (data, policyObject, props) => {
     propertyStateNew: data.propertyStateNew,
     propertyAddress1New: data.propertyAddress1New,
     propertyAddress2New: data.propertyAddress2New,
-    protectionClassNew: data.protectionClassNew,
+    protectionClassNew: Number(data.protectionClassNew),
     stateNew: data.stateNew,
     cityNew: data.cityNew,
     zipNew: data.zipNew,
     address2New: data.address2New,
     address1New: data.address1New,
     roofGeometryNew: data.roofGeometryNew,
-    floridaBuildingCodeWindSpeedNew: data.floridaBuildingCodeWindSpeedNew,
+    floridaBuildingCodeWindSpeedNew: Number(data.floridaBuildingCodeWindSpeedNew),
     secondaryWaterResistanceNew: data.secondaryWaterResistanceNew,
     internalPressureDesignNew: data.internalPressureDesignNew,
     roofCoveringNew: data.roofCoveringNew,
     openingProtectionNew: data.openingProtectionNew,
     terrainNew: data.terrainNew,
-    floridaBuildingCodeWindSpeedDesignNew: data.floridaBuildingCodeWindSpeedDesignNew,
+    floridaBuildingCodeWindSpeedDesignNew: Number(data.floridaBuildingCodeWindSpeedDesignNew),
     roofDeckAttachmentNew: data.roofDeckAttachmentNew,
     windBorneDebrisRegionNew: data.windBorneDebrisRegionNew,
     roofToWallConnectionNew: data.roofToWallConnectionNew,
     electronicDeliveryNew: data.electronicDeliveryNew,
     distanceToFireStationNew: data.distanceToFireStationNew ? Number(String(data.distanceToFireStationNew).replace(/,|\.$/g, '')) : 0,
     distanceToFireHydrantNew: data.distanceToFireHydrantNew ? Number(String(data.distanceToFireHydrantNew).replace(/,|\.$/g, '')) : 0,
-    yearOfRoofNew: data.yearOfRoofNew,
+    yearOfRoofNew: data.yearOfRoofNew ? Number(data.yearOfRoofNew) : null,
     fireAlarmNew: data.fireAlarmNew,
     burglarAlarmNew: data.burglarAlarmNew,
     buildingCodeEffectivenessGradingNew: data.buildingCodeEffectivenessGradingNew || null,
-    yearBuiltNew: data.yearBuiltNew || null,
+    yearBuiltNew: data.yearBuiltNew ? Number(data.yearBuiltNew) : null,
     townhouseRowhouseNew: data.townhouseRowhouseNew,
     familyUnitsNew: data.familyUnitsNew,
     constructionTypeNew: data.constructionTypeNew,
@@ -421,12 +421,12 @@ export const generateModel = (data, policyObject, props) => {
     dwellingAmountNew: Math.round(Number(String(data.dwellingAmountNew).replace(/[^\d]/g, '')) / 1000) * 1000,
     otherStructuresAmountNew: Number(data.otherStructuresAmountNew),
     personalPropertyAmountNew: Number(data.personalPropertyAmountNew),
-    personalLiabilityNew: data.personalLiabilityNew,
-    medicalPaymentsNew: data.medicalPaymentsNew,
-    lossOfUseNew: data.lossOfUseNew,
-    moldPropertyNew: data.moldPropertyNew,
-    moldLiabilityNew: data.moldLiabilityNew,
-    ordinanceOrLawNew: data.ordinanceOrLawNew,
+    personalLiabilityNew:  Number(data.personalLiabilityNew),
+    medicalPaymentsNew:  Number(data.medicalPaymentsNew),
+    lossOfUseNew: Number(data.lossOfUseNew),
+    moldPropertyNew: Number(data.moldPropertyNew),
+    moldLiabilityNew: Number(data.moldLiabilityNew),
+    ordinanceOrLawNew: Number(data.ordinanceOrLawNew),
     // Premium Coverage Options
     sinkholePerilCoverageNew: data.sinkholePerilCoverageNew,
     propertyIncidentalOccupanciesMainDwellingNew: data.propertyIncidentalOccupanciesMainDwellingNew,
@@ -435,8 +435,8 @@ export const generateModel = (data, policyObject, props) => {
     personalPropertyReplacementCostCoverageNew: data.personalPropertyReplacementCostCoverageNew,
     // Premium Deductibles
     allOtherPerilsNew: data.allOtherPerilsNew,
-    hurricaneNew: data.hurricaneNew,
-    calculatedHurricaneNew: data.calculatedHurricaneNew,
+    hurricaneNew: String(data.hurricaneNew),
+    calculatedHurricaneNew: String(data.calculatedHurricaneNew),
     sinkholeNew: String(data.sinkholePerilCoverageNew) === 'true' ? sinkholeAmount : 0,
     // underwriting answers
     noPriorInsuranceNew: data.noPriorInsuranceNew,
@@ -473,7 +473,7 @@ export const covertToRateData = (changePolicyData, props) => {
       fireAlarm: changePolicyData.fireAlarmNew,
       burglarAlarm: changePolicyData.burglarAlarmNew,
       constructionType: changePolicyData.constructionTypeNew,
-      yearBuilt: Number(changePolicyData.yearBuiltNew),
+      yearBuilt: changePolicyData.yearBuiltNew ? Number(changePolicyData.yearBuiltNew) : null,
       sprinkler: changePolicyData.sprinklerNew,
       protectionClass: Number(changePolicyData.protectionClassNew),
       townhouseRowhouse: changePolicyData.townhouseRowhouseNew
