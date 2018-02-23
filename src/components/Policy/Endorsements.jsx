@@ -60,9 +60,9 @@ export const setPHToggle = (props) => {
 export const clearSecondaryPolicyholder = (value, props) => {
   const { dispatch, policy } = props;
   if (!value) {
-    const pH2email = _.get(policy, 'policyHolders[1].emailAddress');
-    const pH2FirstName = _.get(policy, 'policyHolders[1].firstName');
-    const pH2LastName = _.get(policy, 'policyHolders[1].lastName');
+    const pH2email = _.get(policy, 'policyHolders[1].emailAddress') || '';
+    const pH2FirstName = _.get(policy, 'policyHolders[1].firstName') || '';
+    const pH2LastName = _.get(policy, 'policyHolders[1].lastName') || '';
     const pH2phone = normalizePhone(_.get(policy, 'policyHolders[1].primaryPhoneNumber') || '');
     const pH2secondaryPhone = normalizePhone(_.get(policy, 'policyHolders[1].secondaryPhoneNumber') || '');
     dispatch(batchActions([
@@ -239,7 +239,7 @@ export const handleInitialize = (state) => {
   values.yearBuiltNew = values.yearBuilt;
   values.constructionType = _.get(policy, 'property.constructionType');
   values.constructionTypeNew = values.constructionType;
-  values.yearOfRoof = _.get(policy, 'property.yearOfRoof');
+  values.yearOfRoof = _.get(policy, 'property.yearOfRoof') || '';
   values.yearOfRoofNew = values.yearOfRoof;
   values.protectionClass = String(`0${_.get(policy, 'property.protectionClass')}`).slice(-2);
   values.protectionClassNew = _.get(policy, 'property.protectionClass');
@@ -273,12 +273,12 @@ export const handleInitialize = (state) => {
   values.pH1secondaryPhoneNew = values.pH1secondaryPhone;
 
   // Policyholder 2
-  values.pH2email = _.get(policy, 'policyHolders[1].emailAddress');
-  values.pH2emailNew = values.pH2email;
-  values.pH2FirstName = _.get(policy, 'policyHolders[1].firstName');
-  values.pH2FirstNameNew = values.pH2FirstName;
-  values.pH2LastName = _.get(policy, 'policyHolders[1].lastName');
-  values.pH2LastNameNew = values.pH2LastName;
+  values.pH2email = _.get(policy, 'policyHolders[1].emailAddress') || '';
+  values.pH2emailNew = values.pH2email || '';
+  values.pH2FirstName = _.get(policy, 'policyHolders[1].firstName') || '';
+  values.pH2FirstNameNew = values.pH2FirstName  || '';
+  values.pH2LastName = _.get(policy, 'policyHolders[1].lastName') || '';
+  values.pH2LastNameNew = values.pH2LastName || '';
   values.pH2phone = normalizePhone(_.get(policy, 'policyHolders[1].primaryPhoneNumber') || '');
   values.pH2secondaryPhone = normalizePhone(_.get(policy, 'policyHolders[1].secondaryPhoneNumber') || '');
 
@@ -1234,9 +1234,7 @@ export class Endorsements extends React.Component {
                           <TextField label="Wind Mit Factor" styleName="" name="windMitFactor" disabled />
                           <TextField validations={['required']} styleName="" label="" name="windMitFactorNew" disabled />
                         </div>
-
                       </div>
-
                     </div>
                   </section>
                   <section name="home" id="home">
@@ -1393,6 +1391,7 @@ export class Endorsements extends React.Component {
                               id="clearFields"
                               component="input"
                               type="checkbox"
+                              disabled={!(policy && policy.policyHolders && policy.policyHolders[1])}
                             />
                             <label htmlFor="clearFields"> Remove</label>
                           </div>
