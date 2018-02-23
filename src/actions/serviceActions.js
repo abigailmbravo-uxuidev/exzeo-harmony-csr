@@ -751,3 +751,37 @@ export const getAgencies = (companyCode, state) => (dispatch) => {
       ]));
     });
 };
+
+export const searchPolicy = (taskData, sort) => (dispatch) => {
+  const formattedAddress = taskData.address ? taskData.address.replace(' ', '&#32;') : '';
+  const sortDirection = sort === 'policyNumber' ? 'desc' : 'asc';
+  const axiosConfig = runnerSetup({
+    service: 'policy-data.services',
+    method: 'GET',
+    path: `/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=${taskData.policyNumber}&firstName=${taskData.firstName}&lastName=${taskData.lastName}&propertyAddress=${formattedAddress.replace(' ', '&#32;')}&active=true&page=${taskData.pageNumber}&pageSize=${taskData.pageSize}&resultStart=${taskData.resultStart}&sort=${sort}&sortDirection=${sortDirection}`
+  });
+
+  return Promise.resolve(axios(axiosConfig)).then((response) => {
+    const data = { policyResults: response.data };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError({ message })
+      ]));
+    });
+};
+
+export const clearPolicyResults = () => (dispatch) => {
+  const data = { policyResults: {
+    totalNumberOfRecords: 1,
+    pageSize: 1,
+    currentPage: 1
+  } };
+  return dispatch(batchActions([
+    serviceRequest(data)
+  ]));
+};
