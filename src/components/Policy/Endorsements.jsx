@@ -473,7 +473,7 @@ export const covertToRateData = (changePolicyData, props) => {
       fireAlarm: changePolicyData.fireAlarmNew,
       burglarAlarm: changePolicyData.burglarAlarmNew,
       constructionType: changePolicyData.constructionTypeNew,
-      yearBuilt: changePolicyData.yearBuiltNew ? Number(data.yearBuiltNew) : null,
+      yearBuilt: changePolicyData.yearBuiltNew ? Number(changePolicyData.yearBuiltNew) : null,
       sprinkler: changePolicyData.sprinklerNew,
       protectionClass: Number(changePolicyData.protectionClassNew),
       townhouseRowhouse: changePolicyData.townhouseRowhouseNew
