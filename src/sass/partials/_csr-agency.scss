@@ -104,6 +104,7 @@
 
                         label {
                             font-size: $font-size-xs;
+                            margin: 0;
                         }
                     }
                 }
@@ -338,7 +339,7 @@
                   }
 
                   .additional-contacts {
-                    margin-top: 1rem;
+                    //margin-top: 1rem;
                     border-top: 1px dotted $warm-gray-01;
 
                     ul {

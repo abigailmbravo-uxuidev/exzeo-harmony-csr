@@ -21,18 +21,14 @@ export const onKeypressPolicy = (event, policy, props) => {
 
 export const SearchResults = (props) => {
   const model = props.tasks[props.appState.modelName] || {};
-  const previousTask = model.data && model.data.previousTask
-    ? model.data.previousTask
-    : {};
-  const activeTask = model.data && model.data.activeTask
-    ? model.data.activeTask
-    : {};
+  const previousTask = model.data && model.data.previousTask ? model.data.previousTask : {};
+  const activeTask = model.data && model.data.activeTask ? model.data.activeTask : {};
 
   const searchData = JSON.parse(localStorage.getItem('lastSearchData'));
   if (props.search && props.search.searchType === 'policy') {
     const { defaultPolicyResults } = props;
     const policyResults = [];
-  
+
     const policies = _.get(defaultPolicyResults, 'policies') || [];
 
     for (let i = 0; i < policies.length; i += 1) {
@@ -44,14 +40,14 @@ export const SearchResults = (props) => {
     }
 
     return (
-      <div className="quote-list">
+      <div className="policy-list">
         {props.search && props.search.isLoading && <Loader />}
         {
           policyResults && policyResults.length > 0 && policyResults.map((policy, index) => (<div tabIndex={0} onKeyPress={event => onKeypressPolicy(event, policy, props)} id={policy.PolicyID} className="card" key={index}>
             <div className="icon-name">
               <i className="card-icon fa fa-user-circle" />
               <div className="card-name">
-                <h4 title={policy.policyHolders && policy.policyHolders.length > 0 ? `${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}` : ''}>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}</h4>
+                <h5 title={policy.policyHolders && policy.policyHolders.length > 0 ? `${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}` : ''}>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}</h5>
               </div>
             </div>
             <section>
@@ -199,7 +195,7 @@ export const SearchResults = (props) => {
             <div className="contact-details">
               <div className="card-name">
 
-                <h4 className="agency"><span className="agency-code">{agency.agencyCode}</span> | <span className="agency-display-name">{agency.displayName}</span> | <span className="agency-legal-name">{agency.legalName}</span> | <span className="agency-license">{agency.licenseNumber}</span></h4>
+                <h4 className="agency" onClick={() => props.handleNewTab(agency, props)}><span className="agency-code">{agency.agencyCode}</span> | <span className="agency-display-name">{agency.displayName}</span> | <span className="agency-legal-name">{agency.legalName}</span> | <span className="agency-license">{agency.licenseNumber}</span></h4>
 
                 <div className="contact-address">
                   {agency.physicalAddress.address1},&nbsp;

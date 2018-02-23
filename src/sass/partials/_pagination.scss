@@ -1,12 +1,13 @@
 .search {
   form {
     .pagination-wrapper {
+      position: fixed;
+      bottom: 0;
       display: flex;
       align-items: center;
       justify-content: center;
       width: 100%;
-      padding: $padding 0;
-      background: $warm-gray-08;
+      padding: 0 0 ($padding/2);
 
       > button.multi-input {
         height: 2rem;
