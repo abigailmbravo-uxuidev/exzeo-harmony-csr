@@ -99,25 +99,12 @@ export class Splash extends Component {
 
   handleSelectPolicy = (policy, props) => {
     const workflowId = props.appState.instanceId;
-    const steps = [{
-      name: 'choosePolicy',
-      data: {
-        policyId: policy.policyID
-      }
-    }];
-
-    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
-
-    props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
-      .then(() => {
-        // now update the workflow details so the recalculated rate shows
-        props.actions.appStateActions.setAppState(
-          props.appState.modelName,
-          workflowId,
-          { ...props.appState.data, selectedLink: 'coverage', submitting: false }
-        );
-        if (this.context.router) { this.context.router.history.push('/policy/coverage'); }
-      });
+    props.actions.appStateActions.setAppState(
+      props.appState.modelName,
+      workflowId,
+      { ...props.appState.data, selectedLink: 'coverage', submitting: false }
+    );
+    if (this.context.router) { this.context.router.history.push('/policy/coverage'); }
   };
 
   render() {
