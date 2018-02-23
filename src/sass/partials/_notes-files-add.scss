@@ -270,15 +270,15 @@
 
                       .uppy-DashboardFileCard-preview {
                         display: flex;
+                        overflow: hidden;
                         align-items: center;
                         flex-grow: 1;
                         flex-shrink: 1;
                         justify-content: center;
                         height: 6.25rem;
                         padding: $padding;
-                        background-color: $white !important;
                         border-bottom-width: 0;
-                        overflow: hidden;
+                        background-color: $white !important;
 
                         img {
                           display: block;
@@ -291,9 +291,9 @@
                       .uppy-DashboardFileCard-info {
                         flex-grow: 0;
                         flex-shrink: 0;
+                        height: auto;
                         padding: $padding ($padding*8) $padding $padding;
                         background-color: $white;
-                        height: auto;
 
                         fieldset {
                           display: flex;
@@ -304,15 +304,50 @@
                           margin: 0;
 
                           label {
-                              width: 100%;
-                              font-size: $font-size-base;
-                              color: $warm-gray-10;
+                            width: 100%;
+                            color: $warm-gray-10;
+                            font-size: $font-size-base;
                           }
+
                           input {
-                              margin: 0;
-                              padding: $padding;
-                              width: 100%;
-                              border: $border-width solid $warm-gray-06;
+                            width: 100%;
+                            margin: 0;
+                            padding: $padding;
+                            border: $border-width solid $warm-gray-06;
+                          }
+                        }
+                      }
+                    }
+
+                    .uppy-Dashboard-actions {
+                        right: 1rem;
+                        bottom: .5rem;
+                      .UppyButton--circular {
+                        position: relative;
+                        width: 2rem;
+                        height: 2rem;
+
+                        &.UppyButton--blue {
+                          background: $bright-blue-darken-01;
+
+                          &.uppy-DashboardFileCard-done {
+                            &:before {
+                              position: absolute;
+                              top: 0;
+                              left: 0;
+                              display: flex;
+                              align-items: center;
+                              justify-content: center;
+                              width: 2rem;
+                              height: 2rem;
+                              content: '\f00c';
+                              color: $white;
+                              font-family: $font-family-icon;
+                            }
+
+                            svg {
+                              display: none;
+                            }
                           }
                         }
                       }
