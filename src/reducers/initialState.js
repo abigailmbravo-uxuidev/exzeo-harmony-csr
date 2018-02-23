@@ -1,9 +1,5 @@
-import {
-  Map
-} from 'immutable';
-
 export default {
-  search: new Map({}),
+  search: {},
   workflowData: {},
   service: {},
   appState: {

@@ -29,12 +29,6 @@
     }
   }
 
-  &.additionalInterestModal {
-    z-index: 5;
-    height: 80%;
-    max-height: 44rem;
-  }
-
   .card {
     display: flex;
     align-content: flex-start;
@@ -47,6 +41,11 @@
 
   > form {
     justify-content: center;
+
+    &.AdditionalInterestModal {
+      height: 90%;
+      max-height: 44rem;
+    }
   }
 }
 
