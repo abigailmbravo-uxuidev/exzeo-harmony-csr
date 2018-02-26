@@ -405,7 +405,17 @@
                         font-weight: $font-weight-bold;
                       }
 
-                      .agency-legal-name {}
+                      .agency-legal-name {
+                          font-weight: $font-weight-normal;
+                      }
+                    }
+
+                    .agent-code {
+                        font-weight: $font-weight-normal;
+                    }
+
+                    .agent-license {
+                        font-weight: $font-weight-normal;
                     }
                   }
 
@@ -422,6 +432,10 @@
                       display: flex;
                       align-items: center;
                       margin-right: $padding*2;
+
+                      .contact-divider {
+                        margin: 0 ($padding*2) 0 0;
+                      }
 
                       small {
                         margin-right: $padding;
@@ -441,6 +455,22 @@
                           margin-left: 0.1rem;
                           color: $white;
                         }
+                      }
+
+                      &.secondary-phone {
+                          small {
+                              i {
+                                  color: $white;
+                              }
+                          }
+                      }
+
+                      &.csr-phone {
+                          small {
+                              i {
+                                  color: $white;
+                              }
+                          }
                       }
 
                       i {
@@ -464,11 +494,11 @@
                   }
 
                   .additional-contacts {
-                    margin-top: 1rem;
+                    margin-top: $padding;
                     border-top: 1px dotted $warm-gray-01;
 
                     ul {
-                      margin: 1rem 0 0;
+                      margin: $padding 0 0;
                       padding: 0;
                       list-style: none;
 
