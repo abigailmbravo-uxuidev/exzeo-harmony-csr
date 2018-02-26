@@ -45,9 +45,8 @@ export const changeEffectiveDate = (data, dispatch, props) => {
 };
 
 export class Policy extends React.Component {
-
-  componentDidMount() {
-    if (this.props && this.props.policy && this.props.policy.policyNumber) {
+  componentWillReceiveProps() {
+    if (!this.props.zipCodeSetting && this.props && this.props.policy && this.props.policy.policyNumber) {
       this.props.actions.serviceActions.getZipcodeSettings(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property.physicalAddress.zip);
     }
   }
