@@ -618,6 +618,12 @@
               }
             }
 
+            &.add-payment {
+              form {
+                flex-direction: column;
+              }
+            }
+
             &.payment-summary {
               .payment-summary {
                 * {
