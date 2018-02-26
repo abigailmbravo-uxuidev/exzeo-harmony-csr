@@ -67,6 +67,6 @@ describe('Testing Policy component', () => {
     const wrapper = shallow(<Policy store={store} {...props} />);
     expect(wrapper);
     changeEffectiveDate({}, props.dispatch, props);
-    wrapper.instance().componentDidMount();
+    wrapper.instance().componentWillReceiveProps();
   });
 });
