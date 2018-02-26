@@ -564,8 +564,12 @@ export const calculate = (data, dispatch, props) => {
     if (data[key] !== props.initialValues[key]) changed.push(key);
     return changed;
   }, []);
-  if (delta.length === 1 && delta.includes('endorsementDateNew')) return setCalculate(props, true);
-
+  if (delta.length === 1 && delta.includes('endorsementDateNew')) {
+    setCalculate(props, true);
+    props.dispatch(errorActions.setAppError({ message: 'No changes were made.' }));
+    return;
+  }
+  
   const setLiabilityIncidentalOccupanciesNew = submitData.propertyIncidentalOccupanciesMainDwellingNew || submitData.propertyIncidentalOccupanciesOtherStructuresNew;
   submitData.liabilityIncidentalOccupanciesNew = setLiabilityIncidentalOccupanciesNew;
   props.dispatch(change('Endorsements', 'liabilityIncidentalOccupanciesNew', setLiabilityIncidentalOccupanciesNew));
