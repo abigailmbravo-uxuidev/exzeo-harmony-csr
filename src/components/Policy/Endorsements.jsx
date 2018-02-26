@@ -256,7 +256,7 @@ export const handleInitialize = (state) => {
   values.distanceToFireStationNew = values.distanceToFireStation;
   values.residenceType = _.get(policy, 'property.residenceType');
   values.residenceTypeNew = values.residenceType;
-  values.squareFeet = _.get(policy, 'property.squareFeet');
+  values.squareFeet = _.get(policy, 'property.squareFeet') || '';
   values.squareFeetNew = Number(values.squareFeet);
   values.floodZone = _.get(policy, 'property.floodZone');
   values.floodZoneNew = values.floodZone;
@@ -559,6 +559,12 @@ export const covertToRateData = (changePolicyData, props) => {
 export const calculate = (data, dispatch, props) => {
   const submitData = generateModel(data, props.policy, props);
   const workflowId = props.appState.instanceId;
+
+  const delta = Object.keys(data).reduce((changed, key) => {
+    if (data[key] !== props.initialValues[key]) changed.push(key);
+    return changed;
+  }, []);
+  if (delta.length === 1 && delta.includes('endorsementDateNew')) return setCalculate(props, true);
 
   const setLiabilityIncidentalOccupanciesNew = submitData.propertyIncidentalOccupanciesMainDwellingNew || submitData.propertyIncidentalOccupanciesOtherStructuresNew;
   submitData.liabilityIncidentalOccupanciesNew = setLiabilityIncidentalOccupanciesNew;
