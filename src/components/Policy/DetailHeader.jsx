@@ -15,6 +15,11 @@ export const showEffectiveDatePopUp = (props) => {
       { ...props.appState.data, showEffectiveDateChangePopUp: true });
 };
 
+export const showReinstatePolicyPopUp = (props) => {
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data, showReinstatePolicyPopUp: true });
+};
+
 export class DetailHeader extends Component {
 
   componentDidMount() {
@@ -104,15 +109,27 @@ export class DetailHeader extends Component {
             <dd>{moment.utc(_.get(policy, 'effectiveDate')).format('MM/DD/YYYY')}</dd>
           </div>
         </dl>
-      </section>
-      <section id="cancellationDate" className="cancellationDate">
-        <dl>
+        </section>
+        { _.includes(['Policy Issued', 'In Force', 'Voluntary Cancel Pending' , 'Underwriting Cancel Pending', 'Underwriting Non-Renewal Pending'], _.get(policy, 'status')) &&
+          <section id="cancellationDate" className="cancellationDate">
+          <dl>
           <div>
             <dt>Cancellation Date</dt>
             <dd>{_.get(policy, 'cancelDate') ? moment.utc(_.get(policy, 'cancelDate')).format('MM/DD/YYYY') : '' }</dd>
           </div>
         </dl>
-      </section>
+        </section>
+        }
+        { _.get(policy, 'status') === 'Cancelled' &&
+          <section id="cancellationDate" className="cancellationDate">
+          <dl>
+          <div>
+            <dt>Expiration <button id="effective-date" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showReinstatePolicyPopUp(this.props)}><i className="fa fa-thumbs-up" />Reinstate</button></dt>
+            <dd>{_.get(policy, 'cancelDate') ? moment.utc(_.get(policy, 'cancelDate')).format('MM/DD/YYYY') : '' }</dd>
+          </div>
+        </dl>
+        </section>
+        }
       <section id="premium" className="premium">
         <dl>
           <div>
@@ -137,6 +154,7 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   summaryLedger: state.service.getSummaryLedger,
+  getTransactionHistory: state.service.getTransactionHistory,
   policy: state.service.latestPolicy
 });
 
