@@ -110,7 +110,7 @@ const additionalInterests = [
 ];
 
 const body = {
-  service: 'billing.services',
+  service: 'billing',
   method: 'POST',
   path: 'post-payment-transaction',
   data: {

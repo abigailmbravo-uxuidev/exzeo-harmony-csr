@@ -29,13 +29,13 @@ export const runnerSetup = data => ({
 export const getNotes = (id, policyId) => (dispatch) => {
   const pid = policyId ? policyId : id;
   const notesRequest = runnerSetup({
-    service: 'transaction-logs.services',
+    service: 'transaction-logs',
     method: 'GET',
     path: `history?number=${id}`
   });
 
   const docsRequest = runnerSetup({
-    service: 'file-index.services',
+    service: 'file-index',
     method: 'GET',
     path: `v1/fileindex/${pid}`
   });
@@ -104,7 +104,7 @@ export const addNote = (data, files) => (dispatch) => {
 
 export const getAgents = (companyCode, state) => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'agency.services',
+    service: 'agency',
     method: 'GET',
     path: `v1/agents/${companyCode}/${state}`
   });
@@ -125,7 +125,7 @@ export const getAgents = (companyCode, state) => (dispatch) => {
 
 export const searchAgents = (companyCode, state, firstName, lastName, agentCode, address, licNumber) => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'agency.services',
+    service: 'agency',
     method: 'GET',
     path: `v1/agents/${companyCode}/${state}?firstName=${firstName}&lastName=${lastName}&agentCode=${agentCode}&mailingAddress=${address}&licenseNumber=${licNumber}`
   });
@@ -152,7 +152,7 @@ export const clearAgent = () => (dispatch) => {
 
 export const getAgency = (companyCode, state, agencyCode) => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'agency.services',
+    service: 'agency',
     method: 'GET',
     path: `v1/agency/${companyCode}/${state}/${agencyCode}`
   });
@@ -173,7 +173,7 @@ export const getAgency = (companyCode, state, agencyCode) => (dispatch) => {
 
 export const getAgentsByAgency = (companyCode, state, agencyCode) => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'agency.services',
+    service: 'agency',
     method: 'GET',
     path: `v1/agents/${companyCode}/${state}?agencyCode=${agencyCode}`
   });
@@ -194,7 +194,7 @@ export const getAgentsByAgency = (companyCode, state, agencyCode) => (dispatch) 
 
 export const searchAgencies = (companyCode, state, displayName, agencyCode, address, licNumber, fein, phone) => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'agency.services',
+    service: 'agency',
     method: 'GET',
     path: `v1/agencies/${companyCode}/${state}?displayName=${displayName}&agencyCode=${agencyCode}&mailingAddress=${address}&licenseNumber=${licNumber}&taxIdNumber=${fein}&primaryPhoneNumber=${phone}`
   });
@@ -224,7 +224,7 @@ export const clearAgencies = () => (dispatch) => {
 
 export const currentAgent = (companyCode, state, agentCode) => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'agency.services',
+    service: 'agency',
     method: 'GET',
     path: `v1/agent/${companyCode}/${state}/${agentCode}`
   });
@@ -245,7 +245,7 @@ export const currentAgent = (companyCode, state, agentCode) => (dispatch) => {
 
 export const getPolicyFromPolicyNumber = (companyCode, state, product, policyNumber) => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'policy-data.services',
+    service: 'policy-data',
     method: 'GET',
     path: `transactions?companyCode=${companyCode}&state=${state}&product=${product}&policyNumber=${policyNumber}`
   });
@@ -266,7 +266,7 @@ export const getPolicyFromPolicyNumber = (companyCode, state, product, policyNum
 
 export const getLatestPolicy = policyNumber => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'policy-data.services',
+    service: 'policy-data',
     method: 'GET',
     path: `transactions/${policyNumber}/latest`
   });
@@ -287,7 +287,7 @@ export const getLatestPolicy = policyNumber => (dispatch) => {
 
 export const getPolicyFromPolicyID = policyId => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'policy-data.services',
+    service: 'policy-data',
     method: 'GET',
     path: `transactions/${policyId}`
   });
@@ -309,7 +309,7 @@ export const getPolicyFromPolicyID = policyId => (dispatch) => {
 
 export const getEffectiveDateChangeReasons = () => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'policy-data.services',
+    service: 'policy-data',
     method: 'GET',
     path: 'effectiveDateChangeReasons'
   });
@@ -330,7 +330,7 @@ export const getEffectiveDateChangeReasons = () => (dispatch) => {
 
 export const getTransactionHistory = policyNumber => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'billing.services',
+    service: 'billing',
     method: 'GET',
     path: `transaction-history/${policyNumber}`
   });
@@ -353,7 +353,7 @@ export const getTransactionHistory = policyNumber => (dispatch) => {
 
 export const addTransaction = submitData => (dispatch) => {
   const body = {
-    service: 'billing.services',
+    service: 'billing',
     method: 'POST',
     path: 'post-payment-transaction',
     data: {
@@ -388,7 +388,7 @@ export const addTransaction = submitData => (dispatch) => {
 
 export const getUnderwritingQuestions = (companyCode, state, product, property) => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'questions.services',
+    service: 'questions',
     method: 'POST',
     path: 'questions/uw',
     data: {
@@ -419,7 +419,7 @@ export const getUnderwritingQuestions = (companyCode, state, product, property) 
 
 export const getSummaryLedger = policyNumber => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'billing.services',
+    service: 'billing',
     method: 'GET',
     path: `summary-ledgers/${policyNumber}/latest`
   });
@@ -440,7 +440,7 @@ export const getSummaryLedger = policyNumber => (dispatch) => {
 
 export const getPaymentOptionsApplyPayments = () => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'billing.services',
+    service: 'billing',
     method: 'GET',
     path: 'payment-options-apply-payment'
   });
@@ -461,7 +461,7 @@ export const getPaymentOptionsApplyPayments = () => (dispatch) => {
 
 export const getPaymentHistory = policyNumber => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'billing.services',
+    service: 'billing',
     method: 'GET',
     path: `payment-history/${policyNumber}`
   });
@@ -482,7 +482,7 @@ export const getPaymentHistory = policyNumber => (dispatch) => {
 
 export const saveUnderwritingExceptions = (id, underwritingExceptions) => (dispatch) => {
   const body = {
-    service: 'quote-data.services',
+    service: 'quote-data',
     method: 'put',
     path: String(' '),
     data: {
@@ -508,7 +508,7 @@ export const saveUnderwritingExceptions = (id, underwritingExceptions) => (dispa
 
 export const getBillingOptions = paymentOptions => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'billing.services',
+    service: 'billing',
     method: 'POST',
     path: 'payment-options-for-quoting',
     data: paymentOptions
@@ -530,7 +530,7 @@ export const getBillingOptions = paymentOptions => (dispatch) => {
 
 export const updateBillPlan = paymentPlan => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'policy-data.services',
+    service: 'policy-data',
     method: 'POST',
     path: 'transaction',
     data: paymentPlan
@@ -549,7 +549,7 @@ export const updateBillPlan = paymentPlan => (dispatch) => {
 export const getBillingOptionsForPolicy = paymentOptions => (dispatch) => {
 
   const axiosConfig = runnerSetup({
-    service: 'billing.services',
+    service: 'billing',
     method: 'POST',
     path: 'payment-options-for-policy',
     data: paymentOptions
@@ -571,7 +571,7 @@ export const getBillingOptionsForPolicy = paymentOptions => (dispatch) => {
 
 export const getEndorsementHistory = policyNumber => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'policy-data.services',
+    service: 'policy-data',
     method: 'GET',
     path: `transactionDetails/${policyNumber}?endorsement=endorsement`
   });
@@ -592,7 +592,7 @@ export const getEndorsementHistory = policyNumber => (dispatch) => {
 
 export const getRate = policyObject => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'rating-engine.services',
+    service: 'rating-engine',
     method: 'POST',
     path: 'endorsement',
     data: policyObject
@@ -618,7 +618,7 @@ export const clearRate = () => dispatch => dispatch(batchActions([
 
 export const getQuote = quoteId => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'quote-data.services',
+    service: 'quote-data',
     method: 'GET',
     path: quoteId
   });
@@ -639,7 +639,7 @@ export const getQuote = quoteId => (dispatch) => {
 
 export const getCancelOptions = () => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'policy-data.services',
+    service: 'policy-data',
     method: 'GET',
     path: 'cancelOptions'
   });
@@ -660,7 +660,7 @@ export const getCancelOptions = () => (dispatch) => {
 
 export const createTransaction = submitData => (dispatch) => {
   const body = {
-    service: 'policy-data.services',
+    service: 'policy-data',
     method: 'POST',
     path: 'transaction',
     data: submitData
@@ -683,7 +683,7 @@ export const createTransaction = submitData => (dispatch) => {
 
 export const getZipcodeSettings = (companyCode, state, product, zip) => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'underwriting.services',
+    service: 'underwriting',
     method: 'GET',
     path: `zip-code?companyCode=${companyCode}&state=${state}&product=${product}&zip=${zip}`
   });
@@ -704,7 +704,7 @@ export const getZipcodeSettings = (companyCode, state, product, zip) => (dispatc
 
 export const saveBillingInfo = (id, billToType, billToId, billPlan) => (dispatch) => {
   const body = {
-    service: 'quote-data.services',
+    service: 'quote-data',
     method: 'put',
     path: String(' '),
     data: {
@@ -732,7 +732,7 @@ export const saveBillingInfo = (id, billToType, billToId, billPlan) => (dispatch
 
 export const getAgencies = (companyCode, state) => (dispatch) => {
   const axiosConfig = runnerSetup({
-    service: 'agency.services',
+    service: 'agency',
     method: 'GET',
     path: `v1/agencies/${companyCode}/${state}`
   });
@@ -756,7 +756,7 @@ export const searchPolicy = (taskData, sort) => (dispatch) => {
   const formattedAddress = taskData.address ? taskData.address.replace(' ', '&#32;') : '';
   const sortDirection = sort === 'policyNumber' ? 'desc' : 'asc';
   const axiosConfig = runnerSetup({
-    service: 'policy-data.services',
+    service: 'policy-data',
     method: 'GET',
     path: `/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=${taskData.policyNumber}&firstName=${taskData.firstName}&lastName=${taskData.lastName}&propertyAddress=${formattedAddress.replace(' ', '&#32;')}&active=true&page=${taskData.pageNumber}&pageSize=${taskData.pageSize}&resultStart=${taskData.resultStart}&sort=${sort}&sortDirection=${sortDirection}`
   });
