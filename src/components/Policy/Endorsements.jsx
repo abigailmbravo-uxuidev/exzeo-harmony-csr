@@ -235,7 +235,7 @@ export const handleInitialize = (state) => {
   values.windMitFactor = windMitigationDiscount;
   values.windMitFactorNew = (updatedRatingWindMitDiscount === undefined || updatedRatingWindMitDiscount === null) ? windMitigationDiscount : updatedRatingWindMitDiscount;
   // Home/Location Bottom Left
-  values.yearBuilt = _.get(policy, 'property.yearBuilt');
+  values.yearBuilt = String(_.get(policy, 'property.yearBuilt'));
   values.yearBuiltNew = values.yearBuilt;
   values.constructionType = _.get(policy, 'property.constructionType');
   values.constructionTypeNew = values.constructionType;
@@ -257,7 +257,7 @@ export const handleInitialize = (state) => {
   values.residenceType = _.get(policy, 'property.residenceType');
   values.residenceTypeNew = values.residenceType;
   values.squareFeet = _.get(policy, 'property.squareFeet');
-  values.squareFeetNew = Number(values.squareFeet);
+  values.squareFeetNew = String(values.squareFeet);
   values.floodZone = _.get(policy, 'property.floodZone');
   values.floodZoneNew = values.floodZone;
 
