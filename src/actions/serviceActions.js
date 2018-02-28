@@ -758,7 +758,7 @@ export const searchPolicy = (taskData, sort) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'policy-data.services',
     method: 'GET',
-    path: `/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=${taskData.policyNumber}&firstName=${taskData.firstName}&lastName=${taskData.lastName}&propertyAddress=${formattedAddress.replace(' ', '&#32;')}&active=true&page=${taskData.pageNumber}&pageSize=${taskData.pageSize}&resultStart=${taskData.resultStart}&sort=${sort}&sortDirection=${sortDirection}`
+    path: `/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=${taskData.policyNumber}&firstName=${taskData.firstName}&lastName=${taskData.lastName}&propertyAddress=${formattedAddress.replace(' ', '&#32;')}&page=${taskData.pageNumber}&pageSize=${taskData.pageSize}&resultStart=${taskData.resultStart}&sort=${sort}&sortDirection=${sortDirection}`
   });
 
   return Promise.resolve(axios(axiosConfig)).then((response) => {
