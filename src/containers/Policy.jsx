@@ -12,6 +12,7 @@ import * as appStateActions from '../actions/appStateActions';
 import * as serviceActions from '../actions/serviceActions';
 import * as policyStateActions from '../actions/policyStateActions';
 import EditEffectiveDataPopUp from '../components/Policy/EditEffectiveDatePopup';
+import ReinstatePolicyPopup from '../components/Policy/ReinstatePolicyPopup';
 
 export const hideEffectiveDatePopUp = (props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
@@ -22,6 +23,28 @@ export const showEffectiveDatePopUp = (props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
       { ...props.appState.data, showEffectiveDateChangePopUp: true });
 };
+
+export const hideReinstatePolicyPopUp = (props) => {
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data, showReinstatePolicyPopUp: false, submitting: false });
+};
+
+export const reinstatePolicySubmit = (data, dispatch, props) => {
+
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, submitting: true });
+
+  const { policy, summaryLedger } = props;
+  const submitData = {
+    "policyID": policy.policyID,
+    "policyNumber": policy.policyNumber, 
+    "billingStatus": summaryLedger.status.code, 
+    "transactionType":  "Reinstatement"
+    };
+    props.actions.serviceActions.createTransaction(submitData).then(() => {
+      hideReinstatePolicyPopUp(props);
+      props.actions.policyStateActions.updatePolicy(true, policy.policyNumber);
+    });
+}
 
 export const changeEffectiveDate = (data, dispatch, props) => {
   const effectiveDateUTC = moment.tz(moment.utc(data.effectiveDate).format('YYYY-MM-DD'), props.zipCodeSetting.timezone).format();
@@ -45,9 +68,8 @@ export const changeEffectiveDate = (data, dispatch, props) => {
 };
 
 export class Policy extends React.Component {
-
-  componentDidMount() {
-    if (this.props && this.props.policy && this.props.policy.policyNumber) {
+  componentWillReceiveProps() {
+    if (!this.props.zipCodeSetting && this.props && this.props.policy && this.props.policy.policyNumber) {
       this.props.actions.serviceActions.getZipcodeSettings(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property.physicalAddress.zip);
     }
   }
@@ -69,6 +91,7 @@ export class Policy extends React.Component {
           <div className="content-wrapper">
             {children}
           </div>
+          {appState.data.showReinstatePolicyPopUp && <ReinstatePolicyPopup {...this.props} reinstatePolicySubmit={reinstatePolicySubmit} hideReinstatePolicyModal={() => hideReinstatePolicyPopUp(this.props)} />}
           {appState.data.showEffectiveDateChangePopUp && <EditEffectiveDataPopUp {...this.props} changeEffectiveDateSubmit={changeEffectiveDate} hideEffectiveDateModal={() => hideEffectiveDatePopUp(this.props)} />}
         </main>
       </div>
