@@ -74,6 +74,6 @@ describe('Testing Policy component', () => {
     expect(wrapper);
     changeEffectiveDate({}, props.dispatch, props);
     wrapper.instance().componentWillReceiveProps();
-    reinstatePolicySubmit({}, props.dispatch, props)
+    reinstatePolicySubmit({}, props.dispatch, props);
   });
 });
