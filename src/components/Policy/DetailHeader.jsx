@@ -26,11 +26,11 @@ export class DetailHeader extends Component {
     this.props.actions.serviceActions.getEffectiveDateChangeReasons();
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.policyState.update && nextProps.policyState.policyNumber) {
+    if (nextProps.policyState && nextProps.policyState.update && nextProps.policyState.policyNumber) {
       this.props.actions.serviceActions.getLatestPolicy(nextProps.policyState.policyNumber);
       this.props.actions.policyStateActions.updatePolicy(false, nextProps.policyState.policyNumber);
     }
-    if (!_.isEqual(this.props.policy, nextProps.policy) && nextProps.policy.policyNumber) {
+    if (!_.isEqual(this.props.policy, nextProps.policy) && nextProps.policy && nextProps.policy.policyNumber) {
       this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
     }
   }
