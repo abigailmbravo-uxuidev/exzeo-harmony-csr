@@ -16,7 +16,8 @@ import NoPolicyResultsConnect from './NoPolicyResults';
 
 export const onKeypressPolicy = (event, policy, props) => {
   if (event.charCode === 13) {
-    props.handleNewTab(policy, props)  }
+    props.handleNewTab(policy, props);
+  }
 };
 
 export const SearchResults = (props) => {
@@ -32,7 +33,7 @@ export const SearchResults = (props) => {
   if (props.search && props.search.searchType === 'policy') {
     const { defaultPolicyResults } = props;
     const policyResults = [];
-  
+
     const policies = _.get(defaultPolicyResults, 'policies') || [];
 
     for (let i = 0; i < policies.length; i += 1) {
@@ -69,7 +70,8 @@ export const SearchResults = (props) => {
                   `${policy.property.physicalAddress.address1}
                       ${policy.property.physicalAddress.city}, ${policy.property.physicalAddress.state}
                       ${policy.property.physicalAddress.zip}`
-                }</span>
+                }
+                    </span>
                     <span className="quote-state">{policy.status}</span>
                     <span className="effctive-date">{moment.utc(policy.effectiveDate).format('MM/DD/YYYY')}</span>
                   </a>
@@ -95,7 +97,7 @@ export const SearchResults = (props) => {
 
               {/* <div>
                     <button className="row" onClick={() => props.handleSelectAddress(address, props)} tabIndex="-1">Open New Tab</button>
-                  </div>*/
+                  </div> */
               }
 
               <a id={address.physicalAddress.address1} aria-label={address.physicalAddress.address1} className={address.physicalAddress.address1} value={address.physicalAddress.address1} onClick={() => props.handleNewTab(address, props)} tabIndex="-1">
@@ -103,7 +105,8 @@ export const SearchResults = (props) => {
                 <section>
                   <h4>{address.physicalAddress.address1}</h4>
                   <p>{address.physicalAddress.city}, {address.physicalAddress.state}
-                    {address.physicalAddress.zip}</p>
+                    {address.physicalAddress.zip}
+                  </p>
                 </section>
                 <i className="fa fa-chevron-circle-right" />
               </a>
@@ -117,7 +120,8 @@ export const SearchResults = (props) => {
             <a href="tel:888-210-5235">
               <strong>call us</strong>
             </a>
-            and one of our representatives will be glad to help you.</small>
+            and one of our representatives will be glad to help you.
+          </small>
         </p>
       </ul>
     </div>);
@@ -126,135 +130,140 @@ export const SearchResults = (props) => {
   if (previousTask.value && activeTask.name === 'chooseQuote') {
     const quoteResults = previousTask.value.result.quotes;
 
-    return (<div className="quote-list">
-      {
-        quoteResults && quoteResults.map((quote, index) => <div id={quote._id} className="card" key={index}>
-          <div className="icon-name">
-            <i className="card-icon fa fa-user-circle" />
-            <div className="card-name">
-              <h5
-                title={quote.policyHolders && quote.policyHolders.length > 0
+    return (
+      <div className="quote-list">
+        {
+        quoteResults && quoteResults.map((quote, index) => (
+          <div id={quote._id} className="card" key={index}>
+            <div className="icon-name">
+              <i className="card-icon fa fa-user-circle" />
+              <div className="card-name">
+                <h5
+                  title={quote.policyHolders && quote.policyHolders.length > 0
                   ? `${quote.policyHolders[0].firstName} ${quote.policyHolders[0].lastName}`
                   : ''}
-              >{quote.policyHolders[0] && `${quote.policyHolders[0].firstName.replace(/(^.{20}).*$/, '$1...')}`}<br />
-                {quote.policyHolders[0] && `${quote.policyHolders[0].lastName.replace(/(^.{20}).*$/, '$1...')}`}</h5>
+                >{quote.policyHolders[0] && `${quote.policyHolders[0].firstName.replace(/(^.{20}).*$/, '$1...')}`}<br />
+                  {quote.policyHolders[0] && `${quote.policyHolders[0].lastName.replace(/(^.{20}).*$/, '$1...')}`}
+                </h5>
+              </div>
             </div>
-          </div>
 
-          {/* <div>
+            {/* <div>
                 <button className="row" onClick={() => props.handleSelectQuote(quote, props)} tabIndex="-1">Open New Tab</button>
-              </div>*/
+              </div> */
           }
 
-          <section>
-            <ul id="quote-search-results" className="quote-search-results">
-              <li className="header">
-                <span className="quote-no">Quote No.</span>
-                <span className="property-address">Property Address</span>
-                <span className="quote-state">Quote State</span>
-                <span className="effctive-date">Effective Date</span>
-                <span className="started-on">Started On</span>
-                <span className="premium">Premium</span>
-              </li>
-              <li>
-                <a id={quote.quoteNumber + quote.property.physicalAddress.address1} className={`${quote.quoteNumber + quote.property.physicalAddress.address1} row`} aria-label={quote.quoteNumber + quote.property.physicalAddress.address1} value={quote.quoteNumber + quote.property.physicalAddress.address1} onClick={() => props.handleNewTab(quote, props)} tabIndex="-1">
-                  <span className="quote-no">{quote.quoteNumber}</span>
-                  <span className="property-address">{`${quote.property.physicalAddress.address1} ${quote.property.physicalAddress.city}, ${quote.property.physicalAddress.state} ${quote.property.physicalAddress.zip}`}</span>
-                  <span className="quote-state">{quote.quoteState}</span>
-                  <span className="effctive-date">{moment.utc(quote.effectiveDate).format('MM/DD/YYYY')}</span>
-                  <span className="started-on">{moment.utc(quote.createdAt).format('MM/DD/YYYY')}</span>
-                  <span className="premium">$ {
+            <section>
+              <ul id="quote-search-results" className="quote-search-results">
+                <li className="header">
+                  <span className="quote-no">Quote No.</span>
+                  <span className="property-address">Property Address</span>
+                  <span className="quote-state">Quote Status</span>
+                  <span className="effctive-date">Effective Date</span>
+                  <span className="started-on">Started On</span>
+                  <span className="premium">Premium</span>
+                </li>
+                <li>
+                  <a id={quote.quoteNumber + quote.property.physicalAddress.address1} className={`${quote.quoteNumber + quote.property.physicalAddress.address1} row`} aria-label={quote.quoteNumber + quote.property.physicalAddress.address1} value={quote.quoteNumber + quote.property.physicalAddress.address1} onClick={() => props.handleNewTab(quote, props)} tabIndex="-1">
+                    <span className="quote-no">{quote.quoteNumber}</span>
+                    <span className="property-address">{`${quote.property.physicalAddress.address1} ${quote.property.physicalAddress.city}, ${quote.property.physicalAddress.state} ${quote.property.physicalAddress.zip}`}</span>
+                    <span className="quote-state">{quote.quoteState}</span>
+                    <span className="effctive-date">{moment.utc(quote.effectiveDate).format('MM/DD/YYYY')}</span>
+                    <span className="started-on">{moment.utc(quote.createdAt).format('MM/DD/YYYY')}</span>
+                    <span className="premium">$ {
                     quote.rating
                       ? quote.rating.totalPremium
                       : '-'
-                  }</span>
-                </a>
-              </li>
-            </ul>
-          </section>
-        </div>)
+                  }
+                    </span>
+                  </a>
+                </li>
+              </ul>
+            </section>
+          </div>))
       }
-    </div>);
+      </div>);
   }
 
   if (searchData && searchData.searchType === 'agency') {
     const agencyResults = props.agencies ? props.agencies : [];
 
-    if (agencyResults.length <= 0 && searchData.searchType === 'agency' &&  props.appState.data && !props.appState.data.agentSubmitting) {
+    if (agencyResults.length <= 0 && searchData.searchType === 'agency' && props.appState.data && !props.appState.data.agentSubmitting) {
       return (
         <NoResults />
-      )
-    } else {
-    return (<div className="user-list agency-list">
-      { props.appState.data && props.appState.data.agentSubmitting && <Loader />}
-      {
-        agencyResults && agencyResults.map((agency, index) => <div className="card-wrapper" key={index}>
-          <span className="fa fa-chevron-circle-right" id={`agency-code-${agency.agencyCode}`} onClick={() => props.handleNewTab(agency, props)} tabIndex="-1" />
-          <div className="agency contact card">
+      );
+    }
+    return (
+      <div className="user-list agency-list">
+        { props.appState.data && props.appState.data.agentSubmitting && <Loader />}
+        {
+        agencyResults && agencyResults.map((agency, index) => (
+          <div className="card-wrapper" key={index}>
+            <span className="fa fa-chevron-circle-right" id={`agency-code-${agency.agencyCode}`} onClick={() => props.handleNewTab(agency, props)} tabIndex="-1" />
+            <div className="agency contact card">
 
-            <div className="contact-title">
-              <i className="fa fa-address-book" />
-              <label>Agency</label>
-            </div>
-            <div className="contact-details">
-              <div className="card-name">
+              <div className="contact-title">
+                <i className="fa fa-address-book" />
+                <label>Agency</label>
+              </div>
+              <div className="contact-details">
+                <div className="card-name">
 
-                <h4 className="agency"><span className="agency-code">{agency.agencyCode}</span> | <span className="agency-display-name">{agency.displayName}</span> | <span className="agency-legal-name">{agency.legalName}</span> | <span className="agency-license">{agency.licenseNumber}</span></h4>
+                  <h4 className="agency"><span className="agency-code">{agency.agencyCode}</span> | <span className="agency-display-name">{agency.displayName}</span> | <span className="agency-legal-name">{agency.legalName}</span> | <span className="agency-license">{agency.licenseNumber}</span></h4>
 
-                <div className="contact-address">
-                  {agency.physicalAddress.address1},&nbsp;
-                  {agency.physicalAddress.address2}{agency.physicalAddress.address2 ? ', ' : ' ' }
-                  {agency.physicalAddress.city},&nbsp;
-                  {agency.physicalAddress.state}&nbsp;
-                  {agency.physicalAddress.zip}
-                  {agency.status ? <span className="additional-data status"><label>STATUS:&nbsp;</label>{agency.status}</span> : null}
-                  <span className="additional-data tier"><label>TIER:&nbsp;</label>{agency.tier >= 0 ? agency.tier : ''}</span>
-                  {agency.websiteUrl ? <span className="additional-data website"><label>WEBSITE:&nbsp;</label><a href={`${agency.websiteUrl}`} target="_blank">{agency.websiteUrl}</a></span> : null}
-                </div>
-                <div className="additional-contacts">
-                  <ul>
-                    <li>
-                      <div>
-                        <h5>{agency.contactFirstName} {agency.contactLastName}</h5>
-                      </div>
-                      <div className="contact-methods">
-                        {agency.primaryPhoneNumber ?
-                          <p className="phone">
-                            <i className="fa fa-phone-square" />
-                            <a href={`tel:${agency.primaryPhoneNumber}`}>{normalizePhone(agency.primaryPhoneNumber)}</a>
-                          </p> : null }
-                        {agency.secondaryPhoneNumber ?
-                          <p className="phone">
-                            <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
-                            <a href={`tel:${agency.secondaryPhoneNumber}`}>{normalizePhone(agency.secondaryPhoneNumber)}</a>
-                          </p> : null }
-                        {agency.faxNumber ?
-                          <p className="fax">
-                            <i className="fa fa-fax" />
-                            <a href={`tel:${agency.faxNumber}`}>{normalizePhone(agency.faxNumber)}</a>
-                          </p> : null }
-                        {agency.contactEmailAddress ?
-                          <p>
-                            <i className="fa fa-envelope" />
-                            <a href={`mailto:${agency.contactEmailAddress}`}>{agency.contactEmailAddress}</a>
-                          </p> : null }
-                        {agency.customerServiceEmailAddress ?
-                          <p className="phone">
-                            <span className="contact-divider">|</span>
-                            <small>CSR <i className="fa fa-envelope" /></small>
-                            <a href={`mailto:${agency.customerServiceEmailAddress}`}>{agency.customerServiceEmailAddress}</a>
-                          </p> : null }
-                      </div>
-                    </li>
-                  </ul>
+                  <div className="contact-address">
+                    {agency.physicalAddress.address1},&nbsp;
+                    {agency.physicalAddress.address2}{agency.physicalAddress.address2 ? ', ' : ' ' }
+                    {agency.physicalAddress.city},&nbsp;
+                    {agency.physicalAddress.state}&nbsp;
+                    {agency.physicalAddress.zip}
+                    {agency.status ? <span className="additional-data status"><label>STATUS:&nbsp;</label>{agency.status}</span> : null}
+                    <span className="additional-data tier"><label>TIER:&nbsp;</label>{agency.tier >= 0 ? agency.tier : ''}</span>
+                    {agency.websiteUrl ? <span className="additional-data website"><label>WEBSITE:&nbsp;</label><a href={`${agency.websiteUrl}`} target="_blank">{agency.websiteUrl}</a></span> : null}
+                  </div>
+                  <div className="additional-contacts">
+                    <ul>
+                      <li>
+                        <div>
+                          <h5>{agency.contactFirstName} {agency.contactLastName}</h5>
+                        </div>
+                        <div className="contact-methods">
+                          {agency.primaryPhoneNumber ?
+                            <p className="phone">
+                              <i className="fa fa-phone-square" />
+                              <a href={`tel:${agency.primaryPhoneNumber}`}>{normalizePhone(agency.primaryPhoneNumber)}</a>
+                            </p> : null }
+                          {agency.secondaryPhoneNumber ?
+                            <p className="phone">
+                              <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
+                              <a href={`tel:${agency.secondaryPhoneNumber}`}>{normalizePhone(agency.secondaryPhoneNumber)}</a>
+                            </p> : null }
+                          {agency.faxNumber ?
+                            <p className="fax">
+                              <i className="fa fa-fax" />
+                              <a href={`tel:${agency.faxNumber}`}>{normalizePhone(agency.faxNumber)}</a>
+                            </p> : null }
+                          {agency.contactEmailAddress ?
+                            <p>
+                              <i className="fa fa-envelope" />
+                              <a href={`mailto:${agency.contactEmailAddress}`}>{agency.contactEmailAddress}</a>
+                            </p> : null }
+                          {agency.customerServiceEmailAddress ?
+                            <p className="phone">
+                              <span className="contact-divider">|</span>
+                              <small>CSR <i className="fa fa-envelope" /></small>
+                              <a href={`mailto:${agency.customerServiceEmailAddress}`}>{agency.customerServiceEmailAddress}</a>
+                            </p> : null }
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>)
+          </div>))
       }
-    </div>);
-    }
+      </div>);
   }
 
   if (searchData && searchData.searchType === 'agent') {
@@ -262,12 +271,12 @@ export const SearchResults = (props) => {
     if (props.appState.data && !props.appState.data.agentSubmitting && agentResults.length <= 0 && searchData.searchType === 'agent') {
       return (
         <NoResults />
-      )
-    } else {
+      );
+    }
     return (<div className="user-list agent-list">
       { props.appState.data && props.appState.data.agentSubmitting && <Loader />}
       {
-        agentResults && agentResults.map((agent, index) => <div className="agency agent contact card" key={index}>
+        agentResults && agentResults.map((agent, index) => (<div className="agency agent contact card" key={index}>
           <div className="contact-title">
             <i className="fa fa-address-card margin bottom" />
             {agent.agentOfRecord ? <small><i className="card-icon fa fa-bookmark" /><label>AOR</label></small> : null }
@@ -314,11 +323,10 @@ export const SearchResults = (props) => {
               </div>
             </div>
           </div>
-        </div>)
+                                                            </div>))
             }
     </div>
     );
-  }
   }
   return <span />;
 };
@@ -332,7 +340,8 @@ SearchResults.propTypes = {
   tasks: PropTypes.shape()
 };
 
-const mapStateToProps = state => ({ tasks: state.cg, appState: state.appState, agencies: state.service.agencies, agents: state.service.agents, defaultPolicyResults: state.service.policyResults, search: state.search,
+const mapStateToProps = state => ({
+  tasks: state.cg, appState: state.appState, agencies: state.service.agencies, agents: state.service.agents, defaultPolicyResults: state.service.policyResults, search: state.search
 });
 
 const mapDispatchToProps = dispatch => ({
