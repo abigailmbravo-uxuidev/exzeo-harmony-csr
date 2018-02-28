@@ -94,6 +94,14 @@ export class DetailHeader extends Component {
           </div>
         </dl>
       </section>
+      <section id="constructionType" className="constructionType">
+        <dl>
+          <div>
+            <dt>Construction Type</dt>
+            <dd>{_.get(policy, 'property.constructionType')}</dd>
+          </div>
+        </dl>
+      </section>
       <section id="sourceNumber" className="sourceNumber">
         <dl>
           <div>
