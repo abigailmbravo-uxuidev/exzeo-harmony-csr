@@ -7,7 +7,7 @@ import * as errorActions from './errorActions';
 
 export const handleError = (err) => {
   let error = err.response && err.response.data ? err.response.data : err;
-  if (typeof error === 'string') error = { message: error }
+  if (typeof error === 'string') error = { message: error };
   if (!error.message) error.message = 'There was an error.';
   return { ...error };
 };
@@ -27,7 +27,7 @@ export const runnerSetup = data => ({
 });
 
 export const getNotes = (id, policyId) => (dispatch) => {
-  const pid = policyId ? policyId : id;
+  const pid = policyId || id;
   const notesRequest = runnerSetup({
     service: 'transaction-logs.services',
     method: 'GET',
@@ -44,31 +44,31 @@ export const getNotes = (id, policyId) => (dispatch) => {
     axios(notesRequest),
     axios(docsRequest)
   ])
-  .then(([notesResult, docsResult]) => {
-    const notes = notesResult.data.result;
-    docsResult.data.result.forEach(doc => {
-      const newNote = { 
-        '_id': doc.envelopeId ? doc.envelopeId : doc.fileUrl,
-        contactType: 'system',
-        createdBy: {userName: 'System', userId: doc.createdBy},
-        createdDate:  moment.unix(doc.createdDate),
-        attachments: [
-          {
-            fileType: 'System',
-            fileName: doc.fileName,
-            fileUrl: doc.fileUrl
-          }
-        ]
-      };
-      notes.push(newNote)
-    });
+    .then(([notesResult, docsResult]) => {
+      const notes = notesResult.data.result;
+      docsResult.data.result.forEach((doc) => {
+        const newNote = {
+          _id: doc.envelopeId ? doc.envelopeId : doc.fileUrl,
+          contactType: 'system',
+          createdBy: { userName: 'System', userId: doc.createdBy },
+          createdDate: moment.unix(doc.createdDate),
+          attachments: [
+            {
+              fileType: 'System',
+              fileName: doc.fileName,
+              fileUrl: doc.fileUrl
+            }
+          ]
+        };
+        notes.push(newNote);
+      });
 
-    return dispatch(serviceRequest({notes}));
-  })
-  .catch((error) => {
-    const message = handleError(error);
-    dispatch(errorActions.setAppError(message));
-  });
+      return dispatch(serviceRequest({ notes }));
+    })
+    .catch((error) => {
+      const message = handleError(error);
+      dispatch(errorActions.setAppError(message));
+    });
 };
 
 export const addNote = (data, files) => (dispatch) => {
@@ -93,13 +93,13 @@ export const addNote = (data, files) => (dispatch) => {
       'Content-Type': `multipart/form-data; boundary=${form._boundary}`
     }
   })
-  .then(response => dispatch(getNotes(response.data.number)))
-  .catch((error) => {
-    const message = handleError(error);
-    return dispatch(batchActions([
-      errorActions.setAppError(message)
-    ]));
-  });
+    .then(response => dispatch(getNotes(response.data.number)))
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError(message)
+      ]));
+    });
 };
 
 export const getAgents = (companyCode, state) => (dispatch) => {
@@ -115,12 +115,12 @@ export const getAgents = (companyCode, state) => (dispatch) => {
       serviceRequest(data)
     ]));
   })
-  .catch((error) => {
-    const message = handleError(error);
-    return dispatch(batchActions([
-      errorActions.setAppError(message)
-    ]));
-  });
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError(message)
+      ]));
+    });
 };
 
 export const searchAgents = (companyCode, state, firstName, lastName, agentCode, address, licNumber) => (dispatch) => {
@@ -136,12 +136,12 @@ export const searchAgents = (companyCode, state, firstName, lastName, agentCode,
       serviceRequest(data)
     ]));
   })
-  .catch((error) => {
-    const message = handleError(error);
-    return dispatch(batchActions([
-      errorActions.setAppError(message)
-    ]));
-  });
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError(message)
+      ]));
+    });
 };
 
 export const clearAgent = () => (dispatch) => {
@@ -540,14 +540,13 @@ export const updateBillPlan = paymentPlan => (dispatch) => {
     const data = response.data.result;
     dispatch(getLatestPolicy(data.policyNumber));
   })
-  .catch((error) => {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError({ message }));
-  });
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(errorActions.setAppError({ message }));
+    });
 };
 
 export const getBillingOptionsForPolicy = paymentOptions => (dispatch) => {
-
   const axiosConfig = runnerSetup({
     service: 'billing.services',
     method: 'POST',
@@ -561,12 +560,12 @@ export const getBillingOptionsForPolicy = paymentOptions => (dispatch) => {
       serviceRequest(data)
     ]));
   })
-.catch((error) => {
-  const message = handleError(error);
-  return dispatch(batchActions([
-    errorActions.setAppError(message)
-  ]));
-});
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError(message)
+      ]));
+    });
 };
 
 export const getEndorsementHistory = policyNumber => (dispatch) => {
@@ -673,12 +672,12 @@ export const createTransaction = submitData => (dispatch) => {
       serviceRequest(data)
     ]));
   })
-      .catch((error) => {
-        const message = handleError(error);
-        return dispatch(batchActions([
-          errorActions.setAppError(message)
-        ]));
-      });
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError(message)
+      ]));
+    });
 };
 
 export const getZipcodeSettings = (companyCode, state, product, zip) => (dispatch) => {
@@ -758,7 +757,7 @@ export const searchPolicy = (taskData, sort) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'policy-data.services',
     method: 'GET',
-    path: `/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=${taskData.policyNumber}&firstName=${taskData.firstName}&lastName=${taskData.lastName}&propertyAddress=${formattedAddress.replace(' ', '&#32;')}&active=true&page=${taskData.pageNumber}&pageSize=${taskData.pageSize}&resultStart=${taskData.resultStart}&sort=${sort}&sortDirection=${sortDirection}`
+    path: `/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=${taskData.policyNumber}&firstName=${taskData.firstName}&lastName=${taskData.lastName}&propertyAddress=${formattedAddress.replace(' ', '&#32;')}&active=true&page=${taskData.pageNumber}&pageSize=${taskData.pageSize}&resultStart=${taskData.resultStart}&sort=${sort}&sortDirection=${sortDirection}&effectiveDate=${taskData.effectiveDate}&agencyName=${taskData.agencyName}&policyStatus=${taskData.policyStatus}`
   });
 
   return Promise.resolve(axios(axiosConfig)).then((response) => {
@@ -776,11 +775,13 @@ export const searchPolicy = (taskData, sort) => (dispatch) => {
 };
 
 export const clearPolicyResults = () => (dispatch) => {
-  const data = { policyResults: {
-    totalNumberOfRecords: 1,
-    pageSize: 1,
-    currentPage: 1
-  } };
+  const data = {
+    policyResults: {
+      totalNumberOfRecords: 1,
+      pageSize: 1,
+      currentPage: 1
+    }
+  };
   return dispatch(batchActions([
     serviceRequest(data)
   ]));

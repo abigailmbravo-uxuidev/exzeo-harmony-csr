@@ -40,8 +40,8 @@ export const changePage = (props, isNext) => {
     resultStart: 60,
     pageSize: 25,
     policyStatus: (encodeURIComponent(fieldValues.policyStatus) !== 'undefined' ? encodeURIComponent(fieldValues.policyStatus) : ''),
-    agency: (encodeURIComponent(fieldValues.agency) !== 'undefined' ? encodeURIComponent(fieldValues.agency) : ''),
-    effectiveDate: (encodeURIComponent(fieldValues.effectiveDate) !== 'undefined' ? encodeURIComponent(fieldValues.effectiveDate) : '')
+    agencyName: (encodeURIComponent(fieldValues.agencyName) !== 'undefined' ? encodeURIComponent(fieldValues.agencyName) : ''),
+    effectiveDate: (encodeURIComponent(fieldValues.effectiveDate) !== 'undefined' ? encodeURIComponent(moment(fieldValues.effectiveDate).utc().format('YYYY-MM-DD')) : '')
   };
 
 
@@ -56,7 +56,7 @@ export const changePage = (props, isNext) => {
   });
 };
 
-const handleInitialize = () => ({ searchType: 'quote', sortBy: 'policyNumber', effectiveDate: '' });
+const handleInitialize = () => ({ searchType: 'quote', sortBy: 'policyNumber' });
 
 export const handlePolicySearchSubmit = (data, dispatch, props) => {
   const taskData = {
@@ -69,7 +69,10 @@ export const handlePolicySearchSubmit = (data, dispatch, props) => {
     hasSearched: true,
     pageNumber: 1,
     resultStart: 60,
-    pageSize: 25
+    pageSize: 25,
+    policyStatus: (encodeURIComponent(data.policyStatus) !== 'undefined' ? encodeURIComponent(data.policyStatus) : ''),
+    agencyName: (encodeURIComponent(data.agencyName) !== 'undefined' ? encodeURIComponent(data.agencyName) : ''),
+    effectiveDate: (encodeURIComponent(data.effectiveDate) !== 'undefined' ? encodeURIComponent(moment(data.effectiveDate).utc().format('YYYY-MM-DD')) : '')
   };
 
   props.actions.searchActions.setSearch(taskData);
@@ -95,10 +98,7 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
     policyNumber: (encodeURIComponent(data.policyNumber) !== 'undefined' ? encodeURIComponent(data.policyNumber) : ''),
     zip: (encodeURIComponent(data.zip) !== 'undefined' ? encodeURIComponent(data.zip) : ''),
     quoteState: (encodeURIComponent(data.quoteState) !== 'undefined' ? encodeURIComponent(data.quoteState) : ''),
-    searchType,
-    policyStatus: (encodeURIComponent(data.policyStatus) !== 'undefined' ? encodeURIComponent(data.policyStatus) : ''),
-    agency: (encodeURIComponent(data.agency) !== 'undefined' ? encodeURIComponent(data.agency) : ''),
-    effectiveDate: (encodeURIComponent(data.effectiveDate) !== 'undefined' ? encodeURIComponent(data.effectiveDate) : '')
+    searchType
   };
 
   const agencyAgentData = {
@@ -418,14 +418,14 @@ export class SearchForm extends Component {
             {generateField('firstName', 'First Name Search', 'First Name', formErrors, 'first-name-search')}
             {generateField('lastName', 'Last Name Search', 'Last Name', formErrors, 'last-name-search')}
             {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
-            {generateField('agency', 'Agency', 'Agency', formErrors, 'agency-search')}
+            {generateField('agencyName', 'Agency Name', 'Agency Name', formErrors, 'agency-search')}
             <div className="form-group effectiveDate">
               <label htmlFor="effectiveDate">{getErrorToolTip(formErrors, 'effectiveDate')} {'Effective Date'}
               </label>
               <Field
                 name="effectiveDate"
                 className=""
-                placeholder="Effective Date"
+                placeholder="MM/DD/YYYY"
                 type="text"
                 normalize={normalizeDate}
                 component="input"
@@ -527,7 +527,7 @@ export class SearchForm extends Component {
               </button>
             </div>
             <div className="filters fade-in">FILTERS HERE</div>
-                                                </div>
+          </div>
         }
           {fieldValues.searchType === 'agency' && <div className="search-inputs fade-in">
 
@@ -546,7 +546,7 @@ export class SearchForm extends Component {
             >
               <i className="fa fa-search" />Search
             </button>
-                                                  </div>
+          </div>
         }
           {fieldValues.searchType === 'agent' && <div className="search-inputs fade-in">
 
@@ -564,7 +564,7 @@ export class SearchForm extends Component {
             >
               <i className="fa fa-search" />Search
             </button>
-                                                 </div>
+          </div>
       }
           {/* <!-- End should be available only in user admin  --> */}
         </div>
