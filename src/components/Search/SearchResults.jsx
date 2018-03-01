@@ -45,7 +45,7 @@ export const SearchResults = (props) => {
     }
 
     return (
-      <div className={props.search.policyAdvanceSearch ? 'quote-list policy-advance' : 'quote-list'}>
+      <div className="quote-list">
         {props.search && props.search.isLoading && <Loader />}
         {
           policyResults && policyResults.length > 0 && policyResults.map((policy, index) => (<div tabIndex={0} onKeyPress={event => onKeypressPolicy(event, policy, props)} id={policy.PolicyID} className="card" key={index}>
