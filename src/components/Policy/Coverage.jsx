@@ -296,6 +296,51 @@ export class Coverage extends Component {
                   </dl>
                 </div>
               </section>
+              <section>
+                <h3>Wind Mitigation</h3>
+                <div className="wind-mitigation">
+                  <dl>
+                    <div>
+                      <dt>Roof Covering</dt>
+                      <dd>{property.windMitigation.roofCovering}</dd>
+                      <dt>Roof Deck Attachment</dt>
+                      <dd>{property.windMitigation.roofDeckAttachment}</dd>
+                      <dt>Roof to Wall Attachment</dt>
+                      <dd>{property.windMitigation.roofToWallConnection}</dd>
+                    </div>
+                  </dl>
+                  <dl>
+                    <div>
+                      <dt>Roof Geometry</dt>
+                      <dd>{property.windMitigation.roofGeometry}</dd>
+                        <dt>Secondary Water Resistance (SWR)</dt>
+                        <dd>{property.windMitigation.secondaryWaterResistance}</dd>
+                        <dt>Opening Protection</dt>
+                        <dd>{property.windMitigation.openingProtection}</dd>
+                    </div>
+                  </dl>
+                  <dl>
+                    <div>
+                        <dt>FBC Wind Speed</dt>
+                        <dd>{property.windMitigation.floridaBuildingCodeWindSpeed}</dd>
+                        <dt>FBC Wind Speed Design</dt>
+                        <dd>{property.windMitigation.floridaBuildingCodeWindSpeedDesign}</dd>
+                        <dt>Terrain</dt>
+                        <dd>{property.windMitigation.terrain}</dd>
+                    </div>
+                  </dl>
+                  <dl>
+                    <div>    
+                      <dt>Internal Pressure Design</dt>
+                      <dd>{property.windMitigation.internalPressureDesign}</dd>
+                      <dt>Wind Borne Debris Region (WBDR)</dt>
+                      <dd>{property.windMitigation.windBorneDebrisRegion}</dd>
+                      <dt>Wind Mit Factor</dt>
+                      <dd>{_.get(_.find(discountSurcharge, { discountSurcharge: "Wind Mit Factor" }), 'value')}</dd>
+                    </div>
+                  </dl>
+                </div>
+              </section>
               {/* <section>
               <h2>Claims</h2>
               <div className="table-view claims">

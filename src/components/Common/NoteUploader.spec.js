@@ -5,12 +5,12 @@ import MockAdapter from 'axios-mock-adapter';
 import { propTypes } from 'redux-form';
 import { mount, shallow } from 'enzyme';
 import * as serviceActions from '../../actions/serviceActions';
-import ConnectedApp, { submitNote, minimzeButtonHandler, validate, RenderDropzone, renderNotes, NewNoteFileUploader } from './NewNoteFileUploader';
+import ConnectedApp, { minimzeButtonHandler, validate, renderNotes, NoteUploader } from './NoteUploader';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 
-describe('Testing NewNoteFileUploader component', () => {
+describe('Testing NoteUploader component', () => {
   it('should test connected app', () => {
     const initialState = {
       authState: {
@@ -92,7 +92,6 @@ describe('Testing NewNoteFileUploader component', () => {
       ...propTypes
     };
 
-    submitNote({}, props.dispatch, props);
     minimzeButtonHandler(props);
 
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
@@ -103,71 +102,6 @@ describe('Testing NewNoteFileUploader component', () => {
     wrapper.setProps(props);
 
     minimzeButtonHandler(props);
-  });
-
-  it('should test NewNoteFileUploader', () => {
-    const initialState = {
-      authState: {
-      },
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {},
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        modelName: 'bb'
-      }
-    };
-    const store = mockStore(initialState);
-    const props = {
-      user: {
-        user_id: '2342'
-      },
-      closeButtonHandler() {},
-      actions: {
-        appStateActions: {
-          setAppState() {}
-        },
-        serviceActions: {
-          addNote() {}
-        }
-      },
-      handleSubmit() {},
-      fieldQuestions: [],
-      quoteData: {},
-      dispatch: store.dispatch,
-      appState: {
-        data: {
-          submitting: false
-        }
-      }
-    };
-
-    NewNoteFileUploader(props, { function() {} });
-  });
-
-  it('should test RenderDropzone', () => {
-    const props = {
-      input: {
-        name: 'upload',
-        value: [],
-        onChange() { this.value }
-      },
-      meta: { 
-        touched: true, 
-        error: 'test'
-      }
-    }
-
-    const wrapper = shallow(<RenderDropzone {...props} />);
-    const onDragEnter = wrapper.instance().onDragEnter();
-    const onDragLeave = wrapper.instance().onDragLeave();
-    const onDrop = wrapper.instance().onDrop([]);
-    expect(wrapper);
   });
 
   it('note should be valid', () => {

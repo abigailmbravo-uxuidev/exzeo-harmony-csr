@@ -75,15 +75,10 @@ export const addNote = (data, files) => (dispatch) => {
   const form = new FormData();
   const url = `${process.env.REACT_APP_API_URL}/upload`;
 
-  Object.keys(data).forEach((key) => {
-    const value = data[key];
-    const fieldValue = key === 'createdBy' ? JSON.stringify(value) : value;
-    form.append(key, fieldValue);
-  });
-
+  Object.keys(data).forEach((key) => form.append(key, data[key]));
 
   if (files && files.length > 0) {
-    files.forEach(file => form.append(file.name, file));
+    files.forEach(file => form.append(file.name, file.data));
   }
 
   axios.post(url, form, {
