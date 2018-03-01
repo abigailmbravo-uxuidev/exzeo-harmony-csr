@@ -104,6 +104,14 @@ export class DetailHeader extends Component {
           </div>
         </dl>
       </section>
+      <section id="constructionType" className="constructionType">
+        <dl>
+          <div>
+            <dt>Construction Type</dt>
+            <dd>{quoteData.property.constructionType}</dd>
+          </div>
+        </dl>
+      </section>
       <section id="quoteEffectiveDate" className="quoteEffectiveDate">
         <dl>
           <div>
