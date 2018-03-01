@@ -1222,7 +1222,7 @@ describe('Service Actions', () => {
       data: {
         service: 'agency.services',
         method: 'GET',
-        path: 'v1/agencies/TTIC/FL'
+        path: 'v1/agencies/TTIC/FL?pageSize=100&sort=displayName&SortDirection=asc'
       }
     };
 
