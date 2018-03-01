@@ -424,20 +424,24 @@
     .react-bs-table {
       .created-date {
         width: 10%;
-        min-width: 120px;
+        min-width: 7rem;
+        white-space: normal;
       }
 
       .created-by {
-        width: 15%;
+        width: 10%;
+        min-width: 9.75rem;
         white-space: normal;
       }
 
       .note-type {
-        width: 15%;
+        width: 9%;
+        min-width: 6rem;
       }
 
       .file-type {
-        width: 15%;
+        width: 16%;
+        min-width: 12rem;
         white-space: normal;
       }
 
@@ -446,7 +450,8 @@
       }
 
       .attachments {
-        width: 20%;
+        width: 10%;
+        min-width: 7rem;
         white-space: normal;
 
         span {
@@ -458,6 +463,172 @@
               color: $bright-blue-darken-02;
             }
           }
+        }
+      }
+    }
+  }
+}
+
+.filter-tabs {
+  .group-label {
+    margin: 0;
+  }
+
+  .form-group.segmented {
+    .segmented-answer-wrapper {
+      border-bottom: 1px solid $bright-blue-darken-04;
+
+      > div {
+        flex-grow: 0;
+        padding: 0;
+
+        .label-segmented {
+          border: none;
+
+          span {
+            justify-content: flex-start;
+            padding: ($padding*2);
+            border: none;
+            border-bottom-width: 5px;
+            border-bottom-style: solid;
+            border-radius: 0;
+            background: none;
+            font-weight: $font-weight-normal;
+            @include button-variant($warm-gray-10, $white, rgba($bright-blue-darken-04, 0));
+
+            &:hover {
+              border-bottom: 5px solid rgba($bright-blue-darken-02, .3);
+              background: $warm-gray-00;
+            }
+          }
+
+          input[type="radio"] {
+            &:checked {
+              + span {
+                color: $warm-gray-14;
+                border-bottom: 5px solid $bright-blue-darken-04;
+                background: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+//compact grid
+
+.react-bs-table-container {
+  &.compact-table {
+    .react-bs-table {
+      .table-bordered {
+        tr {
+          th {
+            font-size: $font-size-sm;
+          }
+
+          td {
+            font-size: $font-size-sm;
+          }
+        }
+      }
+    }
+  }
+}
+//notes attachment styles
+
+.react-bs-table-container {
+  &.notes {
+    .react-bs-table {
+      .table-bordered {
+        tr {
+          th {
+            &.attachments {
+              width: 6%;
+              min-width: 3rem;
+            }
+          }
+
+          td {
+            &.attachments {
+              width: 6%;
+              min-width: 3rem;
+              white-space: normal;
+
+              span {
+                display: flex;
+              }
+            }
+          }
+        }
+
+        .attachments {
+          span {
+            .attachment-wrapper {
+              i.fa {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 1rem;
+                height: 1rem;
+
+                &:before {
+                  content: "\F15B";
+                }
+              }
+
+              .btn {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.react-bs-table-container {
+  &.files {
+    .react-bs-table {
+      .table-bordered {
+        tr {
+          th {}
+
+          td {}
+        }
+
+        .attachments {
+          span {
+            .attachment-wrapper {
+              display: flex;
+              align-items: center;
+
+              i.fa {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 1rem;
+                height: 1rem;
+
+                &:before {
+                  content: "\F15B";
+                }
+              }
+
+              .btn {
+                padding-left: 0;
+              }
+            }
+          }
+        }
+
+        .created-date {
+          width: 16%;
+        }
+
+        .created-by {
+          width: 16%;
         }
       }
     }
