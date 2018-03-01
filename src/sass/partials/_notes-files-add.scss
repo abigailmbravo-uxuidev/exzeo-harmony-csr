@@ -424,7 +424,8 @@
     .react-bs-table {
       .created-date {
         width: 10%;
-        min-width: 9.75rem;
+        min-width: 7rem;
+        white-space: normal;
       }
 
       .created-by {
@@ -449,6 +450,8 @@
       }
 
       .attachments {
+        width: 10%;
+        min-width: 7rem;
         white-space: normal;
 
         span {
