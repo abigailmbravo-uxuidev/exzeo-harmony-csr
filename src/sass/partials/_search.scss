@@ -2,7 +2,7 @@
   z-index: 10;
   position: relative;
   display: flex;
-  overflow: hidden;
+  //overflow: hidden;
   flex-direction: column;
   flex-grow: 1;
   flex-shrink: 1;
@@ -24,6 +24,7 @@
       padding: $padding ($padding*2);
       border-bottom: 2px solid $white;
       background-color: $warm-gray-08;
+
 
       .search-inputs {
         display: flex;
@@ -145,8 +146,8 @@
 
       input {
         flex: 1;
-        height: 38px;
-        padding: 0.25rem 0.5rem;
+        height: 2.375rem;
+        padding: ($padding/2) $padding;
         line-height: 1.75;
       }
 
@@ -160,6 +161,45 @@
           border-top-left-radius: 0.25rem;
           border-bottom-left-radius: 0.25rem;
         }
+
+        &.advanced-search {
+            border-radius: $border-radius;
+            position: initial;
+            margin: 0 $padding 0 0;
+            flex-grow: 0;
+            flex-shrink: 0;
+            width: auto;
+        }
+      }
+
+      .advanced-search {
+          position: absolute;
+          top: 4.5rem;
+          left: 0;
+          background-color: $warm-gray-08;
+          display: flex;
+          width: 100%;
+          padding: $padding ($padding*15.5) $padding ($padding*2);
+
+          input {
+              flex: 1;
+              height: 2.375rem;
+              padding: $padding;
+              line-height: 1.75;
+            -ms-flex-preferred-size: 1.75rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
+
+          .form-group {
+              &.agency-search {
+                  margin-right: $padding;
+              }
+              &.effectiveDate {
+                  width: 12rem;
+                  margin-right: $padding;
+              }
+          }
       }
     }
   }

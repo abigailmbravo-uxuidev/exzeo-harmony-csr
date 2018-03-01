@@ -286,6 +286,7 @@ main[role="document"] {
   height: calc(100vh - 8.125rem);
   min-height: calc(100vh - 8.125rem);
   background: $white;
+  z-index: 1;
 
   .content-wrapper {
     display: flex;
@@ -1526,7 +1527,7 @@ ul.list-cards {
                 &.font-size-base {
                   font-size: $font-size-base;
                 }
-                
+
                 &.policy-status {
                     line-height: 1.02;
                 }
