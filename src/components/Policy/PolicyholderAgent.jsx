@@ -45,22 +45,28 @@ export class PolicyholderAgent extends Component {
                   <div className="contact-title"><i className="fa fa-address-card-o" /><label>Policyholder {index + 1}</label></div>
                   <div className="contact-details">
                     <h4>{`${policyHolder.firstName} ${policyHolder.lastName}`}</h4>
-                    <p>{`${policyHolderMailingAddress.address1} ${policyHolderMailingAddress.address2 ? policyHolderMailingAddress.address2 : ''}
-${policyHolderMailingAddress.city} ${policyHolderMailingAddress.state}, ${policyHolderMailingAddress.zip}`}</p>
-                    <div className="contact-methods">
-                      <p className="primary-phone">
-                        <i className="fa fa-phone-square" />
-                        <a href={`tel: ${(policyHolder.primaryPhoneNumber)}`}>{normalizePhone(policyHolder.primaryPhoneNumber)}</a>
-                      </p>
-                      { policyHolder.secondaryPhoneNumber && <p className="secondary-phone">
-                        <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
-                        <a href={`tel: ${policyHolder.secondaryPhoneNumber}`}>{normalizePhone(policyHolder.secondaryPhoneNumber)}</a>
-                      </p> }
-                      <p className="email">
-                        <i className="fa fa-envelope" />
-                        <a href={`mailto: ${policyHolder.emailAddress}`}>{policyHolder.emailAddress}</a>
-                      </p>
-                    </div>
+                    <div className="contact-address">{`${policyHolderMailingAddress.address1} ${policyHolderMailingAddress.address2 ? policyHolderMailingAddress.address2 : ''}
+${policyHolderMailingAddress.city} ${policyHolderMailingAddress.state}, ${policyHolderMailingAddress.zip}`}</div>
+                    <div className="additional-contacts">
+                      <ul>
+                        <li>
+                        <div className="contact-methods">
+                          <p className="primary-phone">
+                            <i className="fa fa-phone-square" />
+                            <a href={`tel: ${(policyHolder.primaryPhoneNumber)}`}>{normalizePhone(policyHolder.primaryPhoneNumber)}</a>
+                          </p>
+                          { policyHolder.secondaryPhoneNumber && <p className="secondary-phone">
+                            <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
+                            <a href={`tel: ${policyHolder.secondaryPhoneNumber}`}>{normalizePhone(policyHolder.secondaryPhoneNumber)}</a>
+                          </p> }
+                          <p className="email">
+                            <i className="fa fa-envelope" />
+                            <a href={`mailto: ${policyHolder.emailAddress}`}>{policyHolder.emailAddress}</a>
+                          </p>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
                   </div>
                   <div className="electronic-delivery"><label>Electronic Delivery: </label> {policyHolder.electronicDelivery ? 'Yes' : 'No'}</div>
                 </div>)) }
@@ -70,35 +76,41 @@ ${policyHolderMailingAddress.city} ${policyHolderMailingAddress.state}, ${policy
                 <div className="agency contact card">
                   <div className="contact-title"><i className="fa fa-address-book" /><label>Agency</label></div>
                   <div className="contact-details">
-                    <h4 className="agency"><span className="agency-display-name">{agency.displayName}</span> | <span className="agency-legal-name">{agency.legalName}</span></h4>
-                    <p>{agency.mailingAddress.address1}{agency.mailingAddress.address2 ? ` ,${agency.mailingAddress.address2}` : ''}, {agency.mailingAddress.city}, {agency.mailingAddress.state} {agency.mailingAddress.zip}</p>
-                    <div className="contact-methods">
-                      { agency.primaryPhoneNumber && <p className="primary-phone">
-                        <i className="fa fa-phone-square" />
-                        <a href={`tel:${agency.primaryPhoneNumber}`}>{normalizePhone(agency.primaryPhoneNumber)}</a>
-                      </p> }
-                      { agency.secondaryPhoneNumber && <p className="secondary-phone">
-                        <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
-                        <a href={`tel:${agency.secondaryPhoneNumber}`}>{normalizePhone(agency.secondaryPhoneNumber)}</a>
-                      </p> }
-                      { agency.faxNumber && <p className="fax">
-                        <i className="fa fa-fax" />
-                        <a href={`tel:${agency.faxNumber}`}>{normalizePhone(agency.faxNumber)}</a>
-                      </p> }
-                      { agency.customerServiceEmailAddress && <p className="email">
-                        <i className="fa fa-envelope" />
-                        <a href={`mailto:${agency.customerServiceEmailAddress}`}>{agency.customerServiceEmailAddress}</a>
-                      </p> }
+                    <h4 className="agency"><span className="agency-code">{agency.agencyCode}</span> | <span className="agency-display-name">{agency.displayName}</span> | <span className="agency-legal-name">{agency.legalName}</span> | <span className="agency-license">{agency.licenseNumber}</span></h4>
+                    <div className="contact-address">{agency.mailingAddress.address1}{agency.mailingAddress.address2 ? ` ,${agency.mailingAddress.address2}` : ''}, {agency.mailingAddress.city}, {agency.mailingAddress.state} {agency.mailingAddress.zip}
+                      {agency.status ? <span className="additional-data status"><label>STATUS:&nbsp;</label>{agency.status}</span> : null}
+                      <span className="additional-data tier"><label>TIER:&nbsp;</label>{agency.tier >= 0 ? agency.tier : ''}</span>
+                      {agency.websiteUrl ? <span className="additional-data website"><label>WEBSITE:&nbsp;</label><a href={`${agency.websiteUrl}`} target="_blank">{agency.websiteUrl}</a></span> : null}
                     </div>
                     <div className="additional-contacts">
                       <ul>
                         <li>
                           <div>
-                            <h5>{`${agency.principalFirstName} ${agency.principalLastName}`}</h5>
-                            <span>Principal</span>
+                            <h5>{agency.contactFirstName} {agency.contactLastName}</h5>
                           </div>
                           <div className="contact-methods">
-                            { agency.principalEmailAddress && <p><i className="fa fa-envelope" /><a href={`mailto:${agency.principalEmailAddress}`}>{agency.principalEmailAddress}</a></p> }
+                            { agency.primaryPhoneNumber && <p className="primary-phone">
+                              <i className="fa fa-phone-square" />
+                              <a href={`tel:${agency.primaryPhoneNumber}`}>{normalizePhone(agency.primaryPhoneNumber)}</a>
+                            </p> }
+                            { agency.secondaryPhoneNumber && <p className="secondary-phone">
+                              <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
+                              <a href={`tel:${agency.secondaryPhoneNumber}`}>{normalizePhone(agency.secondaryPhoneNumber)}</a>
+                            </p> }
+                            { agency.faxNumber && <p className="fax">
+                              <i className="fa fa-fax" />
+                              <a href={`tel:${agency.faxNumber}`}>{normalizePhone(agency.faxNumber)}</a>
+                            </p> }
+                            { agency.contactEmailAddress ?
+                              <p>
+                                <i className="fa fa-envelope" />
+                                <a href={`mailto:${agency.contactEmailAddress}`}>{agency.contactEmailAddress}</a>
+                              </p> : null }
+                            { agency.customerServiceEmailAddress && <p className="phone csr-phone">
+                              <span className="contact-divider">|</span>
+                              <small>CSR <i className="fa fa-envelope" /></small>
+                              <a href={`mailto:${agency.customerServiceEmailAddress}`}>{agency.customerServiceEmailAddress}</a>
+                            </p> }
                           </div>
                         </li>
                       </ul>
@@ -108,9 +120,12 @@ ${policyHolderMailingAddress.city} ${policyHolderMailingAddress.state}, ${policy
                 <div className="agent contact card">
                   <div className="contact-title"><i className="fa fa-address-card" /><label>Agent</label></div>
                   <div className="contact-details">
-                    <h4>{`${selectedAgent.firstName} ${selectedAgent.lastName}`}</h4>
-                    <p>{selectedAgent.mailingAddress.address1}{selectedAgent.mailingAddress.address2 ? ` ,${selectedAgent.mailingAddress.address2}` : ''}, {selectedAgent.mailingAddress.city}, {selectedAgent.mailingAddress.state} {selectedAgent.mailingAddress.zip}</p>
-                    <div className="contact-methods">
+                    <h4><span className="agent-code">{selectedAgent.agentCode}</span> | <span className="agent-name">{`${selectedAgent.firstName} ${selectedAgent.lastName}`}</span> | <span className="agent-license">{selectedAgent.licenseNumber}</span></h4>
+                    <div className="contact-address">{selectedAgent.mailingAddress.address1}{selectedAgent.mailingAddress.address2 ? ` ,${selectedAgent.mailingAddress.address2}` : ''}, {selectedAgent.mailingAddress.city}, {selectedAgent.mailingAddress.state} {selectedAgent.mailingAddress.zip}</div>
+                      <div className="additional-contacts">
+                        <ul>
+                          <li>
+                  <div className="contact-methods">
                       { selectedAgent.primaryPhoneNumber && <p className="primary-phone">
                         <i className="fa fa-phone-square" />
                         <a href={`tel:${selectedAgent.primaryPhoneNumber}`}>{normalizePhone(selectedAgent.primaryPhoneNumber)}</a>
@@ -124,6 +139,9 @@ ${policyHolderMailingAddress.city} ${policyHolderMailingAddress.state}, ${policy
                         <a href={`mailto:${selectedAgent.emailAddress}`}>{selectedAgent.emailAddress}</a>
                       </p> }
                     </div>
+</li>
+</ul>
+</div>
                   </div>
                 </div>
               </section>}
