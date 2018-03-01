@@ -734,7 +734,7 @@ export const getAgencies = (companyCode, state) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'agency.services',
     method: 'GET',
-    path: `v1/agencies/${companyCode}/${state}`
+    path: `v1/agencies/${companyCode}/${state}?pageSize=100&sort=displayName&SortDirection=asc`
   });
 
   return axios(axiosConfig).then((response) => {
