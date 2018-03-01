@@ -18,6 +18,7 @@
     .search-input-wrapper {
       display: flex;
       align-items: flex-end;
+      flex-wrap: wrap;
       flex-grow: 1;
       min-height: 4.75rem;
       padding: $padding ($padding*2);

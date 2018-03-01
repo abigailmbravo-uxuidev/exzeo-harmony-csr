@@ -1,0 +1,99 @@
+.search {
+  form {
+    .pagination-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: $padding 0;
+      background: $warm-gray-08;
+
+      > button.multi-input {
+        height: 2rem;
+        padding: ($padding/2) $padding;
+        @include button-variant($white, $warm-gray-04, $warm-gray-04);
+
+        &:first-child {
+          border-radius: 50% 0 0 50%;
+        }
+
+        &:last-child {
+          border-radius: 0 50% 50% 0;
+        }
+
+        &.action-btn {
+          padding: ($padding/2) $padding;
+        }
+      }
+
+      .pagination-count {
+        display: flex;
+        align-items: center;
+        height: 2rem;
+        background: $white;
+
+        .pageNumber {
+          align-items: center;
+          flex-direction: row;
+          width: auto;
+          margin-bottom: 0;
+          padding: 0;
+
+          label {
+            margin-bottom: 0;
+            padding: 0 0 0 $padding;
+            color: $warm-gray-14;
+            font-size: $font-size-sm;
+            font-weight: $font-weight-normal;
+          }
+
+          input {
+            width: 4ch;
+            height: auto;
+            padding: $padding/2;
+            text-align: center;
+            color: $warm-gray-14;
+            border-width: 0;
+            font-size: $font-size-sm;
+
+            &[disabled] {
+              background: $white;
+            }
+          }
+        }
+
+        .pagination-operand {
+          color: $warm-gray-14;
+          font-size: $font-size-sm;
+          font-weight: $font-weight-normal;
+        }
+
+        .totalPages {
+          align-items: center;
+          flex-direction: row;
+          width: auto;
+          margin-bottom: 0;
+          padding: 0 $padding 0 0;
+
+          label {
+            margin-bottom: 0;
+            padding: 0;
+            font-size: $font-size-sm;
+            font-weight: $font-weight-normal;
+          }
+
+          input,
+          input[readonly] {
+            width: 4ch;
+            height: auto;
+            padding: $padding/2;
+            text-align: center;
+            color: $warm-gray-14;
+            border-width: 0;
+            font-size: $font-size-sm;
+          }
+        }
+      }
+    }
+  }
+}
