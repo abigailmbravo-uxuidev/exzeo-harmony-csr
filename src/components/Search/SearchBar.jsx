@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {bindActionCreators} from 'redux';
+import { bindActionCreators } from 'redux';
 import localStorage from 'localStorage';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import {
   reduxForm,
   Form,
@@ -28,13 +28,18 @@ const userTasks = {
   handleSearchBarSubmit: 'search'
 };
 
+export const togglePolicyAdvanceSearch = (props) => {
+  const toggleValue = !!props.search.policyAdvanceSearch;
+  props.actions.searchActions.setSearch({ ...props.search, policyAdvanceSearch: !toggleValue });
+};
+
 export const resetPolicySearch = (props) => {
-  props.actions.searchActions.setSearch({searchType: 'policy', hasSearched: false});
+  props.actions.searchActions.setSearch({ searchType: 'policy', hasSearched: false, policyAdvanceSearch: false });
   props.actions.serviceActions.clearPolicyResults();
 };
 
 export const changePage = (props, isNext) => {
-  const {fieldValues} = props;
+  const { fieldValues } = props;
 
   const taskData = {
     firstName: (
@@ -66,7 +71,7 @@ export const changePage = (props, isNext) => {
   });
 };
 
-const handleInitialize = () => ({searchType: 'quote', sortBy: 'policyNumber'});
+const handleInitialize = () => ({ searchType: 'quote', sortBy: 'policyNumber' });
 
 export const handlePolicySearchSubmit = (data, dispatch, props) => {
   const taskData = {
@@ -287,28 +292,30 @@ export const validate = (values) => {
 const getErrorToolTip = (formErrors, fieldName) => {
   const errorFieldName = `error${fieldName}`;
   return (
-    (formErrors && formErrors[fieldName]) ? <span>
-      <i className="fa fa-exclamation-circle" data-tip="data-tip" data-for={errorFieldName}/>
-      <ReactTooltip place="right" id={errorFieldName} type="error" effect="float">{formErrors[fieldName]}</ReactTooltip>
-    </span> : <span/>);
+    (formErrors && formErrors[fieldName]) ?
+      <span>
+        <i className="fa fa-exclamation-circle" data-tip="data-tip" data-for={errorFieldName} />
+        <ReactTooltip place="right" id={errorFieldName} type="error" effect="float">{formErrors[fieldName]}</ReactTooltip>
+      </span> : <span />);
 };
 
 const generateField = (name, placeholder, labelText, formErrors, formGroupCss) => {
   const field = (<div className={(
-      formErrors && formErrors[name]) ? `form-group error ${formGroupCss}` : `form-group ${formGroupCss}`}>
+      formErrors && formErrors[name]) ? `form-group error ${formGroupCss}` : `form-group ${formGroupCss}`}
+  >
     <label htmlFor={name}>{getErrorToolTip(formErrors, name)}
       {labelText}
     </label>
-    <Field name={name} className="" placeholder={placeholder} type="text" component="input"/>
-  </div>);
+    <Field name={name} className="" placeholder={placeholder} type="text" component="input" />
+                 </div>);
   return field;
 };
 
-const getAnswers = (name, questions) => _.get(_.find(questions, {name}), 'answers') || [];
+const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 export class SearchForm extends Component {
   componentWillReceiveProps(nextProps) {
-    const {dispatch} = nextProps;
+    const { dispatch } = nextProps;
 
     if (nextProps.search.hasSearched && !_.isEqual(this.props.policyResults, nextProps.policyResults)) {
       const totalPages = Math.ceil(nextProps.policyResults.totalNumberOfRecords / nextProps.policyResults.pageSize);
@@ -334,7 +341,8 @@ export class SearchForm extends Component {
       form,
       actions,
       tasks,
-      reset
+      reset,
+      search
     } = this.props;
 
     const clearForm = () => {
@@ -354,13 +362,20 @@ export class SearchForm extends Component {
 
     let searchHandler = handleSearchBarSubmit;
 
-    if (fieldValues.searchType === 'policy')
-      searchHandler = handlePolicySearchSubmit;
+    if (fieldValues.searchType === 'policy') { searchHandler = handlePolicySearchSubmit; }
 
     return (<Form id="SearchBar" onSubmit={handleSubmit(searchHandler)} noValidate="noValidate">
       <div className="search-input-wrapper">
         <div className="form-group search-context">
-          <SelectField id="searchType" name="searchType" component="select" styleName="" label="Search Context" validations={['required']} onChange={clearForm} answers={[
+          <SelectField
+            id="searchType"
+            name="searchType"
+            component="select"
+            styleName=""
+            label="Search Context"
+            validations={['required']}
+            onChange={clearForm}
+            answers={[
               {
                 answer: 'address',
                 label: 'New Quote'
@@ -377,15 +392,16 @@ export class SearchForm extends Component {
                 answer: 'agency',
                 label: 'Agency Search'
               }
-            ]}/>
+            ]}
+          />
         </div>
         {
           fieldValues.searchType === 'address' && <div className="search-inputs fade-in">
               {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
-              <button className="btn btn-success multi-input" type="submit" form="SearchBar" disabled={appState.data.submitting || formErrors || !fieldValues.address || !String(fieldValues.address).trim()}>
-                <i className="fa fa-search"/>Search
-              </button>
-            </div>
+            <button className="btn btn-success multi-input" type="submit" form="SearchBar" disabled={appState.data.submitting || formErrors || !fieldValues.address || !String(fieldValues.address).trim()}>
+              <i className="fa fa-search" />Search
+            </button>
+                                                  </div>
         }
         {
           fieldValues.searchType === 'quote' && <div className="search-inputs fade-in">
@@ -393,55 +409,55 @@ export class SearchForm extends Component {
               {generateField('lastName', 'Last Name Search', 'Last Name', formErrors, 'last-name-search')}
               {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
               {generateField('quoteNumber', 'Quote No Search', 'Quote Number', formErrors, 'quote-no-search')}
-              <div className="form-group quote-state">
-                <SelectField name="quoteState" component="select" styleName="" label="Quote State" onChange={clearForm} answers={getAnswers('quoteState', questions)}/>
-              </div>
-
-              <button className="btn btn-success multi-input" type="submit" form="SearchBar" disabled={appState.data.submitting || formErrors}>
-                <i className="fa fa-search"/>Search
-              </button>
+            <div className="form-group quote-state">
+              <SelectField name="quoteState" component="select" styleName="" label="Quote State" onChange={clearForm} answers={getAnswers('quoteState', questions)} />
             </div>
+
+            <button className="btn btn-success multi-input" type="submit" form="SearchBar" disabled={appState.data.submitting || formErrors}>
+              <i className="fa fa-search" />Search
+            </button>
+                                                </div>
         }
         {
           fieldValues.searchType === 'policy' && <div className="search-inputs fade-in p">
               {generateField('firstName', 'First Name Search', 'First Name', formErrors, 'first-name-search')}
               {generateField('lastName', 'Last Name Search', 'Last Name', formErrors, 'last-name-search')}
               {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
-              {generateField('policyNumber', 'Policy No Search', 'Policy Number', formErrors, 'policy-no-search')}        
-              <button id="searchPolicySubmit" className="btn btn-success multi-input" type="submit" form="SearchBar" disabled={appState.data.submitting || formErrors}>
-                <i className="fa fa-search"/>Search
-              </button>
-              <button className="advanced-search"><i className="fa fa-times" /></button>
-            </div>
+              {generateField('policyNumber', 'Policy No Search', 'Policy Number', formErrors, 'policy-no-search')}
+            <button id="searchPolicySubmit" className="btn btn-success multi-input" type="submit" form="SearchBar" disabled={appState.data.submitting || formErrors}>
+              <i className="fa fa-search" />Search
+            </button>
+            <button type="button" className="advanced-search" onClick={() => togglePolicyAdvanceSearch(this.props)}><i className="fa fa-times" /></button>
+                                                 </div>
         }
         {
           fieldValues.searchType === 'policy' && policyResults && policyResults.policies && policyResults.policies.length > 0 && fieldValues.totalPages > 1 && <div className="pagination-wrapper">
-              <button onClick={() => changePage(this.props, false)} disabled={String(fieldValues.pageNumber) === '1'} tabIndex="0" className="btn multi-input" type="button" form="SearchBar">
-                <span className="fa fa-chevron-circle-left"/>
-              </button>
-              <div className="pagination-count">
-                <TextField size="2" styleName="pageNumber" name="pageNumber" label="Page" disabled="disabled"/>
-                <span className="pagination-operand">of</span>
-                <TextField size="2" styleName="totalPages" name="totalPages" label="" disabled="disabled"/>
-              </div>
-              <button onClick={() => changePage(this.props, true)} disabled={String(fieldValues.pageNumber) === String(fieldValues.totalPages)} tabIndex="0" className="btn multi-input" type="button" form="SearchBar">
-                <span className="fa fa-chevron-circle-right"/>
-              </button>
+            <button onClick={() => changePage(this.props, false)} disabled={String(fieldValues.pageNumber) === '1'} tabIndex="0" className="btn multi-input" type="button" form="SearchBar">
+              <span className="fa fa-chevron-circle-left" />
+            </button>
+            <div className="pagination-count">
+              <TextField size="2" styleName="pageNumber" name="pageNumber" label="Page" disabled="disabled" />
+              <span className="pagination-operand">of</span>
+              <TextField size="2" styleName="totalPages" name="totalPages" label="" disabled="disabled" />
             </div>
+            <button onClick={() => changePage(this.props, true)} disabled={String(fieldValues.pageNumber) === String(fieldValues.totalPages)} tabIndex="0" className="btn multi-input" type="button" form="SearchBar">
+              <span className="fa fa-chevron-circle-right" />
+            </button>
+                                                                                                                                                               </div>
         }
         {/* <!-- Should be available only in user admin  --> */}
         {
           fieldValues.searchType === 'user' && <div className="search-tools">
-              <div className="search-inputs fade-in">
+            <div className="search-inputs fade-in">
 
-                {generateField('user', 'Search for user by name', 'User Name', formErrors, 'user-name-search')}
+              {generateField('user', 'Search for user by name', 'User Name', formErrors, 'user-name-search')}
 
-                <button className="btn btn-success multi-input" type="submit" form="SearchBar" disabled={appState.data.submitting || formErrors}>
-                  <i className="fa fa-search"/>Search
-                </button>
-              </div>
-              <div className="filters fade-in">FILTERS HERE</div>
+              <button className="btn btn-success multi-input" type="submit" form="SearchBar" disabled={appState.data.submitting || formErrors}>
+                <i className="fa fa-search" />Search
+              </button>
             </div>
+            <div className="filters fade-in">FILTERS HERE</div>
+                                               </div>
         }
         {
           fieldValues.searchType === 'agency' && <div className="search-inputs fade-in">
@@ -453,10 +469,10 @@ export class SearchForm extends Component {
               {generateField('fein', 'FEIN No Search', 'FEIN Number', formErrors, 'agency-reg-lic-fein-search')}
               {generateField('phone', 'Phone No Search', 'Agency Phone Number', formErrors, 'agency-phone-search')}
 
-              <button className="btn btn-success multi-input" type="submit" form="SearchBar" disabled={appState.data.submitting || formErrors}>
-                <i className="fa fa-search"/>Search
-              </button>
-            </div>
+            <button className="btn btn-success multi-input" type="submit" form="SearchBar" disabled={appState.data.submitting || formErrors}>
+              <i className="fa fa-search" />Search
+            </button>
+                                                 </div>
         }
         {
           fieldValues.searchType === 'agent' && <div className="search-inputs fade-in">
@@ -467,26 +483,30 @@ export class SearchForm extends Component {
               {generateField('address', 'Agent Address Search', 'Agent Address', formErrors, 'agency-address-search')}
               {generateField('licNumber', 'Lic No Search', 'Lic Number', formErrors, 'agency-reg-lic-fein-search')}
 
-              <button className="btn btn-success multi-input" type="submit" form="SearchBar" disabled={appState.data.submitting || formErrors}>
-                <i className="fa fa-search"/>Search
-              </button>
-            </div>
+            <button className="btn btn-success multi-input" type="submit" form="SearchBar" disabled={appState.data.submitting || formErrors}>
+              <i className="fa fa-search" />Search
+            </button>
+                                                </div>
         }
         {/* <!-- End should be available only in user admin  --> */}
         {/* <!-- Advanced search for policy --> */}
         {
-          fieldValues.searchType === 'policy' && <div className="advanced-search fade-in">
+          fieldValues.searchType === 'policy' && search.policyAdvanceSearch && <div className="advanced-search fade-in">
               {generateField('agencyName', 'Agency Name', 'Agency Name', formErrors, 'agency-search')}
-              <div className="form-group effectiveDate">
-                <label htmlFor="effectiveDate">{getErrorToolTip(formErrors, 'effectiveDate')}
-                  {'Effective Date'}
-                </label>
-                <Field name="effectiveDate" className="" placeholder="MM/DD/YYYY" type="text" normalize={normalizeDate} component="input"/>
-              </div>
-              <div className="form-group quote-state">
-                <SelectField name="policyStatus" component="select" styleName="" label="Policy Status"
+            <div className="form-group effectiveDate">
+              <label htmlFor="effectiveDate">{getErrorToolTip(formErrors, 'effectiveDate')}
+                {'Effective Date'}
+              </label>
+              <Field name="effectiveDate" className="" placeholder="MM/DD/YYYY" type="text" normalize={normalizeDate} component="input" />
+            </div>
+            <div className="form-group quote-state">
+              <SelectField
+                name="policyStatus"
+                component="select"
+                styleName=""
+                label="Policy Status"
                   // answers={getAnswers('policyStatus', questions)}
-                  answers={[
+                answers={[
                     {
                       answer: '0',
                       label: 'Policy Issued'
@@ -509,9 +529,17 @@ export class SearchForm extends Component {
                       answer: '9',
                       label: 'Not In Force'
                     }
-                  ]}/>
-              </div>
-              <SelectField name="sortBy" component="select" styleName="search-context" label="Sort By" validations={['required']} onChange={() => resetPolicySearch(this.props)} answers={[
+                  ]}
+              />
+            </div>
+            <SelectField
+              name="sortBy"
+              component="select"
+              styleName="search-context"
+              label="Sort By"
+              validations={['required']}
+              onChange={() => resetPolicySearch(this.props)}
+              answers={[
                   {
                     answer: 'policyNumber',
                     label: 'Policy Number'
@@ -522,12 +550,13 @@ export class SearchForm extends Component {
                     answer: 'lastName',
                     label: 'Last Name'
                   }
-                ]}/>
-            </div>
+                ]}
+            />
+          </div>
         }
         {/* <!-- End advanced search for policy --> */}
       </div>
-    </Form>);
+            </Form>);
   }
 }
 
@@ -540,7 +569,7 @@ SearchBar.propTypes = {
   appState: PropTypes.shape({
     modelName: PropTypes.string,
     instanceId: PropTypes.string,
-    data: PropTypes.shape({submitting: PropTypes.boolean})
+    data: PropTypes.shape({ submitting: PropTypes.boolean })
   })
 };
 
@@ -574,6 +603,6 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-const searchBarForm = reduxForm({form: 'SearchBar', enableReinitialize: true, validate})(SearchBar);
+const searchBarForm = reduxForm({ form: 'SearchBar', enableReinitialize: true, validate })(SearchBar);
 
 export default connect(mapStateToProps, mapDispatchToProps)(searchBarForm);
