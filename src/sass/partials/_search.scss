@@ -1,16 +1,16 @@
 .search {
-  z-index: 10;
   position: relative;
+  z-index: 10;
   display: flex;
+  align-items: flex-start;
   //overflow: hidden;
   flex-direction: column;
   flex-grow: 1;
   flex-shrink: 1;
-  align-items: flex-start;
-  margin-top: 0;
-  margin-bottom: 0;
   width: 100%;
   height: auto;
+  margin-top: 0;
+  margin-bottom: 0;
 
   form {
     width: 100%;
@@ -18,13 +18,12 @@
     .search-input-wrapper {
       display: flex;
       align-items: flex-end;
-      flex-wrap: wrap;
       flex-grow: 1;
+      flex-wrap: wrap;
       min-height: 4.75rem;
       padding: $padding ($padding*2);
       border-bottom: 2px solid $white;
       background-color: $warm-gray-08;
-
 
       .search-inputs {
         display: flex;
@@ -163,42 +162,58 @@
         }
 
         &.advanced-search-btn {
-            border-radius: 50%;
-            margin: 0 0 0 $padding;
-            flex-grow: 0;
-            flex-shrink: 0;
-            width: auto;
+          flex-grow: 0;
+          flex-shrink: 0;
+          width: auto;
+          margin: 0 0 0 $padding;
+          border-radius: 50%;
+          @include button-variant($white, $bright-blue, $bright-blue);
+
+          &:hover {
+              @include button-variant($white, $bright-blue-darken-02, $bright-blue-darken-02);
+          }
         }
       }
 
       .advanced-search {
-          position: absolute;
-          top: 4.5rem;
-          left: 0;
-          background-color: $warm-gray-08;
-          display: flex;
-          width: 100%;
-          padding: $padding ($padding*15.5) $padding ($padding*2);
+        position: absolute;
+        top: 4.5rem;
+        left: 0;
+        display: flex;
+        width: 100%;
+        padding: $padding 11rem $padding ($padding*2);
+        background-color: $warm-gray-08;
 
-          input {
-              flex: 1;
-              height: 2.375rem;
-              padding: $padding;
-              line-height: 1.75;
-            -ms-flex-preferred-size: 1.75rem;
+        input {
+          flex: 1;
+          -ms-flex-preferred-size: 1.75rem;
+          flex-grow: 0;
+          flex-shrink: 0;
+          height: 2.375rem;
+          padding: $padding;
+          line-height: 1.75;
+        }
+
+        .form-group {
+          &.agency-search {
+            margin-right: $padding;
+          }
+
+          &.effectiveDate {
+            width: 12rem;
+            margin-right: $padding;
+          }
+
+          &.sortBy {
             flex-grow: 0;
             flex-shrink: 0;
-          }
+            width: auto;
 
-          .form-group {
-              &.agency-search {
-                  margin-right: $padding;
-              }
-              &.effectiveDate {
-                  width: 12rem;
-                  margin-right: $padding;
-              }
+            select {
+              height: 2.375rem;
+            }
           }
+        }
       }
     }
   }
