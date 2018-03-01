@@ -407,11 +407,11 @@ export class SearchForm extends Component {
               {generateField('firstName', 'First Name Search', 'First Name', formErrors, 'first-name-search')}
               {generateField('lastName', 'Last Name Search', 'Last Name', formErrors, 'last-name-search')}
               {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
-              {generateField('policyNumber', 'Policy No Search', 'Policy Number', formErrors, 'policy-no-search')}        
+              {generateField('policyNumber', 'Policy No Search', 'Policy Number', formErrors, 'policy-no-search')}
               <button id="searchPolicySubmit" className="btn btn-success multi-input" type="submit" form="SearchBar" disabled={appState.data.submitting || formErrors}>
                 <i className="fa fa-search"/>Search
               </button>
-              <button className="advanced-search"><i className="fa fa-times" /></button>
+              <button className="advanced-search-btn btn btn-sm btn-secondary btn-icon"><i className="fa fa-times" /></button>
             </div>
         }
         {

@@ -162,10 +162,9 @@
           border-bottom-left-radius: 0.25rem;
         }
 
-        &.advanced-search {
-            border-radius: $border-radius;
-            position: initial;
-            margin: 0 $padding 0 0;
+        &.advanced-search-btn {
+            border-radius: 50%;
+            margin: 0 0 0 $padding;
             flex-grow: 0;
             flex-shrink: 0;
             width: auto;
