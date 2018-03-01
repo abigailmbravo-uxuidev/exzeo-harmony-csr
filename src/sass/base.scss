@@ -28,6 +28,7 @@
 @import "partials/_error";
 @import "partials/_dropzone";
 @import "partials/_user-admin";
+@import "partials/_pagination";
 @import "https://fonts.googleapis.com/css?family=Roboto:100,300,500"; //base
 //links
 /*------------------------------------------------------------------------------------*/
@@ -1525,6 +1526,10 @@ ul.list-cards {
                 &.font-size-base {
                   font-size: $font-size-base;
                 }
+                
+                &.policy-status {
+                    line-height: 1.02;
+                }
               }
             }
           }
@@ -1636,10 +1641,6 @@ ul.list-cards {
             }
           }
         }
-
-        &.policyStatus {}
-
-        &.quoteStatus {}
 
         &.quoteEffectiveDate {
           flex-grow: 1;

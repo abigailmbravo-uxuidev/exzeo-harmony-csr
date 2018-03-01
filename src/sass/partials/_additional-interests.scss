@@ -73,6 +73,13 @@
         margin-right: $padding;
       }
 
+      .order {
+        flex-basis: 11rem;
+        flex-grow: 0;
+        flex-shrink: 0;
+        margin-left: $padding;
+      }
+
       .reference-number {}
     }
   }

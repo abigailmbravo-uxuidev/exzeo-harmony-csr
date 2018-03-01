@@ -3,16 +3,15 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { DetailHeader, showEffectiveDatePopUp } from './DetailHeader';
-import { getLatestPolicy } from '../../actions/serviceActions';
+import ConnectedApp, { ReinstatePolicyPopup, handleInitialize } from './ReinstatePolicyPopup';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 
-describe('Testing DetailHeader component', () => {
+describe('Testing ReinstatePolicyPopup component', () => {
   it('should test connected app', () => {
     const initialState = {
-      service: {
+      authState: {
       },
       cg: {
         bb: {
@@ -23,29 +22,36 @@ describe('Testing DetailHeader component', () => {
           }
         }
       },
+      service: {
+        latestPolicy: {}
+      },
       appState: {
+        data: {
+        },
         modelName: 'bb'
       }
     };
     const store = mockStore(initialState);
     const props = {
-      fieldQuestions: [],
+      handleSubmit() {},
+      billingOptions: initialState.service.billingOptions,
+      fieldValues: {},
       quoteData: {},
       dispatch: store.dispatch,
       appState: {
         data: {
           submitting: false
         }
-      },
-      ...propTypes
+      }
     };
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
-    expect(wrapper);
+    expect(wrapper.instance().props.fieldValues).toEqual({});
+    handleInitialize(initialState);
   });
 
-  it('should test connected app', () => {
+  it('should test ReinstatePolicyPopup', () => {
     const initialState = {
-      service: {
+      authState: {
       },
       cg: {
         bb: {
@@ -56,51 +62,34 @@ describe('Testing DetailHeader component', () => {
           }
         }
       },
+      service: {
+        latestPolicy: {}
+      },
       appState: {
+        data: {
+        },
         modelName: 'bb'
       }
     };
     const store = mockStore(initialState);
     const props = {
-      policyState: {},
-      policy: {
-        policyID: '234',
-        product: 'HO3'
+      latestPolicy: {
+        policyNumber: '123'
       },
-      actions: {
-        appStateActions: {
-          setAppState() {}
-        },
-        policyStateActions: {
-          updatePolicy() {}
-        },
-        serviceActions: {
-          getEffectiveDateChangeReasons() {},
-          getLatestPolicy() {},
-          getTransactionHistory() {}
-        }
-      },
-      fieldQuestions: [],
+      handleSubmit() {},
+      billingOptions: initialState.service.billingOptions,
+      fieldValues: {},
       quoteData: {},
       dispatch: store.dispatch,
       appState: {
         data: {
           submitting: false
         }
-      },
-      ...propTypes
+      }
     };
-    const wrapper = shallow(<DetailHeader store={store} {...props} />);
-    expect(wrapper);
-    wrapper.instance().componentDidMount();
-    wrapper.instance().componentWillReceiveProps({ 
-      policy: {
-        policyID: '234',
-        product: 'HO3',
-        cancelDate: '2018-04-04'
-      },
-      policyState: { update: true, policyNumber: '123'} , ...props });
-      wrapper.find('button#effective-date').simulate('click');
-
+    const wrapper = shallow(<ReinstatePolicyPopup store={store} {...props} />);
+    expect(wrapper)
+    wrapper.find('.btn-primary').simulate('click');
+    wrapper.find('.btn-secondary').simulate('click');
   });
 });

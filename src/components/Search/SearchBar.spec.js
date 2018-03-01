@@ -3,14 +3,16 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { handleSearchBarSubmit, validate } from './SearchBar';
-
+import ConnectedApp, { SearchBar, SearchForm, handleSearchBarSubmit, validate, handlePolicySearchSubmit } from './SearchBar';
+import { clearPolicyResults } from '../../actions/serviceActions';
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 
 describe('Testing SearchBar component', () => {
   it('should test connected app', () => {
     const initialState = {
+      service:{
+      },
       cg: {
         bb: {
           data: {
@@ -95,6 +97,9 @@ describe('Testing SearchBar component', () => {
       fieldQuestions: [],
       dispatch: store.dispatch,
       actions: {
+        searchActions:{
+          setSearch(){}
+        },
         appStateActions: {
           setAppState() { }
         },
@@ -165,5 +170,93 @@ describe('Testing SearchBar component', () => {
     expect(errors.policyNumber).toEqual('Only numbers and dashes allowed');
     expect(errors.zip).toEqual('Invalid characters');
     expect(errors.address).toEqual('Invalid characters');
+  });
+
+  it('should test policy', () => {
+    const initialState = {
+      service: {
+        policyResults: []
+      },
+      appState: {
+        data: {
+          showAdditionalInterestModal: false
+        },
+        modelName: 'bb'
+      }
+    };
+    const store = mockStore(initialState);
+
+    const props = {
+      reset(){},
+      search: {
+        hasSearched:true
+      },
+      handleSubmit(){}, 
+      tasks: {
+        test: {},
+        ...initialState.cg
+      },
+      fieldValues: {
+        searchType: 'policy'
+      },
+      fieldQuestions: [],
+      dispatch: store.dispatch,
+      actions: {
+        serviceActions: {
+          clearAgencies(){},
+          clearAgent(){},
+          clearPolicyResults(){},
+          searchPolicy(){ return Promise.resolve(() => {}); }
+        },
+        searchActions:{
+          setSearch(){}
+        },
+        appStateActions: {
+          setAppState() { }
+        },
+        errorActions: {
+          clearAppError() { }
+        },
+        cgActions: {
+          clearSearchResults(){},
+          moveToTaskAndExecuteComplete() { return Promise.resolve(() => {}); }
+        }
+      },
+      appState: {
+        modelName: 'test',
+        data: {
+          submitting: false
+        }
+      },
+      policyResults: []
+    };
+    const wrapper2 = shallow(<SearchForm {...props} store={store} />)
+
+    wrapper2.instance().componentWillReceiveProps({ ...props, policyResults: [{
+      AdditionalInterests: [{
+        id: '049a50b23c21c2ae3',
+        type: 'Mortgagee',
+        order: 1,
+        name1: 'BB&T Home Mortgage',
+        referenceNumber: '1234567',
+        mailingAddress: {
+          address1: '5115 Garden Vale Ave',
+          city: 'Tampa',
+          state: 'FL',
+          county: 'Hillsborough',
+          zip: '33624',
+          country: {
+            code: 'USA',
+            displayText: 'United States of America'
+          }
+        },
+        active: true
+      }]
+    }] });
+
+    wrapper2.find('#searchType').simulate('change', { target: { value: 'quote' } })
+    wrapper2.find('#searchType').simulate('change', { target: { value: 'policy' } })
+    wrapper2.find('#searchPolicySubmit').simulate('click');
+    handlePolicySearchSubmit({}, props.dispatch, props);
   });
 });

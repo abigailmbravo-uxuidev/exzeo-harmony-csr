@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { reduxForm, Form, change } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import _ from 'lodash';
@@ -15,19 +15,19 @@ import HiddenField from '../Form/inputs/HiddenField';
 import * as serviceActions from '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as policyStateActions from '../../actions/policyStateActions';
 import Footer from '../Common/Footer';
+import Loader from '../Common/Loader';
 
 export const handleInitialize = (state) => {
-  const values = {};
-
   const summaryLedger = state.service.getSummaryLedger || {};
-
-  values.equityDate = summaryLedger.equityDate ? moment.utc(summaryLedger.equityDate).format('MM/DD/YYYY') : '';
-
-  return values;
+  return ({
+    equityDate: summaryLedger.equityDate ? moment.utc(summaryLedger.equityDate).format('MM/DD/YYYY') : '',
+    effectiveDate: moment.utc().format('YYYY-MM-DD')
+  });
 };
 
-const amountFormatter = cell => cell.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+const amountFormatter = cell => cell.$numberDecimal ? Number(cell.$numberDecimal).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '';
 const dateFormatter = cell => `${cell.substring(0, 10)}`;
 
 export const Payments = ({ payments }) => {
@@ -67,57 +67,83 @@ export const Claims = ({ claims }) => {
 };
 
 export const handleFormSubmit = (data, dispatch, props) => {
-  alert('Policy Canceled');
+  const { policy, summaryLedger } = props;
+
+  const submitData = {
+    policyID: policy.policyID,
+    policyNumber: policy.policyNumber,
+    cancelDate: moment.tz(moment.utc(data.effectiveDate).format('YYYY-MM-DD'), props.zipCodeSettings.timezone).utc().format(),
+    cancelReason: data.cancelReason,
+    transactionType: `Pending ${data.cancelType}`,
+    equityDate: moment.tz(moment.utc(data.equityDate).format('YYYY-MM-DD'), props.zipCodeSettings.timezone).utc().format(),
+    billingStatus: summaryLedger.status.code
+  };
+
+  const workflowId = props.appState.instanceId;
+  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
+
+
+  props.actions.cgActions.startWorkflow('cancelPolicyModelUI', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID }).then((result) => {
+    const steps = [{
+      name: 'cancelPolicySubmit',
+      data: submitData
+    }];
+    const startResult = result.payload ? result.payload[0].workflowData.cancelPolicyModelUI.data : {};
+
+    props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, isSubmitting: true });
+
+    props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
+      props.reset('CancelPolicy');
+      props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, isSubmitting: false });
+      props.actions.policyStateActions.updatePolicy(true, policy.policyNumber);
+    });
+  });
 };
 
 export const resetCancelReasons = (props) => {
   props.dispatch(change('CancelPolicy', 'cancelReason', ''));
 };
 
-const cancelOptions = [
-  {
-    cancelType: 'Voluntary Cancellation',
-    cancelReason: ['Continuous Wind Coverage - 3 Yrs', 'Duplicate - Similar Coverage', 'Insured Deceased', 'Mortgage Satisfied', 'Other', 'Property Demolished', 'Property Foreclosed', 'Reason Not Provided', 'Rewritten - Similar Coverage', 'Sold']
-  },
-  {
-    cancelType: 'Underwriting Cancellation',
-    cancelReason: ['Claims Frequency', 'Claims Severity', 'Condition of Roof', 'Empty Pool', 'Existing/Unrepaired Damage', 'Failure to Comply with Underwriting Request', 'Ineligible Breed of Dog', 'Ineligible Ownership', 'Ineligible Protection Class', 'Ineligible Risk', 'Insured Deceased', 'No Insurable Interest', 'Policy Limits Paid', 'Property in Disrepair', 'Risk Management', 'Slide/Diving Board', 'Tenant Occupied', 'Trampoline', 'Unsecured Pool', 'Vacant']
-  },
-  {
-    cancelType: 'Underwriting Non-Renewal',
-    cancelReason: ['Claims Frequency', 'Claims Severity', 'Condition of Roof', 'Empty Pool', 'Existing/Unrepaired Damage', 'Failure to Comply with Underwriting Request', 'Ineligible Breed of Dog', 'Ineligible Ownership', 'Ineligible Protection Class', 'Ineligible Risk', 'Insured Deceased', 'No Insurable Interest', 'Policy Limits Paid', 'Property in Disrepair', 'Risk Management', 'Slide/Diving Board', 'Tenant Occupied', 'Trampoline', 'Unsecured Pool', 'Vacant']
-  }
-];
-
 export class CancelPolicy extends React.Component {
-  componentWillReceiveProps = (nextProps) => {
-    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
-      nextProps.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
-      nextProps.actions.serviceActions.getPaymentHistory(nextProps.policy.policyNumber);
+  componentDidMount(){
+    if (this.props.appState && this.props.appState.instanceId) {
+      const workflowId = this.props.appState.instanceId;
+      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, workflowId, { ...this.props.appState.data, isSubmitting: false });
+    }  
+  }
+  componentWillReceiveProps(nextProps) {
+    const { actions, policy, summaryLedger } = nextProps;
+    if (policy && policy.policyNumber) {
+      actions.serviceActions.getSummaryLedger(policy.policyNumber);
+      serviceActions.getPaymentHistory(policy.policyNumber);
+      actions.serviceActions.getCancelOptions();
 
       const paymentOptions = {
-        effectiveDate: nextProps.policy.effectiveDate,
-        policyHolders: nextProps.policy.policyHolders,
-        additionalInterests: nextProps.policy.additionalInterests,
-        currentPremium: nextProps.summaryLedger.currentPremium,
-        fullyEarnedFees: nextProps.policy.rating.worksheet.fees.empTrustFee + nextProps.policy.rating.worksheet.fees.mgaPolicyFee
+        effectiveDate: policy.effectiveDate,
+        policyHolders: policy.policyHolders,
+        additionalInterests: policy.additionalInterests,
+        currentPremium: summaryLedger.currentPremium,
+        fullyEarnedFees: policy.rating.worksheet.fees.empTrustFee + policy.rating.worksheet.fees.mgaPolicyFee
       };
-      nextProps.actions.serviceActions.getBillingOptionsForPolicy(paymentOptions);
+
+      actions.serviceActions.getBillingOptionsForPolicy(paymentOptions);
     }
   }
 
   render() {
-    const { handleSubmit, fieldValues } = this.props;
+    const { handleSubmit, fieldValues, cancelOptions, pristine } = this.props;
 
     const cancelGroup = _.map(cancelOptions, option => ({ answer: option.cancelType }));
     return (
       <PolicyConnect>
-        <div className="route-content">
-          <div className="scroll">
-            <div className="form-group survey-wrapper cancel-policy" role="group">
-              <section>
-                <h3>Cancel Policy</h3>
-                <Form id="Cancellation" className="cancel-type" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+        {this.props.appState.data.isSubmitting && <Loader />}
+        <Form id="CancelPolicy" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+          <div className="route-content">
+            <div className="scroll">
+              <div className="form-group survey-wrapper cancel-policy" role="group">
+                <section>
+                  <h3>Cancel Policy</h3>
+
                   <div className="flex-parent">
                     <div className="flex-child">
                       <RadioField
@@ -126,7 +152,7 @@ export class CancelPolicy extends React.Component {
                         answers={cancelGroup}
                       />
                     </div>
-                    <div className="flex-child">
+                    <div className="flex-child date">
                       <DateField validations={['required']} label={'Effective Date'} name={'effectiveDate'} />
                     </div>
                   </div>
@@ -144,43 +170,43 @@ export class CancelPolicy extends React.Component {
                       }
                     </div>
                   </div>
-                </Form>
-              </section>
-              {/* PAYMENTS SECTION*/}
-              <section>
-                <h3>Payments</h3>
-                <div className="form-group flex-parent billing">
-                  <div className="flex-child">
-                    <label>Bill To</label>
-                    <div>{_.get(_.find(_.get(this.props.paymentOptions, 'options'), option => option.billToId === _.get(this.props.summaryLedger, 'billToId')), 'displayText')}</div>
+
+                </section>
+                {/* PAYMENTS SECTION*/}
+                <section>
+                  <h3>Payments</h3>
+                  <div className="form-group flex-parent billing">
+                    <div className="flex-child">
+                      <label>Bill To</label>
+                      <div>{_.get(_.find(_.get(this.props.paymentOptions, 'options'), option => option.billToId === _.get(this.props.summaryLedger, 'billToId')), 'displayText')}</div>
+                    </div>
+                    <div className="flex-child">
+                      <label>Bill Plan</label>
+                      <div>{_.get(this.props.summaryLedger, 'billPlan')}</div>
+                    </div>
+                    <div className="flex-child date">
+                      <TextField disabled label="Equity Date" name={'equityDate'} />
+                    </div>
                   </div>
-                  <div className="flex-child">
-                    <label>Bill Plan</label>
-                    <div>{_.get(this.props.summaryLedger, 'billPlan')}</div>
-                  </div>
-                  <div className="flex-child">
-                    <label>Equity Date</label>
-                    <TextField label="equityDate" disabled name={'equityDate'} />
-                  </div>
-                </div>
-                <Payments payments={this.props.paymentHistory || []} />
-              </section>
-              {/* CLAIMS SECTION*/}
-              <section>
-                <h3>Claims</h3>
-                <Claims />
-              </section>
+                  <Payments payments={this.props.paymentHistory || []} />
+                </section>
+                {/* CLAIMS SECTION*/}
+                <section>
+                  <h3>Claims</h3>
+                  <Claims />
+                </section>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="basic-footer btn-footer">
-          <Footer />
-          {/* TODO: RESET button should reset form / CANCEL POLICY button should be disabled if form is clean/untouched*/}
-          <div className="btn-wrapper">
-            <button tabIndex={'0'} aria-label="reset-btn form-cancel" type="button" className="btn btn-secondary" onClick={() => this.props.reset('CancelPolicy')}>Reset</button>
-            <button tabIndex={'0'} aria-label="reset-btn form-cancel" type="submit" className="btn btn-primary">Cancel Policy</button>
+          <div className="basic-footer btn-footer">
+            <Footer />
+            {/* TODO: RESET button should reset form / CANCEL POLICY button should be disabled if form is clean/untouched*/}
+            <div className="btn-wrapper">
+              <button tabIndex={'0'} disabled={pristine} aria-label="reset-btn form-cancel" type="button" className="btn btn-secondary" onClick={() => this.props.reset('CancelPolicy')}>Reset</button>
+              <button tabIndex={'0'} disabled={pristine} aria-label="reset-btn form-cancel" type="submit" className="btn btn-primary">Cancel Policy</button>
+            </div>
           </div>
-        </div>
+        </Form>
       </PolicyConnect>
     );
   }
@@ -191,6 +217,7 @@ CancelPolicy.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  userProfile: state.authState.userProfile,
   tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'CancelPolicy.values', {}),
@@ -198,11 +225,14 @@ const mapStateToProps = state => ({
   policy: state.service.latestPolicy || {},
   paymentHistory: state.service.paymentHistory,
   summaryLedger: state.service.getSummaryLedger,
-  paymentOptions: state.service.billingOptions
+  paymentOptions: state.service.billingOptions,
+  cancelOptions: state.service.cancelOptions || [],
+  zipCodeSettings: state.service.getZipcodeSettings
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    policyStateActions: bindActionCreators(policyStateActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)

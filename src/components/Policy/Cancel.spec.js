@@ -1,9 +1,8 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
-import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { CancelPolicy, handleInitialize, Payments, Claims, handleFormSubmit, resetCancelReasons } from './Cancel';
+import { CancelPolicy, handleInitialize, Payments, Claims, handleFormSubmit, resetCancelReasons } from './Cancel';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -44,7 +43,20 @@ describe('Testing Cancel component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      zipCodeSettings : { timezone: 'America/New_York'},
+      reset() {},
+      userProfile: {},
       actions: {
+        cgActions: {
+          batchCompleteTask() { return Promise.resolve(); },
+          startWorkflow() { return Promise.resolve({ payload: [{ workflowData: { cancelPolicyModelUI: { data: {} }, cancelPolicy: { data: {} } } }] }); }
+        },
+        appStateActions: {
+          setAppState() {}
+        },
+        policyStateActions: {
+          updatePolicy() {}
+        },
         serviceActions: {
           getBillingOptionsForPolicy() { return Promise.resolve(); },
           getBillingOptions() { return Promise.resolve(); },
@@ -57,7 +69,8 @@ describe('Testing Cancel component', () => {
       fieldValues: {
 
       },
-      handleSubmit: fn => fn,
+      summaryLedger: { status: { code: 0 } },
+      handleSubmit() {},
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,
@@ -71,16 +84,22 @@ describe('Testing Cancel component', () => {
     expect(wrapper);
 
     wrapper.instance().componentWillReceiveProps({
+      zipCodeSettings : { timezone: 'America/New_York'},
       summaryLedger: {},
       actions: {
+        policyStateActions: {
+          updatePolicy() {}
+        },
         serviceActions: {
+          getCancelOptions() {},
           getBillingOptionsForPolicy() { return Promise.resolve(); },
           getPaymentHistory() { return Promise.resolve(); },
           getBillingOptions() { return Promise.resolve(); },
-          getSummaryLedger() { return Promise.resolve(); }
+          getSummaryLedger() { return Promise.resolve(); },
+          getZipcodeSettings() { }
         }
       },
-      policy: { policyNumber: '1234', rating: { worksheet: { fees: {} } } } });
+      policy: { property: { physicalAddress: { zip: 33607 }}, policyNumber: '1234', rating: { worksheet: { fees: {} } } } });
 
     handleInitialize(initialState);
 

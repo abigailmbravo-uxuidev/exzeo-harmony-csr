@@ -9,6 +9,7 @@ import service from './serviceReducer';
 import policy from './policyStateReducer';
 import questions from './questionsReducer';
 import quoteState from './quoteStateReducer';
+import search from './searchReducer';
 
 const rootReducer = combineReducers({
   form: formReducer,
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
   appState,
   questions,
   error,
-  quoteState
+  quoteState,
+  search
 });
 
 export default rootReducer;
