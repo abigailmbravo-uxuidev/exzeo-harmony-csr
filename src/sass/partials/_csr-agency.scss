@@ -98,14 +98,15 @@
                 }
 
                 .contact-address {
-                    .additional-data {
-                        margin-left: $padding;
-                        font-size: $font-size-sm;
+                  .additional-data {
+                    margin-left: $padding;
+                    font-size: $font-size-sm;
 
-                        label {
-                            font-size: $font-size-xs;
-                        }
+                    label {
+                      margin-bottom: 0;
+                      font-size: $font-size-xs;
                     }
+                  }
                 }
 
                 .additional-contacts {
@@ -126,7 +127,7 @@
 
                       &:last-child {
                         padding-bottom: 0;
-                    }
+                      }
 
                       p {
                         display: flex;
@@ -278,8 +279,6 @@
                       .agency-display-name {
                         font-weight: $font-weight-bold;
                       }
-
-                      .agency-legal-name {}
                     }
                   }
 
@@ -670,23 +669,22 @@
     }
   }
 }
+
 //search cards
-.user-list {
-    .card {
-        &.contact {
-            .contact-details {
-                .card-name {
-                    .contact-address {
-                        .additional-data {
-                            margin-left: $padding;
-                            font-size: $font-size-sm;
-                            label {
-                                font-size: $font-size-xs;
-                            }
-                        }
-                    }
-                }
+.card {
+  &.contact {
+    .contact-details {
+        .contact-address {
+          .additional-data {
+            margin-left: $padding;
+            font-size: $font-size-sm;
+
+            label {
+              margin-bottom: 0;
+              font-size: $font-size-xs;
             }
+          }
         }
     }
+  }
 }
