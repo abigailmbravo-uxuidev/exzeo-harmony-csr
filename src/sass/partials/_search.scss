@@ -2,28 +2,44 @@
   position: relative;
   z-index: 10;
   display: flex;
-  align-items: flex-start;
   overflow: hidden;
+  align-items: flex-start;
   flex-direction: column;
   flex-grow: 1;
   flex-shrink: 1;
-  height: 4.75rem;
   width: 100%;
-  height: auto;
+  height: 4.75rem;
   margin-top: 0;
   margin-bottom: 0;
   @include transition(all 0.2s ease-in-out);
 
+  .advanced-search {
+    overflow: hidden;
+    height: 0;
+    @include transition(all 0.2s ease-in-out);
+  }
+
+  > form {
+    height: 4.5rem;
+    background-color: $warm-gray-08;
+    @include transition(all 0.2s ease-in-out);
+  }
+
   &.policy-advanced {
+    height: 9rem;
+
+    form {
       height: 9rem;
 
+      .search-input-wrapper {
+        height: 9rem;
+      }
+
       .advanced-search {
-        position: absolute;
-        top: 4.5rem;
-        left: 0;
         display: flex;
         width: 100%;
-        padding: $padding 11rem $padding ($padding*2);
+        height: 4.5rem;
+        padding: $padding 10rem $padding 0;
         background-color: $warm-gray-08;
 
         input {
@@ -57,20 +73,23 @@
           }
         }
       }
+    }
   }
 
   form {
     width: 100%;
+    @include transition(all 0.2s ease-in-out);
 
     .search-input-wrapper {
       display: flex;
-      align-items: flex-end;
+      align-items: flex-start;
       flex-grow: 1;
       flex-wrap: wrap;
-      min-height: 4.75rem;
+      height: 4.75rem;
       padding: $padding ($padding*2);
       border-bottom: 2px solid $white;
       background-color: $warm-gray-08;
+      @include transition(all 0.2s ease-in-out);
 
       .search-inputs {
         display: flex;
@@ -209,17 +228,20 @@
         }
 
         &.advanced-search-btn {
+          display: flex;
+          align-items: center;
           flex-grow: 0;
           flex-shrink: 0;
+          justify-content: center;
           width: 2rem;
           height: 2rem;
           margin: 0 0 0 $padding;
           padding: 0;
           border-radius: 50%;
-          @include button-variant($white, $bright-blue, $bright-blue);
+          @include button-variant($white, $bright-blue-lighten-01, $bright-blue-lighten-01);
 
           &:hover {
-              @include button-variant($white, $bright-blue-darken-02, $bright-blue-darken-02);
+            @include button-variant($white, $bright-blue-darken-01, $bright-blue-darken-01);
           }
         }
       }

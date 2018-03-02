@@ -427,7 +427,7 @@ export class SearchForm extends Component {
             <button id="searchPolicySubmit" className="btn btn-success multi-input" type="submit" form="SearchBar" disabled={appState.data.submitting || formErrors}>
               <i className="fa fa-search" />Search
             </button>
-            <button type="button" className="advanced-search-btn btn-sm btn-icon" onClick={() => togglePolicyAdvanceSearch(this.props)}><i className="fa fa-chevron-down" /></button>
+            <button type="button" className="advanced-search-btn btn-sm btn-icon" onClick={() => togglePolicyAdvanceSearch(this.props)}><i className={this.props.search.policyAdvanceSearch ? "fa fa-chevron-up" : "fa fa-chevron-down"} /></button>
           </div>
         }
         {
@@ -537,7 +537,6 @@ export class SearchForm extends Component {
               component="select"
               label="Sort By"
               validations={['required']}
-              onChange={() => resetPolicySearch(this.props)}
               answers={[
                   {
                     answer: 'policyNumber',

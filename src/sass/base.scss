@@ -17,7 +17,6 @@
 @import "partials/_type";
 /*Grid styles*/
 @import "partials/_grid";
-
 @import "partials/_tabs";
 @import "partials/_workflow";
 @import "partials/_notes-files-add";
@@ -277,6 +276,7 @@ html {
 /*------------------------------------------------------------------------------------*/
 main[role="document"] {
   position: relative;
+  z-index: 1;
   display: flex;
   overflow-y: hidden;
   align-items: flex-start;
@@ -287,12 +287,11 @@ main[role="document"] {
   height: calc(100vh - 8.125rem);
   min-height: calc(100vh - 8.125rem);
   background: $white;
-  z-index: 1;
   @include transition(all 0.2s ease-in-out);
 
   &.policy-advanced {
-      height: calc(100vh - 12.5rem);
-      min-height: calc(100vh - 12.5rem);
+    height: calc(100vh - 12.375rem);
+    min-height: calc(100vh - 12.375rem);
   }
 
   .content-wrapper {
@@ -585,7 +584,11 @@ ul.list-cards {
         flex-wrap: wrap;
         padding-left: $padding;
 
-        h5, h4, h3, h2, h1 {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
           display: block;
           overflow: hidden;
           flex-basis: 12rem;
@@ -1536,7 +1539,7 @@ ul.list-cards {
                 }
 
                 &.policy-status {
-                    line-height: 1.02;
+                  line-height: 1.02;
                 }
               }
             }
