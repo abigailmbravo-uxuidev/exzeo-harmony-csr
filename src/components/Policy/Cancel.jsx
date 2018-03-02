@@ -129,9 +129,10 @@ export class CancelPolicy extends React.Component {
 
       actions.serviceActions.getBillingOptionsForPolicy(paymentOptions);
     }
-    if ((nextProps.fieldValues.cancelType === 'Underwriting Cancellation' || nextProps.fieldValues.cancelType === 'Underwriting Non-Renewal') && moment.utc() <= moment.utc(policy.issueDate).add(90, 'days')) {
+    const isUnderwriting = (nextProps.fieldValues.cancelType === 'Underwriting Cancellation' || nextProps.fieldValues.cancelType === 'Underwriting Non-Renewal');
+    if (isUnderwriting && moment.utc() <= moment.utc(policy.issueDate).add(90, 'days')) {
       nextProps.dispatch(change('CancelPolicy', 'effectiveDate', moment.utc(summaryLedger.effectiveDate).add(20, 'days').format('YYYY-MM-DD')));
-    } else if ((nextProps.fieldValues.cancelType === 'Underwriting Cancellation' || nextProps.fieldValues.cancelType === 'Underwriting Non-Renewal') && moment.utc() > moment.utc(policy.issueDate).add(90, 'days')) {
+    } else if (isUnderwriting && moment.utc() > moment.utc(policy.issueDate).add(90, 'days')) {
       nextProps.dispatch(change('CancelPolicy', 'effectiveDate', moment.utc(summaryLedger.effectiveDate).add(120, 'days').format('YYYY-MM-DD')));
     } else if (nextProps.fieldValues.cancelType === 'Voluntary Cancellation') {
       const latestDate = moment.utc() > moment.utc(summaryLedger.effectiveDate) ? moment.utc().format('YYYY-MM-DD') : moment.utc(summaryLedger.effectiveDate).format('YYYY-MM-DD');
