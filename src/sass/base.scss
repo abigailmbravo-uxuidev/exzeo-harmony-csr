@@ -288,6 +288,12 @@ main[role="document"] {
   min-height: calc(100vh - 8.125rem);
   background: $white;
   z-index: 1;
+  @include transition(all 0.2s ease-in-out);
+
+  &.policy-advanced {
+      height: calc(100vh - 12.5rem);
+      min-height: calc(100vh - 12.5rem);
+  }
 
   .content-wrapper {
     display: flex;
