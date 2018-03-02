@@ -13,7 +13,7 @@ const props = {
 describe('Testing Downloader component', () => {
   it('should test downloader', () => {
     const wrapper = shallow(<Downloader {...props} />);
-    expect(wrapper.props().children).toEqual('testfile');
+    expect(wrapper.props().children[0]).toEqual(<i className="fa" title="testfile" />);
   });
 
   it('should test file download', () => {

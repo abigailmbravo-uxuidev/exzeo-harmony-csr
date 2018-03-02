@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 import { reduxForm, propTypes } from 'redux-form';
 import * as appStateActions from '../../actions/appStateActions';
 import * as cgActions from '../../actions/cgActions';
-import NewNoteFileUploader from '../Common/NewNoteFileUploader';
+import NoteUploader from '../Common/NoteUploader';
 
 // Example of a possible schema
 /**
@@ -100,7 +100,7 @@ export const SideNav = (props) => {
         </li>
       </ul>
       { props.appState.data.showNewNoteFileUploader === true &&
-        <NewNoteFileUploader noteType="Policy Note" documentId={documentId} closeButtonHandler={() => closeNewNoteFileUploader(props)} />
+        <NoteUploader noteType="Policy Note" documentId={documentId} closeButtonHandler={() => closeNewNoteFileUploader(props)} />
       }
     </nav>);
 };

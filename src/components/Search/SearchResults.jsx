@@ -22,12 +22,8 @@ export const onKeypressPolicy = (event, policy, props) => {
 
 export const SearchResults = (props) => {
   const model = props.tasks[props.appState.modelName] || {};
-  const previousTask = model.data && model.data.previousTask
-    ? model.data.previousTask
-    : {};
-  const activeTask = model.data && model.data.activeTask
-    ? model.data.activeTask
-    : {};
+  const previousTask = model.data && model.data.previousTask ? model.data.previousTask : {};
+  const activeTask = model.data && model.data.activeTask ? model.data.activeTask : {};
 
   const searchData = JSON.parse(localStorage.getItem('lastSearchData'));
   if (props.search && props.search.searchType === 'policy') {
@@ -197,16 +193,13 @@ export const SearchResults = (props) => {
         agencyResults && agencyResults.map((agency, index) => (<div className="card-wrapper" key={index}>
           <span className="fa fa-chevron-circle-right" id={`agency-code-${agency.agencyCode}`} onClick={() => props.handleNewTab(agency, props)} tabIndex="-1" />
           <div className="agency contact card">
-
             <div className="contact-title">
               <i className="fa fa-address-book" />
               <label>Agency</label>
             </div>
             <div className="contact-details">
               <div className="card-name">
-
                 <h4 className="agency"><span className="agency-code">{agency.agencyCode}</span> | <span className="agency-display-name">{agency.displayName}</span> | <span className="agency-legal-name">{agency.legalName}</span> | <span className="agency-license">{agency.licenseNumber}</span></h4>
-
                 <div className="contact-address">
                   {agency.physicalAddress.address1},&nbsp;
                   {agency.physicalAddress.address2}{agency.physicalAddress.address2 ? ', ' : ' ' }
