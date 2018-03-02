@@ -32,8 +32,8 @@
       height: 9rem;
 
       .search-input-wrapper {
-        height: 9rem;
         flex-wrap: wrap;
+        height: 9rem;
       }
 
       .advanced-search {
@@ -239,10 +239,10 @@
           margin: 0 0 0 $padding;
           padding: 0;
           border-radius: 50%;
-          @include button-variant($white, $bright-blue-lighten-01, $bright-blue-lighten-01);
+          @include button-variant($bright-blue-darken-03, $warm-gray-01, $warm-gray-01);
 
           &:hover {
-            @include button-variant($white, $bright-blue-darken-01, $bright-blue-darken-01);
+            @include button-variant($bright-blue-darken-04, $warm-gray-00, $warm-gray-00);
           }
         }
       }
