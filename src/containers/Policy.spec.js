@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { Policy, changeEffectiveDate, showEffectiveDatePopUp, hideEffectiveDatePopUp } from './Policy';
+import ConnectedApp, { Policy, changeEffectiveDate, showEffectiveDatePopUp, hideEffectiveDatePopUp, reinstatePolicySubmit } from './Policy';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -29,6 +29,11 @@ describe('Testing Policy component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      summaryLedger: {
+        status: {
+          code: 13
+        }
+      },
       zipCodeSetting: {},
       policy: {
         policyNumber: '1234',
@@ -50,6 +55,7 @@ describe('Testing Policy component', () => {
           setAppState() {}
         },
         serviceActions: {
+          createTransaction() { return Promise.resolve(); },
           getZipcodeSettings() { return Promise.resolve(); },
           getSummaryLedger() { return Promise.resolve(); }
         }
@@ -67,6 +73,7 @@ describe('Testing Policy component', () => {
     const wrapper = shallow(<Policy store={store} {...props} />);
     expect(wrapper);
     changeEffectiveDate({}, props.dispatch, props);
-    wrapper.instance().componentDidMount();
+    wrapper.instance().componentWillReceiveProps();
+    reinstatePolicySubmit({}, props.dispatch, props);
   });
 });

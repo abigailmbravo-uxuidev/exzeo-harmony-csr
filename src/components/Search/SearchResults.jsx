@@ -187,7 +187,6 @@ export const SearchResults = (props) => {
         agencyResults && agencyResults.map((agency, index) => <div className="card-wrapper" key={index}>
           <span className="fa fa-chevron-circle-right" id={`agency-code-${agency.agencyCode}`} onClick={() => props.handleNewTab(agency, props)} tabIndex="-1" />
           <div className="agency contact card">
-
             <div className="contact-title">
               <i className="fa fa-address-book" />
               <label>Agency</label>

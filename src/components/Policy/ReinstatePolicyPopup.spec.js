@@ -2,17 +2,16 @@ import React from 'react';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
-import _ from 'lodash';
-import ConnectedApp, { NotesFiles } from './NotesFiles';
+
+import ConnectedApp, { ReinstatePolicyPopup, handleInitialize } from './ReinstatePolicyPopup';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 
-describe('Testing NotesFiles component', () => {
+describe('Testing ReinstatePolicyPopup component', () => {
   it('should test connected app', () => {
     const initialState = {
-      service: {
-        notes: []
+      authState: {
       },
       cg: {
         bb: {
@@ -23,75 +22,74 @@ describe('Testing NotesFiles component', () => {
           }
         }
       },
-      appState: {
-        modelName: 'bb'
-      }
-    };
-    const store = mockStore(initialState);
-    const props = {
-      fieldQuestions: [],
-      quoteData: {},
-      dispatch: store.dispatch,
+      service: {
+        latestPolicy: {}
+      },
       appState: {
         data: {
-          submitting: false
-        }
-      },
-      ...propTypes
-    };
-    const wrapper = shallow(<ConnectedApp store={store} {...props} />);
-    expect(wrapper);
-  });
-  it('should test NoteList app', () => {
-    const initialState = {
-      service: {
-        notes: []
-      },
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {},
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        data: { activateRedirect: false },
+        },
         modelName: 'bb'
       }
     };
     const store = mockStore(initialState);
     const props = {
-      notes: [],
-      actions: {
-        quoteStateActions: {
-          getLatestQuote() {}
-        },
-        serviceActions: {
-          getNotes() {}
-        },
-        appStateActions: {
-          setAppState() { }
-        },
-        cgActions: {
-          batchCompleteTask() { return Promise.resolve(() => {}); }
-        }
-      },
-      handleSubmit() { },
+      handleSubmit() {},
+      billingOptions: initialState.service.billingOptions,
       fieldValues: {},
       quoteData: {},
       dispatch: store.dispatch,
       appState: {
-        instanceId: 1,
         data: {
           submitting: false
         }
       }
     };
+    const wrapper = shallow(<ConnectedApp store={store} {...props} />);
+    expect(wrapper.instance().props.fieldValues).toEqual({});
+    handleInitialize(initialState);
+  });
 
-    const notesFiles = shallow(<NotesFiles store={store} {...props} />);
-    expect(notesFiles);
-    notesFiles.instance().componentDidMount({ quoteData: { quoteNumber: '1234' } });
+  it('should test ReinstatePolicyPopup', () => {
+    const initialState = {
+      authState: {
+      },
+      cg: {
+        bb: {
+          data: {
+            modelInstanceId: '123',
+            model: {},
+            uiQuestions: []
+          }
+        }
+      },
+      service: {
+        latestPolicy: {}
+      },
+      appState: {
+        data: {
+        },
+        modelName: 'bb'
+      }
+    };
+    const store = mockStore(initialState);
+    const props = {
+      latestPolicy: {
+        policyNumber: '123'
+      },
+      handleSubmit() {},
+      billingOptions: initialState.service.billingOptions,
+      fieldValues: {},
+      quoteData: {},
+      dispatch: store.dispatch,
+      appState: {
+        data: {
+          submitting: false
+        }
+      }
+    };
+    const wrapper = shallow(<ReinstatePolicyPopup store={store} {...props} />);
+    expect(wrapper)
+    wrapper.find('.btn-primary').simulate('click');
+    wrapper.find('.btn-secondary').simulate('click');
   });
 });

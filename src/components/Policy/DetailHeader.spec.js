@@ -76,7 +76,8 @@ describe('Testing DetailHeader component', () => {
         },
         serviceActions: {
           getEffectiveDateChangeReasons() {},
-          getLatestPolicy() {}
+          getLatestPolicy() {},
+          getTransactionHistory() {}
         }
       },
       fieldQuestions: [],
