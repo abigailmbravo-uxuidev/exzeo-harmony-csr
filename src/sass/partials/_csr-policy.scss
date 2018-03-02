@@ -397,6 +397,10 @@
                   h4 {
                     margin-bottom: 0;
                     color: $warm-gray-10;
+                    -ms-hyphens: auto;
+                    -moz-hyphens: auto;
+                    -webkit-hyphens: auto;
+                    hyphens: auto;
 
                     &.agency {
                       font-weight: $font-weight-normal;
@@ -770,6 +774,10 @@
 
                   .value {
                     width: 70%;
+                    -ms-hyphens: auto;
+                    -moz-hyphens: auto;
+                    -webkit-hyphens: auto;
+                    hyphens: auto;
                   }
                 }
 

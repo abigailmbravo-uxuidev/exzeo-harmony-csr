@@ -423,13 +423,13 @@
 
     .react-bs-table {
       .created-date {
-        width: 10%;
-        min-width: 7rem;
+        width: 16%;
+        min-width: 9.75rem;
         white-space: normal;
       }
 
       .created-by {
-        width: 10%;
+        width: 16%;
         min-width: 9.75rem;
         white-space: normal;
       }
@@ -624,11 +624,23 @@
         }
 
         .created-date {
-          width: 16%;
+            width: 16%;
+            min-width: 9.75rem;
         }
 
         .created-by {
-          width: 16%;
+            width: 16%;
+            min-width: 9.75rem;
+        }
+
+        .file-type {
+            width: 20%;
+            min-width: 10rem;
+        }
+
+        .attachments {
+            width: 48%;
+            min-width: 26.5rem;
         }
       }
     }
