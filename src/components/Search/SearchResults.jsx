@@ -22,12 +22,8 @@ export const onKeypressPolicy = (event, policy, props) => {
 
 export const SearchResults = (props) => {
   const model = props.tasks[props.appState.modelName] || {};
-  const previousTask = model.data && model.data.previousTask
-    ? model.data.previousTask
-    : {};
-  const activeTask = model.data && model.data.activeTask
-    ? model.data.activeTask
-    : {};
+  const previousTask = model.data && model.data.previousTask ? model.data.previousTask : {};
+  const activeTask = model.data && model.data.activeTask ? model.data.activeTask : {};
 
   const searchData = JSON.parse(localStorage.getItem('lastSearchData'));
   if (props.search && props.search.searchType === 'policy') {
@@ -48,37 +44,38 @@ export const SearchResults = (props) => {
       <div className="quote-list">
         {props.search && props.search.isLoading && <Loader />}
         {
-          policyResults && policyResults.length > 0 && policyResults.map((policy, index) => (<div tabIndex={0} onKeyPress={event => onKeypressPolicy(event, policy, props)} id={policy.PolicyID} className="card" key={index}>
-            <div className="icon-name">
-              <i className="card-icon fa fa-user-circle" />
-              <div className="card-name">
-                <h4 title={policy.policyHolders && policy.policyHolders.length > 0 ? `${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}` : ''}>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}</h4>
+          policyResults && policyResults.length > 0 && policyResults.map((policy, index) => (
+            <div tabIndex="0" onKeyPress={event => onKeypressPolicy(event, policy, props)} id={policy.PolicyID} className="card" key={index}>
+              <div className="icon-name">
+                <i className="card-icon fa fa-user-circle" />
+                <div className="card-name">
+                  <h4 title={policy.policyHolders && policy.policyHolders.length > 0 ? `${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}` : ''}>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}</h4>
+                </div>
               </div>
-            </div>
-            <section>
-              <ul id="policy-search-results" className="policy-search-results">
-                <li className="header">
-                  <span className="policy-no">Policy No.</span>
-                  <span className="property-address">Property Address</span>
-                  <span className="quote-state">Policy Status</span>
-                  <span className="effctive-date">Effective Date</span>
-                </li>
-                <li>
-                  <a id={policy.PolicyID} onClick={() => props.handleNewTab(policy, props)} className={`${policy.policyNumber + policy.property.physicalAddress.address1} row`}>
-                    <span className="quote-no">{policy.policyNumber}</span>
-                    <span className="property-address">{
+              <section>
+                <ul id="policy-search-results" className="policy-search-results">
+                  <li className="header">
+                    <span className="policy-no">Policy No.</span>
+                    <span className="property-address">Property Address</span>
+                    <span className="quote-state">Policy Status</span>
+                    <span className="effctive-date">Effective Date</span>
+                  </li>
+                  <li>
+                    <a id={policy.PolicyID} onClick={() => props.handleNewTab(policy, props)} className={`${policy.policyNumber + policy.property.physicalAddress.address1} row`}>
+                      <span className="quote-no">{policy.policyNumber}</span>
+                      <span className="property-address">{
                   `${policy.property.physicalAddress.address1}
                       ${policy.property.physicalAddress.city}, ${policy.property.physicalAddress.state}
                       ${policy.property.physicalAddress.zip}`
                 }
-                    </span>
-                    <span className="quote-state">{policy.status}</span>
-                    <span className="effctive-date">{moment.utc(policy.effectiveDate).format('MM/DD/YYYY')}</span>
-                  </a>
-                </li>
-              </ul>
-            </section>
-          </div>))
+                      </span>
+                      <span className="quote-state">{policy.status}</span>
+                      <span className="effctive-date">{moment.utc(policy.effectiveDate).format('MM/DD/YYYY')}</span>
+                    </a>
+                  </li>
+                </ul>
+              </section>
+            </div>))
       }
         {
           props.search && props.search.hasSearched && !props.search.isLoading && policyResults && policyResults.length === 0 && <NoPolicyResultsConnect />
@@ -89,42 +86,44 @@ export const SearchResults = (props) => {
 
   if (previousTask && previousTask.name === 'searchAddress' && activeTask.name !== 'askToSearchAgain') {
     const addresses = previousTask.value.result.IndexResult;
-    return (<div>
-      <ul id="property-search-results" className="results result-cards property-search-results">
-        {
+    return (
+      <div>
+        <ul id="property-search-results" className="results result-cards property-search-results">
+          {
           addresses
-            ? addresses.map((address, index) => (<li id={address.id} key={index}>
+            ? addresses.map((address, index) => (
+              <li id={address.id} key={index}>
 
-              {/* <div>
+                {/* <div>
                     <button className="row" onClick={() => props.handleSelectAddress(address, props)} tabIndex="-1">Open New Tab</button>
                   </div> */
               }
 
-              <a id={address.physicalAddress.address1} aria-label={address.physicalAddress.address1} className={address.physicalAddress.address1} value={address.physicalAddress.address1} onClick={() => props.handleNewTab(address, props)} tabIndex="-1">
-                <i className="card-icon fa fa-map-marker" />
-                <section>
-                  <h4>{address.physicalAddress.address1}</h4>
-                  <p>{address.physicalAddress.city}, {address.physicalAddress.state}
-                    {address.physicalAddress.zip}
-                  </p>
-                </section>
-                <i className="fa fa-chevron-circle-right" />
-              </a>
-            </li>))
+                <a id={address.physicalAddress.address1} aria-label={address.physicalAddress.address1} className={address.physicalAddress.address1} value={address.physicalAddress.address1} onClick={() => props.handleNewTab(address, props)} tabIndex="-1">
+                  <i className="card-icon fa fa-map-marker" />
+                  <section>
+                    <h4>{address.physicalAddress.address1}</h4>
+                    <p>{address.physicalAddress.city}, {address.physicalAddress.state}
+                      {address.physicalAddress.zip}
+                    </p>
+                  </section>
+                  <i className="fa fa-chevron-circle-right" />
+                </a>
+              </li>))
             : null
         }
-        <p>
-          <small>
-            <strong>TIP:</strong>
+          <p>
+            <small>
+              <strong>TIP:</strong>
             If you don't see your address in the list provided, try entering less address information to see if that improves your search results. Please note, at this time we are only writing single family dwellings in the state of Florida. If you still have problems finding an address, please
-            <a href="tel:888-210-5235">
-              <strong>call us</strong>
-            </a>
+              <a href="tel:888-210-5235">
+                <strong>call us</strong>
+              </a>
             and one of our representatives will be glad to help you.
-          </small>
-        </p>
-      </ul>
-    </div>);
+            </small>
+          </p>
+        </ul>
+      </div>);
   }
 
   if (previousTask.value && activeTask.name === 'chooseQuote') {
@@ -201,16 +200,13 @@ export const SearchResults = (props) => {
           <div className="card-wrapper" key={index}>
             <span className="fa fa-chevron-circle-right" id={`agency-code-${agency.agencyCode}`} onClick={() => props.handleNewTab(agency, props)} tabIndex="-1" />
             <div className="agency contact card">
-
               <div className="contact-title">
                 <i className="fa fa-address-book" />
                 <label>Agency</label>
               </div>
               <div className="contact-details">
                 <div className="card-name">
-
                   <h4 className="agency"><span className="agency-code">{agency.agencyCode}</span> | <span className="agency-display-name">{agency.displayName}</span> | <span className="agency-legal-name">{agency.legalName}</span> | <span className="agency-license">{agency.licenseNumber}</span></h4>
-
                   <div className="contact-address">
                     {agency.physicalAddress.address1},&nbsp;
                     {agency.physicalAddress.address2}{agency.physicalAddress.address2 ? ', ' : ' ' }
@@ -273,59 +269,61 @@ export const SearchResults = (props) => {
         <NoResults />
       );
     }
-    return (<div className="user-list agent-list">
-      { props.appState.data && props.appState.data.agentSubmitting && <Loader />}
-      {
-        agentResults && agentResults.map((agent, index) => (<div className="agency agent contact card" key={index}>
-          <div className="contact-title">
-            <i className="fa fa-address-card margin bottom" />
-            {agent.agentOfRecord ? <small><i className="card-icon fa fa-bookmark" /><label>AOR</label></small> : null }
-            {agent.appointed ? <small><i className="card-icon fa fa-certificate" /><label>Appointed</label></small> : null }
-          </div>
-          <div className="contact-details">
-            <div className="card-name">
-              <h4 className="agent"><span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{agent.firstName} {agent.lastName}</span> | <span className="agent-license">{agent.licenseNumber}</span></h4>
-              <div className="contact-address">
-                {agent.mailingAddress.address1},&nbsp;
-                {agent.mailingAddress.address2}{agent.mailingAddress.address2 ? ', ' : ' ' }
-                {agent.mailingAddress.city},&nbsp;
-                {agent.mailingAddress.state}&nbsp;
-                {agent.mailingAddress.zip}
-                {agent.status ? <span className="additional-data status"><label>STATUS:&nbsp;</label>{agent.status}</span> : null}
-              </div>
-              <div className="additional-contacts">
-                <ul>
-                  <li>
-                    <div className="contact-methods">
-                      {agent.primaryPhoneNumber ?
-                        <p className="phone">
-                          <i className="fa fa-phone-square" />
-                          <a href={`tel:${agent.primaryPhoneNumber}`}>{normalizePhone(agent.primaryPhoneNumber)}</a>
-                        </p> : null }
-                      {agent.secondaryPhoneNumber ?
-                        <p className="phone">
-                          <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
-                          <a href={`tel:${agent.secondaryPhoneNumber}`}>{normalizePhone(agent.secondaryPhoneNumber)}</a>
-                        </p> : null }
-                      {agent.faxNumber ?
-                        <p className="fax">
-                          <i className="fa fa-fax" />
-                          <a href={`tel:${agent.faxNumber}`}>{normalizePhone(agent.faxNumber)}</a>
-                        </p> : null }
-                      {agent.emailAddress ?
-                        <p>
-                          <i className="fa fa-envelope" />
-                          <a href={`mailto:${agent.emailAddress}`}>{agent.emailAddress}</a>
-                        </p> : null }
-                    </div>
-                  </li>
-                </ul>
+    return (
+      <div className="user-list agent-list">
+        { props.appState.data && props.appState.data.agentSubmitting && <Loader />}
+        {
+        agentResults && agentResults.map((agent, index) => (
+          <div className="agency agent contact card" key={index}>
+            <div className="contact-title">
+              <i className="fa fa-address-card margin bottom" />
+              {agent.agentOfRecord ? <small><i className="card-icon fa fa-bookmark" /><label>AOR</label></small> : null }
+              {agent.appointed ? <small><i className="card-icon fa fa-certificate" /><label>Appointed</label></small> : null }
+            </div>
+            <div className="contact-details">
+              <div className="card-name">
+                <h4 className="agent"><span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{agent.firstName} {agent.lastName}</span> | <span className="agent-license">{agent.licenseNumber}</span></h4>
+                <div className="contact-address">
+                  {agent.mailingAddress.address1},&nbsp;
+                  {agent.mailingAddress.address2}{agent.mailingAddress.address2 ? ', ' : ' ' }
+                  {agent.mailingAddress.city},&nbsp;
+                  {agent.mailingAddress.state}&nbsp;
+                  {agent.mailingAddress.zip}
+                  {agent.status ? <span className="additional-data status"><label>STATUS:&nbsp;</label>{agent.status}</span> : null}
+                </div>
+                <div className="additional-contacts">
+                  <ul>
+                    <li>
+                      <div className="contact-methods">
+                        {agent.primaryPhoneNumber ?
+                          <p className="phone">
+                            <i className="fa fa-phone-square" />
+                            <a href={`tel:${agent.primaryPhoneNumber}`}>{normalizePhone(agent.primaryPhoneNumber)}</a>
+                          </p> : null }
+                        {agent.secondaryPhoneNumber ?
+                          <p className="phone">
+                            <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
+                            <a href={`tel:${agent.secondaryPhoneNumber}`}>{normalizePhone(agent.secondaryPhoneNumber)}</a>
+                          </p> : null }
+                        {agent.faxNumber ?
+                          <p className="fax">
+                            <i className="fa fa-fax" />
+                            <a href={`tel:${agent.faxNumber}`}>{normalizePhone(agent.faxNumber)}</a>
+                          </p> : null }
+                        {agent.emailAddress ?
+                          <p>
+                            <i className="fa fa-envelope" />
+                            <a href={`mailto:${agent.emailAddress}`}>{agent.emailAddress}</a>
+                          </p> : null }
+                      </div>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
-                                                            </div>))
+          </div>))
             }
-    </div>
+      </div>
     );
   }
   return <span />;

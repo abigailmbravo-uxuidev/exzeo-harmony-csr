@@ -1,6 +1,7 @@
 .new-note-file {
   position: absolute;
-  z-index: 9999;
+  z-index: 1000;
+  top: 1rem;
   right: 2.5rem;
   bottom: 0;
   width: 40%;
@@ -9,7 +10,7 @@
   @include transition(all 0.1s ease-in-out);
 
   &.minimize {
-    bottom: -25.25rem;
+    top: calc(100vh - 10.5rem);
 
     .controls {
       .btn-icon {
@@ -25,7 +26,10 @@
   .title-bar {
     display: flex;
     flex-direction: row;
+    flex-grow: 0;
+    flex-shrink: 0;
     flex-wrap: nowrap;
+    height: 2.4375rem;
     background: $bright-blue-darken-04;
 
     * {
@@ -65,22 +69,27 @@
   }
 
   .mainContainer {
-    .content {
-      padding: ($padding*2);
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 2.4375rem;);
 
-      .flex-contents {
-        position: relative;
+    form {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+
+      .content {
         display: flex;
-        align-content: stretch;
-        align-items: stretch;
+        overflow-y: auto;
         flex-direction: column;
-        flex-wrap: nowrap;
-        justify-content: flex-start;
-        height: 320px;
-        margin: 0 0 ($padding*2);
+        flex-grow: 1;
+        flex-shrink: 1;
+        padding: ($padding*2);
 
+        label,
         select {
-          margin: 0 0 ($padding*2);
+          flex-grow: 0;
+          flex-shrink: 0;
         }
 
         .text-area-wrapper {
@@ -88,110 +97,280 @@
           flex-direction: column;
           flex-grow: 1;
           flex-shrink: 1;
-          margin: 0 0 ($padding*2);
+          min-height: 5.5rem;
+          margin: ($padding*2) 0;
 
           textarea {
-            align-self: auto;
-            flex-grow: 1;
-            flex-shrink: 1;
-            order: 0;
-            margin: 0;
-            color: $warm-gray-08;
-          }
-
-          .error-message {
-            color: $red;
-            font-size: $font-size-sm;
-          }
-
-          &.error {
-            textarea {
-              border-color: $red;
-            }
+            height: auto;
           }
         }
 
-        .dropzone-wrapper {
-          @include transition(all 0.2s ease-in-out);
+        .file-uploader {
+          margin-top: $padding*2;
 
-          .upload-list {
-            overflow-y: auto;
-            max-height: 4.25rem;
-            margin: 0.5rem 0 0;
-            padding: ($padding/2) $padding;
-            border: 1px solid $warm-gray-02;
-            border-radius: $border-radius;
-            background: $warm-gray-01;
+          .uppy-Dashboard.uppy-Dashboard--wide {
+            .uppy-Dashboard-inner {
+              width: 100%;
+              height: auto;
+              max-height: none;
+              border-color: $input-border-color;
+              background: $white;
 
-            .drop-area-label {
-              margin-bottom: $padding/2;
-              cursor: pointer;
+              .uppy-Dashboard-innerWrap {
+                min-height: 240px;
 
-              span {
-                color: $bright-blue;
-                font-weight: $font-weight-bold;
-                @include transition(all 0.2s ease-in-out);
-              }
-            }
+                .uppy-DashboardTabs {
+                  padding: 0;
+                  border-bottom: 1px solid $warm-gray-04;
+                  background: $warm-gray-02;
 
-            &:hover {
-              .drop-area-label {
-                span {
-                  text-decoration: underline;
-                  color: $bright-blue-darken-04;
+                  .uppy-DashboardTabs-title {
+                    padding: $padding;
+                    line-height: unset;
+
+                    .uppy-Dashboard-browse {
+                      color: $bright-blue-lighten-01;
+                    }
+                  }
+                }
+
+                .uppy-Dashboard-filesContainer {
+                  .uppy-DashboardItem {
+                    margin: $padding*2;
+
+                    .uppy-DashboardItem-previewInnerWrap {
+                      border-radius: $border-radius;
+                      box-shadow: 0 0 4px rgba(0,0,0,0.2);
+                    }
+
+                    .uppy-DashboardItem-action {
+                      top: -.75rem;
+                      right: -.75rem;
+
+                      .uppy-DashboardItem-remove {
+                        width: 1rem;
+                        height: 1rem;
+
+                        &:before {
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          width: 1rem;
+                          height: 1rem;
+                          content: '\f057';
+                          color: $red-darken-01;
+                          font-family: $font-family-icon;
+                          font-size: $font-size-base;
+                        }
+
+                        svg {
+                          display: none;
+                        }
+                      }
+                    }
+
+                    .uppy-DashboardItem-edit {
+                      width: 1rem;
+                      height: 1rem;
+
+                      &:before {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 1rem;
+                        height: 1rem;
+                        content: '\f040';
+                        color: $bright-blue-darken-01;
+                        font-family: $font-family-icon;
+                        font-size: $font-size-sm;
+                      }
+
+                      svg {
+                        display: none;
+                      }
+                    }
+                  }
+                }
+
+                .uppy-DashboardFileCard {
+                  > div {
+                    display: flex;
+                    flex-direction: column;
+
+                    .uppy-DashboardContent-bar {
+                      position: relative;
+                      top: auto;
+                      right: auto;
+                      bottom: auto;
+                      left: auto;
+                      display: flex;
+                      align-items: center;
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      height: auto;
+                      height: auto;
+                      padding: $padding;
+                      border-bottom: 1px solid $warm-gray-04;
+                      background: $warm-gray-02;
+
+                      .uppy-DashboardContent-title {
+                        position: relative;
+                        top: auto;
+                        right: auto;
+                        bottom: auto;
+                        left: auto;
+                        flex-grow: 1;
+                        flex-shrink: 1;
+                        max-width: 100%;
+                        margin: 0;
+                        padding: 0;
+                        text-align: left;
+                        font-size: $font-size-base;
+                        line-height: unset;
+                        line-height: normal;
+
+                        .uppy-DashboardContent-titleFile {
+                          top: auto;
+                          right: auto;
+                          bottom: auto;
+                          left: auto;
+                          margin: 0;
+                          padding: 0;
+                          text-align: left;
+                          font-size: $font-size-base;
+                          line-height: 1;
+                        }
+                      }
+
+                      .uppy-DashboardContent-back {
+                        position: relative;
+                        top: auto;
+                        right: auto;
+                        bottom: auto;
+                        left: auto;
+                        margin: 0;
+                        padding: 0;
+                        font-size: $font-size-base;
+                        line-height: 1;
+                      }
+                    }
+
+                    .uppy-DashboardFileCard-inner {
+                      position: relative;
+                      top: auto;
+                      right: auto;
+                      bottom: auto;
+                      left: auto;
+                      display: flex;
+                      flex-direction: column;
+                      flex-grow: 1;
+                      flex-shrink: 1;
+                      margin: 0;
+                      padding: 0;
+
+                      .uppy-DashboardFileCard-preview {
+                        display: flex;
+                        overflow: hidden;
+                        align-items: center;
+                        flex-grow: 1;
+                        flex-shrink: 1;
+                        justify-content: center;
+                        height: 6.25rem;
+                        padding: $padding;
+                        border-bottom-width: 0;
+                        background-color: $white !important;
+
+                        img {
+                          display: block;
+                          width: auto;
+                          height: 6.25rem;
+                          box-shadow: 0 0 0 rgba(0,0,0,0);
+                        }
+                      }
+
+                      .uppy-DashboardFileCard-info {
+                        flex-grow: 0;
+                        flex-shrink: 0;
+                        height: auto;
+                        padding: $padding ($padding*8) $padding $padding;
+                        background-color: $white;
+
+                        fieldset {
+                          display: flex;
+                          flex-grow: 1;
+                          flex-shrink: 1;
+                          width: auto;
+                          max-width: none;
+                          margin: 0;
+
+                          label {
+                            width: 100%;
+                            color: $warm-gray-10;
+                            font-size: $font-size-base;
+                          }
+
+                          input {
+                            width: 100%;
+                            margin: 0;
+                            padding: $padding;
+                            border: $border-width solid $warm-gray-06;
+                          }
+                        }
+                      }
+                    }
+
+                    .uppy-Dashboard-actions {
+                        right: 1rem;
+                        bottom: .5rem;
+                      .UppyButton--circular {
+                        position: relative;
+                        width: 2rem;
+                        height: 2rem;
+
+                        &.UppyButton--blue {
+                          background: $bright-blue-darken-01;
+
+                          &.uppy-DashboardFileCard-done {
+                            &:before {
+                              position: absolute;
+                              top: 0;
+                              left: 0;
+                              display: flex;
+                              align-items: center;
+                              justify-content: center;
+                              width: 2rem;
+                              height: 2rem;
+                              content: '\f00c';
+                              color: $white;
+                              font-family: $font-family-icon;
+                            }
+
+                            svg {
+                              display: none;
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
-            }
-
-            li {
-              border-top: 1px dashed $warm-gray-02;
-            }
-          }
-
-          .dropzone-overlay {
-            position: absolute;
-            top: -1rem;
-            right: -1rem;
-            bottom: -4.25rem;
-            left: -1rem;
-            color: $white;
-            background: rgba($warm-gray-15, .75);
-
-            .dropzone-drop-area {
-              position: absolute;
-              top: $padding*2;
-              right: $padding*2;
-              bottom: $padding*2;
-              left: $padding*2;
-              display: flex;
-              align-items: center;
-              flex-direction: column;
-              justify-content: center;
-              padding: $padding;
-              border: 5px dashed $white;
-              border-radius: $border-radius;
-              font-size: $font-size-h3;
             }
           }
         }
       }
 
-      .buttons {
+      .note-file-footer-button-group {
         display: flex;
-        align-content: stretch;
-        align-items: flex-start;
-        flex-direction: row;
-        flex-wrap: nowrap;
+        flex-grow: 0;
+        flex-shrink: 0;
         justify-content: flex-end;
+        padding: $padding;
+        border-top: 1px dotted $warm-gray-04;
+        background: $white;
 
-        div {
-          align-self: auto;
-          flex: 1 1 auto;
-          order: 0;
-        }
-
-        .btn-secondary {
-          margin: 0 ($padding*2) 0 0;
+        .btn {
+          margin-left: $padding;
         }
       }
     }
@@ -244,21 +423,25 @@
 
     .react-bs-table {
       .created-date {
-        width: 10%;
-        min-width: 120px;
+        width: 16%;
+        min-width: 9.75rem;
+        white-space: normal;
       }
 
       .created-by {
-        width: 15%;
+        width: 16%;
+        min-width: 9.75rem;
         white-space: normal;
       }
 
       .note-type {
-        width: 15%;
+        width: 9%;
+        min-width: 6rem;
       }
 
       .file-type {
-        width: 15%;
+        width: 16%;
+        min-width: 12rem;
         white-space: normal;
       }
 
@@ -267,7 +450,8 @@
       }
 
       .attachments {
-        width: 20%;
+        width: 10%;
+        min-width: 7rem;
         white-space: normal;
 
         span {
@@ -327,6 +511,136 @@
               }
             }
           }
+        }
+      }
+    }
+  }
+}
+//compact grid
+
+.react-bs-table-container {
+  &.compact-table {
+    .react-bs-table {
+      .table-bordered {
+        tr {
+          th {
+            font-size: $font-size-sm;
+          }
+
+          td {
+            font-size: $font-size-sm;
+          }
+        }
+      }
+    }
+  }
+}
+//notes attachment styles
+
+.react-bs-table-container {
+  &.notes {
+    .react-bs-table {
+      .table-bordered {
+        tr {
+          th {
+            &.attachments {
+              width: 6%;
+              min-width: 3rem;
+            }
+          }
+
+          td {
+            &.attachments {
+              width: 6%;
+              min-width: 3rem;
+              white-space: normal;
+
+              span {
+                display: flex;
+              }
+            }
+          }
+        }
+
+        .attachments {
+          span {
+            .attachment-wrapper {
+              i.fa {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 1rem;
+                height: 1rem;
+
+                &:before {
+                  content: "\F15B";
+                }
+              }
+
+              .btn {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.react-bs-table-container {
+  &.files {
+    .react-bs-table {
+      .table-bordered {
+        tr {
+          th {}
+
+          td {}
+        }
+
+        .attachments {
+          span {
+            .attachment-wrapper {
+              display: flex;
+              align-items: center;
+
+              i.fa {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 1rem;
+                height: 1rem;
+
+                &:before {
+                  content: "\F15B";
+                }
+              }
+
+              .btn {
+                padding-left: 0;
+              }
+            }
+          }
+        }
+
+        .created-date {
+            width: 16%;
+            min-width: 9.75rem;
+        }
+
+        .created-by {
+            width: 16%;
+            min-width: 9.75rem;
+        }
+
+        .file-type {
+            width: 20%;
+            min-width: 10rem;
+        }
+
+        .attachments {
+            width: 48%;
+            min-width: 26.5rem;
         }
       }
     }
