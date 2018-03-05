@@ -1487,22 +1487,37 @@ ul.list-cards {
               margin-bottom: 0;
               text-transform: uppercase;
               text-overflow: ellipsis;
+              -webkit-hyphens: auto;
+              hyphens: auto;
               font-size: $font-size-sm;
               line-height: $headings-line-height;
+              -ms-hyphens: auto;
+              @media (max-width: 1440px) {
+                line-height: 1.02;
+              }
             }
           }
         }
 
         &.propertyAddress {
           max-width: 20rem;
+          @media (max-width: 1440px) {
+            max-width: 14rem;
+          }
         }
 
         &.policyHolderMailingAddress {
           max-width: 20rem;
+          @media (max-width: 1440px) {
+            max-width: 14rem;
+          }
         }
 
         &.policyHolder {
           max-width: 18rem;
+          @media (max-width: 1440px) {
+            max-width: 12rem;
+          }
         }
 
         &.agencyDetails,
