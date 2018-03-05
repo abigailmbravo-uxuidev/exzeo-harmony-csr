@@ -52,7 +52,7 @@ export class DetailHeader extends Component {
           </div>
         </dl>
       </section>
-      <section id="policyHçolder" className="policyHolder">
+      <section id="policyHolder" className="policyHolder">
         <dl>
           <div>
             <dt>Policyholder</dt>
