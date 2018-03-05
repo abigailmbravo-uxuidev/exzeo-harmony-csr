@@ -19,18 +19,18 @@ import * as policyStateActions from '../../actions/policyStateActions';
 import Footer from '../Common/Footer';
 import Loader from '../Common/Loader';
 
+const convertDateToTimeZone = (date, props) => {
+  const formattedDateString = date.format('YYYY-MM-DD');
+  return moment.tz(formattedDateString, props.zipCodeSettings.timezone).utc();
+};
+
 export const handleInitialize = (state) => {
   const summaryLedger = state.service.getSummaryLedger || {};
-  const latestDate = moment.utc() > moment.utc(summaryLedger.effectiveDate) ? moment.utc().format('YYYY-MM-DD') : moment.utc(summaryLedger.effectiveDate).format('YYYY-MM-DD');
+  const latestDate = convertDateToTimeZone(moment.utc()) > convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate)) ? convertDateToTimeZone(moment.utc()).format('YYYY-MM-DD') : convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate)).format('YYYY-MM-DD');
   return ({
     equityDate: moment.utc(summaryLedger.equityDate).format('MM/DD/YYYY'),
     effectiveDate: latestDate
   });
-};
-
-const convertDateToTimeZone = (date, props) => {
-  const formattedDateString = date.format('YYYY-MM-DD');
-  return moment.tz(formattedDateString, props.zipCodeSettings.timezone).utc();
 };
 
 const amountFormatter = cell => (cell.$numberDecimal ? Number(cell.$numberDecimal).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '');
