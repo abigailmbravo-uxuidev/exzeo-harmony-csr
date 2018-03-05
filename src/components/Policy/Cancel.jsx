@@ -19,14 +19,14 @@ import * as policyStateActions from '../../actions/policyStateActions';
 import Footer from '../Common/Footer';
 import Loader from '../Common/Loader';
 
-const convertDateToTimeZone = (date, props) => {
+const convertDateToTimeZone = (date, zipCodeSettings) => {
   const formattedDateString = date.format('YYYY-MM-DD');
-  return moment.tz(formattedDateString, props.zipCodeSettings.timezone).utc();
+  return moment.tz(formattedDateString, zipCodeSettings.timezone).utc();
 };
-
 export const handleInitialize = (state) => {
   const summaryLedger = state.service.getSummaryLedger || {};
-  const latestDate = convertDateToTimeZone(moment.utc()) > convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate)) ? convertDateToTimeZone(moment.utc()).format('YYYY-MM-DD') : convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate)).format('YYYY-MM-DD');
+  const zipCodeSettings = state.service.getZipcodeSettings || {};
+  const latestDate = convertDateToTimeZone(moment.utc(), zipCodeSettings) > convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings) ? convertDateToTimeZone(moment.utc(), zipCodeSettings).format('YYYY-MM-DD') : convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings).format('YYYY-MM-DD');
   return ({
     equityDate: moment.utc(summaryLedger.equityDate).format('MM/DD/YYYY'),
     effectiveDate: latestDate
@@ -118,7 +118,9 @@ export class CancelPolicy extends React.Component {
     }
   }
   componentWillReceiveProps(nextProps) {
-    const { actions, policy, summaryLedger } = nextProps;
+    const {
+      actions, policy, summaryLedger, zipCodeSettings
+    } = nextProps;
     if (policy && policy.policyNumber) {
       actions.serviceActions.getSummaryLedger(policy.policyNumber);
       serviceActions.getPaymentHistory(policy.policyNumber);
@@ -135,12 +137,12 @@ export class CancelPolicy extends React.Component {
       actions.serviceActions.getBillingOptionsForPolicy(paymentOptions);
     }
     const isUnderwriting = (nextProps.fieldValues.cancelType === 'Underwriting Cancellation' || nextProps.fieldValues.cancelType === 'Underwriting Non-Renewal');
-    if (isUnderwriting && convertDateToTimeZone(moment.utc()) <= convertDateToTimeZone(moment.utc(policy.issueDate)).add(90, 'days')) {
-      nextProps.dispatch(change('CancelPolicy', 'effectiveDate', moment.utc(summaryLedger.effectiveDate).add(20, 'days').format('YYYY-MM-DD')));
-    } else if (isUnderwriting && convertDateToTimeZone(moment.utc()) > convertDateToTimeZone(moment.utc(policy.issueDate)).add(90, 'days')) {
-      nextProps.dispatch(change('CancelPolicy', 'effectiveDate', moment.utc(summaryLedger.effectiveDate).add(120, 'days').format('YYYY-MM-DD')));
+    if (isUnderwriting && convertDateToTimeZone(moment.utc(), zipCodeSettings) <= convertDateToTimeZone(moment.utc(policy.issueDate), zipCodeSettings).add(90, 'days')) {
+      nextProps.dispatch(change('CancelPolicy', 'effectiveDate', convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings).add(20, 'days').format('YYYY-MM-DD')));
+    } else if (isUnderwriting && convertDateToTimeZone(moment.utc(), zipCodeSettings) > convertDateToTimeZone(moment.utc(policy.issueDate), zipCodeSettings).add(90, 'days')) {
+      nextProps.dispatch(change('CancelPolicy', 'effectiveDate', convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings).add(120, 'days').format('YYYY-MM-DD')));
     } else if (nextProps.fieldValues.cancelType === 'Voluntary Cancellation') {
-      const latestDate = convertDateToTimeZone(moment.utc()) > convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate)) ? convertDateToTimeZone(moment.utc()).format('YYYY-MM-DD') : convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate)).format('YYYY-MM-DD');
+      const latestDate = convertDateToTimeZone(moment.utc(), zipCodeSettings) > convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings) ? convertDateToTimeZone(moment.utc(), zipCodeSettings).format('YYYY-MM-DD') : convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings).format('YYYY-MM-DD');
       nextProps.dispatch(change('CancelPolicy', 'effectiveDate', latestDate));
     }
   }

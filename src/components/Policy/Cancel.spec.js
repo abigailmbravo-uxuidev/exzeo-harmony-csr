@@ -25,6 +25,7 @@ const cancelOptions = [
 describe('Testing Cancel component', () => {
   it('should test connected app', () => {
     const initialState = {
+      zipCodeSettings: { timezone: 'America/New_York' },
       service: {
 
       },
