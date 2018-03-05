@@ -28,6 +28,11 @@ export const handleInitialize = (state) => {
   });
 };
 
+const convertDateToTimeZone = (date, props) => {
+  const formattedDateString = date.format('YYYY-MM-DD');
+  return moment.tz(formattedDateString, props.zipCodeSettings.timezone).utc();
+};
+
 const amountFormatter = cell => (cell.$numberDecimal ? Number(cell.$numberDecimal).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '');
 const dateFormatter = cell => `${cell.substring(0, 10)}`;
 
@@ -130,12 +135,12 @@ export class CancelPolicy extends React.Component {
       actions.serviceActions.getBillingOptionsForPolicy(paymentOptions);
     }
     const isUnderwriting = (nextProps.fieldValues.cancelType === 'Underwriting Cancellation' || nextProps.fieldValues.cancelType === 'Underwriting Non-Renewal');
-    if (isUnderwriting && moment.utc() <= moment.utc(policy.issueDate).add(90, 'days')) {
+    if (isUnderwriting && convertDateToTimeZone(moment.utc()) <= convertDateToTimeZone(moment.utc(policy.issueDate)).add(90, 'days')) {
       nextProps.dispatch(change('CancelPolicy', 'effectiveDate', moment.utc(summaryLedger.effectiveDate).add(20, 'days').format('YYYY-MM-DD')));
-    } else if (isUnderwriting && moment.utc() > moment.utc(policy.issueDate).add(90, 'days')) {
+    } else if (isUnderwriting && convertDateToTimeZone(moment.utc()) > convertDateToTimeZone(moment.utc(policy.issueDate)).add(90, 'days')) {
       nextProps.dispatch(change('CancelPolicy', 'effectiveDate', moment.utc(summaryLedger.effectiveDate).add(120, 'days').format('YYYY-MM-DD')));
     } else if (nextProps.fieldValues.cancelType === 'Voluntary Cancellation') {
-      const latestDate = moment.utc() > moment.utc(summaryLedger.effectiveDate) ? moment.utc().format('YYYY-MM-DD') : moment.utc(summaryLedger.effectiveDate).format('YYYY-MM-DD');
+      const latestDate = convertDateToTimeZone(moment.utc()) > convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate)) ? convertDateToTimeZone(moment.utc()).format('YYYY-MM-DD') : convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate)).format('YYYY-MM-DD');
       nextProps.dispatch(change('CancelPolicy', 'effectiveDate', latestDate));
     }
   }
