@@ -41,7 +41,7 @@ const QuoteSummary = ({
           <br />
           <p>If no adverse information, advise<em>&ldquo;We will generate the Homeowners Application and e-mail it to:</em></p>
           { quoteData.policyHolders && quoteData.policyHolders[0] && <p>{`${quoteData.policyHolders[0].firstName} ${quoteData.policyHolders[0].lastName}  (${quoteData.policyHolders[0].emailAddress})`}</p>}
-          { quoteData.policyHolders && quoteData.policyHolders[1] && <p>{`${quoteData.policyHolders[1].firstName} ${quoteData.policyHolders[0].lastName} (${quoteData.policyHolders[1].emailAddress})`}</p>}
+          { quoteData.policyHolders && quoteData.policyHolders[1] && <p>{`${quoteData.policyHolders[1].firstName} ${quoteData.policyHolders[1].lastName} (${quoteData.policyHolders[1].emailAddress})`}</p>}
           <br />
           <p><em>Is this/Are these the correct email address(es)?&rdquo;</em></p>
           <br />
