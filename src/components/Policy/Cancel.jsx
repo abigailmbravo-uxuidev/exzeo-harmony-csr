@@ -178,7 +178,7 @@ export class CancelPolicy extends React.Component {
                   <div className="form-group flex-parent billing">
                     <div className="flex-child">
                       <label>Bill To</label>
-                      <div>{_.get(_.find(_.get(this.props.paymentOptions, 'options'), option => option.billToId === _.get(this.props.summaryLedger, 'billToId')), 'displayText')}</div>
+                      <div>{_.get(_.find(_.get(this.props.paymentOptions, 'options'), option => option.billToId === _.get(this.props.policy, 'billToId')), 'displayText')}</div>
                     </div>
                     <div className="flex-child">
                       <label>Bill Plan</label>
