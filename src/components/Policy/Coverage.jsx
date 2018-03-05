@@ -243,55 +243,55 @@ export class Coverage extends Component {
                 <div className="property-info">
                   <dl>
                     <div>
-                      <dt>Year Home Built</dt>
-                      <dd>{propertyData.yearBuilt}</dd>
-                      <dt>Construction</dt>
-                      <dd>{propertyData.constructionType}</dd>
-                      <dt>Year Roof Built</dt>
-                      <dd>{propertyData.yearOfRoof}</dd>
+                      <dt className="yearHomeBuilt">Year Home Built</dt>
+                      <dd className="yearHomeBuilt">{propertyData.yearBuilt}</dd>
+                      <dt className="construction">Construction</dt>
+                      <dd className="construction">{propertyData.constructionType}</dd>
+                      <dt className="yearRoofBuilt">Year Roof Built</dt>
+                      <dd className="yearRoofBuilt">{propertyData.yearOfRoof}</dd>
                     </div>
                   </dl>
                   <dl>
                     <div>
-                      <dt>Protection Class</dt>
-                      <dd>{propertyData.protectionClass}</dd>
-                      <dt>BCEG</dt>
-                      <dd>{propertyData.buildingCodeEffectivenessGrading}</dd>
-                      <dt>Family Units</dt>
-                      <dd>{propertyData.familyUnits}</dd>
+                      <dt className="protectionClass">Protection Class</dt>
+                      <dd className="protectionClass">{propertyData.protectionClass}</dd>
+                      <dt className="BCEG">BCEG</dt>
+                      <dd className="BCEG">{propertyData.buildingCodeEffectivenessGrading}</dd>
+                      <dt className="familyUnits">Family Units</dt>
+                      <dd className="familyUnits">{propertyData.familyUnits}</dd>
                     </div>
                   </dl>
                   <dl>
                     <div>
-                      <dt>Dist. to Tidal Waters</dt>
-                      <dd>{normalizeNumbers(propertyData.distanceToTidalWater)} ft.</dd>
-                      <dt>Dist. to Fire Hydrant</dt>
-                      <dd>{propertyData.distanceToFireHydrant ? `${normalizeNumbers(propertyData.distanceToFireHydrant)} ft.` : '-'}</dd>
-                      <dt>Dist. to Fire Station</dt>
-                      <dd>{propertyData.distanceToFireStation} mi.</dd>
+                      <dt className="distToTidalWaters">Dist. to Tidal Waters</dt>
+                      <dd className="distToTidalWaters">{normalizeNumbers(propertyData.distanceToTidalWater)} ft.</dd>
+                      <dt className="distToFireHydrant">Dist. to Fire Hydrant</dt>
+                      <dd className="distToFireHydrant">{propertyData.distanceToFireHydrant ? `${normalizeNumbers(propertyData.distanceToFireHydrant)} ft.` : '-'}</dd>
+                      <dt className="distToFireStation">Dist. to Fire Station</dt>
+                      <dd className="distToFireStation">{propertyData.distanceToFireStation} mi.</dd>
                     </div>
                   </dl>
                   <dl>
                     <div>
-                      <dt>Residence Type</dt>
-                      <dd>{propertyData.residenceType}</dd>
-                      <dt>Square Footage</dt>
-                      <dd>{propertyData.squareFeet}</dd>
-                      <dt>Flood Zone</dt>
-                      <dd>{propertyData.floodZone}</dd>
+                      <dt className="residenceType">Residence Type</dt>
+                      <dd className="residenceType">{propertyData.residenceType}</dd>
+                      <dt className="squareFootage">Square Footage</dt>
+                      <dd className="squareFootage">{propertyData.squareFeet}</dd>
+                      <dt className="floodZone">Flood Zone</dt>
+                      <dd className="floodZone">{propertyData.floodZone}</dd>
                     </div>
                   </dl>
                   <dl>
                     <div>
-                      <dt>Appraiser</dt>
-                      <dd>
+                      <dt className="appraiser">Appraiser</dt>
+                      <dd className="appraiser">
                         <a
                           target="_blank" rel="noopener noreferrer"
                           href={getPropertyAppraisialLink(propertyData.physicalAddress.county, questions).answer}
                         >{getPropertyAppraisialLink(propertyData.physicalAddress.county, questions).label}</a>
                       </dd>
-                      <dt>Territory</dt>
-                      <dd>{_.get(rating, 'worksheet.elements.territoryFactors.name') || '-'}</dd>
+                      <dt className="territory">Territory</dt>
+                      <dd className="territory">{_.get(rating, 'worksheet.elements.territoryFactors.name') || '-'}</dd>
                     </div>
                   </dl>
                 </div>
@@ -301,42 +301,42 @@ export class Coverage extends Component {
                 <div className="wind-mitigation">
                   <dl>
                     <div>
-                      <dt>Roof Covering</dt>
-                      <dd>{property.windMitigation.roofCovering}</dd>
-                      <dt>Roof Deck Attachment</dt>
-                      <dd>{property.windMitigation.roofDeckAttachment}</dd>
-                      <dt>Roof to Wall Attachment</dt>
-                      <dd>{property.windMitigation.roofToWallConnection}</dd>
+                      <dt className="roofCovering">Roof Covering</dt>
+                      <dd className="roofCovering">{property.windMitigation.roofCovering}</dd>
+                      <dt className="roofDeckAttachment">Roof Deck Attachment</dt>
+                      <dd className="roofDeckAttachment">{property.windMitigation.roofDeckAttachment}</dd>
+                      <dt className="roofToWallAttachment">Roof to Wall Attachment</dt>
+                      <dd className="roofToWallAttachment">{property.windMitigation.roofToWallConnection}</dd>
                     </div>
                   </dl>
                   <dl>
                     <div>
-                      <dt>Roof Geometry</dt>
-                      <dd>{property.windMitigation.roofGeometry}</dd>
-                        <dt>Secondary Water Resistance (SWR)</dt>
-                        <dd>{property.windMitigation.secondaryWaterResistance}</dd>
-                        <dt>Opening Protection</dt>
-                        <dd>{property.windMitigation.openingProtection}</dd>
+                      <dt className="roofGeometry">Roof Geometry</dt>
+                      <dd className="roofGeometry">{property.windMitigation.roofGeometry}</dd>
+                        <dt className="SWR">Secondary Water Resistance (SWR)</dt>
+                        <dd className="SWR">{property.windMitigation.secondaryWaterResistance}</dd>
+                        <dt className="openingProtection">Opening Protection</dt>
+                        <dd className="openingProtection">{property.windMitigation.openingProtection}</dd>
                     </div>
                   </dl>
                   <dl>
                     <div>
-                        <dt>FBC Wind Speed</dt>
-                        <dd>{property.windMitigation.floridaBuildingCodeWindSpeed}</dd>
-                        <dt>FBC Wind Speed Design</dt>
-                        <dd>{property.windMitigation.floridaBuildingCodeWindSpeedDesign}</dd>
-                        <dt>Terrain</dt>
-                        <dd>{property.windMitigation.terrain}</dd>
+                        <dt className="windSpeed">FBC Wind Speed</dt>
+                        <dd className="windSpeed">{property.windMitigation.floridaBuildingCodeWindSpeed}</dd>
+                        <dt className="windSpeedDesign">FBC Wind Speed Design</dt>
+                        <dd className="windSpeedDesign">{property.windMitigation.floridaBuildingCodeWindSpeedDesign}</dd>
+                        <dt className="terrain">Terrain</dt>
+                        <dd className="terrain">{property.windMitigation.terrain}</dd>
                     </div>
                   </dl>
                   <dl>
-                    <div>    
-                      <dt>Internal Pressure Design</dt>
-                      <dd>{property.windMitigation.internalPressureDesign}</dd>
-                      <dt>Wind Borne Debris Region (WBDR)</dt>
-                      <dd>{property.windMitigation.windBorneDebrisRegion}</dd>
-                      <dt>Wind Mit Factor</dt>
-                      <dd>{_.get(_.find(discountSurcharge, { discountSurcharge: "Wind Mit Factor" }), 'value')}</dd>
+                    <div>
+                      <dt className="internalPressureDesign">Internal Pressure Design</dt>
+                      <dd className="internalPressureDesign">{property.windMitigation.internalPressureDesign}</dd>
+                      <dt className="WBDR">Wind Borne Debris Region (WBDR)</dt>
+                      <dd className="WBDR">{property.windMitigation.windBorneDebrisRegion}</dd>
+                      <dt className="windMitFactor">Wind Mit Factor</dt>
+                      <dd className="windMitFactor">{_.get(_.find(discountSurcharge, { discountSurcharge: "Wind Mit Factor" }), 'value')}</dd>
                     </div>
                   </dl>
                 </div>

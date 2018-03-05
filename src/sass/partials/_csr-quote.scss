@@ -266,13 +266,13 @@
         flex-shrink: 0;
         width: auto;
         padding: $padding;
-        background: $warm-gray-01;
         border-top: 1px dotted $warm-gray-04;
+        background: $warm-gray-01;
 
         form {
           display: flex;
-          align-items: flex-start;
           align-content: space-between;
+          align-items: flex-start;
           width: 100%;
 
           .btn {
@@ -500,6 +500,10 @@
 }
 
 .modal.quote-summary {
+  form {
+    max-height: 90%;
+  }
+
   .btn-footer.flex-parent {
     align-content: center;
     align-items: flex-end;

@@ -54,10 +54,10 @@ const QuoteSummary = ({
           <p>Click &ldquo;SEND&rdquo; below to generate the Homeowners Application. Once you click &ldquo;SEND&rdquo; no changes can be made to this quote.</p>
         </div>
         <div className="card-footer">
-          <div className="btn-footer">
+
             <button tabIndex="0" className="btn btn-secondary" type="button" onClick={() => showQuoteSummaryModal(false)}>Cancel</button>
             <button tabIndex="0" className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Send</button>
-          </div>
+
         </div>
       </div>
     </Form>
