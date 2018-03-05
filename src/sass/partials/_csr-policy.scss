@@ -397,6 +397,10 @@
                   h4 {
                     margin-bottom: 0;
                     color: $warm-gray-10;
+                    -ms-hyphens: auto;
+                    -moz-hyphens: auto;
+                    -webkit-hyphens: auto;
+                    hyphens: auto;
 
                     &.agency {
                       font-weight: $font-weight-normal;
@@ -405,7 +409,17 @@
                         font-weight: $font-weight-bold;
                       }
 
-                      .agency-legal-name {}
+                      .agency-legal-name {
+                          font-weight: $font-weight-normal;
+                      }
+                    }
+
+                    .agent-code {
+                        font-weight: $font-weight-normal;
+                    }
+
+                    .agent-license {
+                        font-weight: $font-weight-normal;
                     }
                   }
 
@@ -422,6 +436,10 @@
                       display: flex;
                       align-items: center;
                       margin-right: $padding*2;
+
+                      .contact-divider {
+                        margin: 0 ($padding*2) 0 0;
+                      }
 
                       small {
                         margin-right: $padding;
@@ -441,6 +459,22 @@
                           margin-left: 0.1rem;
                           color: $white;
                         }
+                      }
+
+                      &.secondary-phone {
+                          small {
+                              i {
+                                  color: $white;
+                              }
+                          }
+                      }
+
+                      &.csr-phone {
+                          small {
+                              i {
+                                  color: $white;
+                              }
+                          }
                       }
 
                       i {
@@ -464,11 +498,11 @@
                   }
 
                   .additional-contacts {
-                    margin-top: 1rem;
+                    margin-top: $padding;
                     border-top: 1px dotted $warm-gray-01;
 
                     ul {
-                      margin: 1rem 0 0;
+                      margin: $padding 0 0;
                       padding: 0;
                       list-style: none;
 
@@ -590,12 +624,14 @@
               font-weight: normal;
             }
 
-            .property-info {
+            .property-info,
+            .wind-mitigation {
               justify-content: space-between;
             }
 
             .payment-summary,
-            .property-info {
+            .property-info,
+            .wind-mitigation {
               display: flex;
 
               &.grid {
@@ -659,7 +695,8 @@
               }
             }
 
-            .property-info {
+            .property-info,
+            .wind-mitigation {
               justify-content: space-between;
             }
 
@@ -730,6 +767,18 @@
                   tbody tr:nth-of-type(even) > td {
                     background: rgba($green-lighten-04, .2);
                   }
+
+                  .coverage {
+                    width: 30%;
+                  }
+
+                  .value {
+                    width: 70%;
+                    -ms-hyphens: auto;
+                    -moz-hyphens: auto;
+                    -webkit-hyphens: auto;
+                    hyphens: auto;
+                  }
                 }
 
                 .coverage,
@@ -741,6 +790,7 @@
                 .value {
                   width: 40%;
                   padding: $padding ($padding*1.5);
+                  white-space: normal;
                 }
               }
             }
