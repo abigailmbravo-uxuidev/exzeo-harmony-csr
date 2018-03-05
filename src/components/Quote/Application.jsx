@@ -19,7 +19,7 @@ const handleInitialize = (state) => {
   return formValues;
 };
 
-export const handleGetUnderwritingExceptions = state => state.service.quote && state.service.quote.underwritingExceptions ? state.service.quote.underwritingExceptions : [];
+export const handleGetUnderwritingExceptions = state => (state.service.quote && state.service.quote.underwritingExceptions ? state.service.quote.underwritingExceptions : []);
 
 export const handleFormSubmit = (data, dispatch, props) => {
   const { appState, actions } = props;
@@ -28,12 +28,13 @@ export const handleFormSubmit = (data, dispatch, props) => {
   const workflowId = appState.instanceId;
 
   props.actions.appStateActions.setAppState(
-      appState.modelName,
-      props.appState.instanceId,
+    appState.modelName,
+    props.appState.instanceId,
     {
       ...props.appState.data,
       applicationSubmitting: true
-    });
+    }
+  );
 
   const steps = [
     { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
@@ -43,9 +44,9 @@ export const handleFormSubmit = (data, dispatch, props) => {
     }
   ];
   actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
-  .then(() => {
-    props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
-  });
+    .then(() => {
+      props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
+    });
 };
 
 export const quoteSummaryModal = (props) => {
@@ -60,7 +61,6 @@ export const quoteSummaryModal = (props) => {
 const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
 
 export class QuoteApplication extends Component {
-
   componentDidMount() {
     if (this.props.appState.instanceId) {
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
@@ -68,32 +68,29 @@ export class QuoteApplication extends Component {
         submitting: true
       });
       const steps = [
-    { name: 'hasUserEnteredData', data: { answer: 'No' } },
-    { name: 'moveTo', data: { key: 'application' } }
+        { name: 'hasUserEnteredData', data: { answer: 'No' } },
+        { name: 'moveTo', data: { key: 'application' } }
       ];
       const workflowId = this.props.appState.instanceId;
 
       this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
-    .then(() => {
-      this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
-      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
-        ...this.props.appState.data,
-        selectedLink: 'application'
-      });
-    });
+        .then(() => {
+          this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
+          this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+            ...this.props.appState.data,
+            selectedLink: 'application'
+          });
+        });
     }
   }
 
   render() {
-    const { appState, handleSubmit, underwritingExceptions, quoteData } = this.props;
-
-    const redirect = (this.props.activateRedirect)
-    ? (<Redirect to={this.props.activateRedirectLink} />)
-    : null;
+    const {
+      appState, handleSubmit, underwritingExceptions, quoteData
+    } = this.props;
 
     return (
       <QuoteBaseConnect>
-        { redirect }
         <div className="route-content verify workflow">
           <Form id="Application" onSubmit={handleSubmit(() => quoteSummaryModal(this.props))} noValidate>
             <div className="scroll">
@@ -105,7 +102,6 @@ export class QuoteApplication extends Component {
                     </div>
                   </div>
                 }
-
               </div>
             </div>
           </Form>
@@ -115,11 +111,14 @@ export class QuoteApplication extends Component {
           <Footer />
           <div className="btn-wrapper">
             <button
-              tabIndex={'0'}
+              tabIndex="0"
               aria-label="submit-btn form-application"
               form="Application"
-              className="btn btn-primary" type="submit" disabled={(underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0) || checkQuoteState(quoteData)}
-            >Send to DocuSign</button>
+              className="btn btn-primary"
+              type="submit"
+              disabled={(underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0) || checkQuoteState(quoteData)}
+            >Send to DocuSign
+            </button>
           </div>
         </div>
       </QuoteBaseConnect>
