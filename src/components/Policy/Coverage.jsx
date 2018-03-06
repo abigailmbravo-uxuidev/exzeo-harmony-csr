@@ -63,7 +63,7 @@ export class Coverage extends Component {
     underwritingAnswers
   } = this.props.policy;
 
-    const { questions, summaryLedger, paymentOptions } = this.props;
+    const { policy, questions, summaryLedger, paymentOptions } = this.props;
 
     const discountSurcharge = [
       {
@@ -164,10 +164,10 @@ export class Coverage extends Component {
       },
       {
         coverage: 'Bill To',
-        value: `${_.get(_.find(_.get(paymentOptions, 'options'), option => option.billToId === _.get(summaryLedger, 'billToId')), 'displayText')}`
+        value: `${_.get(_.find(_.get(paymentOptions, 'options'), option => option.billToId === _.get(policy, 'billToId')), 'displayText')}`
       }, {
         coverage: 'Bill Plan',
-        value: _.get(summaryLedger, 'billPlan')
+        value: _.get(policy, 'billPlan')
       }
     ];
 

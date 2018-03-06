@@ -40,9 +40,9 @@ export const DateInput = ({
     <div className={formGroupStyles} id={name}>
       {Label}
       <input
-        tabIndex={'0'}
+        tabIndex="0"
         {...input}
-        type={'date'}
+        type="date"
         min={min}
         max={max}
       />

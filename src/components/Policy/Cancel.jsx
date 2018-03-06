@@ -19,15 +19,21 @@ import * as policyStateActions from '../../actions/policyStateActions';
 import Footer from '../Common/Footer';
 import Loader from '../Common/Loader';
 
+const convertDateToTimeZone = (date, zipCodeSettings) => {
+  const formattedDateString = date.format('YYYY-MM-DD');
+  return moment.tz(formattedDateString, zipCodeSettings.timezone).utc();
+};
 export const handleInitialize = (state) => {
   const summaryLedger = state.service.getSummaryLedger || {};
+  const zipCodeSettings = state.service.getZipcodeSettings || {};
+  const latestDate = convertDateToTimeZone(moment.utc(), zipCodeSettings) > convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings) ? convertDateToTimeZone(moment.utc(), zipCodeSettings).format('YYYY-MM-DD') : convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings).format('YYYY-MM-DD');
   return ({
-    equityDate: summaryLedger.equityDate ? moment.utc(summaryLedger.equityDate).format('MM/DD/YYYY') : '',
-    effectiveDate: moment.utc().format('YYYY-MM-DD')
+    equityDate: moment.utc(summaryLedger.equityDate).format('MM/DD/YYYY'),
+    effectiveDate: latestDate
   });
 };
 
-const amountFormatter = cell => cell.$numberDecimal ? Number(cell.$numberDecimal).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '';
+const amountFormatter = cell => (cell.$numberDecimal ? Number(cell.$numberDecimal).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '');
 const dateFormatter = cell => `${cell.substring(0, 10)}`;
 
 export const Payments = ({ payments }) => {
@@ -105,14 +111,16 @@ export const resetCancelReasons = (props) => {
 };
 
 export class CancelPolicy extends React.Component {
-  componentDidMount(){
+  componentDidMount() {
     if (this.props.appState && this.props.appState.instanceId) {
       const workflowId = this.props.appState.instanceId;
       this.props.actions.appStateActions.setAppState(this.props.appState.modelName, workflowId, { ...this.props.appState.data, isSubmitting: false });
-    }  
+    }
   }
   componentWillReceiveProps(nextProps) {
-    const { actions, policy, summaryLedger } = nextProps;
+    const {
+      actions, policy, summaryLedger, zipCodeSettings
+    } = nextProps;
     if (policy && policy.policyNumber) {
       actions.serviceActions.getSummaryLedger(policy.policyNumber);
       serviceActions.getPaymentHistory(policy.policyNumber);
@@ -128,10 +136,21 @@ export class CancelPolicy extends React.Component {
 
       actions.serviceActions.getBillingOptionsForPolicy(paymentOptions);
     }
+    const isUnderwriting = (nextProps.fieldValues.cancelType === 'Underwriting Cancellation' || nextProps.fieldValues.cancelType === 'Underwriting Non-Renewal');
+    if (isUnderwriting && convertDateToTimeZone(moment.utc(), zipCodeSettings) <= convertDateToTimeZone(moment.utc(policy.issueDate), zipCodeSettings).add(90, 'days')) {
+      nextProps.dispatch(change('CancelPolicy', 'effectiveDate', convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings).add(20, 'days').format('YYYY-MM-DD')));
+    } else if (isUnderwriting && convertDateToTimeZone(moment.utc(), zipCodeSettings) > convertDateToTimeZone(moment.utc(policy.issueDate), zipCodeSettings).add(90, 'days')) {
+      nextProps.dispatch(change('CancelPolicy', 'effectiveDate', convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings).add(120, 'days').format('YYYY-MM-DD')));
+    } else if (nextProps.fieldValues.cancelType === 'Voluntary Cancellation') {
+      const latestDate = convertDateToTimeZone(moment.utc(), zipCodeSettings) > convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings) ? convertDateToTimeZone(moment.utc(), zipCodeSettings).format('YYYY-MM-DD') : convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings).format('YYYY-MM-DD');
+      nextProps.dispatch(change('CancelPolicy', 'effectiveDate', latestDate));
+    }
   }
 
   render() {
-    const { handleSubmit, fieldValues, cancelOptions, pristine } = this.props;
+    const {
+      handleSubmit, fieldValues, cancelOptions, pristine
+    } = this.props;
 
     const cancelGroup = _.map(cancelOptions, option => ({ answer: option.cancelType }));
     return (
@@ -148,49 +167,57 @@ export class CancelPolicy extends React.Component {
                     <div className="flex-child">
                       <RadioField
                         onChange={() => resetCancelReasons(this.props)}
-                        validations={['required']} name={'cancelType'} styleName={''} label={'Cancel Type'} segmented
+                        validations={['required']}
+                        name="cancelType"
+                        styleName=""
+                        label="Cancel Type"
+                        segmented
                         answers={cancelGroup}
                       />
                     </div>
                     <div className="flex-child date">
-                      <DateField validations={['required']} label={'Effective Date'} name={'effectiveDate'} />
+                      <DateField validations={['required']} label="Effective Date" name="effectiveDate" />
                     </div>
                   </div>
                   <div className="flex-parent">
                     <div className="flex-child">
                       <SelectField
-                        name="cancelReason" component="select" styleName={''} label="Cancel Reason" validations={['required']}
+                        name="cancelReason"
+                        component="select"
+                        styleName=""
+                        label="Cancel Reason"
+                        validations={['required']}
                         answers={_.concat([], _.get(_.find(cancelOptions, option => option.cancelType === fieldValues.cancelType), 'cancelReason')).map(reason => ({
                           answer: reason,
                           label: reason
                         }))}
                       />
                       {(fieldValues.cancelType === 'Underwriting Cancellation' || fieldValues.cancelType === 'Underwriting Non-Renewal') ?
-                        <TextField label={'Additional Reason'} name={'additionalReason'} /> : <HiddenField label={'Additional Reason'} name={'additionalReason'} />
+                        <TextField label="Additional Reason" name="additionalReason" /> : <HiddenField label="Additional Reason" name="additionalReason" />
                       }
                     </div>
                   </div>
 
                 </section>
-                {/* PAYMENTS SECTION*/}
+                {/* PAYMENTS SECTION */}
                 <section>
                   <h3>Payments</h3>
                   <div className="form-group flex-parent billing">
                     <div className="flex-child">
                       <label>Bill To</label>
-                      <div>{_.get(_.find(_.get(this.props.paymentOptions, 'options'), option => option.billToId === _.get(this.props.summaryLedger, 'billToId')), 'displayText')}</div>
+                      <div>{_.get(_.find(_.get(this.props.paymentOptions, 'options'), option => option.billToId === _.get(this.props.policy, 'billToId')), 'displayText')}</div>
                     </div>
                     <div className="flex-child">
                       <label>Bill Plan</label>
                       <div>{_.get(this.props.summaryLedger, 'billPlan')}</div>
                     </div>
                     <div className="flex-child date">
-                      <TextField disabled label="Equity Date" name={'equityDate'} />
+                      <TextField disabled label="Equity Date" name="equityDate" />
                     </div>
                   </div>
                   <Payments payments={this.props.paymentHistory || []} />
                 </section>
-                {/* CLAIMS SECTION*/}
+                {/* CLAIMS SECTION */}
                 <section>
                   <h3>Claims</h3>
                   <Claims />
@@ -200,10 +227,10 @@ export class CancelPolicy extends React.Component {
           </div>
           <div className="basic-footer btn-footer">
             <Footer />
-            {/* TODO: RESET button should reset form / CANCEL POLICY button should be disabled if form is clean/untouched*/}
+            {/* TODO: RESET button should reset form / CANCEL POLICY button should be disabled if form is clean/untouched */}
             <div className="btn-wrapper">
-              <button tabIndex={'0'} disabled={pristine} aria-label="reset-btn form-cancel" type="button" className="btn btn-secondary" onClick={() => this.props.reset('CancelPolicy')}>Reset</button>
-              <button tabIndex={'0'} disabled={pristine} aria-label="reset-btn form-cancel" type="submit" className="btn btn-primary">Cancel Policy</button>
+              <button tabIndex="0" disabled={pristine} aria-label="reset-btn form-cancel" type="button" className="btn btn-secondary" onClick={() => this.props.reset('CancelPolicy')}>Reset</button>
+              <button tabIndex="0" disabled={pristine} aria-label="reset-btn form-cancel" type="submit" className="btn btn-primary">Cancel Policy</button>
             </div>
           </div>
         </Form>
