@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { reduxForm, Form, propTypes } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
 import _ from 'lodash';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
