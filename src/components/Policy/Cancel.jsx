@@ -136,14 +136,21 @@ export class CancelPolicy extends React.Component {
 
       actions.serviceActions.getBillingOptionsForPolicy(paymentOptions);
     }
-    const isUnderwriting = (nextProps.fieldValues.cancelType === 'Underwriting Cancellation' || nextProps.fieldValues.cancelType === 'Underwriting Non-Renewal');
-    if (isUnderwriting && convertDateToTimeZone(moment.utc(), zipCodeSettings) <= convertDateToTimeZone(moment.utc(policy.issueDate), zipCodeSettings).add(90, 'days')) {
-      nextProps.dispatch(change('CancelPolicy', 'effectiveDate', convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings).add(20, 'days').format('YYYY-MM-DD')));
-    } else if (isUnderwriting && convertDateToTimeZone(moment.utc(), zipCodeSettings) > convertDateToTimeZone(moment.utc(policy.issueDate), zipCodeSettings).add(90, 'days')) {
-      nextProps.dispatch(change('CancelPolicy', 'effectiveDate', convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings).add(120, 'days').format('YYYY-MM-DD')));
-    } else if (nextProps.fieldValues.cancelType === 'Voluntary Cancellation') {
-      const latestDate = convertDateToTimeZone(moment.utc(), zipCodeSettings) > convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings) ? convertDateToTimeZone(moment.utc(), zipCodeSettings).format('YYYY-MM-DD') : convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings).format('YYYY-MM-DD');
-      nextProps.dispatch(change('CancelPolicy', 'effectiveDate', latestDate));
+
+    if (this.props.fieldValues.cancelType !== nextProps.fieldValues.cancelType) {
+      if (nextProps.fieldValues.cancelType === 'Underwriting Cancellation') {
+        if (convertDateToTimeZone(moment.utc(), zipCodeSettings) <= convertDateToTimeZone(moment.utc(policy.issueDate), zipCodeSettings).add(90, 'days')) {
+          nextProps.dispatch(change('CancelPolicy', 'effectiveDate', convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings).add(20, 'days').format('YYYY-MM-DD')));
+        } else if (convertDateToTimeZone(moment.utc(), zipCodeSettings) > convertDateToTimeZone(moment.utc(policy.issueDate), zipCodeSettings).add(90, 'days')) {
+          nextProps.dispatch(change('CancelPolicy', 'effectiveDate', convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings).add(120, 'days').format('YYYY-MM-DD')));
+        }
+      } else if (nextProps.fieldValues.cancelType === 'Voluntary Cancellation') {
+        const latestDate = convertDateToTimeZone(moment.utc(), zipCodeSettings) > convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings) ? convertDateToTimeZone(moment.utc(), zipCodeSettings).format('YYYY-MM-DD') : convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings).format('YYYY-MM-DD');
+        nextProps.dispatch(change('CancelPolicy', 'effectiveDate', latestDate));
+      } else if (nextProps.fieldValues.cancelType === 'Underwriting Non-Renewal') {
+        const endDate = convertDateToTimeZone(moment.utc(policy.endDate), zipCodeSettings).format('YYYY-MM-DD');
+        nextProps.dispatch(change('CancelPolicy', 'effectiveDate', endDate));
+      }
     }
   }
 
