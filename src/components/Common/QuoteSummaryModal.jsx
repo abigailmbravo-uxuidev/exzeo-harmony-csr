@@ -34,14 +34,14 @@ const QuoteSummary = ({
             <li className="scriptInfo margin bottom">Home is in flood zone: {quoteData.property.floodZone}</li>
             }
             <li className="script margin bottom">Does the property have any existing unrepaired damage?</li>
-            <li className="script">What is the roof covering on the home? What is the roof&rsquo;s age?
+            <li className="script">What is the roof covering on the home?
               <ul>
                 <li className="scriptInfo">Asphalt, Fiberglass, Composition/Wood Shake Shingles, Built-up Tar and Gravel</li>
                 <li className="script">Is the roof over 20 years old?</li>
-                <li className="scriptInfo margin bottom">Newer than: {new Date().getFullYear() - 20}</li>
+                <li className="scriptInfo margin bottom">Before: {new Date().getFullYear() - 20}</li>
                 <li className="scriptInfo">Tile, Slate, Concrete, or Metal</li>
                 <li className="script">Is roof over 40 years old?</li>
-                <li className="scriptInfo margin bottom">Newer than: {new Date().getFullYear() - 40}</li>
+                <li className="scriptInfo margin bottom">Before: {new Date().getFullYear() - 40}</li>
               </ul>
             </li>
           </ul>
