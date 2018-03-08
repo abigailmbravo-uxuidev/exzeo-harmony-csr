@@ -138,18 +138,23 @@ export class CancelPolicy extends React.Component {
     }
 
     if (this.props.fieldValues.cancelType !== nextProps.fieldValues.cancelType) {
+      const now = convertDateToTimeZone(moment.utc(), zipCodeSettings);
+      const issueDate = convertDateToTimeZone(moment.utc(policy.issueDate), zipCodeSettings);
+      const efffectiveDate = convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings);
+
       if (nextProps.fieldValues.cancelType === 'Underwriting Cancellation') {
-        if (convertDateToTimeZone(moment.utc(), zipCodeSettings) <= convertDateToTimeZone(moment.utc(policy.issueDate), zipCodeSettings).add(90, 'days')) {
-          nextProps.dispatch(change('CancelPolicy', 'effectiveDate', convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings).add(20, 'days').format('YYYY-MM-DD')));
-        } else if (convertDateToTimeZone(moment.utc(), zipCodeSettings) > convertDateToTimeZone(moment.utc(policy.issueDate), zipCodeSettings).add(90, 'days')) {
-          nextProps.dispatch(change('CancelPolicy', 'effectiveDate', convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings).add(120, 'days').format('YYYY-MM-DD')));
+        if (now.isBefore(issueDate.add(90, 'days'))) {
+          const notice = now.isBefore(efffectiveDate) ? efffectiveDate : now;
+          nextProps.dispatch(change('CancelPolicy', 'effectiveDate', notice.add(20, 'days').format('YYYY-MM-DD')));
+        } else {
+          nextProps.dispatch(change('CancelPolicy', 'effectiveDate', now.add(120, 'days').format('YYYY-MM-DD')));
         }
       } else if (nextProps.fieldValues.cancelType === 'Voluntary Cancellation') {
-        const latestDate = convertDateToTimeZone(moment.utc(), zipCodeSettings) > convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings) ? convertDateToTimeZone(moment.utc(), zipCodeSettings).format('YYYY-MM-DD') : convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings).format('YYYY-MM-DD');
-        nextProps.dispatch(change('CancelPolicy', 'effectiveDate', latestDate));
+        const latestDate = now > efffectiveDate ? now : efffectiveDate;
+        nextProps.dispatch(change('CancelPolicy', 'effectiveDate', latestDate.format('YYYY-MM-DD')));
       } else if (nextProps.fieldValues.cancelType === 'Underwriting Non-Renewal') {
-        const endDate = convertDateToTimeZone(moment.utc(policy.endDate), zipCodeSettings).format('YYYY-MM-DD');
-        nextProps.dispatch(change('CancelPolicy', 'effectiveDate', endDate));
+        const endDate = convertDateToTimeZone(moment.utc(policy.endDate), zipCodeSettings);
+        nextProps.dispatch(change('CancelPolicy', 'effectiveDate', endDate.format('YYYY-MM-DD')));
       }
     }
   }
