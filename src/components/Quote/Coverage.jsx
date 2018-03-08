@@ -550,12 +550,12 @@ export class Coverage extends Component {
                       </div>
                       <div className="flex-child">
                         <Field
-                          disabled={checkSentToDocusign(quoteData.quoteState)}
                           onChange={event => clearSecondaryPolicyholder(String(event.target.value) === 'false', this.props)}
                           name="clearFields"
                           id="clearFields"
                           component="input"
                           type="checkbox"
+                          disabled={checkSentToDocusign(quoteData.quoteState) || !(quoteData && quoteData.policyHolders && quoteData.policyHolders[1])}
                         />
                         <label htmlFor="clearFields"> Remove</label>
                       </div>
