@@ -6,24 +6,25 @@
 
         &.margin {
           &.bottom {
-            margin-bottom: $padding;
+            margin-bottom: $padding*2;
           }
         }
 
         &.script {
           color: $warm-gray-14;
           font-size: $font-size-base;
-          font-weight: $font-weight-bold;
-          font-style: italic;
         }
 
         &.scriptInfo {
           color: $warm-gray-12;
+          font-size: $font-size-sm;
+          font-weight: $font-weight-bold;
         }
       }
 
       ul {
         list-style-type: none;
+        padding: 0  0 0 $padding*2;
 
         li {
           &.margin {
@@ -35,8 +36,6 @@
           &.script {
             color: $warm-gray-14;
             font-size: $font-size-base;
-            font-weight: $font-weight-bold;
-            font-style: italic;
 
             &:before {
               display: inline-block;
@@ -51,9 +50,13 @@
 
           &.scriptInfo {
             color: $warm-gray-12;
-            font-size: $font-size-base;
+            font-size: $font-size-sm;
             font-style: normal;
-            font-weight: $font-weight-normal;
+            font-weight: $font-weight-bold;
+          }
+
+          ul {
+              margin-top: $padding;
           }
         }
       }

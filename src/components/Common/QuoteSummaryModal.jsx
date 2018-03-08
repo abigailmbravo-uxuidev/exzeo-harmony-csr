@@ -50,8 +50,8 @@ const QuoteSummary = ({
           <p className="scriptInfo">If no adverse information</p>
           <p className="script margin bottom">We will generate the Homeowners Application and e-mail it to:</p>
           <ul>
-            { quoteData.policyHolders && quoteData.policyHolders[0] && <li className="script">{`${quoteData.policyHolders[0].firstName} ${quoteData.policyHolders[0].lastName}  (${quoteData.policyHolders[0].emailAddress})`}</li>}
-            { quoteData.policyHolders && quoteData.policyHolders[1] && <li className="script">{`${quoteData.policyHolders[1].firstName} ${quoteData.policyHolders[1].lastName} (${quoteData.policyHolders[1].emailAddress})`}</li>}
+            { quoteData.policyHolders && quoteData.policyHolders[0] && <li className="script"><strong>{`${quoteData.policyHolders[0].firstName} ${quoteData.policyHolders[0].lastName}  (${quoteData.policyHolders[0].emailAddress})`}</strong></li>}
+            { quoteData.policyHolders && quoteData.policyHolders[1] && <li className="script"><strong>{`${quoteData.policyHolders[1].firstName} ${quoteData.policyHolders[1].lastName} (${quoteData.policyHolders[1].emailAddress})`}</strong></li>}
           </ul>
           <p className="script margin bottom">
             {quoteData.policyHolders && quoteData.policyHolders.length === 1 && 'Is this the correct email address?'}
