@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { reduxForm, Form, propTypes } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
 import _ from 'lodash';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
@@ -32,7 +31,8 @@ export const handleFormSubmit = (data, dispatch, props) => {
     props.appState.instanceId,
     {
       ...props.appState.data,
-      applicationSubmitting: true
+      applicationSubmitting: true,
+      applicationSent: true
     }
   );
 
@@ -45,6 +45,13 @@ export const handleFormSubmit = (data, dispatch, props) => {
   ];
   actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
     .then(() => {
+      props.actions.appStateActions.setAppState(
+        appState.modelName,
+        props.appState.instanceId,
+        {
+          applicationSent: true
+        }
+      );
       props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
     });
 };
@@ -116,7 +123,7 @@ export class QuoteApplication extends Component {
               form="Application"
               className="btn btn-primary"
               type="submit"
-              disabled={(underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0) || checkQuoteState(quoteData)}
+              disabled={(underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0) || checkQuoteState(quoteData) || appState.data.applicationSent}
             >Send to DocuSign
             </button>
           </div>
