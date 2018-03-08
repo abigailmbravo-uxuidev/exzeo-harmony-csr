@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Form, propTypes } from 'redux-form';
-
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
@@ -28,19 +27,21 @@ const QuoteSummary = ({
                 <li className="script margin bottom">Are there any slides or diving boards?</li>
               </ul>
             </li>
-            {/*SHOW IF IN FLOOD ZONE A or V*/}
+            { quoteData.property && (quoteData.property.floodZone === 'A' || quoteData.property.floodZone === 'V') &&
             <li className="script">Do you maintain a separate flood policy?</li>
-            <li className="scriptInfo margin bottom">Home is in flood zone: {/*FLOOD ZONE*/}</li>
-            {/*END SHOW IF IN FLOOD ZONE A or V*/}
+            }
+            { quoteData.property && (quoteData.property.floodZone === 'A' || quoteData.property.floodZone === 'V') &&
+            <li className="scriptInfo margin bottom">Home is in flood zone: {quoteData.property.floodZone}</li>
+            }
             <li className="script margin bottom">Does the property have any existing unrepaired damage?</li>
             <li className="script">What is the roof covering on the home? What is the roof&rsquo;s age?
               <ul>
                 <li className="scriptInfo">Asphalt, Fiberglass, Composition/Wood Shake Shingles, Built-up Tar and Gravel</li>
                 <li className="script">Is the roof over 20 years old?</li>
-                <li className="scriptInfo margin bottom">Newer than: {/*Current year - 20*/}</li>
+                <li className="scriptInfo margin bottom">Newer than: {new Date().getFullYear() - 20}</li>
                 <li className="scriptInfo">Tile, Slate, Concrete, or Metal</li>
                 <li className="script">Is roof over 40 years old?</li>
-                <li className="scriptInfo margin bottom">Newer than: {/*Current year - 40*/}</li>
+                <li className="scriptInfo margin bottom">Newer than: {new Date().getFullYear() - 40}</li>
               </ul>
             </li>
           </ul>
@@ -53,17 +54,17 @@ const QuoteSummary = ({
             { quoteData.policyHolders && quoteData.policyHolders[1] && <li className="script">{`${quoteData.policyHolders[1].firstName} ${quoteData.policyHolders[1].lastName} (${quoteData.policyHolders[1].emailAddress})`}</li>}
           </ul>
           <p className="script margin bottom">
-            {/*SHOW IF ONLY 1 POLICYHOLDER*/}Is this{/*END SHOW IF ONLY 1 POLICYHOLDER*/}
-            {/*SHOW IF MORE THAN 1 POLICYHOLDER*/}Are these {/*END SHOW IF MORE THAN  1 POLICYHOLDER*/}
-            the correct email address{/*SHOW IF MORE THAN 1 POLICYHOLDER*/}(es){/*END SHOW IF MORE THAN  1 POLICYHOLDER*/}?</p>
+            {quoteData.policyHolders && quoteData.policyHolders.length === 1 && 'Is this the correct email address?'}
+            {quoteData.policyHolders && quoteData.policyHolders.length > 1 && 'Are these the correct email addresses?'}
+          </p>
           <p className="script margin bottom">Once all electronic signatures have been received, the policy will automatically be bound and the policy documents will be emailed to you.</p>
           <p className="script margin bottom">PLEASE NOTE: All signatures must be completed within 10 days, or the application will expire.</p>
           <p className="script margin bottom">All properties are inspected within 30 days of the effective date. One of our representatives will be in contact with you to schedule it. Please plan to have someone present at the inspection as the inspector will need to enter the home.</p>
           <p className="scriptInfo margin bottom">Click &ldquo;SEND&rdquo; below to generate the Homeowners Application. Once you click &ldquo;SEND&rdquo; no changes can be made to this quote.</p>
         </div>
         <div className="card-footer">
-            <button tabIndex="0" className="btn btn-secondary" type="button" onClick={() => showQuoteSummaryModal(false)}>Cancel</button>
-            <button tabIndex="0" className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Send</button>
+          <button tabIndex="0" className="btn btn-secondary" type="button" onClick={() => showQuoteSummaryModal(false)}>Cancel</button>
+          <button tabIndex="0" className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Send</button>
         </div>
       </div>
     </Form>
