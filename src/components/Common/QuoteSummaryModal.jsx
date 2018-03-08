@@ -20,12 +20,12 @@ const QuoteSummary = ({
           <h4><i className="fa fa-envelope" /> Congratulations</h4>
         </div>
         <div className="card-block user-script">
-          <p className="script">I need to confirm a few more items prior to sending the application</p>
+          <p className="script margin bottom">I need to confirm a few more items prior to sending the application</p>
           <ul>
             <li className="script">Do you have a pool or similar structure on the property?
               <ul>
                 <li className="script">Is it completely fenced, walled, or screened?</li>
-                <li className="script">Are there any slides or diving boards?</li>
+                <li className="script margin bottom">Are there any slides or diving boards?</li>
               </ul>
             </li>
             {/*SHOW IF IN FLOOD ZONE A or V*/}
@@ -45,7 +45,7 @@ const QuoteSummary = ({
             </li>
           </ul>
           <p className="scriptInfo">If any adverse information</p>
-          <p className="script">Your policy request will be referred to Underwriting for review.</p>
+          <p className="script margin bottom">Your policy request will be referred to Underwriting for review.</p>
           <p className="scriptInfo">If no adverse information</p>
           <p className="script margin bottom">We will generate the Homeowners Application and e-mail it to:</p>
           <ul>
@@ -58,7 +58,7 @@ const QuoteSummary = ({
             the correct email address{/*SHOW IF MORE THAN 1 POLICYHOLDER*/}(es){/*END SHOW IF MORE THAN  1 POLICYHOLDER*/}?</p>
           <p className="script margin bottom">Once all electronic signatures have been received, the policy will automatically be bound and the policy documents will be emailed to you.</p>
           <p className="script margin bottom">PLEASE NOTE: All signatures must be completed within 10 days, or the application will expire.</p>
-          <p className="script">All properties are inspected within 30 days of the effective date. One of our representatives will be in contact with you to schedule it. Please plan to have someone present at the inspection as the inspector will need to enter the home.</p>
+          <p className="script margin bottom">All properties are inspected within 30 days of the effective date. One of our representatives will be in contact with you to schedule it. Please plan to have someone present at the inspection as the inspector will need to enter the home.</p>
           <p className="scriptInfo margin bottom">Click &ldquo;SEND&rdquo; below to generate the Homeowners Application. Once you click &ldquo;SEND&rdquo; no changes can be made to this quote.</p>
         </div>
         <div className="card-footer">

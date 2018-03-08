@@ -12,7 +12,7 @@
 
         &.script {
           color: $warm-gray-14;
-          font-size: $font-size-h4;
+          font-size: $font-size-base;
           font-weight: $font-weight-bold;
           font-style: italic;
         }
@@ -34,7 +34,7 @@
 
           &.script {
             color: $warm-gray-14;
-            font-size: $font-size-h4;
+            font-size: $font-size-base;
             font-weight: $font-weight-bold;
             font-style: italic;
 
@@ -42,7 +42,7 @@
               display: inline-block;
               width: 0.25rem;
               height: 0.25rem;
-              margin-right: $padding;
+              margin: ($padding/3) $padding ($padding/3) 0;
               content: '';
               border-radius: 50%;
               background: $warm-gray-14;
