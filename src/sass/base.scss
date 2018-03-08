@@ -30,6 +30,7 @@
 @import "partials/_uppy";
 @import "partials/_user-admin";
 @import "partials/_pagination";
+@import "partials/_user-script";
 @import "https://fonts.googleapis.com/css?family=Roboto:100,300,500"; //base
 //links
 /*------------------------------------------------------------------------------------*/
@@ -1527,7 +1528,7 @@ ul.list-cards {
                 &.font-size-base {
                   font-size: $font-size-base;
                 }
-                
+
                 &.policy-status {
                     line-height: 1.02;
                 }

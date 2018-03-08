@@ -1,0 +1,62 @@
+.card {
+  .card-block {
+    &.user-script {
+      p {
+        margin: 0;
+
+        &.margin {
+          &.bottom {
+            margin-bottom: $padding;
+          }
+        }
+
+        &.script {
+          color: $warm-gray-14;
+          font-size: $font-size-h4;
+          font-weight: $font-weight-bold;
+          font-style: italic;
+        }
+
+        &.scriptInfo {
+          color: $warm-gray-12;
+        }
+      }
+
+      ul {
+        list-style-type: none;
+
+        li {
+          &.margin {
+            &.bottom {
+              margin-bottom: $padding*2;
+            }
+          }
+
+          &.script {
+            color: $warm-gray-14;
+            font-size: $font-size-h4;
+            font-weight: $font-weight-bold;
+            font-style: italic;
+
+            &:before {
+              display: inline-block;
+              width: 0.25rem;
+              height: 0.25rem;
+              margin-right: $padding;
+              content: '';
+              border-radius: 50%;
+              background: $warm-gray-14;
+            }
+          }
+
+          &.scriptInfo {
+            color: $warm-gray-12;
+            font-size: $font-size-base;
+            font-style: normal;
+            font-weight: $font-weight-normal;
+          }
+        }
+      }
+    }
+  }
+}
