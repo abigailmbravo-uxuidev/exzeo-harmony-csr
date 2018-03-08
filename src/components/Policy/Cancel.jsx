@@ -144,8 +144,8 @@ export class CancelPolicy extends React.Component {
 
       if (nextProps.fieldValues.cancelType === 'Underwriting Cancellation') {
         if (now.isBefore(issueDate.add(90, 'days'))) {
-          const twentyDayNotice = now.isBefore(efffectiveDate) ? efffectiveDate : now;
-          nextProps.dispatch(change('CancelPolicy', 'effectiveDate', twentyDayNotice.add(20, 'days').format('YYYY-MM-DD')));
+          const notice = now.isBefore(efffectiveDate) ? efffectiveDate : now;
+          nextProps.dispatch(change('CancelPolicy', 'effectiveDate', notice.add(20, 'days').format('YYYY-MM-DD')));
         } else {
           nextProps.dispatch(change('CancelPolicy', 'effectiveDate', now.add(120, 'days').format('YYYY-MM-DD')));
         }
