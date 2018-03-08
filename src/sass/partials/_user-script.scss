@@ -1,6 +1,13 @@
 .card {
   .card-block {
     &.user-script {
+
+      hr {
+          background: none;
+          border: 0;
+          border-bottom: 1px dashed $warm-gray-02;
+      }
+
       p {
         margin: 0;
 
@@ -16,7 +23,7 @@
         }
 
         &.scriptInfo {
-          color: $warm-gray-12;
+          color: $warm-gray-14;
           font-size: $font-size-sm;
           font-weight: $font-weight-bold;
         }
@@ -49,7 +56,7 @@
           }
 
           &.scriptInfo {
-            color: $warm-gray-12;
+            color: $warm-gray-14;
             font-size: $font-size-sm;
             font-style: normal;
             font-weight: $font-weight-bold;
