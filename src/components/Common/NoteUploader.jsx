@@ -112,7 +112,7 @@ export class Uploader extends Component {
   docTypes = this.props.noteType ? this.docTypeOptions[this.props.noteType] : [];
 
   submitNote = (data, dispatch, props) => {
-    const { actions, user, noteType, documentId } = props;
+    const { actions, user, noteType, documentId, sourceId } = props;
     const attachments = Object.values(this.uppy.getState().files);
     if(!user.given_name || !user.family_name) {
       const message = 'There was a problem with your user profile. Please logout of Harmony and try logging in again.';
@@ -122,6 +122,7 @@ export class Uploader extends Component {
     }
     const noteData = {
       number: documentId,
+      source: sourceId,
       noteType,
       noteContent: data.noteContent,
       contactType: data.contactType,
@@ -144,7 +145,7 @@ export class Uploader extends Component {
     this.uppy = new Uppy({
       autoProceed: false,
       restrictions: {
-        maxFileSize: 1000000,
+        maxFileSize: 10000000,
         maxNumberOfFiles: 10
       },
       onBeforeFileAdded: validateFile,
