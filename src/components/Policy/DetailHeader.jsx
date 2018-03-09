@@ -83,68 +83,72 @@ export class DetailHeader extends Component {
           </div>
         </dl>
       </section>
-      <section id="propertyCounty" className="propertyCounty">
-        <dl>
-          <div>
-            <dt>Property County</dt>
-            <dd>{_.get(policy, 'property.physicalAddress.county')}</dd>
-          </div>
-        </dl>
-      </section>
-      <section id="territory" className="territory">
-        <dl>
-          <div>
-            <dt>Territory</dt>
-            <dd>{_.get(policy, 'property.territory')}</dd>
-          </div>
-        </dl>
-      </section>
-      <section id="constructionType" className="constructionType">
-        <dl>
-          <div>
-            <dt>Construction Type</dt>
-            <dd>{_.get(policy, 'property.constructionType')}</dd>
-          </div>
-        </dl>
-      </section>
-      <section id="sourceNumber" className="sourceNumber">
-        <dl>
-          <div>
-            <dt>Source Number</dt>
-            <dd>{_.get(policy, 'sourceNumber')}</dd>
-          </div>
-        </dl>
-      </section>
-      <section id="policyEffectiveDate" className="policyEffectiveDate">
-        <dl>
-          <div>
-            <dt>Effective Date <button id="effective-date" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showEffectiveDatePopUp(this.props)}><i className="fa fa-pencil-square" />Edit</button></dt>
-            <dd>{moment.utc(_.get(policy, 'effectiveDate')).format('MM/DD/YYYY')}</dd>
-          </div>
-        </dl>
-        </section>
-        {policy.status !== 'Not In Force' && billingStatusCode !== 99 &&
+      <div className="detailHeader-wrapping-sections">
+        <div className="wrapping-section">
+          <section id="propertyCounty" className="propertyCounty">
+            <dl>
+              <div>
+                <dt>Property County</dt>
+                <dd>{_.get(policy, 'property.physicalAddress.county')}</dd>
+              </div>
+            </dl>
+          </section>
+          <section id="territory" className="territory">
+            <dl>
+              <div>
+                <dt>Territory</dt>
+                <dd>{_.get(policy, 'property.territory')}</dd>
+              </div>
+            </dl>
+          </section>
+          <section id="constructionType" className="constructionType">
+            <dl>
+              <div>
+                <dt>Construction Type</dt>
+                <dd>{_.get(policy, 'property.constructionType')}</dd>
+              </div>
+            </dl>
+          </section>
+        </div>
+        <div className="wrapping-section">
+          <section id="sourceNumber" className="sourceNumber">
+            <dl>
+              <div>
+                <dt>Source Number</dt>
+                <dd>{_.get(policy, 'sourceNumber')}</dd>
+              </div>
+            </dl>
+          </section>
+          <section id="policyEffectiveDate" className="policyEffectiveDate">
+            <dl>
+              <div>
+                <dt>Effective Date <button id="effective-date" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showEffectiveDatePopUp(this.props)}><i className="fa fa-pencil-square" />Edit</button></dt>
+                <dd>{moment.utc(_.get(policy, 'effectiveDate')).format('MM/DD/YYYY')}</dd>
+              </div>
+            </dl>
+          </section>
+          {policy.status !== 'Not In Force' && billingStatusCode !== 99 &&
           <section id="cancellationDate" className="cancellationDate">
-          <dl>
-          <div>
-            <dt>Cancellation</dt>
-            <dd>{policy.cancelDate &&  policy.status !== 'Policy Issued' && policy.status !== 'In Force' && billingStatusCode > 8
-              ? moment.utc(policy.cancelDate).format('MM/DD/YYYY') 
-              : '' }</dd>
-          </div>
-        </dl>
-        </section>
-        }
-        { billingStatusCode === 99 &&
+            <dl>
+            <div>
+              <dt>Cancellation</dt>
+              <dd>{policy.cancelDate &&  policy.status !== 'Policy Issued' && policy.status !== 'In Force' && billingStatusCode > 8
+                ? moment.utc(policy.cancelDate).format('MM/DD/YYYY')
+                : '' }</dd>
+            </div>
+          </dl>
+          </section>}
+          { billingStatusCode === 99 &&
           <section id="cancellationDate" className="cancellationDate">
-          <dl>
-          <div>
-            <dt>Expiration <button id="effective-date" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showReinstatePolicyPopUp(this.props)}><i className="fa fa-thumbs-up" />Reinstate</button></dt>
-            <dd>{policy.endDate ? moment.utc(policy.endDate).format('MM/DD/YYYY') : '' }</dd>
-          </div>
-        </dl>
-        </section>
-        }
+            <dl>
+            <div>
+              <dt>Expiration <button id="effective-date" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showReinstatePolicyPopUp(this.props)}><i className="fa fa-thumbs-up" />Reinstate</button></dt>
+              <dd>{policy.endDate ? moment.utc(policy.endDate).format('MM/DD/YYYY') : '' }</dd>
+            </div>
+          </dl>
+          </section>}
+        </div>
+      </div>
       <section id="premium" className="premium">
         <dl>
           <div>
@@ -153,7 +157,6 @@ export class DetailHeader extends Component {
           </div>
         </dl>
       </section>
-
             </div>);
   }
 }
