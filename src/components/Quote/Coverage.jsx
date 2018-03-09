@@ -499,10 +499,10 @@ export class Coverage extends Component {
                     </div>
                   </div>
                 </section>
-                <section id="policyHolders" className="demographics flex-parent policyHolders">
-                  <div id="policy-holder-a" className="policy-holder-a flex-child">
+                <section id="policyHolders" className="demographics flex-parent col2">
+                  <div id="policy-holder-a" className="flex-child policy-holder-a">
                     <h3 id="primaryPolicyholder">Primary Policyholder</h3>
-                    <div className="flex-parent policy-holder-a-name">
+                    <div className="flex-parent col2 policy-holder-a-name">
                       <div className="flex-child policy-holder-a-first-name">
                         <TextField validations={['required']} label="First Name" styleName="" name="pH1FirstName" />
                       </div>
@@ -510,7 +510,7 @@ export class Coverage extends Component {
                         <TextField validations={['required']} label="Last Name" styleName="" name="pH1LastName" />
                       </div>
                     </div>
-                    <div className="flex-parent policy-holder-a-phone">
+                    <div className="flex-parent col2 policy-holder-a-phone">
                       <div className="flex-child policy-holder-a-primary-phone">
                         <PhoneField validations={['required', 'phone']} label="Primary Phone" styleName="" name="pH1phone" />
                       </div>
@@ -542,13 +542,10 @@ export class Coverage extends Component {
                       </div>
                     </div>
                   </div>
-                  <div id="policy-holder-b" className="policy-holder-b flex-child">
-                    <div className="flex-parent policy-holder-b-name">
-                      <div className="flex-child policy-holder-b-first-name">
-                        <h3>Secondary Policyholder
-                        </h3>
-                      </div>
-                      <div className="flex-child">
+                  <div id="policy-holder-b" className="flex-child policy-holder-b">
+                    <div className="flex-header-wrap">
+                      <h3>Secondary Policyholder</h3>
+                      <div className="check-box-wrapper">
                         <Field
                           onChange={event => clearSecondaryPolicyholder(String(event.target.value) === 'false', this.props)}
                           name="clearFields"
@@ -557,10 +554,14 @@ export class Coverage extends Component {
                           type="checkbox"
                           disabled={checkSentToDocusign(quoteData.quoteState) || !(quoteData && quoteData.policyHolders && quoteData.policyHolders[1])}
                         />
+<<<<<<< HEAD
                         <label htmlFor="clearFields"> Remove</label>
+=======
+                        <label htmlFor={'clearFields'}>Remove</label>
+>>>>>>> update policyholder 2 remove checkbox styles; update demographic styles
                       </div>
                     </div>
-                    <div className="flex-parent policy-holder-b-name">
+                    <div className="flex-parent col2 policy-holder-b-name">
                       <div className="flex-child policy-holder-b-first-name">
                         <TextField
                           onChange={() => setPHToggle(this.props)}
@@ -580,7 +581,7 @@ export class Coverage extends Component {
                         />
                       </div>
                     </div>
-                    <div className="flex-parent policy-holder-b-phone">
+                    <div className="flex-parent col2 policy-holder-b-phone">
                       <div className="flex-child policy-holder-b-primary-phone">
                         <PhoneField
                           onChange={() => setPHToggle(this.props)}

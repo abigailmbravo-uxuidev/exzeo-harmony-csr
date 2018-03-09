@@ -1216,3 +1216,12 @@ input[type="checkbox"] {
   padding-left: ($padding*2);
   border-left: solid 3px $cool-gray-08;
 }
+
+.flex-header-wrap {
+    display: flex;
+    align-items: baseline;
+
+    input[type="checkbox"] {
+        margin-right: $padding/2;
+    }
+}

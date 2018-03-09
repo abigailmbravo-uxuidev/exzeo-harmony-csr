@@ -165,26 +165,16 @@
           .producer {
             .flex-parent {
               .flex-child:first-child {
-                flex: 0 0 auto;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  flex-basis: auto;
               }
-            }
-          }
-
-          .demographics {
-            .policy-holder-a {
-              width: 50%;
-            }
-
-            .policy-holder-b {
-              width: 50%;
             }
           }
 
           .property {
             .property-address {
               width: 30%;
-
-              .city {}
 
               .state {
                 flex-basis: 4rem;
@@ -637,12 +627,9 @@
 }
 
 .csr.quote {
-  .policy-holder-a-email,
-  .policy-holder-b {
     .email-address {
-      flex-grow: 0;
-      flex-shrink: 0;
-      width: 68%;
+      flex-grow: 1;
+      flex-shrink: 1;
     }
 
     .electronicDelivery {
@@ -650,5 +637,4 @@
       flex-shrink: 0;
       width: 32%;
     }
-  }
 }
