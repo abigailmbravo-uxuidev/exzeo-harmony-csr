@@ -1,24 +1,29 @@
 .search {
   form {
     .pagination-wrapper {
+      position: fixed;
+      bottom: 0;
+      left: 0;
       display: flex;
       align-items: center;
       justify-content: center;
       width: 100%;
-      padding: $padding 0;
-      background: $warm-gray-08;
+      padding: 0 0 ($padding/2);
 
       > button.multi-input {
+        z-index: 5;
         height: 2rem;
         padding: ($padding/2) $padding;
         @include button-variant($white, $warm-gray-04, $warm-gray-04);
 
         &:first-child {
           border-radius: 50% 0 0 50%;
+          box-shadow: -2px 0 4px rgba($black, .25);
         }
 
         &:last-child {
           border-radius: 0 50% 50% 0;
+          box-shadow: 2px 0 4px rgba($black, .25);
         }
 
         &.action-btn {
@@ -27,10 +32,12 @@
       }
 
       .pagination-count {
+        z-index: 1;
         display: flex;
         align-items: center;
         height: 2rem;
         background: $white;
+        box-shadow: 0 0 4px rgba($black, .25);
 
         .pageNumber {
           align-items: center;
@@ -91,6 +98,10 @@
             color: $warm-gray-14;
             border-width: 0;
             font-size: $font-size-sm;
+
+            &[disabled] {
+              background: $white;
+            }
           }
         }
       }

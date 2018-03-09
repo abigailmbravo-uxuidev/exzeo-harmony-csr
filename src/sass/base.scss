@@ -277,6 +277,7 @@ html {
 /*------------------------------------------------------------------------------------*/
 main[role="document"] {
   position: relative;
+  z-index: 10;
   display: flex;
   overflow-y: hidden;
   align-items: flex-start;
@@ -578,7 +579,11 @@ ul.list-cards {
         flex-wrap: wrap;
         padding-left: $padding;
 
-        h5, h4, h3, h2, h1 {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
           display: block;
           overflow: hidden;
           flex-basis: 12rem;
@@ -626,6 +631,7 @@ ul.list-cards {
             padding: 0;
             border-width: 0;
             border-radius: 0;
+            color: $bright-blue;
 
             &:hover {
               background: rgba($bright-blue, .1);
@@ -1527,9 +1533,9 @@ ul.list-cards {
                 &.font-size-base {
                   font-size: $font-size-base;
                 }
-                
+
                 &.policy-status {
-                    line-height: 1.02;
+                  line-height: 1.02;
                 }
               }
             }
