@@ -36,7 +36,6 @@ export class DetailHeader extends Component {
   }
   render() {
     const { policy, summaryLedger } = this.props;
-    
     const billingStatusCode = summaryLedger && summaryLedger.status ? summaryLedger.status.code : null;
 
     if (!policy || !policy.policyID) {
