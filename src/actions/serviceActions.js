@@ -77,9 +77,7 @@ export const addNote = (data, files) => (dispatch) => {
 
   Object.keys(data).forEach((key) => form.append(key, data[key]));
 
-  if (files && files.length > 0) {
-    files.forEach(file => form.append(file.name, file.data));
-  }
+  files.map(file => form.append(file.name, file.data, file.meta.name));
 
   axios.post(url, form, {
     headers: {
