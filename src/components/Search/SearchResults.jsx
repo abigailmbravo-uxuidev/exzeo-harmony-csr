@@ -41,16 +41,14 @@ export const SearchResults = (props) => {
     }
 
     return (
-      <div className="quote-list">
+      <div className="policy-list">
         {props.search && props.search.isLoading && <Loader />}
         {
-          policyResults && policyResults.length > 0 && policyResults.map((policy, index) => (
-            <div tabIndex="0" onKeyPress={event => onKeypressPolicy(event, policy, props)} id={policy.PolicyID} className="card" key={index}>
-              <div className="icon-name">
-                <i className="card-icon fa fa-user-circle" />
-                <div className="card-name">
-                  <h4 title={policy.policyHolders && policy.policyHolders.length > 0 ? `${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}` : ''}>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}</h4>
-                </div>
+          policyResults && policyResults.length > 0 && policyResults.map((policy, index) => (<div tabIndex={0} onKeyPress={event => onKeypressPolicy(event, policy, props)} id={policy.PolicyID} className="card" key={index}>
+            <div className="icon-name">
+              <i className="card-icon fa fa-user-circle" />
+              <div className="card-name">
+                <h5 title={policy.policyHolders && policy.policyHolders.length > 0 ? `${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}` : ''}>{policy.policyHolders[0] && `${policy.policyHolders[0].firstName} ${policy.policyHolders[0].lastName}`}</h5>
               </div>
               <section>
                 <ul id="policy-search-results" className="policy-search-results">
@@ -282,7 +280,9 @@ export const SearchResults = (props) => {
             </div>
             <div className="contact-details">
               <div className="card-name">
-                <h4 className="agent"><span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{agent.firstName} {agent.lastName}</span> | <span className="agent-license">{agent.licenseNumber}</span></h4>
+
+                <h4 className="agency" onClick={() => props.handleNewTab(agency, props)}><span className="agency-code">{agency.agencyCode}</span> | <span className="agency-display-name">{agency.displayName}</span> | <span className="agency-legal-name">{agency.legalName}</span> | <span className="agency-license">{agency.licenseNumber}</span></h4>
+
                 <div className="contact-address">
                   {agent.mailingAddress.address1},&nbsp;
                   {agent.mailingAddress.address2}{agent.mailingAddress.address2 ? ', ' : ' ' }

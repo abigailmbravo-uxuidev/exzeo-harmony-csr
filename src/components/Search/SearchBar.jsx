@@ -20,11 +20,11 @@ const userTasks = {
 };
 
 export const resetPolicySearch = (props) => {
-  props.actions.searchActions.setSearch({ searchType: 'policy', hasSearched: false });
-  props.actions.serviceActions.clearPolicyResults();
+   props.actions.searchActions.setSearch({ searchType : 'policy', hasSearched: false, isLoading: false});
+   props.actions.serviceActions.clearPolicyResults();
 };
 
-export const changePage = (props, isNext) => {
+export const changePagePolicy = (props, isNext) => {
   const { fieldValues } = props;
 
   const taskData = {
@@ -49,6 +49,48 @@ export const changePage = (props, isNext) => {
     taskData.isLoading = false;
     props.actions.searchActions.setSearch(taskData);
   });
+};
+
+export const changePageQuote = (props, isNext) => {
+  const { fieldValues } = props;
+  const workflowId = props.appState.instanceId;
+  const taskName = userTasks.handleSearchBarSubmit;
+  const modelName = props.appState.modelName;
+  const searchType = 'quote';
+
+  const taskData = {
+    firstName: (encodeURIComponent(fieldValues.firstName) !== 'undefined' ? encodeURIComponent(fieldValues.firstName) : ''),
+    lastName: (encodeURIComponent(fieldValues.lastName) !== 'undefined' ? encodeURIComponent(fieldValues.lastName) : ''),
+    address: (encodeURIComponent(fieldValues.address) !== 'undefined' ? encodeURIComponent(String(fieldValues.address).trim()) : ''),
+    quoteNumber: (encodeURIComponent(fieldValues.policyNumber) !== 'undefined' ? encodeURIComponent(fieldValues.policyNumber) : ''),
+    quoteState: (encodeURIComponent(fieldValues.quoteState) !== 'undefined' ? encodeURIComponent(fieldValues.quoteState) : ''),
+    searchType: searchType,
+    isLoading: true,
+    hasSearched: true,
+    resultStart: "60",
+    pageSize: "25"
+  };
+
+
+  taskData.pageNumber = isNext ? String(Number(fieldValues.pageNumber) + 1) : String(Number(fieldValues.pageNumber) - 1);
+
+  props.actions.searchActions.setSearch(taskData);
+  localStorage.setItem('lastSearchData', JSON.stringify(taskData));
+
+  props.actions.errorActions.clearAppError();
+  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
+
+  // we need to make sure the active task is search otherwise we need to reset the workflow
+  if (props.tasks[modelName].data.activeTask && (props.tasks[modelName].data.activeTask.name !== userTasks.handleSearchBarSubmit)) {
+    const completeStep = {
+      stepName: taskName,
+      data: taskData
+    };
+    props.actions.cgActions.moveToTaskAndExecuteComplete(props.appState.modelName, workflowId, taskName, completeStep);
+  } else {
+    props.actions.appStateActions.setAppState(modelName, workflowId, { ...props.appState.data, submitting: true });
+    props.actions.cgActions.completeTask(modelName, workflowId, taskName, taskData);
+  }
 };
 
 const handleInitialize = () => ({ searchType: 'quote', sortBy: 'policyNumber' });
@@ -90,7 +132,8 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
     policyNumber: (encodeURIComponent(data.policyNumber) !== 'undefined' ? encodeURIComponent(data.policyNumber) : ''),
     zip: (encodeURIComponent(data.zip) !== 'undefined' ? encodeURIComponent(data.zip) : ''),
     quoteState: (encodeURIComponent(data.quoteState) !== 'undefined' ? encodeURIComponent(data.quoteState) : ''),
-    searchType
+    searchType,
+    hasSearched: true
   };
 
   const agencyAgentData = {
@@ -253,9 +296,23 @@ export class SearchForm extends Component {
   componentWillReceiveProps(nextProps) {
     const { dispatch } = nextProps;
 
-    if (nextProps.search.hasSearched && !_.isEqual(this.props.policyResults, nextProps.policyResults)) {
+    const model = nextProps.tasks[nextProps.appState.modelName] || {};
+    const previousTask = model.data && model.data.previousTask
+      ? model.data.previousTask
+      : {};
+  
+    const quoteSearchResponse = previousTask.value && previousTask.value.result ? previousTask.value.result : {};
+
+    if (nextProps.search.searchType === 'policy' && nextProps.search.hasSearched && !_.isEqual(this.props.policyResults, nextProps.policyResults)) {
       const totalPages = Math.ceil(nextProps.policyResults.totalNumberOfRecords / nextProps.policyResults.pageSize);
       const pageNumber = nextProps.policyResults.currentPage;
+      dispatch(change('SearchBar', 'pageNumber', pageNumber));
+      dispatch(change('SearchBar', 'totalPages', totalPages));
+      nextProps.actions.searchActions.setSearch({ ...nextProps.search, totalPages, pageNumber });
+    }
+    if (nextProps.search.searchType === 'quote' && nextProps.search.hasSearched && !_.isEqual(this.props.quoteSearchResponse, quoteSearchResponse)) {
+      const totalPages = Math.ceil(quoteSearchResponse.totalNumberOfRecords / quoteSearchResponse.pageSize);
+      const pageNumber = quoteSearchResponse.currentPage;
       dispatch(change('SearchBar', 'pageNumber', pageNumber));
       dispatch(change('SearchBar', 'totalPages', totalPages));
       nextProps.actions.searchActions.setSearch({ ...nextProps.search, totalPages, pageNumber });
@@ -280,34 +337,42 @@ export class SearchForm extends Component {
       const modelName = appState.modelName;
       const data = tasks[modelName].data;
 
-      const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData')) || {};
-      lastSearchData.searchType = '';
-      localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
-      reset(form);
-      actions.cgActions.clearSearchResults(modelName, data);
-      actions.errorActions.clearAppError();
-      actions.serviceActions.clearAgencies();
-      actions.serviceActions.clearAgent();
-      resetPolicySearch(this.props);
-    };
+  const clearForm = () => {
+    const modelName = appState.modelName;
+    const data = tasks[modelName].data;
+    const workflowId = appState.instanceId;
+    const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData')) || {};
+    lastSearchData.searchType = '';
+    localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
+    reset(form);
+    actions.cgActions.clearSearchResults(modelName, data);
+    actions.errorActions.clearAppError();
+    actions.serviceActions.clearAgencies();
+    actions.serviceActions.clearAgent();
+    resetPolicySearch(this.props);
+    this.props.actions.appStateActions.setAppState(appState.modelName, workflowId, {  submitting: false });
+  };
 
     let searchHandler = handleSearchBarSubmit;
 
     if (fieldValues.searchType === 'policy') searchHandler = handlePolicySearchSubmit;
 
-    return (
-      <Form id="SearchBar" onSubmit={handleSubmit(searchHandler)} noValidate>
-        <div className="search-input-wrapper">
-          <div className="form-group search-context">
-            <SelectField
-              id="searchType"
-              name="searchType"
-              component="select"
-              styleName=""
-              label="Search Context"
-              validations={['required']}
-              onChange={clearForm}
-              answers={[
+  const model = this.props.tasks[this.props.appState.modelName] || {};
+  const previousTask = model.data && model.data.previousTask
+    ? model.data.previousTask
+    : {};
+
+  const quoteResults = previousTask.value && previousTask.value.result ? previousTask.value.result : [];
+
+  return (
+    <Form id="SearchBar" onSubmit={handleSubmit(searchHandler)} noValidate>
+      <div className="search-input-wrapper">
+        <div className="form-group search-context">
+          <SelectField
+            id="searchType"
+            name="searchType" component="select" styleName={''} label="Search Context" validations={['required']}
+            onChange={clearForm}
+            answers={[
               {
                 answer: 'address',
                 label: 'New Quote'
@@ -370,7 +435,35 @@ export class SearchForm extends Component {
             </button>
           </div>
         }
-          {fieldValues.searchType === 'policy' && <div className="search-inputs fade-in p">
+        { fieldValues.searchType === 'quote' && quoteResults && quoteResults.quotes && quoteResults.quotes.length > 0 && fieldValues.totalPages > 1 && <div className="pagination-wrapper">
+        <button
+          onClick={() => changePageQuote(this.props, false)}
+          disabled={String(fieldValues.pageNumber) === '1'}
+          tabIndex="0"
+          className="btn multi-input"
+          type="button"
+          form="SearchBar"
+        >
+          <span className="fa fa-chevron-circle-left" />
+        </button>
+        <div className="pagination-count">
+          <TextField size="2" styleName="pageNumber" name={'pageNumber'} label={'Page'} disabled />
+          <span className="pagination-operand">of</span>
+          <TextField size="2" styleName="totalPages" name={'totalPages'} label={''} disabled />
+        </div>
+        <button
+          onClick={() => changePageQuote(this.props, true)}
+          disabled={String(fieldValues.pageNumber) === String(fieldValues.totalPages)}
+          tabIndex="0"
+          className="btn multi-input"
+          type="button"
+          form="SearchBar"
+        >
+          <span className="fa fa-chevron-circle-right" />
+        </button>
+      </div>
+      }
+        {fieldValues.searchType === 'policy' && <div className="search-inputs fade-in p">
 
             <SelectField
               name="sortBy"
@@ -410,33 +503,33 @@ export class SearchForm extends Component {
             </button>
           </div>
         }
-          { fieldValues.searchType === 'policy' && policyResults && policyResults.policies && policyResults.policies.length > 0 && fieldValues.totalPages > 1 && <div className="pagination-wrapper">
-            <button
-              onClick={() => changePage(this.props, false)}
-              disabled={String(fieldValues.pageNumber) === '1'}
-              tabIndex="0"
-              className="btn multi-input"
-              type="button"
-              form="SearchBar"
-            >
-              <span className="fa fa-chevron-circle-left" />
-            </button>
-            <div className="pagination-count">
-              <TextField size="2" styleName="pageNumber" name="pageNumber" label="Page" disabled />
-              <span className="pagination-operand">of</span>
-              <TextField size="2" styleName="totalPages" name="totalPages" label="" disabled />
-            </div>
-            <button
-              onClick={() => changePage(this.props, true)}
-              disabled={String(fieldValues.pageNumber) === String(fieldValues.totalPages)}
-              tabIndex="0"
-              className="btn multi-input"
-              type="button"
-              form="SearchBar"
-            >
-              <span className="fa fa-chevron-circle-right" />
-            </button>
-                                                                                                                                                                 </div>
+        { fieldValues.searchType === 'policy' && policyResults && policyResults.policies && policyResults.policies.length > 0 && fieldValues.totalPages > 1 && <div className="pagination-wrapper">
+        <button
+          onClick={() => changePagePolicy(this.props, false)}
+          disabled={String(fieldValues.pageNumber) === '1'}
+          tabIndex="0"
+          className="btn multi-input"
+          type="button"
+          form="SearchBar"
+        >
+          <span className="fa fa-chevron-circle-left" />
+        </button>
+        <div className="pagination-count">
+          <TextField size="2" styleName="pageNumber" name={'pageNumber'} label={'Page'} disabled />
+          <span className="pagination-operand">of</span>
+          <TextField size="2" styleName="totalPages" name={'totalPages'} label={''} disabled />
+        </div>
+        <button
+          onClick={() => changePagePolicy(this.props, true)}
+          disabled={String(fieldValues.pageNumber) === String(fieldValues.totalPages)}
+          tabIndex="0"
+          className="btn multi-input"
+          type="button"
+          form="SearchBar"
+        >
+          <span className="fa fa-chevron-circle-right" />
+        </button>
+      </div>
       }
           {/* <!-- Should be available only in user admin  --> */}
           {fieldValues.searchType === 'user' && <div className="search-tools">
