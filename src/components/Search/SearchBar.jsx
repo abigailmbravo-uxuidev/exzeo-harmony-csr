@@ -20,8 +20,8 @@ const userTasks = {
 };
 
 export const resetPolicySearch = (props) => {
-   props.actions.searchActions.setSearch({ searchType : 'policy', hasSearched: false, isLoading: false});
-   props.actions.serviceActions.clearPolicyResults();
+  props.actions.searchActions.setSearch({ searchType: 'policy', hasSearched: false, isLoading: false });
+  props.actions.serviceActions.clearPolicyResults();
 };
 
 export const changePagePolicy = (props, isNext) => {
@@ -64,11 +64,11 @@ export const changePageQuote = (props, isNext) => {
     address: (encodeURIComponent(fieldValues.address) !== 'undefined' ? encodeURIComponent(String(fieldValues.address).trim()) : ''),
     quoteNumber: (encodeURIComponent(fieldValues.policyNumber) !== 'undefined' ? encodeURIComponent(fieldValues.policyNumber) : ''),
     quoteState: (encodeURIComponent(fieldValues.quoteState) !== 'undefined' ? encodeURIComponent(fieldValues.quoteState) : ''),
-    searchType: searchType,
+    searchType,
     isLoading: true,
     hasSearched: true,
-    resultStart: "60",
-    pageSize: "25"
+    resultStart: '60',
+    pageSize: '25'
   };
 
 
@@ -300,7 +300,7 @@ export class SearchForm extends Component {
     const previousTask = model.data && model.data.previousTask
       ? model.data.previousTask
       : {};
-  
+
     const quoteSearchResponse = previousTask.value && previousTask.value.result ? previousTask.value.result : {};
 
     if (nextProps.search.searchType === 'policy' && nextProps.search.hasSearched && !_.isEqual(this.props.policyResults, nextProps.policyResults)) {
@@ -336,43 +336,43 @@ export class SearchForm extends Component {
     const clearForm = () => {
       const modelName = appState.modelName;
       const data = tasks[modelName].data;
-
-  const clearForm = () => {
-    const modelName = appState.modelName;
-    const data = tasks[modelName].data;
-    const workflowId = appState.instanceId;
-    const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData')) || {};
-    lastSearchData.searchType = '';
-    localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
-    reset(form);
-    actions.cgActions.clearSearchResults(modelName, data);
-    actions.errorActions.clearAppError();
-    actions.serviceActions.clearAgencies();
-    actions.serviceActions.clearAgent();
-    resetPolicySearch(this.props);
-    this.props.actions.appStateActions.setAppState(appState.modelName, workflowId, {  submitting: false });
-  };
+      const workflowId = appState.instanceId;
+      const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData')) || {};
+      lastSearchData.searchType = '';
+      localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
+      reset(form);
+      actions.cgActions.clearSearchResults(modelName, data);
+      actions.errorActions.clearAppError();
+      actions.serviceActions.clearAgencies();
+      actions.serviceActions.clearAgent();
+      resetPolicySearch(this.props);
+      this.props.actions.appStateActions.setAppState(appState.modelName, workflowId, { submitting: false });
+    };
 
     let searchHandler = handleSearchBarSubmit;
 
     if (fieldValues.searchType === 'policy') searchHandler = handlePolicySearchSubmit;
 
-  const model = this.props.tasks[this.props.appState.modelName] || {};
-  const previousTask = model.data && model.data.previousTask
-    ? model.data.previousTask
-    : {};
+    const model = this.props.tasks[this.props.appState.modelName] || {};
+    const previousTask = model.data && model.data.previousTask
+      ? model.data.previousTask
+      : {};
 
-  const quoteResults = previousTask.value && previousTask.value.result ? previousTask.value.result : [];
+    const quoteResults = previousTask.value && previousTask.value.result ? previousTask.value.result : [];
 
-  return (
-    <Form id="SearchBar" onSubmit={handleSubmit(searchHandler)} noValidate>
-      <div className="search-input-wrapper">
-        <div className="form-group search-context">
-          <SelectField
-            id="searchType"
-            name="searchType" component="select" styleName={''} label="Search Context" validations={['required']}
-            onChange={clearForm}
-            answers={[
+    return (
+      <Form id="SearchBar" onSubmit={handleSubmit(searchHandler)} noValidate>
+        <div className="search-input-wrapper">
+          <div className="form-group search-context">
+            <SelectField
+              id="searchType"
+              name="searchType"
+              component="select"
+              styleName=""
+              label="Search Context"
+              validations={['required']}
+              onChange={clearForm}
+              answers={[
               {
                 answer: 'address',
                 label: 'New Quote'
@@ -435,35 +435,35 @@ export class SearchForm extends Component {
             </button>
           </div>
         }
-        { fieldValues.searchType === 'quote' && quoteResults && quoteResults.quotes && quoteResults.quotes.length > 0 && fieldValues.totalPages > 1 && <div className="pagination-wrapper">
-        <button
-          onClick={() => changePageQuote(this.props, false)}
-          disabled={String(fieldValues.pageNumber) === '1'}
-          tabIndex="0"
-          className="btn multi-input"
-          type="button"
-          form="SearchBar"
-        >
-          <span className="fa fa-chevron-circle-left" />
-        </button>
-        <div className="pagination-count">
-          <TextField size="2" styleName="pageNumber" name={'pageNumber'} label={'Page'} disabled />
-          <span className="pagination-operand">of</span>
-          <TextField size="2" styleName="totalPages" name={'totalPages'} label={''} disabled />
-        </div>
-        <button
-          onClick={() => changePageQuote(this.props, true)}
-          disabled={String(fieldValues.pageNumber) === String(fieldValues.totalPages)}
-          tabIndex="0"
-          className="btn multi-input"
-          type="button"
-          form="SearchBar"
-        >
-          <span className="fa fa-chevron-circle-right" />
-        </button>
-      </div>
+          { fieldValues.searchType === 'quote' && quoteResults && quoteResults.quotes && quoteResults.quotes.length > 0 && fieldValues.totalPages > 1 && <div className="pagination-wrapper">
+            <button
+              onClick={() => changePageQuote(this.props, false)}
+              disabled={String(fieldValues.pageNumber) === '1'}
+              tabIndex="0"
+              className="btn multi-input"
+              type="button"
+              form="SearchBar"
+            >
+              <span className="fa fa-chevron-circle-left" />
+            </button>
+            <div className="pagination-count">
+              <TextField size="2" styleName="pageNumber" name="pageNumber" label="Page" disabled />
+              <span className="pagination-operand">of</span>
+              <TextField size="2" styleName="totalPages" name="totalPages" label="" disabled />
+            </div>
+            <button
+              onClick={() => changePageQuote(this.props, true)}
+              disabled={String(fieldValues.pageNumber) === String(fieldValues.totalPages)}
+              tabIndex="0"
+              className="btn multi-input"
+              type="button"
+              form="SearchBar"
+            >
+              <span className="fa fa-chevron-circle-right" />
+            </button>
+          </div>
       }
-        {fieldValues.searchType === 'policy' && <div className="search-inputs fade-in p">
+          {fieldValues.searchType === 'policy' && <div className="search-inputs fade-in p">
 
             <SelectField
               name="sortBy"
@@ -503,33 +503,33 @@ export class SearchForm extends Component {
             </button>
           </div>
         }
-        { fieldValues.searchType === 'policy' && policyResults && policyResults.policies && policyResults.policies.length > 0 && fieldValues.totalPages > 1 && <div className="pagination-wrapper">
-        <button
-          onClick={() => changePagePolicy(this.props, false)}
-          disabled={String(fieldValues.pageNumber) === '1'}
-          tabIndex="0"
-          className="btn multi-input"
-          type="button"
-          form="SearchBar"
-        >
-          <span className="fa fa-chevron-circle-left" />
-        </button>
-        <div className="pagination-count">
-          <TextField size="2" styleName="pageNumber" name={'pageNumber'} label={'Page'} disabled />
-          <span className="pagination-operand">of</span>
-          <TextField size="2" styleName="totalPages" name={'totalPages'} label={''} disabled />
-        </div>
-        <button
-          onClick={() => changePagePolicy(this.props, true)}
-          disabled={String(fieldValues.pageNumber) === String(fieldValues.totalPages)}
-          tabIndex="0"
-          className="btn multi-input"
-          type="button"
-          form="SearchBar"
-        >
-          <span className="fa fa-chevron-circle-right" />
-        </button>
-      </div>
+          { fieldValues.searchType === 'policy' && policyResults && policyResults.policies && policyResults.policies.length > 0 && fieldValues.totalPages > 1 && <div className="pagination-wrapper">
+            <button
+              onClick={() => changePagePolicy(this.props, false)}
+              disabled={String(fieldValues.pageNumber) === '1'}
+              tabIndex="0"
+              className="btn multi-input"
+              type="button"
+              form="SearchBar"
+            >
+              <span className="fa fa-chevron-circle-left" />
+            </button>
+            <div className="pagination-count">
+              <TextField size="2" styleName="pageNumber" name="pageNumber" label="Page" disabled />
+              <span className="pagination-operand">of</span>
+              <TextField size="2" styleName="totalPages" name="totalPages" label="" disabled />
+            </div>
+            <button
+              onClick={() => changePagePolicy(this.props, true)}
+              disabled={String(fieldValues.pageNumber) === String(fieldValues.totalPages)}
+              tabIndex="0"
+              className="btn multi-input"
+              type="button"
+              form="SearchBar"
+            >
+              <span className="fa fa-chevron-circle-right" />
+            </button>
+          </div>
       }
           {/* <!-- Should be available only in user admin  --> */}
           {fieldValues.searchType === 'user' && <div className="search-tools">
