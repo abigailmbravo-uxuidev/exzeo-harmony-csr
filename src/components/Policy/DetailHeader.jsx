@@ -11,17 +11,20 @@ import * as serviceActions from '../../actions/serviceActions';
 import * as policyStateActions from '../../actions/policyStateActions';
 
 export const showEffectiveDatePopUp = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
-      { ...props.appState.data, showEffectiveDateChangePopUp: true });
+  props.actions.appStateActions.setAppState(
+    props.appState.modelName, props.appState.instanceId,
+    { ...props.appState.data, showEffectiveDateChangePopUp: true }
+  );
 };
 
 export const showReinstatePolicyPopUp = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
-      { ...props.appState.data, showReinstatePolicyPopUp: true });
+  props.actions.appStateActions.setAppState(
+    props.appState.modelName, props.appState.instanceId,
+    { ...props.appState.data, showReinstatePolicyPopUp: true }
+  );
 };
 
 export class DetailHeader extends Component {
-
   componentDidMount() {
     this.props.actions.serviceActions.getEffectiveDateChangeReasons();
   }
@@ -49,7 +52,7 @@ export class DetailHeader extends Component {
           </div>
         </dl>
       </section>
-      <section id="policyholder" className="policyholder">
+      <section id="policyHolder" className="policyHolder">
         <dl>
           <div>
             <dt>Policyholder</dt>
@@ -78,66 +81,74 @@ export class DetailHeader extends Component {
           </div>
         </dl>
       </section>
-      <section id="propertyCounty" className="propertyCounty">
-        <dl>
-          <div>
-            <dt>Property County</dt>
-            <dd>{_.get(policy, 'property.physicalAddress.county')}</dd>
-          </div>
-        </dl>
-      </section>
-      <section id="territory" className="territory">
-        <dl>
-          <div>
-            <dt>Territory</dt>
-            <dd>{_.get(policy, 'property.territory')}</dd>
-          </div>
-        </dl>
-      </section>
-      <section id="constructionType" className="constructionType">
-        <dl>
-          <div>
-            <dt>Construction Type</dt>
-            <dd>{_.get(policy, 'property.constructionType')}</dd>
-          </div>
-        </dl>
-      </section>
-      <section id="sourceNumber" className="sourceNumber">
-        <dl>
-          <div>
-            <dt>Source Number</dt>
-            <dd>{_.get(policy, 'sourceNumber')}</dd>
-          </div>
-        </dl>
-      </section>
-      <section id="policyEffectiveDate" className="policyEffectiveDate">
-        <dl>
-          <div>
-            <dt>Effective Date <button id="effective-date" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showEffectiveDatePopUp(this.props)}><i className="fa fa-pencil-square" />Edit</button></dt>
-            <dd>{moment.utc(_.get(policy, 'effectiveDate')).format('MM/DD/YYYY')}</dd>
-          </div>
-        </dl>
-        </section>
-        { _.includes(['Policy Issued', 'In Force', 'Voluntary Cancel Pending' , 'Underwriting Cancel Pending', 'Underwriting Non-Renewal Pending'], _.get(policy, 'status')) &&
+
+      <div className="detailHeader-wrapping-sections">
+        <div className="wrapping-section">
+          <section id="propertyCounty" className="propertyCounty">
+            <dl>
+              <div>
+                <dt>Property County</dt>
+                <dd>{_.get(policy, 'property.physicalAddress.county')}</dd>
+              </div>
+            </dl>
+          </section>
+          <section id="territory" className="territory">
+            <dl>
+              <div>
+                <dt>Territory</dt>
+                <dd>{_.get(policy, 'property.territory')}</dd>
+              </div>
+            </dl>
+          </section>
+          <section id="constructionType" className="constructionType">
+            <dl>
+              <div>
+                <dt>Construction Type</dt>
+                <dd>{_.get(policy, 'property.constructionType')}</dd>
+              </div>
+            </dl>
+          </section>
+        </div>
+        <div className="wrapping-section">
+          <section id="sourceNumber" className="sourceNumber">
+            <dl>
+              <div>
+                <dt>Source Number</dt>
+                <dd>{_.get(policy, 'sourceNumber')}</dd>
+              </div>
+            </dl>
+          </section>
+          <section id="policyEffectiveDate" className="policyEffectiveDate">
+            <dl>
+              <div>
+                <dt>Effective Date <button id="effective-date" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showEffectiveDatePopUp(this.props)}><i className="fa fa-pencil-square" />Edit</button></dt>
+                <dd>{moment.utc(_.get(policy, 'effectiveDate')).format('MM/DD/YYYY')}</dd>
+              </div>
+            </dl>
+          </section>
+          { _.includes(['Policy Issued', 'In Force', 'Pending Voluntary Cancellation', 'Pending Underwriting Non-Renewal', 'Pending Underwriting Cancellation'], _.get(policy, 'status')) &&
           <section id="cancellationDate" className="cancellationDate">
-          <dl>
-          <div>
-            <dt>Cancellation Date</dt>
-            <dd>{_.get(policy, 'cancelDate') ? moment.utc(_.get(policy, 'cancelDate')).format('MM/DD/YYYY') : '' }</dd>
-          </div>
-        </dl>
-        </section>
-        }
-        { _.get(policy, 'status') === 'Cancelled' &&
+            <dl>
+              <div>
+                <dt>Cancellation Date</dt>
+                <dd>{_.get(policy, 'cancelDate') ? moment.utc(_.get(policy, 'cancelDate')).format('MM/DD/YYYY') : '' }</dd>
+              </div>
+            </dl>
+          </section>
+            }
+          { _.get(policy, 'status') === 'Cancelled' &&
           <section id="cancellationDate" className="cancellationDate">
-          <dl>
-          <div>
-            <dt>Expiration <button id="effective-date" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showReinstatePolicyPopUp(this.props)}><i className="fa fa-thumbs-up" />Reinstate</button></dt>
-            <dd>{_.get(policy, 'cancelDate') ? moment.utc(_.get(policy, 'cancelDate')).format('MM/DD/YYYY') : '' }</dd>
-          </div>
-        </dl>
-        </section>
-        }
+            <dl>
+              <div>
+                <dt>Expiration <button id="effective-date" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showReinstatePolicyPopUp(this.props)}><i className="fa fa-thumbs-up" />Reinstate</button></dt>
+                <dd>{_.get(policy, 'cancelDate') ? moment.utc(_.get(policy, 'cancelDate')).format('MM/DD/YYYY') : '' }</dd>
+              </div>
+            </dl>
+          </section>
+            }
+        </div>
+      </div>
+
       <section id="premium" className="premium">
         <dl>
           <div>
@@ -147,9 +158,8 @@ export class DetailHeader extends Component {
         </dl>
       </section>
 
-    </div>);
+            </div>);
   }
-
 }
 
 DetailHeader.propTypes = {
