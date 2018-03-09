@@ -1372,19 +1372,16 @@ export class Endorsements extends React.Component {
                           <PhoneField validations={['required', 'phone']} label="Primary Phone" styleName="" name="pH1phone" onChange={() => setCalculate(this.props, false)} />
                           <PhoneField validations={['phone']} label="Secondary Phone" styleName="" name="pH1secondaryPhone" onChange={() => setCalculate(this.props, false)} />
                         </div>
-                        <div className="flex-parent col2">
+                        <div className="flex-parent">
                           <TextField validations={['required', 'email']} label="Email Address" styleName="" name="pH1email" onChange={() => setCalculate(this.props, false)} />
                           {/* electronic delivery question placeholder */ }
                         </div>
                       </div>
                       {/* Col2 */}
                       <div className="flex-child">
-                        <div className="flex-parent policy-holder-b-name">
-                          <div className="flex-child policy-holder-b-first-name">
-                            <h3>Secondary Policyholder
-                            </h3>
-                          </div>
-                          <div className="flex-child">
+                        <div className="flex-header-wrap">
+                          <h3>Secondary Policyholder</h3>
+                          <div className="check-box-wrapper">
                             <Field
                               onChange={event => clearSecondaryPolicyholder(String(event.target.value) === 'false', this.props)}
                               name="clearFields"
@@ -1393,7 +1390,7 @@ export class Endorsements extends React.Component {
                               type="checkbox"
                               disabled={!(policy && policy.policyHolders && policy.policyHolders[1])}
                             />
-                            <label htmlFor="clearFields"> Remove</label>
+                            <label htmlFor="clearFields">Remove</label>
                           </div>
                         </div>
                         <div className="flex-parent col2">
@@ -1404,7 +1401,7 @@ export class Endorsements extends React.Component {
                           <PhoneField validations={['phone']} label="Primary Phone" dependsOn={['pH2FirstName', 'pH2LastName', 'pH2email']} styleName="" name="pH2phone" onChange={() => setPHToggle(this.props)} />
                           <PhoneField validations={['phone']} label="Secondary Phone" styleName="" name="pH2secondaryPhone" onChange={() => setPHToggle(this.props)} />
                         </div>
-                        <div className="flex-parent col2">
+                        <div className="flex-parent">
                           <TextField validations={['email']} label="Email Address" dependsOn={['pH2FirstName', 'pH2LastName', 'pH2phone']} styleName="" name="pH2email" onChange={() => setPHToggle(this.props)} />
                         </div>
                       </div>

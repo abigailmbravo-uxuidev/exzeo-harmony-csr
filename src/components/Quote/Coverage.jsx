@@ -57,18 +57,18 @@ export const clearSecondaryPolicyholder = (value, props) => {
   }
 };
 
-export const handleGetQuoteData = (state) => { 
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) 
-    ? state.cg[state.appState.modelName].data 
-    : null; 
-  if (!taskData) { return {}; } 
-  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' }) 
-    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result 
-    : {}; 
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }) 
-    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result 
-    : quoteEnd; 
-  return quoteData; 
+export const handleGetQuoteData = (state) => {
+  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName])
+    ? state.cg[state.appState.modelName].data
+    : null;
+  if (!taskData) { return {}; }
+  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
+    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
+    : {};
+  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
+    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
+    : quoteEnd;
+  return quoteData;
 };
 
 export const handleGetZipCodeSettings = (state) => {
@@ -97,7 +97,7 @@ const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answ
 export const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
 
 export const handleInitialize = (state) => {
-  const quoteData = handleGetQuoteData(state); 
+  const quoteData = handleGetQuoteData(state);
   const questions = state.questions;
   const values = {};
   values.clearFields = false;
@@ -199,7 +199,7 @@ const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 
 
 export const handleAgencyChange = (props, agencyCode, isInit) => {
   if (!isInit) {
-    
+
     props.dispatch(batchActions([
       change('Coverage', 'agencyCode', agencyCode),
       change('Coverage', 'agentCode', '')
@@ -484,10 +484,10 @@ export class Coverage extends Component {
                     </div>
                   </div>
                 </section>
-                <section id="policyHolders" className="demographics flex-parent policyHolders">
-                  <div id="policy-holder-a" className="policy-holder-a flex-child">
+                <section id="policyHolders" className="demographics flex-parent col2">
+                  <div id="policy-holder-a" className="flex-child policy-holder-a">
                     <h3 id="primaryPolicyholder">Primary Policyholder</h3>
-                    <div className="flex-parent policy-holder-a-name">
+                    <div className="flex-parent col2 policy-holder-a-name">
                       <div className="flex-child policy-holder-a-first-name">
                         <TextField validations={['required']} label={'First Name'} styleName={''} name={'pH1FirstName'} />
                       </div>
@@ -495,7 +495,7 @@ export class Coverage extends Component {
                         <TextField validations={['required']} label={'Last Name'} styleName={''} name={'pH1LastName'} />
                       </div>
                     </div>
-                    <div className="flex-parent policy-holder-a-phone">
+                    <div className="flex-parent col2 policy-holder-a-phone">
                       <div className="flex-child policy-holder-a-primary-phone">
                         <PhoneField validations={['required', 'phone']} label={'Primary Phone'} styleName={''} name={'pH1phone'} />
                       </div>
@@ -522,13 +522,10 @@ export class Coverage extends Component {
                       </div>
                     </div>
                   </div>
-                  <div id="policy-holder-b" className="policy-holder-b flex-child">
-                    <div className="flex-parent policy-holder-b-name">
-                      <div className="flex-child policy-holder-b-first-name">
-                        <h3>Secondary Policyholder
-                        </h3>
-                      </div>
-                      <div className="flex-child">
+                  <div id="policy-holder-b" className="flex-child policy-holder-b">
+                    <div className="flex-header-wrap">
+                      <h3>Secondary Policyholder</h3>
+                      <div className="check-box-wrapper">
                         <Field
                           onChange={event => clearSecondaryPolicyholder(String(event.target.value) === 'false', this.props)}
                           name={'clearFields'}
@@ -537,10 +534,10 @@ export class Coverage extends Component {
                           type="checkbox"
                           disabled={checkSentToDocusign(quoteData.quoteState) || !(quoteData && quoteData.policyHolders && quoteData.policyHolders[1])}
                         />
-                        <label htmlFor={'clearFields'}> Remove</label>
+                        <label htmlFor={'clearFields'}>Remove</label>
                       </div>
                     </div>
-                    <div className="flex-parent policy-holder-b-name">
+                    <div className="flex-parent col2 policy-holder-b-name">
                       <div className="flex-child policy-holder-b-first-name">
                         <TextField
                           onChange={() => setPHToggle(this.props)}
@@ -554,7 +551,7 @@ export class Coverage extends Component {
                         />
                       </div>
                     </div>
-                    <div className="flex-parent policy-holder-b-phone">
+                    <div className="flex-parent col2 policy-holder-b-phone">
                       <div className="flex-child policy-holder-b-primary-phone">
                         <PhoneField
                           onChange={() => setPHToggle(this.props)}
@@ -1010,7 +1007,7 @@ const mapStateToProps = state => ({
   agencies: state.service.agencies,
   fieldValues: _.get(state.form, 'Coverage.values', {}),
   initialValues: handleInitialize(state),
-  quoteData: handleGetQuoteData(state), 
+  quoteData: handleGetQuoteData(state),
   zipCodeSettings: handleGetZipCodeSettings(state),
   questions: state.questions
 });
