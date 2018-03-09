@@ -24,14 +24,14 @@
   }
 
   .agency-name-search {
-    flex-basis: auto;
+    flex-basis: 12rem;
     flex-grow: 1;
     flex-shrink: 1;
     margin-right: $padding;
   }
 
   .agency-address-search {
-    flex-basis: auto;
+    flex-basis: 12rem;
     flex-grow: 1;
     flex-shrink: 1;
     margin-right: $padding;
@@ -103,6 +103,14 @@
         margin-bottom: 0;
         padding-right: 4rem;
         @include transition(all 0.2s ease-in-out);
+
+        h4.agency {
+            @include transition(all 0.2s ease-in-out);
+            &:hover {
+                cursor: pointer;
+                color: $bright-blue;
+            }
+        }
       }
     }
   }

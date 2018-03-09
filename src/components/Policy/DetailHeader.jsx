@@ -11,26 +11,29 @@ import * as serviceActions from '../../actions/serviceActions';
 import * as policyStateActions from '../../actions/policyStateActions';
 
 export const showEffectiveDatePopUp = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
-      { ...props.appState.data, showEffectiveDateChangePopUp: true });
+  props.actions.appStateActions.setAppState(
+    props.appState.modelName, props.appState.instanceId,
+    { ...props.appState.data, showEffectiveDateChangePopUp: true }
+  );
 };
 
 export const showReinstatePolicyPopUp = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
-      { ...props.appState.data, showReinstatePolicyPopUp: true });
+  props.actions.appStateActions.setAppState(
+    props.appState.modelName, props.appState.instanceId,
+    { ...props.appState.data, showReinstatePolicyPopUp: true }
+  );
 };
 
 export class DetailHeader extends Component {
-
   componentDidMount() {
     this.props.actions.serviceActions.getEffectiveDateChangeReasons();
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.policyState.update && nextProps.policyState.policyNumber) {
+    if (nextProps.policyState && nextProps.policyState.update && nextProps.policyState.policyNumber) {
       this.props.actions.serviceActions.getLatestPolicy(nextProps.policyState.policyNumber);
       this.props.actions.policyStateActions.updatePolicy(false, nextProps.policyState.policyNumber);
     }
-    if (!_.isEqual(this.props.policy, nextProps.policy) && nextProps.policy.policyNumber) {
+    if (!_.isEqual(this.props.policy, nextProps.policy) && nextProps.policy && nextProps.policy.policyNumber) {
       this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
     }
   }
@@ -51,7 +54,7 @@ export class DetailHeader extends Component {
           </div>
         </dl>
       </section>
-      <section id="policyholder" className="policyholder">
+      <section id="policyHolder" className="policyHolder">
         <dl>
           <div>
             <dt>Policyholder</dt>
@@ -151,9 +154,8 @@ export class DetailHeader extends Component {
         </dl>
       </section>
 
-    </div>);
+            </div>);
   }
-
 }
 
 DetailHeader.propTypes = {
