@@ -235,7 +235,7 @@ export const handleInitialize = (state) => {
   values.windMitFactor = windMitigationDiscount;
   values.windMitFactorNew = (updatedRatingWindMitDiscount === undefined || updatedRatingWindMitDiscount === null) ? windMitigationDiscount : updatedRatingWindMitDiscount;
   // Home/Location Bottom Left
-  values.yearBuilt = _.get(policy, 'property.yearBuilt');
+  values.yearBuilt = String(_.get(policy, 'property.yearBuilt'));
   values.yearBuiltNew = values.yearBuilt;
   values.constructionType = _.get(policy, 'property.constructionType');
   values.constructionTypeNew = values.constructionType;
@@ -256,7 +256,7 @@ export const handleInitialize = (state) => {
   values.distanceToFireStationNew = values.distanceToFireStation;
   values.residenceType = _.get(policy, 'property.residenceType');
   values.residenceTypeNew = values.residenceType;
-  values.squareFeet = _.get(policy, 'property.squareFeet');
+  values.squareFeet = _.get(policy, 'property.squareFeet') || '';
   values.squareFeetNew = Number(values.squareFeet);
   values.floodZone = _.get(policy, 'property.floodZone');
   values.floodZoneNew = values.floodZone;
@@ -560,6 +560,16 @@ export const calculate = (data, dispatch, props) => {
   const submitData = generateModel(data, props.policy, props);
   const workflowId = props.appState.instanceId;
 
+  const delta = Object.keys(data).reduce((changed, key) => {
+    if (data[key] !== props.initialValues[key]) changed.push(key);
+    return changed;
+  }, []);
+  if (delta.length === 1 && delta.includes('endorsementDateNew')) {
+    setCalculate(props, true);
+    props.dispatch(errorActions.setAppError({ message: 'No changes were made.' }));
+    return;
+  }
+  
   const setLiabilityIncidentalOccupanciesNew = submitData.propertyIncidentalOccupanciesMainDwellingNew || submitData.propertyIncidentalOccupanciesOtherStructuresNew;
   submitData.liabilityIncidentalOccupanciesNew = setLiabilityIncidentalOccupanciesNew;
   props.dispatch(change('Endorsements', 'liabilityIncidentalOccupanciesNew', setLiabilityIncidentalOccupanciesNew));
@@ -731,7 +741,7 @@ export class Endorsements extends React.Component {
                             disabled
                           />
                           <CurrencyField
-                            validations={['required', 'range']}
+                            validations={['required', 'dwellingRange']}
                             styleName=""
                             name="dwellingAmountNew"
                             onChange={this.updateDwellingAndDependencies}
