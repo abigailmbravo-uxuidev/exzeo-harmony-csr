@@ -1,6 +1,12 @@
 import validator from 'validator';
 import moment from 'moment';
 
+const calculatedValue = (value) => {
+  const numberValue = String(value).replace(/\D+/g, '');
+  return Number(numberValue);
+};
+
+
 const rules = {
   required: value => (value || value === 0 ? undefined : 'Field Required'),
   email: value => (!value || validator.isEmail(value) ? undefined : 'Not a valid email address'),
@@ -13,7 +19,8 @@ const rules = {
   invalidCharacters: value => (!value.match(/\/|\\/) ? undefined : 'Invalid characters'),
   numberDashesOnly: value => (value.match(/^(\d+-?)+\d+$/) ? undefined : 'Only numbers and dashes allowed'),
   zipNumbersOnly: value => ((!value || validator.isNumeric(String(value))) ? undefined : 'Not a valid zip code'),
-  numbersOnly: value => ((!value || validator.isNumeric(String(value))) ? undefined : 'Not a valid number')
+  numbersOnly: value => ((!value || validator.isNumeric(String(value))) ? undefined : 'Not a valid number'),
+  dwellingRange: value => ((calculatedValue(value) <= 2000000 && calculatedValue(value) >= 125000) ? undefined : 'Not a valid range. Must be ($125,000 - $2,000,000)')
 };
 
 export function combineRules(validations, variables) {
@@ -21,7 +28,7 @@ export function combineRules(validations, variables) {
 
   if (validations) {
     for (let i = 0; i < validations.length; i += 1) {
-      if ((!variables || (!variables.min && !variables.max && !variables.dateString)) && rules[validations[i]]) {
+      if (rules[validations[i]] && ((!variables || (!variables.min && !variables.max)) || (validations[i] === 'dwellingRange'))) {
         ruleArray.push(rules[`${validations[i]}`]);
       } else if (validations[i] === 'range' && variables && variables.min && variables.max) {
         const range = (values) => {
@@ -55,7 +62,7 @@ export function combineRules(validations, variables) {
       for (const field of variables.dependsOn) {
         if (allValues[field]) return 'Field Required';
       }
-      
+
       return undefined;
     };
     ruleArray.push(checkFields);

@@ -13,7 +13,9 @@ export const SelectInput = ({
   meta,
   styleName
 }) => {
-  const { onChange, name, value, disabled } = input;
+  const {
+    onChange, name, value, disabled
+  } = input;
   const { touched, error, warning } = meta;
   const Error = touched && (error || warning) && <span>{error || warning}</span>;
   const formGroupStyles = classNames('form-group', styleName, name, Error ? 'error' : '');
@@ -24,14 +26,14 @@ export const SelectInput = ({
       {answers && answers.length >= 0 ? (
         <select
           className={Error ? 'error' : ''}
-          tabIndex={'0'}
+          tabIndex="0"
           value={value}
           name={name}
           disabled={disabled || isDisabled}
           onChange={onChange}
           aria-activedescendant={value}
         >
-          <option aria-label={'Please select...'} disabled value={''}>Please select...</option>
+          <option aria-label="Please select..." value="">Please select...</option>
           {answers.map((answer, index) => (
             <option aria-label={answer.label || answer.answer} value={answer.answer} key={index}>
               {answer.label || answer.answer}

@@ -741,7 +741,7 @@ export class Endorsements extends React.Component {
                             disabled
                           />
                           <CurrencyField
-                            validations={['required', 'range']}
+                            validations={['required', 'dwellingRange']}
                             styleName=""
                             name="dwellingAmountNew"
                             onChange={this.updateDwellingAndDependencies}
