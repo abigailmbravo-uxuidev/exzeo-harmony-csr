@@ -74,7 +74,7 @@ export const SearchResults = (props) => {
                 </li>
               </ul>
             </section>
-                                                                                             </div>))
+          </div>))
       }
         {
           props.search && props.search.hasSearched && !props.search.isLoading && policyResults && policyResults.length === 0 && <NoPolicyResultsConnect />
@@ -281,9 +281,7 @@ export const SearchResults = (props) => {
             </div>
             <div className="contact-details">
               <div className="card-name">
-
-                <h4 className="agency" onClick={() => props.handleNewTab(agent, props)}><span className="agency-code">{agent.agencyCode}</span> | <span className="agency-display-name">{agent.displayName}</span> | <span className="agency-legal-name">{agent.legalName}</span> | <span className="agency-license">{agent.licenseNumber}</span></h4>
-
+                <h4 onClick={() => props.handleNewTab(agent, props)}><span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span> | <span className="agent-license">{agent.licenseNumber}</span></h4>
                 <div className="contact-address">
                   {agent.mailingAddress.address1},&nbsp;
                   {agent.mailingAddress.address2}{agent.mailingAddress.address2 ? ', ' : ' ' }
