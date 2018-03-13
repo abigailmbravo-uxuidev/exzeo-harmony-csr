@@ -252,9 +252,9 @@ export const handleBillingFormSubmit = (data, dispatch, props) => {
 
 export const hideBillingModal = (props) => {
   props.actions.appStateActions.setAppState(
-props.appState.modelName, props.appState.instanceId,
+    props.appState.modelName, props.appState.instanceId,
     { ...props.appState.data, showBillingEditModal: false }
-);
+  );
 };
 
 export const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
@@ -364,10 +364,10 @@ export class MortgageBilling extends Component {
   dateFormatter = cell => `${cell.substring(0, 10)}`;
 
   render() {
-    const { additionalInterests, policyHolders } = this.props.policy;
+    const { additionalInterests } = this.props.policy;
     const {
- handleSubmit, pristine, fieldValues, policy, questions 
-} = this.props;
+      handleSubmit, pristine, fieldValues, policy, questions
+    } = this.props;
     setRank(additionalInterests);
     setIsActive(additionalInterests);
 
