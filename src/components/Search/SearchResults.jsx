@@ -17,6 +17,8 @@ import PolicySearchCard from './PolicySearchCard.jsx';
 import QuoteSearchCard from './QuoteSearchCard';
 import AddressSearchCard from './AddressSearchCard';
 import AgencySearchCard from './AgencySearchCard';
+import AgentSearchCard from './AgentSearchCard';
+import AddressTip from './AddressTip';
 
 export const onKeypressSubmit = (event, data, props) => {
   if (event.charCode === 13) {
@@ -82,16 +84,7 @@ export const SearchResults = (props) => {
               ))
             : null
         }
-          <p>
-            <small>
-              <strong>TIP:</strong>
-            If you don't see your address in the list provided, try entering less address information to see if that improves your search results. Please note, at this time we are only writing single family dwellings in the state of Florida. If you still have problems finding an address, please
-              <a href="tel:888-210-5235">
-                <strong>call us</strong>
-              </a>
-            and one of our representatives will be glad to help you.
-            </small>
-          </p>
+          <AddressTip />
         </ul>
       </div>);
   }
@@ -145,54 +138,8 @@ export const SearchResults = (props) => {
         { props.appState.data && props.appState.data.agentSubmitting && <Loader />}
         {
         agentResults && agentResults.map((agent, index) => (
-          <div className="agency agent contact card" key={index}>
-            <div className="contact-title">
-              <i className="fa fa-address-card margin bottom" />
-              {agent.agentOfRecord ? <small><i className="card-icon fa fa-bookmark" /><label>AOR</label></small> : null }
-              {agent.appointed ? <small><i className="card-icon fa fa-certificate" /><label>Appointed</label></small> : null }
-            </div>
-            <div className="contact-details">
-              <div className="card-name">
-                <h4 onClick={() => props.handleNewTab(agent, props)}><span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span> | <span className="agent-license">{agent.licenseNumber}</span></h4>
-                <div className="contact-address">
-                  {agent.mailingAddress.address1},&nbsp;
-                  {agent.mailingAddress.address2}{agent.mailingAddress.address2 ? ', ' : ' ' }
-                  {agent.mailingAddress.city},&nbsp;
-                  {agent.mailingAddress.state}&nbsp;
-                  {agent.mailingAddress.zip}
-                  {agent.status ? <span className="additional-data status"><label>STATUS:&nbsp;</label>{agent.status}</span> : null}
-                </div>
-                <div className="additional-contacts">
-                  <ul>
-                    <li>
-                      <div className="contact-methods">
-                        {agent.primaryPhoneNumber ?
-                          <p className="phone">
-                            <i className="fa fa-phone-square" />
-                            <a href={`tel:${agent.primaryPhoneNumber}`}>{normalizePhone(agent.primaryPhoneNumber)}</a>
-                          </p> : null }
-                        {agent.secondaryPhoneNumber ?
-                          <p className="phone">
-                            <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
-                            <a href={`tel:${agent.secondaryPhoneNumber}`}>{normalizePhone(agent.secondaryPhoneNumber)}</a>
-                          </p> : null }
-                        {agent.faxNumber ?
-                          <p className="fax">
-                            <i className="fa fa-fax" />
-                            <a href={`tel:${agent.faxNumber}`}>{normalizePhone(agent.faxNumber)}</a>
-                          </p> : null }
-                        {agent.emailAddress ?
-                          <p>
-                            <i className="fa fa-envelope" />
-                            <a href={`mailto:${agent.emailAddress}`}>{agent.emailAddress}</a>
-                          </p> : null }
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>))
+          <AgentSearchCard agent={agent} index={index} agentSelection={() => props.handleNewTab(agent, props)} agentKeyEnter={event => onKeypressSubmit(event, agent, props)} />
+          ))
             }
       </div>
     );
