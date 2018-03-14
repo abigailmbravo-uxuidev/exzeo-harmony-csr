@@ -13,7 +13,6 @@ import * as appStateActions from '../../actions/appStateActions';
 import * as errorActions from '../../actions/errorActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as searchActions from '../../actions/searchActions';
-import TextField from '../Form/inputs/TextField';
 import Pagination from '../Common/Pagination';
 
 const userTasks = {
@@ -273,7 +272,7 @@ const getErrorToolTip = (formErrors, fieldName) => {
   return ((formErrors && formErrors[fieldName]) ? <span>
     <i className="fa fa-exclamation-circle" data-tip data-for={errorFieldName} />
     <ReactTooltip place="right" id={errorFieldName} type="error" effect="float">{formErrors[fieldName]}</ReactTooltip>
-  </span> : <span />);
+                                                  </span> : <span />);
 };
 
 const generateField = (name, placeholder, labelText, formErrors, formGroupCss) => {
@@ -287,7 +286,7 @@ const generateField = (name, placeholder, labelText, formErrors, formGroupCss) =
       type="text"
       component="input"
     />
-  </div>);
+                 </div>);
   return field;
 };
 
@@ -407,7 +406,7 @@ export class SearchForm extends Component {
             >
               <i className="fa fa-search" />Search
             </button>
-          </div>
+                                                   </div>
         }
           {fieldValues.searchType === 'quote' && <div className="search-inputs fade-in">
 
@@ -434,7 +433,7 @@ export class SearchForm extends Component {
             >
               <i className="fa fa-search" />Search
             </button>
-          </div>
+                                                 </div>
         }
           { fieldValues.searchType === 'quote' && quoteResults && quoteResults.quotes && quoteResults.quotes.length > 0 && fieldValues.totalPages > 1 &&
           <Pagination changePageForward={() => changePageQuote(this.props, true)} changePageBack={() => changePageQuote(this.props, false)} fieldValues={fieldValues} />
@@ -477,7 +476,7 @@ export class SearchForm extends Component {
             >
               <i className="fa fa-search" />Search
             </button>
-          </div>
+                                                  </div>
         }
           { fieldValues.searchType === 'policy' && policyResults && policyResults.policies && policyResults.policies.length > 0 && fieldValues.totalPages > 1 &&
           <Pagination changePageForward={() => changePagePolicy(this.props, true)} changePageBack={() => changePagePolicy(this.props, false)} fieldValues={fieldValues} />
@@ -498,7 +497,7 @@ export class SearchForm extends Component {
               </button>
             </div>
             <div className="filters fade-in">FILTERS HERE</div>
-          </div>
+                                                </div>
         }
           {fieldValues.searchType === 'agency' && <div className="search-inputs fade-in">
 
@@ -517,7 +516,7 @@ export class SearchForm extends Component {
             >
               <i className="fa fa-search" />Search
             </button>
-          </div>
+                                                  </div>
         }
           {fieldValues.searchType === 'agent' && <div className="search-inputs fade-in">
 
@@ -535,7 +534,7 @@ export class SearchForm extends Component {
             >
               <i className="fa fa-search" />Search
             </button>
-          </div>
+                                                 </div>
       }
           {/* <!-- End should be available only in user admin  --> */}
         </div>
