@@ -75,7 +75,10 @@
           }
 
           input {
-            width: 4rem;
+            flex-basis: 4rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+            max-width: 4rem;
             height: auto;
             padding: $padding/2;
             text-align: center;
@@ -111,7 +114,10 @@
 
           input,
           input[readonly] {
-            width: 4rem;
+            flex-basis: 4rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+            max-width: 4rem;
             height: auto;
             padding: ($padding/2) 0 ($padding/2) ($padding/2);
             text-align: center;
