@@ -66,7 +66,7 @@ export const closeNewNoteFileUploader = (props) => {
 };
 
 export const SideNav = (props) => {
-  const documentId = props.policy.policyNumber;
+  const { policyNumber, sourceNumber } = props.policy;
 
   return (
     <nav className="site-nav">
@@ -100,7 +100,7 @@ export const SideNav = (props) => {
         </li>
       </ul>
       { props.appState.data.showNewNoteFileUploader === true &&
-        <NoteUploader noteType="Policy Note" documentId={documentId} closeButtonHandler={() => closeNewNoteFileUploader(props)} />
+        <NoteUploader noteType="Policy Note" documentId={policyNumber} sourceId={sourceNumber} closeButtonHandler={() => closeNewNoteFileUploader(props)} />
       }
     </nav>);
 };

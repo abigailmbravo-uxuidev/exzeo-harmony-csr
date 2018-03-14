@@ -26,8 +26,7 @@ export const runnerSetup = data => ({
   data
 });
 
-export const getNotes = (id, policyId) => (dispatch) => {
-  const pid = policyId ? policyId : id;
+export const getNotes = (id, sysNoteId) => (dispatch) => {
   const notesRequest = runnerSetup({
     service: 'transaction-logs.services',
     method: 'GET',
@@ -37,7 +36,7 @@ export const getNotes = (id, policyId) => (dispatch) => {
   const docsRequest = runnerSetup({
     service: 'file-index.services',
     method: 'GET',
-    path: `v1/fileindex/${pid}`
+    path: `v1/fileindex/${sysNoteId}`
   });
 
   return Promise.all([
@@ -88,7 +87,12 @@ export const addNote = (data, files) => (dispatch) => {
       'Content-Type': `multipart/form-data; boundary=${form._boundary}`
     }
   })
-  .then(response => dispatch(getNotes(response.data.number)))
+  .then(response => {
+    const ids = (data.noteType === 'Policy Note') 
+      ? [response.data.number, data.source].toString()
+      : response.data.number;
+    dispatch(getNotes(ids, response.data.number))
+  })
   .catch((error) => {
     const message = handleError(error);
     return dispatch(batchActions([

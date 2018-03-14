@@ -12,7 +12,9 @@ export class NotesFiles extends Component {
 
   componentDidMount () {
     const { quoteData } = this.props;
-    if (quoteData && quoteData.quoteNumber) this.props.actions.serviceActions.getNotes(quoteData.quoteNumber);
+    if (quoteData && quoteData.quoteNumber) {
+      this.props.actions.serviceActions.getNotes(quoteData.quoteNumber, quoteData.quoteNumber);
+    }
   }
 
   render() {
