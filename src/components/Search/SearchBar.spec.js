@@ -3,8 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { SearchBar, SearchForm, handleSearchBarSubmit, validate, handlePolicySearchSubmit, togglePolicyAdvanceSearch } from './SearchBar';
-import { clearPolicyResults } from '../../actions/serviceActions';
+import ConnectedApp, { SearchForm, handleSearchBarSubmit, validate, handlePolicySearchSubmit, togglePolicyAdvanceSearch, changePageQuote, changePagePolicy } from './SearchBar';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -179,6 +178,17 @@ describe('Testing SearchBar component', () => {
 
   it('should test policy', () => {
     const initialState = {
+      cg: {
+        test: {
+          data: {
+            activeTask: {},
+            modelInstanceId: '123',
+            model: {
+            },
+            uiQuestions: []
+          }
+        }
+      },
       service: {
         policyResults: []
       },
@@ -186,7 +196,7 @@ describe('Testing SearchBar component', () => {
         data: {
           showAdditionalInterestModal: false
         },
-        modelName: 'bb'
+        modelName: 'test'
       }
     };
     const store = mockStore(initialState);
@@ -267,5 +277,7 @@ describe('Testing SearchBar component', () => {
     wrapper2.find('#searchPolicySubmit').simulate('click');
     handlePolicySearchSubmit({}, props.dispatch, props);
     togglePolicyAdvanceSearch(props);
+    changePageQuote(props, true);
+    changePagePolicy(props, true);
   });
 });

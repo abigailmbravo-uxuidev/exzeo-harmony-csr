@@ -33,14 +33,13 @@ export const handleNewTab = (searchData) => {
   } else if (lastSearchData.searchType === 'policy') {
     localStorage.setItem('policyNumber', searchData.policyNumber);
     window.open('/policy/coverage', '_blank');
-  } else if (lastSearchData.searchType === 'agency') {
+  } else if (lastSearchData.searchType === 'agency' || lastSearchData.searchType === 'agent') {
     localStorage.setItem('agencyCode', searchData.agencyCode);
     window.open('/agency/staff', '_blank');
   }
 };
 
 export class Splash extends Component {
-
   componentDidMount() {
     this.props.actions.cgActions.startWorkflow(workflowModelName, workflowData);
     this.props.actions.questionsActions.getUIQuestions('searchCSR');

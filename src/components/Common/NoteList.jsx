@@ -42,9 +42,10 @@ export const Notes = (props) => {
     <div className="note-grid-wrapper btn-tabs">
       <div className="filter-tabs">
         <button type="button" className={`btn btn-tab ${!attachmentStatus ? 'selected' : ''}`} onClick={() => setNoteStatus(false)}>Notes</button>
-        <button type="button" className={`btn btn-tab ${attachmentStatus ? 'selected' : ''}`} onClick={() => setNoteStatus(true)}>Documents</button>
+        <button type="button" className={`btn btn-tab ${attachmentStatus ? 'selected' : ''}`} onClick={() => setNoteStatus(true)}>Files</button>
       </div>
       <BootstrapTable
+        className={attachmentStatus ? 'files compact-table' : 'notes compact-table'}
         data={filterNotesByType(notes, attachmentStatus)}
         options={options}
         search
