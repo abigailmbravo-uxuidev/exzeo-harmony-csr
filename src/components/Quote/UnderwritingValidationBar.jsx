@@ -122,7 +122,7 @@ export class UnderwritingValidationBar extends React.Component {
               </h5>
               <div>
                 <ul className="fa-ul">
-                  {_.orderBy(overridableExceptions).map((underwritingException, index) => (
+                  {_.orderBy(overridableExceptions, ['overridden'], ['asc']).map((underwritingException, index) => (
                     <li className={underwritingException.overridden ? 'overridden' : ''} key={index}>
                       <i className="fa-li fa fa-exclamation-triangle" aria-hidden="true" />
                       <span>{underwritingException.internalMessage}</span>
