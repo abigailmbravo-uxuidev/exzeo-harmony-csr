@@ -272,7 +272,7 @@ const getErrorToolTip = (formErrors, fieldName) => {
   return ((formErrors && formErrors[fieldName]) ? <span>
     <i className="fa fa-exclamation-circle" data-tip data-for={errorFieldName} />
     <ReactTooltip place="right" id={errorFieldName} type="error" effect="float">{formErrors[fieldName]}</ReactTooltip>
-  </span> : <span />);
+                                                  </span> : <span />);
 };
 
 const generateField = (name, placeholder, labelText, formErrors, formGroupCss) => {
@@ -286,7 +286,7 @@ const generateField = (name, placeholder, labelText, formErrors, formGroupCss) =
       type="text"
       component="input"
     />
-  </div>);
+                 </div>);
   return field;
 };
 
@@ -295,7 +295,6 @@ const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answ
 export class SearchForm extends Component {
   componentWillReceiveProps(nextProps) {
     const { dispatch } = nextProps;
-
     const model = nextProps.tasks[nextProps.appState.modelName] || {};
     const previousTask = model.data && model.data.previousTask
       ? model.data.previousTask
@@ -330,7 +329,8 @@ export class SearchForm extends Component {
       form,
       actions,
       tasks,
-      reset
+      reset,
+      pathName
     } = this.props;
 
     const clearForm = () => {
@@ -364,7 +364,7 @@ export class SearchForm extends Component {
       <Form id="SearchBar" onSubmit={handleSubmit(searchHandler)} noValidate>
         <div className="search-input-wrapper">
           <div className="form-group search-context">
-            <SelectField
+            { pathName === '/agency' ? <SelectField
               id="searchType"
               name="searchType"
               component="select"
@@ -374,18 +374,6 @@ export class SearchForm extends Component {
               onChange={clearForm}
               answers={[
               {
-                answer: 'address',
-                label: 'New Quote'
-              },
-              {
-                answer: 'quote',
-                label: 'Quote Search'
-              },
-              {
-                answer: 'policy',
-                label: 'Policy Search'
-              },
-              {
                 answer: 'agent',
                 label: 'Agent Search'
               },
@@ -394,7 +382,30 @@ export class SearchForm extends Component {
                 label: 'Agency Search'
               }
             ]}
-            />
+            /> :
+            <SelectField
+              id="searchType"
+              name="searchType"
+              component="select"
+              styleName=""
+              label="Search Context"
+              validations={['required']}
+              onChange={clearForm}
+              answers={[
+            {
+              answer: 'address',
+              label: 'New Quote'
+            },
+            {
+              answer: 'quote',
+              label: 'Quote Search'
+            },
+            {
+              answer: 'policy',
+              label: 'Policy Search'
+            }
+          ]}
+            />}
           </div>
           {fieldValues.searchType === 'address' && <div className="search-inputs fade-in">
             {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
@@ -406,7 +417,7 @@ export class SearchForm extends Component {
             >
               <i className="fa fa-search" />Search
             </button>
-          </div>
+                                                   </div>
         }
           {fieldValues.searchType === 'quote' && <div className="search-inputs fade-in">
 
@@ -433,7 +444,7 @@ export class SearchForm extends Component {
             >
               <i className="fa fa-search" />Search
             </button>
-          </div>
+                                                 </div>
         }
           { fieldValues.searchType === 'quote' && quoteResults && quoteResults.quotes && quoteResults.quotes.length > 0 && fieldValues.totalPages > 1 && <div className="pagination-wrapper">
             <button
@@ -461,7 +472,7 @@ export class SearchForm extends Component {
             >
               <span className="fa fa-chevron-circle-right" />
             </button>
-          </div>
+                                                                                                                                                         </div>
       }
           {fieldValues.searchType === 'policy' && <div className="search-inputs fade-in p">
 
@@ -501,7 +512,7 @@ export class SearchForm extends Component {
             >
               <i className="fa fa-search" />Search
             </button>
-          </div>
+                                                  </div>
         }
           { fieldValues.searchType === 'policy' && policyResults && policyResults.policies && policyResults.policies.length > 0 && fieldValues.totalPages > 1 && <div className="pagination-wrapper">
             <button
@@ -529,7 +540,7 @@ export class SearchForm extends Component {
             >
               <span className="fa fa-chevron-circle-right" />
             </button>
-          </div>
+                                                                                                                                                                 </div>
       }
           {/* <!-- Should be available only in user admin  --> */}
           {fieldValues.searchType === 'user' && <div className="search-tools">
@@ -547,7 +558,7 @@ export class SearchForm extends Component {
               </button>
             </div>
             <div className="filters fade-in">FILTERS HERE</div>
-          </div>
+                                                </div>
         }
           {fieldValues.searchType === 'agency' && <div className="search-inputs fade-in">
 
@@ -566,7 +577,7 @@ export class SearchForm extends Component {
             >
               <i className="fa fa-search" />Search
             </button>
-          </div>
+                                                  </div>
         }
           {fieldValues.searchType === 'agent' && <div className="search-inputs fade-in">
 
@@ -584,7 +595,7 @@ export class SearchForm extends Component {
             >
               <i className="fa fa-search" />Search
             </button>
-          </div>
+                                                 </div>
       }
           {/* <!-- End should be available only in user admin  --> */}
         </div>
@@ -625,7 +636,8 @@ const mapStateToProps = state => ({
   agencies: state.agencies,
   agents: state.agents,
   policyResults: state.service.policyResults,
-  search: state.search
+  search: state.search,
+  pathName: window.location.pathname
 });
 
 const mapDispatchToProps = dispatch => ({
