@@ -316,13 +316,17 @@ describe('Testing UnderwritingValidationBar component', () => {
             modelInstanceId: '123',
             model: {
               variables: [
-                { name: 'retrieveQuote',
+                {
+                  name: 'retrieveQuote',
                   value: {
                     result: quoteData
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: quoteData
-                    } }]
+                  }
+                }, {
+                  name: 'getQuoteBeforePageLoop',
+                  value: {
+                    result: quoteData
+                  }
+                }]
             },
             uiQuestions: []
           }
@@ -337,6 +341,8 @@ describe('Testing UnderwritingValidationBar component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      overridableExceptions: [],
+      nonOverridableExceptions: [],
       actions: {
         quoteStateActions: { getLatestQuote() {} },
         serviceActions: {
