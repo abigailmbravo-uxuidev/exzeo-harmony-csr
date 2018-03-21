@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { reduxForm, Form } from 'redux-form';
+import { reduxForm, Form, change } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
 import * as cgActions from '../../actions/cgActions';
@@ -44,88 +44,105 @@ export const handleInitialize = (state) => {
   return values;
 };
 
-export const UnderwritingValidationBar = (props) => {
-  const {
-     handleSubmit,
-     pristine,
-     quoteData
-   } = props;
+export const handleOverridableExceptions = (quoteData) => {
+  const underwritingExceptions = quoteData && quoteData.underwritingExceptions ? quoteData.underwritingExceptions : [];
+  return underwritingExceptions.filter(uw => uw.canOverride === true);
+};
 
-  if (!quoteData) { // eslint-disable-line
-    return <div />;
-  }
-  let underwritingExceptions = [];
+export const handleNonOverridableExceptions = (quoteData) => {
+  const underwritingExceptions = quoteData && quoteData.underwritingExceptions ? quoteData.underwritingExceptions : [];
+  return underwritingExceptions.filter(uw => uw.canOverride === false);
+};
 
-  underwritingExceptions = quoteData && quoteData.underwritingExceptions ? quoteData.underwritingExceptions : [];
-
-  const hasOverrideExceptions = _.filter(underwritingExceptions, { canOverride: true }).length > 0;
-  if (hasOverrideExceptions) {
-    _.each(_.filter(underwritingExceptions, { canOverride: true }), (uw) => {
-      if (_.find(uw.fields, { name: 'rating.netPremium' }) && _.find(uw.fields, { name: 'rating.netPremium' }).value === 'null') {
-        uw.canOverride = false;
+export class UnderwritingValidationBar extends React.Component {
+  componentWillReceiveProps(nextProps) {
+    nextProps.overridableExceptions.forEach((uw) => {
+      if (!nextProps.fieldValues[uw._id]) {
+        nextProps.dispatch(change('UnderwritingOverride', uw._id, uw.overridden));
       }
     });
   }
+  render() {
+    const {
+      handleSubmit,
+      pristine,
+      quoteData,
+      overridableExceptions,
+      nonOverridableExceptions
+    } = this.props;
 
-  return (
-    <Form id="UnderwritingOverride" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
-      <aside className="underwriting-validation">
-        <h4 className="uw-validation-header">Qualifier Status</h4>
-        <div>
-          {quoteData && (!quoteData.rating || quoteData.policyHolders.length === 0) &&
-          <section className="msg-info">
-            <h5>
-              <i className="fa fa-info-circle" aria-hidden="true" /><span>Info</span>
-            </h5>
-            <div>
-              <ul className="fa-ul">
-                { quoteData.policyHolders && quoteData.policyHolders.length === 0 && <li key={0}><a href="/quote/coverage#primaryPolicyholder"><i className="fa-li fa fa-info-circle" aria-hidden="true" />Needs a Primary Policyholder</a></li> }
-                { !quoteData.rating && <li key={1}><a href="/quote/underwriting"><i className="fa-li fa fa-info-circle" aria-hidden="true" />Needs Underwriting</a></li> }
-              </ul>
-            </div>
-          </section>
+  if (!quoteData) { // eslint-disable-line
+      return <div />;
+    }
+
+    if (overridableExceptions.length > 0) {
+      overridableExceptions.forEach((uw) => {
+        if (_.find(uw.fields, { name: 'rating.netPremium' }) && _.find(uw.fields, { name: 'rating.netPremium' }).value === 'null') {
+          uw.canOverride = false;
         }
-          {underwritingExceptions && _.filter(underwritingExceptions, { canOverride: false }).length > 0 &&
-          <section className="msg-error">
-            <h5>
-              <i className="fa fa-exclamation-circle" aria-hidden="true" /><span>Error</span>
-            </h5>
-            <div>
-              <ul className="fa-ul">
-                {_.filter(underwritingExceptions, { canOverride: false }).map((underwritingException, index) => (
-                  <li key={index}><i className="fa-li fa fa-exclamation-circle" aria-hidden="true" />{underwritingException.internalMessage}</li>
+      });
+    }
+
+    return (
+      <Form id="UnderwritingOverride" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+        <aside className="underwriting-validation">
+          <h4 className="uw-validation-header">Qualifier Status</h4>
+          <div>
+            {quoteData && (!quoteData.rating || quoteData.policyHolders.length === 0) &&
+            <section className="msg-info">
+              <h5>
+                <i className="fa fa-info-circle" aria-hidden="true" /><span>Info</span>
+              </h5>
+              <div>
+                <ul className="fa-ul">
+                  { quoteData.policyHolders && quoteData.policyHolders.length === 0 && <li key={0}><a href="/quote/coverage#primaryPolicyholder"><i className="fa-li fa fa-info-circle" aria-hidden="true" />Needs a Primary Policyholder</a></li> }
+                  { !quoteData.rating && <li key={1}><a href="/quote/underwriting"><i className="fa-li fa fa-info-circle" aria-hidden="true" />Needs Underwriting</a></li> }
+                </ul>
+              </div>
+            </section>
+        }
+            {nonOverridableExceptions.length > 0 &&
+            <section className="msg-error">
+              <h5>
+                <i className="fa fa-exclamation-circle" aria-hidden="true" /><span>Error</span>
+              </h5>
+              <div>
+                <ul className="fa-ul">
+                  {nonOverridableExceptions.map((underwritingException, index) => (
+                    <li key={index}><i className="fa-li fa fa-exclamation-circle" aria-hidden="true" />{underwritingException.internalMessage}</li>
                 ))}
-              </ul>
-            </div>
-          </section>
+                </ul>
+              </div>
+            </section>
         }
-          {underwritingExceptions && _.filter(underwritingExceptions, { canOverride: true }).length > 0 &&
-          <section className="msg-caution">
-            <h5>
-              <i className="fa fa-exclamation-triangle" aria-hidden="true" /><span>Caution</span>{ hasOverrideExceptions && !pristine && <button tabIndex={'0'} className="btn btn-sm btn-primary" type="submit">Save</button> }
-            </h5>
-            <div>
-              <ul className="fa-ul">
-                {_.orderBy(_.filter(underwritingExceptions, { canOverride: true }), ['overridden'], ['asc']).map((underwritingException, index) => (
-                  <li className={underwritingException.overridden ? 'overridden' : ''} key={index}>
-                    <i className="fa-li fa fa-exclamation-triangle" aria-hidden="true" />
-                    <span>{underwritingException.internalMessage}</span>
-                    <CheckField
-                      label={'Override'}
-                      name={underwritingException._id}
-                      id={underwritingException._id}
-                    />
-                  </li>
+            {overridableExceptions.length > 0 &&
+            <section className="msg-caution">
+              <h5>
+                <i className="fa fa-exclamation-triangle" aria-hidden="true" /><span>Caution</span>{ overridableExceptions.length > 0 && !pristine && <button tabIndex="0" className="btn btn-sm btn-primary" type="submit">Save</button> }
+              </h5>
+              <div>
+                <ul className="fa-ul">
+                  {_.orderBy(overridableExceptions).map((underwritingException, index) => (
+                    <li className={underwritingException.overridden ? 'overridden' : ''} key={index}>
+                      <i className="fa-li fa fa-exclamation-triangle" aria-hidden="true" />
+                      <span>{underwritingException.internalMessage}</span>
+                      <CheckField
+                        label="Override"
+                        name={underwritingException._id}
+                        id={underwritingException._id}
+                      />
+                    </li>
                 ))}
-              </ul>
-            </div>
-          </section>
+                </ul>
+              </div>
+            </section>
         }
-        </div>
-      </aside>
-    </Form>
-  );
-};
+          </div>
+        </aside>
+      </Form>
+    );
+  }
+}
 
 UnderwritingValidationBar.propTypes = {
   completedTasks: PropTypes.any, // eslint-disable-line
@@ -147,11 +164,15 @@ const mapStateToProps = state => ({
   appState: state.appState,
   completedTasks: state.completedTasks,
   quoteData: state.service.quote || {},
+  initialValues: handleInitialize(state),
   fieldValues: _.get(state.form, 'UnderwritingOverride.values', {}),
-  initialValues: handleInitialize(state)
+  overridableExceptions: handleOverridableExceptions(state.service.quote || {}),
+  nonOverridableExceptions: handleNonOverridableExceptions(state.service.quote || {})
+
 });
 
 const mapDispatchToProps = dispatch => ({
+  dispatch,
   actions: {
     quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
