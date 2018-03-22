@@ -142,7 +142,7 @@ export const handleInitialize = (state) => {
   values.clearFields = false;
   values.endorsementDateNew = setEndorsementDate(_.get(policy, 'effectiveDate'), _.get(policy, 'endDate'));
   values.dwellingAmount = _.get(policy, 'coverageLimits.dwelling.amount');
-  values.dwellingAmountNew =`$ ${Number(_.get(policy, 'coverageLimits.dwelling.amount')).toLocaleString()}`;
+  values.dwellingAmountNew = `$ ${Number(_.get(policy, 'coverageLimits.dwelling.amount')).toLocaleString()}`;
   values.otherStructuresAmount = otherStructures;
   values.otherStructuresAmountNew = values.otherStructuresAmount;
   values.otherStructures = `${String(calculatePercentage(otherStructures, dwelling))}%`;
@@ -257,7 +257,7 @@ export const handleInitialize = (state) => {
   values.residenceType = _.get(policy, 'property.residenceType');
   values.residenceTypeNew = values.residenceType;
   values.squareFeet = _.get(policy, 'property.squareFeet') || '';
-  values.squareFeetNew = Number(values.squareFeet);
+  values.squareFeetNew = String(values.squareFeet);
   values.floodZone = _.get(policy, 'property.floodZone');
   values.floodZoneNew = values.floodZone;
 
@@ -276,7 +276,7 @@ export const handleInitialize = (state) => {
   values.pH2email = _.get(policy, 'policyHolders[1].emailAddress') || '';
   values.pH2emailNew = values.pH2email || '';
   values.pH2FirstName = _.get(policy, 'policyHolders[1].firstName') || '';
-  values.pH2FirstNameNew = values.pH2FirstName  || '';
+  values.pH2FirstNameNew = values.pH2FirstName || '';
   values.pH2LastName = _.get(policy, 'policyHolders[1].lastName') || '';
   values.pH2LastNameNew = values.pH2LastName || '';
   values.pH2phone = normalizePhone(_.get(policy, 'policyHolders[1].primaryPhoneNumber') || '');
@@ -421,8 +421,8 @@ export const generateModel = (data, policyObject, props) => {
     dwellingAmountNew: Math.round(Number(String(data.dwellingAmountNew).replace(/[^\d]/g, '')) / 1000) * 1000,
     otherStructuresAmountNew: Number(data.otherStructuresAmountNew),
     personalPropertyAmountNew: Number(data.personalPropertyAmountNew),
-    personalLiabilityNew:  Number(data.personalLiabilityNew),
-    medicalPaymentsNew:  Number(data.medicalPaymentsNew),
+    personalLiabilityNew: Number(data.personalLiabilityNew),
+    medicalPaymentsNew: Number(data.medicalPaymentsNew),
     lossOfUseNew: Number(data.lossOfUseNew),
     moldPropertyNew: Number(data.moldPropertyNew),
     moldLiabilityNew: Number(data.moldLiabilityNew),
@@ -569,7 +569,7 @@ export const calculate = (data, dispatch, props) => {
     props.dispatch(errorActions.setAppError({ message: 'No changes were made.' }));
     return;
   }
-  
+
   const setLiabilityIncidentalOccupanciesNew = submitData.propertyIncidentalOccupanciesMainDwellingNew || submitData.propertyIncidentalOccupanciesOtherStructuresNew;
   submitData.liabilityIncidentalOccupanciesNew = setLiabilityIncidentalOccupanciesNew;
   props.dispatch(change('Endorsements', 'liabilityIncidentalOccupanciesNew', setLiabilityIncidentalOccupanciesNew));
