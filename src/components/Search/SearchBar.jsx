@@ -93,7 +93,7 @@ export const changePageQuote = (props, isNext) => {
   }
 };
 
-const handleInitialize = () => ({ searchType: 'quote', sortBy: 'policyNumber' });
+const handleInitialize = () => ({ searchType: 'policy', sortBy: 'policyNumber' });
 
 export const handlePolicySearchSubmit = (data, dispatch, props) => {
   const taskData = {
