@@ -554,15 +554,7 @@ export class Coverage extends Component {
                           type="checkbox"
                           disabled={checkSentToDocusign(quoteData.quoteState) || !(quoteData && quoteData.policyHolders && quoteData.policyHolders[1])}
                         />
-<<<<<<< HEAD
-<<<<<<< HEAD
                         <label htmlFor="clearFields"> Remove</label>
-=======
-                        <label htmlFor={'clearFields'}>Remove</label>
->>>>>>> update policyholder 2 remove checkbox styles; update demographic styles
-=======
-                        <label htmlFor={'clearFields'}>Remove</label>
->>>>>>> 57fe3cbcd22fde78123a574789a0c0cb2322ea85
                       </div>
                     </div>
                     <div className="flex-parent col2 policy-holder-b-name">
