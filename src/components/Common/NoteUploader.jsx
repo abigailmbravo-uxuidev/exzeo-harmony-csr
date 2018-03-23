@@ -181,12 +181,12 @@ export class Uploader extends Component {
         <div className="mainContainer">
           <Form id="NewNoteFileUploader" onSubmit={this.props.handleSubmit(this.submitNote)} noValidate>
               <div className="content">
-                <label>Note Type</label>
+                <label>Contact</label>
                 <Field component="select" name="contactType" disabled={!this.contactTypes.length}>
                   { this.contactTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
                 </Field>
                 <Field name="noteContent" component={renderNotes} label="Note Content" />
-                <label>Document Type</label>
+                <label>File Type</label>
                 <Field component="select" name="fileType" disabled={!this.docTypes.length}>
                   { this.docTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
                 </Field>
