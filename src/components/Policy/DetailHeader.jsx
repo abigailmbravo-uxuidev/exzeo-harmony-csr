@@ -139,7 +139,12 @@ export class DetailHeader extends Component {
           <section id="cancellationDate" className="cancellationDate">
             <dl>
             <div>
-              <dt>Cancellation Date</dt>
+              <dt>
+                Cancellation Date
+                {policy && policy.status === 'Cancelled' &&
+                <button id="effective-date" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showReinstatePolicyPopUp(this.props)}><i className="fa fa-thumbs-up" />Reinstate</button>
+                }
+              </dt>
               <dd>{cancellationDate}</dd>
             </div>
           </dl>
