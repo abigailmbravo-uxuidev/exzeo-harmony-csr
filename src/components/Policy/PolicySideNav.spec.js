@@ -37,9 +37,12 @@ describe('Testing PolicySideNav component', () => {
         cgActions: {
           batchCompleteTask() { return Promise.resolve(); }
         },
+        newNoteActions: {
+          toggleNote() {}
+        },
         appStateActions: {
-          setAppState() { }
-        }
+          setAppState() {}
+        },
       },
       fieldQuestions: [],
       quoteData: {},
@@ -52,11 +55,8 @@ describe('Testing PolicySideNav component', () => {
       }
     };
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
-    expect(wrapper);
-
     SideNav(props);
-
     NewNoteFileUploaderPopup(props);
-    closeNewNoteFileUploader(props);
+    expect(wrapper);
   });
 });

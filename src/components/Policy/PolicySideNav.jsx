@@ -5,8 +5,9 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { reduxForm, propTypes } from 'redux-form';
 import * as appStateActions from '../../actions/appStateActions';
+import * as newNoteActions from '../../actions/newNoteActions';
 import * as cgActions from '../../actions/cgActions';
-import NoteUploader from '../Common/NoteUploader';
+
 
 // Example of a possible schema
 /**
@@ -58,15 +59,10 @@ const csrLinks = [{
 }];
 
 export const NewNoteFileUploaderPopup = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showNewNoteFileUploader: true });
-};
-
-export const closeNewNoteFileUploader = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showNewNoteFileUploader: false });
+  props.actions.newNoteActions.toggleNote({noteType: 'Policy Note', documentId: props.policy.policyNumber, sourceNumber: props.policy.sourceNumber})
 };
 
 export const SideNav = (props) => {
-  const { policyNumber, sourceNumber } = props.policy;
 
   return (
     <nav className="site-nav">
@@ -99,9 +95,6 @@ export const SideNav = (props) => {
           <button aria-label="open-btn form-newNote" className="btn btn-primary btn-sm btn-block" onClick={() => NewNoteFileUploaderPopup(props)}><i className="fa fa-plus" /> Note / File</button>
         </li>
       </ul>
-      { props.appState.data.showNewNoteFileUploader === true &&
-        <NoteUploader noteType="Policy Note" documentId={policyNumber} sourceId={sourceNumber} closeButtonHandler={() => closeNewNoteFileUploader(props)} />
-      }
     </nav>);
 };
 
@@ -134,6 +127,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: {
     cgActions: bindActionCreators(cgActions, dispatch),
+    newNoteActions: bindActionCreators(newNoteActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }
 });
