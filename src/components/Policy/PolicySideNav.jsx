@@ -8,7 +8,6 @@ import * as appStateActions from '../../actions/appStateActions';
 import * as newNoteActions from '../../actions/newNoteActions';
 import * as cgActions from '../../actions/cgActions';
 
-
 // Example of a possible schema
 /**
  * {
