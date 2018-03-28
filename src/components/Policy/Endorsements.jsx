@@ -708,7 +708,7 @@ export class Endorsements extends React.Component {
         <PolicyConnect>
           <div className="messages" >
             <div className="message error">
-              <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;No permission found for Endorsements.
+              <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Endorsement page cannot be accessed due to User Permissions.
             </div>
           </div>
         </PolicyConnect>);
