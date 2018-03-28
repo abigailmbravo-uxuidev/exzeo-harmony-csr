@@ -693,13 +693,27 @@ export class Endorsements extends React.Component {
 
   render() {
     const {
-      initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, policy, dirty, fieldValues
+      initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, policy, dirty, fieldValues, userProfile
     } = this.props;
 
     const mappedEndorsementHistory = _.map(endorsementHistory, (endorsement) => {
       endorsement.netChargeFormat = _.includes(premiumEndorsmentList, endorsement.transactionType) ? premiumAmountFormatter(endorsement.netCharge) : '';
       return endorsement;
     });
+
+    const hasUpdatePermission = userProfile && Array.isArray(userProfile.resources) && userProfile.resources.find(resource => resource.right === 'UPDATE' && String(resource.uri).includes('PolicyData:Transactions'));
+
+    if (hasUpdatePermission) {
+      return (
+        <PolicyConnect>
+          <div className="messages" >
+            <div className="message error">
+              <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;No permission found for Endorsements.
+            </div>
+          </div>
+        </PolicyConnect>);
+    }
+
     return (
       <PolicyConnect>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
@@ -1530,7 +1544,8 @@ const mapStateToProps = state => ({
   getRate: state.service.getRate,
   newPolicyNumber: getNewPolicyNumber(state),
   summaryLedger: state.service.getSummaryLedger || {},
-  zipcodeSettings: state.service.getZipcodeSettings
+  zipcodeSettings: state.service.getZipcodeSettings,
+  userProfile: state.authState.userProfile || {}
 });
 
 const mapDispatchToProps = dispatch => ({
