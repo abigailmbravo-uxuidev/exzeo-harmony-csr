@@ -774,7 +774,6 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <TextField label="Other Structures %" styleName="" name="otherStructures" disabled />
                           <SelectField
-
                             name="otherStructuresNew"
                             answers={getAnswers('otherStructuresAmount', questions)}
                             component="select"
