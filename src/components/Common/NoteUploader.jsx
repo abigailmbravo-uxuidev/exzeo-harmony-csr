@@ -41,7 +41,7 @@ export class Uploader extends Component {
   // TODO: Pull this from the list service
   contactTypeOptions = {
     'Quote Note': ['Agent', 'Policyholder', 'Inspector', 'Other'],
-    'Policy Note': ['Agent', 'Policyholder', 'Lienholder', 'Claims', 'Inspector', 'Other']
+    'Policy Note': ['Agent', 'Policyholder', 'Lienholder', 'Internal', 'Inspector', 'Other']
   };
 
   docTypeOptions = {
