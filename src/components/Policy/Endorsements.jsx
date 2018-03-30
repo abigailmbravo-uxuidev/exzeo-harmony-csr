@@ -693,13 +693,30 @@ export class Endorsements extends React.Component {
 
   render() {
     const {
-      initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, policy, dirty, fieldValues
+      initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, policy, dirty, fieldValues, userProfile
     } = this.props;
 
     const mappedEndorsementHistory = _.map(endorsementHistory, (endorsement) => {
       endorsement.netChargeFormat = _.includes(premiumEndorsmentList, endorsement.transactionType) ? premiumAmountFormatter(endorsement.netCharge) : '';
       return endorsement;
     });
+
+    const resources = userProfile && Array.isArray(userProfile.resources) ? userProfile.resources : [];
+    const hasUpdatePermission = resources.find(resource => resource.right === 'UPDATE' && String(resource.uri).includes('PolicyData:Transactions'));
+    const hasReadPermission = resources.find(resource => resource.right === 'READ' && String(resource.uri).includes('PolicyData:Transactions'));
+
+
+    if (!hasReadPermission) {
+      return (
+        <PolicyConnect>
+          <div className="messages" >
+            <div className="message error">
+              <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Endorsement page cannot be accessed due to User Permissions.
+            </div>
+          </div>
+        </PolicyConnect>);
+    }
+
     return (
       <PolicyConnect>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
@@ -757,7 +774,6 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <TextField label="Other Structures %" styleName="" name="otherStructures" disabled />
                           <SelectField
-
                             name="otherStructuresNew"
                             answers={getAnswers('otherStructuresAmount', questions)}
                             component="select"
@@ -1479,7 +1495,7 @@ export class Endorsements extends React.Component {
 
                   { /* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */ }
                   <button id="cancel-button" tabIndex="0" type="button" className="btn btn-secondary" onKeyPress={(event) => { if (event.charCode === 13) { setCalculate(this.props, true); } }} onClick={() => setCalculate(this.props, true)}>Cancel</button>
-                  <button type="submit" tabIndex="0" className="btn btn-primary" disabled={(!appState.data.isCalculated && pristine) || appState.data.isSubmitting}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
+                  <button type="submit" tabIndex="0" className="btn btn-primary" disabled={(!appState.data.isCalculated && pristine) || appState.data.isSubmitting || (!hasUpdatePermission && appState.data.isCalculated)}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
 
                 </div>
               </div>
@@ -1530,7 +1546,8 @@ const mapStateToProps = state => ({
   getRate: state.service.getRate,
   newPolicyNumber: getNewPolicyNumber(state),
   summaryLedger: state.service.getSummaryLedger || {},
-  zipcodeSettings: state.service.getZipcodeSettings
+  zipcodeSettings: state.service.getZipcodeSettings,
+  userProfile: state.authState.userProfile || {}
 });
 
 const mapDispatchToProps = dispatch => ({
