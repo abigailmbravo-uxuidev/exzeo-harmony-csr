@@ -43,13 +43,7 @@ axios.interceptors.response.use(response => response,
       auth.logout();
     }
     return Promise.reject(error);
-  });
-
-const handleAuthentication = (nextState, replace) => {
-  if (/access_token|id_token|error/.test(nextState.location.hash)) {
-    auth.handleAuthentication();
-  }
-};
+});
 
 const checkPublicPath = (path) => {
   const publicPaths = ['/login', '/logout', '/accessDenied', '/loggedOut', '/callback'];
@@ -70,6 +64,10 @@ class Routes extends Component {
     } else if (!isAuthenticated() && checkPublicPath(window.location.pathname)) {
       history.push('/login');
       axios.defaults.headers.common['authorization'] = undefined; // eslint-disable-line
+    } else {
+      if (/access_token|id_token|error/.test(window.location.hash)) {
+        auth.handleAuthentication();
+      }
     }
   }
 
@@ -110,6 +108,10 @@ class Routes extends Component {
             noteType={this.props.newNote.noteType} 
             documentId={this.props.newNote.documentId} 
             sourceId={this.props.newNote.sourceNumber} 
+<<<<<<< HEAD
+=======
+            closeButtonHandler={() => console.log('props')} 
+>>>>>>> 30fccfc9eb2b9aba17d53e80ff3561f94a988a0a
           />
         }
 
@@ -152,10 +154,7 @@ class Routes extends Component {
               <Route
                 exact
                 path="/callback"
-                render={(props) => {
-                  handleAuthentication(props);
-                  return <Callback />;
-                }}
+                render={(props) => <Callback />}
               />
               <Route path="*" render={props => <NotFoundPage auth={auth} {...props} />} />
             </Switch>

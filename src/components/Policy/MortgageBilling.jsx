@@ -321,7 +321,7 @@ export class MortgageBilling extends Component {
     submitData.amount = Number(String(data.amount).replace(/[^\d.-]/g, ''));
     submitData.cashType = String(data.cashType);
     submitData.cashDescription = String(data.cashDescription);
-    submitData.companyCode = this.props.auth.userProfile.groups[0].companyCode;
+    submitData.companyCode = 'TTIC';
     submitData.policy = this.props.policy;
     this.props.actions.serviceActions.addTransaction(submitData)
       .then(() => {
