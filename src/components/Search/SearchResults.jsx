@@ -102,8 +102,7 @@ export const SearchResults = (props) => {
                   <i className="card-icon fa fa-map-marker" />
                   <section>
                     <h4>{address.physicalAddress.address1}</h4>
-                    <p>{address.physicalAddress.city}, {address.physicalAddress.state}
-                      {address.physicalAddress.zip}
+                    <p>{address.physicalAddress.city}, {address.physicalAddress.state} {address.physicalAddress.zip}
                     </p>
                   </section>
                   <i className="fa fa-chevron-circle-right" />
