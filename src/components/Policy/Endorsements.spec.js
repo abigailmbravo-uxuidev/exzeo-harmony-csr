@@ -79,6 +79,22 @@ describe('Testing Endorsements component', () => {
           isSubmitting: true,
           submitting: false
         }
+      },    
+      userProfile: {
+        resources: [
+          {
+            right: "READ",
+            uri: "TTIC:FL:HO3:PolicyData:Transactions:*"
+          },
+          {
+            right: "INSERT",
+            uri: "TTIC:FL:HO3:PolicyData:Transactions:*"
+          },
+          {
+            right: "UPDATE",
+            uri: "TTIC:FL:HO3:PolicyData:Transactions:*"
+          }
+        ]
       }
     };
 
@@ -104,7 +120,6 @@ describe('Testing Endorsements component', () => {
 
     const endsDate = setEndorsementDate('2016-11-27', '2017-11-26');
     expect(endsDate).toEqual('2017-11-26');
-
     wrapper.find('[name="otherStructuresNew"]').simulate('change', { target: { value: '4,540' } });
     wrapper.find('[name="personalPropertyNew"]').simulate('change', { target: { value: '4,540' } });
     wrapper.find('[name="personalLiabilityNew"]').simulate('change', { target: { value: '4,540' } });
