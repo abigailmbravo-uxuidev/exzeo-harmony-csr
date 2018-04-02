@@ -59,8 +59,8 @@ export const changePagePolicy = (props, isNext) => {
     pageSize: 25,
     policyStatus: (
       encodeURIComponent(fieldValues.policyStatus) !== 'undefined' ? encodeURIComponent(fieldValues.policyStatus) : ''),
-    agencyName: (
-      encodeURIComponent(fieldValues.agencyName) !== 'undefined' ? encodeURIComponent(fieldValues.agencyName) : ''),
+    agencyCode: (
+      encodeURIComponent(fieldValues.agencyCode) !== 'undefined' ? encodeURIComponent(fieldValues.agencyCode) : ''),
     effectiveDate: (
       encodeURIComponent(fieldValues.effectiveDate) !== 'undefined' ? encodeURIComponent(moment(fieldValues.effectiveDate).utc().format('YYYY-MM-DD')) : '')
   };
@@ -135,8 +135,8 @@ export const handlePolicySearchSubmit = (data, dispatch, props) => {
     pageSize: 25,
     policyStatus: (
       encodeURIComponent(data.policyStatus) !== 'undefined' ? encodeURIComponent(data.policyStatus) : ''),
-    agencyName: (
-      encodeURIComponent(data.agencyName) !== 'undefined' ? encodeURIComponent(data.agencyName) : ''),
+    agencyCode: (
+      encodeURIComponent(data.agencyCode) !== 'undefined' ? encodeURIComponent(data.agencyCode) : ''),
     effectiveDate: (
       encodeURIComponent(data.effectiveDate) !== 'undefined' ? encodeURIComponent(moment(data.effectiveDate).utc().format('YYYY-MM-DD')) : '')
   };
@@ -401,8 +401,18 @@ export class SearchForm extends Component {
       actions,
       tasks,
       reset,
-      search
+      search,
+      agencyList
     } = this.props;
+
+    const agencyListValues = agencyList.map(agency => {
+        return {
+          label: agency.displayName,
+          answer: agency.agencyCode
+        }
+    });
+
+    console.log(agencyListValues);
 
     const clearForm = () => {
       const modelName = appState.modelName;
@@ -418,6 +428,8 @@ export class SearchForm extends Component {
       actions.serviceActions.clearAgent();
       resetPolicySearch(this.props);
       this.props.actions.appStateActions.setAppState(appState.modelName, workflowId, { submitting: false });
+      this.props.actions.serviceActions.getAgencies('TTIC', 'FL');
+
     };
 
     let searchHandler = handleSearchBarSubmit;
@@ -487,7 +499,6 @@ export class SearchForm extends Component {
                 component="select"
                 styleName=""
                 label="Quote Status"
-                onChange={clearForm}
                 answers={getAnswers('quoteState', questions)}
               />
             </div>
@@ -659,7 +670,13 @@ export class SearchForm extends Component {
           {
   fieldValues.searchType === 'policy' && search.policyAdvanceSearch &&
   <div className="advanced-search fade-in">
-    {generateField('agencyName', 'Agency Name', 'Agency Name', formErrors, 'agency-search')}
+      <SelectField
+      name="agencyCode"
+      component="select"
+      styleName=""
+      label="Agency Name"
+      answers={agencyListValues}
+    />
     <div className="form-group effectiveDate">
       <label htmlFor="effectiveDate">{getErrorToolTip(formErrors, 'effectiveDate')}
         {'Effective Date'}
@@ -755,6 +772,7 @@ const mapStateToProps = state => ({
   questions: state.questions,
   agencies: state.agencies,
   agents: state.agents,
+  agencyList: state.service.agencies || [],
   policyResults: state.service.policyResults,
   search: state.search
 });

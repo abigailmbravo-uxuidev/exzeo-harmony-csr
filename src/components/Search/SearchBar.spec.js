@@ -202,6 +202,7 @@ describe('Testing SearchBar component', () => {
     const store = mockStore(initialState);
 
     const props = {
+      agencyList: [],
       reset() {},
       search: {
         hasSearched: true
@@ -218,6 +219,7 @@ describe('Testing SearchBar component', () => {
       dispatch: store.dispatch,
       actions: {
         serviceActions: {
+          getAgencies(){},
           clearAgencies() {},
           clearAgent() {},
           clearPolicyResults() {},
