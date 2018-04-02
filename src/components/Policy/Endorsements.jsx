@@ -142,7 +142,7 @@ export const handleInitialize = (state) => {
   values.clearFields = false;
   values.endorsementDateNew = setEndorsementDate(_.get(policy, 'effectiveDate'), _.get(policy, 'endDate'));
   values.dwellingAmount = _.get(policy, 'coverageLimits.dwelling.amount');
-  values.dwellingAmountNew =`$ ${Number(_.get(policy, 'coverageLimits.dwelling.amount')).toLocaleString()}`;
+  values.dwellingAmountNew = `$ ${Number(_.get(policy, 'coverageLimits.dwelling.amount')).toLocaleString()}`;
   values.otherStructuresAmount = otherStructures;
   values.otherStructuresAmountNew = values.otherStructuresAmount;
   values.otherStructures = `${String(calculatePercentage(otherStructures, dwelling))}%`;
@@ -257,7 +257,7 @@ export const handleInitialize = (state) => {
   values.residenceType = _.get(policy, 'property.residenceType');
   values.residenceTypeNew = values.residenceType;
   values.squareFeet = _.get(policy, 'property.squareFeet') || '';
-  values.squareFeetNew = Number(values.squareFeet);
+  values.squareFeetNew = String(values.squareFeet);
   values.floodZone = _.get(policy, 'property.floodZone');
   values.floodZoneNew = values.floodZone;
 
@@ -276,7 +276,7 @@ export const handleInitialize = (state) => {
   values.pH2email = _.get(policy, 'policyHolders[1].emailAddress') || '';
   values.pH2emailNew = values.pH2email || '';
   values.pH2FirstName = _.get(policy, 'policyHolders[1].firstName') || '';
-  values.pH2FirstNameNew = values.pH2FirstName  || '';
+  values.pH2FirstNameNew = values.pH2FirstName || '';
   values.pH2LastName = _.get(policy, 'policyHolders[1].lastName') || '';
   values.pH2LastNameNew = values.pH2LastName || '';
   values.pH2phone = normalizePhone(_.get(policy, 'policyHolders[1].primaryPhoneNumber') || '');
@@ -421,8 +421,8 @@ export const generateModel = (data, policyObject, props) => {
     dwellingAmountNew: Math.round(Number(String(data.dwellingAmountNew).replace(/[^\d]/g, '')) / 1000) * 1000,
     otherStructuresAmountNew: Number(data.otherStructuresAmountNew),
     personalPropertyAmountNew: Number(data.personalPropertyAmountNew),
-    personalLiabilityNew:  Number(data.personalLiabilityNew),
-    medicalPaymentsNew:  Number(data.medicalPaymentsNew),
+    personalLiabilityNew: Number(data.personalLiabilityNew),
+    medicalPaymentsNew: Number(data.medicalPaymentsNew),
     lossOfUseNew: Number(data.lossOfUseNew),
     moldPropertyNew: Number(data.moldPropertyNew),
     moldLiabilityNew: Number(data.moldLiabilityNew),
@@ -569,7 +569,7 @@ export const calculate = (data, dispatch, props) => {
     props.dispatch(errorActions.setAppError({ message: 'No changes were made.' }));
     return;
   }
-  
+
   const setLiabilityIncidentalOccupanciesNew = submitData.propertyIncidentalOccupanciesMainDwellingNew || submitData.propertyIncidentalOccupanciesOtherStructuresNew;
   submitData.liabilityIncidentalOccupanciesNew = setLiabilityIncidentalOccupanciesNew;
   props.dispatch(change('Endorsements', 'liabilityIncidentalOccupanciesNew', setLiabilityIncidentalOccupanciesNew));
@@ -693,13 +693,30 @@ export class Endorsements extends React.Component {
 
   render() {
     const {
-      initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, policy, dirty, fieldValues
+      initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, policy, dirty, fieldValues, userProfile
     } = this.props;
 
     const mappedEndorsementHistory = _.map(endorsementHistory, (endorsement) => {
       endorsement.netChargeFormat = _.includes(premiumEndorsmentList, endorsement.transactionType) ? premiumAmountFormatter(endorsement.netCharge) : '';
       return endorsement;
     });
+
+    const resources = userProfile && Array.isArray(userProfile.resources) ? userProfile.resources : [];
+    const hasUpdatePermission = resources.find(resource => resource.right === 'UPDATE' && String(resource.uri).includes('PolicyData:Transactions'));
+    const hasReadPermission = resources.find(resource => resource.right === 'READ' && String(resource.uri).includes('PolicyData:Transactions'));
+
+
+    if (!hasReadPermission) {
+      return (
+        <PolicyConnect>
+          <div className="messages" >
+            <div className="message error">
+              <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Endorsement page cannot be accessed due to User Permissions.
+            </div>
+          </div>
+        </PolicyConnect>);
+    }
+
     return (
       <PolicyConnect>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
@@ -757,7 +774,6 @@ export class Endorsements extends React.Component {
                         <div className="form-group-double-element">
                           <TextField label="Other Structures %" styleName="" name="otherStructures" disabled />
                           <SelectField
-
                             name="otherStructuresNew"
                             answers={getAnswers('otherStructuresAmount', questions)}
                             component="select"
@@ -1382,19 +1398,16 @@ export class Endorsements extends React.Component {
                           <PhoneField validations={['required', 'phone']} label="Primary Phone" styleName="" name="pH1phone" onChange={() => setCalculate(this.props, false)} />
                           <PhoneField validations={['phone']} label="Secondary Phone" styleName="" name="pH1secondaryPhone" onChange={() => setCalculate(this.props, false)} />
                         </div>
-                        <div className="flex-parent col2">
+                        <div className="flex-parent">
                           <TextField validations={['required', 'email']} label="Email Address" styleName="" name="pH1email" onChange={() => setCalculate(this.props, false)} />
                           {/* electronic delivery question placeholder */ }
                         </div>
                       </div>
                       {/* Col2 */}
                       <div className="flex-child">
-                        <div className="flex-parent policy-holder-b-name">
-                          <div className="flex-child policy-holder-b-first-name">
-                            <h3>Secondary Policyholder
-                            </h3>
-                          </div>
-                          <div className="flex-child">
+                        <div className="flex-header-wrap">
+                          <h3>Secondary Policyholder</h3>
+                          <div className="check-box-wrapper">
                             <Field
                               onChange={event => clearSecondaryPolicyholder(String(event.target.value) === 'false', this.props)}
                               name="clearFields"
@@ -1403,7 +1416,7 @@ export class Endorsements extends React.Component {
                               type="checkbox"
                               disabled={!(policy && policy.policyHolders && policy.policyHolders[1])}
                             />
-                            <label htmlFor="clearFields"> Remove</label>
+                            <label htmlFor="clearFields">Remove</label>
                           </div>
                         </div>
                         <div className="flex-parent col2">
@@ -1414,7 +1427,7 @@ export class Endorsements extends React.Component {
                           <PhoneField validations={['phone']} label="Primary Phone" dependsOn={['pH2FirstName', 'pH2LastName', 'pH2email']} styleName="" name="pH2phone" onChange={() => setPHToggle(this.props)} />
                           <PhoneField validations={['phone']} label="Secondary Phone" styleName="" name="pH2secondaryPhone" onChange={() => setPHToggle(this.props)} />
                         </div>
-                        <div className="flex-parent col2">
+                        <div className="flex-parent">
                           <TextField validations={['email']} label="Email Address" dependsOn={['pH2FirstName', 'pH2LastName', 'pH2phone']} styleName="" name="pH2email" onChange={() => setPHToggle(this.props)} />
                         </div>
                       </div>
@@ -1482,7 +1495,7 @@ export class Endorsements extends React.Component {
 
                   { /* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */ }
                   <button id="cancel-button" tabIndex="0" type="button" className="btn btn-secondary" onKeyPress={(event) => { if (event.charCode === 13) { setCalculate(this.props, true); } }} onClick={() => setCalculate(this.props, true)}>Cancel</button>
-                  <button type="submit" tabIndex="0" className="btn btn-primary" disabled={(!appState.data.isCalculated && pristine) || appState.data.isSubmitting}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
+                  <button type="submit" tabIndex="0" className="btn btn-primary" disabled={(!appState.data.isCalculated && pristine) || appState.data.isSubmitting || (!hasUpdatePermission && appState.data.isCalculated)}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
 
                 </div>
               </div>
@@ -1533,7 +1546,8 @@ const mapStateToProps = state => ({
   getRate: state.service.getRate,
   newPolicyNumber: getNewPolicyNumber(state),
   summaryLedger: state.service.getSummaryLedger || {},
-  zipcodeSettings: state.service.getZipcodeSettings
+  zipcodeSettings: state.service.getZipcodeSettings,
+  userProfile: state.authState.userProfile || {}
 });
 
 const mapDispatchToProps = dispatch => ({

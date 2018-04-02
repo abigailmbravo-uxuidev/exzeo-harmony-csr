@@ -219,7 +219,7 @@ export class CancelPolicy extends React.Component {
                     </div>
                     <div className="flex-child">
                       <label>Bill Plan</label>
-                      <div>{_.get(this.props.summaryLedger, 'billPlan')}</div>
+                      <div>{_.get(this.props.policy, 'billPlan')}</div>
                     </div>
                     <div className="flex-child date">
                       <TextField disabled label="Equity Date" name="equityDate" />

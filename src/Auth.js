@@ -1,6 +1,6 @@
 import auth0 from 'auth0-js';
 import jwtDecode from 'jwt-decode';
-import _ from 'lodash';
+import axios from 'axios';
 import history from './history';
 
 export default class Auth {
@@ -54,12 +54,19 @@ export default class Auth {
        if (authResult && authResult.accessToken && authResult.idToken) {
           const payload = jwtDecode(authResult.idToken);
           // check to see if the user exists in a CSR group
-          if(_.some(_.union([], _.get(payload, 'https://heimdall.security/groups')), 'isCSR')){
-            this.setSession(authResult);
-            history.replace('/');
-          }
-          else{
-          history.replace(`/accessDenied?error=${'Not Authorized'}`);
+          if(payload['https://heimdall.security/groups'].some(group => group['isCSR'])) {
+            return axios.get(`${process.env.REACT_APP_API_URL}/mainUserProfile`, {
+              headers: { authorization: `bearer ${authResult.idToken}`}
+            })
+            .then(profile => {
+              this.setSession(authResult, profile.data);
+              history.replace('/');
+            })
+            .catch(error => {
+              history.replace(`/accessDenied?error=${error}`);
+            });     
+          } else {
+            history.replace(`/accessDenied?error=${'Not Authorized'}`);
           }
       } else if (err) {
         history.replace(`/accessDenied?error=${err.errorDescription}`);
@@ -67,25 +74,14 @@ export default class Auth {
     });
   }
 
-  setSession = (authResult) => {
+  setSession = (authResult, userProfile) => {
     // Set the time that the access token will expire at
     const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
-    const payload = jwtDecode(authResult.idToken);
-    const profile = {
-      name: payload.name,
-      given_name: payload['https://heimdall.security/given_name'],
-      family_name: payload['https://heimdall.security/family_name'],
-      email: payload.email,
-      sub: payload.sub,
-      username: payload.username,
-      groups: payload['https://heimdall.security/groups'],
-      roles: payload['https://heimdall.security/roles'],
-    };
-      localStorage.setItem('user_profile', JSON.stringify(profile));
-      localStorage.setItem('access_token', authResult.accessToken);
-      localStorage.setItem('id_token', authResult.idToken);
-      localStorage.setItem('expires_at', expiresAt);
-      localStorage.removeItem('csr_loggedOut');
+    localStorage.setItem('user_profile', JSON.stringify(userProfile));
+    localStorage.setItem('access_token', authResult.accessToken);
+    localStorage.setItem('id_token', authResult.idToken);
+    localStorage.setItem('expires_at', expiresAt);
+    localStorage.removeItem('csr_loggedOut');
   }
 
   getIdToken = () => {
