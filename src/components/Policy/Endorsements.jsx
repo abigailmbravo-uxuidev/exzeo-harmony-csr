@@ -701,12 +701,11 @@ export class Endorsements extends React.Component {
       return endorsement;
     });
 
-    const resources = userProfile && Array.isArray(userProfile.resources) ? userProfile.resources : [];
-    const hasUpdatePermission = resources.find(resource => resource.right === 'UPDATE' && String(resource.uri).includes('PolicyData:Transactions'));
-    const hasReadPermission = resources.find(resource => resource.right === 'READ' && String(resource.uri).includes('PolicyData:Transactions'));
+    const canPremiumEndorse = userProfile && userProfile.resources 
+      ? userProfile.resources.some(resource => resource['uri'] === 'TTIC:FL:HO3:PolicyData:PremiumEndorse' && resource['right'] === 'UPDATE')
+      : false;
 
-
-    if (!hasReadPermission) {
+    if (!canPremiumEndorse) {
       return (
         <PolicyConnect>
           <div className="messages" >
@@ -1495,7 +1494,7 @@ export class Endorsements extends React.Component {
 
                   { /* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */ }
                   <button id="cancel-button" tabIndex="0" type="button" className="btn btn-secondary" onKeyPress={(event) => { if (event.charCode === 13) { setCalculate(this.props, true); } }} onClick={() => setCalculate(this.props, true)}>Cancel</button>
-                  <button type="submit" tabIndex="0" className="btn btn-primary" disabled={(!appState.data.isCalculated && pristine) || appState.data.isSubmitting || (!hasUpdatePermission && appState.data.isCalculated)}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
+                  <button type="submit" tabIndex="0" className="btn btn-primary" disabled={(!appState.data.isCalculated && pristine) || appState.data.isSubmitting || (appState.data.isCalculated)}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
 
                 </div>
               </div>

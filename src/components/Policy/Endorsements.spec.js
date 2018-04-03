@@ -83,16 +83,8 @@ describe('Testing Endorsements component', () => {
       userProfile: {
         resources: [
           {
-            right: "READ",
-            uri: "TTIC:FL:HO3:PolicyData:Transactions:*"
-          },
-          {
-            right: "INSERT",
-            uri: "TTIC:FL:HO3:PolicyData:Transactions:*"
-          },
-          {
             right: "UPDATE",
-            uri: "TTIC:FL:HO3:PolicyData:Transactions:*"
+            uri: "TTIC:FL:HO3:PolicyData:PremiumEndorse"
           }
         ]
       }
