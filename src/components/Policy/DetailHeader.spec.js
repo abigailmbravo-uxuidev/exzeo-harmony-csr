@@ -65,7 +65,16 @@ describe('Testing DetailHeader component', () => {
       policyState: {},
       policy: {
         policyID: '234',
-        product: 'HO3'
+        product: 'HO3',
+        property: {
+          physicalAddress: {
+            address1: 'test',
+            address2: '',
+            city: 'Tampa',
+            state: 'FL',
+            zip: '33606'
+          }
+        }
       },
       actions: {
         appStateActions: {
