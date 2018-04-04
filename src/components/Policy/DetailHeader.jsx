@@ -82,7 +82,7 @@ export class DetailHeader extends Component {
         <section id="propertyAddress" className="propertyAddress">
           <dl>
             <div>
-              <dt>Property Address</dt>
+              <dt>Property Address <a className="btn btn-link btn-xs btn-alt-light no-padding" target="_blank" href={mapUri}><i className="fa fa-map-marker" />Map</a></dt>
               <dd>{_.get(policy, 'property.physicalAddress.address1')}</dd>
               <dd>{_.get(policy, 'property.physicalAddress.address2')}</dd>
               <dd>{`${_.get(policy, 'property.physicalAddress.city')}, ${_.get(policy, 'property.physicalAddress.state')} ${_.get(policy, 'property.physicalAddress.zip')}`}</dd>
@@ -153,13 +153,6 @@ export class DetailHeader extends Component {
               </div>
             </dl>
             </section>}
-            <section>
-              <dl>
-              <div>
-                <dt><a target="_blank" href={mapUri}><i className="fa fa-location-arrow" /></a></dt>
-              </div>
-            </dl>
-            </section>
           </div>
         </div>
         <section id="premium" className="premium">
