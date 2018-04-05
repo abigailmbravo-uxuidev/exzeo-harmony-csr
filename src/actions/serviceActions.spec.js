@@ -639,7 +639,7 @@ describe('Service Actions', () => {
     submitData.amount = Number(String('400').replace(/[^\d.-]/g, ''));
     submitData.cashType = String('Electronic Deposit');
     submitData.cashDescription = String('Payment Received');
-    submitData.companyCode = props.auth.userProfile.groups[0].companyCode;
+    submitData.companyCode = 'TTIC';
     submitData.policy = props.policy;
     const mockAdapter = new MockAdapter(axios);
 
