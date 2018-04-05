@@ -412,8 +412,6 @@ export class SearchForm extends Component {
         }
     });
 
-    console.log(agencyListValues);
-
     const clearForm = () => {
       const modelName = appState.modelName;
       const data = tasks[modelName].data;
