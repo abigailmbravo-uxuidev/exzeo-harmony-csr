@@ -95,38 +95,43 @@ export const handleFormSubmit = (data, dispatch, props) => {
     }
   };
 
-  if (isMortgagee) {
-    _.forEach(_.filter(modifiedAIs, ai => ai.type === type), (mortgagee) => {
-      if (Number(order) === 0) mortgagee.order = 1;
-      else mortgagee.order = 0;
+  if (isMortgagee && data._id) {
+    _.forEach(modifiedAIs.filter(ai => ai.type === 'Mortgagee'), (mortgagee) => {
+      if(String(mortgagee.order) === String(data.order)){
+        console.log(modifiedAIs.filter(ai => ai._id === data._id), data._id)
+        mortgagee.order = modifiedAIs.filter(ai => ai._id === data._id).order;
+      }
     });
   }
 
   modifiedAIs.push(aiData);
 
-  applyRank(modifiedAIs);
 
-  const steps = [
-    {
-      name: 'hasUserEnteredData',
-      data: { answer: 'Yes' }
-    },
-    {
-      name: 'askadditionalInterests',
-      data: { additionalInterests: modifiedAIs }
-    },
-    {
-      name: 'moveTo',
-      data: { key: 'additionalInterests' }
-    }
-  ];
+  console.log(modifiedAIs.filter(ai => ai.type === 'Mortgagee'));
 
-  actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
-    .then(() => {
-      props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
+  // applyRank(modifiedAIs);
 
-      additionalInterests = modifiedAIs;
-      // now update the workflow details so the recalculated rate shows
+  // const steps = [
+  //   {
+  //     name: 'hasUserEnteredData',
+  //     data: { answer: 'Yes' }
+  //   },
+  //   {
+  //     name: 'askadditionalInterests',
+  //     data: { additionalInterests: modifiedAIs }
+  //   },
+  //   {
+  //     name: 'moveTo',
+  //     data: { key: 'additionalInterests' }
+  //   }
+  // ];
+
+  // actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
+  //   .then(() => {
+  //     props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
+
+  //     additionalInterests = modifiedAIs;
+  //     // now update the workflow details so the recalculated rate shows
       actions.appStateActions.setAppState(
         appState.modelName,
         workflowId, {
@@ -140,7 +145,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
           showAdditionalInterestEditModal: false
         }
       );
-    });
+  //   });
 };
 
 const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
@@ -329,7 +334,7 @@ export class AdditionalInterests extends Component {
               <div className="form-group survey-wrapper" role="group">
                 <h3>Additional Interests</h3>
                 <div className="button-group">
-                  <button disabled={(quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Mortgagee').length > 1) || checkQuoteState(quoteData)} onClick={() => addAdditionalInterest('Mortgagee', this.props)} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
+                  <button disabled={(quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Mortgagee').length > 2) || checkQuoteState(quoteData)} onClick={() => addAdditionalInterest('Mortgagee', this.props)} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
                   <button disabled={(quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Additional Insured').length > 1) || checkQuoteState(quoteData)} onClick={() => addAdditionalInterest('Additional Insured', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
                   <button disabled={(quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Additional Interest').length > 1) || checkQuoteState(quoteData)} onClick={() => addAdditionalInterest('Additional Interest', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
                   { /* <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Lienholder').length > 1} onClick={() => addAdditionalInterest('Lienholder')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Lienholder</span></div></button> */ }

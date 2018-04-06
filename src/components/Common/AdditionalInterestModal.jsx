@@ -33,7 +33,22 @@ const handleInitialize = (state) => {
     order: mortgageeOrderAnswers.length === 1  ? mortgageeOrderAnswers[0].answer : ''
   };
 };
-const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
+ const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
+
+const getTestAnswers = (name, questions) =>[
+  {
+    answer: '0',
+    label: 'First Mortgagee'
+  },
+  {
+    answer: '1',
+    label: 'Second Mortgagee'
+  },
+  {
+    answer: '2',
+    label: 'Third Mortgagee'
+  }
+]
 
 export const setMortgageeValues = (val, props) => {
   props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, {
@@ -64,12 +79,15 @@ export const setMortgageeValues = (val, props) => {
 };
 
 export const getMortgageeAnswers = (questions, additionalInterests) => {
-  let mortgageeOrderAnswers = _.cloneDeep(getAnswers('order', questions));
+  let mortgageeOrderAnswers = _.cloneDeep(getTestAnswers('order', questions));
 
   if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 0) {
     mortgageeOrderAnswers = mortgageeOrderAnswers.filter(answer =>  Number(answer.answer) === 0)
   } else if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 1) {
     mortgageeOrderAnswers = mortgageeOrderAnswers.filter(answer =>  Number(answer.answer) === 1)
+  }
+  else if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 2) {
+    mortgageeOrderAnswers = mortgageeOrderAnswers.filter(answer =>  Number(answer.answer) === 2)
   }
   return mortgageeOrderAnswers;
 }
