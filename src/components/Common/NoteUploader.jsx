@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import localStorage from 'localStorage';
 import { Field, Form, reduxForm, propTypes } from 'redux-form';
 import Uppy from 'uppy/lib/core';
 import { Dashboard } from 'uppy/lib/react';

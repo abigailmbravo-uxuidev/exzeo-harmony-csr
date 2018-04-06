@@ -5,7 +5,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { propTypes } from 'redux-form';
 import { mount, shallow } from 'enzyme';
 import * as serviceActions from '../../actions/serviceActions';
-import ConnectedApp, { minimzeButtonHandler, validate, renderNotes, NoteUploader } from './NoteUploader';
+import ConnectedApp, { minimzeButtonHandler, validate, renderNotes, Uploader } from './NoteUploader';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -30,6 +30,18 @@ describe('Testing NoteUploader component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      actions:{
+        serviceActions: {
+          addNote(){}
+        },
+        errorActions: {
+          setAppError(){}
+        }
+      },
+      closeButtonHandler() {},
+      user: {
+        profile: {}
+      },
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,
@@ -38,10 +50,20 @@ describe('Testing NoteUploader component', () => {
           submitting: false
         }
       },
-      ...propTypes
+      handleSubmit() {}
     };
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
     expect(wrapper.instance().props.fieldQuestions).toEqual([]);
+
+    const wrapper2 = shallow(<Uploader store={store} {...props} />);
+    wrapper2.instance().submitNote({}, props.dispatch, props);
+
+    props.user = {
+      profile: { family_name: 'test', given_name: 'test'}
+    }
+    const wrapper3 = shallow(<Uploader store={store} {...props} />);
+    wrapper3.instance().submitNote({}, props.dispatch, props);
+
   });
 
   it('should test submit note and minimzeButtonHandler', () => {
@@ -102,6 +124,7 @@ describe('Testing NoteUploader component', () => {
     wrapper.setProps(props);
 
     minimzeButtonHandler(props);
+
   });
 
   it('note should be valid', () => {
