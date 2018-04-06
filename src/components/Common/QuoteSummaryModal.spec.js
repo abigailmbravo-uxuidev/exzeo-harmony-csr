@@ -11,6 +11,9 @@ const mockStore = configureStore(middlewares);
 describe('Testing QuoteSummaryModal component', () => {
   it('should test connected app', () => {
     const initialState = {
+      service: {
+        quote: {}
+      },
       cg: {
         bb: {
           data: {

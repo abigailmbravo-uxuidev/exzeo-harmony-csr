@@ -13,3 +13,4 @@ yarn-error.log*
 documentation
 package.lock
 sh.exe.stackdump
+.env.local
