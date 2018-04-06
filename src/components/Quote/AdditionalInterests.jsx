@@ -96,10 +96,10 @@ export const handleFormSubmit = (data, dispatch, props) => {
   };
 
   if (isMortgagee && data._id) {
+    const selectedAI = props.appState.data.selectedAI;
     _.forEach(modifiedAIs.filter(ai => ai.type === 'Mortgagee'), (mortgagee) => {
       if(String(mortgagee.order) === String(data.order)){
-        console.log(modifiedAIs.filter(ai => ai._id === data._id), data._id)
-        mortgagee.order = modifiedAIs.filter(ai => ai._id === data._id).order;
+        mortgagee.order = Number(selectedAI.order);
       }
     });
   }
