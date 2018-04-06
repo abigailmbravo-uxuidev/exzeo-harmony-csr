@@ -2,6 +2,7 @@
   "parser": "babel-eslint",
   "extends": ["airbnb"],
   "rules": {
+    "react/jsx-closing-tag-location" : 0,
     "no-underscore-dangle": [0, { "allow": [] }],
     "comma-dangle":  [2, "never"],
     "import/no-extraneous-dependencies": 0,

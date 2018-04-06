@@ -24,7 +24,7 @@ const payments = [];
 
 export const setRank = (additionalInterests) => {
   if (!additionalInterests) return;
-  additionalInterests.forEach(value => {
+  additionalInterests.forEach((value) => {
     switch (value.type) {
       case 'Mortgagee':
         value.rank = 1; // eslint-disable-line
@@ -251,8 +251,10 @@ export const handleBillingFormSubmit = (data, dispatch, props) => {
 };
 
 export const hideBillingModal = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId,
-      { ...props.appState.data, showBillingEditModal: false });
+  props.actions.appStateActions.setAppState(
+    props.appState.modelName, props.appState.instanceId,
+    { ...props.appState.data, showBillingEditModal: false }
+  );
 };
 
 export const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
@@ -319,7 +321,7 @@ export class MortgageBilling extends Component {
     submitData.amount = Number(String(data.amount).replace(/[^\d.-]/g, ''));
     submitData.cashType = String(data.cashType);
     submitData.cashDescription = String(data.cashDescription);
-    submitData.companyCode = this.props.auth.userProfile.groups[0].companyCode;
+    submitData.companyCode = 'TTIC';
     submitData.policy = this.props.policy;
     this.props.actions.serviceActions.addTransaction(submitData)
       .then(() => {
@@ -362,8 +364,10 @@ export class MortgageBilling extends Component {
   dateFormatter = cell => `${cell.substring(0, 10)}`;
 
   render() {
-    const { additionalInterests, policyHolders } = this.props.policy;
-    const { handleSubmit, pristine, fieldValues, policy, questions } = this.props;
+    const { additionalInterests } = this.props.policy;
+    const {
+      handleSubmit, pristine, fieldValues, policy, questions
+    } = this.props;
     setRank(additionalInterests);
     setIsActive(additionalInterests);
 
@@ -378,18 +382,6 @@ export class MortgageBilling extends Component {
     });
 
     const validAdditionalInterestTypes = checkValidTypes(additionalInterests, this.props.appState.data.selectedAI || {});
-    
-    let billToName;
-    if (policyHolders && additionalInterests) {
-      let billTo;
-      if (policy.billToType === 'Policyholder') {
-        billTo = policyHolders.find(ph => ph._id === policy.billToId);
-        billToName = `${policy.billToType}: ${billTo.firstName} ${billTo.lastName}`
-      } else {
-        billTo = billTo ? billTo : additionalInterests.find(ai => ai._id === policy.billToId);
-        billToName = `${policy.billToType}: ${billTo.name1} ${billTo.name2}`;
-      }
-    }
 
     return (
       <PolicyConnect>
@@ -461,7 +453,7 @@ export class MortgageBilling extends Component {
                   <dl>
                     <div>
                       <dt>Bill To</dt>
-                      <dd>{billToName}
+                      <dd>{_.get(_.find(_.get(this.props.billingOptions, 'options'), option => option.billToId === _.get(this.props.policy, 'billToId')), 'displayText')}
                       </dd>
                     </div>
                   </dl>

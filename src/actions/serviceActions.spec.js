@@ -40,7 +40,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'transaction-logs.services',
+        service: 'transaction-logs',
         method: 'GET',
         path: 'history?number=test'
       }
@@ -53,7 +53,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'file-index.services',
+        service: 'file-index',
         method: 'GET',
         path: `v1/fileindex/test`
       }
@@ -130,7 +130,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'agency.services',
+        service: 'agency',
         method: 'GET',
         path: 'v1/agents/TTIC/FL'
       }
@@ -161,7 +161,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'agency.services',
+        service: 'agency',
         method: 'GET',
         path: 'v1/agents/TTIC/FL'
       }
@@ -191,7 +191,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'agency.services',
+        service: 'agency',
         method: 'GET',
         path: 'v1/agents/TTIC/FL?firstName=Test&lastName=Test&agentCode=003&mailingAddress=123Main&licenseNumber=licNumber'
       }
@@ -220,7 +220,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'agency.services',
+        service: 'agency',
         method: 'GET',
         path: 'v1/agencies/TTIC/FL?displayName=&agencyCode=&mailingAddress=&licenseNumber=&taxIdNumber=&primaryPhoneNumber='
       }
@@ -250,7 +250,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'agency.services',
+        service: 'agency',
         method: 'GET',
         path: 'v1/agencies/TTIC/FL'
       }
@@ -345,7 +345,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'questions.services',
+        service: 'questions',
         method: 'POST',
         path: 'questions/uw',
         data: {
@@ -450,7 +450,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'questions.services',
+        service: 'questions',
         method: 'POST',
         path: 'questions/uw',
         data: {
@@ -490,7 +490,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'billing.services',
+        service: 'billing',
         method: 'GET',
         path: 'summary-ledgers/12345/latest'
       }
@@ -520,7 +520,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'billing.services',
+        service: 'billing',
         method: 'GET',
         path: '/payment-options-apply-payment'
       }
@@ -566,7 +566,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'billing.services',
+        service: 'billing',
         method: 'GET',
         path: '/payment-history/12345'
       }
@@ -595,7 +595,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'billing.services',
+        service: 'billing',
         method: 'GET',
         path: '/payment-history/12345'
       }
@@ -639,7 +639,7 @@ describe('Service Actions', () => {
     submitData.amount = Number(String('400').replace(/[^\d.-]/g, ''));
     submitData.cashType = String('Electronic Deposit');
     submitData.cashDescription = String('Payment Received');
-    submitData.companyCode = props.auth.userProfile.groups[0].companyCode;
+    submitData.companyCode = 'TTIC';
     submitData.policy = props.policy;
     const mockAdapter = new MockAdapter(axios);
 
@@ -650,7 +650,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'billing.services',
+        service: 'billing',
         method: 'POST',
         path: 'post-payment-transaction',
         data: {
@@ -692,7 +692,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'quote-data.services',
+        service: 'quote-data',
         method: 'put',
         path: ' ',
         data: {
@@ -747,7 +747,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'quote-data.services',
+        service: 'quote-data',
         method: 'put',
         path: '',
         data: {
@@ -813,7 +813,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'billing.services',
+        service: 'billing',
         method: 'POST',
         path: 'payment-options-for-quoting',
         data: paymentOptions
@@ -864,7 +864,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'billing.services',
+        service: 'billing',
         method: 'POST',
         path: 'payment-options-for-quoting',
         data: paymentOptions
@@ -894,7 +894,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'policy-data.services',
+        service: 'policy-data',
         method: 'GET',
         path: 'transactionDetails/123?endorsement=endorsement'
       }
@@ -924,7 +924,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'policy-data.services',
+        service: 'policy-data',
         method: 'GET',
         path: 'transactionDetails/123?endorsement=endorsement'
       }
@@ -954,7 +954,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'quote-data.services',
+        service: 'quote-data',
         method: 'GET',
         path: '1234'
       }
@@ -984,7 +984,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'quote-data.services',
+        service: 'quote-data',
         method: 'GET',
         path: '543543543'
       }
@@ -1014,7 +1014,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'rating-engine.services',
+        service: 'rating-engine',
         method: 'POST',
         path: 'endorsement',
         data: {}
@@ -1045,7 +1045,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'rating-engine.services',
+        service: 'rating-engine',
         method: 'POST',
         path: 'endorsement',
         data: {}
@@ -1098,7 +1098,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'policy-data.services',
+        service: 'policy-data',
         method: 'POST',
         path: 'transaction',
         data: ai
@@ -1129,7 +1129,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'policy-data.services',
+        service: 'policy-data',
         method: 'POST',
         path: 'transaction',
         data: ai
@@ -1160,7 +1160,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'underwriting.services',
+        service: 'underwriting',
         method: 'GET',
         path: 'zip-code?companyCode=TTIC&state=FL&product=HO3&zip=33607'
       }
@@ -1189,7 +1189,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'underwriting.services',
+        service: 'underwriting',
         method: 'GET',
         path: 'zip-code?companyCode=TTIC&state=FL&product=HO3&zip=33607'
       }
@@ -1220,7 +1220,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'agency.services',
+        service: 'agency',
         method: 'GET',
         path: 'v1/agencies/TTIC/FL?pageSize=100&sort=displayName&SortDirection=asc'
       }
@@ -1250,7 +1250,7 @@ describe('Service Actions', () => {
       },
       url: `${process.env.REACT_APP_API_URL}/svc`,
       data: {
-        service: 'agency.services',
+        service: 'agency',
         method: 'GET',
         path: 'v1/agencies/TTIC/FL'
       }

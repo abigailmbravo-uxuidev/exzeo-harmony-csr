@@ -133,7 +133,8 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
     zip: (encodeURIComponent(data.zip) !== 'undefined' ? encodeURIComponent(data.zip) : ''),
     quoteState: (encodeURIComponent(data.quoteState) !== 'undefined' ? encodeURIComponent(data.quoteState) : ''),
     searchType,
-    hasSearched: true
+    hasSearched: true,
+    pageNumber: '1'
   };
 
   const agencyAgentData = {
@@ -420,7 +421,6 @@ export class SearchForm extends Component {
                 component="select"
                 styleName=""
                 label="Quote Status"
-                onChange={clearForm}
                 answers={getAnswers('quoteState', questions)}
               />
             </div>
