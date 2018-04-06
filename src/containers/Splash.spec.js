@@ -394,7 +394,14 @@ describe('Testing Splash component', () => {
       searchType: 'address'
     };
 
-    const address = { id: '120955882646A1E36', source: 'casaclue', residenceType: 'N/A', physicalAddress: { city: 'ORLANDO', latitude: '28.614350', zip: '32810', state: 'FL', address2: '', longitude: '-81.393340', county: 'ORANGE', address1: '234 AMADOR CIR' } };
+    const address = {
+      id: '120955882646A1E36',
+      source: 'casaclue',
+      residenceType: 'N/A',
+      physicalAddress: {
+        city: 'ORLANDO', latitude: '28.614350', zip: '32810', state: 'FL', address2: '', longitude: '-81.393340', county: 'ORANGE', address1: '234 AMADOR CIR'
+      }
+    };
 
     localStorage.setItem('lastSearchData', JSON.stringify(taskData));
 
@@ -441,6 +448,9 @@ describe('Testing Splash component', () => {
 
   it('should test mount', () => {
     const initialState = {
+      search: {
+        policyAdvanceSearch: true
+      },
       service: {
         agencies: []
       },
@@ -462,6 +472,9 @@ describe('Testing Splash component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      search: {
+        policyAdvanceSearch: true
+      },
       actions: {
         appStateActions: {
           setAppState() {}
@@ -489,21 +502,22 @@ describe('Testing Splash component', () => {
       }
     };
     const wrapper = mount(<Provider store={store}><Router>
-      <Splash {...props} /></Router>
-    </Provider>);
+      <Splash {...props} />
+                                                  </Router>
+                          </Provider>);
     expect(wrapper.find(Splash).props()).toEqual(props);
 
-    const wrapperComponent = shallow( <Splash {...props} />);
+    const wrapperComponent = shallow(<Splash {...props} />);
     wrapper.setProps({});
 
-    const wrapper2 = shallow(<Splash store={store} {...props} />)
+    const wrapper2 = shallow(<Splash store={store} {...props} />);
 
     wrapper2.instance().handleSelectQuote(quoteData, props);
-    wrapper2.instance().handleSelectAddress({ physicalAddress: {
-      state: 'FL'
-    }}, props)
+    wrapper2.instance().handleSelectAddress({
+      physicalAddress: {
+        state: 'FL'
+      }
+    }, props);
     wrapper2.instance().handleSelectPolicy(policy, props);
-
-
   });
 });
