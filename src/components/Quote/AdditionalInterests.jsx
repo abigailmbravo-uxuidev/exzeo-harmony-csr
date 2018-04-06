@@ -107,31 +107,31 @@ export const handleFormSubmit = (data, dispatch, props) => {
   modifiedAIs.push(aiData);
 
 
-  console.log(modifiedAIs.filter(ai => ai.type === 'Mortgagee'));
+  // console.log(modifiedAIs.filter(ai => ai.type === 'Mortgagee'));
 
-  // applyRank(modifiedAIs);
+  applyRank(modifiedAIs);
 
-  // const steps = [
-  //   {
-  //     name: 'hasUserEnteredData',
-  //     data: { answer: 'Yes' }
-  //   },
-  //   {
-  //     name: 'askadditionalInterests',
-  //     data: { additionalInterests: modifiedAIs }
-  //   },
-  //   {
-  //     name: 'moveTo',
-  //     data: { key: 'additionalInterests' }
-  //   }
-  // ];
+  const steps = [
+    {
+      name: 'hasUserEnteredData',
+      data: { answer: 'Yes' }
+    },
+    {
+      name: 'askadditionalInterests',
+      data: { additionalInterests: modifiedAIs }
+    },
+    {
+      name: 'moveTo',
+      data: { key: 'additionalInterests' }
+    }
+  ];
 
-  // actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
-  //   .then(() => {
-  //     props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
+  actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
+    .then(() => {
+      props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
 
-  //     additionalInterests = modifiedAIs;
-  //     // now update the workflow details so the recalculated rate shows
+      additionalInterests = modifiedAIs;
+      // now update the workflow details so the recalculated rate shows
       actions.appStateActions.setAppState(
         appState.modelName,
         workflowId, {
@@ -145,7 +145,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
           showAdditionalInterestEditModal: false
         }
       );
-  //   });
+    });
 };
 
 const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);

@@ -21,6 +21,20 @@ import Loader from './Loader';
 
 const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
+const getTestAnswers = (name, questions) =>[
+  {
+    answer: '0',
+    label: 'First Mortgagee'
+  },
+  {
+    answer: '1',
+    label: 'Second Mortgagee'
+  },
+  {
+    answer: '2',
+    label: 'Third Mortgagee'
+  }
+]
 
 const handleInitialize = (state) => {
   const { selectedAI } = state.appState.data;
@@ -95,7 +109,7 @@ export const AdditionalInterestEditModal = (props) => {
     appState, handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, selectedAI, questions, isEndorsement, validAdditionalInterestTypes, additionalInterests
   } = props;
 
-  const mortgageeOrderAnswers = _.cloneDeep(getAnswers('order', questions));
+  const mortgageeOrderAnswers = _.cloneDeep(getTestAnswers('order', questions));
 
   if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length < 2) {
     _.remove(mortgageeOrderAnswers, answer => Number(answer.answer) === 1);
