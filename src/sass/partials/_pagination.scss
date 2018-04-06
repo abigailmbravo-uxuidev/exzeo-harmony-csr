@@ -3,27 +3,46 @@
     .pagination-wrapper {
       position: fixed;
       bottom: 0;
-      left: 0;
+      left: calc(50% - 8rem);
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 100%;
-      padding: 0 0 ($padding/2);
+      width: 16rem;
+      margin: 0 0 ($padding*2);
+      padding: 0;
+      opacity: 0.8;
+      border-radius: $padding*2;
+      box-shadow: 0 0 4px rgba($black, .25);
+      @include transition(all 0.2s ease-in-out);
+
+      &:hover {
+        opacity: 1;
+      }
 
       > button.multi-input {
         z-index: 5;
+        width: 2rem;
         height: 2rem;
         padding: ($padding/2) $padding;
         @include button-variant($white, $warm-gray-04, $warm-gray-04);
 
+        &:hover {
+          @include button-variant($white, $warm-gray-06, $warm-gray-06);
+        }
+
+        &:disabled,
+        &[disabled=disabled] {
+          &:hover {
+            @include button-variant($white, $warm-gray-04, $warm-gray-04);
+          }
+        }
+
         &:first-child {
           border-radius: 50% 0 0 50%;
-          box-shadow: -2px 0 4px rgba($black, .25);
         }
 
         &:last-child {
           border-radius: 0 50% 50% 0;
-          box-shadow: 2px 0 4px rgba($black, .25);
         }
 
         &.action-btn {
@@ -35,9 +54,10 @@
         z-index: 1;
         display: flex;
         align-items: center;
+        justify-content: center;
+        width: 12rem;
         height: 2rem;
         background: $white;
-        box-shadow: 0 0 4px rgba($black, .25);
 
         .pageNumber {
           align-items: center;
@@ -48,14 +68,17 @@
 
           label {
             margin-bottom: 0;
-            padding: 0 0 0 $padding;
+            padding: 0;
             color: $warm-gray-14;
             font-size: $font-size-sm;
             font-weight: $font-weight-normal;
           }
 
           input {
-            width: 4ch;
+            flex-basis: 4rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+            max-width: 4rem;
             height: auto;
             padding: $padding/2;
             text-align: center;
@@ -80,7 +103,7 @@
           flex-direction: row;
           width: auto;
           margin-bottom: 0;
-          padding: 0 $padding 0 0;
+          padding: 0;
 
           label {
             margin-bottom: 0;
@@ -91,9 +114,12 @@
 
           input,
           input[readonly] {
-            width: 4ch;
+            flex-basis: 4rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+            max-width: 4rem;
             height: auto;
-            padding: $padding/2;
+            padding: ($padding/2) 0 ($padding/2) ($padding/2);
             text-align: center;
             color: $warm-gray-14;
             border-width: 0;
