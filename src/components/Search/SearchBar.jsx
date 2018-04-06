@@ -420,7 +420,6 @@ export class SearchForm extends Component {
                 component="select"
                 styleName=""
                 label="Quote Status"
-                onChange={clearForm}
                 answers={getAnswers('quoteState', questions)}
               />
             </div>
