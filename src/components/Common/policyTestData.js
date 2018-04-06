@@ -1,19 +1,10 @@
-import React from 'react';
-import configureStore from 'redux-mock-store';
-import { propTypes } from 'redux-form';
-import { shallow } from 'enzyme';
-
-import { UnderwritingValidationBar, handleFormSubmit, handleInitialize } from './UnderwritingValidationBar';
-
-const middlewares = [];
-const mockStore = configureStore(middlewares);
-const quoteData = {
-  _id: '5866c036a46eb72908f3f547',
+const policyTestData = {
+  policyVersion: '1',
+  PolicyID: '5866c036a46eb72908f3f547',
   companyCode: 'TTIC',
-  agencyCode: '20000',
   state: 'FL',
   product: 'HO3',
-  quoteNumber: '12-1234567-12',
+  policyNumber: '12-1234567-12',
   billToId: '5866c036a46eb72908f3f547',
   billPlan: 'Annual',
   eligibility: 'Yes',
@@ -304,76 +295,4 @@ const quoteData = {
   __v: 0
 };
 
-describe('Testing UnderwritingValidationBar component', () => {
-  it('should test connected app', () => {
-    const initialState = {
-      service: {
-        quote: quoteData
-      },
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {
-              variables: [
-                {
-                  name: 'retrieveQuote',
-                  value: {
-                    result: quoteData
-                  }
-                }, {
-                  name: 'getQuoteBeforePageLoop',
-                  value: {
-                    result: quoteData
-                  }
-                }]
-            },
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        data: {
-          showAdditionalInterestModal: false
-        },
-        modelName: 'bb'
-      }
-    };
-    const store = mockStore(initialState);
-    const props = {
-      overridableExceptions: [{ _id: 'name', canOverride: true, fields: [{ name: 'rating.netPremium', value: 'null' }] }],
-      nonOverridableExceptions: [{ _id: 'name', canOverride: false, fields: [{ name: 'rating.netPremium', value: 'null' }] }],
-      actions: {
-        quoteStateActions: { getLatestQuote() {} },
-        serviceActions: {
-          saveUnderwritingExceptions() { return Promise.resolve(() => {}); }
-        },
-        appStateActions: {
-          setAppState() { }
-        },
-        cgActions: {
-          startWorkflow() { return Promise.resolve(() => {}); },
-          batchCompleteTask() { return Promise.resolve(() => {}); }
-        }
-      },
-      handleSubmit: fn => fn,
-      quoteData: {
-        underwritingExceptions: [{ _id: 'name', canOverride: true, fields: [{ name: 'rating.netPremium', value: 'null' }] }],
-        policyHolders: []
-      },
-      userProfile: '',
-      fieldQuestions: [],
-      dispatch: store.dispatch,
-      appState: {
-        data: {
-          submitting: false
-        }
-      }
-    };
-    const wrapper = shallow(<UnderwritingValidationBar store={store} {...props} />);
-    expect(wrapper);
-
-    handleInitialize(initialState);
-    handleFormSubmit({ name: true }, props.dispatch, props);
-  });
-});
+export default policyTestData;

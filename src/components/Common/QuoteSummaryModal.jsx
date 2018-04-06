@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Form, propTypes } from 'redux-form';
+import moment from 'moment';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
@@ -34,24 +35,24 @@ const QuoteSummary = ({
             <li className="scriptInfo margin bottom">Home is in flood zone: {quoteData.property.floodZone}</li>
             }
             <li className="script margin bottom">Does the property have any existing unrepaired damage?</li>
-            { quoteData.property && quoteData.property.yearBuilt && quoteData.property.yearBuilt < (new Date().getFullYear() - 20) &&
+            { quoteData.property && quoteData.property.yearBuilt && quoteData.property.yearBuilt < (Number(moment.utc(quoteData.effectiveDate).format('YYYY')) - 20) &&
               <li className="script">What is the roof covering on the home?
                 <ul>
                   <li className="scriptInfo">Asphalt, Fiberglass, Composition/Wood Shake Shingles, Built-up Tar and Gravel</li>
                   <li className="script">Is the roof over 20 years old?</li>
-                  <li className="scriptInfo margin bottom">Before: {new Date().getFullYear() - 20}</li>
+                  <li className="scriptInfo margin bottom">Before: {moment - 20}</li>
                   <li className="scriptInfo">Tile, Slate, Concrete, or Metal</li>
                   <li className="script">Is roof over 40 years old?</li>
-                  <li className="scriptInfo margin bottom">Before: {new Date().getFullYear() - 40}</li>
+                  <li className="scriptInfo margin bottom">Before: {Number(moment.utc(quoteData.effectiveDate).format('YYYY')) - 40}</li>
                 </ul>
               </li>
             }
           </ul>
-          <hr></hr>
+          <hr />
           <p className="scriptInfo">If any adverse information</p>
           <p className="script margin bottom">Your policy request will be referred to Underwriting for review.</p>
           <p className="scriptInfo margin bottom">Click &ldquo;CANCEL&rdquo; below.</p>
-          <hr></hr>
+          <hr />
           <p className="scriptInfo">If no adverse information</p>
           <p className="script margin bottom">We will generate the Homeowners Application and e-mail it to:</p>
           <ul>

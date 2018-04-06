@@ -21,8 +21,8 @@ import * as appStateActions from '../../actions/appStateActions';
 import * as errorActions from '../../actions/errorActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as searchActions from '../../actions/searchActions';
-import TextField from '../Form/inputs/TextField';
 import normalizeDate from '../Form/normalizeDate';
+import Pagination from '../Common/Pagination';
 
 const userTasks = {
   handleSearchBarSubmit: 'search'
@@ -115,7 +115,7 @@ export const changePageQuote = (props, isNext) => {
   }
 };
 
-const handleInitialize = () => ({ searchType: 'quote', sortBy: 'policyNumber' });
+const handleInitialize = () => ({ searchType: 'policy', sortBy: 'policyNumber' });
 
 export const handlePolicySearchSubmit = (data, dispatch, props) => {
   const taskData = {
@@ -164,7 +164,8 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
     zip: (encodeURIComponent(data.zip) !== 'undefined' ? encodeURIComponent(data.zip) : ''),
     quoteState: (encodeURIComponent(data.quoteState) !== 'undefined' ? encodeURIComponent(data.quoteState) : ''),
     searchType,
-    hasSearched: true
+    hasSearched: true,
+    pageNumber: '1'
   };
 
   const agencyAgentData = {
@@ -511,33 +512,8 @@ export class SearchForm extends Component {
             </button>
           </div>
         }
-          { fieldValues.searchType === 'quote' && quoteResults && quoteResults.quotes && quoteResults.quotes.length > 0 && fieldValues.totalPages > 1 && <div className="pagination-wrapper">
-            <button
-              onClick={() => changePageQuote(this.props, false)}
-              disabled={String(fieldValues.pageNumber) === '1'}
-              tabIndex="0"
-              className="btn multi-input"
-              type="button"
-              form="SearchBar"
-            >
-              <span className="fa fa-chevron-circle-left" />
-            </button>
-            <div className="pagination-count">
-              <TextField size="2" styleName="pageNumber" name="pageNumber" label="Page" disabled />
-              <span className="pagination-operand">of</span>
-              <TextField size="2" styleName="totalPages" name="totalPages" label="" disabled />
-            </div>
-            <button
-              onClick={() => changePageQuote(this.props, true)}
-              disabled={String(fieldValues.pageNumber) === String(fieldValues.totalPages)}
-              tabIndex="0"
-              className="btn multi-input"
-              type="button"
-              form="SearchBar"
-            >
-              <span className="fa fa-chevron-circle-right" />
-            </button>
-          </div>
+          { fieldValues.searchType === 'quote' && quoteResults && quoteResults.quotes && quoteResults.quotes.length > 0 && fieldValues.totalPages > 1 &&
+          <Pagination changePageForward={() => changePageQuote(this.props, true)} changePageBack={() => changePageQuote(this.props, false)} fieldValues={fieldValues} />
       }
           {fieldValues.searchType === 'policy' && <div className="search-inputs fade-in p">
 
@@ -580,33 +556,8 @@ export class SearchForm extends Component {
             <button type="button" className="advanced-search-btn btn-sm btn-icon" onClick={() => togglePolicyAdvanceSearch(this.props)}><i className={this.props.search.policyAdvanceSearch ? 'fa fa-chevron-up' : 'fa fa-chevron-down'} /></button>
           </div>
         }
-          { fieldValues.searchType === 'policy' && policyResults && policyResults.policies && policyResults.policies.length > 0 && fieldValues.totalPages > 1 && <div className="pagination-wrapper">
-            <button
-              onClick={() => changePagePolicy(this.props, false)}
-              disabled={String(fieldValues.pageNumber) === '1'}
-              tabIndex="0"
-              className="btn multi-input"
-              type="button"
-              form="SearchBar"
-            >
-              <span className="fa fa-chevron-circle-left" />
-            </button>
-            <div className="pagination-count">
-              <TextField size="2" styleName="pageNumber" name="pageNumber" label="Page" disabled />
-              <span className="pagination-operand">of</span>
-              <TextField size="2" styleName="totalPages" name="totalPages" label="" disabled />
-            </div>
-            <button
-              onClick={() => changePagePolicy(this.props, true)}
-              disabled={String(fieldValues.pageNumber) === String(fieldValues.totalPages)}
-              tabIndex="0"
-              className="btn multi-input"
-              type="button"
-              form="SearchBar"
-            >
-              <span className="fa fa-chevron-circle-right" />
-            </button>
-          </div>
+          { fieldValues.searchType === 'policy' && policyResults && policyResults.policies && policyResults.policies.length > 0 && fieldValues.totalPages > 1 &&
+          <Pagination changePageForward={() => changePagePolicy(this.props, true)} changePageBack={() => changePagePolicy(this.props, false)} fieldValues={fieldValues} />
       }
           {/* <!-- Should be available only in user admin  --> */}
           {fieldValues.searchType === 'user' && <div className="search-tools">
