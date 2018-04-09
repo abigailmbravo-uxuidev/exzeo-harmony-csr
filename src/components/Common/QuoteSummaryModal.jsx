@@ -40,10 +40,10 @@ const QuoteSummary = ({
                 <ul>
                   <li className="scriptInfo">Asphalt, Fiberglass, Composition/Wood Shake Shingles, Built-up Tar and Gravel</li>
                   <li className="script">Is the roof over 20 years old?</li>
-                  <li className="scriptInfo margin bottom">Before: {moment - 20}</li>
+                  <li className="scriptInfo margin bottom">Before: {Number(moment.utc(quoteData.effectiveDate).subtract(20, 'years').format('YYYY'))}</li>
                   <li className="scriptInfo">Tile, Slate, Concrete, or Metal</li>
                   <li className="script">Is roof over 40 years old?</li>
-                  <li className="scriptInfo margin bottom">Before: {Number(moment.utc(quoteData.effectiveDate).format('YYYY')) - 40}</li>
+                  <li className="scriptInfo margin bottom">Before: {Number(moment.utc(quoteData.effectiveDate).subtract(40, 'years').format('YYYY'))}</li>
                 </ul>
               </li>
             }
