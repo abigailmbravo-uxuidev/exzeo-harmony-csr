@@ -36,8 +36,8 @@ export const reinstatePolicySubmit = (data, dispatch, props) => {
   const { policy, summaryLedger } = props;
   const submitData = {
     "policyID": policy.policyID,
-    "policyNumber": policy.policyNumber, 
-    "billingStatus": summaryLedger.status.code, 
+    "policyNumber": policy.policyNumber,
+    "billingStatus": summaryLedger.status.code,
     "transactionType":  "Reinstatement"
     };
     props.actions.serviceActions.createTransaction(submitData).then(() => {
