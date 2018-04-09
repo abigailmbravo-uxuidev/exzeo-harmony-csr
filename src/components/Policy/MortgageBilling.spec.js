@@ -72,7 +72,7 @@ const additionalInterests = [
     }
   },
   {
-    type: 'Lienholder',
+    type: 'Premium Finance',
     name1: 'BB3',
     referenceNumber: '1001',
     phoneNumber: '1234567890',
@@ -315,7 +315,7 @@ describe('Testing MortgageBilling component', () => {
     expect(_.find(additionalInterests, ai => ai.type === 'Mortgagee').rank).toEqual(1);
     expect(_.find(additionalInterests, ai => ai.type === 'Additional Insured').rank).toEqual(2);
     expect(_.find(additionalInterests, ai => ai.type === 'Additional Interest').rank).toEqual(3);
-    expect(_.find(additionalInterests, ai => ai.type === 'Lienholder').rank).toEqual(4);
+    expect(_.find(additionalInterests, ai => ai.type === 'Premium Finance').rank).toEqual(4);
     expect(_.find(additionalInterests, ai => ai.type === 'Bill Payer').rank).toEqual(5);
   });
 });
