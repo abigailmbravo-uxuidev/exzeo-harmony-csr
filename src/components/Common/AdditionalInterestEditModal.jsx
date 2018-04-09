@@ -113,9 +113,12 @@ export const AdditionalInterestEditModal = (props) => {
 
   const mortgageeOrderAnswers = _.cloneDeep(getTestAnswers('order', questions));
 
-  if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length < 2) {
-    _.remove(mortgageeOrderAnswers, answer => Number(answer.answer) === 1);
-  }
+  if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length < 3) {
+    _.remove(mortgageeOrderAnswers, answer => Number(answer.answer) === 2);
+    }
+    else if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length < 2) {
+    _.remove(mortgageeOrderAnswers, answer => Number(answer.answer) === 1 || Number(answer.answer) === 2);
+    }
 
   return (
     <div className="modal" style={{ flexDirection: 'row' }}>
