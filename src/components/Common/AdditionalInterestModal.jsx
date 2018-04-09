@@ -30,7 +30,7 @@ const handleInitialize = (state) => {
     zip: '',
     referenceNumber: '',
     type: '',
-    order: mortgageeOrderAnswers.length === 1  ? mortgageeOrderAnswers[0].answer : ''
+    order: mortgageeOrderAnswers.length === 1 ? mortgageeOrderAnswers[0].answer : ''
   };
 };
  const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
@@ -82,15 +82,17 @@ export const getMortgageeAnswers = (questions, additionalInterests) => {
   let mortgageeOrderAnswers = _.cloneDeep(getTestAnswers('order', questions));
 
   if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 0) {
-    mortgageeOrderAnswers = mortgageeOrderAnswers.filter(answer =>  Number(answer.answer) === 0)
+    mortgageeOrderAnswers = mortgageeOrderAnswers.filter(answer => Number(answer.answer) === 0);
   } else if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 1) {
-    mortgageeOrderAnswers = mortgageeOrderAnswers.filter(answer =>  Number(answer.answer) === 1)
+    mortgageeOrderAnswers = mortgageeOrderAnswers.filter(answer => Number(answer.answer) === 1);
   }
   else if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 2) {
     mortgageeOrderAnswers = mortgageeOrderAnswers.filter(answer =>  Number(answer.answer) === 2)
   }
   return mortgageeOrderAnswers;
-}
+};
+
+export const checkAdditionalInterestForName = aiType => aiType === 'Additional Insured' || aiType === 'Additional Interest' || aiType === 'Bill Payer';
 
 export const AdditionalInterestModal = (props) => {
   const {
@@ -119,8 +121,8 @@ export const AdditionalInterestModal = (props) => {
               onChange={val => setMortgageeValues(val, props)}
             />
          }
-            <TextField label="Name 1" styleName="name-1" name="name1" validations={['required']} />
-            <TextField label="Name 2" styleName="name-2" name="name2" />
+            <TextField label={checkAdditionalInterestForName(appState.data.addAdditionalInterestType) ? 'First Name' : 'Name 1'} styleName="name-1" name="name1" validations={['required']} />
+            <TextField label={checkAdditionalInterestForName(appState.data.addAdditionalInterestType) ? 'Last Name' : 'Name 2'} styleName="name-2" name="name2" />
             <TextField label="Address 1" styleName="address-1" name="address1" validations={['required']} />
             <TextField label="Address 2" styleName="address-2" name="address2" />
             <div className="flex-form">
