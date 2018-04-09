@@ -42,7 +42,7 @@ const QuoteSummary = ({
                   <li className="script">Is the roof over 20 years old?</li>
                   <li className="scriptInfo margin bottom">Before: {Number(moment.utc(quoteData.effectiveDate).subtract(20, 'years').format('YYYY'))}</li>
                   <li className="scriptInfo">Tile, Slate, Concrete, or Metal</li>
-                  <li className="script">Is roof over 40 years old?</li>
+                  <li className="script">Is the roof over 40 years old?</li>
                   <li className="scriptInfo margin bottom">Before: {Number(moment.utc(quoteData.effectiveDate).subtract(40, 'years').format('YYYY'))}</li>
                 </ul>
               </li>
