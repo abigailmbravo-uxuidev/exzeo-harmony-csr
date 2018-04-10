@@ -94,7 +94,7 @@
         }
       }
 
-      &.Lienholder {
+      &.Premium {
         &:before {
           content: "\F27E";
         }
@@ -112,7 +112,7 @@
         }
       }
 
-      &.Billpayer {
+      &.Bill {
         &:before {
           content: "\F0D6";
         }
