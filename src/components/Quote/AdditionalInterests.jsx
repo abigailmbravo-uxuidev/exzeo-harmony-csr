@@ -98,7 +98,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
   if (isMortgagee && data._id) {
     const selectedAI = props.appState.data.selectedAI;
     _.forEach(modifiedAIs.filter(ai => ai.type === 'Mortgagee'), (mortgagee) => {
-      if(String(mortgagee.order) === String(data.order)){
+      if (String(mortgagee.order) === String(data.order)) {
         mortgagee.order = Number(selectedAI.order);
       }
     });
@@ -197,12 +197,9 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
   // remove any existing items before submission
     _.remove(modifiedAIs, ai => ai._id === selectedAdditionalInterest._id); // eslint-disable-line
 
-  if (_.filter(modifiedAIs, ai => ai.type === selectedAdditionalInterest.type).length === 1) {
-    const index = _.findIndex(modifiedAIs, { type: selectedAdditionalInterest.type });
-    const ai = modifiedAIs[index];
-    ai.order = 0;
-    modifiedAIs.splice(index, 1, ai);
-  }
+  _.each(_.sortBy(_.filter(modifiedAIs, ai => ai.type === selectedAdditionalInterest.type), ['order']), (ai, index) => {
+    ai.order = index;
+  });
 
   const steps = [{
     name: 'hasUserEnteredData',
@@ -266,7 +263,6 @@ export class AdditionalInterests extends Component {
 
       this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
         .then(() => {
-
           this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
 
           this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
@@ -294,13 +290,13 @@ export class AdditionalInterests extends Component {
     }
 
     if (nextProps.billingOptions && !_.isEqual(this.props.billingOptions, nextProps.billingOptions) &&
-    nextProps.appState.data.addAdditionalInterestType === 'Bill Payer' || nextProps.appState.data.addAdditionalInterestType === 'Premium Finance') {
+    (nextProps.appState.data.addAdditionalInterestType === 'Bill Payer' || nextProps.appState.data.addAdditionalInterestType === 'Premium Finance')) {
       const billPayer = nextProps.billingOptions.options[0];
       nextProps.actions.serviceActions.saveBillingInfo(nextProps.quoteData._id, billPayer.billToType, billPayer.billToId, 'Annual');
 
       // update billToType to BP
     } else if (nextProps.billingOptions && !_.isEqual(this.props.billingOptions, nextProps.billingOptions) &&
-    nextProps.appState.data.deleteAdditionalInterestType === 'Bill Payer' || nextProps.appState.data.deleteAdditionalInterestType === 'Premium Finance') {
+    (nextProps.appState.data.deleteAdditionalInterestType === 'Bill Payer' || nextProps.appState.data.deleteAdditionalInterestType === 'Premium Finance')) {
       // update billToType to PH
       const policyHolder = _.find(nextProps.billingOptions.options, bo => bo.billToType === 'Policyholder');
       nextProps.actions.serviceActions.saveBillingInfo(nextProps.quoteData._id, policyHolder.billToType, policyHolder.billToId, 'Annual');
@@ -337,8 +333,8 @@ export class AdditionalInterests extends Component {
                   <button disabled={(quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Mortgagee').length > 2) || checkQuoteState(quoteData)} onClick={() => addAdditionalInterest('Mortgagee', this.props)} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
                   <button disabled={(quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Additional Insured').length > 1) || checkQuoteState(quoteData)} onClick={() => addAdditionalInterest('Additional Insured', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
                   <button disabled={(quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Additional Interest').length > 1) || checkQuoteState(quoteData)} onClick={() => addAdditionalInterest('Additional Interest', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
-                  <button disabled={quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Premium Finance').length > 0 ||  _.filter(quoteData.additionalInterests, ai => ai.type === 'Bill Payer').length > 0 || checkQuoteState(quoteData)} onClick={() => addAdditionalInterest('Premium Finance', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Premium Finance</span></div></button>
-                  <button disabled={(quoteData && _.filter(quoteData.additionalInterests, ai => ai.type === 'Bill Payer').length > 0 || _.filter(quoteData.additionalInterests, ai => ai.type === 'Premium Finance').length > 0) || checkQuoteState(quoteData)} onClick={() => addAdditionalInterest('Bill Payer', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
+                  <button disabled={(quoteData && (_.filter(quoteData.additionalInterests, ai => ai.type === 'Premium Finance').length > 0 || _.filter(quoteData.additionalInterests, ai => ai.type === 'Bill Payer').length > 0)) || checkQuoteState(quoteData)} onClick={() => addAdditionalInterest('Premium Finance', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Premium Finance</span></div></button>
+                  <button disabled={(quoteData && (_.filter(quoteData.additionalInterests, ai => ai.type === 'Bill Payer').length > 0 || _.filter(quoteData.additionalInterests, ai => ai.type === 'Premium Finance').length > 0)) || checkQuoteState(quoteData)} onClick={() => addAdditionalInterest('Bill Payer', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
                 </div>
                 <div className="results-wrapper">
                   <ul className="results result-cards">
