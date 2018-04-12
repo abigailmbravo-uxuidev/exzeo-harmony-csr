@@ -401,12 +401,7 @@ export class SearchForm extends Component {
       actions,
       tasks,
       reset,
-<<<<<<< HEAD
       pathName
-=======
-      search,
-      agencyList
->>>>>>> b224da6eb5c78cb34aa96fdaec1fa76e05225038
     } = this.props;
 
     const agencyListValues = agencyList.map(agency => {
