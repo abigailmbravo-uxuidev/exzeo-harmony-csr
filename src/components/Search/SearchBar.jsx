@@ -404,12 +404,10 @@ export class SearchForm extends Component {
       pathName
     } = this.props;
 
-    const agencyListValues = agencyList.map(agency => {
-        return {
+    const agencyListValues = agencyList.map((agency) => ({
           label: agency.displayName,
           answer: agency.agencyCode
-        }
-    });
+        }));
 
     const clearForm = () => {
       const modelName = appState.modelName;
@@ -426,7 +424,6 @@ export class SearchForm extends Component {
       resetPolicySearch(this.props);
       this.props.actions.appStateActions.setAppState(appState.modelName, workflowId, { submitting: false });
       this.props.actions.serviceActions.getAgencies('TTIC', 'FL');
-
     };
 
     let searchHandler = handleSearchBarSubmit;
@@ -454,18 +451,6 @@ export class SearchForm extends Component {
               onChange={clearForm}
               answers={[
               {
-<<<<<<< HEAD
-=======
-                answer: 'address',
-                label: 'New Quote'
-              }, {
-                answer: 'quote',
-                label: 'Quote Search'
-              }, {
-                answer: 'policy',
-                label: 'Policy Search'
-              }, {
->>>>>>> b224da6eb5c78cb34aa96fdaec1fa76e05225038
                 answer: 'agent',
                 label: 'Agent Search'
               }, {
@@ -643,13 +628,13 @@ export class SearchForm extends Component {
           {
   fieldValues.searchType === 'policy' && search.policyAdvanceSearch &&
   <div className="advanced-search fade-in">
-      <SelectField
-      name="agencyCode"
-      component="select"
-      styleName=""
-      label="Agency Name"
-      answers={agencyListValues}
-    />
+    <SelectField
+        name="agencyCode"
+        component="select"
+        styleName=""
+        label="Agency Name"
+        answers={agencyListValues}
+      />
     <div className="form-group effectiveDate">
       <label htmlFor="effectiveDate">{getErrorToolTip(formErrors, 'effectiveDate')}
         {'Effective Date'}
