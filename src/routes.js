@@ -30,6 +30,7 @@ import PolicyMortgageBilling from './components/Policy/MortgageBilling';
 import PolicyNotesFiles from './components/Policy/NotesFiles';
 import PolicyEndorsements from './components/Policy/Endorsements';
 import AgencyStaff from './components/Agency/Staff';
+import NoteUploader from './components/Common/NoteUploader';
 import * as appStateActions from './actions/appStateActions';
 import PolicyCancel from './components/Policy/Cancel';
 import * as errorActions from './actions/errorActions';
@@ -73,7 +74,9 @@ class Routes extends Component {
     } else if (!isAuthenticated() && checkPublicPath(window.location.pathname)) {
       history.push('/login');
       axios.defaults.headers.common['authorization'] = undefined; // eslint-disable-line
-    }
+    } else if (/access_token|id_token|error/.test(window.location.hash)) {
+        auth.handleAuthentication();
+      }
   }
 
   setBackStep = (goToNext, callback) => {
@@ -108,6 +111,14 @@ class Routes extends Component {
             <button className="btn-primary" onClick={this.clearError}>close</button>
           </div>
         </Modal>
+        {this.props.newNote && this.props.newNote.documentId &&
+          <NoteUploader
+            noteType={this.props.newNote.noteType}
+            documentId={this.props.newNote.documentId}
+            sourceId={this.props.newNote.sourceNumber}
+            closeButtonHandler={() => console.log('props')}
+          />
+        }
 
         <Router
           getUserConfirmation={(message, callback) => {
@@ -151,10 +162,7 @@ class Routes extends Component {
               <Route
                 exact
                 path="/callback"
-                render={(props) => {
-                  handleAuthentication(props);
-                  return <Callback />;
-                }}
+                render={props => <Callback />}
               />
               <Route path="*" render={props => <NotFoundPage auth={auth} {...props} />} />
             </Switch>
@@ -168,7 +176,8 @@ class Routes extends Component {
 const mapStateToProps = state => ({
   error: state.error,
   appState: state.appState,
-  authState: state.authState
+  authState: state.authState,
+  newNote: state.newNote
 });
 
 const mapDispatchToProps = dispatch => ({

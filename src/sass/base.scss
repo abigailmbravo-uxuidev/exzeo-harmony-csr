@@ -29,6 +29,7 @@
 @import "partials/_uppy";
 @import "partials/_user-admin";
 @import "partials/_pagination";
+@import "partials/_user-script";
 @import "https://fonts.googleapis.com/css?family=Roboto:100,300,500"; //base
 //links
 /*------------------------------------------------------------------------------------*/
@@ -276,7 +277,7 @@ html {
 /*------------------------------------------------------------------------------------*/
 main[role="document"] {
   position: relative;
-  z-index: 10;
+  z-index: 1;
   display: flex;
   overflow-y: hidden;
   align-items: flex-start;
@@ -287,6 +288,12 @@ main[role="document"] {
   height: calc(100vh - 8.125rem);
   min-height: calc(100vh - 8.125rem);
   background: $white;
+  @include transition(all 0.2s ease-in-out);
+
+  &.policy-advanced {
+    height: calc(100vh - 12.375rem);
+    min-height: calc(100vh - 12.375rem);
+  }
 
   .content-wrapper {
     display: flex;
@@ -619,7 +626,7 @@ ul.list-cards {
           &.header {
             padding: ($padding/4) 0;
             color: $warm-gray-08;
-            background: $cool-gray-01;
+            background: $warm-gray-02;
             font-size: $font-size-sm;
             font-weight: $font-weight-bold;
           }

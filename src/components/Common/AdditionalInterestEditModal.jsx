@@ -90,6 +90,8 @@ export const setMortgageeValues = (val, props) => {
   }
 };
 
+export const checkAdditionalInterestForName = aiType => aiType === 'Additional Insured' || aiType === 'Additional Interest' || aiType === 'Bill Payer';
+
 export const AdditionalInterestEditModal = (props) => {
   const {
     appState, handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, selectedAI, questions, isEndorsement, validAdditionalInterestTypes, additionalInterests
@@ -125,8 +127,8 @@ export const AdditionalInterestEditModal = (props) => {
               onChange={val => setMortgageeValues(val, props)}
             />
          }
-            <TextField label="Name 1" styleName="name-1" name="name1" validations={['required']} />
-            <TextField label="Name 2" styleName="" name="name2" />
+            <TextField label={checkAdditionalInterestForName(appState.data.addAdditionalInterestType) ? 'First Name' : 'Name 1'} styleName="name-1" name="name1" validations={['required']} />
+            <TextField label={checkAdditionalInterestForName(appState.data.addAdditionalInterestType) ? 'Last Name' : 'Name 2'} styleName="" name="name2" />
 
             <TextField label="Address 1" styleName="" name="address1" validations={['required']} />
             <TextField label="Address 2" styleName="" name="address2" />

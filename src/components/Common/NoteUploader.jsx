@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import localStorage from 'localStorage';
 import { Field, Form, reduxForm, propTypes } from 'redux-form';
 import Uppy from 'uppy/lib/core';
 import { Dashboard } from 'uppy/lib/react';
@@ -114,7 +115,7 @@ export class Uploader extends Component {
   submitNote = (data, dispatch, props) => {
     const { actions, user, noteType, documentId, sourceId } = props;
     const attachments = Object.values(this.uppy.getState().files);
-    if(!user.given_name || !user.family_name) {
+    if(!user.profile.given_name || !user.profile.family_name) {
       const message = 'There was a problem with your user profile. Please logout of Harmony and try logging in again.';
       props.closeButtonHandler();
       actions.errorActions.setAppError({ message });
@@ -131,7 +132,7 @@ export class Uploader extends Component {
       fileType: data.fileType,
       createdBy: JSON.stringify({
         userId: user.sub,
-        userName: `${user.given_name} ${user.family_name}`
+        userName: `${user.profile.given_name} ${user.profile.family_name}`
       })
     };
 

@@ -13,6 +13,9 @@ describe('Testing Base component', () => {
     const initialState = {};
     const store = mockStore(initialState);
     const props = {
+      search: {
+        policyAdvanceSearch: true
+      },
       auth: {
         userProfile: {
 
