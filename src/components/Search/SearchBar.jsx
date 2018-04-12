@@ -401,13 +401,15 @@ export class SearchForm extends Component {
       actions,
       tasks,
       reset,
+      search,
+      agencyList,
       pathName
     } = this.props;
 
-    const agencyListValues = agencyList.map((agency) => ({
-          label: agency.displayName,
-          answer: agency.agencyCode
-        }));
+    const agencyListValues = agencyList.map(agency => ({
+      label: agency.displayName,
+      answer: agency.agencyCode
+    }));
 
     const clearForm = () => {
       const modelName = appState.modelName;
@@ -629,12 +631,12 @@ export class SearchForm extends Component {
   fieldValues.searchType === 'policy' && search.policyAdvanceSearch &&
   <div className="advanced-search fade-in">
     <SelectField
-        name="agencyCode"
-        component="select"
-        styleName=""
-        label="Agency Name"
-        answers={agencyListValues}
-      />
+      name="agencyCode"
+      component="select"
+      styleName=""
+      label="Agency Name"
+      answers={agencyListValues}
+    />
     <div className="form-group effectiveDate">
       <label htmlFor="effectiveDate">{getErrorToolTip(formErrors, 'effectiveDate')}
         {'Effective Date'}
