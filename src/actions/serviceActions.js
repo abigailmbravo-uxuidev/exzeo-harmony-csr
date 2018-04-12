@@ -74,7 +74,7 @@ export const addNote = (data, files) => (dispatch) => {
   const form = new FormData();
   const url = `${process.env.REACT_APP_API_URL}/upload`;
 
-  Object.keys(data).forEach((key) => form.append(key, data[key]));
+  Object.keys(data).forEach(key => form.append(key, data[key]));
 
   if (files && files.length > 0) {
     files.forEach(file => form.append(file.name, file.data));
@@ -87,18 +87,18 @@ export const addNote = (data, files) => (dispatch) => {
       'Content-Type': `multipart/form-data; boundary=${form._boundary}`
     }
   })
-  .then(response => {
-    const ids = (data.noteType === 'Policy Note') 
-      ? [response.data.number, data.source].toString()
-      : response.data.number;
-    dispatch(getNotes(ids, response.data.number))
-  })
-  .catch((error) => {
-    const message = handleError(error);
-    return dispatch(batchActions([
-      errorActions.setAppError(message)
-    ]));
-  });
+    .then((response) => {
+      const ids = (data.noteType === 'Policy Note')
+        ? [response.data.number, data.source].toString()
+        : response.data.number;
+      dispatch(getNotes(ids, response.data.number));
+    })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError(message)
+      ]));
+    });
 };
 
 export const getAgents = (companyCode, state) => (dispatch) => {
@@ -539,10 +539,10 @@ export const updateBillPlan = paymentPlan => (dispatch) => {
     const data = response.data.result;
     dispatch(getLatestPolicy(data.policyNumber));
   })
-  .catch((error) => {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
-  });
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(errorActions.setAppError(message));
+    });
 };
 
 export const getBillingOptionsForPolicy = paymentOptions => (dispatch) => {
@@ -756,7 +756,7 @@ export const searchPolicy = (taskData, sort) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'policy-data',
     method: 'GET',
-    path: `/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=${taskData.policyNumber}&firstName=${taskData.firstName}&lastName=${taskData.lastName}&propertyAddress=${formattedAddress.replace(' ', '&#32;')}&active=true&page=${taskData.pageNumber}&pageSize=${taskData.pageSize}&resultStart=${taskData.resultStart}&sort=${sort}&sortDirection=${sortDirection}&effectiveDate=${taskData.effectiveDate}&agencyCode=${taskData.agencyCode}&policyStatus=${taskData.policyStatus}`
+    path: `/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=${taskData.policyNumber}&firstName=${taskData.firstName}&lastName=${taskData.lastName}&propertyAddress=${formattedAddress.replace(' ', '&#32;')}&active=true&page=${taskData.pageNumber}&pageSize=${taskData.pageSize}&resultStart=${taskData.resultStart}&sort=${sort}&sortDirection=${sortDirection}&effectiveDate=${taskData.effectiveDate}&agencyCode=${taskData.agencyCode}&status=${taskData.policyStatus}`
   });
 
   return Promise.resolve(axios(axiosConfig)).then((response) => {
