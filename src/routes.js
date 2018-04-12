@@ -49,11 +49,6 @@ axios.interceptors.response.use(
   }
 );
 
-const handleAuthentication = (nextState, replace) => {
-  if (/access_token|id_token|error/.test(nextState.location.hash)) {
-    auth.handleAuthentication();
-  }
-};
 
 const checkPublicPath = (path) => {
   const publicPaths = ['/login', '/logout', '/accessDenied', '/loggedOut', '/callback'];
@@ -75,8 +70,8 @@ class Routes extends Component {
       history.push('/login');
       axios.defaults.headers.common['authorization'] = undefined; // eslint-disable-line
     } else if (/access_token|id_token|error/.test(window.location.hash)) {
-        auth.handleAuthentication();
-      }
+      auth.handleAuthentication();
+    }
   }
 
   setBackStep = (goToNext, callback) => {
