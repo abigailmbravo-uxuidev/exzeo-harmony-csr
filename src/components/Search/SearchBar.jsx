@@ -272,7 +272,7 @@ const getErrorToolTip = (formErrors, fieldName) => {
   return ((formErrors && formErrors[fieldName]) ? <span>
     <i className="fa fa-exclamation-circle" data-tip data-for={errorFieldName} />
     <ReactTooltip place="right" id={errorFieldName} type="error" effect="float">{formErrors[fieldName]}</ReactTooltip>
-                                                  </span> : <span />);
+  </span> : <span />);
 };
 
 const generateField = (name, placeholder, labelText, formErrors, formGroupCss) => {
@@ -286,7 +286,7 @@ const generateField = (name, placeholder, labelText, formErrors, formGroupCss) =
       type="text"
       component="input"
     />
-                 </div>);
+  </div>);
   return field;
 };
 
@@ -417,7 +417,7 @@ export class SearchForm extends Component {
             >
               <i className="fa fa-search" />Search
             </button>
-                                                   </div>
+          </div>
         }
           {fieldValues.searchType === 'quote' && <div className="search-inputs fade-in">
 
@@ -444,7 +444,7 @@ export class SearchForm extends Component {
             >
               <i className="fa fa-search" />Search
             </button>
-                                                 </div>
+          </div>
         }
           { fieldValues.searchType === 'quote' && quoteResults && quoteResults.quotes && quoteResults.quotes.length > 0 && fieldValues.totalPages > 1 && <div className="pagination-wrapper">
             <button
@@ -472,7 +472,7 @@ export class SearchForm extends Component {
             >
               <span className="fa fa-chevron-circle-right" />
             </button>
-                                                                                                                                                         </div>
+          </div>
       }
           {fieldValues.searchType === 'policy' && <div className="search-inputs fade-in p">
 
@@ -512,7 +512,7 @@ export class SearchForm extends Component {
             >
               <i className="fa fa-search" />Search
             </button>
-                                                  </div>
+          </div>
         }
           { fieldValues.searchType === 'policy' && policyResults && policyResults.policies && policyResults.policies.length > 0 && fieldValues.totalPages > 1 && <div className="pagination-wrapper">
             <button
@@ -540,7 +540,7 @@ export class SearchForm extends Component {
             >
               <span className="fa fa-chevron-circle-right" />
             </button>
-                                                                                                                                                                 </div>
+          </div>
       }
           {/* <!-- Should be available only in user admin  --> */}
           {fieldValues.searchType === 'user' && <div className="search-tools">
@@ -558,7 +558,7 @@ export class SearchForm extends Component {
               </button>
             </div>
             <div className="filters fade-in">FILTERS HERE</div>
-                                                </div>
+          </div>
         }
           {fieldValues.searchType === 'agency' && <div className="search-inputs fade-in">
 
@@ -577,7 +577,7 @@ export class SearchForm extends Component {
             >
               <i className="fa fa-search" />Search
             </button>
-                                                  </div>
+          </div>
         }
           {fieldValues.searchType === 'agent' && <div className="search-inputs fade-in">
 
@@ -595,7 +595,7 @@ export class SearchForm extends Component {
             >
               <i className="fa fa-search" />Search
             </button>
-                                                 </div>
+          </div>
       }
           {/* <!-- End should be available only in user admin  --> */}
         </div>
