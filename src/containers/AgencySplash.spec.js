@@ -52,6 +52,9 @@ describe('Testing AgencySplash component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      search: {
+        policyAdvanceSearch: false
+      },
       actions: {
         appStateActions: {
           setAppState() {}
