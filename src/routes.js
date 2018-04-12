@@ -108,8 +108,7 @@ class Routes extends Component {
           <NoteUploader 
             noteType={this.props.newNote.noteType} 
             documentId={this.props.newNote.documentId} 
-            sourceId={this.props.newNote.sourceNumber} 
-            closeButtonHandler={() => console.log('props')} 
+            sourceId={this.props.newNote.sourceNumber}
           />
         }
 

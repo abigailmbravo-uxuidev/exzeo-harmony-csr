@@ -54,6 +54,7 @@ export const SearchResults = (props) => {
               policyKeyEnter={event => onKeypressSubmit(event, policy, props)}
               policy={policy}
               index={index}
+              key={index}
               policySelection={() => props.handleNewTab(policy, props)}
             />
           ))
@@ -76,6 +77,7 @@ export const SearchResults = (props) => {
               <AddressSearchCard
                 address={address}
                 index={index}
+                key={index}
                 addressSelection={() => props.handleNewTab(address, props)}
                 addressKeyEnter={event => onKeypressSubmit(event, address, props)}
               />
@@ -97,6 +99,7 @@ export const SearchResults = (props) => {
           <QuoteSearchCard
             quote={quote}
             index={index}
+            key={index}
             quoteSelection={() => props.handleNewTab(quote, props)}
             quoteKeyEnter={event => onKeypressSubmit(event, quote, props)}
           />
