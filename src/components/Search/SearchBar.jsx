@@ -336,29 +336,9 @@ export const setAgency = (val, props) => {
 
 
 export class SearchForm extends Component {
-  clearForm = () => {
-    const { actions, appState, change, form, reset, tasks} = this.props;
-    const modelName = appState.modelName;
-    const data = tasks[modelName].data;
-    const workflowId = appState.instanceId;
-    const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData')) || {};
-    lastSearchData.searchType = '';
-    localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
-    reset(form);
-    actions.cgActions.clearSearchResults(modelName, data);
-    actions.errorActions.clearAppError();
-    actions.serviceActions.clearAgencies();
-    actions.serviceActions.clearAgent();
-    resetPolicySearch(this.props);
-    actions.appStateActions.setAppState(appState.modelName, workflowId, { submitting: false });
-    actions.serviceActions.getAgencies('TTIC', 'FL');
-    change('sortBy', 'policyNumber');
-  }
-
   componentDidMount() {
-    localStorage.removeItem('lastSearchData');
+    this.props.actions.serviceActions.getAgencies('TTIC', 'FL');
   }
-
   componentWillReceiveProps(nextProps) {
     const { dispatch } = nextProps;
     const model = nextProps.tasks[nextProps.appState.modelName] || {};
@@ -409,11 +389,28 @@ export class SearchForm extends Component {
       pathName
     } = this.props;
 
-    const agencyListValues = agencyList.map(agency => ({
-      label: agency.displayName,
-      answer: agency.agencyCode,
-      value: agency.agencyCode
-    }));
+    const agencyListValues = agencyList.map(agency => {
+        return {
+          label: agency.displayName,
+          answer: agency.agencyCode
+        }
+    });
+
+    const clearForm = () => {
+      const modelName = appState.modelName;
+      const data = tasks[modelName].data;
+      const workflowId = appState.instanceId;
+      const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData')) || {};
+      lastSearchData.searchType = '';
+      localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
+      reset(form);
+      actions.cgActions.clearSearchResults(modelName, data);
+      actions.errorActions.clearAppError();
+      actions.serviceActions.clearAgencies();
+      actions.serviceActions.clearAgent();
+      resetPolicySearch(this.props);
+      this.props.actions.appStateActions.setAppState(appState.modelName, workflowId, { submitting: false });
+    };
 
     let searchHandler = handleSearchBarSubmit;
 
