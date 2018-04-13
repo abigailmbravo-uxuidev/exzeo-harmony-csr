@@ -408,6 +408,7 @@ export class SearchForm extends Component {
       agencyList,
       pathName
     } = this.props;
+
     const agencyListValues = agencyList.map(agency => ({
       label: agency.displayName,
       answer: agency.agencyCode,
