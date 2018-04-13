@@ -360,6 +360,9 @@ const generateField = (name, placeholder, labelText, formErrors, formGroupCss) =
 const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 export class SearchForm extends Component {
+  componentDidMount() {
+    this.props.actions.serviceActions.getAgencies('TTIC', 'FL');
+  }
   componentWillReceiveProps(nextProps) {
     const { dispatch } = nextProps;
 
@@ -427,8 +430,6 @@ export class SearchForm extends Component {
       actions.serviceActions.clearAgent();
       resetPolicySearch(this.props);
       this.props.actions.appStateActions.setAppState(appState.modelName, workflowId, { submitting: false });
-      this.props.actions.serviceActions.getAgencies('TTIC', 'FL');
-
     };
 
     let searchHandler = handleSearchBarSubmit;
