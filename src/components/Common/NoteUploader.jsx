@@ -11,6 +11,7 @@ import moment from 'moment';
 import * as cgActions from '../../actions/cgActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as newNoteActions from '../../actions/newNoteActions';
 import * as errorActions from '../../actions/errorActions';
 
 export const minimzeButtonHandler = (props) => {
@@ -112,12 +113,14 @@ export class Uploader extends Component {
   contactTypes = this.props.noteType ? this.contactTypeOptions[this.props.noteType] : [];
   docTypes = this.props.noteType ? this.docTypeOptions[this.props.noteType] : [];
 
+  closeButtonHandler = () => this.props.actions.newNoteActions.toggleNote({});
+
   submitNote = (data, dispatch, props) => {
     const { actions, user, noteType, documentId, sourceId } = props;
     const attachments = Object.values(this.uppy.getState().files);
     if(!user.profile.given_name || !user.profile.family_name) {
       const message = 'There was a problem with your user profile. Please logout of Harmony and try logging in again.';
-      props.closeButtonHandler();
+      this.closeButtonHandler();
       actions.errorActions.setAppError({ message });
       return false;
     }
@@ -137,7 +140,7 @@ export class Uploader extends Component {
     };
 
     props.actions.serviceActions.addNote(noteData, attachments);
-    props.closeButtonHandler();
+    this.closeButtonHandler();
   };
 
   componentWillMount () {
@@ -176,7 +179,7 @@ export class Uploader extends Component {
           <div className="title title-minimze-button" onClick={() => minimzeButtonHandler(this.props)}>Note / File</div>
           <div className="controls note-file-header-button-group">
             <button className="btn btn-icon minimize-button" onClick={() => minimzeButtonHandler(this.props)}><i className="fa fa-window-minimize" aria-hidden="true" /></button>
-            <button className="btn btn-icon header-cancel-button" onClick={this.props.closeButtonHandler} type="submit"><i className="fa fa-times-circle" aria-hidden="true" /></button>
+            <button className="btn btn-icon header-cancel-button" onClick={this.closeButtonHandler} type="submit"><i className="fa fa-times-circle" aria-hidden="true" /></button>
           </div>
         </div>
         <div className="mainContainer">
@@ -201,7 +204,7 @@ export class Uploader extends Component {
               </div>
               </div>
               <div className="buttons note-file-footer-button-group">
-                <button tabIndex={'0'} aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={this.props.closeButtonHandler}>Cancel</button>
+                <button tabIndex={'0'} aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={this.closeButtonHandler}>Cancel</button>
                 <button tabIndex={'0'} aria-label="submit-btn form-newNote" className="btn btn-primary submit-button">Save</button>
               </div>
           </Form>
@@ -213,7 +216,6 @@ export class Uploader extends Component {
 
 Uploader.propTypes = {
   ...propTypes,
-  closeButtonHandler: PropTypes.func,
   noteType: PropTypes.string
 };
 
@@ -227,6 +229,7 @@ const mapDispatchToProps = dispatch => ({
     cgActions: bindActionCreators(cgActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch),
+    newNoteActions: bindActionCreators(newNoteActions, dispatch),
     errorActions: bindActionCreators(errorActions, dispatch)
   }
 });

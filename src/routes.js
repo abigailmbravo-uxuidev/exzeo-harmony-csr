@@ -1,4 +1,3 @@
-// src/routes.js
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -108,8 +107,7 @@ class Routes extends Component {
           <NoteUploader 
             noteType={this.props.newNote.noteType} 
             documentId={this.props.newNote.documentId} 
-            sourceId={this.props.newNote.sourceNumber} 
-            closeButtonHandler={() => console.log('props')} 
+            sourceId={this.props.newNote.sourceNumber}
           />
         }
 
