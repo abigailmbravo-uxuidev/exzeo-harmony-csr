@@ -34,6 +34,9 @@ describe('Testing NoteUploader component', () => {
         serviceActions: {
           addNote(){}
         },
+        newNoteActions: {
+          toggleNote(){}
+        },
         errorActions: {
           setAppError(){}
         }
