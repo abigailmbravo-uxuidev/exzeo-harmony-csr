@@ -8,7 +8,6 @@ import Uppy from 'uppy/lib/core';
 import { Dashboard } from 'uppy/lib/react';
 import XHRUpload from 'uppy/lib/plugins/XHRUpload';
 import moment from 'moment';
-import * as cgActions from '../../actions/cgActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as newNoteActions from '../../actions/newNoteActions';
@@ -34,10 +33,6 @@ export const validate = (values) => {
   if (!values.noteContent) errors.noteContent = 'Note Content Required';
   return errors;
 };
-
-export const validateFile = (file => {
-  return true;
-});
 
 export class Uploader extends Component {
   // TODO: Pull this from the list service
@@ -139,9 +134,17 @@ export class Uploader extends Component {
       })
     };
 
-    props.actions.serviceActions.addNote(noteData, attachments);
+    //props.actions.serviceActions.addNote(noteData, attachments);
+    console.log(attachments)
     this.closeButtonHandler();
   };
+
+  validateFile = (file => {
+    if (!file.name.includes('.')) {
+      return Promise.reject('Files must have an extension.');
+    }
+    return true;
+  });
 
   componentWillMount () {
     const idToken = localStorage.getItem('id_token');
@@ -152,8 +155,9 @@ export class Uploader extends Component {
         maxFileSize: 10000000,
         maxNumberOfFiles: 10
       },
-      onBeforeFileAdded: validateFile,
+      onBeforeFileAdded: this.validateFile,
       onBeforeUpload: (files) => {
+        console.log('eggz', files)
         if (files) return Promise.resolve();
         return this.uppy.addFile({ source: 'uppy', preview: null, name: 'hidden', type: null, data: new Uint8Array() })
         .then(done => Promise.resolve())
@@ -226,7 +230,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    cgActions: bindActionCreators(cgActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch),
     newNoteActions: bindActionCreators(newNoteActions, dispatch),
