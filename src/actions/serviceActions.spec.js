@@ -1282,7 +1282,7 @@ describe('Service Actions', () => {
       data: {
         service: 'policy-data',
         method: 'GET',
-        path: `/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=123&firstName=gfdgfd&lastName=fhnhyn&propertyAddress=123&page=1&pageSize=25&resultStart=1&sort=policyNumber&sortDirection=desc`    
+        path: `/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=123&firstName=gfdgfd&lastName=fhnhyn&propertyAddress=123&page=1&pageSize=25&resultStart=1&sort=policyNumber&sortDirection=desc&effectiveDate=2017-01-02&agencyCode=2000&policyStatus=0` 
       }
     };
 
@@ -1302,11 +1302,15 @@ describe('Service Actions', () => {
       pageNumber:'1',
       pageSize:'25',
       resultStart:'1',
+      effectiveDate: '2017-01-02',
+      policyStatus: 0,
+      agencyCode: 2000
     }
 
     return serviceActions.searchPolicy(taskData, 'policyNumber')(store.dispatch)
     .then(() => {
-      expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+      console.log('mmmmmm', store.getActions())
+      expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
     });
   });
 
@@ -1340,7 +1344,7 @@ describe('Service Actions', () => {
 
     return serviceActions.searchPolicy(taskData, 'policyNumber')(store.dispatch)
     .then(() => {
-      expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+      expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
     });
   });
 });
