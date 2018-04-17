@@ -134,17 +134,15 @@ export class Uploader extends Component {
       })
     };
 
-    //props.actions.serviceActions.addNote(noteData, attachments);
-    console.log(attachments)
+    props.actions.serviceActions.addNote(noteData, attachments);
     this.closeButtonHandler();
   };
 
-  validateFile = (file => {
-    if (!file.name.includes('.')) {
-      return Promise.reject('Files must have an extension.');
-    }
-    return true;
-  });
+  validateFile = (file, currentFiles) => {
+    return !file.name.includes('.') 
+      ? Promise.reject('Uploads must have a file extension.') 
+      : Promise.resolve();
+  }
 
   componentWillMount () {
     const idToken = localStorage.getItem('id_token');
@@ -157,7 +155,6 @@ export class Uploader extends Component {
       },
       onBeforeFileAdded: this.validateFile,
       onBeforeUpload: (files) => {
-        console.log('eggz', files)
         if (files) return Promise.resolve();
         return this.uppy.addFile({ source: 'uppy', preview: null, name: 'hidden', type: null, data: new Uint8Array() })
         .then(done => Promise.resolve())

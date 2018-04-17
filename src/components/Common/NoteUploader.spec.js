@@ -14,18 +14,6 @@ describe('Testing NoteUploader component', () => {
   it('should test connected app', () => {
     const initialState = {
       authState: {
-      },
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {},
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        modelName: 'bb'
       }
     };
     const store = mockStore(initialState);
@@ -72,18 +60,6 @@ describe('Testing NoteUploader component', () => {
   it('should test submit note and minimzeButtonHandler', () => {
     const initialState = {
       authState: {
-      },
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {},
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        modelName: 'bb'
       }
     };
     const store = mockStore(initialState);
