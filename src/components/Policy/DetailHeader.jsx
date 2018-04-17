@@ -41,6 +41,14 @@ export class DetailHeader extends Component {
     const { policy, summaryLedger } = this.props;
     const billingStatusCode = summaryLedger && summaryLedger.status ? summaryLedger.status.code : null;
 
+    let cancellationDate = '';
+    if (policy && policy.cancelDate && (policy.status.includes('Pending') || policy.status.includes('Cancel') || billingStatusCode > 8)) {
+      cancellationDate = moment.utc(policy.cancelDate).format('MM/DD/YYYY');
+    }
+    if (policy && policy.endDate && billingStatusCode === 99) {
+      cancellationDate = moment.utc(policy.endDate).format('MM/DD/YYYY');
+    }
+
     if (!policy || !policy.policyID) {
       return (<div className="detailHeader" />);
     }
@@ -127,23 +135,17 @@ export class DetailHeader extends Component {
               </div>
             </dl>
           </section>
-          {policy.status !== 'Not In Force' && billingStatusCode !== 99 &&
+          {policy &&
           <section id="cancellationDate" className="cancellationDate">
             <dl>
             <div>
-              <dt>Cancellation</dt>
-              <dd>{policy.cancelDate &&  policy.status !== 'Policy Issued' && policy.status !== 'In Force' && billingStatusCode > 8
-                ? moment.utc(policy.cancelDate).format('MM/DD/YYYY')
-                : '' }</dd>
-            </div>
-          </dl>
-          </section>}
-          { billingStatusCode === 99 &&
-          <section id="cancellationDate" className="cancellationDate">
-            <dl>
-            <div>
-              <dt>Expiration <button id="effective-date" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showReinstatePolicyPopUp(this.props)}><i className="fa fa-thumbs-up" />Reinstate</button></dt>
-              <dd>{policy.endDate ? moment.utc(policy.endDate).format('MM/DD/YYYY') : '' }</dd>
+              <dt>
+                Cancellation Date
+                {policy && policy.status === 'Cancelled' &&
+                <button id="effective-date" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showReinstatePolicyPopUp(this.props)}><i className="fa fa-thumbs-up" />Reinstate</button>
+                }
+              </dt>
+              <dd>{cancellationDate}</dd>
             </div>
           </dl>
           </section>}
