@@ -14,6 +14,7 @@ import QuoteBaseConnect from '../../containers/Quote';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
+import applyRank from '../Common/additionalInterestRank';
 
 const handlePrimarySecondaryTitles = (type, order) => `${type} ${order + 1}`;
 
@@ -111,9 +112,12 @@ export class Summary extends Component {
       coverageOptions = quoteData.coverageOptions;
       mailingAddress = quoteData.policyHolderMailingAddress || {};
       deductibles = quoteData.deductibles;
+      applyRank(quoteData.additionalInterests);
     }
 
     const filteredExceptions = _.filter(quoteData.underwritingExceptions, uw => !uw.overridden);
+
+
     return (
       <QuoteBaseConnect>
         <div className="route-content summary workflow">
@@ -326,7 +330,7 @@ export class Summary extends Component {
                   <section className="display-element additional-interests">
                     <h3>Additional Interests</h3>
                     {(quoteData.additionalInterests && quoteData.additionalInterests.length > 0) ?
-                        quoteData.additionalInterests.map((additionalInterest, index) => (_.trim(additionalInterest.name1).length > 0 &&
+                      _.sortBy(quoteData.additionalInterests, ['rank', 'order']).map((additionalInterest, index) => (_.trim(additionalInterest.name1).length > 0 &&
                         <div className="card" key={`ph${index}`}>
                           <div className="card-icon">
                             <i className={`fa ${additionalInterest.type}`} />
