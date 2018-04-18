@@ -1269,4 +1269,82 @@ describe('Service Actions', () => {
       expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
     });
   });
+
+  it('should call searchPolicy', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'policy-data',
+        method: 'GET',
+        path: `/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=123&firstName=gfdgfd&lastName=fhnhyn&propertyAddress=123&page=1&pageSize=25&resultStart=1&sort=policyNumber&sortDirection=desc&effectiveDate=2017-01-02&agencyCode=2000&policyStatus=0` 
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    const taskData = {
+      policyNumber: '123',
+      address: '123',
+      firstName: 'gfdgfd',
+      lastName:'fhnhyn',
+      propertyAddress: '123',
+      pageNumber:'1',
+      pageSize:'25',
+      resultStart:'1',
+      effectiveDate: '2017-01-02',
+      policyStatus: 0,
+      agencyCode: 2000
+    }
+
+    return serviceActions.searchPolicy(taskData, 'policyNumber')(store.dispatch)
+    .then(() => {
+      console.log('mmmmmm', store.getActions())
+      expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
+    });
+  });
+
+  it('should fail searchPolicy', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'policy-data',
+        method: 'GET',
+        path: `/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=123&firstName=gfdgfd&lastName=fhnhyn&propertyAddress=123&page=1&pageSize=25&resultStart=1&sort=policyNumber&sortDirection=desc`    
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+    serviceActions.getAgencies(store.dispatch);
+
+    const taskData = {
+      policyNumber: '123'
+    }
+
+    return serviceActions.searchPolicy(taskData, 'policyNumber')(store.dispatch)
+    .then(() => {
+      expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
+    });
+  });
 });
