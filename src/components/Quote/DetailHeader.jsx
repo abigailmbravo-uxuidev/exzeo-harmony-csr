@@ -11,17 +11,6 @@ import * as quoteStateActions from '../../actions/quoteStateActions';
 export const selectPolicy = (quote, props) => {
   if (!quote.quoteNumber) return;
 
-  const lastSearchData = {
-    firstName: '',
-    lastName: '',
-    address: '',
-    quoteNumber: '',
-    policyNumber: quote.policyNumber,
-    zip: '',
-    searchType: 'policy'
-  };
-
-  localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
   localStorage.setItem('isNewTab', true);
   localStorage.setItem('policyNumber', quote.policyNumber);
   window.open('/policy/coverage', '_blank');
@@ -150,3 +139,4 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailHeader);
+0
