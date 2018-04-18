@@ -79,7 +79,6 @@ export const addNote = (data, files) => (dispatch) => {
     const fileName = !file.name.endsWith(file.meta.name.extension)
       ? `${file.meta.name}.${file.extension}`
       : file.meta.name;
-    console.log(fileName)
     return form.append(file.name, file.data, fileName)
   });
 
