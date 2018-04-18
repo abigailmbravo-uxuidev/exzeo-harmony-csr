@@ -8,7 +8,6 @@ import Uppy from 'uppy/lib/core';
 import { Dashboard } from 'uppy/lib/react';
 import XHRUpload from 'uppy/lib/plugins/XHRUpload';
 import moment from 'moment';
-import * as cgActions from '../../actions/cgActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as newNoteActions from '../../actions/newNoteActions';
@@ -34,10 +33,6 @@ export const validate = (values) => {
   if (!values.noteContent) errors.noteContent = 'Note Content Required';
   return errors;
 };
-
-export const validateFile = (file => {
-  return true;
-});
 
 export class Uploader extends Component {
   // TODO: Pull this from the list service
@@ -143,6 +138,12 @@ export class Uploader extends Component {
     this.closeButtonHandler();
   };
 
+  validateFile = (file, currentFiles) => {
+    return !file.name.includes('.') 
+      ? Promise.reject('Uploads must have a file extension.') 
+      : Promise.resolve();
+  }
+
   componentWillMount () {
     const idToken = localStorage.getItem('id_token');
 
@@ -152,7 +153,7 @@ export class Uploader extends Component {
         maxFileSize: 10000000,
         maxNumberOfFiles: 10
       },
-      onBeforeFileAdded: validateFile,
+      onBeforeFileAdded: this.validateFile,
       onBeforeUpload: (files) => {
         if (files) return Promise.resolve();
         return this.uppy.addFile({ source: 'uppy', preview: null, name: 'hidden', type: null, data: new Uint8Array() })
@@ -226,7 +227,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    cgActions: bindActionCreators(cgActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch),
     newNoteActions: bindActionCreators(newNoteActions, dispatch),
