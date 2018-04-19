@@ -147,7 +147,7 @@ export class DetailHeader extends Component {
               <dt>
                 Cancellation Date
                 {policy && (policy.status === 'Cancelled' || billingStatusCode === 9) &&
-                <button className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showReinstatePolicyPopUp(this.props)}><i className="fa fa-thumbs-up" />Reinstate</button>
+                <button id="show-reinstate" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showReinstatePolicyPopUp(this.props)}><i className="fa fa-thumbs-up" />Reinstate</button>
                 }
               </dt>
               <dd>{cancellationDate}</dd>
@@ -164,7 +164,7 @@ export class DetailHeader extends Component {
           </div>
         </dl>
       </section>
-            </div>);
+    </div>);
   }
 }
 
