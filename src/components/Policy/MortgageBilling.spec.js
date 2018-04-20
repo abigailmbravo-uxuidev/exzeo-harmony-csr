@@ -4,7 +4,6 @@ import { shallow } from 'enzyme';
 import _ from 'lodash';
 import {
   MortgageBilling,
-  setRank,
   handleInitialize,
   addAdditionalInterest,
   editAdditionalInterest,
@@ -308,14 +307,5 @@ describe('Testing MortgageBilling component', () => {
         }
       }
     });
-  });
-
-  it('test setRank', () => {
-    setRank(additionalInterests);
-    expect(_.find(additionalInterests, ai => ai.type === 'Mortgagee').rank).toEqual(1);
-    expect(_.find(additionalInterests, ai => ai.type === 'Additional Insured').rank).toEqual(2);
-    expect(_.find(additionalInterests, ai => ai.type === 'Additional Interest').rank).toEqual(3);
-    expect(_.find(additionalInterests, ai => ai.type === 'Premium Finance').rank).toEqual(4);
-    expect(_.find(additionalInterests, ai => ai.type === 'Bill Payer').rank).toEqual(5);
   });
 });
