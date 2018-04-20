@@ -4,3 +4,4 @@ README.md
 .git
 documentation
 package-lock.json
+.env

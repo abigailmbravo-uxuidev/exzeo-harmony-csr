@@ -8,9 +8,9 @@ import Uppy from 'uppy/lib/core';
 import { Dashboard } from 'uppy/lib/react';
 import XHRUpload from 'uppy/lib/plugins/XHRUpload';
 import moment from 'moment';
-import * as cgActions from '../../actions/cgActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as appStateActions from '../../actions/appStateActions';
+import * as newNoteActions from '../../actions/newNoteActions';
 import * as errorActions from '../../actions/errorActions';
 
 export const minimzeButtonHandler = (props) => {
@@ -34,15 +34,11 @@ export const validate = (values) => {
   return errors;
 };
 
-export const validateFile = (file => {
-  return true;
-});
-
 export class Uploader extends Component {
   // TODO: Pull this from the list service
   contactTypeOptions = {
     'Quote Note': ['Agent', 'Policyholder', 'Inspector', 'Other'],
-    'Policy Note': ['Agent', 'Policyholder', 'Lienholder', 'Claims', 'Inspector', 'Other']
+    'Policy Note': ['Agent', 'Policyholder', 'Lienholder', 'Internal', 'Inspector', 'Other']
   };
 
   docTypeOptions = {
@@ -112,12 +108,14 @@ export class Uploader extends Component {
   contactTypes = this.props.noteType ? this.contactTypeOptions[this.props.noteType] : [];
   docTypes = this.props.noteType ? this.docTypeOptions[this.props.noteType] : [];
 
+  closeButtonHandler = () => this.props.actions.newNoteActions.toggleNote({});
+
   submitNote = (data, dispatch, props) => {
     const { actions, user, noteType, documentId, sourceId } = props;
     const attachments = Object.values(this.uppy.getState().files);
     if(!user.profile.given_name || !user.profile.family_name) {
       const message = 'There was a problem with your user profile. Please logout of Harmony and try logging in again.';
-      props.closeButtonHandler();
+      this.closeButtonHandler();
       actions.errorActions.setAppError({ message });
       return false;
     }
@@ -137,8 +135,14 @@ export class Uploader extends Component {
     };
 
     props.actions.serviceActions.addNote(noteData, attachments);
-    props.closeButtonHandler();
+    this.closeButtonHandler();
   };
+
+  validateFile = (file, currentFiles) => {
+    return !file.name.includes('.') 
+      ? Promise.reject('Uploads must have a file extension.') 
+      : Promise.resolve();
+  }
 
   componentWillMount () {
     const idToken = localStorage.getItem('id_token');
@@ -149,7 +153,7 @@ export class Uploader extends Component {
         maxFileSize: 10000000,
         maxNumberOfFiles: 10
       },
-      onBeforeFileAdded: validateFile,
+      onBeforeFileAdded: this.validateFile,
       onBeforeUpload: (files) => {
         if (files) return Promise.resolve();
         return this.uppy.addFile({ source: 'uppy', preview: null, name: 'hidden', type: null, data: new Uint8Array() })
@@ -176,18 +180,18 @@ export class Uploader extends Component {
           <div className="title title-minimze-button" onClick={() => minimzeButtonHandler(this.props)}>Note / File</div>
           <div className="controls note-file-header-button-group">
             <button className="btn btn-icon minimize-button" onClick={() => minimzeButtonHandler(this.props)}><i className="fa fa-window-minimize" aria-hidden="true" /></button>
-            <button className="btn btn-icon header-cancel-button" onClick={this.props.closeButtonHandler} type="submit"><i className="fa fa-times-circle" aria-hidden="true" /></button>
+            <button className="btn btn-icon header-cancel-button" onClick={this.closeButtonHandler} type="submit"><i className="fa fa-times-circle" aria-hidden="true" /></button>
           </div>
         </div>
         <div className="mainContainer">
           <Form id="NewNoteFileUploader" onSubmit={this.props.handleSubmit(this.submitNote)} noValidate>
               <div className="content">
-                <label>Note Type</label>
+                <label>Contact</label>
                 <Field component="select" name="contactType" disabled={!this.contactTypes.length}>
                   { this.contactTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
                 </Field>
                 <Field name="noteContent" component={renderNotes} label="Note Content" />
-                <label>Document Type</label>
+                <label>File Type</label>
                 <Field component="select" name="fileType" disabled={!this.docTypes.length}>
                   { this.docTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
                 </Field>
@@ -201,7 +205,7 @@ export class Uploader extends Component {
               </div>
               </div>
               <div className="buttons note-file-footer-button-group">
-                <button tabIndex={'0'} aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={this.props.closeButtonHandler}>Cancel</button>
+                <button tabIndex={'0'} aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={this.closeButtonHandler}>Cancel</button>
                 <button tabIndex={'0'} aria-label="submit-btn form-newNote" className="btn btn-primary submit-button">Save</button>
               </div>
           </Form>
@@ -213,7 +217,6 @@ export class Uploader extends Component {
 
 Uploader.propTypes = {
   ...propTypes,
-  closeButtonHandler: PropTypes.func,
   noteType: PropTypes.string
 };
 
@@ -224,9 +227,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    cgActions: bindActionCreators(cgActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch),
+    newNoteActions: bindActionCreators(newNoteActions, dispatch),
     errorActions: bindActionCreators(errorActions, dispatch)
   }
 });

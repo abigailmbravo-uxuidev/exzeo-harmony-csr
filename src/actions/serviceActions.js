@@ -75,10 +75,12 @@ export const addNote = (data, files) => (dispatch) => {
   const url = `${process.env.REACT_APP_API_URL}/upload`;
 
   Object.keys(data).forEach((key) => form.append(key, data[key]));
-
-  if (files && files.length > 0) {
-    files.forEach(file => form.append(file.name, file.data));
-  }
+  files.map(file => {
+    const fileName = !file.name.endsWith(file.meta.name.extension)
+      ? `${file.meta.name}.${file.extension}`
+      : file.meta.name;
+    return form.append(file.name, file.data, fileName)
+  });
 
   axios.post(url, form, {
     headers: {
@@ -95,9 +97,7 @@ export const addNote = (data, files) => (dispatch) => {
   })
   .catch((error) => {
     const message = handleError(error);
-    return dispatch(batchActions([
-      errorActions.setAppError(message)
-    ]));
+    return dispatch(errorActions.setAppError(message));
   });
 };
 
@@ -756,20 +756,16 @@ export const searchPolicy = (taskData, sort) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'policy-data',
     method: 'GET',
-    path: `/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=${taskData.policyNumber}&firstName=${taskData.firstName}&lastName=${taskData.lastName}&propertyAddress=${formattedAddress.replace(' ', '&#32;')}&active=true&page=${taskData.pageNumber}&pageSize=${taskData.pageSize}&resultStart=${taskData.resultStart}&sort=${sort}&sortDirection=${sortDirection}&effectiveDate=${taskData.effectiveDate}&agencyCode=${taskData.agencyCode}&policyStatus=${taskData.policyStatus}`
+    path: `/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=${taskData.policyNumber}&firstName=${taskData.firstName}&lastName=${taskData.lastName}&propertyAddress=${formattedAddress.replace(' ', '&#32;')}&page=${taskData.pageNumber}&pageSize=${taskData.pageSize}&resultStart=${taskData.resultStart}&sort=${sort}&sortDirection=${sortDirection}&effectiveDate=${taskData.effectiveDate}&agencyCode=${taskData.agencyCode}&policyStatus=${taskData.policyStatus}`
   });
 
   return Promise.resolve(axios(axiosConfig)).then((response) => {
     const data = { policyResults: response.data };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
+    return dispatch(serviceRequest(data));
   })
     .catch((error) => {
       const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError({ message })
-      ]));
+      return dispatch(errorActions.setAppError({ message }));
     });
 };
 

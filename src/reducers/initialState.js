@@ -2,6 +2,7 @@ export default {
   search: {},
   workflowData: {},
   service: {},
+  newNote: {},
   appState: {
     data: {
       submitting: false

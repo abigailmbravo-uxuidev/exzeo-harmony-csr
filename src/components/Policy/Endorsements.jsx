@@ -220,9 +220,9 @@ export const handleInitialize = (state) => {
   values.electronicDeliveryNew = !!_.get(policy, 'policyHolders[0].electronicDelivery');
 
   // Coverage Mid Right
-  values.floridaBuildingCodeWindSpeed = _.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeed');
+  values.floridaBuildingCodeWindSpeed = String(_.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeed'));
   values.floridaBuildingCodeWindSpeedNew = values.floridaBuildingCodeWindSpeed;
-  values.floridaBuildingCodeWindSpeedDesign = _.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign');
+  values.floridaBuildingCodeWindSpeedDesign = String(_.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign'));
   values.floridaBuildingCodeWindSpeedDesignNew = values.floridaBuildingCodeWindSpeedDesign;
   values.terrain = _.get(policy, 'property.windMitigation.terrain');
   values.terrainNew = values.terrain;
