@@ -1309,7 +1309,6 @@ describe('Service Actions', () => {
 
     return serviceActions.searchPolicy(taskData, 'policyNumber')(store.dispatch)
       .then(() => {
-        console.log('mmmmmm', store.getActions());
         expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
       });
   });
