@@ -245,13 +245,11 @@ export const validate = (values) => {
   }
 
   if (values.agentCode) {
-    console.log(values.agentCode);
     const numbersOnly = Rules.numbersOnly(values.agentCode);
     if (numbersOnly) {
       errors.agentCode = numbersOnly;
     }
   }
-  console.log(values.agencyCode);
 
   if (values.agencyCode) {
     const numbersOnly = Rules.numbersOnly(values.agencyCode);
