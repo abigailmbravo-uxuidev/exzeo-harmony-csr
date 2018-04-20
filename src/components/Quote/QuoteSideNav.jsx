@@ -7,9 +7,8 @@ import { NavLink } from 'react-router-dom';
 import { reduxForm, propTypes } from 'redux-form';
 import * as appStateActions from '../../actions/appStateActions';
 import UWconditions from '../Common/UWconditions';
+import * as newNoteActions from '../../actions/newNoteActions';
 import * as cgActions from '../../actions/cgActions';
-import NoteUploader from '../Common/NoteUploader';
-
 
 // Example of a possible schema
 /**
@@ -65,11 +64,7 @@ const csrLinks = [{
 }];
 
 export const NewNoteFileUploaderPopup = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showNewNoteFileUploader: true });
-};
-
-export const closeNewNoteFileUploader = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showNewNoteFileUploader: false });
+  props.actions.newNoteActions.toggleNote({noteType: 'Quote Note', documentId: props.quoteData.quoteNumber})
 };
 
 export const UWconditionsPopup = (props) => {
@@ -85,7 +80,6 @@ export const SideNav = (props) => {
     ? (<Redirect to={props.activateRedirectLink} />)
     : null;
 
-  const quote = props.quoteData;
   return (
     <nav className="site-nav">
       { redirect }
@@ -112,9 +106,6 @@ export const SideNav = (props) => {
           <button tabIndex={'0'} aria-label="open-btn form-newNote" className="btn btn-secondary btn-xs btn-block" onClick={() => UWconditionsPopup(props)}>Underwriting Conditions</button>
         </li>
       </ul>
-      { props.appState.data.showNewNoteFileUploader === true &&
-        <NoteUploader noteType="Quote Note" documentId={quote.quoteNumber} closeButtonHandler={() => closeNewNoteFileUploader(props)} />
-      }
       { props.appState.data.showUWconditions === true &&
         <UWconditions
           closeButtonHandler={() => closeUWConditions(props)}
@@ -152,6 +143,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: {
     cgActions: bindActionCreators(cgActions, dispatch),
+    newNoteActions: bindActionCreators(newNoteActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }
 });

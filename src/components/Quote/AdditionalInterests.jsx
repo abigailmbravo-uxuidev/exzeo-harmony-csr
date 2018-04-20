@@ -13,31 +13,7 @@ import * as serviceActions from '../../actions/serviceActions';
 import AdditionalInterestPopup from '../../components/Common/AdditionalInterestModal';
 import AdditionalInterestEditPopup from '../../components/Common/AdditionalInterestEditModal';
 import Footer from '../Common/Footer';
-
-export const applyRank = (additionalInterests) => {
-  // add rank to sort by a specific way
-  _.forEach(additionalInterests, (value) => {
-    switch (value.type) {
-      case 'Mortgagee':
-        value.rank = 1; // eslint-disable-line
-        break;
-      case 'Additional Insured':
-        value.rank = 2; // eslint-disable-line
-        break;
-      case 'Additional Interest':
-        value.rank = 3; // eslint-disable-line
-        break;
-      case 'Lienholder':
-        value.rank = 4; // eslint-disable-line
-        break;
-      case 'Bill Payer':
-        value.rank = 5; // eslint-disable-line
-        break;
-      default:
-        break;
-    }
-  });
-};
+import applyRank from '../Common/additionalInterestRank';
 
 const handleInitialize = () => {
   // const quoteData = handleGetQuoteData(state);
