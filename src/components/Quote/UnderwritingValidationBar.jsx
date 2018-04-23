@@ -8,8 +8,9 @@ import moment from 'moment';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
-import CheckField from '../Form/inputs/CheckField';
 import * as quoteStateActions from '../../actions/quoteStateActions';
+import CheckField from '../Form/inputs/CheckField';
+import UnderwritingExceptions from './UnderwritingExceptions';
 
 export const handleFormSubmit = (data, dispatch, props) => {
   const uwExceptions = props.quoteData.underwritingExceptions || [];
@@ -94,38 +95,19 @@ export class UnderwritingValidationBar extends React.Component {
         <aside className="underwriting-validation">
           <h4 className="uw-validation-header">Qualifier Status</h4>
           <div>
+
             {warnings.length > 0 &&
-            <section className="msg-info">
-              <h5>
-                <i className="fa fa-info-circle" aria-hidden="true" /><span>Info</span>
-              </h5>
-              <div>
-                <ul className="fa-ul">
-                  {warnings.map(warning => (
-                    <li key={warning._id}><i className="fa-li fa fa-info-circle" aria-hidden="true" />{warning.internalMessage}</li>
-                  ))}
-                </ul>
-              </div>
-            </section>
-        }
+              <UnderwritingExceptions exceptionLevel="warning" exceptions={warnings} />
+            }
+
             {nonOverridableExceptions.length > 0 &&
-            <section className="msg-error">
-              <h5>
-                <i className="fa fa-exclamation-circle" aria-hidden="true" /><span>Error</span>
-              </h5>
-              <div>
-                <ul className="fa-ul">
-                  {nonOverridableExceptions.map((underwritingException, index) => (
-                    <li key={index}><i className="fa-li fa fa-exclamation-circle" aria-hidden="true" />{underwritingException.internalMessage}</li>
-                ))}
-                </ul>
-              </div>
-            </section>
-        }
+              <UnderwritingExceptions exceptionLevel="nonOverridable" exceptions={nonOverridableExceptions} />
+            }
+
             {overridableExceptions.length > 0 &&
             <section className="msg-caution">
               <h5>
-                <i className="fa fa-exclamation-triangle" aria-hidden="true" /><span>Caution</span>{ overridableExceptions.length > 0 && !pristine && <button tabIndex="0" className="btn btn-sm btn-primary" type="submit">Save</button> }
+                <i className="fa fa-exclamation-triangle" aria-hidden="true" /><span>Caution</span>{ overridableExceptions.length > 0 && !pristine && <button tabIndex="0" className="btn btn-sm btn-primary" type="submit">Save</button>}
               </h5>
               <div>
                 <ul className="fa-ul">
@@ -143,7 +125,7 @@ export class UnderwritingValidationBar extends React.Component {
                 </ul>
               </div>
             </section>
-        }
+            }
           </div>
         </aside>
       </Form>
