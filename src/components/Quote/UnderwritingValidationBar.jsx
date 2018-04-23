@@ -44,19 +44,24 @@ export const handleInitialize = (state) => {
   return values;
 };
 
-export const handleOverridableExceptions = (quoteData) => {
-  const underwritingExceptions = quoteData && quoteData.underwritingExceptions ? quoteData.underwritingExceptions : [];
-  return underwritingExceptions.filter(uw => uw.canOverride === true);
-};
-
-export const handleNonOverridableExceptions = (quoteData) => {
-  const underwritingExceptions = quoteData && quoteData.underwritingExceptions ? quoteData.underwritingExceptions : [];
-  return underwritingExceptions.filter(uw => uw.canOverride === false);
+export const getGroupedExceptions = (quoteData = {}) => {
+  const underwritingExceptions = quoteData.underwritingExceptions || [];
+  return underwritingExceptions.reduce((data, exception) => {
+    if (exception.action === 'Missing Info') {
+      return {
+        ...data,
+        warnings: [...data.warnings, exception],
+      };
+    }
+    return exception.canOverride ?
+      ({ ...data, overridableExceptions: [ ...data.overridableExceptions, exception ] }) :
+      ({ ...data, nonOverridableExceptions: [ ...data.nonOverridableExceptions, exception ]});
+  }, { warnings: [], overridableExceptions: [], nonOverridableExceptions: [] });
 };
 
 export class UnderwritingValidationBar extends React.Component {
   componentWillReceiveProps(nextProps) {
-    nextProps.overridableExceptions.forEach((uw) => {
+    nextProps.exceptions && nextProps.exceptions.overridableExceptions.forEach((uw) => {
       if (!nextProps.fieldValues[uw._id]) {
         nextProps.dispatch(change('UnderwritingOverride', uw._id, uw.overridden));
       }
@@ -67,9 +72,10 @@ export class UnderwritingValidationBar extends React.Component {
       handleSubmit,
       pristine,
       quoteData,
-      overridableExceptions,
-      nonOverridableExceptions
+      exceptions,
     } = this.props;
+
+  const { warnings, overridableExceptions, nonOverridableExceptions } = exceptions;
 
   if (!quoteData) { // eslint-disable-line
       return <div />;
@@ -88,15 +94,16 @@ export class UnderwritingValidationBar extends React.Component {
         <aside className="underwriting-validation">
           <h4 className="uw-validation-header">Qualifier Status</h4>
           <div>
-            {quoteData && (!quoteData.rating || quoteData.policyHolders.length === 0) &&
+            {warnings.length > 0 &&
             <section className="msg-info">
               <h5>
                 <i className="fa fa-info-circle" aria-hidden="true" /><span>Info</span>
               </h5>
               <div>
                 <ul className="fa-ul">
-                  { quoteData.policyHolders && quoteData.policyHolders.length === 0 && <li key={0}><a href="/quote/coverage#primaryPolicyholder"><i className="fa-li fa fa-info-circle" aria-hidden="true" />Needs a Primary Policyholder</a></li> }
-                  { !quoteData.rating && <li key={1}><a href="/quote/underwriting"><i className="fa-li fa fa-info-circle" aria-hidden="true" />Needs Underwriting</a></li> }
+                  {warnings.map(warning => (
+                    <li key={warning._id}><i className="fa-li fa fa-info-circle" aria-hidden="true" />{warning.internalMessage}</li>
+                  ))}
                 </ul>
               </div>
             </section>
@@ -166,9 +173,7 @@ const mapStateToProps = state => ({
   quoteData: state.service.quote || {},
   initialValues: handleInitialize(state),
   fieldValues: _.get(state.form, 'UnderwritingOverride.values', {}),
-  overridableExceptions: handleOverridableExceptions(state.service.quote || {}),
-  nonOverridableExceptions: handleNonOverridableExceptions(state.service.quote || {})
-
+  exceptions: getGroupedExceptions(state.service.quote || {}),
 });
 
 const mapDispatchToProps = dispatch => ({

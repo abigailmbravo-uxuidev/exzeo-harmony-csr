@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import { UnderwritingValidationBar, handleFormSubmit, handleInitialize } from './UnderwritingValidationBar';
+import { UnderwritingValidationBar, handleFormSubmit, handleInitialize, getGroupedExceptions } from './UnderwritingValidationBar';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -67,7 +67,11 @@ const quoteData = {
     rateCode: '0417',
     _id: '5866c036a46eb72908f3f548'
   },
-  underwritingExceptions: [],
+  underwritingExceptions: [
+    { _id: 'name1', canOverride: true, fields: [{name: 'rating.netPremium', value: 'null'}] },
+    { _id: 'name2', canOverride: false, fields: [{name: 'rating.netPremium', value: 'null'}] },
+    { _id: 'name3', canOverride: false, fields: [{name: 'rating.netPremium', value: 'null'}], action: 'Missing Info', }
+  ],
   underwritingAnswers: {
     noPriorInsuranceSurcharge: {
       question: 'No Prior Insurance Surcharge',
@@ -341,8 +345,11 @@ describe('Testing UnderwritingValidationBar component', () => {
     };
     const store = mockStore(initialState);
     const props = {
-      overridableExceptions: [{ _id: 'name', canOverride: true, fields: [{ name: 'rating.netPremium', value: 'null' }] }],
-      nonOverridableExceptions: [{ _id: 'name', canOverride: false, fields: [{ name: 'rating.netPremium', value: 'null' }] }],
+      exceptions: {
+        overridableExceptions: [ quoteData.underwritingExceptions[0] ],
+        nonOverridableExceptions: [ quoteData.underwritingExceptions[1] ],
+        warnings: [ quoteData.underwritingExceptions[2] ],
+      },
       actions: {
         quoteStateActions: { getLatestQuote() {} },
         serviceActions: {
@@ -376,4 +383,22 @@ describe('Testing UnderwritingValidationBar component', () => {
     handleInitialize(initialState);
     handleFormSubmit({ name: true }, props.dispatch, props);
   });
+});
+
+describe('Testing getGroupedExceptions', () => {
+  it('should allow underwritingExceptions to be undefined', () => {
+    const localQuoteData = {};
+    const exceptions = getGroupedExceptions.bind(null, localQuoteData);
+
+    expect(exceptions).not.toThrow();
+  });
+
+  it('should group exceptions correctly', () => {
+    const localQuoteData = { underwritingExceptions: quoteData.underwritingExceptions };
+    const exceptions = getGroupedExceptions(localQuoteData);
+
+    expect(exceptions.warnings.length).toEqual(1);
+    expect(exceptions.overridableExceptions.length).toEqual(1);
+    expect(exceptions.nonOverridableExceptions.length).toEqual(1);
+  })
 });
