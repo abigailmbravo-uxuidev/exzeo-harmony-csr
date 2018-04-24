@@ -78,7 +78,7 @@ export class UnderwritingValidationBar extends React.Component {
   const sortedOverridableExceptions = orderBy(overridableExceptions, ['overridden'], ['asc']);
 
   if (!quoteData) { // eslint-disable-line
-      return <div />;
+      return <div />
     }
 
     return (
@@ -128,12 +128,12 @@ UnderwritingValidationBar.propTypes = {
     modelName: PropTypes.string,
     data: PropTypes.shape({
       quote: PropTypes.object,
-      updateUnderwriting: PropTypes.boolean
+      updateUnderwriting: PropTypes.bool,
     })
   })
 };
 
-const defaultObject = {}
+const defaultObject = {};
 const mapStateToProps = state => ({
   userProfile: state.authState.userProfile,
   tasks: state.cg,
