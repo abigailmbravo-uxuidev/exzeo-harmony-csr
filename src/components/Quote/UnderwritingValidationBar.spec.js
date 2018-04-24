@@ -350,19 +350,8 @@ describe('Testing UnderwritingValidationBar component', () => {
         nonOverridableExceptions: [ quoteData.underwritingExceptions[1] ],
         warnings: [ quoteData.underwritingExceptions[2] ],
       },
-      actions: {
-        quoteStateActions: { getLatestQuote() {} },
-        serviceActions: {
-          saveUnderwritingExceptions() { return Promise.resolve(() => {}); }
-        },
-        appStateActions: {
-          setAppState() { }
-        },
-        cgActions: {
-          startWorkflow() { return Promise.resolve(() => {}); },
-          batchCompleteTask() { return Promise.resolve(() => {}); }
-        }
-      },
+      saveUnderwritingExceptions() { return Promise.resolve(() => {}); },
+      getLatestQuote() {},
       handleSubmit: fn => fn,
       quoteData: {
         underwritingExceptions: [{ _id: 'name', canOverride: true, fields: [{ name: 'rating.netPremium', value: 'null' }] }],

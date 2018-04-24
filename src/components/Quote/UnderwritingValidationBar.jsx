@@ -1,32 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { reduxForm, Form, change } from 'redux-form';
-import _ from 'lodash';
+import { reduxForm, Form, change, getFormValues } from 'redux-form';
+import orderBy from 'lodash/orderBy';
 import moment from 'moment';
-import * as cgActions from '../../actions/cgActions';
-import * as appStateActions from '../../actions/appStateActions';
-import * as serviceActions from '../../actions/serviceActions';
-import * as quoteStateActions from '../../actions/quoteStateActions';
+import {saveUnderwritingExceptions } from '../../actions/serviceActions';
+import { getLatestQuote } from '../../actions/quoteStateActions';
 import CheckField from '../Form/inputs/CheckField';
 import UnderwritingExceptions from './UnderwritingExceptions';
 
-export const handleFormSubmit = (data, dispatch, props) => {
+export const handleFormSubmit = async (data, dispatch, props) => {
   const uwExceptions = props.quoteData.underwritingExceptions || [];
   for (let i = 0; i < uwExceptions.length; i += 1) {
     const uwException = uwExceptions[i];
     if (uwException.canOverride && data[uwException._id] === true) {
       uwException.overridden = true;
       uwException.overriddenAt = moment.utc();
-      uwException.overriddenBy = { userId: props.userProfile.userId, userName: props.userProfile.userName };
+      uwException.overriddenBy = {
+        userId: props.userProfile.userId,
+        userName: props.userProfile.userName
+      };
     } else if (uwException.canOverride) {
       uwException.overridden = false;
     }
   }
-  props.actions.serviceActions.saveUnderwritingExceptions(props.quoteData._id, uwExceptions).then(() => {
-    props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
-  });
+  await props.saveUnderwritingExceptions(props.quoteData._id, uwExceptions);
+  await props.getLatestQuote(true, props.quoteData._id);
 };
 
 export const handleInitialize = (state) => {
@@ -71,23 +70,15 @@ export class UnderwritingValidationBar extends React.Component {
   render() {
     const {
       handleSubmit,
-      pristine,
       quoteData,
       exceptions,
     } = this.props;
 
   const { warnings, overridableExceptions, nonOverridableExceptions } = exceptions;
+  const sortedOverridableExceptions = orderBy(overridableExceptions, ['overridden'], ['asc']);
 
   if (!quoteData) { // eslint-disable-line
       return <div />;
-    }
-
-    if (overridableExceptions.length > 0) {
-      overridableExceptions.forEach((uw) => {
-        if (_.find(uw.fields, { name: 'rating.netPremium' }) && _.find(uw.fields, { name: 'rating.netPremium' }).value === 'null') {
-          uw.canOverride = false;
-        }
-      });
     }
 
     return (
@@ -105,27 +96,19 @@ export class UnderwritingValidationBar extends React.Component {
             }
 
             {overridableExceptions.length > 0 &&
-            <section className="msg-caution">
-              <h5>
-                <i className="fa fa-exclamation-triangle" aria-hidden="true" /><span>Caution</span>{ overridableExceptions.length > 0 && !pristine && <button tabIndex="0" className="btn btn-sm btn-primary" type="submit">Save</button>}
-              </h5>
-              <div>
-                <ul className="fa-ul">
-                  {_.orderBy(overridableExceptions, ['overridden'], ['asc']).map((underwritingException, index) => (
-                    <li className={underwritingException.overridden ? 'overridden' : ''} key={index}>
-                      <i className="fa-li fa fa-exclamation-triangle" aria-hidden="true" />
-                      <span>{underwritingException.internalMessage}</span>
-                      <CheckField
-                        label="Override"
-                        name={underwritingException._id}
-                        id={underwritingException._id}
-                      />
-                    </li>
-                ))}
-                </ul>
-              </div>
-            </section>
+            <UnderwritingExceptions
+                exceptionLevel="overridable"
+                exceptions={sortedOverridableExceptions}
+                render={exception => (
+                <CheckField
+                  label="Override"
+                  name={exception._id}
+                  id={exception._id}
+                />
+                )} >
+              </UnderwritingExceptions>
             }
+
           </div>
         </aside>
       </Form>
@@ -135,7 +118,6 @@ export class UnderwritingValidationBar extends React.Component {
 
 UnderwritingValidationBar.propTypes = {
   completedTasks: PropTypes.any, // eslint-disable-line
-  actions: PropTypes.shape(),
   tasks: PropTypes.shape(),
   appState: PropTypes.shape({
     instanceId: PropTypes.string,
@@ -147,27 +129,19 @@ UnderwritingValidationBar.propTypes = {
   })
 };
 
+const defaultObject = {}
 const mapStateToProps = state => ({
   userProfile: state.authState.userProfile,
   tasks: state.cg,
   appState: state.appState,
   completedTasks: state.completedTasks,
-  quoteData: state.service.quote || {},
+  quoteData: state.service.quote || defaultObject,
   initialValues: handleInitialize(state),
-  fieldValues: _.get(state.form, 'UnderwritingOverride.values', {}),
-  exceptions: getGroupedExceptions(state.service.quote || {}),
+  fieldValues: getFormValues('UnderwritingOverride')(state) || defaultObject,
+  exceptions: getGroupedExceptions(state.service.quote || defaultObject),
 });
 
-const mapDispatchToProps = dispatch => ({
-  dispatch,
-  actions: {
-    quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch),
-    cgActions: bindActionCreators(cgActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
-  }
-});
 // ------------------------------------------------
 // wire up redux form with the redux connect
 // ------------------------------------------------
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'UnderwritingOverride', enableReinitialize: true })(UnderwritingValidationBar));
+export default connect(mapStateToProps, { getLatestQuote, saveUnderwritingExceptions })(reduxForm({ form: 'UnderwritingOverride', enableReinitialize: true })(UnderwritingValidationBar));

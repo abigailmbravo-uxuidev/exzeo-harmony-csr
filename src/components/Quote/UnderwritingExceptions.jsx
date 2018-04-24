@@ -1,27 +1,29 @@
-import React, {Component} from 'react';
+import React from 'react';
+import classNames from 'classnames';
 
 const EXCEPTION_LEVELS = {
   warning: {
-    sectionClass: "msg-info",
-    iconClass: "fa fa-info-circle",
-    label: "Info",
-    listIconClass: "fa-li fa fa-info-circle",
-  },
-  overridable: {
-    sectionClass: "msg-caution",
-    iconClass: "fa fa-exclamation-triangle",
-    label: "Caution",
-    listIconClass: "fa-li fa fa-exclamation-triangle",
+    sectionClass: 'msg-info',
+    iconClass: 'fa fa-info-circle',
+    label: 'Info',
+    listIconClass: 'fa-li fa fa-info-circle',
   },
   nonOverridable: {
-    sectionClass: "msg-error",
-    iconClass: "fa fa-exclamation-circle",
-    label: "Error",
-    listIconClass: "fa-li fa fa-exclamation-circle",
+    sectionClass: 'msg-error',
+    iconClass: 'fa fa-exclamation-circle',
+    label: 'Error',
+    listIconClass: 'fa-li fa fa-exclamation-circle',
+  },
+  overridable: {
+    sectionClass: 'msg-caution',
+    iconClass: 'fa fa-exclamation-triangle',
+    label: 'Caution',
+    listClass: 'overridden',
+    listIconClass: 'fa-li fa fa-exclamation-triangle',
   },
 }
 
-class UnderwritingExceptions extends Component {
+class UnderwritingExceptions extends React.Component {
   render() {
     const {exceptionLevel, exceptions} = this.props;
     const severity = EXCEPTION_LEVELS[exceptionLevel];
@@ -34,8 +36,13 @@ class UnderwritingExceptions extends Component {
         <div>
           <ul className="fa-ul">
             {exceptions.map(exception => (
-              <li key={exception._id}>
-                <i className={severity.listIconClass} aria-hidden="true"/>{exception.internalMessage}</li>
+              <li key={exception._id} className={classNames({ 'overridden': exception.canOverride && exception.overridden })}>
+                <i className={severity.listIconClass} aria-hidden="true"/>
+                <span>{exception.internalMessage}</span>
+
+                {this.props.render(exception)}
+
+              </li>
             ))}
           </ul>
         </div>
@@ -43,5 +50,9 @@ class UnderwritingExceptions extends Component {
     );
   }
 }
+
+UnderwritingExceptions.defaultProps = {
+  render: () => {}
+};
 
 export default UnderwritingExceptions;
