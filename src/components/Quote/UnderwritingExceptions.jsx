@@ -1,4 +1,5 @@
 import React from 'react';
+import propTypes from 'prop-types'
 import classNames from 'classnames';
 
 const EXCEPTION_LEVELS = {
@@ -21,7 +22,7 @@ const EXCEPTION_LEVELS = {
     listClass: 'overridden',
     listIconClass: 'fa-li fa fa-exclamation-triangle',
   },
-}
+};
 
 class UnderwritingExceptions extends React.Component {
   render() {
@@ -50,6 +51,14 @@ class UnderwritingExceptions extends React.Component {
     );
   }
 }
+
+UnderwritingExceptions.propTypes = {
+  exceptionLevel: propTypes.oneOf(['warning', 'overridable', 'nonOverridable']).isRequired,
+  exceptions: propTypes.arrayOf(propTypes.shape({
+    _id: propTypes.string,
+    internalMessage: propTypes.string
+  }))
+};
 
 UnderwritingExceptions.defaultProps = {
   render: () => {}
