@@ -88,24 +88,28 @@ export class UnderwritingValidationBar extends React.Component {
           <div>
 
             {warnings.length > 0 &&
-              <UnderwritingExceptions exceptionLevel="warning" exceptions={warnings} />
+              <UnderwritingExceptions
+                exceptionLevel="warning"
+                exceptions={warnings} />
             }
 
             {nonOverridableExceptions.length > 0 &&
-              <UnderwritingExceptions exceptionLevel="nonOverridable" exceptions={nonOverridableExceptions} />
+              <UnderwritingExceptions
+                exceptionLevel="nonOverridable"
+                exceptions={nonOverridableExceptions} />
             }
 
             {overridableExceptions.length > 0 &&
             <UnderwritingExceptions
-                exceptionLevel="overridable"
-                exceptions={sortedOverridableExceptions}
-                render={exception => (
+              exceptionLevel="overridable"
+              exceptions={sortedOverridableExceptions}
+              render={exception => (
                 <CheckField
                   label="Override"
                   name={exception._id}
                   id={exception._id}
                 />
-                )} >
+              )} >
               </UnderwritingExceptions>
             }
 
