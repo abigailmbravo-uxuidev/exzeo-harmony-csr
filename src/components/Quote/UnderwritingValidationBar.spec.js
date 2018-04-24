@@ -387,7 +387,10 @@ describe('Testing getGroupedExceptions', () => {
     const exceptions = getGroupedExceptions(localQuoteData);
 
     expect(exceptions.warnings.length).toEqual(1);
+    expect(exceptions.warnings[0]._id).toEqual('name3')
     expect(exceptions.overridableExceptions.length).toEqual(1);
+    expect(exceptions.overridableExceptions[0]._id).toEqual('name1')
     expect(exceptions.nonOverridableExceptions.length).toEqual(1);
+    expect(exceptions.nonOverridableExceptions[0]._id).toEqual('name2')
   })
 });
