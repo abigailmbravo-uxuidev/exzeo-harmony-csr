@@ -1,7 +1,7 @@
 .new-note-file {
   position: absolute;
   z-index: 1000;
-  top: 1rem;
+  top: 9rem;
   right: 2.5rem;
   bottom: 0;
   width: 40%;
@@ -10,7 +10,7 @@
   @include transition(all 0.1s ease-in-out);
 
   &.minimize {
-    top: calc(100vh - 10.5rem);
+    top: calc(100vh - 2.4375rem);
 
     .controls {
       .btn-icon {
@@ -18,6 +18,18 @@
           &:before {
             content: "\f2d0";
           }
+        }
+      }
+    }
+
+    .mainContainer {
+      form {
+        .content {
+          display: none;
+        }
+
+        .note-file-footer-button-group {
+          display: none;
         }
       }
     }
@@ -320,8 +332,9 @@
                     }
 
                     .uppy-Dashboard-actions {
-                        right: 1rem;
-                        bottom: .5rem;
+                      right: 1rem;
+                      bottom: 0.5rem;
+
                       .UppyButton--circular {
                         position: relative;
                         width: 2rem;
@@ -624,23 +637,23 @@
         }
 
         .created-date {
-            width: 16%;
-            min-width: 9.75rem;
+          width: 16%;
+          min-width: 9.75rem;
         }
 
         .created-by {
-            width: 16%;
-            min-width: 9.75rem;
+          width: 16%;
+          min-width: 9.75rem;
         }
 
         .file-type {
-            width: 20%;
-            min-width: 10rem;
+          width: 20%;
+          min-width: 10rem;
         }
 
         .attachments {
-            width: 48%;
-            min-width: 26.5rem;
+          width: 48%;
+          min-width: 26.5rem;
         }
       }
     }

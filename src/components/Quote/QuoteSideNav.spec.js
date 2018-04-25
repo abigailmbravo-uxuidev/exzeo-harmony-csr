@@ -38,8 +38,11 @@ describe('Testing QuoteSideNav component', () => {
         cgActions: {
           batchCompleteTask() { return Promise.resolve(); }
         },
+        newNoteActions: {
+          toggleNote() {}
+        },
         appStateActions: {
-          setAppState() { }
+          setAppState() {}
         }
       },
       fieldQuestions: [],
@@ -59,8 +62,6 @@ describe('Testing QuoteSideNav component', () => {
     const sideNav = SideNav(props);
 
     NewNoteFileUploaderPopup(props);
-    closeNewNoteFileUploader(props);
     UWconditionsPopup(props);
-    closeUWConditions(props);
   });
 });

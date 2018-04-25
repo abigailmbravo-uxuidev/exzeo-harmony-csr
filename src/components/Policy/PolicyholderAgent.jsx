@@ -10,7 +10,6 @@ import Footer from '../Common/Footer';
 
 // turn this into class and use the service runner
 export class PolicyholderAgent extends Component {
-
   componentDidMount() {
     const policy = this.props.policy;
     const actions = this.props.actions.serviceActions;
@@ -50,23 +49,23 @@ ${policyHolderMailingAddress.city} ${policyHolderMailingAddress.state}, ${policy
                     <div className="additional-contacts">
                       <ul>
                         <li>
-                        <div className="contact-methods">
-                          <p className="primary-phone">
-                            <i className="fa fa-phone-square" />
-                            <a href={`tel: ${(policyHolder.primaryPhoneNumber)}`}>{normalizePhone(policyHolder.primaryPhoneNumber)}</a>
-                          </p>
-                          { policyHolder.secondaryPhoneNumber && <p className="secondary-phone">
-                            <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
-                            <a href={`tel: ${policyHolder.secondaryPhoneNumber}`}>{normalizePhone(policyHolder.secondaryPhoneNumber)}</a>
-                          </p> }
-                          <p className="email">
-                            <i className="fa fa-envelope" />
-                            <a href={`mailto: ${policyHolder.emailAddress}`}>{policyHolder.emailAddress}</a>
-                          </p>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
+                          <div className="contact-methods">
+                            <p className="primary-phone">
+                              <i className="fa fa-phone-square" />
+                              <a href={`tel: ${(policyHolder.primaryPhoneNumber)}`}>{normalizePhone(policyHolder.primaryPhoneNumber)}</a>
+                            </p>
+                            { policyHolder.secondaryPhoneNumber && <p className="secondary-phone">
+                              <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
+                              <a href={`tel: ${policyHolder.secondaryPhoneNumber}`}>{normalizePhone(policyHolder.secondaryPhoneNumber)}</a>
+                            </p> }
+                            <p className="email">
+                              <i className="fa fa-envelope" />
+                              <a href={`mailto: ${policyHolder.emailAddress}?subject=${this.props.policy.policyNumber}%20${policyHolders[0].firstName}%20${policyHolders[0].lastName}`}>{policyHolder.emailAddress}</a>
+                            </p>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                   <div className="electronic-delivery"><label>Electronic Delivery: </label> {policyHolder.electronicDelivery ? 'Yes' : 'No'}</div>
                 </div>)) }
@@ -104,12 +103,12 @@ ${policyHolderMailingAddress.city} ${policyHolderMailingAddress.state}, ${policy
                             { agency.contactEmailAddress ?
                               <p>
                                 <i className="fa fa-envelope" />
-                                <a href={`mailto:${agency.contactEmailAddress}`}>{agency.contactEmailAddress}</a>
+                                <a href={`mailto:${agency.contactEmailAddress}?subject=${this.props.policy.policyNumber}%20${policyHolders[0].firstName}%20${policyHolders[0].lastName}`}>{agency.contactEmailAddress}</a>
                               </p> : null }
                             { agency.customerServiceEmailAddress && <p className="phone csr-phone">
                               <span className="contact-divider">|</span>
                               <small>CSR <i className="fa fa-envelope" /></small>
-                              <a href={`mailto:${agency.customerServiceEmailAddress}`}>{agency.customerServiceEmailAddress}</a>
+                              <a href={`mailto:${agency.customerServiceEmailAddress}?subject=${this.props.policy.policyNumber}%20${policyHolders[0].firstName}%20${policyHolders[0].lastName}`}>{agency.customerServiceEmailAddress}</a>
                             </p> }
                           </div>
                         </li>
@@ -122,26 +121,26 @@ ${policyHolderMailingAddress.city} ${policyHolderMailingAddress.state}, ${policy
                   <div className="contact-details">
                     <h4><span className="agent-code">{selectedAgent.agentCode}</span> | <span className="agent-name">{`${selectedAgent.firstName} ${selectedAgent.lastName}`}</span> | <span className="agent-license">{selectedAgent.licenseNumber}</span></h4>
                     <div className="contact-address">{selectedAgent.mailingAddress.address1}{selectedAgent.mailingAddress.address2 ? ` ,${selectedAgent.mailingAddress.address2}` : ''}, {selectedAgent.mailingAddress.city}, {selectedAgent.mailingAddress.state} {selectedAgent.mailingAddress.zip}</div>
-                      <div className="additional-contacts">
-                        <ul>
-                          <li>
-                  <div className="contact-methods">
-                      { selectedAgent.primaryPhoneNumber && <p className="primary-phone">
-                        <i className="fa fa-phone-square" />
-                        <a href={`tel:${selectedAgent.primaryPhoneNumber}`}>{normalizePhone(selectedAgent.primaryPhoneNumber)}</a>
-                      </p> }
-                      { selectedAgent.faxNumber && <p className="fax">
-                        <i className="fa fa-fax" />
-                        <a href={`tel:${selectedAgent.faxNumber}`}>{normalizePhone(selectedAgent.faxNumber)}</a>
-                      </p> }
-                      { selectedAgent.emailAddress && <p className="email">
-                        <i className="fa fa-envelope" />
-                        <a href={`mailto:${selectedAgent.emailAddress}`}>{selectedAgent.emailAddress}</a>
-                      </p> }
+                    <div className="additional-contacts">
+                      <ul>
+                        <li>
+                          <div className="contact-methods">
+                            { selectedAgent.primaryPhoneNumber && <p className="primary-phone">
+                              <i className="fa fa-phone-square" />
+                              <a href={`tel:${selectedAgent.primaryPhoneNumber}`}>{normalizePhone(selectedAgent.primaryPhoneNumber)}</a>
+                              </p> }
+                            { selectedAgent.faxNumber && <p className="fax">
+                              <i className="fa fa-fax" />
+                              <a href={`tel:${selectedAgent.faxNumber}`}>{normalizePhone(selectedAgent.faxNumber)}</a>
+                              </p> }
+                            { selectedAgent.emailAddress && <p className="email">
+                              <i className="fa fa-envelope" />
+                              <a href={`mailto:${selectedAgent.emailAddress}?subject=${this.props.policy.policyNumber}%20${policyHolders[0].firstName}%20${policyHolders[0].lastName}`}>{selectedAgent.emailAddress}</a>
+                              </p> }
+                          </div>
+                        </li>
+                      </ul>
                     </div>
-</li>
-</ul>
-</div>
                   </div>
                 </div>
               </section>}

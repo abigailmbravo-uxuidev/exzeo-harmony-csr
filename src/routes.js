@@ -1,4 +1,3 @@
-// src/routes.js
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -107,9 +106,15 @@ class Routes extends Component {
           </div>
         </Modal>
         {this.props.newNote && this.props.newNote.documentId &&
+<<<<<<< HEAD
           <NoteUploader
             noteType={this.props.newNote.noteType}
             documentId={this.props.newNote.documentId}
+=======
+          <NoteUploader 
+            noteType={this.props.newNote.noteType} 
+            documentId={this.props.newNote.documentId} 
+>>>>>>> 69a5125a30876495c12030de3d6a6a10132128c6
             sourceId={this.props.newNote.sourceNumber}
           />
         }
