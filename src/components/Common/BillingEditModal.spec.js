@@ -64,5 +64,6 @@ describe('Testing BillingEditModal component', () => {
     expect(wrapper.instance().props.fieldValues).toEqual({ billToId: '23432432432432430' });
     selectBillPlan('Annual', props);
     handleInitialize(initialState);
+    BillingEditModal(props);
   });
 });

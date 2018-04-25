@@ -54,13 +54,14 @@ export const BillingEditModal = (props) => {
     appState,
     handleSubmit,
     hideBillingModal,
-    billingOptions: { options },
+    billingOptions: { options, paymentPlans },
     fieldValues,
   } = props;
   const billToOptions = options.map(option => ({ label: option.displayText, answer: option.billToId, value: option.billToId }));
   const billPlanOptions = options.find(option => option.billToId === fieldValues.billToId);
 
-  return (<div className="modal" style={{ flexDirection: 'row' }}>
+  return (
+    <div className="modal" style={{ flexDirection: 'row' }}>
     <div className="card card-billing-edit-modal">
       <Form id="BillingEditModal" className="BillingEditModal" noValidate onSubmit={handleSubmit(handleBillingFormSubmit)}>
         <div className="card-header">
@@ -82,7 +83,7 @@ export const BillingEditModal = (props) => {
             validate={[value => (value ? undefined : 'Field Required')]}
             segmented
             answers={billPlanOptions ? billPlanOptions.payPlans : []}
-            paymentPlans={billingOptions.paymentPlans}
+            paymentPlans={paymentPlans}
           />
         </div>
         <div className="card-footer">
@@ -107,7 +108,8 @@ export const BillingEditModal = (props) => {
         </div>
       </Form>
     </div>
-  </div>);
+  </div>
+  );
 };
 
 BillingEditModal.propTypes = {
