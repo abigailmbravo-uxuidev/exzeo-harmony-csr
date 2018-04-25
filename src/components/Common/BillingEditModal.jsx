@@ -20,18 +20,17 @@ export const handleInitialize = (state) => {
   return state.service.latestPolicy;
 };
 
-export const handleBillingFormSubmit = (data, dispatch, props) => {
+export const handleBillingFormSubmit = async (data, dispatch, props) => {
   const { updateBillPlan, hideBillingModal, policy } = props;
   const updateData = {
     policyNumber: policy.policyNumber,
     policyID: policy.policyID,
     transactionType: 'Bill Plan Update',
     billingStatus: 2,
-    billToId: data.billToId,
-    billPlan: data.billPlan,
-    billToType: data.billToType
+    ...data
   };
-  updateBillPlan(updateData).then(() => hideBillingModal(props));
+  await updateBillPlan(updateData);
+  await hideBillingModal(props);
 };
 
 export const setFormValues = (options, billToId, billplan, dispatch) => {
@@ -50,17 +49,16 @@ export const selectBillPlan = (value, props) => {
   setFormValues(billingOptions.options, fieldValues.billToId, value, dispatch);
 };
 
-export const selectBillTo = (event, props) => {
-  const { billingOptions, dispatch } = props;
-  setFormValues(billingOptions.options, event.target.value, 'Annual', dispatch);
-};
-
 export const BillingEditModal = (props) => {
   const {
-    appState, handleSubmit, hideBillingModal, billingOptions, fieldValues, dispatch
+    appState,
+    handleSubmit,
+    hideBillingModal,
+    billingOptions: { options },
+    fieldValues,
   } = props;
-  const billToOptions = billingOptions.options.map(option => ({ label: option.displayText, answer: option.billToId }));
-  const options = billingOptions.options.find(option => option.billToId === fieldValues.billToId);
+  const billToOptions = options.map(option => ({ label: option.displayText, answer: option.billToId, value: option.billToId }));
+  const billPlanOptions = options.find(option => option.billToId === fieldValues.billToId);
 
   return (<div className="modal" style={{ flexDirection: 'row' }}>
     <div className="card card-billing-edit-modal">
@@ -70,10 +68,6 @@ export const BillingEditModal = (props) => {
         </div>
         <div className="card-block">
           <SelectField
-            normalize={(value, previousValue, allValues, allPreviousValues) => {
-            setFormValues(billToOptions, value, 'Annual', dispatch);
-            }
-          }
             name="billToId"
             component="select"
             label="Bill To"
@@ -87,7 +81,7 @@ export const BillingEditModal = (props) => {
             onChange={value => selectBillPlan(value, props)}
             validate={[value => (value ? undefined : 'Field Required')]}
             segmented
-            answers={options ? options.payPlans : []}
+            answers={billPlanOptions ? billPlanOptions.payPlans : []}
             paymentPlans={billingOptions.paymentPlans}
           />
         </div>
@@ -123,12 +117,11 @@ BillingEditModal.propTypes = {
   appState: PropTypes.shape({
     modelName: PropTypes.string,
     data: PropTypes.shape({
-      recalc: PropTypes.boolean,
-      submitting: PropTypes.boolean
+      recalc: PropTypes.bool,
+      submitting: PropTypes.bool,
     })
   })
 };
-
 
 const mapStateToProps = state => ({
   tasks: state.cg,
@@ -136,8 +129,13 @@ const mapStateToProps = state => ({
   selectedAI: state.appState.data.selectedAI,
   initialValues: handleInitialize(state),
   policy: state.service.latestPolicy,
-  fieldValues: getFormValues('BillingEditModal')(state) || {}
+  fieldValues: getFormValues('BillingEditModal')(state),
 });
+
+BillingEditModal.defaultProps = {
+  fieldValues: {},
+  billingOptions: {}
+};
 
 export default connect(mapStateToProps, { updateBillPlan })(reduxForm({
   form: 'BillingEditModal',
