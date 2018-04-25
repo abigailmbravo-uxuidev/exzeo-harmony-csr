@@ -27,7 +27,9 @@ export const handleBillingFormSubmit = async (data, dispatch, props) => {
     policyID: policy.policyID,
     transactionType: 'Bill Plan Update',
     billingStatus: 2,
-    ...data
+    billToId: data.billToId,
+    billPlan: data.billPlan,
+    billToType: data.billToType
   };
   await updateBillPlan(updateData);
   await hideBillingModal(props);
