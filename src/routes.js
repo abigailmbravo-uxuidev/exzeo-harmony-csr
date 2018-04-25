@@ -113,7 +113,6 @@ class Routes extends Component {
             sourceId={this.props.newNote.sourceNumber}
           />
         }
-
         <Router
           getUserConfirmation={(message, callback) => {
             ReactDOM.render(
