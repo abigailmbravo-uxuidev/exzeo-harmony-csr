@@ -15,7 +15,7 @@ export const handleInitialize = (state) => {
       billToId: billingOptions.options[0].billToId,
       billToType: billingOptions.options[0].billToType,
       billPlan: 'Annual'
-    }
+    };
   }
   return state.service.latestPolicy;
 };
@@ -40,14 +40,14 @@ export const setFormValues = (options, billToId, billplan, dispatch) => {
     dispatch(batchActions([
       change('BillingEditModal', 'billToId', currentPaymentPlan.billToId),
       change('BillingEditModal', 'billToType', currentPaymentPlan.billToType),
-      change('BillingEditModal', 'billPlan', billplan),
+      change('BillingEditModal', 'billPlan', billplan)
     ]));
   }
 };
 
 export const selectBillPlan = (value, props) => {
   const { billingOptions, dispatch, fieldValues } = props;
-  setFormValues(billingOptions, fieldValues.billToId, value, dispatch);
+  setFormValues(billingOptions.options, fieldValues.billToId, value, dispatch);
 };
 
 export const selectBillTo = (event, props) => {
@@ -56,7 +56,9 @@ export const selectBillTo = (event, props) => {
 };
 
 export const BillingEditModal = (props) => {
-  const { appState, handleSubmit, hideBillingModal, billingOptions, fieldValues } = props;
+  const {
+    appState, handleSubmit, hideBillingModal, billingOptions, fieldValues
+  } = props;
   const billToOptions = billingOptions.options.map(option => ({ label: option.displayText, answer: option.billToId }));
   const options = billingOptions.options.find(option => option.billToId === fieldValues.billToId);
 
@@ -71,14 +73,14 @@ export const BillingEditModal = (props) => {
             name="billToId"
             component="select"
             label="Bill To"
-            onChange={(e) => selectBillTo(e, props)}
+            onChange={e => selectBillTo(e, props)}
             validations={['required']}
             answers={billToOptions}
           />
           <RadioFieldBilling
             validations={['required']}
-            name={'billPlan'}
-            label={'Bill Plan'}
+            name="billPlan"
+            label="Bill Plan"
             onChange={value => selectBillPlan(value, props)}
             validate={[value => (value ? undefined : 'Field Required')]}
             segmented
@@ -89,18 +91,20 @@ export const BillingEditModal = (props) => {
         <div className="card-footer">
           <div className="btn-group">
             <button
-              tabIndex={'0'}
+              tabIndex="0"
               aria-label="reset-btn form-editBilling"
               className="btn btn-secondary"
               type="button"
-              onClick={() => hideBillingModal(props)}>Cancel
+              onClick={() => hideBillingModal(props)}
+            >Cancel
             </button>
             <button
-              tabIndex={'0'}
+              tabIndex="0"
               aria-label="submit-btn form-editBilling"
               className="btn btn-primary"
               type="submit"
-              disabled={appState.data.submitting}>Update
+              disabled={appState.data.submitting}
+            >Update
             </button>
           </div>
         </div>
@@ -129,10 +133,10 @@ const mapStateToProps = state => ({
   selectedAI: state.appState.data.selectedAI,
   initialValues: handleInitialize(state),
   policy: state.service.latestPolicy,
-  fieldValues: getFormValues('BillingEditModal')(state) || {},
+  fieldValues: getFormValues('BillingEditModal')(state) || {}
 });
 
 export default connect(mapStateToProps, { updateBillPlan })(reduxForm({
   form: 'BillingEditModal',
-  enableReinitialize: true,
+  enableReinitialize: true
 })(BillingEditModal));
