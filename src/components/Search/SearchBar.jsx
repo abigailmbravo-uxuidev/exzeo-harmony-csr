@@ -362,7 +362,6 @@ const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answ
 export class SearchForm extends Component {
   componentWillReceiveProps(nextProps) {
     const { dispatch } = nextProps;
-
     const model = nextProps.tasks[nextProps.appState.modelName] || {};
     const previousTask = model.data && model.data.previousTask
       ? model.data.previousTask
@@ -403,15 +402,14 @@ export class SearchForm extends Component {
       tasks,
       reset,
       search,
-      agencyList
+      agencyList,
+      pathName
     } = this.props;
 
-    const agencyListValues = agencyList.map(agency => {
-        return {
-          label: agency.displayName,
-          answer: agency.agencyCode
-        }
-    });
+    const agencyListValues = agencyList.map(agency => ({
+      label: agency.displayName,
+      answer: agency.agencyCode
+    }));
 
     const clearForm = () => {
       const modelName = appState.modelName;
@@ -428,7 +426,6 @@ export class SearchForm extends Component {
       resetPolicySearch(this.props);
       this.props.actions.appStateActions.setAppState(appState.modelName, workflowId, { submitting: false });
       this.props.actions.serviceActions.getAgencies('TTIC', 'FL');
-
     };
 
     let searchHandler = handleSearchBarSubmit;
@@ -446,7 +443,7 @@ export class SearchForm extends Component {
       <Form id="SearchBar" onSubmit={handleSubmit(searchHandler)} noValidate>
         <div className="search-input-wrapper">
           <div className="form-group search-context">
-            <SelectField
+            { pathName === '/agency' ? <SelectField
               id="searchType"
               name="searchType"
               component="select"
@@ -456,15 +453,6 @@ export class SearchForm extends Component {
               onChange={clearForm}
               answers={[
               {
-                answer: 'address',
-                label: 'New Quote'
-              }, {
-                answer: 'quote',
-                label: 'Quote Search'
-              }, {
-                answer: 'policy',
-                label: 'Policy Search'
-              }, {
                 answer: 'agent',
                 label: 'Agent Search'
               }, {
@@ -472,7 +460,30 @@ export class SearchForm extends Component {
                 label: 'Agency Search'
               }
             ]}
-            />
+            /> :
+            <SelectField
+              id="searchType"
+              name="searchType"
+              component="select"
+              styleName=""
+              label="Search Context"
+              validations={['required']}
+              onChange={clearForm}
+              answers={[
+            {
+              answer: 'address',
+              label: 'New Quote'
+            },
+            {
+              answer: 'quote',
+              label: 'Quote Search'
+            },
+            {
+              answer: 'policy',
+              label: 'Policy Search'
+            }
+          ]}
+            />}
           </div>
           {fieldValues.searchType === 'address' && <div className="search-inputs fade-in">
             {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
@@ -619,7 +630,7 @@ export class SearchForm extends Component {
           {
   fieldValues.searchType === 'policy' && search.policyAdvanceSearch &&
   <div className="advanced-search fade-in">
-      <SelectField
+    <SelectField
       name="agencyCode"
       component="select"
       styleName=""
@@ -723,7 +734,8 @@ const mapStateToProps = state => ({
   agents: state.agents,
   agencyList: state.service.agencies || [],
   policyResults: state.service.policyResults,
-  search: state.search
+  search: state.search,
+  pathName: window.location.pathname
 });
 
 const mapDispatchToProps = dispatch => ({
