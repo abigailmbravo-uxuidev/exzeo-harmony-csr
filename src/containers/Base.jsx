@@ -7,10 +7,10 @@ export const Base = (props) => {
   const { isAuthenticated } = props.auth;
   return (<div className="app-wrapper csr">
     <Header {...props} />
-    <div className={props.search.policyAdvanceSearch ? 'policy-advanced search' : 'search'}>
+    <div className={props.search && props.search.policyAdvanceSearch ? 'policy-advanced search' : 'search'}>
       { isAuthenticated() && <SearchBar /> }
     </div>
-    <main role="document" className={props.search.policyAdvanceSearch ? 'policy-advanced' : ''}>
+    <main role="document" className={props.search && props.search.policyAdvanceSearch ? 'policy-advanced' : ''}>
       <div className="content-wrapper">
         {props.children}
       </div>
