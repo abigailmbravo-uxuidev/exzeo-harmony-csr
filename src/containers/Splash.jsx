@@ -33,9 +33,6 @@ export const handleNewTab = (searchData) => {
   } else if (lastSearchData.searchType === 'policy') {
     localStorage.setItem('policyNumber', searchData.policyNumber);
     window.open('/policy/coverage', '_blank');
-  } else if (lastSearchData.searchType === 'agency' || lastSearchData.searchType === 'agent') {
-    localStorage.setItem('agencyCode', searchData.agencyCode);
-    window.open('/agency/staff', '_blank');
   }
 };
 
