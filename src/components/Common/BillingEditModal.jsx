@@ -1,39 +1,47 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
-import 'react-select/dist/react-select.css';
+import { batchActions } from 'redux-batched-actions';
 import { connect } from 'react-redux';
-import { reduxForm, Form, propTypes, change } from 'redux-form';
-import * as cgActions from '../../actions/cgActions';
-import * as appStateActions from '../../actions/appStateActions';
-import * as serviceActions from '../../actions/serviceActions';
-import { RadioFieldBilling, SelectFieldBilling } from '../Form/inputs';
+import { reduxForm, Form, propTypes, change, getFormValues } from 'redux-form';
+import { RadioFieldBilling, SelectField } from '../Form/inputs';
+import { updateBillPlan } from '../../actions/serviceActions';
+import 'react-select/dist/react-select.css';
 
 export const handleInitialize = (state) => {
-  const policyData = state.service.latestPolicy;
-  const values = {
-    billToId: policyData.billToId,
-    billToType: policyData.billToType,
-    billPlan: policyData.billPlan
-  };
+  const { billingOptions, latestPolicy } = state.service;
 
-  const paymentPlans = state.service.billingOptions;
-
-  if (paymentPlans && paymentPlans.options && paymentPlans.options.length === 1 && !values.billTo && !values.billPlan) {
-    values.billToId = paymentPlans.options[0].billToId;
-    values.billToType = paymentPlans.options[0].billToType;
-    values.billPlan = 'Annual';
+  if (billingOptions && billingOptions.options && billingOptions.options.length === 1 && !latestPolicy.billTo && !latestPolicy.billPlan) {
+    return {
+      billToId: billingOptions.options[0].billToId,
+      billToType: billingOptions.options[0].billToType,
+      billPlan: 'Annual'
+    }
   }
-
-  return values;
+  return state.service.latestPolicy;
 };
 
-export const setFormValues = (billingOptions, billToId, billplan, dispatch) => {
-  const currentPaymentPlan = billingOptions.options.find(option => option.billToId === billToId);
+export const handleBillingFormSubmit = (data, dispatch, props) => {
+  const { updateBillPlan, hideBillingModal, policy } = props;
+  const updateData = {
+    policyNumber: policy.policyNumber,
+    policyID: policy.policyID,
+    transactionType: 'Bill Plan Update',
+    billingStatus: 2,
+    billToId: data.billToId,
+    billPlan: data.billPlan,
+    billToType: data.billToType
+  };
+  updateBillPlan(updateData).then(() => hideBillingModal(props));
+};
+
+export const setFormValues = (options, billToId, billplan, dispatch) => {
+  const currentPaymentPlan = options.find(option => option.billToId === billToId);
   if (currentPaymentPlan) {
-    dispatch(change('BillingEditModal', 'billToId', currentPaymentPlan.billToId));
-    dispatch(change('BillingEditModal', 'billToType', currentPaymentPlan.billToType));
-    dispatch(change('BillingEditModal', 'billPlan', billplan));
+    dispatch(batchActions([
+      change('BillingEditModal', 'billToId', currentPaymentPlan.billToId),
+      change('BillingEditModal', 'billToType', currentPaymentPlan.billToType),
+      change('BillingEditModal', 'billPlan', billplan),
+    ]));
   }
 };
 
@@ -44,11 +52,12 @@ export const selectBillPlan = (value, props) => {
 
 export const selectBillTo = (event, props) => {
   const { billingOptions, dispatch } = props;
-  setFormValues(billingOptions, event.target.value, 'Annual', dispatch);
+  setFormValues(billingOptions.options, event.target.value, 'Annual', dispatch);
 };
 
 export const BillingEditModal = (props) => {
-  const { appState, handleSubmit, handleBillingFormSubmit, hideBillingModal, billingOptions, fieldValues } = props;
+  const { appState, handleSubmit, hideBillingModal, billingOptions, fieldValues } = props;
+  const billToOptions = billingOptions.options.map(option => ({ label: option.displayText, answer: option.billToId }));
   const options = billingOptions.options.find(option => option.billToId === fieldValues.billToId);
 
   return (<div className="modal" style={{ flexDirection: 'row' }}>
@@ -58,13 +67,13 @@ export const BillingEditModal = (props) => {
           <h4>Edit Billing</h4>
         </div>
         <div className="card-block">
-          <SelectFieldBilling
+          <SelectField
             name="billToId"
             component="select"
             label="Bill To"
             onChange={(e) => selectBillTo(e, props)}
             validations={['required']}
-            answers={billingOptions.options}
+            answers={billToOptions}
           />
           <RadioFieldBilling
             validations={['required']}
@@ -79,18 +88,18 @@ export const BillingEditModal = (props) => {
         </div>
         <div className="card-footer">
           <div className="btn-group">
-            <button 
-              tabIndex={'0'} 
-              aria-label="reset-btn form-editBilling" 
-              className="btn btn-secondary" 
-              type="button" 
+            <button
+              tabIndex={'0'}
+              aria-label="reset-btn form-editBilling"
+              className="btn btn-secondary"
+              type="button"
               onClick={() => hideBillingModal(props)}>Cancel
             </button>
-            <button 
-              tabIndex={'0'} 
-              aria-label="submit-btn form-editBilling" 
-              className="btn btn-primary" 
-              type="submit" 
+            <button
+              tabIndex={'0'}
+              aria-label="submit-btn form-editBilling"
+              className="btn btn-primary"
+              type="submit"
               disabled={appState.data.submitting}>Update
             </button>
           </div>
@@ -120,17 +129,10 @@ const mapStateToProps = state => ({
   selectedAI: state.appState.data.selectedAI,
   initialValues: handleInitialize(state),
   policy: state.service.latestPolicy,
-  fieldValues: state.form.BillingEditModal ? state.form.BillingEditModal.values : {}
+  fieldValues: getFormValues('BillingEditModal')(state) || {},
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    cgActions: bindActionCreators(cgActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
-  }
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
-  form: 'BillingEditModal', enableReinitialize: true
+export default connect(mapStateToProps, { updateBillPlan })(reduxForm({
+  form: 'BillingEditModal',
+  enableReinitialize: true,
 })(BillingEditModal));

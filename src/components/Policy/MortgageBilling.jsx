@@ -212,20 +212,6 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
   });
 };
 
-export const handleBillingFormSubmit = (data, dispatch, props) => {
-  const { actions, policy } = props;
-  const updateData = {
-    policyNumber: policy.policyNumber,
-    policyID: policy.policyID,
-    transactionType: 'Bill Plan Update',
-    billingStatus: 2,
-    billToId: data.billToId,
-    billPlan: data.billPlan,
-    billToType: data.billToType
-  };
-  actions.serviceActions.updateBillPlan(updateData).then(() => hideBillingModal(props));
-};
-
 export const hideBillingModal = (props) => {
   props.actions.appStateActions.setAppState(
     props.appState.modelName, props.appState.instanceId,
@@ -518,7 +504,7 @@ export class MortgageBilling extends Component {
           { this.props.appState.data.showAdditionalInterestEditModal && <AIEditModal additionalInterests={additionalInterests} validAdditionalInterestTypes={validAdditionalInterestTypes} isEndorsement questions={questions} selectedAI={this.props.appState.data.selectedAI} policy={policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
           { this.props.appState.data.showAdditionalInterestModal && <AIModal additionalInterests={additionalInterests} questions={questions} policy={policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
         </div>
-        { this.props.appState.data.showBillingEditModal && <BillingModal policy={policy} billingOptions={this.props.billingOptions} handleBillingFormSubmit={handleBillingFormSubmit} hideBillingModal={() => hideBillingModal(this.props)} /> }
+        { this.props.appState.data.showBillingEditModal && <BillingModal policy={policy} billingOptions={this.props.billingOptions} hideBillingModal={() => hideBillingModal(this.props)} /> }
         <div className="basic-footer">
           <Footer />
         </div>

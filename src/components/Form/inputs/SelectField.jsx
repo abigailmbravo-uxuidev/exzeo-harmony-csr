@@ -13,9 +13,7 @@ export const SelectInput = ({
   meta,
   styleName
 }) => {
-  const {
-    onChange, name, value, disabled
-  } = input;
+  const {onChange, name, value, disabled} = input;
   const { touched, error, warning } = meta;
   const Error = touched && (error || warning) && <span>{error || warning}</span>;
   const formGroupStyles = classNames('form-group', styleName, name, Error ? 'error' : '');
