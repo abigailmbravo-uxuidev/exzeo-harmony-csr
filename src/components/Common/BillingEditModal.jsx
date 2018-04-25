@@ -57,7 +57,7 @@ export const selectBillTo = (event, props) => {
 
 export const BillingEditModal = (props) => {
   const {
-    appState, handleSubmit, hideBillingModal, billingOptions, fieldValues
+    appState, handleSubmit, hideBillingModal, billingOptions, fieldValues, dispatch
   } = props;
   const billToOptions = billingOptions.options.map(option => ({ label: option.displayText, answer: option.billToId }));
   const options = billingOptions.options.find(option => option.billToId === fieldValues.billToId);
@@ -70,10 +70,13 @@ export const BillingEditModal = (props) => {
         </div>
         <div className="card-block">
           <SelectField
+            normalize={(value, previousValue, allValues, allPreviousValues) => {
+            setFormValues(billToOptions, value, 'Annual', dispatch);
+            }
+          }
             name="billToId"
             component="select"
             label="Bill To"
-            onChange={e => selectBillTo(e, props)}
             validations={['required']}
             answers={billToOptions}
           />
