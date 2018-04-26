@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
-import localStorage from 'localStorage';
 import BaseConnect from './Base';
 import Footer from '../components/Common/Footer';
 import * as cgActions from '../actions/cgActions';

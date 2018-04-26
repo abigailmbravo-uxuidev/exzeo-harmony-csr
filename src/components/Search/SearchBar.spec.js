@@ -219,7 +219,7 @@ describe('Testing SearchBar component', () => {
       dispatch: store.dispatch,
       actions: {
         serviceActions: {
-          getAgencies(){},
+          getAgencies() {},
           clearAgencies() {},
           clearAgent() {},
           clearPolicyResults() {},

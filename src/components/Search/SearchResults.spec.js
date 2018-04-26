@@ -2,7 +2,6 @@ import React from 'react';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
-import localStorage from 'localStorage';
 import ConnectedApp, { SearchResults } from './SearchResults';
 import NoPolicyResultsConnect from './NoPolicyResults';
 import policyTestData from '../Common/policyTestData';

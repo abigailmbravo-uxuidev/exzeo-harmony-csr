@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
-import localStorage from 'localStorage';
 import { connect } from 'react-redux';
 import {
   reduxForm,

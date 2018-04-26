@@ -1,6 +1,5 @@
 import React from 'react';
 import thunk from 'redux-thunk';
-import localStorage from 'localStorage';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
@@ -77,30 +76,31 @@ describe('Testing Coverage component', () => {
 
     const wrapper2 = shallow(<Coverage store={store} {...props} />);
 
-    wrapper2.instance().componentWillReceiveProps({ 
-      summaryLedger: { currentPremium : 100},
+    wrapper2.instance().componentWillReceiveProps({
+      summaryLedger: { currentPremium: 100 },
       actions: {
-      policyStateActions: {
-        updatePolicy() {}
+        policyStateActions: {
+          updatePolicy() {}
+        },
+        appStateActions: {
+          setAppState() { }
+        },
+        cgActions: {
+          batchCompleteTask() { return Promise.resolve({ payload: [{ data: { policy: { } } }] }); },
+          startWorkflow() { return Promise.resolve({ payload: [{ data: { policy: { } } }] }); }
+        },
+        questionsActions: {
+          getUIQuestions() {}
+        },
+        serviceActions: {
+          getCancelOptions() { return Promise.resolve(); },
+          getBillingOptionsForPolicy() { return Promise.resolve(); },
+          getSummaryLedger() { return Promise.resolve(); }
+        },
+        errorActions: { dispatchClearAppError() { } }
       },
-      appStateActions: {
-        setAppState() { }
-      },
-      cgActions: {
-        batchCompleteTask() { return Promise.resolve({ payload: [{ data: { policy: { } } }] }); },
-        startWorkflow() { return Promise.resolve({ payload: [{ data: { policy: { } } }] }); }
-      },
-      questionsActions: {
-        getUIQuestions() {}
-      },
-      serviceActions: {
-        getCancelOptions() { return Promise.resolve(); },
-        getBillingOptionsForPolicy() { return Promise.resolve(); },
-        getSummaryLedger() { return Promise.resolve(); }
-      },
-      errorActions: { dispatchClearAppError() { } }
-    },
-    policy: { policyNumber: '324324', rating: { worksheet: { fees: {} } } } });
+      policy: { policyNumber: '324324', rating: { worksheet: { fees: {} } } } 
+});
     wrapper2.instance().componentWillReceiveProps({ ...props, policy: { policyNumber: '324324', rating: { worksheet: { fees: {} } } } });
 
     wrapper2.instance().componentDidMount();

@@ -1,6 +1,5 @@
 import React from 'react';
 import thunk from 'redux-thunk';
-import localStorage from 'localStorage';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
@@ -359,8 +358,7 @@ describe('Testing Coverage component', () => {
       searchType: 'address'
     }));
 
-    const wrapper = mount(
-      <Provider store={store} >
+    const wrapper = mount(<Provider store={store} >
         <Router><ConnectedApp {...props} /></Router>
       </Provider>);
     expect(wrapper);
@@ -376,13 +374,17 @@ describe('Testing Coverage component', () => {
             modelInstanceId: '123',
             model: {
               variables: [
-                { name: 'retrieveQuote',
+                {
+ name: 'retrieveQuote',
                   value: {
                     result: quoteData
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: quoteData
-                    } }]
+                  } 
+}, {
+ name: 'getQuoteBeforePageLoop',
+                  value: {
+                    result: quoteData
+                  } 
+}]
             },
             uiQuestions: []
           }
@@ -412,13 +414,17 @@ describe('Testing Coverage component', () => {
             modelInstanceId: '123',
             model: {
               variables: [
-                { name: 'retrieveQuote',
+                {
+ name: 'retrieveQuote',
                   value: {
                     result: quoteData
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: quoteData
-                    } }]
+                  } 
+}, {
+ name: 'getQuoteBeforePageLoop',
+                  value: {
+                    result: quoteData
+                  } 
+}]
             },
             uiQuestions: []
           }
@@ -494,13 +500,17 @@ describe('Testing Coverage component', () => {
             modelInstanceId: '123',
             model: {
               variables: [
-                { name: 'retrieveQuote',
+                {
+ name: 'retrieveQuote',
                   value: {
                     result: quoteData
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: quoteData
-                    } }]
+                  } 
+}, {
+ name: 'getQuoteBeforePageLoop',
+                  value: {
+                    result: quoteData
+                  } 
+}]
             },
             uiQuestions: []
           }
@@ -696,7 +706,7 @@ describe('Testing Coverage component', () => {
     handleInitialize(initialState);
     handleGetZipCodeSettings(initialState);
     clearSecondaryPolicyholder(false, props);
-    clearSecondaryPolicyholder(true, props)
+    clearSecondaryPolicyholder(true, props);
   });
 
   it('should test componentWillMount', () => {

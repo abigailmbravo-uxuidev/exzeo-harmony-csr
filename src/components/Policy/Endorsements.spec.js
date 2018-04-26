@@ -1,11 +1,10 @@
 import React from 'react';
 import thunk from 'redux-thunk';
-import localStorage from 'localStorage';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { reduxForm, propTypes, change, Form } from 'redux-form';
 import { shallow, mount } from 'enzyme';
-import { Endorsements, calculatePercentage, handleInitialize, setPercentageOfValue, updateDependencies, calculate, save, setCalculate, updateCalculatedSinkhole, getNewPolicyNumber, setEndorsementDate ,clearSecondaryPolicyholder } from './Endorsements';
+import { Endorsements, calculatePercentage, handleInitialize, setPercentageOfValue, updateDependencies, calculate, save, setCalculate, updateCalculatedSinkhole, getNewPolicyNumber, setEndorsementDate, clearSecondaryPolicyholder } from './Endorsements';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
@@ -79,12 +78,12 @@ describe('Testing Endorsements component', () => {
           isSubmitting: true,
           submitting: false
         }
-      },    
+      },
       userProfile: {
         resources: [
           {
-            right: "UPDATE",
-            uri: "TTIC:FL:HO3:PolicyData:PremiumEndorse"
+            right: 'UPDATE',
+            uri: 'TTIC:FL:HO3:PolicyData:PremiumEndorse'
           }
         ]
       }
@@ -267,12 +266,12 @@ describe('Testing Endorsements component', () => {
           isSubmitting: true,
           submitting: false
         }
-      },    
+      },
       userProfile: {
         resources: [
           {
-            right: "UPDATE",
-            uri: "TTIC:FL:HO3:PolicyData:Transaction"
+            right: 'UPDATE',
+            uri: 'TTIC:FL:HO3:PolicyData:Transaction'
           }
         ]
       }
@@ -285,7 +284,7 @@ describe('Testing Endorsements component', () => {
 
     const wrapper = shallow(<Endorsements store={store} {...props} />);
     wrapper.instance().componentWillReceiveProps(props);
-    expect(wrapper.find('.error').text()).toEqual(" Endorsement page cannot be accessed due to User Permissions.")
+    expect(wrapper.find('.error').text()).toEqual(' Endorsement page cannot be accessed due to User Permissions.');
     expect(wrapper);
   });
 });

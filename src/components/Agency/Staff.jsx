@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import localStorage from 'localStorage';
 import { reduxForm, propTypes } from 'redux-form';
 import * as serviceActions from '../../actions/serviceActions';
 import AgencyConnect from '../../containers/Agency';
@@ -15,7 +14,6 @@ export const handleInitialize = state => ({
 });
 
 export class Staff extends Component {
-
   componentDidMount() {
     const isNewTab = localStorage.getItem('isNewTab') === 'true';
     if (isNewTab) {
@@ -29,7 +27,7 @@ export class Staff extends Component {
   render() {
     const { agency, agents } = this.props;
     if (!agency) {
-      return (<AgencyConnect></AgencyConnect>);
+      return (<AgencyConnect />);
     }
     return (<AgencyConnect>
       <div className="route-content">
@@ -129,16 +127,16 @@ export class Staff extends Component {
                   </div>
                   <div className="contact-details">
                     <div className="card-name">
-                        <h4 className="agent">
+                      <h4 className="agent">
                           <span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span> | <span className="agent-license">{agent.licenseNumber}</span>
                         </h4>
-                        <div className="contact-address">
+                      <div className="contact-address">
                           {agent.mailingAddress.address1},&nbsp;
                           {agent.mailingAddress.address2}{agent.mailingAddress.address2 ? ', ' : ' '}
                           {`${agent.mailingAddress.city}, ${agent.mailingAddress.state} ${agent.mailingAddress.zip}`}
                           {agent.status ? <span className="agent-status additional-data status"><label>STATUS:&nbsp;</label>{agent.status}</span> : null}
                         </div>
-                        <div className="additional-contacts">
+                      <div className="additional-contacts">
                           <ul>
                             <li>
                               <div className="contact-methods">
@@ -170,7 +168,7 @@ export class Staff extends Component {
                             </li>
                           </ul>
                         </div>
-                      </div>
+                    </div>
                   </div>
                 </div>
                 )) : null
