@@ -383,7 +383,7 @@ const policy = {
 };
 
 describe('Testing Splash component', () => {
-  it('should test handleNewTab address', () => {
+  it('should test handleNewTab address', async () => {
     const taskData = {
       firstName: '',
       lastName: '',
@@ -403,15 +403,15 @@ describe('Testing Splash component', () => {
       }
     };
 
-    localStorage.setItem('lastSearchData', JSON.stringify(taskData));
+    await localStorage.setItem('lastSearchData', JSON.stringify(taskData));
 
-    handleNewTab(address);
+    await handleNewTab(address);
 
     expect(localStorage.getItem('stateCode')).toEqual(address.physicalAddress.state);
     expect(localStorage.getItem('igdID')).toEqual(address.id);
   });
 
-  it('should test handleNewTab quote', () => {
+  it('should test handleNewTab quote', async () => {
     const taskData = {
       firstName: '',
       lastName: '',
@@ -422,13 +422,13 @@ describe('Testing Splash component', () => {
       searchType: 'quote'
     };
 
-    localStorage.setItem('lastSearchData', JSON.stringify(taskData));
+    await localStorage.setItem('lastSearchData', JSON.stringify(taskData));
 
-    handleNewTab(quoteData);
+    await handleNewTab(quoteData);
     expect(localStorage.getItem('quoteId')).toEqual(quoteData._id);
   });
 
-  it('should test handleNewTab policy', () => {
+  it('should test handleNewTab policy', async () => {
     const taskData = {
       firstName: '',
       lastName: '',
@@ -440,9 +440,9 @@ describe('Testing Splash component', () => {
     };
 
 
-    localStorage.setItem('lastSearchData', JSON.stringify(taskData));
+    await localStorage.setItem('lastSearchData', JSON.stringify(taskData));
 
-    handleNewTab(policy);
+    await handleNewTab(policy);
     expect(localStorage.getItem('policyNumber')).toEqual(policy.policyNumber);
   });
 
@@ -503,8 +503,8 @@ describe('Testing Splash component', () => {
     };
     const wrapper = mount(<Provider store={store}><Router>
       <Splash {...props} />
-                                                  </Router>
-                          </Provider>);
+    </Router>
+    </Provider>);
     expect(wrapper.find(Splash).props()).toEqual(props);
 
     const wrapperComponent = shallow(<Splash {...props} />);

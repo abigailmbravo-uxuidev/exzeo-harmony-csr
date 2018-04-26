@@ -18,20 +18,20 @@ const workflowData = {
   dsUrl: `${process.env.REACT_APP_API_URL}/ds`
 };
 
-export const handleNewTab = (searchData) => {
-  localStorage.setItem('isNewTab', true);
+export const handleNewTab = async (searchData) => {
+  await localStorage.setItem('isNewTab', true);
 
-  const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData'));
+  const lastSearchData = await JSON.parse(localStorage.getItem('lastSearchData'));
 
   if (lastSearchData.searchType === 'address') {
-    localStorage.setItem('stateCode', searchData.physicalAddress.state);
-    localStorage.setItem('igdID', searchData.id);
+    await localStorage.setItem('stateCode', searchData.physicalAddress.state);
+    await localStorage.setItem('igdID', searchData.id);
     window.open('/quote/coverage', '_blank');
   } else if (lastSearchData.searchType === 'quote') {
-    localStorage.setItem('quoteId', searchData._id);
+    await localStorage.setItem('quoteId', searchData._id);
     window.open('/quote/coverage', '_blank');
   } else if (lastSearchData.searchType === 'policy') {
-    localStorage.setItem('policyNumber', searchData.policyNumber);
+    await localStorage.setItem('policyNumber', searchData.policyNumber);
     window.open('/policy/coverage', '_blank');
   }
 };

@@ -24,23 +24,22 @@ export const getPropertyAppraisialLink = (county, questions) => {
 const handleInitialize = state => state.service.latestPolicy;
 
 export class Coverage extends Component {
-
-  componentDidMount() {
+  async componentDidMount() {
     const { actions } = this.props;
 
     actions.questionsActions.getUIQuestions('propertyAppraisalCSR');
-    const isNewTab = localStorage.getItem('isNewTab') === 'true';
+    const isNewTab = await localStorage.getItem('isNewTab') === 'true';
     if (isNewTab) {
-      localStorage.setItem('isNewTab', false);
-      const policyNumber = localStorage.getItem('policyNumber');
+      const policyNumber = await localStorage.getItem('policyNumber');
       actions.policyStateActions.updatePolicy(true, policyNumber);
       actions.serviceActions.getCancelOptions();
       actions.serviceActions.getSummaryLedger(policyNumber);
+      localStorage.setItem('isNewTab', false);
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const { actions, policy, summaryLedger} = nextProps;
+    const { actions, policy, summaryLedger } = nextProps;
     if (policy && policy.policyNumber && summaryLedger.currentPremium) {
       const paymentOptions = {
         effectiveDate: policy.effectiveDate,
@@ -55,15 +54,17 @@ export class Coverage extends Component {
 
   render() {
     const {
-    coverageLimits,
-    coverageOptions,
-    deductibles,
-    property,
-    rating,
-    underwritingAnswers
-  } = this.props.policy;
+      coverageLimits,
+      coverageOptions,
+      deductibles,
+      property,
+      rating,
+      underwritingAnswers
+    } = this.props.policy;
 
-    const { policy, questions, summaryLedger, paymentOptions } = this.props;
+    const {
+      policy, questions, summaryLedger, paymentOptions
+    } = this.props;
 
     const discountSurcharge = [
       {
@@ -186,7 +187,7 @@ export class Coverage extends Component {
 
     const propertyData = property || {};
     if (!this.props.policy.policyID) {
-      return (<PolicyConnect></PolicyConnect>);
+      return (<PolicyConnect />);
     }
     return (
       <PolicyConnect>
@@ -286,7 +287,8 @@ export class Coverage extends Component {
                       <dt className="appraiser">Appraiser</dt>
                       <dd className="appraiser">
                         <a
-                          target="_blank" rel="noopener noreferrer"
+                          target="_blank"
+                          rel="noopener noreferrer"
                           href={getPropertyAppraisialLink(propertyData.physicalAddress.county, questions).answer}
                         >{getPropertyAppraisialLink(propertyData.physicalAddress.county, questions).label}</a>
                       </dd>
@@ -313,20 +315,20 @@ export class Coverage extends Component {
                     <div>
                       <dt className="roofGeometry">Roof Geometry</dt>
                       <dd className="roofGeometry">{property.windMitigation.roofGeometry}</dd>
-                        <dt className="SWR">Secondary Water Resistance (SWR)</dt>
-                        <dd className="SWR">{property.windMitigation.secondaryWaterResistance}</dd>
-                        <dt className="openingProtection">Opening Protection</dt>
-                        <dd className="openingProtection">{property.windMitigation.openingProtection}</dd>
+                      <dt className="SWR">Secondary Water Resistance (SWR)</dt>
+                      <dd className="SWR">{property.windMitigation.secondaryWaterResistance}</dd>
+                      <dt className="openingProtection">Opening Protection</dt>
+                      <dd className="openingProtection">{property.windMitigation.openingProtection}</dd>
                     </div>
                   </dl>
                   <dl>
                     <div>
-                        <dt className="windSpeed">FBC Wind Speed</dt>
-                        <dd className="windSpeed">{property.windMitigation.floridaBuildingCodeWindSpeed}</dd>
-                        <dt className="windSpeedDesign">FBC Wind Speed Design</dt>
-                        <dd className="windSpeedDesign">{property.windMitigation.floridaBuildingCodeWindSpeedDesign}</dd>
-                        <dt className="terrain">Terrain</dt>
-                        <dd className="terrain">{property.windMitigation.terrain}</dd>
+                      <dt className="windSpeed">FBC Wind Speed</dt>
+                      <dd className="windSpeed">{property.windMitigation.floridaBuildingCodeWindSpeed}</dd>
+                      <dt className="windSpeedDesign">FBC Wind Speed Design</dt>
+                      <dd className="windSpeedDesign">{property.windMitigation.floridaBuildingCodeWindSpeedDesign}</dd>
+                      <dt className="terrain">Terrain</dt>
+                      <dd className="terrain">{property.windMitigation.terrain}</dd>
                     </div>
                   </dl>
                   <dl>
@@ -336,7 +338,7 @@ export class Coverage extends Component {
                       <dt className="WBDR">Wind Borne Debris Region (WBDR)</dt>
                       <dd className="WBDR">{property.windMitigation.windBorneDebrisRegion}</dd>
                       <dt className="windMitFactor">Wind Mit Factor</dt>
-                      <dd className="windMitFactor">{_.get(_.find(discountSurcharge, { discountSurcharge: "Wind Mit Factor" }), 'value')}</dd>
+                      <dd className="windMitFactor">{_.get(_.find(discountSurcharge, { discountSurcharge: 'Wind Mit Factor' }), 'value')}</dd>
                     </div>
                   </dl>
                 </div>
@@ -352,7 +354,7 @@ export class Coverage extends Component {
                   <TableHeaderColumn dataField="lossDescription" className="lossDescription" columnClassName="lossDescription" dataSort>Loss Description</TableHeaderColumn>
                 </BootstrapTable>
               </div>
-            </section>*/}
+            </section> */}
             </div>
           </div>
         </div>
@@ -362,7 +364,6 @@ export class Coverage extends Component {
       </PolicyConnect>
     );
   }
-
 }
 
 /**
