@@ -228,6 +228,7 @@ describe('Testing MortgageBilling component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      billingOptions: [],
       reset() {},
       auth: {
         userProfile: {
@@ -273,16 +274,15 @@ describe('Testing MortgageBilling component', () => {
     handleInitialize(initialState);
 
 
-    addAdditionalInterest('Mortgagee', props);
-    editAdditionalInterest(additionalInterests[0], props);
-    hideAdditionalInterestModal(props);
-    handleAISubmit(additionalInterests[0], props.dispatch, props);
-    deleteAdditionalInterest(additionalInterests[0], props);
+    wrapper.instance().addAdditionalInterest('Mortgagee');
+    wrapper.instance().editAdditionalInterest(additionalInterests[0]);
+    wrapper.instance().hideAdditionalInterestModal(props);
+    wrapper.instance().handleAISubmit(additionalInterests[0], props.dispatch, props);
+    wrapper.instance().deleteAdditionalInterest(additionalInterests[0], props);
 
     wrapper.instance().handleFormSubmit({ body });
     wrapper.instance().handleBillingEdit();
     wrapper.instance().setBatch('');
-    wrapper.instance().checkPayments();
 
     wrapper.instance().amountFormatter(100);
     wrapper.instance().dateFormatter('123');
