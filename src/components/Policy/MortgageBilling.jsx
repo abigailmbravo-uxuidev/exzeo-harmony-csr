@@ -242,7 +242,7 @@ export class MortgageBilling extends Component {
       }
     );
     this.props.actions.questionsActions.getUIQuestions('additionalInterestsCSR');
-  }
+  };
 
   componentWillReceiveProps = (nextProps) => {
     if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
@@ -262,21 +262,22 @@ export class MortgageBilling extends Component {
         nextProps.appState.instanceId, { ...nextProps.appState.data, ranService: true }
       );
     }
-  }
+  };
 
   setBatch = (value) => {
     const { dispatch } = this.props;
 
     dispatch(change('MortgageBilling', 'cashDate', value));
     dispatch(change('MortgageBilling', 'batchNumber', moment.utc(value).format('YYYYMMDD')));
-  }
+  };
 
   handleFormSubmit = (data) => {
-    const workflowId = this.props.appState.instanceId;
+    const { appState } = this.props;
+    const workflowId = appState.instanceId;
     const submitData = data;
     this.props.actions.appStateActions.setAppState(
-      this.props.appState.modelName,
-      workflowId, { ...this.props.appState.data, submitting: true }
+      appState.modelName,
+      workflowId, { ...appState.data, submitting: true }
     );
     submitData.cashDate = moment.utc(data.cashDate);
     submitData.batchNumber = String(data.batchNumber);
@@ -290,8 +291,8 @@ export class MortgageBilling extends Component {
         this.props.actions.serviceActions.getPaymentHistory(this.props.policy.policyNumber);
         this.props.actions.serviceActions.getSummaryLedger(this.props.policy.policyNumber);
         this.props.actions.appStateActions.setAppState(
-          this.props.appState.modelName,
-          this.props.appState.instanceId, { ...this.props.appState.data }
+          appState.modelName,
+          appState.instanceId, { ...appState.data }
         );
       });
 
@@ -299,28 +300,51 @@ export class MortgageBilling extends Component {
   };
 
   handleBillingEdit = () => {
-    const workflowId = this.props.appState.instanceId;
+    const { appState } = this.props;
+    const workflowId = appState.instanceId;
     this.props.actions.appStateActions.setAppState(
-      this.props.appState.modelName,
-      workflowId, { ...this.props.appState.data, showBillingEditModal: true }
+      appState.modelName,
+      workflowId, { ...appState.data, showBillingEditModal: true }
     );
   };
 
 
   clearForm = () => {
-    const { dispatch } = this.props;
-    const workflowId = this.props.appState.instanceId;
+    const { dispatch, appState } = this.props;
+    const workflowId = appState.instanceId;
     dispatch(reset('MortgageBilling'));
     this.props.actions.appStateActions.setAppState(
-      this.props.appState.modelName,
-      workflowId, { ...this.props.appState.data, submitting: false }
+      appState.modelName,
+      workflowId, { ...appState.data, submitting: false }
     );
   };
 
   checkPayments = (batchNumber, transaction) => {
     const found = payments.some(payment => payment.batchNumber === batchNumber);
     if (!found) { payments.push(transaction); }
-  }
+  };
+
+  hideBillingModal = () => {
+    const { actions: { appStateActions }, appState } = this.props;
+    appStateActions.setAppState(
+      appState.modelName, appState.instanceId,
+      { ...appState.data, showBillingEditModal: false }
+    );
+  };
+
+  hideAdditionalInterestModal = () => {
+    const { actions, appState, dispatch, reset } = this.props;
+    actions.appStateActions.setAppState(
+      appState.modelName,
+      appState.instanceId,
+      { ...appState.data,
+        showAdditionalInterestModal: false,
+        showAdditionalInterestEditModal: false
+      }
+    );
+    dispatch(reset('AdditionalInterestModal'));
+    dispatch(reset('AdditionalInterestEditModal'));
+  };
 
   amountFormatter = cell => (cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '');
   dateFormatter = cell => `${cell.substring(0, 10)}`;
@@ -328,7 +352,7 @@ export class MortgageBilling extends Component {
   render() {
     const { additionalInterests } = this.props.policy;
     const {
-      handleSubmit, pristine, fieldValues, policy, questions
+      handleSubmit, pristine, fieldValues, policy, questions, billingOptions, appState,
     } = this.props;
     setRank(additionalInterests);
     setIsActive(additionalInterests);
@@ -343,7 +367,7 @@ export class MortgageBilling extends Component {
       payment.amountDisplay = payment.amount.$numberDecimal;
     });
 
-    const validAdditionalInterestTypes = checkValidTypes(additionalInterests, this.props.appState.data.selectedAI || {});
+    const validAdditionalInterestTypes = checkValidTypes(additionalInterests, appState.data.selectedAI || {});
 
     return (
       <PolicyConnect>
@@ -386,7 +410,7 @@ export class MortgageBilling extends Component {
                           component="select"
                           label="Description"
                           validations={['required']}
-                          answers={_.map(this.props.appState.data.paymentDescription || [], description => ({ answer: description }))}
+                          answers={_.map(appState.data.paymentDescription || [], description => ({ answer: description }))}
                         />
                       </div>
                     </div>
@@ -405,7 +429,7 @@ export class MortgageBilling extends Component {
                   </div>
                   <div className="btn-footer">
                     <button className="btn btn-secondary" type="button" form="MortgageBilling" onClick={this.clearForm}>Cancel</button>
-                    <button className="btn btn-primary" type="submit" form="MortgageBilling" disabled={this.props.appState.data.submitting || pristine}>Save</button>
+                    <button className="btn btn-primary" type="submit" form="MortgageBilling" disabled={appState.data.submitting || pristine}>Save</button>
                   </div>
                 </Form>
               </section>
@@ -415,7 +439,7 @@ export class MortgageBilling extends Component {
                   <dl>
                     <div>
                       <dt>Bill To</dt>
-                      <dd>{_.get(_.find(_.get(this.props.billingOptions, 'options'), option => option.billToId === _.get(this.props.policy, 'billToId')), 'displayText')}
+                      <dd>{_.get(_.find(_.get(billingOptions, 'options'), option => option.billToId === _.get(this.props.policy, 'billToId')), 'displayText')}
                       </dd>
                     </div>
                   </dl>
@@ -457,54 +481,79 @@ export class MortgageBilling extends Component {
                     <button tabIndex="0" disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Bill Payer' && ai.active).length > 0)} onClick={() => addAdditionalInterest('Bill Payer', this.props)} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
                   </div>
                   <ul className="results result-cards">
-                    {additionalInterests && _.sortBy(additionalInterests, ['sortInactive', 'rank', 'order']).map((ai, index) =>
-                      (
-                        <li key={index}>
-                          { ai.active &&
+                    {additionalInterests && _.sortBy(additionalInterests, ['sortInactive', 'rank', 'order']).map((ai, index) => (
+                      <li key={index}>
+                        {ai.active &&
                           <a onKeyPress={event => editAIOnEnter(event, ai, this.props)} onClick={() => editAdditionalInterest(ai, this.props)}>
                             {/* add className based on type - i.e. mortgagee could have class of mortgagee */}
                             <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {ai.order + 1}</label></div>
                             <section><h4>{ai.name1}&nbsp;{ai.name2}</h4>
-                              <p className="address">{
-                             `${ai.mailingAddress.address1},
-                              ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city},
-                              ${ai.mailingAddress.state}
-                              ${ai.mailingAddress.zip}`
-                            }
+                              <p className="address">
+                                {`${ai.mailingAddress.address1},
+                                  ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city},
+                                  ${ai.mailingAddress.state}
+                                  ${ai.mailingAddress.zip}`}
                               </p>
                             </section>
                             <div className="ref-number">
                               <label htmlFor="ref-number">Reference Number</label>
                               <span>{` ${ai.referenceNumber || ' - '}`}</span>
                             </div>
-                          </a>}
-                          { !ai.active &&
+                          </a>
+                        }
+                        {!ai.active &&
                           <a style={{ cursor: 'not-allowed' }}>
                             <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {'Inactive'}</label></div>
                             <section><h4>{ai.name1}&nbsp;{ai.name2} (Inactive)</h4>
-                              <p className="address">{
-                           `${ai.mailingAddress.address1},
-                            ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city},
-                            ${ai.mailingAddress.state}
-                            ${ai.mailingAddress.zip}`
-                          }
+                              <p className="address">
+                                {`${ai.mailingAddress.address1},
+                                  ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city},
+                                  ${ai.mailingAddress.state}
+                                  ${ai.mailingAddress.zip}`}
                               </p>
                             </section>
                             <div className="ref-number">
                               <label htmlFor="ref-number">Reference Number</label>
                               <span>{` ${ai.referenceNumber || ' - '}`}</span>
                             </div>
-                          </a>}
-                        </li>))}
+                          </a>
+                        }
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </section>
             </div>
           </div>
-          { this.props.appState.data.showAdditionalInterestEditModal && <AIEditModal additionalInterests={additionalInterests} validAdditionalInterestTypes={validAdditionalInterestTypes} isEndorsement questions={questions} selectedAI={this.props.appState.data.selectedAI} policy={policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
-          { this.props.appState.data.showAdditionalInterestModal && <AIModal additionalInterests={additionalInterests} questions={questions} policy={policy} verify={handleAISubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
+          {appState.data.showAdditionalInterestEditModal &&
+            <AIEditModal
+              additionalInterests={additionalInterests}
+              validAdditionalInterestTypes={validAdditionalInterestTypes}
+              isEndorsement questions={questions}
+              selectedAI={appState.data.selectedAI}
+              policy={policy}
+              verify={handleAISubmit}
+              hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)}
+              deleteAdditionalInterest={() => deleteAdditionalInterest(appState.data.selectedAI, this.props)}
+            />
+          }
+          {appState.data.showAdditionalInterestModal &&
+            <AIModal
+              additionalInterests={additionalInterests}
+              questions={questions}
+              policy={policy}
+              verify={handleAISubmit}
+              hideAdditionalInterestModal={this.hideAdditionalInterestModal}
+            />
+          }
         </div>
-        { this.props.appState.data.showBillingEditModal && <BillingModal policy={policy} billingOptions={this.props.billingOptions} hideBillingModal={() => hideBillingModal(this.props)} /> }
+        {appState.data.showBillingEditModal &&
+          <BillingModal
+            policy={policy}
+            billingOptions={billingOptions.options}
+            hideBillingModal={this.hideBillingModal}
+          />
+        }
         <div className="basic-footer">
           <Footer />
         </div>
