@@ -36,10 +36,6 @@ const handleInitialize = (state) => {
 const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 export const setMortgageeValues = (val, props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, {
-    ...props.appState.data,
-    selectedMortgageeOption: val
-  });
   const selectedMortgagee = val;
 
   if (selectedMortgagee) {
@@ -78,33 +74,32 @@ export const checkAdditionalInterestForName = aiType => aiType === 'Additional I
 
 export const AdditionalInterestModal = (props) => {
   const {
-    appState, handleSubmit, verify, hideAdditionalInterestModal, questions, additionalInterests
+    appState, handleSubmit, verify, hideAdditionalInterestModal, questions, additionalInterests, submitting, addAdditionalInterestType
   } = props;
 
   const mortgageeOrderAnswers = getMortgageeAnswers(questions, additionalInterests);
   return (
     <div className="modal" style={{ flexDirection: 'row' }}>
-      <Form id="AdditionalInterestModal" className={`AdditionalInterestModal ${appState.data.addAdditionalInterestType}`} noValidate onSubmit={handleSubmit(verify)}>
-        {props.appState.data.submittingAI && <Loader />}
+      <Form id="AdditionalInterestModal" className={`AdditionalInterestModal ${addAdditionalInterestType}`} noValidate onSubmit={handleSubmit(verify)}>
+        {submitting && <Loader />}
         <div className="card">
           <div className="card-header">
-            <h4><i className={`fa fa-circle ${appState.data.addAdditionalInterestType}`} /> {appState.data.addAdditionalInterestType}</h4>
+            <h4><i className={`fa fa-circle ${addAdditionalInterestType}`} /> {addAdditionalInterestType}</h4>
           </div>
           <div className="card-block">
-            { appState.data.addAdditionalInterestType === 'Mortgagee' &&
+            { addAdditionalInterestType === 'Mortgagee' &&
             <ReactSelectField
               label="Top Mortgagees"
               name="mortgage"
               searchable
               labelKey="displayText"
               autoFocus
-              value={appState.data.selectedMortgageeOption}
               answers={getAnswers('mortgagee', questions)}
               onChange={val => setMortgageeValues(val, props)}
             />
          }
-            <TextField label={checkAdditionalInterestForName(appState.data.addAdditionalInterestType) ? 'First Name' : 'Name 1'} styleName="name-1" name="name1" validations={['required']} />
-            <TextField label={checkAdditionalInterestForName(appState.data.addAdditionalInterestType) ? 'Last Name' : 'Name 2'} styleName="name-2" name="name2" />
+            <TextField label={checkAdditionalInterestForName(addAdditionalInterestType) ? 'First Name' : 'Name 1'} styleName="name-1" name="name1" validations={['required']} />
+            <TextField label={checkAdditionalInterestForName(addAdditionalInterestType) ? 'Last Name' : 'Name 2'} styleName="name-2" name="name2" />
             <TextField label="Address 1" styleName="address-1" name="address1" validations={['required']} />
             <TextField label="Address 2" styleName="address-2" name="address2" />
             <div className="flex-form">
@@ -120,7 +115,7 @@ export const AdditionalInterestModal = (props) => {
             <div className="flex-form">
               <PhoneField label="Phone Number" styleName="phone" name="phoneNumber" validations={['phone']} />
               <TextField label="Reference Number" styleName="reference-number" name="referenceNumber" />
-              { appState.data.addAdditionalInterestType === 'Mortgagee' && <SelectField
+              { addAdditionalInterestType === 'Mortgagee' && <SelectField
                 name="order"
                 component="select"
                 styleName=""
@@ -133,7 +128,7 @@ export const AdditionalInterestModal = (props) => {
           <div className="card-footer">
             <div className="btn-group">
               <button tabIndex="0" className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal(props)}>Cancel</button>
-              <button tabIndex="0" className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Save</button>
+              <button tabIndex="0" className="btn btn-primary" type="submit" disabled={submitting}>Save</button>
             </div>
           </div>
         </div>
