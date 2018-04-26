@@ -359,8 +359,8 @@ describe('Testing Coverage component', () => {
     }));
 
     const wrapper = mount(<Provider store={store} >
-        <Router><ConnectedApp {...props} /></Router>
-      </Provider>);
+      <Router><ConnectedApp {...props} /></Router>
+    </Provider>);
     expect(wrapper);
   });
   it('should test handleGetQuoteData', () => {
@@ -375,16 +375,16 @@ describe('Testing Coverage component', () => {
             model: {
               variables: [
                 {
- name: 'retrieveQuote',
+                  name: 'retrieveQuote',
                   value: {
                     result: quoteData
-                  } 
-}, {
- name: 'getQuoteBeforePageLoop',
+                  }
+                }, {
+                  name: 'getQuoteBeforePageLoop',
                   value: {
                     result: quoteData
-                  } 
-}]
+                  }
+                }]
             },
             uiQuestions: []
           }
@@ -415,16 +415,16 @@ describe('Testing Coverage component', () => {
             model: {
               variables: [
                 {
- name: 'retrieveQuote',
+                  name: 'retrieveQuote',
                   value: {
                     result: quoteData
-                  } 
-}, {
- name: 'getQuoteBeforePageLoop',
+                  }
+                }, {
+                  name: 'getQuoteBeforePageLoop',
                   value: {
                     result: quoteData
-                  } 
-}]
+                  }
+                }]
             },
             uiQuestions: []
           }
@@ -501,16 +501,16 @@ describe('Testing Coverage component', () => {
             model: {
               variables: [
                 {
- name: 'retrieveQuote',
+                  name: 'retrieveQuote',
                   value: {
                     result: quoteData
-                  } 
-}, {
- name: 'getQuoteBeforePageLoop',
+                  }
+                }, {
+                  name: 'getQuoteBeforePageLoop',
                   value: {
                     result: quoteData
-                  } 
-}]
+                  }
+                }]
             },
             uiQuestions: []
           }
@@ -844,5 +844,7 @@ describe('Testing Coverage component', () => {
     const wrapper2 = shallow(<Coverage store={store} {...props} />);
     localStorage.setItem('isNewTab', false);
     wrapper2.instance().componentDidMount();
+
+    wrapper2.find('[name="agencyCode"]').simulate('change', { target: { value: '60000' } });
   });
 });

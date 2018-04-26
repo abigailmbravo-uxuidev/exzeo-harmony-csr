@@ -301,7 +301,6 @@ export class Coverage extends Component {
     this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
 
     const isNewTab = localStorage.getItem('isNewTab') === 'true';
-
     if (isNewTab) {
       localStorage.setItem('isNewTab', false);
 

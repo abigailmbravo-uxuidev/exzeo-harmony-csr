@@ -7,10 +7,10 @@ const storage = {};
 
 const localStorageMock = {
   setItem(key, value) {
-    storage[key] = value || '';
+    storage[key] = String(value) || '';
   },
   getItem(key) {
-    return key in storage ? storage[key] : null;
+    return key in storage ? String(storage[key]) : null;
   }
 };
 global.localStorage = localStorageMock;
