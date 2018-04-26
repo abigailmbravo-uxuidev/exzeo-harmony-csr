@@ -2,7 +2,7 @@ import React from 'react';
 import configureStore from 'redux-mock-store';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { BillingEditModal, selectBillPlan, handleInitialize } from './BillingEditModal';
+import ConnectedApp, { BillingEditModal, handleInitialize } from './BillingEditModal';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -60,10 +60,9 @@ describe('Testing BillingEditModal component', () => {
       }
     };
 
-    const wrapper = shallow(<ConnectedApp store={store} {...props} />);
+    const wrapper = shallow(<BillingEditModal store={store} {...props} />);
     expect(wrapper.instance().props.fieldValues).toEqual({ billToId: '23432432432432430' });
-    selectBillPlan('Annual', props);
     handleInitialize(initialState);
-    BillingEditModal(props);
+
   });
 });
