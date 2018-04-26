@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import FieldHint from '../inputs/FieldHint';
-import Radio from '../base/Radios';
+import Radio from '../base/Radio';
 
 export const BillingRadio = ({
    input,
