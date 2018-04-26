@@ -99,8 +99,8 @@ describe('Testing Coverage component', () => {
         },
         errorActions: { dispatchClearAppError() { } }
       },
-      policy: { policyNumber: '324324', rating: { worksheet: { fees: {} } } } 
-});
+      policy: { policyNumber: '324324', rating: { worksheet: { fees: {} } } }
+    });
     wrapper2.instance().componentWillReceiveProps({ ...props, policy: { policyNumber: '324324', rating: { worksheet: { fees: {} } } } });
 
     wrapper2.instance().componentDidMount();

@@ -128,16 +128,16 @@ export class Staff extends Component {
                   <div className="contact-details">
                     <div className="card-name">
                       <h4 className="agent">
-                          <span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span> | <span className="agent-license">{agent.licenseNumber}</span>
-                        </h4>
+                        <span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span> | <span className="agent-license">{agent.licenseNumber}</span>
+                      </h4>
                       <div className="contact-address">
-                          {agent.mailingAddress.address1},&nbsp;
-                          {agent.mailingAddress.address2}{agent.mailingAddress.address2 ? ', ' : ' '}
-                          {`${agent.mailingAddress.city}, ${agent.mailingAddress.state} ${agent.mailingAddress.zip}`}
-                          {agent.status ? <span className="agent-status additional-data status"><label>STATUS:&nbsp;</label>{agent.status}</span> : null}
-                        </div>
+                        {agent.mailingAddress.address1},&nbsp;
+                        {agent.mailingAddress.address2}{agent.mailingAddress.address2 ? ', ' : ' '}
+                        {`${agent.mailingAddress.city}, ${agent.mailingAddress.state} ${agent.mailingAddress.zip}`}
+                        {agent.status ? <span className="agent-status additional-data status"><label>STATUS:&nbsp;</label>{agent.status}</span> : null}
+                      </div>
                       <div className="additional-contacts">
-                          <ul>
+                        <ul>
                             <li>
                               <div className="contact-methods">
                                 {
@@ -167,7 +167,7 @@ export class Staff extends Component {
                               </div>
                             </li>
                           </ul>
-                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
