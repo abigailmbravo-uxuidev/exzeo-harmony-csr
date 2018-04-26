@@ -12,9 +12,7 @@ const Header = props => (
   <header>
     <div role="banner">
       <button className="btn-icon btn-bars"><i className="fa fa-bars" /></button>
-      <Link to="/" id="logo" className="logo">
-        <img src={logo} alt="Harmony" />
-      </Link>
+      <Link to="/" id="logo" className="logo"><img src={logo} alt="Harmony" /></Link>
       <button className="btn-icon btn-ellipsis-v"><i className="fa fa-ellipsis-v" /></button>
       <nav className="fade-in">
         <NavLink to="/reports" activeClassName="active" exact>Reports</NavLink>
