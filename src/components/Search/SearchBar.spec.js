@@ -204,6 +204,7 @@ describe('Testing SearchBar component', () => {
     const props = {
       agencyList: [],
       reset() {},
+      change() {},
       search: {
         hasSearched: true
       },
@@ -237,7 +238,8 @@ describe('Testing SearchBar component', () => {
         cgActions: {
           clearSearchResults() {},
           moveToTaskAndExecuteComplete() { return Promise.resolve(() => {}); }
-        }
+        },
+        change() {},
       },
       appState: {
         modelName: 'test',
