@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import logo from '../../img/Harmony.svg';
 
 const handleLogout = (auth) => {
@@ -12,9 +12,7 @@ const Header = props => (
   <header>
     <div role="banner">
       <button className="btn-icon btn-bars"><i className="fa fa-bars" /></button>
-      <a href="/" id="logo" className="logo">
-        <img src={logo} alt="Harmony" />
-      </a>
+      <Link to="/" id="logo" className="logo"><img src={logo} alt="Harmony" /></Link>
       <button className="btn-icon btn-ellipsis-v"><i className="fa fa-ellipsis-v" /></button>
       <nav className="fade-in">
         <NavLink to="/reports" activeClassName="active" exact>Reports</NavLink>
