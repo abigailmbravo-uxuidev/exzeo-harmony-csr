@@ -90,7 +90,7 @@ export const AdditionalInterestModal = (props) => {
             { addAdditionalInterestType === 'Mortgagee' &&
             <ReactSelectField
               label="Top Mortgagees"
-              name="mortgage"
+              name="mortgagee"
               searchable
               labelKey="displayText"
               autoFocus

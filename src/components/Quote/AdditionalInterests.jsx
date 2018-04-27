@@ -14,6 +14,7 @@ import AdditionalInterestPopup from '../../components/Common/AdditionalInterestM
 import AdditionalInterestEditPopup from '../../components/Common/AdditionalInterestEditModal';
 import Footer from '../Common/Footer';
 import applyRank from '../Common/additionalInterestRank';
+import normalizePhone from '../Form/normalizePhone';
 
 const handleInitialize = () => {
   // const quoteData = handleGetQuoteData(state);
@@ -237,7 +238,6 @@ export class AdditionalInterests extends Component {
 
       this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
         .then(() => {
-
           this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
 
           this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
@@ -277,6 +277,49 @@ export class AdditionalInterests extends Component {
       nextProps.actions.serviceActions.saveBillingInfo(nextProps.quoteData._id, policyHolder.billToType, policyHolder.billToId, 'Annual');
     }
   }
+
+  getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
+
+  handleAIInitialize = () => {
+    const { selectedAI } = this.props.appState.data;
+
+    if (selectedAI) {
+      const mortgagee = _.get(_.find(this.getAnswers('mortgagee', this.props.questions), a => a.AIName1 === selectedAI.name1 &&
+      a.AIAddress1 === selectedAI.mailingAddress.address1));
+
+      return {
+        mortgagee,
+        _id: selectedAI._id, // eslint-disable-line
+        name1: selectedAI.name1,
+        name2: selectedAI.name2,
+        phoneNumber: String(selectedAI.phoneNumber).length > 0 ? normalizePhone(String(selectedAI.phoneNumber)) : '',
+        address1: selectedAI.mailingAddress.address1,
+        address2: selectedAI.mailingAddress.address2,
+        city: selectedAI.mailingAddress.city,
+        state: selectedAI.mailingAddress.state,
+        zip: String(selectedAI.mailingAddress.zip),
+        referenceNumber: selectedAI.referenceNumber,
+        type: selectedAI.type,
+        aiType: selectedAI.type,
+        order: selectedAI.order
+      };
+    }
+
+    return {
+      _id: '',
+      name1: '',
+      name2: '',
+      phoneNumber: '',
+      address1: '',
+      address2: '',
+      city: '',
+      state: '',
+      zip: '',
+      referenceNumber: '',
+      type: ''
+    };
+  };
+
   render() {
     const { appState, quoteData, questions } = this.props;
     _.forEach(getAnswers('mortgagee', questions), (answer) => {
@@ -335,8 +378,18 @@ export class AdditionalInterests extends Component {
               </div>
             </div>
           </form>
-          { appState.data.showAdditionalInterestEditModal && <AdditionalInterestEditPopup additionalInterests={this.props.quoteData.additionalInterests} questions={this.props.questions} selectedAI={this.props.appState.data.selectedAI} quoteData={quoteData} verify={handleFormSubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)} /> }
-          { appState.data.showAdditionalInterestModal && <AdditionalInterestPopup additionalInterests={this.props.quoteData.additionalInterests} questions={this.props.questions} quoteData={quoteData} verify={handleFormSubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
+          { appState.data.showAdditionalInterestEditModal && <AdditionalInterestEditPopup
+            appState={this.props.appState}
+            initialValues={this.handleAIInitialize()}
+            additionalInterests={this.props.quoteData.additionalInterests}
+            questions={this.props.questions}
+            selectedAI={this.props.appState.data.selectedAI}
+            quoteData={quoteData}
+            verify={handleFormSubmit}
+            hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)}
+            deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)}
+          /> }
+          { appState.data.showAdditionalInterestModal && <AdditionalInterestPopup addAdditionalInterestType={appState.data.addAdditionalInterestType} additionalInterests={this.props.quoteData.additionalInterests} questions={this.props.questions} quoteData={quoteData} verify={handleFormSubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
         </div>
         <div className="basic-footer">
           <Footer />

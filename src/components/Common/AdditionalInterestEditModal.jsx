@@ -45,11 +45,12 @@ export const setMortgageeValues = (val, props) => {
   }
 };
 
+
 export const checkAdditionalInterestForName = aiType => aiType === 'Additional Insured' || aiType === 'Additional Interest' || aiType === 'Bill Payer';
 
 export const AdditionalInterestEditModal = (props) => {
   const {
-    appState, handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, questions, isEndorsement, validAdditionalInterestTypes, additionalInterests, submitting, selectedMortgageeOption, selectedAI
+    handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, questions, isEndorsement, validAdditionalInterestTypes, additionalInterests, submitting, selectedAI
   } = props;
 
   const mortgageeOrderAnswers = _.cloneDeep(getAnswers('order', questions));
@@ -73,11 +74,10 @@ export const AdditionalInterestEditModal = (props) => {
             { selectedAI.type === 'Mortgagee' &&
             <ReactSelectField
               label="Top Mortgagees"
-              name="mortgage"
+              name="mortgagee"
               searchable
               labelKey="displayText"
               autoFocus
-              value={selectedMortgageeOption}
               answers={getAnswers('mortgagee', questions)}
               onChange={val => setMortgageeValues(val, props)}
             />
