@@ -331,7 +331,7 @@ const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answ
 
 export class SearchForm extends Component {
   clearForm = () => {
-    const { actions, appState, form, reset, tasks} = this.props;
+    const { actions, appState, change, form, reset, tasks} = this.props;
     const modelName = appState.modelName;
     const data = tasks[modelName].data;
     const workflowId = appState.instanceId;
@@ -346,6 +346,7 @@ export class SearchForm extends Component {
     resetPolicySearch(this.props);
     actions.appStateActions.setAppState(appState.modelName, workflowId, { submitting: false });
     actions.serviceActions.getAgencies('TTIC', 'FL');
+    change('sortBy', 'policyNumber');
   }
 
   componentDidMount() {
@@ -383,8 +384,8 @@ export class SearchForm extends Component {
     if (nextProps.fieldValues && !nextProps.fieldValues.searchType) {
       this.clearForm();
       if (nextProps.pathName === '/') {
-        dispatch(change('SearchBar', 'searchType', 'policy')) 
-        dispatch(change('SearchBar', 'sortBy', 'policyNumber'))
+        dispatch(change('SearchBar', 'searchType', 'policy'));
+        dispatch(change('SearchBar', 'sortBy', 'policyNumber'));
       } else {
         dispatch(change('SearchBar', 'searchType', 'agency'));
       }
