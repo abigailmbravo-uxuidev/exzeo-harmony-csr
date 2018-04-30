@@ -6,9 +6,13 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
 import ConnectedApp, { Splash, handleNewTab, handleSelectQuote } from './Splash';
+import localStorageMock from '../setupTests';
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
+
+global.localStorage = localStorageMock;
+
 
 const quoteData = {
   _id: '5866c036a46eb72908f3f547',

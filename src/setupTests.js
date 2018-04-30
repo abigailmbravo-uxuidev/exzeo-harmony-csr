@@ -11,6 +11,11 @@ const localStorageMock = {
   },
   getItem(key) {
     return key in storage ? String(storage[key]) : null;
+  },
+  removeItem(key) {
+    storage[key] = null;
   }
 };
 global.localStorage = localStorageMock;
+
+export default localStorageMock;

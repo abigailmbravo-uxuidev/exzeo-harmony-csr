@@ -7,6 +7,8 @@ import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
 import ConnectedApp, { AgencySplash } from './AgencySplash';
 
+import localStorage from '../setupTests';
+
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 
