@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { reduxForm, Field, propTypes as rfPropTypes, change, getFormValues } from 'redux-form';
 import SelectInput from '../Form/base/Select';
 import BillingRadio from '../Form/inputs/BillingRadio';
+import { requireField } from "../Form/validations/index";
 import { updateBillPlan } from '../../actions/serviceActions';
 import 'react-select/dist/react-select.css';
 const FORM_NAME = 'BillingEditModal';
@@ -37,16 +38,17 @@ export const handleBillingFormSubmit = async (data, dispatch, props) => {
 };
 
 export class BillingEditModal extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.modalStyle = { flexDirection: 'row' };
+  }
   normalizeBilling = (value) => {
     const { billingOptions, changeField } = this.props;
     const billToType = billingOptions.find(o => o.billToId === value).billToType;
     changeField(FORM_NAME, 'billPlan', 'Annual');
     changeField(FORM_NAME, 'billToType', billToType);
     return value;
-  };
-
-  validateBillPlan = (value) => {
-    return value ? undefined : 'Field Required';
   };
 
   getBillingOptions() {
@@ -60,7 +62,7 @@ export class BillingEditModal extends React.Component {
     const billToOptions = billingOptions.map(option => ({label: option.displayText, answer: option.billToId}));
 
     return (
-      <div className="modal" style={{flexDirection: 'row'}}>
+      <div className="modal" style={this.modalStyle}>
         <div className="card card-billing-edit-modal">
           <form id="BillingEditModal" className="BillingEditModal" noValidate onSubmit={handleSubmit(handleBillingFormSubmit)}>
             <div className="card-header">
@@ -72,14 +74,14 @@ export class BillingEditModal extends React.Component {
                 normalize={this.normalizeBilling}
                 component={SelectInput}
                 label="Bill To"
-                validations={['required']}
+                validate={requireField}
                 answers={billToOptions}
               />
               <Field
                 name="billPlan"
                 label="Bill Plan"
                 component={BillingRadio}
-                validate={this.validateBillPlan}
+                validate={requireField}
                 answers={this.getBillingOptions()}
                 segmented
               />

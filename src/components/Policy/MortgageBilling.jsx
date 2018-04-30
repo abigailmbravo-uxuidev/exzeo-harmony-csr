@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
-import { reduxForm, Form, reset, change } from 'redux-form';
+import { reduxForm, Form, Field,  reset, change } from 'redux-form';
+import InputField from '../Form/base/Input';
+import { requireField, matchDateMin10 } from "../Form/validations";
 import { batchActions } from 'redux-batched-actions';
 import moment from 'moment';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
@@ -12,7 +14,7 @@ import * as serviceActions from '../../actions/serviceActions';
 import * as policyStateActions from '../../actions/policyStateActions';
 import PolicyConnect from '../../containers/Policy';
 import SelectField from '../Form/inputs/SelectField';
-import TextField from '../Form/inputs/TextField';
+
 import CurrencyField from '../Form/inputs/CurrencyField';
 import BillingModal from '../../components/Common/BillingEditModal';
 import Footer from '../Common/Footer';
@@ -352,12 +354,24 @@ export class MortgageBilling extends Component {
                   <div className="flex-parent">
                     <div className="flex-child">
                       <div className="form-group">
-                        <TextField validations={['required']} label="Cash Date" styleName="" name="cashDate" type="date" onChange={e => this.setBatch(e.target.value)} />
+                        <Field
+                          name="cashDate"
+                          label="Cash Date"
+                          component={InputField}
+                          type="date"
+                          validate={requireField}
+                          normalize={this.setBatch}
+                        />
                       </div>
                     </div>
                     <div className="flex-child">
                       <div className="form-group">
-                        <TextField validations={['matchDateMin10']} label="Batch Number" styleName="" name="batchNumber" dateString={moment.utc(fieldValues.cashDate).format('YYYYMMDD')} />
+                        <Field
+                          name="batchNumber"
+                          label="Batch Number"
+                          component={InputField}
+                          validate={(value, allValues) => matchDateMin10(value, allValues, 'cashDate', 'YYYYMMDD')}
+                        />
                       </div>
                     </div>
                   </div>
@@ -549,7 +563,6 @@ const mapStateToProps = state => ({
   initialValues: handleInitialize(state),
   policy: state.service.latestPolicy || {},
   tasks: state.cg,
-  appState: state.appState,
   paymentHistory: state.service.paymentHistory,
   paymentOptions: state.service.paymentOptions || defaultArray,
   billingOptions: state.service.billingOptions
