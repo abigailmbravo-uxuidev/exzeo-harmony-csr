@@ -4,26 +4,26 @@ import classNames from 'classnames';
 import FieldHint from '../inputs/FieldHint';
 
 const SelectInput = ({
-   answers,
-   hint,
-   input,
-   isDisabled,
-   label,
-   meta,
-   styleName
- }) => {
-  const { disabled, name } = input;
+  answers,
+  hint,
+  input,
+  disabled,
+  label,
+  meta,
+  styleName
+}) => {
+  const { name } = input;
   const { touched, error, warning } = meta;
 
   return (
-    <div className={classNames('form-group', styleName, name, (error || warning ? 'error' : ''))}>
+    <div className={classNames('form-group', styleName, name, { 'error': touched && (error || warning) })}>
       {label && <label htmlFor={name}>{label}{hint && <FieldHint name={name} hint={hint} />}</label>}
       {answers && answers.length >= 0 &&
       <select
         {...input}
-        className={Error ? 'error' : ''}
+        className={classNames({ 'error': touched && (error || warning) })}
         tabIndex="0"
-        disabled={disabled || isDisabled}
+        disabled={disabled}
         aria-activedescendant={input.value}
       >
         <option aria-label="Please select..." value="">Please select...</option>
@@ -76,9 +76,8 @@ SelectInput.propTypes = {
 };
 
 SelectInput.defaultProps = {
-  input: {
-    onChange: () => {}
-  }
+  styleName: '',
+  disabled: false,
 };
 
 export default SelectInput;

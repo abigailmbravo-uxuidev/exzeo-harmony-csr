@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import FieldHint from '../inputs/FieldHint';
 
-export const TextInput = ({
+export const Input = ({
   input,
   meta: { touched, error, warning },
   hint,
@@ -11,7 +11,8 @@ export const TextInput = ({
   styleName,
   type,
   disabled,
-  name
+  name,
+  placeholder
 }) => {
   return (
     <div className={classNames('form-group', styleName, name, { disabled }, { valid: touched && !error }, { error: touched && error },)}>
@@ -25,6 +26,7 @@ export const TextInput = ({
         name={name}
         type={type}
         disabled={disabled}
+        placeholder={placeholder}
         {...input}
         tabIndex={'0'}
       />
@@ -35,7 +37,7 @@ export const TextInput = ({
   );
 };
 
-TextInput.propTypes = {
+Input.propTypes = {
   hint: PropTypes.string,
   input: PropTypes.shape({
     disabled: PropTypes.bool,
@@ -53,11 +55,13 @@ TextInput.propTypes = {
 
 };
 
-TextInput.defaultProps = {
-  hint: '',
+Input.defaultProps = {
+  type: 'text',
   input: {},
   meta: {},
-  type: 'text',
+  hint: '',
+  placeholder: '',
+  disabled: false,
 };
 
-export default TextInput;
+export default Input;
