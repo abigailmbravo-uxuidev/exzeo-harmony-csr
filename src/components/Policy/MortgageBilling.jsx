@@ -13,7 +13,7 @@ import * as questionsActions from '../../actions/questionsActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as policyStateActions from '../../actions/policyStateActions';
 import PolicyConnect from '../../containers/Policy';
-import SelectField from '../Form/inputs/SelectField';
+import SelectField from '../Form/base/Select';
 
 import BillingModal from '../../components/Common/BillingEditModal';
 import Footer from '../Common/Footer';
@@ -369,23 +369,23 @@ export class MortgageBilling extends Component {
                   <div className="flex-parent">
                     <div className="flex-child">
                       <div className="form-group">
-                        <SelectField
+                        <Field
                           name="cashType"
-                          component="select"
                           label="Cash Type"
-                          onChange={val => this.getPaymentDescription(val)}
-                          validations={['required']}
+                          onChange={this.getPaymentDescription}
+                          component={SelectField}
+                          validate={requireField}
                           answers={_.map(this.props.paymentOptions, type => ({ answer: type.paymentType }))}
                         />
                       </div>
                     </div>
                     <div className="flex-child">
                       <div className="form-group">
-                        <SelectField
+                        <Field
                           name="cashDescription"
-                          component="select"
                           label="Description"
-                          validations={['required']}
+                          component={SelectField}
+                          validate={requireField}
                           answers={_.map(this.state.paymentDescription || [], description => ({ answer: description }))}
                         />
                       </div>

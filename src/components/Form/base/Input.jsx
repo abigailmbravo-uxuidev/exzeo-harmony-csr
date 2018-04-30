@@ -23,18 +23,18 @@ export const Input = ({
         {hint && <FieldHint name={name} hint={hint} />}
       </label>
     }
-      <input
-        name={name}
-        type={type}
-        disabled={disabled}
-        {...input}
-        placeholder={placeholder}
-        min={min}
-        max={max}
-        tabIndex"0"
-      />
-      {touched && (error || warning) &&
-        <span>{error || warning}</span>
+    <input
+      name={name}
+      type={type}
+      disabled={disabled}
+      {...input}
+      placeholder={placeholder}
+      min={min}
+      max={max}
+      tabIndex="0"
+    />
+    {touched && (error || warning) &&
+    <span>{error || warning}</span>
       }
   </div>
 );
@@ -63,7 +63,7 @@ Input.defaultProps = {
   meta: {},
   hint: '',
   placeholder: '',
-  disabled: false,
+  disabled: false
 };
 
 export default Input;
