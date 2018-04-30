@@ -11,29 +11,31 @@ export const TextInput = ({
   styleName,
   type,
   disabled,
-  name
-}) => {
-  return (
-    <div className={classNames('form-group', styleName, name, { disabled }, { valid: touched && !error }, { error: touched && error },)}>
-      {label &&
-        <label htmlFor={name}>
-          {label}
-          {hint && <FieldHint name={name} hint={hint} />}
-        </label>
+  name,
+  min,
+  max
+}) => (
+  <div className={classNames('form-group', styleName, name, { disabled }, { valid: touched && !error }, { error: touched && error }, )}>
+    {label &&
+    <label htmlFor={name}>
+      {label}
+      {hint && <FieldHint name={name} hint={hint} />}
+    </label>
       }
-      <input
-        name={name}
-        type={type}
-        disabled={disabled}
-        {...input}
-        tabIndex={'0'}
-      />
-      {touched && (error || warning) &&
-        <span>{error || warning}</span>
+    <input
+      name={name}
+      type={type}
+      disabled={disabled}
+      {...input}
+      min={min}
+      max={max}
+      tabIndex="0"
+    />
+    {touched && (error || warning) &&
+    <span>{error || warning}</span>
       }
-    </div>
-  );
-};
+  </div>
+);
 
 TextInput.propTypes = {
   hint: PropTypes.string,
@@ -57,7 +59,7 @@ TextInput.defaultProps = {
   hint: '',
   input: {},
   meta: {},
-  type: 'text',
+  type: 'text'
 };
 
 export default TextInput;

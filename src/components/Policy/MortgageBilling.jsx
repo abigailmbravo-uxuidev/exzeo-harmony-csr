@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
-import { reduxForm, Form, Field,  reset, change } from 'redux-form';
+import { reduxForm, Form, Field, reset, change } from 'redux-form';
 import InputField from '../Form/base/Input';
-import { requireField, matchDateMin10 } from "../Form/validations";
+import { requireField, matchDateMin10, range } from '../Form/validations';
 import { batchActions } from 'redux-batched-actions';
 import moment from 'moment';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
@@ -15,13 +15,13 @@ import * as policyStateActions from '../../actions/policyStateActions';
 import PolicyConnect from '../../containers/Policy';
 import SelectField from '../Form/inputs/SelectField';
 
-import CurrencyField from '../Form/inputs/CurrencyField';
 import BillingModal from '../../components/Common/BillingEditModal';
 import Footer from '../Common/Footer';
 import AIModal from '../../components/Common/AdditionalInterestModal';
 import AIEditModal from '../../components/Common/AdditionalInterestEditModal';
 import setRank from '../Common/additionalInterestRank';
 import normalizePhone from '../Form/normalizePhone';
+import CurrencyField from '../Form/inputs/CurrencyField';
 
 export const handleInitialize = (state) => {
   const { service } = state;
@@ -392,11 +392,11 @@ export class MortgageBilling extends Component {
                     </div>
                     <div className="flex-child">
                       <div className="form-group">
-                        <CurrencyField
-                          validations={['range']}
-                          label="Amount"
-                          styleName=""
+                        <Field
                           name="amount"
+                          label="Amount"
+                          component={CurrencyField}
+                          validate={value => range(value, -1000000, 1000000)}
                           min={-1000000}
                           max={1000000}
                         />
