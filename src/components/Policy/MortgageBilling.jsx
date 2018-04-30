@@ -210,15 +210,6 @@ export class MortgageBilling extends Component {
     this.setState({ showAdditionalInterestEditModal: true, selectedAI: ai, addAdditionalInterestType: ai.type });
   };
 
-  hideAdditionalInterestModal = () => {
-    const { dispatch } = this.props;
-    this.setState({ showAdditionalInterestModal: false, showAdditionalInterestEditModal: false });
-    dispatch(batchActions([
-      reset('AdditionalInterestModal'),
-      reset('AdditionalInterestEditModal')
-    ]));
-  };
-
   editAIOnEnter = (event, ai) => {
     if (event.key === 'Enter') {
       this.editAdditionalInterest(ai);
@@ -325,7 +316,7 @@ export class MortgageBilling extends Component {
   render() {
     const { additionalInterests } = this.props.policy;
     const {
-      handleSubmit, pristine, fieldValues, policy, questions, billingOptions, submitting
+      handleSubmit, pristine, policy, questions, billingOptions, submitting
     } = this.props;
     setRank(additionalInterests);
     this.setIsActive(additionalInterests);
@@ -558,7 +549,6 @@ const defaultArray = [];
 const mapStateToProps = state => ({
   questions: state.questions,
   auth: state.authState,
-  fieldValues: _.get(state.form, 'MortgageBilling.values', {}),
   getSummaryLedger: state.service.getSummaryLedger,
   initialValues: handleInitialize(state),
   policy: state.service.latestPolicy || {},
