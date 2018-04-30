@@ -416,7 +416,6 @@ export class SearchForm extends Component {
       value: agency.agencyCode
     }));
 
-
     let searchHandler = handleSearchBarSubmit;
 
     if (fieldValues.searchType === 'policy') searchHandler = handlePolicySearchSubmit;
