@@ -12,30 +12,32 @@ export const Input = ({
   type,
   disabled,
   name,
-  placeholder
-}) => {
-  return (
-    <div className={classNames('form-group', styleName, name, { disabled }, { valid: touched && !error }, { error: touched && error },)}>
-      {label &&
-        <label htmlFor={name}>
-          {label}
-          {hint && <FieldHint name={name} hint={hint} />}
-        </label>
-      }
+  placeholder,
+  min,
+  max
+}) => (
+  <div className={classNames('form-group', styleName, name, { disabled }, { valid: touched && !error }, { error: touched && error }, )}>
+    {label &&
+      <label htmlFor={name}>
+        {label}
+        {hint && <FieldHint name={name} hint={hint} />}
+      </label>
+    }
       <input
         name={name}
         type={type}
         disabled={disabled}
-        placeholder={placeholder}
         {...input}
-        tabIndex={'0'}
+        placeholder={placeholder}
+        min={min}
+        max={max}
+        tabIndex"0"
       />
       {touched && (error || warning) &&
         <span>{error || warning}</span>
       }
-    </div>
-  );
-};
+  </div>
+);
 
 Input.propTypes = {
   hint: PropTypes.string,
