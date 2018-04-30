@@ -31,7 +31,7 @@ export const Input = ({
         placeholder={placeholder}
         min={min}
         max={max}
-        tabIndex"0"
+        tabIndex="0"
       />
       {touched && (error || warning) &&
         <span>{error || warning}</span>
