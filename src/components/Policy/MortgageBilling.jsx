@@ -522,7 +522,7 @@ export class MortgageBilling extends Component {
               questions={questions}
               policy={policy}
               verify={this.handleAISubmit}
-              hideAdditionalInterestModal={this.hideAdditionalInterestModal}
+              hideModal={this.hideAdditionalInterestModal}
             />
           }
         </div>

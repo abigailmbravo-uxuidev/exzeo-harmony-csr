@@ -2,18 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { reduxForm, Form, Field, propTypes, change } from 'redux-form';
+import { reduxForm, Field, propTypes, initialize, reset } from 'redux-form';
 import Input from '../Form/base/Input';
-import { requireField, zipNumbersOnly } from "../Form/validations";
-import { batchActions } from 'redux-batched-actions';
+import { requireField, zipNumbersOnly, phone } from "../Form/validations";
+import { normalizePhone } from "../Form/normalize";
+// TODO refactor these out next
 import ReactSelectField from '../Form/inputs/ReactSelectField';
-import TextField from '../Form/inputs/TextField';
 import SelectField from '../Form/inputs/SelectField';
-import PhoneField from '../Form/inputs/PhoneField';
 import Loader from './Loader';
 
-const handleInitialize = (state) => {
-  const mortgageeOrderAnswers = getMortgageeAnswers(state.questions, _.get(state, 'service.latestPolicy.additionalInterests') || _.get(state, 'service.quote.additionalInterests') || null);
+const handleInitialize = (state, ownProps) => {
+  const { service = {}, questions = {} } = state;
+  let mortgageeOrderAnswers = '';
+  if ((service.latestPolicy || service.quote) && ownProps.addAdditionalInterestType === 'Mortgagee') {
+   mortgageeOrderAnswers = getMortgageeAnswers(questions, service.latestPolicy.additionalInterests || service.quote.additionalInterests || null);
+  }
   return {
     name1: '',
     name2: '',
@@ -28,31 +31,26 @@ const handleInitialize = (state) => {
     order: mortgageeOrderAnswers.length === 1 ? mortgageeOrderAnswers[0].answer : ''
   };
 };
-const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 export const setMortgageeValues = (val, props) => {
   const selectedMortgagee = val;
 
   if (selectedMortgagee) {
-    props.dispatch(batchActions([
-      change('AdditionalInterestModal', 'name1', _.get(selectedMortgagee, 'AIName1')),
-      change('AdditionalInterestModal', 'name2', _.get(selectedMortgagee, 'AIName2')),
-      change('AdditionalInterestModal', 'address1', _.get(selectedMortgagee, 'AIAddress1')),
-      change('AdditionalInterestModal', 'city', _.get(selectedMortgagee, 'AICity')),
-      change('AdditionalInterestModal', 'state', _.get(selectedMortgagee, 'AIState')),
-      change('AdditionalInterestModal', 'zip', String(_.get(selectedMortgagee, 'AIZip')))
-    ]));
+    props.initializeForm('AdditionalInterestModal', {
+      name1: selectedMortgagee['AIName1'],
+      name2: selectedMortgagee['AIName2'],
+      address1: selectedMortgagee['AIAddress1'],
+      address2: selectedMortgagee['AIAddress2'] || '',
+      city: selectedMortgagee['AICity'],
+      state: selectedMortgagee['AIState'],
+      zip: String(selectedMortgagee['AIZip']),
+    });
   } else {
-    props.dispatch(batchActions([
-      change('AdditionalInterestModal', 'name1', ''),
-      change('AdditionalInterestModal', 'name2', ''),
-      change('AdditionalInterestModal', 'address1', ''),
-      change('AdditionalInterestModal', 'city', ''),
-      change('AdditionalInterestModal', 'state', ''),
-      change('AdditionalInterestModal', 'zip', '')
-    ]));
+    props.resetForm('AdditionalInterestModal')
   }
 };
+
+const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 export const getMortgageeAnswers = (questions, additionalInterests) => {
   let mortgageeOrderAnswers = _.cloneDeep(getAnswers('order', questions));
@@ -77,17 +75,20 @@ export class AdditionalInterestModal extends React.Component {
     const {
       handleSubmit,
       verify,
-      hideAdditionalInterestModal,
+      hideModal,
       questions,
       additionalInterests,
       submitting,
       addAdditionalInterestType
     } = this.props;
 
-    const mortgageeOrderAnswers = getMortgageeAnswers(questions, additionalInterests);
     return (
       <div className="modal" style={this.modalStyle}>
-        <Form id="AdditionalInterestModal" className={`AdditionalInterestModal ${addAdditionalInterestType}`} noValidate onSubmit={handleSubmit(verify)}>
+        <form
+          id="AdditionalInterestModal"
+          className={`AdditionalInterestModal ${addAdditionalInterestType}`}
+          onSubmit={handleSubmit(verify)}
+        >
           {submitting && <Loader/>}
           <div className="card">
             <div className="card-header">
@@ -155,8 +156,21 @@ export class AdditionalInterestModal extends React.Component {
                 />
               </div>
               <div className="flex-form">
-                <PhoneField label="Phone Number" styleName="phone" name="phoneNumber" validations={['phone']}/>
-                <TextField label="Reference Number" styleName="reference-number" name="referenceNumber"/>
+                <Field
+                  name="phoneNumber"
+                  label="Phone Number"
+                  component={Input}
+                  styleName="phone"
+                  normalize={normalizePhone}
+                  validate={phone}
+                  placeholder="555-555-5555"
+                />
+                <Field
+                  name="referenceNumber"
+                  label="Reference Number"
+                  component={Input}
+                  styleName="reference-number"
+                />
                 {addAdditionalInterestType === 'Mortgagee' &&
                 <SelectField
                   name="order"
@@ -164,18 +178,18 @@ export class AdditionalInterestModal extends React.Component {
                   styleName=""
                   label="Order"
                   validations={['required']}
-                  answers={mortgageeOrderAnswers}
+                  answers={getMortgageeAnswers(questions, additionalInterests)}
                 />}
               </div>
             </div>
             <div className="card-footer">
               <div className="btn-group">
-                <button tabIndex="0" className="btn btn-secondary" type="button" onClick={hideAdditionalInterestModal}>Cancel</button>
+                <button tabIndex="0" className="btn btn-secondary" type="button" onClick={hideModal}>Cancel</button>
                 <button tabIndex="0" className="btn btn-primary" type="submit" disabled={submitting}>Save</button>
               </div>
             </div>
           </div>
-        </Form>
+        </form>
       </div>
     );
   };
@@ -193,10 +207,9 @@ AdditionalInterestModal.propTypes = {
   })
 };
 
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps) => ({
   tasks: state.cg,
-  initialValues: handleInitialize(state),
+  initialValues: handleInitialize(state, ownProps),
 });
 
 AdditionalInterestModal = reduxForm({
@@ -204,6 +217,9 @@ AdditionalInterestModal = reduxForm({
   enableReinitialize: true
 })(AdditionalInterestModal);
 
-AdditionalInterestModal = connect(mapStateToProps)(AdditionalInterestModal);
+AdditionalInterestModal = connect(mapStateToProps, {
+  initializeForm: initialize,
+  resetForm: reset
+})(AdditionalInterestModal);
 
 export default AdditionalInterestModal;
