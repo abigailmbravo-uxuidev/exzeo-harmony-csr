@@ -412,39 +412,11 @@ export class SearchForm extends Component {
       agencyList,
       pathName
     } = this.props;
-<<<<<<< HEAD
     const agencyListValues = agencyList.map(agency => ({
       label: agency.displayName,
-      answer: agency.agencyCode
+      answer: agency.agencyCode,
+      value: agency.agencyCode
     }));
-=======
-
-    const agencyListValues = agencyList.map(agency => {
-        return {
-          label: agency.displayName,
-          answer: agency.agencyCode,
-          value: agency.agencyCode
-        }
-    });
-
-    const clearForm = () => {
-      const modelName = appState.modelName;
-      const data = tasks[modelName].data;
-      const workflowId = appState.instanceId;
-      const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData')) || {};
-      lastSearchData.searchType = '';
-      localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
-      reset(form);
-      actions.cgActions.clearSearchResults(modelName, data);
-      actions.errorActions.clearAppError();
-      actions.serviceActions.clearAgencies();
-      actions.serviceActions.clearAgent();
-      resetPolicySearch(this.props);
-      this.props.actions.appStateActions.setAppState(appState.modelName, workflowId, { submitting: false });
-      this.props.actions.serviceActions.getAgencies('TTIC', 'FL');
-
-    };
->>>>>>> merged in develop,
 
 
     let searchHandler = handleSearchBarSubmit;
@@ -626,14 +598,7 @@ export class SearchForm extends Component {
           {
   fieldValues.searchType === 'policy' && search.policyAdvanceSearch &&
   <div className="advanced-search fade-in">
-<<<<<<< HEAD
-    <SelectField
-      name="agencyCode"
-      component="select"
-      styleName=""
-=======
     <ReactSelectField
->>>>>>> merged in develop,
       label="Agency Name"
       name="agencyCodeSelectField"
       searchable
