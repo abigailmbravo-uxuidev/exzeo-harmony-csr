@@ -16,6 +16,7 @@ import * as serviceActions from '../../actions/serviceActions';
 import * as searchActions from '../../actions/searchActions';
 import normalizeDate from '../Form/normalizeDate';
 import Pagination from '../Common/Pagination';
+import ReactSelectField from '../Form/inputs/ReactSelectField';
 
 const userTasks = {
   handleSearchBarSubmit: 'search'
@@ -244,11 +245,13 @@ export const validate = (values) => {
   }
 
   if (values.agentCode) {
+    console.log(values.agentCode);
     const numbersOnly = Rules.numbersOnly(values.agentCode);
     if (numbersOnly) {
       errors.agentCode = numbersOnly;
     }
   }
+  console.log(values.agencyCode);
 
   if (values.agencyCode) {
     const numbersOnly = Rules.numbersOnly(values.agencyCode);
@@ -329,6 +332,11 @@ const generateField = (name, placeholder, labelText, formErrors, formGroupCss) =
 
 const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
+export const setAgency = (val, props) => {
+  props.dispatch(change('SearchBar', 'agencyCode', val.value ? val.value: ""));
+};
+
+
 export class SearchForm extends Component {
   clearForm = () => {
     const { actions, appState, change, form, reset, tasks} = this.props;
@@ -404,10 +412,40 @@ export class SearchForm extends Component {
       agencyList,
       pathName
     } = this.props;
+<<<<<<< HEAD
     const agencyListValues = agencyList.map(agency => ({
       label: agency.displayName,
       answer: agency.agencyCode
     }));
+=======
+
+    const agencyListValues = agencyList.map(agency => {
+        return {
+          label: agency.displayName,
+          answer: agency.agencyCode,
+          value: agency.agencyCode
+        }
+    });
+
+    const clearForm = () => {
+      const modelName = appState.modelName;
+      const data = tasks[modelName].data;
+      const workflowId = appState.instanceId;
+      const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData')) || {};
+      lastSearchData.searchType = '';
+      localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
+      reset(form);
+      actions.cgActions.clearSearchResults(modelName, data);
+      actions.errorActions.clearAppError();
+      actions.serviceActions.clearAgencies();
+      actions.serviceActions.clearAgent();
+      resetPolicySearch(this.props);
+      this.props.actions.appStateActions.setAppState(appState.modelName, workflowId, { submitting: false });
+      this.props.actions.serviceActions.getAgencies('TTIC', 'FL');
+
+    };
+>>>>>>> merged in develop,
+
 
     let searchHandler = handleSearchBarSubmit;
 
@@ -508,29 +546,6 @@ export class SearchForm extends Component {
           <Pagination changePageForward={() => changePageQuote(this.props, true)} changePageBack={() => changePageQuote(this.props, false)} fieldValues={fieldValues} />
       }
           {fieldValues.searchType === 'policy' && <div className="search-inputs fade-in p">
-
-            <SelectField
-              name="sortBy"
-              component="select"
-              styleName="search-context"
-              label="Sort By"
-              validations={['required']}
-              onChange={() => resetPolicySearch(this.props)}
-              answers={[
-          {
-            answer: 'policyNumber',
-            label: 'Policy Number'
-          },
-          {
-            answer: 'firstName',
-            label: 'First Name'
-          },
-          {
-            answer: 'lastName',
-            label: 'Last Name'
-          }
-        ]}
-            />
             {generateField('firstName', 'First Name Search', 'First Name', formErrors, 'first-name-search')}
             {generateField('lastName', 'Last Name Search', 'Last Name', formErrors, 'last-name-search')}
             {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
@@ -611,12 +626,22 @@ export class SearchForm extends Component {
           {
   fieldValues.searchType === 'policy' && search.policyAdvanceSearch &&
   <div className="advanced-search fade-in">
+<<<<<<< HEAD
     <SelectField
       name="agencyCode"
       component="select"
       styleName=""
+=======
+    <ReactSelectField
+>>>>>>> merged in develop,
       label="Agency Name"
+      name="agencyCodeSelectField"
+      searchable
+      labelKey="label"
+      autoFocus
+      value={appState.data.selectedAgency}
       answers={agencyListValues}
+      onChange={val => setAgency(val, this.props)}
     />
     <div className="form-group effectiveDate">
       <label htmlFor="effectiveDate">{getErrorToolTip(formErrors, 'effectiveDate')}
@@ -624,37 +649,13 @@ export class SearchForm extends Component {
       </label>
       <Field name="effectiveDate" className="" placeholder="MM/DD/YYYY" type="text" normalize={normalizeDate} component="input" />
     </div>
-    <div className="form-group quote-state">
+    <div className="form-group policy-status">
       <SelectField
         name="policyStatus"
         component="select"
         styleName=""
         label="Policy Status"
-  // answers={getAnswers('policyStatus', questions)}
-        answers={[
-        {
-        answer: '0',
-        label: 'Policy Issued'
-        }, {
-        answer: '1',
-        label: 'In Force'
-        }, {
-        answer: '2',
-        label: 'Pending Voluntary Cancellation'
-        }, {
-        answer: '3',
-        label: 'Pending Underwriting Cancellation'
-        }, {
-        answer: '4',
-        label: 'Pending Underwriting Non-Renewal'
-        }, {
-        answer: '8',
-        label: 'Cancelled'
-        }, {
-        answer: '9',
-        label: 'Not In Force'
-        }
-        ]}
+      answers={getAnswers('policyStatus', questions)}
       />
     </div>
     <SelectField
