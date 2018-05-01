@@ -343,7 +343,7 @@ export class MortgageBilling extends Component {
   render() {
     const { additionalInterests } = this.props.policy;
     const {
-      handleSubmit, pristine, policy, questions, billingOptions, submitting,
+      handleSubmit, pristine, policy, questions, billingOptions, submitting, reset: resetForm,
     } = this.props;
     setRank(additionalInterests);
     this.setIsActive(additionalInterests);
@@ -431,7 +431,7 @@ export class MortgageBilling extends Component {
                     </div>
                   </div>
                   <div className="btn-footer">
-                    <button className="btn btn-secondary" type="button" form="MortgageBilling" onClick={this.hideAdditionalInterestModal}>Cancel</button>
+                    <button className="btn btn-secondary" type="button" form="MortgageBilling" onClick={resetForm}>Cancel</button>
                     <button className="btn btn-primary" type="submit" form="MortgageBilling" disabled={submitting || pristine}>Save</button>
                   </div>
                 </Form>
