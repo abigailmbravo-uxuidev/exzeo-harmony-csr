@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { reduxForm, Field, propTypes, initialize, reset } from 'redux-form';
 import Input from '../Form/base/Input';
+import Select from '../Form/base/Select';
 import { requireField, zipNumbersOnly, phone, ensureString } from "../Form/validations";
 import { normalizePhone } from "../Form/normalize";
 // TODO refactor these out next
@@ -51,6 +52,7 @@ export class AdditionalInterestModal extends React.Component {
       getAnswers,
       getMortgageeOrderAnswers,
       getMortgageeOrderAnswersForEdit,
+      deleteAdditionalInterest,
       validAdditionalInterestTypes,
       selectedAI,
     } = this.props;
@@ -151,9 +153,9 @@ export class AdditionalInterestModal extends React.Component {
                 />
 
                 {isEditing && selectedAI.type === 'Mortgagee' &&
-                <SelectField
+                <Field
                   name="order"
-                  component="select"
+                  component={Select}
                   styleName=""
                   label="Order"
                   validations={['required']}
@@ -162,12 +164,12 @@ export class AdditionalInterestModal extends React.Component {
                 }
 
                 {!isEditing && addAdditionalInterestType === 'Mortgagee' &&
-                  <SelectField
+                  <Field
                     name="order"
-                    component="select"
+                    component={Select}
                     styleName=""
                     label="Order"
-                    validations={['required']}
+
                     answers={getMortgageeOrderAnswers(questions, additionalInterests)}
                   />
                 }
@@ -188,6 +190,7 @@ export class AdditionalInterestModal extends React.Component {
             <div className="card-footer">
               <div className="btn-group">
                 <button tabIndex="0" className="btn btn-secondary" type="button" onClick={hideModal}>Cancel</button>
+                {isEditing && <button tabIndex="0" className="btn btn-secondary" type="button" disabled={submitting} onClick={() => deleteAdditionalInterest(selectedAI, this.props)}>Delete</button> }
                 <button tabIndex="0" className="btn btn-primary" type="submit" disabled={submitting}>Save</button>
               </div>
             </div>

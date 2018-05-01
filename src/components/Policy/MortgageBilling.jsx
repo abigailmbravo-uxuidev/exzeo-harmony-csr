@@ -17,12 +17,13 @@ import {
   createTransaction
 } from '../../actions/serviceActions';
 import PolicyConnect from '../../containers/Policy';
+
 import BillingModal from '../../components/Common/BillingEditModal';
 import AIModal from '../../components/Common/AdditionalInterestModal';
 import Footer from '../Common/Footer';
 import setRank from '../Common/additionalInterestRank';
 import { requireField, matchDateMin10, range } from '../Form/validations';
-import SelectField from '../Form/inputs/SelectField';
+import SelectField from '../Form/base/Select';
 import InputField from '../Form/base/Input';
 import CurrencyField from '../Form/base/Currency';
 
@@ -115,13 +116,14 @@ export class MortgageBilling extends Component {
     this.setState({ paymentDescription: selectedDescriptionType.paymentDescription });
   };
 
-  handleAISubmit = (data, dispatch, props) => {
+  handleAISubmit = async (data, dispatch, props) => {
+    const { updatePolicy, createTransaction } = this.props;
     const { policy } = props;
 
     const additionalInterests = policy.additionalInterests || [];
     const type = data.aiType || this.state.addAdditionalInterestType;
 
-    let { order } = data;
+    let {order} = data;
 
     const isMortgagee = type === 'Mortgagee';
     // type mortgagee allows the user to select order and the AI edit will pass in order
@@ -169,14 +171,19 @@ export class MortgageBilling extends Component {
       additionalInterests: modifiedAIs
     };
 
-    this.props.createTransaction(submitData).then(() => {
-      this.props.updatePolicy(true, policy.policyNumber);
-      this.setState({
-        showAdditionalInterestModal: false,
-        showAdditionalInterestEditModal: false
-      });
+    try {
+      await createTransaction(submitData);
+      updatePolicy(true, policy.policyNumber);
+    } catch (err) {
+      // not sure what to do here
+    }
+
+    this.setState({
+      showAdditionalInterestModal: false,
+      showAdditionalInterestEditModal: false
     });
   };
+
 
   deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
     const additionalInterests = props.policy.additionalInterests || [];
@@ -331,7 +338,7 @@ export class MortgageBilling extends Component {
   render() {
     const { additionalInterests } = this.props.policy;
     const {
-      handleSubmit, pristine, policy, questions, billingOptions, submitting, reset: resetForm,
+      handleSubmit, pristine, policy, questions, billingOptions, submitting,
     } = this.props;
     setRank(additionalInterests);
     this.setIsActive(additionalInterests);
@@ -384,12 +391,12 @@ export class MortgageBilling extends Component {
                   <div className="flex-parent">
                     <div className="flex-child">
                       <div className="form-group">
-                        <SelectField
+                        <Field
                           name="cashType"
-                          component="select"
                           label="Cash Type"
-                          onChange={val => this.getPaymentDescription(val)}
-                          validations={['required']}
+                          onChange={this.getPaymentDescription}
+                          component={SelectField}
+                          validate={requireField}
                           answers={_.map(this.props.paymentOptions, type => ({ answer: type.paymentType }))}
                         />
                       </div>
@@ -398,9 +405,9 @@ export class MortgageBilling extends Component {
                       <div className="form-group">
                         <Field
                           name="cashDescription"
-                          component={SelectField}
                           label="Description"
-                          validations={['required']}
+                          component={SelectField}
+                          validate={requireField}
                           answers={_.map(this.state.paymentDescription || [], description => ({ answer: description }))}
                         />
                       </div>

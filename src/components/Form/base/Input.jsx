@@ -63,7 +63,7 @@ Input.defaultProps = {
   meta: {},
   hint: '',
   placeholder: '',
-  disabled: false,
+  disabled: false
 };
 
 export default Input;
