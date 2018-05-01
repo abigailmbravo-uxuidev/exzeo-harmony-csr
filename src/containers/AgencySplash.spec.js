@@ -5,8 +5,9 @@ import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
-import localStorage from 'localStorage';
 import ConnectedApp, { AgencySplash } from './AgencySplash';
+
+import localStorage from '../setupTests';
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);

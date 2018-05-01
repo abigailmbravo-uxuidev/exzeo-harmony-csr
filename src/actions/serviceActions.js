@@ -199,18 +199,14 @@ export const searchAgencies = (companyCode, state, displayName, agencyCode, addr
   });
 
   return axios(axiosConfig).then((response) => {
-    const result = response.data && response.data.result ? response.data.result.sort() : [];
+    const result = response.data && response.data.result ? response.data.result : [];
     const data = { agencies: result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
+    return dispatch(serviceRequest(data));
   })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
+  .catch((error) => {
+    const message = handleError(error);
+    return dispatch(errorActions.setAppError(message));
+  });
 };
 
 export const clearAgencies = () => (dispatch) => {
@@ -539,10 +535,10 @@ export const updateBillPlan = paymentPlan => (dispatch) => {
     const data = response.data.result;
     dispatch(getLatestPolicy(data.policyNumber));
   })
-  .catch((error) => {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
-  });
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(errorActions.setAppError(message));
+    });
 };
 
 export const getBillingOptionsForPolicy = paymentOptions => (dispatch) => {
@@ -736,18 +732,14 @@ export const getAgencies = (companyCode, state) => (dispatch) => {
   });
 
   return axios(axiosConfig).then((response) => {
-    const result = response.data && response.data.result ? response.data.result.sort() : [];
+    const result = response.data && response.data.result ? response.data.result : [];
     const data = { agencies: result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
+    return dispatch(serviceRequest(data));
   })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
+  .catch((error) => {
+    const message = handleError(error);
+    return dispatch(errorActions.setAppError(message));
+  });
 };
 
 export const searchPolicy = (taskData, sort) => (dispatch) => {
@@ -756,7 +748,7 @@ export const searchPolicy = (taskData, sort) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'policy-data',
     method: 'GET',
-    path: `/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=${taskData.policyNumber}&firstName=${taskData.firstName}&lastName=${taskData.lastName}&propertyAddress=${formattedAddress.replace(' ', '&#32;')}&page=${taskData.pageNumber}&pageSize=${taskData.pageSize}&resultStart=${taskData.resultStart}&sort=${sort}&sortDirection=${sortDirection}&effectiveDate=${taskData.effectiveDate}&agencyCode=${taskData.agencyCode}&policyStatus=${taskData.policyStatus}`
+    path: `/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=${taskData.policyNumber}&firstName=${taskData.firstName}&lastName=${taskData.lastName}&propertyAddress=${formattedAddress.replace(' ', '&#32;')}&page=${taskData.pageNumber}&pageSize=${taskData.pageSize}&resultStart=${taskData.resultStart}&sort=${sort}&sortDirection=${sortDirection}&effectiveDate=${taskData.effectiveDate}&agencyCode=${taskData.agencyCode}&status=${taskData.policyStatus}`
   });
 
   return Promise.resolve(axios(axiosConfig)).then((response) => {

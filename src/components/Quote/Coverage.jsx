@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import localStorage from 'localStorage';
 import moment from 'moment';
 import momentTZ from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
@@ -302,7 +301,6 @@ export class Coverage extends Component {
     this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
 
     const isNewTab = localStorage.getItem('isNewTab') === 'true';
-
     if (isNewTab) {
       localStorage.setItem('isNewTab', false);
 

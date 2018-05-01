@@ -4,6 +4,9 @@ import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
 import ConnectedApp, { SearchForm, handleSearchBarSubmit, validate, handlePolicySearchSubmit, togglePolicyAdvanceSearch, changePageQuote, changePagePolicy } from './SearchBar';
+import localStorageMock from '../../setupTests';
+
+global.localStorage = localStorageMock;
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -204,6 +207,7 @@ describe('Testing SearchBar component', () => {
     const props = {
       agencyList: [],
       reset() {},
+      change() {},
       search: {
         hasSearched: true
       },
@@ -219,7 +223,7 @@ describe('Testing SearchBar component', () => {
       dispatch: store.dispatch,
       actions: {
         serviceActions: {
-          getAgencies(){},
+          getAgencies() {},
           clearAgencies() {},
           clearAgent() {},
           clearPolicyResults() {},
@@ -237,7 +241,8 @@ describe('Testing SearchBar component', () => {
         cgActions: {
           clearSearchResults() {},
           moveToTaskAndExecuteComplete() { return Promise.resolve(() => {}); }
-        }
+        },
+        change() {}
       },
       appState: {
         modelName: 'test',
