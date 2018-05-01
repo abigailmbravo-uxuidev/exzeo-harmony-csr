@@ -7,6 +7,12 @@ import { mount, shallow } from 'enzyme';
 import * as serviceActions from '../../actions/serviceActions';
 import ConnectedApp, { minimzeButtonHandler, validate, renderNotes, Uploader } from './NoteUploader';
 
+const localStorageMock = {
+  getItem() {},
+  setItem() {},
+  clear() {}
+};
+global.localStorage = localStorageMock;
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 
@@ -18,15 +24,15 @@ describe('Testing NoteUploader component', () => {
     };
     const store = mockStore(initialState);
     const props = {
-      actions:{
+      actions: {
         serviceActions: {
-          addNote(){}
+          addNote() {}
         },
         newNoteActions: {
-          toggleNote(){}
+          toggleNote() {}
         },
         errorActions: {
-          setAppError(){}
+          setAppError() {}
         }
       },
       closeButtonHandler() {},
@@ -50,11 +56,10 @@ describe('Testing NoteUploader component', () => {
     wrapper2.instance().submitNote({}, props.dispatch, props);
 
     props.user = {
-      profile: { family_name: 'test', given_name: 'test'}
-    }
+      profile: { family_name: 'test', given_name: 'test' }
+    };
     const wrapper3 = shallow(<Uploader store={store} {...props} />);
     wrapper3.instance().submitNote({}, props.dispatch, props);
-
   });
 
   it('should test submit note and minimzeButtonHandler', () => {
@@ -103,11 +108,10 @@ describe('Testing NoteUploader component', () => {
     wrapper.setProps(props);
 
     minimzeButtonHandler(props);
-
   });
 
   it('note should be valid', () => {
-    const valid = validate({noteContent: 'Test Content'});
+    const valid = validate({ noteContent: 'Test Content' });
     expect(valid).toEqual({});
   });
 
@@ -117,24 +121,24 @@ describe('Testing NoteUploader component', () => {
   });
 
   it('should render Notes', () => {
-    const note  = { 
-      input:'test', 
-      label: 'test', 
-      type: 'textarea', 
-      meta: { touched: false, error: null } 
-    }
+    const note = {
+      input: 'test',
+      label: 'test',
+      type: 'textarea',
+      meta: { touched: false, error: null }
+    };
     const renderNote = renderNotes(note);
     expect(renderNote.type).toEqual('div');
     expect(renderNote.props.className).toEqual(' text-area-wrapper');
   });
 
   it('should render Notes error', () => {
-    const note  = { 
-      input:'test', 
-      label: 'test', 
-      type: 'textarea', 
-      meta: { touched: true, error: true } 
-    }
+    const note = {
+      input: 'test',
+      label: 'test',
+      type: 'textarea',
+      meta: { touched: true, error: true }
+    };
     const renderNote = renderNotes(note);
     expect(renderNote.type).toEqual('div');
     expect(renderNote.props.className).toEqual('error text-area-wrapper');
