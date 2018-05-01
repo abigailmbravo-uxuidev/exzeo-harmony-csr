@@ -199,18 +199,14 @@ export const searchAgencies = (companyCode, state, displayName, agencyCode, addr
   });
 
   return axios(axiosConfig).then((response) => {
-    const result = response.data && response.data.result ? response.data.result.sort() : [];
+    const result = response.data && response.data.result ? response.data.result : [];
     const data = { agencies: result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
+    return dispatch(serviceRequest(data));
   })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
+  .catch((error) => {
+    const message = handleError(error);
+    return dispatch(errorActions.setAppError(message));
+  });
 };
 
 export const clearAgencies = () => (dispatch) => {
@@ -736,18 +732,14 @@ export const getAgencies = (companyCode, state) => (dispatch) => {
   });
 
   return axios(axiosConfig).then((response) => {
-    const result = response.data && response.data.result ? response.data.result.sort() : [];
+    const result = response.data && response.data.result ? response.data.result : [];
     const data = { agencies: result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
+    return dispatch(serviceRequest(data));
   })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
+  .catch((error) => {
+    const message = handleError(error);
+    return dispatch(errorActions.setAppError(message));
+  });
 };
 
 export const searchPolicy = (taskData, sort) => (dispatch) => {

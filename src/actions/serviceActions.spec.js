@@ -236,7 +236,7 @@ describe('Service Actions', () => {
 
     return serviceActions.searchAgencies('TTIC', 'FL', '', '', '', '', '', '')(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
       });
   });
 
@@ -266,7 +266,7 @@ describe('Service Actions', () => {
 
     return serviceActions.searchAgencies('454545', 'FL')(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
   });
 
@@ -1235,9 +1235,9 @@ describe('Service Actions', () => {
     serviceActions.getAgencies(store.dispatch);
 
     return serviceActions.getAgencies('TTIC', 'FL')(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
-      });
+    .then(() => {
+      expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
+    });
   });
 
   it('should fail start getAgencies', () => {
@@ -1266,7 +1266,7 @@ describe('Service Actions', () => {
 
     return serviceActions.getAgencies(null, 'FL')(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
   });
 

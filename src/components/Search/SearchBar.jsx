@@ -408,10 +408,10 @@ export class SearchForm extends Component {
       agencyList,
       pathName
     } = this.props;
+
     const agencyListValues = agencyList.map(agency => ({
       label: agency.displayName,
-      answer: agency.agencyCode,
-      value: agency.agencyCode
+      answer: agency.agencyCode
     }));
 
     let searchHandler = handleSearchBarSubmit;
