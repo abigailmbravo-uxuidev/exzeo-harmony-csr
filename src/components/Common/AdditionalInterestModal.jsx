@@ -7,9 +7,8 @@ import Input from '../Form/base/Input';
 import Select from '../Form/base/Select';
 import { requireField, zipNumbersOnly, phone, ensureString } from "../Form/validations";
 import { normalizePhone } from "../Form/normalize";
-// TODO refactor these out next
+// TODO refactor this out next
 import ReactSelectField from '../Form/inputs/ReactSelectField';
-import SelectField from '../Form/inputs/SelectField';
 import Loader from './Loader';
 
 export const setMortgageeValues = (val, props) => {
@@ -74,7 +73,7 @@ export class AdditionalInterestModal extends React.Component {
               <h4><i className={`fa fa-circle ${addAdditionalInterestType}`}/> {addAdditionalInterestType}</h4>
             </div>
             <div className="card-block">
-              {addAdditionalInterestType === 'Mortgagee' &&
+              {(addAdditionalInterestType || selectedAI.type) === 'Mortgagee' &&
               <ReactSelectField
                 label="Top Mortgagees"
                 name="mortgagee"
@@ -176,13 +175,12 @@ export class AdditionalInterestModal extends React.Component {
               </div>
               {isEndorsement &&
               <div className="flex-form">
-                <SelectField
+                <Field
                   name="aiType"
-                  answers={validAdditionalInterestTypes}
                   label="Type"
-                  component="select"
-                  styleName=""
-                  validations={['required']}
+                  component={Select}
+                  answers={validAdditionalInterestTypes}
+                  validations={requireField}
                 />
               </div>
               }

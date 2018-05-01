@@ -121,6 +121,7 @@ export class MortgageBilling extends Component {
     this.setState({
       showAdditionalInterestModal: true,
       isEditingAI: false,
+      selectedAI: {},
       addAdditionalInterestType: type
     });
   };
