@@ -1,8 +1,9 @@
 import validator from 'validator';
 import moment from 'moment';
 
-export const matchDateMin = max => (value, allValues, match, format) => (String(value).substring(0, 8) === moment.utc(allValues[match]).format(format) &&
-String(value).length >= max ? undefined : `Field must match date and be at least ${max} characters`);
+export const matchDateMin = max => (value, allValues, matchTo, format) =>
+  (String(value).substring(0, 8) === moment.utc(allValues[matchTo]).format(format) &&
+  String(value).length >= max ? undefined : `Field must match date and be at least ${max} characters`);
 
 export const matchDateMin10 = matchDateMin(10);
 
