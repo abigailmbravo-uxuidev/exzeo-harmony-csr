@@ -362,18 +362,16 @@ export class SearchForm extends Component {
 
     const quoteSearchResponse = previousTask.value && previousTask.value.result ? previousTask.value.result : {};
 
-    if (nextProps.search.searchType === 'policy' && nextProps.search.hasSearched && !_.isEqual(this.props.policyResults, nextProps.policyResults)) {
+    if (nextProps.search.searchType === 'policy' && nextProps.search.hasSearched) {
       const totalPages = Math.ceil(nextProps.policyResults.totalNumberOfRecords / nextProps.policyResults.pageSize);
       const pageNumber = nextProps.policyResults.currentPage;
       dispatch(change('SearchBar', 'pageNumber', pageNumber));
       dispatch(change('SearchBar', 'totalPages', totalPages));
-      nextProps.actions.searchActions.setSearch({
-        ...nextProps.search,
-        totalPages,
-        pageNumber
-      });
+      nextProps.actions.searchActions.setSearch({...nextProps.search, totalPages, pageNumber });
     }
-    if (nextProps.search.searchType === 'quote' && nextProps.search.hasSearched && !_.isEqual(this.props.quoteSearchResponse, quoteSearchResponse)) {
+
+
+    if (nextProps.search.searchType === 'quote' && nextProps.search.hasSearched) {
       const totalPages = Math.ceil(quoteSearchResponse.totalNumberOfRecords / quoteSearchResponse.pageSize);
       const pageNumber = quoteSearchResponse.currentPage;
       dispatch(change('SearchBar', 'pageNumber', pageNumber));
