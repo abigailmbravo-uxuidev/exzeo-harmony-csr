@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import localStorage from 'localStorage';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
@@ -17,7 +16,6 @@ export const selectPolicy = (quote, props) => {
 };
 
 export class DetailHeader extends Component {
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.quoteState && nextProps.quoteState.update && nextProps.quoteState.quoteId) {
       this.props.actions.serviceActions.getQuote(nextProps.quoteState.quoteId);
@@ -27,8 +25,8 @@ export class DetailHeader extends Component {
   render() {
     const { quoteData } = this.props;
       if (!quoteData || !quoteData._id) { // eslint-disable-line
-        return <div className="detailHeader" />;
-      }
+      return <div className="detailHeader" />;
+    }
     return (<div className="detailHeader">
       <section id="quoteDetails" className="quoteDetails">
         <dl>
@@ -57,7 +55,7 @@ export class DetailHeader extends Component {
             <dd>{quoteData.policyHolderMailingAddress.address2}</dd>
             <dd>
               {quoteData.policyHolderMailingAddress.city},&nbsp;
-                     {quoteData.policyHolderMailingAddress.state}&nbsp;
+              {quoteData.policyHolderMailingAddress.state}&nbsp;
               {quoteData.policyHolderMailingAddress.zip}
             </dd>
           </div>
@@ -71,7 +69,7 @@ export class DetailHeader extends Component {
             <dd>{quoteData.property.physicalAddress.address2}</dd>
             <dd>
               {quoteData.property.physicalAddress.city},&nbsp;
-                     {quoteData.property.physicalAddress.state}&nbsp;
+              {quoteData.property.physicalAddress.state}&nbsp;
               {quoteData.property.physicalAddress.zip}
             </dd>
           </div>
@@ -121,8 +119,7 @@ export class DetailHeader extends Component {
       </section>
     </div>);
   }
-
-  }
+}
 
 const mapStateToProps = state => ({
   quoteState: state.quoteState,

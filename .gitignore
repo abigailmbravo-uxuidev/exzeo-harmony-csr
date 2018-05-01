@@ -14,3 +14,6 @@ documentation
 package.lock
 sh.exe.stackdump
 .env.local
+
+# JetBrains IDEs (Webstorm, etc.)
+.idea

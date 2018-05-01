@@ -106,9 +106,9 @@ class Routes extends Component {
           </div>
         </Modal>
         {this.props.newNote && this.props.newNote.documentId &&
-          <NoteUploader
-            noteType={this.props.newNote.noteType}
-            documentId={this.props.newNote.documentId}
+          <NoteUploader 
+            noteType={this.props.newNote.noteType} 
+            documentId={this.props.newNote.documentId} 
             sourceId={this.props.newNote.sourceNumber}
           />
         }

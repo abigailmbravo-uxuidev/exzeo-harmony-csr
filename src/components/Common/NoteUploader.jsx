@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import localStorage from 'localStorage';
 import { Field, Form, reduxForm, propTypes } from 'redux-form';
 import Uppy from 'uppy/lib/core';
 import { Dashboard } from 'uppy/lib/react';
@@ -21,7 +20,9 @@ export const minimzeButtonHandler = (props) => {
   }
 };
 
-export const renderNotes = ({ input, label, type, meta: { touched, error } }) => (
+export const renderNotes = ({
+ input, label, type, meta: { touched, error } 
+}) => (
   <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
     <textarea {...input} placeholder={label} rows="10" cols="40" />
     { touched && error && <span className="error-message">{ error }</span> }
@@ -111,9 +112,11 @@ export class Uploader extends Component {
   closeButtonHandler = () => this.props.actions.newNoteActions.toggleNote({});
 
   submitNote = (data, dispatch, props) => {
-    const { actions, user, noteType, documentId, sourceId } = props;
+    const {
+ actions, user, noteType, documentId, sourceId 
+} = props;
     const attachments = Object.values(this.uppy.getState().files);
-    if(!user.profile.given_name || !user.profile.family_name) {
+    if (!user.profile.given_name || !user.profile.family_name) {
       const message = 'There was a problem with your user profile. Please logout of Harmony and try logging in again.';
       this.closeButtonHandler();
       actions.errorActions.setAppError({ message });
@@ -125,7 +128,7 @@ export class Uploader extends Component {
       noteType,
       noteContent: data.noteContent,
       contactType: data.contactType,
-      createdAt:  moment().unix(),
+      createdAt: moment().unix(),
       attachmentCount: attachments ? attachments.length : 0,
       fileType: data.fileType,
       createdBy: JSON.stringify({
@@ -138,13 +141,11 @@ export class Uploader extends Component {
     this.closeButtonHandler();
   };
 
-  validateFile = (file, currentFiles) => {
-    return !file.name.includes('.') 
+  validateFile = (file, currentFiles) => !file.name.includes('.') 
       ? Promise.reject('Uploads must have a file extension.') 
-      : Promise.resolve();
-  }
+      : Promise.resolve()
 
-  componentWillMount () {
+  componentWillMount() {
     const idToken = localStorage.getItem('id_token');
 
     this.uppy = new Uppy({
@@ -156,24 +157,26 @@ export class Uploader extends Component {
       onBeforeFileAdded: this.validateFile,
       onBeforeUpload: (files) => {
         if (files) return Promise.resolve();
-        return this.uppy.addFile({ source: 'uppy', preview: null, name: 'hidden', type: null, data: new Uint8Array() })
-        .then(done => Promise.resolve())
+        return this.uppy.addFile({
+ source: 'uppy', preview: null, name: 'hidden', type: null, data: new Uint8Array() 
+})
+          .then(done => Promise.resolve());
       }
     })
-    .use(XHRUpload, {
-      endpoint: `${process.env.REACT_APP_API_URL}/upload`,
-      formData: true,
-      bundle: true,
-      fieldName: 'files[]',
-      headers: {
-        accept: 'application/json',
-        authorization: `bearer ${idToken}`
-      }
-    })
-    .run();
+      .use(XHRUpload, {
+        endpoint: `${process.env.REACT_APP_API_URL}/upload`,
+        formData: true,
+        bundle: true,
+        fieldName: 'files[]',
+        headers: {
+          accept: 'application/json',
+          authorization: `bearer ${idToken}`
+        }
+      })
+      .run();
   }
 
-  render () {
+  render() {
     return (
       <div className={this.props.appState.data.minimize === true ? 'new-note-file minimize' : 'new-note-file'} >
         <div className="title-bar">
@@ -185,7 +188,7 @@ export class Uploader extends Component {
         </div>
         <div className="mainContainer">
           <Form id="NewNoteFileUploader" onSubmit={this.props.handleSubmit(this.submitNote)} noValidate>
-              <div className="content">
+            <div className="content">
                 <label>Contact</label>
                 <Field component="select" name="contactType" disabled={!this.contactTypes.length}>
                   { this.contactTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
@@ -199,21 +202,21 @@ export class Uploader extends Component {
                   <Dashboard
                     uppy={this.uppy}
                     maxHeight={350}
-                    showProgressDetails={true}
-                    hideUploadButton={true}
+                    showProgressDetails
+                    hideUploadButton
                   />
+                </div>
               </div>
-              </div>
-              <div className="buttons note-file-footer-button-group">
-                <button tabIndex={'0'} aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={this.closeButtonHandler}>Cancel</button>
-                <button tabIndex={'0'} aria-label="submit-btn form-newNote" className="btn btn-primary submit-button">Save</button>
+            <div className="buttons note-file-footer-button-group">
+                <button tabIndex="0" aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={this.closeButtonHandler}>Cancel</button>
+                <button tabIndex="0" aria-label="submit-btn form-newNote" className="btn btn-primary submit-button">Save</button>
               </div>
           </Form>
         </div>
       </div>
     );
   }
-};
+}
 
 Uploader.propTypes = {
   ...propTypes,
@@ -236,6 +239,6 @@ const mapDispatchToProps = dispatch => ({
 
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
   form: 'NewNoteFileUploader',
-  initialValues: { contactType: 'Agent', fileType: 'Other',  },
+  initialValues: { contactType: 'Agent', fileType: 'Other' },
   validate
 })(Uploader));

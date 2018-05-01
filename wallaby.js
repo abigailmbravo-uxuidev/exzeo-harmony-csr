@@ -25,7 +25,7 @@ module.exports = function (wallaby) {
       '!src/**/**/**/*.spec.js*',
       '!src/index.js',
       '!src/routes.js',
-      '!src/setupTests.js'
+      'src/setupTests.js'
     ],
     tests: [
       'src/**/*.spec.js*',

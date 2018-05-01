@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import localStorage from 'localStorage';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
@@ -77,6 +76,7 @@ export const SearchResults = (props) => {
               <AddressSearchCard
                 address={address}
                 index={index}
+                key={index}
                 addressSelection={() => props.handleNewTab(address, props)}
                 addressKeyEnter={event => onKeypressSubmit(event, address, props)}
               />
