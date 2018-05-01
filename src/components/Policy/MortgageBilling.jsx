@@ -7,7 +7,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import _ from 'lodash';
 import moment from 'moment';
 import { updatePolicy } from '../../actions/policyStateActions';
-import { getUIQuestions } from "../../actions/questionsActions";
+import { getUIQuestions } from '../../actions/questionsActions';
 import {
   getPaymentOptionsApplyPayments,
   getBillingOptionsForPolicy,
@@ -58,7 +58,7 @@ export const getMortgageeOrderAnswersForEdit = (questions, additionalInterests) 
   if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length < 2) {
     _.remove(answers, answer => Number(answer.answer) === 1);
   }
-  return answers
+  return answers;
 };
 
 
@@ -154,7 +154,7 @@ export class MortgageBilling extends Component {
     const additionalInterests = policy.additionalInterests || [];
     const type = data.aiType || this.state.addAdditionalInterestType;
 
-    let {order} = data;
+    let { order } = data;
 
     const isMortgagee = type === 'Mortgagee';
     // type mortgagee allows the user to select order and the AI edit will pass in order
@@ -237,7 +237,7 @@ export class MortgageBilling extends Component {
       this.props.updatePolicy(true, props.policy.policyNumber);
       this.setState({
         showAdditionalInterestModal: false,
-        isEditingAI: false,
+        isEditingAI: false
       });
     });
   };
@@ -262,7 +262,9 @@ export class MortgageBilling extends Component {
 
 
   handleFormSubmit = (data) => {
-    const { policy, reset: resetForm, addTransaction, getPaymentHistory, getSummaryLedger } = this.props;
+    const {
+      policy, reset: resetForm, addTransaction, getPaymentHistory, getSummaryLedger
+    } = this.props;
     const submitData = data;
 
     submitData.cashDate = moment.utc(data.cashDate);
@@ -349,7 +351,7 @@ export class MortgageBilling extends Component {
       questions,
       billingOptions,
       submitting,
-      reset: resetForm,
+      reset: resetForm
     } = this.props;
 
     setRank(additionalInterests);
@@ -587,11 +589,6 @@ const mapStateToProps = state => ({
   billingOptions: state.service.billingOptions
 });
 
-MortgageBilling = reduxForm({
-  form: 'MortgageBilling',
-  enableReinitialize: true
-})(MortgageBilling);
-
 export default connect(mapStateToProps, {
   batchActions,
   getPaymentHistory,
@@ -601,5 +598,8 @@ export default connect(mapStateToProps, {
   addTransaction,
   createTransaction,
   getUIQuestions,
-  updatePolicy,
-})(MortgageBilling);
+  updatePolicy
+})(reduxForm({
+  form: 'MortgageBilling',
+  enableReinitialize: true
+})(MortgageBilling));
