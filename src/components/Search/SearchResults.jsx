@@ -76,6 +76,7 @@ export const SearchResults = (props) => {
               <AddressSearchCard
                 address={address}
                 index={index}
+                key={index}
                 addressSelection={() => props.handleNewTab(address, props)}
                 addressKeyEnter={event => onKeypressSubmit(event, address, props)}
               />

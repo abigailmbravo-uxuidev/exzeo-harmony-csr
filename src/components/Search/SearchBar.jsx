@@ -15,6 +15,7 @@ import * as serviceActions from '../../actions/serviceActions';
 import * as searchActions from '../../actions/searchActions';
 import normalizeDate from '../Form/normalizeDate';
 import Pagination from '../Common/Pagination';
+import ReactSelectField from '../Form/inputs/ReactSelectField';
 
 const userTasks = {
   handleSearchBarSubmit: 'search'
@@ -69,7 +70,7 @@ export const changePageQuote = (props, isNext) => {
     firstName: (encodeURIComponent(fieldValues.firstName) !== 'undefined' ? encodeURIComponent(fieldValues.firstName) : ''),
     lastName: (encodeURIComponent(fieldValues.lastName) !== 'undefined' ? encodeURIComponent(fieldValues.lastName) : ''),
     address: (encodeURIComponent(fieldValues.address) !== 'undefined' ? encodeURIComponent(String(fieldValues.address).trim()) : ''),
-    quoteNumber: (encodeURIComponent(fieldValues.policyNumber) !== 'undefined' ? encodeURIComponent(fieldValues.policyNumber) : ''),
+    quoteNumber: (encodeURIComponent(fieldValues.quoteNumber) !== 'undefined' ? encodeURIComponent(fieldValues.quoteNumber) : ''),
     quoteState: (encodeURIComponent(fieldValues.quoteState) !== 'undefined' ? encodeURIComponent(fieldValues.quoteState) : ''),
     searchType,
     isLoading: true,
@@ -328,6 +329,11 @@ const generateField = (name, placeholder, labelText, formErrors, formGroupCss) =
 
 const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
+export const setAgency = (val, props) => {
+  props.dispatch(change('SearchBar', 'agencyCode', val.value ? val.value: ""));
+};
+
+
 export class SearchForm extends Component {
   clearForm = () => {
     const { actions, appState, change, form, reset, tasks} = this.props;
@@ -361,18 +367,16 @@ export class SearchForm extends Component {
 
     const quoteSearchResponse = previousTask.value && previousTask.value.result ? previousTask.value.result : {};
 
-    if (nextProps.search.searchType === 'policy' && nextProps.search.hasSearched && !_.isEqual(this.props.policyResults, nextProps.policyResults)) {
+    if (nextProps.search.searchType === 'policy' && nextProps.search.hasSearched) {
       const totalPages = Math.ceil(nextProps.policyResults.totalNumberOfRecords / nextProps.policyResults.pageSize);
       const pageNumber = nextProps.policyResults.currentPage;
       dispatch(change('SearchBar', 'pageNumber', pageNumber));
       dispatch(change('SearchBar', 'totalPages', totalPages));
-      nextProps.actions.searchActions.setSearch({
-        ...nextProps.search,
-        totalPages,
-        pageNumber
-      });
+      nextProps.actions.searchActions.setSearch({...nextProps.search, totalPages, pageNumber });
     }
-    if (nextProps.search.searchType === 'quote' && nextProps.search.hasSearched && !_.isEqual(this.props.quoteSearchResponse, quoteSearchResponse)) {
+
+
+    if (nextProps.search.searchType === 'quote' && nextProps.search.hasSearched) {
       const totalPages = Math.ceil(quoteSearchResponse.totalNumberOfRecords / quoteSearchResponse.pageSize);
       const pageNumber = quoteSearchResponse.currentPage;
       dispatch(change('SearchBar', 'pageNumber', pageNumber));
@@ -403,6 +407,7 @@ export class SearchForm extends Component {
       agencyList,
       pathName
     } = this.props;
+
     const agencyListValues = agencyList.map(agency => ({
       label: agency.displayName,
       answer: agency.agencyCode
@@ -507,29 +512,6 @@ export class SearchForm extends Component {
           <Pagination changePageForward={() => changePageQuote(this.props, true)} changePageBack={() => changePageQuote(this.props, false)} fieldValues={fieldValues} />
       }
           {fieldValues.searchType === 'policy' && <div className="search-inputs fade-in p">
-
-            <SelectField
-              name="sortBy"
-              component="select"
-              styleName="search-context"
-              label="Sort By"
-              validations={['required']}
-              onChange={() => resetPolicySearch(this.props)}
-              answers={[
-          {
-            answer: 'policyNumber',
-            label: 'Policy Number'
-          },
-          {
-            answer: 'firstName',
-            label: 'First Name'
-          },
-          {
-            answer: 'lastName',
-            label: 'Last Name'
-          }
-        ]}
-            />
             {generateField('firstName', 'First Name Search', 'First Name', formErrors, 'first-name-search')}
             {generateField('lastName', 'Last Name Search', 'Last Name', formErrors, 'last-name-search')}
             {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
@@ -610,12 +592,15 @@ export class SearchForm extends Component {
           {
   fieldValues.searchType === 'policy' && search.policyAdvanceSearch &&
   <div className="advanced-search fade-in">
-    <SelectField
-      name="agencyCode"
-      component="select"
-      styleName=""
+    <ReactSelectField
       label="Agency Name"
+      name="agencyCodeSelectField"
+      searchable
+      labelKey="label"
+      autoFocus
+      value={appState.data.selectedAgency}
       answers={agencyListValues}
+      onChange={val => setAgency(val, this.props)}
     />
     <div className="form-group effectiveDate">
       <label htmlFor="effectiveDate">{getErrorToolTip(formErrors, 'effectiveDate')}
@@ -623,37 +608,13 @@ export class SearchForm extends Component {
       </label>
       <Field name="effectiveDate" className="" placeholder="MM/DD/YYYY" type="text" normalize={normalizeDate} component="input" />
     </div>
-    <div className="form-group quote-state">
+    <div className="form-group policy-status">
       <SelectField
         name="policyStatus"
         component="select"
         styleName=""
         label="Policy Status"
-  // answers={getAnswers('policyStatus', questions)}
-        answers={[
-        {
-        answer: '0',
-        label: 'Policy Issued'
-        }, {
-        answer: '1',
-        label: 'In Force'
-        }, {
-        answer: '2',
-        label: 'Pending Voluntary Cancellation'
-        }, {
-        answer: '3',
-        label: 'Pending Underwriting Cancellation'
-        }, {
-        answer: '4',
-        label: 'Pending Underwriting Non-Renewal'
-        }, {
-        answer: '8',
-        label: 'Cancelled'
-        }, {
-        answer: '9',
-        label: 'Not In Force'
-        }
-        ]}
+      answers={getAnswers('policyStatus', questions)}
       />
     </div>
     <SelectField

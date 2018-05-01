@@ -12,7 +12,8 @@ export const ReactSelectInput = ({
   input,
   label,
   meta,
-  styleName
+  styleName,
+  labelKey
 }) => {
   const {
     onChange, name, value
@@ -28,7 +29,7 @@ export const ReactSelectInput = ({
         <Select
           name={name}
           searchable
-          labelKey="displayText"
+          labelKey={labelKey}
           autoFocus
           value={value}
           options={answers}

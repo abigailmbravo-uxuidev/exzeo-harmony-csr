@@ -236,7 +236,7 @@ describe('Service Actions', () => {
 
     return serviceActions.searchAgencies('TTIC', 'FL', '', '', '', '', '', '')(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
       });
   });
 
@@ -266,7 +266,7 @@ describe('Service Actions', () => {
 
     return serviceActions.searchAgencies('454545', 'FL')(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
   });
 
@@ -1235,9 +1235,9 @@ describe('Service Actions', () => {
     serviceActions.getAgencies(store.dispatch);
 
     return serviceActions.getAgencies('TTIC', 'FL')(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
-      });
+    .then(() => {
+      expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
+    });
   });
 
   it('should fail start getAgencies', () => {
@@ -1266,7 +1266,7 @@ describe('Service Actions', () => {
 
     return serviceActions.getAgencies(null, 'FL')(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
   });
 
@@ -1282,7 +1282,7 @@ describe('Service Actions', () => {
       data: {
         service: 'policy-data',
         method: 'GET',
-        path: '/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=123&firstName=gfdgfd&lastName=fhnhyn&propertyAddress=123&page=1&pageSize=25&resultStart=1&sort=policyNumber&sortDirection=desc&effectiveDate=2017-01-02&agencyCode=2000&policyStatus=0'
+        path: '/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=123&firstName=gfdgfd&lastName=fhnhyn&propertyAddress=123&page=1&pageSize=25&resultStart=1&sort=policyNumber&sortDirection=desc&effectiveDate=2017-01-02&agencyCode=2000&status=0'
       }
     };
 
@@ -1308,9 +1308,9 @@ describe('Service Actions', () => {
     };
 
     return serviceActions.searchPolicy(taskData, 'policyNumber')(store.dispatch)
-    .then(() => {
-      expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
-    });
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
+      });
   });
 
   it('should fail searchPolicy', () => {
@@ -1344,41 +1344,6 @@ describe('Service Actions', () => {
     return serviceActions.searchPolicy(taskData, 'policyNumber')(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
-      });
-  });
-
-  it('should saveBillingInfo', () => {
-    const mockAdapter = new MockAdapter(axios);
-
-    const axiosOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'quote-data',
-        method: 'put',
-        path: ' ',
-        data: {
-          _id: 123,
-          billToType: 'Policyholder',
-          billToId: '123456',
-          billPlan: 'Annual'
-        }
-      }
-    };
-
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
-    });
-
-    const initialState = {};
-    const store = mockStore(initialState);
-
-    return serviceActions.saveBillingInfo(123, 'Policyholder', '123456', 'Annual')(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
       });
   });
 
