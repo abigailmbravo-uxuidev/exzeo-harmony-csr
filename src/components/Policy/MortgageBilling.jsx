@@ -341,10 +341,17 @@ export class MortgageBilling extends Component {
   };
 
   render() {
-    const { additionalInterests } = this.props.policy;
     const {
-      handleSubmit, pristine, policy, questions, billingOptions, submitting, reset: resetForm,
+      handleSubmit,
+      pristine,
+      policy,
+      policy: { additionalInterests },
+      questions,
+      billingOptions,
+      submitting,
+      reset: resetForm,
     } = this.props;
+
     setRank(additionalInterests);
     this.setIsActive(additionalInterests);
 
