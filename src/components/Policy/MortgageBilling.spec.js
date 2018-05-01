@@ -1,15 +1,9 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
 import { shallow } from 'enzyme';
-import _ from 'lodash';
-import {
+import MortgageBillingConnect, {
   MortgageBilling,
   handleInitialize,
-  addAdditionalInterest,
-  editAdditionalInterest,
-  hideAdditionalInterestModal,
-  handleAISubmit,
-  deleteAdditionalInterest
 } from './MortgageBilling';
 
 const middlewares = [];
@@ -269,7 +263,7 @@ describe('Testing MortgageBilling component', () => {
         }
       }
     };
-    const wrapper = shallow(<MortgageBilling store={store} {...props} />);
+    const wrapper = shallow(<MortgageBillingConnect store={store} {...props} />);
     expect(wrapper);
     handleInitialize(initialState);
 

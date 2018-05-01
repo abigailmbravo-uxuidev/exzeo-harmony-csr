@@ -64,11 +64,12 @@ export const getMortgageeOrderAnswersForEdit = (questions, additionalInterests) 
 
 export class MortgageBilling extends Component {
   state = {
+    addAdditionalInterestType: null,
     paymentDescription: [],
+    selectedAI: {},
     showAdditionalInterestModal: false,
     isEditingAI: false,
-    addAdditionalInterestType: null,
-    selectedAI: {}
+    showBillingEditModal: false
   };
 
   componentDidMount = () => {
@@ -114,6 +115,36 @@ export class MortgageBilling extends Component {
     const { dispatch } = this.props;
     dispatch(change('MortgageBilling', 'cashDescription', ''));
     this.setState({ paymentDescription: selectedDescriptionType.paymentDescription });
+  };
+
+  addAdditionalInterest = (type) => {
+    this.setState({
+      showAdditionalInterestModal: true,
+      isEditingAI: false,
+      addAdditionalInterestType: type
+    });
+  };
+
+  editAdditionalInterest = (ai) => {
+    this.setState({
+      showAdditionalInterestModal: true,
+      isEditingAI: true,
+      selectedAI: ai,
+      addAdditionalInterestType: ai.type
+    });
+  };
+
+  editAIOnEnter = (event, ai) => {
+    if (event.key === 'Enter') {
+      this.editAdditionalInterest(ai);
+    }
+  };
+
+  hideAdditionalInterestModal = () => {
+    this.setState({
+      showAdditionalInterestModal: false,
+      isEditingAI: false
+    });
   };
 
   handleAISubmit = async (data, dispatch, props) => {
@@ -162,7 +193,6 @@ export class MortgageBilling extends Component {
 
     const offset = new Date(policy.effectiveDate).getTimezoneOffset() / 60;
 
-
     const submitData = {
       ...aiData,
       ...policy,
@@ -171,23 +201,18 @@ export class MortgageBilling extends Component {
       additionalInterests: modifiedAIs
     };
 
-    try {
-      await createTransaction(submitData);
-      updatePolicy(true, policy.policyNumber);
-    } catch (err) {
-      // not sure what to do here
-    }
+    await createTransaction(submitData);
+    updatePolicy(true, policy.policyNumber);
 
     this.setState({
       showAdditionalInterestModal: false,
-      showAdditionalInterestEditModal: false
+      isEditingAI: false
     });
   };
 
 
   deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
     const additionalInterests = props.policy.additionalInterests || [];
-
     // remove any existing items before submission
     const modifiedAIs = _.cloneDeep(additionalInterests);
     // remove any existing items before submission
@@ -208,38 +233,21 @@ export class MortgageBilling extends Component {
       transactionType: 'AI Removal'
     };
 
-    props.createTransaction(submitData).then(() => {
-      props.updatePolicy(true, props.policy.policyNumber);
+    this.props.createTransaction(submitData).then(() => {
+      this.props.updatePolicy(true, props.policy.policyNumber);
       this.setState({
         showAdditionalInterestModal: false,
-        showAdditionalInterestEditModal: false
+        isEditingAI: false,
       });
     });
   };
 
+  handleBillingEdit = () => {
+    this.setState({ showBillingEditModal: true });
+  };
+
   hideBillingModal = () => {
     this.setState({ showBillingEditModal: false });
-  };
-
-  addAdditionalInterest = (type) => {
-    this.setState({ showAdditionalInterestModal: true, isEditingAI: false, addAdditionalInterestType: type });
-  };
-
-  editAdditionalInterest = (ai) => {
-    this.setState({ showAdditionalInterestModal: true, isEditingAI: true, selectedAI: ai, addAdditionalInterestType: ai.type });
-  };
-
-  editAIOnEnter = (event, ai) => {
-    if (event.key === 'Enter') {
-      this.editAdditionalInterest(ai);
-    }
-  };
-
-  hideAdditionalInterestModal = () => {
-    this.setState({
-      showAdditionalInterestModal: false,
-      isEditingAI: false
-    });
   };
 
   checkValidTypes = (additionalInterests, selectedAI) => {
@@ -254,7 +262,7 @@ export class MortgageBilling extends Component {
 
 
   handleFormSubmit = (data) => {
-    const { policy, reset: resetForm } = this.props;
+    const { policy, reset: resetForm, addTransaction, getPaymentHistory, getSummaryLedger } = this.props;
     const submitData = data;
 
     submitData.cashDate = moment.utc(data.cashDate);
@@ -264,17 +272,14 @@ export class MortgageBilling extends Component {
     submitData.cashDescription = String(data.cashDescription);
     submitData.companyCode = 'TTIC';
     submitData.policy = this.props.policy;
-    this.props.addTransaction(submitData)
+
+    addTransaction(submitData)
       .then(() => {
-        this.props.getPaymentHistory(policy.policyNumber);
-        this.props.getSummaryLedger(policy.policyNumber);
+        getPaymentHistory(policy.policyNumber);
+        getSummaryLedger(policy.policyNumber);
       });
 
     resetForm();
-  };
-
-  handleBillingEdit = () => {
-    this.setState({ showBillingEditModal: true });
   };
 
   amountFormatter = cell => (cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '');
@@ -523,18 +528,6 @@ export class MortgageBilling extends Component {
               </section>
             </div>
           </div>
-          {/*{this.state.showAdditionalInterestEditModal &&*/}
-            {/*<AIEditModal*/}
-              {/*additionalInterests={additionalInterests}*/}
-              {/*validAdditionalInterestTypes={validAdditionalInterestTypes}*/}
-              {/*selectedAI={this.state.selectedAI}*/}
-              {/*initialValues={this.initAdditionalInterestModal()}*/}
-              {/*hideAdditionalInterestModal={this.hideAdditionalInterestModal}*/}
-              {/*questions={questions}*/}
-              {/*policy={policy}*/}
-              {/*verify={this.handleAISubmit}*/}
-            {/*/>*/}
-          {/*}*/}
           {this.state.showAdditionalInterestModal &&
             <AIModal
               isEditing={this.state.isEditingAI}

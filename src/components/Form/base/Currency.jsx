@@ -17,7 +17,7 @@ export const CurrencyInput = ({
   max
 }) => {
   return (
-    <div className={classNames('form-group', styleName, { name: input.name }, { disabled }, { valid: touched && !error }, { error: touched && error }, )}>
+    <div className={classNames('form-group', styleName, input.name, { disabled }, { valid: touched && !error }, { error: touched && error }, )}>
       {label &&
       <label htmlFor={input.name}>
         {label}

@@ -12,7 +12,7 @@ const SelectInput = ({
  label,
  styleName
 }) => (
-  <div className={classNames('form-group', styleName, { name: input.name }, {'error': touched && (error || warning)})}>
+  <div className={classNames('form-group', styleName, input.name, {'error': touched && (error || warning)})}>
     {label && <label htmlFor={input.name}>{label}{hint && <FieldHint name={input.name} hint={hint}/>}</label>}
     {answers && answers.length >= 0 &&
     <select
