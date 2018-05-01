@@ -4,40 +4,35 @@ import classNames from 'classnames';
 import FieldHint from '../inputs/FieldHint';
 
 const SelectInput = ({
-  answers,
-  hint,
-  input,
-  disabled,
-  label,
-  meta,
-  styleName
-}) => {
-  const { name } = input;
-  const { touched, error, warning } = meta;
-
-  return (
-    <div className={classNames('form-group', styleName, name, { 'error': touched && (error || warning) })}>
-      {label && <label htmlFor={name}>{label}{hint && <FieldHint name={name} hint={hint} />}</label>}
-      {answers && answers.length >= 0 &&
-      <select
-        {...input}
-        className={classNames({ 'error': touched && (error || warning) })}
-        tabIndex="0"
-        disabled={disabled}
-        aria-activedescendant={input.value}
-      >
-        <option aria-label="Please select..." value="">Please select...</option>
-        {answers.map((answer, index) => (
-          <option aria-label={answer.label || answer.answer} value={answer.answer} key={index}>
-            {answer.label || answer.answer}
-          </option>
-        ))}
-      </select>
-      }
-      {touched && (error || warning) && <span>{error || warning}</span>}
-    </div>
-  );
-};
+ input,
+ meta: { touched, error, warning },
+ answers,
+ hint,
+ disabled,
+ label,
+ styleName
+}) => (
+  <div className={classNames('form-group', styleName, { name: input.name }, {'error': touched && (error || warning)})}>
+    {label && <label htmlFor={input.name}>{label}{hint && <FieldHint name={input.name} hint={hint}/>}</label>}
+    {answers && answers.length >= 0 &&
+    <select
+      {...input}
+      className={classNames({'error': touched && (error || warning)})}
+      tabIndex="0"
+      disabled={disabled}
+      aria-activedescendant={input.value}
+    >
+      <option aria-label="Please select..." value="">Please select...</option>
+      {answers.map((answer, index) => (
+        <option aria-label={answer.label || answer.answer} value={answer.answer} key={index}>
+          {answer.label || answer.answer}
+        </option>
+      ))}
+    </select>
+    }
+    {touched && (error || warning) && <span>{error || warning}</span>}
+  </div>
+);
 
 SelectInput.propTypes = {
   /**

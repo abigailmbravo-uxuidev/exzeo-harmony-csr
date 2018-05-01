@@ -1,36 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 import { reduxForm, Field, propTypes, initialize, reset } from 'redux-form';
 import Input from '../Form/base/Input';
-import { requireField, zipNumbersOnly, phone } from "../Form/validations";
+import { requireField, zipNumbersOnly, phone, ensureString } from "../Form/validations";
 import { normalizePhone } from "../Form/normalize";
 // TODO refactor these out next
 import ReactSelectField from '../Form/inputs/ReactSelectField';
 import SelectField from '../Form/inputs/SelectField';
 import Loader from './Loader';
-
-const handleInitialize = (state, ownProps) => {
-  const { service = {}, questions = {} } = state;
-  let mortgageeOrderAnswers = '';
-  if ((service.latestPolicy || service.quote) && ownProps.addAdditionalInterestType === 'Mortgagee') {
-   mortgageeOrderAnswers = getMortgageeAnswers(questions, service.latestPolicy.additionalInterests || service.quote.additionalInterests || null);
-  }
-  return {
-    name1: '',
-    name2: '',
-    phoneNumber: '',
-    address1: '',
-    address2: '',
-    city: '',
-    state: '',
-    zip: '',
-    referenceNumber: '',
-    type: '',
-    order: mortgageeOrderAnswers.length === 1 ? mortgageeOrderAnswers[0].answer : ''
-  };
-};
 
 export const setMortgageeValues = (val, props) => {
   const selectedMortgagee = val;
@@ -50,19 +29,6 @@ export const setMortgageeValues = (val, props) => {
   }
 };
 
-const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
-
-export const getMortgageeAnswers = (questions, additionalInterests) => {
-  let mortgageeOrderAnswers = _.cloneDeep(getAnswers('order', questions));
-
-  if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 0) {
-    mortgageeOrderAnswers = mortgageeOrderAnswers.filter(answer => Number(answer.answer) === 0);
-  } else if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 1) {
-    mortgageeOrderAnswers = mortgageeOrderAnswers.filter(answer => Number(answer.answer) === 1);
-  }
-  return mortgageeOrderAnswers;
-};
-
 export const checkAdditionalInterestForName = aiType => aiType === 'Additional Insured' || aiType === 'Additional Interest' || aiType === 'Bill Payer';
 
 export class AdditionalInterestModal extends React.Component {
@@ -79,14 +45,25 @@ export class AdditionalInterestModal extends React.Component {
       questions,
       additionalInterests,
       submitting,
-      addAdditionalInterestType
+      addAdditionalInterestType,
+      isEditing,
+      isEndorsement,
+      getAnswers,
+      getMortgageeOrderAnswers,
+      getMortgageeOrderAnswersForEdit,
+      validAdditionalInterestTypes,
+      selectedAI,
     } = this.props;
+
+    if (isEditing) {
+
+    }
 
     return (
       <div className="modal" style={this.modalStyle}>
         <form
-          id="AdditionalInterestModal"
-          className={`AdditionalInterestModal ${addAdditionalInterestType}`}
+          id={isEditing ? "AdditionalInterestEditModal" : "AdditionalInterestModal"}
+          className={classNames('AdditionalInterestModal', { [selectedAI.type]: isEditing, [addAdditionalInterestType]: !isEditing })}
           onSubmit={handleSubmit(verify)}
         >
           {submitting && <Loader/>}
@@ -152,6 +129,7 @@ export class AdditionalInterestModal extends React.Component {
                   label="Zip Code"
                   component={Input}
                   styleName="zip"
+                  format={ensureString}
                   validate={[requireField, zipNumbersOnly]}
                 />
               </div>
@@ -171,16 +149,41 @@ export class AdditionalInterestModal extends React.Component {
                   component={Input}
                   styleName="reference-number"
                 />
-                {addAdditionalInterestType === 'Mortgagee' &&
+
+                {isEditing && selectedAI.type === 'Mortgagee' &&
                 <SelectField
                   name="order"
                   component="select"
                   styleName=""
                   label="Order"
                   validations={['required']}
-                  answers={getMortgageeAnswers(questions, additionalInterests)}
-                />}
+                  answers={getMortgageeOrderAnswersForEdit(questions, additionalInterests)}
+                />
+                }
+
+                {!isEditing && addAdditionalInterestType === 'Mortgagee' &&
+                  <SelectField
+                    name="order"
+                    component="select"
+                    styleName=""
+                    label="Order"
+                    validations={['required']}
+                    answers={getMortgageeOrderAnswers(questions, additionalInterests)}
+                  />
+                }
               </div>
+              {isEndorsement &&
+              <div className="flex-form">
+                <SelectField
+                  name="aiType"
+                  answers={validAdditionalInterestTypes}
+                  label="Type"
+                  component="select"
+                  styleName=""
+                  validations={['required']}
+                />
+              </div>
+              }
             </div>
             <div className="card-footer">
               <div className="btn-group">
@@ -209,7 +212,6 @@ AdditionalInterestModal.propTypes = {
 
 const mapStateToProps = (state, ownProps) => ({
   tasks: state.cg,
-  initialValues: handleInitialize(state, ownProps),
 });
 
 AdditionalInterestModal = reduxForm({

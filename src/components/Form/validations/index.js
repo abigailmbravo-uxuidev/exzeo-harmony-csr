@@ -22,3 +22,4 @@ export const range = (value, min, max) => {
   return valid;
 };
 
+export const ensureString = value => String(value);
