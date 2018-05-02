@@ -72,6 +72,7 @@ export class UnderwritingValidationBar extends React.Component {
       handleSubmit,
       quoteData,
       exceptions,
+      pristine
     } = this.props;
 
   const { warnings, overridableExceptions, nonOverridableExceptions } = exceptions;
@@ -103,6 +104,7 @@ export class UnderwritingValidationBar extends React.Component {
             <UnderwritingExceptions
               exceptionLevel="overridable"
               exceptions={sortedOverridableExceptions}
+              pristine={pristine}
               render={exception => (
                 <CheckField
                   label="Override"
