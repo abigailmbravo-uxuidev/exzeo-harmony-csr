@@ -344,7 +344,7 @@ export class SearchForm extends Component {
 
     const quoteSearchResponse = previousTask.value && previousTask.value.result ? previousTask.value.result : {};
 
-    if (nextProps.search.searchType === 'policy' && nextProps.policyResults && nextProps.search.hasSearched) {
+    if (nextProps.search.searchType === 'policy' && nextProps.search.hasSearched && nextProps.policyResults) {
       const totalPages = Math.ceil(nextProps.policyResults.totalNumberOfRecords / nextProps.policyResults.pageSize);
       const pageNumber = nextProps.policyResults.currentPage;
       dispatch(change('SearchBar', 'pageNumber', pageNumber));
