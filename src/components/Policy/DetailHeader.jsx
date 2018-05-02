@@ -42,8 +42,11 @@ export class DetailHeader extends Component {
     const billingStatusCode = summaryLedger && summaryLedger.status ? summaryLedger.status.code : null;
 
     let cancellationDate = '';
-    if (policy && policy.cancelDate && (policy.status.includes('Pending') || policy.status.includes('Cancel') || billingStatusCode > 8)) {
-      cancellationDate = moment.utc(policy.cancelDate).format('MM/DD/YYYY');
+
+    if (policy && summaryLedger && (policy.status.includes('Pending') || policy.status.includes('Cancel') || billingStatusCode > 8)) { 
+      cancellationDate = policy.cancelDate 
+        ? moment.utc(policy.cancelDate).format('MM/DD/YYYY')
+        : moment.utc(summaryLedger.nonPaymentNoticeDueDate).format('MM/DD/YYYY');
     }
     if (policy && policy.endDate && billingStatusCode === 99) {
       cancellationDate = moment.utc(policy.endDate).format('MM/DD/YYYY');
