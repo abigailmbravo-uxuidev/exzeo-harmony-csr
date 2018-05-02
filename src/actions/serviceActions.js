@@ -757,7 +757,7 @@ export const searchPolicy = (taskData, sort) => (dispatch) => {
   })
     .catch((error) => {
       const message = handleError(error);
-      return dispatch(errorActions.setAppError({ message }));
+      return dispatch(errorActions.setAppError(message));
     });
 };
 

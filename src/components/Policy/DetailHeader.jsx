@@ -59,7 +59,8 @@ export class DetailHeader extends Component {
     const loc = policy.property.physicalAddress;
     const mapQuery = encodeURIComponent(`${loc.address1} ${loc.address2} ${loc.city}, ${loc.state} ${loc.zip}`)
     const mapUri = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
-    
+    console.log('billingStatusCode: ', billingStatusCode)
+    const showReinstatement = policy.status === 'Cancelled' && [12, 13, 14, 15].includes(billingStatusCode);
     return (<div className="detailHeader">
       <section id="policyDetails" className="policyDetails">
         <dl>
@@ -149,7 +150,7 @@ export class DetailHeader extends Component {
             <div>
               <dt>
                 Cancellation Date
-                {policy && (policy.status === 'Cancelled' || billingStatusCode === 9) &&
+                {policy && showReinstatement &&
                 <button id="show-reinstate" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showReinstatePolicyPopUp(this.props)}><i className="fa fa-thumbs-up" />Reinstate</button>
                 }
               </dt>
