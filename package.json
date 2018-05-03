@@ -72,8 +72,7 @@
     "server": "./replace-dotenv.sh && exframe-web",
     "start-js": "react-scripts start",
     "start": "npm-run-all -p watch-css start-js",
-    "build-js": "react-scripts build",
-    "build": "npm-run-all build-css build-js",
+    "build": "npm run build-css && react-scripts build", 
     "cover": "npm test -- --coverage",
     "test": "npm run build && react-scripts test --env=jsdom --coverage",
     "eject": "react-scripts eject"
