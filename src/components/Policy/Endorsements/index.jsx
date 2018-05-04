@@ -5,8 +5,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
-import { reduxForm, propTypes, change, Form, Field } from 'redux-form';
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import { reduxForm, propTypes, change, Form } from 'redux-form';
 import * as cgActions from '../../../actions/cgActions';
 import * as serviceActions from '../../../actions/serviceActions';
 import * as appStateActions from '../../../actions/appStateActions';
@@ -14,23 +13,24 @@ import * as questionsActions from '../../../actions/questionsActions';
 import * as errorActions from '../../../actions/errorActions';
 import PolicyConnect from '../../../containers/Policy';
 import normalizePhone from '../../Form/normalizePhone';
-import TextField from '../../Form/inputs/TextField';
-import DisplayField from '../../Form/inputs/DisplayField';
-import RadioField from '../../Form/inputs/RadioField';
-import PhoneField from '../../Form/inputs/PhoneField';
-import SelectField from '../../Form/inputs/SelectField';
-import CurrencyField from '../../Form/inputs/CurrencyField';
-import NumberField from '../../Form/inputs/NumberField';
 import Footer from '../../Common/Footer';
-import DateField from '../../Form/inputs/DateField';
 import Loader from '../../Common/Loader';
 import * as policyStateActions from '../../../actions/policyStateActions';
 import * as actionTypes from '../../../actions/actionTypes';
-import { premiumEndorsmentList } from './endorsementTypes';
+import { premiumEndorsementList } from './constants/endorsementTypes';
 import { batchActions } from 'redux-batched-actions';
 
 // Component Sections
 import Coverage from './Coverage';
+import WindMitigation from "./WindMitigation";
+import HomeLocation from "./HomeLocation";
+import PreviousEndorsements from "./PreviousEndorsements";
+import PolicyHolder from "./PolicyHolder";
+import MailingAddress from "./MailingAddress";
+import PropertyAddress from "./PropertyAddress";
+import ResultsCalculator from "./ResultsCalculator";
+import GoToMenu from "./GoToMenu";
+import UnderwritingValidations from "./UnderwritingValidations";
 
 export const scrollToView = (elementName) => {
   const element = document.getElementById(elementName);
@@ -700,7 +700,7 @@ export class Endorsements extends React.Component {
     } = this.props;
 
     const mappedEndorsementHistory = _.map(endorsementHistory, (endorsement) => {
-      endorsement.netChargeFormat = _.includes(premiumEndorsmentList, endorsement.transactionType) ? premiumAmountFormatter(endorsement.netCharge) : '';
+      endorsement.netChargeFormat = _.includes(premiumEndorsementList, endorsement.transactionType) ? premiumAmountFormatter(endorsement.netCharge) : '';
       return endorsement;
     });
 
@@ -734,397 +734,35 @@ export class Endorsements extends React.Component {
 
           <div className="route-content">
             <div className="endorsements">
-              <div className="endo-jump-menu">
-                <button id="coverage-scroll" type="button" onClick={() => scrollToView('coverage')} className="btn btn-secondary btn-xs">Coverage</button>
-                <button id="home-scroll" type="button" onClick={() => scrollToView('home')} className="btn btn-secondary btn-xs">Home / Location</button>
-                <button id="policy-scroll" type="button" onClick={() => scrollToView('policy')} className="btn btn-secondary btn-xs">Policyholders</button>
-                <button id="addresses-scroll" type="button" onClick={() => scrollToView('addresses')} className="btn btn-secondary btn-xs">Addresses</button>
-              </div>
+              <GoToMenu />
               <div className="scroll">
                 <div className="form-group survey-wrapper" role="group">
                   <Coverage { ...this.props } />
-                  <section>
-                    <div className="flex-parent">
-                      {/* Col1 */}
-                      <div className="flex-child col3">
-                        <div className="form-group labels">
-                          <label /><label>Current</label><label>New</label>
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="Roof Covering" styleName="" name="roofCovering" disabled />
-                          <SelectField
-                            label=""
-                            name="roofCoveringNew"
-                            answers={getAnswers('roofCovering', questions)}
-                            component="select"
-                            styleName=""
-                            onChange={() => setCalculate(this.props, false)}
-                            validations={['required']}
-                          />
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="Roof Deck Attachment" styleName="" name="roofDeckAttachment" disabled />
-                          <SelectField
-                            label=""
-                            name="roofDeckAttachmentNew"
-                            answers={getAnswers('roofDeckAttachment', questions)}
-                            component="select"
-                            styleName=""
-                            onChange={() => setCalculate(this.props, false)}
-                            validations={['required']}
-                          />
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="Roof to Wall Attachment" styleName="" name="roofToWallConnection" disabled />
-                          <SelectField
-                            label=""
-                            name="roofToWallConnectionNew"
-                            answers={getAnswers('roofToWallConnection', questions)}
-                            component="select"
-                            styleName="weakestRoofWallConnect"
-                            onChange={() => setCalculate(this.props, false)}
-                            validations={['required']}
-                          />
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="Roof Geometry" styleName="" name="roofGeometry" disabled />
-                          <SelectField
-                            label=""
-                            name="roofGeometryNew"
-                            answers={getAnswers('roofGeometry', questions)}
-                            component="select"
-                            styleName=""
-                            onChange={() => setCalculate(this.props, false)}
-                            validations={['required']}
-                          />
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="Secondary Water Resistance (SWR)" styleName="" name="secondaryWaterResistance" disabled />
-                          <div className="flex-child discounts-sprinkler">
-                            <RadioField
-                              label=""
-                              styleName=""
-                              onChange={() => setCalculate(this.props, false)}
-                              segmented
-                              name="secondaryWaterResistanceNew"
-                              validations={['required']}
-                              answers={getAnswers('secondaryWaterResistance', questions)}
-                            />
-                          </div>
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="Opening Protection" styleName="" name="openingProtection" disabled />
-                          <SelectField
-                            label=""
-                            name="openingProtectionNew"
-                            answers={getAnswers('openingProtection', questions)}
-                            component="select"
-                            styleName=""
-                            onChange={() => setCalculate(this.props, false)}
-                            validations={['required']}
-                          />
-                        </div>
-                      </div>
 
-                      {/* Col2 */}
-                      <div className="flex-child col3">
+                  <WindMitigation {...this.props } />
 
-                        <div className="form-group labels">
-                          <label /><label>Current</label><label>New</label>
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="FBC Wind Speed" styleName="" name="floridaBuildingCodeWindSpeed" disabled />
-                          <TextField validations={['required', 'numbersOnly']} label="" styleName="" name="floridaBuildingCodeWindSpeedNew" onChange={() => setCalculate(this.props, false)} />
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="FBC Wind Speed Design" styleName="" name="floridaBuildingCodeWindSpeedDesign" disabled />
-                          <TextField validations={['required', 'numbersOnly']} label="" styleName="" name="floridaBuildingCodeWindSpeedDesignNew" onChange={() => setCalculate(this.props, false)} />
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="Terrain" styleName="" name="terrain" disabled />
-                          <SelectField
-                            name="terrainNew"
-                            answers={getAnswers('terrain', questions)}
-                            component="select"
-                            label=""
-                            styleName="propertyTerrain"
-                            onChange={() => setCalculate(this.props, false)}
-                            validations={['required']}
-                          />
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="Internal Pressure Design" styleName="" name="internalPressureDesign" disabled />
-                          <SelectField
-                            name="internalPressureDesignNew"
-                            answers={getAnswers('internalPressureDesign', questions)}
-                            component="select"
-                            label=""
-                            styleName=""
-                            onChange={() => setCalculate(this.props, false)}
-                            validations={['required']}
-                          />
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="Wind Borne Debris Region (WBDR)" styleName="" name="windBorneDebrisRegion" disabled />
-                          <div className="flex-child discounts-sprinkler">
-                            <RadioField
-                              label=""
-                              styleName=""
-                              onChange={() => setCalculate(this.props, false)}
-                              segmented
-                              name="windBorneDebrisRegionNew"
-                              validations={['required']}
-                              answers={getAnswers('windBorneDebrisRegion', questions)}
-                            />
-                          </div>
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="Wind Mit Factor" styleName="" name="windMitFactor" disabled />
-                          <TextField validations={['required']} styleName="" label="" name="windMitFactorNew" disabled />
-                        </div>
-                      </div>
-                    </div>
-                  </section>
-                  <section name="home" id="home">
-                    <h3>Home / Location</h3>
-                    <div className="flex-parent">
-                      {/* Col1 */}
-                      <div className="flex-child col3">
-                        <div className="form-group labels">
-                          <label /><label>Current</label><label>New</label>
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="Year Home Built" styleName="" name="yearBuilt" disabled />
-                          <TextField
-                            validations={['numbersOnly']}
-                            styleName=""
-                            label=""
-                            name="yearBuiltNew"
-                            onChange={() => setCalculate(this.props, false)}
-                          />
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="Construction" styleName="" name="constructionType" disabled />
-                          <SelectField
-                            onChange={() => setCalculate(this.props, false)}
-                            name="constructionTypeNew"
-                            answers={getAnswers('constructionType', questions)}
-                            component="select"
-                            styleName=""
-                            label=""
-                          />
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="Protection Class" styleName="" name="protectionClass" disabled />
-                          <SelectField
-                            onChange={() => setCalculate(this.props, false)}
-                            name="protectionClassNew"
-                            answers={getAnswers('protectionClass', questions)}
-                            component="select"
-                            label=""
-                            styleName=""
-                          />
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="BCEG" styleName="" name="buildingCodeEffectivenessGrading" disabled />
-                          <SelectField
-                            onChange={() => setCalculate(this.props, false)}
-                            name="buildingCodeEffectivenessGradingNew"
-                            answers={getAnswers('buildingCodeEffectivenessGrading', questions)}
-                            component="select"
-                            styleName=""
-                            label=""
-                          />
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="Family Units" styleName="" name="familyUnits" disabled />
-                          <SelectField
-                            onChange={() => setCalculate(this.props, false)}
-                            name="familyUnitsNew"
-                            answers={getAnswers('familyUnits', questions)}
-                            component="select"
-                            label=""
-                            styleName=""
-                          />
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="Flood Zone" styleName="" name="floodZone" disabled />
-                          <SelectField
-                            onChange={() => setCalculate(this.props, false)}
-                            name="floodZoneNew"
-                            answers={getAnswers('floodZone', questions)}
-                            component="select"
-                            label=""
-                            styleName=""
-                          />
-                        </div>
-                      </div>
-                      {/* Col2 */}
-                      <div className="flex-child col3">
-                        <div className="form-group labels">
-                          <label /><label>Current</label><label>New</label>
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="Tidal Waters Dist." styleName="" name="distanceToTidalWater" disabled />
-                          <NumberField label="" styleName="" name="distanceToTidalWaterNew" onChange={() => setCalculate(this.props, false)} />
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="Fire Hydrant Dist." styleName="" name="distanceToFireHydrant" disabled />
-                          <NumberField label="" styleName="" name="distanceToFireHydrantNew" onChange={() => setCalculate(this.props, false)} />
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="Fire Station Dist." styleName="" name="distanceToFireStation" disabled />
-                          <NumberField label="" styleName="" name="distanceToFireStationNew" onChange={() => setCalculate(this.props, false)} />
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="Residence Type" styleName="" name="residenceType" disabled />
-                          <SelectField
-                            name="residenceTypeNew"
-                            answers={getAnswers('residenceType', questions)}
-                            component="select"
-                            label=""
-                            styleName=""
-                            onChange={() => setCalculate(this.props, false)}
-                          />
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="Sq. Ft. of Home" styleName="" name="squareFeet" disabled />
-                          <TextField validations={['required']} label="" styleName="" name="squareFeetNew" onChange={() => setCalculate(this.props, false)} />
-                        </div>
-                        <div className="form-group-double-element">
-                          <TextField label="Year Roof Built" styleName="" name="yearOfRoof" disabled />
-                          <TextField styleName="" label="" name="yearOfRoofNew" onChange={() => setCalculate(this.props, false)} />
-                        </div>
-                      </div>
-                    </div>
-                  </section>
-                  <section>
-                    <h3>Previous Endorsements</h3>
-                    <BootstrapTable data={mappedEndorsementHistory}>
-                      <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="effectiveDate" isKey dataFormat={dateFormatter}>Effective Date</TableHeaderColumn>
-                      <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="netChargeFormat">Amount</TableHeaderColumn>
-                      <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="transactionType">Type</TableHeaderColumn>
-                      <TableHeaderColumn width="25%" headerAlign="left" dataAlign="left" dataField="createdAt" dataFormat={dateFormatter}>Processed Date</TableHeaderColumn>
-                    </BootstrapTable>
-                  </section>
-                  <section name="policy" id="policy">
-                    <div className="flex-parent col2">
-                      {/* Col1 */}
-                      <div className="flex-child">
-                        <h3>Primary Policyholder</h3>
-                        <div className="flex-parent col2">
-                          <TextField validations={['required']} label="First Name" styleName="" name="pH1FirstName" onChange={() => setCalculate(this.props, false)} />
-                          <TextField validations={['required']} label="Last Name" styleName="" name="pH1LastName" onChange={() => setCalculate(this.props, false)} />
-                        </div>
-                        <div className="flex-parent col2">
-                          <PhoneField validations={['required', 'phone']} label="Primary Phone" styleName="" name="pH1phone" onChange={() => setCalculate(this.props, false)} />
-                          <PhoneField validations={['phone']} label="Secondary Phone" styleName="" name="pH1secondaryPhone" onChange={() => setCalculate(this.props, false)} />
-                        </div>
-                        <div className="flex-parent">
-                          <TextField validations={['required', 'email']} label="Email Address" styleName="" name="pH1email" onChange={() => setCalculate(this.props, false)} />
-                          {/* electronic delivery question placeholder */ }
-                        </div>
-                      </div>
-                      {/* Col2 */}
-                      <div className="flex-child">
-                        <div className="flex-header-wrap">
-                          <h3>Secondary Policyholder</h3>
-                          <div className="check-box-wrapper">
-                            <Field
-                              onChange={event => clearSecondaryPolicyholder(String(event.target.value) === 'false', this.props)}
-                              name="clearFields"
-                              id="clearFields"
-                              component="input"
-                              type="checkbox"
-                              disabled={!(policy && policy.policyHolders && policy.policyHolders[1])}
-                            />
-                            <label htmlFor="clearFields">Remove</label>
-                          </div>
-                        </div>
-                        <div className="flex-parent col2">
-                          <TextField label="First Name" dependsOn={['pH2LastName', 'pH2email', 'pH2phone']} styleName="" name="pH2FirstName" onChange={() => setPHToggle(this.props)} />
-                          <TextField label="Last Name" dependsOn={['pH2FirstName', 'pH2email', 'pH2phone']} styleName="" name="pH2LastName" onChange={() => setPHToggle(this.props)} />
-                        </div>
-                        <div className="flex-parent col2">
-                          <PhoneField validations={['phone']} label="Primary Phone" dependsOn={['pH2FirstName', 'pH2LastName', 'pH2email']} styleName="" name="pH2phone" onChange={() => setPHToggle(this.props)} />
-                          <PhoneField validations={['phone']} label="Secondary Phone" styleName="" name="pH2secondaryPhone" onChange={() => setPHToggle(this.props)} />
-                        </div>
-                        <div className="flex-parent">
-                          <TextField validations={['email']} label="Email Address" dependsOn={['pH2FirstName', 'pH2LastName', 'pH2phone']} styleName="" name="pH2email" onChange={() => setPHToggle(this.props)} />
-                        </div>
-                      </div>
-                    </div>
-                  </section>
-                  <section name="addresses" id="addresses">
-                    <h3>Mailing Address</h3>
-                    <div className="flex-parent wrap">
-                      <div className="address">
-                        <TextField label="Address 1" styleName="" name="address1New" onChange={() => setCalculate(this.props, false)} />
-                      </div>
-                      <div className="address">
-                        <TextField label="Address 2" styleName="" name="address2New" onChange={() => setCalculate(this.props, false)} />
-                      </div>
-                      <div className="city">
-                        <TextField label="City" styleName="" name="cityNew" onChange={() => setCalculate(this.props, false)} />
-                      </div>
-                      <div className="state">
-                        <TextField label="State" styleName="" name="stateNew" onChange={() => setCalculate(this.props, false)} />
-                      </div>
-                      <div className="zip">
-                        <TextField label="Zip" styleName="" name="zipNew" onChange={() => setCalculate(this.props, false)} />
-                      </div>
-                    </div>
-                  </section>
-                  <section>
-                    <h3>Property Address</h3>
-                    <div className="flex-parent wrap">
-                      <div className="address">
-                        <TextField label="Address 1" styleName="" name="propertyAddress1New" onChange={() => setCalculate(this.props, false)} />
-                      </div>
-                      <div className="address">
-                        <TextField label="Address 2" styleName="" name="propertyAddress2New" onChange={() => setCalculate(this.props, false)} />
-                      </div>
-                      <div className="city">
-                        <TextField label="City" styleName="" name="propertyCityNew" onChange={() => setCalculate(this.props, false)} />
-                      </div>
-                      <div className="state">
-                        <TextField label="State" styleName="" name="propertyStateNew" onChange={() => setCalculate(this.props, false)} />
-                      </div>
-                      <div className="zip">
-                        <TextField label="Zip" styleName="" name="propertyZipNew" onChange={() => setCalculate(this.props, false)} />
-                      </div>
-                    </div>
-                  </section>
+                  <HomeLocation {...this.props} />
+
+                  <PreviousEndorsements mappedEndorsementHistory={mappedEndorsementHistory} />
+
+                  <PolicyHolder {...this.props } />
+
+                  <MailingAddress {...this.props} />
+
+                  <PropertyAddress {...this.props} />
                 </div>
               </div>
-              <div className="endo-results-calc">
-                <div className="flex-parent">
-                  <div className="form-group">
-                    <DateField
-                      validations={['date']}
-                      label="Endorsement Effective Date"
-                      name="endorsementDateNew"
-                      min={moment.utc(policy.effectiveDate).format('YYYY-MM-DD')}
-                      max={moment.utc(policy.endDate).format('YYYY-MM-DD')}
-                      onChange={() => setCalculate(this.props, false)}
-                    />
-                  </div>
-                  <DisplayField label="New End Amount" name="newEndorsementAmount" />
-
-                  <DisplayField label="New End Premium" name="newEndorsementPremium" />
-
-                  <DisplayField label="New Annual Premium" name="newAnnualPremium" />
-
+              <ResultsCalculator {...this.props}>
                   { /* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */ }
                   <button id="cancel-button" tabIndex="0" type="button" className="btn btn-secondary" onKeyPress={(event) => { if (event.charCode === 13) { setCalculate(this.props, true); } }} onClick={() => setCalculate(this.props, true)}>Cancel</button>
                   <button type="submit" tabIndex="0" className="btn btn-primary" disabled={(!appState.data.isCalculated && pristine) || appState.data.isSubmitting}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
+              </ResultsCalculator>
 
-                </div>
-              </div>
+
             </div>
-            <aside className="underwriting-validation">
-              <h4 className="uw-validation-header">Underwriting Validation</h4>
-            </aside>
+
+            <UnderwritingValidations />
+
           </div>
         </Form>
         <div className="basic-footer">
