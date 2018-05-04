@@ -71,7 +71,7 @@ const additionalInterests = [
     }
   },
   {
-    type: 'Lienholder',
+    type: 'Premium Finance',
     name1: 'BB3',
     referenceNumber: '1001',
     phoneNumber: '1234567890',

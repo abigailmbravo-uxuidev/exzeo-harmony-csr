@@ -70,6 +70,8 @@ export const getMortgageeAnswers = (questions, additionalInterests) => {
     mortgageeOrderAnswers = mortgageeOrderAnswers.filter(answer => Number(answer.answer) === 0);
   } else if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 1) {
     mortgageeOrderAnswers = mortgageeOrderAnswers.filter(answer => Number(answer.answer) === 1);
+  } else if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 2) {
+    mortgageeOrderAnswers = mortgageeOrderAnswers.filter(answer => Number(answer.answer) === 2);
   }
   return mortgageeOrderAnswers;
 };
@@ -102,7 +104,7 @@ export const AdditionalInterestModal = (props) => {
               answers={getAnswers('mortgagee', questions)}
               onChange={val => setMortgageeValues(val, props)}
             />
-         }
+}
             <TextField label={checkAdditionalInterestForName(appState.data.addAdditionalInterestType) ? 'First Name' : 'Name 1'} styleName="name-1" name="name1" validations={['required']} />
             <TextField label={checkAdditionalInterestForName(appState.data.addAdditionalInterestType) ? 'Last Name' : 'Name 2'} styleName="name-2" name="name2" />
             <TextField label="Address 1" styleName="address-1" name="address1" validations={['required']} />
