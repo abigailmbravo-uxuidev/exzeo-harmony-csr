@@ -145,7 +145,7 @@ export const handleInitialize = (state) => {
   values.clearFields = false;
   values.endorsementDateNew = setEndorsementDate(_.get(policy, 'effectiveDate'), _.get(policy, 'endDate'));
   values.dwellingAmount = _.get(policy, 'coverageLimits.dwelling.amount');
-  values.dwellingAmountNew = `$ ${Number(_.get(policy, 'coverageLimits.dwelling.amount')).toLocaleString()}`;
+  values.dwellingAmountNew = values.dwellingAmount;
   values.otherStructuresAmount = otherStructures;
   values.otherStructuresAmountNew = values.otherStructuresAmount;
   values.otherStructures = `${String(calculatePercentage(otherStructures, dwelling))}%`;
@@ -671,7 +671,7 @@ export class Endorsements extends React.Component {
     }
   }
 
-  updateDwellingAndDependencies = (e, value) => {
+  updateDwellingAndDependencies = (value) => {
     setCalculate(this.props, false);
     const { dispatch, fieldValues } = this.props;
 
@@ -696,7 +696,7 @@ export class Endorsements extends React.Component {
 
   render() {
     const {
-      initialValues, handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, policy, dirty, fieldValues, userProfile
+      handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, policy, dirty, fieldValues, userProfile
     } = this.props;
 
     const mappedEndorsementHistory = _.map(endorsementHistory, (endorsement) => {
@@ -704,7 +704,7 @@ export class Endorsements extends React.Component {
       return endorsement;
     });
 
-    const canPremiumEndorse = userProfile && userProfile.resources 
+    const canPremiumEndorse = userProfile && userProfile.resources
       ? userProfile.resources.some(resource => resource['uri'] === 'TTIC:FL:HO3:PolicyData:PremiumEndorse' && resource['right'] === 'UPDATE')
       : false;
 
@@ -737,7 +737,7 @@ export class Endorsements extends React.Component {
               <GoToMenu />
               <div className="scroll">
                 <div className="form-group survey-wrapper" role="group">
-                  <Coverage { ...this.props } />
+                  <Coverage normalizeDwellingAmount={this.updateDwellingAndDependencies} { ...this.props } />
 
                   <WindMitigation {...this.props } />
 

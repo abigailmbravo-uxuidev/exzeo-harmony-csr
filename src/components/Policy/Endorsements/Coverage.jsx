@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Field } from 'redux-form';
+import Inputs from '@exzeo/core-ui/lib/Input';
+import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 
 import TextField from '../../Form/inputs/TextField';
 import RadioField from '../../Form/inputs/RadioField';
@@ -9,9 +12,13 @@ import {
   getAnswers,
   getQuestionName,
   setCalculate,
-  updateCalculatedSinkhole, updateDependencies,
+  updateCalculatedSinkhole,
+  updateDependencies,
   updatepersonalPropertyDependnecies
 } from "./index";
+
+const { Currency } = Inputs;
+const { validation, format, parse, normalize } = lifecycle;
 
 const Coverage = (props) => {
   return (
@@ -24,30 +31,44 @@ const Coverage = (props) => {
             <label /><label>Current</label><label>New</label>
           </div>
           <div className="form-group-double-element">
-            <CurrencyField
-              label={`Dwelling (A) ($ ${String(props.initialValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $ ${String(props.initialValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`}
-              styleName=""
+            <Field
               name="dwellingAmount"
+              label={`Dwelling (A) ($ ${String(props.initialValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $ ${String(props.initialValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`}
+              component={Currency}
+              disabled
+            />
+            <Field
+              name="dwellingAmountNew"
+              component={Currency}
+              validate={[validation.isRequired, validation.isDwellingRange]}
+              format={format.toNumberLocaleString}
+              parse={parse.toNumber}
+              normalize={props.normalizeDwellingAmount}
               min={props.initialValues.dwellingMin}
               max={props.initialValues.dwellingMax}
+            />
+          </div>
+          <div className="form-group-double-element">
+            <CurrencyField
+              name="otherStructuresAmount"
+              label="Other Structures (B)"
+              styleName="coverage-b"
               disabled
             />
             <CurrencyField
-              validations={['required', 'dwellingRange']}
-              styleName=""
-              name="dwellingAmountNew"
-              onChange={this.updateDwellingAndDependencies}
-              min={props.initialValues.dwellingMin}
+              validations={['required']}
               label=""
-              max={props.initialValues.dwellingMax}
+              name="otherStructuresAmountNew"
+              styleName="coverage-b"
+              disabled
             />
           </div>
           <div className="form-group-double-element">
-            <CurrencyField name="otherStructuresAmount" label="Other Structures (B)" styleName="coverage-b" disabled />
-            <CurrencyField validations={['required']} label="" name="otherStructuresAmountNew" styleName="coverage-b" disabled />
-          </div>
-          <div className="form-group-double-element">
-            <TextField label="Other Structures %" styleName="" name="otherStructures" disabled />
+            <TextField
+              label="Other Structures %"
+              styleName=""
+              name="otherStructures"
+              disabled />
             <SelectField
               name="otherStructuresNew"
               answers={getAnswers('otherStructuresAmount', props.questions)}
@@ -59,11 +80,27 @@ const Coverage = (props) => {
             />
           </div>
           <div className="form-group-double-element">
-            <CurrencyField label="Personal Property (C)" styleName="coverage-c" name="personalPropertyAmount" disabled />
-            <CurrencyField validations={['required']} label="" styleName="coverage-c" name="personalPropertyAmountNew" disabled />
+            <CurrencyField
+              label="Personal Property (C)"
+              styleName="coverage-c"
+              name="personalPropertyAmount"
+              disabled
+            />
+            <CurrencyField
+              validations={['required']}
+              label=""
+              styleName="coverage-c"
+              name="personalPropertyAmountNew"
+              disabled
+            />
           </div>
           <div className="form-group-double-element">
-            <TextField label="Personal Property %" styleName="" name="personalProperty" disabled />
+            <TextField
+              label="Personal Property %"
+              styleName=""
+              name="personalProperty"
+              disabled
+            />
             <SelectField
               name="personalPropertyNew"
               answers={getAnswers('personalPropertyAmount', props.questions)}
@@ -75,11 +112,28 @@ const Coverage = (props) => {
             />
           </div>
           <div className="form-group-double-element">
-            <CurrencyField label="Loss of Use (D)" styleName="" name="lossOfUse" disabled />
-            <CurrencyField validations={['required']} styleName="" label="" name="lossOfUseNew" disabled />
+            <CurrencyField
+              label="Loss of Use (D)"
+              styleName=""
+              name="lossOfUse"
+              disabled
+            />
+
+            <CurrencyField
+              validations={['required']}
+              styleName=""
+              label=""
+              name="lossOfUseNew"
+              disabled
+            />
           </div>
           <div className="form-group-double-element">
-            <CurrencyField label="Personal Liability (E)" styleName="" name="personalLiability" disabled />
+            <CurrencyField
+              label="Personal Liability (E)"
+              styleName=""
+              name="personalLiability"
+              disabled
+            />
             <SelectField
               onChange={() => setCalculate(props, false)}
               name="personalLiabilityNew"
@@ -91,11 +145,28 @@ const Coverage = (props) => {
             />
           </div>
           <div className="form-group-double-element">
-            <CurrencyField label="Medical Payments (F)" styleName="" name="medicalPayments" disabled />
-            <CurrencyField validations={['required']} name="medicalPaymentsNew" label="" styleName="" disabled />
+            <CurrencyField
+              label="Medical Payments (F)"
+              styleName=""
+              name="medicalPayments"
+              disabled
+            />
+            <CurrencyField
+              validations={['required']}
+              name="medicalPaymentsNew"
+              label=""
+              styleName=""
+              disabled
+            />
           </div>
           <div className="form-group-double-element">
-            <CurrencyField label="Mold Property" styleName="" name="moldProperty" disabled />
+            <CurrencyField
+              label="Mold Property"
+              styleName=""
+              name="moldProperty"
+              disabled
+            />
+
             <SelectField
               name="moldPropertyNew"
               answers={getAnswers('moldProperty', props.questions)}
@@ -107,7 +178,12 @@ const Coverage = (props) => {
             />
           </div>
           <div className="form-group-double-element">
-            <CurrencyField label="Mold Liability" styleName="" name="moldLiability" disabled />
+            <CurrencyField
+              label="Mold Liability"
+              styleName=""
+              name="moldLiability"
+              disabled
+            />
             <SelectField
               name="moldLiabilityNew"
               answers={getAnswers('moldLiability', props.questions)}
@@ -119,7 +195,12 @@ const Coverage = (props) => {
             />
           </div>
           <div className="form-group-double-element">
-            <CurrencyField label="AOP Deductible" styleName="" name="allOtherPerils" disabled />
+            <CurrencyField
+              label="AOP Deductible"
+              styleName=""
+              name="allOtherPerils"
+              disabled
+            />
             <SelectField
               onChange={() => setCalculate(props, false)}
               name="allOtherPerilsNew"
@@ -131,7 +212,12 @@ const Coverage = (props) => {
             />
           </div>
           <div className="form-group-double-element">
-            <TextField label="Hurricane Deductible" styleName="" name="hurricane" disabled />
+            <TextField
+              label="Hurricane Deductible"
+              styleName=""
+              name="hurricane"
+              disabled
+            />
             <SelectField
               label=""
               name="hurricaneNew"
@@ -168,7 +254,12 @@ const Coverage = (props) => {
             <label /><label>Current</label><label>New</label>
           </div>
           <div className="form-group-double-element">
-            <TextField label="Personal Property Repl Cost" styleName="" name="personalPropertyReplacementCostCoverage" disabled />
+            <TextField
+              label="Personal Property Repl Cost"
+              styleName=""
+              name="personalPropertyReplacementCostCoverage"
+              disabled
+            />
             <div className="flex-child other-coverages-property-replacement-cost">
               <RadioField
                 disabled={String(props.fieldValues.personalPropertyNew) === '0'}
@@ -190,7 +281,12 @@ const Coverage = (props) => {
             </div>
           </div>
           <div className="form-group-double-element">
-            <TextField label="Ordinance or Law" styleName="" name="ordinanceOrLaw" disabled />
+            <TextField
+              label="Ordinance or Law"
+              styleName=""
+              name="ordinanceOrLaw"
+              disabled
+            />
             <SelectField
               onChange={() => setCalculate(props, false)}
               name="ordinanceOrLawNew"
@@ -202,7 +298,12 @@ const Coverage = (props) => {
             />
           </div>
           <div className="form-group-double-element">
-            <TextField label="Incidental Occ Main" styleName="" name="propertyIncidentalOccupanciesMainDwelling" disabled />
+            <TextField
+              label="Incidental Occ Main"
+              styleName=""
+              name="propertyIncidentalOccupanciesMainDwelling"
+              disabled
+            />
             <div className="flex-child other-coverages-property-replacement-cost">
               <RadioField
                 onChange={() => setCalculate(props, false)}
@@ -223,7 +324,12 @@ const Coverage = (props) => {
             </div>
           </div>
           <div className="form-group-double-element">
-            <TextField label="Incidental Occ Other" styleName="" name="propertyIncidentalOccupanciesOtherStructures" disabled />
+            <TextField
+              label="Incidental Occ Other"
+              styleName=""
+              name="propertyIncidentalOccupanciesOtherStructures"
+              disabled
+            />
             <div className="flex-child other-coverages-property-replacement-cost">
               <RadioField
                 onChange={() => setCalculate(props, false)}
@@ -244,7 +350,12 @@ const Coverage = (props) => {
             </div>
           </div>
           <div className="form-group-double-element">
-            <TextField label="Incidental Occ Liability" styleName="" name="liabilityIncidentalOccupancies" disabled />
+            <TextField
+              label="Incidental Occ Liability"
+              styleName=""
+              name="liabilityIncidentalOccupancies"
+              disabled
+            />
             <div className="flex-child other-coverages-property-replacement-cost">
               <RadioField
                 disabled
@@ -266,7 +377,12 @@ const Coverage = (props) => {
             </div>
           </div>
           <div className="form-group-double-element">
-            <TextField label="Townhouse / Rowhouse" styleName="" name="townhouseRowhouse" disabled />
+            <TextField
+              label="Townhouse / Rowhouse"
+              styleName=""
+              name="townhouseRowhouse"
+              disabled
+            />
             <div className="flex-child">
               <RadioField
                 onChange={() => setCalculate(props, false)}
@@ -287,7 +403,12 @@ const Coverage = (props) => {
             </div>
           </div>
           <div className="form-group-double-element">
-            <TextField label="Property Ever Rented" styleName="" name="rented" disabled />
+            <TextField
+              label="Property Ever Rented"
+              styleName=""
+              name="rented"
+              disabled
+            />
             <SelectField
               label=""
               name="rentedNew"
@@ -297,7 +418,12 @@ const Coverage = (props) => {
             />
           </div>
           <div className="form-group-double-element">
-            <TextField label="Months Occupied" styleName="" name="monthsOccupied" disabled />
+            <TextField
+              label="Months Occupied"
+              styleName=""
+              name="monthsOccupied"
+              disabled
+            />
             <SelectField
               name="monthsOccupiedNew"
               answers={getAnswers('monthsOccupied', props.underwritingQuestions)}
@@ -307,7 +433,12 @@ const Coverage = (props) => {
             />
           </div>
           <div className="form-group-double-element">
-            <TextField label="No Prior Insurance" styleName="" name="noPriorInsurance" disabled />
+            <TextField
+              label="No Prior Insurance"
+              styleName=""
+              name="noPriorInsurance"
+              disabled
+            />
             <div className="flex-child discounts-burglar-alarm">
               <RadioField
                 name="noPriorInsuranceNew"
@@ -328,7 +459,12 @@ const Coverage = (props) => {
             </div>
           </div>
           <div className="form-group-double-element">
-            <TextField label="Burglar Alarm" styleName="" name="burglarAlarm" disabled />
+            <TextField
+              label="Burglar Alarm"
+              styleName=""
+              name="burglarAlarm"
+              disabled
+            />
             <div className="flex-child discounts-burglar-alarm">
               <RadioField
                 name="burglarAlarmNew"
@@ -349,7 +485,12 @@ const Coverage = (props) => {
             </div>
           </div>
           <div className="form-group-double-element">
-            <TextField label="Fire Alarm" styleName="" name="fireAlarm" disabled />
+            <TextField
+              label="Fire Alarm"
+              styleName=""
+              name="fireAlarm"
+              disabled
+            />
             <div className="flex-child discounts-fire-alarm">
               <RadioField
                 name="fireAlarmNew"
@@ -370,7 +511,12 @@ const Coverage = (props) => {
             </div>
           </div>
           <div className="form-group-double-element">
-            <TextField label="Sprinkler" styleName="" name="sprinkler" disabled />
+            <TextField
+              label="Sprinkler"
+              styleName=""
+              name="sprinkler"
+              disabled
+            />
             <div className="flex-child discounts-sprinkler">
               <RadioField
                 name="sprinklerNew"
