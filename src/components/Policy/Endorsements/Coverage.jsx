@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
+// import Fields from '@exzeo/core-ui/lib/Fields';
 
 import TextField from '../../Form/inputs/TextField';
 import RadioField from '../../Form/inputs/RadioField';
@@ -17,7 +18,7 @@ import {
   updatepersonalPropertyDependnecies
 } from "./index";
 
-const { Currency } = Inputs;
+const { Currency, Input, Select } = Inputs;
 const { validation, format, parse, normalize } = lifecycle;
 
 const Coverage = (props) => {
@@ -41,42 +42,45 @@ const Coverage = (props) => {
               name="dwellingAmountNew"
               component={Currency}
               validate={[validation.isRequired, validation.isDwellingRange]}
-              format={format.toNumberLocaleString}
               parse={parse.toNumber}
               normalize={props.normalizeDwellingAmount}
               min={props.initialValues.dwellingMin}
               max={props.initialValues.dwellingMax}
+              noDecimal
             />
           </div>
           <div className="form-group-double-element">
-            <CurrencyField
+            <Field
               name="otherStructuresAmount"
               label="Other Structures (B)"
+              component={Currency}
               styleName="coverage-b"
               disabled
             />
-            <CurrencyField
-              validations={['required']}
-              label=""
+            <Field
               name="otherStructuresAmountNew"
+              component={Currency}
+              validations={validation.isRequired}
               styleName="coverage-b"
               disabled
             />
           </div>
           <div className="form-group-double-element">
-            <TextField
-              label="Other Structures %"
-              styleName=""
+            <Field
               name="otherStructures"
+              label="Other Structures %"
+              component={Input}
+              format={format.toPercent}
               disabled />
-            <SelectField
+            <Field
               name="otherStructuresNew"
+              component={Select}
               answers={getAnswers('otherStructuresAmount', props.questions)}
-              component="select"
-              label=""
               styleName="coverage-b-percentage"
-              onChange={event => updateDependencies(event, 'otherStructuresAmountNew', 'dwellingAmountNew', props)}
-              validations={['required']}
+              normalize={(v, pv, av, pav) =>
+                props.normalizeDependencies(v, pv, av, pav, 'otherStructuresAmountNew', 'dwellingAmountNew')
+              }
+              validations={validation.isRequired}
             />
           </div>
           <div className="form-group-double-element">

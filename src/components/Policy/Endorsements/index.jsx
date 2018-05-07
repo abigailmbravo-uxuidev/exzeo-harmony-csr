@@ -104,11 +104,8 @@ export const getNewPolicyNumber = (state) => {
 };
 
 export const calculatePercentage = (oldFigure, newFigure) => {
-  let percentChange = 0;
-  if ((oldFigure !== 0) && (newFigure !== 0)) {
-    percentChange = (oldFigure / newFigure) * 100;
-  }
-  return percentChange;
+  if (oldFigure === 0 || newFigure  === 0) return  0;
+  return oldFigure / newFigure * 100;
 };
 
 export const setEndorsementDate = (effectiveDate, endPolicyDate) => {
@@ -124,11 +121,16 @@ export const setEndorsementDate = (effectiveDate, endPolicyDate) => {
   return endDate;
 };
 
-export const handleInitialize = (state) => {
-  const policy = state.service.latestPolicy || {};
-  const rating = state.service.getRate || {};
-  const questions = state.questions || [];
+export const handleInitialize = ({ service = {}, questions = []}) => {
+  const { latestPolicy, getRate } = service;
+  const policy = latestPolicy || {};
+  const rating = getRate || {};
   const values = {};
+
+  // Bail if we don't have all our info
+  if (!latestPolicy && !getRate) { return values; }
+
+
   // values.agencyCode = '20000'; // _.get(policy, 'agencyCode');
   // values.agentCode = '60000'; // _.get(policy, 'agentCode');
   // values.effectiveDate = moment.utc(_.get(policy, 'effectiveDate')).format('YYYY-MM-DD');
@@ -144,11 +146,11 @@ export const handleInitialize = (state) => {
   // Coverage Top Left
   values.clearFields = false;
   values.endorsementDateNew = setEndorsementDate(_.get(policy, 'effectiveDate'), _.get(policy, 'endDate'));
-  values.dwellingAmount = _.get(policy, 'coverageLimits.dwelling.amount');
+  values.dwellingAmount = policy.coverageLimits.dwelling.amount;
   values.dwellingAmountNew = values.dwellingAmount;
   values.otherStructuresAmount = otherStructures;
   values.otherStructuresAmountNew = values.otherStructuresAmount;
-  values.otherStructures = `${String(calculatePercentage(otherStructures, dwelling))}%`;
+  values.otherStructures = String(calculatePercentage(otherStructures, dwelling));
   values.otherStructuresNew = String(calculatePercentage(otherStructures, dwelling));
   values.personalPropertyAmount = String(personalProperty);
   values.personalPropertyAmountNew = values.personalPropertyAmount;
@@ -313,7 +315,6 @@ export const handleInitialize = (state) => {
 
   return values;
 };
-
 
 export const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
 
@@ -671,21 +672,37 @@ export class Endorsements extends React.Component {
     }
   }
 
+  setPercentageOfValue = (value, percent) => {
+    return Math.ceil(value * (percent / 100));
+  };
+
   updateDwellingAndDependencies = (value, prevValue, fieldValues) => {
+    const { change } = this.props;
     setCalculate(this.props, false);
-    const { dispatch } = this.props;
+
+    let roundedDwellingAmount = Math.round(String(value).replace(/\D+/g, '') / 1000) * 1000;
 
     if (fieldValues.otherStructuresNew !== 'other') {
-      dispatch(change('Endorsements', 'otherStructuresAmountNew', String(setPercentageOfValue(value, Number(fieldValues.otherStructuresNew)))));
+      change('otherStructuresAmountNew', String(this.setPercentageOfValue(roundedDwellingAmount, Number(fieldValues.otherStructuresNew))));
     }
     if (fieldValues.personalPropertyNew !== 'other') {
-      dispatch(change('Endorsements', 'personalPropertyAmountNew', String(setPercentageOfValue(value, Number(fieldValues.personalPropertyNew)))));
+      change('personalPropertyAmountNew', String(this.setPercentageOfValue(roundedDwellingAmount, Number(fieldValues.personalPropertyNew))));
     }
-    dispatch(change('Endorsements', 'calculatedHurricaneNew', String(setPercentageOfValue(value, Number(fieldValues.hurricaneNew)))));
-    dispatch(change('Endorsements', 'lossOfUseNew', String(setPercentageOfValue(value, 10))));
-    dispatch(change('Endorsements', 'calculatedSinkholeNew', String(setPercentageOfValue(value, 10))));
+    change('calculatedHurricaneNew', String(this.setPercentageOfValue(roundedDwellingAmount, Number(fieldValues.hurricaneNew))));
+    change('lossOfUseNew', String(this.setPercentageOfValue(roundedDwellingAmount, 10)));
+    change('calculatedSinkholeNew', String(this.setPercentageOfValue(roundedDwellingAmount, 10)));
 
     return value;
+  };
+
+  normalizeDependencies = (value, previousValue, allValues, field, dependency) => {
+    if (Number.isNaN(value)) return;
+    setCalculate(this.props, false);
+    const { change } = this.props;
+    const fieldValue = setPercentageOfValue((allValues[dependency]), value);
+
+    change(field, Number.isNaN(fieldValue) ? '' : fieldValue);
+    return value
   };
 
   render() {
@@ -805,6 +822,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  change: bindActionCreators(change, dispatch),
   actions: {
     errorActions: bindActionCreators(errorActions, dispatch),
     policyStateActions: bindActionCreators(policyStateActions, dispatch),
