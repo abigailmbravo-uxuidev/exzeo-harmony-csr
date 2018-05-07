@@ -4,9 +4,8 @@ import { Field } from 'redux-form';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers } from './index';
-import RadioField from '../../Form/inputs/RadioField';
 
-const { Input, Select } = Inputs;
+const { Input, Select, Radio } = Inputs;
 const {
   validation, format, parse, normalize
 } = lifecycle;
@@ -90,7 +89,7 @@ const WindMitigation = props => (
               segmented
               name="secondaryWaterResistanceNew"
               answers={getAnswers('secondaryWaterResistance', props.questions)}
-              component={RadioField}
+              component={Radio}
               validation={validation.isRequired}
             />
           </div>
@@ -184,7 +183,7 @@ const WindMitigation = props => (
               segmented
               name="windBorneDebrisRegionNew"
               answers={getAnswers('windBorneDebrisRegion', props.questions)}
-              component={RadioField}
+              component={Radio}
               validation={validation.isRequired}
             />
           </div>
