@@ -671,27 +671,21 @@ export class Endorsements extends React.Component {
     }
   }
 
-  updateDwellingAndDependencies = (value) => {
+  updateDwellingAndDependencies = (value, prevValue, fieldValues) => {
     setCalculate(this.props, false);
-    const { dispatch, fieldValues } = this.props;
-
-    let dwellingNumber = String(value).replace(/\D+/g, '');
-
-    if (Number.isNaN(dwellingNumber)) { return; }
-
-    dwellingNumber = Math.round(dwellingNumber / 1000) * 1000;
+    const { dispatch } = this.props;
 
     if (fieldValues.otherStructuresNew !== 'other') {
-      dispatch(change('Endorsements', 'otherStructuresAmountNew', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.otherStructuresNew)))));
+      dispatch(change('Endorsements', 'otherStructuresAmountNew', String(setPercentageOfValue(value, Number(fieldValues.otherStructuresNew)))));
     }
     if (fieldValues.personalPropertyNew !== 'other') {
-      dispatch(change('Endorsements', 'personalPropertyAmountNew', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.personalPropertyNew)))));
+      dispatch(change('Endorsements', 'personalPropertyAmountNew', String(setPercentageOfValue(value, Number(fieldValues.personalPropertyNew)))));
     }
-    dispatch(change('Endorsements', 'calculatedHurricaneNew', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.hurricaneNew)))));
+    dispatch(change('Endorsements', 'calculatedHurricaneNew', String(setPercentageOfValue(value, Number(fieldValues.hurricaneNew)))));
+    dispatch(change('Endorsements', 'lossOfUseNew', String(setPercentageOfValue(value, 10))));
+    dispatch(change('Endorsements', 'calculatedSinkholeNew', String(setPercentageOfValue(value, 10))));
 
-    dispatch(change('Endorsements', 'lossOfUseNew', String(setPercentageOfValue(Number(dwellingNumber), 10))));
-
-    dispatch(change('Endorsements', 'calculatedSinkholeNew', String(setPercentageOfValue(Number(dwellingNumber), 10))));
+    return value;
   };
 
   render() {
