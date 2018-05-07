@@ -192,7 +192,6 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
     ai.order = 0;
     modifiedAIs.splice(index, 1, ai);
   }
-  const offset = new Date(props.policy.effectiveDate).getTimezoneOffset() / 60;
 
   const submitData = {
     additionalInterestId: selectedAdditionalInterest._id,
