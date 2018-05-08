@@ -30,7 +30,7 @@ const WindMitigation = props => (
             name="roofCoveringNew"
             answers={getAnswers('roofCovering', props.questions)}
             component={Select}
-            validation={validation.isRequired}
+            validate={validation.isRequired}
           />
         </div>
         <div className="form-group-double-element">
@@ -44,7 +44,7 @@ const WindMitigation = props => (
             name="roofDeckAttachmentNew"
             answers={getAnswers('roofDeckAttachment', props.questions)}
             component={Select}
-            validation={validation.isRequired}
+            validate={validation.isRequired}
           />
         </div>
         <div className="form-group-double-element">
@@ -59,7 +59,7 @@ const WindMitigation = props => (
             answers={getAnswers('roofToWallConnection', props.questions)}
             styleName="weakestRoofWallConnect"
             component={Select}
-            validation={validation.isRequired}
+            validate={validation.isRequired}
           />
         </div>
         <div className="form-group-double-element">
@@ -74,7 +74,7 @@ const WindMitigation = props => (
             name="roofGeometryNew"
             answers={getAnswers('roofGeometry', props.questions)}
             component={Select}
-            validation={validation.isRequired}
+            validate={validation.isRequired}
           />
         </div>
         <div className="form-group-double-element">
@@ -90,7 +90,7 @@ const WindMitigation = props => (
               name="secondaryWaterResistanceNew"
               answers={getAnswers('secondaryWaterResistance', props.questions)}
               component={Radio}
-              validation={validation.isRequired}
+              validate={validation.isRequired}
             />
           </div>
         </div>
@@ -105,7 +105,7 @@ const WindMitigation = props => (
             name="openingProtectionNew"
             answers={getAnswers('openingProtection', props.questions)}
             component={Select}
-            validation={validation.isRequired}
+            validate={validation.isRequired}
           />
         </div>
       </div>
@@ -126,7 +126,7 @@ const WindMitigation = props => (
           <Field
             name="floridaBuildingCodeWindSpeedNew"
             component={Input}
-            validation={[validation.isRequired, validation.isNumbersOnly]}
+            validate={[validation.isRequired, validation.isNumbersOnly]}
           />
         </div>
         <div className="form-group-double-element">
@@ -139,7 +139,7 @@ const WindMitigation = props => (
           <Field
             name="floridaBuildingCodeWindSpeedDesignNew"
             component={Input}
-            validation={[validation.isRequired, validation.isNumbersOnly]}
+            validate={[validation.isRequired, validation.isNumbersOnly]}
           />
         </div>
         <div className="form-group-double-element">
@@ -154,7 +154,7 @@ const WindMitigation = props => (
             styleName="propertyTerrain"
             component={Select}
             answers={getAnswers('terrain', props.questions)}
-            validation={validation.isRequired}
+            validate={validation.isRequired}
           />
         </div>
         <div className="form-group-double-element">
@@ -168,7 +168,7 @@ const WindMitigation = props => (
             name="internalPressureDesignNew"
             answers={getAnswers('internalPressureDesign', props.questions)}
             component={Select}
-            validation={validation.isRequired}
+            validate={validation.isRequired}
           />
         </div>
         <div className="form-group-double-element">
@@ -184,7 +184,7 @@ const WindMitigation = props => (
               name="windBorneDebrisRegionNew"
               answers={getAnswers('windBorneDebrisRegion', props.questions)}
               component={Radio}
-              validation={validation.isRequired}
+              validate={validation.isRequired}
             />
           </div>
         </div>
@@ -198,7 +198,7 @@ const WindMitigation = props => (
           <Field
             name="windMitFactorNew"
             component={Input}
-            validation={validation.isRequired}
+            validate={validation.isRequired}
             disabled
           />
         </div>
