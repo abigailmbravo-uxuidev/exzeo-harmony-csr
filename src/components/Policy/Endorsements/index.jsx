@@ -22,15 +22,15 @@ import { batchActions } from 'redux-batched-actions';
 
 // Component Sections
 import Coverage from './Coverage';
-import WindMitigation from "./WindMitigation";
-import HomeLocation from "./HomeLocation";
-import PreviousEndorsements from "./PreviousEndorsements";
-import PolicyHolder from "./PolicyHolder";
-import MailingAddress from "./MailingAddress";
-import PropertyAddress from "./PropertyAddress";
-import ResultsCalculator from "./ResultsCalculator";
-import GoToMenu from "./GoToMenu";
-import UnderwritingValidations from "./UnderwritingValidations";
+import WindMitigation from './WindMitigation';
+import HomeLocation from './HomeLocation';
+import PreviousEndorsements from './PreviousEndorsements';
+import PolicyHolder from './PolicyHolder';
+import MailingAddress from './MailingAddress';
+import PropertyAddress from './PropertyAddress';
+import ResultsCalculator from './ResultsCalculator';
+import GoToMenu from './GoToMenu';
+import UnderwritingValidations from './UnderwritingValidations';
 
 export const scrollToView = (elementName) => {
   const element = document.getElementById(elementName);
@@ -104,7 +104,7 @@ export const getNewPolicyNumber = (state) => {
 };
 
 export const calculatePercentage = (oldFigure, newFigure) => {
-  if (oldFigure === 0 || newFigure  === 0) return  0;
+  if (oldFigure === 0 || newFigure === 0) return 0;
   return oldFigure / newFigure * 100;
 };
 
@@ -121,7 +121,7 @@ export const setEndorsementDate = (effectiveDate, endPolicyDate) => {
   return endDate;
 };
 
-export const handleInitialize = ({ service = {}, questions = []}) => {
+export const handleInitialize = ({ service = {}, questions = [] }) => {
   const { latestPolicy, getRate } = service;
   const policy = latestPolicy || {};
   const rating = getRate || {};
@@ -632,6 +632,8 @@ export class Endorsements extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    // TODO: figure out setCalculate
+
     if (!_.isEqual(this.props.getRate, nextProps.getRate) && nextProps.getRate && nextProps.getRate.newAnnualPremium) {
       const { getRate } = nextProps;
 
@@ -674,18 +676,16 @@ export class Endorsements extends React.Component {
 
   normalizeSetCalculate = (value) => {
     setCalculate(this.props, false);
-    return value
+    return value;
   };
 
-  setPercentageOfValue = (value, percent) => {
-    return Math.ceil(value * (percent / 100));
-  };
+  setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
 
   updateDwellingAndDependencies = (value, prevValue, fieldValues) => {
     const { change } = this.props;
     setCalculate(this.props, false);
 
-    let roundedDwellingAmount = Math.round(String(value).replace(/\D+/g, '') / 1000) * 1000;
+    const roundedDwellingAmount = Math.round(String(value).replace(/\D+/g, '') / 1000) * 1000;
 
     if (fieldValues.otherStructuresNew !== 'other') {
       change('otherStructuresAmountNew', String(this.setPercentageOfValue(roundedDwellingAmount, Number(fieldValues.otherStructuresNew))));
@@ -712,7 +712,7 @@ export class Endorsements extends React.Component {
 
     const fieldValue = setPercentageOfValue(allValues[dependency], value);
     change(field, Number.isNaN(fieldValue) ? '' : fieldValue);
-    return value
+    return value;
   };
 
   normalizeDependencies = (value, allValues, field, dependency) => {
@@ -722,7 +722,7 @@ export class Endorsements extends React.Component {
     const fieldValue = setPercentageOfValue((allValues[dependency]), value);
 
     change(field, Number.isNaN(fieldValue) ? '' : fieldValue);
-    return value
+    return value;
   };
 
   render() {
@@ -736,7 +736,7 @@ export class Endorsements extends React.Component {
     });
 
     const canPremiumEndorse = userProfile && userProfile.resources
-      ? userProfile.resources.some(resource => resource['uri'] === 'TTIC:FL:HO3:PolicyData:PremiumEndorse' && resource['right'] === 'UPDATE')
+      ? userProfile.resources.some(resource => resource.uri === 'TTIC:FL:HO3:PolicyData:PremiumEndorse' && resource.right === 'UPDATE')
       : false;
 
     if (!canPremiumEndorse) {
@@ -769,7 +769,7 @@ export class Endorsements extends React.Component {
               <div className="scroll">
                 <div className="form-group survey-wrapper" role="group">
                   <Coverage
-                    { ...this.props }
+                    {...this.props}
                     questions={this.props.questions}
                     normalizeDwellingAmount={this.updateDwellingAndDependencies}
                     normalizeDependencies={this.normalizeDependencies}
@@ -777,13 +777,13 @@ export class Endorsements extends React.Component {
                     normalizeSetCalculate={this.normalizeSetCalculate}
                   />
 
-                  <WindMitigation {...this.props } />
+                  <WindMitigation {...this.props} />
 
                   <HomeLocation {...this.props} />
 
                   <PreviousEndorsements mappedEndorsementHistory={mappedEndorsementHistory} />
 
-                  <PolicyHolder {...this.props } />
+                  <PolicyHolder {...this.props} />
 
                   <MailingAddress {...this.props} />
 
@@ -791,9 +791,9 @@ export class Endorsements extends React.Component {
                 </div>
               </div>
               <ResultsCalculator {...this.props}>
-                  { /* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */ }
-                  <button id="cancel-button" tabIndex="0" type="button" className="btn btn-secondary" onKeyPress={(event) => { if (event.charCode === 13) { setCalculate(this.props, true); } }} onClick={() => setCalculate(this.props, true)}>Cancel</button>
-                  <button type="submit" tabIndex="0" className="btn btn-primary" disabled={(!appState.data.isCalculated && pristine) || appState.data.isSubmitting}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
+                { /* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */ }
+                <button id="cancel-button" tabIndex="0" type="button" className="btn btn-secondary" onKeyPress={(event) => { if (event.charCode === 13) { setCalculate(this.props, true); } }} onClick={() => setCalculate(this.props, true)}>Cancel</button>
+                <button type="submit" tabIndex="0" className="btn btn-primary" disabled={(!appState.data.isCalculated && pristine) || appState.data.isSubmitting}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
               </ResultsCalculator>
 
 
