@@ -44,6 +44,7 @@ const PolicyHolder = props => (
             name="pH1secondaryPhone"
             component={Input}
             validate={validation.isPhone}
+            normalize={normalize.phone}
           />
         </div>
         <div className="flex-parent">
@@ -92,9 +93,10 @@ const PolicyHolder = props => (
         <div className="flex-parent col2">
           <Field
             label="Primary Phone"
+            name="pH2phone"
             component={Input}
             validate={[validation.dependsOn(['pH2FirstName', 'pH2LastName', 'pH2email']), validation.isPhone]}
-            name="pH2phone"
+            normalize={normalize.phone}
             onChange={() => setPHToggle(props)}
           />
           <Field
@@ -102,6 +104,7 @@ const PolicyHolder = props => (
             name="pH2secondaryPhone"
             component={Input}
             validate={validation.isPhone}
+            normalize={normalize.phone}
             onChange={() => setPHToggle(props)}
           />
         </div>
