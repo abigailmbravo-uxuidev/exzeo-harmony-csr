@@ -150,12 +150,12 @@ export const handleInitialize = ({ service = {}, questions = []}) => {
   values.dwellingAmountNew = values.dwellingAmount;
   values.otherStructuresAmount = otherStructures;
   values.otherStructuresAmountNew = values.otherStructuresAmount;
-  values.otherStructures = String(calculatePercentage(otherStructures, dwelling));
-  values.otherStructuresNew = String(calculatePercentage(otherStructures, dwelling));
-  values.personalPropertyAmount = String(personalProperty);
+  values.otherStructures = calculatePercentage(otherStructures, dwelling);
+  values.otherStructuresNew = calculatePercentage(otherStructures, dwelling);
+  values.personalPropertyAmount = personalProperty;
   values.personalPropertyAmountNew = values.personalPropertyAmount;
-  values.personalProperty = `${String(calculatePercentage(personalProperty, dwelling))}%`;
-  values.personalPropertyNew = String(calculatePercentage(personalProperty, dwelling));
+  values.personalProperty = calculatePercentage(personalProperty, dwelling);
+  values.personalPropertyNew = calculatePercentage(personalProperty, dwelling);
   values.lossOfUse = _.get(policy, 'coverageLimits.lossOfUse.amount');
   values.lossOfUseNew = values.lossOfUse;
   values.personalLiability = _.get(policy, 'coverageLimits.personalLiability.amount');
@@ -168,7 +168,7 @@ export const handleInitialize = ({ service = {}, questions = []}) => {
   values.moldLiabilityNew = values.moldLiability;
   values.allOtherPerils = _.get(policy, 'deductibles.allOtherPerils.amount');
   values.allOtherPerilsNew = values.allOtherPerils;
-  values.hurricane = `${hurricane}%`;
+  values.hurricane = hurricane;
   values.hurricaneNew = hurricane;
   values.calculatedHurricane = _.get(policy, 'deductibles.hurricane.calculatedAmount');
   values.calculatedHurricaneNew = values.calculatedHurricane;
@@ -612,8 +612,8 @@ export const save = (data, dispatch, props) => {
   });
 };
 
-
 const premiumAmountFormatter = cell => Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+
 const dateFormatter = cell => `${cell.substring(0, 10)}`;
 
 
@@ -672,6 +672,11 @@ export class Endorsements extends React.Component {
     }
   }
 
+  normalizeSetCalculate = (value) => {
+    setCalculate(this.props, false);
+    return value
+  };
+
   setPercentageOfValue = (value, percent) => {
     return Math.ceil(value * (percent / 100));
   };
@@ -690,12 +695,27 @@ export class Endorsements extends React.Component {
     }
     change('calculatedHurricaneNew', String(this.setPercentageOfValue(roundedDwellingAmount, Number(fieldValues.hurricaneNew))));
     change('lossOfUseNew', String(this.setPercentageOfValue(roundedDwellingAmount, 10)));
-    change('calculatedSinkholeNew', String(this.setPercentageOfValue(roundedDwellingAmount, 10)));
 
     return value;
   };
 
-  normalizeDependencies = (value, previousValue, allValues, field, dependency) => {
+  normalizePersonalPropertyDependencies = (value, allValues, field, dependency) => {
+    if (Number.isNaN(value)) return;
+    setCalculate(this.props, false);
+    const { change, policy } = this.props;
+
+    if (value === 0) {
+      change('personalPropertyReplacementCostCoverageNew', false);
+    } else {
+      change('personalPropertyReplacementCostCoverageNew', _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer') || false);
+    }
+
+    const fieldValue = setPercentageOfValue(allValues[dependency], value);
+    change(field, Number.isNaN(fieldValue) ? '' : fieldValue);
+    return value
+  };
+
+  normalizeDependencies = (value, allValues, field, dependency) => {
     if (Number.isNaN(value)) return;
     setCalculate(this.props, false);
     const { change } = this.props;
@@ -748,7 +768,14 @@ export class Endorsements extends React.Component {
               <GoToMenu />
               <div className="scroll">
                 <div className="form-group survey-wrapper" role="group">
-                  <Coverage normalizeDwellingAmount={this.updateDwellingAndDependencies} { ...this.props } />
+                  <Coverage
+                    { ...this.props }
+                    questions={this.props.questions}
+                    normalizeDwellingAmount={this.updateDwellingAndDependencies}
+                    normalizeDependencies={this.normalizeDependencies}
+                    normalizePersonalPropertyDependencies={this.normalizePersonalPropertyDependencies}
+                    normalizeSetCalculate={this.normalizeSetCalculate}
+                  />
 
                   <WindMitigation {...this.props } />
 

@@ -3,23 +3,23 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
-// import Fields from '@exzeo/core-ui/lib/Fields';
 
 import TextField from '../../Form/inputs/TextField';
 import RadioField from '../../Form/inputs/RadioField';
 import SelectField from '../../Form/inputs/SelectField';
-import CurrencyField from '../../Form/inputs/CurrencyField';
 import {
   getAnswers,
   getQuestionName,
   setCalculate,
-  updateCalculatedSinkhole,
-  updateDependencies,
-  updatepersonalPropertyDependnecies
 } from "./index";
 
 const { Currency, Input, Select } = Inputs;
 const { validation, format, parse, normalize } = lifecycle;
+
+const baseYesNoAnswers = [
+  { answer: false, label: 'No' },
+  { answer: true, label: 'Yes' }
+];
 
 const Coverage = (props) => {
   return (
@@ -60,8 +60,8 @@ const Coverage = (props) => {
             <Field
               name="otherStructuresAmountNew"
               component={Currency}
-              validations={validation.isRequired}
               styleName="coverage-b"
+              validate={validation.isRequired}
               disabled
             />
           </div>
@@ -71,175 +71,174 @@ const Coverage = (props) => {
               label="Other Structures %"
               component={Input}
               format={format.toPercent}
-              disabled />
+              disabled
+            />
             <Field
               name="otherStructuresNew"
               component={Select}
               answers={getAnswers('otherStructuresAmount', props.questions)}
               styleName="coverage-b-percentage"
-              normalize={(v, pv, av, pav) =>
-                props.normalizeDependencies(v, pv, av, pav, 'otherStructuresAmountNew', 'dwellingAmountNew')
+              parse={parse.toNumber}
+              validate={validation.isRequired}
+              normalize={(v, pv, av) =>
+                props.normalizeDependencies(v, av, 'otherStructuresAmountNew', 'dwellingAmountNew')
               }
-              validations={validation.isRequired}
             />
           </div>
           <div className="form-group-double-element">
-            <CurrencyField
-              label="Personal Property (C)"
-              styleName="coverage-c"
+            <Field
               name="personalPropertyAmount"
-              disabled
-            />
-            <CurrencyField
-              validations={['required']}
-              label=""
+              label="Personal Property (C)"
+              component={Currency}
               styleName="coverage-c"
+              disabled
+            />
+            <Field
               name="personalPropertyAmountNew"
+              component={Currency}
+              styleName="coverage-c"
+              validate={validation.isRequired}
               disabled
             />
           </div>
           <div className="form-group-double-element">
-            <TextField
-              label="Personal Property %"
-              styleName=""
+            <Field
               name="personalProperty"
+              label="Personal Property %"
+              component={Input}
+              format={format.toPercent}
               disabled
             />
-            <SelectField
+            <Field
               name="personalPropertyNew"
+              component={Select}
               answers={getAnswers('personalPropertyAmount', props.questions)}
-              component="select"
-              label=""
               styleName="coverage-c-percentage"
-              onChange={event => updatepersonalPropertyDependnecies(event, 'personalPropertyAmountNew', 'dwellingAmountNew', props)}
-              validations={['required']}
+              parse={parse.toNumber}
+              validate={validation.isRequired}
+              normalize={(v, pv, av) =>
+                props.normalizePersonalPropertyDependencies(v, av, 'personalPropertyAmountNew', 'dwellingAmountNew')
+              }
             />
           </div>
           <div className="form-group-double-element">
-            <CurrencyField
-              label="Loss of Use (D)"
-              styleName=""
+            <Field
               name="lossOfUse"
+              component={Currency}
+              label="Loss of Use (D)"
               disabled
             />
-
-            <CurrencyField
-              validations={['required']}
-              styleName=""
-              label=""
+            <Field
               name="lossOfUseNew"
+              component={Currency}
+              validate={validation.isRequired}
               disabled
             />
           </div>
           <div className="form-group-double-element">
-            <CurrencyField
-              label="Personal Liability (E)"
-              styleName=""
+            <Field
               name="personalLiability"
+              label="Personal Liability (E)"
+              component={Currency}
               disabled
             />
-            <SelectField
-              onChange={() => setCalculate(props, false)}
+            <Field
               name="personalLiabilityNew"
+              component={Select}
               answers={getAnswers('personalLiability', props.questions)}
-              component="select"
-              label=""
-              styleName=""
-              validations={['required']}
+              parse={parse.toNumber}
+              validate={validation.isRequired}
+              normalize={props.normalizeSetCalculate}
             />
           </div>
           <div className="form-group-double-element">
-            <CurrencyField
-              label="Medical Payments (F)"
-              styleName=""
+            <Field
               name="medicalPayments"
+              label="Medical Payments (F)"
+              component={Currency}
               disabled
             />
-            <CurrencyField
-              validations={['required']}
+            <Field
               name="medicalPaymentsNew"
-              label=""
-              styleName=""
+              component={Currency}
+              validate={validation.isRequired}
               disabled
             />
           </div>
           <div className="form-group-double-element">
-            <CurrencyField
-              label="Mold Property"
-              styleName=""
+            <Field
               name="moldProperty"
+              label="Mold Property"
+              component={Currency}
               disabled
             />
 
-            <SelectField
+            <Field
               name="moldPropertyNew"
               answers={getAnswers('moldProperty', props.questions)}
-              component="select"
-              label=""
-              styleName=""
-              onChange={() => setCalculate(props, false)}
-              validations={['required']}
+              component={Select}
+              validate={validation.isRequired}
+              normalize={props.normalizeSetCalculate}
             />
           </div>
           <div className="form-group-double-element">
-            <CurrencyField
-              label="Mold Liability"
-              styleName=""
+            <Field
               name="moldLiability"
+              label="Mold Liability"
+              component={Currency}
               disabled
             />
-            <SelectField
+            <Field
               name="moldLiabilityNew"
+              component={Select}
               answers={getAnswers('moldLiability', props.questions)}
-              component="select"
-              styleName=""
-              label=""
-              onChange={() => setCalculate(props, false)}
-              validations={['required']}
+              validate={validation.isRequired}
+              normalize={props.normalizeSetCalculate}
             />
           </div>
           <div className="form-group-double-element">
-            <CurrencyField
-              label="AOP Deductible"
-              styleName=""
+            <Field
               name="allOtherPerils"
+              label="AOP Deductible"
+              component={Currency}
               disabled
             />
-            <SelectField
-              onChange={() => setCalculate(props, false)}
+            <Field
               name="allOtherPerilsNew"
+              component={Select}
               answers={getAnswers('allOtherPerils', props.questions)}
-              component="select"
-              styleName=""
-              label=""
-              validations={['required']}
+              validate={validation.isRequired}
+              normalize={props.normalizeSetCalculate}
             />
           </div>
           <div className="form-group-double-element">
             <TextField
-              label="Hurricane Deductible"
-              styleName=""
               name="hurricane"
+              label="Hurricane Deductible"
+              component={Input}
+              format={format.toPercent}
               disabled
             />
-            <SelectField
-              label=""
+            <Field
               name="hurricaneNew"
+              component={Select}
               answers={getAnswers('hurricane', props.questions)}
-              component="select"
-              styleName=""
-              onChange={event => updateDependencies(event, 'calculatedHurricane', 'dwellingAmountNew', props)}
-              validations={['required']}
+              validate={validation.isRequired}
+              normalize={(v, pv, av) =>
+                props.normalizeDependencies(v, av, 'calculatedHurricane', 'dwellingAmountNew')
+              }
             />
           </div>
           <div className="form-group-double-element">
-            <TextField label="Sinkhole Deductible" styleName="" name="sinkholePerilCoverage" disabled />
-            <SelectField
-              label=""
+            <Field
+              name="sinkholePerilCoverage"
+              label="Sinkhole Deductible"
+              component={Input}
+              disabled
+            />
+            <Field
               name="sinkholePerilCoverageNew"
-              component="select"
-              styleName=""
-              onChange={() => updateCalculatedSinkhole(props)}
+              component={Select}
               answers={[
                 {
                   answer: false,
@@ -252,7 +251,11 @@ const Coverage = (props) => {
             />
           </div>
         </div>
+
+
         {/* Col2 */}
+
+
         <div className="flex-child col3">
           <div className="form-group labels">
             <label /><label>Current</label><label>New</label>
@@ -272,15 +275,7 @@ const Coverage = (props) => {
                 label=""
                 onChange={() => setCalculate(props, false)}
                 segmented
-                answers={[
-                  {
-                    answer: false,
-                    label: 'No'
-                  }, {
-                    answer: true,
-                    label: 'Yes'
-                  }
-                ]}
+                answers={baseYesNoAnswers}
               />
             </div>
           </div>
@@ -315,15 +310,7 @@ const Coverage = (props) => {
                 styleName="billPlan"
                 label=""
                 segmented
-                answers={[
-                  {
-                    answer: false,
-                    label: 'No'
-                  }, {
-                    answer: true,
-                    label: 'Yes'
-                  }
-                ]}
+                answers={baseYesNoAnswers}
               />
             </div>
           </div>
@@ -341,15 +328,7 @@ const Coverage = (props) => {
                 styleName="billPlan"
                 label=""
                 segmented
-                answers={[
-                  {
-                    answer: false,
-                    label: 'No'
-                  }, {
-                    answer: true,
-                    label: 'Yes'
-                  }
-                ]}
+                answers={baseYesNoAnswers}
               />
             </div>
           </div>
@@ -368,15 +347,7 @@ const Coverage = (props) => {
                 styleName="billPlan"
                 label=""
                 segmented
-                answers={[
-                  {
-                    answer: false,
-                    label: 'No'
-                  }, {
-                    answer: true,
-                    label: 'Yes'
-                  }
-                ]}
+                answers={baseYesNoAnswers}
               />
             </div>
           </div>
@@ -394,15 +365,7 @@ const Coverage = (props) => {
                 styleName=""
                 label=""
                 segmented
-                answers={[
-                  {
-                    answer: false,
-                    label: 'No'
-                  }, {
-                    answer: true,
-                    label: 'Yes'
-                  }
-                ]}
+                answers={baseYesNoAnswers}
               />
             </div>
           </div>
@@ -450,15 +413,7 @@ const Coverage = (props) => {
                 label=""
                 onChange={() => setCalculate(props, false)}
                 segmented
-                answers={[
-                  {
-                    answer: 'No',
-                    label: 'No'
-                  }, {
-                    answer: 'Yes',
-                    label: 'Yes'
-                  }
-                ]}
+                answers={baseYesNoAnswers}
               />
             </div>
           </div>
@@ -476,15 +431,7 @@ const Coverage = (props) => {
                 label=""
                 onChange={() => setCalculate(props, false)}
                 segmented
-                answers={[
-                  {
-                    answer: false,
-                    label: 'No'
-                  }, {
-                    answer: true,
-                    label: 'Yes'
-                  }
-                ]}
+                answers={baseYesNoAnswers}
               />
             </div>
           </div>
@@ -502,15 +449,7 @@ const Coverage = (props) => {
                 label=""
                 onChange={() => setCalculate(props, false)}
                 segmented
-                answers={[
-                  {
-                    answer: false,
-                    label: 'No'
-                  }, {
-                    answer: true,
-                    label: 'Yes'
-                  }
-                ]}
+                answers={baseYesNoAnswers}
               />
             </div>
           </div>
