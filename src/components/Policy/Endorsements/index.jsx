@@ -146,7 +146,7 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   // Coverage Top Left
   values.clearFields = false;
   values.endorsementDateNew = setEndorsementDate(_.get(policy, 'effectiveDate'), _.get(policy, 'endDate'));
-  values.dwellingAmount = policy.coverageLimits.dwelling.amount;
+  values.dwellingAmount = dwelling;
   values.dwellingAmountNew = values.dwellingAmount;
   values.otherStructuresAmount = otherStructures;
   values.otherStructuresAmountNew = values.otherStructuresAmount;
