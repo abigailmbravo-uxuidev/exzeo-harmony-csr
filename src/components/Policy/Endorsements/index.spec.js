@@ -31,6 +31,7 @@ describe('Testing Endorsements component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      change() {},
       zipcodeSettings: {},
       summaryLedger: {},
       reset() {},
@@ -105,34 +106,13 @@ describe('Testing Endorsements component', () => {
     setCalculate(props, true);
     save({}, props.dispatch, props);
     updateCalculatedSinkhole(props);
-    wrapper.instance().updateDwellingAndDependencies({}, '5000');
+    wrapper.instance().updateDwellingAndDependencies('5000', '100', {});
     props.getRate = { worksheet: {} };
     wrapper.instance().componentWillReceiveProps(props);
 
     const endsDate = setEndorsementDate('2016-11-27', '2017-11-26');
     expect(endsDate).toEqual('2017-11-26');
-    wrapper.find('[name="otherStructuresNew"]').simulate('change', { target: { value: '4,540' } });
-    wrapper.find('[name="personalPropertyNew"]').simulate('change', { target: { value: '4,540' } });
-    wrapper.find('[name="personalLiabilityNew"]').simulate('change', { target: { value: '4,540' } });
-    wrapper.find('[name="moldPropertyNew"]').simulate('change', { target: { value: '10,000' } });
-    wrapper.find('[name="moldLiabilityNew"]').simulate('change', { target: { value: '50,000' } });
-    wrapper.find('[name="allOtherPerilsNew"]').simulate('change', { target: { value: '1,000' } });
-    wrapper.find('[name="hurricaneNew"]').simulate('change', { target: { value: '2,000' } });
-    wrapper.find('[name="sinkholePerilCoverageNew"]').simulate('change', { target: { value: true } });
-    wrapper.find('[name="personalPropertyReplacementCostCoverageNew"]').simulate('change', { target: { value: true } });
-    wrapper.find('[name="ordinanceOrLawNew"]').simulate('change', { target: { value: 25 } });
-    wrapper.find('[name="propertyIncidentalOccupanciesMainDwellingNew"]').simulate('change', { target: { value: true } });
-    wrapper.find('[name="propertyIncidentalOccupanciesOtherStructuresNew"]').simulate('change', { target: { value: true } });
 
-    wrapper.find('[name="liabilityIncidentalOccupanciesNew"]').simulate('change', { target: { value: true } });
-    wrapper.find('[name="townhouseRowhouseNew"]').simulate('change', { target: { value: true } });
-    wrapper.find('[name="rentedNew"]').simulate('change', { target: { value: true } });
-    wrapper.find('[name="monthsOccupiedNew"]').simulate('change', { target: { value: '10+' } });
-    wrapper.find('[name="noPriorInsuranceNew"]').simulate('change', { target: { value: 'Yes' } });
-    wrapper.find('[name="burglarAlarmNew"]').simulate('change', { target: { value: true } });
-    wrapper.find('[name="fireAlarmNew"]').simulate('change', { target: { value: true } });
-    wrapper.find('[name="sprinklerNew"]').simulate('change', { target: { value: 'N' } });
-    wrapper.find('[name="roofCoveringNew"]').simulate('change', { target: { value: 'Other' } });
 
     wrapper.find('[name="roofDeckAttachmentNew"]').simulate('change', { target: { value: 'Other' } });
     wrapper.find('[name="roofToWallConnectionNew"]').simulate('change', { target: { value: 'Other' } });
