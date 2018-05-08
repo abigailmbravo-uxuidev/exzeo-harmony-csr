@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
-import { reduxForm, propTypes, change, Form } from 'redux-form';
+import { reduxForm, propTypes, change, Form, formValueSelector } from 'redux-form';
 import * as cgActions from '../../../actions/cgActions';
 import * as serviceActions from '../../../actions/serviceActions';
 import * as appStateActions from '../../../actions/appStateActions';
@@ -86,7 +86,6 @@ export const clearSecondaryPolicyholder = (value, props) => {
   }
 };
 
-
 export const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 export const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question') || '';
@@ -151,11 +150,11 @@ export const handleInitialize = ({ service = {}, questions = []}) => {
   values.otherStructuresAmount = otherStructures;
   values.otherStructuresAmountNew = values.otherStructuresAmount;
   values.otherStructures = calculatePercentage(otherStructures, dwelling);
-  values.otherStructuresNew = calculatePercentage(otherStructures, dwelling);
+  values.otherStructuresNew = values.otherStructures;
   values.personalPropertyAmount = personalProperty;
   values.personalPropertyAmountNew = values.personalPropertyAmount;
   values.personalProperty = calculatePercentage(personalProperty, dwelling);
-  values.personalPropertyNew = calculatePercentage(personalProperty, dwelling);
+  values.personalPropertyNew = values.personalProperty;
   values.lossOfUse = _.get(policy, 'coverageLimits.lossOfUse.amount');
   values.lossOfUseNew = values.lossOfUse;
   values.personalLiability = _.get(policy, 'coverageLimits.personalLiability.amount');
@@ -175,20 +174,18 @@ export const handleInitialize = ({ service = {}, questions = []}) => {
   values.sinkholePerilCoverage = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer') ? `10% of ${getQuestionName('dwellingAmount', questions)}` : 'Coverage Excluded';
   values.sinkholePerilCoverageNew = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer');
   // Coverage Top Right
-  values.personalPropertyReplacementCostCoverage = _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer') ? 'Yes' : 'No';
-  values.personalPropertyReplacementCostCoverageNew = _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer');
-  values.ordinanceOrLaw = `${_.get(policy, 'coverageLimits.ordinanceOrLaw.amount')}%`;
-  values.ordinanceOrLawNew = _.get(policy, 'coverageLimits.ordinanceOrLaw.amount');
-  values.propertyIncidentalOccupanciesMainDwelling = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer') ? 'Yes' : 'No';
-  values.propertyIncidentalOccupanciesMainDwellingNew = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer');
-  values.propertyIncidentalOccupanciesOtherStructures = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer') ? 'Yes' : 'No';
-  values.propertyIncidentalOccupanciesOtherStructuresNew = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer');
-
-  values.liabilityIncidentalOccupancies = _.get(policy, 'coverageOptions.liabilityIncidentalOccupancies.answer') ? 'Yes' : 'No';
-  values.liabilityIncidentalOccupanciesNew = !!_.get(policy, 'coverageOptions.liabilityIncidentalOccupancies.answer');
-
-  values.townhouseRowhouse = _.get(policy, 'property.townhouseRowhouse') ? 'Yes' : 'No';
-  values.townhouseRowhouseNew = !!_.get(policy, 'property.townhouseRowhouse');
+  values.personalPropertyReplacementCostCoverage = _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer');
+  values.personalPropertyReplacementCostCoverageNew = values.personalPropertyReplacementCostCoverage;
+  values.ordinanceOrLaw = _.get(policy, 'coverageLimits.ordinanceOrLaw.amount');
+  values.ordinanceOrLawNew = values.ordinanceOrLaw;
+  values.propertyIncidentalOccupanciesMainDwelling = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer');
+  values.propertyIncidentalOccupanciesMainDwellingNew = values.propertyIncidentalOccupanciesMainDwelling;
+  values.propertyIncidentalOccupanciesOtherStructures = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer');
+  values.propertyIncidentalOccupanciesOtherStructuresNew = values.propertyIncidentalOccupanciesOtherStructures;
+  values.liabilityIncidentalOccupancies = _.get(policy, 'coverageOptions.liabilityIncidentalOccupancies.answer');
+  values.liabilityIncidentalOccupanciesNew = values.liabilityIncidentalOccupancies;
+  values.townhouseRowhouse = _.get(policy, 'property.townhouseRowhouse');
+  values.townhouseRowhouseNew = values.townhouseRowhouse;
   values.windExcluded = _.get(policy, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount') === 0 ? 'No' : 'Yes';
   values.windExcludedNew = values.windExcluded;
   values.rented = _.get(policy, 'underwritingAnswers.rented.answer');
@@ -197,10 +194,10 @@ export const handleInitialize = ({ service = {}, questions = []}) => {
   values.monthsOccupiedNew = values.monthsOccupied;
   values.noPriorInsurance = _.get(policy, 'underwritingAnswers.noPriorInsuranceSurcharge.answer');
   values.noPriorInsuranceNew = values.noPriorInsurance;
-  values.burglarAlarm = _.get(policy, 'property.burglarAlarm') ? 'Yes' : 'No';
-  values.burglarAlarmNew = _.get(policy, 'property.burglarAlarm');
-  values.fireAlarm = _.get(policy, 'property.fireAlarm') ? 'Yes' : 'No';
-  values.fireAlarmNew = _.get(policy, 'property.fireAlarm');
+  values.burglarAlarm = _.get(policy, 'property.burglarAlarm');
+  values.burglarAlarmNew = values.burglarAlarm;
+  values.fireAlarm = _.get(policy, 'property.fireAlarm');
+  values.fireAlarmNew = values.fireAlarm;
   values.sprinkler = _.get(policy, 'property.sprinkler');
   values.sprinklerNew = values.sprinkler;
   values.billToType = _.get(policy, 'billToType');
@@ -239,6 +236,7 @@ export const handleInitialize = ({ service = {}, questions = []}) => {
   const updatedRatingWindMitDiscount = _.get(rating, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
   values.windMitFactor = windMitigationDiscount;
   values.windMitFactorNew = (updatedRatingWindMitDiscount === undefined || updatedRatingWindMitDiscount === null) ? windMitigationDiscount : updatedRatingWindMitDiscount;
+
   // Home/Location Bottom Left
   values.yearBuilt = String(_.get(policy, 'property.yearBuilt'));
   values.yearBuiltNew = values.yearBuilt;
@@ -252,6 +250,7 @@ export const handleInitialize = ({ service = {}, questions = []}) => {
   values.buildingCodeEffectivenessGradingNew = _.get(policy, 'property.buildingCodeEffectivenessGrading');
   values.familyUnits = _.get(policy, 'property.familyUnits');
   values.familyUnitsNew = values.familyUnits;
+
   // Home/Location Bottom Right
   values.distanceToTidalWater = Number(_.get(policy, 'property.distanceToTidalWater')).toLocaleString();
   values.distanceToTidalWaterNew = values.distanceToTidalWater;
@@ -333,24 +332,6 @@ export const updateDependencies = (event, field, dependency, props) => {
 
   const { dispatch, fieldValues } = props;
   if (Number.isNaN(event.target.value)) return;
-
-  const dependencyValue = String(fieldValues[dependency]).replace(/\D+/g, '');
-  const fieldValue = setPercentageOfValue(Number(dependencyValue), Number(event.target.value));
-
-  dispatch(change('Endorsements', field, Number.isNaN(fieldValue) ? '' : String(fieldValue)));
-};
-
-export const updatepersonalPropertyDependnecies = (event, field, dependency, props) => {
-  setCalculate(props, false);
-
-  const { dispatch, fieldValues } = props;
-  if (Number.isNaN(event.target.value)) return;
-
-  if (Number(event.target.value) === 0) {
-    dispatch(change('Endorsements', 'personalPropertyReplacementCostCoverageNew', false));
-  } else {
-    dispatch(change('Endorsements', 'personalPropertyReplacementCostCoverageNew', _.get(props.policy, 'coverageOptions.personalPropertyReplacementCost.answer') || false));
-  }
 
   const dependencyValue = String(fieldValues[dependency]).replace(/\D+/g, '');
   const fieldValue = setPercentageOfValue(Number(dependencyValue), Number(event.target.value));
@@ -614,9 +595,6 @@ export const save = (data, dispatch, props) => {
 
 const premiumAmountFormatter = cell => Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 
-const dateFormatter = cell => `${cell.substring(0, 10)}`;
-
-
 export class Endorsements extends React.Component {
   componentDidMount() {
     this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
@@ -672,62 +650,84 @@ export class Endorsements extends React.Component {
     }
   }
 
-  normalizeSetCalculate = (value) => {
-    setCalculate(this.props, false);
-    return value
-  };
-
   setPercentageOfValue = (value, percent) => {
     return Math.ceil(value * (percent / 100));
   };
 
-  updateDwellingAndDependencies = (value, prevValue, fieldValues) => {
-    const { change } = this.props;
-    setCalculate(this.props, false);
+  setCalculate = (reset = false) => {
+    const { actions: { serviceActions, appStateActions }, appState } = this.props;
+    if (reset) {
+      this.props.reset();
+    }
+    serviceActions.clearRate();
 
-    let roundedDwellingAmount = Math.round(String(value).replace(/\D+/g, '') / 1000) * 1000;
+    if (!appState.data.isCalculated) return;
+
+    const workflowId = appState.instanceId;
+    appStateActions.setAppState(appState.modelName, workflowId, {
+      ...appState.data,
+      isCalculated: false
+    });
+  };
+
+  updateDwellingAndDependencies = (value, prevValue, fieldValues) => {
+    const { change: changeF } = this.props;
+    this.setCalculate();
+
+    let roundedDwellingAmount = Math.round(value / 1000) * 1000;
 
     if (fieldValues.otherStructuresNew !== 'other') {
-      change('otherStructuresAmountNew', String(this.setPercentageOfValue(roundedDwellingAmount, Number(fieldValues.otherStructuresNew))));
+      changeF('otherStructuresAmountNew', this.setPercentageOfValue(roundedDwellingAmount, fieldValues.otherStructuresNew));
     }
     if (fieldValues.personalPropertyNew !== 'other') {
-      change('personalPropertyAmountNew', String(this.setPercentageOfValue(roundedDwellingAmount, Number(fieldValues.personalPropertyNew))));
+      changeF('personalPropertyAmountNew', this.setPercentageOfValue(roundedDwellingAmount, fieldValues.personalPropertyNew));
     }
-    change('calculatedHurricaneNew', String(this.setPercentageOfValue(roundedDwellingAmount, Number(fieldValues.hurricaneNew))));
-    change('lossOfUseNew', String(this.setPercentageOfValue(roundedDwellingAmount, 10)));
+    changeF('calculatedHurricaneNew', this.setPercentageOfValue(roundedDwellingAmount, fieldValues.hurricaneNew));
+    changeF('lossOfUseNew', this.setPercentageOfValue(roundedDwellingAmount, 10));
 
     return value;
   };
 
   normalizePersonalPropertyDependencies = (value, allValues, field, dependency) => {
     if (Number.isNaN(value)) return;
-    setCalculate(this.props, false);
-    const { change, policy } = this.props;
+    setCalculate();
+    const { change: changeF, policy } = this.props;
 
     if (value === 0) {
-      change('personalPropertyReplacementCostCoverageNew', false);
+      changeF('personalPropertyReplacementCostCoverageNew', false);
     } else {
-      change('personalPropertyReplacementCostCoverageNew', _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer') || false);
+      changeF('personalPropertyReplacementCostCoverageNew', _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer') || false);
     }
 
     const fieldValue = setPercentageOfValue(allValues[dependency], value);
-    change(field, Number.isNaN(fieldValue) ? '' : fieldValue);
+    changeF(field, Number.isNaN(fieldValue) ? '' : fieldValue);
     return value
   };
 
   normalizeDependencies = (value, allValues, field, dependency) => {
     if (Number.isNaN(value)) return;
     setCalculate(this.props, false);
-    const { change } = this.props;
+    const { change: changeF } = this.props;
     const fieldValue = setPercentageOfValue((allValues[dependency]), value);
 
-    change(field, Number.isNaN(fieldValue) ? '' : fieldValue);
+    changeF(field, Number.isNaN(fieldValue) ? '' : fieldValue);
     return value
   };
 
   render() {
     const {
-      handleSubmit, appState, questions, pristine, endorsementHistory, underwritingQuestions, policy, dirty, fieldValues, userProfile
+      appState,
+      dirty,
+      endorsementHistory,
+      fieldValues,
+      handleSubmit,
+      initialValues,
+      personalPropertyNewVal,
+      policy,
+      pristine,
+      questions,
+      underwritingQuestions,
+      userProfile
     } = this.props;
 
     const mappedEndorsementHistory = _.map(endorsementHistory, (endorsement) => {
@@ -769,12 +769,13 @@ export class Endorsements extends React.Component {
               <div className="scroll">
                 <div className="form-group survey-wrapper" role="group">
                   <Coverage
-                    { ...this.props }
-                    questions={this.props.questions}
+                    initialValues={initialValues}
+                    personalPropertyNewVal={personalPropertyNewVal}
+                    questions={questions}
+                    underwritingQuestions={underwritingQuestions}
                     normalizeDwellingAmount={this.updateDwellingAndDependencies}
                     normalizeDependencies={this.normalizeDependencies}
                     normalizePersonalPropertyDependencies={this.normalizePersonalPropertyDependencies}
-                    normalizeSetCalculate={this.normalizeSetCalculate}
                   />
 
                   <WindMitigation {...this.props } />
@@ -832,6 +833,7 @@ Endorsements.propTypes = {
 redux mapping
 ------------------------------------------------
 */
+const selector = formValueSelector('Endorsements');
 const mapStateToProps = state => ({
   tasks: state.cg,
   endorsementHistory: state.service.endorsementHistory || [],
@@ -845,11 +847,11 @@ const mapStateToProps = state => ({
   newPolicyNumber: getNewPolicyNumber(state),
   summaryLedger: state.service.getSummaryLedger || {},
   zipcodeSettings: state.service.getZipcodeSettings,
-  userProfile: state.authState.userProfile || {}
+  userProfile: state.authState.userProfile || {},
+  personalPropertyNewVal: selector(state, 'personalPropertyNew')
 });
 
 const mapDispatchToProps = dispatch => ({
-  change: bindActionCreators(change, dispatch),
   actions: {
     errorActions: bindActionCreators(errorActions, dispatch),
     policyStateActions: bindActionCreators(policyStateActions, dispatch),

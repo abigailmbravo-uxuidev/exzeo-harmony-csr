@@ -4,17 +4,13 @@ import { Field } from 'redux-form';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 
-import TextField from '../../Form/inputs/TextField';
-import RadioField from '../../Form/inputs/RadioField';
-import SelectField from '../../Form/inputs/SelectField';
 import {
   getAnswers,
   getQuestionName,
-  setCalculate,
 } from "./index";
 
-const { Currency, Input, Select } = Inputs;
-const { validation, format, parse, normalize } = lifecycle;
+const { Currency, Input, Select, Radio } = Inputs;
+const { validation, format, parse } = lifecycle;
 
 const baseYesNoAnswers = [
   { answer: false, label: 'No' },
@@ -60,8 +56,8 @@ const Coverage = (props) => {
             <Field
               name="otherStructuresAmountNew"
               component={Currency}
-              styleName="coverage-b"
               validate={validation.isRequired}
+              styleName="coverage-b"
               disabled
             />
           </div>
@@ -77,12 +73,12 @@ const Coverage = (props) => {
               name="otherStructuresNew"
               component={Select}
               answers={getAnswers('otherStructuresAmount', props.questions)}
-              styleName="coverage-b-percentage"
               parse={parse.toNumber}
               validate={validation.isRequired}
               normalize={(v, pv, av) =>
                 props.normalizeDependencies(v, av, 'otherStructuresAmountNew', 'dwellingAmountNew')
               }
+              styleName="coverage-b-percentage"
             />
           </div>
           <div className="form-group-double-element">
@@ -96,8 +92,8 @@ const Coverage = (props) => {
             <Field
               name="personalPropertyAmountNew"
               component={Currency}
-              styleName="coverage-c"
               validate={validation.isRequired}
+              styleName="coverage-c"
               disabled
             />
           </div>
@@ -113,19 +109,19 @@ const Coverage = (props) => {
               name="personalPropertyNew"
               component={Select}
               answers={getAnswers('personalPropertyAmount', props.questions)}
-              styleName="coverage-c-percentage"
               parse={parse.toNumber}
               validate={validation.isRequired}
               normalize={(v, pv, av) =>
                 props.normalizePersonalPropertyDependencies(v, av, 'personalPropertyAmountNew', 'dwellingAmountNew')
               }
+              styleName="coverage-c-percentage"
             />
           </div>
           <div className="form-group-double-element">
             <Field
               name="lossOfUse"
-              component={Currency}
               label="Loss of Use (D)"
+              component={Currency}
               disabled
             />
             <Field
@@ -148,7 +144,6 @@ const Coverage = (props) => {
               answers={getAnswers('personalLiability', props.questions)}
               parse={parse.toNumber}
               validate={validation.isRequired}
-              normalize={props.normalizeSetCalculate}
             />
           </div>
           <div className="form-group-double-element">
@@ -175,10 +170,9 @@ const Coverage = (props) => {
 
             <Field
               name="moldPropertyNew"
-              answers={getAnswers('moldProperty', props.questions)}
               component={Select}
+              answers={getAnswers('moldProperty', props.questions)}
               validate={validation.isRequired}
-              normalize={props.normalizeSetCalculate}
             />
           </div>
           <div className="form-group-double-element">
@@ -193,7 +187,6 @@ const Coverage = (props) => {
               component={Select}
               answers={getAnswers('moldLiability', props.questions)}
               validate={validation.isRequired}
-              normalize={props.normalizeSetCalculate}
             />
           </div>
           <div className="form-group-double-element">
@@ -208,11 +201,10 @@ const Coverage = (props) => {
               component={Select}
               answers={getAnswers('allOtherPerils', props.questions)}
               validate={validation.isRequired}
-              normalize={props.normalizeSetCalculate}
             />
           </div>
           <div className="form-group-double-element">
-            <TextField
+            <Field
               name="hurricane"
               label="Hurricane Deductible"
               component={Input}
@@ -240,13 +232,8 @@ const Coverage = (props) => {
               name="sinkholePerilCoverageNew"
               component={Select}
               answers={[
-                {
-                  answer: false,
-                  label: 'Coverage Excluded'
-                }, {
-                  answer: true,
-                  label: `10% of ${getQuestionName('dwellingAmount', props.questions)}`
-                }
+                { answer: false, label: 'Coverage Excluded' },
+                { answer: true, label: `10% of ${getQuestionName('dwellingAmount', props.questions)}` }
               ]}
             />
           </div>
@@ -261,211 +248,201 @@ const Coverage = (props) => {
             <label /><label>Current</label><label>New</label>
           </div>
           <div className="form-group-double-element">
-            <TextField
-              label="Personal Property Repl Cost"
-              styleName=""
+            <Field
               name="personalPropertyReplacementCostCoverage"
+              label="Personal Property Repl Cost"
+              component={Input}
+              format={format.boolToYesNo}
               disabled
             />
             <div className="flex-child other-coverages-property-replacement-cost">
-              <RadioField
-                disabled={String(props.fieldValues.personalPropertyNew) === '0'}
+              <Field
                 name="personalPropertyReplacementCostCoverageNew"
-                styleName="billPlan"
-                label=""
-                onChange={() => setCalculate(props, false)}
-                segmented
+                component={Radio}
                 answers={baseYesNoAnswers}
+                styleName="billPlan"
+                segmented
+                disabled={props.personalPropertyNewVal === 0}
               />
             </div>
           </div>
           <div className="form-group-double-element">
-            <TextField
-              label="Ordinance or Law"
-              styleName=""
+            <Field
               name="ordinanceOrLaw"
+              label="Ordinance or Law"
+              component={Input}
+              format={format.toPercent}
               disabled
             />
-            <SelectField
-              onChange={() => setCalculate(props, false)}
+            <Field
               name="ordinanceOrLawNew"
               answers={getAnswers('ordinanceOrLaw', props.questions)}
-              label=""
-              component="select"
-              styleName=""
-              validations={['required']}
+              component={Select}
+              validate={validation.isRequired}
             />
           </div>
           <div className="form-group-double-element">
-            <TextField
-              label="Incidental Occ Main"
-              styleName=""
+            <Field
               name="propertyIncidentalOccupanciesMainDwelling"
+              label="Incidental Occ Main"
+              component={Input}
+              format={format.boolToYesNo}
               disabled
             />
             <div className="flex-child other-coverages-property-replacement-cost">
-              <RadioField
-                onChange={() => setCalculate(props, false)}
+              <Field
                 name="propertyIncidentalOccupanciesMainDwellingNew"
-                styleName="billPlan"
-                label=""
-                segmented
+                component={Radio}
                 answers={baseYesNoAnswers}
+                styleName="billPlan"
+                segmented
               />
             </div>
           </div>
           <div className="form-group-double-element">
-            <TextField
-              label="Incidental Occ Other"
-              styleName=""
+            <Field
               name="propertyIncidentalOccupanciesOtherStructures"
+              label="Incidental Occ Other"
+              component={Input}
+              format={format.boolToYesNo}
               disabled
             />
             <div className="flex-child other-coverages-property-replacement-cost">
-              <RadioField
-                onChange={() => setCalculate(props, false)}
+              <Field
                 name="propertyIncidentalOccupanciesOtherStructuresNew"
-                styleName="billPlan"
-                label=""
-                segmented
+                component={Radio}
                 answers={baseYesNoAnswers}
+                styleName="billPlan"
+                segmented
               />
             </div>
           </div>
           <div className="form-group-double-element">
-            <TextField
-              label="Incidental Occ Liability"
-              styleName=""
+            <Field
               name="liabilityIncidentalOccupancies"
+              label="Incidental Occ Liability"
+              component={Input}
+              format={format.boolToYesNo}
               disabled
             />
             <div className="flex-child other-coverages-property-replacement-cost">
-              <RadioField
-                disabled
-                onChange={() => setCalculate(props, false)}
+              <Field
                 name="liabilityIncidentalOccupanciesNew"
-                styleName="billPlan"
-                label=""
-                segmented
+                component={Radio}
                 answers={baseYesNoAnswers}
+                styleName="billPlan"
+                segmented
+                disabled
               />
             </div>
           </div>
           <div className="form-group-double-element">
-            <TextField
-              label="Townhouse / Rowhouse"
-              styleName=""
+            <Field
               name="townhouseRowhouse"
+              label="Townhouse / Rowhouse"
+              component={Input}
+              format={format.boolToYesNo}
               disabled
             />
             <div className="flex-child">
-              <RadioField
-                onChange={() => setCalculate(props, false)}
+              <Field
                 name="townhouseRowhouseNew"
-                styleName=""
-                label=""
+                component={Radio}
                 segmented
                 answers={baseYesNoAnswers}
               />
             </div>
           </div>
           <div className="form-group-double-element">
-            <TextField
-              label="Property Ever Rented"
-              styleName=""
+            <Field
               name="rented"
+              label="Property Ever Rented"
+              component={Input}
               disabled
             />
-            <SelectField
-              label=""
+            <Field
               name="rentedNew"
+              component={Select}
               answers={getAnswers('rented', props.underwritingQuestions)}
-              styleName=""
-              onChange={() => setCalculate(props, false)}
             />
           </div>
           <div className="form-group-double-element">
-            <TextField
-              label="Months Occupied"
-              styleName=""
+            <Field
               name="monthsOccupied"
+              label="Months Occupied"
+              component={Input}
               disabled
             />
-            <SelectField
+            <Field
               name="monthsOccupiedNew"
+              component={Select}
               answers={getAnswers('monthsOccupied', props.underwritingQuestions)}
-              label=""
-              styleName=""
-              onChange={() => setCalculate(props, false)}
             />
           </div>
           <div className="form-group-double-element">
-            <TextField
-              label="No Prior Insurance"
-              styleName=""
+            <Field
               name="noPriorInsurance"
+              label="No Prior Insurance"
+              component={Input}
               disabled
             />
             <div className="flex-child discounts-burglar-alarm">
-              <RadioField
+              <Field
                 name="noPriorInsuranceNew"
-                styleName=""
-                label=""
-                onChange={() => setCalculate(props, false)}
+                component={Radio}
+                answers={[
+                  { answer: 'No', label: 'No'},
+                  { answer: 'Yes', label: 'Yes'}
+                ]}
                 segmented
-                answers={baseYesNoAnswers}
               />
             </div>
           </div>
           <div className="form-group-double-element">
-            <TextField
-              label="Burglar Alarm"
-              styleName=""
+            <Field
               name="burglarAlarm"
+              label="Burglar Alarm"
+              component={Input}
+              format={format.boolToYesNo}
               disabled
             />
             <div className="flex-child discounts-burglar-alarm">
-              <RadioField
+              <Field
                 name="burglarAlarmNew"
-                styleName=""
-                label=""
-                onChange={() => setCalculate(props, false)}
-                segmented
+                component={Radio}
                 answers={baseYesNoAnswers}
+                segmented
               />
             </div>
           </div>
           <div className="form-group-double-element">
-            <TextField
-              label="Fire Alarm"
-              styleName=""
+            <Field
               name="fireAlarm"
+              label="Fire Alarm"
+              component={Input}
+              format={format.boolToYesNo}
               disabled
             />
             <div className="flex-child discounts-fire-alarm">
-              <RadioField
+              <Field
                 name="fireAlarmNew"
-                styleName=""
-                label=""
-                onChange={() => setCalculate(props, false)}
-                segmented
+                component={Radio}
                 answers={baseYesNoAnswers}
+                segmented
               />
             </div>
           </div>
           <div className="form-group-double-element">
-            <TextField
-              label="Sprinkler"
-              styleName=""
+            <Field
               name="sprinkler"
+              label="Sprinkler"
+              component={Input}
               disabled
             />
             <div className="flex-child discounts-sprinkler">
-              <RadioField
+              <Field
                 name="sprinklerNew"
-                label=""
-                styleName=""
-                onChange={() => setCalculate(props, false)}
+                component={Radio}
                 segmented
                 answers={[
                   {
