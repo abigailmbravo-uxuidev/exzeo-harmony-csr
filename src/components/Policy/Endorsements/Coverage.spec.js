@@ -57,8 +57,6 @@ describe('Testing Coverage component', () => {
     const wrapper = shallow(<CoverageComponent store={store} {...props} />);
 
     wrapper.find('[name="otherStructuresNew"]').simulate('change', { target: { value: '4,540' } });
-    wrapper.update();
-    // console.log(wrapper.props().fieldValues);
     wrapper.find('[name="personalPropertyNew"]').simulate('change', { target: { value: '4,540' } });
     wrapper.find('[name="personalLiabilityNew"]').simulate('change', { target: { value: '4,540' } });
     wrapper.find('[name="moldPropertyNew"]').simulate('change', { target: { value: '10,000' } });

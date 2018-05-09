@@ -6,6 +6,7 @@ import _ from 'lodash';
 import moment from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
 import { reduxForm, propTypes, change, Form, formValueSelector } from 'redux-form';
+import { batchActions } from 'redux-batched-actions';
 import * as cgActions from '../../../actions/cgActions';
 import * as serviceActions from '../../../actions/serviceActions';
 import * as appStateActions from '../../../actions/appStateActions';
@@ -18,7 +19,6 @@ import Loader from '../../Common/Loader';
 import * as policyStateActions from '../../../actions/policyStateActions';
 import * as actionTypes from '../../../actions/actionTypes';
 import { premiumEndorsementList } from './constants/endorsementTypes';
-import { batchActions } from 'redux-batched-actions';
 
 // Component Sections
 import Coverage from './Coverage';
@@ -104,7 +104,7 @@ export const getNewPolicyNumber = (state) => {
 
 export const calculatePercentage = (oldFigure, newFigure) => {
   if (oldFigure === 0 || newFigure === 0) return 0;
-  return oldFigure / newFigure * 100;
+  return (oldFigure / newFigure) * 100;
 };
 
 export const setEndorsementDate = (effectiveDate, endPolicyDate) => {
@@ -645,9 +645,7 @@ export class Endorsements extends React.Component {
     }
   }
 
-  setPercentageOfValue = (value, percent) => {
-    return Math.ceil(value * (percent / 100));
-  };
+  setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
 
   setPHToggle = () => {
     const { change: changeF, selectedValues } = this.props;
@@ -688,6 +686,11 @@ export class Endorsements extends React.Component {
       ...appState.data,
       isCalculated: false
     });
+  };
+
+  normalizeSetCalculate = (value) => {
+    setCalculate(this.props, false);
+    return value;
   };
 
   updateDwellingAndDependencies = (value, prevValue, fieldValues) => {
@@ -739,11 +742,9 @@ export class Endorsements extends React.Component {
       appState,
       dirty,
       endorsementHistory,
-      fieldValues,
       handleSubmit,
       initialValues,
       selectedFields = {},
-      policy,
       pristine,
       questions,
       underwritingQuestions,
