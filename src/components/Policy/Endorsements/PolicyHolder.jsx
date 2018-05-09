@@ -2,7 +2,6 @@ import React from 'react';
 import { Field } from 'redux-form';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
-import { setPHToggle } from './index';
 
 const { Input } = Inputs;
 const {
