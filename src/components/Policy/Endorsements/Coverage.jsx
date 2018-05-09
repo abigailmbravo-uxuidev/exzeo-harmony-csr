@@ -8,9 +8,7 @@ import {
   getQuestionName
 } from './index';
 
-const {
-  Currency, Input, Select, Radio
-} = Inputs;
+const { Currency, Input, Select, Radio } = Inputs;
 const { validation, format, parse } = lifecycle;
 
 const baseYesNoAnswers = [

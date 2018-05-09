@@ -2,11 +2,10 @@ import React from 'react';
 import { Field } from 'redux-form';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
-import { setPHToggle } from './index';
 
-const { Input } = Inputs;
+const { Input, Phone } = Inputs;
 const {
-  validation, normalize
+  validation, normalize, parse
 } = lifecycle;
 
 const PolicyHolder = props => (
@@ -33,16 +32,16 @@ const PolicyHolder = props => (
           <Field
             name="pH1phone"
             label="Primary Phone"
-            component={Input}
+            component={Phone}
             validate={[validation.isRequired, validation.isPhone]}
-            normalize={normalize.phone}
+            parse={parse.toNumberString}
           />
           <Field
             name="pH1secondaryPhone"
             label="Secondary Phone"
-            component={Input}
+            component={Phone}
             validate={validation.isPhone}
-            normalize={normalize.phone}
+            parse={parse.toNumberString}
           />
         </div>
         <div className="flex-parent">
@@ -92,17 +91,17 @@ const PolicyHolder = props => (
           <Field
             name="pH2phone"
             label="Primary Phone"
-            component={Input}
+            component={Phone}
             validate={[validation.dependsOn(['pH2FirstName', 'pH2LastName', 'pH2email']), validation.isPhone]}
-            normalize={normalize.phone}
+            parse={parse.toNumberString}
             onChange={props.setPHToggle}
           />
           <Field
             name="pH2secondaryPhone"
             label="Secondary Phone"
-            component={Input}
+            component={Phone}
             validate={validation.isPhone}
-            normalize={normalize.phone}
+            parse={parse.toNumberString}
             onChange={props.setPHToggle}
           />
         </div>
