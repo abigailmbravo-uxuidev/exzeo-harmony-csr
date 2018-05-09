@@ -1,10 +1,10 @@
 import React from 'react';
 import thunk from 'redux-thunk';
-import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
-import { reduxForm, propTypes, change, Form } from 'redux-form';
-import { shallow, mount } from 'enzyme';
-import { Endorsements, calculatePercentage, handleInitialize, setPercentageOfValue, updateDependencies, calculate, save, setCalculate, updateCalculatedSinkhole, getNewPolicyNumber, setEndorsementDate, clearSecondaryPolicyholder } from './index';
+import { shallow } from 'enzyme';
+import { Endorsements, calculatePercentage, handleInitialize, setPercentageOfValue,
+  updateDependencies, calculate, save, setCalculate, updateCalculatedSinkhole,
+  getNewPolicyNumber, setEndorsementDate, clearSecondaryPolicyholder } from './index';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
