@@ -8,7 +8,7 @@ const {
   validation, normalize, parse
 } = lifecycle;
 
-const PolicyHolder = props => (
+const PolicyHolder = ({ clearSecondaryPolicyholder, policyHolders, setPHToggle }) => (
   <section name="policy" id="policy">
     <div className="flex-parent col2">
       {/* Col1 */}
@@ -63,8 +63,8 @@ const PolicyHolder = props => (
               id="clearFields"
               component="input"
               type="checkbox"
-              normalize={props.clearSecondaryPolicyholder}
-              disabled={!(props.policy && props.policy.policyHolders && props.policy.policyHolders[1])}
+              normalize={clearSecondaryPolicyholder}
+              disabled={!(policyHolders && policyHolders[1])}
             />
             <label htmlFor="clearFields">Remove</label>
           </div>
@@ -75,14 +75,14 @@ const PolicyHolder = props => (
             label="First Name"
             component={Input}
             validate={validation.dependsOn(['pH2LastName', 'pH2email', 'pH2phone'])}
-            onChange={props.setPHToggle}
+            onChange={setPHToggle}
           />
           <Field
             name="pH2LastName"
             label="Last Name"
             component={Input}
             validate={validation.dependsOn(['pH2FirstName', 'pH2email', 'pH2phone'])}
-            onChange={props.setPHToggle}
+            onChange={setPHToggle}
           />
         </div>
         <div className="flex-parent col2">
@@ -91,14 +91,14 @@ const PolicyHolder = props => (
             label="Primary Phone"
             component={Phone}
             validate={[validation.dependsOn(['pH2FirstName', 'pH2LastName', 'pH2email']), validation.isPhone]}
-            onChange={props.setPHToggle}
+            onChange={setPHToggle}
           />
           <Field
             name="pH2secondaryPhone"
             label="Secondary Phone"
             component={Phone}
             validate={validation.isPhone}
-            onChange={props.setPHToggle}
+            onChange={setPHToggle}
           />
         </div>
         <div className="flex-parent">
@@ -107,7 +107,7 @@ const PolicyHolder = props => (
             label="Email Address"
             component={Input}
             validate={[validation.dependsOn(['pH2FirstName', 'pH2LastName', 'pH2phone']), validation.isEmail]}
-            onChange={props.setPHToggle}
+            onChange={setPHToggle}
           />
         </div>
       </div>

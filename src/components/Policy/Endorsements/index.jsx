@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
-import { reduxForm, propTypes, change, Form, formValueSelector } from 'redux-form';
+import { reduxForm, propTypes, change, formValueSelector } from 'redux-form';
 import { batchActions } from 'redux-batched-actions';
 import * as cgActions from '../../../actions/cgActions';
 import * as serviceActions from '../../../actions/serviceActions';
@@ -13,7 +13,6 @@ import * as appStateActions from '../../../actions/appStateActions';
 import * as questionsActions from '../../../actions/questionsActions';
 import * as errorActions from '../../../actions/errorActions';
 import PolicyConnect from '../../../containers/Policy';
-import normalizePhone from '../../Form/normalizePhone';
 import Footer from '../../Common/Footer';
 import Loader from '../../Common/Loader';
 import * as policyStateActions from '../../../actions/policyStateActions';
@@ -32,12 +31,9 @@ import ResultsCalculator from './ResultsCalculator';
 import GoToMenu from './GoToMenu';
 import UnderwritingValidations from './UnderwritingValidations';
 
-export const scrollToView = (elementName) => {
-  const element = document.getElementById(elementName);
-  if (element) {
-    element.scrollIntoView(true);
-  }
-};
+export const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
+
+export const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question', '');
 
 export const setCalculate = (props, reset) => {
   if (reset) {
@@ -53,42 +49,6 @@ export const setCalculate = (props, reset) => {
     isCalculated: false
   });
 };
-
-export const setPHToggle = (props) => {
-  const { dispatch } = props;
-  dispatch(change('Endorsements', 'clearFields', false));
-  setCalculate(props, false);
-};
-
-export const clearSecondaryPolicyholder = (value, props) => {
-  const { dispatch, policy } = props;
-  if (!value) {
-    const pH2email = _.get(policy, 'policyHolders[1].emailAddress') || '';
-    const pH2FirstName = _.get(policy, 'policyHolders[1].firstName') || '';
-    const pH2LastName = _.get(policy, 'policyHolders[1].lastName') || '';
-    const pH2phone = normalizePhone(_.get(policy, 'policyHolders[1].primaryPhoneNumber') || '');
-    const pH2secondaryPhone = normalizePhone(_.get(policy, 'policyHolders[1].secondaryPhoneNumber') || '');
-    dispatch(batchActions([
-      change('Endorsements', 'pH2email', pH2email),
-      change('Endorsements', 'pH2FirstName', pH2FirstName),
-      change('Endorsements', 'pH2LastName', pH2LastName),
-      change('Endorsements', 'pH2phone', pH2phone),
-      change('Endorsements', 'pH2secondaryPhone', pH2secondaryPhone)
-    ]));
-  } else {
-    dispatch(batchActions([
-      change('Endorsements', 'pH2email', ''),
-      change('Endorsements', 'pH2FirstName', ''),
-      change('Endorsements', 'pH2LastName', ''),
-      change('Endorsements', 'pH2phone', ''),
-      change('Endorsements', 'pH2secondaryPhone', '')
-    ]));
-  }
-};
-
-export const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
-
-export const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question') || '';
 
 export const getNewPolicyNumber = (state) => {
   const taskData = (state.cg && state.appState && state.cg.endorsePolicyModelSave)
@@ -309,28 +269,6 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
 };
 
 export const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
-
-export const updateCalculatedSinkhole = (props) => {
-  setCalculate(props, false);
-
-  const { dispatch, fieldValues } = props;
-
-  const dependencyValue = Math.round(Number(String(fieldValues.dwellingAmount).replace(/\D+/g, '')) / 1000) * 1000;
-
-  dispatch(change('Endorsements', 'calculatedSinkholeNew', String(setPercentageOfValue(Number(dependencyValue), 10))));
-};
-
-export const updateDependencies = (event, field, dependency, props) => {
-  setCalculate(props, false);
-
-  const { dispatch, fieldValues } = props;
-  if (Number.isNaN(event.target.value)) return;
-
-  const dependencyValue = String(fieldValues[dependency]).replace(/\D+/g, '');
-  const fieldValue = setPercentageOfValue(Number(dependencyValue), Number(event.target.value));
-
-  dispatch(change('Endorsements', field, Number.isNaN(fieldValue) ? '' : String(fieldValue)));
-};
 
 export const generateModel = (data, policyObject, props) => {
   const policy = policyObject;
@@ -688,11 +626,6 @@ export class Endorsements extends React.Component {
     });
   };
 
-  normalizeSetCalculate = (value) => {
-    setCalculate(this.props, false);
-    return value;
-  };
-
   updateDwellingAndDependencies = (value, prevValue, fieldValues) => {
     const { change: changeF } = this.props;
     this.setCalculate();
@@ -746,6 +679,7 @@ export class Endorsements extends React.Component {
       initialValues,
       selectedFields = {},
       pristine,
+      policy,
       questions,
       underwritingQuestions,
       userProfile
@@ -775,13 +709,11 @@ export class Endorsements extends React.Component {
       <PolicyConnect>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         {this.props.appState.data.isSubmitting && <Loader />}
-        <Form
+        <form
           id="Endorsements"
           className="content-wrapper"
-          onKeyPress={(e) => {
-            if (e.key === 'Enter' && e.target.type !== 'submit') e.preventDefault();
-          }}
           onSubmit={appState.data.isCalculated ? handleSubmit(save) : handleSubmit(calculate)}
+          onKeyPress={(e) => (e.key === 'Enter' && e.target.type !== 'submit') && e.preventDefault()}
         >
 
           <div className="route-content">
@@ -798,37 +730,33 @@ export class Endorsements extends React.Component {
                     normalizeDependencies={this.normalizeDependencies}
                     normalizePersonalPropertyDependencies={this.normalizePersonalPropertyDependencies}
                   />
-
-                  <WindMitigation {...this.props} />
-
-                  <HomeLocation {...this.props} />
-
+                  <WindMitigation questions={questions} />
+                  <HomeLocation questions={questions} />
                   <PreviousEndorsements mappedEndorsementHistory={mappedEndorsementHistory} />
-
                   <PolicyHolder
                     clearSecondaryPolicyholder={this.clearSecondaryPolicyholder}
                     setPHToggle={this.setPHToggle}
-                    {...this.props}
+                    policyHolders={policy.policyHolders}
                   />
-
-                  <MailingAddress {...this.props} />
-
-                  <PropertyAddress {...this.props} />
+                  <MailingAddress />
+                  <PropertyAddress />
                 </div>
               </div>
-              <ResultsCalculator {...this.props}>
+              <ResultsCalculator
+                min={policy.effectiveDate}
+                max={policy.endDate}
+                setCalculate={this.setCalculate}>
                 { /* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */ }
                 <button id="cancel-button" tabIndex="0" type="button" className="btn btn-secondary" onKeyPress={(event) => { if (event.charCode === 13) { setCalculate(this.props, true); } }} onClick={() => setCalculate(this.props, true)}>Cancel</button>
                 <button type="submit" tabIndex="0" className="btn btn-primary" disabled={(!appState.data.isCalculated && pristine) || appState.data.isSubmitting}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
               </ResultsCalculator>
-
 
             </div>
 
             <UnderwritingValidations />
 
           </div>
-        </Form>
+        </form>
         <div className="basic-footer">
           <Footer />
         </div>

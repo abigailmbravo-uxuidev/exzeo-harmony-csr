@@ -9,7 +9,7 @@ const {
   validation
 } = lifecycle;
 
-const WindMitigation = props => (
+const WindMitigation = ({questions}) => (
   <section>
     <h3>Wind Mitigation</h3>
     <div className="flex-parent">
@@ -27,7 +27,7 @@ const WindMitigation = props => (
           />
           <Field
             name="roofCoveringNew"
-            answers={getAnswers('roofCovering', props.questions)}
+            answers={getAnswers('roofCovering', questions)}
             component={Select}
             validate={validation.isRequired}
           />
@@ -41,7 +41,7 @@ const WindMitigation = props => (
           />
           <Field
             name="roofDeckAttachmentNew"
-            answers={getAnswers('roofDeckAttachment', props.questions)}
+            answers={getAnswers('roofDeckAttachment', questions)}
             component={Select}
             validate={validation.isRequired}
           />
@@ -55,7 +55,7 @@ const WindMitigation = props => (
           />
           <Field
             name="roofToWallConnectionNew"
-            answers={getAnswers('roofToWallConnection', props.questions)}
+            answers={getAnswers('roofToWallConnection', questions)}
             styleName="weakestRoofWallConnect"
             component={Select}
             validate={validation.isRequired}
@@ -71,7 +71,7 @@ const WindMitigation = props => (
           <Field
             label=""
             name="roofGeometryNew"
-            answers={getAnswers('roofGeometry', props.questions)}
+            answers={getAnswers('roofGeometry', questions)}
             component={Select}
             validate={validation.isRequired}
           />
@@ -87,7 +87,7 @@ const WindMitigation = props => (
             <Field
               segmented
               name="secondaryWaterResistanceNew"
-              answers={getAnswers('secondaryWaterResistance', props.questions)}
+              answers={getAnswers('secondaryWaterResistance', questions)}
               component={Radio}
               validate={validation.isRequired}
             />
@@ -102,7 +102,7 @@ const WindMitigation = props => (
           />
           <Field
             name="openingProtectionNew"
-            answers={getAnswers('openingProtection', props.questions)}
+            answers={getAnswers('openingProtection', questions)}
             component={Select}
             validate={validation.isRequired}
           />
@@ -152,7 +152,7 @@ const WindMitigation = props => (
             name="terrainNew"
             styleName="propertyTerrain"
             component={Select}
-            answers={getAnswers('terrain', props.questions)}
+            answers={getAnswers('terrain', questions)}
             validate={validation.isRequired}
           />
         </div>
@@ -165,7 +165,7 @@ const WindMitigation = props => (
           />
           <Field
             name="internalPressureDesignNew"
-            answers={getAnswers('internalPressureDesign', props.questions)}
+            answers={getAnswers('internalPressureDesign', questions)}
             component={Select}
             validate={validation.isRequired}
           />
@@ -181,7 +181,7 @@ const WindMitigation = props => (
             <Field
               segmented
               name="windBorneDebrisRegionNew"
-              answers={getAnswers('windBorneDebrisRegion', props.questions)}
+              answers={getAnswers('windBorneDebrisRegion', questions)}
               component={Radio}
               validate={validation.isRequired}
             />

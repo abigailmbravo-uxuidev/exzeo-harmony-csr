@@ -9,7 +9,7 @@ const {
   validation
 } = lifecycle;
 
-const HomeLocation = props => (
+const HomeLocation = ({ questions }) => (
   <section name="home" id="home">
     <h3>Home / Location</h3>
     <div className="flex-parent">
@@ -20,34 +20,34 @@ const HomeLocation = props => (
         </div>
         <div className="form-group-double-element">
           <Field
-            label="Year Home Built"
             name="yearBuilt"
-            disabled
+            label="Year Home Built"
             component={Input}
+            disabled
           />
           <Field
             name="yearBuiltNew"
-            validate={validation.isNumbersOnly}
             component={Input}
+            validate={validation.isNumbersOnly}
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            label="Construction"
             name="constructionType"
+            label="Construction"
             disabled
             component={Input}
           />
           <Field
             name="constructionTypeNew"
             component={Select}
-            answers={getAnswers('constructionType', props.questions)}
+            answers={getAnswers('constructionType', questions)}
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            label="Protection Class"
             name="protectionClass"
+            label="Protection Class"
             component={Input}
             disabled
           />
@@ -55,46 +55,46 @@ const HomeLocation = props => (
           <Field
             name="protectionClassNew"
             component={Select}
-            answers={getAnswers('protectionClass', props.questions)}
+            answers={getAnswers('protectionClass', questions)}
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            label="BCEG"
             name="buildingCodeEffectivenessGrading"
+            label="BCEG"
             component={Input}
             disabled
           />
           <Field
             name="buildingCodeEffectivenessGradingNew"
             component={Select}
-            answers={getAnswers('buildingCodeEffectivenessGrading', props.questions)}
+            answers={getAnswers('buildingCodeEffectivenessGrading', questions)}
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            label="Family Units"
             name="familyUnits"
+            label="Family Units"
             component={Input}
             disabled
           />
           <Field
             name="familyUnitsNew"
-            answers={getAnswers('familyUnits', props.questions)}
             component={Select}
+            answers={getAnswers('familyUnits', questions)}
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            label="Flood Zone"
             name="floodZone"
+            label="Flood Zone"
             component={Input}
             disabled
           />
           <Field
             name="floodZoneNew"
-            answers={getAnswers('floodZone', props.questions)}
             component={Select}
+            answers={getAnswers('floodZone', questions)}
           />
         </div>
       </div>
@@ -105,8 +105,8 @@ const HomeLocation = props => (
         </div>
         <div className="form-group-double-element">
           <Field
-            label="Tidal Waters Dist."
             name="distanceToTidalWater"
+            label="Tidal Waters Dist."
             component={Input}
             disabled
           />
@@ -117,8 +117,8 @@ const HomeLocation = props => (
         </div>
         <div className="form-group-double-element">
           <Field
-            label="Fire Hydrant Dist."
             name="distanceToFireHydrant"
+            label="Fire Hydrant Dist."
             component={Input}
             disabled
           />
@@ -129,8 +129,8 @@ const HomeLocation = props => (
         </div>
         <div className="form-group-double-element">
           <Field
-            label="Fire Station Dist."
             name="distanceToFireStation"
+            label="Fire Station Dist."
             component={Input}
             disabled
           />
@@ -148,14 +148,14 @@ const HomeLocation = props => (
           />
           <Field
             name="residenceTypeNew"
-            answers={getAnswers('residenceType', props.questions)}
             component={Select}
+            answers={getAnswers('residenceType', questions)}
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            label="Sq. Ft. of Home"
             name="squareFeet"
+            label="Sq. Ft. of Home"
             component={Input}
             disabled
           />

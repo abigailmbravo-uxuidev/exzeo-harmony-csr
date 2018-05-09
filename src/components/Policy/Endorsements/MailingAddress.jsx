@@ -3,7 +3,7 @@ import { Field } from 'redux-form';
 import { Input } from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 
-const MailingAddress = props => (
+const MailingAddress = () => (
   <section name="addresses" id="addresses">
     <h3>Mailing Address</h3>
     <div className="flex-parent wrap">

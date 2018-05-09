@@ -2,7 +2,6 @@ import React from 'react';
 import moment from 'moment-timezone';
 import DateField from '../../Form/inputs/DateField';
 import DisplayField from '../../Form/inputs/DisplayField';
-import { setCalculate } from './index';
 
 const ResultsCalculator = props => (
   <div className="endo-results-calc">
@@ -12,9 +11,9 @@ const ResultsCalculator = props => (
           validations={['date']}
           label="Endorsement Effective Date"
           name="endorsementDateNew"
-          min={moment.utc(props.policy.effectiveDate).format('YYYY-MM-DD')}
-          max={moment.utc(props.policy.endDate).format('YYYY-MM-DD')}
-          onChange={() => setCalculate(props, false)}
+          min={moment.utc(props.min).format('YYYY-MM-DD')}
+          max={moment.utc(props.max).format('YYYY-MM-DD')}
+          onChange={props.setCalculate}
         />
       </div>
       <DisplayField label="New End Amount" name="newEndorsementAmount" />

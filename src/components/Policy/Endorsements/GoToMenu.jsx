@@ -1,5 +1,11 @@
 import React from 'react';
-import { scrollToView } from './index';
+
+const scrollToView = (elementName) => {
+  const element = document.getElementById(elementName);
+  if (element) {
+    element.scrollIntoView(true);
+  }
+};
 
 const GoToMenu = () => (
   <div className="endo-jump-menu">
