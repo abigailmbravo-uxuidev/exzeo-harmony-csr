@@ -3,7 +3,11 @@ import { Field } from 'redux-form';
 import { Input } from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 
-const MailingAddress = props => (
+const {
+  validation
+} = lifecycle;
+
+const MailingAddress = () => (
   <section name="addresses" id="addresses">
     <h3>Mailing Address</h3>
     <div className="flex-parent wrap">
@@ -12,6 +16,7 @@ const MailingAddress = props => (
           name="address1New"
           label="Address 1"
           component={Input}
+          validate={validation.isRequired}
         />
       </div>
       <div className="address">
@@ -26,6 +31,7 @@ const MailingAddress = props => (
           name="cityNew"
           label="City"
           component={Input}
+          validate={validation.isRequired}
         />
       </div>
       <div className="state">
@@ -33,6 +39,7 @@ const MailingAddress = props => (
           name="stateNew"
           label="State"
           component={Input}
+          validate={validation.isRequired}
         />
       </div>
       <div className="zip">
@@ -40,6 +47,7 @@ const MailingAddress = props => (
           name="zipNew"
           label="Zip"
           component={Input}
+          validate={validation.isRequired}
         />
       </div>
     </div>
