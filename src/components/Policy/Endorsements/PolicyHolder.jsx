@@ -34,14 +34,12 @@ const PolicyHolder = props => (
             label="Primary Phone"
             component={Phone}
             validate={[validation.isRequired, validation.isPhone]}
-            parse={parse.toNumberString}
           />
           <Field
             name="pH1secondaryPhone"
             label="Secondary Phone"
             component={Phone}
             validate={validation.isPhone}
-            parse={parse.toNumberString}
           />
         </div>
         <div className="flex-parent">
@@ -93,7 +91,6 @@ const PolicyHolder = props => (
             label="Primary Phone"
             component={Phone}
             validate={[validation.dependsOn(['pH2FirstName', 'pH2LastName', 'pH2email']), validation.isPhone]}
-            parse={parse.toNumberString}
             onChange={props.setPHToggle}
           />
           <Field
@@ -101,7 +98,6 @@ const PolicyHolder = props => (
             label="Secondary Phone"
             component={Phone}
             validate={validation.isPhone}
-            parse={parse.toNumberString}
             onChange={props.setPHToggle}
           />
         </div>

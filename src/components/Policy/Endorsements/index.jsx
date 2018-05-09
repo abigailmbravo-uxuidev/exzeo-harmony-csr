@@ -260,7 +260,7 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.distanceToFireStationNew = values.distanceToFireStation;
   values.residenceType = _.get(policy, 'property.residenceType');
   values.residenceTypeNew = values.residenceType;
-  values.squareFeet = _.get(policy, 'property.squareFeet') || '';
+  values.squareFeet = _.get(policy, 'property.squareFeet', '');
   values.squareFeetNew = String(values.squareFeet);
   values.floodZone = _.get(policy, 'property.floodZone');
   values.floodZoneNew = values.floodZone;

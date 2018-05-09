@@ -1,25 +1,46 @@
 import React from 'react';
-import TextField from '../../Form/inputs/TextField';
-import { setCalculate } from './index';
+import { Field } from 'redux-form';
+import { Input } from '@exzeo/core-ui/lib/Input';
+import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 
 const MailingAddress = props => (
   <section name="addresses" id="addresses">
     <h3>Mailing Address</h3>
     <div className="flex-parent wrap">
       <div className="address">
-        <TextField label="Address 1" styleName="" name="address1New" onChange={() => setCalculate(props, false)} />
+        <Field
+          name="address1New"
+          label="Address 1"
+          component={Input}
+        />
       </div>
       <div className="address">
-        <TextField label="Address 2" styleName="" name="address2New" onChange={() => setCalculate(props, false)} />
+        <Field
+          name="address2New"
+          label="Address 2"
+          component={Input}
+        />
       </div>
       <div className="city">
-        <TextField label="City" styleName="" name="cityNew" onChange={() => setCalculate(props, false)} />
+        <Field
+          name="cityNew"
+          label="City"
+          component={Input}
+        />
       </div>
       <div className="state">
-        <TextField label="State" styleName="" name="stateNew" onChange={() => setCalculate(props, false)} />
+        <Field
+          name="stateNew"
+          label="State"
+          component={Input}
+        />
       </div>
       <div className="zip">
-        <TextField label="Zip" styleName="" name="zipNew" onChange={() => setCalculate(props, false)} />
+        <Field
+          name="zipNew"
+          label="Zip"
+          component={Input}
+        />
       </div>
     </div>
   </section>
