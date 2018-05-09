@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
-import TextField from '../../Form/inputs/TextField';
-import { clearSecondaryPolicyholder, setPHToggle } from './index';
+import { setPHToggle } from './index';
 
 const { Input } = Inputs;
 const {
@@ -19,29 +18,29 @@ const PolicyHolder = props => (
         <h3>Primary Policyholder</h3>
         <div className="flex-parent col2">
           <Field
-            label="First Name"
             name="pH1FirstName"
+            label="First Name"
             component={Input}
             validate={validation.isRequired}
           />
-          <TextField
-            label="Last Name"
+          <Field
             name="pH1LastName"
+            label="Last Name"
             component={Input}
             validate={validation.isRequired}
           />
         </div>
         <div className="flex-parent col2">
           <Field
-            label="Primary Phone"
             name="pH1phone"
+            label="Primary Phone"
             component={Input}
             validate={[validation.isRequired, validation.isPhone]}
             normalize={normalize.phone}
           />
           <Field
-            label="Secondary Phone"
             name="pH1secondaryPhone"
+            label="Secondary Phone"
             component={Input}
             validate={validation.isPhone}
             normalize={normalize.phone}
@@ -49,8 +48,8 @@ const PolicyHolder = props => (
         </div>
         <div className="flex-parent">
           <Field
-            label="Email Address"
             name="pH1email"
+            label="Email Address"
             component={Input}
             validate={[validation.isRequired, validation.isEmail]}
             normalize={normalize.email}
@@ -64,11 +63,11 @@ const PolicyHolder = props => (
           <h3>Secondary Policyholder</h3>
           <div className="check-box-wrapper">
             <Field
-              onChange={event => clearSecondaryPolicyholder(String(event.target.value) === 'false', props)}
               name="clearFields"
               id="clearFields"
               component="input"
               type="checkbox"
+              normalize={props.clearSecondaryPolicyholder}
               disabled={!(props.policy && props.policy.policyHolders && props.policy.policyHolders[1])}
             />
             <label htmlFor="clearFields">Remove</label>
@@ -76,45 +75,45 @@ const PolicyHolder = props => (
         </div>
         <div className="flex-parent col2">
           <Field
-            label="First Name"
             name="pH2FirstName"
+            label="First Name"
             component={Input}
             validate={validation.dependsOn(['pH2LastName', 'pH2email', 'pH2phone'])}
-            onChange={() => setPHToggle(props)}
+            onChange={props.setPHToggle}
           />
           <Field
-            label="Last Name"
             name="pH2LastName"
+            label="Last Name"
             component={Input}
             validate={validation.dependsOn(['pH2FirstName', 'pH2email', 'pH2phone'])}
-            onChange={() => setPHToggle(props)}
+            onChange={props.setPHToggle}
           />
         </div>
         <div className="flex-parent col2">
           <Field
-            label="Primary Phone"
             name="pH2phone"
+            label="Primary Phone"
             component={Input}
             validate={[validation.dependsOn(['pH2FirstName', 'pH2LastName', 'pH2email']), validation.isPhone]}
             normalize={normalize.phone}
-            onChange={() => setPHToggle(props)}
+            onChange={props.setPHToggle}
           />
           <Field
-            label="Secondary Phone"
             name="pH2secondaryPhone"
+            label="Secondary Phone"
             component={Input}
             validate={validation.isPhone}
             normalize={normalize.phone}
-            onChange={() => setPHToggle(props)}
+            onChange={props.setPHToggle}
           />
         </div>
         <div className="flex-parent">
           <Field
-            label="Email Address"
             name="pH2email"
+            label="Email Address"
             component={Input}
             validate={[validation.dependsOn(['pH2FirstName', 'pH2LastName', 'pH2phone']), validation.isEmail]}
-            onChange={() => setPHToggle(props)}
+            onChange={props.setPHToggle}
           />
         </div>
       </div>

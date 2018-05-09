@@ -267,22 +267,15 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
 
   // Policyholder 1
   values.pH1email = _.get(policy, 'policyHolders[0].emailAddress');
-  values.pH1emailNew = values.pH1email;
   values.pH1FirstName = _.get(policy, 'policyHolders[0].firstName');
-  values.pH1FirstNameNew = values.pH1FirstName;
   values.pH1LastName = _.get(policy, 'policyHolders[0].lastName');
-  values.pH1LastNameNew = values.pH1LastName;
   values.pH1phone = normalizePhone(_.get(policy, 'policyHolders[0].primaryPhoneNumber') || '');
   values.pH1secondaryPhone = normalizePhone(_.get(policy, 'policyHolders[0].secondaryPhoneNumber') || '');
-  values.pH1secondaryPhoneNew = values.pH1secondaryPhone;
 
   // Policyholder 2
   values.pH2email = _.get(policy, 'policyHolders[1].emailAddress') || '';
-  values.pH2emailNew = values.pH2email || '';
   values.pH2FirstName = _.get(policy, 'policyHolders[1].firstName') || '';
-  values.pH2FirstNameNew = values.pH2FirstName || '';
   values.pH2LastName = _.get(policy, 'policyHolders[1].lastName') || '';
-  values.pH2LastNameNew = values.pH2LastName || '';
   values.pH2phone = normalizePhone(_.get(policy, 'policyHolders[1].primaryPhoneNumber') || '');
   values.pH2secondaryPhone = normalizePhone(_.get(policy, 'policyHolders[1].secondaryPhoneNumber') || '');
 
@@ -655,8 +648,29 @@ export class Endorsements extends React.Component {
   setPercentageOfValue = (value, percent) => {
     return Math.ceil(value * (percent / 100));
   };
-  normalizeSetCalculate = (value) => {
-    setCalculate(this.props, false);
+
+  setPHToggle = () => {
+    const { change: changeF, selectedValues } = this.props;
+    if (selectedValues.clearFields) {
+      changeF('clearFields', false);
+    }
+  };
+
+  clearSecondaryPolicyholder = (value) => {
+    const { change: changeF, initialValues } = this.props;
+    if (!value) {
+        changeF('pH2email', initialValues.pH2email);
+        changeF('pH2FirstName', initialValues.pH2FirstName);
+        changeF('pH2LastName', initialValues.pH2LastName);
+        changeF('pH2phone', initialValues.pH2phone);
+        changeF('pH2secondaryPhone', initialValues.pH2secondaryPhone);
+    } else {
+        changeF('pH2email', '');
+        changeF('pH2FirstName', '');
+        changeF('pH2LastName', '');
+        changeF('pH2phone', '');
+        changeF('pH2secondaryPhone', '');
+    }
     return value;
   };
 
@@ -728,7 +742,7 @@ export class Endorsements extends React.Component {
       fieldValues,
       handleSubmit,
       initialValues,
-      personalPropertyNewVal,
+      selectedFields = {},
       policy,
       pristine,
       questions,
@@ -776,7 +790,7 @@ export class Endorsements extends React.Component {
                 <div className="form-group survey-wrapper" role="group">
                   <Coverage
                     initialValues={initialValues}
-                    personalPropertyNewVal={personalPropertyNewVal}
+                    personalPropertyNewVal={selectedFields.personalPropertyNew}
                     questions={questions}
                     underwritingQuestions={underwritingQuestions}
                     normalizeDwellingAmount={this.updateDwellingAndDependencies}
@@ -790,7 +804,11 @@ export class Endorsements extends React.Component {
 
                   <PreviousEndorsements mappedEndorsementHistory={mappedEndorsementHistory} />
 
-                  <PolicyHolder {...this.props} />
+                  <PolicyHolder
+                    clearSecondaryPolicyholder={this.clearSecondaryPolicyholder}
+                    setPHToggle={this.setPHToggle}
+                    {...this.props}
+                  />
 
                   <MailingAddress {...this.props} />
 
@@ -854,7 +872,7 @@ const mapStateToProps = state => ({
   summaryLedger: state.service.getSummaryLedger || {},
   zipcodeSettings: state.service.getZipcodeSettings,
   userProfile: state.authState.userProfile || {},
-  personalPropertyNewVal: selector(state, 'personalPropertyNew')
+  selectedValues: selector(state, 'personalPropertyNew', 'clearFields')
 });
 
 const mapDispatchToProps = dispatch => ({
