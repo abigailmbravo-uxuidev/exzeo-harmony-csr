@@ -12,6 +12,7 @@ const PropertyAddress = props => (
           name="propertyAddress1New"
           label="Address 1"
           component={Input}
+          validate={validation.isRequired}
         />
       </div>
       <div className="address">
@@ -26,6 +27,7 @@ const PropertyAddress = props => (
           name="propertyCityNew"
           label="City"
           component={Input}
+          validate={validation.isRequired}
         />
       </div>
       <div className="state">
@@ -33,6 +35,7 @@ const PropertyAddress = props => (
           name="propertyStateNew"
           label="State"
           component={Input}
+          validate={validation.isRequired}
         />
       </div>
       <div className="zip">
@@ -40,6 +43,7 @@ const PropertyAddress = props => (
           name="propertyZipNew"
           label="Zip"
           component={Input}
+          validate={validation.isRequired}
         />
       </div>
     </div>
