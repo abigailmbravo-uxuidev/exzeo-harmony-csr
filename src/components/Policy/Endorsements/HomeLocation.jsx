@@ -1,9 +1,13 @@
 import React from 'react';
-import TextField from '../../Form/inputs/TextField';
-import SelectField from '../../Form/inputs/SelectField';
-import NumberField from '../../Form/inputs/NumberField';
+import { Field } from 'redux-form';
+import Inputs from '@exzeo/core-ui/lib/Input';
+import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
+import { getAnswers } from './index';
 
-import { getAnswers, setCalculate } from './index';
+const { Input, Select, NumberInput } = Inputs;
+const {
+  validation
+} = lifecycle;
 
 const HomeLocation = props => (
   <section name="home" id="home">
@@ -15,68 +19,82 @@ const HomeLocation = props => (
           <label /><label>Current</label><label>New</label>
         </div>
         <div className="form-group-double-element">
-          <TextField label="Year Home Built" styleName="" name="yearBuilt" disabled />
-          <TextField
-            validations={['numbersOnly']}
-            styleName=""
-            label=""
+          <Field
+            label="Year Home Built"
+            name="yearBuilt"
+            disabled
+            component={Input}
+          />
+          <Field
             name="yearBuiltNew"
-            onChange={() => setCalculate(props, false)}
+            validate={validation.isNumbersOnly}
+            component={Input}
           />
         </div>
         <div className="form-group-double-element">
-          <TextField label="Construction" styleName="" name="constructionType" disabled />
-          <SelectField
-            onChange={() => setCalculate(props, false)}
+          <Field
+            label="Construction"
+            name="constructionType"
+            disabled
+            component={Input}
+          />
+          <Field
             name="constructionTypeNew"
+            component={Select}
             answers={getAnswers('constructionType', props.questions)}
-            component="select"
-            styleName=""
-            label=""
           />
         </div>
         <div className="form-group-double-element">
-          <TextField label="Protection Class" styleName="" name="protectionClass" disabled />
-          <SelectField
-            onChange={() => setCalculate(props, false)}
+          <Field
+            label="Protection Class"
+            name="protectionClass"
+            component={Input}
+            disabled
+          />
+
+          <Field
             name="protectionClassNew"
+            component={Select}
             answers={getAnswers('protectionClass', props.questions)}
-            component="select"
-            label=""
-            styleName=""
           />
         </div>
         <div className="form-group-double-element">
-          <TextField label="BCEG" styleName="" name="buildingCodeEffectivenessGrading" disabled />
-          <SelectField
-            onChange={() => setCalculate(props, false)}
+          <Field
+            label="BCEG"
+            name="buildingCodeEffectivenessGrading"
+            component={Input}
+            disabled
+          />
+          <Field
             name="buildingCodeEffectivenessGradingNew"
+            component={Select}
             answers={getAnswers('buildingCodeEffectivenessGrading', props.questions)}
-            component="select"
-            styleName=""
-            label=""
           />
         </div>
         <div className="form-group-double-element">
-          <TextField label="Family Units" styleName="" name="familyUnits" disabled />
-          <SelectField
-            onChange={() => setCalculate(props, false)}
+          <Field
+            label="Family Units"
+            name="familyUnits"
+            component={Input}
+            disabled
+          />
+          <Field
             name="familyUnitsNew"
             answers={getAnswers('familyUnits', props.questions)}
-            component="select"
-            label=""
-            styleName=""
+            component={Select}
           />
         </div>
         <div className="form-group-double-element">
-          <TextField label="Flood Zone" styleName="" name="floodZone" disabled />
-          <SelectField
-            onChange={() => setCalculate(props, false)}
+          <Field
+            label="Flood Zone"
+            name="floodZone"
+            component={Input}
+            disabled
+          />
+          <Field
             name="floodZoneNew"
             answers={getAnswers('floodZone', props.questions)}
-            component="select"
-            label=""
-            styleName=""
+            component={Select}
           />
         </div>
       </div>
@@ -86,35 +104,78 @@ const HomeLocation = props => (
           <label /><label>Current</label><label>New</label>
         </div>
         <div className="form-group-double-element">
-          <TextField label="Tidal Waters Dist." styleName="" name="distanceToTidalWater" disabled />
-          <NumberField label="" styleName="" name="distanceToTidalWaterNew" onChange={() => setCalculate(props, false)} />
-        </div>
-        <div className="form-group-double-element">
-          <TextField label="Fire Hydrant Dist." styleName="" name="distanceToFireHydrant" disabled />
-          <NumberField label="" styleName="" name="distanceToFireHydrantNew" onChange={() => setCalculate(props, false)} />
-        </div>
-        <div className="form-group-double-element">
-          <TextField label="Fire Station Dist." styleName="" name="distanceToFireStation" disabled />
-          <NumberField label="" styleName="" name="distanceToFireStationNew" onChange={() => setCalculate(props, false)} />
-        </div>
-        <div className="form-group-double-element">
-          <TextField label="Residence Type" styleName="" name="residenceType" disabled />
-          <SelectField
-            name="residenceTypeNew"
-            answers={getAnswers('residenceType', props.questions)}
-            component="select"
-            label=""
-            styleName=""
-            onChange={() => setCalculate(props, false)}
+          <Field
+            label="Tidal Waters Dist."
+            name="distanceToTidalWater"
+            component={Input}
+            disabled
+          />
+          <Field
+            name="distanceToTidalWaterNew"
+            component={NumberInput}
           />
         </div>
         <div className="form-group-double-element">
-          <TextField label="Sq. Ft. of Home" styleName="" name="squareFeet" disabled />
-          <TextField validations={['required']} label="" styleName="" name="squareFeetNew" onChange={() => setCalculate(props, false)} />
+          <Field
+            label="Fire Hydrant Dist."
+            name="distanceToFireHydrant"
+            component={Input}
+            disabled
+          />
+          <Field
+            name="distanceToFireHydrantNew"
+            component={NumberInput}
+          />
         </div>
         <div className="form-group-double-element">
-          <TextField label="Year Roof Built" styleName="" name="yearOfRoof" disabled />
-          <TextField styleName="" label="" name="yearOfRoofNew" onChange={() => setCalculate(props, false)} />
+          <Field
+            label="Fire Station Dist."
+            name="distanceToFireStation"
+            component={Input}
+            disabled
+          />
+          <Field
+            name="distanceToFireStationNew"
+            component={NumberInput}
+          />
+        </div>
+        <div className="form-group-double-element">
+          <Field
+            label="Residence Type"
+            name="residenceType"
+            component={Input}
+            disabled
+          />
+          <Field
+            name="residenceTypeNew"
+            answers={getAnswers('residenceType', props.questions)}
+            component={Select}
+          />
+        </div>
+        <div className="form-group-double-element">
+          <Field
+            label="Sq. Ft. of Home"
+            name="squareFeet"
+            component={Input}
+            disabled
+          />
+          <Field
+            name="squareFeetNew"
+            component={Input}
+            validate={validation.isRequired}
+          />
+        </div>
+        <div className="form-group-double-element">
+          <Field
+            label="Year Roof Built"
+            name="yearOfRoof"
+            component={Input}
+            disabled
+          />
+          <Field
+            name="yearOfRoofNew"
+            component={Input}
+          />
         </div>
       </div>
     </div>
