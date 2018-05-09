@@ -9,7 +9,7 @@ const {
   validation
 } = lifecycle;
 
-const WindMitigation = ({questions}) => (
+const WindMitigation = ({ questions }) => (
   <section>
     <h3>Wind Mitigation</h3>
     <div className="flex-parent">
