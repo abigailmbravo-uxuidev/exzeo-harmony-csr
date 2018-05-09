@@ -9,7 +9,7 @@ const {
   validation
 } = lifecycle;
 
-const HomeLocation = props => (
+const HomeLocation = ({ questions }) => (
   <section name="home" id="home">
     <h3>Home / Location</h3>
     <div className="flex-parent">
@@ -41,7 +41,7 @@ const HomeLocation = props => (
           <Field
             name="constructionTypeNew"
             component={Select}
-            answers={getAnswers('constructionType', props.questions)}
+            answers={getAnswers('constructionType', questions)}
           />
         </div>
         <div className="form-group-double-element">
@@ -55,7 +55,7 @@ const HomeLocation = props => (
           <Field
             name="protectionClassNew"
             component={Select}
-            answers={getAnswers('protectionClass', props.questions)}
+            answers={getAnswers('protectionClass', questions)}
           />
         </div>
         <div className="form-group-double-element">
@@ -68,7 +68,7 @@ const HomeLocation = props => (
           <Field
             name="buildingCodeEffectivenessGradingNew"
             component={Select}
-            answers={getAnswers('buildingCodeEffectivenessGrading', props.questions)}
+            answers={getAnswers('buildingCodeEffectivenessGrading', questions)}
           />
         </div>
         <div className="form-group-double-element">
@@ -80,7 +80,7 @@ const HomeLocation = props => (
           />
           <Field
             name="familyUnitsNew"
-            answers={getAnswers('familyUnits', props.questions)}
+            answers={getAnswers('familyUnits', questions)}
             component={Select}
           />
         </div>
@@ -93,7 +93,7 @@ const HomeLocation = props => (
           />
           <Field
             name="floodZoneNew"
-            answers={getAnswers('floodZone', props.questions)}
+            answers={getAnswers('floodZone', questions)}
             component={Select}
           />
         </div>
@@ -148,7 +148,7 @@ const HomeLocation = props => (
           />
           <Field
             name="residenceTypeNew"
-            answers={getAnswers('residenceType', props.questions)}
+            answers={getAnswers('residenceType', questions)}
             component={Select}
           />
         </div>
