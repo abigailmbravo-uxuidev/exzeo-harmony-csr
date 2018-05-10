@@ -134,15 +134,15 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.sinkholePerilCoverage = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer') ? `10% of ${getQuestionName('dwellingAmount', questions)}` : 'Coverage Excluded';
   values.sinkholePerilCoverageNew = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer');
   // Coverage Top Right
-  values.personalPropertyReplacementCostCoverage = _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer');
+  values.personalPropertyReplacementCostCoverage = _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer', false);
   values.personalPropertyReplacementCostCoverageNew = values.personalPropertyReplacementCostCoverage;
   values.ordinanceOrLaw = _.get(policy, 'coverageLimits.ordinanceOrLaw.amount');
   values.ordinanceOrLawNew = values.ordinanceOrLaw;
-  values.propertyIncidentalOccupanciesMainDwelling = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer');
+  values.propertyIncidentalOccupanciesMainDwelling = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer', false);
   values.propertyIncidentalOccupanciesMainDwellingNew = values.propertyIncidentalOccupanciesMainDwelling;
-  values.propertyIncidentalOccupanciesOtherStructures = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer');
+  values.propertyIncidentalOccupanciesOtherStructures = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer', false);
   values.propertyIncidentalOccupanciesOtherStructuresNew = values.propertyIncidentalOccupanciesOtherStructures;
-  values.liabilityIncidentalOccupancies = _.get(policy, 'coverageOptions.liabilityIncidentalOccupancies.answer');
+  values.liabilityIncidentalOccupancies = _.get(policy, 'coverageOptions.liabilityIncidentalOccupancies.answer', false);
   values.liabilityIncidentalOccupanciesNew = values.liabilityIncidentalOccupancies;
   values.townhouseRowhouse = _.get(policy, 'property.townhouseRowhouse');
   values.townhouseRowhouseNew = values.townhouseRowhouse;
@@ -182,9 +182,9 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.electronicDeliveryNew = !!_.get(policy, 'policyHolders[0].electronicDelivery');
 
   // Coverage Mid Right
-  values.floridaBuildingCodeWindSpeed = String(_.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeed'));
+  values.floridaBuildingCodeWindSpeed = _.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeed', '');
   values.floridaBuildingCodeWindSpeedNew = values.floridaBuildingCodeWindSpeed;
-  values.floridaBuildingCodeWindSpeedDesign = String(_.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign'));
+  values.floridaBuildingCodeWindSpeedDesign = _.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign', '');
   values.floridaBuildingCodeWindSpeedDesignNew = values.floridaBuildingCodeWindSpeedDesign;
   values.terrain = _.get(policy, 'property.windMitigation.terrain');
   values.terrainNew = values.terrain;
@@ -198,30 +198,30 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.windMitFactorNew = (updatedRatingWindMitDiscount === undefined || updatedRatingWindMitDiscount === null) ? windMitigationDiscount : updatedRatingWindMitDiscount;
 
   // Home/Location Bottom Left
-  values.yearBuilt = String(_.get(policy, 'property.yearBuilt'));
+  values.yearBuilt = _.get(policy, 'property.yearBuilt');
   values.yearBuiltNew = values.yearBuilt;
   values.constructionType = _.get(policy, 'property.constructionType');
   values.constructionTypeNew = values.constructionType;
-  values.yearOfRoof = _.get(policy, 'property.yearOfRoof') || '';
+  values.yearOfRoof = _.get(policy, 'property.yearOfRoof', '');
   values.yearOfRoofNew = values.yearOfRoof;
-  values.protectionClass = String(`0${_.get(policy, 'property.protectionClass')}`).slice(-2);
-  values.protectionClassNew = _.get(policy, 'property.protectionClass');
-  values.buildingCodeEffectivenessGrading = String(`0${_.get(policy, 'property.buildingCodeEffectivenessGrading')}`).slice(-2);
-  values.buildingCodeEffectivenessGradingNew = _.get(policy, 'property.buildingCodeEffectivenessGrading');
+  values.protectionClass = _.get(policy, 'property.protectionClass', '');
+  values.protectionClassNew = values.protectionClass;
+  values.buildingCodeEffectivenessGrading = _.get(policy, 'property.buildingCodeEffectivenessGrading', '');
+  values.buildingCodeEffectivenessGradingNew = values.buildingCodeEffectivenessGrading;
   values.familyUnits = _.get(policy, 'property.familyUnits');
   values.familyUnitsNew = values.familyUnits;
 
   // Home/Location Bottom Right
-  values.distanceToTidalWater = Number(_.get(policy, 'property.distanceToTidalWater')).toLocaleString();
+  values.distanceToTidalWater = _.get(policy, 'property.distanceToTidalWater');
   values.distanceToTidalWaterNew = values.distanceToTidalWater;
-  values.distanceToFireHydrant = Number(_.get(policy, 'property.distanceToFireHydrant')).toLocaleString();
+  values.distanceToFireHydrant = _.get(policy, 'property.distanceToFireHydrant');
   values.distanceToFireHydrantNew = values.distanceToFireHydrant;
-  values.distanceToFireStation = Number(_.get(policy, 'property.distanceToFireStation')).toLocaleString();
+  values.distanceToFireStation = _.get(policy, 'property.distanceToFireStation');
   values.distanceToFireStationNew = values.distanceToFireStation;
   values.residenceType = _.get(policy, 'property.residenceType');
   values.residenceTypeNew = values.residenceType;
   values.squareFeet = _.get(policy, 'property.squareFeet', '');
-  values.squareFeetNew = String(values.squareFeet);
+  values.squareFeetNew = values.squareFeet;
   values.floodZone = _.get(policy, 'property.floodZone');
   values.floodZoneNew = values.floodZone;
 
@@ -276,73 +276,73 @@ export const generateModel = (data, policyObject, props) => {
   const sinkholeAmount = _.get(policy, 'deductibles.sinkhole.amount') || 10;
 
   policy.transactionType = 'Endorsement';
-  const submitData = {
+  return {
     ...policy,
     policyID: policy._id,
     formListTransactionType: 'Endorsement',
     endorsementAmountNew: data.newEndorsementAmount || 0,
     endorsementDate: endorseDate,
     country: policy.policyHolderMailingAddress.country,
-    pH1Id: _.get(policy, 'policyHolders[0]._id') || '',
-    pH2Id: _.get(policy, 'policyHolders[1]._id') || '',
+    pH1Id: _.get(policy, 'policyHolders[0]._id', ''),
+    pH2Id: _.get(policy, 'policyHolders[1]._id', ''),
     pH1FirstName: data.pH1FirstName,
     pH1LastName: data.pH1LastName,
     pH1email: data.pH1email,
-    pH1phone: data.pH1phone ? data.pH1phone.replace(/[^\d]/g, '') : '',
-    pH1secondaryPhone: data.pH1secondaryPhone ? data.pH1secondaryPhone.replace(/[^\d]/g, '') : '',
+    pH1phone: data.pH1phone,
+    pH1secondaryPhone: data.pH1secondaryPhone,
     pH2FirstName: data.pH2FirstName,
     pH2LastName: data.pH2LastName,
     pH2email: data.pH2email,
-    pH2phone: data.pH2phone ? data.pH2phone.replace(/[^\d]/g, '') : '',
-    pH2secondaryPhone: data.pH2secondaryPhone ? data.pH2secondaryPhone.replace(/[^\d]/g, '') : '',
+    pH2phone: data.pH2phone,
+    pH2secondaryPhone: data.pH2secondaryPhone,
     floodZoneNew: data.floodZoneNew,
-    squareFeetNew: Number(data.squareFeetNew),
+    squareFeetNew: data.squareFeetNew,
     residenceTypeNew: data.residenceTypeNew,
-    distanceToTidalWaterNew: data.distanceToTidalWaterNew ? Number(String(data.distanceToTidalWaterNew).replace(/,|\.$/g, '')) : 0,
+    distanceToTidalWaterNew: data.distanceToTidalWaterNew,
     propertyCityNew: data.propertyCityNew,
     propertyZipNew: data.propertyZipNew,
     propertyStateNew: data.propertyStateNew,
     propertyAddress1New: data.propertyAddress1New,
     propertyAddress2New: data.propertyAddress2New,
-    protectionClassNew: Number(data.protectionClassNew),
+    protectionClassNew: data.protectionClassNew,
     stateNew: data.stateNew,
     cityNew: data.cityNew,
     zipNew: data.zipNew,
     address2New: data.address2New,
     address1New: data.address1New,
     roofGeometryNew: data.roofGeometryNew,
-    floridaBuildingCodeWindSpeedNew: Number(data.floridaBuildingCodeWindSpeedNew),
+    floridaBuildingCodeWindSpeedNew: data.floridaBuildingCodeWindSpeedNew,
     secondaryWaterResistanceNew: data.secondaryWaterResistanceNew,
     internalPressureDesignNew: data.internalPressureDesignNew,
     roofCoveringNew: data.roofCoveringNew,
     openingProtectionNew: data.openingProtectionNew,
     terrainNew: data.terrainNew,
-    floridaBuildingCodeWindSpeedDesignNew: Number(data.floridaBuildingCodeWindSpeedDesignNew),
+    floridaBuildingCodeWindSpeedDesignNew: data.floridaBuildingCodeWindSpeedDesignNew,
     roofDeckAttachmentNew: data.roofDeckAttachmentNew,
     windBorneDebrisRegionNew: data.windBorneDebrisRegionNew,
     roofToWallConnectionNew: data.roofToWallConnectionNew,
     electronicDeliveryNew: data.electronicDeliveryNew,
-    distanceToFireStationNew: data.distanceToFireStationNew ? Number(String(data.distanceToFireStationNew).replace(/,|\.$/g, '')) : 0,
-    distanceToFireHydrantNew: data.distanceToFireHydrantNew ? Number(String(data.distanceToFireHydrantNew).replace(/,|\.$/g, '')) : 0,
-    yearOfRoofNew: data.yearOfRoofNew ? Number(data.yearOfRoofNew) : null,
+    distanceToFireStationNew: data.distanceToFireStationNew || 0,
+    distanceToFireHydrantNew: data.distanceToFireHydrantNew || 0,
+    yearOfRoofNew: data.yearOfRoofNew || null,
     fireAlarmNew: data.fireAlarmNew,
     burglarAlarmNew: data.burglarAlarmNew,
     buildingCodeEffectivenessGradingNew: data.buildingCodeEffectivenessGradingNew || null,
-    yearBuiltNew: data.yearBuiltNew ? Number(data.yearBuiltNew) : null,
+    yearBuiltNew: data.yearBuiltNew || null,
     townhouseRowhouseNew: data.townhouseRowhouseNew,
     familyUnitsNew: data.familyUnitsNew,
     constructionTypeNew: data.constructionTypeNew,
     sprinklerNew: data.sprinklerNew,
     // Premium Coverage Limits
-    dwellingAmountNew: Math.round(Number(String(data.dwellingAmountNew).replace(/[^\d]/g, '')) / 1000) * 1000,
-    otherStructuresAmountNew: Number(data.otherStructuresAmountNew),
-    personalPropertyAmountNew: Number(data.personalPropertyAmountNew),
-    personalLiabilityNew: Number(data.personalLiabilityNew),
-    medicalPaymentsNew: Number(data.medicalPaymentsNew),
-    lossOfUseNew: Number(data.lossOfUseNew),
-    moldPropertyNew: Number(data.moldPropertyNew),
-    moldLiabilityNew: Number(data.moldLiabilityNew),
-    ordinanceOrLawNew: Number(data.ordinanceOrLawNew),
+    dwellingAmountNew: Math.round(data.dwellingAmountNew / 1000) * 1000,
+    otherStructuresAmountNew: data.otherStructuresAmountNew,
+    personalPropertyAmountNew: data.personalPropertyAmountNew,
+    personalLiabilityNew: data.personalLiabilityNew,
+    medicalPaymentsNew: data.medicalPaymentsNew,
+    lossOfUseNew: data.lossOfUseNew,
+    moldPropertyNew: data.moldPropertyNew,
+    moldLiabilityNew: data.moldLiabilityNew,
+    ordinanceOrLawNew: data.ordinanceOrLawNew,
     // Premium Coverage Options
     sinkholePerilCoverageNew: data.sinkholePerilCoverageNew,
     propertyIncidentalOccupanciesMainDwellingNew: data.propertyIncidentalOccupanciesMainDwellingNew,
@@ -351,15 +351,14 @@ export const generateModel = (data, policyObject, props) => {
     personalPropertyReplacementCostCoverageNew: data.personalPropertyReplacementCostCoverageNew,
     // Premium Deductibles
     allOtherPerilsNew: data.allOtherPerilsNew,
-    hurricaneNew: String(data.hurricaneNew),
-    calculatedHurricaneNew: String(data.calculatedHurricaneNew),
-    sinkholeNew: String(data.sinkholePerilCoverageNew) === 'true' ? sinkholeAmount : 0,
+    hurricaneNew: data.hurricaneNew,
+    calculatedHurricaneNew: data.calculatedHurricaneNew,
+    sinkholeNew: data.sinkholePerilCoverageNew === 'true' ? sinkholeAmount : 0,
     // underwriting answers
     noPriorInsuranceNew: data.noPriorInsuranceNew,
     monthsOccupiedNew: data.monthsOccupiedNew,
     rentedNew: data.rentedNew
   };
-  return submitData;
 };
 
 export const covertToRateData = (changePolicyData, props) => {
@@ -372,60 +371,60 @@ export const covertToRateData = (changePolicyData, props) => {
     property: {
       windMitigation: {
         roofGeometry: changePolicyData.roofGeometryNew,
-        floridaBuildingCodeWindSpeed: Number(changePolicyData.floridaBuildingCodeWindSpeedNew),
+        floridaBuildingCodeWindSpeed: changePolicyData.floridaBuildingCodeWindSpeedNew,
         secondaryWaterResistance: changePolicyData.secondaryWaterResistanceNew,
         internalPressureDesign: changePolicyData.internalPressureDesignNew,
         roofCovering: changePolicyData.roofCoveringNew,
         openingProtection: changePolicyData.openingProtectionNew,
         terrain: changePolicyData.terrainNew,
-        floridaBuildingCodeWindSpeedDesign: Number(changePolicyData.floridaBuildingCodeWindSpeedDesignNew),
+        floridaBuildingCodeWindSpeedDesign: changePolicyData.floridaBuildingCodeWindSpeedDesignNew,
         roofDeckAttachment: changePolicyData.roofDeckAttachmentNew,
         windBorneDebrisRegion: changePolicyData.windBorneDebrisRegionNew,
         roofToWallConnection: changePolicyData.roofToWallConnectionNew
       },
       territory: changePolicyData.property.territory,
-      buildingCodeEffectivenessGrading: Number(changePolicyData.buildingCodeEffectivenessGradingNew),
+      buildingCodeEffectivenessGrading: changePolicyData.buildingCodeEffectivenessGradingNew,
       familyUnits: changePolicyData.familyUnitsNew,
       fireAlarm: changePolicyData.fireAlarmNew,
       burglarAlarm: changePolicyData.burglarAlarmNew,
       constructionType: changePolicyData.constructionTypeNew,
-      yearBuilt: changePolicyData.yearBuiltNew ? Number(changePolicyData.yearBuiltNew) : null,
+      yearBuilt: changePolicyData.yearBuiltNew || null,
       sprinkler: changePolicyData.sprinklerNew,
-      protectionClass: Number(changePolicyData.protectionClassNew),
+      protectionClass: changePolicyData.protectionClassNew,
       townhouseRowhouse: changePolicyData.townhouseRowhouseNew
     },
     coverageLimits: {
       dwelling: {
-        amount: Number(changePolicyData.dwellingAmountNew)
+        amount: changePolicyData.dwellingAmountNew
       },
       otherStructures: {
-        amount: Number(changePolicyData.otherStructuresAmountNew)
+        amount: changePolicyData.otherStructuresAmountNew
       },
       personalProperty: {
-        amount: Number(changePolicyData.personalPropertyAmountNew)
+        amount: changePolicyData.personalPropertyAmountNew
       },
       personalLiability: {
-        amount: Number(changePolicyData.personalLiabilityNew)
+        amount: changePolicyData.personalLiabilityNew
       },
       medicalPayments: {
-        amount: Number(changePolicyData.medicalPaymentsNew)
+        amount: changePolicyData.medicalPaymentsNew
       },
       lossOfUse: {
-        amount: Number(changePolicyData.lossOfUseNew)
+        amount: changePolicyData.lossOfUseNew
       },
       moldProperty: {
-        amount: Number(changePolicyData.moldPropertyNew)
+        amount: changePolicyData.moldPropertyNew
       },
       moldLiability: {
-        amount: Number(changePolicyData.moldLiabilityNew)
+        amount: changePolicyData.moldLiabilityNew
       },
       ordinanceOrLaw: {
-        amount: Number(changePolicyData.ordinanceOrLawNew)
+        amount: changePolicyData.ordinanceOrLawNew
       }
     },
     coverageOptions: {
       sinkholePerilCoverage: {
-        answer: String(changePolicyData.sinkholePerilCoverageNew) === 'true'
+        answer: changePolicyData.sinkholePerilCoverageNew
       },
       propertyIncidentalOccupanciesMainDwelling: {
         answer: changePolicyData.propertyIncidentalOccupanciesMainDwellingNew
@@ -442,15 +441,15 @@ export const covertToRateData = (changePolicyData, props) => {
     },
     deductibles: {
       allOtherPerils: {
-        amount: Number(changePolicyData.allOtherPerilsNew)
+        amount: changePolicyData.allOtherPerilsNew
       },
       hurricane: {
-        amount: Number(changePolicyData.hurricaneNew),
-        calculatedAmount: Number(setPercentageOfValue(Number(changePolicyData.dwellingAmountNew), Number(changePolicyData.hurricaneNew)))
+        amount: changePolicyData.hurricaneNew,
+        calculatedAmount: setPercentageOfValue(changePolicyData.dwellingAmountNew, changePolicyData.hurricaneNew)
       },
       sinkhole: {
-        amount: Number(changePolicyData.sinkholeNew),
-        calculatedAmount: Number(setPercentageOfValue(Number(changePolicyData.dwellingAmountNew), Number(changePolicyData.sinkholeNew)))
+        amount: changePolicyData.sinkholeNew,
+        calculatedAmount: setPercentageOfValue(changePolicyData.dwellingAmountNew, changePolicyData.sinkholeNew)
       }
     },
     underwritingAnswers: {
@@ -646,7 +645,7 @@ export class Endorsements extends React.Component {
 
   normalizePersonalPropertyDependencies = (value, allValues, field, dependency) => {
     if (Number.isNaN(value)) return;
-    setCalculate();
+    this.setCalculate();
     const { change: changeF, policy } = this.props;
 
     if (value === 0) {
@@ -662,7 +661,7 @@ export class Endorsements extends React.Component {
 
   normalizeDependencies = (value, allValues, field, dependency) => {
     if (Number.isNaN(value)) return;
-    setCalculate(this.props, false);
+    this.setCalculate();
     const { change: changeF } = this.props;
     const fieldValue = setPercentageOfValue((allValues[dependency]), value);
 
@@ -709,54 +708,67 @@ export class Endorsements extends React.Component {
       <PolicyConnect>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         {this.props.appState.data.isSubmitting && <Loader />}
-        <form
-          id="Endorsements"
-          className="content-wrapper"
-          onSubmit={appState.data.isCalculated ? handleSubmit(save) : handleSubmit(calculate)}
-          onKeyPress={(e) => (e.key === 'Enter' && e.target.type !== 'submit') && e.preventDefault()}
-        >
 
-          <div className="route-content">
-            <div className="endorsements">
-              <GoToMenu />
-              <div className="scroll">
-                <div className="form-group survey-wrapper" role="group">
-                  <Coverage
-                    initialValues={initialValues}
-                    personalPropertyNewVal={selectedFields.personalPropertyNew}
-                    questions={questions}
-                    underwritingQuestions={underwritingQuestions}
-                    normalizeDwellingAmount={this.updateDwellingAndDependencies}
-                    normalizeDependencies={this.normalizeDependencies}
-                    normalizePersonalPropertyDependencies={this.normalizePersonalPropertyDependencies}
-                  />
-                  <WindMitigation questions={questions} />
-                  <HomeLocation questions={questions} />
-                  <PreviousEndorsements mappedEndorsementHistory={mappedEndorsementHistory} />
-                  <PolicyHolder
-                    clearSecondaryPolicyholder={this.clearSecondaryPolicyholder}
-                    setPHToggle={this.setPHToggle}
-                    policyHolders={policy.policyHolders}
-                  />
-                  <MailingAddress />
-                  <PropertyAddress />
+        {initialValues.endorsementDateNew ?
+          <form
+            id="Endorsements"
+            className="content-wrapper"
+            onSubmit={appState.data.isCalculated ? handleSubmit(save) : handleSubmit(calculate)}
+            onKeyPress={(e) => (e.key === 'Enter' && e.target.type !== 'submit') && e.preventDefault()}
+          >
+
+            <div className="route-content">
+              <div className="endorsements">
+                <GoToMenu/>
+                <div className="scroll">
+                  <div className="form-group survey-wrapper" role="group">
+                    <Coverage
+                      initialValues={initialValues}
+                      personalPropertyNewVal={selectedFields.personalPropertyNew}
+                      questions={questions}
+                      underwritingQuestions={underwritingQuestions}
+                      normalizeDwellingAmount={this.updateDwellingAndDependencies}
+                      normalizeDependencies={this.normalizeDependencies}
+                      normalizePersonalPropertyDependencies={this.normalizePersonalPropertyDependencies}
+                    />
+                    <WindMitigation questions={questions}/>
+                    <HomeLocation questions={questions}/>
+                    <PreviousEndorsements mappedEndorsementHistory={mappedEndorsementHistory}/>
+                    <PolicyHolder
+                      clearSecondaryPolicyholder={this.clearSecondaryPolicyholder}
+                      setPHToggle={this.setPHToggle}
+                      policyHolders={policy.policyHolders}
+                    />
+                    <MailingAddress/>
+                    <PropertyAddress/>
+                  </div>
                 </div>
+                <ResultsCalculator
+                  min={policy.effectiveDate}
+                  max={policy.endDate}
+                  setCalculate={this.setCalculate}>
+                  {/* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */}
+                  <button id="cancel-button" tabIndex="0" type="button" className="btn btn-secondary"
+                          onKeyPress={(event) => {
+                            if (event.charCode === 13) {
+                              this.setCalculate();
+                            }
+                          }} onClick={() => this.setCalculate()}>Cancel
+                  </button>
+                  <button type="submit" tabIndex="0" className="btn btn-primary"
+                          disabled={(!appState.data.isCalculated && pristine) || appState.data.isSubmitting}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
+                </ResultsCalculator>
+
               </div>
-              <ResultsCalculator
-                min={policy.effectiveDate}
-                max={policy.endDate}
-                setCalculate={this.setCalculate}>
-                { /* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */ }
-                <button id="cancel-button" tabIndex="0" type="button" className="btn btn-secondary" onKeyPress={(event) => { if (event.charCode === 13) { setCalculate(this.props, true); } }} onClick={() => setCalculate(this.props, true)}>Cancel</button>
-                <button type="submit" tabIndex="0" className="btn btn-primary" disabled={(!appState.data.isCalculated && pristine) || appState.data.isSubmitting}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
-              </ResultsCalculator>
+
+              <UnderwritingValidations/>
 
             </div>
+          </form>
+          :
+          <Loader />
+        }
 
-            <UnderwritingValidations />
-
-          </div>
-        </form>
         <div className="basic-footer">
           <Footer />
         </div>

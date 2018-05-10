@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 
 const { Input, Phone } = Inputs;
 const {
-  validation, normalize, parse
+  validation, normalize
 } = lifecycle;
 
 const PolicyHolder = ({ clearSecondaryPolicyholder, policyHolders, setPHToggle }) => (
@@ -115,7 +116,11 @@ const PolicyHolder = ({ clearSecondaryPolicyholder, policyHolders, setPHToggle }
   </section>
 );
 
-PolicyHolder.propTypes = {};
+PolicyHolder.propTypes = {
+  clearSecondaryPolicyholder: PropTypes.func,
+  policyHolders: PropTypes.array,
+  setPHToggle: PropTypes.func
+};
 
 PolicyHolder.defaultProps = {};
 

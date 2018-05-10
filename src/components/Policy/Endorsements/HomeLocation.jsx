@@ -1,13 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers } from './index';
 
-const { Input, Select, NumberInput } = Inputs;
-const {
-  validation
-} = lifecycle;
+const { Input, Select, SelectInteger, Numbers } = Inputs;
+const { validation } = lifecycle;
 
 const HomeLocation = ({ questions }) => (
   <section name="home" id="home">
@@ -27,7 +26,8 @@ const HomeLocation = ({ questions }) => (
           />
           <Field
             name="yearBuiltNew"
-            component={Input}
+            component={Numbers}
+            decimalScale={0}
             validate={validation.isNumbersOnly}
           />
         </div>
@@ -48,13 +48,14 @@ const HomeLocation = ({ questions }) => (
           <Field
             name="protectionClass"
             label="Protection Class"
-            component={Input}
+            component={Numbers}
+            prefix={'0'}
             disabled
           />
 
           <Field
             name="protectionClassNew"
-            component={Select}
+            component={SelectInteger}
             answers={getAnswers('protectionClass', questions)}
           />
         </div>
@@ -62,12 +63,13 @@ const HomeLocation = ({ questions }) => (
           <Field
             name="buildingCodeEffectivenessGrading"
             label="BCEG"
-            component={Input}
+            component={Numbers}
+            prefix={'0'}
             disabled
           />
           <Field
             name="buildingCodeEffectivenessGradingNew"
-            component={Select}
+            component={SelectInteger}
             answers={getAnswers('buildingCodeEffectivenessGrading', questions)}
           />
         </div>
@@ -112,7 +114,8 @@ const HomeLocation = ({ questions }) => (
           />
           <Field
             name="distanceToTidalWaterNew"
-            component={NumberInput}
+            component={Numbers}
+            decimalScale={2}
           />
         </div>
         <div className="form-group-double-element">
@@ -124,7 +127,8 @@ const HomeLocation = ({ questions }) => (
           />
           <Field
             name="distanceToFireHydrantNew"
-            component={NumberInput}
+            component={Numbers}
+            decimalScale={2}
           />
         </div>
         <div className="form-group-double-element">
@@ -136,7 +140,8 @@ const HomeLocation = ({ questions }) => (
           />
           <Field
             name="distanceToFireStationNew"
-            component={NumberInput}
+            component={Numbers}
+            decimalScale={2}
           />
         </div>
         <div className="form-group-double-element">
@@ -161,7 +166,8 @@ const HomeLocation = ({ questions }) => (
           />
           <Field
             name="squareFeetNew"
-            component={Input}
+            component={Numbers}
+            decimalScale={0}
             validate={validation.isRequired}
           />
         </div>
@@ -174,7 +180,8 @@ const HomeLocation = ({ questions }) => (
           />
           <Field
             name="yearOfRoofNew"
-            component={Input}
+            component={Numbers}
+            decimalScale={0}
           />
         </div>
       </div>
@@ -182,7 +189,9 @@ const HomeLocation = ({ questions }) => (
   </section>
 );
 
-HomeLocation.propTypes = {};
+HomeLocation.propTypes = {
+  questions: PropTypes.object
+};
 
 HomeLocation.defaultProps = {};
 

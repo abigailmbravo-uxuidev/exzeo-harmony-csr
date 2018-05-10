@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
@@ -8,7 +9,7 @@ import {
   getQuestionName
 } from './index';
 
-const { Currency, Input, Select, Radio } = Inputs;
+const { Currency, Input, Select, SelectInteger, Radio } = Inputs;
 const { validation, format, parse } = lifecycle;
 
 const baseYesNoAnswers = [
@@ -16,7 +17,15 @@ const baseYesNoAnswers = [
   { answer: true, label: 'Yes' }
 ];
 
-const Coverage = props => (
+const Coverage = ({
+  initialValues,
+  normalizeDependencies,
+  normalizeDwellingAmount,
+  normalizePersonalPropertyDependencies,
+  personalPropertyNewVal,
+  questions,
+  underwritingQuestions
+}) => (
   <section name="coverage" id="coverage">
     <h3>Coverage</h3>
     <div className="flex-parent">
@@ -28,7 +37,7 @@ const Coverage = props => (
         <div className="form-group-double-element">
           <Field
             name="dwellingAmount"
-            label={`Dwelling (A) ($ ${String(props.initialValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $ ${String(props.initialValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`}
+            label={`Dwelling (A) ($ ${String(initialValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $ ${String(initialValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`}
             component={Currency}
             disabled
           />
@@ -37,9 +46,7 @@ const Coverage = props => (
             component={Currency}
             validate={[validation.isRequired, validation.isDwellingRange]}
             parse={parse.toNumber}
-            normalize={props.normalizeDwellingAmount}
-            min={props.initialValues.dwellingMin}
-            max={props.initialValues.dwellingMax}
+            normalize={normalizeDwellingAmount}
             noDecimal
           />
         </div>
@@ -69,14 +76,14 @@ const Coverage = props => (
           />
           <Field
             name="otherStructuresNew"
-            component={Select}
-            answers={getAnswers('otherStructuresAmount', props.questions)}
+            component={SelectInteger}
+            styleName="coverage-b-percentage"
+            answers={getAnswers('otherStructuresAmount', questions)}
             parse={parse.toNumber}
             validate={validation.isRequired}
             normalize={(v, pv, av) =>
-                props.normalizeDependencies(v, av, 'otherStructuresAmountNew', 'dwellingAmountNew')
+                normalizeDependencies(v, av, 'otherStructuresAmountNew', 'dwellingAmountNew')
               }
-            styleName="coverage-b-percentage"
           />
         </div>
         <div className="form-group-double-element">
@@ -90,6 +97,7 @@ const Coverage = props => (
           <Field
             name="personalPropertyAmountNew"
             component={Currency}
+            parse={parse.toNumber}
             validate={validation.isRequired}
             styleName="coverage-c"
             disabled
@@ -105,12 +113,12 @@ const Coverage = props => (
           />
           <Field
             name="personalPropertyNew"
-            component={Select}
-            answers={getAnswers('personalPropertyAmount', props.questions)}
+            component={SelectInteger}
+            answers={getAnswers('personalPropertyAmount', questions)}
             parse={parse.toNumber}
             validate={validation.isRequired}
             normalize={(v, pv, av) =>
-                props.normalizePersonalPropertyDependencies(v, av, 'personalPropertyAmountNew', 'dwellingAmountNew')
+                normalizePersonalPropertyDependencies(v, av, 'personalPropertyAmountNew', 'dwellingAmountNew')
               }
             styleName="coverage-c-percentage"
           />
@@ -138,8 +146,8 @@ const Coverage = props => (
           />
           <Field
             name="personalLiabilityNew"
-            component={Select}
-            answers={getAnswers('personalLiability', props.questions)}
+            component={SelectInteger}
+            answers={getAnswers('personalLiability', questions)}
             parse={parse.toNumber}
             validate={validation.isRequired}
           />
@@ -168,8 +176,8 @@ const Coverage = props => (
 
           <Field
             name="moldPropertyNew"
-            component={Select}
-            answers={getAnswers('moldProperty', props.questions)}
+            component={SelectInteger}
+            answers={getAnswers('moldProperty', questions)}
             validate={validation.isRequired}
           />
         </div>
@@ -182,8 +190,8 @@ const Coverage = props => (
           />
           <Field
             name="moldLiabilityNew"
-            component={Select}
-            answers={getAnswers('moldLiability', props.questions)}
+            component={SelectInteger}
+            answers={getAnswers('moldLiability', questions)}
             validate={validation.isRequired}
           />
         </div>
@@ -196,8 +204,8 @@ const Coverage = props => (
           />
           <Field
             name="allOtherPerilsNew"
-            component={Select}
-            answers={getAnswers('allOtherPerils', props.questions)}
+            component={SelectInteger}
+            answers={getAnswers('allOtherPerils', questions)}
             validate={validation.isRequired}
           />
         </div>
@@ -211,11 +219,11 @@ const Coverage = props => (
           />
           <Field
             name="hurricaneNew"
-            component={Select}
-            answers={getAnswers('hurricane', props.questions)}
+            component={SelectInteger}
+            answers={getAnswers('hurricane', questions)}
             validate={validation.isRequired}
             normalize={(v, pv, av) =>
-                props.normalizeDependencies(v, av, 'calculatedHurricane', 'dwellingAmountNew')
+                normalizeDependencies(v, av, 'calculatedHurricane', 'dwellingAmountNew')
               }
           />
         </div>
@@ -228,10 +236,10 @@ const Coverage = props => (
           />
           <Field
             name="sinkholePerilCoverageNew"
-            component={Select}
+            component={SelectInteger}
             answers={[
                 { answer: false, label: 'Coverage Excluded' },
-                { answer: true, label: `10% of ${getQuestionName('dwellingAmount', props.questions)}` }
+                { answer: true, label: `10% of ${getQuestionName('dwellingAmount', questions)}` }
               ]}
           />
         </div>
@@ -260,7 +268,7 @@ const Coverage = props => (
               answers={baseYesNoAnswers}
               styleName="billPlan"
               segmented
-              disabled={props.personalPropertyNewVal === 0}
+              disabled={personalPropertyNewVal === 0}
             />
           </div>
         </div>
@@ -274,8 +282,8 @@ const Coverage = props => (
           />
           <Field
             name="ordinanceOrLawNew"
-            answers={getAnswers('ordinanceOrLaw', props.questions)}
-            component={Select}
+            answers={getAnswers('ordinanceOrLaw', questions)}
+            component={SelectInteger}
             validate={validation.isRequired}
           />
         </div>
@@ -361,7 +369,7 @@ const Coverage = props => (
           <Field
             name="rentedNew"
             component={Select}
-            answers={getAnswers('rented', props.underwritingQuestions)}
+            answers={getAnswers('rented', underwritingQuestions)}
           />
         </div>
         <div className="form-group-double-element">
@@ -374,7 +382,7 @@ const Coverage = props => (
           <Field
             name="monthsOccupiedNew"
             component={Select}
-            answers={getAnswers('monthsOccupied', props.underwritingQuestions)}
+            answers={getAnswers('monthsOccupied', underwritingQuestions)}
           />
         </div>
         <div className="form-group-double-element">
@@ -463,7 +471,15 @@ const Coverage = props => (
 
 );
 
-Coverage.propTypes = {};
+Coverage.propTypes = {
+  initialValues: PropTypes.object,
+  normalizeDependencies: PropTypes.func,
+  normalizeDwellingAmount: PropTypes.func,
+  normalizePersonalPropertyDependencies: PropTypes.func,
+  personalPropertyNewVal: PropTypes.number,
+  questions: PropTypes.object,
+  underwritingQuestions: PropTypes.object
+};
 
 Coverage.defaultProps = {};
 

@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers } from './index';
 
-const { Input, Select, Radio } = Inputs;
+const { Input, Select, Radio, Numbers } = Inputs;
 const {
   validation
 } = lifecycle;
@@ -124,7 +125,8 @@ const WindMitigation = ({ questions }) => (
           />
           <Field
             name="floridaBuildingCodeWindSpeedNew"
-            component={Input}
+            component={Numbers}
+            decimalScale={0}
             validate={[validation.isRequired, validation.isNumbersOnly]}
           />
         </div>
@@ -137,7 +139,8 @@ const WindMitigation = ({ questions }) => (
           />
           <Field
             name="floridaBuildingCodeWindSpeedDesignNew"
-            component={Input}
+            component={Numbers}
+            decimalScale={0}
             validate={[validation.isRequired, validation.isNumbersOnly]}
           />
         </div>
@@ -206,7 +209,9 @@ const WindMitigation = ({ questions }) => (
   </section>
 );
 
-WindMitigation.propTypes = {};
+WindMitigation.propTypes = {
+  questions: PropTypes.object
+};
 
 WindMitigation.defaultProps = {};
 

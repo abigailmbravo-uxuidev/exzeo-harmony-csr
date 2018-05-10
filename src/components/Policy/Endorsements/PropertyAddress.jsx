@@ -3,7 +3,7 @@ import { Field } from 'redux-form'
 import { Input } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 
-const PropertyAddress = props => (
+const PropertyAddress = () => (
   <section>
     <h3>Property Address</h3>
     <div className="flex-parent wrap">
