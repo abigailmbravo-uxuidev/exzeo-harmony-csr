@@ -75,7 +75,9 @@
     "build": "npm run build-css && react-scripts build",
     "cover": "npm test -- --coverage",
     "test": "npm run build && react-scripts test --env=jsdom --coverage",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "link-core": "npm link @exzeo/core-ui",
+    "unlink-core": "npm unlink @exzeo/core-ui"
   },
   "jest": {
     "collectCoverageFrom": [
