@@ -586,6 +586,49 @@ export const getEndorsementHistory = policyNumber => (dispatch) => {
     });
 };
 
+export const createTransaction = (submitData) => (dispatch) => {
+  const body = {
+    service: 'policy-data',
+    method: 'POST',
+    path: 'transaction',
+    data: submitData
+  };
+  const axiosConfig = runnerSetup(body);
+
+  return axios(axiosConfig).then((response) => {
+    const data = { addTransaction: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError(message)
+      ]));
+    });
+};
+
+// TODO use this once the form is in the shape of the model
+// export const submitEndorsementForm = (formData, formProps) => {
+//   return async (dispatch) => {
+//     const { policy, summaryLedger: { currentPremium } } = formProps;
+//     const submitData = endorsementUtils.generateModel(formData, policy, formProps);
+//     const rateData = endorsementUtils.convertToRateData(submitData, currentPremium);
+//
+//     rateData.rating = formProps.getRate.rating;
+//     rateData.billingStatus = formProps.summaryLedger.status.code;
+//     rateData.endorsementAmount = formData.newEndorsementAmount;
+//     rateData.transactionType = 'Endorsement';
+//
+//     const forms = await getListOfForms(policy, formProps.getRate.rating, 'New Business');
+//
+//     rateData.forms = forms;
+//
+//     dispatch(createTransaction(rateData));
+//   }
+// };
+
 export const getRate = (formData, formProps) => async (dispatch) => {
   const { policy, summaryLedger: { currentPremium } } = formProps;
   const submitData = endorsementUtils.generateModel(formData, policy, formProps);
@@ -601,7 +644,6 @@ export const getRate = (formData, formProps) => async (dispatch) => {
   try {
     const response = await axios(axiosConfig);
     const data = { getRate: response.data ? response.data.result : {} };
-    dispatch(getListOfForms(policy, data.getRate.rating, 'New Business'));
     return dispatch(serviceRequest(data));
   } catch (error) {
     dispatch(errorActions.setAppError(handleError(error)));
@@ -644,29 +686,6 @@ export const getCancelOptions = () => (dispatch) => {
 
   return axios(axiosConfig).then((response) => {
     const data = { cancelOptions: response.data.cancelOptions };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
-};
-
-export const createTransaction = submitData => (dispatch) => {
-  const body = {
-    service: 'policy-data',
-    method: 'POST',
-    path: 'transaction',
-    data: submitData
-  };
-  const axiosConfig = runnerSetup(body);
-
-  return axios(axiosConfig).then((response) => {
-    const data = { addTransaction: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));
@@ -778,7 +797,7 @@ export const clearPolicyResults = () => (dispatch) => {
   ]));
 };
 
-export const getListOfForms = (policy, rating, transactionType) => (dispatch) => {
+export const getListOfForms = (policy, rating, transactionType) => {
   const body = {
     service: 'form-list',
     method: 'POST',
@@ -793,19 +812,13 @@ export const getListOfForms = (policy, rating, transactionType) => (dispatch) =>
   };
   const axiosConfig = runnerSetup(body);
 
-  return axios(axiosConfig).then((response) => {
-    const data = {
-      listOfForms: response.data &&
-      response.data.result && response.data.result.forms ? response.data.result.forms : []
-    };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
+  return axios(axiosConfig)
+    .then((response) => {
+      return (response.data && response.data.result && response.data.result.forms)
+        ? response.data.result.forms
+        : []
+    })
     .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
+      throw new Error(error)
     });
 };

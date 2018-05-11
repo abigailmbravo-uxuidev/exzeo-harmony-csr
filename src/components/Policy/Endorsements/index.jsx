@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import moment from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
 import { reduxForm, propTypes, change, formValueSelector } from 'redux-form';
 import { batchActions } from 'redux-batched-actions';
@@ -70,6 +69,7 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
 
   // Coverage Top Left
   values.clearFields = false;
+  values.policyID = policy._id;
   values.endorsementDateNew = endorsementUtils.setEndorsementDate(policy.effectiveDate, policy.endDate);
   values.dwellingAmount = dwelling;
   values.dwellingAmountNew = values.dwellingAmount;
@@ -233,7 +233,6 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
 
   return values;
 };
-
 
 export class Endorsements extends React.Component {
   constructor(props) {
@@ -493,8 +492,9 @@ export class Endorsements extends React.Component {
                           type="button"
                           className="btn btn-secondary"
                           tabIndex="0"
-                          onClick={() => this.setCalculate()}>Cancel
-                          onKeyPress={(event) => event.charCode === 13 && this.setCalculate() }
+                          onClick={() => this.setCalculate()}
+                          onKeyPress={(event) => event.charCode === 13 && this.setCalculate()}
+                  >Cancel
                   </button>
                   <button
                     type="submit"
