@@ -18,9 +18,9 @@ import * as cgActions from '../../actions/cgActions';
  *  outside
  * }
  */
-const csrLinks = [{
+const csrLinks = ({ policyNumber }) => [{
   key: 'coverage',
-  link: '/policy/coverage',
+  link: `/policy/coverage/${policyNumber}`,
   label: 'Coverage / Rating',
   styleName: 'coverage',
   exact: true
@@ -58,18 +58,16 @@ const csrLinks = [{
 }];
 
 export const NewNoteFileUploaderPopup = (props) => {
-  props.actions.newNoteActions.toggleNote({noteType: 'Policy Note', documentId: props.policy.policyNumber, sourceNumber: props.policy.sourceNumber})
+  props.actions.newNoteActions.toggleNote({ noteType: 'Policy Note', documentId: props.policy.policyNumber, sourceNumber: props.policy.sourceNumber });
 };
 
-export const SideNav = (props) => {
-
-  return (
-    <nav className="site-nav">
-      <ul>
-        {csrLinks && csrLinks.length > 0 && csrLinks.map((agentLink, index) => (
+export const SideNav = props => (
+  <nav className="site-nav">
+    <ul>
+      {csrLinks && csrLinks.length > 0 && csrLinks({ policyNumber: props.policy.policyNumber }).map((agentLink, index) => (
         agentLink.outside ?
           <li key={index}>
-            {/* <a className={agentLink.styleName} href={agentLink.link}>*/}
+            {/* <a className={agentLink.styleName} href={agentLink.link}> */}
             <a className="csr-dashboard" href="/">
               <span>{agentLink.label}</span>
             </a>
@@ -80,7 +78,7 @@ export const SideNav = (props) => {
             </span>
           </li>
       ))}
-        {/* <hr className="quote-hr" />
+      {/* <hr className="quote-hr" />
         <li>
           <button className="btn btn-secondary btn-xs" onClick={() => UWconditionsPopup(props)}>Underwriting Conditions</button>
         </li>
@@ -88,14 +86,13 @@ export const SideNav = (props) => {
           <UWconditions
             closeButtonHandler={() => closeUWConditions(props)}
             />
-          }*/}
-        <hr className="nav-division" />
-        <li>
-          <button aria-label="open-btn form-newNote" className="btn btn-primary btn-sm btn-block" onClick={() => NewNoteFileUploaderPopup(props)}><i className="fa fa-plus" /> Note / File</button>
-        </li>
-      </ul>
-    </nav>);
-};
+          } */}
+      <hr className="nav-division" />
+      <li>
+        <button aria-label="open-btn form-newNote" className="btn btn-primary btn-sm btn-block" onClick={() => NewNoteFileUploaderPopup(props)}><i className="fa fa-plus" /> Note / File</button>
+      </li>
+    </ul>
+  </nav>);
 
 // TODO: Needs to be connected to wherever it's gonnna get nav links from
 SideNav.propTypes = {
