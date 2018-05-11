@@ -76,12 +76,12 @@ export const addNote = (data, files) => (dispatch) => {
   const form = new FormData();
   const url = `${process.env.REACT_APP_API_URL}/upload`;
 
-  Object.keys(data).forEach((key) => form.append(key, data[key]));
-  files.map(file => {
+  Object.keys(data).forEach(key => form.append(key, data[key]));
+  files.map((file) => {
     const fileName = !file.name.endsWith(file.meta.name.extension)
       ? `${file.meta.name}.${file.extension}`
       : file.meta.name;
-    return form.append(file.name, file.data, fileName)
+    return form.append(file.name, file.data, fileName);
   });
 
   axios.post(url, form, {
@@ -205,10 +205,10 @@ export const searchAgencies = (companyCode, state, displayName, agencyCode, addr
     const data = { agencies: result };
     return dispatch(serviceRequest(data));
   })
-  .catch((error) => {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
-  });
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(errorActions.setAppError(message));
+    });
 };
 
 export const clearAgencies = () => (dispatch) => {
@@ -741,10 +741,10 @@ export const getAgencies = (companyCode, state) => (dispatch) => {
     const data = { agencies: result };
     return dispatch(serviceRequest(data));
   })
-  .catch((error) => {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
-  });
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(errorActions.setAppError(message));
+    });
 };
 
 export const searchPolicy = (taskData, sort) => (dispatch) => {
@@ -777,4 +777,33 @@ export const clearPolicyResults = () => (dispatch) => {
   return dispatch(batchActions([
     serviceRequest(data)
   ]));
+};
+
+export const getListOfForms = (policy, rating, transactionType) => (dispatch) => {
+  const body = {
+    service: 'form-list',
+    method: 'POST',
+    path: String(' '),
+    data: {
+      policy: {
+        ...policy,
+        rating
+      },
+      transactionType: transactionType || 'New Business'
+    }
+  };
+  const axiosConfig = runnerSetup(body);
+
+  return axios(axiosConfig).then((response) => {
+    const data = { listOfForms: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError(message)
+      ]));
+    });
 };
