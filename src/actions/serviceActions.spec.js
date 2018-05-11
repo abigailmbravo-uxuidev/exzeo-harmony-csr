@@ -1235,9 +1235,9 @@ describe('Service Actions', () => {
     serviceActions.getAgencies(store.dispatch);
 
     return serviceActions.getAgencies('TTIC', 'FL')(store.dispatch)
-    .then(() => {
-      expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
-    });
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
+      });
   });
 
   it('should fail start getAgencies', () => {
@@ -1377,6 +1377,102 @@ describe('Service Actions', () => {
     const store = mockStore(initialState);
 
     return serviceActions.saveBillingInfo(null)(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+      });
+  });
+
+  it('should add getListOfForms', () => {
+    const policy = {
+      state: 'FL',
+      product: 'HO3',
+      policyTerm: 'A',
+      policyAccountCode: '123',
+      policyNumber: '123'
+    };
+
+    const rating = {
+
+    };
+
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'form-list',
+        method: 'POST',
+        path: ' ',
+        data: {
+          policy: {
+            ...policy,
+            rating
+          },
+          transactionType: 'New Business'
+        }
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    return serviceActions.getListOfForms(policy, rating, 'New Business')(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+      });
+  });
+
+  it('should fail getListOfForms', () => {
+    const policy = {
+      state: 'FL',
+      product: 'HO3',
+      policyTerm: 'A',
+      policyAccountCode: '123',
+      policyNumber: '123'
+    };
+
+    const rating = {
+
+    };
+
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'form-list',
+        method: 'POST',
+        path: ' ',
+        data: {
+          policy: {
+            ...policy,
+            rating
+          },
+          transactionType: 'New Business'
+        }
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    return serviceActions.getListOfForms(policy, null, 'New Business')(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
       });
