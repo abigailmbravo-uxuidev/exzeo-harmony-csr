@@ -31,7 +31,7 @@ export const generateModel = (data, policyObject, props) => {
   policy.transactionType = 'Endorsement';
   return {
     ...policy,
-    policyID: policy._id,
+    policyID: data.policyID,
     formListTransactionType: 'Endorsement',
     endorsementAmountNew: data.newEndorsementAmount || 0,
     endorsementDate: endorseDate,
