@@ -1,7 +1,9 @@
 import axios from 'axios';
 import _ from 'lodash';
 import moment from 'moment';
+import { SubmissionError } from 'redux-form';
 import { batchActions } from 'redux-batched-actions';
+import endorsementUtils from '../utilities/endorsementModel';
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
 
@@ -90,7 +92,7 @@ export const addNote = (data, files) => (dispatch) => {
     }
   })
   .then(response => {
-    const ids = (data.noteType === 'Policy Note') 
+    const ids = (data.noteType === 'Policy Note')
       ? [response.data.number, data.source].toString()
       : response.data.number;
     dispatch(getNotes(ids, response.data.number))
@@ -584,27 +586,30 @@ export const getEndorsementHistory = policyNumber => (dispatch) => {
     });
 };
 
-export const getRate = policyObject => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'rating-engine',
-    method: 'POST',
-    path: 'endorsement',
-    data: policyObject
-  });
+export const getRate = (formData, formProps) => {
+ return async (dispatch) => {
+   const { policy, summaryLedger: { currentPremium } } = formProps;
+   const submitData = endorsementUtils.generateModel(formData, policy, formProps);
+   const rateData = endorsementUtils.convertToRateData(submitData, currentPremium);
 
-  return axios(axiosConfig).then((response) => {
-    const data = { getRate: response.data ? response.data.result : {} };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
+    const axiosConfig = runnerSetup({
+      service: 'rating-engine',
+      method: 'POST',
+      path: 'endorsement',
+      data: rateData
     });
+
+    try {
+      const response = await axios(axiosConfig);
+      const data = {getRate: response.data ? response.data.result : {}};
+      return dispatch(serviceRequest(data));
+    } catch (error) {
+      dispatch(errorActions.setAppError(handleError(error)));
+      throw new SubmissionError(error);
+    }
+  };
 };
+
 
 export const clearRate = () => dispatch => dispatch(batchActions([
   serviceRequest({ getRate: {} })

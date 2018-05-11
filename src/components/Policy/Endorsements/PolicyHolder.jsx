@@ -5,9 +5,7 @@ import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 
 const { Input, Phone } = Inputs;
-const {
-  validation, normalize
-} = lifecycle;
+const { validation, normalize } = lifecycle;
 
 const PolicyHolder = ({ clearSecondaryPolicyholder, policyHolders, setPHToggle }) => (
   <section name="policy" id="policy">

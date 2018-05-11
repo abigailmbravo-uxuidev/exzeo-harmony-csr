@@ -3,12 +3,10 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
-import { getAnswers } from './index';
+import { getAnswers } from '../../../utilities/forms';
 
 const { Input, Select, Radio, Numbers } = Inputs;
-const {
-  validation
-} = lifecycle;
+const { validation } = lifecycle;
 
 const WindMitigation = ({ questions }) => (
   <section>
@@ -210,7 +208,7 @@ const WindMitigation = ({ questions }) => (
 );
 
 WindMitigation.propTypes = {
-  questions: PropTypes.object
+  questions: PropTypes.array
 };
 
 WindMitigation.defaultProps = {};

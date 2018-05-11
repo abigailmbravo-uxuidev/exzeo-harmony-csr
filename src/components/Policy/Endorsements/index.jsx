@@ -16,8 +16,9 @@ import PolicyConnect from '../../../containers/Policy';
 import Footer from '../../Common/Footer';
 import Loader from '../../Common/Loader';
 import * as policyStateActions from '../../../actions/policyStateActions';
-import * as actionTypes from '../../../actions/actionTypes';
 import { premiumEndorsementList } from './constants/endorsementTypes';
+import endorsementUtils from '../../../utilities/endorsementModel';
+import { getQuestionName } from '../../../utilities/forms';
 
 // Component Sections
 import Coverage from './Coverage';
@@ -31,27 +32,8 @@ import ResultsCalculator from './ResultsCalculator';
 import GoToMenu from './GoToMenu';
 import UnderwritingValidations from './UnderwritingValidations';
 
-export const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
-
-export const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question', '');
-
-export const setCalculate = (props, reset) => {
-  if (reset) {
-    props.reset('Endorsements');
-  }
-  props.actions.serviceActions.clearRate();
-
-  const workflowId = props.appState.instanceId;
-  if (!props.appState.data.isCalculated) return;
-
-  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, {
-    ...props.appState.data,
-    isCalculated: false
-  });
-};
-
 export const getNewPolicyNumber = (state) => {
-  const taskData = (state.cg && state.appState && state.cg.endorsePolicyModelSave)
+  const taskData = (state.cg && state.cg.endorsePolicyModelSave)
     ? state.cg.endorsePolicyModelSave.data
     : null;
   if (!taskData || !taskData.model || !taskData.model.variables) { return null; }
@@ -270,262 +252,24 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
 
 export const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
 
-export const generateModel = (data, policyObject, props) => {
-  const policy = policyObject;
-  const endorseDate = moment.tz(moment.utc(data.endorsementDateNew).format('YYYY-MM-DD'), props.zipcodeSettings.timezone).utc().format();
-  const sinkholeAmount = _.get(policy, 'deductibles.sinkhole.amount') || 10;
+export const save = async (data, dispatch, props) => {
+  props.actions.cgActions.submitEndorsement(data, props);
 
-  policy.transactionType = 'Endorsement';
-  return {
-    ...policy,
-    policyID: policy._id,
-    formListTransactionType: 'Endorsement',
-    endorsementAmountNew: data.newEndorsementAmount || 0,
-    endorsementDate: endorseDate,
-    country: policy.policyHolderMailingAddress.country,
-    pH1Id: _.get(policy, 'policyHolders[0]._id', ''),
-    pH2Id: _.get(policy, 'policyHolders[1]._id', ''),
-    pH1FirstName: data.pH1FirstName,
-    pH1LastName: data.pH1LastName,
-    pH1email: data.pH1email,
-    pH1phone: data.pH1phone,
-    pH1secondaryPhone: data.pH1secondaryPhone,
-    pH2FirstName: data.pH2FirstName,
-    pH2LastName: data.pH2LastName,
-    pH2email: data.pH2email,
-    pH2phone: data.pH2phone,
-    pH2secondaryPhone: data.pH2secondaryPhone,
-    floodZoneNew: data.floodZoneNew,
-    squareFeetNew: data.squareFeetNew,
-    residenceTypeNew: data.residenceTypeNew,
-    distanceToTidalWaterNew: data.distanceToTidalWaterNew,
-    propertyCityNew: data.propertyCityNew,
-    propertyZipNew: data.propertyZipNew,
-    propertyStateNew: data.propertyStateNew,
-    propertyAddress1New: data.propertyAddress1New,
-    propertyAddress2New: data.propertyAddress2New,
-    protectionClassNew: data.protectionClassNew,
-    stateNew: data.stateNew,
-    cityNew: data.cityNew,
-    zipNew: data.zipNew,
-    address2New: data.address2New,
-    address1New: data.address1New,
-    roofGeometryNew: data.roofGeometryNew,
-    floridaBuildingCodeWindSpeedNew: data.floridaBuildingCodeWindSpeedNew,
-    secondaryWaterResistanceNew: data.secondaryWaterResistanceNew,
-    internalPressureDesignNew: data.internalPressureDesignNew,
-    roofCoveringNew: data.roofCoveringNew,
-    openingProtectionNew: data.openingProtectionNew,
-    terrainNew: data.terrainNew,
-    floridaBuildingCodeWindSpeedDesignNew: data.floridaBuildingCodeWindSpeedDesignNew,
-    roofDeckAttachmentNew: data.roofDeckAttachmentNew,
-    windBorneDebrisRegionNew: data.windBorneDebrisRegionNew,
-    roofToWallConnectionNew: data.roofToWallConnectionNew,
-    electronicDeliveryNew: data.electronicDeliveryNew,
-    distanceToFireStationNew: data.distanceToFireStationNew || 0,
-    distanceToFireHydrantNew: data.distanceToFireHydrantNew || 0,
-    yearOfRoofNew: data.yearOfRoofNew || null,
-    fireAlarmNew: data.fireAlarmNew,
-    burglarAlarmNew: data.burglarAlarmNew,
-    buildingCodeEffectivenessGradingNew: data.buildingCodeEffectivenessGradingNew || null,
-    yearBuiltNew: data.yearBuiltNew || null,
-    townhouseRowhouseNew: data.townhouseRowhouseNew,
-    familyUnitsNew: data.familyUnitsNew,
-    constructionTypeNew: data.constructionTypeNew,
-    sprinklerNew: data.sprinklerNew,
-    // Premium Coverage Limits
-    dwellingAmountNew: Math.round(data.dwellingAmountNew / 1000) * 1000,
-    otherStructuresAmountNew: data.otherStructuresAmountNew,
-    personalPropertyAmountNew: data.personalPropertyAmountNew,
-    personalLiabilityNew: data.personalLiabilityNew,
-    medicalPaymentsNew: data.medicalPaymentsNew,
-    lossOfUseNew: data.lossOfUseNew,
-    moldPropertyNew: data.moldPropertyNew,
-    moldLiabilityNew: data.moldLiabilityNew,
-    ordinanceOrLawNew: data.ordinanceOrLawNew,
-    // Premium Coverage Options
-    sinkholePerilCoverageNew: data.sinkholePerilCoverageNew,
-    propertyIncidentalOccupanciesMainDwellingNew: data.propertyIncidentalOccupanciesMainDwellingNew,
-    propertyIncidentalOccupanciesOtherStructuresNew: data.propertyIncidentalOccupanciesOtherStructuresNew,
-    liabilityIncidentalOccupanciesNew: data.liabilityIncidentalOccupanciesNew,
-    personalPropertyReplacementCostCoverageNew: data.personalPropertyReplacementCostCoverageNew,
-    // Premium Deductibles
-    allOtherPerilsNew: data.allOtherPerilsNew,
-    hurricaneNew: data.hurricaneNew,
-    calculatedHurricaneNew: data.calculatedHurricaneNew,
-    sinkholeNew: data.sinkholePerilCoverageNew === 'true' ? sinkholeAmount : 0,
-    // underwriting answers
-    noPriorInsuranceNew: data.noPriorInsuranceNew,
-    monthsOccupiedNew: data.monthsOccupiedNew,
-    rentedNew: data.rentedNew
-  };
+  this.setState({ isCalculated: false });
 };
 
-export const covertToRateData = (changePolicyData, props) => {
-  const data = {
-    effectiveDate: changePolicyData.effectiveDate,
-    policyNumber: changePolicyData.policyNumber,
-    companyCode: changePolicyData.companyCode,
-    state: changePolicyData.state,
-    product: changePolicyData.product,
-    property: {
-      windMitigation: {
-        roofGeometry: changePolicyData.roofGeometryNew,
-        floridaBuildingCodeWindSpeed: changePolicyData.floridaBuildingCodeWindSpeedNew,
-        secondaryWaterResistance: changePolicyData.secondaryWaterResistanceNew,
-        internalPressureDesign: changePolicyData.internalPressureDesignNew,
-        roofCovering: changePolicyData.roofCoveringNew,
-        openingProtection: changePolicyData.openingProtectionNew,
-        terrain: changePolicyData.terrainNew,
-        floridaBuildingCodeWindSpeedDesign: changePolicyData.floridaBuildingCodeWindSpeedDesignNew,
-        roofDeckAttachment: changePolicyData.roofDeckAttachmentNew,
-        windBorneDebrisRegion: changePolicyData.windBorneDebrisRegionNew,
-        roofToWallConnection: changePolicyData.roofToWallConnectionNew
-      },
-      territory: changePolicyData.property.territory,
-      buildingCodeEffectivenessGrading: changePolicyData.buildingCodeEffectivenessGradingNew,
-      familyUnits: changePolicyData.familyUnitsNew,
-      fireAlarm: changePolicyData.fireAlarmNew,
-      burglarAlarm: changePolicyData.burglarAlarmNew,
-      constructionType: changePolicyData.constructionTypeNew,
-      yearBuilt: changePolicyData.yearBuiltNew || null,
-      sprinkler: changePolicyData.sprinklerNew,
-      protectionClass: changePolicyData.protectionClassNew,
-      townhouseRowhouse: changePolicyData.townhouseRowhouseNew
-    },
-    coverageLimits: {
-      dwelling: {
-        amount: changePolicyData.dwellingAmountNew
-      },
-      otherStructures: {
-        amount: changePolicyData.otherStructuresAmountNew
-      },
-      personalProperty: {
-        amount: changePolicyData.personalPropertyAmountNew
-      },
-      personalLiability: {
-        amount: changePolicyData.personalLiabilityNew
-      },
-      medicalPayments: {
-        amount: changePolicyData.medicalPaymentsNew
-      },
-      lossOfUse: {
-        amount: changePolicyData.lossOfUseNew
-      },
-      moldProperty: {
-        amount: changePolicyData.moldPropertyNew
-      },
-      moldLiability: {
-        amount: changePolicyData.moldLiabilityNew
-      },
-      ordinanceOrLaw: {
-        amount: changePolicyData.ordinanceOrLawNew
-      }
-    },
-    coverageOptions: {
-      sinkholePerilCoverage: {
-        answer: changePolicyData.sinkholePerilCoverageNew
-      },
-      propertyIncidentalOccupanciesMainDwelling: {
-        answer: changePolicyData.propertyIncidentalOccupanciesMainDwellingNew
-      },
-      propertyIncidentalOccupanciesOtherStructures: {
-        answer: changePolicyData.propertyIncidentalOccupanciesOtherStructuresNew
-      },
-      liabilityIncidentalOccupancies: {
-        answer: changePolicyData.liabilityIncidentalOccupanciesNew
-      },
-      personalPropertyReplacementCost: {
-        answer: changePolicyData.personalPropertyReplacementCostCoverageNew
-      }
-    },
-    deductibles: {
-      allOtherPerils: {
-        amount: changePolicyData.allOtherPerilsNew
-      },
-      hurricane: {
-        amount: changePolicyData.hurricaneNew,
-        calculatedAmount: setPercentageOfValue(changePolicyData.dwellingAmountNew, changePolicyData.hurricaneNew)
-      },
-      sinkhole: {
-        amount: changePolicyData.sinkholeNew,
-        calculatedAmount: setPercentageOfValue(changePolicyData.dwellingAmountNew, changePolicyData.sinkholeNew)
-      }
-    },
-    underwritingAnswers: {
-      rented: {
-        answer: changePolicyData.rentedNew
-      },
-      monthsOccupied: {
-        answer: changePolicyData.monthsOccupiedNew
-      },
-      noPriorInsuranceSurcharge: {
-        answer: changePolicyData.noPriorInsuranceNew
-      }
-    },
-    oldTotalPremium: changePolicyData.rating.totalPremium,
-    oldCurrentPremium: props.summaryLedger.currentPremium,
-    endorsementDate: changePolicyData.endorsementDate
-  };
-
-  return data;
-};
-
-export const calculate = (data, dispatch, props) => {
-  const submitData = generateModel(data, props.policy, props);
-  const workflowId = props.appState.instanceId;
-
-  const delta = Object.keys(data).reduce((changed, key) => {
-    if (data[key] !== props.initialValues[key]) changed.push(key);
-    return changed;
-  }, []);
-  if (delta.length === 1 && delta.includes('endorsementDateNew')) {
-    setCalculate(props, true);
-    props.dispatch(errorActions.setAppError({ message: 'No changes were made.' }));
-    return;
-  }
-
-  const setLiabilityIncidentalOccupanciesNew = submitData.propertyIncidentalOccupanciesMainDwellingNew || submitData.propertyIncidentalOccupanciesOtherStructuresNew;
-  submitData.liabilityIncidentalOccupanciesNew = setLiabilityIncidentalOccupanciesNew;
-  props.dispatch(change('Endorsements', 'liabilityIncidentalOccupanciesNew', setLiabilityIncidentalOccupanciesNew));
-
-  const rateData = covertToRateData(submitData, props);
-
-  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true, isCalculated: false });
-
-  props.actions.serviceActions.getRate(rateData).then((result) => {
-    if (result.payload && result.payload[0] && result.payload[0].type === actionTypes.APP_ERROR) {
-      props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: false, isCalculated: false });
-    } else props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: false, isCalculated: true });
-  });
-};
-
-export const save = (data, dispatch, props) => {
-  const workflowId = props.appState.instanceId;
-  const submitData = generateModel(data, props.policy, props);
-  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
-
-  submitData.rating = props.getRate.rating;
-  submitData.summaryLedger = props.summaryLedger;
-
-  props.actions.cgActions.startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID }).then((result) => {
-    const steps = [{
-      name: 'saveEndorsement',
-      data: submitData
-    }];
-    const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelSave.data : {};
-
-    props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, isSubmitting: true });
-
-    props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
-      props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, isSubmitting: false, isCalculated: false });
-    });
-  });
-};
 
 const premiumAmountFormatter = cell => Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 
 export class Endorsements extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isCalculated: false
+    }
+  }
+
   componentDidMount() {
     this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
     if (this.props.appState && this.props.appState.instanceId) {
@@ -540,8 +284,8 @@ export class Endorsements extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // TODO: figure out setCalculate
 
+    // TODO make this happen only when we call **calculate**
     if (!_.isEqual(this.props.getRate, nextProps.getRate) && nextProps.getRate && nextProps.getRate.newAnnualPremium) {
       const { getRate } = nextProps;
 
@@ -552,10 +296,16 @@ export class Endorsements extends React.Component {
         change('Endorsements', 'windMitFactorNew', _.get(getRate, 'worksheet.elements.windMitigationFactors.windMitigationDiscount'))
       ]));
     }
-    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
+
+    // TODO this only happens after SAVE or SUBMIT
+    if (nextProps.policy && (nextProps.policy.policyID !== this.props.policy.policyID)) {
+      this.setCalculate();
+      this.props.reset();
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
-      setCalculate(nextProps, true);
+
     }
+
+    // TODO this only happens after SAVE or SUBMIT
     if (!_.isEqual(this.props.newPolicyNumber, nextProps.newPolicyNumber)) {
       this.props.actions.policyStateActions.updatePolicy(true, nextProps.newPolicyNumber);
       const endorsementDateNew = setEndorsementDate(_.get(nextProps.policy, 'effectiveDate'), _.get(nextProps.policy, 'endDate'));
@@ -567,20 +317,45 @@ export class Endorsements extends React.Component {
         change('Endorsements', 'newAnnualPremium', '')
       ]));
     }
+
+    // TODO this only happens after save and checks for SUBMIT FAILED
     if (this.props.tasks && this.props.tasks.endorsePolicyModelSave && this.props.tasks.endorsePolicyModelSave.data &&
       nextProps.tasks && nextProps.tasks.endorsePolicyModelSave && nextProps.tasks.endorsePolicyModelSave.data &&
       !_.isEqual(this.props.tasks.endorsePolicyModelSave.data, nextProps.tasks.endorsePolicyModelSave.data)) {
       if (nextProps.tasks.endorsePolicyModelSave.data.result && nextProps.tasks.endorsePolicyModelSave.data.result.status !== 200) {
         nextProps.dispatch(errorActions.setAppError({ message: nextProps.tasks.endorsePolicyModelSave.data.result.result }));
-        setCalculate(nextProps);
+        this.setCalculate(nextProps);
       }
     }
-    if (_.isEqual(this.props.fieldValues.propertyIncidentalOccupanciesMainDwellingNew, nextProps.fieldValues.propertyIncidentalOccupanciesMainDwellingNew) ||
-    _.isEqual(this.props.fieldValues.propertyIncidentalOccupanciesOtherStructuresNew, nextProps.fieldValues.propertyIncidentalOccupanciesOtherStructuresNew)) {
-      const setLiabilityIncidentalOccupanciesNew = nextProps.fieldValues.propertyIncidentalOccupanciesMainDwellingNew || nextProps.fieldValues.propertyIncidentalOccupanciesOtherStructuresNew;
+
+    // TODO this can be handled by normalizing the two fields that affect the third.
+    if (
+      _.isEqual(this.props.fieldValues.propertyIncidentalOccupanciesMainDwellingNew, nextProps.fieldValues.propertyIncidentalOccupanciesMainDwellingNew) ||
+      _.isEqual(this.props.fieldValues.propertyIncidentalOccupanciesOtherStructuresNew, nextProps.fieldValues.propertyIncidentalOccupanciesOtherStructuresNew)) {
+      const setLiabilityIncidentalOccupanciesNew =
+        nextProps.fieldValues.propertyIncidentalOccupanciesMainDwellingNew ||
+        nextProps.fieldValues.propertyIncidentalOccupanciesOtherStructuresNew;
+
       nextProps.dispatch(change('Endorsements', 'liabilityIncidentalOccupanciesNew', setLiabilityIncidentalOccupanciesNew));
     }
   }
+
+  calculate = async (data, dispatch, props) => {
+    const { serviceActions } = props.actions;
+      try {
+        await serviceActions.getRate(data, props);
+        this.setState({ isCalculated: true })
+      } catch (error) {
+        this.setState({ isCalculated: false })
+      }
+  };
+
+  save = async (data, dispatch, props) => {
+    await props.actions.cgActions.submitEndorsement(data, props);
+
+    this.setState({ isCalculated: false });
+
+  };
 
   setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
 
@@ -609,20 +384,13 @@ export class Endorsements extends React.Component {
     return value;
   };
 
-  setCalculate = (reset = false) => {
-    const { actions: { serviceActions, appStateActions }, appState } = this.props;
-    if (reset) {
-      this.props.reset();
-    }
+  setCalculate = () => {
+    const { isCalculated } = this.state;
+    if (!isCalculated) return;
+
+    const { actions: { serviceActions } } = this.props;
     serviceActions.clearRate();
-
-    if (!appState.data.isCalculated) return;
-
-    const workflowId = appState.instanceId;
-    appStateActions.setAppState(appState.modelName, workflowId, {
-      ...appState.data,
-      isCalculated: false
-    });
+    this.setState({ isCalculated: false });
   };
 
   updateDwellingAndDependencies = (value, prevValue, fieldValues) => {
@@ -654,7 +422,7 @@ export class Endorsements extends React.Component {
       changeF('personalPropertyReplacementCostCoverageNew', _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer') || false);
     }
 
-    const fieldValue = setPercentageOfValue(allValues[dependency], value);
+    const fieldValue = endorsementUtils.setPercentageOfValue(allValues[dependency], value);
     changeF(field, Number.isNaN(fieldValue) ? '' : fieldValue);
     return value;
   };
@@ -663,7 +431,7 @@ export class Endorsements extends React.Component {
     if (Number.isNaN(value)) return;
     this.setCalculate();
     const { change: changeF } = this.props;
-    const fieldValue = setPercentageOfValue((allValues[dependency]), value);
+    const fieldValue = endorsementUtils.setPercentageOfValue((allValues[dependency]), value);
 
     changeF(field, Number.isNaN(fieldValue) ? '' : fieldValue);
     return value;
@@ -671,18 +439,19 @@ export class Endorsements extends React.Component {
 
   render() {
     const {
-      appState,
       dirty,
       endorsementHistory,
       handleSubmit,
       initialValues,
       selectedFields = {},
+      submitting,
       pristine,
       policy,
       questions,
       underwritingQuestions,
       userProfile
     } = this.props;
+    const { isCalculated } = this.state;
 
     const mappedEndorsementHistory = _.map(endorsementHistory, (endorsement) => {
       endorsement.netChargeFormat = _.includes(premiumEndorsementList, endorsement.transactionType) ? premiumAmountFormatter(endorsement.netCharge) : '';
@@ -707,13 +476,13 @@ export class Endorsements extends React.Component {
     return (
       <PolicyConnect>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
-        {this.props.appState.data.isSubmitting && <Loader />}
+        {this.props.submitting && <Loader />}
 
         {initialValues.endorsementDateNew ?
           <form
             id="Endorsements"
             className="content-wrapper"
-            onSubmit={appState.data.isCalculated ? handleSubmit(save) : handleSubmit(calculate)}
+            onSubmit={isCalculated ? handleSubmit(this.save) : handleSubmit(this.calculate)}
             onKeyPress={(e) => (e.key === 'Enter' && e.target.type !== 'submit') && e.preventDefault()}
           >
 
@@ -756,7 +525,7 @@ export class Endorsements extends React.Component {
                           }} onClick={() => this.setCalculate()}>Cancel
                   </button>
                   <button type="submit" tabIndex="0" className="btn btn-primary"
-                          disabled={(!appState.data.isCalculated && pristine) || appState.data.isSubmitting}>{appState.data.isCalculated ? 'Save' : 'Review'}</button>
+                          disabled={(!isCalculated && pristine) || submitting}>{isCalculated ? 'Save' : 'Review'}</button>
                 </ResultsCalculator>
 
               </div>

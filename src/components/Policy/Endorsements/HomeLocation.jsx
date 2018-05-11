@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
-import { getAnswers } from './index';
+import { getAnswers } from '../../../utilities/forms';
 
 const { Input, Select, SelectInteger, Numbers } = Inputs;
 const { validation } = lifecycle;
@@ -190,7 +190,7 @@ const HomeLocation = ({ questions }) => (
 );
 
 HomeLocation.propTypes = {
-  questions: PropTypes.object
+  questions: PropTypes.array
 };
 
 HomeLocation.defaultProps = {};

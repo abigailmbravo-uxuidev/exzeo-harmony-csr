@@ -3,11 +3,7 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
-
-import {
-  getAnswers,
-  getQuestionName
-} from './index';
+import formUtils from '../../../utilities/forms';
 
 const { Currency, Input, Select, SelectInteger, Radio } = Inputs;
 const { validation, format, parse } = lifecycle;
@@ -78,7 +74,7 @@ const Coverage = ({
             name="otherStructuresNew"
             component={SelectInteger}
             styleName="coverage-b-percentage"
-            answers={getAnswers('otherStructuresAmount', questions)}
+            answers={formUtils.getAnswers('otherStructuresAmount', questions)}
             parse={parse.toNumber}
             validate={validation.isRequired}
             normalize={(v, pv, av) =>
@@ -114,7 +110,7 @@ const Coverage = ({
           <Field
             name="personalPropertyNew"
             component={SelectInteger}
-            answers={getAnswers('personalPropertyAmount', questions)}
+            answers={formUtils.getAnswers('personalPropertyAmount', questions)}
             parse={parse.toNumber}
             validate={validation.isRequired}
             normalize={(v, pv, av) =>
@@ -147,7 +143,7 @@ const Coverage = ({
           <Field
             name="personalLiabilityNew"
             component={SelectInteger}
-            answers={getAnswers('personalLiability', questions)}
+            answers={formUtils.getAnswers('personalLiability', questions)}
             parse={parse.toNumber}
             validate={validation.isRequired}
           />
@@ -177,7 +173,7 @@ const Coverage = ({
           <Field
             name="moldPropertyNew"
             component={SelectInteger}
-            answers={getAnswers('moldProperty', questions)}
+            answers={formUtils.getAnswers('moldProperty', questions)}
             validate={validation.isRequired}
           />
         </div>
@@ -191,7 +187,7 @@ const Coverage = ({
           <Field
             name="moldLiabilityNew"
             component={SelectInteger}
-            answers={getAnswers('moldLiability', questions)}
+            answers={formUtils.getAnswers('moldLiability', questions)}
             validate={validation.isRequired}
           />
         </div>
@@ -205,7 +201,7 @@ const Coverage = ({
           <Field
             name="allOtherPerilsNew"
             component={SelectInteger}
-            answers={getAnswers('allOtherPerils', questions)}
+            answers={formUtils.getAnswers('allOtherPerils', questions)}
             validate={validation.isRequired}
           />
         </div>
@@ -220,7 +216,7 @@ const Coverage = ({
           <Field
             name="hurricaneNew"
             component={SelectInteger}
-            answers={getAnswers('hurricane', questions)}
+            answers={formUtils.getAnswers('hurricane', questions)}
             validate={validation.isRequired}
             normalize={(v, pv, av) =>
                 normalizeDependencies(v, av, 'calculatedHurricane', 'dwellingAmountNew')
@@ -239,7 +235,7 @@ const Coverage = ({
             component={SelectInteger}
             answers={[
                 { answer: false, label: 'Coverage Excluded' },
-                { answer: true, label: `10% of ${getQuestionName('dwellingAmount', questions)}` }
+                { answer: true, label: `10% of ${formUtils.getQuestionName('dwellingAmount', questions)}` }
               ]}
           />
         </div>
@@ -282,7 +278,7 @@ const Coverage = ({
           />
           <Field
             name="ordinanceOrLawNew"
-            answers={getAnswers('ordinanceOrLaw', questions)}
+            answers={formUtils.getAnswers('ordinanceOrLaw', questions)}
             component={SelectInteger}
             validate={validation.isRequired}
           />
@@ -369,7 +365,7 @@ const Coverage = ({
           <Field
             name="rentedNew"
             component={Select}
-            answers={getAnswers('rented', underwritingQuestions)}
+            answers={formUtils.getAnswers('rented', underwritingQuestions)}
           />
         </div>
         <div className="form-group-double-element">
@@ -382,7 +378,7 @@ const Coverage = ({
           <Field
             name="monthsOccupiedNew"
             component={Select}
-            answers={getAnswers('monthsOccupied', underwritingQuestions)}
+            answers={formUtils.getAnswers('monthsOccupied', underwritingQuestions)}
           />
         </div>
         <div className="form-group-double-element">
@@ -477,8 +473,8 @@ Coverage.propTypes = {
   normalizeDwellingAmount: PropTypes.func,
   normalizePersonalPropertyDependencies: PropTypes.func,
   personalPropertyNewVal: PropTypes.number,
-  questions: PropTypes.object,
-  underwritingQuestions: PropTypes.object
+  questions: PropTypes.array,
+  underwritingQuestions: PropTypes.array
 };
 
 Coverage.defaultProps = {};
