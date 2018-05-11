@@ -1029,7 +1029,7 @@ describe('Service Actions', () => {
     const store = mockStore(initialState);
     serviceActions.getRate(store.dispatch);
 
-    return serviceActions.getRate({})(store.dispatch)
+    return serviceActions.getRate({}, { policy: {}, summaryLedger: { currentPremium: '1' } })(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
       });
@@ -1406,9 +1406,9 @@ describe('Service Actions', () => {
       data: {
         service: 'form-list',
         method: 'POST',
-        path: ' ',
+        path: '/v1',
         data: {
-          policy: {
+          quote: {
             ...policy,
             rating
           },
@@ -1454,9 +1454,9 @@ describe('Service Actions', () => {
       data: {
         service: 'form-list',
         method: 'POST',
-        path: ' ',
+        path: '/v1',
         data: {
-          policy: {
+          quote: {
             ...policy,
             rating
           },
