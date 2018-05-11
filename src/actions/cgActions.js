@@ -5,6 +5,7 @@ import Promise from 'bluebird';
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
 import * as appStateActions from './appStateActions';
+import endorsementUtils from "../utilities/endorsementModel";
 
 export const start = (modelName, workflowData) => {
   const newWorkflowData = {};
@@ -285,4 +286,20 @@ export const moveToTaskAndExecuteComplete = (modelName, workflowId, stepName, co
       return dispatch(complete(modelName, responseData));
     })
     .catch(error => handleError(dispatch, modelName, workflowId, error));
+};
+
+export const submitEndorsement = (data, props) => {
+  return async (dispatch) => {
+    const submitData = endorsementUtils.generateModel(data, props.policy, props);
+
+    submitData.rating = props.getRate.rating;
+    submitData.summaryLedger = props.summaryLedger;
+    const result = await dispatch(startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID }));
+    const steps = [{
+      name: 'saveEndorsement',
+      data: submitData
+    }];
+    const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelSave.data : {};
+    await dispatch(batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps));
+  }
 };
