@@ -38,28 +38,12 @@ export const getNewPolicyNumber = (state) => {
     : null;
   if (!taskData || !taskData.model || !taskData.model.variables) { return null; }
 
-  const policy = _.find(taskData.model.variables, { name: 'retrievePolicy' })
-    ? _.find(taskData.model.variables, { name: 'retrievePolicy' }).value[0]
-    : null;
-  return policy ? policy.policyNumber : null;
-};
+  const policy = _.find(taskData.model.variables, { name: 'retrievePolicy' });
 
-export const calculatePercentage = (oldFigure, newFigure) => {
-  if (oldFigure === 0 || newFigure === 0) return 0;
-  return (oldFigure / newFigure) * 100;
-};
-
-export const setEndorsementDate = (effectiveDate, endPolicyDate) => {
-  const effDate = moment.utc(effectiveDate).format('YYYY-MM-DD');
-  const endDate = moment.utc(endPolicyDate).format('YYYY-MM-DD');
-  const today = moment.utc().format('YYYY-MM-DD');
-
-  if (today <= effDate) {
-    return effDate;
-  } else if (today >= effDate && today < endDate) {
-    return today;
-  }
-  return endDate;
+  return policy
+    ? policy.value[0]
+      ? policy.policyNumber : null
+    : null
 };
 
 export const handleInitialize = ({ service = {}, questions = [] }) => {
@@ -86,16 +70,16 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
 
   // Coverage Top Left
   values.clearFields = false;
-  values.endorsementDateNew = setEndorsementDate(_.get(policy, 'effectiveDate'), _.get(policy, 'endDate'));
+  values.endorsementDateNew = endorsementUtils.setEndorsementDate(policy.effectiveDate, policy.endDate);
   values.dwellingAmount = dwelling;
   values.dwellingAmountNew = values.dwellingAmount;
   values.otherStructuresAmount = otherStructures;
   values.otherStructuresAmountNew = values.otherStructuresAmount;
-  values.otherStructures = calculatePercentage(otherStructures, dwelling);
+  values.otherStructures = endorsementUtils.calculatePercentage(otherStructures, dwelling);
   values.otherStructuresNew = values.otherStructures;
   values.personalPropertyAmount = personalProperty;
   values.personalPropertyAmountNew = values.personalPropertyAmount;
-  values.personalProperty = calculatePercentage(personalProperty, dwelling);
+  values.personalProperty = endorsementUtils.calculatePercentage(personalProperty, dwelling);
   values.personalPropertyNew = values.personalProperty;
   values.lossOfUse = _.get(policy, 'coverageLimits.lossOfUse.amount');
   values.lossOfUseNew = values.lossOfUse;
@@ -250,16 +234,6 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   return values;
 };
 
-export const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
-
-export const save = async (data, dispatch, props) => {
-  props.actions.cgActions.submitEndorsement(data, props);
-
-  this.setState({ isCalculated: false });
-};
-
-
-const premiumAmountFormatter = cell => Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 
 export class Endorsements extends React.Component {
   constructor(props) {
@@ -284,6 +258,7 @@ export class Endorsements extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+
     // TODO make this happen only when we call **calculate**
     if (!_.isEqual(this.props.getRate, nextProps.getRate) && nextProps.getRate && nextProps.getRate.newAnnualPremium) {
       const { getRate } = nextProps;
@@ -301,12 +276,13 @@ export class Endorsements extends React.Component {
       this.setCalculate();
       this.props.reset();
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
+
     }
 
     // TODO this only happens after SAVE or SUBMIT
     if (!_.isEqual(this.props.newPolicyNumber, nextProps.newPolicyNumber)) {
       this.props.actions.policyStateActions.updatePolicy(true, nextProps.newPolicyNumber);
-      const endorsementDateNew = setEndorsementDate(_.get(nextProps.policy, 'effectiveDate'), _.get(nextProps.policy, 'endDate'));
+      const endorsementDateNew = endorsementUtils.setEndorsementDate(_.get(nextProps.policy, 'effectiveDate'), _.get(nextProps.policy, 'endDate'));
 
       nextProps.dispatch(batchActions([
         change('Endorsements', 'endorsementDateNew', endorsementDateNew),
@@ -354,8 +330,6 @@ export class Endorsements extends React.Component {
     this.setState({ isCalculated: false });
   };
 
-  setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
-
   setPHToggle = () => {
     const { change: changeF, selectedValues } = this.props;
     if (selectedValues.clearFields) {
@@ -366,17 +340,17 @@ export class Endorsements extends React.Component {
   clearSecondaryPolicyholder = (value) => {
     const { change: changeF, initialValues } = this.props;
     if (!value) {
-      changeF('pH2email', initialValues.pH2email);
-      changeF('pH2FirstName', initialValues.pH2FirstName);
-      changeF('pH2LastName', initialValues.pH2LastName);
-      changeF('pH2phone', initialValues.pH2phone);
-      changeF('pH2secondaryPhone', initialValues.pH2secondaryPhone);
+        changeF('pH2email', initialValues.pH2email);
+        changeF('pH2FirstName', initialValues.pH2FirstName);
+        changeF('pH2LastName', initialValues.pH2LastName);
+        changeF('pH2phone', initialValues.pH2phone);
+        changeF('pH2secondaryPhone', initialValues.pH2secondaryPhone);
     } else {
-      changeF('pH2email', '');
-      changeF('pH2FirstName', '');
-      changeF('pH2LastName', '');
-      changeF('pH2phone', '');
-      changeF('pH2secondaryPhone', '');
+        changeF('pH2email', '');
+        changeF('pH2FirstName', '');
+        changeF('pH2LastName', '');
+        changeF('pH2phone', '');
+        changeF('pH2secondaryPhone', '');
     }
     return value;
   };
@@ -397,13 +371,13 @@ export class Endorsements extends React.Component {
     const roundedDwellingAmount = Math.round(value / 1000) * 1000;
 
     if (fieldValues.otherStructuresNew !== 'other') {
-      changeF('otherStructuresAmountNew', this.setPercentageOfValue(roundedDwellingAmount, fieldValues.otherStructuresNew));
+      changeF('otherStructuresAmountNew', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.otherStructuresNew));
     }
     if (fieldValues.personalPropertyNew !== 'other') {
-      changeF('personalPropertyAmountNew', this.setPercentageOfValue(roundedDwellingAmount, fieldValues.personalPropertyNew));
+      changeF('personalPropertyAmountNew', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.personalPropertyNew));
     }
-    changeF('calculatedHurricaneNew', this.setPercentageOfValue(roundedDwellingAmount, fieldValues.hurricaneNew));
-    changeF('lossOfUseNew', this.setPercentageOfValue(roundedDwellingAmount, 10));
+    changeF('calculatedHurricaneNew', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.hurricaneNew));
+    changeF('lossOfUseNew', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, 10));
 
     return value;
   };
@@ -450,12 +424,14 @@ export class Endorsements extends React.Component {
     } = this.props;
     const { isCalculated } = this.state;
 
-    const mappedEndorsementHistory = _.map(endorsementHistory, (endorsement) => {
-      endorsement.netChargeFormat = _.includes(premiumEndorsementList, endorsement.transactionType) ? premiumAmountFormatter(endorsement.netCharge) : '';
+    const mappedEndorsementHistory = endorsementHistory.map((endorsement) => {
+      endorsement.netChargeFormat = premiumEndorsementList.some(pe => pe === endorsement.transactionType)
+        ? endorsementUtils.premiumAmountFormatter(endorsement.netCharge)
+        : '';
       return endorsement;
     });
 
-    const canPremiumEndorse = userProfile && userProfile.resources
+    const canPremiumEndorse = userProfile.resources
       ? userProfile.resources.some(resource => resource.uri === 'TTIC:FL:HO3:PolicyData:PremiumEndorse' && resource.right === 'UPDATE')
       : false;
 
@@ -480,7 +456,7 @@ export class Endorsements extends React.Component {
             id="Endorsements"
             className="content-wrapper"
             onSubmit={isCalculated ? handleSubmit(this.save) : handleSubmit(this.calculate)}
-            onKeyPress={e => (e.key === 'Enter' && e.target.type !== 'submit') && e.preventDefault()}
+            onKeyPress={(e) => (e.key === 'Enter' && e.target.type !== 'submit') && e.preventDefault()}
           >
 
             <div className="route-content">
@@ -512,21 +488,14 @@ export class Endorsements extends React.Component {
                 <ResultsCalculator
                   min={policy.effectiveDate}
                   max={policy.endDate}
-                  setCalculate={this.setCalculate}
-                >
+                  setCalculate={this.setCalculate}>
                   {/* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */}
-                  <button
-                    id="cancel-button"
-                    tabIndex="0"
-                    type="button"
-                    className="btn btn-secondary"
-                    onKeyPress={(event) => {
-                            if (event.charCode === 13) {
-                              this.setCalculate();
-                            }
-                          }}
-                    onClick={() => this.setCalculate()}
-                  >Cancel
+                  <button id="cancel-button"
+                          type="button"
+                          className="btn btn-secondary"
+                          tabIndex="0"
+                          onClick={() => this.setCalculate()}>Cancel
+                          onKeyPress={(event) => event.charCode === 13 && this.setCalculate() }
                   </button>
                   <button
                     type="submit"
@@ -554,12 +523,6 @@ export class Endorsements extends React.Component {
   }
 }
 
-
-/**
-------------------------------------------------
-Property type definitions
-------------------------------------------------
-*/
 Endorsements.propTypes = {
   ...propTypes,
   tasks: PropTypes.shape().isRequired,
@@ -570,26 +533,23 @@ Endorsements.propTypes = {
   }).isRequired
 };
 
-/**
-------------------------------------------------
-redux mapping
-------------------------------------------------
-*/
+const defaultObj = {};
+const defaultArr = [];
 const selector = formValueSelector('Endorsements');
 const mapStateToProps = state => ({
   tasks: state.cg,
-  endorsementHistory: state.service.endorsementHistory || [],
+  endorsementHistory: state.service.endorsementHistory || defaultArr,
   appState: state.appState,
-  fieldValues: _.get(state.form, 'Endorsements.values', {}),
+  fieldValues: _.get(state.form, 'Endorsements.values', defaultObj),
   initialValues: handleInitialize(state),
-  policy: state.service.latestPolicy || {},
+  policy: state.service.latestPolicy || defaultObj,
   questions: state.questions,
   underwritingQuestions: state.service.underwritingQuestions,
   getRate: state.service.getRate,
   newPolicyNumber: getNewPolicyNumber(state),
-  summaryLedger: state.service.getSummaryLedger || {},
+  summaryLedger: state.service.getSummaryLedger || defaultObj,
   zipcodeSettings: state.service.getZipcodeSettings,
-  userProfile: state.authState.userProfile || {},
+  userProfile: state.authState.userProfile || defaultObj,
   selectedValues: selector(state, 'personalPropertyNew', 'clearFields')
 });
 
