@@ -91,16 +91,16 @@ export const addNote = (data, files) => (dispatch) => {
       'Content-Type': `multipart/form-data; boundary=${form._boundary}`
     }
   })
-  .then(response => {
-    const ids = (data.noteType === 'Policy Note')
-      ? [response.data.number, data.source].toString()
-      : response.data.number;
-    dispatch(getNotes(ids, response.data.number))
-  })
-  .catch((error) => {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
-  });
+    .then((response) => {
+      const ids = (data.noteType === 'Policy Note')
+        ? [response.data.number, data.source].toString()
+        : response.data.number;
+      dispatch(getNotes(ids, response.data.number));
+    })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(errorActions.setAppError(message));
+    });
 };
 
 export const getAgents = (companyCode, state) => (dispatch) => {
@@ -586,28 +586,27 @@ export const getEndorsementHistory = policyNumber => (dispatch) => {
     });
 };
 
-export const getRate = (formData, formProps) => {
- return async (dispatch) => {
-   const { policy, summaryLedger: { currentPremium } } = formProps;
-   const submitData = endorsementUtils.generateModel(formData, policy, formProps);
-   const rateData = endorsementUtils.convertToRateData(submitData, currentPremium);
+export const getRate = (formData, formProps) => async (dispatch) => {
+  const { policy, summaryLedger: { currentPremium } } = formProps;
+  const submitData = endorsementUtils.generateModel(formData, policy, formProps);
+  const rateData = endorsementUtils.convertToRateData(submitData, currentPremium);
 
-    const axiosConfig = runnerSetup({
-      service: 'rating-engine',
-      method: 'POST',
-      path: 'endorsement',
-      data: rateData
-    });
+  const axiosConfig = runnerSetup({
+    service: 'rating-engine',
+    method: 'POST',
+    path: 'endorsement',
+    data: rateData
+  });
 
-    try {
-      const response = await axios(axiosConfig);
-      const data = {getRate: response.data ? response.data.result : {}};
-      return dispatch(serviceRequest(data));
-    } catch (error) {
-      dispatch(errorActions.setAppError(handleError(error)));
-      throw new SubmissionError(error);
-    }
-  };
+  try {
+    const response = await axios(axiosConfig);
+    const data = { getRate: response.data ? response.data.result : {} };
+    dispatch(getListOfForms(policy, data.getRate.rating, 'New Business'));
+    return dispatch(serviceRequest(data));
+  } catch (error) {
+    dispatch(errorActions.setAppError(handleError(error)));
+    throw new SubmissionError(error);
+  }
 };
 
 
@@ -783,9 +782,9 @@ export const getListOfForms = (policy, rating, transactionType) => (dispatch) =>
   const body = {
     service: 'form-list',
     method: 'POST',
-    path: String(' '),
+    path: '/v1',
     data: {
-      policy: {
+      quote: {
         ...policy,
         rating
       },
@@ -795,7 +794,10 @@ export const getListOfForms = (policy, rating, transactionType) => (dispatch) =>
   const axiosConfig = runnerSetup(body);
 
   return axios(axiosConfig).then((response) => {
-    const data = { listOfForms: response.data.result };
+    const data = {
+      listOfForms: response.data &&
+      response.data.result && response.data.result.forms ? response.data.result.forms : []
+    };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));

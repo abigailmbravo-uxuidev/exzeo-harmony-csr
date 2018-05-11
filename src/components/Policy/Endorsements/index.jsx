@@ -267,7 +267,7 @@ export class Endorsements extends React.Component {
 
     this.state = {
       isCalculated: false
-    }
+    };
   }
 
   componentDidMount() {
@@ -284,7 +284,6 @@ export class Endorsements extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-
     // TODO make this happen only when we call **calculate**
     if (!_.isEqual(this.props.getRate, nextProps.getRate) && nextProps.getRate && nextProps.getRate.newAnnualPremium) {
       const { getRate } = nextProps;
@@ -302,7 +301,6 @@ export class Endorsements extends React.Component {
       this.setCalculate();
       this.props.reset();
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
-
     }
 
     // TODO this only happens after SAVE or SUBMIT
@@ -342,19 +340,18 @@ export class Endorsements extends React.Component {
 
   calculate = async (data, dispatch, props) => {
     const { serviceActions } = props.actions;
-      try {
-        await serviceActions.getRate(data, props);
-        this.setState({ isCalculated: true })
-      } catch (error) {
-        this.setState({ isCalculated: false })
-      }
+    try {
+      await serviceActions.getRate(data, props);
+      this.setState({ isCalculated: true });
+    } catch (error) {
+      this.setState({ isCalculated: false });
+    }
   };
 
   save = async (data, dispatch, props) => {
     await props.actions.cgActions.submitEndorsement(data, props);
 
     this.setState({ isCalculated: false });
-
   };
 
   setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
@@ -369,17 +366,17 @@ export class Endorsements extends React.Component {
   clearSecondaryPolicyholder = (value) => {
     const { change: changeF, initialValues } = this.props;
     if (!value) {
-        changeF('pH2email', initialValues.pH2email);
-        changeF('pH2FirstName', initialValues.pH2FirstName);
-        changeF('pH2LastName', initialValues.pH2LastName);
-        changeF('pH2phone', initialValues.pH2phone);
-        changeF('pH2secondaryPhone', initialValues.pH2secondaryPhone);
+      changeF('pH2email', initialValues.pH2email);
+      changeF('pH2FirstName', initialValues.pH2FirstName);
+      changeF('pH2LastName', initialValues.pH2LastName);
+      changeF('pH2phone', initialValues.pH2phone);
+      changeF('pH2secondaryPhone', initialValues.pH2secondaryPhone);
     } else {
-        changeF('pH2email', '');
-        changeF('pH2FirstName', '');
-        changeF('pH2LastName', '');
-        changeF('pH2phone', '');
-        changeF('pH2secondaryPhone', '');
+      changeF('pH2email', '');
+      changeF('pH2FirstName', '');
+      changeF('pH2LastName', '');
+      changeF('pH2phone', '');
+      changeF('pH2secondaryPhone', '');
     }
     return value;
   };
@@ -483,12 +480,12 @@ export class Endorsements extends React.Component {
             id="Endorsements"
             className="content-wrapper"
             onSubmit={isCalculated ? handleSubmit(this.save) : handleSubmit(this.calculate)}
-            onKeyPress={(e) => (e.key === 'Enter' && e.target.type !== 'submit') && e.preventDefault()}
+            onKeyPress={e => (e.key === 'Enter' && e.target.type !== 'submit') && e.preventDefault()}
           >
 
             <div className="route-content">
               <div className="endorsements">
-                <GoToMenu/>
+                <GoToMenu />
                 <div className="scroll">
                   <div className="form-group survey-wrapper" role="group">
                     <Coverage
@@ -500,37 +497,48 @@ export class Endorsements extends React.Component {
                       normalizeDependencies={this.normalizeDependencies}
                       normalizePersonalPropertyDependencies={this.normalizePersonalPropertyDependencies}
                     />
-                    <WindMitigation questions={questions}/>
-                    <HomeLocation questions={questions}/>
-                    <PreviousEndorsements mappedEndorsementHistory={mappedEndorsementHistory}/>
+                    <WindMitigation questions={questions} />
+                    <HomeLocation questions={questions} />
+                    <PreviousEndorsements mappedEndorsementHistory={mappedEndorsementHistory} />
                     <PolicyHolder
                       clearSecondaryPolicyholder={this.clearSecondaryPolicyholder}
                       setPHToggle={this.setPHToggle}
                       policyHolders={policy.policyHolders}
                     />
-                    <MailingAddress/>
-                    <PropertyAddress/>
+                    <MailingAddress />
+                    <PropertyAddress />
                   </div>
                 </div>
                 <ResultsCalculator
                   min={policy.effectiveDate}
                   max={policy.endDate}
-                  setCalculate={this.setCalculate}>
+                  setCalculate={this.setCalculate}
+                >
                   {/* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */}
-                  <button id="cancel-button" tabIndex="0" type="button" className="btn btn-secondary"
-                          onKeyPress={(event) => {
+                  <button
+                    id="cancel-button"
+                    tabIndex="0"
+                    type="button"
+                    className="btn btn-secondary"
+                    onKeyPress={(event) => {
                             if (event.charCode === 13) {
                               this.setCalculate();
                             }
-                          }} onClick={() => this.setCalculate()}>Cancel
+                          }}
+                    onClick={() => this.setCalculate()}
+                  >Cancel
                   </button>
-                  <button type="submit" tabIndex="0" className="btn btn-primary"
-                          disabled={(!isCalculated && pristine) || submitting}>{isCalculated ? 'Save' : 'Review'}</button>
+                  <button
+                    type="submit"
+                    tabIndex="0"
+                    className="btn btn-primary"
+                    disabled={(!isCalculated && pristine) || submitting}
+                  >{isCalculated ? 'Save' : 'Review'}</button>
                 </ResultsCalculator>
 
               </div>
 
-              <UnderwritingValidations/>
+              <UnderwritingValidations />
 
             </div>
           </form>
