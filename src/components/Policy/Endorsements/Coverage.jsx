@@ -6,7 +6,7 @@ import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 import formUtils from '../../../utilities/forms';
 
 const { Currency, Input, Select, SelectInteger, Radio } = Inputs;
-const { validation, format, parse } = lifecycle;
+const { validation, format } = lifecycle;
 
 const baseYesNoAnswers = [
   { answer: false, label: 'No' },
@@ -60,7 +60,7 @@ const Coverage = ({
             styleName="coverage-b-percentage"
             answers={formUtils.getAnswers('otherStructuresAmount', questions)}
             validate={validation.isRequired}
-            normalize={(v, pv, av) => normalizeDependencies(v, av, 'otherStructuresAmountNew', 'dwellingAmountNew')}
+            normalize={(v, pv, av) => normalizeDependencies(v, av, 'coverageLimits.otherStructures.amount', 'coverageLimits.dwelling.amount')}
             showInitial
             formatInitial={'Percent'}
           />
@@ -85,7 +85,7 @@ const Coverage = ({
             styleName="coverage-c-percentage"
             answers={formUtils.getAnswers('personalPropertyAmount', questions)}
             validate={validation.isRequired}
-            normalize={(v, pv, av) => normalizePersonalPropertyDependencies(v, av, 'personalPropertyAmountNew', 'dwellingAmountNew')}
+            normalize={(v, pv, av) => normalizePersonalPropertyDependencies(v, av, 'coverageLimits.personalProperty.amount', 'coverageLimits.dwelling.amount')}
             showInitial
             formatInitial={'Percent'}
           />
@@ -147,7 +147,7 @@ const Coverage = ({
         </div>
         <div className="form-group-double-element">
           <Field
-            name="allOtherPerilsNew"
+            name="deductibles.allOtherPerils.amount"
             label="AOP Deductible"
             component={SelectInteger}
             answers={formUtils.getAnswers('allOtherPerils', questions)}
@@ -158,26 +158,28 @@ const Coverage = ({
         </div>
         <div className="form-group-double-element">
           <Field
-            name="deductibles.allOtherPerils.amount"
+            name="deductibles.hurricane.amount"
             label="Hurricane Deductible"
             component={SelectInteger}
             answers={formUtils.getAnswers('hurricane', questions)}
             validate={validation.isRequired}
-            normalize={(v, pv, av) => normalizeDependencies(v, av, 'calculatedHurricane', 'dwellingAmountNew')}
+            normalize={(v, pv, av) => normalizeDependencies(v, av, 'deductibles.hurricane.calculatedAmount', 'coverageLimits.dwelling.amount')}
             showInitial
             formatInitial={'Percent'}
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            name="sinkholePerilCoverage"
+            name="coverageOptions.sinkholePerilCoverage.initialValue"
             label="Sinkhole Deductible"
-            component={Input}
-            disabled
+            component={({ input }) => (
+
+              <div className='initial-value-override'>{input.value}</div> )
+            }
           />
           <Field
-            name="sinkholePerilCoverageNew"
-            component={SelectInteger}
+            name="coverageOptions.sinkholePerilCoverage.answer"
+            component={Select}
             answers={[
                 { answer: false, label: 'Coverage Excluded' },
                 { answer: true, label: `10% of ${formUtils.getQuestionName('dwellingAmount', questions)}` }

@@ -111,8 +111,8 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.deductibles.allOtherPerils.amount = _.get(policy, 'deductibles.allOtherPerils.amount');
   values.deductibles.hurricane.amount = hurricane;
   values.deductibles.hurricane.calculatedAmount = _.get(policy, 'deductibles.hurricane.calculatedAmount');
-  values.sinkholePerilCoverage = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer') ? `10% of ${getQuestionName('dwellingAmount', questions)}` : 'Coverage Excluded';
-  values.sinkholePerilCoverageNew = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer');
+  values.coverageOptions.sinkholePerilCoverage.initialValue = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer') ? `10% of ${getQuestionName('dwellingAmount', questions)}` : 'Coverage Excluded';
+  values.coverageOptions.sinkholePerilCoverage.answer = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer');
   // Coverage Top Right
   values.personalPropertyReplacementCostCoverage = _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer', false);
   values.personalPropertyReplacementCostCoverageNew = values.personalPropertyReplacementCostCoverage;
