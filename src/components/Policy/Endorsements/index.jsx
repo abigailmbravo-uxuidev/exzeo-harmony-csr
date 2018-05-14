@@ -49,7 +49,34 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   const { latestPolicy, getRate } = service;
   const policy = latestPolicy || {};
   const rating = getRate || {};
-  const values = { property: { windMitigation: {} }, coverageLimits: { dwelling: {} }, policyHolderMailingAddress: {} };
+  const values = {
+    property: { windMitigation: {} },
+    policyHolderMailingAddress: {},
+    coverageLimits: {
+      dwelling: {} ,
+      otherStructures: {},
+      personalProperty: {},
+      lossOfUse: {},
+      medicalPayments: {},
+      moldProperty: {},
+      personalLiability: {},
+      moldLiability: {},
+      ordinanceOrLaw: {},
+      },
+    deductibles: {
+      allOtherPerils: {},
+      hurricane: {},
+      sinkhole: {},
+
+    },
+    coverageOptions: {
+      sinkholePerilCoverage: {},
+      propertyIncidentalOccupanciesMainDwelling: {},
+      propertyIncidentalOccupanciesOtherStructures: {},
+      liabilityIncidentalOccupancies: {},
+      personalPropertyReplacementCost: {},
+    }
+  };
 
   // Bail if we don't have all our info
   if (!latestPolicy && !getRate) { return values; }
@@ -72,31 +99,18 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.policyID = policy._id;
   values.endorsementDateNew = endorsementUtils.setEndorsementDate(policy.effectiveDate, policy.endDate);
   values.coverageLimits.dwelling.amount = dwelling;
-  values.dwellingAmountNew = values.dwellingAmount;
-  values.otherStructuresAmount = otherStructures;
-  values.otherStructuresAmountNew = values.otherStructuresAmount;
-  values.otherStructures = endorsementUtils.calculatePercentage(otherStructures, dwelling);
-  values.otherStructuresNew = values.otherStructures;
-  values.personalPropertyAmount = personalProperty;
-  values.personalPropertyAmountNew = values.personalPropertyAmount;
-  values.personalProperty = endorsementUtils.calculatePercentage(personalProperty, dwelling);
-  values.personalPropertyNew = values.personalProperty;
-  values.lossOfUse = _.get(policy, 'coverageLimits.lossOfUse.amount');
-  values.lossOfUseNew = values.lossOfUse;
-  values.personalLiability = _.get(policy, 'coverageLimits.personalLiability.amount');
-  values.personalLiabilityNew = values.personalLiability;
-  values.medicalPayments = _.get(policy, 'coverageLimits.medicalPayments.amount');
-  values.medicalPaymentsNew = values.medicalPayments;
-  values.moldProperty = _.get(policy, 'coverageLimits.moldProperty.amount');
-  values.moldPropertyNew = values.moldProperty;
-  values.moldLiability = _.get(policy, 'coverageLimits.moldLiability.amount');
-  values.moldLiabilityNew = values.moldLiability;
-  values.allOtherPerils = _.get(policy, 'deductibles.allOtherPerils.amount');
-  values.allOtherPerilsNew = values.allOtherPerils;
-  values.hurricane = hurricane;
-  values.hurricaneNew = hurricane;
-  values.calculatedHurricane = _.get(policy, 'deductibles.hurricane.calculatedAmount');
-  values.calculatedHurricaneNew = values.calculatedHurricane;
+  values.coverageLimits.otherStructures.amount = otherStructures;
+  values.coverageLimits.otherStructures.percentage = endorsementUtils.calculatePercentage(otherStructures, dwelling);
+  values.coverageLimits.personalProperty.amount = personalProperty;
+  values.coverageLimits.personalProperty.percentage = endorsementUtils.calculatePercentage(personalProperty, dwelling);
+  values.coverageLimits.lossOfUse.amount = _.get(policy, 'coverageLimits.lossOfUse.amount');
+  values.coverageLimits.personalLiability.amount = _.get(policy, 'coverageLimits.personalLiability.amount');
+  values.coverageLimits.medicalPayments.amount = _.get(policy, 'coverageLimits.medicalPayments.amount');
+  values.coverageLimits.moldProperty.amount = _.get(policy, 'coverageLimits.moldProperty.amount');
+  values.coverageLimits.moldLiability.amount = _.get(policy, 'coverageLimits.moldLiability.amount');
+  values.deductibles.allOtherPerils.amount = _.get(policy, 'deductibles.allOtherPerils.amount');
+  values.deductibles.hurricane.amount = hurricane;
+  values.deductibles.hurricane.calculatedAmount = _.get(policy, 'deductibles.hurricane.calculatedAmount');
   values.sinkholePerilCoverage = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer') ? `10% of ${getQuestionName('dwellingAmount', questions)}` : 'Coverage Excluded';
   values.sinkholePerilCoverageNew = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer');
   // Coverage Top Right

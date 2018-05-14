@@ -36,187 +36,136 @@ const Coverage = ({
             label={`Dwelling (A) ($ ${String(initialValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $ ${String(initialValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`}
             component={Currency}
             validate={[validation.isRequired, validation.isDwellingRange]}
-            parse={parse.toNumber}
             normalize={normalizeDwellingAmount}
-            noDecimal
             showInitial
+            formatInitial={'Currency'}
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            name="otherStructuresAmount"
+            name="coverageLimits.otherStructures.amount"
             label="Other Structures (B)"
             component={Currency}
             styleName="coverage-b"
-            disabled
-          />
-          <Field
-            name="otherStructuresAmountNew"
-            component={Currency}
             validate={validation.isRequired}
-            styleName="coverage-b"
-            disabled
+            showInitial
+            formatInitial={'Currency'}
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            name="otherStructures"
+            name="coverageLimits.otherStructures.percentage"
             label="Other Structures %"
-            component={Input}
-            format={format.toPercent}
-            disabled
-          />
-          <Field
-            name="otherStructuresNew"
             component={SelectInteger}
             styleName="coverage-b-percentage"
             answers={formUtils.getAnswers('otherStructuresAmount', questions)}
-            parse={parse.toNumber}
             validate={validation.isRequired}
-            normalize={(v, pv, av) =>
-                normalizeDependencies(v, av, 'otherStructuresAmountNew', 'dwellingAmountNew')
-              }
+            normalize={(v, pv, av) => normalizeDependencies(v, av, 'otherStructuresAmountNew', 'dwellingAmountNew')}
+            showInitial
+            formatInitial={'Percent'}
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            name="personalPropertyAmount"
+            name="coverageLimits.personalProperty.amount"
             label="Personal Property (C)"
             component={Currency}
             styleName="coverage-c"
-            disabled
-          />
-          <Field
-            name="personalPropertyAmountNew"
-            component={Currency}
-            parse={parse.toNumber}
             validate={validation.isRequired}
-            styleName="coverage-c"
             disabled
+            showInitial
+            formatInitial={'Currency'}
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            name="personalProperty"
+            name="coverageLimits.personalProperty.percentage"
             label="Personal Property %"
-            component={Input}
-            format={format.toPercent}
-            disabled
-          />
-          <Field
-            name="personalPropertyNew"
             component={SelectInteger}
-            answers={formUtils.getAnswers('personalPropertyAmount', questions)}
-            parse={parse.toNumber}
-            validate={validation.isRequired}
-            normalize={(v, pv, av) =>
-                normalizePersonalPropertyDependencies(v, av, 'personalPropertyAmountNew', 'dwellingAmountNew')
-              }
             styleName="coverage-c-percentage"
+            answers={formUtils.getAnswers('personalPropertyAmount', questions)}
+            validate={validation.isRequired}
+            normalize={(v, pv, av) => normalizePersonalPropertyDependencies(v, av, 'personalPropertyAmountNew', 'dwellingAmountNew')}
+            showInitial
+            formatInitial={'Percent'}
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            name="lossOfUse"
+            name="coverageLimits.lossOfUse.amount"
             label="Loss of Use (D)"
             component={Currency}
-            disabled
-          />
-          <Field
-            name="lossOfUseNew"
-            component={Currency}
             validate={validation.isRequired}
+            showInitial
+            formatInitial={'Currency'}
             disabled
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            name="personalLiability"
+            name="coverageLimits.personalLiability.amount"
             label="Personal Liability (E)"
-            component={Currency}
-            disabled
-          />
-          <Field
-            name="personalLiabilityNew"
             component={SelectInteger}
             answers={formUtils.getAnswers('personalLiability', questions)}
-            parse={parse.toNumber}
             validate={validation.isRequired}
+            showInitial
+            formatInitial={'Currency'}
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            name="medicalPayments"
+            name="coverageLimits.medicalPayments.amount"
             label="Medical Payments (F)"
             component={Currency}
-            disabled
-          />
-          <Field
-            name="medicalPaymentsNew"
-            component={Currency}
             validate={validation.isRequired}
+            showInitial
+            formatInitial={'Currency'}
             disabled
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            name="moldProperty"
+            name="coverageLimits.moldProperty.amount"
             label="Mold Property"
-            component={Currency}
-            disabled
-          />
-
-          <Field
-            name="moldPropertyNew"
             component={SelectInteger}
             answers={formUtils.getAnswers('moldProperty', questions)}
             validate={validation.isRequired}
+            showInitial
+            formatInitial={'Currency'}
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            name="moldLiability"
+            name="coverageLimits.moldLiability.amount"
             label="Mold Liability"
-            component={Currency}
-            disabled
-          />
-          <Field
-            name="moldLiabilityNew"
             component={SelectInteger}
             answers={formUtils.getAnswers('moldLiability', questions)}
             validate={validation.isRequired}
+            showInitial
+            formatInitial={'Currency'}
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            name="allOtherPerils"
-            label="AOP Deductible"
-            component={Currency}
-            disabled
-          />
-          <Field
             name="allOtherPerilsNew"
+            label="AOP Deductible"
             component={SelectInteger}
             answers={formUtils.getAnswers('allOtherPerils', questions)}
             validate={validation.isRequired}
+            showInitial
+            formatInitial={'Currency'}
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            name="hurricane"
+            name="deductibles.allOtherPerils.amount"
             label="Hurricane Deductible"
-            component={Input}
-            format={format.toPercent}
-            disabled
-          />
-          <Field
-            name="hurricaneNew"
             component={SelectInteger}
             answers={formUtils.getAnswers('hurricane', questions)}
             validate={validation.isRequired}
-            normalize={(v, pv, av) =>
-                normalizeDependencies(v, av, 'calculatedHurricane', 'dwellingAmountNew')
-              }
+            normalize={(v, pv, av) => normalizeDependencies(v, av, 'calculatedHurricane', 'dwellingAmountNew')}
+            showInitial
+            formatInitial={'Percent'}
           />
         </div>
         <div className="form-group-double-element">
