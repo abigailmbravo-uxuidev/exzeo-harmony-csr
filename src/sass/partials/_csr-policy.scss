@@ -143,7 +143,7 @@
                   flex-grow: 0;
                   flex-shrink: 0;
                   width: 33.33%;
-                  margin: 0;
+                  margin: 0 $padding 0 0;
                   padding: 0;
                   text-align: left;
                 }
@@ -160,8 +160,6 @@
                   flex-direction: row;
                   flex-grow: 0;
                   flex-shrink: 0;
-                  flex-wrap: wrap;
-                  width: 66.66%;
                   margin: 0;
                   padding: 0 $padding;
 
@@ -174,49 +172,30 @@
                     }
                   }
 
-                  &:last-child {
-                    flex-direction: column;
-                    flex-grow: 0;
-                    flex-shrink: 0;
-                    width: 33.33%;
-                    margin: 0;
-                    padding: 0;
-
-                    label {
-                      display: none;
-                    }
-
-                    &.error {
-                      span {
-                        flex-grow: 1;
-                        flex-shrink: 1;
-                        width: 100%;
-                        padding-left: 0;
-                      }
-                    }
-                  }
-
                   label {
                     flex-grow: 0;
                     flex-shrink: 0;
-                    width: 50%;
-                    margin: 0;
-                    padding-right: $padding;
+                    width: 33.33%;
+                    margin: 0 $padding 0 0;
                     text-align: right;
                     @media (max-width: 1600px) {
                       font-size: $font-size-sm;
                     }
                   }
 
-                  select {
-                    width: 100%;
-                  }
-
-                  > *:nth-child(2) {
+                  .initial-value {
                     flex-grow: 0;
                     flex-shrink: 0;
-                    width: 50%;
-                    margin: 0;
+                    width: 33.33%;
+                    margin: 0 $padding 0 0;
+                    padding: $padding/2;
+                    border: $border-width solid $warm-gray-03;
+                    border-radius: $border-radius;
+                    background: $warm-gray-00;
+                  }
+
+                  select {
+                    width: 100%;
                   }
                 }
 
@@ -396,11 +375,11 @@
 
                   h4 {
                     margin-bottom: 0;
+                    -webkit-hyphens: auto;
+                    -moz-hyphens: auto;
+                    hyphens: auto;
                     color: $warm-gray-10;
                     -ms-hyphens: auto;
-                    -moz-hyphens: auto;
-                    -webkit-hyphens: auto;
-                    hyphens: auto;
 
                     &.agency {
                       font-weight: $font-weight-normal;
@@ -410,16 +389,16 @@
                       }
 
                       .agency-legal-name {
-                          font-weight: $font-weight-normal;
+                        font-weight: $font-weight-normal;
                       }
                     }
 
                     .agent-code {
-                        font-weight: $font-weight-normal;
+                      font-weight: $font-weight-normal;
                     }
 
                     .agent-license {
-                        font-weight: $font-weight-normal;
+                      font-weight: $font-weight-normal;
                     }
                   }
 
@@ -462,19 +441,19 @@
                       }
 
                       &.secondary-phone {
-                          small {
-                              i {
-                                  color: $white;
-                              }
+                        small {
+                          i {
+                            color: $white;
                           }
+                        }
                       }
 
                       &.csr-phone {
-                          small {
-                              i {
-                                  color: $white;
-                              }
+                        small {
+                          i {
+                            color: $white;
                           }
+                        }
                       }
 
                       i {
@@ -780,10 +759,10 @@
 
                   .value {
                     width: 70%;
-                    -ms-hyphens: auto;
-                    -moz-hyphens: auto;
                     -webkit-hyphens: auto;
+                    -moz-hyphens: auto;
                     hyphens: auto;
+                    -ms-hyphens: auto;
                   }
                 }
 
