@@ -13,7 +13,7 @@ const MailingAddress = () => (
     <div className="flex-parent wrap">
       <div className="address">
         <Field
-          name="address1New"
+          name="policyHolderMailingAddress.address1"
           label="Address 1"
           component={Input}
           validate={validation.isRequired}
@@ -21,14 +21,14 @@ const MailingAddress = () => (
       </div>
       <div className="address">
         <Field
-          name="address2New"
+          name="policyHolderMailingAddress.address2"
           label="Address 2"
           component={Input}
         />
       </div>
       <div className="city">
         <Field
-          name="cityNew"
+          name="policyHolderMailingAddress.city"
           label="City"
           component={Input}
           validate={validation.isRequired}
@@ -36,7 +36,7 @@ const MailingAddress = () => (
       </div>
       <div className="state">
         <Field
-          name="stateNew"
+          name="policyHolderMailingAddress.state"
           label="State"
           component={Input}
           validate={validation.isRequired}
@@ -44,7 +44,7 @@ const MailingAddress = () => (
       </div>
       <div className="zip">
         <Field
-          name="zipNew"
+          name="policyHolderMailingAddress.zip"
           label="Zip"
           component={Input}
           validate={validation.isRequired}

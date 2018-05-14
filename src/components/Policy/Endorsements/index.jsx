@@ -50,10 +50,11 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   const policy = latestPolicy || {};
   const rating = getRate || {};
   const values = {
-    property: { windMitigation: {} },
+    policyHolders: [{}, {}],
+    property: { windMitigation: {}, physicalAddress: {} },
     policyHolderMailingAddress: {},
     coverageLimits: {
-      dwelling: {} ,
+      dwelling: {},
       otherStructures: {},
       personalProperty: {},
       lossOfUse: {},
@@ -61,12 +62,12 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
       moldProperty: {},
       personalLiability: {},
       moldLiability: {},
-      ordinanceOrLaw: {},
-      },
+      ordinanceOrLaw: {}
+    },
     deductibles: {
       allOtherPerils: {},
       hurricane: {},
-      sinkhole: {},
+      sinkhole: {}
 
     },
     coverageOptions: {
@@ -74,7 +75,7 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
       propertyIncidentalOccupanciesMainDwelling: {},
       propertyIncidentalOccupanciesOtherStructures: {},
       liabilityIncidentalOccupancies: {},
-      personalPropertyReplacementCost: {},
+      personalPropertyReplacementCost: {}
     }
   };
 
@@ -166,43 +167,22 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.property.squareFeet = _.get(policy, 'property.squareFeet', '');
   values.property.floodZone = _.get(policy, 'property.floodZone');
 
-  // Policyholder 1
-  values.pH1email = _.get(policy, 'policyHolders[0].emailAddress');
-  values.pH1FirstName = _.get(policy, 'policyHolders[0].firstName');
-  values.pH1LastName = _.get(policy, 'policyHolders[0].lastName');
-  values.pH1phone = _.get(policy, 'policyHolders[0].primaryPhoneNumber', '');
-  values.pH1secondaryPhone = _.get(policy, 'policyHolders[0].secondaryPhoneNumber', '');
-
-  // Policyholder 2
-  values.pH2email = _.get(policy, 'policyHolders[1].emailAddress', '');
-  values.pH2FirstName = _.get(policy, 'policyHolders[1].firstName', '');
-  values.pH2LastName = _.get(policy, 'policyHolders[1].lastName', '');
-  values.pH2phone = _.get(policy, 'policyHolders[1].primaryPhoneNumber', '');
-  values.pH2secondaryPhone = _.get(policy, 'policyHolders[1].secondaryPhoneNumber', '');
+  // Policyholders
+  values.policyHolders = _.get(policy, 'policyHolders', []);
 
   // Mailing/Billing
-  values.address1 = _.get(policy, 'policyHolderMailingAddress.address1');
-  values.address1New = values.address1;
-  values.address2 = _.get(policy, 'policyHolderMailingAddress.address2');
-  values.address2New = values.address2;
-  values.city = _.get(policy, 'policyHolderMailingAddress.city');
-  values.cityNew = values.city;
-  values.state = _.get(policy, 'policyHolderMailingAddress.state');
-  values.stateNew = values.state;
-  values.zip = _.get(policy, 'policyHolderMailingAddress.zip');
-  values.zipNew = values.zip;
+  values.policyHolderMailingAddress.address1 = _.get(policy, 'policyHolderMailingAddress.address1');
+  values.policyHolderMailingAddress.address2 = _.get(policy, 'policyHolderMailingAddress.address2');
+  values.policyHolderMailingAddress.city = _.get(policy, 'policyHolderMailingAddress.city');
+  values.policyHolderMailingAddress.state = _.get(policy, 'policyHolderMailingAddress.state');
+  values.policyHolderMailingAddress.zip = _.get(policy, 'policyHolderMailingAddress.zip');
 
   // Property
-  values.propertyAddress1 = _.get(policy, 'property.physicalAddress.address1');
-  values.propertyAddress1New = values.propertyAddress1;
-  values.propertyAddress2 = _.get(policy, 'property.physicalAddress.address2');
-  values.propertyAddress2New = values.propertyAddress2;
-  values.propertyCity = _.get(policy, 'property.physicalAddress.city');
-  values.propertyCityNew = values.propertyCity;
-  values.propertyState = _.get(policy, 'property.physicalAddress.state');
-  values.propertyStateNew = values.propertyState;
-  values.propertyZip = _.get(policy, 'property.physicalAddress.zip');
-  values.propertyZipNew = values.propertyZip;
+  values.property.physicalAddress.address1 = _.get(policy, 'property.physicalAddress.address1');
+  values.property.physicalAddress.address2 = _.get(policy, 'property.physicalAddress.address2');
+  values.property.physicalAddress.city = _.get(policy, 'property.physicalAddress.city');
+  values.property.physicalAddress.state = _.get(policy, 'property.physicalAddress.state');
+  values.property.physicalAddress.zip = _.get(policy, 'property.physicalAddress.zip');
 
   values.uwExceptions = _.get(policy, 'underwritingExceptions');
 

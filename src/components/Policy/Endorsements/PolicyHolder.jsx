@@ -15,13 +15,13 @@ const PolicyHolder = ({ clearSecondaryPolicyholder, policyHolders, setPHToggle }
         <h3>Primary Policyholder</h3>
         <div className="flex-parent col2">
           <Field
-            name="pH1FirstName"
+            name="policyHolders[0].firstName"
             label="First Name"
             component={Input}
             validate={validation.isRequired}
           />
           <Field
-            name="pH1LastName"
+            name="policyHolders[0].lastName"
             label="Last Name"
             component={Input}
             validate={validation.isRequired}
@@ -29,13 +29,13 @@ const PolicyHolder = ({ clearSecondaryPolicyholder, policyHolders, setPHToggle }
         </div>
         <div className="flex-parent col2">
           <Field
-            name="pH1phone"
+            name="policyHolders[0].primaryPhoneNumber"
             label="Primary Phone"
             component={Phone}
             validate={[validation.isRequired, validation.isPhone]}
           />
           <Field
-            name="pH1secondaryPhone"
+            name="policyHolders[0].secondaryPhoneNumber"
             label="Secondary Phone"
             component={Phone}
             validate={validation.isPhone}
@@ -43,7 +43,7 @@ const PolicyHolder = ({ clearSecondaryPolicyholder, policyHolders, setPHToggle }
         </div>
         <div className="flex-parent">
           <Field
-            name="pH1email"
+            name="policyHolders[0].emailAddress"
             label="Email Address"
             component={Input}
             validate={[validation.isRequired, validation.isEmail]}
@@ -70,14 +70,14 @@ const PolicyHolder = ({ clearSecondaryPolicyholder, policyHolders, setPHToggle }
         </div>
         <div className="flex-parent col2">
           <Field
-            name="pH2FirstName"
+            name="policyHolders[1].firstName"
             label="First Name"
             component={Input}
             validate={validation.dependsOn(['pH2LastName', 'pH2email', 'pH2phone'])}
             onChange={setPHToggle}
           />
           <Field
-            name="pH2LastName"
+            name="policyHolders[1].lastName"
             label="Last Name"
             component={Input}
             validate={validation.dependsOn(['pH2FirstName', 'pH2email', 'pH2phone'])}
@@ -86,14 +86,14 @@ const PolicyHolder = ({ clearSecondaryPolicyholder, policyHolders, setPHToggle }
         </div>
         <div className="flex-parent col2">
           <Field
-            name="pH2phone"
+            name="policyHolders[1].primaryPhoneNumber"
             label="Primary Phone"
             component={Phone}
             validate={[validation.dependsOn(['pH2FirstName', 'pH2LastName', 'pH2email']), validation.isPhone]}
             onChange={setPHToggle}
           />
           <Field
-            name="pH2secondaryPhone"
+            name="policyHolders[1].secondaryPhoneNumber"
             label="Secondary Phone"
             component={Phone}
             validate={validation.isPhone}
@@ -102,7 +102,7 @@ const PolicyHolder = ({ clearSecondaryPolicyholder, policyHolders, setPHToggle }
         </div>
         <div className="flex-parent">
           <Field
-            name="pH2email"
+            name="policyHolders[1].emailAddress"
             label="Email Address"
             component={Input}
             validate={[validation.dependsOn(['pH2FirstName', 'pH2LastName', 'pH2phone']), validation.isEmail]}
