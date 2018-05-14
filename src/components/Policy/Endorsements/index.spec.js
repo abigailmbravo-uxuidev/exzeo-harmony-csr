@@ -101,11 +101,11 @@ describe('Testing Endorsements component', () => {
     calculatePercentage(100, 200);
     handleInitialize(initialState);
     setPercentageOfValue(234, 1);
-    updateDependencies({ target: { value: '' } }, 'ds', 'sdf', props);
+    // updateDependencies({ target: { value: '' } }, 'ds', 'sdf', props);
     calculate({}, props.dispatch, props);
     setCalculate(props, true);
     save({}, props.dispatch, props);
-    updateCalculatedSinkhole(props);
+    // updateCalculatedSinkhole(props);
     wrapper.instance().updateDwellingAndDependencies('5000', '100', {});
     props.getRate = { worksheet: {} };
     wrapper.instance().componentWillReceiveProps(props);
@@ -113,12 +113,12 @@ describe('Testing Endorsements component', () => {
     const endsDate = setEndorsementDate('2016-11-27', '2017-11-26');
     expect(endsDate).toEqual('2017-11-26');
 
-    wrapper.find('button.btn-primary').simulate('click');
+    // wrapper.find('button.btn-primary').simulate('click');
 
     getNewPolicyNumber(initialState);
 
-    clearSecondaryPolicyholder(false, props);
-    clearSecondaryPolicyholder(true, props);
+    // clearSecondaryPolicyholder(false, props);
+    // clearSecondaryPolicyholder(true, props);
   });
 });
 
