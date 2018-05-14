@@ -13,7 +13,7 @@ const WindMitigation = ({ questions }) => (
     <h3>Wind Mitigation</h3>
     <div className="flex-parent">
       {/* Col1 */}
-      <div className="flex-child col3">
+      <div className="flex-child col-2">
         <div className="form-group labels">
           <label /><label>Current</label><label>New</label>
         </div>
@@ -107,10 +107,8 @@ const WindMitigation = ({ questions }) => (
           />
         </div>
       </div>
-
       {/* Col2 */}
-      <div className="flex-child col3">
-
+      <div className="flex-child col-2">
         <div className="form-group labels">
           <label /><label>Current</label><label>New</label>
         </div>
