@@ -257,6 +257,7 @@ export class Endorsements extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+
     // TODO make this happen only when we call **calculate**
     if (!_.isEqual(this.props.getRate, nextProps.getRate) && nextProps.getRate && nextProps.getRate.newAnnualPremium) {
       const { getRate } = nextProps;
@@ -274,6 +275,7 @@ export class Endorsements extends React.Component {
       this.setCalculate();
       this.props.reset();
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
+
     }
 
     // TODO this only happens after SAVE or SUBMIT
