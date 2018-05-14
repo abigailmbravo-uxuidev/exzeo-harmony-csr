@@ -132,18 +132,6 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.billPlanNew = values.billPlan;
 
   // Coverage Mid Left
-  values.roofCovering = _.get(policy, 'property.windMitigation.roofCovering');
-  values.roofCoveringNew = values.roofCovering;
-  values.roofDeckAttachment = _.get(policy, 'property.windMitigation.roofDeckAttachment');
-  values.roofDeckAttachmentNew = values.roofDeckAttachment;
-  values.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
-  values.roofToWallConnectionNew = values.roofToWallConnection;
-  values.roofGeometry = _.get(policy, 'property.windMitigation.roofGeometry');
-  values.roofGeometryNew = values.roofGeometry;
-  values.secondaryWaterResistance = _.get(policy, 'property.windMitigation.secondaryWaterResistance');
-  values.secondaryWaterResistanceNew = _.get(policy, 'property.windMitigation.secondaryWaterResistance');
-  values.openingProtection = _.get(policy, 'property.windMitigation.openingProtection');
-  values.openingProtectionNew = values.openingProtection;
   values.electronicDelivery = _.get(policy, 'policyHolders[0].electronicDelivery') ? 'Yes' : 'No';
   values.electronicDeliveryNew = !!_.get(policy, 'policyHolders[0].electronicDelivery');
 
@@ -231,6 +219,20 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
 
   values.uwExceptions = _.get(policy, 'underwritingExceptions');
 
+
+  // NEW WIND MITIGATION MAPPING
+  values.property.windMitigation.roofCovering = _.get(policy, 'property.windMitigation.roofCovering');
+  values.property.windMitigation.roofDeckAttachment = _.get(policy, 'property.windMitigation.roofDeckAttachment');
+  values.property.windMitigation.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
+  values.property.windMitigation.roofGeometry = _.get(policy, 'property.windMitigation.roofGeometry');
+  values.property.windMitigation.secondaryWaterResistance = _.get(policy, 'property.windMitigation.secondaryWaterResistance');
+  values.property.windMitigation.openingProtection = _.get(policy, 'property.windMitigation.openingProtection');
+
+  values.property.windMitigation.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
+  values.property.windMitigation.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
+  values.property.windMitigation.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
+  values.property.windMitigation.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
+
   return values;
 };
 
@@ -257,7 +259,6 @@ export class Endorsements extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-
     // TODO make this happen only when we call **calculate**
     if (!_.isEqual(this.props.getRate, nextProps.getRate) && nextProps.getRate && nextProps.getRate.newAnnualPremium) {
       const { getRate } = nextProps;
@@ -275,7 +276,6 @@ export class Endorsements extends React.Component {
       this.setCalculate();
       this.props.reset();
       this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
-
     }
 
     // TODO this only happens after SAVE or SUBMIT
