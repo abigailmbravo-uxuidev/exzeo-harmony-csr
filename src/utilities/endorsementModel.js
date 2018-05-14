@@ -1,5 +1,5 @@
-import _ from "lodash";
-import moment from "moment/moment";
+import _ from 'lodash';
+import moment from 'moment-timezone';
 
 export const premiumAmountFormatter = cell => Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 
@@ -114,113 +114,111 @@ export const generateModel = (data, policyObject, props) => {
   };
 };
 
-export const convertToRateData = (changePolicyData, currentPremium) => {
-  return {
-    effectiveDate: changePolicyData.effectiveDate,
-    policyNumber: changePolicyData.policyNumber,
-    companyCode: changePolicyData.companyCode,
-    state: changePolicyData.state,
-    product: changePolicyData.product,
-    property: {
-      windMitigation: {
-        roofGeometry: changePolicyData.roofGeometryNew,
-        floridaBuildingCodeWindSpeed: changePolicyData.floridaBuildingCodeWindSpeedNew,
-        secondaryWaterResistance: changePolicyData.secondaryWaterResistanceNew,
-        internalPressureDesign: changePolicyData.internalPressureDesignNew,
-        roofCovering: changePolicyData.roofCoveringNew,
-        openingProtection: changePolicyData.openingProtectionNew,
-        terrain: changePolicyData.terrainNew,
-        floridaBuildingCodeWindSpeedDesign: changePolicyData.floridaBuildingCodeWindSpeedDesignNew,
-        roofDeckAttachment: changePolicyData.roofDeckAttachmentNew,
-        windBorneDebrisRegion: changePolicyData.windBorneDebrisRegionNew,
-        roofToWallConnection: changePolicyData.roofToWallConnectionNew
-      },
-      territory: changePolicyData.property.territory,
-      buildingCodeEffectivenessGrading: changePolicyData.buildingCodeEffectivenessGradingNew,
-      familyUnits: changePolicyData.familyUnitsNew,
-      fireAlarm: changePolicyData.fireAlarmNew,
-      burglarAlarm: changePolicyData.burglarAlarmNew,
-      constructionType: changePolicyData.constructionTypeNew,
-      yearBuilt: changePolicyData.yearBuiltNew || null,
-      sprinkler: changePolicyData.sprinklerNew,
-      protectionClass: changePolicyData.protectionClassNew,
-      townhouseRowhouse: changePolicyData.townhouseRowhouseNew
+export const convertToRateData = (changePolicyData, currentPremium) => ({
+  effectiveDate: changePolicyData.effectiveDate,
+  policyNumber: changePolicyData.policyNumber,
+  companyCode: changePolicyData.companyCode,
+  state: changePolicyData.state,
+  product: changePolicyData.product,
+  property: {
+    windMitigation: {
+      roofGeometry: changePolicyData.roofGeometryNew,
+      floridaBuildingCodeWindSpeed: changePolicyData.floridaBuildingCodeWindSpeedNew,
+      secondaryWaterResistance: changePolicyData.secondaryWaterResistanceNew,
+      internalPressureDesign: changePolicyData.internalPressureDesignNew,
+      roofCovering: changePolicyData.roofCoveringNew,
+      openingProtection: changePolicyData.openingProtectionNew,
+      terrain: changePolicyData.terrainNew,
+      floridaBuildingCodeWindSpeedDesign: changePolicyData.floridaBuildingCodeWindSpeedDesignNew,
+      roofDeckAttachment: changePolicyData.roofDeckAttachmentNew,
+      windBorneDebrisRegion: changePolicyData.windBorneDebrisRegionNew,
+      roofToWallConnection: changePolicyData.roofToWallConnectionNew
     },
-    coverageLimits: {
-      dwelling: {
-        amount: changePolicyData.dwellingAmountNew
-      },
-      otherStructures: {
-        amount: changePolicyData.otherStructuresAmountNew
-      },
-      personalProperty: {
-        amount: changePolicyData.personalPropertyAmountNew
-      },
-      personalLiability: {
-        amount: changePolicyData.personalLiabilityNew
-      },
-      medicalPayments: {
-        amount: changePolicyData.medicalPaymentsNew
-      },
-      lossOfUse: {
-        amount: changePolicyData.lossOfUseNew
-      },
-      moldProperty: {
-        amount: changePolicyData.moldPropertyNew
-      },
-      moldLiability: {
-        amount: changePolicyData.moldLiabilityNew
-      },
-      ordinanceOrLaw: {
-        amount: changePolicyData.ordinanceOrLawNew
-      }
+    territory: changePolicyData.property.territory,
+    buildingCodeEffectivenessGrading: changePolicyData.buildingCodeEffectivenessGradingNew,
+    familyUnits: changePolicyData.familyUnitsNew,
+    fireAlarm: changePolicyData.fireAlarmNew,
+    burglarAlarm: changePolicyData.burglarAlarmNew,
+    constructionType: changePolicyData.constructionTypeNew,
+    yearBuilt: changePolicyData.yearBuiltNew || null,
+    sprinkler: changePolicyData.sprinklerNew,
+    protectionClass: changePolicyData.protectionClassNew,
+    townhouseRowhouse: changePolicyData.townhouseRowhouseNew
+  },
+  coverageLimits: {
+    dwelling: {
+      amount: changePolicyData.dwellingAmountNew
     },
-    coverageOptions: {
-      sinkholePerilCoverage: {
-        answer: changePolicyData.sinkholePerilCoverageNew
-      },
-      propertyIncidentalOccupanciesMainDwelling: {
-        answer: changePolicyData.propertyIncidentalOccupanciesMainDwellingNew
-      },
-      propertyIncidentalOccupanciesOtherStructures: {
-        answer: changePolicyData.propertyIncidentalOccupanciesOtherStructuresNew
-      },
-      liabilityIncidentalOccupancies: {
-        answer: changePolicyData.liabilityIncidentalOccupanciesNew
-      },
-      personalPropertyReplacementCost: {
-        answer: changePolicyData.personalPropertyReplacementCostCoverageNew
-      }
+    otherStructures: {
+      amount: changePolicyData.otherStructuresAmountNew
     },
-    deductibles: {
-      allOtherPerils: {
-        amount: changePolicyData.allOtherPerilsNew
-      },
-      hurricane: {
-        amount: changePolicyData.hurricaneNew,
-        calculatedAmount: setPercentageOfValue(changePolicyData.dwellingAmountNew, changePolicyData.hurricaneNew)
-      },
-      sinkhole: {
-        amount: changePolicyData.sinkholeNew,
-        calculatedAmount: setPercentageOfValue(changePolicyData.dwellingAmountNew, changePolicyData.sinkholeNew)
-      }
+    personalProperty: {
+      amount: changePolicyData.personalPropertyAmountNew
     },
-    underwritingAnswers: {
-      rented: {
-        answer: changePolicyData.rentedNew
-      },
-      monthsOccupied: {
-        answer: changePolicyData.monthsOccupiedNew
-      },
-      noPriorInsuranceSurcharge: {
-        answer: changePolicyData.noPriorInsuranceNew
-      }
+    personalLiability: {
+      amount: changePolicyData.personalLiabilityNew
     },
-    oldTotalPremium: changePolicyData.rating.totalPremium,
-    oldCurrentPremium: currentPremium,
-    endorsementDate: changePolicyData.endorsementDate
-  };
-};
+    medicalPayments: {
+      amount: changePolicyData.medicalPaymentsNew
+    },
+    lossOfUse: {
+      amount: changePolicyData.lossOfUseNew
+    },
+    moldProperty: {
+      amount: changePolicyData.moldPropertyNew
+    },
+    moldLiability: {
+      amount: changePolicyData.moldLiabilityNew
+    },
+    ordinanceOrLaw: {
+      amount: changePolicyData.ordinanceOrLawNew
+    }
+  },
+  coverageOptions: {
+    sinkholePerilCoverage: {
+      answer: changePolicyData.sinkholePerilCoverageNew
+    },
+    propertyIncidentalOccupanciesMainDwelling: {
+      answer: changePolicyData.propertyIncidentalOccupanciesMainDwellingNew
+    },
+    propertyIncidentalOccupanciesOtherStructures: {
+      answer: changePolicyData.propertyIncidentalOccupanciesOtherStructuresNew
+    },
+    liabilityIncidentalOccupancies: {
+      answer: changePolicyData.liabilityIncidentalOccupanciesNew
+    },
+    personalPropertyReplacementCost: {
+      answer: changePolicyData.personalPropertyReplacementCostCoverageNew
+    }
+  },
+  deductibles: {
+    allOtherPerils: {
+      amount: changePolicyData.allOtherPerilsNew
+    },
+    hurricane: {
+      amount: changePolicyData.hurricaneNew,
+      calculatedAmount: setPercentageOfValue(changePolicyData.dwellingAmountNew, changePolicyData.hurricaneNew)
+    },
+    sinkhole: {
+      amount: changePolicyData.sinkholeNew,
+      calculatedAmount: setPercentageOfValue(changePolicyData.dwellingAmountNew, changePolicyData.sinkholeNew)
+    }
+  },
+  underwritingAnswers: {
+    rented: {
+      answer: changePolicyData.rentedNew
+    },
+    monthsOccupied: {
+      answer: changePolicyData.monthsOccupiedNew
+    },
+    noPriorInsuranceSurcharge: {
+      answer: changePolicyData.noPriorInsuranceNew
+    }
+  },
+  oldTotalPremium: changePolicyData.rating.totalPremium,
+  oldCurrentPremium: currentPremium,
+  endorsementDate: changePolicyData.endorsementDate
+});
 
 export default {
   calculatePercentage,
@@ -228,5 +226,5 @@ export default {
   premiumAmountFormatter,
   generateModel,
   setEndorsementDate,
-  setPercentageOfValue,
-}
+  setPercentageOfValue
+};

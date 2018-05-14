@@ -586,7 +586,7 @@ export const getEndorsementHistory = policyNumber => (dispatch) => {
     });
 };
 
-export const createTransaction = (submitData) => (dispatch) => {
+export const createTransaction = submitData => (dispatch) => {
   const body = {
     service: 'policy-data',
     method: 'POST',
@@ -647,7 +647,7 @@ export const getRate = (formData, formProps) => async (dispatch) => {
     return dispatch(serviceRequest(data));
   } catch (error) {
     dispatch(errorActions.setAppError(handleError(error)));
-    throw new SubmissionError(error);
+    // throw new SubmissionError(error);
   }
 };
 
@@ -813,12 +813,10 @@ export const getListOfForms = (policy, rating, transactionType) => {
   const axiosConfig = runnerSetup(body);
 
   return axios(axiosConfig)
-    .then((response) => {
-      return (response.data && response.data.result && response.data.result.forms)
-        ? response.data.result.forms
-        : []
-    })
+    .then(response => ((response.data && response.data.result && response.data.result.forms)
+      ? response.data.result.forms
+      : []))
     .catch((error) => {
-      throw new Error(error)
+      throw new Error(error);
     });
 };

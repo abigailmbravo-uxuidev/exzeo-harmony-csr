@@ -5,7 +5,9 @@ import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 import formUtils from '../../../utilities/forms';
 
-const { Currency, Input, Select, SelectInteger, Radio } = Inputs;
+const {
+  Currency, Input, Select, SelectInteger, Radio
+} = Inputs;
 const { validation, format, parse } = lifecycle;
 
 const baseYesNoAnswers = [
@@ -38,7 +40,7 @@ const Coverage = ({
             validate={[validation.isRequired, validation.isDwellingRange]}
             normalize={normalizeDwellingAmount}
             showInitial
-            formatInitial={'Currency'}
+            formatInitial="Currency"
           />
         </div>
         <div className="form-group-double-element">
@@ -49,7 +51,7 @@ const Coverage = ({
             styleName="coverage-b"
             validate={validation.isRequired}
             showInitial
-            formatInitial={'Currency'}
+            formatInitial="Currency"
           />
         </div>
         <div className="form-group-double-element">
@@ -62,7 +64,7 @@ const Coverage = ({
             validate={validation.isRequired}
             normalize={(v, pv, av) => normalizeDependencies(v, av, 'otherStructuresAmountNew', 'dwellingAmountNew')}
             showInitial
-            formatInitial={'Percent'}
+            formatInitial="Percent"
           />
         </div>
         <div className="form-group-double-element">
@@ -74,7 +76,7 @@ const Coverage = ({
             validate={validation.isRequired}
             disabled
             showInitial
-            formatInitial={'Currency'}
+            formatInitial="Currency"
           />
         </div>
         <div className="form-group-double-element">
@@ -87,7 +89,7 @@ const Coverage = ({
             validate={validation.isRequired}
             normalize={(v, pv, av) => normalizePersonalPropertyDependencies(v, av, 'personalPropertyAmountNew', 'dwellingAmountNew')}
             showInitial
-            formatInitial={'Percent'}
+            formatInitial="Percent"
           />
         </div>
         <div className="form-group-double-element">
@@ -97,7 +99,7 @@ const Coverage = ({
             component={Currency}
             validate={validation.isRequired}
             showInitial
-            formatInitial={'Currency'}
+            formatInitial="Currency"
             disabled
           />
         </div>
@@ -109,7 +111,7 @@ const Coverage = ({
             answers={formUtils.getAnswers('personalLiability', questions)}
             validate={validation.isRequired}
             showInitial
-            formatInitial={'Currency'}
+            formatInitial="Currency"
           />
         </div>
         <div className="form-group-double-element">
@@ -119,7 +121,7 @@ const Coverage = ({
             component={Currency}
             validate={validation.isRequired}
             showInitial
-            formatInitial={'Currency'}
+            formatInitial="Currency"
             disabled
           />
         </div>
@@ -131,7 +133,7 @@ const Coverage = ({
             answers={formUtils.getAnswers('moldProperty', questions)}
             validate={validation.isRequired}
             showInitial
-            formatInitial={'Currency'}
+            formatInitial="Currency"
           />
         </div>
         <div className="form-group-double-element">
@@ -142,7 +144,7 @@ const Coverage = ({
             answers={formUtils.getAnswers('moldLiability', questions)}
             validate={validation.isRequired}
             showInitial
-            formatInitial={'Currency'}
+            formatInitial="Currency"
           />
         </div>
         <div className="form-group-double-element">
@@ -153,7 +155,7 @@ const Coverage = ({
             answers={formUtils.getAnswers('allOtherPerils', questions)}
             validate={validation.isRequired}
             showInitial
-            formatInitial={'Currency'}
+            formatInitial="Currency"
           />
         </div>
         <div className="form-group-double-element">
@@ -165,7 +167,7 @@ const Coverage = ({
             validate={validation.isRequired}
             normalize={(v, pv, av) => normalizeDependencies(v, av, 'calculatedHurricane', 'dwellingAmountNew')}
             showInitial
-            formatInitial={'Percent'}
+            formatInitial="Percent"
           />
         </div>
         <div className="form-group-double-element">
