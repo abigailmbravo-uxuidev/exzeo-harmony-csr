@@ -339,17 +339,17 @@ export class Endorsements extends React.Component {
   clearSecondaryPolicyholder = (value) => {
     const { change: changeF, initialValues } = this.props;
     if (!value) {
-        changeF('pH2email', initialValues.pH2email);
-        changeF('pH2FirstName', initialValues.pH2FirstName);
-        changeF('pH2LastName', initialValues.pH2LastName);
-        changeF('pH2phone', initialValues.pH2phone);
-        changeF('pH2secondaryPhone', initialValues.pH2secondaryPhone);
+      changeF('pH2email', initialValues.pH2email);
+      changeF('pH2FirstName', initialValues.pH2FirstName);
+      changeF('pH2LastName', initialValues.pH2LastName);
+      changeF('pH2phone', initialValues.pH2phone);
+      changeF('pH2secondaryPhone', initialValues.pH2secondaryPhone);
     } else {
-        changeF('pH2email', '');
-        changeF('pH2FirstName', '');
-        changeF('pH2LastName', '');
-        changeF('pH2phone', '');
-        changeF('pH2secondaryPhone', '');
+      changeF('pH2email', '');
+      changeF('pH2FirstName', '');
+      changeF('pH2LastName', '');
+      changeF('pH2phone', '');
+      changeF('pH2secondaryPhone', '');
     }
     return value;
   };
@@ -455,7 +455,7 @@ export class Endorsements extends React.Component {
             id="Endorsements"
             className="content-wrapper"
             onSubmit={isCalculated ? handleSubmit(this.save) : handleSubmit(this.calculate)}
-            onKeyPress={(e) => (e.key === 'Enter' && e.target.type !== 'submit') && e.preventDefault()}
+            onKeyPress={e => (e.key === 'Enter' && e.target.type !== 'submit') && e.preventDefault()}
           >
 
             <div className="route-content">
@@ -487,7 +487,8 @@ export class Endorsements extends React.Component {
                 <ResultsCalculator
                   min={policy.effectiveDate}
                   max={policy.endDate}
-                  setCalculate={this.setCalculate}>
+                  setCalculate={this.setCalculate}
+                >
                   {/* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */}
                   <button id="cancel-button"
                           type="button"
