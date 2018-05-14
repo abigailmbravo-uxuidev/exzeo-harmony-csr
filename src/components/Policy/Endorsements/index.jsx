@@ -135,22 +135,6 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.electronicDelivery = _.get(policy, 'policyHolders[0].electronicDelivery') ? 'Yes' : 'No';
   values.electronicDeliveryNew = !!_.get(policy, 'policyHolders[0].electronicDelivery');
 
-  // Coverage Mid Right
-  values.floridaBuildingCodeWindSpeed = _.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeed', '');
-  values.floridaBuildingCodeWindSpeedNew = values.floridaBuildingCodeWindSpeed;
-  values.floridaBuildingCodeWindSpeedDesign = _.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign', '');
-  values.floridaBuildingCodeWindSpeedDesignNew = values.floridaBuildingCodeWindSpeedDesign;
-  values.terrain = _.get(policy, 'property.windMitigation.terrain');
-  values.terrainNew = values.terrain;
-  values.internalPressureDesign = _.get(policy, 'property.windMitigation.internalPressureDesign');
-  values.internalPressureDesignNew = values.internalPressureDesign;
-  values.windBorneDebrisRegion = _.get(policy, 'property.windMitigation.windBorneDebrisRegion');
-  values.windBorneDebrisRegionNew = values.windBorneDebrisRegion;
-  const windMitigationDiscount = _.get(policy, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
-  const updatedRatingWindMitDiscount = _.get(rating, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
-  values.windMitFactor = windMitigationDiscount;
-  values.windMitFactorNew = (updatedRatingWindMitDiscount === undefined || updatedRatingWindMitDiscount === null) ? windMitigationDiscount : updatedRatingWindMitDiscount;
-
   // Home/Location Bottom Left
   values.yearBuilt = _.get(policy, 'property.yearBuilt');
   values.yearBuiltNew = values.yearBuilt;
@@ -220,18 +204,27 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.uwExceptions = _.get(policy, 'underwritingExceptions');
 
 
-  // NEW WIND MITIGATION MAPPING
+  // START: WIND MITIGATION MAPPING
   values.property.windMitigation.roofCovering = _.get(policy, 'property.windMitigation.roofCovering');
   values.property.windMitigation.roofDeckAttachment = _.get(policy, 'property.windMitigation.roofDeckAttachment');
   values.property.windMitigation.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
   values.property.windMitigation.roofGeometry = _.get(policy, 'property.windMitigation.roofGeometry');
   values.property.windMitigation.secondaryWaterResistance = _.get(policy, 'property.windMitigation.secondaryWaterResistance');
   values.property.windMitigation.openingProtection = _.get(policy, 'property.windMitigation.openingProtection');
+  values.property.windMitigation.floridaBuildingCodeWindSpeed = _.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeed');
+  values.property.windMitigation.floridaBuildingCodeWindSpeedDesign = _.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign');
+  values.property.windMitigation.terrain = _.get(policy, 'property.windMitigation.terrain');
+  values.property.windMitigation.internalPressureDesign = _.get(policy, 'property.windMitigation.internalPressureDesign');
+  values.property.windMitigation.windBorneDebrisRegion = _.get(policy, 'property.windMitigation.windBorneDebrisRegion');
+  values.property.windMitigation.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
 
-  values.property.windMitigation.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
-  values.property.windMitigation.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
-  values.property.windMitigation.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
-  values.property.windMitigation.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
+  // display only values
+  const windMitigationDiscount = _.get(policy, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
+  const updatedRatingWindMitDiscount = _.get(rating, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
+  values.windMitFactor = windMitigationDiscount;
+  values.windMitFactorRated = updatedRatingWindMitDiscount || windMitigationDiscount;
+
+  // END: WIND MITIGATION
 
   return values;
 };

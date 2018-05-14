@@ -94,74 +94,54 @@ const WindMitigation = ({ questions }) => (
         <div className="form-group-double-element">
           <Field
             label="FBC Wind Speed"
-            name="floridaBuildingCodeWindSpeed"
-            component={Input}
-            disabled
-          />
-          <Field
-            name="floridaBuildingCodeWindSpeedNew"
+            name="property.windMitigation.floridaBuildingCodeWindSpeed"
             component={Numbers}
             decimalScale={0}
             validate={[validation.isRequired, validation.isNumbersOnly]}
+            showInitial
           />
         </div>
         <div className="form-group-double-element">
           <Field
             label="FBC Wind Speed Design"
-            name="floridaBuildingCodeWindSpeedDesign"
-            component={Input}
-            disabled
-          />
-          <Field
-            name="floridaBuildingCodeWindSpeedDesignNew"
+            name="property.windMitigation.floridaBuildingCodeWindSpeedDesign"
             component={Numbers}
             decimalScale={0}
             validate={[validation.isRequired, validation.isNumbersOnly]}
+            showInitial
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            label="Terrain"
-            name="terrain"
-            component={Input}
-            disabled
-          />
-          <Field
-            name="terrainNew"
+            label="FBC Wind Speed Design"
+            name="property.windMitigation.terrain"
             styleName="propertyTerrain"
             component={Select}
             answers={getAnswers('terrain', questions)}
             validate={validation.isRequired}
+            showInitial
           />
         </div>
         <div className="form-group-double-element">
           <Field
             label="Internal Pressure Design"
-            name="internalPressureDesign"
-            component={Input}
-            disabled
-          />
-          <Field
-            name="internalPressureDesignNew"
+            name="property.windMitigation.internalPressureDesign"
             answers={getAnswers('internalPressureDesign', questions)}
             component={Select}
             validate={validation.isRequired}
+            showInitial
           />
         </div>
         <div className="form-group-double-element">
-          <Field
-            label="Wind Borne Debris Region (WBDR)"
-            name="windBorneDebrisRegion"
-            component={Input}
-            disabled
-          />
           <div className="flex-child discounts-sprinkler">
             <Field
               segmented
-              name="windBorneDebrisRegionNew"
+              label="Wind Borne Debris Region (WBDR)"
+              name="windBorneDebrisRegion.windBorneDebrisRegion"
               answers={getAnswers('windBorneDebrisRegion', questions)}
               component={Radio}
               validate={validation.isRequired}
+              showInitial
             />
           </div>
         </div>
@@ -173,9 +153,8 @@ const WindMitigation = ({ questions }) => (
             disabled
           />
           <Field
-            name="windMitFactorNew"
+            name="windMitFactorRated"
             component={Input}
-            validate={validation.isRequired}
             disabled
           />
         </div>
