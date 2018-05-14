@@ -42,14 +42,14 @@ export const getNewPolicyNumber = (state) => {
   return policy
     ? policy.value[0]
       ? policy.policyNumber : null
-    : null
+    : null;
 };
 
 export const handleInitialize = ({ service = {}, questions = [] }) => {
   const { latestPolicy, getRate } = service;
   const policy = latestPolicy || {};
   const rating = getRate || {};
-  const values = { coverageLimits: { dwelling: {} }, policyHolderMailingAddress: {} };
+  const values = { property: { windMitigation: {} }, coverageLimits: { dwelling: {} }, policyHolderMailingAddress: {} };
 
   // Bail if we don't have all our info
   if (!latestPolicy && !getRate) { return values; }
@@ -488,12 +488,13 @@ export class Endorsements extends React.Component {
                   setCalculate={this.setCalculate}
                 >
                   {/* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */}
-                  <button id="cancel-button"
-                          type="button"
-                          className="btn btn-secondary"
-                          tabIndex="0"
-                          onClick={() => this.setCalculate()}
-                          onKeyPress={(event) => event.charCode === 13 && this.setCalculate()}
+                  <button
+                    id="cancel-button"
+                    type="button"
+                    className="btn btn-secondary"
+                    tabIndex="0"
+                    onClick={() => this.setCalculate()}
+                    onKeyPress={event => event.charCode === 13 && this.setCalculate()}
                   >Cancel
                   </button>
                   <button

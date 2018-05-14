@@ -5,7 +5,9 @@ import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers } from '../../../utilities/forms';
 
-const { Input, Select, Radio, Numbers } = Inputs;
+const {
+  Input, Select, Radio, Numbers
+} = Inputs;
 const { validation } = lifecycle;
 
 const WindMitigation = ({ questions }) => (
@@ -19,16 +21,11 @@ const WindMitigation = ({ questions }) => (
         </div>
         <div className="form-group-double-element">
           <Field
-            label="Roof Covering"
-            name="roofCovering"
-            component={Input}
-            disabled
-          />
-          <Field
             name="roofCoveringNew"
             answers={getAnswers('roofCovering', questions)}
             component={Select}
             validate={validation.isRequired}
+            showInitial
           />
         </div>
         <div className="form-group-double-element">
