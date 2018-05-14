@@ -42,14 +42,14 @@ export const getNewPolicyNumber = (state) => {
   return policy
     ? policy.value[0]
       ? policy.policyNumber : null
-    : null
+    : null;
 };
 
 export const handleInitialize = ({ service = {}, questions = [] }) => {
   const { latestPolicy, getRate } = service;
   const policy = latestPolicy || {};
   const rating = getRate || {};
-  const values = { coverageLimits: { dwelling: {} }, policyHolderMailingAddress: {} };
+  const values = { property: { windMitigation: {} }, coverageLimits: { dwelling: {} }, policyHolderMailingAddress: {} };
 
   // Bail if we don't have all our info
   if (!latestPolicy && !getRate) { return values; }
@@ -132,18 +132,6 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.billPlanNew = values.billPlan;
 
   // Coverage Mid Left
-  values.roofCovering = _.get(policy, 'property.windMitigation.roofCovering');
-  values.roofCoveringNew = values.roofCovering;
-  values.roofDeckAttachment = _.get(policy, 'property.windMitigation.roofDeckAttachment');
-  values.roofDeckAttachmentNew = values.roofDeckAttachment;
-  values.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
-  values.roofToWallConnectionNew = values.roofToWallConnection;
-  values.roofGeometry = _.get(policy, 'property.windMitigation.roofGeometry');
-  values.roofGeometryNew = values.roofGeometry;
-  values.secondaryWaterResistance = _.get(policy, 'property.windMitigation.secondaryWaterResistance');
-  values.secondaryWaterResistanceNew = _.get(policy, 'property.windMitigation.secondaryWaterResistance');
-  values.openingProtection = _.get(policy, 'property.windMitigation.openingProtection');
-  values.openingProtectionNew = values.openingProtection;
   values.electronicDelivery = _.get(policy, 'policyHolders[0].electronicDelivery') ? 'Yes' : 'No';
   values.electronicDeliveryNew = !!_.get(policy, 'policyHolders[0].electronicDelivery');
 
@@ -230,6 +218,20 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.propertyZipNew = values.propertyZip;
 
   values.uwExceptions = _.get(policy, 'underwritingExceptions');
+
+
+  // NEW WIND MITIGATION MAPPING
+  values.property.windMitigation.roofCovering = _.get(policy, 'property.windMitigation.roofCovering');
+  values.property.windMitigation.roofDeckAttachment = _.get(policy, 'property.windMitigation.roofDeckAttachment');
+  values.property.windMitigation.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
+  values.property.windMitigation.roofGeometry = _.get(policy, 'property.windMitigation.roofGeometry');
+  values.property.windMitigation.secondaryWaterResistance = _.get(policy, 'property.windMitigation.secondaryWaterResistance');
+  values.property.windMitigation.openingProtection = _.get(policy, 'property.windMitigation.openingProtection');
+
+  values.property.windMitigation.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
+  values.property.windMitigation.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
+  values.property.windMitigation.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
+  values.property.windMitigation.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
 
   return values;
 };
@@ -488,12 +490,13 @@ export class Endorsements extends React.Component {
                   setCalculate={this.setCalculate}
                 >
                   {/* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */}
-                  <button id="cancel-button"
-                          type="button"
-                          className="btn btn-secondary"
-                          tabIndex="0"
-                          onClick={() => this.setCalculate()}
-                          onKeyPress={(event) => event.charCode === 13 && this.setCalculate()}
+                  <button
+                    id="cancel-button"
+                    type="button"
+                    className="btn btn-secondary"
+                    tabIndex="0"
+                    onClick={() => this.setCalculate()}
+                    onKeyPress={event => event.charCode === 13 && this.setCalculate()}
                   >Cancel
                   </button>
                   <button

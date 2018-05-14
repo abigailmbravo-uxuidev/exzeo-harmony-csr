@@ -5,7 +5,9 @@ import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers } from '../../../utilities/forms';
 
-const { Input, Select, Radio, Numbers } = Inputs;
+const {
+  Input, Select, Radio, Numbers
+} = Inputs;
 const { validation } = lifecycle;
 
 const WindMitigation = ({ questions }) => (
@@ -20,90 +22,65 @@ const WindMitigation = ({ questions }) => (
         <div className="form-group-double-element">
           <Field
             label="Roof Covering"
-            name="roofCovering"
-            component={Input}
-            disabled
-          />
-          <Field
-            name="roofCoveringNew"
+            name="property.windMitigation.roofCovering"
             answers={getAnswers('roofCovering', questions)}
             component={Select}
             validate={validation.isRequired}
+            showInitial
           />
         </div>
         <div className="form-group-double-element">
           <Field
             label="Roof Deck Attachment"
-            name="roofDeckAttachment"
-            component={Input}
-            disabled
-          />
-          <Field
-            name="roofDeckAttachmentNew"
+            name="property.windMitigation.roofDeckAttachment"
             answers={getAnswers('roofDeckAttachment', questions)}
             component={Select}
             validate={validation.isRequired}
+            showInitial
           />
         </div>
         <div className="form-group-double-element">
           <Field
             label="Roof to Wall Attachment"
-            name="roofToWallConnection"
-            component={Input}
-            disabled
-          />
-          <Field
-            name="roofToWallConnectionNew"
+            name="property.windMitigation.roofToWallConnection"
             answers={getAnswers('roofToWallConnection', questions)}
             styleName="weakestRoofWallConnect"
             component={Select}
             validate={validation.isRequired}
+            showInitial
           />
         </div>
         <div className="form-group-double-element">
           <Field
             label="Roof Geometry"
-            name="roofGeometry"
-            component={Input}
-            disabled
-          />
-          <Field
-            label=""
-            name="roofGeometryNew"
+            name="property.windMitigation.roofGeometry"
             answers={getAnswers('roofGeometry', questions)}
             component={Select}
             validate={validation.isRequired}
+            showInitial
           />
         </div>
         <div className="form-group-double-element">
-          <Field
-            label="Secondary Water Resistance (SWR)"
-            name="secondaryWaterResistance"
-            component={Input}
-            disabled
-          />
           <div className="flex-child discounts-sprinkler">
             <Field
               segmented
-              name="secondaryWaterResistanceNew"
+              label="Secondary Water Resistance (SWR)"
+              name="property.windMitigation.secondaryWaterResistance"
               answers={getAnswers('secondaryWaterResistance', questions)}
               component={Radio}
               validate={validation.isRequired}
+              showInitial
             />
           </div>
         </div>
         <div className="form-group-double-element">
           <Field
             label="Opening Protection"
-            name="openingProtection"
-            component={Input}
-            disabled
-          />
-          <Field
-            name="openingProtectionNew"
+            name="property.windMitigation.openingProtection"
             answers={getAnswers('openingProtection', questions)}
             component={Select}
             validate={validation.isRequired}
+            showInitial
           />
         </div>
       </div>
