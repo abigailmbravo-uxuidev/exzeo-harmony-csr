@@ -32,18 +32,14 @@ const Coverage = ({
         </div>
         <div className="form-group-double-element">
           <Field
-            name="dwellingAmount"
+            name="coverageLimits.dwelling.amount"
             label={`Dwelling (A) ($ ${String(initialValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $ ${String(initialValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`}
-            component={Currency}
-            disabled
-          />
-          <Field
-            name="dwellingAmountNew"
             component={Currency}
             validate={[validation.isRequired, validation.isDwellingRange]}
             parse={parse.toNumber}
             normalize={normalizeDwellingAmount}
             noDecimal
+            showInitial
           />
         </div>
         <div className="form-group-double-element">

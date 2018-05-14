@@ -49,7 +49,7 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   const { latestPolicy, getRate } = service;
   const policy = latestPolicy || {};
   const rating = getRate || {};
-  const values = {};
+  const values = { coverageLimits: { dwelling: {} }, policyHolderMailingAddress: {} };
 
   // Bail if we don't have all our info
   if (!latestPolicy && !getRate) { return values; }
@@ -71,7 +71,7 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.clearFields = false;
   values.policyID = policy._id;
   values.endorsementDateNew = endorsementUtils.setEndorsementDate(policy.effectiveDate, policy.endDate);
-  values.dwellingAmount = dwelling;
+  values.coverageLimits.dwelling.amount = dwelling;
   values.dwellingAmountNew = values.dwellingAmount;
   values.otherStructuresAmount = otherStructures;
   values.otherStructuresAmountNew = values.otherStructuresAmount;
