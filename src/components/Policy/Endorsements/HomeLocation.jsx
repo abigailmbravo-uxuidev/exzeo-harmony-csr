@@ -5,7 +5,9 @@ import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers } from '../../../utilities/forms';
 
-const { Input, Select, SelectInteger, Numbers } = Inputs;
+const {
+  Input, Select, SelectInteger, Numbers
+} = Inputs;
 const { validation } = lifecycle;
 
 const HomeLocation = ({ questions }) => (
@@ -19,84 +21,57 @@ const HomeLocation = ({ questions }) => (
         </div>
         <div className="form-group-double-element">
           <Field
-            name="yearBuilt"
+            name="property.yearBuilt"
             label="Year Home Built"
-            component={Input}
-            disabled
-          />
-          <Field
-            name="yearBuiltNew"
             component={Numbers}
             decimalScale={0}
             validate={validation.isNumbersOnly}
+            showInitial
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            name="constructionType"
+            name="property.constructionType"
             label="Construction"
-            disabled
-            component={Input}
-          />
-          <Field
-            name="constructionTypeNew"
             component={Select}
             answers={getAnswers('constructionType', questions)}
+            showInitial
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            name="protectionClass"
+            name="property.protectionClass"
             label="Protection Class"
-            component={Numbers}
-            prefix={'0'}
-            disabled
-          />
-
-          <Field
-            name="protectionClassNew"
             component={SelectInteger}
             answers={getAnswers('protectionClass', questions)}
+            showInitial
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            name="buildingCodeEffectivenessGrading"
+            name="property.buildingCodeEffectivenessGrading"
             label="BCEG"
-            component={Numbers}
-            prefix={'0'}
-            disabled
-          />
-          <Field
-            name="buildingCodeEffectivenessGradingNew"
             component={SelectInteger}
             answers={getAnswers('buildingCodeEffectivenessGrading', questions)}
+            showInitial
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            name="familyUnits"
+            name="property.familyUnits"
             label="Family Units"
-            component={Input}
-            disabled
-          />
-          <Field
-            name="familyUnitsNew"
             component={Select}
             answers={getAnswers('familyUnits', questions)}
+            showInitial
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            name="floodZone"
+            name="property.floodZone"
             label="Flood Zone"
-            component={Input}
-            disabled
-          />
-          <Field
-            name="floodZoneNew"
             component={Select}
             answers={getAnswers('floodZone', questions)}
+            showInitial
           />
         </div>
       </div>
@@ -107,81 +82,57 @@ const HomeLocation = ({ questions }) => (
         </div>
         <div className="form-group-double-element">
           <Field
-            name="distanceToTidalWater"
+            name="property.distanceToTidalWater"
             label="Tidal Waters Dist."
-            component={Input}
-            disabled
-          />
-          <Field
-            name="distanceToTidalWaterNew"
             component={Numbers}
             decimalScale={2}
+            showInitial
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            name="distanceToFireHydrant"
+            name="property.distanceToFireHydrant"
             label="Fire Hydrant Dist."
-            component={Input}
-            disabled
-          />
-          <Field
-            name="distanceToFireHydrantNew"
             component={Numbers}
             decimalScale={2}
+            showInitial
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            name="distanceToFireStation"
+            name="property.distanceToFireStation"
             label="Fire Station Dist."
-            component={Input}
-            disabled
-          />
-          <Field
-            name="distanceToFireStationNew"
             component={Numbers}
             decimalScale={2}
+            showInitial
           />
         </div>
         <div className="form-group-double-element">
           <Field
             label="Residence Type"
-            name="residenceType"
-            component={Input}
-            disabled
-          />
-          <Field
-            name="residenceTypeNew"
+            name="property.residenceType"
             component={Select}
             answers={getAnswers('residenceType', questions)}
+            showInitial
           />
         </div>
         <div className="form-group-double-element">
           <Field
-            name="squareFeet"
+            name="property.squareFeet"
             label="Sq. Ft. of Home"
-            component={Input}
-            disabled
-          />
-          <Field
-            name="squareFeetNew"
             component={Numbers}
             decimalScale={0}
             validate={validation.isRequired}
+            showInitial
           />
         </div>
         <div className="form-group-double-element">
           <Field
             label="Year Roof Built"
-            name="yearOfRoof"
-            component={Input}
-            disabled
-          />
-          <Field
-            name="yearOfRoofNew"
+            name="property.yearOfRoof"
             component={Numbers}
             decimalScale={0}
+            showInitial
           />
         </div>
       </div>

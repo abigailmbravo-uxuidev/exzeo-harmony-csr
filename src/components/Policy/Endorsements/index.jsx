@@ -150,32 +150,21 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.electronicDeliveryNew = !!_.get(policy, 'policyHolders[0].electronicDelivery');
 
   // Home/Location Bottom Left
-  values.yearBuilt = _.get(policy, 'property.yearBuilt');
-  values.yearBuiltNew = values.yearBuilt;
-  values.constructionType = _.get(policy, 'property.constructionType');
-  values.constructionTypeNew = values.constructionType;
-  values.yearOfRoof = _.get(policy, 'property.yearOfRoof', '');
-  values.yearOfRoofNew = values.yearOfRoof;
-  values.protectionClass = _.get(policy, 'property.protectionClass', '');
-  values.protectionClassNew = values.protectionClass;
-  values.buildingCodeEffectivenessGrading = _.get(policy, 'property.buildingCodeEffectivenessGrading', '');
+  values.property.yearBuilt = _.get(policy, 'property.yearBuilt');
+  values.property.constructionType = _.get(policy, 'property.constructionType');
+  values.property.yearOfRoof = _.get(policy, 'property.yearOfRoof', '');
+  values.property.protectionClass = _.get(policy, 'property.protectionClass', '');
+  values.property.buildingCodeEffectivenessGrading = _.get(policy, 'property.buildingCodeEffectivenessGrading', '');
   values.buildingCodeEffectivenessGradingNew = values.buildingCodeEffectivenessGrading;
-  values.familyUnits = _.get(policy, 'property.familyUnits');
-  values.familyUnitsNew = values.familyUnits;
+  values.property.familyUnits = _.get(policy, 'property.familyUnits');
 
   // Home/Location Bottom Right
-  values.distanceToTidalWater = _.get(policy, 'property.distanceToTidalWater');
-  values.distanceToTidalWaterNew = values.distanceToTidalWater;
-  values.distanceToFireHydrant = _.get(policy, 'property.distanceToFireHydrant');
-  values.distanceToFireHydrantNew = values.distanceToFireHydrant;
-  values.distanceToFireStation = _.get(policy, 'property.distanceToFireStation');
-  values.distanceToFireStationNew = values.distanceToFireStation;
-  values.residenceType = _.get(policy, 'property.residenceType');
-  values.residenceTypeNew = values.residenceType;
-  values.squareFeet = _.get(policy, 'property.squareFeet', '');
-  values.squareFeetNew = values.squareFeet;
-  values.floodZone = _.get(policy, 'property.floodZone');
-  values.floodZoneNew = values.floodZone;
+  values.property.distanceToTidalWater = _.get(policy, 'property.distanceToTidalWater');
+  values.property.distanceToFireHydrant = _.get(policy, 'property.distanceToFireHydrant');
+  values.property.distanceToFireStation = _.get(policy, 'property.distanceToFireStation');
+  values.property.residenceType = _.get(policy, 'property.residenceType');
+  values.property.squareFeet = _.get(policy, 'property.squareFeet', '');
+  values.property.floodZone = _.get(policy, 'property.floodZone');
 
   // Policyholder 1
   values.pH1email = _.get(policy, 'policyHolders[0].emailAddress');
