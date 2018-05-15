@@ -80,7 +80,7 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
     underwritingAnswers: {
       rented: {},
       monthsOccupied: {},
-      noPriorInsuranceSurcharge: {},
+      noPriorInsuranceSurcharge: {}
 
     },
     rating: {
@@ -114,7 +114,7 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   // Coverage Top Left
   values.clearFields = false;
   values.policyID = policy._id;
-  values.endorsementDateNew = endorsementUtils.setEndorsementDate(policy.effectiveDate, policy.endDate);
+  values.endorsementDate = endorsementUtils.setEndorsementDate(policy.effectiveDate, policy.endDate);
   values.coverageLimits.dwelling.amount = dwelling;
   values.coverageLimits.otherStructures.amount = otherStructures;
   values.coverageLimits.otherStructures.percentage = endorsementUtils.calculatePercentage(otherStructures, dwelling);
@@ -256,10 +256,10 @@ export class Endorsements extends React.Component {
     // TODO this only happens after SAVE or SUBMIT
     if (!_.isEqual(this.props.newPolicyNumber, nextProps.newPolicyNumber)) {
       this.props.actions.policyStateActions.updatePolicy(true, nextProps.newPolicyNumber);
-      const endorsementDateNew = endorsementUtils.setEndorsementDate(_.get(nextProps.policy, 'effectiveDate'), _.get(nextProps.policy, 'endDate'));
+      const endorsementDate = endorsementUtils.setEndorsementDate(_.get(nextProps.policy, 'effectiveDate'), _.get(nextProps.policy, 'endDate'));
 
       nextProps.dispatch(batchActions([
-        change('Endorsements', 'endorsementDateNew', endorsementDateNew),
+        change('Endorsements', 'endorsementDate', endorsementDate),
         change('Endorsements', 'newEndorsementAmount', ''),
         change('Endorsements', 'newEndorsementPremium', ''),
         change('Endorsements', 'newAnnualPremium', '')
@@ -344,11 +344,11 @@ export class Endorsements extends React.Component {
 
     const roundedDwellingAmount = Math.round(value / 1000) * 1000;
 
-    if (fieldValues.otherStructuresNew !== 'other') {
-      changeF('otherStructuresAmountNew', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.otherStructuresNew));
+    if (fieldValues.coverageLimits.otherStructures.amount !== 'other') {
+      changeF('coverageLimits.otherStructures.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.coverageLimits.otherStructures.amount));
     }
-    if (fieldValues.personalPropertyNew !== 'other') {
-      changeF('personalPropertyAmountNew', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.personalPropertyNew));
+    if (fieldValues.coverageLimits.personalProperty.amount !== 'other') {
+      changeF('coverageLimits.personalProperty.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.coverageLimits.personalProperty.amount));
     }
     changeF('calculatedHurricaneNew', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.hurricaneNew));
     changeF('lossOfUseNew', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, 10));
@@ -425,7 +425,7 @@ export class Endorsements extends React.Component {
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         {this.props.submitting && <Loader />}
 
-        {initialValues.endorsementDateNew ?
+        {initialValues.endorsementDate ?
           <form
             id="Endorsements"
             className="content-wrapper"
@@ -527,7 +527,7 @@ const mapStateToProps = state => ({
   summaryLedger: state.service.getSummaryLedger || defaultObj,
   zipcodeSettings: state.service.getZipcodeSettings,
   userProfile: state.authState.userProfile || defaultObj,
-  selectedValues: selector(state, 'personalPropertyNew', 'clearFields')
+  selectedValues: selector(state, 'coverageLimits.personalProperty.amount', 'clearFields')
 });
 
 const mapDispatchToProps = dispatch => ({
