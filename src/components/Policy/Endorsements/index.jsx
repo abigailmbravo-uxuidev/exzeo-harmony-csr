@@ -300,9 +300,9 @@ export class Endorsements extends React.Component {
     return value;
   };
 
-  normalizeIncidentalOccupancies = (value, allValues, previousValue, previousAllValues) => {
+  normalizeIncidentalOccupancies = (value, previousValue, allValues) => {
     const { change: changeF } = this.props;
-    if (!allValues.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer &&
+    if (!allValues.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer &&
         !allValues.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer) {
       changeF('coverageOptions.liabilityIncidentalOccupancies.answer', false);
     }
