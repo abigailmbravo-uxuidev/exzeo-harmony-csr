@@ -54,15 +54,15 @@ describe('Testing PolicyHolder component', () => {
     };
     const wrapper = shallow(<PolicyHolderComponent store={store} {...props} />);
 
-    wrapper.find('[name="pH1FirstName"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="pH1LastName"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="pH1phone"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="pH1secondaryPhone"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="pH1email"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="pH2FirstName"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="pH2LastName"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="pH2phone"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="pH2secondaryPhone"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="pH2email"]').simulate('change', { target: { value: 'ABC@gmail.com' } });
+    wrapper.find('[name="policyHolders[0].firstName"]').simulate('change', { target: { value: 'ABC' } });
+    wrapper.find('[name="policyHolders[0].lastName"]').simulate('change', { target: { value: 'ABC' } });
+    wrapper.find('[name="policyHolders[0].primaryPhoneNumber"]').simulate('change', { target: { value: 'ABC' } });
+    wrapper.find('[name="policyHolders[0].secondaryPhoneNumber"]').simulate('change', { target: { value: 'ABC' } });
+    wrapper.find('[name="policyHolders[0].emailAddress"]').simulate('change', { target: { value: 'ABC' } });
+    wrapper.find('[name="policyHolders[1].firstName"]').simulate('change', { target: { value: 'ABC' } });
+    wrapper.find('[name="policyHolders[1].lastName"]').simulate('change', { target: { value: 'ABC' } });
+    wrapper.find('[name="policyHolders[1].primaryPhoneNumber"]').simulate('change', { target: { value: 'ABC' } });
+    wrapper.find('[name="policyHolders[1].secondaryPhoneNumber"]').simulate('change', { target: { value: 'ABC' } });
+    wrapper.find('[name="policyHolders[1].emailAddress"]').simulate('change', { target: { value: 'ABC' } });
   });
 });

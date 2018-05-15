@@ -6,7 +6,7 @@ import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers } from '../../../utilities/forms';
 
 const {
-  Input, Select, Radio, Numbers
+  Input, SelectGrouped, Radio, Numbers
 } = Inputs;
 const { validation } = lifecycle;
 
@@ -24,9 +24,9 @@ const WindMitigation = ({ questions }) => (
             label="Roof Covering"
             name="property.windMitigation.roofCovering"
             answers={getAnswers('roofCovering', questions)}
-            component={Select}
+            component={SelectGrouped}
             validate={validation.isRequired}
-            showInitial
+
           />
         </div>
         <div className="form-group-double-element">
@@ -34,9 +34,9 @@ const WindMitigation = ({ questions }) => (
             label="Roof Deck Attachment"
             name="property.windMitigation.roofDeckAttachment"
             answers={getAnswers('roofDeckAttachment', questions)}
-            component={Select}
+            component={SelectGrouped}
             validate={validation.isRequired}
-            showInitial
+
           />
         </div>
         <div className="form-group-double-element">
@@ -45,9 +45,9 @@ const WindMitigation = ({ questions }) => (
             name="property.windMitigation.roofToWallConnection"
             answers={getAnswers('roofToWallConnection', questions)}
             styleName="weakestRoofWallConnect"
-            component={Select}
+            component={SelectGrouped}
             validate={validation.isRequired}
-            showInitial
+
           />
         </div>
         <div className="form-group-double-element">
@@ -55,9 +55,9 @@ const WindMitigation = ({ questions }) => (
             label="Roof Geometry"
             name="property.windMitigation.roofGeometry"
             answers={getAnswers('roofGeometry', questions)}
-            component={Select}
+            component={SelectGrouped}
             validate={validation.isRequired}
-            showInitial
+
           />
         </div>
         <div className="form-group-double-element">
@@ -69,7 +69,7 @@ const WindMitigation = ({ questions }) => (
               answers={getAnswers('secondaryWaterResistance', questions)}
               component={Radio}
               validate={validation.isRequired}
-              showInitial
+
             />
           </div>
         </div>
@@ -78,9 +78,9 @@ const WindMitigation = ({ questions }) => (
             label="Opening Protection"
             name="property.windMitigation.openingProtection"
             answers={getAnswers('openingProtection', questions)}
-            component={Select}
+            component={SelectGrouped}
             validate={validation.isRequired}
-            showInitial
+
           />
         </div>
       </div>
@@ -96,7 +96,7 @@ const WindMitigation = ({ questions }) => (
             component={Numbers}
             decimalScale={0}
             validate={[validation.isRequired, validation.isNumbersOnly]}
-            showInitial
+
           />
         </div>
         <div className="form-group-double-element">
@@ -106,7 +106,7 @@ const WindMitigation = ({ questions }) => (
             component={Numbers}
             decimalScale={0}
             validate={[validation.isRequired, validation.isNumbersOnly]}
-            showInitial
+
           />
         </div>
         <div className="form-group-double-element">
@@ -114,10 +114,10 @@ const WindMitigation = ({ questions }) => (
             label="FBC Wind Speed Design"
             name="property.windMitigation.terrain"
             styleName="propertyTerrain"
-            component={Select}
+            component={SelectGrouped}
             answers={getAnswers('terrain', questions)}
             validate={validation.isRequired}
-            showInitial
+
           />
         </div>
         <div className="form-group-double-element">
@@ -125,9 +125,9 @@ const WindMitigation = ({ questions }) => (
             label="Internal Pressure Design"
             name="property.windMitigation.internalPressureDesign"
             answers={getAnswers('internalPressureDesign', questions)}
-            component={Select}
+            component={SelectGrouped}
             validate={validation.isRequired}
-            showInitial
+
           />
         </div>
         <div className="form-group-double-element">
@@ -139,7 +139,7 @@ const WindMitigation = ({ questions }) => (
               answers={getAnswers('windBorneDebrisRegion', questions)}
               component={Radio}
               validate={validation.isRequired}
-              showInitial
+
             />
           </div>
         </div>
