@@ -105,7 +105,7 @@ const WindMitigation = ({ questions }) => (
           component={RadioGrouped}
           validate={validation.isRequired}
         />
-        <div className="form-group-double-element">
+      <div className="form-group-double-element wind-mit">
           <Field
             label="Wind Mit Factor"
             name="windMitFactor"
