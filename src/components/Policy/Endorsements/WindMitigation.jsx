@@ -6,7 +6,7 @@ import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers } from '../../../utilities/forms';
 
 const {
-  Input, SelectGrouped, Radio, Numbers
+  Input, SelectGrouped, RadioGrouped, IntegerGrouped
 } = Inputs;
 const { validation } = lifecycle;
 
@@ -67,7 +67,7 @@ const WindMitigation = ({ questions }) => (
               label="Secondary Water Resistance (SWR)"
               name="property.windMitigation.secondaryWaterResistance"
               answers={getAnswers('secondaryWaterResistance', questions)}
-              component={Radio}
+              component={RadioGrouped}
               validate={validation.isRequired}
 
             />
@@ -93,8 +93,7 @@ const WindMitigation = ({ questions }) => (
           <Field
             label="FBC Wind Speed"
             name="property.windMitigation.floridaBuildingCodeWindSpeed"
-            component={Numbers}
-            decimalScale={0}
+            component={IntegerGrouped}
             validate={[validation.isRequired, validation.isNumbersOnly]}
 
           />
@@ -103,8 +102,7 @@ const WindMitigation = ({ questions }) => (
           <Field
             label="FBC Wind Speed Design"
             name="property.windMitigation.floridaBuildingCodeWindSpeedDesign"
-            component={Numbers}
-            decimalScale={0}
+            component={IntegerGrouped}
             validate={[validation.isRequired, validation.isNumbersOnly]}
 
           />
@@ -137,7 +135,7 @@ const WindMitigation = ({ questions }) => (
               label="Wind Borne Debris Region (WBDR)"
               name="property.windMitigation.windBorneDebrisRegion"
               answers={getAnswers('windBorneDebrisRegion', questions)}
-              component={Radio}
+              component={RadioGrouped}
               validate={validation.isRequired}
 
             />
