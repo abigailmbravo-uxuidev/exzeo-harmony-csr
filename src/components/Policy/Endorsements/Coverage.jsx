@@ -255,7 +255,7 @@ Coverage.propTypes = {
   normalizeDwellingAmount: PropTypes.func,
   normalizePersonalPropertyDependencies: PropTypes.func,
   personalPropertyNewVal: PropTypes.number,
-  questions: PropTypes.array,
+  questions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   underwritingQuestions: PropTypes.array
 };
 
