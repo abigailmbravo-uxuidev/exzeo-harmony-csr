@@ -100,6 +100,7 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   if (!latestPolicy && !getRate) { return values; }
   // Set some things up
   values.uwExceptions = _.get(policy, 'underwritingExceptions');
+  values.transactionType = 'Endorsement';
   values.dwellingMin = _.get(policy, 'coverageLimits.dwelling.minAmount');
   values.dwellingMax = _.get(policy, 'coverageLimits.dwelling.maxAmount');
   values.billToType = _.get(policy, 'billToType');
@@ -241,8 +242,7 @@ export class Endorsements extends React.Component {
   };
 
   save = async (data, dispatch, props) => {
-    await props.actions.cgActions.submitEndorsement(data, props);
-
+    await props.actions.serviceActions.submitEndorsementForm(data, props);
     this.setState({ isCalculated: false });
     this.resetCalculate();
     this.props.reset();
