@@ -173,11 +173,12 @@
                     }
                   }
 
-                  label {
+                  label, .label-segmented {
                     flex-grow: 0;
                     flex-shrink: 0;
                     width: calc(33.33% - .5rem);
                     margin: 0 $padding 0 0;
+                    display: block;
                     text-align: right;
                     @media (max-width: 1600px) {
                       font-size: $font-size-sm;
@@ -185,43 +186,38 @@
                   }
 
                   .initial-value {
-                    flex-grow: 0;
-                    flex-shrink: 0;
                     width: calc(33.33% - .5rem);
-                    margin: 0 $padding 0 0;
-                    padding: $padding/2;
-                    border: $border-width solid $warm-gray-03;
-                    border-radius: $border-radius;
-                    background: $warm-gray-00;
+                    margin-right: $padding;
+
+                    > input[type="text"],
+                    select,
+                    .segmented-answer-wrapper {
+                      width: 100%;
+                    }
                   }
 
-                  input[type="text"] {
+                  > input[type="text"],
+                  select,
+                  .segmented-answer-wrapper {
                     width: 33.33%;
                   }
 
                   > .form-group {
-                      width: 33.33%;
-                      margin-bottom: 0;
+                    margin-bottom: 0;
 
-                      select {
-                        width: 100%;
-                      }
+                    select {
+                      width: 100%;
+                    }
                   }
                 }
 
                 .segmented {
-                  flex-direction: column;
                   width: 100%;
                   margin: 0;
-
-                  .label-segmented {
-                    margin: 0;
-                  }
 
                   .segmented-answer-wrapper {
                     flex-grow: 1;
                     flex-shrink: 1;
-                    width: 100%;
                     margin: 0;
 
                     > div {
@@ -230,10 +226,7 @@
                       flex-shrink: 1;
 
                       .label-segmented {
-                        flex-grow: 1;
-                        flex-shrink: 1;
                         width: 100%;
-                        margin: 0;
 
                         span {
                           font-size: $font-size-h5;
