@@ -5,8 +5,8 @@ import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 import formUtils from '../../../utilities/forms';
 
-const { CurrencyGrouped, InputGrouped, Input, Select, SelectGrouped, SelectInteger, SelectIntegerGrouped, Radio, RadioGrouped } = Inputs;
-const { validation, format } = lifecycle;
+const { CurrencyGrouped, SelectIntegerGrouped, SelectGrouped, RadioGrouped } = Inputs;
+const { validation } = lifecycle;
 
 const baseYesNoAnswers = [
   { answer: false, label: 'No' },
