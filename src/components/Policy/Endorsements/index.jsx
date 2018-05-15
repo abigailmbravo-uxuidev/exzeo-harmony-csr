@@ -76,6 +76,21 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
       propertyIncidentalOccupanciesOtherStructures: {},
       liabilityIncidentalOccupancies: {},
       personalPropertyReplacementCost: {}
+    },
+    underwritingAnswers: {
+      rented: {},
+      monthsOccupied: {},
+      noPriorInsuranceSurcharge: {},
+
+    },
+    rating: {
+      worksheet: {
+        elements: {
+          windMitigationFactors: {
+
+          }
+        }
+      }
     }
   };
 
@@ -88,8 +103,9 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   // values.effectiveDate = moment.utc(_.get(policy, 'effectiveDate')).format('YYYY-MM-DD');
   values.dwellingMin = _.get(policy, 'coverageLimits.dwelling.minAmount');
   values.dwellingMax = _.get(policy, 'coverageLimits.dwelling.maxAmount');
+  values.billToType = _.get(policy, 'billToType');
+  values.billPlan = _.get(policy, 'billPlan');
   // values.liabilityIncidentalOccupancies = false;
-
   const dwelling = _.get(policy, 'coverageLimits.dwelling.amount');
   const otherStructures = _.get(policy, 'coverageLimits.otherStructures.amount');
   const personalProperty = _.get(policy, 'coverageLimits.personalProperty.amount');
@@ -115,36 +131,19 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.coverageOptions.sinkholePerilCoverage.initialValue = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer') ? `10% of ${getQuestionName('dwellingAmount', questions)}` : 'Coverage Excluded';
   values.coverageOptions.sinkholePerilCoverage.answer = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer');
   // Coverage Top Right
-  values.personalPropertyReplacementCostCoverage = _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer', false);
-  values.personalPropertyReplacementCostCoverageNew = values.personalPropertyReplacementCostCoverage;
-  values.ordinanceOrLaw = _.get(policy, 'coverageLimits.ordinanceOrLaw.amount');
-  values.ordinanceOrLawNew = values.ordinanceOrLaw;
-  values.propertyIncidentalOccupanciesMainDwelling = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer', false);
-  values.propertyIncidentalOccupanciesMainDwellingNew = values.propertyIncidentalOccupanciesMainDwelling;
-  values.propertyIncidentalOccupanciesOtherStructures = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer', false);
-  values.propertyIncidentalOccupanciesOtherStructuresNew = values.propertyIncidentalOccupanciesOtherStructures;
-  values.liabilityIncidentalOccupancies = _.get(policy, 'coverageOptions.liabilityIncidentalOccupancies.answer', false);
-  values.liabilityIncidentalOccupanciesNew = values.liabilityIncidentalOccupancies;
-  values.townhouseRowhouse = _.get(policy, 'property.townhouseRowhouse');
-  values.townhouseRowhouseNew = values.townhouseRowhouse;
-  values.windExcluded = _.get(policy, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount') === 0 ? 'No' : 'Yes';
-  values.windExcludedNew = values.windExcluded;
-  values.rented = _.get(policy, 'underwritingAnswers.rented.answer');
-  values.rentedNew = values.rented;
-  values.monthsOccupied = _.get(policy, 'underwritingAnswers.monthsOccupied.answer');
-  values.monthsOccupiedNew = values.monthsOccupied;
-  values.noPriorInsurance = _.get(policy, 'underwritingAnswers.noPriorInsuranceSurcharge.answer');
-  values.noPriorInsuranceNew = values.noPriorInsurance;
-  values.burglarAlarm = _.get(policy, 'property.burglarAlarm');
-  values.burglarAlarmNew = values.burglarAlarm;
-  values.fireAlarm = _.get(policy, 'property.fireAlarm');
-  values.fireAlarmNew = values.fireAlarm;
-  values.sprinkler = _.get(policy, 'property.sprinkler');
-  values.sprinklerNew = values.sprinkler;
-  values.billToType = _.get(policy, 'billToType');
-  values.billToTypeNew = values.billToType;
-  values.billPlan = _.get(policy, 'billPlan');
-  values.billPlanNew = values.billPlan;
+  values.coverageOptions.personalPropertyReplacementCost.answer = _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer', false);
+  values.coverageLimits.ordinanceOrLaw.amount = _.get(policy, 'coverageLimits.ordinanceOrLaw.amount');
+  values.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer', false);
+  values.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer', false);
+  values.coverageOptions.liabilityIncidentalOccupancies.answer = _.get(policy, 'coverageOptions.liabilityIncidentalOccupancies.answer', false);
+  values.property.townhouseRowhouse = _.get(policy, 'property.townhouseRowhouse');
+  values.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount = _.get(policy, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount') === 0 ? 'No' : 'Yes';
+  values.underwritingAnswers.rented.answer = _.get(policy, 'underwritingAnswers.rented.answer');
+  values.underwritingAnswers.monthsOccupied.answer = _.get(policy, 'underwritingAnswers.monthsOccupied.answer');
+  values.underwritingAnswers.noPriorInsuranceSurcharge.answer = _.get(policy, 'underwritingAnswers.noPriorInsuranceSurcharge.answer');
+  values.property.burglarAlarm = _.get(policy, 'property.burglarAlarm');
+  values.property.fireAlarm = _.get(policy, 'property.fireAlarm');
+  values.property.sprinkler = _.get(policy, 'property.sprinkler');
 
   // Coverage Mid Left
   values.electronicDelivery = _.get(policy, 'policyHolders[0].electronicDelivery') ? 'Yes' : 'No';
