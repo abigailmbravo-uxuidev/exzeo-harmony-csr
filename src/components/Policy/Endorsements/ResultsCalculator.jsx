@@ -10,7 +10,7 @@ const ResultsCalculator = props => (
         <DateField
           validations={['date']}
           label="Endorsement Effective Date"
-          name="endorsementDateNew"
+          name="endorsementDate"
           min={moment.utc(props.min).format('YYYY-MM-DD')}
           max={moment.utc(props.max).format('YYYY-MM-DD')}
           onChange={props.setCalculate}
