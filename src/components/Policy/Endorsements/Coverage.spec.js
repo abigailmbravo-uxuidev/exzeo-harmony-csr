@@ -43,7 +43,33 @@ describe('Testing Coverage component', () => {
         }
       },
       fieldValues: {
-        personalPropertyNew: ''
+        policyHolders: [{}, {}],
+        property: { windMitigation: {}, physicalAddress: {} },
+        policyHolderMailingAddress: {},
+        coverageLimits: {
+          dwelling: {},
+          otherStructures: {},
+          personalProperty: {},
+          lossOfUse: {},
+          medicalPayments: {},
+          moldProperty: {},
+          personalLiability: {},
+          moldLiability: {},
+          ordinanceOrLaw: {}
+        },
+        deductibles: {
+          allOtherPerils: {},
+          hurricane: {},
+          sinkhole: {}
+
+        },
+        coverageOptions: {
+          sinkholePerilCoverage: {},
+          propertyIncidentalOccupanciesMainDwelling: {},
+          propertyIncidentalOccupanciesOtherStructures: {},
+          liabilityIncidentalOccupancies: {},
+          personalPropertyReplacementCost: {}
+        }
       },
       quoteData: {},
       dispatch: store.dispatch,
@@ -56,26 +82,20 @@ describe('Testing Coverage component', () => {
     };
     const wrapper = shallow(<CoverageComponent store={store} {...props} />);
 
-    wrapper.find('[name="otherStructuresNew"]').simulate('change', { target: { value: '4,540' } });
-    wrapper.find('[name="personalPropertyNew"]').simulate('change', { target: { value: '4,540' } });
-    wrapper.find('[name="personalLiabilityNew"]').simulate('change', { target: { value: '4,540' } });
-    wrapper.find('[name="moldPropertyNew"]').simulate('change', { target: { value: '10,000' } });
-    wrapper.find('[name="moldLiabilityNew"]').simulate('change', { target: { value: '50,000' } });
-    wrapper.find('[name="allOtherPerilsNew"]').simulate('change', { target: { value: '1,000' } });
-    wrapper.find('[name="hurricaneNew"]').simulate('change', { target: { value: '2,000' } });
-    wrapper.find('[name="sinkholePerilCoverageNew"]').simulate('change', { target: { value: true } });
-    wrapper.find('[name="personalPropertyReplacementCostCoverageNew"]').simulate('change', { target: { value: true } });
-    wrapper.find('[name="ordinanceOrLawNew"]').simulate('change', { target: { value: 25 } });
-    wrapper.find('[name="propertyIncidentalOccupanciesMainDwellingNew"]').simulate('change', { target: { value: true } });
-    wrapper.find('[name="propertyIncidentalOccupanciesOtherStructuresNew"]').simulate('change', { target: { value: true } });
+    wrapper.find('[name="coverageLimits.dwelling.amount"]').simulate('change', { target: { value: '4,540' } });
+    wrapper.find('[name="coverageLimits.otherStructures.amount"]').simulate('change', { target: { value: '4,540' } });
+    wrapper.find('[name="coverageLimits.otherStructures.percentage"]').simulate('change', { target: { value: '4,540' } });
+    wrapper.find('[name="coverageLimits.personalProperty.amount"]').simulate('change', { target: { value: '10,000' } });
+    wrapper.find('[name="coverageLimits.personalProperty.percentage"]').simulate('change', { target: { value: '50,000' } });
+    wrapper.find('[name="coverageLimits.lossOfUse.amount"]').simulate('change', { target: { value: '1,000' } });
+    wrapper.find('[name="coverageLimits.personalLiability.amount"]').simulate('change', { target: { value: '2,000' } });
+    wrapper.find('[name="coverageLimits.medicalPayments.amount"]').simulate('change', { target: { value: true } });
+    wrapper.find('[name="coverageLimits.moldProperty.amount"]').simulate('change', { target: { value: true } });
+    wrapper.find('[name="coverageLimits.moldLiability.amount"]').simulate('change', { target: { value: 25 } });
 
-    wrapper.find('[name="liabilityIncidentalOccupanciesNew"]').simulate('change', { target: { value: true } });
-    wrapper.find('[name="townhouseRowhouseNew"]').simulate('change', { target: { value: true } });
-    wrapper.find('[name="rentedNew"]').simulate('change', { target: { value: true } });
-    wrapper.find('[name="monthsOccupiedNew"]').simulate('change', { target: { value: '10+' } });
-    wrapper.find('[name="noPriorInsuranceNew"]').simulate('change', { target: { value: 'Yes' } });
-    wrapper.find('[name="burglarAlarmNew"]').simulate('change', { target: { value: true } });
-    wrapper.find('[name="fireAlarmNew"]').simulate('change', { target: { value: true } });
-    wrapper.find('[name="sprinklerNew"]').simulate('change', { target: { value: 'N' } });
+    wrapper.find('[name="deductibles.allOtherPerils.amount"]').simulate('change', { target: { value: true } });
+    wrapper.find('[name="deductibles.hurricane.amount"]').simulate('change', { target: { value: true } });
+
+    wrapper.find('[name="coverageOptions.sinkholePerilCoverage.answer"]').simulate('change', { target: { value: true } });
   });
 });

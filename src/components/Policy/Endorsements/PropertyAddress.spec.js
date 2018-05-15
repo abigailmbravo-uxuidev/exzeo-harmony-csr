@@ -56,10 +56,10 @@ describe('Testing PropertyAddress component', () => {
     };
     const wrapper = shallow(<PropertyAddressComponent store={store} {...props} />);
 
-    wrapper.find('[name="propertyAddress1New"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="propertyAddress2New"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="propertyCityNew"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="propertyStateNew"]').simulate('change', { target: { value: 'FL' } });
-    wrapper.find('[name="propertyZipNew"]').simulate('change', { target: { value: '33627' } });
+    wrapper.find('[name="property.physicalAddress.address1"]').simulate('change', { target: { value: 'ABC' } });
+    wrapper.find('[name="property.physicalAddress.address2"]').simulate('change', { target: { value: 'ABC' } });
+    wrapper.find('[name="property.physicalAddress.city"]').simulate('change', { target: { value: 'ABC' } });
+    wrapper.find('[name="property.physicalAddress.state"]').simulate('change', { target: { value: 'FL' } });
+    wrapper.find('[name="property.physicalAddress.zip"]').simulate('change', { target: { value: '33627' } });
   });
 });

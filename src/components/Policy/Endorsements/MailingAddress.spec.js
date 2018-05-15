@@ -43,7 +43,7 @@ describe('Testing MailingAddress component', () => {
         }
       },
       fieldValues: {
-        personalPropertyNew: ''
+        personalProperty: ''
       },
       quoteData: {},
       dispatch: store.dispatch,
@@ -56,10 +56,10 @@ describe('Testing MailingAddress component', () => {
     };
     const wrapper = shallow(<MailingAddressComponent store={store} {...props} />);
 
-    wrapper.find('[name="address1New"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="address2New"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="cityNew"]').simulate('change', { target: { value: 'ABC' } });
-    wrapper.find('[name="stateNew"]').simulate('change', { target: { value: 'FL' } });
-    wrapper.find('[name="zipNew"]').simulate('change', { target: { value: '33607' } });
+    wrapper.find('[name="policyHolderMailingAddress.address1"]').simulate('change', { target: { value: 'ABC' } });
+    wrapper.find('[name="policyHolderMailingAddress.address2"]').simulate('change', { target: { value: 'ABC' } });
+    wrapper.find('[name="policyHolderMailingAddress.city"]').simulate('change', { target: { value: 'ABC' } });
+    wrapper.find('[name="policyHolderMailingAddress.state"]').simulate('change', { target: { value: 'FL' } });
+    wrapper.find('[name="policyHolderMailingAddress.zip"]').simulate('change', { target: { value: '33607' } });
   });
 });

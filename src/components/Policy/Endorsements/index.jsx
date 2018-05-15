@@ -399,7 +399,7 @@ export class Endorsements extends React.Component {
     } = this.props;
     const { isCalculated } = this.state;
 
-    const mappedEndorsementHistory = endorsementHistory.map((endorsement) => {
+    const mappedEndorsementHistory = endorsementHistory && endorsementHistory.map((endorsement) => {
       endorsement.netChargeFormat = premiumEndorsementList.some(pe => pe === endorsement.transactionType)
         ? endorsementUtils.premiumAmountFormatter(endorsement.netCharge)
         : '';

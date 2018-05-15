@@ -56,14 +56,17 @@ describe('Testing WindMitigation component', () => {
     };
     const wrapper = shallow(<WindMitigationComponent store={store} {...props} />);
 
-    wrapper.find('[name="roofDeckAttachmentNew"]').simulate('change', { target: { value: 'Other' } });
-    wrapper.find('[name="roofToWallConnectionNew"]').simulate('change', { target: { value: 'Other' } });
-    wrapper.find('[name="secondaryWaterResistanceNew"]').simulate('change', { target: { value: 'Other' } });
-    wrapper.find('[name="openingProtectionNew"]').simulate('change', { target: { value: 'Other' } });
-    wrapper.find('[name="floridaBuildingCodeWindSpeedNew"]').simulate('change', { target: { value: '140' } });
-    wrapper.find('[name="floridaBuildingCodeWindSpeedDesignNew"]').simulate('change', { target: { value: '140' } });
-    wrapper.find('[name="terrainNew"]').simulate('change', { target: { value: 'C' } });
-    wrapper.find('[name="internalPressureDesignNew"]').simulate('change', { target: { value: 'Other' } });
-    wrapper.find('[name="windBorneDebrisRegionNew"]').simulate('change', { target: { value: 'Other' } });
+    wrapper.find('[name="property.windMitigation.roofCovering"]').simulate('change', { target: { value: 'Other' } });
+    wrapper.find('[name="property.windMitigation.roofDeckAttachment"]').simulate('change', { target: { value: 'Other' } });
+    wrapper.find('[name="property.windMitigation.roofToWallConnection"]').simulate('change', { target: { value: 'Other' } });
+    wrapper.find('[name="property.windMitigation.roofGeometry"]').simulate('change', { target: { value: 'Other' } });
+    wrapper.find('[name="property.windMitigation.secondaryWaterResistance"]').simulate('change', { target: { value: '140' } });
+    wrapper.find('[name="property.windMitigation.openingProtection"]').simulate('change', { target: { value: '140' } });
+    wrapper.find('[name="property.windMitigation.floridaBuildingCodeWindSpeed"]').simulate('change', { target: { value: 'C' } });
+    wrapper.find('[name="property.windMitigation.floridaBuildingCodeWindSpeedDesign"]').simulate('change', { target: { value: 'Other' } });
+    wrapper.find('[name="property.windMitigation.terrain"]').simulate('change', { target: { value: 'Other' } });
+    wrapper.find('[name="property.windMitigation.internalPressureDesign"]').simulate('change', { target: { value: 'Other' } });
+
+    wrapper.find('[name="property.windMitigation.windBorneDebrisRegion"]').simulate('change', { target: { value: 'Other' } });
   });
 });

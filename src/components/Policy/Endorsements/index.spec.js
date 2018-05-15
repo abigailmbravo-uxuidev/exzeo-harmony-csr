@@ -98,19 +98,12 @@ describe('Testing Endorsements component', () => {
     const wrapper = shallow(<Endorsements store={store} {...props} />);
     expect(wrapper);
 
-    calculatePercentage(100, 200);
     handleInitialize(initialState);
-    setPercentageOfValue(234, 1);
-    calculate({}, props.dispatch, props);
-    setCalculate(props, true);
-    save({}, props.dispatch, props);
     wrapper.instance().updateDwellingAndDependencies('5000', '100', {});
 
     props.getRate = { worksheet: {} };
     wrapper.instance().componentWillReceiveProps(props);
 
-    const endsDate = setEndorsementDate('2016-11-27', '2017-11-26');
-    expect(endsDate).toEqual('2017-11-26');
 
     getNewPolicyNumber(initialState);
   });
