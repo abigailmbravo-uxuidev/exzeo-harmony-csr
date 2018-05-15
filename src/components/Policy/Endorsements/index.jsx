@@ -153,19 +153,19 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   // Home/Location Bottom Left
   values.property.yearBuilt = _.get(policy, 'property.yearBuilt');
   values.property.constructionType = _.get(policy, 'property.constructionType');
-  values.property.yearOfRoof = _.get(policy, 'property.yearOfRoof', '');
+  values.property.yearOfRoof = _.get(policy, 'property.yearOfRoof') || '';
   values.property.protectionClass = _.get(policy, 'property.protectionClass', '');
   values.property.buildingCodeEffectivenessGrading = _.get(policy, 'property.buildingCodeEffectivenessGrading', '');
-  values.buildingCodeEffectivenessGradingNew = values.buildingCodeEffectivenessGrading;
-  values.property.familyUnits = _.get(policy, 'property.familyUnits');
+  values.buildingCodeEffectivenessGradingNew = values.property.buildingCodeEffectivenessGrading;
+  values.property.familyUnits = _.get(policy, 'property.familyUnits', '');
 
   // Home/Location Bottom Right
-  values.property.distanceToTidalWater = _.get(policy, 'property.distanceToTidalWater');
-  values.property.distanceToFireHydrant = _.get(policy, 'property.distanceToFireHydrant');
-  values.property.distanceToFireStation = _.get(policy, 'property.distanceToFireStation');
-  values.property.residenceType = _.get(policy, 'property.residenceType');
+  values.property.distanceToTidalWater = _.get(policy, 'property.distanceToTidalWater', '');
+  values.property.distanceToFireHydrant = _.get(policy, 'property.distanceToFireHydrant', '');
+  values.property.distanceToFireStation = _.get(policy, 'property.distanceToFireStation', '');
+  values.property.residenceType = _.get(policy, 'property.residenceType', '');
   values.property.squareFeet = _.get(policy, 'property.squareFeet', '');
-  values.property.floodZone = _.get(policy, 'property.floodZone');
+  values.property.floodZone = _.get(policy, 'property.floodZone', '');
 
   // Policyholders
   values.policyHolders = _.get(policy, 'policyHolders', []);

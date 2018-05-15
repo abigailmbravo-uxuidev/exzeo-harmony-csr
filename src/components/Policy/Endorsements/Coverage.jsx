@@ -160,6 +160,7 @@ const Coverage = ({
         <div className="form-group-double-element">
           <Field
             name="coverageOptions.sinkholePerilCoverage.answer"
+            label="Sinkhole Deductible"
             component={Select}
             answers={[
                 { answer: false, label: 'Coverage Excluded' },

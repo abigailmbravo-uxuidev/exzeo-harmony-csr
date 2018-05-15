@@ -135,7 +135,7 @@ const WindMitigation = ({ questions }) => (
             <Field
               segmented
               label="Wind Borne Debris Region (WBDR)"
-              name="windBorneDebrisRegion.windBorneDebrisRegion"
+              name="property.windMitigation.windBorneDebrisRegion"
               answers={getAnswers('windBorneDebrisRegion', questions)}
               component={Radio}
               validate={validation.isRequired}
