@@ -212,47 +212,8 @@ export class Endorsements extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // TODO make this happen only when we call **calculate**
-    if (!_.isEqual(this.props.getRate, nextProps.getRate) && nextProps.getRate && nextProps.getRate.newAnnualPremium) {
-      const { getRate } = nextProps;
 
-      nextProps.dispatch(batchActions([
-        change('Endorsements', 'newEndorsementAmount', getRate.endorsementAmount || 0),
-        change('Endorsements', 'newEndorsementPremium', getRate.newCurrentPremium || ''),
-        change('Endorsements', 'newAnnualPremium', getRate.newAnnualPremium || ''),
-        change('Endorsements', 'windMitFactorNew', _.get(getRate, 'worksheet.elements.windMitigationFactors.windMitigationDiscount'))
-      ]));
-    }
 
-    // TODO this only happens after SAVE or SUBMIT
-    if (nextProps.policy && (nextProps.policy.policyID !== this.props.policy.policyID)) {
-      this.setCalculate();
-      this.props.reset();
-      this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
-    }
-
-    // TODO this only happens after SAVE or SUBMIT
-    if (!_.isEqual(this.props.newPolicyNumber, nextProps.newPolicyNumber)) {
-      this.props.actions.policyStateActions.updatePolicy(true, nextProps.newPolicyNumber);
-      const endorsementDate = endorsementUtils.setEndorsementDate(_.get(nextProps.policy, 'effectiveDate'), _.get(nextProps.policy, 'endDate'));
-
-      nextProps.dispatch(batchActions([
-        change('Endorsements', 'endorsementDate', endorsementDate),
-        change('Endorsements', 'newEndorsementAmount', ''),
-        change('Endorsements', 'newEndorsementPremium', ''),
-        change('Endorsements', 'newAnnualPremium', '')
-      ]));
-    }
-
-    // TODO this only happens after save and checks for SUBMIT FAILED
-    if (this.props.tasks && this.props.tasks.endorsePolicyModelSave && this.props.tasks.endorsePolicyModelSave.data &&
-      nextProps.tasks && nextProps.tasks.endorsePolicyModelSave && nextProps.tasks.endorsePolicyModelSave.data &&
-      !_.isEqual(this.props.tasks.endorsePolicyModelSave.data, nextProps.tasks.endorsePolicyModelSave.data)) {
-      if (nextProps.tasks.endorsePolicyModelSave.data.result && nextProps.tasks.endorsePolicyModelSave.data.result.status !== 200) {
-        nextProps.dispatch(errorActions.setAppError({ message: nextProps.tasks.endorsePolicyModelSave.data.result.result }));
-        this.setCalculate(nextProps);
-      }
-    }
 
     // TODO this can be handled by normalizing the two fields that affect the third.
     if (
@@ -266,11 +227,30 @@ export class Endorsements extends React.Component {
     }
   }
 
+  clearCalculate = () => {
+    const { change: changeF, actions: { serviceActions }, policy } = this.props;
+    const endorsementDate = endorsementUtils.setEndorsementDate(policy.effectiveDate, policy.endDate);
+    changeF('endorsementDate', endorsementDate);
+    changeF('newEndorsementAmount', '');
+    changeF('newEndorsementPremium', '');
+    changeF('newAnnualPremium', '');
+    serviceActions.clearRate();
+    this.setState({ isCalculated: false });
+  };
+
+  resetCalculate = () => {
+    const { change: changeF, getRate } = this.props;
+    changeF('newEndorsementAmount', getRate.endorsementAmount || 0);
+    changeF('newEndorsementPremium', getRate.newCurrentPremium || '');
+    changeF('newAnnualPremium', getRate.newAnnualPremium || '');
+    changeF('windMitFactorNew', _.get(getRate, 'worksheet.elements.windMitigationFactors.windMitigationDiscount'));
+  };
+
   calculate = async (data, dispatch, props) => {
     const { serviceActions } = props.actions;
     try {
       await serviceActions.getRate(data, props);
-      this.setState({ isCalculated: true });
+      this.setState({ isCalculated: true }, this.resetCalculate);
     } catch (error) {
       this.setState({ isCalculated: false });
     }
@@ -280,6 +260,8 @@ export class Endorsements extends React.Component {
     await props.actions.cgActions.submitEndorsement(data, props);
 
     this.setState({ isCalculated: false });
+    this.resetCalculate();
+    this.props.reset();
   };
 
   setPHToggle = () => {
@@ -455,7 +437,7 @@ export class Endorsements extends React.Component {
                     type="button"
                     className="btn btn-secondary"
                     tabIndex="0"
-                    onClick={() => this.setCalculate()}
+                    onClick={() => this.clearCalculate()}
                     onKeyPress={event => event.charCode === 13 && this.setCalculate()}
                   >Cancel
                   </button>
