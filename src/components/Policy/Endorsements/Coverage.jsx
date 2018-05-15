@@ -37,8 +37,7 @@ const Coverage = ({
             component={Currency}
             validate={[validation.isRequired, validation.isDwellingRange]}
             normalize={normalizeDwellingAmount}
-            showInitial
-            formatInitial={'Currency'}
+            showInitial={true}
           />
         </div>
         <div className="form-group-double-element">
@@ -49,7 +48,6 @@ const Coverage = ({
             styleName="coverage-b"
             validate={validation.isRequired}
             showInitial
-            formatInitial={'Currency'}
           />
         </div>
         <div className="form-group-double-element">
@@ -74,7 +72,6 @@ const Coverage = ({
             validate={validation.isRequired}
             disabled
             showInitial
-            formatInitial={'Currency'}
           />
         </div>
         <div className="form-group-double-element">
@@ -87,7 +84,6 @@ const Coverage = ({
             validate={validation.isRequired}
             normalize={(v, pv, av) => normalizePersonalPropertyDependencies(v, av, 'coverageLimits.personalProperty.amount', 'coverageLimits.dwelling.amount')}
             showInitial
-            formatInitial={'Percent'}
           />
         </div>
         <div className="form-group-double-element">
@@ -97,7 +93,6 @@ const Coverage = ({
             component={Currency}
             validate={validation.isRequired}
             showInitial
-            formatInitial={'Currency'}
             disabled
           />
         </div>
@@ -109,7 +104,6 @@ const Coverage = ({
             answers={formUtils.getAnswers('personalLiability', questions)}
             validate={validation.isRequired}
             showInitial
-            formatInitial={'Currency'}
           />
         </div>
         <div className="form-group-double-element">
@@ -118,9 +112,8 @@ const Coverage = ({
             label="Medical Payments (F)"
             component={Currency}
             validate={validation.isRequired}
-            showInitial
-            formatInitial={'Currency'}
             disabled
+            showInitial
           />
         </div>
         <div className="form-group-double-element">
@@ -131,7 +124,6 @@ const Coverage = ({
             answers={formUtils.getAnswers('moldProperty', questions)}
             validate={validation.isRequired}
             showInitial
-            formatInitial={'Currency'}
           />
         </div>
         <div className="form-group-double-element">
@@ -142,7 +134,6 @@ const Coverage = ({
             answers={formUtils.getAnswers('moldLiability', questions)}
             validate={validation.isRequired}
             showInitial
-            formatInitial={'Currency'}
           />
         </div>
         <div className="form-group-double-element">
@@ -153,7 +144,6 @@ const Coverage = ({
             answers={formUtils.getAnswers('allOtherPerils', questions)}
             validate={validation.isRequired}
             showInitial
-            formatInitial={'Currency'}
           />
         </div>
         <div className="form-group-double-element">
@@ -165,18 +155,9 @@ const Coverage = ({
             validate={validation.isRequired}
             normalize={(v, pv, av) => normalizeDependencies(v, av, 'deductibles.hurricane.calculatedAmount', 'coverageLimits.dwelling.amount')}
             showInitial
-            formatInitial={'Percent'}
           />
         </div>
         <div className="form-group-double-element">
-          <Field
-            name="coverageOptions.sinkholePerilCoverage.initialValue"
-            label="Sinkhole Deductible"
-            component={({ input }) => (
-
-              <div className='initial-value-override'>{input.value}</div> )
-            }
-          />
           <Field
             name="coverageOptions.sinkholePerilCoverage.answer"
             component={Select}
@@ -184,6 +165,7 @@ const Coverage = ({
                 { answer: false, label: 'Coverage Excluded' },
                 { answer: true, label: `10% of ${formUtils.getQuestionName('dwellingAmount', questions)}` }
               ]}
+            showInitial
           />
         </div>
       </div>
