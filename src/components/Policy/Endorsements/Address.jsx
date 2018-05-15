@@ -1,19 +1,15 @@
 import React from 'react';
 import { Field } from 'redux-form';
 import { Input } from '@exzeo/core-ui/lib/Input';
-import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
+import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 
-const {
-  validation
-} = lifecycle;
-
-const MailingAddress = () => (
-  <section name="addresses" id="addresses">
-    <h3>Mailing Address</h3>
+const PropertyAddress = ({ name, sectionId, header }) => (
+  <section name={name} id={sectionId}>
+    <h3>{header}</h3>
     <div className="flex-parent wrap">
       <div className="address">
         <Field
-          name="policyHolderMailingAddress.address1"
+          name="address1"
           label="Address 1"
           component={Input}
           validate={validation.isRequired}
@@ -21,14 +17,14 @@ const MailingAddress = () => (
       </div>
       <div className="address">
         <Field
-          name="policyHolderMailingAddress.address2"
+          name="address2"
           label="Address 2"
           component={Input}
         />
       </div>
       <div className="city">
         <Field
-          name="policyHolderMailingAddress.city"
+          name="city"
           label="City"
           component={Input}
           validate={validation.isRequired}
@@ -36,7 +32,7 @@ const MailingAddress = () => (
       </div>
       <div className="state">
         <Field
-          name="policyHolderMailingAddress.state"
+          name="state"
           label="State"
           component={Input}
           validate={validation.isRequired}
@@ -44,7 +40,7 @@ const MailingAddress = () => (
       </div>
       <div className="zip">
         <Field
-          name="policyHolderMailingAddress.zip"
+          name="zip"
           label="Zip"
           component={Input}
           validate={validation.isRequired}
@@ -54,8 +50,8 @@ const MailingAddress = () => (
   </section>
 );
 
-MailingAddress.propTypes = {};
+PropertyAddress.propTypes = {};
 
-MailingAddress.defaultProps = {};
+PropertyAddress.defaultProps = {};
 
-export default MailingAddress;
+export default PropertyAddress;

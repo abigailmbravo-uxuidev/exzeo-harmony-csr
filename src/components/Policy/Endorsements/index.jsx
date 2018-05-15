@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Prompt } from 'react-router-dom';
-import { reduxForm, propTypes, change, formValueSelector } from 'redux-form';
+import { reduxForm, propTypes, change, formValueSelector, FormSection } from 'redux-form';
 import { batchActions } from 'redux-batched-actions';
 import * as cgActions from '../../../actions/cgActions';
 import * as serviceActions from '../../../actions/serviceActions';
@@ -25,8 +25,7 @@ import WindMitigation from './WindMitigation';
 import HomeLocation from './HomeLocation';
 import PreviousEndorsements from './PreviousEndorsements';
 import PolicyHolder from './PolicyHolder';
-import MailingAddress from './MailingAddress';
-import PropertyAddress from './PropertyAddress';
+import Address from './Address';
 import ResultsCalculator from './ResultsCalculator';
 import GoToMenu from './GoToMenu';
 import UnderwritingValidations from './UnderwritingValidations';
@@ -455,8 +454,15 @@ export class Endorsements extends React.Component {
                       setPHToggle={this.setPHToggle}
                       policyHolders={policy.policyHolders}
                     />
-                    <MailingAddress />
-                    <PropertyAddress />
+
+                    <FormSection name="policyHolderMailingAddress">
+                      <Address name="addresses" sectionId="addresses" header="Mailing Address" />
+                    </FormSection>
+
+                    <FormSection name="property.physicalAddress">
+                      <Address header="Property Address" />
+                    </FormSection>
+
                   </div>
                 </div>
                 <ResultsCalculator
