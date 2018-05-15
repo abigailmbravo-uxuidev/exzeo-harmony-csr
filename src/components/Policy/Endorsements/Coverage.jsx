@@ -31,8 +31,6 @@ const sprinklerAnswers = [
   { answer: 'B', label: 'B'}
 ];
 
-
-
 const Coverage = ({
   initialValues,
   normalizeDependencies,
