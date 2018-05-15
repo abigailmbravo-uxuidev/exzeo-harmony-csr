@@ -92,23 +92,19 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
       }
     }
   };
-
-  // Bail if we don't have all our info
-  if (!latestPolicy && !getRate) { return values; }
-
-  values.transactionType = 'Endorsement';
-  // values.agencyCode = '20000'; // _.get(policy, 'agencyCode');
-  // values.agentCode = '60000'; // _.get(policy, 'agentCode');
-  // values.effectiveDate = moment.utc(_.get(policy, 'effectiveDate')).format('YYYY-MM-DD');
-  values.dwellingMin = _.get(policy, 'coverageLimits.dwelling.minAmount');
-  values.dwellingMax = _.get(policy, 'coverageLimits.dwelling.maxAmount');
-  values.billToType = _.get(policy, 'billToType');
-  values.billPlan = _.get(policy, 'billPlan');
-  // values.liabilityIncidentalOccupancies = false;
   const dwelling = _.get(policy, 'coverageLimits.dwelling.amount');
   const otherStructures = _.get(policy, 'coverageLimits.otherStructures.amount');
   const personalProperty = _.get(policy, 'coverageLimits.personalProperty.amount');
   const hurricane = _.get(policy, 'deductibles.hurricane.amount');
+  // Bail if we don't have all our info
+  if (!latestPolicy && !getRate) { return values; }
+  // Set some things up
+  values.uwExceptions = _.get(policy, 'underwritingExceptions');
+  values.transactionType = 'Endorsement';
+  values.dwellingMin = _.get(policy, 'coverageLimits.dwelling.minAmount');
+  values.dwellingMax = _.get(policy, 'coverageLimits.dwelling.maxAmount');
+  values.billToType = _.get(policy, 'billToType');
+  values.billPlan = _.get(policy, 'billPlan');
 
   // Coverage Top Left
   values.clearFields = false;
@@ -143,49 +139,7 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.property.burglarAlarm = _.get(policy, 'property.burglarAlarm');
   values.property.fireAlarm = _.get(policy, 'property.fireAlarm');
   values.property.sprinkler = _.get(policy, 'property.sprinkler');
-
-  // Coverage Mid Left
-  values.electronicDelivery = _.get(policy, 'policyHolders[0].electronicDelivery') ? 'Yes' : 'No';
-  values.electronicDeliveryNew = !!_.get(policy, 'policyHolders[0].electronicDelivery');
-
-  // Home/Location Bottom Left
-  values.property.yearBuilt = _.get(policy, 'property.yearBuilt');
-  values.property.constructionType = _.get(policy, 'property.constructionType');
-  values.property.yearOfRoof = _.get(policy, 'property.yearOfRoof') || '';
-  values.property.protectionClass = _.get(policy, 'property.protectionClass', '');
-  values.property.buildingCodeEffectivenessGrading = _.get(policy, 'property.buildingCodeEffectivenessGrading', '');
-  values.buildingCodeEffectivenessGradingNew = values.property.buildingCodeEffectivenessGrading;
-  values.property.familyUnits = _.get(policy, 'property.familyUnits', '');
-
-  // Home/Location Bottom Right
-  values.property.distanceToTidalWater = _.get(policy, 'property.distanceToTidalWater', '');
-  values.property.distanceToFireHydrant = _.get(policy, 'property.distanceToFireHydrant', '');
-  values.property.distanceToFireStation = _.get(policy, 'property.distanceToFireStation', '');
-  values.property.residenceType = _.get(policy, 'property.residenceType', '');
-  values.property.squareFeet = _.get(policy, 'property.squareFeet', '');
-  values.property.floodZone = _.get(policy, 'property.floodZone', '');
-
-  // Policyholders
-  values.policyHolders = _.get(policy, 'policyHolders', []);
-
-  // Mailing/Billing
-  values.policyHolderMailingAddress.address1 = _.get(policy, 'policyHolderMailingAddress.address1');
-  values.policyHolderMailingAddress.address2 = _.get(policy, 'policyHolderMailingAddress.address2');
-  values.policyHolderMailingAddress.city = _.get(policy, 'policyHolderMailingAddress.city');
-  values.policyHolderMailingAddress.state = _.get(policy, 'policyHolderMailingAddress.state');
-  values.policyHolderMailingAddress.zip = _.get(policy, 'policyHolderMailingAddress.zip');
-
-  // Property
-  values.property.physicalAddress.address1 = _.get(policy, 'property.physicalAddress.address1');
-  values.property.physicalAddress.address2 = _.get(policy, 'property.physicalAddress.address2');
-  values.property.physicalAddress.city = _.get(policy, 'property.physicalAddress.city');
-  values.property.physicalAddress.state = _.get(policy, 'property.physicalAddress.state');
-  values.property.physicalAddress.zip = _.get(policy, 'property.physicalAddress.zip');
-
-  values.uwExceptions = _.get(policy, 'underwritingExceptions');
-
-
-  // START: WIND MITIGATION MAPPING
+  // Wind Mitigation
   values.property.windMitigation.roofCovering = _.get(policy, 'property.windMitigation.roofCovering');
   values.property.windMitigation.roofDeckAttachment = _.get(policy, 'property.windMitigation.roofDeckAttachment');
   values.property.windMitigation.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
@@ -198,14 +152,40 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.property.windMitigation.internalPressureDesign = _.get(policy, 'property.windMitigation.internalPressureDesign');
   values.property.windMitigation.windBorneDebrisRegion = _.get(policy, 'property.windMitigation.windBorneDebrisRegion');
   values.property.windMitigation.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
-
-  // display only values
+  // Display only values
   const windMitigationDiscount = _.get(policy, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
   const updatedRatingWindMitDiscount = _.get(rating, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
   values.windMitFactor = windMitigationDiscount;
   values.windMitFactorRated = updatedRatingWindMitDiscount || windMitigationDiscount;
-
-  // END: WIND MITIGATION
+  // Home/Location Bottom Left
+  values.property.yearBuilt = _.get(policy, 'property.yearBuilt');
+  values.property.constructionType = _.get(policy, 'property.constructionType');
+  values.property.yearOfRoof = _.get(policy, 'property.yearOfRoof') || '';
+  values.property.protectionClass = _.get(policy, 'property.protectionClass', '');
+  values.property.buildingCodeEffectivenessGrading = _.get(policy, 'property.buildingCodeEffectivenessGrading', '');
+  values.buildingCodeEffectivenessGradingNew = values.property.buildingCodeEffectivenessGrading;
+  values.property.familyUnits = _.get(policy, 'property.familyUnits', '');
+  // Home/Location Bottom Right
+  values.property.distanceToTidalWater = _.get(policy, 'property.distanceToTidalWater', '');
+  values.property.distanceToFireHydrant = _.get(policy, 'property.distanceToFireHydrant', '');
+  values.property.distanceToFireStation = _.get(policy, 'property.distanceToFireStation', '');
+  values.property.residenceType = _.get(policy, 'property.residenceType', '');
+  values.property.squareFeet = _.get(policy, 'property.squareFeet', '');
+  values.property.floodZone = _.get(policy, 'property.floodZone', '');
+  // Policyholders
+  values.policyHolders = _.get(policy, 'policyHolders', []);
+  // Mailing Address
+  values.policyHolderMailingAddress.address1 = _.get(policy, 'policyHolderMailingAddress.address1');
+  values.policyHolderMailingAddress.address2 = _.get(policy, 'policyHolderMailingAddress.address2');
+  values.policyHolderMailingAddress.city = _.get(policy, 'policyHolderMailingAddress.city');
+  values.policyHolderMailingAddress.state = _.get(policy, 'policyHolderMailingAddress.state');
+  values.policyHolderMailingAddress.zip = _.get(policy, 'policyHolderMailingAddress.zip');
+  // Property Address
+  values.property.physicalAddress.address1 = _.get(policy, 'property.physicalAddress.address1');
+  values.property.physicalAddress.address2 = _.get(policy, 'property.physicalAddress.address2');
+  values.property.physicalAddress.city = _.get(policy, 'property.physicalAddress.city');
+  values.property.physicalAddress.state = _.get(policy, 'property.physicalAddress.state');
+  values.property.physicalAddress.zip = _.get(policy, 'property.physicalAddress.zip');
 
   return values;
 };
@@ -233,47 +213,8 @@ export class Endorsements extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // TODO make this happen only when we call **calculate**
-    if (!_.isEqual(this.props.getRate, nextProps.getRate) && nextProps.getRate && nextProps.getRate.newAnnualPremium) {
-      const { getRate } = nextProps;
 
-      nextProps.dispatch(batchActions([
-        change('Endorsements', 'newEndorsementAmount', getRate.endorsementAmount || 0),
-        change('Endorsements', 'newEndorsementPremium', getRate.newCurrentPremium || ''),
-        change('Endorsements', 'newAnnualPremium', getRate.newAnnualPremium || ''),
-        change('Endorsements', 'windMitFactorNew', _.get(getRate, 'worksheet.elements.windMitigationFactors.windMitigationDiscount'))
-      ]));
-    }
 
-    // TODO this only happens after SAVE or SUBMIT
-    if (nextProps.policy && (nextProps.policy.policyID !== this.props.policy.policyID)) {
-      this.setCalculate();
-      this.props.reset();
-      this.props.actions.serviceActions.getEndorsementHistory(nextProps.policy.policyNumber);
-    }
-
-    // TODO this only happens after SAVE or SUBMIT
-    if (!_.isEqual(this.props.newPolicyNumber, nextProps.newPolicyNumber)) {
-      this.props.actions.policyStateActions.updatePolicy(true, nextProps.newPolicyNumber);
-      const endorsementDate = endorsementUtils.setEndorsementDate(_.get(nextProps.policy, 'effectiveDate'), _.get(nextProps.policy, 'endDate'));
-
-      nextProps.dispatch(batchActions([
-        change('Endorsements', 'endorsementDate', endorsementDate),
-        change('Endorsements', 'newEndorsementAmount', ''),
-        change('Endorsements', 'newEndorsementPremium', ''),
-        change('Endorsements', 'newAnnualPremium', '')
-      ]));
-    }
-
-    // TODO this only happens after save and checks for SUBMIT FAILED
-    if (this.props.tasks && this.props.tasks.endorsePolicyModelSave && this.props.tasks.endorsePolicyModelSave.data &&
-      nextProps.tasks && nextProps.tasks.endorsePolicyModelSave && nextProps.tasks.endorsePolicyModelSave.data &&
-      !_.isEqual(this.props.tasks.endorsePolicyModelSave.data, nextProps.tasks.endorsePolicyModelSave.data)) {
-      if (nextProps.tasks.endorsePolicyModelSave.data.result && nextProps.tasks.endorsePolicyModelSave.data.result.status !== 200) {
-        nextProps.dispatch(errorActions.setAppError({ message: nextProps.tasks.endorsePolicyModelSave.data.result.result }));
-        this.setCalculate(nextProps);
-      }
-    }
 
     // TODO this can be handled by normalizing the two fields that affect the third.
     if (
@@ -283,15 +224,34 @@ export class Endorsements extends React.Component {
         nextProps.fieldValues.propertyIncidentalOccupanciesMainDwellingNew ||
         nextProps.fieldValues.propertyIncidentalOccupanciesOtherStructuresNew;
 
-      nextProps.dispatch(change('Endorsements', 'liabilityIncidentalOccupanciesNew', setLiabilityIncidentalOccupanciesNew));
+      nextProps.dispatch(change('Endorsements', 'coverageOptions.liabilityIncidentalOccupancies.answer', setLiabilityIncidentalOccupanciesNew));
     }
   }
+
+  clearCalculate = () => {
+    const { change: changeF, actions: { serviceActions }, policy } = this.props;
+    const endorsementDate = endorsementUtils.setEndorsementDate(policy.effectiveDate, policy.endDate);
+    changeF('endorsementDate', endorsementDate);
+    changeF('newEndorsementAmount', '');
+    changeF('newEndorsementPremium', '');
+    changeF('newAnnualPremium', '');
+    serviceActions.clearRate();
+    this.setState({ isCalculated: false });
+  };
+
+  resetCalculate = () => {
+    const { change: changeF, getRate } = this.props;
+    changeF('newEndorsementAmount', getRate.endorsementAmount || 0);
+    changeF('newEndorsementPremium', getRate.newCurrentPremium || '');
+    changeF('newAnnualPremium', getRate.newAnnualPremium || '');
+    changeF('windMitFactorNew', _.get(getRate, 'worksheet.elements.windMitigationFactors.windMitigationDiscount'));
+  };
 
   calculate = async (data, dispatch, props) => {
     const { serviceActions } = props.actions;
     try {
       await serviceActions.getRate(data, props);
-      this.setState({ isCalculated: true });
+      this.setState({ isCalculated: true }, this.resetCalculate);
     } catch (error) {
       this.setState({ isCalculated: false });
     }
@@ -300,6 +260,8 @@ export class Endorsements extends React.Component {
   save = async (data, dispatch, props) => {
     await props.actions.serviceActions.submitEndorsementForm(data, props);
     this.setState({ isCalculated: false });
+    this.resetCalculate();
+    this.props.reset();
   };
 
   setPHToggle = () => {
@@ -312,17 +274,17 @@ export class Endorsements extends React.Component {
   clearSecondaryPolicyholder = (value) => {
     const { change: changeF, initialValues } = this.props;
     if (!value) {
-      changeF('pH2email', initialValues.pH2email);
-      changeF('pH2FirstName', initialValues.pH2FirstName);
-      changeF('pH2LastName', initialValues.pH2LastName);
-      changeF('pH2phone', initialValues.pH2phone);
-      changeF('pH2secondaryPhone', initialValues.pH2secondaryPhone);
+      changeF('policyHolders[1].emailAddress', initialValues.policyHolders[1].emailAddress);
+      changeF('policyHolders[1].firstName', initialValues.policyHolders[1].firstName);
+      changeF('policyHolders[1].lastName', initialValues.policyHolders[1].lastName);
+      changeF('policyHolders[1].primaryPhoneNumber', initialValues.policyHolders[1].primaryPhoneNumber);
+      changeF('policyHolders[1].secondaryPhoneNumber', initialValues.policyHolders[1].secondaryPhoneNumber);
     } else {
-      changeF('pH2email', '');
-      changeF('pH2FirstName', '');
-      changeF('pH2LastName', '');
-      changeF('pH2phone', '');
-      changeF('pH2secondaryPhone', '');
+      changeF('policyHolders[1].emailAddress', '');
+      changeF('policyHolders[1].firstName', '');
+      changeF('policyHolders[1].lastName', '');
+      changeF('policyHolders[1].primaryPhoneNumber', '');
+      changeF('policyHolders[1].secondaryPhoneNumber', '');
     }
     return value;
   };
@@ -348,8 +310,8 @@ export class Endorsements extends React.Component {
     if (fieldValues.coverageLimits.personalProperty.amount !== 'other') {
       changeF('coverageLimits.personalProperty.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.coverageLimits.personalProperty.amount));
     }
-    changeF('calculatedHurricaneNew', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.hurricaneNew));
-    changeF('lossOfUseNew', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, 10));
+    changeF('deductibles.hurricane.calculatedAmount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.deductibles.hurricane.calculatedAmount));
+    changeF('coverageLimits.lossOfUse.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, 10));
 
     return value;
   };
@@ -357,12 +319,12 @@ export class Endorsements extends React.Component {
   normalizePersonalPropertyDependencies = (value, allValues, field, dependency) => {
     if (Number.isNaN(value)) return;
     this.setCalculate();
-    const { change: changeF, policy } = this.props;
+    const { change: changeF, initialValues } = this.props;
 
     if (value === 0) {
-      changeF('personalPropertyReplacementCostCoverageNew', false);
+      changeF('coverageOptions.personalPropertyReplacementCost.answer', false);
     } else {
-      changeF('personalPropertyReplacementCostCoverageNew', _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer') || false);
+      changeF('coverageOptions.personalPropertyReplacementCost.answer', initialValues.coverageOptions.personalPropertyReplacementCost.answer || false);
     }
 
     const fieldValue = endorsementUtils.setPercentageOfValue(allValues[dependency], value);
@@ -475,7 +437,7 @@ export class Endorsements extends React.Component {
                     type="button"
                     className="btn btn-secondary"
                     tabIndex="0"
-                    onClick={() => this.setCalculate()}
+                    onClick={() => this.clearCalculate()}
                     onKeyPress={event => event.charCode === 13 && this.setCalculate()}
                   >Cancel
                   </button>

@@ -230,10 +230,37 @@
 
                         span {
                           font-size: $font-size-h5;
+                          @media (max-width: 1600px) {
+                            font-size: $font-size-sm;
+                            padding: $padding/2;
+                          }
                         }
                       }
                     }
                   }
+                }
+
+                &.wind-mit {
+                    > .windMitFactor {
+                        width: calc(66.66% - .75rem);
+                        margin-right: $padding;
+                        padding: 0 0 0 $padding;
+
+                        label {
+                            width: 50%;
+                        }
+                        input[type="text"] {
+                            width: calc(50% - .5rem);
+                        }
+                    }
+                    > .windMitFactorRated {
+                        width: 33%;
+                        padding: 0;
+
+                        input[type="text"] {
+                            width: 100%;
+                        }
+                    }
                 }
               }
             }
