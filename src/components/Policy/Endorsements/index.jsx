@@ -211,22 +211,6 @@ export class Endorsements extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-
-
-
-    // TODO this can be handled by normalizing the two fields that affect the third.
-    if (
-      _.isEqual(this.props.fieldValues.propertyIncidentalOccupanciesMainDwellingNew, nextProps.fieldValues.propertyIncidentalOccupanciesMainDwellingNew) ||
-      _.isEqual(this.props.fieldValues.propertyIncidentalOccupanciesOtherStructuresNew, nextProps.fieldValues.propertyIncidentalOccupanciesOtherStructuresNew)) {
-      const setLiabilityIncidentalOccupanciesNew =
-        nextProps.fieldValues.propertyIncidentalOccupanciesMainDwellingNew ||
-        nextProps.fieldValues.propertyIncidentalOccupanciesOtherStructuresNew;
-
-      nextProps.dispatch(change('Endorsements', 'coverageOptions.liabilityIncidentalOccupancies.answer', setLiabilityIncidentalOccupanciesNew));
-    }
-  }
-
   clearCalculate = () => {
     const { change: changeF, actions: { serviceActions }, policy } = this.props;
     const endorsementDate = endorsementUtils.setEndorsementDate(policy.effectiveDate, policy.endDate);
@@ -314,6 +298,18 @@ export class Endorsements extends React.Component {
     changeF('coverageLimits.lossOfUse.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, 10));
 
     return value;
+  };
+
+  normalizeIncidentalOccupancies = (value, allValues, previousValue, previousAllValues) => {
+    const { change: changeF } = this.props;
+    if (!allValues.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer &&
+        !allValues.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer) {
+      changeF('coverageOptions.liabilityIncidentalOccupancies.answer', false);
+    }
+    const setLiabilityIncidentalOccupanciesNew =
+      allValues.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer ||
+      allValues.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer;
+    changeF('coverageOptions.liabilityIncidentalOccupancies.answer', setLiabilityIncidentalOccupanciesNew);
   };
 
   normalizePersonalPropertyDependencies = (value, allValues, field, dependency) => {
@@ -406,6 +402,7 @@ export class Endorsements extends React.Component {
                       normalizeDwellingAmount={this.updateDwellingAndDependencies}
                       normalizeDependencies={this.normalizeDependencies}
                       normalizePersonalPropertyDependencies={this.normalizePersonalPropertyDependencies}
+                      normalizeIncidentalOccupancies={this.normalizeIncidentalOccupancies}
                     />
                     <WindMitigation questions={questions} />
                     <HomeLocation questions={questions} />

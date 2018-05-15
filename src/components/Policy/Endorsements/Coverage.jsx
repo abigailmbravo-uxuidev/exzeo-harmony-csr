@@ -36,6 +36,7 @@ const Coverage = ({
   normalizeDependencies,
   normalizeDwellingAmount,
   normalizePersonalPropertyDependencies,
+  normalizeIncidentalOccupancies,
   personalPropertyNewVal,
   questions,
   underwritingQuestions
@@ -175,6 +176,7 @@ const Coverage = ({
           label="Incidental Occ Main"
           component={RadioGrouped}
           answers={baseYesNoAnswers}
+          normalize={normalizeIncidentalOccupancies}
           styleName="billPlan"
           segmented
         />
@@ -183,6 +185,7 @@ const Coverage = ({
           label="Incidental Occ Other"
           component={RadioGrouped}
           answers={baseYesNoAnswers}
+          normalize={normalizeIncidentalOccupancies}
           styleName="billPlan"
           segmented
         />
