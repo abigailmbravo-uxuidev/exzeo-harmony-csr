@@ -96,7 +96,7 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   // Bail if we don't have all our info
   if (!latestPolicy && !getRate) { return values; }
 
-
+  values.transactionType = 'Endorsement';
   // values.agencyCode = '20000'; // _.get(policy, 'agencyCode');
   // values.agentCode = '60000'; // _.get(policy, 'agentCode');
   // values.effectiveDate = moment.utc(_.get(policy, 'effectiveDate')).format('YYYY-MM-DD');
@@ -298,8 +298,7 @@ export class Endorsements extends React.Component {
   };
 
   save = async (data, dispatch, props) => {
-    await props.actions.cgActions.submitEndorsement(data, props);
-
+    await props.actions.serviceActions.submitEndorsementForm(data, props);
     this.setState({ isCalculated: false });
   };
 
