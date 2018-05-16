@@ -35,12 +35,17 @@ export const generateModel = (data, props) => {
   };
 };
 
-export const convertToRateData = (changePolicyData, currentPremium) => ({
-  ...changePolicyData,
-  oldTotalPremium: changePolicyData.rating.totalPremium,
-  oldCurrentPremium: currentPremium,
-  endorsementDate: changePolicyData.endorsementDate
-});
+export const convertToRateData = (formData, props) => {
+  const { policy, summaryLedger: { currentPremium }, zipcodeSettings } = props;
+  const endorsementDate = moment.tz(moment.utc(formData.endorsementDate).format('YYYY-MM-DD'), zipcodeSettings.timezone).utc().format();
+
+  return {
+    ...formData,
+    oldTotalPremium: policy.rating.totalPremium,
+    oldCurrentPremium: currentPremium,
+    endorsementDate
+  };
+};
 
 export default {
   calculatePercentage,
