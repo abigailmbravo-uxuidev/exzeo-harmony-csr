@@ -105,6 +105,14 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.billToType = _.get(policy, 'billToType');
   values.billPlan = _.get(policy, 'billPlan');
 
+  // spread willl default these
+  values.companyCode = policy.companyCode;
+  values.state = policy.state;
+  values.product = policy.product;
+  values.property.territory = _.get(policy, 'property.territory', '');
+  values.policyNumber = policy.policyNumber;
+  values.effectiveDate = policy.effectiveDate;
+
   // Coverage Top Left
   values.clearFields = false;
   values.policyID = policy._id;
@@ -122,6 +130,8 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.deductibles.allOtherPerils.amount = _.get(policy, 'deductibles.allOtherPerils.amount');
   values.deductibles.hurricane.amount = hurricane;
   values.deductibles.hurricane.calculatedAmount = _.get(policy, 'deductibles.hurricane.calculatedAmount');
+  values.deductibles.sinkhole.amount = _.get(policy, 'deductibles.sinkhole.amount');
+  values.deductibles.sinkhole.calculatedAmount = _.get(policy, 'deductibles.sinkhole.calculatedAmount');
   values.coverageOptions.sinkholePerilCoverage.initialValue = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer') ? `10% of ${getQuestionName('dwellingAmount', questions)}` : 'Coverage Excluded';
   values.coverageOptions.sinkholePerilCoverage.answer = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer');
   // Coverage Top Right
