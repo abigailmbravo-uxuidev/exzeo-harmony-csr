@@ -630,7 +630,7 @@ export const submitEndorsementForm = (formData, formProps) => async (dispatch) =
 
 export const getRate = (formData, formProps) => async (dispatch) => {
   const { policy, summaryLedger: { currentPremium } } = formProps;
-  const submitData = endorsementUtils.generateModel(formData, policy, formProps);
+  const submitData = endorsementUtils.generateModel(formData, formProps);
   const rateData = endorsementUtils.convertToRateData(submitData, currentPremium);
 
   const axiosConfig = runnerSetup({

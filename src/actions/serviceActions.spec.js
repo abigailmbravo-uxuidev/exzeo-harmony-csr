@@ -8,6 +8,55 @@ const middlewares = [];
 const mockStore = configureStore(middlewares);
 
 describe('Service Actions', () => {
+  const baseProps = {
+    zipcodeSettings: { timezone: '' },
+    policy: {
+      policyHolders: [{}, {}],
+      property: { windMitigation: {}, physicalAddress: {} },
+      policyHolderMailingAddress: {},
+      coverageLimits: {
+        dwelling: {},
+        otherStructures: {},
+        personalProperty: {},
+        lossOfUse: {},
+        medicalPayments: {},
+        moldProperty: {},
+        personalLiability: {},
+        moldLiability: {},
+        ordinanceOrLaw: {}
+      },
+      deductibles: {
+        allOtherPerils: {},
+        hurricane: {},
+        sinkhole: {}
+
+      },
+      coverageOptions: {
+        sinkholePerilCoverage: {},
+        propertyIncidentalOccupanciesMainDwelling: {},
+        propertyIncidentalOccupanciesOtherStructures: {},
+        liabilityIncidentalOccupancies: {},
+        personalPropertyReplacementCost: {}
+      },
+      underwritingAnswers: {
+        rented: {},
+        monthsOccupied: {},
+        noPriorInsuranceSurcharge: {}
+
+      },
+      rating: {
+        worksheet: {
+          elements: {
+            windMitigationFactors: {
+
+            }
+          }
+        }
+      }
+    },
+    summaryLedger: { currentPremium: '1' }
+  };
+
   it('should call serviceRequest', () => {
     const initialState = {};
     const store = mockStore(initialState);
@@ -1029,8 +1078,7 @@ describe('Service Actions', () => {
     const store = mockStore(initialState);
     serviceActions.getRate(store.dispatch);
 
-    const rate = await serviceActions.getRate({}, { zipcodeSettings: { timeZone: '' }, policy: { rating: {}, property: {}, policyHolderMailingAddress: {} }, summaryLedger: { currentPremium: '1' } })(store.dispatch);
-    console.log(rate);
+    const rate = await serviceActions.getRate(baseProps.policy, baseProps)(store.dispatch);
   });
 
   it('should fail start getRate', async () => {
@@ -1058,8 +1106,7 @@ describe('Service Actions', () => {
     const store = mockStore(initialState);
     serviceActions.getRate(store.dispatch);
 
-    const rate = await serviceActions.getRate({}, { zipcodeSettings: { timeZone: '' }, policy: { rating: {}, property: {}, policyHolderMailingAddress: {} }, summaryLedger: { currentPremium: '1' } })(store.dispatch);
-    console.log(rate);
+    const rate = await serviceActions.getRate(baseProps.policy, baseProps)(store.dispatch);
   });
 
   const ai = {
