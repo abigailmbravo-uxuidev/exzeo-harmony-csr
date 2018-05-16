@@ -4,8 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Prompt } from 'react-router-dom';
-import { reduxForm, propTypes, change, formValueSelector, FormSection } from 'redux-form';
-import { batchActions } from 'redux-batched-actions';
+import { reduxForm, propTypes, formValueSelector, FormSection } from 'redux-form';
 import * as cgActions from '../../../actions/cgActions';
 import * as serviceActions from '../../../actions/serviceActions';
 import * as appStateActions from '../../../actions/appStateActions';
@@ -255,7 +254,7 @@ export class Endorsements extends React.Component {
     }
   };
 
-  clearSecondaryPolicyholder = (value) => {
+  setSecondaryPolicyHolder = (value) => {
     const { change: changeF, initialValues } = this.props;
     if (!value) {
       changeF('policyHolders[1].emailAddress', initialValues.policyHolders[1].emailAddress);
@@ -288,13 +287,13 @@ export class Endorsements extends React.Component {
 
     const roundedDwellingAmount = Math.round(value / 1000) * 1000;
 
-    if (fieldValues.coverageLimits.otherStructures.amount !== 'other') {
-      changeF('coverageLimits.otherStructures.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.coverageLimits.otherStructures.amount));
+    if (fieldValues.coverageLimits.otherStructures.percentage !== 'other') {
+      changeF('coverageLimits.otherStructures.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.coverageLimits.otherStructures.percentage));
     }
-    if (fieldValues.coverageLimits.personalProperty.amount !== 'other') {
-      changeF('coverageLimits.personalProperty.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.coverageLimits.personalProperty.amount));
+    if (fieldValues.coverageLimits.personalProperty.percentage !== 'other') {
+      changeF('coverageLimits.personalProperty.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.coverageLimits.personalProperty.percentage));
     }
-    changeF('deductibles.hurricane.calculatedAmount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.deductibles.hurricane.calculatedAmount));
+    changeF('deductibles.hurricane.calculatedAmount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.deductibles.hurricane.amount));
     changeF('coverageLimits.lossOfUse.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, 10));
 
     return value;
@@ -409,7 +408,7 @@ export class Endorsements extends React.Component {
                     <HomeLocation questions={questions} />
                     <PreviousEndorsements mappedEndorsementHistory={mappedEndorsementHistory} />
                     <PolicyHolder
-                      clearSecondaryPolicyholder={this.clearSecondaryPolicyholder}
+                      setSecondaryPolicyHolder={this.setSecondaryPolicyHolder}
                       setPHToggle={this.setPHToggle}
                       policyHolders={policy.policyHolders}
                     />
