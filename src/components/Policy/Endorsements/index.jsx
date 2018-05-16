@@ -310,6 +310,7 @@ export class Endorsements extends React.Component {
       allValues.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer ||
       allValues.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer;
     changeF('coverageOptions.liabilityIncidentalOccupancies.answer', setLiabilityIncidentalOccupanciesNew);
+    return value;
   };
 
   normalizePersonalPropertyDependencies = (value, allValues, field, dependency) => {
