@@ -353,6 +353,12 @@
             border-top: 1px dotted $warm-gray-04;
             background: $warm-gray-01;
 
+            .endorsement-date-wrapper {
+                width: 14rem;
+                flex-grow: 0;
+                flex-shrink: 0;
+            }
+
             .btn-secondary {
               margin-right: $padding;
             }
@@ -368,7 +374,6 @@
                 input {
                   &[disabled="disabled"],
                   &:disabled {
-                    color: $white;
                     border-color: $warm-gray-03;
                     background: $warm-gray-00;
                   }
