@@ -333,16 +333,17 @@ export class Endorsements extends React.Component {
       changeF('coverageOptions.personalPropertyReplacementCost.answer', initialValues.coverageOptions.personalPropertyReplacementCost.answer || false);
     }
 
-    const fieldValue = endorsementUtils.setPercentageOfValue(allValues[dependency], value);
+    const fieldValue = endorsementUtils.setPercentageOfValue(allValues.coverageLimits.dwelling.amount, value);
     changeF(field, Number.isNaN(fieldValue) ? '' : fieldValue);
     return value;
   };
 
-  normalizeDependencies = (value, allValues, field, dependency) => {
+  normalizeDwellingDependencies = (value, allValues, field) => {
+    // console.log(value, allValues, field, dependency);
     if (Number.isNaN(value)) return;
     this.setCalculate();
     const { change: changeF } = this.props;
-    const fieldValue = endorsementUtils.setPercentageOfValue((allValues[dependency]), value);
+    const fieldValue = endorsementUtils.setPercentageOfValue(allValues.coverageLimits.dwelling.amount, value);
 
     changeF(field, Number.isNaN(fieldValue) ? '' : fieldValue);
     return value;
@@ -410,7 +411,7 @@ export class Endorsements extends React.Component {
                       questions={questions}
                       underwritingQuestions={underwritingQuestions}
                       normalizeDwellingAmount={this.updateDwellingAndDependencies}
-                      normalizeDependencies={this.normalizeDependencies}
+                      normalizeDwellingDependencies={this.normalizeDwellingDependencies}
                       normalizePersonalPropertyDependencies={this.normalizePersonalPropertyDependencies}
                       normalizeIncidentalOccupancies={this.normalizeIncidentalOccupancies}
                     />

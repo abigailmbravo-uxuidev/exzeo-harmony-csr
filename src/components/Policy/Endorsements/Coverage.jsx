@@ -5,7 +5,9 @@ import GroupedInputs from '@exzeo/core-ui/lib/InputGrouped';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 import formUtils from '../../../utilities/forms';
 
-const { Currency, SelectInteger, Select, Radio } = GroupedInputs;
+const {
+  Currency, SelectInteger, Select, Radio
+} = GroupedInputs;
 const { validation } = lifecycle;
 
 const baseYesNoAnswers = [
@@ -26,14 +28,14 @@ const noPriorInsuranceSurchargeAnswers = [
 ];
 
 const sprinklerAnswers = [
-  { answer: 'N', label: 'No'},
-  { answer: 'A', label: 'A'},
-  { answer: 'B', label: 'B'}
+  { answer: 'N', label: 'No' },
+  { answer: 'A', label: 'A' },
+  { answer: 'B', label: 'B' }
 ];
 
 const Coverage = ({
   initialValues,
-  normalizeDependencies,
+  normalizeDwellingDependencies,
   normalizeDwellingAmount,
   normalizePersonalPropertyDependencies,
   normalizeIncidentalOccupancies,
@@ -62,6 +64,7 @@ const Coverage = ({
           component={Currency}
           styleName="coverage-b"
           validate={validation.isRequired}
+          disabled
         />
         <Field
           name="coverageLimits.otherStructures.percentage"
@@ -70,7 +73,7 @@ const Coverage = ({
           styleName="coverage-b-percentage"
           answers={formUtils.getAnswers('otherStructuresAmount', questions)}
           validate={validation.isRequired}
-          normalize={(v, pv, av) => normalizeDependencies(v, av, 'coverageLimits.otherStructures.amount', 'coverageLimits.dwelling.amount')}
+          normalize={(v, pv, av) => normalizeDwellingDependencies(v, av, 'coverageLimits.otherStructures.amount')}
         />
         <Field
           name="coverageLimits.personalProperty.amount"
@@ -87,7 +90,7 @@ const Coverage = ({
           styleName="coverage-c-percentage"
           answers={formUtils.getAnswers('personalPropertyAmount', questions)}
           validate={validation.isRequired}
-          normalize={(v, pv, av) => normalizePersonalPropertyDependencies(v, av, 'coverageLimits.personalProperty.amount', 'coverageLimits.dwelling.amount')}
+          normalize={(v, pv, av) => normalizePersonalPropertyDependencies(v, av, 'coverageLimits.personalProperty.amount')}
           showInitial
         />
         <Field
@@ -139,7 +142,7 @@ const Coverage = ({
           component={SelectInteger}
           answers={formUtils.getAnswers('hurricane', questions)}
           validate={validation.isRequired}
-          normalize={(v, pv, av) => normalizeDependencies(v, av, 'deductibles.hurricane.calculatedAmount', 'coverageLimits.dwelling.amount')}
+          normalize={(v, pv, av) => normalizeDwellingDependencies(v, av, 'deductibles.hurricane.calculatedAmount')}
           showInitial
         />
         <Field
@@ -254,7 +257,7 @@ const Coverage = ({
 
 Coverage.propTypes = {
   initialValues: PropTypes.object,
-  normalizeDependencies: PropTypes.func,
+  normalizeDwellingDependencies: PropTypes.func,
   normalizeDwellingAmount: PropTypes.func,
   normalizePersonalPropertyDependencies: PropTypes.func,
   personalPropertyNewVal: PropTypes.number,
