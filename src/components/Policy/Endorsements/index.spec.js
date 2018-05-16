@@ -63,7 +63,50 @@ describe('Testing Endorsements component', () => {
         }
       },
       initialValues: {},
-      fieldValues: {},
+      fieldValues: {
+        policyHolders: [{}, {}],
+        property: { windMitigation: {}, physicalAddress: {} },
+        policyHolderMailingAddress: {},
+        coverageLimits: {
+          dwelling: {},
+          otherStructures: {},
+          personalProperty: {},
+          lossOfUse: {},
+          medicalPayments: {},
+          moldProperty: {},
+          personalLiability: {},
+          moldLiability: {},
+          ordinanceOrLaw: {}
+        },
+        deductibles: {
+          allOtherPerils: {},
+          hurricane: {},
+          sinkhole: {}
+
+        },
+        coverageOptions: {
+          sinkholePerilCoverage: {},
+          propertyIncidentalOccupanciesMainDwelling: {},
+          propertyIncidentalOccupanciesOtherStructures: {},
+          liabilityIncidentalOccupancies: {},
+          personalPropertyReplacementCost: {}
+        },
+        underwritingAnswers: {
+          rented: {},
+          monthsOccupied: {},
+          noPriorInsuranceSurcharge: {}
+
+        },
+        rating: {
+          worksheet: {
+            elements: {
+              windMitigationFactors: {
+
+              }
+            }
+          }
+        }
+      },
       policy: {
         policyNumber: '112',
         rating: {},
@@ -99,12 +142,9 @@ describe('Testing Endorsements component', () => {
     expect(wrapper);
 
     handleInitialize(initialState);
-    wrapper.instance().updateDwellingAndDependencies('5000', '100', {});
+    wrapper.instance().updateDwellingAndDependencies('5000', '100', props.fieldValues);
 
     props.getRate = { worksheet: {} };
-    wrapper.instance().componentWillReceiveProps(props);
-
-
     getNewPolicyNumber(initialState);
   });
 });
@@ -195,7 +235,7 @@ describe('Testing Endorsements component', () => {
     }));
 
     const wrapper = shallow(<Endorsements store={store} {...props} />);
-    wrapper.instance().componentWillReceiveProps(props);
+    // wrapper.instance().componentWillReceiveProps(props);
     expect(wrapper.find('.error').text()).toEqual(' Endorsement page cannot be accessed due to User Permissions.');
     expect(wrapper);
   });
