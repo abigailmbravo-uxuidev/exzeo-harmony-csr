@@ -622,8 +622,19 @@ export const submitEndorsementForm = (formData, formProps) => async (dispatch) =
   // dispatch result of create transaction to set the latest policy
 };
 
+export const convertToRateData = (formData, props) => {
+  const { policy, summaryLedger: { currentPremium }, zipcodeSettings } = props;
+  const endorsementDate = moment.tz(moment.utc(formData.endorsementDate).format('YYYY-MM-DD'), zipcodeSettings.timezone).utc().format();
+
+  return {
+    ...formData,
+    oldTotalPremium: policy.rating.totalPremium,
+    oldCurrentPremium: currentPremium,
+    endorsementDate
+  };
+};
 export const getRate = (formData, formProps) => async (dispatch) => {
-  const rateData = endorsementUtils.convertToRateData(formData, formProps);
+  const rateData = convertToRateData(formData, formProps);
 
   const axiosConfig = runnerSetup({
     service: 'rating-engine',
@@ -637,7 +648,7 @@ export const getRate = (formData, formProps) => async (dispatch) => {
     const data = { getRate: response.data ? response.data.result : {} };
     return dispatch(serviceRequest(data));
   } catch (error) {
-    dispatch(errorActions.setAppError(handleError(error)));
+    return dispatch(errorActions.setAppError(handleError(error)));
     // throw new SubmissionError(error);
   }
 };
