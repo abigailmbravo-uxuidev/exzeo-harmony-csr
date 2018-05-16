@@ -9,7 +9,7 @@ const { Currency } = Inputs;
 const ResultsCalculator = props => (
   <div className="endo-results-calc">
     <div className="flex-parent">
-      <div className="form-group">
+      <div className="form-group endorsement-date-wrapper">
         <DateField
           validations={['date']}
           label="Endorsement Effective Date"
