@@ -613,18 +613,12 @@ export const createTransaction = submitData => (dispatch) => {
 export const submitEndorsementForm = (formData, formProps) => async (dispatch) => {
   const { policy, summaryLedger: { currentPremium } } = formProps;
   const submitData = endorsementUtils.generateModel(formData, policy, formProps);
-  const rateData = endorsementUtils.convertToRateData(submitData, currentPremium);
-
-  rateData.rating = formProps.getRate.rating;
-  rateData.billingStatus = formProps.summaryLedger.status.code;
-  rateData.endorsementAmount = formData.newEndorsementAmount;
-  rateData.transactionType = 'Endorsement';
 
   const forms = await getListOfForms(policy, formProps.getRate.rating, 'New Business');
 
-  rateData.forms = forms;
+  submitData.forms = forms;
 
-  dispatch(createTransaction(rateData));
+  dispatch(createTransaction(submitData));
   // dispatch result of create transaction to set the latest policy
 };
 

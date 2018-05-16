@@ -24,9 +24,12 @@ export const calculatePercentage = (oldFigure, newFigure) => {
 export const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
 
 export const generateModel = (data, props) => {
-  console.log(props);
   const endorseDate = moment.tz(moment.utc(data.endorsementDateNew).format('YYYY-MM-DD'), props.zipcodeSettings.timezone).utc().format();
   data.deductibles.sinkhole.amount = data.coverageOptions.sinkholePerilCoverage.answer === 'true' ? _.get(data, 'deductibles.sinkhole.amount') || 10 : 0;
+
+  data.rating = props.getRate.rating;
+  data.billingStatus = props.summaryLedger.status.code;
+  data.transactionType = 'Endorsement';
 
   return {
     ...data,
