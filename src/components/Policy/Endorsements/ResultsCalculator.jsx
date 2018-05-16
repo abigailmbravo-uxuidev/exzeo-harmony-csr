@@ -1,21 +1,19 @@
 import React from 'react';
 import { Field } from 'redux-form';
 import Inputs from '@exzeo/core-ui/lib/Input';
-import moment from 'moment-timezone';
-import DateField from '../../Form/inputs/DateField';
+import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 
-const { Currency } = Inputs;
+const { Currency, Date } = Inputs;
 
 const ResultsCalculator = props => (
   <div className="endo-results-calc">
     <div className="flex-parent">
       <div className="form-group">
-        <DateField
-          validations={['date']}
-          label="Endorsement Effective Date"
+        <Field
           name="endorsementDate"
-          min={moment.utc(props.min).format('YYYY-MM-DD')}
-          max={moment.utc(props.max).format('YYYY-MM-DD')}
+          label="Endorsement Effective Date"
+          component={Date}
+          validate={[validation.isDate, (value) => validation.isDateRange(value, props.min, props.max)]}
           onChange={props.setCalculate}
         />
       </div>
