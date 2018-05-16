@@ -234,6 +234,7 @@ export class Endorsements extends React.Component {
 
   resetCalculate = () => {
     const { change: changeF, getRate } = this.props;
+    console.log(getRate.endorsementAmount);
     changeF('newEndorsementAmount', getRate.endorsementAmount || 0);
     changeF('newEndorsementPremium', getRate.newCurrentPremium || '');
     changeF('newAnnualPremium', getRate.newAnnualPremium || '');
