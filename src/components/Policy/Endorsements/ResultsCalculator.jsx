@@ -23,26 +23,19 @@ const ResultsCalculator = props => (
         name="newEndorsementAmount"
         label="New End Amount"
         component={Currency}
-        placeholder
         disabled
-
       />
-
       <Field
         name="newEndorsementPremium"
         label="New End Premium"
         component={Currency}
-        placeholder
         disabled
-
       />
       <Field
         name="newAnnualPremium"
         label="New Annual Premium"
         component={Currency}
-        placeholder
         disabled
-
       />
 
       {props.children}
