@@ -1,7 +1,10 @@
 import React from 'react';
+import { Field } from 'redux-form';
+import Inputs from '@exzeo/core-ui/lib/Input';
 import moment from 'moment-timezone';
 import DateField from '../../Form/inputs/DateField';
-import DisplayField from '../../Form/inputs/DisplayField';
+
+const { Currency } = Inputs;
 
 const ResultsCalculator = props => (
   <div className="endo-results-calc">
@@ -16,11 +19,31 @@ const ResultsCalculator = props => (
           onChange={props.setCalculate}
         />
       </div>
-      <DisplayField label="New End Amount" name="newEndorsementAmount" />
+      <Field
+        name="newEndorsementAmount"
+        label="New End Amount"
+        component={Currency}
+        placeholder
+        disabled
 
-      <DisplayField label="New End Premium" name="newEndorsementPremium" />
+      />
 
-      <DisplayField label="New Annual Premium" name="newAnnualPremium" />
+      <Field
+        name="newEndorsementPremium"
+        label="New End Premium"
+        component={Currency}
+        placeholder
+        disabled
+
+      />
+      <Field
+        name="newAnnualPremium"
+        label="New Annual Premium"
+        component={Currency}
+        placeholder
+        disabled
+
+      />
 
       {props.children}
     </div>
