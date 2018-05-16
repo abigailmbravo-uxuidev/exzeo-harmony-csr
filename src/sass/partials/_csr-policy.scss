@@ -207,8 +207,8 @@
                       &.selected {
                         span {
                           cursor: not-allowed;
-                          color: $warm-gray-05;
-                          background: $warm-gray-03;
+                          color: $white;
+                          background: rgba($bright-blue-darken-04, .5);
                         }
                       }
                     }
@@ -268,8 +268,8 @@
                           &.selected {
                               span {
                                 cursor: not-allowed;
-                                color: $warm-gray-05;
-                                background: $warm-gray-03;
+                                color: $white;
+                                background: rgba($bright-blue-darken-04, .5);
                               }
                           }
                       }
