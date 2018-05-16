@@ -26,11 +26,11 @@ const handleInitialize = (state) => {
 
   if (selectedAI) {
     const mortgagee = _.get(_.find(getAnswers('mortgagee', state.questions), a => a.AIName1 === selectedAI.name1 &&
-    a.AIAddress1 === selectedAI.mailingAddress.address1), 'ID');
+a.AIAddress1 === selectedAI.mailingAddress.address1), 'ID');
 
     return {
       mortgagee,
-      _id: selectedAI._id, // eslint-disable-line
+_id: selectedAI._id, // eslint-disable-line
       name1: selectedAI.name1,
       name2: selectedAI.name2,
       phoneNumber: String(selectedAI.phoneNumber).length > 0 ? normalizePhone(String(selectedAI.phoneNumber)) : '',
@@ -110,71 +110,71 @@ export const AdditionalInterestEditModal = (props) => {
         {props.appState.data.submittingAI && <Loader />}
         <div className="card">
           <div className="card-header">
-            <h4><i className={`fa fa-circle ${selectedAI ? selectedAI.type : ''}`} /> {selectedAI ? selectedAI.type : ''}</h4>
-          </div>
+          <h4><i className={`fa fa-circle ${selectedAI ? selectedAI.type : ''}`} /> {selectedAI ? selectedAI.type : ''}</h4>
+        </div>
           <div className="card-block">
-            <HiddenField name="_id" />
-            <HiddenField name="order" />
+          <HiddenField name="_id" />
+          <HiddenField name="order" />
 
-            { appState.data.addAdditionalInterestType === 'Mortgagee' &&
-            <ReactSelectField
-              label="Top Mortgagees"
-              name="mortgage"
-              searchable
-              labelKey="displayText"
-              autoFocus
-              value={appState.data.selectedMortgageeOption}
-              answers={getAnswers('mortgagee', questions)}
-              onChange={val => setMortgageeValues(val, props)}
-            />
-         }
-            <TextField label={checkAdditionalInterestForName(appState.data.addAdditionalInterestType) ? 'First Name' : 'Name 1'} styleName="name-1" name="name1" validations={['required']} />
-            <TextField label={checkAdditionalInterestForName(appState.data.addAdditionalInterestType) ? 'Last Name' : 'Name 2'} styleName="" name="name2" />
+          { appState.data.addAdditionalInterestType === 'Mortgagee' &&
+        <ReactSelectField
+        label="Top Mortgagees"
+        name="mortgage"
+        searchable
+        labelKey="displayText"
+        autoFocus
+        value={appState.data.selectedMortgageeOption}
+        answers={getAnswers('mortgagee', questions)}
+        onChange={val => setMortgageeValues(val, props)}
+      />
+}
+          <TextField label={checkAdditionalInterestForName(appState.data.addAdditionalInterestType) ? 'First Name' : 'Name 1'} styleName="name-1" name="name1" validations={['required']} />
+          <TextField label={checkAdditionalInterestForName(appState.data.addAdditionalInterestType) ? 'Last Name' : 'Name 2'} styleName="" name="name2" />
 
-            <TextField label="Address 1" styleName="" name="address1" validations={['required']} />
-            <TextField label="Address 2" styleName="" name="address2" />
-            <div className="flex-form">
-              <TextField label="City" styleName="city" name="city" validations={['required']} />
-              <TextField
-                label="State"
-                styleName="state"
-                name="state"
-                validations={['required']}
-              />
-              <TextField label="Zip Code" styleName="" name="zip" validations={['required', 'zipNumbersOnly']} />
-            </div>
-            <div className="flex-form">
-              <PhoneField label="Phone Number" styleName="phone" name="phoneNumber" validations={['phone']} />
-              <TextField label="Reference Number" styleName="" name="referenceNumber" />
-              { appState.data.addAdditionalInterestType === 'Mortgagee' && <SelectField
-                name="order"
-                component="select"
-                styleName=""
-                label="Order"
-                validations={['required']}
-                answers={mortgageeOrderAnswers}
-              />}
-            </div>
-            {isEndorsement &&
-            <div className="flex-form">
-              <SelectField
-                name="aiType"
-                answers={validAdditionalInterestTypes}
-                label="Type"
-                component="select"
-                styleName=""
-                validations={['required']}
-              />
-            </div>
-          }
-          </div>
+          <TextField label="Address 1" styleName="" name="address1" validations={['required']} />
+          <TextField label="Address 2" styleName="" name="address2" />
+          <div className="flex-form">
+          <TextField label="City" styleName="city" name="city" validations={['required']} />
+          <TextField
+          label="State"
+          styleName="state"
+          name="state"
+          validations={['required']}
+        />
+          <TextField label="Zip Code" styleName="" name="zip" validations={['required', 'zipNumbersOnly']} />
+        </div>
+          <div className="flex-form">
+          <PhoneField label="Phone Number" styleName="phone" name="phoneNumber" validations={['phone']} />
+          <TextField label="Reference Number" styleName="" name="referenceNumber" />
+          { appState.data.addAdditionalInterestType === 'Mortgagee' && <SelectField
+          name="order"
+          component="select"
+          styleName=""
+          label="Order"
+          validations={['required']}
+          answers={mortgageeOrderAnswers}
+        />}
+        </div>
+          {isEndorsement &&
+        <div className="flex-form">
+        <SelectField
+        name="aiType"
+        answers={validAdditionalInterestTypes}
+        label="Type"
+        component="select"
+        styleName=""
+        validations={['required']}
+      />
+      </div>
+}
+        </div>
           <div className="card-footer">
-            <div className="btn-group">
-              <button tabIndex="0" className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal(props)}>Cancel</button>
-              <button tabIndex="0" className="btn btn-secondary" type="button" disabled={appState.data.submittingAI} onClick={() => deleteAdditionalInterest(selectedAI, props)}>Delete</button>
-              <button tabIndex="0" className="btn btn-primary" type="submit" disabled={appState.data.submittingAI}>Update</button>
-            </div>
-          </div>
+          <div className="btn-group">
+          <button tabIndex="0" className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal(props)}>Cancel</button>
+          <button tabIndex="0" className="btn btn-secondary" type="button" disabled={appState.data.submittingAI} onClick={() => deleteAdditionalInterest(selectedAI, props)}>Delete</button>
+          <button tabIndex="0" className="btn btn-primary" type="submit" disabled={appState.data.submittingAI}>Update</button>
+        </div>
+        </div>
         </div>
       </Form>
     </div>

@@ -64,6 +64,7 @@ const quoteData = {
     pool: false
   },
   rating: {
+    totalPremium: '123',
     engineCode: 'HO3ByPeril',
     rateCode: '0417',
     _id: '5866c036a46eb72908f3f548'
@@ -84,7 +85,11 @@ const quoteData = {
     }
   },
   deductibles: {
+    sinkhole: {
+      amount: 0
+    },
     hurricane: {
+      calculatedAmount: 20000,
       displayText: 'Hurricane',
       amount: 0.2,
       format: 'Percentage',
@@ -99,6 +104,11 @@ const quoteData = {
     }
   },
   coverageOptions: {
+    personalPropertyReplacementCost: {
+      displayText: 'Replacement Cost',
+      answer: false,
+      _id: '5866c036a46eb72908f3f550'
+    },
     sinkholePerilCoverage: {
       displayText: 'Sinkhole Peril Coverage',
       answer: false,
@@ -234,7 +244,7 @@ const quoteData = {
       }
     },
     {
-      type: 'Lienholder',
+      type: 'PremiumFinance',
       name1: 'BB3',
       referenceNumber: '1001',
       phoneNumber: '1234567890',
@@ -337,32 +347,12 @@ describe('Testing AdditionalInterests component', () => {
           submitting: false
         }
       },
-      quoteData: {
-        AdditionalInterests: [{
-          id: '049a50b23c21c2ae3',
-          type: 'Mortgagee',
-          order: 1,
-          name1: 'BB&T Home Mortgage',
-          referenceNumber: '1234567',
-          mailingAddress: {
-            address1: '5115 Garden Vale Ave',
-            city: 'Tampa',
-            state: 'FL',
-            county: 'Hillsborough',
-            zip: '33624',
-            country: {
-              code: 'USA',
-              displayText: 'United States of America'
-            }
-          },
-          active: true
-        }]
-      },
+      quoteData,
       ...propTypes
     };
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
 
-   // wrapper.props().handleFormSubmit();
+    // wrapper.props().handleFormSubmit();
     expect(wrapper);
   });
 
@@ -377,13 +367,17 @@ describe('Testing AdditionalInterests component', () => {
             modelInstanceId: '123',
             model: {
               variables: [
-                { name: 'retrieveQuote',
+                {
+                  name: 'retrieveQuote',
                   value: {
                     result: quoteData
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: quoteData
-                    } }]
+                  }
+                }, {
+                  name: 'getQuoteBeforePageLoop',
+                  value: {
+                    result: quoteData
+                  }
+                }]
             },
             uiQuestions: []
           }
@@ -407,13 +401,17 @@ describe('Testing AdditionalInterests component', () => {
             modelInstanceId: '123',
             model: {
               variables: [
-                { name: 'retrieveQuote',
+                {
+                  name: 'retrieveQuote',
                   value: {
                     result: quoteData
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: quoteData
-                    } }]
+                  }
+                }, {
+                  name: 'getQuoteBeforePageLoop',
+                  value: {
+                    result: quoteData
+                  }
+                }]
             },
             uiQuestions: []
           }
@@ -446,27 +444,7 @@ describe('Testing AdditionalInterests component', () => {
           submitting: false
         }
       },
-      quoteData: {
-        AdditionalInterests: [{
-          id: '049a50b23c21c2ae3',
-          type: 'Mortgagee',
-          order: 1,
-          name1: 'BB&T Home Mortgage',
-          referenceNumber: '1234567',
-          mailingAddress: {
-            address1: '5115 Garden Vale Ave',
-            city: 'Tampa',
-            state: 'FL',
-            county: 'Hillsborough',
-            zip: '33624',
-            country: {
-              code: 'USA',
-              displayText: 'United States of America'
-            }
-          },
-          active: true
-        }]
-      },
+      quoteData,
       ...propTypes
     };
     deleteAdditionalInterest(quoteData.additionalInterests[0], props);
@@ -480,13 +458,17 @@ describe('Testing AdditionalInterests component', () => {
             modelInstanceId: '123',
             model: {
               variables: [
-                { name: 'retrieveQuote',
+                {
+                  name: 'retrieveQuote',
                   value: {
                     result: quoteData
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: quoteData
-                    } }]
+                  }
+                }, {
+                  name: 'getQuoteBeforePageLoop',
+                  value: {
+                    result: quoteData
+                  }
+                }]
             },
             uiQuestions: []
           }
@@ -520,27 +502,7 @@ describe('Testing AdditionalInterests component', () => {
           submitting: false
         }
       },
-      quoteData: {
-        AdditionalInterests: [{
-          id: '049a50b23c21c2ae3',
-          type: 'Mortgagee',
-          order: 1,
-          name1: 'BB&T Home Mortgage',
-          referenceNumber: '1234567',
-          mailingAddress: {
-            address1: '5115 Garden Vale Ave',
-            city: 'Tampa',
-            state: 'FL',
-            county: 'Hillsborough',
-            zip: '33624',
-            country: {
-              code: 'USA',
-              displayText: 'United States of America'
-            }
-          },
-          active: true
-        }]
-      },
+      quoteData,
       ...propTypes
     };
     addAdditionalInterest(quoteData.additionalInterests[0], props);
@@ -554,13 +516,17 @@ describe('Testing AdditionalInterests component', () => {
             modelInstanceId: '123',
             model: {
               variables: [
-                { name: 'retrieveQuote',
+                {
+                  name: 'retrieveQuote',
                   value: {
                     result: quoteData
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: quoteData
-                    } }]
+                  }
+                }, {
+                  name: 'getQuoteBeforePageLoop',
+                  value: {
+                    result: quoteData
+                  }
+                }]
             },
             uiQuestions: []
           }
@@ -594,27 +560,7 @@ describe('Testing AdditionalInterests component', () => {
           submitting: false
         }
       },
-      quoteData: {
-        AdditionalInterests: [{
-          id: '049a50b23c21c2ae3',
-          type: 'Mortgagee',
-          order: 1,
-          name1: 'BB&T Home Mortgage',
-          referenceNumber: '1234567',
-          mailingAddress: {
-            address1: '5115 Garden Vale Ave',
-            city: 'Tampa',
-            state: 'FL',
-            county: 'Hillsborough',
-            zip: '33624',
-            country: {
-              code: 'USA',
-              displayText: 'United States of America'
-            }
-          },
-          active: true
-        }]
-      },
+      quoteData,
       ...propTypes
     };
     editAdditionalInterest(quoteData.additionalInterests[0], props);
@@ -628,13 +574,17 @@ describe('Testing AdditionalInterests component', () => {
             modelInstanceId: '123',
             model: {
               variables: [
-                { name: 'retrieveQuote',
+                {
+                  name: 'retrieveQuote',
                   value: {
                     result: quoteData
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: quoteData
-                    } }]
+                  }
+                }, {
+                  name: 'getQuoteBeforePageLoop',
+                  value: {
+                    result: quoteData
+                  }
+                }]
             },
             uiQuestions: []
           }
@@ -668,27 +618,7 @@ describe('Testing AdditionalInterests component', () => {
           submitting: false
         }
       },
-      quoteData: {
-        AdditionalInterests: [{
-          id: '049a50b23c21c2ae3',
-          type: 'Mortgagee',
-          order: 1,
-          name1: 'BB&T Home Mortgage',
-          referenceNumber: '1234567',
-          mailingAddress: {
-            address1: '5115 Garden Vale Ave',
-            city: 'Tampa',
-            state: 'FL',
-            county: 'Hillsborough',
-            zip: '33624',
-            country: {
-              code: 'USA',
-              displayText: 'United States of America'
-            }
-          },
-          active: true
-        }]
-      },
+      quoteData,
       ...propTypes
     };
     hideAdditionalInterestModal(props);
@@ -702,13 +632,17 @@ describe('Testing AdditionalInterests component', () => {
             modelInstanceId: '123',
             model: {
               variables: [
-                { name: 'retrieveQuote',
+                {
+                  name: 'retrieveQuote',
                   value: {
                     result: quoteData
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: quoteData
-                    } }]
+                  }
+                }, {
+                  name: 'getQuoteBeforePageLoop',
+                  value: {
+                    result: quoteData
+                  }
+                }]
             },
             uiQuestions: []
           }
@@ -746,27 +680,7 @@ describe('Testing AdditionalInterests component', () => {
           submitting: false
         }
       },
-      quoteData: {
-        AdditionalInterests: [{
-          id: '049a50b23c21c2ae3',
-          type: 'Mortgagee',
-          order: 1,
-          name1: 'BB&T Home Mortgage',
-          referenceNumber: '1234567',
-          mailingAddress: {
-            address1: '5115 Garden Vale Ave',
-            city: 'Tampa',
-            state: 'FL',
-            county: 'Hillsborough',
-            zip: '33624',
-            country: {
-              code: 'USA',
-              displayText: 'United States of America'
-            }
-          },
-          active: true
-        }]
-      }
+      quoteData
     };
     handleFormSubmit(quoteData.additionalInterests, store.dispatch, props);
 

@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
-import localStorage from 'localStorage';
 import BaseConnect from './Base';
 import Footer from '../components/Common/Footer';
 import * as cgActions from '../actions/cgActions';
@@ -18,24 +17,21 @@ const workflowData = {
   dsUrl: `${process.env.REACT_APP_API_URL}/ds`
 };
 
-export const handleNewTab = (searchData) => {
-  localStorage.setItem('isNewTab', true);
+export const handleNewTab = async (searchData) => {
+  await localStorage.setItem('isNewTab', true);
 
-  const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData'));
+  const lastSearchData = await JSON.parse(localStorage.getItem('lastSearchData'));
 
   if (lastSearchData.searchType === 'address') {
-    localStorage.setItem('stateCode', searchData.physicalAddress.state);
-    localStorage.setItem('igdID', searchData.id);
+    await localStorage.setItem('stateCode', searchData.physicalAddress.state);
+    await localStorage.setItem('igdID', searchData.id);
     window.open('/quote/coverage', '_blank');
   } else if (lastSearchData.searchType === 'quote') {
-    localStorage.setItem('quoteId', searchData._id);
+    await localStorage.setItem('quoteId', searchData._id);
     window.open('/quote/coverage', '_blank');
   } else if (lastSearchData.searchType === 'policy') {
-    localStorage.setItem('policyNumber', searchData.policyNumber);
+    await localStorage.setItem('policyNumber', searchData.policyNumber);
     window.open('/policy/coverage', '_blank');
-  } else if (lastSearchData.searchType === 'agency' || lastSearchData.searchType === 'agent') {
-    localStorage.setItem('agencyCode', searchData.agencyCode);
-    window.open('/agency/staff', '_blank');
   }
 };
 

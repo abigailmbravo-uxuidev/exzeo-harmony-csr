@@ -13,6 +13,7 @@ import AccessDenied from './containers/AccessDenied';
 import LoggedOut from './containers/LoggedOut';
 import Callback from './containers/Callback';
 import SplashPage from './containers/Splash';
+import AgencySplashPage from './containers/AgencySplash';
 import NotFoundPage from './containers/NotFound';
 import QuoteCoverage from './components/Quote/Coverage';
 import QuoteUnderwriting from './components/Quote/Underwriting';
@@ -37,13 +38,16 @@ import * as authActions from './actions/authActions';
 const auth = new Auth();
 
 // logout the user if the server comesback with a 401
-axios.interceptors.response.use(response => response,
+axios.interceptors.response.use(
+  response => response,
   (error) => {
     if (error.response.status === 401) {
       auth.logout();
     }
     return Promise.reject(error);
-});
+  }
+);
+
 
 const checkPublicPath = (path) => {
   const publicPaths = ['/login', '/logout', '/accessDenied', '/loggedOut', '/callback'];
@@ -64,10 +68,8 @@ class Routes extends Component {
     } else if (!isAuthenticated() && checkPublicPath(window.location.pathname)) {
       history.push('/login');
       axios.defaults.headers.common['authorization'] = undefined; // eslint-disable-line
-    } else {
-      if (/access_token|id_token|error/.test(window.location.hash)) {
-        auth.handleAuthentication();
-      }
+    } else if (/access_token|id_token|error/.test(window.location.hash)) {
+      auth.handleAuthentication();
     }
   }
 
@@ -110,17 +112,19 @@ class Routes extends Component {
             sourceId={this.props.newNote.sourceNumber}
           />
         }
-
         <Router
           getUserConfirmation={(message, callback) => {
-            ReactDOM.render((
-              <ConfirmPopup {...this.props} message={message} setBackStep={this.setBackStep} callback={callback} />
-            ), document.getElementById('modal'));
+            ReactDOM.render(
+(
+  <ConfirmPopup {...this.props} message={message} setBackStep={this.setBackStep} callback={callback} />
+            ), document.getElementById('modal')
+);
           }}
         >
           <div className="routes">
             <Switch>
               <Route exact path="/" render={props => <SplashPage auth={auth} {...props} />} />
+              <Route exact path="/agency" render={props => <AgencySplashPage auth={auth} {...props} />} />
               <Route exact path="/quote/billing" render={props => <QuoteMailingAddressBilling auth={auth} {...props} />} />
               <Route exact path="/quote/notes" render={props => <QuoteNotesFiles auth={auth} {...props} />} />
               <Route exact path="/quote/summary" render={props => <QuoteSummary auth={auth} {...props} />} />
@@ -150,7 +154,7 @@ class Routes extends Component {
               <Route
                 exact
                 path="/callback"
-                render={(props) => <Callback />}
+                render={props => <Callback />}
               />
               <Route path="*" render={props => <NotFoundPage auth={auth} {...props} />} />
             </Switch>

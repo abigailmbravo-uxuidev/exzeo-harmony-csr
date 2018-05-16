@@ -104,7 +104,7 @@ export const AdditionalInterestModal = (props) => {
               answers={getAnswers('mortgagee', questions)}
               onChange={val => setMortgageeValues(val, props)}
             />
-         }
+}
             <TextField label={checkAdditionalInterestForName(appState.data.addAdditionalInterestType) ? 'First Name' : 'Name 1'} styleName="name-1" name="name1" validations={['required']} />
             <TextField label={checkAdditionalInterestForName(appState.data.addAdditionalInterestType) ? 'Last Name' : 'Name 2'} styleName="name-2" name="name2" />
             <TextField label="Address 1" styleName="address-1" name="address1" validations={['required']} />

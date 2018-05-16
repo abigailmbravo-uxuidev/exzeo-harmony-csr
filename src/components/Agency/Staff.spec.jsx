@@ -1,6 +1,5 @@
 import React from 'react';
 import thunk from 'redux-thunk';
-import localStorage from 'localStorage';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
@@ -34,11 +33,13 @@ describe('Testing Staff component', () => {
     const store = mockStore(initialState);
     const props = {
       initialValues: {},
-      agents: [{ name: 'test', status: true, agentOfRecord: true, appointed: true, mailingAddress: {} }],
+      agents: [{
+ name: 'test', status: true, agentOfRecord: true, appointed: true, mailingAddress: {} 
+}],
       agency: {
         name: 'Test Agency',
-        contactFirstName: "Test",
-        contactLastName: "Test",
+        contactFirstName: 'Test',
+        contactLastName: 'Test',
         phone: '555-555-5555',
         primaryPhoneNumber: '555-555-5555',
         secondaryPhoneNumber: '555-555-5555',

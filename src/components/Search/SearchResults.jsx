@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import localStorage from 'localStorage';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
@@ -54,6 +53,7 @@ export const SearchResults = (props) => {
               policyKeyEnter={event => onKeypressSubmit(event, policy, props)}
               policy={policy}
               index={index}
+              key={index}
               policySelection={() => props.handleNewTab(policy, props)}
             />
           ))
@@ -76,6 +76,7 @@ export const SearchResults = (props) => {
               <AddressSearchCard
                 address={address}
                 index={index}
+                key={index}
                 addressSelection={() => props.handleNewTab(address, props)}
                 addressKeyEnter={event => onKeypressSubmit(event, address, props)}
               />
@@ -97,6 +98,7 @@ export const SearchResults = (props) => {
           <QuoteSearchCard
             quote={quote}
             index={index}
+            key={index}
             quoteSelection={() => props.handleNewTab(quote, props)}
             quoteKeyEnter={event => onKeypressSubmit(event, quote, props)}
           />
@@ -118,7 +120,7 @@ export const SearchResults = (props) => {
         { props.appState.data && props.appState.data.agentSubmitting && <Loader />}
         {
         agencyResults && agencyResults.map((agency, index) => (
-          <AgencySearchCard agency={agency} index={index} agencySelection={() => props.handleNewTab(agency, props)} agencyKeyEnter={event => onKeypressSubmit(event, agency, props)} />
+          <AgencySearchCard agency={agency} index={index} key={index} agencySelection={() => props.handleNewTab(agency, props)} agencyKeyEnter={event => onKeypressSubmit(event, agency, props)} />
         ))
       }
       </div>);
@@ -136,7 +138,7 @@ export const SearchResults = (props) => {
         { props.appState.data && props.appState.data.agentSubmitting && <Loader />}
         {
         agentResults && agentResults.map((agent, index) => (
-          <AgentSearchCard agent={agent} index={index} agentSelection={() => props.handleNewTab(agent, props)} agentKeyEnter={event => onKeypressSubmit(event, agent, props)} />
+          <AgentSearchCard agent={agent} index={index} key={index} agentSelection={() => props.handleNewTab(agent, props)} agentKeyEnter={event => onKeypressSubmit(event, agent, props)} />
           ))
             }
       </div>
