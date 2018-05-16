@@ -611,15 +611,16 @@ export const createTransaction = submitData => (dispatch) => {
 
 // TODO use this once the form is in the shape of the model
 export const submitEndorsementForm = (formData, formProps) => async (dispatch) => {
-  const { policy, summaryLedger: { currentPremium } } = formProps;
-  const submitData = endorsementUtils.generateModel(formData, policy, formProps);
+  const submitData = endorsementUtils.generateModel(formData, formProps);
 
-  const forms = await getListOfForms(policy, formProps.getRate.rating, 'New Business');
+  const forms = await getListOfForms(formProps.policy, formProps.getRate.rating, 'New Business');
 
   submitData.forms = forms;
 
   dispatch(createTransaction(submitData));
-  // dispatch result of create transaction to set the latest policy
+
+  // TODO we need to make this more declarative
+  dispatch(getLatestPolicy(formData.policyNumber));
 };
 
 export const convertToRateData = (formData, props) => {

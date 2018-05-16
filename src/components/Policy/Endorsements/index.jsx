@@ -105,6 +105,13 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.billToType = _.get(policy, 'billToType');
   values.billPlan = _.get(policy, 'billPlan');
 
+  values.coverageLimits = { ...policy.coverageLimits };
+  values.coverageOptions = { ...policy.coverageOptions };
+  values.policyHolderMailingAddress = { ...policy.policyHolderMailingAddress };
+  values.underwritingAnswers = { ...policy.underwritingAnswers };
+  values.deductibles = { ...policy.deductibles };
+  values.property = { ...policy.property };
+
   // spread willl default these
   values.companyCode = policy.companyCode;
   values.state = policy.state;
@@ -115,7 +122,7 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
 
   // Coverage Top Left
   values.clearFields = false;
-  values.policyID = policy._id;
+  values.policyID = policy.policyID;
   values.endorsementDate = endorsementUtils.setEndorsementDate(policy.effectiveDate, policy.endDate);
   values.coverageLimits.dwelling.amount = dwelling;
   values.coverageLimits.otherStructures.amount = otherStructures;
@@ -140,14 +147,14 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer', false);
   values.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer', false);
   values.coverageOptions.liabilityIncidentalOccupancies.answer = _.get(policy, 'coverageOptions.liabilityIncidentalOccupancies.answer', false);
-  values.property.townhouseRowhouse = _.get(policy, 'property.townhouseRowhouse');
+  // values.property.townhouseRowhouse = _.get(policy, 'property.townhouseRowhouse');
   values.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount = _.get(policy, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount') === 0 ? 'No' : 'Yes';
   values.underwritingAnswers.rented.answer = _.get(policy, 'underwritingAnswers.rented.answer');
   values.underwritingAnswers.monthsOccupied.answer = _.get(policy, 'underwritingAnswers.monthsOccupied.answer');
   values.underwritingAnswers.noPriorInsuranceSurcharge.answer = _.get(policy, 'underwritingAnswers.noPriorInsuranceSurcharge.answer');
-  values.property.burglarAlarm = _.get(policy, 'property.burglarAlarm');
-  values.property.fireAlarm = _.get(policy, 'property.fireAlarm');
-  values.property.sprinkler = _.get(policy, 'property.sprinkler');
+  // values.property.burglarAlarm = _.get(policy, 'property.burglarAlarm');
+  // values.property.fireAlarm = _.get(policy, 'property.fireAlarm');
+  // values.property.sprinkler = _.get(policy, 'property.sprinkler');
   // Wind Mitigation
   values.property.windMitigation.roofCovering = _.get(policy, 'property.windMitigation.roofCovering');
   values.property.windMitigation.roofDeckAttachment = _.get(policy, 'property.windMitigation.roofDeckAttachment');
@@ -167,20 +174,20 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.windMitFactor = windMitigationDiscount;
   values.windMitFactorRated = updatedRatingWindMitDiscount || windMitigationDiscount;
   // Home/Location Bottom Left
-  values.property.yearBuilt = _.get(policy, 'property.yearBuilt');
-  values.property.constructionType = _.get(policy, 'property.constructionType');
-  values.property.yearOfRoof = _.get(policy, 'property.yearOfRoof') || '';
-  values.property.protectionClass = _.get(policy, 'property.protectionClass', '');
-  values.property.buildingCodeEffectivenessGrading = _.get(policy, 'property.buildingCodeEffectivenessGrading', '');
+  // values.property.yearBuilt = _.get(policy, 'property.yearBuilt');
+  // values.property.constructionType = _.get(policy, 'property.constructionType');
+  // values.property.yearOfRoof = _.get(policy, 'property.yearOfRoof') || '';
+  // values.property.protectionClass = _.get(policy, 'property.protectionClass', '');
+  // values.property.buildingCodeEffectivenessGrading = _.get(policy, 'property.buildingCodeEffectivenessGrading', '');
   values.buildingCodeEffectivenessGradingNew = values.property.buildingCodeEffectivenessGrading;
-  values.property.familyUnits = _.get(policy, 'property.familyUnits', '');
+  // values.property.familyUnits = _.get(policy, 'property.familyUnits', '');
   // Home/Location Bottom Right
-  values.property.distanceToTidalWater = _.get(policy, 'property.distanceToTidalWater', '');
-  values.property.distanceToFireHydrant = _.get(policy, 'property.distanceToFireHydrant', '');
-  values.property.distanceToFireStation = _.get(policy, 'property.distanceToFireStation', '');
-  values.property.residenceType = _.get(policy, 'property.residenceType', '');
-  values.property.squareFeet = _.get(policy, 'property.squareFeet', '');
-  values.property.floodZone = _.get(policy, 'property.floodZone', '');
+  // values.property.distanceToTidalWater = _.get(policy, 'property.distanceToTidalWater', '');
+  // values.property.distanceToFireHydrant = _.get(policy, 'property.distanceToFireHydrant', '');
+  // values.property.distanceToFireStation = _.get(policy, 'property.distanceToFireStation', '');
+  // values.property.residenceType = _.get(policy, 'property.residenceType', '');
+  // values.property.squareFeet = _.get(policy, 'property.squareFeet', '');
+  // values.property.floodZone = _.get(policy, 'property.floodZone', '');
   // Policyholders
   values.policyHolders = _.get(policy, 'policyHolders', []);
   // Mailing Address
@@ -190,11 +197,14 @@ export const handleInitialize = ({ service = {}, questions = [] }) => {
   values.policyHolderMailingAddress.state = _.get(policy, 'policyHolderMailingAddress.state');
   values.policyHolderMailingAddress.zip = _.get(policy, 'policyHolderMailingAddress.zip');
   // Property Address
-  values.property.physicalAddress.address1 = _.get(policy, 'property.physicalAddress.address1');
-  values.property.physicalAddress.address2 = _.get(policy, 'property.physicalAddress.address2');
-  values.property.physicalAddress.city = _.get(policy, 'property.physicalAddress.city');
-  values.property.physicalAddress.state = _.get(policy, 'property.physicalAddress.state');
-  values.property.physicalAddress.zip = _.get(policy, 'property.physicalAddress.zip');
+  // values.property.physicalAddress.address1 = _.get(policy, 'property.physicalAddress.address1');
+  // values.property.physicalAddress.address2 = _.get(policy, 'property.physicalAddress.address2');
+  // values.property.physicalAddress.city = _.get(policy, 'property.physicalAddress.city');
+  // values.property.physicalAddress.county = _.get(policy, 'property.physicalAddress.county');
+  // values.property.physicalAddress.state = _.get(policy, 'property.physicalAddress.state');
+  // values.property.physicalAddress.zip = _.get(policy, 'property.physicalAddress.zip');
+
+
 
   return values;
 };
@@ -253,9 +263,8 @@ export class Endorsements extends React.Component {
 
   save = async (data, dispatch, props) => {
     await props.actions.serviceActions.submitEndorsementForm(data, props);
-    this.setState({ isCalculated: false });
-    this.resetCalculate();
-    this.props.reset();
+    this.setState({ isCalculated: false }, this.resetCalculate);
+
   };
 
   setPHToggle = () => {
