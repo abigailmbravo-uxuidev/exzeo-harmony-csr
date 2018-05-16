@@ -292,7 +292,7 @@ export class Endorsements extends React.Component {
     this.setState({ isCalculated: false });
   };
 
-  updateDwellingAndDependencies = (value, prevValue, fieldValues) => {
+  normalizeDwellingAmount = (value, prevValue, fieldValues) => {
     const { change: changeF } = this.props;
     this.setCalculate();
 
@@ -323,7 +323,7 @@ export class Endorsements extends React.Component {
     return value;
   };
 
-  normalizePersonalPropertyDependencies = (value, allValues, field, dependency) => {
+  normalizePersonalPropertyPercentage = (value, allValues, field, dependency) => {
     if (Number.isNaN(value)) return;
     this.setCalculate();
     const { change: changeF, initialValues } = this.props;
@@ -411,9 +411,9 @@ export class Endorsements extends React.Component {
                       personalPropertyNewVal={selectedFields.personalPropertyNew}
                       questions={questions}
                       underwritingQuestions={underwritingQuestions}
-                      normalizeDwellingAmount={this.updateDwellingAndDependencies}
+                      normalizeDwellingAmount={this.normalizeDwellingAmount}
                       normalizeDwellingDependencies={this.normalizeDwellingDependencies}
-                      normalizePersonalPropertyDependencies={this.normalizePersonalPropertyDependencies}
+                      normalizePersonalPropertyPercentage={this.normalizePersonalPropertyPercentage}
                       normalizeIncidentalOccupancies={this.normalizeIncidentalOccupancies}
                     />
                     <WindMitigation questions={questions} />
@@ -476,34 +476,34 @@ export class Endorsements extends React.Component {
   }
 }
 
-Endorsements.propTypes = {
-  ...propTypes,
-  tasks: PropTypes.shape().isRequired,
-  appState: PropTypes.shape({
-    modelName: PropTypes.string,
-    instanceId: PropTypes.string,
-    data: PropTypes.shape({ isSubmitting: PropTypes.bool })
-  }).isRequired
-};
+// Endorsements.propTypes = {
+//   ...propTypes,
+//   tasks: PropTypes.shape().isRequired,
+//   appState: PropTypes.shape({
+//     modelName: PropTypes.string,
+//     instanceId: PropTypes.string,
+//     data: PropTypes.shape({ isSubmitting: PropTypes.bool })
+//   }).isRequired
+// };
 
 const defaultObj = {};
 const defaultArr = [];
 const selector = formValueSelector('Endorsements');
 const mapStateToProps = state => ({
-  tasks: state.cg,
-  endorsementHistory: state.service.endorsementHistory || defaultArr,
   appState: state.appState,
+  endorsementHistory: state.service.endorsementHistory || defaultArr,
   fieldValues: _.get(state.form, 'Endorsements.values', defaultObj),
+  getRate: state.service.getRate,
   initialValues: handleInitialize(state),
+  newPolicyNumber: getNewPolicyNumber(state),
   policy: state.service.latestPolicy || defaultObj,
   questions: state.questions,
-  underwritingQuestions: state.service.underwritingQuestions,
-  getRate: state.service.getRate,
-  newPolicyNumber: getNewPolicyNumber(state),
+  selectedValues: selector(state, 'coverageLimits.personalProperty.amount', 'clearFields'),
   summaryLedger: state.service.getSummaryLedger || defaultObj,
-  zipcodeSettings: state.service.getZipcodeSettings,
+  tasks: state.cg,
+  underwritingQuestions: state.service.underwritingQuestions,
   userProfile: state.authState.userProfile || defaultObj,
-  selectedValues: selector(state, 'coverageLimits.personalProperty.amount', 'clearFields')
+  zipcodeSettings: state.service.getZipcodeSettings,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -517,4 +517,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Endorsements', enableReinitialize: true, keepDirtyOnReinitialize: true })(Endorsements));
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Endorsements', enableReinitialize: true })(Endorsements));

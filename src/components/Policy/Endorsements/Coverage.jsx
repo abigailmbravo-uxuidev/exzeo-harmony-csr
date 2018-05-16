@@ -35,9 +35,9 @@ const sprinklerAnswers = [
 
 const Coverage = ({
   initialValues,
-  normalizeDwellingDependencies,
   normalizeDwellingAmount,
-  normalizePersonalPropertyDependencies,
+  normalizeDwellingDependencies,
+  normalizePersonalPropertyPercentage,
   normalizeIncidentalOccupancies,
   personalPropertyNewVal,
   questions,
@@ -90,7 +90,7 @@ const Coverage = ({
           styleName="coverage-c-percentage"
           answers={formUtils.getAnswers('personalPropertyAmount', questions)}
           validate={validation.isRequired}
-          normalize={(v, pv, av) => normalizePersonalPropertyDependencies(v, av, 'coverageLimits.personalProperty.amount')}
+          normalize={(v, pv, av) => normalizePersonalPropertyPercentage(v, av, 'coverageLimits.personalProperty.amount')}
           showInitial
         />
         <Field
@@ -256,15 +256,14 @@ const Coverage = ({
 );
 
 Coverage.propTypes = {
-  initialValues: PropTypes.object,
-  normalizeDwellingDependencies: PropTypes.func,
-  normalizeDwellingAmount: PropTypes.func,
-  normalizePersonalPropertyDependencies: PropTypes.func,
+  initialValues: PropTypes.object.isRequired,
   personalPropertyNewVal: PropTypes.number,
-  questions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-  underwritingQuestions: PropTypes.array
+  questions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
+  underwritingQuestions: PropTypes.array.isRequired,
+  normalizeDwellingAmount: PropTypes.func.isRequired,
+  normalizeDwellingDependencies: PropTypes.func.isRequired,
+  normalizePersonalPropertyPercentage: PropTypes.func.isRequired,
+  normalizeIncidentalOccupancies: PropTypes.func.isRequired
 };
-
-Coverage.defaultProps = {};
 
 export default Coverage;
