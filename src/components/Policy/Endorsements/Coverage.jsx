@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import Inputs from '@exzeo/core-ui/lib/Input';
+import GroupedInputs from '@exzeo/core-ui/lib/InputGrouped';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 import formUtils from '../../../utilities/forms';
 
-const { CurrencyGrouped, SelectIntegerGrouped, SelectGrouped, RadioGrouped } = Inputs;
+const { Currency, SelectInteger, Select, Radio } = GroupedInputs;
 const { validation } = lifecycle;
 
 const baseYesNoAnswers = [
@@ -52,21 +52,21 @@ const Coverage = ({
         <Field
           name="coverageLimits.dwelling.amount"
           label={`Dwelling (A) ($ ${String(initialValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $ ${String(initialValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`}
-          component={CurrencyGrouped}
+          component={Currency}
           validate={[validation.isRequired, validation.isDwellingRange]}
           normalize={normalizeDwellingAmount}
         />
         <Field
           name="coverageLimits.otherStructures.amount"
           label="Other Structures (B)"
-          component={CurrencyGrouped}
+          component={Currency}
           styleName="coverage-b"
           validate={validation.isRequired}
         />
         <Field
           name="coverageLimits.otherStructures.percentage"
           label="Other Structures %"
-          component={SelectIntegerGrouped}
+          component={SelectInteger}
           styleName="coverage-b-percentage"
           answers={formUtils.getAnswers('otherStructuresAmount', questions)}
           validate={validation.isRequired}
@@ -75,7 +75,7 @@ const Coverage = ({
         <Field
           name="coverageLimits.personalProperty.amount"
           label="Personal Property (C)"
-          component={CurrencyGrouped}
+          component={Currency}
           styleName="coverage-c"
           validate={validation.isRequired}
           disabled
@@ -83,7 +83,7 @@ const Coverage = ({
         <Field
           name="coverageLimits.personalProperty.percentage"
           label="Personal Property %"
-          component={SelectIntegerGrouped}
+          component={SelectInteger}
           styleName="coverage-c-percentage"
           answers={formUtils.getAnswers('personalPropertyAmount', questions)}
           validate={validation.isRequired}
@@ -93,21 +93,21 @@ const Coverage = ({
         <Field
           name="coverageLimits.lossOfUse.amount"
           label="Loss of Use (D)"
-          component={CurrencyGrouped}
+          component={Currency}
           validate={validation.isRequired}
           disabled
         />
         <Field
           name="coverageLimits.personalLiability.amount"
           label="Personal Liability (E)"
-          component={SelectIntegerGrouped}
+          component={SelectInteger}
           answers={formUtils.getAnswers('personalLiability', questions)}
           validate={validation.isRequired}
         />
         <Field
           name="coverageLimits.medicalPayments.amount"
           label="Medical Payments (F)"
-          component={CurrencyGrouped}
+          component={Currency}
           validate={validation.isRequired}
           disabled
           showInitial
@@ -115,28 +115,28 @@ const Coverage = ({
         <Field
           name="coverageLimits.moldProperty.amount"
           label="Mold Property"
-          component={SelectIntegerGrouped}
+          component={SelectInteger}
           answers={formUtils.getAnswers('moldProperty', questions)}
           validate={validation.isRequired}
         />
         <Field
           name="coverageLimits.moldLiability.amount"
           label="Mold Liability"
-          component={SelectIntegerGrouped}
+          component={SelectInteger}
           answers={formUtils.getAnswers('moldLiability', questions)}
           validate={validation.isRequired}
         />
         <Field
           name="deductibles.allOtherPerils.amount"
           label="AOP Deductible"
-          component={SelectIntegerGrouped}
+          component={SelectInteger}
           answers={formUtils.getAnswers('allOtherPerils', questions)}
           validate={validation.isRequired}
         />
         <Field
           name="deductibles.hurricane.amount"
           label="Hurricane Deductible"
-          component={SelectIntegerGrouped}
+          component={SelectInteger}
           answers={formUtils.getAnswers('hurricane', questions)}
           validate={validation.isRequired}
           normalize={(v, pv, av) => normalizeDependencies(v, av, 'deductibles.hurricane.calculatedAmount', 'coverageLimits.dwelling.amount')}
@@ -145,7 +145,7 @@ const Coverage = ({
         <Field
           name="coverageOptions.sinkholePerilCoverage.answer"
           label="Sinkhole Deductible"
-          component={SelectGrouped}
+          component={Select}
           answers={sinkholePerilCoverageAnswers(questions)}
           showInitial
         />
@@ -158,7 +158,7 @@ const Coverage = ({
         <Field
           name="coverageOptions.personalPropertyReplacementCost.answer"
           label="Personal Property Repl Cost"
-          component={RadioGrouped}
+          component={Radio}
           answers={baseYesNoAnswers}
           styleName="billPlan"
           segmented
@@ -168,13 +168,13 @@ const Coverage = ({
           name="coverageLimits.ordinanceOrLaw.amount"
           label="Ordinance or Law"
           answers={formUtils.getAnswers('ordinanceOrLaw', questions)}
-          component={SelectIntegerGrouped}
+          component={SelectInteger}
           validate={validation.isRequired}
         />
         <Field
           name="coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer"
           label="Incidental Occ Main"
-          component={RadioGrouped}
+          component={Radio}
           answers={baseYesNoAnswers}
           normalize={normalizeIncidentalOccupancies}
           styleName="billPlan"
@@ -183,7 +183,7 @@ const Coverage = ({
         <Field
           name="coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer"
           label="Incidental Occ Other"
-          component={RadioGrouped}
+          component={Radio}
           answers={baseYesNoAnswers}
           normalize={normalizeIncidentalOccupancies}
           styleName="billPlan"
@@ -192,7 +192,7 @@ const Coverage = ({
         <Field
           name="coverageOptions.liabilityIncidentalOccupancies.answer"
           label="Incidental Occ Liability"
-          component={RadioGrouped}
+          component={Radio}
           answers={baseYesNoAnswers}
           styleName="billPlan"
           segmented
@@ -201,33 +201,33 @@ const Coverage = ({
         <Field
           name="property.townhouseRowhouse"
           label="Townhouse / Rowhouse"
-          component={RadioGrouped}
+          component={Radio}
           segmented
           answers={baseYesNoAnswers}
         />
         <Field
           name="underwritingAnswers.rented.answer"
           label="Property Ever Rented"
-          component={SelectGrouped}
+          component={Select}
           answers={formUtils.getAnswers('rented', underwritingQuestions)}
         />
         <Field
           name="underwritingAnswers.monthsOccupied.answer"
           label="Months Occupied"
-          component={SelectGrouped}
+          component={Select}
           answers={formUtils.getAnswers('monthsOccupied', underwritingQuestions)}
         />
         <Field
           name="underwritingAnswers.noPriorInsuranceSurcharge.answer"
           label="No Prior Insurance"
-          component={RadioGrouped}
+          component={Radio}
           answers={noPriorInsuranceSurchargeAnswers}
           segmented
         />
         <Field
           name="property.burglarAlarm"
           label="Burglar Alarm"
-          component={RadioGrouped}
+          component={Radio}
           answers={baseYesNoAnswers}
           segmented
         />
@@ -235,14 +235,14 @@ const Coverage = ({
           name="property.fireAlarm"
 
           label="Fire Alarm"
-          component={RadioGrouped}
+          component={Radio}
           answers={baseYesNoAnswers}
           segmented
         />
         <Field
           name="property.sprinkler"
           label="Sprinkler"
-          component={RadioGrouped}
+          component={Radio}
           segmented
           answers={sprinklerAnswers}
         />

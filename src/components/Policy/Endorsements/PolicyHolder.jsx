@@ -7,7 +7,7 @@ import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 const { Input, Phone } = Inputs;
 const { validation, normalize } = lifecycle;
 
-const PolicyHolder = ({ clearSecondaryPolicyholder, policyHolders, setPHToggle }) => (
+const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) => (
   <section name="policy" id="policy">
     <div className="flex-parent col2">
       {/* Col1 */}
@@ -62,7 +62,7 @@ const PolicyHolder = ({ clearSecondaryPolicyholder, policyHolders, setPHToggle }
               id="clearFields"
               component="input"
               type="checkbox"
-              normalize={clearSecondaryPolicyholder}
+              normalize={setSecondaryPolicyHolder}
               disabled={!(policyHolders && policyHolders[1])}
             />
             <label htmlFor="clearFields">Remove</label>

@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import Inputs from '@exzeo/core-ui/lib/Input';
+import { Input } from '@exzeo/core-ui/lib/Input';
+import GroupedInputs from '@exzeo/core-ui/lib/InputGrouped';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers } from '../../../utilities/forms';
 
-const {
-  Input, SelectGrouped, RadioGrouped, IntegerGrouped
-} = Inputs;
+const { Select, Radio, Integer } = GroupedInputs;
 const { validation } = lifecycle;
 
 const WindMitigation = ({ questions }) => (
@@ -23,14 +22,14 @@ const WindMitigation = ({ questions }) => (
           label="Roof Covering"
           name="property.windMitigation.roofCovering"
           answers={getAnswers('roofCovering', questions)}
-          component={SelectGrouped}
+          component={Select}
           validate={validation.isRequired}
         />
         <Field
           label="Roof Deck Attachment"
           name="property.windMitigation.roofDeckAttachment"
           answers={getAnswers('roofDeckAttachment', questions)}
-          component={SelectGrouped}
+          component={Select}
           validate={validation.isRequired}
         />
         <Field
@@ -38,14 +37,14 @@ const WindMitigation = ({ questions }) => (
           name="property.windMitigation.roofToWallConnection"
           answers={getAnswers('roofToWallConnection', questions)}
           styleName="weakestRoofWallConnect"
-          component={SelectGrouped}
+          component={Select}
           validate={validation.isRequired}
         />
         <Field
           label="Roof Geometry"
           name="property.windMitigation.roofGeometry"
           answers={getAnswers('roofGeometry', questions)}
-          component={SelectGrouped}
+          component={Select}
           validate={validation.isRequired}
         />
         <Field
@@ -53,14 +52,14 @@ const WindMitigation = ({ questions }) => (
           label="Secondary Water Resistance (SWR)"
           name="property.windMitigation.secondaryWaterResistance"
           answers={getAnswers('secondaryWaterResistance', questions)}
-          component={RadioGrouped}
+          component={Radio}
           validate={validation.isRequired}
         />
         <Field
           label="Opening Protection"
           name="property.windMitigation.openingProtection"
           answers={getAnswers('openingProtection', questions)}
-          component={SelectGrouped}
+          component={Select}
           validate={validation.isRequired}
         />
       </div>
@@ -73,20 +72,20 @@ const WindMitigation = ({ questions }) => (
         <Field
           label="FBC Wind Speed"
           name="property.windMitigation.floridaBuildingCodeWindSpeed"
-          component={IntegerGrouped}
+          component={Integer}
           validate={[validation.isRequired, validation.isNumbersOnly]}
         />
         <Field
           label="FBC Wind Speed Design"
           name="property.windMitigation.floridaBuildingCodeWindSpeedDesign"
-          component={IntegerGrouped}
+          component={Integer}
           validate={[validation.isRequired, validation.isNumbersOnly]}
         />
         <Field
           label="FBC Wind Speed Design"
           name="property.windMitigation.terrain"
           styleName="propertyTerrain"
-          component={SelectGrouped}
+          component={Select}
           answers={getAnswers('terrain', questions)}
           validate={validation.isRequired}
         />
@@ -94,7 +93,7 @@ const WindMitigation = ({ questions }) => (
           label="Internal Pressure Design"
           name="property.windMitigation.internalPressureDesign"
           answers={getAnswers('internalPressureDesign', questions)}
-          component={SelectGrouped}
+          component={Select}
           validate={validation.isRequired}
         />
         <Field
@@ -102,7 +101,7 @@ const WindMitigation = ({ questions }) => (
           label="Wind Borne Debris Region (WBDR)"
           name="property.windMitigation.windBorneDebrisRegion"
           answers={getAnswers('windBorneDebrisRegion', questions)}
-          component={RadioGrouped}
+          component={Radio}
           validate={validation.isRequired}
         />
       <div className="form-group-double-element wind-mit">
