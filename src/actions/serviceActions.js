@@ -627,6 +627,7 @@ export const submitEndorsementForm = (formData, formProps) => async (dispatch) =
 export const convertToRateData = (formData, props) => {
   const { policy, summaryLedger: { currentPremium }, zipcodeSettings } = props;
   const endorsementDate = moment.tz(moment.utc(formData.endorsementDate).format('YYYY-MM-DD'), zipcodeSettings.timezone).utc().format();
+  formData.deductibles.sinkhole.amount = String(formData.coverageOptions.sinkholePerilCoverage.answer) === 'true' ?  10 : 0;
 
   return {
     ...formData,
