@@ -608,18 +608,22 @@ export const createTransaction = submitData => (dispatch) => {
     });
 };
 
-// TODO use this once the form is in the shape of the model
-export const submitEndorsementForm = (formData, formProps) => async (dispatch) => {
-  const submitData = endorsementUtils.generateModel(formData, formProps);
+/**
+ * Save Endorsement form to get new rate and update policy coverage
+ */
+export const submitEndorsementForm = (formData, formProps) => {
+  return async (dispatch) => {
+    const submitData = endorsementUtils.generateModel(formData, formProps);
 
-  const forms = await getListOfForms(formProps.policy, formProps.getRate.rating, 'New Business');
+    const forms = await getListOfForms(formProps.policy, formProps.getRate.rating, 'New Business');
 
-  submitData.forms = forms;
+    submitData.forms = forms;
 
-  dispatch(createTransaction(submitData));
+    dispatch(createTransaction(submitData));
 
-  // TODO we need to make this more declarative
-  dispatch(getLatestPolicy(formData.policyNumber));
+    // TODO we need to make this more declarative
+    dispatch(getLatestPolicy(formData.policyNumber));
+  };
 };
 
 export const convertToRateData = (formData, props) => {
@@ -627,120 +631,125 @@ export const convertToRateData = (formData, props) => {
   const endorsementDate = endorsementUtils.calculateEndorsementDate(formData.endorsementDate, zipcodeSettings.timezone);
 
   return {
+    ...formData,
     oldTotalPremium: formData.rating.totalPremium,
     oldCurrentPremium: currentPremium,
     endorsementDate: endorsementDate,
-    effectiveDate: formData.effectiveDate,
-    policyNumber: formData.policyNumber,
-    companyCode: formData.companyCode,
-    state: formData.state,
-    product: formData.product,
-    property: {
-      territory: formData.property.territory,
-      buildingCodeEffectivenessGrading: formData.property.buildingCodeEffectivenessGrading,
-      familyUnits: formData.property.familyUnits,
-      fireAlarm: formData.property.fireAlarm,
-      burglarAlarm: formData.property.burglarAlarm,
-      constructionType: formData.property.constructionType,
-      sprinkler: formData.property.sprinkler,
-      protectionClass: formData.property.protectionClass,
-      townhouseRowhouse: formData.property.townhouseRowhouse,
-      yearBuilt: formData.property.yearBuilt || null,
-      windMitigation: {
-        ...formData.property.windMitigation
-      },
-    },
-    coverageLimits: {
-      dwelling: {
-        amount: formData.coverageLimits.dwelling.amount
-      },
-      otherStructures: {
-        amount: formData.coverageLimits.otherStructures.amount
-      },
-      personalProperty: {
-        amount: formData.coverageLimits.personalProperty.amount
-      },
-      personalLiability: {
-        amount: formData.coverageLimits.personalLiability.amount
-      },
-      medicalPayments: {
-        amount: formData.coverageLimits.medicalPayments.amount
-      },
-      lossOfUse: {
-        amount: formData.coverageLimits.lossOfUse.amount
-      },
-      moldProperty: {
-        amount: formData.coverageLimits.moldProperty.amount
-      },
-      moldLiability: {
-        amount: formData.coverageLimits.moldLiability.amount
-      },
-      ordinanceOrLaw: {
-        amount: formData.coverageLimits.ordinanceOrLaw.amount
-      }
-    },
-    coverageOptions: {
-      sinkholePerilCoverage: {
-        answer: formData.coverageOptions.sinkholePerilCoverage.answer
-      },
-      propertyIncidentalOccupanciesMainDwelling: {
-        answer: formData.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer
-      },
-      propertyIncidentalOccupanciesOtherStructures: {
-        answer: formData.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer
-      },
-      liabilityIncidentalOccupancies: {
-        answer: formData.coverageOptions.liabilityIncidentalOccupancies.answer
-      },
-      personalPropertyReplacementCost: {
-        answer: formData.coverageOptions.personalPropertyReplacementCost.answer
-      }
-    },
-    deductibles: {
-      allOtherPerils: {
-        amount: formData.deductibles.allOtherPerils.amount
-      },
-      hurricane: {
-        amount: formData.deductibles.hurricane.amount,
-        calculatedAmount: formData.deductibles.hurricane.calculatedAmount
-      },
-      sinkhole: {
-        amount: formData.deductibles.sinkhole.amount,
-        calculatedAmount: formData.deductibles.sinkhole.calculatedAmount
-      }
-    },
-    underwritingAnswers: {
-      rented: {
-        answer: formData.underwritingAnswers.rented.answer
-      },
-      monthsOccupied: {
-        answer: formData.underwritingAnswers.monthsOccupied.answer
-      },
-      noPriorInsuranceSurcharge: {
-        answer: formData.underwritingAnswers.noPriorInsuranceSurcharge.answer
-      }
-    },
-  };
+  }
+  // return {
+  //
+  //   effectiveDate: formData.effectiveDate,
+  //   policyNumber: formData.policyNumber,
+  //   companyCode: formData.companyCode,
+  //   state: formData.state,
+  //   product: formData.product,
+  //   property: {
+  //     territory: formData.property.territory,
+  //     buildingCodeEffectivenessGrading: formData.property.buildingCodeEffectivenessGrading,
+  //     familyUnits: formData.property.familyUnits,
+  //     fireAlarm: formData.property.fireAlarm,
+  //     burglarAlarm: formData.property.burglarAlarm,
+  //     constructionType: formData.property.constructionType,
+  //     sprinkler: formData.property.sprinkler,
+  //     protectionClass: formData.property.protectionClass,
+  //     townhouseRowhouse: formData.property.townhouseRowhouse,
+  //     yearBuilt: formData.property.yearBuilt || null,
+  //     windMitigation: {
+  //       ...formData.property.windMitigation
+  //     },
+  //   },
+  //   coverageLimits: {
+  //     dwelling: {
+  //       amount: formData.coverageLimits.dwelling.amount
+  //     },
+  //     otherStructures: {
+  //       amount: formData.coverageLimits.otherStructures.amount
+  //     },
+  //     personalProperty: {
+  //       amount: formData.coverageLimits.personalProperty.amount
+  //     },
+  //     personalLiability: {
+  //       amount: formData.coverageLimits.personalLiability.amount
+  //     },
+  //     medicalPayments: {
+  //       amount: formData.coverageLimits.medicalPayments.amount
+  //     },
+  //     lossOfUse: {
+  //       amount: formData.coverageLimits.lossOfUse.amount
+  //     },
+  //     moldProperty: {
+  //       amount: formData.coverageLimits.moldProperty.amount
+  //     },
+  //     moldLiability: {
+  //       amount: formData.coverageLimits.moldLiability.amount
+  //     },
+  //     ordinanceOrLaw: {
+  //       amount: formData.coverageLimits.ordinanceOrLaw.amount
+  //     }
+  //   },
+  //   coverageOptions: {
+  //     sinkholePerilCoverage: {
+  //       answer: formData.coverageOptions.sinkholePerilCoverage.answer
+  //     },
+  //     propertyIncidentalOccupanciesMainDwelling: {
+  //       answer: formData.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer
+  //     },
+  //     propertyIncidentalOccupanciesOtherStructures: {
+  //       answer: formData.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer
+  //     },
+  //     liabilityIncidentalOccupancies: {
+  //       answer: formData.coverageOptions.liabilityIncidentalOccupancies.answer
+  //     },
+  //     personalPropertyReplacementCost: {
+  //       answer: formData.coverageOptions.personalPropertyReplacementCost.answer
+  //     }
+  //   },
+  //   deductibles: {
+  //     allOtherPerils: {
+  //       amount: formData.deductibles.allOtherPerils.amount
+  //     },
+  //     hurricane: {
+  //       amount: formData.deductibles.hurricane.amount,
+  //       calculatedAmount: formData.deductibles.hurricane.calculatedAmount
+  //     },
+  //     sinkhole: {
+  //       amount: formData.deductibles.sinkhole.amount,
+  //       calculatedAmount: formData.deductibles.sinkhole.calculatedAmount
+  //     }
+  //   },
+  //   underwritingAnswers: {
+  //     rented: {
+  //       answer: formData.underwritingAnswers.rented.answer
+  //     },
+  //     monthsOccupied: {
+  //       answer: formData.underwritingAnswers.monthsOccupied.answer
+  //     },
+  //     noPriorInsuranceSurcharge: {
+  //       answer: formData.underwritingAnswers.noPriorInsuranceSurcharge.answer
+  //     }
+  //   },
+  // };
 };
 
-export const getRate = (formData, formProps) => async (dispatch) => {
-  const rateData = convertToRateData(formData, formProps);
+export const getNewRate = (formData, formProps) => {
+  return async (dispatch) => {
+    try {
+      const rateData = convertToRateData(formData, formProps);
+      const axiosConfig = runnerSetup({
+        service: 'rating-engine',
+        method: 'POST',
+        path: 'endorsement',
+        data: rateData
+      });
 
-  const axiosConfig = runnerSetup({
-    service: 'rating-engine',
-    method: 'POST',
-    path: 'endorsement',
-    data: rateData
-  });
-
-  try {
-    const response = await axios(axiosConfig);
-    const data = { getRate: response.data ? response.data.result : {} };
-    return dispatch(serviceRequest(data));
-  } catch (error) {
-    return dispatch(errorActions.setAppError(handleError(error)));
-    // throw new SubmissionError(error);
-  }
+      const response = await axios(axiosConfig);
+      const data = { getRate: response.data ? response.data.result : {} };
+      return dispatch(serviceRequest(data));
+    } catch (error) {
+      dispatch(errorActions.setAppError(handleError(error)));
+      throw new Error(error);
+    }
+  };
 };
 
 

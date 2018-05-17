@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import _find from 'lodash/find';
 import { Prompt } from 'react-router-dom';
 import { reduxForm, propTypes, formValueSelector, FormSection } from 'redux-form';
 import { premiumEndorsementList } from './constants/endorsementTypes';
@@ -13,7 +13,7 @@ import {
   getEndorsementHistory,
   getZipcodeSettings,
   clearRate,
-  getRate
+  getNewRate
 } from '../../../actions/serviceActions';
 // Component Sections
 import PolicyConnect from '../../../containers/Policy';
@@ -35,72 +35,12 @@ export const getNewPolicyNumber = (state) => {
     : null;
   if (!taskData || !taskData.model || !taskData.model.variables) { return null; }
 
-  const policy = _.find(taskData.model.variables, { name: 'retrievePolicy' });
+  const policy = _find(taskData.model.variables, { name: 'retrievePolicy' });
 
   return policy
     ? policy.value[0]
       ? policy.policyNumber : null
     : null;
-};
-
-export const handleInitialize = ({ service = {} }) => {
-  const { latestPolicy } = service;
-  const policy = latestPolicy || {};
-  const defaultValues = {};
-  // Bail if we don't have all our info
-  if (!latestPolicy) return defaultValues;
-
-  const dwelling = policy.coverageLimits.dwelling.amount;
-  const otherStructures = policy.coverageLimits.otherStructures.amount;
-  const personalProperty = policy.coverageLimits.personalProperty.amount;
-
-
-  // Use the policy object as initial values for Endorsement Form
-  const values = { ...policy };
-
-  values.underwritingAnswers.business = values.underwritingAnswers.business ||
-  {
-    "question": "Is a business conducted on the property?",
-    "source": "Customer",
-    "answer": ""
-  };
-  //sinkhole is not always populated for deductibles
-  values.deductibles.sinkhole = values.deductibles.sinkhole ||
-    {
-      format: "Percentage",
-      amount: 0,
-      displayText: "Sinkhole",
-      ofCoverageLimit: "dwelling",
-      calculatedAmount: 0
-    };
-
-  // Set some things up
-  values.clearFields = false;
-  values.transactionType = 'Endorsement';
-  values.windMitFactor = policy.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount;
-  // Coverage Top Left
-  values.endorsementDate = endorsementUtils.setEndorsementDate(policy.effectiveDate, policy.endDate);
-  values.coverageLimits.otherStructures.percentage = endorsementUtils.calculatePercentage(otherStructures, dwelling);
-  values.coverageLimits.personalProperty.percentage = endorsementUtils.calculatePercentage(personalProperty, dwelling);
-  values.coverageOptions.personalPropertyReplacementCost.answer = policy.coverageOptions.personalPropertyReplacementCost.answer || false;
-  values.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer = policy.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer || false;
-  values.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer = policy.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer || false;
-  values.coverageOptions.liabilityIncidentalOccupancies.answer = policy.coverageOptions.liabilityIncidentalOccupancies.answer || false;
-  // Wind Mitigation
-  values.property.yearOfRoof = policy.property.yearOfRoof || null;
-  values.property.protectionClass = policy.property.protectionClass || '';
-  values.property.buildingCodeEffectivenessGrading = policy.property.buildingCodeEffectivenessGrading || null;
-  values.buildingCodeEffectivenessGradingNew = values.property.buildingCodeEffectivenessGrading;
-  values.property.familyUnits = policy.property.familyUnits || '';
-  // Home/Location Bottom Right
-  values.property.distanceToTidalWater = policy.property.distanceToTidalWater || '';
-  values.property.distanceToFireHydrant = policy.property.distanceToFireHydrant || '';
-  values.property.distanceToFireStation = policy.property.distanceToFireStation || '';
-  values.property.residenceType = policy.property.residenceType || '';
-  values.property.squareFeet = policy.property.squareFeet || '';
-  values.property.floodZone = policy.property.floodZone || '';
-
-  return values;
 };
 
 export class Endorsements extends React.Component {
@@ -142,19 +82,15 @@ export class Endorsements extends React.Component {
   };
 
   calculate = async (data, dispatch, props) => {
-    const { fetchRate } = props;
-    try {
-      await fetchRate(data, props);
-      this.setState({ isCalculated: true }, this.resetCalculate);
-    } catch (error) {
-      this.setState({ isCalculated: false });
-    }
+    const { getNewRate, initialize } = props;
+    await getNewRate(data, props);
+    initialize(data);
+    this.setState({ isCalculated: true }, this.resetCalculate);
   };
 
   save = async (data, dispatch, props) => {
     await props.submitEndorsementForm(data, props);
     this.setState({ isCalculated: false }, this.resetCalculate);
-
   };
 
   setPHToggle = () => {
@@ -404,7 +340,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   endorsementHistory: state.service.endorsementHistory || defaultArr,
   getRate: state.service.getRate,
-  initialValues: handleInitialize(state),
+  initialValues: endorsementUtils.initializeEndorsementForm(state.service.latestPolicy),
   newPolicyNumber: getNewPolicyNumber(state),
   policy: state.service.latestPolicy || defaultObj,
   questions: state.questions,
@@ -417,11 +353,11 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  fetchRate: getRate,
+  getNewRate,
   getUnderwritingQuestions,
   submitEndorsementForm,
   getEndorsementHistory,
   getZipcodeSettings,
   clearRate,
-  getUIQuestions
+  getUIQuestions,
 })(reduxForm({ form: 'Endorsements', enableReinitialize: true })(Endorsements));
