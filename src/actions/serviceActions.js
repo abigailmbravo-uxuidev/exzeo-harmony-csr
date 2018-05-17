@@ -1,7 +1,6 @@
 import axios from 'axios';
 import _ from 'lodash';
 import moment from 'moment';
-import { SubmissionError } from 'redux-form';
 import { batchActions } from 'redux-batched-actions';
 import endorsementUtils from '../utilities/endorsementModel';
 import * as types from './actionTypes';
@@ -611,7 +610,6 @@ export const createTransaction = submitData => (dispatch) => {
 
 // TODO use this once the form is in the shape of the model
 export const submitEndorsementForm = (formData, formProps) => async (dispatch) => {
-  console.log(formData)
   const submitData = endorsementUtils.generateModel(formData, formProps);
 
   const forms = await getListOfForms(formProps.policy, formProps.getRate.rating, 'New Business');
@@ -625,17 +623,106 @@ export const submitEndorsementForm = (formData, formProps) => async (dispatch) =
 };
 
 export const convertToRateData = (formData, props) => {
-  const { policy, summaryLedger: { currentPremium }, zipcodeSettings } = props;
-  const endorsementDate = moment.tz(moment.utc(formData.endorsementDate).format('YYYY-MM-DD'), zipcodeSettings.timezone).utc().format();
-  formData.deductibles.sinkhole.amount = String(formData.coverageOptions.sinkholePerilCoverage.answer) === 'true' ?  10 : 0;
+  const { summaryLedger: { currentPremium }, zipcodeSettings } = props;
+  const endorsementDate = endorsementUtils.calculateEndorsementDate(formData.endorsementDate, zipcodeSettings.timezone);
 
   return {
-    ...formData,
-    oldTotalPremium: policy.rating.totalPremium,
+    oldTotalPremium: formData.rating.totalPremium,
     oldCurrentPremium: currentPremium,
-    endorsementDate
+    endorsementDate: endorsementDate,
+    effectiveDate: formData.effectiveDate,
+    policyNumber: formData.policyNumber,
+    companyCode: formData.companyCode,
+    state: formData.state,
+    product: formData.product,
+    property: {
+      territory: formData.property.territory,
+      buildingCodeEffectivenessGrading: formData.property.buildingCodeEffectivenessGrading,
+      familyUnits: formData.property.familyUnits,
+      fireAlarm: formData.property.fireAlarm,
+      burglarAlarm: formData.property.burglarAlarm,
+      constructionType: formData.property.constructionType,
+      sprinkler: formData.property.sprinkler,
+      protectionClass: formData.property.protectionClass,
+      townhouseRowhouse: formData.property.townhouseRowhouse,
+      yearBuilt: formData.property.yearBuilt || null,
+      windMitigation: {
+        ...formData.property.windMitigation
+      },
+    },
+    coverageLimits: {
+      dwelling: {
+        amount: formData.coverageLimits.dwelling.amount
+      },
+      otherStructures: {
+        amount: formData.coverageLimits.otherStructures.amount
+      },
+      personalProperty: {
+        amount: formData.coverageLimits.personalProperty.amount
+      },
+      personalLiability: {
+        amount: formData.coverageLimits.personalLiability.amount
+      },
+      medicalPayments: {
+        amount: formData.coverageLimits.medicalPayments.amount
+      },
+      lossOfUse: {
+        amount: formData.coverageLimits.lossOfUse.amount
+      },
+      moldProperty: {
+        amount: formData.coverageLimits.moldProperty.amount
+      },
+      moldLiability: {
+        amount: formData.coverageLimits.moldLiability.amount
+      },
+      ordinanceOrLaw: {
+        amount: formData.coverageLimits.ordinanceOrLaw.amount
+      }
+    },
+    coverageOptions: {
+      sinkholePerilCoverage: {
+        answer: formData.coverageOptions.sinkholePerilCoverage.answer
+      },
+      propertyIncidentalOccupanciesMainDwelling: {
+        answer: formData.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer
+      },
+      propertyIncidentalOccupanciesOtherStructures: {
+        answer: formData.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer
+      },
+      liabilityIncidentalOccupancies: {
+        answer: formData.coverageOptions.liabilityIncidentalOccupancies.answer
+      },
+      personalPropertyReplacementCost: {
+        answer: formData.coverageOptions.personalPropertyReplacementCost.answer
+      }
+    },
+    deductibles: {
+      allOtherPerils: {
+        amount: formData.deductibles.allOtherPerils.amount
+      },
+      hurricane: {
+        amount: formData.deductibles.hurricane.amount,
+        calculatedAmount: formData.deductibles.hurricane.calculatedAmount
+      },
+      sinkhole: {
+        amount: formData.deductibles.sinkhole.amount,
+        calculatedAmount: formData.deductibles.sinkhole.calculatedAmount
+      }
+    },
+    underwritingAnswers: {
+      rented: {
+        answer: formData.underwritingAnswers.rented.answer
+      },
+      monthsOccupied: {
+        answer: formData.underwritingAnswers.monthsOccupied.answer
+      },
+      noPriorInsuranceSurcharge: {
+        answer: formData.underwritingAnswers.noPriorInsuranceSurcharge.answer
+      }
+    },
   };
 };
+
 export const getRate = (formData, formProps) => async (dispatch) => {
   const rateData = convertToRateData(formData, formProps);
 

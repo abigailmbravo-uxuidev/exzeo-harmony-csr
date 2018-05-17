@@ -58,22 +58,20 @@ export const handleInitialize = ({ service = {} }) => {
   // Use the policy object as initial values for Endorsement Form
   const values = { ...policy };
 
-
-  values.underwritingAnswers.business = values.underwritingAnswers.business || 
+  values.underwritingAnswers.business = values.underwritingAnswers.business ||
   {
     "question": "Is a business conducted on the property?",
     "source": "Customer",
     "answer": ""
   };
-  
-
-  //sinkhole is not always populated for deductibles 
-  values.deductibles.sinkhole = values.deductibles.sinkhole || 
+  //sinkhole is not always populated for deductibles
+  values.deductibles.sinkhole = values.deductibles.sinkhole ||
     {
-      "format": "Percentage",
-      "amount": 0,
-      "displayText": "Sinkhole",
-      "ofCoverageLimit": "dwelling"
+      format: "Percentage",
+      amount: 0,
+      displayText: "Sinkhole",
+      ofCoverageLimit: "dwelling",
+      calculatedAmount: 0
     };
 
   // Set some things up
@@ -88,7 +86,6 @@ export const handleInitialize = ({ service = {} }) => {
   values.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer = policy.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer || false;
   values.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer = policy.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer || false;
   values.coverageOptions.liabilityIncidentalOccupancies.answer = policy.coverageOptions.liabilityIncidentalOccupancies.answer || false;
-  values.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount = (policy.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount === 0) ? 'No' : 'Yes';
   // Wind Mitigation
   values.property.yearOfRoof = policy.property.yearOfRoof || null;
   values.property.protectionClass = policy.property.protectionClass || '';
@@ -195,13 +192,14 @@ export class Endorsements extends React.Component {
 
   normalizeSinkholeAmount = (value, prevValue, allValues) => {
     const { change } = this.props;
-    if (value) {
+    if (String(value) === 'true') {
       change('deductibles.sinkhole.amount', 10);
       change('deductibles.sinkhole.calculatedAmount', endorsementUtils.setPercentageOfValue(allValues.coverageLimits.dwelling.amount, 10))
     } else {
       change('deductibles.sinkhole.amount', 0);
       change('deductibles.sinkhole.calculatedAmount', 0);
     }
+    return value
   };
 
   normalizeDwellingAmount = (value, prevValue, fieldValues) => {
