@@ -1,24 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Prompt } from 'react-router-dom';
 import { reduxForm, propTypes, formValueSelector, FormSection } from 'redux-form';
-import * as cgActions from '../../../actions/cgActions';
-import * as serviceActions from '../../../actions/serviceActions';
-import * as appStateActions from '../../../actions/appStateActions';
-import * as questionsActions from '../../../actions/questionsActions';
-import * as errorActions from '../../../actions/errorActions';
+import { premiumEndorsementList } from './constants/endorsementTypes';
+import endorsementUtils from '../../../utilities/endorsementModel';
+import { getUIQuestions } from '../../../actions/questionsActions';
+import {
+  getUnderwritingQuestions,
+  submitEndorsementForm,
+  getEndorsementHistory,
+  getZipcodeSettings,
+  clearRate,
+  getRate
+} from '../../../actions/serviceActions';
+// Component Sections
 import PolicyConnect from '../../../containers/Policy';
 import Footer from '../../Common/Footer';
 import Loader from '../../Common/Loader';
-import * as policyStateActions from '../../../actions/policyStateActions';
-import { premiumEndorsementList } from './constants/endorsementTypes';
-import endorsementUtils from '../../../utilities/endorsementModel';
-import { getQuestionName } from '../../../utilities/forms';
-
-// Component Sections
 import Coverage from './Coverage';
 import WindMitigation from './WindMitigation';
 import HomeLocation from './HomeLocation';
@@ -43,168 +43,44 @@ export const getNewPolicyNumber = (state) => {
     : null;
 };
 
-export const handleInitialize = ({ service = {}, questions = [] }) => {
-  const { latestPolicy, getRate } = service;
+export const handleInitialize = ({ service = {} }) => {
+  const { latestPolicy } = service;
   const policy = latestPolicy || {};
-  const rating = getRate || {};
-  const values = {
-    policyHolders: [{}, {}],
-    property: { windMitigation: {}, physicalAddress: {} },
-    policyHolderMailingAddress: {},
-    coverageLimits: {
-      dwelling: {},
-      otherStructures: {},
-      personalProperty: {},
-      lossOfUse: {},
-      medicalPayments: {},
-      moldProperty: {},
-      personalLiability: {},
-      moldLiability: {},
-      ordinanceOrLaw: {}
-    },
-    deductibles: {
-      allOtherPerils: {},
-      hurricane: {},
-      sinkhole: {}
-
-    },
-    coverageOptions: {
-      sinkholePerilCoverage: {},
-      propertyIncidentalOccupanciesMainDwelling: {},
-      propertyIncidentalOccupanciesOtherStructures: {},
-      liabilityIncidentalOccupancies: {},
-      personalPropertyReplacementCost: {}
-    },
-    underwritingAnswers: {
-      rented: {},
-      monthsOccupied: {},
-      noPriorInsuranceSurcharge: {}
-
-    },
-    rating: {
-      worksheet: {
-        elements: {
-          windMitigationFactors: {
-
-          }
-        }
-      }
-    }
-  };
-  const dwelling = _.get(policy, 'coverageLimits.dwelling.amount');
-  const otherStructures = _.get(policy, 'coverageLimits.otherStructures.amount');
-  const personalProperty = _.get(policy, 'coverageLimits.personalProperty.amount');
-  const hurricane = _.get(policy, 'deductibles.hurricane.amount');
+  const defaultValues = {};
   // Bail if we don't have all our info
-  if (!latestPolicy && !getRate) { return values; }
+  if (!latestPolicy) return defaultValues;
+
+  const dwelling = policy.coverageLimits.dwelling.amount;
+  const otherStructures = policy.coverageLimits.otherStructures.amount;
+  const personalProperty = policy.coverageLimits.personalProperty.amount;
+  // Use the policy object as initial values for Endorsement Form
+  const values = { ...policy };
   // Set some things up
-  values.uwExceptions = _.get(policy, 'underwritingExceptions');
-  values.transactionType = 'Endorsement';
-  values.dwellingMin = _.get(policy, 'coverageLimits.dwelling.minAmount');
-  values.dwellingMax = _.get(policy, 'coverageLimits.dwelling.maxAmount');
-  values.billToType = _.get(policy, 'billToType');
-  values.billPlan = _.get(policy, 'billPlan');
-
-  values.coverageLimits = { ...policy.coverageLimits };
-  values.coverageOptions = { ...policy.coverageOptions };
-  values.policyHolderMailingAddress = { ...policy.policyHolderMailingAddress };
-  values.underwritingAnswers = { ...policy.underwritingAnswers };
-  values.deductibles = { ...policy.deductibles };
-  values.property = { ...policy.property };
-
-  // spread willl default these
-  values.companyCode = policy.companyCode;
-  values.state = policy.state;
-  values.product = policy.product;
-  values.property.territory = _.get(policy, 'property.territory', '');
-  values.policyNumber = policy.policyNumber;
-  values.effectiveDate = policy.effectiveDate;
-
-  // Coverage Top Left
   values.clearFields = false;
-  values.policyID = policy.policyID;
+  values.transactionType = 'Endorsement';
+  values.windMitFactor = policy.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount;
+  // Coverage Top Left
   values.endorsementDate = endorsementUtils.setEndorsementDate(policy.effectiveDate, policy.endDate);
-  values.coverageLimits.dwelling.amount = dwelling;
-  values.coverageLimits.otherStructures.amount = otherStructures;
   values.coverageLimits.otherStructures.percentage = endorsementUtils.calculatePercentage(otherStructures, dwelling);
-  values.coverageLimits.personalProperty.amount = personalProperty;
   values.coverageLimits.personalProperty.percentage = endorsementUtils.calculatePercentage(personalProperty, dwelling);
-  values.coverageLimits.lossOfUse.amount = _.get(policy, 'coverageLimits.lossOfUse.amount');
-  values.coverageLimits.personalLiability.amount = _.get(policy, 'coverageLimits.personalLiability.amount');
-  values.coverageLimits.medicalPayments.amount = _.get(policy, 'coverageLimits.medicalPayments.amount');
-  values.coverageLimits.moldProperty.amount = _.get(policy, 'coverageLimits.moldProperty.amount');
-  values.coverageLimits.moldLiability.amount = _.get(policy, 'coverageLimits.moldLiability.amount');
-  values.deductibles.allOtherPerils.amount = _.get(policy, 'deductibles.allOtherPerils.amount');
-  values.deductibles.hurricane.amount = hurricane;
-  values.deductibles.hurricane.calculatedAmount = _.get(policy, 'deductibles.hurricane.calculatedAmount');
-  values.deductibles.sinkhole.amount = _.get(policy, 'deductibles.sinkhole.amount');
-  values.deductibles.sinkhole.calculatedAmount = _.get(policy, 'deductibles.sinkhole.calculatedAmount');
-  values.coverageOptions.sinkholePerilCoverage.initialValue = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer') ? `10% of ${getQuestionName('dwellingAmount', questions)}` : 'Coverage Excluded';
-  values.coverageOptions.sinkholePerilCoverage.answer = _.get(policy, 'coverageOptions.sinkholePerilCoverage.answer');
-  // Coverage Top Right
-  values.coverageOptions.personalPropertyReplacementCost.answer = _.get(policy, 'coverageOptions.personalPropertyReplacementCost.answer', false);
-  values.coverageLimits.ordinanceOrLaw.amount = _.get(policy, 'coverageLimits.ordinanceOrLaw.amount');
-  values.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer', false);
-  values.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer = _.get(policy, 'coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer', false);
-  values.coverageOptions.liabilityIncidentalOccupancies.answer = _.get(policy, 'coverageOptions.liabilityIncidentalOccupancies.answer', false);
-  // values.property.townhouseRowhouse = _.get(policy, 'property.townhouseRowhouse');
-  values.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount = _.get(policy, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount') === 0 ? 'No' : 'Yes';
-  values.underwritingAnswers.rented.answer = _.get(policy, 'underwritingAnswers.rented.answer');
-  values.underwritingAnswers.monthsOccupied.answer = _.get(policy, 'underwritingAnswers.monthsOccupied.answer');
-  values.underwritingAnswers.noPriorInsuranceSurcharge.answer = _.get(policy, 'underwritingAnswers.noPriorInsuranceSurcharge.answer');
-  // values.property.burglarAlarm = _.get(policy, 'property.burglarAlarm');
-  // values.property.fireAlarm = _.get(policy, 'property.fireAlarm');
-  // values.property.sprinkler = _.get(policy, 'property.sprinkler');
+  values.coverageOptions.personalPropertyReplacementCost.answer = policy.coverageOptions.personalPropertyReplacementCost.answer || false;
+  values.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer = policy.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer || false;
+  values.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer = policy.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer || false;
+  values.coverageOptions.liabilityIncidentalOccupancies.answer = policy.coverageOptions.liabilityIncidentalOccupancies.answer || false;
+  values.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount = (policy.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount === 0) ? 'No' : 'Yes';
   // Wind Mitigation
-  values.property.windMitigation.roofCovering = _.get(policy, 'property.windMitigation.roofCovering');
-  values.property.windMitigation.roofDeckAttachment = _.get(policy, 'property.windMitigation.roofDeckAttachment');
-  values.property.windMitigation.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
-  values.property.windMitigation.roofGeometry = _.get(policy, 'property.windMitigation.roofGeometry');
-  values.property.windMitigation.secondaryWaterResistance = _.get(policy, 'property.windMitigation.secondaryWaterResistance');
-  values.property.windMitigation.openingProtection = _.get(policy, 'property.windMitigation.openingProtection');
-  values.property.windMitigation.floridaBuildingCodeWindSpeed = _.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeed');
-  values.property.windMitigation.floridaBuildingCodeWindSpeedDesign = _.get(policy, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign');
-  values.property.windMitigation.terrain = _.get(policy, 'property.windMitigation.terrain');
-  values.property.windMitigation.internalPressureDesign = _.get(policy, 'property.windMitigation.internalPressureDesign');
-  values.property.windMitigation.windBorneDebrisRegion = _.get(policy, 'property.windMitigation.windBorneDebrisRegion');
-  values.property.windMitigation.roofToWallConnection = _.get(policy, 'property.windMitigation.roofToWallConnection');
-  // Display only values
-  const windMitigationDiscount = _.get(policy, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
-  const updatedRatingWindMitDiscount = _.get(rating, 'rating.worksheet.elements.windMitigationFactors.windMitigationDiscount');
-  values.windMitFactor = windMitigationDiscount;
-  values.windMitFactorRated = updatedRatingWindMitDiscount || windMitigationDiscount;
-  // Home/Location Bottom Left
-  // values.property.yearBuilt = _.get(policy, 'property.yearBuilt');
-  // values.property.constructionType = _.get(policy, 'property.constructionType');
-  // values.property.yearOfRoof = _.get(policy, 'property.yearOfRoof') || '';
-  // values.property.protectionClass = _.get(policy, 'property.protectionClass', '');
-  // values.property.buildingCodeEffectivenessGrading = _.get(policy, 'property.buildingCodeEffectivenessGrading', '');
+  values.property.yearOfRoof = policy.property.yearOfRoof || '';
+  values.property.protectionClass = policy.property.protectionClass || '';
+  values.property.buildingCodeEffectivenessGrading = policy.property.buildingCodeEffectivenessGrading || '';
   values.buildingCodeEffectivenessGradingNew = values.property.buildingCodeEffectivenessGrading;
-  // values.property.familyUnits = _.get(policy, 'property.familyUnits', '');
+  values.property.familyUnits = policy.property.familyUnits || '';
   // Home/Location Bottom Right
-  // values.property.distanceToTidalWater = _.get(policy, 'property.distanceToTidalWater', '');
-  // values.property.distanceToFireHydrant = _.get(policy, 'property.distanceToFireHydrant', '');
-  // values.property.distanceToFireStation = _.get(policy, 'property.distanceToFireStation', '');
-  // values.property.residenceType = _.get(policy, 'property.residenceType', '');
-  // values.property.squareFeet = _.get(policy, 'property.squareFeet', '');
-  // values.property.floodZone = _.get(policy, 'property.floodZone', '');
-  // Policyholders
-  values.policyHolders = _.get(policy, 'policyHolders', []);
-  // Mailing Address
-  values.policyHolderMailingAddress.address1 = _.get(policy, 'policyHolderMailingAddress.address1');
-  values.policyHolderMailingAddress.address2 = _.get(policy, 'policyHolderMailingAddress.address2');
-  values.policyHolderMailingAddress.city = _.get(policy, 'policyHolderMailingAddress.city');
-  values.policyHolderMailingAddress.state = _.get(policy, 'policyHolderMailingAddress.state');
-  values.policyHolderMailingAddress.zip = _.get(policy, 'policyHolderMailingAddress.zip');
-  // Property Address
-  // values.property.physicalAddress.address1 = _.get(policy, 'property.physicalAddress.address1');
-  // values.property.physicalAddress.address2 = _.get(policy, 'property.physicalAddress.address2');
-  // values.property.physicalAddress.city = _.get(policy, 'property.physicalAddress.city');
-  // values.property.physicalAddress.county = _.get(policy, 'property.physicalAddress.county');
-  // values.property.physicalAddress.state = _.get(policy, 'property.physicalAddress.state');
-  // values.property.physicalAddress.zip = _.get(policy, 'property.physicalAddress.zip');
-
-
+  values.property.distanceToTidalWater = policy.property.distanceToTidalWater || '';
+  values.property.distanceToFireHydrant = policy.property.distanceToFireHydrant || '';
+  values.property.distanceToFireStation = policy.property.distanceToFireStation || '';
+  values.property.residenceType = policy.property.residenceType || '';
+  values.property.squareFeet = policy.property.squareFeet || '';
+  values.property.floodZone = policy.property.floodZone || '';
 
   return values;
 };
@@ -219,42 +95,38 @@ export class Endorsements extends React.Component {
   }
 
   componentDidMount() {
-    this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
-    if (this.props.appState && this.props.appState.instanceId) {
-      const workflowId = this.props.appState.instanceId;
-      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, workflowId, { ...this.props.appState.data, isCalculated: false, isSubmitting: false });
-    }
-    if (this.props && this.props.policy && this.props.policy.policyNumber && this.props.policy.property && this.props.policy.property.physicalAddress) {
-      this.props.actions.serviceActions.getUnderwritingQuestions(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property);
-      this.props.actions.serviceActions.getEndorsementHistory(this.props.policy.policyNumber);
-      this.props.actions.serviceActions.getZipcodeSettings(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property.physicalAddress.zip);
+    const { policy, getUnderwritingQuestions, getZipcodeSettings, getEndorsementHistory, getUIQuestions } = this.props;
+    getUIQuestions('askToCustomizeDefaultQuoteCSR');
+    if (policy && policy.policyNumber && policy.property && policy.property.physicalAddress) {
+      getUnderwritingQuestions(policy.companyCode, policy.state, policy.product, policy.property);
+      getEndorsementHistory(policy.policyNumber);
+      getZipcodeSettings(policy.companyCode, policy.state, policy.product, policy.property.physicalAddress.zip);
     }
   }
 
   clearCalculate = () => {
-    const { change: changeF, actions: { serviceActions }, policy } = this.props;
+    const { change, clearRate , policy } = this.props;
     const endorsementDate = endorsementUtils.setEndorsementDate(policy.effectiveDate, policy.endDate);
-    changeF('endorsementDate', endorsementDate);
-    changeF('newEndorsementAmount', '');
-    changeF('newEndorsementPremium', '');
-    changeF('newAnnualPremium', '');
-    serviceActions.clearRate();
+    change('endorsementDate', endorsementDate);
+    change('newEndorsementAmount', '');
+    change('newEndorsementPremium', '');
+    change('newAnnualPremium', '');
+    clearRate();
     this.setState({ isCalculated: false });
   };
 
   resetCalculate = () => {
-    const { change: changeF, getRate } = this.props;
-    console.log(getRate.endorsementAmount);
-    changeF('newEndorsementAmount', getRate.endorsementAmount || 0);
-    changeF('newEndorsementPremium', getRate.newCurrentPremium || '');
-    changeF('newAnnualPremium', getRate.newAnnualPremium || '');
-    changeF('windMitFactorNew', _.get(getRate, 'worksheet.elements.windMitigationFactors.windMitigationDiscount'));
+    const { change, getRate } = this.props;
+    change('newEndorsementAmount', getRate.endorsementAmount || 0);
+    change('newEndorsementPremium', getRate.newCurrentPremium || '');
+    change('newAnnualPremium', getRate.newAnnualPremium || '');
+    change('windMitFactor', getRate.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount);
   };
 
   calculate = async (data, dispatch, props) => {
-    const { serviceActions } = props.actions;
+    const { fetchRate } = props;
     try {
-      await serviceActions.getRate(data, props);
+      await fetchRate(data, props);
       this.setState({ isCalculated: true }, this.resetCalculate);
     } catch (error) {
       this.setState({ isCalculated: false });
@@ -262,32 +134,32 @@ export class Endorsements extends React.Component {
   };
 
   save = async (data, dispatch, props) => {
-    await props.actions.serviceActions.submitEndorsementForm(data, props);
+    await props.submitEndorsementForm(data, props);
     this.setState({ isCalculated: false }, this.resetCalculate);
 
   };
 
   setPHToggle = () => {
-    const { change: changeF, selectedValues } = this.props;
+    const { change, selectedValues } = this.props;
     if (selectedValues.clearFields) {
-      changeF('clearFields', false);
+      change('clearFields', false);
     }
   };
 
   setSecondaryPolicyHolder = (value) => {
-    const { change: changeF, initialValues } = this.props;
+    const { change, initialValues } = this.props;
     if (!value) {
-      changeF('policyHolders[1].emailAddress', initialValues.policyHolders[1].emailAddress);
-      changeF('policyHolders[1].firstName', initialValues.policyHolders[1].firstName);
-      changeF('policyHolders[1].lastName', initialValues.policyHolders[1].lastName);
-      changeF('policyHolders[1].primaryPhoneNumber', initialValues.policyHolders[1].primaryPhoneNumber);
-      changeF('policyHolders[1].secondaryPhoneNumber', initialValues.policyHolders[1].secondaryPhoneNumber);
+      change('policyHolders[1].emailAddress', initialValues.policyHolders[1].emailAddress);
+      change('policyHolders[1].firstName', initialValues.policyHolders[1].firstName);
+      change('policyHolders[1].lastName', initialValues.policyHolders[1].lastName);
+      change('policyHolders[1].primaryPhoneNumber', initialValues.policyHolders[1].primaryPhoneNumber);
+      change('policyHolders[1].secondaryPhoneNumber', initialValues.policyHolders[1].secondaryPhoneNumber);
     } else {
-      changeF('policyHolders[1].emailAddress', '');
-      changeF('policyHolders[1].firstName', '');
-      changeF('policyHolders[1].lastName', '');
-      changeF('policyHolders[1].primaryPhoneNumber', '');
-      changeF('policyHolders[1].secondaryPhoneNumber', '');
+      change('policyHolders[1].emailAddress', '');
+      change('policyHolders[1].firstName', '');
+      change('policyHolders[1].lastName', '');
+      change('policyHolders[1].primaryPhoneNumber', '');
+      change('policyHolders[1].secondaryPhoneNumber', '');
     }
     return value;
   };
@@ -296,55 +168,54 @@ export class Endorsements extends React.Component {
     const { isCalculated } = this.state;
     if (!isCalculated) return;
 
-    const { actions: { serviceActions } } = this.props;
-    serviceActions.clearRate();
+    this.props.clearRate();
     this.setState({ isCalculated: false });
   };
 
   normalizeDwellingAmount = (value, prevValue, fieldValues) => {
-    const { change: changeF } = this.props;
+    const { change } = this.props;
     this.setCalculate();
 
     const roundedDwellingAmount = Math.round(value / 1000) * 1000;
 
     if (fieldValues.coverageLimits.otherStructures.percentage !== 'other') {
-      changeF('coverageLimits.otherStructures.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.coverageLimits.otherStructures.percentage));
+      change('coverageLimits.otherStructures.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.coverageLimits.otherStructures.percentage));
     }
     if (fieldValues.coverageLimits.personalProperty.percentage !== 'other') {
-      changeF('coverageLimits.personalProperty.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.coverageLimits.personalProperty.percentage));
+      change('coverageLimits.personalProperty.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.coverageLimits.personalProperty.percentage));
     }
-    changeF('deductibles.hurricane.calculatedAmount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.deductibles.hurricane.amount));
-    changeF('coverageLimits.lossOfUse.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, 10));
+    change('deductibles.hurricane.calculatedAmount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.deductibles.hurricane.amount));
+    change('coverageLimits.lossOfUse.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, 10));
 
     return value;
   };
 
   normalizeIncidentalOccupancies = (value, previousValue, allValues) => {
-    const { change: changeF } = this.props;
+    const { change } = this.props;
     if (!allValues.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer &&
         !allValues.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer) {
-      changeF('coverageOptions.liabilityIncidentalOccupancies.answer', false);
+      change('coverageOptions.liabilityIncidentalOccupancies.answer', false);
     }
     const setLiabilityIncidentalOccupanciesNew =
       allValues.coverageOptions.propertyIncidentalOccupanciesMainDwelling.answer ||
       allValues.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer;
-    changeF('coverageOptions.liabilityIncidentalOccupancies.answer', setLiabilityIncidentalOccupanciesNew);
+    change('coverageOptions.liabilityIncidentalOccupancies.answer', setLiabilityIncidentalOccupanciesNew);
     return value;
   };
 
-  normalizePersonalPropertyPercentage = (value, allValues, field, dependency) => {
+  normalizePersonalPropertyPercentage = (value, allValues, field) => {
     if (Number.isNaN(value)) return;
     this.setCalculate();
-    const { change: changeF, initialValues } = this.props;
+    const { change, initialValues } = this.props;
 
     if (value === 0) {
-      changeF('coverageOptions.personalPropertyReplacementCost.answer', false);
+      change('coverageOptions.personalPropertyReplacementCost.answer', false);
     } else {
-      changeF('coverageOptions.personalPropertyReplacementCost.answer', initialValues.coverageOptions.personalPropertyReplacementCost.answer || false);
+      change('coverageOptions.personalPropertyReplacementCost.answer', initialValues.coverageOptions.personalPropertyReplacementCost.answer || false);
     }
 
     const fieldValue = endorsementUtils.setPercentageOfValue(allValues.coverageLimits.dwelling.amount, value);
-    changeF(field, Number.isNaN(fieldValue) ? '' : fieldValue);
+    change(field, Number.isNaN(fieldValue) ? '' : fieldValue);
     return value;
   };
 
@@ -352,28 +223,28 @@ export class Endorsements extends React.Component {
     // console.log(value, allValues, field, dependency);
     if (Number.isNaN(value)) return;
     this.setCalculate();
-    const { change: changeF } = this.props;
+    const { change } = this.props;
     const fieldValue = endorsementUtils.setPercentageOfValue(allValues.coverageLimits.dwelling.amount, value);
 
-    changeF(field, Number.isNaN(fieldValue) ? '' : fieldValue);
+    change(field, Number.isNaN(fieldValue) ? '' : fieldValue);
     return value;
   };
 
   render() {
+    const { isCalculated } = this.state;
     const {
       dirty,
       endorsementHistory,
       handleSubmit,
       initialValues,
+      policy,
+      pristine,
+      questions,
       selectedFields = {},
       submitting,
-      pristine,
-      policy,
-      questions,
       underwritingQuestions,
       userProfile
     } = this.props;
-    const { isCalculated } = this.state;
 
     const mappedEndorsementHistory = endorsementHistory && endorsementHistory.map((endorsement) => {
       endorsement.netChargeFormat = premiumEndorsementList.some(pe => pe === endorsement.transactionType)
@@ -501,7 +372,6 @@ const selector = formValueSelector('Endorsements');
 const mapStateToProps = state => ({
   appState: state.appState,
   endorsementHistory: state.service.endorsementHistory || defaultArr,
-  fieldValues: _.get(state.form, 'Endorsements.values', defaultObj),
   getRate: state.service.getRate,
   initialValues: handleInitialize(state),
   newPolicyNumber: getNewPolicyNumber(state),
@@ -515,15 +385,12 @@ const mapStateToProps = state => ({
   zipcodeSettings: state.service.getZipcodeSettings,
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    errorActions: bindActionCreators(errorActions, dispatch),
-    policyStateActions: bindActionCreators(policyStateActions, dispatch),
-    questionsActions: bindActionCreators(questionsActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch),
-    cgActions: bindActionCreators(cgActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
-  }
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Endorsements', enableReinitialize: true })(Endorsements));
+export default connect(mapStateToProps, {
+  fetchRate: getRate,
+  getUnderwritingQuestions,
+  submitEndorsementForm,
+  getEndorsementHistory,
+  getZipcodeSettings,
+  clearRate,
+  getUIQuestions
+})(reduxForm({ form: 'Endorsements', enableReinitialize: true })(Endorsements));

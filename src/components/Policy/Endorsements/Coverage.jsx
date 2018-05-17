@@ -259,11 +259,15 @@ Coverage.propTypes = {
   initialValues: PropTypes.object.isRequired,
   personalPropertyNewVal: PropTypes.number,
   questions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
-  underwritingQuestions: PropTypes.array.isRequired,
+  underwritingQuestions: PropTypes.array,
   normalizeDwellingAmount: PropTypes.func.isRequired,
   normalizeDwellingDependencies: PropTypes.func.isRequired,
   normalizePersonalPropertyPercentage: PropTypes.func.isRequired,
   normalizeIncidentalOccupancies: PropTypes.func.isRequired
+};
+
+Coverage.defaultProps = {
+  underwritingQuestions: []
 };
 
 export default Coverage;

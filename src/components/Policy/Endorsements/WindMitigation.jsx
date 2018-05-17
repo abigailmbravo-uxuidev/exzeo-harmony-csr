@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Input } from '@exzeo/core-ui/lib/Input';
 import GroupedInputs from '@exzeo/core-ui/lib/InputGrouped';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers } from '../../../utilities/forms';
 
-const { Select, Radio, Integer } = GroupedInputs;
+const { Select, Radio, Integer, Input } = GroupedInputs;
 const { validation } = lifecycle;
 
 const WindMitigation = ({ questions }) => (
@@ -104,19 +103,12 @@ const WindMitigation = ({ questions }) => (
           component={Radio}
           validate={validation.isRequired}
         />
-      <div className="form-group-double-element wind-mit">
-          <Field
-            label="Wind Mit Factor"
-            name="windMitFactor"
-            component={Input}
-            disabled
-          />
-          <Field
-            name="windMitFactorRated"
-            component={Input}
-            disabled
-          />
-        </div>
+        <Field
+          label="Wind Mit Factor"
+          name="windMitFactor"
+          component={Input}
+          disabled
+        />
       </div>
     </div>
   </section>
