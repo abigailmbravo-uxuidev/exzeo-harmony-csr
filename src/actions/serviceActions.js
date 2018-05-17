@@ -611,6 +611,7 @@ export const createTransaction = submitData => (dispatch) => {
 
 // TODO use this once the form is in the shape of the model
 export const submitEndorsementForm = (formData, formProps) => async (dispatch) => {
+  console.log(formData)
   const submitData = endorsementUtils.generateModel(formData, formProps);
 
   const forms = await getListOfForms(formProps.policy, formProps.getRate.rating, 'New Business');
@@ -626,6 +627,7 @@ export const submitEndorsementForm = (formData, formProps) => async (dispatch) =
 export const convertToRateData = (formData, props) => {
   const { policy, summaryLedger: { currentPremium }, zipcodeSettings } = props;
   const endorsementDate = moment.tz(moment.utc(formData.endorsementDate).format('YYYY-MM-DD'), zipcodeSettings.timezone).utc().format();
+  formData.deductibles.sinkhole.amount = String(formData.coverageOptions.sinkholePerilCoverage.answer) === 'true' ?  10 : 0;
 
   return {
     ...formData,
