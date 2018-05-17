@@ -53,8 +53,29 @@ export const handleInitialize = ({ service = {} }) => {
   const dwelling = policy.coverageLimits.dwelling.amount;
   const otherStructures = policy.coverageLimits.otherStructures.amount;
   const personalProperty = policy.coverageLimits.personalProperty.amount;
+
+
   // Use the policy object as initial values for Endorsement Form
   const values = { ...policy };
+
+
+  values.underwritingAnswers.business = values.underwritingAnswers.business || 
+  {
+    "question": "Is a business conducted on the property?",
+    "source": "Customer",
+    "answer": ""
+  };
+  
+
+  //sinkhole is not always populated for deductibles 
+  values.deductibles.sinkhole = values.deductibles.sinkhole || 
+    {
+      "format": "Percentage",
+      "amount": 0,
+      "displayText": "Sinkhole",
+      "ofCoverageLimit": "dwelling"
+    };
+
   // Set some things up
   values.clearFields = false;
   values.transactionType = 'Endorsement';
@@ -184,7 +205,7 @@ export class Endorsements extends React.Component {
     if (fieldValues.coverageLimits.personalProperty.percentage !== 'other') {
       change('coverageLimits.personalProperty.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.coverageLimits.personalProperty.percentage));
     }
-    change('deductibles.hurricane.calculatedAmount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.deductibles.hurricane.amount));
+    change('deductibles.hurricane.calculatedAmount', String(endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.deductibles.hurricane.amount)));
     change('coverageLimits.lossOfUse.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, 10));
 
     return value;

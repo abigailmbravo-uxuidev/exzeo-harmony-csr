@@ -611,6 +611,7 @@ export const createTransaction = submitData => (dispatch) => {
 
 // TODO use this once the form is in the shape of the model
 export const submitEndorsementForm = (formData, formProps) => async (dispatch) => {
+  console.log(formData)
   const submitData = endorsementUtils.generateModel(formData, formProps);
 
   const forms = await getListOfForms(formProps.policy, formProps.getRate.rating, 'New Business');

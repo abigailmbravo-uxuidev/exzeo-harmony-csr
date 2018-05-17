@@ -24,12 +24,21 @@ export const calculatePercentage = (oldFigure, newFigure) => {
 export const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
 
 export const generateModel = (data, props) => {
+
   const endorsementDate = moment.tz(moment.utc(data.endorsementDateNew).format('YYYY-MM-DD'), props.zipcodeSettings.timezone).utc().format();
   data.deductibles.sinkhole.amount = data.coverageOptions.sinkholePerilCoverage.answer === 'true' ? _.get(data, 'deductibles.sinkhole.amount') || 10 : 0;
 
   data.rating = props.getRate.rating;
   data.billingStatus = props.summaryLedger.status.code;
   data.transactionType = 'Endorsement';
+
+  data.property.distanceToFireHydrant = Number(data.property.distanceToFireHydrant);
+  data.property.yearOfRoof = String(data.property.yearOfRoof).length > 0 ? data.property.yearOfRoof : null;
+
+  delete data.additionalInterests;
+  data.deductibles.hurricane.calculatedAmount = String(data.deductibles.hurricane.calculatedAmount);
+
+  console.log(data)
 
   return {
     ...data,
