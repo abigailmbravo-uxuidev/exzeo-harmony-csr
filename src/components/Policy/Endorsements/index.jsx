@@ -69,9 +69,9 @@ export const handleInitialize = ({ service = {} }) => {
   values.coverageOptions.liabilityIncidentalOccupancies.answer = policy.coverageOptions.liabilityIncidentalOccupancies.answer || false;
   values.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount = (policy.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount === 0) ? 'No' : 'Yes';
   // Wind Mitigation
-  values.property.yearOfRoof = policy.property.yearOfRoof || '';
+  values.property.yearOfRoof = policy.property.yearOfRoof || null;
   values.property.protectionClass = policy.property.protectionClass || '';
-  values.property.buildingCodeEffectivenessGrading = policy.property.buildingCodeEffectivenessGrading || '';
+  values.property.buildingCodeEffectivenessGrading = policy.property.buildingCodeEffectivenessGrading || null;
   values.buildingCodeEffectivenessGradingNew = values.property.buildingCodeEffectivenessGrading;
   values.property.familyUnits = policy.property.familyUnits || '';
   // Home/Location Bottom Right
@@ -170,6 +170,17 @@ export class Endorsements extends React.Component {
 
     this.props.clearRate();
     this.setState({ isCalculated: false });
+  };
+
+  normalizeSinkholeAmount = (value, prevValue, allValues) => {
+    const { change } = this.props;
+    if (value) {
+      change('deductibles.sinkhole.amount', 10);
+      change('deductibles.sinkhole.calculatedAmount', endorsementUtils.setPercentageOfValue(allValues.coverageLimits.dwelling.amount, 10))
+    } else {
+      change('deductibles.sinkhole.amount', 0);
+      change('deductibles.sinkhole.calculatedAmount', 0);
+    }
   };
 
   normalizeDwellingAmount = (value, prevValue, fieldValues) => {
@@ -295,6 +306,7 @@ export class Endorsements extends React.Component {
                       normalizeDwellingDependencies={this.normalizeDwellingDependencies}
                       normalizePersonalPropertyPercentage={this.normalizePersonalPropertyPercentage}
                       normalizeIncidentalOccupancies={this.normalizeIncidentalOccupancies}
+                      normalizeSinkholeAmount={this.normalizeSinkholeAmount}
                     />
                     <WindMitigation questions={questions} />
                     <HomeLocation questions={questions} />

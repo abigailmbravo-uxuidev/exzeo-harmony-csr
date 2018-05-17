@@ -39,6 +39,7 @@ const Coverage = ({
   normalizeDwellingDependencies,
   normalizePersonalPropertyPercentage,
   normalizeIncidentalOccupancies,
+  normalizeSinkholeAmount,
   personalPropertyNewVal,
   questions,
   underwritingQuestions
@@ -150,6 +151,7 @@ const Coverage = ({
           label="Sinkhole Deductible"
           component={Select}
           answers={sinkholePerilCoverageAnswers(questions)}
+          normalize={normalizeSinkholeAmount}
           showInitial
         />
       </div>
@@ -263,7 +265,8 @@ Coverage.propTypes = {
   normalizeDwellingAmount: PropTypes.func.isRequired,
   normalizeDwellingDependencies: PropTypes.func.isRequired,
   normalizePersonalPropertyPercentage: PropTypes.func.isRequired,
-  normalizeIncidentalOccupancies: PropTypes.func.isRequired
+  normalizeIncidentalOccupancies: PropTypes.func.isRequired,
+  normalizeSinkholeAmount: PropTypes.func.isRequired
 };
 
 Coverage.defaultProps = {
