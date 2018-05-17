@@ -10,10 +10,54 @@ const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
 
 describe('Testing Endorsements component', () => {
+  const policy = {
+    policyHolders: [{}, {}],
+    property: { windMitigation: {}, physicalAddress: {} },
+    policyHolderMailingAddress: {},
+    coverageLimits: {
+      dwelling: {},
+      otherStructures: {},
+      personalProperty: {},
+      lossOfUse: {},
+      medicalPayments: {},
+      moldProperty: {},
+      personalLiability: {},
+      moldLiability: {},
+      ordinanceOrLaw: {}
+    },
+    deductibles: {
+      allOtherPerils: {},
+      hurricane: {},
+      sinkhole: {}
+
+    },
+    coverageOptions: {
+      sinkholePerilCoverage: {},
+      propertyIncidentalOccupanciesMainDwelling: {},
+      propertyIncidentalOccupanciesOtherStructures: {},
+      liabilityIncidentalOccupancies: {},
+      personalPropertyReplacementCost: {}
+    },
+    underwritingAnswers: {
+      rented: {},
+      monthsOccupied: {},
+      noPriorInsuranceSurcharge: {}
+
+    },
+    rating: {
+      worksheet: {
+        elements: {
+          windMitigationFactors: {
+
+          }
+        }
+      }
+    }
+  }
   it('should test connected app', () => {
     const initialState = {
       service: {
-        latestPolicy: {}
+        latestPolicy: policy
       },
       cg: {
         bb: {
@@ -63,56 +107,8 @@ describe('Testing Endorsements component', () => {
         }
       },
       initialValues: {},
-      fieldValues: {
-        policyHolders: [{}, {}],
-        property: { windMitigation: {}, physicalAddress: {} },
-        policyHolderMailingAddress: {},
-        coverageLimits: {
-          dwelling: {},
-          otherStructures: {},
-          personalProperty: {},
-          lossOfUse: {},
-          medicalPayments: {},
-          moldProperty: {},
-          personalLiability: {},
-          moldLiability: {},
-          ordinanceOrLaw: {}
-        },
-        deductibles: {
-          allOtherPerils: {},
-          hurricane: {},
-          sinkhole: {}
-
-        },
-        coverageOptions: {
-          sinkholePerilCoverage: {},
-          propertyIncidentalOccupanciesMainDwelling: {},
-          propertyIncidentalOccupanciesOtherStructures: {},
-          liabilityIncidentalOccupancies: {},
-          personalPropertyReplacementCost: {}
-        },
-        underwritingAnswers: {
-          rented: {},
-          monthsOccupied: {},
-          noPriorInsuranceSurcharge: {}
-
-        },
-        rating: {
-          worksheet: {
-            elements: {
-              windMitigationFactors: {
-
-              }
-            }
-          }
-        }
-      },
-      policy: {
-        policyNumber: '112',
-        rating: {},
-        property: {},
-        policyHolderMailingAddress: {}
-      },
+      fieldValues: policy,
+      policy: policy,
       handleSubmit() {},
       quoteData: {},
       dispatch: store.dispatch,
@@ -142,7 +138,7 @@ describe('Testing Endorsements component', () => {
     expect(wrapper);
 
     handleInitialize(initialState);
-    wrapper.instance().updateDwellingAndDependencies('5000', '100', props.fieldValues);
+    wrapper.instance().normalizeDwellingDependencies('5000', props.fieldValues,'coverageLimits.otherStructures.amount');
 
     props.getRate = { worksheet: {} };
     getNewPolicyNumber(initialState);
