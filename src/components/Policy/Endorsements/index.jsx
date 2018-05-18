@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _find from 'lodash/find';
 import { Prompt } from 'react-router-dom';
-import { reduxForm, propTypes, formValueSelector, FormSection } from 'redux-form';
+import { reduxForm, formValueSelector, FormSection } from 'redux-form';
 import { premiumEndorsementList } from './constants/endorsementTypes';
 import endorsementUtils from '../../../utilities/endorsementModel';
 import { getUIQuestions } from '../../../actions/questionsActions';
@@ -53,7 +52,9 @@ export class Endorsements extends React.Component {
   }
 
   componentDidMount() {
-    const { policy, getUnderwritingQuestions, getZipcodeSettings, getEndorsementHistory, getUIQuestions, clearRate } = this.props;
+    const {
+      policy, getUnderwritingQuestions, getZipcodeSettings, getEndorsementHistory, getUIQuestions, clearRate
+    } = this.props;
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
     clearRate();
     if (policy && policy.policyNumber && policy.property && policy.property.physicalAddress) {
@@ -78,7 +79,7 @@ export class Endorsements extends React.Component {
   };
 
   setCalculate = (rate = {}) => {
-    const { change, initialize, policy, reset } = this.props;
+    const { change } = this.props;
     const { getRate } = rate;
     const windMitFactor = getRate ? getRate.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount : 0;
     change('newEndorsementAmount', getRate.endorsementAmount || 0);
@@ -86,7 +87,6 @@ export class Endorsements extends React.Component {
     change('newAnnualPremium', getRate.newAnnualPremium || '');
     change('windMitFactor', windMitFactor);
     // initialize(endorsementUtils.initializeEndorsementForm(policy), true);
-
   };
 
   calculate = async (data, dispatch, props) => {
@@ -129,12 +129,12 @@ export class Endorsements extends React.Component {
     const { change } = this.props;
     if (String(value) === 'true') {
       change('deductibles.sinkhole.amount', 10);
-      change('deductibles.sinkhole.calculatedAmount', endorsementUtils.setPercentageOfValue(allValues.coverageLimits.dwelling.amount, 10))
+      change('deductibles.sinkhole.calculatedAmount', endorsementUtils.setPercentageOfValue(allValues.coverageLimits.dwelling.amount, 10));
     } else {
       change('deductibles.sinkhole.amount', 0);
       change('deductibles.sinkhole.calculatedAmount', 0);
     }
-    return value
+    return value;
   };
 
   normalizeDwellingAmount = (value, prevValue, fieldValues) => {
@@ -194,7 +194,6 @@ export class Endorsements extends React.Component {
   render() {
     const { isCalculated } = this.state;
     const {
-      anyTouched,
       dirty,
       endorsementHistory,
       handleSubmit,
@@ -340,7 +339,7 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   underwritingQuestions: state.service.underwritingQuestions,
   userProfile: state.authState.userProfile || defaultObj,
-  zipcodeSettings: state.service.getZipcodeSettings,
+  zipcodeSettings: state.service.getZipcodeSettings
 });
 
 export default connect(mapStateToProps, {
@@ -350,5 +349,5 @@ export default connect(mapStateToProps, {
   getEndorsementHistory,
   getZipcodeSettings,
   clearRate,
-  getUIQuestions,
+  getUIQuestions
 })(reduxForm({ form: 'Endorsements', enableReinitialize: true })(Endorsements));
