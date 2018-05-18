@@ -7,6 +7,11 @@ import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 const { Input, Phone } = Inputs;
 const { validation, normalize } = lifecycle;
 
+const firstNameDepends = validation.dependsOn(['policyHolders[1].lastName', 'policyHolders[1].emailAddress', 'policyHolders[1].primaryPhoneNumber']);
+const lastNameDepends = validation.dependsOn(['policyHolders[1].firstName', 'policyHolders[1].emailAddress', 'policyHolders[1].primaryPhoneNumber']);
+const primaryPhoneDepends = validation.dependsOn(['policyHolders[1].firstName', 'policyHolders[1].lastName', 'policyHolders[1].emailAddress']);
+const emailAddressDepends = validation.dependsOn(['policyHolders[1].firstName', 'policyHolders[1].lastName', 'policyHolders[1].primaryPhoneNumber']);
+
 const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) => (
   <section name="policy" id="policy">
     <div className="flex-parent col2">
@@ -73,14 +78,14 @@ const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) 
             name="policyHolders[1].firstName"
             label="First Name"
             component={Input}
-            validate={validation.dependsOn(['pH2LastName', 'pH2email', 'pH2phone'])}
+            validate={firstNameDepends}
             onChange={setPHToggle}
           />
           <Field
             name="policyHolders[1].lastName"
             label="Last Name"
             component={Input}
-            validate={validation.dependsOn(['pH2FirstName', 'pH2email', 'pH2phone'])}
+            validate={lastNameDepends}
             onChange={setPHToggle}
           />
         </div>
@@ -89,7 +94,7 @@ const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) 
             name="policyHolders[1].primaryPhoneNumber"
             label="Primary Phone"
             component={Phone}
-            validate={[validation.dependsOn(['pH2FirstName', 'pH2LastName', 'pH2email']), validation.isPhone]}
+            validate={[primaryPhoneDepends, validation.isPhone]}
             onChange={setPHToggle}
           />
           <Field
@@ -105,7 +110,7 @@ const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) 
             name="policyHolders[1].emailAddress"
             label="Email Address"
             component={Input}
-            validate={[validation.dependsOn(['pH2FirstName', 'pH2LastName', 'pH2phone']), validation.isEmail]}
+            validate={[emailAddressDepends, validation.isEmail]}
             onChange={setPHToggle}
           />
         </div>

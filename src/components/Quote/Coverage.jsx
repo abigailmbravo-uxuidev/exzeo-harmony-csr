@@ -25,6 +25,11 @@ import normalizeNumbers from '../Form/normalizeNumbers';
 import DateField from '../Form/inputs/DateField';
 import Footer from '../Common/Footer';
 
+const firstNameDepends = validation.dependsOn(['policyHolders[1].lastName', 'policyHolders[1].emailAddress', 'policyHolders[1].primaryPhoneNumber']);
+const lastNameDepends = validation.dependsOn(['policyHolders[1].firstName', 'policyHolders[1].emailAddress', 'policyHolders[1].primaryPhoneNumber']);
+const primaryPhoneDepends = validation.dependsOn(['policyHolders[1].firstName', 'policyHolders[1].lastName', 'policyHolders[1].emailAddress']);
+const emailAddressDepends = validation.dependsOn(['policyHolders[1].firstName', 'policyHolders[1].lastName', 'policyHolders[1].primaryPhoneNumber']);
+
 export const clearSecondaryPolicyholder = (value, props) => {
   const { dispatch, quoteData } = props;
   if (!value) {
@@ -387,7 +392,7 @@ export class Coverage extends Component {
   }
 
   setPHToggle = () => {
-    const { fieldValues, change: changeF } = props;
+    const { fieldValues, change: changeF } = this.props;
     if (fieldValues.clearFields) {
       changeF('clearFields', false);
     }
