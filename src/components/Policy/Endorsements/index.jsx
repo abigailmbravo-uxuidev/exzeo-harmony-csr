@@ -64,10 +64,6 @@ export class Endorsements extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
-  }
-
   clearCalculate = () => {
     const { change, clearRate, initialValues } = this.props;
     change('endorsementDate', initialValues.endorsementDate);
@@ -79,14 +75,15 @@ export class Endorsements extends React.Component {
   };
 
   setCalculate = (rate = {}) => {
-    const { change } = this.props;
-    const { getRate } = rate;
-    const windMitFactor = getRate ? getRate.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount : 0;
+    const { change, initialize } = this.props;
+    const { getRate = {} } = rate;
+    const windMitFactor = getRate.rating ? getRate.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount : 0;
     change('newEndorsementAmount', getRate.endorsementAmount || 0);
     change('newEndorsementPremium', getRate.newCurrentPremium || '');
     change('newAnnualPremium', getRate.newAnnualPremium || '');
     change('windMitFactor', windMitFactor);
-    // initialize(endorsementUtils.initializeEndorsementForm(policy), true);
+    initialize({}, { keepValues: true });
+
   };
 
   calculate = async (data, dispatch, props) => {
@@ -292,7 +289,7 @@ export class Endorsements extends React.Component {
                     tabIndex="0"
                     className="btn btn-primary"
                     disabled={(!isCalculated && pristine) || submitting}
-                  >{(isCalculated) ? 'Save' : 'Review'}</button>
+                  >{(isCalculated && !anyTouched) ? 'Save' : 'Review'}</button>
                 </ResultsCalculator>
 
               </div>
@@ -313,15 +310,10 @@ export class Endorsements extends React.Component {
   }
 }
 
-// Endorsements.propTypes = {
-//   ...propTypes,
-//   tasks: PropTypes.shape().isRequired,
-//   appState: PropTypes.shape({
-//     modelName: PropTypes.string,
-//     instanceId: PropTypes.string,
-//     data: PropTypes.shape({ isSubmitting: PropTypes.bool })
-//   }).isRequired
-// };
+Endorsements.propTypes = {
+  ...propTypes,
+  // TODO flesh these out in subsequent PR
+};
 
 const defaultObj = {};
 const defaultArr = [];
@@ -329,14 +321,12 @@ const selector = formValueSelector('Endorsements');
 const mapStateToProps = state => ({
   appState: state.appState,
   endorsementHistory: state.service.endorsementHistory || defaultArr,
-  getRate: state.service.getRate,
   initialValues: endorsementUtils.initializeEndorsementForm(state.service.latestPolicy),
   newPolicyNumber: getNewPolicyNumber(state),
   policy: state.service.latestPolicy || defaultObj,
   questions: state.questions,
   selectedValues: selector(state, 'coverageLimits.personalProperty.amount', 'clearFields'),
   summaryLedger: state.service.getSummaryLedger || defaultObj,
-  tasks: state.cg,
   underwritingQuestions: state.service.underwritingQuestions,
   userProfile: state.authState.userProfile || defaultObj,
   zipcodeSettings: state.service.getZipcodeSettings
