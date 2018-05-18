@@ -26,15 +26,14 @@ import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import DateField from '../Form/inputs/DateField';
 import Footer from '../Common/Footer';
-import rules from '../Form/Rules';
 
 const { Input, Phone } = Inputs;
-const { validation, normalize } = lifecycle;
+const { validation } = lifecycle;
 
-const firstNameDepends = validation.dependsOn(['policyHolders[1].lastName', 'policyHolders[1].emailAddress', 'policyHolders[1].primaryPhoneNumber']);
-const lastNameDepends = validation.dependsOn(['policyHolders[1].firstName', 'policyHolders[1].emailAddress', 'policyHolders[1].primaryPhoneNumber']);
-const primaryPhoneDepends = validation.dependsOn(['policyHolders[1].firstName', 'policyHolders[1].lastName', 'policyHolders[1].emailAddress']);
-const emailAddressDepends = validation.dependsOn(['policyHolders[1].firstName', 'policyHolders[1].lastName', 'policyHolders[1].primaryPhoneNumber']);
+const firstNameDepends = validation.dependsOn(['pH2LastName', 'pH2email', 'pH2phone']);
+const lastNameDepends = validation.dependsOn(['pH2FirstName', 'pH2email', 'pH2phone']);
+const primaryPhoneDepends = validation.dependsOn(['pH2FirstName', 'pH2LastName', 'pH2email']);
+const emailAddressDepends = validation.dependsOn(['pH2FirstName', 'pH2LastName', 'pH2phone']);
 
 export const clearSecondaryPolicyholder = (value, props) => {
   const { dispatch, quoteData } = props;
@@ -574,7 +573,7 @@ export class Coverage extends Component {
                           name="pH2FirstName"
                           label="First Name"
                           component={Input}
-                          validate={validation.dependsOn(['pH2LastName', 'pH2email', 'pH2phone'])}
+                          validate={firstNameDepends}
                           onChange={this.setPHToggle}
                         />
                       </div>
@@ -583,7 +582,7 @@ export class Coverage extends Component {
                           name="pH2LastName"
                           label="Last Name"
                           component={Input}
-                          validate={validation.dependsOn(['pH2FirstName', 'pH2email', 'pH2phone'])}
+                          validate={lastNameDepends}
                           onChange={this.setPHToggle}
                         />
 
@@ -595,7 +594,7 @@ export class Coverage extends Component {
                           name="pH2phone"
                           label="Primary Phone"
                           component={Phone}
-                          validate={[validation.dependsOn(['pH2FirstName', 'pH2LastName', 'pH2email']), validation.isPhone]}
+                          validate={[primaryPhoneDepends, validation.isPhone]}
                           onChange={this.setPHToggle}
                         />
                       </div>
@@ -615,7 +614,7 @@ export class Coverage extends Component {
                           name="pH2email"
                           label="Email Address"
                           component={Input}
-                          validate={[validation.dependsOn(['pH2FirstName', 'pH2LastName', 'pH2phone']), validation.isEmail]}
+                          validate={[emailAddressDepends, validation.isEmail]}
                           onChange={this.setPHToggle}
                         />
                       </div>
