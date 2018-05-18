@@ -25,11 +25,6 @@ import normalizeNumbers from '../Form/normalizeNumbers';
 import DateField from '../Form/inputs/DateField';
 import Footer from '../Common/Footer';
 
-const setPHToggle = (props) => {
-  const { dispatch } = props;
-  dispatch(change('Coverage', 'clearFields', false));
-};
-
 export const clearSecondaryPolicyholder = (value, props) => {
   const { dispatch, quoteData } = props;
   if (!value) {
@@ -391,6 +386,13 @@ export class Coverage extends Component {
     }
   }
 
+  setPHToggle = () => {
+    const { fieldValues, change: changeF } = props;
+    if (fieldValues.clearFields) {
+      changeF('clearFields', false);
+    }
+  };
+
   updateDwellingAndDependencies = (e, value) => {
     const { dispatch, fieldValues } = this.props;
 
@@ -558,7 +560,7 @@ export class Coverage extends Component {
                     <div className="flex-parent col2 policy-holder-b-name">
                       <div className="flex-child policy-holder-b-first-name">
                         <TextField
-                          onChange={() => setPHToggle(this.props)}
+                          onChange={() => this.setPHToggle()}
                           label="First Name"
                           dependsOn={['pH2LastName', 'pH2email', 'pH2phone']}
                           styleName=""
@@ -567,7 +569,7 @@ export class Coverage extends Component {
                       </div>
                       <div className="flex-child policy-holder-b-last-name">
                         <TextField
-                          onChange={() => setPHToggle(this.props)}
+                          onChange={() => this.setPHToggle()}
                           label="Last Name"
                           dependsOn={['pH2FirstName', 'pH2email', 'pH2phone']}
                           styleName=""
@@ -578,7 +580,7 @@ export class Coverage extends Component {
                     <div className="flex-parent col2 policy-holder-b-phone">
                       <div className="flex-child policy-holder-b-primary-phone">
                         <PhoneField
-                          onChange={() => setPHToggle(this.props)}
+                          onChange={() => this.setPHToggle()}
                           label="Primary Phone"
                           dependsOn={['pH2FirstName', 'pH2LastName', 'pH2email']}
                           styleName=""
@@ -588,7 +590,7 @@ export class Coverage extends Component {
                       </div>
                       <div className="flex-child policy-holder-b-secondary-phone">
                         <PhoneField
-                          onChange={() => setPHToggle(this.props)}
+                          onChange={() => this.setPHToggle()}
                           label="Secondary Phone"
                           styleName=""
                           name="pH2phone2"
@@ -599,7 +601,7 @@ export class Coverage extends Component {
                     <div className="flex-parent policy-holder-b-email">
                       <div className="flex-child email-address">
                         <TextField
-                          onChange={() => setPHToggle(this.props)}
+                          onChange={() => this.setPHToggle()}
                           validations={['email']}
                           dependsOn={['pH2FirstName', 'pH2LastName', 'pH2phone']}
                           label="Email Address"
