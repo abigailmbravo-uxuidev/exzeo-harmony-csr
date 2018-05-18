@@ -5,7 +5,9 @@ import GroupedInputs from '@exzeo/core-ui/lib/InputGrouped';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers } from '../../../utilities/forms';
 
-const { Integer, Select, SelectInteger, Numbers } = GroupedInputs;
+const {
+  Integer, Select, SelectInteger, Numbers
+} = GroupedInputs;
 const { validation } = lifecycle;
 
 const HomeLocation = ({ questions }) => (
@@ -21,6 +23,7 @@ const HomeLocation = ({ questions }) => (
           name="property.yearBuilt"
           label="Year Home Built"
           component={Integer}
+          thousandSeparator={false}
           validate={validation.isNumbersOnly}
         />
         <Field
