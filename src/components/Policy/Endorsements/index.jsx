@@ -53,8 +53,9 @@ export class Endorsements extends React.Component {
   }
 
   componentDidMount() {
-    const { policy, getUnderwritingQuestions, getZipcodeSettings, getEndorsementHistory, getUIQuestions } = this.props;
+    const { policy, getUnderwritingQuestions, getZipcodeSettings, getEndorsementHistory, getUIQuestions, clearRate } = this.props;
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
+    clearRate();
     if (policy && policy.policyNumber && policy.property && policy.property.physicalAddress) {
       getUnderwritingQuestions(policy.companyCode, policy.state, policy.product, policy.property);
       getEndorsementHistory(policy.policyNumber);
@@ -62,10 +63,13 @@ export class Endorsements extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+  }
+
   clearCalculate = () => {
-    const { change, clearRate , policy } = this.props;
-    const endorsementDate = endorsementUtils.setEndorsementDate(policy.effectiveDate, policy.endDate);
-    change('endorsementDate', endorsementDate);
+    const { change, clearRate, initialValues } = this.props;
+    change('endorsementDate', initialValues.endorsementDate);
     change('newEndorsementAmount', '');
     change('newEndorsementPremium', '');
     change('newAnnualPremium', '');
@@ -73,24 +77,27 @@ export class Endorsements extends React.Component {
     this.setState({ isCalculated: false });
   };
 
-  resetCalculate = () => {
-    const { change, getRate } = this.props;
+  setCalculate = (rate = {}) => {
+    const { change, initialize, policy, reset } = this.props;
+    const { getRate } = rate;
+    const windMitFactor = getRate ? getRate.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount : 0;
     change('newEndorsementAmount', getRate.endorsementAmount || 0);
     change('newEndorsementPremium', getRate.newCurrentPremium || '');
     change('newAnnualPremium', getRate.newAnnualPremium || '');
-    change('windMitFactor', getRate.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount);
+    change('windMitFactor', windMitFactor);
+    // initialize(endorsementUtils.initializeEndorsementForm(policy), true);
+
   };
 
   calculate = async (data, dispatch, props) => {
-    const { getNewRate, initialize } = props;
-    await getNewRate(data, props);
-    initialize(data);
-    this.setState({ isCalculated: true }, this.resetCalculate);
+    const { getNewRate } = props;
+    const rate = await getNewRate(data, props);
+    this.setState({ isCalculated: true }, () => this.setCalculate(rate, data));
   };
 
   save = async (data, dispatch, props) => {
     await props.submitEndorsementForm(data, props);
-    this.setState({ isCalculated: false }, this.resetCalculate);
+    this.setState({ isCalculated: false }, this.setCalculate);
   };
 
   setPHToggle = () => {
@@ -118,14 +125,6 @@ export class Endorsements extends React.Component {
     return value;
   };
 
-  setCalculate = () => {
-    const { isCalculated } = this.state;
-    if (!isCalculated) return;
-
-    this.props.clearRate();
-    this.setState({ isCalculated: false });
-  };
-
   normalizeSinkholeAmount = (value, prevValue, allValues) => {
     const { change } = this.props;
     if (String(value) === 'true') {
@@ -140,7 +139,6 @@ export class Endorsements extends React.Component {
 
   normalizeDwellingAmount = (value, prevValue, fieldValues) => {
     const { change } = this.props;
-    this.setCalculate();
 
     const roundedDwellingAmount = Math.round(value / 1000) * 1000;
 
@@ -171,7 +169,6 @@ export class Endorsements extends React.Component {
 
   normalizePersonalPropertyPercentage = (value, allValues, field) => {
     if (Number.isNaN(value)) return;
-    this.setCalculate();
     const { change, initialValues } = this.props;
 
     if (value === 0) {
@@ -186,9 +183,7 @@ export class Endorsements extends React.Component {
   };
 
   normalizeDwellingDependencies = (value, allValues, field) => {
-    // console.log(value, allValues, field, dependency);
     if (Number.isNaN(value)) return;
-    this.setCalculate();
     const { change } = this.props;
     const fieldValue = endorsementUtils.setPercentageOfValue(allValues.coverageLimits.dwelling.amount, value);
 
@@ -199,6 +194,7 @@ export class Endorsements extends React.Component {
   render() {
     const { isCalculated } = this.state;
     const {
+      anyTouched,
       dirty,
       endorsementHistory,
       handleSubmit,
@@ -282,19 +278,14 @@ export class Endorsements extends React.Component {
 
                   </div>
                 </div>
-                <ResultsCalculator
-                  min={policy.effectiveDate}
-                  max={policy.endDate}
-                  setCalculate={this.setCalculate}
-                >
-                  {/* <Link className="btn btn-secondary" to={'/policy/coverage'} >Cancel</Link> */}
+                <ResultsCalculator min={policy.effectiveDate} max={policy.endDate}>
                   <button
                     id="cancel-button"
                     type="button"
                     className="btn btn-secondary"
                     tabIndex="0"
                     onClick={() => this.clearCalculate()}
-                    onKeyPress={event => event.charCode === 13 && this.setCalculate()}
+                    onKeyPress={event => event.charCode === 13 && this.clearCalculate()}
                   >Cancel
                   </button>
                   <button
@@ -302,7 +293,7 @@ export class Endorsements extends React.Component {
                     tabIndex="0"
                     className="btn btn-primary"
                     disabled={(!isCalculated && pristine) || submitting}
-                  >{isCalculated ? 'Save' : 'Review'}</button>
+                  >{(isCalculated) ? 'Save' : 'Review'}</button>
                 </ResultsCalculator>
 
               </div>

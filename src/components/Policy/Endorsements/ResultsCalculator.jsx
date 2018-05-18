@@ -14,7 +14,6 @@ const ResultsCalculator = props => (
           label="Endorsement Effective Date"
           component={Date}
           validate={[validation.isDate, (value) => validation.isDateRange(value, props.min, props.max)]}
-          onChange={props.setCalculate}
         />
       </div>
       <Field

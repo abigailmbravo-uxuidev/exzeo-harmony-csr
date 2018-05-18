@@ -744,7 +744,8 @@ export const getNewRate = (formData, formProps) => {
 
       const response = await axios(axiosConfig);
       const data = { getRate: response.data ? response.data.result : {} };
-      return dispatch(serviceRequest(data));
+      dispatch(serviceRequest(data));
+      return data
     } catch (error) {
       dispatch(errorActions.setAppError(handleError(error)));
       throw new Error(error);
