@@ -52,9 +52,7 @@ export class Endorsements extends React.Component {
   }
 
   componentDidMount() {
-    const {
-      policy, getUnderwritingQuestions, getZipcodeSettings, getEndorsementHistory, getUIQuestions, clearRate
-    } = this.props;
+    const { policy, getUnderwritingQuestions, getZipcodeSettings, getEndorsementHistory, getUIQuestions, clearRate } = this.props;
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
     clearRate();
     if (policy && policy.policyNumber && policy.property && policy.property.physicalAddress) {
@@ -83,7 +81,6 @@ export class Endorsements extends React.Component {
     change('newAnnualPremium', getRate.newAnnualPremium || '');
     change('windMitFactor', windMitFactor);
     initialize({}, { keepValues: true });
-
   };
 
   calculate = async (data, dispatch, props) => {
@@ -172,6 +169,7 @@ export class Endorsements extends React.Component {
       change('coverageOptions.personalPropertyReplacementCost.answer', false);
     } else {
       change('coverageOptions.personalPropertyReplacementCost.answer', initialValues.coverageOptions.personalPropertyReplacementCost.answer || false);
+    return value;
     }
 
     const fieldValue = endorsementUtils.setPercentageOfValue(allValues.coverageLimits.dwelling.amount, value);
@@ -191,6 +189,7 @@ export class Endorsements extends React.Component {
   render() {
     const { isCalculated } = this.state;
     const {
+      anyTouched,
       dirty,
       endorsementHistory,
       handleSubmit,
@@ -310,16 +309,15 @@ export class Endorsements extends React.Component {
   }
 }
 
-Endorsements.propTypes = {
-  ...propTypes,
-  // TODO flesh these out in subsequent PR
-};
+// Endorsements.propTypes = {
+//   ...propTypes
+//   // TODO flesh these out in subsequent PR
+// };
 
 const defaultObj = {};
 const defaultArr = [];
 const selector = formValueSelector('Endorsements');
 const mapStateToProps = state => ({
-  appState: state.appState,
   endorsementHistory: state.service.endorsementHistory || defaultArr,
   initialValues: endorsementUtils.initializeEndorsementForm(state.service.latestPolicy),
   newPolicyNumber: getNewPolicyNumber(state),
