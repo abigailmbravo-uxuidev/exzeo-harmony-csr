@@ -6,6 +6,10 @@ import { reduxForm, Form, Field, change } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import _ from 'lodash';
 import moment from 'moment';
+
+import Inputs from '@exzeo/core-ui/lib/Input';
+import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
+
 import { updatePolicy } from '../../actions/policyStateActions';
 import { getUIQuestions } from '../../actions/questionsActions';
 import {
@@ -22,10 +26,9 @@ import BillingModal from '../../components/Common/BillingEditModal';
 import AIModal from '../../components/Common/AdditionalInterestModal';
 import Footer from '../Common/Footer';
 import setRank from '../Common/additionalInterestRank';
-import { requireField, matchDateMin10, range } from '../Form/validations';
-import SelectField from '../Form/base/Select';
-import InputField from '../Form/base/Input';
-import CurrencyField from '../Form/base/Currency';
+
+const { validation } = lifecycle;
+const { Input, Select, Currency } = Inputs;
 
 export const handleInitialize = (state) => {
   const { service } = state;
@@ -390,9 +393,9 @@ export class MortgageBilling extends Component {
                         <Field
                           name="cashDate"
                           label="Cash Date"
-                          component={InputField}
+                          component={Input}
                           type="date"
-                          validate={requireField}
+                          validate={validation.isRequired}
                           normalize={this.setBatch}
                         />
                       </div>
@@ -402,8 +405,8 @@ export class MortgageBilling extends Component {
                         <Field
                           name="batchNumber"
                           label="Batch Number"
-                          component={InputField}
-                          validate={(value, allValues) => matchDateMin10(value, allValues, 'cashDate', 'YYYYMMDD')}
+                          component={Input}
+                          validate={(value, allValues) => validation.isDateMatchMin10(value, allValues, 'cashDate', 'YYYYMMDD')}
                         />
                       </div>
                     </div>
@@ -415,8 +418,8 @@ export class MortgageBilling extends Component {
                           name="cashType"
                           label="Cash Type"
                           onChange={this.getPaymentDescription}
-                          component={SelectField}
-                          validate={requireField}
+                          component={Select}
+                          validate={validation.isRequired}
                           answers={_.map(this.props.paymentOptions, type => ({ answer: type.paymentType }))}
                         />
                       </div>
@@ -426,8 +429,8 @@ export class MortgageBilling extends Component {
                         <Field
                           name="cashDescription"
                           label="Description"
-                          component={SelectField}
-                          validate={requireField}
+                          component={Select}
+                          validate={validation.isRequired}
                           answers={_.map(this.state.paymentDescription || [], description => ({ answer: description }))}
                         />
                       </div>
@@ -437,8 +440,8 @@ export class MortgageBilling extends Component {
                         <Field
                           name="amount"
                           label="Amount"
-                          component={CurrencyField}
-                          validate={value => range(value, -1000000, 1000000)}
+                          component={Currency}
+                          validate={value => validation.isRange(value, -1000000, 1000000)}
                           min={-1000000}
                           max={1000000}
                         />
@@ -496,7 +499,7 @@ export class MortgageBilling extends Component {
                     <button tabIndex="0" disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Additional Insured' && ai.active).length > 1)} onClick={() => this.addAdditionalInterest('Additional Insured')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
                     <button tabIndex="0" disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Additional Interest' && ai.active).length > 1)} onClick={() => this.addAdditionalInterest('Additional Interest')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
                     <button tabIndex="0" disabled={(policy && (_.filter(policy.additionalInterests, ai => ai.type === 'Premium Finance' && ai.active).length > 0 || _.filter(policy.additionalInterests, ai => ai.type === 'Bill Payer' && ai.active).length > 0))} onClick={() => this.addAdditionalInterest('Premium Finance')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Premium Finance</span></div></button>
-                    <button tabIndex="0" disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Bill Payer' && ai.active).length > 0 || _.filter(policy.additionalInterests, ai => ai.type === 'Premium Finance' && ai.active).length > 0)} onClick={() => this.addAdditionalInterest('Bill Payer')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
+                    <button tabIndex="0" disabled={(policy && (_.filter(policy.additionalInterests, ai => ai.type === 'Bill Payer' && ai.active).length > 0 || _.filter(policy.additionalInterests, ai => ai.type === 'Premium Finance' && ai.active).length > 0))} onClick={() => this.addAdditionalInterest('Bill Payer')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
                   </div>
                   <ul className="results result-cards">
                     {additionalInterests && _.sortBy(additionalInterests, ['sortInactive', 'rank', 'order']).map((ai, index) => (
