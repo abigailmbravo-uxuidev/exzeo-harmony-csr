@@ -1,16 +1,16 @@
 import moment from 'moment-timezone';
 
 const BUSINESS = {
-  "question": "Is a business conducted on the property?",
-  "source": "Customer",
-  "answer": ""
+  question: 'Is a business conducted on the property?',
+  source: 'Customer',
+  answer: ''
 };
 
 const SINKHOLE = {
-  format: "Percentage",
+  format: 'Percentage',
   amount: 0,
-  displayText: "Sinkhole",
-  ofCoverageLimit: "dwelling",
+  displayText: 'Sinkhole',
+  ofCoverageLimit: 'dwelling',
   calculatedAmount: 0
 };
 
@@ -32,7 +32,7 @@ export function setEndorsementDate(effectiveDate, endPolicyDate) {
 }
 
 export function premiumAmountFormatter(cell) {
-  Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  return Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 }
 
 
@@ -54,7 +54,7 @@ export function initializeEndorsementForm(policy = {}) {
   const personalProperty = policy.coverageLimits.personalProperty.amount;
 
   // Use the policy object as initial values for Endorsement Form
-  const values = {...policy};
+  const values = { ...policy };
   // Initialize values for form
   values.clearFields = false;
   values.transactionType = 'Endorsement';
@@ -90,7 +90,6 @@ export function initializeEndorsementForm(policy = {}) {
 }
 
 export function generateModel(data, props) {
-
   const endorsementDate = calculateEndorsementDate(data.endorsementDate, props.zipcodeSettings.timezone);
 
   data.transactionType = 'Endorsement';
