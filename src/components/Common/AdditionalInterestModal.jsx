@@ -3,13 +3,16 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { reduxForm, Field, propTypes, initialize, reset } from 'redux-form';
-import Input from '../Form/base/Input';
-import Select from '../Form/base/Select';
-import { requireField, zipNumbersOnly, phone, ensureString } from '../Form/validations';
-import { normalizePhone } from '../Form/normalize';
+
 // TODO refactor this out next
 import ReactSelectField from '../Form/inputs/ReactSelectField';
 import Loader from './Loader';
+
+import Inputs from '@exzeo/core-ui/lib/Input';
+import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
+
+const { validation, format } = lifecycle;
+const { Input, Select, Phone } = Inputs;
 
 export const setMortgageeValues = (val, props) => {
   const selectedMortgagee = val;
@@ -86,7 +89,7 @@ export class AdditionalInterestModal extends React.Component {
                 label={checkAdditionalInterestForName(addAdditionalInterestType) ? 'First Name' : 'Name 1'}
                 component={Input}
                 styleName="name-1"
-                validate={requireField}
+                validate={validation.isRequired}
               />
               <Field
                 name="name2"
@@ -99,7 +102,7 @@ export class AdditionalInterestModal extends React.Component {
                 label="Address 1"
                 component={Input}
                 styleName="address-1"
-                validate={requireField}
+                validate={validation.isRequired}
               />
               <Field
                 name="address2"
@@ -113,31 +116,31 @@ export class AdditionalInterestModal extends React.Component {
                   label="City"
                   component={Input}
                   styleName="city"
-                  validate={requireField}
+                  validate={validation.isRequired}
                 />
                 <Field
                   name="state"
                   label="State"
                   component={Input}
                   styleName="state"
-                  validate={requireField}
+                  validate={validation.isRequired}
                 />
                 <Field
                   name="zip"
                   label="Zip Code"
                   component={Input}
                   styleName="zip"
-                  format={ensureString}
-                  validate={[requireField, zipNumbersOnly]}
+                  format={format.toString}
+                  validate={[validation.isRequired, validation.isZipCode]}
                 />
               </div>
               <div className="flex-form">
                 <Field
                   name="phoneNumber"
                   label="Phone Number"
-                  component={Input}
+                  component={Phone}
                   styleName="phone"
-                  validate={phone}
+                  validate={validation.isPhone}
                   placeholder="555-555-5555"
                 />
                 <Field
@@ -151,9 +154,8 @@ export class AdditionalInterestModal extends React.Component {
                 <Field
                   name="order"
                   component={Select}
-                  styleName=""
                   label="Order"
-                  validations={['required']}
+                  validate={validation.isRequired}
                   answers={getMortgageeOrderAnswersForEdit(questions, additionalInterests)}
                 />
                 }
@@ -164,7 +166,6 @@ export class AdditionalInterestModal extends React.Component {
                     component={Select}
                     styleName=""
                     label="Order"
-
                     answers={getMortgageeOrderAnswers(questions, additionalInterests)}
                   />
                 }
@@ -176,7 +177,7 @@ export class AdditionalInterestModal extends React.Component {
                   label="Type"
                   component={Select}
                   answers={validAdditionalInterestTypes}
-                  validations={requireField}
+                  validations={validation.isRequired}
                 />
               </div>
               }
