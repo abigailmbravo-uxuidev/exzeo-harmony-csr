@@ -9,7 +9,8 @@ const mockStore = configureStore(middlewares);
 
 describe('Service Actions', () => {
   const baseProps = {
-    zipcodeSettings: { timezone: '' },
+    endorsementDate: '2017-02-02',
+    zipcodeSettings: { timezone: 'America/New_York' },
     policy: {
       policyHolders: [{}, {}],
       property: { windMitigation: {}, physicalAddress: {} },
@@ -45,6 +46,7 @@ describe('Service Actions', () => {
 
       },
       rating: {
+        totalPremium: '1',
         worksheet: {
           elements: {
             windMitigationFactors: {
@@ -1053,8 +1055,11 @@ describe('Service Actions', () => {
       });
   });
 
-  it('should call start getRate', async () => {
+  it('should call start getNewRate', async () => {
     const mockAdapter = new MockAdapter(axios);
+
+    const rateData = serviceActions.convertToRateData(baseProps.policy, baseProps);
+
 
     const axiosOptions = {
       method: 'POST',
@@ -1066,22 +1071,20 @@ describe('Service Actions', () => {
         service: 'rating-engine',
         method: 'POST',
         path: 'endorsement',
-        data: {}
+        data: rateData
       }
     };
 
     mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
+      data: {}
     });
+    const store = mockStore({});
 
-    const initialState = {};
-    const store = mockStore(initialState);
-    serviceActions.getRate(store.dispatch);
-
-    const rate = await serviceActions.getRate(baseProps.policy, baseProps)(store.dispatch);
+    const rate = await serviceActions.getNewRate(baseProps.policy, baseProps)(store.dispatch);
+    expect(rate.getRate);
   });
 
-  it('should fail start getRate', async () => {
+  it('should fail start getNewRate', async () => {
     const mockAdapter = new MockAdapter(axios);
 
     const axiosOptions = {
@@ -1101,12 +1104,10 @@ describe('Service Actions', () => {
     mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
       data: []
     });
+    const store = mockStore({});
 
-    const initialState = {};
-    const store = mockStore(initialState);
-    serviceActions.getRate(store.dispatch);
-
-    const rate = await serviceActions.getRate(baseProps.policy, baseProps)(store.dispatch);
+    const rate = await serviceActions.getNewRate(baseProps.policy, baseProps)(store.dispatch);
+    expect(rate.getRate);
   });
 
   const ai = {
@@ -1130,68 +1131,6 @@ describe('Service Actions', () => {
       }
     }
   };
-
-  it('should call start getRate', () => {
-    const mockAdapter = new MockAdapter(axios);
-
-    const axiosOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'policy-data',
-        method: 'POST',
-        path: 'transaction',
-        data: ai
-      }
-    };
-
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
-    });
-
-    const initialState = {};
-    const store = mockStore(initialState);
-    serviceActions.getRate(store.dispatch);
-
-    return serviceActions.createTransaction(ai)(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
-      });
-  });
-
-  it('should fail start getRate', () => {
-    const mockAdapter = new MockAdapter(axios);
-
-    const axiosOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'policy-data',
-        method: 'POST',
-        path: 'transaction',
-        data: ai
-      }
-    };
-
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
-    });
-
-    const initialState = {};
-    const store = mockStore(initialState);
-    serviceActions.getRate(store.dispatch);
-
-    return serviceActions.createTransaction({})(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
-      });
-  });
 
   it('should call start getZipcodeSettings', () => {
     const mockAdapter = new MockAdapter(axios);

@@ -596,10 +596,10 @@ export const createTransaction = submitData => (dispatch) => {
 
   return axios(axiosConfig)
     .then((response) => {
-    const data = { addTransaction: response.data.result };
-    dispatch(serviceRequest(data));
+      const data = { addTransaction: response.data.result };
+      dispatch(serviceRequest(data));
 
-    return response.data.result
+      return response.data.result;
     })
     .catch((error) => {
       const message = handleError(error);
@@ -612,15 +612,13 @@ export const createTransaction = submitData => (dispatch) => {
 /**
  * Save Endorsement form to get new rate and update policy coverage
  */
-export const submitEndorsementForm = (formData, formProps) => {
-  return async (dispatch) => {
-    const submitData = endorsementUtils.generateModel(formData, formProps);
-    const forms = await getListOfForms(formProps.policy, formProps.getRate.rating, 'New Business');
-    submitData.forms = forms;
-    const newPolicy = await dispatch(createTransaction(submitData));
+export const submitEndorsementForm = (formData, formProps) => async (dispatch) => {
+  const submitData = endorsementUtils.generateModel(formData, formProps);
+  const forms = await getListOfForms(formProps.policy, formProps.getRate.rating, 'New Business');
+  submitData.forms = forms;
+  const newPolicy = await dispatch(createTransaction(submitData));
 
-    dispatch(getLatestPolicy(newPolicy.policyNumber));
-  };
+  dispatch(getLatestPolicy(newPolicy.policyNumber));
 };
 
 export const convertToRateData = (formData, props) => {
@@ -631,30 +629,28 @@ export const convertToRateData = (formData, props) => {
     ...formData,
     oldTotalPremium: formData.rating.totalPremium,
     oldCurrentPremium: currentPremium,
-    endorsementDate: endorsementDate,
-  }
+    endorsementDate
+  };
 };
 
-export const getNewRate = (formData, formProps) => {
-  return async (dispatch) => {
-    try {
-      const rateData = convertToRateData(formData, formProps);
-      const axiosConfig = runnerSetup({
-        service: 'rating-engine',
-        method: 'POST',
-        path: 'endorsement',
-        data: rateData
-      });
+export const getNewRate = (formData, formProps) => async (dispatch) => {
+  try {
+    const rateData = convertToRateData(formData, formProps);
+    const axiosConfig = runnerSetup({
+      service: 'rating-engine',
+      method: 'POST',
+      path: 'endorsement',
+      data: rateData
+    });
 
-      const response = await axios(axiosConfig);
-      const data = { getRate: response.data ? response.data.result : {} };
-      dispatch(serviceRequest(data));
-      return data
-    } catch (error) {
-      dispatch(errorActions.setAppError(handleError(error)));
-      throw new Error(error);
-    }
-  };
+    const response = await axios(axiosConfig);
+    const data = { getRate: response && response.data && response.data.result ? response.data.result : {} };
+    dispatch(serviceRequest(data));
+    return data;
+  } catch (error) {
+    dispatch(errorActions.setAppError(handleError(error)));
+    throw new Error(error);
+  }
 };
 
 export const clearRate = () => dispatch => dispatch(batchActions([
