@@ -113,8 +113,6 @@ describe('Test the Endorsements form component', () => {
     const wrapper = shallow(<Endorsements store={store} {...baseProps} />);
     expect(wrapper);
 
-    wrapper.instance().normalizeDwellingDependencies('5000', baseProps.policy, 'coverageLimits.otherStructures.amount');
-
     baseProps.getRate = { worksheet: {} };
     getNewPolicyNumber(initialState);
   });
@@ -158,7 +156,7 @@ describe('Test the Endorsements form component', () => {
     inst.normalizeSinkholeAmount(true, false, policy);
     inst.normalizeDwellingAmount(1000, 1100, policy);
     inst.normalizeIncidentalOccupancies(true, true, policy);
-    inst.normalizePersonalPropertyPercentage(10, )
+    inst.normalizePersonalPropertyPercentage(10, 10, policy, 'test')
 
   })
 });
