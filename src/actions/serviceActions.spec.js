@@ -1102,13 +1102,15 @@ describe('Service Actions', () => {
       }
     };
 
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
-    });
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(404, { data: {}});
     const store = mockStore({});
+    try {
+      await serviceActions.getNewRate(baseProps.policy, baseProps)(store.dispatch);
+      expect(true).toBe(false);
+    } catch (err) {
+      expect(err).toBeTruthy();
+    }
 
-    const fn = serviceActions.getNewRate(baseProps.policy, baseProps)(store.dispatch);
-    expect();
   });
 
   const ai = {
