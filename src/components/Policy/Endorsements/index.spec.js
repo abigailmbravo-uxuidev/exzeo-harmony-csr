@@ -4,7 +4,7 @@ import configureStore from 'redux-mock-store';
 import { shallow } from 'enzyme';
 import { Endorsements, getNewPolicyNumber } from './index';
 
-const middlewares = [thunk]; // add your middlewares like `redux-thunk`
+const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 const policy = {
   policyHolders: [{}, {}],
@@ -73,18 +73,16 @@ const baseProps = {
   change() {},
   reset() {},
   handleSubmit() {},
-  zipcodeSettings: {},
-  summaryLedger: {},
+  initialize() {},
   errorActions: { dispatchClearAppError() { } },
   getZipcodeSettings() {},
   getUnderwritingQuestions() {},
   getEndorsementHistory() {},
   submitEndorsementForm() { return Promise.resolve(); },
   getRate() { return Promise.resolve({ rating: {} }); },
+  getNewRate() {},
   clearRate() {},
   getUIQuestions() {},
-  initialValues: {},
-  quoteData: {},
   userProfile: {
     resources: [
       {
@@ -93,11 +91,15 @@ const baseProps = {
       }
     ]
   },
+  zipcodeSettings: {},
+  summaryLedger: {},
+  quoteData: {},
+  selectedValues: { clearFields: false,  coverageLimits: { personalProperty: { amount: 0 } } },
+  initialValues: policy,
   policy
 };
 
-
-describe('Testing Endorsements component', () => {
+describe('Test the Endorsements form component', () => {
 
 
   beforeEach(() => {
@@ -116,9 +118,7 @@ describe('Testing Endorsements component', () => {
     baseProps.getRate = { worksheet: {} };
     getNewPolicyNumber(initialState);
   });
-});
 
-describe('Testing Endorsements component', () => {
   it('should test connected app without permission', () => {
     const props = {
       ...baseProps,
@@ -142,4 +142,23 @@ describe('Testing Endorsements component', () => {
     expect(wrapper.find('.error').text()).toEqual(' Endorsement page cannot be accessed due to User Permissions.');
     expect(wrapper);
   });
+
+  it('Should allow for instance methods to be called', () => {
+    const wrapper = shallow(<Endorsements store={store} {...baseProps} />);
+    const inst = wrapper.instance();
+    const fn = () => {};
+
+    inst.clearCalculate();
+    inst.setCalculate();
+    inst.calculate(policy, fn, baseProps);
+    inst.save(policy, fn, baseProps);
+    inst.setPHToggle();
+    inst.setSecondaryPolicyHolder(true);
+    inst.normalizeSinkholeAmount(false, false, policy);
+    inst.normalizeSinkholeAmount(true, false, policy);
+    inst.normalizeDwellingAmount(1000, 1100, policy);
+    inst.normalizeIncidentalOccupancies(true, true, policy);
+    inst.normalizePersonalPropertyPercentage(10, )
+
+  })
 });

@@ -197,7 +197,7 @@ export class Endorsements extends React.Component {
       policy,
       pristine,
       questions,
-      selectedFields = {},
+      selectedFields = { coverageLimits: { personalProperty: { amount: null } } },
       submitting,
       underwritingQuestions,
       userProfile
