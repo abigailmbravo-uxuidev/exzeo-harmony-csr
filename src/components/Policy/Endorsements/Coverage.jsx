@@ -270,7 +270,8 @@ Coverage.propTypes = {
 };
 
 Coverage.defaultProps = {
-  underwritingQuestions: []
+  underwritingQuestions: [],
+  personalPropertyNewVal: 0
 };
 
 export default Coverage;
