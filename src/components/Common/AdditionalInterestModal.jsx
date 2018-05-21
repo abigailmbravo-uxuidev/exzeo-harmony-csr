@@ -53,7 +53,8 @@ export class AdditionalInterestModal extends React.Component {
       getMortgageeOrderAnswersForEdit,
       deleteAdditionalInterest,
       validAdditionalInterestTypes,
-      selectedAI
+      selectedAI,
+      isDeleting
     } = this.props;
 
     return (
@@ -63,7 +64,7 @@ export class AdditionalInterestModal extends React.Component {
           className={classNames('AdditionalInterestModal', { [selectedAI.type]: isEditing, [addAdditionalInterestType]: !isEditing })}
           onSubmit={handleSubmit(verify)}
         >
-          {submitting && <Loader />}
+          {(submitting || isDeleting) && <Loader />}
           <div className="card">
             <div className="card-header">
               <h4><i className={`fa fa-circle ${addAdditionalInterestType}`} /> {addAdditionalInterestType}</h4>
@@ -136,7 +137,6 @@ export class AdditionalInterestModal extends React.Component {
                   label="Phone Number"
                   component={Input}
                   styleName="phone"
-                  normalize={normalizePhone}
                   validate={phone}
                   placeholder="555-555-5555"
                 />
@@ -184,8 +184,8 @@ export class AdditionalInterestModal extends React.Component {
             <div className="card-footer">
               <div className="btn-group">
                 <button tabIndex="0" className="btn btn-secondary" type="button" onClick={hideModal}>Cancel</button>
-                {isEditing && <button tabIndex="0" className="btn btn-secondary" type="button" disabled={submitting} onClick={() => deleteAdditionalInterest(selectedAI, this.props)}>Delete</button> }
-                <button tabIndex="0" className="btn btn-primary" type="submit" disabled={submitting}>Save</button>
+                {isEditing && <button tabIndex="0" className="btn btn-secondary" type="button" disabled={submitting || isDeleting} onClick={() => deleteAdditionalInterest(selectedAI, this.props)}>Delete</button> }
+                <button tabIndex="0" className="btn btn-primary" type="submit" disabled={submitting || isDeleting}>Save</button>
               </div>
             </div>
           </div>

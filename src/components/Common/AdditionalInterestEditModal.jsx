@@ -50,7 +50,7 @@ export const checkAdditionalInterestForName = aiType => aiType === 'Additional I
 
 export const AdditionalInterestEditModal = (props) => {
   const {
-    handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, questions, isEndorsement, validAdditionalInterestTypes, additionalInterests, submitting, selectedAI
+    handleSubmit, verify, hideAdditionalInterestModal, deleteAdditionalInterest, questions, isEndorsement, validAdditionalInterestTypes, additionalInterests, submitting, selectedAI, isDeleting
   } = props;
 
   const mortgageeOrderAnswers = _.cloneDeep(getAnswers('order', questions));
@@ -70,7 +70,7 @@ export const AdditionalInterestEditModal = (props) => {
         onSubmit={handleSubmit(verify)}
       >
 
-        {submitting && <Loader />}
+        {(submitting || isDeleting) && <Loader />}
         <div className="card">
           <div className="card-header">
             <h4><i className={`fa fa-circle ${selectedAI ? selectedAI.type : ''}`} /> {selectedAI ? selectedAI.type : ''}</h4>
@@ -133,8 +133,8 @@ export const AdditionalInterestEditModal = (props) => {
           <div className="card-footer">
             <div className="btn-group">
               <button tabIndex="0" className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal(props)}>Cancel</button>
-              <button tabIndex="0" className="btn btn-secondary" type="button" disabled={submitting} onClick={() => deleteAdditionalInterest(selectedAI, props)}>Delete</button>
-              <button tabIndex="0" className="btn btn-primary" type="submit" disabled={submitting}>Update</button>
+              <button tabIndex="0" className="btn btn-secondary" type="button" disabled={submitting || isDeleting} onClick={() => deleteAdditionalInterest(selectedAI, props)}>Delete</button>
+              <button tabIndex="0" className="btn btn-primary" type="submit" disabled={submitting || isDeleting}>Update</button>
             </div>
           </div>
         </div>

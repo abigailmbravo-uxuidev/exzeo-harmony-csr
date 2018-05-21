@@ -212,8 +212,12 @@ export class MortgageBilling extends Component {
   };
 
 
-  deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
-    const additionalInterests = props.policy.additionalInterests || [];
+  deleteAdditionalInterest = (selectedAdditionalInterest) => {
+    this.setState({
+      isDeleting: true
+    });
+
+    const additionalInterests = this.props.policy.additionalInterests || [];
     // remove any existing items before submission
     const modifiedAIs = _.cloneDeep(additionalInterests);
     // remove any existing items before submission
@@ -225,20 +229,21 @@ export class MortgageBilling extends Component {
       ai.order = 0;
       modifiedAIs.splice(index, 1, ai);
     }
-    const offset = new Date(props.policy.effectiveDate).getTimezoneOffset() / 60;
+    const offset = new Date(this.props.policy.effectiveDate).getTimezoneOffset() / 60;
 
     const submitData = {
       additionalInterestId: selectedAdditionalInterest._id,
-      ...props.policy,
-      endorsementDate: moment(props.policy.effectiveDate).utcOffset(offset),
+      ...this.props.policy,
+      endorsementDate: moment(this.props.policy.effectiveDate).utcOffset(offset),
       transactionType: 'AI Removal'
     };
 
     this.props.createTransaction(submitData).then(() => {
-      this.props.updatePolicy(true, props.policy.policyNumber);
+      this.props.updatePolicy(true, this.props.policy.policyNumber);
       this.setState({
         showAdditionalInterestModal: false,
-        isEditingAI: false
+        isEditingAI: false,
+        isDeleting: false
       });
     });
   };
@@ -491,7 +496,7 @@ export class MortgageBilling extends Component {
                     <button tabIndex="0" disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Additional Insured' && ai.active).length > 1)} onClick={() => this.addAdditionalInterest('Additional Insured')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
                     <button tabIndex="0" disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Additional Interest' && ai.active).length > 1)} onClick={() => this.addAdditionalInterest('Additional Interest')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
                     <button tabIndex="0" disabled={(policy && (_.filter(policy.additionalInterests, ai => ai.type === 'Premium Finance' && ai.active).length > 0 || _.filter(policy.additionalInterests, ai => ai.type === 'Bill Payer' && ai.active).length > 0))} onClick={() => this.addAdditionalInterest('Premium Finance')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Premium Finance</span></div></button>
-                    <button tabIndex="0" disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Bill Payer' && ai.active).length > 0)} onClick={() => this.addAdditionalInterest('Bill Payer')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
+                    <button tabIndex="0" disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Bill Payer' && ai.active).length > 0 || _.filter(policy.additionalInterests, ai => ai.type === 'Premium Finance' && ai.active).length > 0)} onClick={() => this.addAdditionalInterest('Bill Payer')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
                   </div>
                   <ul className="results result-cards">
                     {additionalInterests && _.sortBy(additionalInterests, ['sortInactive', 'rank', 'order']).map((ai, index) => (
@@ -555,6 +560,7 @@ export class MortgageBilling extends Component {
               policy={policy}
               verify={this.handleAISubmit}
               deleteAdditionalInterest={this.deleteAdditionalInterest}
+              isDeleting={this.state.isDeleting}
             />
           }
         </div>
