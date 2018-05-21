@@ -55,8 +55,10 @@ export const AdditionalInterestEditModal = (props) => {
 
   const mortgageeOrderAnswers = _.cloneDeep(getAnswers('order', questions));
 
-  if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length < 2) {
-    _.remove(mortgageeOrderAnswers, answer => Number(answer.answer) === 1);
+  if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length < 3) {
+    _.remove(mortgageeOrderAnswers, answer => Number(answer.answer) === 2);
+  } else if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length < 2) {
+    _.remove(mortgageeOrderAnswers, answer => Number(answer.answer) === 1 || Number(answer.answer) === 2);
   }
 
   return (
@@ -65,7 +67,8 @@ export const AdditionalInterestEditModal = (props) => {
         id="AdditionalInterestEditModal"
         className={`AdditionalInterestModal ${selectedAI ? selectedAI.type : ''}`}
         noValidate
-        onSubmit={handleSubmit(verify)}>
+        onSubmit={handleSubmit(verify)}
+      >
 
         {submitting && <Loader />}
         <div className="card">

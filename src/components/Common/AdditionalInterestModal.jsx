@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import { reduxForm, Field, propTypes, initialize, reset } from 'redux-form';
 import Input from '../Form/base/Input';
 import Select from '../Form/base/Select';
-import { requireField, zipNumbersOnly, phone, ensureString } from "../Form/validations";
-import { normalizePhone } from "../Form/normalize";
+import { requireField, zipNumbersOnly, phone, ensureString } from '../Form/validations';
+import { normalizePhone } from '../Form/normalize';
 // TODO refactor this out next
 import ReactSelectField from '../Form/inputs/ReactSelectField';
 import Loader from './Loader';
@@ -16,16 +16,16 @@ export const setMortgageeValues = (val, props) => {
 
   if (selectedMortgagee) {
     props.initializeForm('AdditionalInterestModal', {
-      name1: selectedMortgagee['AIName1'],
-      name2: selectedMortgagee['AIName2'],
-      address1: selectedMortgagee['AIAddress1'],
-      address2: selectedMortgagee['AIAddress2'] || '',
-      city: selectedMortgagee['AICity'],
-      state: selectedMortgagee['AIState'],
-      zip: String(selectedMortgagee['AIZip']),
+      name1: selectedMortgagee.AIName1,
+      name2: selectedMortgagee.AIName2,
+      address1: selectedMortgagee.AIAddress1,
+      address2: selectedMortgagee.AIAddress2 || '',
+      city: selectedMortgagee.AICity,
+      state: selectedMortgagee.AIState,
+      zip: String(selectedMortgagee.AIZip)
     });
   } else {
-    props.resetForm('AdditionalInterestModal')
+    props.resetForm('AdditionalInterestModal');
   }
 };
 
@@ -35,7 +35,7 @@ export class AdditionalInterestModal extends React.Component {
   constructor(props) {
     super(props);
 
-    this.modalStyle = {flexDirection: 'row'};
+    this.modalStyle = { flexDirection: 'row' };
   }
   render() {
     const {
@@ -53,24 +53,20 @@ export class AdditionalInterestModal extends React.Component {
       getMortgageeOrderAnswersForEdit,
       deleteAdditionalInterest,
       validAdditionalInterestTypes,
-      selectedAI,
+      selectedAI
     } = this.props;
-
-    if (isEditing) {
-
-    }
 
     return (
       <div className="modal" style={this.modalStyle}>
         <form
-          id={isEditing ? "AdditionalInterestEditModal" : "AdditionalInterestModal"}
+          id={isEditing ? 'AdditionalInterestEditModal' : 'AdditionalInterestModal'}
           className={classNames('AdditionalInterestModal', { [selectedAI.type]: isEditing, [addAdditionalInterestType]: !isEditing })}
           onSubmit={handleSubmit(verify)}
         >
-          {submitting && <Loader/>}
+          {submitting && <Loader />}
           <div className="card">
             <div className="card-header">
-              <h4><i className={`fa fa-circle ${addAdditionalInterestType}`}/> {addAdditionalInterestType}</h4>
+              <h4><i className={`fa fa-circle ${addAdditionalInterestType}`} /> {addAdditionalInterestType}</h4>
             </div>
             <div className="card-block">
               {(addAdditionalInterestType || selectedAI.type) === 'Mortgagee' &&
@@ -196,7 +192,7 @@ export class AdditionalInterestModal extends React.Component {
         </form>
       </div>
     );
-  };
+  }
 }
 
 AdditionalInterestModal.propTypes = {
@@ -212,7 +208,7 @@ AdditionalInterestModal.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  tasks: state.cg,
+  tasks: state.cg
 });
 
 AdditionalInterestModal = reduxForm({

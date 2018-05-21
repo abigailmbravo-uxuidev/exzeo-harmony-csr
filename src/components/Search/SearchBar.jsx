@@ -329,33 +329,10 @@ const generateField = (name, placeholder, labelText, formErrors, formGroupCss) =
 
 const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
-export const setAgency = (val, props) => {
-  props.dispatch(change('SearchBar', 'agencyCode', val.value ? val.value: ""));
-};
-
-
 export class SearchForm extends Component {
-  clearForm = () => {
-    const { actions, appState, change, form, reset, tasks} = this.props;
-    const modelName = appState.modelName;
-    const data = tasks[modelName].data;
-    const workflowId = appState.instanceId;
-    const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData')) || {};
-    lastSearchData.searchType = '';
-    localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
-    reset(form);
-    actions.cgActions.clearSearchResults(modelName, data);
-    actions.errorActions.clearAppError();
-    actions.serviceActions.clearAgencies();
-    actions.serviceActions.clearAgent();
-    resetPolicySearch(this.props);
-    actions.appStateActions.setAppState(appState.modelName, workflowId, { submitting: false });
-    actions.serviceActions.getAgencies('TTIC', 'FL');
-    change('sortBy', 'policyNumber');
-  }
-
   componentDidMount() {
     localStorage.removeItem('lastSearchData');
+    this.props.actions.serviceActions.getAgencies('TTIC', 'FL');
   }
 
   componentWillReceiveProps(nextProps) {
@@ -367,12 +344,12 @@ export class SearchForm extends Component {
 
     const quoteSearchResponse = previousTask.value && previousTask.value.result ? previousTask.value.result : {};
 
-    if (nextProps.search.searchType === 'policy' && nextProps.search.hasSearched) {
+    if (nextProps.search.searchType === 'policy' && nextProps.search.hasSearched && nextProps.policyResults) {
       const totalPages = Math.ceil(nextProps.policyResults.totalNumberOfRecords / nextProps.policyResults.pageSize);
       const pageNumber = nextProps.policyResults.currentPage;
       dispatch(change('SearchBar', 'pageNumber', pageNumber));
       dispatch(change('SearchBar', 'totalPages', totalPages));
-      nextProps.actions.searchActions.setSearch({...nextProps.search, totalPages, pageNumber });
+      nextProps.actions.searchActions.setSearch({ ...nextProps.search, totalPages, pageNumber });
     }
 
 
@@ -395,6 +372,31 @@ export class SearchForm extends Component {
     }
   }
 
+  setAgency = (val) => {
+    this.props.dispatch(change('SearchBar', 'agencyCode', val.value ? val.value : ''));
+  };
+
+  clearForm = () => {
+    const {
+      actions, appState, form, reset, tasks
+    } = this.props;
+    const modelName = appState.modelName;
+    const data = tasks[modelName].data;
+    const workflowId = appState.instanceId;
+    const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData')) || {};
+    lastSearchData.searchType = '';
+    localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
+    reset(form);
+    actions.cgActions.clearSearchResults(modelName, data);
+    actions.errorActions.clearAppError();
+    actions.serviceActions.clearAgencies();
+    actions.serviceActions.clearAgent();
+    resetPolicySearch(this.props);
+    actions.appStateActions.setAppState(appState.modelName, workflowId, { submitting: false });
+    actions.serviceActions.getAgencies('TTIC', 'FL');
+    change('sortBy', 'policyNumber');
+  }
+
   render() {
     const {
       appState,
@@ -410,7 +412,8 @@ export class SearchForm extends Component {
 
     const agencyListValues = agencyList.map(agency => ({
       label: agency.displayName,
-      answer: agency.agencyCode
+      answer: agency.agencyCode,
+      value: agency.agencyCode
     }));
 
     let searchHandler = handleSearchBarSubmit;
@@ -600,7 +603,7 @@ export class SearchForm extends Component {
       autoFocus
       value={appState.data.selectedAgency}
       answers={agencyListValues}
-      onChange={val => setAgency(val, this.props)}
+      onChange={this.setAgency}
     />
     <div className="form-group effectiveDate">
       <label htmlFor="effectiveDate">{getErrorToolTip(formErrors, 'effectiveDate')}
@@ -614,7 +617,7 @@ export class SearchForm extends Component {
         component="select"
         styleName=""
         label="Policy Status"
-      answers={getAnswers('policyStatus', questions)}
+        answers={getAnswers('policyStatus', questions)}
       />
     </div>
     <SelectField
