@@ -119,7 +119,7 @@ export class Endorsements extends React.Component {
     return value;
   };
 
-  normalizeSinkholeAmount = (value, prevValue, allValues) => {
+  normalizeSinkholeAmount = (value, previousValue, allValues) => {
     const { change } = this.props;
     if (String(value) === 'true') {
       change('deductibles.sinkhole.amount', 10);
@@ -131,18 +131,18 @@ export class Endorsements extends React.Component {
     return value;
   };
 
-  normalizeDwellingAmount = (value, prevValue, fieldValues) => {
+  normalizeDwellingAmount = (value, previousValue, allValues) => {
     const { change } = this.props;
 
     const roundedDwellingAmount = Math.round(value / 1000) * 1000;
 
-    if (fieldValues.coverageLimits.otherStructures.percentage !== 'other') {
-      change('coverageLimits.otherStructures.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.coverageLimits.otherStructures.percentage));
+    if (allValues.coverageLimits.otherStructures.percentage !== 'other') {
+      change('coverageLimits.otherStructures.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, allValues.coverageLimits.otherStructures.percentage));
     }
-    if (fieldValues.coverageLimits.personalProperty.percentage !== 'other') {
-      change('coverageLimits.personalProperty.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.coverageLimits.personalProperty.percentage));
+    if (allValues.coverageLimits.personalProperty.percentage !== 'other') {
+      change('coverageLimits.personalProperty.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, allValues.coverageLimits.personalProperty.percentage));
     }
-    change('deductibles.hurricane.calculatedAmount', String(endorsementUtils.setPercentageOfValue(roundedDwellingAmount, fieldValues.deductibles.hurricane.amount)));
+    change('deductibles.hurricane.calculatedAmount', String(endorsementUtils.setPercentageOfValue(roundedDwellingAmount, allValues.deductibles.hurricane.amount)));
     change('coverageLimits.lossOfUse.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, 10));
 
     return value;
@@ -161,7 +161,7 @@ export class Endorsements extends React.Component {
     return value;
   };
 
-  normalizePersonalPropertyPercentage = (value, allValues, field) => {
+  normalizePersonalPropertyPercentage = (value, previousValue, allValues, field) => {
     if (Number.isNaN(value)) return;
     const { change, initialValues } = this.props;
 
@@ -177,7 +177,7 @@ export class Endorsements extends React.Component {
     return value;
   };
 
-  normalizeDwellingDependencies = (value, allValues, field) => {
+  normalizeDwellingDependencies = (value, previousValue, allValues, field) => {
     if (Number.isNaN(value)) return;
     const { change } = this.props;
     const fieldValue = endorsementUtils.setPercentageOfValue(allValues.coverageLimits.dwelling.amount, value);
@@ -245,7 +245,7 @@ export class Endorsements extends React.Component {
                   <div className="form-group survey-wrapper" role="group">
                     <Coverage
                       initialValues={initialValues}
-                      personalPropertyNewVal={selectedFields.personalPropertyNew}
+                      personalPropertyNewVal={selectedFields.coverageLimits.personalProperty.amount}
                       questions={questions}
                       underwritingQuestions={underwritingQuestions}
                       normalizeDwellingAmount={this.normalizeDwellingAmount}

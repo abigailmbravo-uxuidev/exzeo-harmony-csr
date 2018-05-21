@@ -74,7 +74,7 @@ const Coverage = ({
           styleName="coverage-b-percentage"
           answers={formUtils.getAnswers('otherStructuresAmount', questions)}
           validate={validation.isRequired}
-          normalize={(v, pv, av) => normalizeDwellingDependencies(v, av, 'coverageLimits.otherStructures.amount')}
+          normalize={(v, pv, av) => normalizeDwellingDependencies(v, pv, av, 'coverageLimits.otherStructures.amount')}
         />
         <Field
           name="coverageLimits.personalProperty.amount"
@@ -91,7 +91,7 @@ const Coverage = ({
           styleName="coverage-c-percentage"
           answers={formUtils.getAnswers('personalPropertyAmount', questions)}
           validate={validation.isRequired}
-          normalize={(v, pv, av) => normalizePersonalPropertyPercentage(v, av, 'coverageLimits.personalProperty.amount')}
+          normalize={(v, pv, av) => normalizePersonalPropertyPercentage(v, pv, av, 'coverageLimits.personalProperty.amount')}
           showInitial
         />
         <Field
@@ -143,7 +143,7 @@ const Coverage = ({
           component={SelectInteger}
           answers={formUtils.getAnswers('hurricane', questions)}
           validate={validation.isRequired}
-          normalize={(v, pv, av) => normalizeDwellingDependencies(v, av, 'deductibles.hurricane.calculatedAmount')}
+          normalize={(v, pv, av) => normalizeDwellingDependencies(v, pv, av, 'deductibles.hurricane.calculatedAmount')}
           showInitial
         />
         <Field
