@@ -45,7 +45,7 @@ export class GenerateDocsForm extends React.Component {
     const { documentType, effectiveDate } = data;
     const { policyNumber } = props;
     const req = reqConfig({
-      policyNumber,
+      documentNumber: policyNumber,
       documentType,
       effectiveDate 
     });
