@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { reduxForm, Field, propTypes, initialize, reset } from 'redux-form';
-
+import Inputs from '@exzeo/core-ui/lib/Input';
+import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 // TODO refactor this out next
 import ReactSelectField from '../Form/inputs/ReactSelectField';
 import Loader from './Loader';
-
-import Inputs from '@exzeo/core-ui/lib/Input';
-import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 
 const { validation, format } = lifecycle;
 const { Input, Select, Phone } = Inputs;
