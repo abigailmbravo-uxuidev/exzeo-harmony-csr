@@ -1076,12 +1076,13 @@ describe('Service Actions', () => {
     };
 
     mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: {}
+      result: { policyholder: 'Marky Mark' }
     });
+
     const store = mockStore({});
 
     const rate = await serviceActions.getNewRate(baseProps.policy, baseProps)(store.dispatch);
-    expect(rate.getRate);
+    expect(rate.getRate.policyholder).toEqual('Marky Mark');
   });
 
   it('should fail start getNewRate', async () => {
@@ -1106,8 +1107,8 @@ describe('Service Actions', () => {
     });
     const store = mockStore({});
 
-    const rate = await serviceActions.getNewRate(baseProps.policy, baseProps)(store.dispatch);
-    expect(rate.getRate);
+    const fn = serviceActions.getNewRate(baseProps.policy, baseProps)(store.dispatch);
+    expect();
   });
 
   const ai = {
