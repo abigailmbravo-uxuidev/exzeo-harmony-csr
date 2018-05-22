@@ -1,7 +1,7 @@
 import * as persistTypes from 'redux-persist/constants';
 import * as types from './../actions/actionTypes';
 import initialState from './initialState';
-import policyStateReducer from './policyStateReducer';
+import policyStateReducer from './policyReducer';
 
 describe('Policy State Reducer', () => {
   it('should call policyStateReducer GET_POLICY', () => {

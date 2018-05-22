@@ -8,6 +8,8 @@ export default function policyStateReducer(state = initialState.policyState, act
       return getPolicy(state, action);
     case types.SET_POLICY:
       return setPolicy(state, action);
+    case types.SET_RATE:
+      return setNewRate(state, action);
     case persistTypes.REHYDRATE:
       return rehydrate(state, action);
     default:
@@ -26,6 +28,13 @@ function setPolicy(state, action) {
   return {
     ...state,
     policy: action.policy
+  }
+}
+
+function setNewRate(state, action) {
+  return {
+    ...state,
+    rate: action.rate
   }
 }
 

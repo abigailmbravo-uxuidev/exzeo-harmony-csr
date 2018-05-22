@@ -108,9 +108,22 @@ export function generateModel(data, props) {
   };
 }
 
+export const convertToRateData = (formData, formProps) => {
+  const { summaryLedger: { currentPremium }, zipcodeSettings } = formProps;
+  const endorsementDate = calculateEndorsementDate(formData.endorsementDate, zipcodeSettings.timezone);
+
+  return {
+    ...formData,
+    oldTotalPremium: formData.rating.totalPremium,
+    oldCurrentPremium: currentPremium,
+    endorsementDate
+  };
+};
+
 export default {
   calculateEndorsementDate,
   calculatePercentage,
+  convertToRateData,
   initializeEndorsementForm,
   generateModel,
   premiumAmountFormatter,

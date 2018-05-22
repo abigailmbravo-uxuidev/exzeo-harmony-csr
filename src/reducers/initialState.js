@@ -19,7 +19,9 @@ export default {
   questions: [],
   policyState: {
     policyNumber: null,
-    update: false
+    update: false,
+    policy: {},
+    newRate: {}
   },
   authState: {
     userProfile: null

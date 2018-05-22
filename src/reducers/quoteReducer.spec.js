@@ -1,7 +1,7 @@
 import * as persistTypes from 'redux-persist/constants';
 import * as types from './../actions/actionTypes';
 import initialState from './initialState';
-import quoteStateReducer from './quoteStateReducer';
+import quoteStateReducer from './quoteReducer';
 
 describe('Quote State Reducer', () => {
   it('should call quoteStateReducer GET_QUOTE', () => {

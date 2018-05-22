@@ -27,8 +27,14 @@ export const GET_QUESTIONS = 'GET_QUESTIONS';
 
 export const AUTH = 'AUTH';
 export const GET_QUOTE = 'GET_QUOTE';
-export const GET_POLICY = 'GET_POLICY';
 
 export const SEARCH = 'SEARCH';
 
 export const TOGGLE_NOTE = 'TOGGLE_NOTE';
+
+/* POLICY */
+export const GET_POLICY = 'GET_POLICY';
+export const SET_POLICY = 'SET_POLICY';
+export const UPDATE_POLICY = 'UPDATE_POLICY';
+export const SET_RATE = 'SET_RATE';
+export const UNSET_RATE = 'UNSET_RATE';
