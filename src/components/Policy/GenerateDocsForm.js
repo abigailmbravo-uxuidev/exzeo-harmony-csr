@@ -20,6 +20,8 @@ export const reqConfig = data => ({
 const { Select } = Inputs;
 const { validation } = lifecycle;
 
+const validate = values => !values.documentType ? { documentType: 'Required' } : null;
+
 export class GenerateDocsForm extends React.Component {
   constructor(props) {
     super(props);
@@ -70,12 +72,12 @@ export class GenerateDocsForm extends React.Component {
     });
   }
 
-  toggleDate = (event, value) => this.setState({ showDate: value && this.fieldsWithDate.includes(value) });
+  toggleDate = (event, value) => this.setState({ showDate: value && this.fieldsWithDate.includes(value) })
 
   render() {
     const { handleSubmit } = this.props;
     return (
-      <div>
+      <div className="fade-in">
         {this.state.isSubmitting && <Loader />}
         <form onSubmit={handleSubmit(this.generateDoc)}>
           <Field
@@ -102,10 +104,10 @@ export class GenerateDocsForm extends React.Component {
 
 export default reduxForm({
   form: 'GenerateDocsForm',
-  initialValues:{
-    documentType: 'policyInvoice',
+  initialValues: {
     effectiveDate: moment.utc().format('YYYY-MM-DD')
   },
+  validate: validate,
   enableReinitialize: true,
   keepDirtyOnReinitialize: true
 })(GenerateDocsForm)

@@ -9,23 +9,9 @@ const middlewares = [];
 const mockStore = configureStore(middlewares);
 
 describe('Testing PolicySideNav component', () => {
-  it('should test connected app', () => {
-    const initialState = {
+  const initialState = {
       service: {
         latestPolicy: {}
-      },
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {},
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        data: { activateRedirect: false },
-        modelName: 'bb'
       }
     };
     const store = mockStore(initialState);
@@ -54,9 +40,19 @@ describe('Testing PolicySideNav component', () => {
         }
       }
     };
-    const wrapper = shallow(<ConnectedApp store={store} {...props} />);
-    SideNav(props);
-    NewNoteFileUploaderPopup(props);
+
+    it('should test connected app', () => {
+    const wrapper = shallow(<ConnectedApp store={store} {...props} />).dive().instance();
+    expect(wrapper).toBe.instanceOf(SideNav);
+  });
+
+    it('should test connected app', () => {
+    const wrapper = shallow(<ConnectedApp store={store} {...props} />).dive();
+    //wrapper.instance().find('button[data-test="newNote"]').simulate('click');
+    wrapper.instance().generateDoc();
+    console.log(wrapper.instance().state)
+    const state = wrapper.instance().state;
+    expect(state.showDocsForm).toBe(true);
     expect(wrapper);
   });
 });
