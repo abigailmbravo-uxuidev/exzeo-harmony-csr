@@ -608,7 +608,7 @@ const mapStateToProps = state => ({
   paymentHistory: state.service.paymentHistory,
   paymentOptions: state.service.paymentOptions || defaultArray,
   questions: state.questions,
-  tasks: state.cg,
+  tasks: state.cg
 });
 
 export default connect(mapStateToProps, {
