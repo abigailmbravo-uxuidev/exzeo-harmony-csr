@@ -10,7 +10,7 @@ import moment from 'moment';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 
-import { updatePolicy } from '../../actions/policyStateActions';
+import { updatePolicy, getPolicy } from '../../actions/policyStateActions';
 import { getUIQuestions } from '../../actions/questionsActions';
 import {
   getPaymentOptionsApplyPayments,
@@ -166,7 +166,7 @@ export class MortgageBilling extends Component {
   };
 
   handleAISubmit = async (data, dispatch, props) => {
-    const { updatePolicy, createTransaction } = this.props;
+    const { getPolicy, createTransaction } = this.props;
     const { policy } = props;
 
     const additionalInterests = policy.additionalInterests || [];
@@ -220,7 +220,7 @@ export class MortgageBilling extends Component {
     };
 
     await createTransaction(submitData);
-    updatePolicy(true, policy.policyNumber);
+    getPolicy.policyNumber);
 
     this.setState({
       showAdditionalInterestModal: false,
@@ -606,7 +606,7 @@ const mapStateToProps = state => ({
   auth: state.authState,
   summaryLedger: state.service.getSummaryLedger,
   initialValues: handleInitialize(state),
-  policy: state.service.latestPolicy || {},
+  policy: state.policyState.policy || {},
   tasks: state.cg,
   paymentHistory: state.service.paymentHistory,
   paymentOptions: state.service.paymentOptions || defaultArray,
@@ -622,7 +622,8 @@ export default connect(mapStateToProps, {
   addTransaction,
   createTransaction,
   getUIQuestions,
-  updatePolicy
+  updatePolicy,
+  getPolicy
 })(reduxForm({
   form: 'MortgageBilling',
   enableReinitialize: true

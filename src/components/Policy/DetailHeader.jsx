@@ -30,7 +30,7 @@ export class DetailHeader extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.policyState && nextProps.policyState.update && nextProps.policyState.policyNumber) {
-      this.props.actions.serviceActions.getLatestPolicy(nextProps.policyState.policyNumber);
+      this.props.actions.policyStateActions.getPolicy(nextProps.policyState.policyNumber);
       this.props.actions.policyStateActions.updatePolicy(false, nextProps.policyState.policyNumber);
     }
     if (!_.isEqual(this.props.policy, nextProps.policy) && nextProps.policy && nextProps.policy.policyNumber) {
@@ -43,8 +43,8 @@ export class DetailHeader extends Component {
 
     let cancellationDate = '';
 
-    if (policy && summaryLedger && (policy.status.includes('Pending') || policy.status.includes('Cancel') || billingStatusCode > 8)) { 
-      cancellationDate = policy.cancelDate 
+    if (policy && summaryLedger && (policy.status.includes('Pending') || policy.status.includes('Cancel') || billingStatusCode > 8)) {
+      cancellationDate = policy.cancelDate
         ? moment.utc(policy.cancelDate).format('MM/DD/YYYY')
         : moment.utc(summaryLedger.nonPaymentNoticeDueDate).format('MM/DD/YYYY');
     }
@@ -59,7 +59,7 @@ export class DetailHeader extends Component {
     const loc = policy.property.physicalAddress;
     const mapQuery = encodeURIComponent(`${loc.address1} ${loc.address2} ${loc.city}, ${loc.state} ${loc.zip}`)
     const mapUri = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
-    
+
     return (<div className="detailHeader">
       <section id="policyDetails" className="policyDetails">
         <dl>
@@ -177,7 +177,7 @@ DetailHeader.propTypes = {
 
 
 const mapStateToProps = state => ({
-  policyState: state.policy,
+  policyState: state.policyState,
   appState: state.appState,
   summaryLedger: state.service.getSummaryLedger,
   policy: state.service.latestPolicy

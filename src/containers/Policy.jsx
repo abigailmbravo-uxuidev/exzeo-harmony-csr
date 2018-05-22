@@ -108,7 +108,7 @@ Policy.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  policyState: state.policy,
+  policyState: state.policyState,
   tasks: state.cg,
   appState: state.appState,
   summaryLedger: state.service.getSummaryLedger,
