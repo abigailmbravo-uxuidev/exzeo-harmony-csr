@@ -1,21 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import moment from 'moment-timezone';
 import { reduxForm, Form, change } from 'redux-form';
 import { bindActionCreators } from 'redux';
+import moment from 'moment-timezone';
 import _ from 'lodash';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import * as serviceActions from '../../actions/serviceActions';
+import * as cgActions from '../../actions/cgActions';
+import * as appStateActions from '../../actions/appStateActions';
+import * as policyStateActions from '../../actions/policyStateActions';
 import PolicyConnect from '../../containers/Policy';
 import RadioField from '../Form/inputs/RadioField';
 import DateField from '../Form/inputs/DateField';
 import SelectField from '../Form/inputs/SelectField';
 import TextField from '../Form/inputs/TextField';
 import HiddenField from '../Form/inputs/HiddenField';
-import * as serviceActions from '../../actions/serviceActions';
-import * as cgActions from '../../actions/cgActions';
-import * as appStateActions from '../../actions/appStateActions';
-import * as policyStateActions from '../../actions/policyStateActions';
 import Footer from '../Common/Footer';
 import Loader from '../Common/Loader';
 
@@ -24,7 +24,7 @@ const convertDateToTimeZone = (date, zipCodeSettings) => {
   return moment.tz(formattedDateString, zipCodeSettings.timezone).utc();
 };
 export const handleInitialize = (state) => {
-  const summaryLedger = state.service.getSummaryLedger || {};
+  const summaryLedger = state.policyState.summaryLedger || {};
   const zipCodeSettings = state.service.getZipcodeSettings || {};
   const latestDate = convertDateToTimeZone(moment.utc(), zipCodeSettings) > convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings) ? convertDateToTimeZone(moment.utc(), zipCodeSettings).format('YYYY-MM-DD') : convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings).format('YYYY-MM-DD');
   return ({
@@ -53,7 +53,7 @@ export const Payments = ({ payments }) => {
   );
 };
 
-export const Claims = ({ claims }) => {
+export const Claims = () => {
   const claimsData = [];
   const options = {
     defaultSortName: 'jeLossNo',
@@ -112,19 +112,17 @@ export const resetCancelReasons = (props) => {
 
 export class CancelPolicy extends React.Component {
   componentDidMount() {
-    if (this.props.appState && this.props.appState.instanceId) {
-      const workflowId = this.props.appState.instanceId;
-      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, workflowId, { ...this.props.appState.data, isSubmitting: false });
+    const { appState, actions } = this.props;
+    if (appState && appState.instanceId) {
+      const workflowId = appState.instanceId;
+      actions.appStateActions.setAppState(appState.modelName, workflowId, { ...appState.data, isSubmitting: false });
     }
+    actions.serviceActions.getCancelOptions();
   }
   componentWillReceiveProps(nextProps) {
-    const {
-      actions, policy, summaryLedger, zipCodeSettings
-    } = nextProps;
+    const { actions, policy, summaryLedger, zipCodeSettings } = nextProps;
     if (policy && policy.policyNumber) {
-      actions.serviceActions.getSummaryLedger(policy.policyNumber);
       serviceActions.getPaymentHistory(policy.policyNumber);
-      actions.serviceActions.getCancelOptions();
 
       const paymentOptions = {
         effectiveDate: policy.effectiveDate,
@@ -254,14 +252,14 @@ CancelPolicy.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  appState: state.appState,
   userProfile: state.authState.userProfile,
   tasks: state.cg,
-  appState: state.appState,
   fieldValues: _.get(state.form, 'CancelPolicy.values', {}),
   initialValues: handleInitialize(state),
-  policy: state.policyState.policy || {},
   paymentHistory: state.service.paymentHistory,
-  summaryLedger: state.service.getSummaryLedger,
+  policy: state.policyState.policy,
+  summaryLedger: state.policyState.summaryLedger,
   paymentOptions: state.service.billingOptions,
   cancelOptions: state.service.cancelOptions || [],
   zipCodeSettings: state.service.getZipcodeSettings

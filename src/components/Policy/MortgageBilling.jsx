@@ -31,8 +31,7 @@ const { validation } = lifecycle;
 const { Input, Select, Currency } = Inputs;
 
 export const handleInitialize = (state) => {
-  const { service } = state;
-  const policy = service.latestPolicy || {};
+  const policy = state.policyState.policy || {};
   const values = {};
   values.policyNumber = policy ? policy.policyNumber : null;
   values.cashDescription = '';
@@ -601,15 +600,15 @@ MortgageBilling.propTypes = {
 
 const defaultArray = [];
 const mapStateToProps = state => ({
-  questions: state.questions,
   auth: state.authState,
+  billingOptions: state.service.billingOptions
   initialValues: handleInitialize(state),
   summaryLedger: state.policyState.summaryLedger,
   policy: state.policyState.policy || {},
-  tasks: state.cg,
   paymentHistory: state.service.paymentHistory,
   paymentOptions: state.service.paymentOptions || defaultArray,
-  billingOptions: state.service.billingOptions
+  questions: state.questions,
+  tasks: state.cg,
 });
 
 export default connect(mapStateToProps, {
