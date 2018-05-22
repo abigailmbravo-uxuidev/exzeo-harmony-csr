@@ -53,10 +53,12 @@ export class GenerateDocsForm extends React.Component {
     this.setState({ isSubmitting: true });
     axios(req)
     .then(res => {
+      const contentDisposition = res.headers['content-disposition'];
+      const filename = contentDisposition.match(/filename="(.+)"/)[1] || policyNumber;
       const blobUrl = window.URL.createObjectURL(res.data);
       const link = window.document.createElement('a');
       link.href = blobUrl;
-      link.download = policyNumber;
+      link.download = filename;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
