@@ -25,7 +25,7 @@ export class GenerateDocsForm extends React.Component {
     super(props);
 
     this.fieldsWithDate = [];
-    this.state = { 
+    this.state = {
       showDate: false,
       isSubmitting: false
     };
@@ -47,7 +47,7 @@ export class GenerateDocsForm extends React.Component {
     const req = reqConfig({
       policyNumber,
       documentType,
-      effectiveDate 
+      effectiveDate
     });
 
     this.setState({ isSubmitting: true });
@@ -91,19 +91,19 @@ export class GenerateDocsForm extends React.Component {
               name="effectiveDate"
             />
           }
-          <button type="submit">Submit</button>
+          <button type="submit" className="btn btn-sm btn-primary btn-block">Generate Doc</button>
         </form>
       </div>
     );
   }
 };
 
-export default reduxForm({ 
-  form: 'GenerateDocsForm', 
-  initialValues:{ 
-    documentType: 'policyInvoice', 
+export default reduxForm({
+  form: 'GenerateDocsForm',
+  initialValues:{
+    documentType: 'policyInvoice',
     effectiveDate: moment.utc().format('YYYY-MM-DD')
   },
-  enableReinitialize: true, 
-  keepDirtyOnReinitialize: true 
+  enableReinitialize: true,
+  keepDirtyOnReinitialize: true
 })(GenerateDocsForm)
