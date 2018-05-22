@@ -30,7 +30,7 @@ export class Coverage extends Component {
     const isNewTab = await localStorage.getItem('isNewTab') === 'true';
     if (isNewTab) {
       const policyNumber = await localStorage.getItem('policyNumber');
-      actions.policyStateActions.updatePolicy(true, policyNumber);
+      actions.policyStateActions.getPolicy(policyNumber);
       actions.serviceActions.getCancelOptions();
       actions.serviceActions.getSummaryLedger(policyNumber);
       localStorage.setItem('isNewTab', false);
@@ -392,7 +392,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   fieldValues: _.get(state.form, 'Coverage.values', {}),
   initialValues: handleInitialize(state),
-  policy: state.service.latestPolicy || {},
+  policy: state.policyState.policy || {},
   questions: state.questions
 
 });

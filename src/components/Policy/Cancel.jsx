@@ -101,7 +101,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
     props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
       props.reset('CancelPolicy');
       props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, isSubmitting: false });
-      props.actions.policyStateActions.updatePolicy(true, policy.policyNumber);
+      props.actions.policyStateActions.getPolicy(policy.policyNumber);
     });
   });
 };
@@ -148,7 +148,7 @@ export class CancelPolicy extends React.Component {
         } else {
           nextProps.dispatch(change('CancelPolicy', 'effectiveDate', now.add(120, 'days').format('YYYY-MM-DD')));
         }
-      } else if (nextProps.fieldValues.cancelType === 'Voluntary Cancellation') {        
+      } else if (nextProps.fieldValues.cancelType === 'Voluntary Cancellation') {
         nextProps.dispatch(change('CancelPolicy', 'effectiveDate', notice.format('YYYY-MM-DD')));
       } else if (nextProps.fieldValues.cancelType === 'Underwriting Non-Renewal') {
         const endDate = convertDateToTimeZone(moment.utc(policy.endDate), zipCodeSettings);
@@ -259,7 +259,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   fieldValues: _.get(state.form, 'CancelPolicy.values', {}),
   initialValues: handleInitialize(state),
-  policy: state.service.latestPolicy || {},
+  policy: state.policyState.policy || {},
   paymentHistory: state.service.paymentHistory,
   summaryLedger: state.service.getSummaryLedger,
   paymentOptions: state.service.billingOptions,

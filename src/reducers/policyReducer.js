@@ -27,7 +27,8 @@ function getPolicy(state, action) {
 function setPolicy(state, action) {
   return {
     ...state,
-    policy: action.policy
+    policy: action.policy,
+    summaryLedger: action.summaryLedger
   }
 }
 

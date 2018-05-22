@@ -42,7 +42,7 @@ export const reinstatePolicySubmit = (data, dispatch, props) => {
     };
     props.actions.serviceActions.createTransaction(submitData).then(() => {
       hideReinstatePolicyPopUp(props);
-      props.actions.policyStateActions.updatePolicy(true, policy.policyNumber);
+      props.actions.policyStateActions.getPolicy(policy.policyNumber);
     });
 }
 
@@ -62,7 +62,7 @@ export const changeEffectiveDate = (data, dispatch, props) => {
 
     props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
       props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, submitting: false, showEffectiveDateChangePopUp: false });
-      props.actions.policyStateActions.updatePolicy(true, props.policy.policyNumber);
+      props.actions.policyStateActions.getPolicy(props.policy.policyNumber);
     });
   });
 };
@@ -111,8 +111,8 @@ const mapStateToProps = state => ({
   policyState: state.policyState,
   tasks: state.cg,
   appState: state.appState,
-  summaryLedger: state.service.getSummaryLedger,
-  policy: state.service.latestPolicy || {},
+  summaryLedger: state.policyState.summaryLedger,
+  policy: state.policyState.policy || {},
   zipCodeSetting: state.service.getZipcodeSettings
 });
 

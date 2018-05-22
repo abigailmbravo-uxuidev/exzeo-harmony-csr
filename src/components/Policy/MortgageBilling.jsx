@@ -95,7 +95,7 @@ export class MortgageBilling extends Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
-    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
+    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && (this.props.policyID !== nextProps.policy.policyID)) {
       nextProps.getSummaryLedger(nextProps.policy.policyNumber);
       nextProps.getPaymentOptionsApplyPayments();
       nextProps.getPaymentHistory(nextProps.policy.policyNumber);
@@ -120,11 +120,10 @@ export class MortgageBilling extends Component {
   };
 
   setBatch = (value) => {
-    const { batchActions } = this.props;
-    batchActions([
-      change('MortgageBilling', 'cashDate', value),
-      change('MortgageBilling', 'batchNumber', moment.utc(value).format('YYYYMMDD'))
-    ]);
+    const { dispatch } = this.props;
+
+    dispatch(change('MortgageBilling', 'cashDate', value));
+    dispatch(change('MortgageBilling', 'batchNumber', moment.utc(value).format('YYYYMMDD')));
   };
 
   getPaymentDescription = (event) => {
@@ -220,7 +219,7 @@ export class MortgageBilling extends Component {
     };
 
     await createTransaction(submitData);
-    getPolicy.policyNumber);
+    getPolicy(policy.policyNumber);
 
     this.setState({
       showAdditionalInterestModal: false,
@@ -256,7 +255,7 @@ export class MortgageBilling extends Component {
     };
 
     this.props.createTransaction(submitData).then(() => {
-      this.props.updatePolicy(true, this.props.policy.policyNumber);
+      this.props.getPolicy(this.props.policy.policyNumber);
       this.setState({
         showAdditionalInterestModal: false,
         isEditingAI: false,
@@ -604,8 +603,8 @@ const defaultArray = [];
 const mapStateToProps = state => ({
   questions: state.questions,
   auth: state.authState,
-  summaryLedger: state.service.getSummaryLedger,
   initialValues: handleInitialize(state),
+  summaryLedger: state.policyState.summaryLedger,
   policy: state.policyState.policy || {},
   tasks: state.cg,
   paymentHistory: state.service.paymentHistory,

@@ -18,9 +18,8 @@ export default {
   },
   questions: [],
   policyState: {
-    policyNumber: null,
-    update: false,
     policy: {},
+    summaryLedger: {},
     newRate: {}
   },
   authState: {

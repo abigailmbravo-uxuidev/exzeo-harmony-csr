@@ -1,13 +1,14 @@
+import { convertToRateData } from "../utilities/endorsementModel";
 import { callService } from '../utilities/serviceRunner';
 import * as types from './actionTypes';
 import * as errorActions from "./errorActions";
-import { convertToRateData } from "./serviceActions";
 
 
-function setPolicy(policy) {
+function setPolicy(policy, summaryLedger) {
   return {
     type: types.SET_POLICY,
-    policy
+    policy,
+    summaryLedger
   }
 }
 
@@ -31,16 +32,13 @@ export const updatePolicy = (update, policyNumber) => {
 
 export function getPolicy(policyNumber) {
   return async (dispatch) => {
-    const config = {
-      service: 'policy-data',
-      method: 'GET',
-      path: `transactions/${policyNumber}/latest`
-    };
-
     try {
-      const response = await callService(config);
-      const policy = response ? response.data : {};
-      dispatch(setPolicy(policy));
+      const [policy, summaryLedger ] = await Promise.all([
+        fetchPolicy(policyNumber),
+        fetchSummaryLedger(policyNumber)
+      ]);
+
+      dispatch(setPolicy(policy, summaryLedger));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
@@ -66,4 +64,34 @@ export function getNewRate(formData, formProps) {
       throw error;
     }
   };
+}
+
+async function fetchPolicy(policyNumber) {
+  const config = {
+    service: 'policy-data',
+    method: 'GET',
+    path: `transactions/${policyNumber}/latest`
+  };
+
+  try {
+    const response = await callService(config);
+    return response ? response.data : {};
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function fetchSummaryLedger(policyNumber) {
+  const config = {
+    service: 'billing',
+    method: 'GET',
+    path: `summary-ledgers/${policyNumber}/latest`
+  };
+
+  try {
+    const response = await callService(config);
+    return response && response.data && response.data.result ? response.data.result : {};
+  } catch (error) {
+    throw error;
+  }
 }
