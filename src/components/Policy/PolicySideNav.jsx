@@ -79,13 +79,13 @@ export class SideNav extends React.Component {
             ))}
             <hr className="nav-division" />
             <li>
-              <button aria-label="open-btn form-newNote" className="btn btn-primary btn-sm btn-block" onClick={() => newNote(this.props)}><i className="fa fa-plus" /> Note / File</button>
+              <button aria-label="open-btn form-newNote" className="btn btn-primary btn-sm btn-block" onClick={() => newNote(this.props)}><i className="fa fa-plus" />Note / File</button>
             </li>
             <li>
-              <button aria-label="open-btn" className="btn btn-primary btn-sm btn-block" onClick={() => this.generateDoc(this.props)}><i className="fa fa-plus" /> Generate Doc</button>
+              <button aria-label="open-btn" className="btn btn-primary btn-sm btn-block" onClick={() => this.generateDoc(this.props)}><i className="fa fa-plus" />Document</button>
             </li>
-            <li>
-             {this.state.showDocsForm &&  <GenerateDocsForm policyNumber={policy.policyNumber} />}
+            <li className={this.state.showDocsForm ? 'document-panel show' : 'document-panel hidden'  }>
+             <GenerateDocsForm policyNumber={policy.policyNumber} />
             </li>
           </ul>
         </nav>
