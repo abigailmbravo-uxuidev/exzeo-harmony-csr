@@ -1,8 +1,8 @@
 import axios from 'axios';
-import _ from 'lodash';
 import moment from 'moment';
 import { batchActions } from 'redux-batched-actions';
 import endorsementUtils from '../utilities/endorsementModel';
+import { getPolicy } from './policyStateActions';
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
 
@@ -239,70 +239,6 @@ export const currentAgent = (companyCode, state, agentCode) => (dispatch) => {
     });
 };
 
-export const getPolicyFromPolicyNumber = (companyCode, state, product, policyNumber) => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'policy-data',
-    method: 'GET',
-    path: `transactions?companyCode=${companyCode}&state=${state}&product=${product}&policyNumber=${policyNumber}`
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = { policy: response.data.policies ? _.maxBy(response.data.policies[0], 'policyVersion') : {} };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
-};
-
-export const getLatestPolicy = policyNumber => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'policy-data',
-    method: 'GET',
-    path: `transactions/${policyNumber}/latest`
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = { latestPolicy: response ? response.data : {} };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
-};
-
-export const getPolicyFromPolicyID = policyId => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'policy-data',
-    method: 'GET',
-    path: `transactions/${policyId}`
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = { policy: response.data.policies ? response.data.policies[0] : {} };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
-};
-
-
 export const getEffectiveDateChangeReasons = () => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'policy-data',
@@ -401,27 +337,6 @@ export const getUnderwritingQuestions = (companyCode, state, product, property) 
 
   return axios(axiosConfig).then((response) => {
     const data = { underwritingQuestions: response.data.result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
-};
-
-export const getSummaryLedger = policyNumber => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'billing',
-    method: 'GET',
-    path: `summary-ledgers/${policyNumber}/latest`
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = { getSummaryLedger: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));
@@ -534,7 +449,7 @@ export const updateBillPlan = paymentPlan => (dispatch) => {
 
   return axios(axiosConfig).then((response) => {
     const data = response.data.result;
-    dispatch(getLatestPolicy(data.policyNumber));
+    dispatch(getPolicy(data.policyNumber));
   })
     .catch((error) => {
       const message = handleError(error);
@@ -607,50 +522,6 @@ export const createTransaction = submitData => (dispatch) => {
         errorActions.setAppError(message)
       ]));
     });
-};
-
-/**
- * Save Endorsement form to get new rate and update policy coverage
- */
-export const submitEndorsementForm = (formData, formProps) => async (dispatch) => {
-  const submitData = endorsementUtils.generateModel(formData, formProps);
-  const forms = await getListOfForms(formProps.policy, formProps.getRate.rating, 'New Business');
-  submitData.forms = forms;
-  const newPolicy = await dispatch(createTransaction(submitData));
-
-  dispatch(getLatestPolicy(newPolicy.policyNumber));
-};
-
-export const convertToRateData = (formData, props) => {
-  const { summaryLedger: { currentPremium }, zipcodeSettings } = props;
-  const endorsementDate = endorsementUtils.calculateEndorsementDate(formData.endorsementDate, zipcodeSettings.timezone);
-
-  return {
-    ...formData,
-    oldTotalPremium: formData.rating.totalPremium,
-    oldCurrentPremium: currentPremium,
-    endorsementDate
-  };
-};
-
-export const getNewRate = (formData, formProps) => async (dispatch) => {
-  try {
-    const rateData = convertToRateData(formData, formProps);
-    const axiosConfig = runnerSetup({
-      service: 'rating-engine',
-      method: 'POST',
-      path: 'endorsement',
-      data: rateData
-    });
-
-    const response = await axios(axiosConfig);
-    const data = { getRate: response && response.data && response.data.result ? response.data.result : {} };
-    dispatch(serviceRequest(data));
-    return data;
-  } catch (error) {
-    dispatch(errorActions.setAppError(handleError(error)));
-    throw new Error(error);
-  }
 };
 
 export const clearRate = () => dispatch => dispatch(batchActions([
@@ -821,3 +692,56 @@ export const getListOfForms = (policy, rating, transactionType) => {
       throw new Error(error);
     });
 };
+
+/**
+ * TODO: move out of service actions
+ * START - Save Endorsement form to get new rate and update policy coverage
+ */
+export function submitEndorsementForm(formData, formProps) {
+  return async (dispatch) => {
+    const submitData = endorsementUtils.generateModel(formData, formProps);
+    const forms = await getListOfForms(formProps.policy, formProps.getRate.rating, 'New Business');
+    submitData.forms = forms;
+    const newPolicy = await dispatch(createTransaction(submitData));
+
+    dispatch(getPolicy(newPolicy.policyNumber));
+  };
+}
+
+export function convertToRateData(formData, props) {
+  const { summaryLedger: { currentPremium }, zipcodeSettings } = props;
+  const endorsementDate = endorsementUtils.calculateEndorsementDate(formData.endorsementDate, zipcodeSettings.timezone);
+
+  return {
+    ...formData,
+    oldTotalPremium: formData.rating.totalPremium,
+    oldCurrentPremium: currentPremium,
+    endorsementDate
+  };
+}
+
+export function getNewRate(formData, formProps) {
+  return async (dispatch) => {
+    try {
+      const rateData = convertToRateData(formData, formProps);
+      const axiosConfig = runnerSetup({
+        service: 'rating-engine',
+        method: 'POST',
+        path: 'endorsement',
+        data: rateData
+      });
+
+      const response = await axios(axiosConfig);
+      const data = { getRate: response && response.data && response.data.result ? response.data.result : {} };
+      dispatch(serviceRequest(data));
+      return data;
+    } catch (error) {
+      dispatch(errorActions.setAppError(handleError(error)));
+      throw new Error(error);
+    }
+  };
+}
+
+/**
+ * END
+ */

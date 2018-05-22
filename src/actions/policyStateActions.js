@@ -12,6 +12,13 @@ function setPolicy(policy, summaryLedger) {
   }
 }
 
+function setSummaryLedger(summaryLedger) {
+  return {
+    type: types.SET_SUMMARY_LEDGER,
+    summaryLedger
+  }
+}
+
 function setNewRate(rate) {
   return {
     type: types.SET_RATE,
@@ -39,6 +46,17 @@ export function getPolicy(policyNumber) {
       ]);
 
       dispatch(setPolicy(policy, summaryLedger));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  }
+}
+
+export function getSummaryLedger(policyNumber) {
+  return async (dispatch) => {
+    try {
+      const summaryLedger = await fetchSummaryLedger(policyNumber);
+      dispatch(setSummaryLedger(summaryLedger));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
