@@ -22,7 +22,6 @@ import HiddenField from '../../Form/inputs/HiddenField';
 import SelectField from '../../Form/inputs/SelectField';
 import RadioField from '../../Form/inputs/RadioField';
 import CurrencyField from '../../Form/inputs/CurrencyField';
-import normalizeNumbers from '../../Form/normalizeNumbers';
 import DateField from '../../Form/inputs/DateField';
 import Footer from '../../Common/Footer';
 import ProducedBy from './ProducedBy';
@@ -104,13 +103,13 @@ export const handleInitialize = (state) => {
   values.protectionClass = _.get(quoteData, 'property.protectionClass');
   values.constructionType = _.get(quoteData, 'property.constructionType');
   values.yearOfRoof = _.get(quoteData, 'property.yearOfRoof');
-  values.squareFeet = normalizeNumbers(_.get(quoteData, 'property.squareFeet'));
+  values.squareFeet = _.get(quoteData, 'property.squareFeet');
   values.yearBuilt = _.get(quoteData, 'property.yearBuilt');
   values.buildingCodeEffectivenessGrading = _.get(quoteData, 'property.buildingCodeEffectivenessGrading');
   values.familyUnits = _.get(quoteData, 'property.familyUnits');
-  values.distanceToTidalWater = normalizeNumbers(_.get(quoteData, 'property.distanceToTidalWater'));
-  values.distanceToFireHydrant = normalizeNumbers(_.get(quoteData, 'property.distanceToFireHydrant'));
-  values.distanceToFireStation = normalizeNumbers(_.get(quoteData, 'property.distanceToFireStation'));
+  values.distanceToTidalWater = _.get(quoteData, 'property.distanceToTidalWater');
+  values.distanceToFireHydrant = _.get(quoteData, 'property.distanceToFireHydrant');
+  values.distanceToFireStation = _.get(quoteData, 'property.distanceToFireStation');
   values.floodZone = _.get(quoteData, 'property.floodZone');
 
   values.burglarAlarm = _.get(quoteData, 'property.burglarAlarm');
