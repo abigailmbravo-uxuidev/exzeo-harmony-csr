@@ -3,7 +3,7 @@ import thunk from 'redux-thunk'
 import sinon from 'sinon'
 import * as types from './actionTypes';
 import * as serviceRunner from '../utilities/serviceRunner';
-import * as policyStateActions from './policyStateActions';
+import * as policyStateActions from './policyActions';
 
 describe('Policy State Actions', () => {
   const mockStore = configureStore([]);

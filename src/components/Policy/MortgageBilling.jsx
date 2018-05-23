@@ -10,7 +10,7 @@ import moment from 'moment';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 
-import { updatePolicy, getPolicy } from '../../actions/policyStateActions';
+import { updatePolicy, getPolicy } from '../../actions/policyActions';
 import { getUIQuestions } from '../../actions/questionsActions';
 import {
   getPaymentOptionsApplyPayments,

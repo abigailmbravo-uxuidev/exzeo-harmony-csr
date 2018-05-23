@@ -6,7 +6,7 @@ import moment from 'moment-timezone';
 import { getCancelOptions, getPaymentHistory, getBillingOptionsForPolicy } from '../../actions/serviceActions';
 import { startWorkflow, batchCompleteTask } from '../../actions/cgActions';
 import { setAppState } from '../../actions/appStateActions';
-import { getPolicy } from '../../actions/policyStateActions';
+import { getPolicy } from '../../actions/policyActions';
 
 import PolicyConnect from '../../containers/Policy';
 import RadioField from '../Form/inputs/RadioField';

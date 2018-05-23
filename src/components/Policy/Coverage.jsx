@@ -8,7 +8,7 @@ import _find from 'lodash/find';
 import moment from 'moment';
 import { getUIQuestions } from '../../actions/questionsActions';
 import { getCancelOptions, getBillingOptionsForPolicy } from '../../actions/serviceActions';
-import { getPolicy } from '../../actions/policyStateActions';
+import { getPolicy } from '../../actions/policyActions';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import PolicyConnect from '../../containers/Policy';
 import Footer from '../Common/Footer';

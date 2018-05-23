@@ -14,7 +14,7 @@ import * as questionsActions from '../../actions/questionsActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as serviceActions from '../../actions/serviceActions';
-import * as policyStateActions from '../../actions/policyStateActions';
+import * as policyStateActions from '../../actions/policyActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 import Loader from './Loader';
 

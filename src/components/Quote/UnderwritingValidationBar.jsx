@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { reduxForm, Form, change, getFormValues } from 'redux-form';
 import orderBy from 'lodash/orderBy';
 import moment from 'moment';
-import {saveUnderwritingExceptions } from '../../actions/serviceActions';
+import { saveUnderwritingExceptions } from '../../actions/serviceActions';
 import { getLatestQuote } from '../../actions/quoteStateActions';
 import CheckField from '../Form/inputs/CheckField';
 import UnderwritingExceptions from './UnderwritingExceptions';
@@ -147,7 +147,7 @@ const mapStateToProps = state => ({
   exceptions: getGroupedExceptions(state.service.quote || defaultObject),
 });
 
-// ------------------------------------------------
-// wire up redux form with the redux connect
-// ------------------------------------------------
-export default connect(mapStateToProps, { getLatestQuote, saveUnderwritingExceptions })(reduxForm({ form: 'UnderwritingOverride', enableReinitialize: true })(UnderwritingValidationBar));
+export default connect(mapStateToProps, {
+  getLatestQuote,
+  saveUnderwritingExceptions
+})(reduxForm({ form: 'UnderwritingOverride', enableReinitialize: true })(UnderwritingValidationBar));

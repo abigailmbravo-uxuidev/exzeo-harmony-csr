@@ -2,7 +2,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { batchActions } from 'redux-batched-actions';
 import endorsementUtils from '../utilities/endorsementModel';
-import { getPolicy } from './policyStateActions';
+import { getPolicy } from './policyActions';
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
 

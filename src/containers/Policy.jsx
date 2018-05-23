@@ -5,7 +5,7 @@ import moment from 'moment-timezone';
 import { Helmet } from 'react-helmet';
 import { setAppState } from '../actions/appStateActions';
 import { createTransaction, getZipcodeSettings } from '../actions/serviceActions';
-import { getPolicy } from '../actions/policyStateActions';
+import { getPolicy } from '../actions/policyActions';
 import { startWorkflow, batchCompleteTask } from '../actions/cgActions';
 import EditEffectiveDataPopUp from '../components/Policy/EditEffectiveDatePopup';
 import ReinstatePolicyPopup from '../components/Policy/ReinstatePolicyPopup';
