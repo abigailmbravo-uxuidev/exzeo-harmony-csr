@@ -8,6 +8,8 @@ import momentTZ from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
 import { batchActions } from 'redux-batched-actions';
 import { reduxForm, Form, propTypes, change, Field } from 'redux-form';
+import Inputs from '@exzeo/core-ui/lib/Input';
+import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 import * as serviceActions from '../../actions/serviceActions';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
@@ -25,10 +27,13 @@ import normalizeNumbers from '../Form/normalizeNumbers';
 import DateField from '../Form/inputs/DateField';
 import Footer from '../Common/Footer';
 
-const setPHToggle = (props) => {
-  const { dispatch } = props;
-  dispatch(change('Coverage', 'clearFields', false));
-};
+const { Input, Phone } = Inputs;
+const { validation } = lifecycle;
+
+const firstNameDepends = validation.dependsOn(['pH2LastName', 'pH2email', 'pH2phone']);
+const lastNameDepends = validation.dependsOn(['pH2FirstName', 'pH2email', 'pH2phone']);
+const primaryPhoneDepends = validation.dependsOn(['pH2FirstName', 'pH2LastName', 'pH2email']);
+const emailAddressDepends = validation.dependsOn(['pH2FirstName', 'pH2LastName', 'pH2phone']);
 
 export const clearSecondaryPolicyholder = (value, props) => {
   const { dispatch, quoteData } = props;
@@ -391,6 +396,13 @@ export class Coverage extends Component {
     }
   }
 
+  setPHToggle = () => {
+    const { fieldValues, change: changeF } = this.props;
+    if (fieldValues.clearFields) {
+      changeF('clearFields', false);
+    }
+  };
+
   updateDwellingAndDependencies = (e, value) => {
     const { dispatch, fieldValues } = this.props;
 
@@ -557,54 +569,53 @@ export class Coverage extends Component {
                     </div>
                     <div className="flex-parent col2 policy-holder-b-name">
                       <div className="flex-child policy-holder-b-first-name">
-                        <TextField
-                          onChange={() => setPHToggle(this.props)}
-                          label="First Name"
-                          dependsOn={['pH2LastName', 'pH2email', 'pH2phone']}
-                          styleName=""
+                        <Field
                           name="pH2FirstName"
+                          label="First Name"
+                          component={Input}
+                          validate={firstNameDepends}
+                          onChange={this.setPHToggle}
                         />
                       </div>
                       <div className="flex-child policy-holder-b-last-name">
-                        <TextField
-                          onChange={() => setPHToggle(this.props)}
-                          label="Last Name"
-                          dependsOn={['pH2FirstName', 'pH2email', 'pH2phone']}
-                          styleName=""
+                        <Field
                           name="pH2LastName"
+                          label="Last Name"
+                          component={Input}
+                          validate={lastNameDepends}
+                          onChange={this.setPHToggle}
                         />
+
                       </div>
                     </div>
                     <div className="flex-parent col2 policy-holder-b-phone">
                       <div className="flex-child policy-holder-b-primary-phone">
-                        <PhoneField
-                          onChange={() => setPHToggle(this.props)}
-                          label="Primary Phone"
-                          dependsOn={['pH2FirstName', 'pH2LastName', 'pH2email']}
-                          styleName=""
+                        <Field
                           name="pH2phone"
-                          validations={['phone']}
+                          label="Primary Phone"
+                          component={Phone}
+                          validate={[primaryPhoneDepends, validation.isPhone]}
+                          onChange={this.setPHToggle}
                         />
                       </div>
                       <div className="flex-child policy-holder-b-secondary-phone">
-                        <PhoneField
-                          onChange={() => setPHToggle(this.props)}
-                          label="Secondary Phone"
-                          styleName=""
+                        <Field
                           name="pH2phone2"
-                          validations={['phone']}
+                          label="Secondary Phone"
+                          component={Phone}
+                          validate={validation.isPhone}
+                          onChange={this.setPHToggle}
                         />
                       </div>
                     </div>
                     <div className="flex-parent policy-holder-b-email">
                       <div className="flex-child email-address">
-                        <TextField
-                          onChange={() => setPHToggle(this.props)}
-                          validations={['email']}
-                          dependsOn={['pH2FirstName', 'pH2LastName', 'pH2phone']}
-                          label="Email Address"
-                          styleName=""
+                        <Field
                           name="pH2email"
+                          label="Email Address"
+                          component={Input}
+                          validate={[emailAddressDepends, validation.isEmail]}
+                          onChange={this.setPHToggle}
                         />
                       </div>
                     </div>

@@ -2,6 +2,7 @@ import axios from 'axios';
 import _ from 'lodash';
 import moment from 'moment';
 import { batchActions } from 'redux-batched-actions';
+import endorsementUtils from '../utilities/endorsementModel';
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
 
@@ -74,12 +75,12 @@ export const addNote = (data, files) => (dispatch) => {
   const form = new FormData();
   const url = `${process.env.REACT_APP_API_URL}/upload`;
 
-  Object.keys(data).forEach((key) => form.append(key, data[key]));
-  files.map(file => {
+  Object.keys(data).forEach(key => form.append(key, data[key]));
+  files.map((file) => {
     const fileName = !file.name.endsWith(file.meta.name.extension)
       ? `${file.meta.name}.${file.extension}`
       : file.meta.name;
-    return form.append(file.name, file.data, fileName)
+    return form.append(file.name, file.data, fileName);
   });
 
   axios.post(url, form, {
@@ -89,16 +90,16 @@ export const addNote = (data, files) => (dispatch) => {
       'Content-Type': `multipart/form-data; boundary=${form._boundary}`
     }
   })
-  .then(response => {
-    const ids = (data.noteType === 'Policy Note') 
-      ? [response.data.number, data.source].toString()
-      : response.data.number;
-    dispatch(getNotes(ids, response.data.number))
-  })
-  .catch((error) => {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
-  });
+    .then((response) => {
+      const ids = (data.noteType === 'Policy Note')
+        ? [response.data.number, data.source].toString()
+        : response.data.number;
+      dispatch(getNotes(ids, response.data.number));
+    })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(errorActions.setAppError(message));
+    });
 };
 
 export const getAgents = (companyCode, state) => (dispatch) => {
@@ -203,10 +204,10 @@ export const searchAgencies = (companyCode, state, displayName, agencyCode, addr
     const data = { agencies: result };
     return dispatch(serviceRequest(data));
   })
-  .catch((error) => {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
-  });
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(errorActions.setAppError(message));
+    });
 };
 
 export const clearAgencies = () => (dispatch) => {
@@ -584,26 +585,72 @@ export const getEndorsementHistory = policyNumber => (dispatch) => {
     });
 };
 
-export const getRate = policyObject => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'rating-engine',
+export const createTransaction = submitData => (dispatch) => {
+  const body = {
+    service: 'policy-data',
     method: 'POST',
-    path: 'endorsement',
-    data: policyObject
-  });
+    path: 'transaction',
+    data: submitData
+  };
+  const axiosConfig = runnerSetup(body);
 
-  return axios(axiosConfig).then((response) => {
-    const data = { getRate: response.data ? response.data.result : {} };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
+  return axios(axiosConfig)
+    .then((response) => {
+      const data = { addTransaction: response.data.result };
+      dispatch(serviceRequest(data));
+
+      return response.data.result;
+    })
     .catch((error) => {
       const message = handleError(error);
       return dispatch(batchActions([
         errorActions.setAppError(message)
       ]));
     });
+};
+
+/**
+ * Save Endorsement form to get new rate and update policy coverage
+ */
+export const submitEndorsementForm = (formData, formProps) => async (dispatch) => {
+  const submitData = endorsementUtils.generateModel(formData, formProps);
+  const forms = await getListOfForms(formProps.policy, formProps.getRate.rating, 'New Business');
+  submitData.forms = forms;
+  const newPolicy = await dispatch(createTransaction(submitData));
+
+  dispatch(getLatestPolicy(newPolicy.policyNumber));
+};
+
+export const convertToRateData = (formData, props) => {
+  const { summaryLedger: { currentPremium }, zipcodeSettings } = props;
+  const endorsementDate = endorsementUtils.calculateEndorsementDate(formData.endorsementDate, zipcodeSettings.timezone);
+
+  return {
+    ...formData,
+    oldTotalPremium: formData.rating.totalPremium,
+    oldCurrentPremium: currentPremium,
+    endorsementDate
+  };
+};
+
+export const getNewRate = (formData, formProps) => async (dispatch) => {
+  try {
+    const rateData = convertToRateData(formData, formProps);
+    const axiosConfig = runnerSetup({
+      service: 'rating-engine',
+      method: 'POST',
+      path: 'endorsement',
+      data: rateData
+    });
+
+    const response = await axios(axiosConfig);
+    const data = { getRate: response && response.data && response.data.result ? response.data.result : {} };
+    dispatch(serviceRequest(data));
+    return data;
+  } catch (error) {
+    dispatch(errorActions.setAppError(handleError(error)));
+    throw new Error(error);
+  }
 };
 
 export const clearRate = () => dispatch => dispatch(batchActions([
@@ -640,29 +687,6 @@ export const getCancelOptions = () => (dispatch) => {
 
   return axios(axiosConfig).then((response) => {
     const data = { cancelOptions: response.data.cancelOptions };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
-};
-
-export const createTransaction = submitData => (dispatch) => {
-  const body = {
-    service: 'policy-data',
-    method: 'POST',
-    path: 'transaction',
-    data: submitData
-  };
-  const axiosConfig = runnerSetup(body);
-
-  return axios(axiosConfig).then((response) => {
-    const data = { addTransaction: response.data.result };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));
@@ -736,10 +760,10 @@ export const getAgencies = (companyCode, state) => (dispatch) => {
     const data = { agencies: result };
     return dispatch(serviceRequest(data));
   })
-  .catch((error) => {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
-  });
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(errorActions.setAppError(message));
+    });
 };
 
 export const searchPolicy = (taskData, sort) => (dispatch) => {
@@ -772,4 +796,28 @@ export const clearPolicyResults = () => (dispatch) => {
   return dispatch(batchActions([
     serviceRequest(data)
   ]));
+};
+
+export const getListOfForms = (policy, rating, transactionType) => {
+  const body = {
+    service: 'form-list',
+    method: 'POST',
+    path: '/v1',
+    data: {
+      quote: {
+        ...policy,
+        rating
+      },
+      transactionType: transactionType || 'New Business'
+    }
+  };
+  const axiosConfig = runnerSetup(body);
+
+  return axios(axiosConfig)
+    .then(response => ((response.data && response.data.result && response.data.result.forms)
+      ? response.data.result.forms
+      : []))
+    .catch((error) => {
+      throw new Error(error);
+    });
 };

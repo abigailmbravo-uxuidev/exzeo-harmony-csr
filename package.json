@@ -5,6 +5,7 @@
   "dependencies": {
     "@fortawesome/fontawesome": "~1.0.0",
     "@fortawesome/react-fontawesome": "~0.0.14",
+    "@exzeo/core-ui": "0.1.x",
     "auth0-js": "~8.10.1",
     "axios": "~0.15.2",
     "classnames": "~2.2.5",
@@ -37,7 +38,7 @@
     "react-tooltip": "~3.4.0",
     "redux": "~3.7.2",
     "redux-batched-actions": "~0.1.6",
-    "redux-form": "~6.6.3",
+    "redux-form": "7.3.x",
     "redux-persist": "~4.10.2",
     "redux-thunk": "~2.2.0",
     "uppy": "^0.23.1",
@@ -52,6 +53,7 @@
     "babel-preset-es2015": "~6.24.1",
     "babel-preset-react": "~6.24.1",
     "babel-preset-stage-0": "~6.24.1",
+    "cross-env": "^5.1.5",
     "enzyme": "~3.2.0",
     "enzyme-adapter-react-16": "~1.1.0",
     "eslint": "~4.13.1",
@@ -73,8 +75,11 @@
     "server": "./replace-dotenv.sh && exframe-web",
     "build": "npm run build-css && react-scripts build",
     "cover": "npm test -- --coverage",
-    "test": "npm run build && react-scripts test --env=jsdom --coverage",
-    "eject": "react-scripts eject"
+    "test": "react-scripts test --env=jsdom --coverage",
+    "watch": "react-scripts test --env=jsdom --coverage",
+    "eject": "react-scripts eject",
+    "link-core": "npm link @exzeo/core-ui",
+    "unlink-core": "npm unlink @exzeo/core-ui"
   },
   "jest": {
     "collectCoverageFrom": [

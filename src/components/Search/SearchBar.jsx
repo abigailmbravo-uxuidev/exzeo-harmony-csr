@@ -479,7 +479,7 @@ export class SearchForm extends Component {
               className="btn btn-success multi-input"
               type="submit"
               form="SearchBar"
-              disabled={appState.data.submitting || formErrors || !fieldValues.address || !String(fieldValues.address).trim()}
+              disabled={appState.data.submitting || !fieldValues.address || !String(fieldValues.address).trim()}
             >
               <i className="fa fa-search" />Search
             </button>
@@ -505,7 +505,7 @@ export class SearchForm extends Component {
               className="btn btn-success multi-input"
               type="submit"
               form="SearchBar"
-              disabled={appState.data.submitting || formErrors}
+              disabled={appState.data.submitting}
             >
               <i className="fa fa-search" />Search
             </button>
@@ -525,7 +525,7 @@ export class SearchForm extends Component {
               className="btn btn-success multi-input"
               type="submit"
               form="SearchBar"
-              disabled={appState.data.submitting || formErrors}
+              disabled={appState.data.submitting}
             >
               <i className="fa fa-search" />Search
             </button>
@@ -545,7 +545,7 @@ export class SearchForm extends Component {
                 className="btn btn-success multi-input"
                 type="submit"
                 form="SearchBar"
-                disabled={appState.data.submitting || formErrors}
+                disabled={appState.data.submitting}
               >
                 <i className="fa fa-search" />Search
               </button>
@@ -566,7 +566,7 @@ export class SearchForm extends Component {
               className="btn btn-success multi-input"
               type="submit"
               form="SearchBar"
-              disabled={appState.data.submitting || formErrors}
+              disabled={appState.data.submitting}
             >
               <i className="fa fa-search" />Search
             </button>
@@ -584,7 +584,7 @@ export class SearchForm extends Component {
               className="btn btn-success multi-input"
               type="submit"
               form="SearchBar"
-              disabled={appState.data.submitting || formErrors}
+              disabled={appState.data.submitting}
             >
               <i className="fa fa-search" />Search
             </button>

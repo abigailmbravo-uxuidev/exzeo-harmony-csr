@@ -8,6 +8,57 @@ const middlewares = [];
 const mockStore = configureStore(middlewares);
 
 describe('Service Actions', () => {
+  const baseProps = {
+    endorsementDate: '2017-02-02',
+    zipcodeSettings: { timezone: 'America/New_York' },
+    policy: {
+      policyHolders: [{}, {}],
+      property: { windMitigation: {}, physicalAddress: {} },
+      policyHolderMailingAddress: {},
+      coverageLimits: {
+        dwelling: {},
+        otherStructures: {},
+        personalProperty: {},
+        lossOfUse: {},
+        medicalPayments: {},
+        moldProperty: {},
+        personalLiability: {},
+        moldLiability: {},
+        ordinanceOrLaw: {}
+      },
+      deductibles: {
+        allOtherPerils: {},
+        hurricane: {},
+        sinkhole: {}
+
+      },
+      coverageOptions: {
+        sinkholePerilCoverage: {},
+        propertyIncidentalOccupanciesMainDwelling: {},
+        propertyIncidentalOccupanciesOtherStructures: {},
+        liabilityIncidentalOccupancies: {},
+        personalPropertyReplacementCost: {}
+      },
+      underwritingAnswers: {
+        rented: {},
+        monthsOccupied: {},
+        noPriorInsuranceSurcharge: {}
+
+      },
+      rating: {
+        totalPremium: '1',
+        worksheet: {
+          elements: {
+            windMitigationFactors: {
+
+            }
+          }
+        }
+      }
+    },
+    summaryLedger: { currentPremium: '1' }
+  };
+
   it('should call serviceRequest', () => {
     const initialState = {};
     const store = mockStore(initialState);
@@ -1004,8 +1055,11 @@ describe('Service Actions', () => {
       });
   });
 
-  it('should call start getRate', () => {
+  it('should call start getNewRate', async () => {
     const mockAdapter = new MockAdapter(axios);
+
+    const rateData = serviceActions.convertToRateData(baseProps.policy, baseProps);
+
 
     const axiosOptions = {
       method: 'POST',
@@ -1017,25 +1071,21 @@ describe('Service Actions', () => {
         service: 'rating-engine',
         method: 'POST',
         path: 'endorsement',
-        data: {}
+        data: rateData
       }
     };
 
     mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
+      result: { policyholder: 'Marky Mark' }
     });
 
-    const initialState = {};
-    const store = mockStore(initialState);
-    serviceActions.getRate(store.dispatch);
+    const store = mockStore({});
 
-    return serviceActions.getRate({})(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
-      });
+    const rate = await serviceActions.getNewRate(baseProps.policy, baseProps)(store.dispatch);
+    expect(rate.getRate.policyholder).toEqual('Marky Mark');
   });
 
-  it('should fail start getRate', () => {
+  it('should fail start getNewRate', async () => {
     const mockAdapter = new MockAdapter(axios);
 
     const axiosOptions = {
@@ -1052,18 +1102,15 @@ describe('Service Actions', () => {
       }
     };
 
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
-    });
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(404, { data: {}});
+    const store = mockStore({});
+    try {
+      await serviceActions.getNewRate(baseProps.policy, baseProps)(store.dispatch);
+      expect(true).toBe(false);
+    } catch (err) {
+      expect(err).toBeTruthy();
+    }
 
-    const initialState = {};
-    const store = mockStore(initialState);
-    serviceActions.getRate(store.dispatch);
-
-    return serviceActions.getRate(null)(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
-      });
   });
 
   const ai = {
@@ -1087,68 +1134,6 @@ describe('Service Actions', () => {
       }
     }
   };
-
-  it('should call start getRate', () => {
-    const mockAdapter = new MockAdapter(axios);
-
-    const axiosOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'policy-data',
-        method: 'POST',
-        path: 'transaction',
-        data: ai
-      }
-    };
-
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
-    });
-
-    const initialState = {};
-    const store = mockStore(initialState);
-    serviceActions.getRate(store.dispatch);
-
-    return serviceActions.createTransaction(ai)(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
-      });
-  });
-
-  it('should fail start getRate', () => {
-    const mockAdapter = new MockAdapter(axios);
-
-    const axiosOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'policy-data',
-        method: 'POST',
-        path: 'transaction',
-        data: ai
-      }
-    };
-
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
-    });
-
-    const initialState = {};
-    const store = mockStore(initialState);
-    serviceActions.getRate(store.dispatch);
-
-    return serviceActions.createTransaction({})(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
-      });
-  });
 
   it('should call start getZipcodeSettings', () => {
     const mockAdapter = new MockAdapter(axios);
@@ -1235,9 +1220,9 @@ describe('Service Actions', () => {
     serviceActions.getAgencies(store.dispatch);
 
     return serviceActions.getAgencies('TTIC', 'FL')(store.dispatch)
-    .then(() => {
-      expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
-    });
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
+      });
   });
 
   it('should fail start getAgencies', () => {
@@ -1380,5 +1365,92 @@ describe('Service Actions', () => {
       .then(() => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
       });
+  });
+
+  it('should add getListOfForms', () => {
+    const policy = {
+      state: 'FL',
+      product: 'HO3',
+      policyTerm: 'A',
+      policyAccountCode: '123',
+      policyNumber: '123'
+    };
+
+    const rating = {
+
+    };
+
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'form-list',
+        method: 'POST',
+        path: '/v1',
+        data: {
+          quote: {
+            ...policy,
+            rating
+          },
+          transactionType: 'New Business'
+        }
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    return serviceActions.getListOfForms(policy, rating, 'New Business')
+      .then((result) => {
+        expect(result).toEqual([]);
+      });
+  });
+
+  it('should fail getListOfForms', () => {
+    const policy = {
+      state: 'FL',
+      product: 'HO3',
+      policyTerm: 'A',
+      policyAccountCode: '123',
+      policyNumber: '123'
+    };
+
+    const rating = {
+
+    };
+
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'form-list',
+        method: 'POST',
+        path: '/v1',
+        data: {
+          quote: {
+            ...policy,
+            rating
+          },
+          transactionType: 'New Business'
+        }
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    expect(() => serviceActions.getListOfForms(policy, null, 'New Business').toThrow());
   });
 });
