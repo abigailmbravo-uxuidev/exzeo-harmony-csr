@@ -22,47 +22,16 @@ import HiddenField from '../../Form/inputs/HiddenField';
 import SelectField from '../../Form/inputs/SelectField';
 import RadioField from '../../Form/inputs/RadioField';
 import CurrencyField from '../../Form/inputs/CurrencyField';
-import normalizePhone from '../../Form/normalizePhone';
 import normalizeNumbers from '../../Form/normalizeNumbers';
 import DateField from '../../Form/inputs/DateField';
 import Footer from '../../Common/Footer';
 import ProducedByComponent from './ProducedBy';
 import ProducedBy from './ProducedBy';
+import PolicyHolder from './PolicyHolder';
 
 
 const { Input, Phone } = Inputs;
 const { validation } = lifecycle;
-
-const firstNameDepends = validation.dependsOn(['pH2LastName', 'pH2email', 'pH2phone']);
-const lastNameDepends = validation.dependsOn(['pH2FirstName', 'pH2email', 'pH2phone']);
-const primaryPhoneDepends = validation.dependsOn(['pH2FirstName', 'pH2LastName', 'pH2email']);
-const emailAddressDepends = validation.dependsOn(['pH2FirstName', 'pH2LastName', 'pH2phone']);
-
-export const clearSecondaryPolicyholder = (value, props) => {
-  const { dispatch, quoteData } = props;
-  if (!value) {
-    const pH2email = _.get(quoteData, 'policyHolders[1].emailAddress');
-    const pH2FirstName = _.get(quoteData, 'policyHolders[1].firstName');
-    const pH2LastName = _.get(quoteData, 'policyHolders[1].lastName');
-    const pH2phone = normalizePhone(_.get(quoteData, 'policyHolders[1].primaryPhoneNumber') || '');
-    const pH2phone2 = normalizePhone(_.get(quoteData, 'policyHolders[1].secondaryPhoneNumber') || '');
-    dispatch(batchActions([
-      change('Coverage', 'pH2email', pH2email),
-      change('Coverage', 'pH2FirstName', pH2FirstName),
-      change('Coverage', 'pH2LastName', pH2LastName),
-      change('Coverage', 'pH2phone', pH2phone),
-      change('Coverage', 'pH2phone2', pH2phone2)
-    ]));
-  } else {
-    dispatch(batchActions([
-      change('Coverage', 'pH2email', ''),
-      change('Coverage', 'pH2FirstName', ''),
-      change('Coverage', 'pH2LastName', ''),
-      change('Coverage', 'pH2phone', ''),
-      change('Coverage', 'pH2phone2', '')
-    ]));
-  }
-};
 
 export const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName])
@@ -118,14 +87,14 @@ export const handleInitialize = (state) => {
   values.pH1email = _.get(quoteData, 'policyHolders[0].emailAddress');
   values.pH1FirstName = _.get(quoteData, 'policyHolders[0].firstName');
   values.pH1LastName = _.get(quoteData, 'policyHolders[0].lastName');
-  values.pH1phone = normalizePhone(_.get(quoteData, 'policyHolders[0].primaryPhoneNumber') || '');
-  values.pH1phone2 = normalizePhone(_.get(quoteData, 'policyHolders[0].secondaryPhoneNumber') || '');
+  values.pH1phone = _.get(quoteData, 'policyHolders[0].primaryPhoneNumber') || '';
+  values.pH1phone2 = _.get(quoteData, 'policyHolders[0].secondaryPhoneNumber') || '';
 
   values.pH2email = _.get(quoteData, 'policyHolders[1].emailAddress');
   values.pH2FirstName = _.get(quoteData, 'policyHolders[1].firstName');
   values.pH2LastName = _.get(quoteData, 'policyHolders[1].lastName');
-  values.pH2phone = normalizePhone(_.get(quoteData, 'policyHolders[1].primaryPhoneNumber') || '');
-  values.pH2phone2 = normalizePhone(_.get(quoteData, 'policyHolders[1].secondaryPhoneNumber') || '');
+  values.pH2phone = _.get(quoteData, 'policyHolders[1].primaryPhoneNumber') || '';
+  values.pH2phone2 = _.get(quoteData, 'policyHolders[1].secondaryPhoneNumber') || '';
 
   values.address1 = _.get(quoteData, 'property.physicalAddress.address1');
   values.address2 = _.get(quoteData, 'property.physicalAddress.address2');
@@ -455,6 +424,34 @@ export class Coverage extends Component {
     }
   };
 
+  clearSecondaryPolicyholder = (value) => {
+    const { dispatch, quoteData } = this.props;
+    if (!value) {
+      const pH2email = _.get(quoteData, 'policyHolders[1].emailAddress');
+      const pH2FirstName = _.get(quoteData, 'policyHolders[1].firstName');
+      const pH2LastName = _.get(quoteData, 'policyHolders[1].lastName');
+      const pH2phone = _.get(quoteData, 'policyHolders[1].primaryPhoneNumber') || '';
+      const pH2phone2 = _.get(quoteData, 'policyHolders[1].secondaryPhoneNumber') || '';
+      dispatch(batchActions([
+        change('Coverage', 'pH2email', pH2email),
+        change('Coverage', 'pH2FirstName', pH2FirstName),
+        change('Coverage', 'pH2LastName', pH2LastName),
+        change('Coverage', 'pH2phone', pH2phone),
+        change('Coverage', 'pH2phone2', pH2phone2),
+        change('Coverage', 'clearFields', false)
+      ]));
+    } else {
+      dispatch(batchActions([
+        change('Coverage', 'pH2email', ''),
+        change('Coverage', 'pH2FirstName', ''),
+        change('Coverage', 'pH2LastName', ''),
+        change('Coverage', 'pH2phone', ''),
+        change('Coverage', 'pH2phone2', ''),
+        change('Coverage', 'clearFields', true)
+      ]));
+    }
+  };
+
   render() {
     const {
       quoteData, fieldValues, handleSubmit, initialValues, pristine, agents, agencies, questions, dirty
@@ -492,118 +489,15 @@ export class Coverage extends Component {
                   agents={mappedAgents}
                   agencies={mappedAgencies}
                 />
-                <section id="policyHolders" className="demographics flex-parent col2">
-                  <div id="policy-holder-a" className="flex-child policy-holder-a">
-                    <h3 id="primaryPolicyholder">Primary Policyholder</h3>
-                    <div className="flex-parent col2 policy-holder-a-name">
-                      <div className="flex-child policy-holder-a-first-name">
-                        <TextField validations={['required']} label="First Name" styleName="" name="pH1FirstName" />
-                      </div>
-                      <div className="flex-child policy-holder-a-last-name">
-                        <TextField validations={['required']} label="Last Name" styleName="" name="pH1LastName" />
-                      </div>
-                    </div>
-                    <div className="flex-parent col2 policy-holder-a-phone">
-                      <div className="flex-child policy-holder-a-primary-phone">
-                        <PhoneField validations={['required', 'phone']} label="Primary Phone" styleName="" name="pH1phone" />
-                      </div>
-                      <div className="flex-child policy-holder-a-secondary-phone">
-                        <PhoneField label="Secondary Phone" styleName="" name="pH1phone2" validations={['phone']} />
-                      </div>
-                    </div>
-                    <div className="flex-parent policy-holder-a-email">
-                      <div className="flex-child email-address">
-                        <TextField validations={['required', 'email']} label="Email Address" styleName="" name="pH1email" />
-                      </div>
-                      <div hidden className="flex-child electronicDelivery">
-                        <RadioField
-                          name=""
-                          styleName="electronicDelivery"
-                          label="Electronic Delivery"
-                          onChange={function () {}}
-                          segmented
-                          answers={[
-                            {
-                              answer: false,
-                              label: 'No'
-                            }, {
-                              answer: true,
-                              label: 'Yes'
-                            }
-                          ]}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div id="policy-holder-b" className="flex-child policy-holder-b">
-                    <div className="flex-header-wrap">
-                      <h3>Secondary Policyholder</h3>
-                      <div className="check-box-wrapper">
-                        <Field
-                          onChange={event => clearSecondaryPolicyholder(String(event.target.value) === 'false', this.props)}
-                          name="clearFields"
-                          id="clearFields"
-                          component="input"
-                          type="checkbox"
-                          disabled={checkSentToDocusign(quoteData.quoteState) || !(quoteData && quoteData.policyHolders && quoteData.policyHolders[1])}
-                        />
-                        <label htmlFor="clearFields"> Remove</label>
-                      </div>
-                    </div>
-                    <div className="flex-parent col2 policy-holder-b-name">
-                      <div className="flex-child policy-holder-b-first-name">
-                        <Field
-                          name="pH2FirstName"
-                          label="First Name"
-                          component={Input}
-                          validate={firstNameDepends}
-                          onChange={this.setPHToggle}
-                        />
-                      </div>
-                      <div className="flex-child policy-holder-b-last-name">
-                        <Field
-                          name="pH2LastName"
-                          label="Last Name"
-                          component={Input}
-                          validate={lastNameDepends}
-                          onChange={this.setPHToggle}
-                        />
-
-                      </div>
-                    </div>
-                    <div className="flex-parent col2 policy-holder-b-phone">
-                      <div className="flex-child policy-holder-b-primary-phone">
-                        <Field
-                          name="pH2phone"
-                          label="Primary Phone"
-                          component={Phone}
-                          validate={[primaryPhoneDepends, validation.isPhone]}
-                          onChange={this.setPHToggle}
-                        />
-                      </div>
-                      <div className="flex-child policy-holder-b-secondary-phone">
-                        <Field
-                          name="pH2phone2"
-                          label="Secondary Phone"
-                          component={Phone}
-                          validate={validation.isPhone}
-                          onChange={this.setPHToggle}
-                        />
-                      </div>
-                    </div>
-                    <div className="flex-parent policy-holder-b-email">
-                      <div className="flex-child email-address">
-                        <Field
-                          name="pH2email"
-                          label="Email Address"
-                          component={Input}
-                          validate={[emailAddressDepends, validation.isEmail]}
-                          onChange={this.setPHToggle}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </section>
+                <PolicyHolder
+                  name="addresses"
+                  sectionId="policyHolders"
+                  header="Primary Policyholder"
+                  headerSecondary="Secondary Policyholder"
+                  sectionClass="demographics flex-parent col2"
+                  clearSecondaryPolicyholder={this.clearSecondaryPolicyholder}
+                  canSendToDocusign={checkSentToDocusign(quoteData.quoteState) || !(quoteData && quoteData.policyHolders && quoteData.policyHolders[1])}
+                />
                 <section id="property-location" className="property flex-parent property-location">
                   <div id="property-risk" className="property-address flex-child property-risk">
                     <h3>Property (Risk)</h3>
