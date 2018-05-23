@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import GenerateDocsForm from './GenerateDocsForm';
 import * as newNoteActions from '../../actions/newNoteActions';
+import * as serviceActions from '../../actions/serviceActions';
+import * as errorActions from '../../actions/errorActions';
 
 const csrLinks = [{
   key: 'coverage',
@@ -45,22 +47,30 @@ const csrLinks = [{
   exact: true
 }];
 
-export const newNote = (props) => {
-  props.actions.newNoteActions.toggleNote({noteType: 'Policy Note', documentId: props.policy.policyNumber, sourceNumber: props.policy.sourceNumber})
-};
-
 export class SideNav extends React.Component {
   constructor(props) {
     super(props);
     this.state = { showDocsForm: false };
   }
 
+  newNote = (props) => {
+    props.actions.newNoteActions.toggleNote({noteType: 'Policy Note', documentId: props.policy.policyNumber, sourceNumber: props.policy.sourceNumber})
+  }
+
   generateDoc = (props) => {
     this.setState({ showDocsForm: !this.state.showDocsForm });
   };
 
+  updateNotes = (props) => {
+    const { actions, policy } = this.props;
+    const ids = [policy.policyNumber, policy.sourceNumber];
+    return () => {
+      actions.serviceActions.getNotes(ids.toString(), policy.policyNumber);
+    }
+  }
+
   render() {
-    const { policy } = this.props;
+    const { actions, policy } = this.props;
     return (
       <nav className="site-nav">
           <ul>
@@ -79,13 +89,18 @@ export class SideNav extends React.Component {
             ))}
             <hr className="nav-division" />
             <li>
-              <button aria-label="open-btn form-newNote" data-test="newNote" className="btn btn-primary btn-sm btn-block" onClick={() => newNote(this.props)}><i className="fa fa-plus" />Note / File</button>
+              <button aria-label="open-btn form-newNote" data-test="newNote" className="btn btn-primary btn-sm btn-block" onClick={() => this.newNote(this.props)}><i className="fa fa-plus" />Note / File</button>
             </li>
             <li>
               <button aria-label="open-btn" className="btn btn-primary btn-sm btn-block" onClick={() => this.generateDoc(this.props)}><i className="fa fa-plus" />Document</button>
             </li>
             <li className={this.state.showDocsForm ? 'document-panel show' : 'document-panel hidden'  }>
-             {this.state.showDocsForm && <GenerateDocsForm policyNumber={policy.policyNumber} />}
+             {this.state.showDocsForm && 
+              <GenerateDocsForm 
+                policyNumber={policy.policyNumber}
+                updateNotes={this.updateNotes(this.props)}
+                errorHandler={(err) => actions.errorActions.setAppError(err)} 
+            />}
             </li>
           </ul>
         </nav>
@@ -103,7 +118,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    newNoteActions: bindActionCreators(newNoteActions, dispatch)
+    newNoteActions: bindActionCreators(newNoteActions, dispatch),
+    serviceActions: bindActionCreators(serviceActions, dispatch),
+    errorActions: bindActionCreators(errorActions, dispatch)
   }
 });
 

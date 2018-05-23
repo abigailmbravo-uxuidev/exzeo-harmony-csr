@@ -1,4 +1,5 @@
-import React from 'react';
+import React , { Component } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import { reduxForm, Field } from 'redux-form';
 import moment from 'moment-timezone'
@@ -22,7 +23,7 @@ const { validation } = lifecycle;
 
 const validate = values => !values.documentType ? { documentType: 'Required' } : null;
 
-export class GenerateDocsForm extends React.Component {
+export class GenerateDocsForm extends Component {
   constructor(props) {
     super(props);
 
@@ -45,7 +46,7 @@ export class GenerateDocsForm extends React.Component {
 
   generateDoc = (data, dispatch, props) => {
     const { documentType, effectiveDate } = data;
-    const { policyNumber } = props;
+    const { policyNumber, errorHandler, updateNotes } = props;
     const req = reqConfig({
       documentNumber: policyNumber,
       documentType,
@@ -65,10 +66,13 @@ export class GenerateDocsForm extends React.Component {
       link.click();
       document.body.removeChild(link);
       this.setState({ isSubmitting: false });
+      if (window.location.pathname === '/policy/notes') updateNotes();
       return true;
     })
-    .catch((error) => {
+    .catch((err) => {
+      const error = err.response ? err.response.statusText : err;
       this.setState({ isSubmitting: false });
+      return errorHandler({ message: error });
     });
   }
 
@@ -100,6 +104,12 @@ export class GenerateDocsForm extends React.Component {
       </div>
     );
   }
+};
+
+GenerateDocsForm.propTypes = {
+  policyNumber: PropTypes.string.isRequired,
+  updateNotes: PropTypes.func.isRequired,
+  errorHandler: PropTypes.func.isRequired
 };
 
 export default reduxForm({
