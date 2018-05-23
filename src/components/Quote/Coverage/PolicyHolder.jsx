@@ -10,7 +10,7 @@ const primaryPhoneDepends = validation.dependsOn(['pH2FirstName', 'pH2LastName',
 const emailAddressDepends = validation.dependsOn(['pH2FirstName', 'pH2LastName', 'pH2phone']);
 
 const PolicyHolder = ({
-  name, sectionId, sectionClass, header, headerSecondary, radioAnsers, canSendToDocusign, clearSecondaryPolicyholder
+  name, sectionId, sectionClass, header, headerSecondary, radioAnsers, canSendToDocusign, clearSecondaryPolicyholder, setPHToggle
 }) => (
   <section name={name} id={sectionId} className={sectionClass}>
     <div id="policy-holder-a" className="flex-child policy-holder-a">
@@ -94,7 +94,7 @@ const PolicyHolder = ({
             label="First Name"
             component={Input}
             validate={firstNameDepends}
-            onChange={this.setPHToggle}
+            onChange={setPHToggle}
           />
         </div>
         <div className="flex-child policy-holder-b-last-name">
@@ -103,7 +103,7 @@ const PolicyHolder = ({
             label="Last Name"
             component={Input}
             validate={lastNameDepends}
-            onChange={this.setPHToggle}
+            onChange={setPHToggle}
           />
 
         </div>
@@ -115,7 +115,7 @@ const PolicyHolder = ({
             label="Primary Phone"
             component={Phone}
             validate={[primaryPhoneDepends, validation.isPhone]}
-            onChange={this.setPHToggle}
+            onChange={setPHToggle}
           />
         </div>
         <div className="flex-child policy-holder-b-secondary-phone">
@@ -124,7 +124,7 @@ const PolicyHolder = ({
             label="Secondary Phone"
             component={Phone}
             validate={validation.isPhone}
-            onChange={this.setPHToggle}
+            onChange={setPHToggle}
           />
         </div>
       </div>
@@ -135,7 +135,7 @@ const PolicyHolder = ({
             label="Email Address"
             component={Input}
             validate={[emailAddressDepends, validation.isEmail]}
-            onChange={this.setPHToggle}
+            onChange={setPHToggle}
           />
         </div>
       </div>

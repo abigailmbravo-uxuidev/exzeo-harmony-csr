@@ -496,6 +496,7 @@ export class Coverage extends Component {
                   headerSecondary="Secondary Policyholder"
                   sectionClass="demographics flex-parent col2"
                   clearSecondaryPolicyholder={this.clearSecondaryPolicyholder}
+                  setPHToggle={this.setPHToggle}
                   canSendToDocusign={checkSentToDocusign(quoteData.quoteState) || !(quoteData && quoteData.policyHolders && quoteData.policyHolders[1])}
                 />
                 <section id="property-location" className="property flex-parent property-location">
