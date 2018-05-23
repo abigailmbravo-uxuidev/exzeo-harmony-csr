@@ -164,7 +164,6 @@ DetailHeader.propTypes = {
   policy: PropTypes.shape()
 };
 
-
 const mapStateToProps = state => ({
   appState: state.appState,
   policyState: state.policy,
