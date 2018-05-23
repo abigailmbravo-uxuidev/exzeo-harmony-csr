@@ -5,8 +5,8 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
-import ConnectedApp, { Coverage, handleAgencyChange, handleFormSubmit, handleGetQuoteData, handleInitialize, handleGetZipCodeSettings, clearSecondaryPolicyholder } from './Coverage';
-import { quoteSummaryModal } from './Application';
+import ConnectedApp, { Coverage, handleAgencyChange, handleFormSubmit, handleGetQuoteData, handleInitialize, handleGetZipCodeSettings, clearSecondaryPolicyholder } from './index';
+import { quoteSummaryModal } from '../../Application';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
