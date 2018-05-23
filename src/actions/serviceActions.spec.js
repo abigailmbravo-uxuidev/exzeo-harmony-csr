@@ -531,36 +531,6 @@ describe('Service Actions', () => {
       });
   });
 
-  it('should call start getSummaryLedger', () => {
-    const mockAdapter = new MockAdapter(axios);
-
-    const axiosOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'billing',
-        method: 'GET',
-        path: 'summary-ledgers/12345/latest'
-      }
-    };
-
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
-    });
-
-    const initialState = {};
-    const store = mockStore(initialState);
-    serviceActions.getSummaryLedger(store.dispatch);
-
-    return serviceActions.getSummaryLedger('12345')(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
-      });
-  });
-
   it('should call start getPaymentOptions', () => {
     const mockAdapter = new MockAdapter(axios);
 
