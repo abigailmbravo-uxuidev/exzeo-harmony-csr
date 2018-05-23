@@ -25,9 +25,9 @@ import CurrencyField from '../../Form/inputs/CurrencyField';
 import normalizeNumbers from '../../Form/normalizeNumbers';
 import DateField from '../../Form/inputs/DateField';
 import Footer from '../../Common/Footer';
-import ProducedByComponent from './ProducedBy';
 import ProducedBy from './ProducedBy';
 import PolicyHolder from './PolicyHolder';
+import Property from './Property';
 
 
 const { Input, Phone } = Inputs;
@@ -481,7 +481,7 @@ export class Coverage extends Component {
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
                 <ProducedBy
-                  name="addresses"
+                  name="produced-by"
                   sectionId="produced-by"
                   header="Produced By"
                   sectionClass="producer produced-by"
@@ -490,7 +490,7 @@ export class Coverage extends Component {
                   agencies={mappedAgencies}
                 />
                 <PolicyHolder
-                  name="addresses"
+                  name="policyHolders"
                   sectionId="policyHolders"
                   header="Primary Policyholder"
                   headerSecondary="Secondary Policyholder"
@@ -499,130 +499,12 @@ export class Coverage extends Component {
                   setPHToggle={this.setPHToggle}
                   canSendToDocusign={checkSentToDocusign(quoteData.quoteState) || !(quoteData && quoteData.policyHolders && quoteData.policyHolders[1])}
                 />
-                <section id="property-location" className="property flex-parent property-location">
-                  <div id="property-risk" className="property-address flex-child property-risk">
-                    <h3>Property (Risk)</h3>
-                    <div className="flex-parent property-risk-address-1-row">
-                      <div className="flex-child property-risk-address-1">
-                        <TextField label="Address 1" styleName="" name="address1" disabled />
-                      </div>
-                    </div>
-                    <div className="flex-parent property-risk-address-2-row">
-                      <div className="flex-child property-risk-address-2">
-                        <TextField label="Address 2" styleName="" name="address2" disabled />
-                      </div>
-                    </div>
-                    <div className="flex-parent property-risk-city-row">
-                      <div className="flex-child city property-risk-city">
-                        <TextField label="City" styleName="" name="city" disabled />
-                      </div>
-                    </div>
-                    <div className="flex-parent property-risk-state-zip-row">
-                      <div className="flex-child state property-risk-state">
-                        <TextField label="State" styleName="" name="state" disabled />
-                      </div>
-                      <div className="flex-child zip property-risk-zip">
-                        <TextField label="Zip" styleName="" name="zip" disabled />
-                      </div>
-                    </div>
-                    <div className="flex-parent property-risk-spacer" />
-                  </div>
-                  <div className="property-details flex-child home-location">
-                    <h3>Home and Location</h3>
-                    <div className="flex-parent home-location-row-1">
-                      <div className="flex-child home-location-year-built">
-                        <TextField label="Year Home Built" styleName="" name="yearBuilt" disabled />
-                      </div>
-                      <div className="flex-child home-location-protection-class">
-                        <SelectField
-                          name="protectionClass"
-                          component="select"
-                          styleName=""
-                          label={getQuestionName('protectionClass', questions)}
-                          input={{
-                            name: 'protectionClass',
-                            disabled: true,
-                            value: fieldValues.protectionClass
-                          }}
-                          answers={getAnswers('protectionClass', questions)}
-                        />
-                      </div>
-                      <div className="flex-child home-location-tidal-waters">
-                        <TextField label="Tidal Waters Dist." styleName="" name="distanceToTidalWater" disabled />
-                      </div>
-                      <div className="flex-child home-location-residence-type">
-                        <TextField
-                          name="residenceType"
-                          styleName=""
-                          label={getQuestionName('residenceType', questions)}
-                          disabled
-                        />
-                      </div>
-                    </div>
-                    <div className="flex-parent home-location-row-2">
-                      <div className="flex-child home-location-construction">
-                        <SelectField
-                          component="select"
-                          styleName=""
-                          label={getQuestionName('constructionType', questions)}
-                          name="constructionType"
-                          input={{
-                            name: 'constructionType',
-                            disabled: true,
-                            value: fieldValues.constructionType
-                          }}
-                          answers={getAnswers('constructionType', questions)}
-                        />
-                      </div>
-                      <div className="flex-child home-location-bceg">
-                        <SelectField
-                          component="select"
-                          styleName=""
-                          label={getQuestionName('buildingCodeEffectivenessGrading', questions)}
-                          name="buildingCodeEffectivenessGrading"
-                          input={{
-                            name: 'buildingCodeEffectivenessGrading',
-                            disabled: true,
-                            value: fieldValues.buildingCodeEffectivenessGrading
-                          }}
-                          answers={getAnswers('buildingCodeEffectivenessGrading', questions)}
-                        />
-                      </div>
-                      <div className="flex-child home-location-fire-hydrant">
-                        <TextField name="distanceToFireHydrant" disabled label="Fire Hydrant Dist." styleName="" />
-                      </div>
-                      <div className="flex-child home-location-square-ft">
-                        <TextField name="squareFeet" disabled label="Sq. Ft. of Home" styleName="" />
-                      </div>
-                    </div>
-                    <div className="flex-parent home-location-row-3">
-                      <div className="flex-child home-location-year-roof-built">
-                        <TextField label="Year Roof Built" styleName="" name="yearOfRoof" disabled />
-                      </div>
-                      <div className="flex-child home-location-family-units">
-                        <SelectField
-                          name="familyUnits"
-                          component="select"
-                          styleName=""
-                          label={getQuestionName('familyUnits', questions)}
-                          input={{
-                            name: 'familyUnits',
-                            disabled: true,
-                            value: fieldValues.familyUnits
-                          }}
-                          onChange={function () {}}
-                          answers={getAnswers('familyUnits', questions)}
-                        />
-                      </div>
-                      <div className="flex-child home-location-fire-station">
-                        <TextField label="Fire Station Dist." styleName="" name="distanceToFireStation" disabled />
-                      </div>
-                      <div className="flex-child home-location-flood-zone">
-                        <TextField name="floodZone" disabled label="Flood Zone" styleName="" />
-                      </div>
-                    </div>
-                  </div>
-                </section>
+                <Property
+                  sectionId="property-location"
+                  sectionClass="property flex-parent property-location"
+                  header="Home and Location"
+                  questions={questions}
+                />
                 <section id="coverage-deductibles-discounts" className="coverage-options flex-parent coverage-deductibles-discounts">
                   <div className="coverages flex-child">
                     <h3>Coverages</h3>
