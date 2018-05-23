@@ -22,7 +22,7 @@ const handleInitialize = state => state.policyState.policy;
 
 export class Coverage extends Component {
   async componentDidMount() {
-    const { getUIQuestions } = this.props;
+    const { getUIQuestions, getPolicy, getCancelOptions } = this.props;
 
     getUIQuestions('propertyAppraisalCSR');
     const isNewTab = await localStorage.getItem('isNewTab') === 'true';
@@ -30,7 +30,7 @@ export class Coverage extends Component {
       const policyNumber = await localStorage.getItem('policyNumber');
       getPolicy(policyNumber);
       getCancelOptions();
-      localStorage.setItem('isNewTab', false);
+      localStorage.setItem('isNewTab', 'false');
     }
   }
 

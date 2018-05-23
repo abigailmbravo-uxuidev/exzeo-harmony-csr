@@ -398,7 +398,7 @@ export class MortgageBilling extends Component {
               {/* TODO: This section needs to be hidden per role */}
               <section className="add-payment">
                 <h3>Add Payment</h3>
-                <Form id="MortgageBilling" onSubmit={handleSubmit(this.handleFormSubmit)} noValidate>
+                <form id="MortgageBilling" onSubmit={handleSubmit(this.handleFormSubmit)} >
                   <div className="flex-parent">
                     <div className="flex-child">
                       <div className="form-group">
@@ -464,7 +464,7 @@ export class MortgageBilling extends Component {
                     <button className="btn btn-secondary" type="button" form="MortgageBilling" onClick={resetForm}>Cancel</button>
                     <button className="btn btn-primary" type="submit" form="MortgageBilling" disabled={submitting || pristine}>Save</button>
                   </div>
-                </Form>
+                </form>
               </section>
               <section className="payment-summary">
                 <h3>Billing <button className="btn btn-link btn-sm" onClick={this.handleBillingEdit}><i className="fa fa-pencil-square" />Edit</button></h3>

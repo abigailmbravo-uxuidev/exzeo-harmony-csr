@@ -209,6 +209,7 @@ describe('Testing MortgageBilling component', () => {
     const initialState = {
       service: {
       },
+      policyState: {},
       cg: {
         bb: {
           data: {
@@ -235,6 +236,7 @@ describe('Testing MortgageBilling component', () => {
       createTransaction() { return Promise.resolve(); },
       getUIQuestions() {},
       updatePolicy() {},
+      getPolicy() {},
       billingOptions: [],
       reset() {},
       auth: {
