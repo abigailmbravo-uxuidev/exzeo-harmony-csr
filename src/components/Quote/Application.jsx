@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { reduxForm, Form, propTypes } from 'redux-form';
+import { reduxForm, Form } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -141,7 +141,6 @@ QuoteApplication.contextTypes = {
 // Property type definitions
 // ------------------------------------------------
 QuoteApplication.propTypes = {
-  ...propTypes,
   tasks: PropTypes.shape(),
   appState: PropTypes.shape({
     modelName: PropTypes.string,

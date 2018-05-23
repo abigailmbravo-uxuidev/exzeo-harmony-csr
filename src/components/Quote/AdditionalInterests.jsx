@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { reduxForm, propTypes } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import * as cgActions from '../../actions/cgActions';
 import * as questionsActions from '../../actions/questionsActions';
 import * as appStateActions from '../../actions/appStateActions';
@@ -439,7 +439,6 @@ export class AdditionalInterests extends Component {
 // Property type definitions
 // ------------------------------------------------
 AdditionalInterests.propTypes = {
-  ...propTypes,
   tasks: PropTypes.shape().isRequired,
   appState: PropTypes.shape({
     modelName: PropTypes.string,

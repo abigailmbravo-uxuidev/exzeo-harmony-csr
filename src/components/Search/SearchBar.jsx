@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { reduxForm, Form, Field, propTypes, getFormSyncErrors, change } from 'redux-form';
+import { reduxForm, Form, Field, getFormSyncErrors, change } from 'redux-form';
 import ReactTooltip from 'react-tooltip';
 import _ from 'lodash';
 import moment from 'moment';
@@ -647,10 +647,7 @@ export class SearchForm extends Component {
   }
 }
 
-export const SearchBar = props => new SearchForm(props);
-
-SearchBar.propTypes = {
-  ...propTypes,
+SearchForm.propTypes = {
   handleSubmit: PropTypes.func,
   tasks: PropTypes.shape({}),
   appState: PropTypes.shape({
@@ -658,10 +655,6 @@ SearchBar.propTypes = {
     instanceId: PropTypes.string,
     data: PropTypes.shape({ submitting: PropTypes.boolean })
   })
-};
-
-SearchForm.propTypes = {
-  ...propTypes
 };
 
 const mapStateToProps = state => ({
@@ -692,6 +685,5 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-const searchBarForm = reduxForm({ form: 'SearchBar', enableReinitialize: true, validate })(SearchBar);
 
-export default connect(mapStateToProps, mapDispatchToProps)(searchBarForm);
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'SearchBar', enableReinitialize: true, validate })(SearchForm));

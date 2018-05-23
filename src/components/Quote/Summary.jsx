@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { reduxForm, Form, propTypes, reset } from 'redux-form';
+import { reduxForm, Form, reset } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
 import * as cgActions from '../../actions/cgActions';
@@ -377,7 +377,6 @@ Summary.contextTypes = {
 };
 
 Summary.propTypes = {
-  ...propTypes,
   handleSubmit: PropTypes.func,
   appState: PropTypes.shape({
     modelName: PropTypes.string,

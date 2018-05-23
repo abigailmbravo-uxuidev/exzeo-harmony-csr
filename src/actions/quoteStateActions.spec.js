@@ -23,21 +23,4 @@ describe('Error Actions', () => {
 
     expect(store.getActions()).toEqual(stateObj);
   });
-
-  it('should call dispatch getLatestQuote', () => {
-    const inputProps = {
-      quoteId: '234',
-      update: true
-    };
-
-    const stateObj = [{
-      type: types.GET_QUOTE,
-      quoteState: inputProps
-    }];
-    const initialState = {};
-    const store = mockStore(initialState);
-
-    quoteStateActions.dispatchGetLatestQuote(inputProps.update, inputProps.quoteId)(store.dispatch);
-    expect(store.getActions()).toEqual(stateObj);
-  });
 });

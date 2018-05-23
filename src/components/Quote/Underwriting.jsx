@@ -4,7 +4,7 @@ import { Prompt } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { reduxForm, Form, propTypes } from 'redux-form';
+import { reduxForm, Form  } from 'redux-form';
 import * as cgActions from '../../actions/cgActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 import * as serviceActions from '../../actions/serviceActions';
@@ -146,7 +146,6 @@ export class Underwriting extends Component {
 // Property type definitions
 // ------------------------------------------------
 Underwriting.propTypes = {
-  ...propTypes,
   stateObject: PropTypes.shape(),
   tasks: PropTypes.shape(),
   appState: PropTypes.shape({

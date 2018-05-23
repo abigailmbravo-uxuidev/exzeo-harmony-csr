@@ -259,7 +259,7 @@ describe('Testing MortgageBilling component', () => {
         }
       }
     };
-    const wrapper = shallow(<MortgageBilling store={store} {...props} />);
+    const wrapper = shallow(<MortgageBilling {...props} />);
     expect(wrapper);
 
     handleInitialize(initialState);
@@ -289,6 +289,9 @@ describe('Testing MortgageBilling component', () => {
 
       },
       actions: {
+        questionsActions: {
+          getUIQuestions() {}
+        },
         appStateActions: {
           setAppState() {}
         },

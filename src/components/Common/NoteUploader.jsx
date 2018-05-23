@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Field, Form, reduxForm, propTypes } from 'redux-form';
+import { Field, Form, reduxForm } from 'redux-form';
 import Uppy from 'uppy/lib/core';
 import { Dashboard } from 'uppy/lib/react';
 import XHRUpload from 'uppy/lib/plugins/XHRUpload';
@@ -21,7 +21,7 @@ export const minimzeButtonHandler = (props) => {
 };
 
 export const renderNotes = ({
- input, label, type, meta: { touched, error } 
+ input, label, type, meta: { touched, error }
 }) => (
   <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
     <textarea {...input} placeholder={label} rows="10" cols="40" />
@@ -113,7 +113,7 @@ export class Uploader extends Component {
 
   submitNote = (data, dispatch, props) => {
     const {
- actions, user, noteType, documentId, sourceId 
+ actions, user, noteType, documentId, sourceId
 } = props;
     const attachments = Object.values(this.uppy.getState().files);
     if (!user.profile.given_name || !user.profile.family_name) {
@@ -141,8 +141,8 @@ export class Uploader extends Component {
     this.closeButtonHandler();
   };
 
-  validateFile = (file, currentFiles) => !file.name.includes('.') 
-      ? Promise.reject('Uploads must have a file extension.') 
+  validateFile = (file, currentFiles) => !file.name.includes('.')
+      ? Promise.reject('Uploads must have a file extension.')
       : Promise.resolve()
 
   componentWillMount() {
@@ -158,7 +158,7 @@ export class Uploader extends Component {
       onBeforeUpload: (files) => {
         if (files) return Promise.resolve();
         return this.uppy.addFile({
- source: 'uppy', preview: null, name: 'hidden', type: null, data: new Uint8Array() 
+ source: 'uppy', preview: null, name: 'hidden', type: null, data: new Uint8Array()
 })
           .then(done => Promise.resolve());
       }
@@ -219,7 +219,6 @@ export class Uploader extends Component {
 }
 
 Uploader.propTypes = {
-  ...propTypes,
   noteType: PropTypes.string
 };
 

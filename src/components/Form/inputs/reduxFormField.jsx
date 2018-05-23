@@ -21,9 +21,12 @@ export default function reduxFormField(fieldComponent) {
       /**
        * String to put in label
        */
-      label: PropTypes.string.isRequired,
+      label: PropTypes.string,
 
-
+      /**
+       * Name of input element, needed for onChange
+       */
+      name: PropTypes.string,
 
       /**
        * Type for input

@@ -1,6 +1,5 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
-import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
 
 import ConnectedApp, { AdditionalInterests, handleGetQuoteData, handleFormSubmit,
@@ -347,12 +346,15 @@ describe('Testing AdditionalInterests component', () => {
           submitting: false
         }
       },
-      quoteData,
-      ...propTypes
+      actions: {
+        questionsActions: {
+          getUIQuestions() {},
+        }
+      },
+      quoteData
     };
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
 
-    // wrapper.props().handleFormSubmit();
     expect(wrapper);
   });
 
@@ -444,8 +446,7 @@ describe('Testing AdditionalInterests component', () => {
           submitting: false
         }
       },
-      quoteData,
-      ...propTypes
+      quoteData
     };
     deleteAdditionalInterest(quoteData.additionalInterests[0], props);
   });
@@ -502,8 +503,7 @@ describe('Testing AdditionalInterests component', () => {
           submitting: false
         }
       },
-      quoteData,
-      ...propTypes
+      quoteData
     };
     addAdditionalInterest(quoteData.additionalInterests[0], props);
   });
@@ -560,8 +560,7 @@ describe('Testing AdditionalInterests component', () => {
           submitting: false
         }
       },
-      quoteData,
-      ...propTypes
+      quoteData
     };
     editAdditionalInterest(quoteData.additionalInterests[0], props);
   });
@@ -618,8 +617,7 @@ describe('Testing AdditionalInterests component', () => {
           submitting: false
         }
       },
-      quoteData,
-      ...propTypes
+      quoteData
     };
     hideAdditionalInterestModal(props);
   });

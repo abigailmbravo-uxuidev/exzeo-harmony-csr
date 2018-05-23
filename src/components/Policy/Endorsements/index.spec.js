@@ -110,7 +110,7 @@ describe('Test the Endorsements form component', () => {
   });
 
   it('should test connected app', () => {
-    const wrapper = shallow(<Endorsements store={store} {...baseProps} />);
+    const wrapper = shallow(<Endorsements {...baseProps} />);
     expect(wrapper);
 
     baseProps.getRate = { worksheet: {} };
@@ -135,14 +135,14 @@ describe('Test the Endorsements form component', () => {
       searchType: 'policy'
     }));
 
-    const wrapper = shallow(<Endorsements store={store} {...props} />);
+    const wrapper = shallow(<Endorsements {...props} />);
     // wrapper.instance().componentWillReceiveProps(props);
     expect(wrapper.find('.error').text()).toEqual(' Endorsement page cannot be accessed due to User Permissions.');
     expect(wrapper);
   });
 
   it('Should allow for instance methods to be called', () => {
-    const wrapper = shallow(<Endorsements store={store} {...baseProps} />);
+    const wrapper = shallow(<Endorsements {...baseProps} />);
     const inst = wrapper.instance();
     const fn = () => {};
 
