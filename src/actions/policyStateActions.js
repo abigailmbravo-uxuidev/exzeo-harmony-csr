@@ -1,10 +1,10 @@
 import { convertToRateData } from "../utilities/endorsementModel";
-import { callService } from '../utilities/serviceRunner';
+import * as serviceRunner from '../utilities/serviceRunner';
 import * as types from './actionTypes';
 import * as errorActions from "./errorActions";
 
 
-function setPolicy(policy, summaryLedger) {
+export function setPolicy(policy, summaryLedger) {
   return {
     type: types.SET_POLICY,
     policy,
@@ -12,30 +12,19 @@ function setPolicy(policy, summaryLedger) {
   }
 }
 
-function setSummaryLedger(summaryLedger) {
+export function setSummaryLedger(summaryLedger) {
   return {
     type: types.SET_SUMMARY_LEDGER,
     summaryLedger
   }
 }
 
-function setNewRate(rate) {
+export function setNewRate(rate) {
   return {
     type: types.SET_RATE,
     rate
   }
 }
-
-export const updatePolicy = (update, policyNumber) => {
-  const stateObj = {
-    type: types.GET_POLICY,
-    policyState: {
-      policyNumber,
-      update
-    }
-  };
-  return stateObj;
-};
 
 export function getPolicy(policyNumber) {
   return async (dispatch) => {
@@ -73,7 +62,7 @@ export function getNewRate(formData, formProps) {
         data: rateData
       };
     try {
-      const response = await callService(config);
+      const response = await serviceRunner.callService(config);
       const rate = response && response.data && response.data.result ? response.data.result : {};
       dispatch(setNewRate(rate));
       return { ...rate };
@@ -84,7 +73,7 @@ export function getNewRate(formData, formProps) {
   };
 }
 
-async function fetchPolicy(policyNumber) {
+export async function fetchPolicy(policyNumber) {
   const config = {
     service: 'policy-data',
     method: 'GET',
@@ -92,14 +81,14 @@ async function fetchPolicy(policyNumber) {
   };
 
   try {
-    const response = await callService(config);
+    const response = await serviceRunner.callService(config);
     return response ? response.data : {};
   } catch (error) {
     throw error;
   }
 }
 
-async function fetchSummaryLedger(policyNumber) {
+export async function fetchSummaryLedger(policyNumber) {
   const config = {
     service: 'billing',
     method: 'GET',
@@ -107,7 +96,7 @@ async function fetchSummaryLedger(policyNumber) {
   };
 
   try {
-    const response = await callService(config);
+    const response = await serviceRunner.callService(config);
     return response && response.data && response.data.result ? response.data.result : {};
   } catch (error) {
     throw error;
