@@ -1,7 +1,9 @@
 export default {
   search: {},
   workflowData: {},
-  service: {},
+  service: {
+    cancelOptions: []
+  },
   newNote: {},
   appState: {
     data: {
