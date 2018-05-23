@@ -26,6 +26,9 @@ import normalizePhone from '../../Form/normalizePhone';
 import normalizeNumbers from '../../Form/normalizeNumbers';
 import DateField from '../../Form/inputs/DateField';
 import Footer from '../../Common/Footer';
+import ProducedByComponent from './ProducedBy';
+import ProducedBy from './ProducedBy';
+
 
 const { Input, Phone } = Inputs;
 const { validation } = lifecycle;
@@ -201,26 +204,6 @@ const checkSentToDocusign = state => state === 'Application Sent DocuSign';
 
 const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question') || '';
 
-export const handleAgencyChange = (props, agencyCode, isInit) => {
-  if (!isInit) {
-    props.dispatch(batchActions([
-      change('Coverage', 'agencyCode', agencyCode),
-      change('Coverage', 'agentCode', '')
-    ]));
-  }
-
-  if (agencyCode) {
-    const agency = _.find(props.agencies, a => String(a.agencyCode) === String(agencyCode));
-    if (agency) {
-      props.actions.serviceActions.getAgentsByAgency(agency.companyCode, agency.state, agencyCode).then((response) => {
-        if (response.payload && response.payload[0].data.agents && response.payload[0].data.agents.length === 1) {
-          props.dispatch(change('Coverage', 'agentCode', response.payload[0].data.agents[0].agentCode));
-        }
-      });
-    }
-  }
-};
-
 export const handleFormSubmit = (data, dispatch, props) => {
   const workflowId = props.appState.instanceId;
   const submitData = data;
@@ -349,7 +332,7 @@ export class Coverage extends Component {
             this.props.appState.modelName,
             startResult.modelInstanceId, { ...this.props.appState.data, selectedLink: 'customerData' }
           );
-          handleAgencyChange(this.props, this.props.quoteData.agencyCode, true);
+          this.handleAgencyChange(this.props, this.props.quoteData.agencyCode, true);
         });
       });
     } else if (this.props.appState.instanceId) {
@@ -371,7 +354,7 @@ export class Coverage extends Component {
             selectedLink: 'customerData'
           });
         });
-      handleAgencyChange(this.props, this.props.quoteData.agencyCode, true);
+      this.handleAgencyChange(this.props, this.props.quoteData.agencyCode, true);
     }
   }
 
@@ -452,6 +435,26 @@ export class Coverage extends Component {
     dispatch(change('Coverage', 'calculatedSinkhole', String(setPercentageOfValue(Number(dependencyValue), 10))));
   }
 
+  handleAgencyChange = (agencyCode, isInit) => {
+    if (!isInit) {
+      this.props.dispatch(batchActions([
+        change('Coverage', 'agencyCode', agencyCode),
+        change('Coverage', 'agentCode', '')
+      ]));
+    }
+
+    if (agencyCode) {
+      const agency = _.find(this.props.agencies, a => String(a.agencyCode) === String(agencyCode));
+      if (agency) {
+        this.props.actions.serviceActions.getAgentsByAgency(agency.companyCode, agency.state, agencyCode).then((response) => {
+          if (response.payload && response.payload[0].data.agents && response.payload[0].data.agents.length === 1) {
+            this.props.dispatch(change('Coverage', 'agentCode', response.payload[0].data.agents[0].agentCode));
+          }
+        });
+      }
+    }
+  };
+
   render() {
     const {
       quoteData, fieldValues, handleSubmit, initialValues, pristine, agents, agencies, questions, dirty
@@ -460,6 +463,16 @@ export class Coverage extends Component {
     if (!quoteData) {
       return (<QuoteBaseConnect />);
     }
+
+    const mappedAgents = agents && agents.map(agent => ({
+      answer: agent.agentCode,
+      label: `${agent.firstName} ${agent.lastName} - ${agent.agentCode}`
+    }));
+    const mappedAgencies = agencies && agencies.map(agency => ({
+      answer: agency.agencyCode,
+      label: `${agency.displayName} - ${agency.agencyCode}`
+    }));
+
     return (
       <QuoteBaseConnect>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
@@ -470,45 +483,15 @@ export class Coverage extends Component {
             <HiddenField name="liabilityIncidentalOccupancies" />
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
-                <section id="produced-by" className="producer produced-by">
-                  <h3>Produced By</h3>
-                  <div className="flex-parent produced-by-wrapper">
-                    <div className="flex-child effectiveDate">
-                      <DateField validations={['required', 'date']} label="Effective Date" name="effectiveDate" />
-                    </div>
-                    <div className="flex-child agencyCode">
-                      <SelectField
-                        name="agencyCode"
-                        component="select"
-                        styleName=""
-                        label="Agency"
-                        validations={['required']}
-                        input={{
-                          name: 'agencyCode',
-                          onChange: event => handleAgencyChange(this.props, event.target.value),
-                          value: fieldValues.agencyCode
-                        }}
-                        answers={agencies && agencies.map(agency => ({
-                          answer: agency.agencyCode,
-                          label: `${agency.displayName} - ${agency.agencyCode}`
-                        }))}
-                      />
-                    </div>
-                    <div className="flex-child agentCode">
-                      <SelectField
-                        name="agentCode"
-                        component="select"
-                        styleName=""
-                        label="Agent"
-                        validations={['required']}
-                        answers={agents && agents.map(agent => ({
-                          answer: agent.agentCode,
-                          label: `${agent.firstName} ${agent.lastName} - ${agent.agentCode}`
-                        }))}
-                      />
-                    </div>
-                  </div>
-                </section>
+                <ProducedBy
+                  name="addresses"
+                  sectionId="produced-by"
+                  header="Produced By"
+                  sectionClass="producer produced-by"
+                  handleAgencyChange={this.handleAgencyChange}
+                  agents={mappedAgents}
+                  agencies={mappedAgencies}
+                />
                 <section id="policyHolders" className="demographics flex-parent col2">
                   <div id="policy-holder-a" className="flex-child policy-holder-a">
                     <h3 id="primaryPolicyholder">Primary Policyholder</h3>
