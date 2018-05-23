@@ -8,5 +8,3 @@ export const getLatestQuote = (update, quoteId) => ({
     update
   }
 });
-
-export const dispatchGetLatestQuote = (update, quoteId) => dispatch => dispatch(getLatestQuote(update, quoteId));

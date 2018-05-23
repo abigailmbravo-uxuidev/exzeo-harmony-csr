@@ -1,16 +1,15 @@
-import * as persistTypes from 'redux-persist/constants';
 import * as types from './../actions/actionTypes';
 import initialState from './initialState';
 import questionsReducer from './questionsReducer';
 
-describe('Quote State Reducer', () => {
-  it('should call questionsReducer GET_QUOTE', () => {
-    const inputProps = { quoteId: '234', update: true };
+describe('Questions State Reducer', () => {
+  it('should call questionsReducer GET_QUESTIONS', () => {
+    const inputProps = [{ quoteId: '234', update: true }];
     const action = {
       type: types.GET_QUESTIONS,
-      quoteState: inputProps
+      questions: inputProps
     };
 
-    expect(questionsReducer(inputProps, action)).toEqual(inputProps);
+    expect(questionsReducer(initialState.questions, action)).toEqual(inputProps);
   });
 });
