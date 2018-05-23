@@ -22,3 +22,4 @@ RUN apk update && apk --no-cache add bash libc6-compat && \
 RUN rm -f .npmrc
 
 CMD ["npm", "run", "server"]
+

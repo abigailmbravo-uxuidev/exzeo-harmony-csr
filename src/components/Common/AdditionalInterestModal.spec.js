@@ -149,7 +149,12 @@ describe('Testing AdditionalInterestModal component', () => {
         }]
       }
     };
-    const wrapper = AdditionalInterestModal(props);
+    const wrapper = shallow(<AdditionalInterestModal store={store} {...props} />);
+    expect(wrapper.props().selectedAI).toEqual({
+      type: 'Mortgagee',
+      phoneNumber: '43543543535',
+      mailingAddress: {}
+    });
   });
 
   it('should test setMortgageeValues', () => {
@@ -173,6 +178,8 @@ describe('Testing AdditionalInterestModal component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      initializeForm() {},
+      resetForm() {},
       actions: {
         cgActions: {
           startWorkflow() {}

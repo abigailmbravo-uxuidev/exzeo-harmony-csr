@@ -1,147 +1,198 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
+import classNames from 'classnames';
 import { connect } from 'react-redux';
-import _ from 'lodash';
-import { reduxForm, Form, propTypes, change } from 'redux-form';
-import { batchActions } from 'redux-batched-actions';
+import { reduxForm, Field, propTypes, initialize, reset } from 'redux-form';
+import Inputs from '@exzeo/core-ui/lib/Input';
+import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
+// TODO refactor this out next
 import ReactSelectField from '../Form/inputs/ReactSelectField';
-import TextField from '../Form/inputs/TextField';
-import SelectField from '../Form/inputs/SelectField';
-import PhoneField from '../Form/inputs/PhoneField';
-import * as questionsActions from '../../actions/questionsActions';
-import * as cgActions from '../../actions/cgActions';
-import * as appStateActions from '../../actions/appStateActions';
-import * as serviceActions from '../../actions/serviceActions';
-import * as policyStateActions from '../../actions/policyStateActions';
-import * as quoteStateActions from '../../actions/quoteStateActions';
 import Loader from './Loader';
 
-const handleInitialize = (state) => {
-  const mortgageeOrderAnswers = getMortgageeAnswers(state.questions, _.get(state, 'service.latestPolicy.additionalInterests') || _.get(state, 'service.quote.additionalInterests') || null);
-  return {
-    name1: '',
-    name2: '',
-    phoneNumber: '',
-    address1: '',
-    address2: '',
-    city: '',
-    state: '',
-    zip: '',
-    referenceNumber: '',
-    type: '',
-    order: mortgageeOrderAnswers.length === 1 ? mortgageeOrderAnswers[0].answer : ''
-  };
-};
-const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
+const { validation, format } = lifecycle;
+const { Input, Select, Phone } = Inputs;
 
 export const setMortgageeValues = (val, props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, {
-    ...props.appState.data,
-    selectedMortgageeOption: val
-  });
   const selectedMortgagee = val;
 
   if (selectedMortgagee) {
-    props.dispatch(batchActions([
-      change('AdditionalInterestModal', 'name1', _.get(selectedMortgagee, 'AIName1')),
-      change('AdditionalInterestModal', 'name2', _.get(selectedMortgagee, 'AIName2')),
-      change('AdditionalInterestModal', 'address1', _.get(selectedMortgagee, 'AIAddress1')),
-      change('AdditionalInterestModal', 'city', _.get(selectedMortgagee, 'AICity')),
-      change('AdditionalInterestModal', 'state', _.get(selectedMortgagee, 'AIState')),
-      change('AdditionalInterestModal', 'zip', String(_.get(selectedMortgagee, 'AIZip')))
-    ]));
+    props.initializeForm('AdditionalInterestModal', {
+      name1: selectedMortgagee.AIName1,
+      name2: selectedMortgagee.AIName2,
+      address1: selectedMortgagee.AIAddress1,
+      address2: selectedMortgagee.AIAddress2 || '',
+      city: selectedMortgagee.AICity,
+      state: selectedMortgagee.AIState,
+      zip: String(selectedMortgagee.AIZip)
+    });
   } else {
-    props.dispatch(batchActions([
-      change('AdditionalInterestModal', 'name1', ''),
-      change('AdditionalInterestModal', 'name2', ''),
-      change('AdditionalInterestModal', 'address1', ''),
-      change('AdditionalInterestModal', 'city', ''),
-      change('AdditionalInterestModal', 'state', ''),
-      change('AdditionalInterestModal', 'zip', '')
-    ]));
+    props.resetForm('AdditionalInterestModal');
   }
-};
-
-export const getMortgageeAnswers = (questions, additionalInterests) => {
-  let mortgageeOrderAnswers = _.cloneDeep(getAnswers('order', questions));
-
-  if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 0) {
-    mortgageeOrderAnswers = mortgageeOrderAnswers.filter(answer => Number(answer.answer) === 0);
-  } else if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 1) {
-    mortgageeOrderAnswers = mortgageeOrderAnswers.filter(answer => Number(answer.answer) === 1);
-  } else if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 2) {
-    mortgageeOrderAnswers = mortgageeOrderAnswers.filter(answer => Number(answer.answer) === 2);
-  }
-  return mortgageeOrderAnswers;
 };
 
 export const checkAdditionalInterestForName = aiType => aiType === 'Additional Insured' || aiType === 'Additional Interest' || aiType === 'Bill Payer';
 
-export const AdditionalInterestModal = (props) => {
-  const {
-    appState, handleSubmit, verify, hideAdditionalInterestModal, questions, additionalInterests
-  } = props;
+export class AdditionalInterestModal extends React.Component {
+  constructor(props) {
+    super(props);
 
-  const mortgageeOrderAnswers = getMortgageeAnswers(questions, additionalInterests);
-  return (
-    <div className="modal" style={{ flexDirection: 'row' }}>
-      <Form id="AdditionalInterestModal" className={`AdditionalInterestModal ${appState.data.addAdditionalInterestType}`} noValidate onSubmit={handleSubmit(verify)}>
-        {props.appState.data.submittingAI && <Loader />}
-        <div className="card">
-          <div className="card-header">
-            <h4><i className={`fa fa-circle ${appState.data.addAdditionalInterestType}`} /> {appState.data.addAdditionalInterestType}</h4>
-          </div>
-          <div className="card-block">
-            { appState.data.addAdditionalInterestType === 'Mortgagee' &&
-            <ReactSelectField
-              label="Top Mortgagees"
-              name="mortgage"
-              searchable
-              labelKey="displayText"
-              autoFocus
-              value={appState.data.selectedMortgageeOption}
-              answers={getAnswers('mortgagee', questions)}
-              onChange={val => setMortgageeValues(val, props)}
-            />
-}
-            <TextField label={checkAdditionalInterestForName(appState.data.addAdditionalInterestType) ? 'First Name' : 'Name 1'} styleName="name-1" name="name1" validations={['required']} />
-            <TextField label={checkAdditionalInterestForName(appState.data.addAdditionalInterestType) ? 'Last Name' : 'Name 2'} styleName="name-2" name="name2" />
-            <TextField label="Address 1" styleName="address-1" name="address1" validations={['required']} />
-            <TextField label="Address 2" styleName="address-2" name="address2" />
-            <div className="flex-form">
-              <TextField label="City" styleName="city" name="city" validations={['required']} />
-              <TextField
-                label="State"
-                styleName="state"
-                name="state"
-                validations={['required']}
+    this.modalStyle = { flexDirection: 'row' };
+  }
+  render() {
+    const {
+      handleSubmit,
+      verify,
+      hideModal,
+      questions,
+      additionalInterests,
+      submitting,
+      addAdditionalInterestType,
+      isEditing,
+      isEndorsement,
+      getAnswers,
+      getMortgageeOrderAnswers,
+      getMortgageeOrderAnswersForEdit,
+      deleteAdditionalInterest,
+      validAdditionalInterestTypes,
+      selectedAI,
+      isDeleting
+    } = this.props;
+
+    return (
+      <div className="modal" style={this.modalStyle}>
+        <form
+          id={isEditing ? 'AdditionalInterestEditModal' : 'AdditionalInterestModal'}
+          className={classNames('AdditionalInterestModal', { [selectedAI.type]: isEditing, [addAdditionalInterestType]: !isEditing })}
+          onSubmit={handleSubmit(verify)}
+        >
+          {(submitting || isDeleting) && <Loader />}
+          <div className="card">
+            <div className="card-header">
+              <h4><i className={`fa fa-circle ${addAdditionalInterestType}`} /> {addAdditionalInterestType}</h4>
+            </div>
+            <div className="card-block">
+              {(addAdditionalInterestType || selectedAI.type) === 'Mortgagee' &&
+              <ReactSelectField
+                label="Top Mortgagees"
+                name="mortgagee"
+                searchable
+                labelKey="displayText"
+                autoFocus
+                answers={getAnswers('mortgagee', questions)}
+                onChange={val => setMortgageeValues(val, this.props)}
               />
-              <TextField label="Zip Code" styleName="zip" name="zip" validations={['required', 'zipNumbersOnly']} />
+              }
+              <Field
+                name="name1"
+                label={checkAdditionalInterestForName(addAdditionalInterestType) ? 'First Name' : 'Name 1'}
+                component={Input}
+                styleName="name-1"
+                validate={validation.isRequired}
+              />
+              <Field
+                name="name2"
+                label={checkAdditionalInterestForName(addAdditionalInterestType) ? 'Last Name' : 'Name 2'}
+                component={Input}
+                styleName="name-2"
+              />
+              <Field
+                name="address1"
+                label="Address 1"
+                component={Input}
+                styleName="address-1"
+                validate={validation.isRequired}
+              />
+              <Field
+                name="address2"
+                label="Address 2"
+                component={Input}
+                styleName="address-2"
+              />
+              <div className="flex-form">
+                <Field
+                  name="city"
+                  label="City"
+                  component={Input}
+                  styleName="city"
+                  validate={validation.isRequired}
+                />
+                <Field
+                  name="state"
+                  label="State"
+                  component={Input}
+                  styleName="state"
+                  validate={validation.isRequired}
+                />
+                <Field
+                  name="zip"
+                  label="Zip Code"
+                  component={Input}
+                  styleName="zip"
+                  format={format.toString}
+                  validate={[validation.isRequired, validation.isZipCode]}
+                />
+              </div>
+              <div className="flex-form">
+                <Field
+                  name="phoneNumber"
+                  label="Phone Number"
+                  component={Phone}
+                  styleName="phone"
+                  validate={validation.isPhone}
+                  placeholder="555-555-5555"
+                />
+                <Field
+                  name="referenceNumber"
+                  label="Reference Number"
+                  component={Input}
+                  styleName="reference-number"
+                />
+
+                {isEditing && selectedAI.type === 'Mortgagee' &&
+                <Field
+                  name="order"
+                  component={Select}
+                  label="Order"
+                  validate={validation.isRequired}
+                  answers={getMortgageeOrderAnswersForEdit(questions, additionalInterests)}
+                />
+                }
+
+                {!isEditing && addAdditionalInterestType === 'Mortgagee' &&
+                  <Field
+                    name="order"
+                    component={Select}
+                    styleName=""
+                    label="Order"
+                    answers={getMortgageeOrderAnswers(questions, additionalInterests)}
+                  />
+                }
+              </div>
+              {isEndorsement &&
+              <div className="flex-form">
+                <Field
+                  name="aiType"
+                  label="Type"
+                  component={Select}
+                  answers={validAdditionalInterestTypes}
+                  validations={validation.isRequired}
+                />
+              </div>
+              }
             </div>
-            <div className="flex-form">
-              <PhoneField label="Phone Number" styleName="phone" name="phoneNumber" validations={['phone']} />
-              <TextField label="Reference Number" styleName="reference-number" name="referenceNumber" />
-              { appState.data.addAdditionalInterestType === 'Mortgagee' && <SelectField
-                name="order"
-                component="select"
-                styleName=""
-                label="Order"
-                validations={['required']}
-                answers={mortgageeOrderAnswers}
-              />}
+            <div className="card-footer">
+              <div className="btn-group">
+                <button tabIndex="0" className="btn btn-secondary" type="button" onClick={hideModal}>Cancel</button>
+                {isEditing && <button tabIndex="0" className="btn btn-secondary" type="button" disabled={submitting || isDeleting} onClick={() => deleteAdditionalInterest(selectedAI, this.props)}>Delete</button> }
+                <button tabIndex="0" className="btn btn-primary" type="submit" disabled={submitting || isDeleting}>Save</button>
+              </div>
             </div>
           </div>
-          <div className="card-footer">
-            <div className="btn-group">
-              <button tabIndex="0" className="btn btn-secondary" type="button" onClick={() => hideAdditionalInterestModal(props)}>Cancel</button>
-              <button tabIndex="0" className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Save</button>
-            </div>
-          </div>
-        </div>
-      </Form>
-    </div>);
-};
+        </form>
+      </div>
+    );
+  }
+}
 
 AdditionalInterestModal.propTypes = {
   ...propTypes,
@@ -151,32 +202,22 @@ AdditionalInterestModal.propTypes = {
     data: PropTypes.shape({
       recalc: PropTypes.bool,
       submitting: PropTypes.bool
-    }).isRequired
-  }).isRequired
+    })
+  })
 };
 
-
-const mapStateToProps = state => ({
-  tasks: state.cg,
-  appState: state.appState,
-  initialValues: handleInitialize(state),
-  fieldValues: _.get(state.form, 'AdditionalInterestModal.values', {})
+const mapStateToProps = (state, ownProps) => ({
+  tasks: state.cg
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    serviceActions: bindActionCreators(serviceActions, dispatch),
-    quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
-    policyStateActions: bindActionCreators(policyStateActions, dispatch),
-    questionsActions: bindActionCreators(questionsActions, dispatch),
-    cgActions: bindActionCreators(cgActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
-  }
-});
+AdditionalInterestModal = reduxForm({
+  form: 'AdditionalInterestModal',
+  enableReinitialize: true
+})(AdditionalInterestModal);
 
-// ------------------------------------------------
-// wire up redux form with the redux connect
-// ------------------------------------------------
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
-  form: 'AdditionalInterestModal', enableReinitialize: true
-})(AdditionalInterestModal));
+AdditionalInterestModal = connect(mapStateToProps, {
+  initializeForm: initialize,
+  resetForm: reset
+})(AdditionalInterestModal);
+
+export default AdditionalInterestModal;

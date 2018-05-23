@@ -1,15 +1,11 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
 import { shallow } from 'enzyme';
-import _ from 'lodash';
 import {
+  getMortgageeOrderAnswers,
+  getMortgageeOrderAnswersForEdit,
   MortgageBilling,
-  handleInitialize,
-  addAdditionalInterest,
-  editAdditionalInterest,
-  hideAdditionalInterestModal,
-  handleAISubmit,
-  deleteAdditionalInterest
+  handleInitialize
 } from './MortgageBilling';
 
 const middlewares = [];
@@ -128,6 +124,7 @@ const body = {
 };
 
 const policy = {
+  additionalInterests,
   policyTerm: 1,
   updatedAt: '2017-06-30T14:59:40.455Z',
   policyHolders: [
@@ -228,6 +225,17 @@ describe('Testing MortgageBilling component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      paymentOptions: [],
+      batchActions() {},
+      getPaymentHistory() {},
+      getPaymentOptionsApplyPayments() {},
+      getBillingOptionsForPolicy() {},
+      getSummaryLedger() {},
+      addTransaction() { return Promise.resolve(); },
+      createTransaction() { return Promise.resolve(); },
+      getUIQuestions() {},
+      updatePolicy() {},
+      billingOptions: [],
       reset() {},
       auth: {
         userProfile: {
@@ -270,25 +278,29 @@ describe('Testing MortgageBilling component', () => {
     };
     const wrapper = shallow(<MortgageBilling store={store} {...props} />);
     expect(wrapper);
+
     handleInitialize(initialState);
-
-
-    addAdditionalInterest('Mortgagee', props);
-    editAdditionalInterest(additionalInterests[0], props);
-    hideAdditionalInterestModal(props);
-    handleAISubmit(additionalInterests[0], props.dispatch, props);
-    deleteAdditionalInterest(additionalInterests[0], props);
+    getMortgageeOrderAnswers([], additionalInterests);
+    getMortgageeOrderAnswersForEdit([], additionalInterests);
+    wrapper.instance().addAdditionalInterest('Mortgagee');
+    wrapper.instance().editAdditionalInterest(additionalInterests[0]);
+    wrapper.instance().hideAdditionalInterestModal(props);
+    wrapper.instance().setIsActive(additionalInterests);
+    wrapper.instance().getPaymentDescription({ target: { value: '' } });
+    wrapper.instance().editAIOnEnter({ key: 'Enter' }, additionalInterests[0]);
 
     wrapper.instance().handleFormSubmit({ body });
     wrapper.instance().handleBillingEdit();
     wrapper.instance().setBatch('');
-    wrapper.instance().checkPayments();
 
     wrapper.instance().amountFormatter(100);
     wrapper.instance().dateFormatter('123');
+    wrapper.instance().handleAISubmit({ type: 'Mortgagee' }, props.dispatch, props);
+    wrapper.instance().deleteAdditionalInterest(additionalInterests[1], props);
 
     wrapper.instance().componentWillReceiveProps({
-      getSummaryLedger() {},
+      ...props,
+      summaryLedger: {},
       policy: { policyNumber: '1234', rating: { worksheet: { fees: {} } } },
       appState: {
 

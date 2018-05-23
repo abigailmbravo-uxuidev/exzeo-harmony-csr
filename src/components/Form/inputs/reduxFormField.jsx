@@ -23,10 +23,7 @@ export default function reduxFormField(fieldComponent) {
        */
       label: PropTypes.string.isRequired,
 
-      /**
-       * Name of input element, needed for onChange
-       */
-      name: PropTypes.string.isRequired,
+
 
       /**
        * Type for input
