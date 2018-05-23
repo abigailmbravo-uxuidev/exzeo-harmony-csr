@@ -12,7 +12,7 @@ describe('Policy State Reducer', () => {
       policyState: inputProps
     };
 
-    expect(policyStateReducer(state, action)).toEqual(inputProps);
+    expect(policyStateReducer(state, action)).toEqual({ ...initialState.policyState, ...inputProps });
   });
   it('should call policyStateReducer REHYDRATE', () => {
     const state = initialState.policyState;
@@ -23,6 +23,6 @@ describe('Policy State Reducer', () => {
         policyState: inputProps
       }
     };
-    expect(policyStateReducer(state, action)).toEqual(inputProps);
+    expect(policyStateReducer(state, action)).toEqual({ ...initialState.policyState, ...inputProps});
   });
 });
