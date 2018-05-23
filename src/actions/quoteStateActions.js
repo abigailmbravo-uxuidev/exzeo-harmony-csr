@@ -1,4 +1,3 @@
-
 import * as types from './actionTypes';
 
 export const getLatestQuote = (update, quoteId) => ({
