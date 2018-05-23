@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
-import { reduxForm, Form, Field, change } from 'redux-form';
+import { reduxForm, Field, change } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import _ from 'lodash';
 import moment from 'moment';
