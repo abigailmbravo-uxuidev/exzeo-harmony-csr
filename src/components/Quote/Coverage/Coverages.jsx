@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Select, SelectInteger, Currency, Radio } from '@exzeo/core-ui/lib/Input';
+import { Select, Currency, Radio } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers, getQuestionName } from '../../../utilities/forms';
 
@@ -19,7 +19,7 @@ const sinkholePerilCoverageAnswers = questions => (
 
 const Coverages = ({
   sectionId, sectionClass, questions,
-  initialValues,
+  fieldValues,
   normalizeDwellingAmount,
   normalizeDwellingDependencies,
   normalizePersonalPropertyPercentage,
@@ -32,7 +32,7 @@ const Coverages = ({
         <Field
           styleName="flex-child"
           name="dwellingAmount"
-          label={`${getQuestionName('dwellingAmount', questions)} ($ ${String(initialValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $ ${String(initialValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`}
+          label={`${getQuestionName('dwellingAmount', questions)} ($ ${String(fieldValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $ ${String(fieldValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`}
           component={Currency}
           validate={[validation.isRequired, validation.isDwellingRange]}
           normalize={normalizeDwellingAmount}
@@ -45,12 +45,12 @@ const Coverages = ({
           component={Currency}
           styleName="flex-child"
           validate={validation.isRequired}
-          disabled={initialValues.otherStructures !== 'other'}
+          disabled={fieldValues.otherStructures !== 'other'}
         />
         <Field
           name="otherStructures"
           label="Percentage"
-          component={SelectInteger}
+          component={Select}
           styleName="flex-child"
           answers={getAnswers('otherStructuresAmount', questions)}
           validate={validation.isRequired}
@@ -64,13 +64,13 @@ const Coverages = ({
           label={getQuestionName('personalPropertyAmount', questions)}
           component={Currency}
           validate={validation.isRequired}
-          disabled={initialValues.personalProperty !== 'other'}
+          disabled={fieldValues.personalProperty !== 'other'}
         />
         <Field
           styleName="flex-child"
           name="personalProperty"
           label="Percentage"
-          component={SelectInteger}
+          component={Select}
           answers={getAnswers('personalPropertyAmount', questions)}
           validate={validation.isRequired}
           normalize={(v, pv, av) => normalizePersonalPropertyPercentage(v, pv, av, 'personalPropertyAmount')}
@@ -91,7 +91,7 @@ const Coverages = ({
           name="personalLiability"
           styleName="flex-child"
           label={getQuestionName('personalLiability', questions)}
-          component={SelectInteger}
+          component={Select}
           answers={getAnswers('personalLiability', questions)}
           validate={validation.isRequired}
         />
@@ -114,7 +114,7 @@ const Coverages = ({
           styleName="flex-child"
           name="moldProperty"
           label="Mold Property"
-          component={SelectInteger}
+          component={Select}
           answers={getAnswers('moldProperty', questions)}
           validate={validation.isRequired}
         />
@@ -124,7 +124,7 @@ const Coverages = ({
           styleName="flex-child"
           name="moldLiability"
           label="Mold Liability Limit"
-          component={SelectInteger}
+          component={Select}
           answers={getAnswers('moldLiability', questions)}
           validate={validation.isRequired}
         />
@@ -137,7 +137,7 @@ const Coverages = ({
           component={Radio}
           answers={baseYesNoAnswers}
           segmented
-          disabled={parseInt(initialValues.personalPropertyAmount, 10) === 0}
+          disabled={parseInt(fieldValues.personalPropertyAmount, 10) === 0}
         />
       </div>
       <div className="flex-parent other-coverages-row-4">
@@ -145,7 +145,7 @@ const Coverages = ({
           styleName="flex-child"
           name="ordinanceOrLaw"
           label="Ordinance or Law Coverage Limit"
-          component={SelectInteger}
+          component={Select}
           answers={getAnswers('ordinanceOrLaw', questions)}
           validate={validation.isRequired}
         />
@@ -158,7 +158,7 @@ const Coverages = ({
           styleName="flex-child"
           name="allOtherPerils"
           label="All Other Perils"
-          component={SelectInteger}
+          component={Select}
           answers={getAnswers('allOtherPerils', questions)}
           validate={validation.isRequired}
         />
@@ -168,7 +168,7 @@ const Coverages = ({
           name="hurricane"
           label="Hurricane Deductible"
           styleName="flex-child"
-          component={SelectInteger}
+          component={Select}
           answers={getAnswers('hurricane', questions)}
           validate={validation.isRequired}
           normalize={(v, pv, av) => normalizeDwellingDependencies(v, pv, av, 'calculatedHurricane')}
@@ -194,7 +194,7 @@ const Coverages = ({
           normalize={normalizeSinkholeAmount}
         />
       </div>
-      { String(initialValues.sinkholePerilCoverage) === 'true' && <div className="flex-parent">
+      { String(fieldValues.sinkholePerilCoverage) === 'true' && <div className="flex-parent">
         <Field
           name="calculatedSinkhole"
           label="Calculated Sinkhole"
@@ -242,7 +242,7 @@ const Coverages = ({
 );
 
 Coverages.propTypes = {
-  initialValues: PropTypes.object.isRequired,
+  fieldValues: PropTypes.object.isRequired,
   questions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
   normalizeDwellingAmount: PropTypes.func.isRequired,
   normalizeDwellingDependencies: PropTypes.func.isRequired,
