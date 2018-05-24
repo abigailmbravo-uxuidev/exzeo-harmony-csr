@@ -24,15 +24,12 @@ const { validation } = lifecycle;
 const validate = values => !values.documentType ? { documentType: 'Required' } : null;
 
 export class GenerateDocsForm extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    showDate: false,
+    isSubmitting: false
+  };
 
-    this.fieldsWithDate = [];
-    this.state = {
-      showDate: false,
-      isSubmitting: false
-    };
-  }
+  fieldsWithDate = []
 
   reqConfig = data => ({
     method: 'POST',
