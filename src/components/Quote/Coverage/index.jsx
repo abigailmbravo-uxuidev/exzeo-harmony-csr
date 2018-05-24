@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
@@ -8,11 +7,11 @@ import momentTZ from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
 import { batchActions } from 'redux-batched-actions';
 import { reduxForm, Form, change } from 'redux-form';
-import * as serviceActions from '../../../actions/serviceActions';
-import * as cgActions from '../../../actions/cgActions';
-import * as appStateActions from '../../../actions/appStateActions';
-import * as questionsActions from '../../../actions/questionsActions';
-import * as quoteStateActions from '../../../actions/quoteStateActions';
+import { getAgencies, getAgentsByAgency } from '../../../actions/serviceActions';
+import { batchCompleteTask, startWorkflow } from '../../../actions/cgActions';
+import { setAppState } from '../../../actions/appStateActions';
+import { getUIQuestions } from '../../../actions/questionsActions';
+import { getLatestQuote } from '../../../actions/quoteStateActions';
 import QuoteBaseConnect from '../../../containers/Quote';
 import HiddenField from '../../Form/inputs/HiddenField';
 import Footer from '../../Common/Footer';
@@ -164,7 +163,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
   const workflowId = props.appState.instanceId;
   const submitData = data;
 
-  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, {
+  props.setAppStateAction(props.appState.modelName, workflowId, {
     ...props.appState.data,
     submitting: true
   });
@@ -227,11 +226,11 @@ export const handleFormSubmit = (data, dispatch, props) => {
 
   ];
 
-  props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
+  props.batchCompleteTaskAction(props.appState.modelName, workflowId, steps)
     .then(() => {
-      props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
+      props.getLatestQuoteAction(true, props.quoteData._id);
       // now update the workflow details so the recalculated rate shows
-      props.actions.appStateActions.setAppState(
+      props.setAppStateAction(
         props.appState.modelName,
         workflowId, { ...props.appState.data, submitting: false, selectedLink: 'customerData' }
       );
@@ -242,13 +241,13 @@ let setAgents = false;
 
 export class Coverage extends Component {
   componentDidMount() {
-    this.props.actions.questionsActions.getUIQuestions('askToCustomizeDefaultQuoteCSR');
+    this.props.getUIQuestionsAction('askToCustomizeDefaultQuoteCSR');
 
     const isNewTab = localStorage.getItem('isNewTab') === 'true';
     if (isNewTab) {
       localStorage.setItem('isNewTab', false);
 
-      this.props.actions.cgActions.startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` }).then((result) => {
+      this.props.startWorkflowAction('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` }).then((result) => {
         const steps = [];
         const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData'));
 
@@ -257,7 +256,7 @@ export class Coverage extends Component {
         if (lastSearchData.searchType === 'quote') {
           const quoteId = localStorage.getItem('quoteId');
 
-          this.props.actions.quoteStateActions.getLatestQuote(true, quoteId);
+          this.props.getLatestQuoteAction(true, quoteId);
 
           steps.push({
             name: 'chooseQuote',
@@ -282,9 +281,9 @@ export class Coverage extends Component {
 
         const startResult = result.payload ? result.payload[0].workflowData.csrQuote.data : {};
 
-        this.props.actions.appStateActions.setAppState('csrQuote', startResult.modelInstanceId, { ...this.props.appState.data, submitting: true });
-        this.props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
-          this.props.actions.appStateActions.setAppState(
+        this.props.setAppStateAction('csrQuote', startResult.modelInstanceId, { ...this.props.appState.data, submitting: true });
+        this.props.batchCompleteTaskAction(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
+          this.props.setAppStateAction(
             this.props.appState.modelName,
             startResult.modelInstanceId, { ...this.props.appState.data, selectedLink: 'customerData' }
           );
@@ -292,7 +291,7 @@ export class Coverage extends Component {
         });
       });
     } else if (this.props.appState.instanceId) {
-      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+      this.props.setAppStateAction(this.props.appState.modelName, this.props.appState.instanceId, {
         ...this.props.appState.data,
         submitting: true
       });
@@ -302,10 +301,10 @@ export class Coverage extends Component {
       ];
 
       const workflowId = this.props.appState.instanceId;
-      this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
+      this.props.batchCompleteTaskAction(this.props.appState.modelName, workflowId, steps)
         .then(() => {
-          this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
-          this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
+          this.props.getLatestQuoteAction(true, this.props.quoteData._id);
+          this.props.setAppStateAction(this.props.appState.modelName, this.props.appState.instanceId, {
             ...this.props.appState.data,
             selectedLink: 'customerData'
           });
@@ -316,20 +315,20 @@ export class Coverage extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props, nextProps)) {
-      const { quoteData } = nextProps;
+      const { quoteData, getAgenciesAction, getAgentsByAgencyAction } = nextProps;
       if (quoteData && quoteData.companyCode && quoteData.state && quoteData.agencyCode && !setAgents) {
-        this.props.actions.serviceActions.getAgencies(quoteData.companyCode, quoteData.state);
-        this.props.actions.serviceActions.getAgentsByAgency(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
+        getAgenciesAction(quoteData.companyCode, quoteData.state);
+        getAgentsByAgencyAction(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
         setAgents = true;
       }
       if (!_.isEqual(this.props.quoteData, nextProps.quoteData)) {
-        this.props.actions.quoteStateActions.getLatestQuote(true, nextProps.quoteData._id);
+        this.props.getLatestQuoteAction(true, nextProps.quoteData._id);
       }
     }
   }
 
   setPHToggle = () => {
-    const { fieldValues, change: changeF } = this.props;
+    const { fieldValues, changeF } = this.props;
     if (fieldValues.clearFields) {
       changeF('clearFields', false);
     }
@@ -425,7 +424,7 @@ export class Coverage extends Component {
     if (agencyCode) {
       const agency = _.find(this.props.agencies, a => String(a.agencyCode) === String(agencyCode));
       if (agency) {
-        this.props.actions.serviceActions.getAgentsByAgency(agency.companyCode, agency.state, agencyCode).then((response) => {
+        this.props.getAgentsByAgencyAction(agency.companyCode, agency.state, agencyCode).then((response) => {
           if (response.payload && response.payload[0].data.agents && response.payload[0].data.agents.length === 1) {
             this.props.dispatch(change('Coverage', 'agentCode', response.payload[0].data.agents[0].agentCode));
           }
@@ -464,7 +463,7 @@ export class Coverage extends Component {
 
   render() {
     const {
-      quoteData, fieldValues, handleSubmit, initialValues, pristine, agents, agencies, questions, dirty
+      quoteData, fieldValues, handleSubmit, pristine, agents, agencies, questions, dirty
     } = this.props;
 
     if (!quoteData) {
@@ -584,17 +583,18 @@ const mapStateToProps = state => ({
   questions: state.questions
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch),
-    questionsActions: bindActionCreators(questionsActions, dispatch),
-    cgActions: bindActionCreators(cgActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
-  }
-});
-
 // ------------------------------------------------
 // wire up redux form with the redux connect
 // ------------------------------------------------
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Coverage', enableReinitialize: true })(Coverage));
+export default connect(
+  mapStateToProps,
+  {
+    getAgenciesAction: getAgencies,
+    getAgentsByAgencyAction: getAgentsByAgency,
+    batchCompleteTaskAction: batchCompleteTask,
+    startWorkflowAction: startWorkflow,
+    setAppStateAction: setAppState,
+    getUIQuestionsAction: getUIQuestions,
+    getLatestQuoteAction: getLatestQuote
+  }
+)(reduxForm({ form: 'Coverage', enableReinitialize: true })(Coverage));

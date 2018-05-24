@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
-import ConnectedApp, { Coverage, handleAgencyChange, handleFormSubmit, handleGetQuoteData, handleInitialize, handleGetZipCodeSettings, clearSecondaryPolicyholder } from './index';
+import ConnectedApp, { Coverage, handleFormSubmit, handleInitialize, handleGetZipCodeSettings } from './index';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
@@ -333,15 +333,13 @@ describe('Testing Coverage component', () => {
     const store = mockStore(initialState);
     const props = {
       handleSubmit: fn => fn,
-      actions: {
-        quoteStateActions: {
-          getLatestQuote() {}
-        },
-        cgActions: {
-          startWorkflow() { return Promise.resolve(() => {}); },
-          batchCompleteTask() { return Promise.resolve(() => {}); }
-        }
-      },
+      getUIQuestionsAction() { return Promise.resolve(() => {}); },
+      getLatestQuoteAction() {},
+      getAgenciesAction() {},
+      getAgentsByAgencyAction() {},
+      setAppStateAction() { return Promise.resolve(() => {}); },
+      startWorkflowAction() { return Promise.resolve(() => {}); },
+      batchCompleteTaskAction() { return Promise.resolve(() => {}); },
       fieldQuestions: [],
       quoteData,
       dispatch: store.dispatch,
@@ -442,18 +440,13 @@ describe('Testing Coverage component', () => {
       zipCodeSettings: { timezone: 'American/NewYork' },
       fieldQuestions: [],
       dispatch: store.dispatch,
-      actions: {
-        quoteStateActions: {
-          getLatestQuote() {}
-        },
-        appStateActions: {
-          setAppState() { }
-        },
-        cgActions: {
-          startWorkflow() { return Promise.resolve(() => {}); },
-          batchCompleteTask() { return Promise.resolve(() => {}); }
-        }
-      },
+      getUIQuestionsAction() { return Promise.resolve(() => {}); },
+      getLatestQuoteAction() {},
+      getAgenciesAction() {},
+      getAgentsByAgencyAction() {},
+      setAppStateAction() { return Promise.resolve(() => {}); },
+      startWorkflowAction() { return Promise.resolve(() => {}); },
+      batchCompleteTaskAction() { return Promise.resolve(() => {}); },
       appState: {
         data: {
           submitting: false
@@ -522,25 +515,13 @@ describe('Testing Coverage component', () => {
         agencyCode: 20000
       },
       handleSubmit: fn => fn,
-      actions: {
-        quoteStateActions: {
-          getLatestQuote() {}
-        },
-        serviceActions: {
-          getAgencies() {},
-          getAgentsByAgency() {}
-        },
-        appStateActions: {
-          setAppState() { return Promise.resolve(() => {}); }
-        },
-        questionsActions: {
-          getUIQuestions() { return Promise.resolve(() => {}); }
-        },
-        cgActions: {
-          startWorkflow() { return Promise.resolve(() => {}); },
-          batchCompleteTask() { return Promise.resolve(() => {}); }
-        }
-      },
+      getUIQuestionsAction() { return Promise.resolve(() => {}); },
+      getLatestQuoteAction() {},
+      getAgenciesAction() {},
+      getAgentsByAgencyAction() {},
+      setAppStateAction() { return Promise.resolve(() => {}); },
+      startWorkflowAction() { return Promise.resolve(() => {}); },
+      batchCompleteTaskAction() { return Promise.resolve(() => {}); },
       fieldQuestions: [],
       quoteData,
       dispatch: store.dispatch,
@@ -604,25 +585,13 @@ describe('Testing Coverage component', () => {
         agencyCode: 20000
       },
       handleSubmit: fn => fn,
-      actions: {
-        quoteStateActions: {
-          getLatestQuote() {}
-        },
-        serviceActions: {
-          getAgencies() {},
-          getAgentsByAgency() {}
-        },
-        appStateActions: {
-          setAppState() { return Promise.resolve(() => {}); }
-        },
-        questionsActions: {
-          getUIQuestions() { return Promise.resolve(() => {}); }
-        },
-        cgActions: {
-          startWorkflow() { return Promise.resolve(() => {}); },
-          batchCompleteTask() { return Promise.resolve(() => {}); }
-        }
-      },
+      getUIQuestionsAction() { return Promise.resolve(() => {}); },
+      getLatestQuoteAction() {},
+      getAgenciesAction() {},
+      getAgentsByAgencyAction() {},
+      setAppStateAction() { return Promise.resolve(() => {}); },
+      startWorkflowAction() { return Promise.resolve(() => {}); },
+      batchCompleteTaskAction() { return Promise.resolve(() => {}); },
       fieldQuestions: [],
       quoteData,
       dispatch: store.dispatch,
@@ -674,26 +643,13 @@ describe('Testing Coverage component', () => {
         agencyCode: 20000
       },
       handleSubmit: fn => fn,
-      actions: {
-        quoteStateActions: {
-          getLatestQuote() {}
-        },
-        serviceActions: {
-          getAgencies() {},
-          getAgentsByAgency() {}
-        },
-        appStateActions: {
-          setAppState() { return Promise.resolve(() => {}); }
-        },
-        questionsActions: {
-          getUIQuestions() { return Promise.resolve(() => {}); }
-        },
-        cgActions: {
-          startWorkflow() { return Promise.resolve(() => {}); },
-          batchCompleteTask() { return Promise.resolve(() => {}); }
-        }
-      },
-      fieldQuestions: [],
+      getUIQuestionsAction() { return Promise.resolve(() => {}); },
+      getLatestQuoteAction() {},
+      getAgenciesAction() {},
+      getAgentsByAgencyAction() {},
+      setAppStateAction() { return Promise.resolve(() => {}); },
+      startWorkflowAction() { return Promise.resolve(() => {}); },
+      batchCompleteTaskAction() { return Promise.resolve(() => {}); },
       quoteData,
       dispatch: store.dispatch,
       appState: {
