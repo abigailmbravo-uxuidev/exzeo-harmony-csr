@@ -52,7 +52,9 @@ export class Endorsements extends React.Component {
   }
 
   componentDidMount() {
-    const { policy, getUnderwritingQuestions, getZipcodeSettings, getEndorsementHistory, getUIQuestions, clearRate } = this.props;
+    const {
+ policy, getUnderwritingQuestions, getZipcodeSettings, getEndorsementHistory, getUIQuestions, clearRate 
+} = this.props;
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
     clearRate();
     if (policy && policy.policyNumber && policy.property && policy.property.physicalAddress) {
@@ -169,7 +171,7 @@ export class Endorsements extends React.Component {
       change('coverageOptions.personalPropertyReplacementCost.answer', false);
     } else {
       change('coverageOptions.personalPropertyReplacementCost.answer', initialValues.coverageOptions.personalPropertyReplacementCost.answer || false);
-    return value;
+      return value;
     }
 
     const fieldValue = endorsementUtils.setPercentageOfValue(allValues.coverageLimits.dwelling.amount, value);

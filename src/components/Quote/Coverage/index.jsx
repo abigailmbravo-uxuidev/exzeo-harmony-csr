@@ -27,6 +27,8 @@ import Footer from '../../Common/Footer';
 import ProducedBy from './ProducedBy';
 import PolicyHolder from './PolicyHolder';
 import Property from './Property';
+import endorsementUtils from '../../../utilities/endorsementModel';
+import Coverages from './Coverages';
 
 
 const { Input, Phone } = Inputs;
@@ -73,6 +75,8 @@ export const setPercentageOfValue = (value, percent) => Math.ceil(value * (perce
 
 export const handleInitialize = (state) => {
   const quoteData = handleGetQuoteData(state);
+  if (!quoteData || !quoteData.quoteNumber) return {};
+
   const questions = state.questions;
   const values = {};
   values.clearFields = false;
@@ -354,29 +358,83 @@ export class Coverage extends Component {
     }
   };
 
-  updateDwellingAndDependencies = (e, value) => {
-    const { dispatch, fieldValues } = this.props;
+  // updateDwellingAndDependencies = (e, value) => {
+  //   const { dispatch, fieldValues } = this.props;
 
-    if (!value) return;
-    let dwellingNumber = String(value).replace(/\D+/g, '');
+  //   if (!value) return;
+  //   let dwellingNumber = String(value).replace(/\D+/g, '');
 
-    if (Number.isNaN(dwellingNumber)) { return; }
+  //   if (Number.isNaN(dwellingNumber)) { return; }
 
-    dwellingNumber = Math.round(dwellingNumber / 1000) * 1000;
+  //   dwellingNumber = Math.round(dwellingNumber / 1000) * 1000;
 
-    if (fieldValues.otherStructures !== 'other') {
-      dispatch(change('Coverage', 'otherStructuresAmount', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.otherStructures)))));
+  //   if (fieldValues.otherStructures !== 'other') {
+  //     dispatch(change('Coverage', 'otherStructuresAmount', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.otherStructures)))));
+  //   }
+  //   if (fieldValues.personalProperty !== 'other') {
+  //     dispatch(change('Coverage', 'personalPropertyAmount', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.personalProperty)))));
+  //   }
+
+  //   dispatch(batchActions([
+  //     change('Coverage', 'calculatedHurricane', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.hurricane)))),
+  //     change('Coverage', 'lossOfUse', String(setPercentageOfValue(Number(dwellingNumber), 10))),
+  //     change('Coverage', 'calculatedSinkhole', String(setPercentageOfValue(Number(dwellingNumber), 10)))
+  //   ]));
+  // }
+
+  normalizeDwellingAmount = (value, previousValue, allValues) => {
+    const { change: changeF } = this.props;
+
+    const roundedDwellingAmount = Math.round(value / 1000) * 1000;
+
+    if (allValues.coverageLimits.otherStructures.percentage !== 'other') {
+      changeF('otherStructuresAmount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, allValues.coverageLimits.otherStructures.percentage));
     }
-    if (fieldValues.personalProperty !== 'other') {
-      dispatch(change('Coverage', 'personalPropertyAmount', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.personalProperty)))));
+    if (allValues.coverageLimits.personalProperty.percentage !== 'other') {
+      changeF('personalPropertyAmount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, allValues.coverageLimits.personalProperty.percentage));
     }
+    changeF('calculatedHurricane', String(endorsementUtils.setPercentageOfValue(roundedDwellingAmount, allValues.deductibles.hurricane.amount)));
+    changeF('lossOfUse', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, 10));
+    changeF('calculatedSinkhole', String(setPercentageOfValue(roundedDwellingAmount, 10)));
 
-    dispatch(batchActions([
-      change('Coverage', 'calculatedHurricane', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.hurricane)))),
-      change('Coverage', 'lossOfUse', String(setPercentageOfValue(Number(dwellingNumber), 10))),
-      change('Coverage', 'calculatedSinkhole', String(setPercentageOfValue(Number(dwellingNumber), 10)))
-    ]));
-  }
+    return value;
+  };
+
+  normalizeDwellingDependencies = (value, previousValue, allValues, field) => {
+    if (Number.isNaN(value)) return;
+    const { change: changeF } = this.props;
+    const fieldValue = endorsementUtils.setPercentageOfValue(allValues.dwellingAmount, value);
+
+    changeF(field, Number.isNaN(fieldValue) ? '' : fieldValue);
+    return value;
+  };
+
+  normalizePersonalPropertyPercentage = (value, previousValue, allValues, field) => {
+    if (Number.isNaN(value)) return;
+    const { change: changeF, initialValues } = this.props;
+
+    // apply percentage to personal property
+    this.normalizeDwellingDependencies(value, previousValue, allValues, field);
+
+    if (value === 0) {
+      changeF('personalPropertyReplacementCostCoverage', false);
+    } else {
+      changeF('personalPropertyReplacementCostCoverage', initialValues.personalPropertyReplacementCostCoverage || false);
+    }
+    return value;
+  };
+
+  normalizeSinkholeAmount = (value, previousValue, allValues) => {
+    const { change: changeF } = this.props;
+    if (String(value) === 'true') {
+      changeF('sinkhole', 10);
+      changeF('calculatedSinkhole', endorsementUtils.setPercentageOfValue(allValues.dwellingAmount, 10));
+    } else {
+      changeF('sinkhole', 0);
+      changeF('calculatedSinkhole', 0);
+    }
+    return value;
+  };
 
   updateDependencies = (event, field, dependency) => {
     const { dispatch, fieldValues } = this.props;
@@ -473,7 +531,8 @@ export class Coverage extends Component {
       <QuoteBaseConnect>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         <div className="route-content">
-          <Form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+
+          { initialValues.dwellingAmount && <Form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
             <HiddenField name="propertyIncidentalOccupanciesMainDwelling" />
             <HiddenField name="propertyIncidentalOccupanciesOtherStructures" />
             <HiddenField name="liabilityIncidentalOccupancies" />
@@ -503,6 +562,17 @@ export class Coverage extends Component {
                   sectionClass="property flex-parent property-location"
                   header="Home and Location"
                   questions={questions}
+                />
+                <Coverages
+                  sectionId="coverage-deductibles-discounts"
+                  sectionClass="coverage-options flex-parent coverage-deductibles-discounts"
+                  initialValues={initialValues}
+                  questions={questions}
+                  normalizeDwellingAmount={this.normalizeDwellingAmount}
+                  normalizeDwellingDependencies={this.normalizeDwellingDependencies}
+                  normalizePersonalPropertyPercentage={this.normalizePersonalPropertyPercentage}
+                  normalizeIncidentalOccupancies={this.normalizeIncidentalOccupancies}
+                  normalizeSinkholeAmount={this.normalizeSinkholeAmount}
                 />
                 <section id="coverage-deductibles-discounts" className="coverage-options flex-parent coverage-deductibles-discounts">
                   <div className="coverages flex-child">
@@ -912,7 +982,7 @@ export class Coverage extends Component {
                 </section>
               </div>
             </div>
-          </Form>
+          </Form> }
         </div>
         <div className="basic-footer btn-footer">
           <Footer />
