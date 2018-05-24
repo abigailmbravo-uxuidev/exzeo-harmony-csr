@@ -26,6 +26,12 @@ export function setNewRate(rate) {
   }
 }
 
+export function clearRate() {
+  return {
+    type: types.CLEAR_RATE
+  }
+}
+
 export function getPolicy(policyNumber) {
   return async (dispatch) => {
     try {

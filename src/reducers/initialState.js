@@ -22,7 +22,7 @@ export default {
   policyState: {
     policy: {},
     summaryLedger: {},
-    newRate: {}
+    getRate: {}
   },
   authState: {
     userProfile: null

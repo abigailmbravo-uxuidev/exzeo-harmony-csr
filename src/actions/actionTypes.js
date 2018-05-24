@@ -35,5 +35,6 @@ export const TOGGLE_NOTE = 'TOGGLE_NOTE';
 /* POLICY */
 export const GET_POLICY = 'GET_POLICY';
 export const SET_POLICY = 'SET_POLICY';
-export const SET_SUMMARY_LEDGER = 'SET_SUMMARY_LEDGER';
 export const SET_RATE = 'SET_RATE';
+export const CLEAR_RATE = 'CLEAR_RATE';
+export const SET_SUMMARY_LEDGER = 'SET_SUMMARY_LEDGER';

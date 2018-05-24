@@ -3,6 +3,7 @@ import thunk from 'redux-thunk'
 import sinon from 'sinon'
 import * as types from './actionTypes';
 import * as serviceRunner from '../utilities/serviceRunner';
+import * as endorsementUtil from '../utilities/endorsementModel';
 import * as policyStateActions from './policyActions';
 
 describe('Policy State Actions', () => {
@@ -39,18 +40,6 @@ describe('Policy State Actions', () => {
     }];
 
     store.dispatch(policyStateActions.setSummaryLedger(summaryLedger));
-    expect(store.getActions()).toEqual(stateObj);
-  });
-
-  it('should call dispatch setNewRate', () => {
-    const rate = { someVal: 'test'};
-
-    const stateObj = [{
-      type: types.SET_RATE,
-      rate
-    }];
-
-    store.dispatch(policyStateActions.setNewRate(rate));
     expect(store.getActions()).toEqual(stateObj);
   });
 
@@ -108,10 +97,18 @@ describe('Policy State Actions', () => {
       httpStub.onCall(0).returns(Promise.resolve({ data: { result: summaryLedger } }));
 
       await store.dispatch(policyStateActions.getSummaryLedger(policyNumber));
-      sinon.assert.calledOnce(serviceRunner.callService)
+      sinon.assert.calledOnce(serviceRunner.callService);
       expect(store.getActions()).toEqual(stateObj);
-
     });
+
+    it('should call getNewRate', async () => {
+      const rate = { message: 'You\'re approved' };
+      sandbox.stub(endorsementUtil, 'convertToRateData').callsFake((...args) => ({ policyNumber: '1234'}))
+      httpStub.onCall(0).returns(Promise.resolve({ data: { result: rate } }));
+
+      const response = await store.dispatch(policyStateActions.getNewRate({}, {}));
+      expect(response).toEqual(rate);
+    })
 
   })
 });

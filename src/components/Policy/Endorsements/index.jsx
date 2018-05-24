@@ -6,13 +6,12 @@ import { reduxForm, formValueSelector, FormSection } from 'redux-form';
 import { premiumEndorsementList } from './constants/endorsementTypes';
 import endorsementUtils from '../../../utilities/endorsementModel';
 import { getUIQuestions } from '../../../actions/questionsActions';
+import { getNewRate, clearRate } from '../../../actions/policyActions';
 import {
   getUnderwritingQuestions,
   submitEndorsementForm,
   getEndorsementHistory,
   getZipcodeSettings,
-  clearRate,
-  getNewRate
 } from '../../../actions/serviceActions';
 // Component Sections
 import PolicyConnect from '../../../containers/Policy';
@@ -323,10 +322,11 @@ const mapStateToProps = state => ({
   endorsementHistory: state.service.endorsementHistory || defaultArr,
   initialValues: endorsementUtils.initializeEndorsementForm(state.service.latestPolicy),
   newPolicyNumber: getNewPolicyNumber(state),
-  policy: state.service.latestPolicy || defaultObj,
+  policy: state.policyState.policy || defaultObj,
+  summaryLedger: state.policyState.summaryLedger || defaultObj,
+  getRate: state.policyState.getRate || defaultObj,
   questions: state.questions,
   selectedValues: selector(state, 'coverageLimits.personalProperty.amount', 'clearFields'),
-  summaryLedger: state.service.getSummaryLedger || defaultObj,
   underwritingQuestions: state.service.underwritingQuestions,
   userProfile: state.authState.userProfile || defaultObj,
   zipcodeSettings: state.service.getZipcodeSettings
@@ -334,10 +334,10 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getNewRate,
+  clearRate,
   getUnderwritingQuestions,
   submitEndorsementForm,
   getEndorsementHistory,
   getZipcodeSettings,
-  clearRate,
   getUIQuestions
 })(reduxForm({ form: 'Endorsements', enableReinitialize: true })(Endorsements));

@@ -8,10 +8,12 @@ export default function policyStateReducer(state = initialState.policyState, act
       return getPolicy(state, action);
     case types.SET_POLICY:
       return setPolicy(state, action);
+    case types.SET_RATE:
+      return setRate(state, action);
+    case types.CLEAR_RATE:
+      return clearRate(state, action);
     case types.SET_SUMMARY_LEDGER:
       return setSummaryLedger(state, action);
-    case types.SET_RATE:
-      return setNewRate(state, action);
     case persistTypes.REHYDRATE:
       return rehydrate(state, action);
     default:
@@ -34,17 +36,24 @@ function setPolicy(state, action) {
   }
 }
 
+function setRate(state, action) {
+  return {
+    ...state,
+    getRate: action.rate
+  }
+}
+
+function clearRate(state, action) {
+  return {
+    ...state,
+    getRate: {}
+  }
+}
+
 function setSummaryLedger(state, action) {
   return {
     ...state,
     summaryLedger: action.summaryLedger
-  }
-}
-
-function setNewRate(state, action) {
-  return {
-    ...state,
-    rate: action.rate
   }
 }
 

@@ -694,7 +694,7 @@ export const getListOfForms = (policy, rating, transactionType) => {
 };
 
 /**
- * TODO: move out of service actions
+ * TODO: move out of service actions (most likely to policy, or some other state)
  * START - Save Endorsement form to get new rate and update policy coverage
  */
 export function submitEndorsementForm(formData, formProps) {
@@ -707,41 +707,6 @@ export function submitEndorsementForm(formData, formProps) {
     dispatch(getPolicy(newPolicy.policyNumber));
   };
 }
-
-export function convertToRateData(formData, props) {
-  const { summaryLedger: { currentPremium }, zipcodeSettings } = props;
-  const endorsementDate = endorsementUtils.calculateEndorsementDate(formData.endorsementDate, zipcodeSettings.timezone);
-
-  return {
-    ...formData,
-    oldTotalPremium: formData.rating.totalPremium,
-    oldCurrentPremium: currentPremium,
-    endorsementDate
-  };
-}
-
-export function getNewRate(formData, formProps) {
-  return async (dispatch) => {
-    try {
-      const rateData = convertToRateData(formData, formProps);
-      const axiosConfig = runnerSetup({
-        service: 'rating-engine',
-        method: 'POST',
-        path: 'endorsement',
-        data: rateData
-      });
-
-      const response = await axios(axiosConfig);
-      const data = { getRate: response && response.data && response.data.result ? response.data.result : {} };
-      dispatch(serviceRequest(data));
-      return data;
-    } catch (error) {
-      dispatch(errorActions.setAppError(handleError(error)));
-      throw new Error(error);
-    }
-  };
-}
-
 /**
  * END
  */

@@ -1025,64 +1025,6 @@ describe('Service Actions', () => {
       });
   });
 
-  it('should call start getNewRate', async () => {
-    const mockAdapter = new MockAdapter(axios);
-
-    const rateData = serviceActions.convertToRateData(baseProps.policy, baseProps);
-
-
-    const axiosOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'rating-engine',
-        method: 'POST',
-        path: 'endorsement',
-        data: rateData
-      }
-    };
-
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      result: { policyholder: 'Marky Mark' }
-    });
-
-    const store = mockStore({});
-
-    const rate = await serviceActions.getNewRate(baseProps.policy, baseProps)(store.dispatch);
-    expect(rate.getRate.policyholder).toEqual('Marky Mark');
-  });
-
-  it('should fail start getNewRate', async () => {
-    const mockAdapter = new MockAdapter(axios);
-
-    const axiosOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'rating-engine',
-        method: 'POST',
-        path: 'endorsement',
-        data: {}
-      }
-    };
-
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(404, { data: {}});
-    const store = mockStore({});
-    try {
-      await serviceActions.getNewRate(baseProps.policy, baseProps)(store.dispatch);
-      expect(true).toBe(false);
-    } catch (err) {
-      expect(err).toBeTruthy();
-    }
-
-  });
-
   const ai = {
     additionalInterestId: '123',
     name1: 'data.name1',
