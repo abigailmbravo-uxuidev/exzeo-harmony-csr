@@ -25,6 +25,7 @@ export const Notes = (props) => {
   const attachmentType = attachments => attachments.length > 0 ? attachments[0].fileType : '';
   const formatCreatedDate = createdDate => `${moment.tz(moment.utc(createdDate), 'America/New_York').format('MM/DD/YYYY h:mm A')} EST`;
   const formatNote = note => note ? note.replace(/\r|\n/g, '<br>') : '';
+  const attachmentFilter = cell => cell.length > 0 ? cell[0].fileName : null;
   const attachmentUrl = attachments => (
     <span>
       { attachments.map((attachment, i) =>
@@ -52,13 +53,13 @@ export const Notes = (props) => {
         multiColumnSearch
       >
         <TableHeaderColumn dataField="_id" isKey hidden>ID</TableHeaderColumn>
-        <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdDate" dataSort dataFormat={formatCreatedDate} >Created</TableHeaderColumn>
+        <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdDate" dataSort dataFormat={formatCreatedDate} filterFormatted >Created</TableHeaderColumn>
         <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataSort dataFormat={showCreatedBy} >Author</TableHeaderColumn>
         {!attachmentStatus && <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="contactType" dataSort >Contact</TableHeaderColumn>}
         {!attachmentStatus && <TableHeaderColumn className="note" columnClassName="note" dataField="content" dataSort dataFormat={formatNote} >Note</TableHeaderColumn>}
         <TableHeaderColumn className="count" columnClassName="count" dataField="attachments" dataFormat={attachmentCount} hidden />
         <TableHeaderColumn className="file-type" columnClassName="file-type" dataField="attachments" dataSort dataFormat={attachmentType} >File Type</TableHeaderColumn>
-        <TableHeaderColumn className="attachments" columnClassName="attachments" dataField="attachments" dataFormat={attachmentUrl} dataSort >File</TableHeaderColumn>
+        <TableHeaderColumn className="attachments" columnClassName="attachments" dataField="attachments" dataFormat={attachmentUrl} filterValue={attachmentFilter} dataSort >File</TableHeaderColumn>
       </BootstrapTable>
     </div>
   );
