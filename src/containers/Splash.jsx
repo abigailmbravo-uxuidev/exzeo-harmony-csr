@@ -3,14 +3,14 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
-import BaseConnect from './Base';
-import Footer from '../components/Common/Footer';
 import * as cgActions from '../actions/cgActions';
 import * as appStateActions from '../actions/appStateActions';
 import * as questionsActions from '../actions/questionsActions';
 import SearchResults from '../components/Search/SearchResults';
 import NoResultsConnect from '../components/Search/NoResults';
+import Footer from '../components/Common/Footer';
 import Loader from '../components/Common/Loader';
+import BaseConnect from './Base';
 
 const workflowModelName = 'csrQuote';
 const workflowData = {
@@ -41,7 +41,6 @@ export class Splash extends Component {
     this.props.actions.questionsActions.getUIQuestions('searchCSR');
   }
 
-
   handleSelectQuote = (quote, props) => {
     const workflowId = props.appState.instanceId;
     const steps = [{
@@ -52,8 +51,6 @@ export class Splash extends Component {
     }];
 
     props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
-
-
     props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
       .then(() => {
         // now update the workflow details so the recalculated rate shows

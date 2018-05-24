@@ -6,8 +6,7 @@ import { reduxForm, Form, Field, propTypes, getFormSyncErrors, change } from 're
 import ReactTooltip from 'react-tooltip';
 import _ from 'lodash';
 import moment from 'moment';
-import Rules from '../Form/Rules';
-import SelectField from '../Form/inputs/SelectField';
+import { getAnswers } from "../../utilities/forms";
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 import * as errorActions from '../../actions/errorActions';
@@ -15,90 +14,12 @@ import * as serviceActions from '../../actions/serviceActions';
 import * as searchActions from '../../actions/searchActions';
 import normalizeDate from '../Form/normalizeDate';
 import Pagination from '../Common/Pagination';
+import Rules from '../Form/Rules';
+import SelectField from '../Form/inputs/SelectField';
 import ReactSelectField from '../Form/inputs/ReactSelectField';
 
 const userTasks = {
   handleSearchBarSubmit: 'search'
-};
-
-export const togglePolicyAdvanceSearch = (props) => {
-  const toggleValue = !!props.search.policyAdvanceSearch;
-  props.actions.searchActions.setSearch({ ...props.search, policyAdvanceSearch: !toggleValue });
-};
-
-export const resetPolicySearch = (props) => {
-  props.actions.searchActions.setSearch({
-    searchType: 'policy', hasSearched: false, isLoading: false, policyAdvanceSearch: false
-  });
-  props.actions.serviceActions.clearPolicyResults();
-};
-
-export const changePagePolicy = (props, isNext) => {
-  const { fieldValues } = props;
-
-  const taskData = {
-    firstName: (encodeURIComponent(fieldValues.firstName) !== 'undefined' ? encodeURIComponent(fieldValues.firstName) : ''),
-    lastName: (encodeURIComponent(fieldValues.lastName) !== 'undefined' ? encodeURIComponent(fieldValues.lastName) : ''),
-    address: (encodeURIComponent(fieldValues.address) !== 'undefined' ? encodeURIComponent(String(fieldValues.address).trim()) : ''),
-    policyNumber: (encodeURIComponent(fieldValues.policyNumber) !== 'undefined' ? encodeURIComponent(fieldValues.policyNumber) : ''),
-    searchType: 'policy',
-    isLoading: true,
-    hasSearched: true,
-    resultStart: 60,
-    pageSize: 25,
-    policyStatus: (encodeURIComponent(fieldValues.policyStatus) !== 'undefined' ? encodeURIComponent(fieldValues.policyStatus) : ''),
-    agencyCode: (encodeURIComponent(fieldValues.agencyCode) !== 'undefined' ? encodeURIComponent(fieldValues.agencyCode) : ''),
-    effectiveDate: (encodeURIComponent(fieldValues.effectiveDate) !== 'undefined' ? encodeURIComponent(moment(fieldValues.effectiveDate).utc().format('YYYY-MM-DD')) : '')
-  };
-
-  taskData.pageNumber = isNext ? Number(fieldValues.pageNumber) + 1 : Number(fieldValues.pageNumber) - 1;
-  props.actions.searchActions.setSearch(taskData);
-  props.actions.serviceActions.searchPolicy(taskData, fieldValues.sortBy).then(() => {
-    taskData.isLoading = false;
-    props.actions.searchActions.setSearch(taskData);
-  });
-};
-
-export const changePageQuote = (props, isNext) => {
-  const { fieldValues } = props;
-  const workflowId = props.appState.instanceId;
-  const taskName = userTasks.handleSearchBarSubmit;
-  const modelName = props.appState.modelName;
-  const searchType = 'quote';
-
-  const taskData = {
-    firstName: (encodeURIComponent(fieldValues.firstName) !== 'undefined' ? encodeURIComponent(fieldValues.firstName) : ''),
-    lastName: (encodeURIComponent(fieldValues.lastName) !== 'undefined' ? encodeURIComponent(fieldValues.lastName) : ''),
-    address: (encodeURIComponent(fieldValues.address) !== 'undefined' ? encodeURIComponent(String(fieldValues.address).trim()) : ''),
-    quoteNumber: (encodeURIComponent(fieldValues.quoteNumber) !== 'undefined' ? encodeURIComponent(fieldValues.quoteNumber) : ''),
-    quoteState: (encodeURIComponent(fieldValues.quoteState) !== 'undefined' ? encodeURIComponent(fieldValues.quoteState) : ''),
-    searchType,
-    isLoading: true,
-    hasSearched: true,
-    resultStart: '60',
-    pageSize: '25'
-  };
-
-
-  taskData.pageNumber = isNext ? String(Number(fieldValues.pageNumber) + 1) : String(Number(fieldValues.pageNumber) - 1);
-
-  props.actions.searchActions.setSearch(taskData);
-  localStorage.setItem('lastSearchData', JSON.stringify(taskData));
-
-  props.actions.errorActions.clearAppError();
-  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
-
-  // we need to make sure the active task is search otherwise we need to reset the workflow
-  if (props.tasks[modelName].data.activeTask && (props.tasks[modelName].data.activeTask.name !== userTasks.handleSearchBarSubmit)) {
-    const completeStep = {
-      stepName: taskName,
-      data: taskData
-    };
-    props.actions.cgActions.moveToTaskAndExecuteComplete(props.appState.modelName, workflowId, taskName, completeStep);
-  } else {
-    props.actions.appStateActions.setAppState(modelName, workflowId, { ...props.appState.data, submitting: true });
-    props.actions.cgActions.completeTask(modelName, workflowId, taskName, taskData);
-  }
 };
 
 const handleInitialize = () => ({ searchType: 'policy', sortBy: 'policyNumber' });
@@ -327,8 +248,6 @@ const generateField = (name, placeholder, labelText, formErrors, formGroupCss) =
   return field;
 };
 
-const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
-
 export class SearchForm extends Component {
   componentDidMount() {
     localStorage.removeItem('lastSearchData');
@@ -372,6 +291,19 @@ export class SearchForm extends Component {
     }
   }
 
+  resetPolicySearch = () => {
+    const { actions } = this.props;
+    actions.searchActions.setSearch({
+      searchType: 'policy', hasSearched: false, isLoading: false, policyAdvanceSearch: false
+    });
+    actions.serviceActions.clearPolicyResults();
+  };
+
+  togglePolicyAdvanceSearch = () => {
+    const { actions, search } = this.props;
+    actions.searchActions.setSearch({ ...search, policyAdvanceSearch: !search.policyAdvanceSearch });
+  };
+
   setAgency = (val) => {
     this.props.dispatch(change('SearchBar', 'agencyCode', val.value ? val.value : ''));
   };
@@ -391,11 +323,79 @@ export class SearchForm extends Component {
     actions.errorActions.clearAppError();
     actions.serviceActions.clearAgencies();
     actions.serviceActions.clearAgent();
-    resetPolicySearch(this.props);
+    this.resetPolicySearch();
     actions.appStateActions.setAppState(appState.modelName, workflowId, { submitting: false });
     actions.serviceActions.getAgencies('TTIC', 'FL');
     change('sortBy', 'policyNumber');
-  }
+  };
+
+  changePageQuote = (isNext) => {
+    const { fieldValues, actions, appState, tasks } = this.props;
+    const workflowId = appState.instanceId;
+    const taskName = userTasks.handleSearchBarSubmit;
+    const modelName = appState.modelName;
+    const searchType = 'quote';
+
+    const taskData = {
+      firstName: (encodeURIComponent(fieldValues.firstName) !== 'undefined' ? encodeURIComponent(fieldValues.firstName) : ''),
+      lastName: (encodeURIComponent(fieldValues.lastName) !== 'undefined' ? encodeURIComponent(fieldValues.lastName) : ''),
+      address: (encodeURIComponent(fieldValues.address) !== 'undefined' ? encodeURIComponent(String(fieldValues.address).trim()) : ''),
+      quoteNumber: (encodeURIComponent(fieldValues.quoteNumber) !== 'undefined' ? encodeURIComponent(fieldValues.quoteNumber) : ''),
+      quoteState: (encodeURIComponent(fieldValues.quoteState) !== 'undefined' ? encodeURIComponent(fieldValues.quoteState) : ''),
+      searchType,
+      isLoading: true,
+      hasSearched: true,
+      resultStart: '60',
+      pageSize: '25'
+    };
+
+
+    taskData.pageNumber = isNext ? String(Number(fieldValues.pageNumber) + 1) : String(Number(fieldValues.pageNumber) - 1);
+
+    actions.searchActions.setSearch(taskData);
+    localStorage.setItem('lastSearchData', JSON.stringify(taskData));
+
+    actions.errorActions.clearAppError();
+    actions.appStateActions.setAppState(appState.modelName, workflowId, { ...appState.data, submitting: true });
+
+    // we need to make sure the active task is search otherwise we need to reset the workflow
+    if (tasks[modelName].data.activeTask && (tasks[modelName].data.activeTask.name !== userTasks.handleSearchBarSubmit)) {
+      const completeStep = {
+        stepName: taskName,
+        data: taskData
+      };
+      actions.cgActions.moveToTaskAndExecuteComplete(appState.modelName, workflowId, taskName, completeStep);
+    } else {
+      actions.appStateActions.setAppState(modelName, workflowId, { ...appState.data, submitting: true });
+      actions.cgActions.completeTask(modelName, workflowId, taskName, taskData);
+    }
+  };
+
+  changePagePolicy = (isNext) => {
+    const { fieldValues, actions,  } = this.props;
+
+    const taskData = {
+      firstName: (encodeURIComponent(fieldValues.firstName) !== 'undefined' ? encodeURIComponent(fieldValues.firstName) : ''),
+      lastName: (encodeURIComponent(fieldValues.lastName) !== 'undefined' ? encodeURIComponent(fieldValues.lastName) : ''),
+      address: (encodeURIComponent(fieldValues.address) !== 'undefined' ? encodeURIComponent(String(fieldValues.address).trim()) : ''),
+      policyNumber: (encodeURIComponent(fieldValues.policyNumber) !== 'undefined' ? encodeURIComponent(fieldValues.policyNumber) : ''),
+      searchType: 'policy',
+      isLoading: true,
+      hasSearched: true,
+      resultStart: 60,
+      pageSize: 25,
+      policyStatus: (encodeURIComponent(fieldValues.policyStatus) !== 'undefined' ? encodeURIComponent(fieldValues.policyStatus) : ''),
+      agencyCode: (encodeURIComponent(fieldValues.agencyCode) !== 'undefined' ? encodeURIComponent(fieldValues.agencyCode) : ''),
+      effectiveDate: (encodeURIComponent(fieldValues.effectiveDate) !== 'undefined' ? encodeURIComponent(moment(fieldValues.effectiveDate).utc().format('YYYY-MM-DD')) : '')
+    };
+
+    taskData.pageNumber = isNext ? Number(fieldValues.pageNumber) + 1 : Number(fieldValues.pageNumber) - 1;
+    actions.searchActions.setSearch(taskData);
+    actions.serviceActions.searchPolicy(taskData, fieldValues.sortBy).then(() => {
+      taskData.isLoading = false;
+      actions.searchActions.setSearch(taskData);
+    });
+  };
 
   render() {
     const {
@@ -512,7 +512,7 @@ export class SearchForm extends Component {
           </div>
         }
           { fieldValues.searchType === 'quote' && quoteResults && quoteResults.quotes && quoteResults.quotes.length > 0 && fieldValues.totalPages > 1 &&
-          <Pagination changePageForward={() => changePageQuote(this.props, true)} changePageBack={() => changePageQuote(this.props, false)} fieldValues={fieldValues} />
+          <Pagination changePageForward={() => this.changePageQuote(true)} changePageBack={() => this.changePageQuote(false)} fieldValues={fieldValues} />
       }
           {fieldValues.searchType === 'policy' && <div className="search-inputs fade-in p">
             {generateField('firstName', 'First Name Search', 'First Name', formErrors, 'first-name-search')}
@@ -529,11 +529,11 @@ export class SearchForm extends Component {
             >
               <i className="fa fa-search" />Search
             </button>
-            <button type="button" className="advanced-search-btn btn-sm btn-icon" onClick={() => togglePolicyAdvanceSearch(this.props)}><i className={this.props.search.policyAdvanceSearch ? 'fa fa-chevron-up' : 'fa fa-chevron-down'} /></button>
+            <button type="button" className="advanced-search-btn btn-sm btn-icon" onClick={this.togglePolicyAdvanceSearch}><i className={this.props.search.policyAdvanceSearch ? 'fa fa-chevron-up' : 'fa fa-chevron-down'} /></button>
           </div>
         }
           { fieldValues.searchType === 'policy' && policyResults && policyResults.policies && policyResults.policies.length > 0 && fieldValues.totalPages > 1 &&
-          <Pagination changePageForward={() => changePagePolicy(this.props, true)} changePageBack={() => changePagePolicy(this.props, false)} fieldValues={fieldValues} />
+          <Pagination changePageForward={() => this.changePagePolicy(true)} changePageBack={() => this.changePagePolicy(false)} fieldValues={fieldValues} />
       }
           {/* <!-- Should be available only in user admin  --> */}
           {fieldValues.searchType === 'user' && <div className="search-tools">
