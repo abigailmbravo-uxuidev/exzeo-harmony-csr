@@ -6,7 +6,6 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
 import ConnectedApp, { Coverage, handleAgencyChange, handleFormSubmit, handleGetQuoteData, handleInitialize, handleGetZipCodeSettings, clearSecondaryPolicyholder } from './index';
-import { quoteSummaryModal } from '../../Application';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
@@ -489,143 +488,6 @@ describe('Testing Coverage component', () => {
     }, store.dispatch, props);
   });
 
-  it('should test handleFormSubmit', () => {
-    const initialState = {
-      service: {
-
-      },
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {
-              variables: [
-                {
-                  name: 'retrieveQuote',
-                  value: {
-                    result: quoteData
-                  }
-                }, {
-                  name: 'getQuoteBeforePageLoop',
-                  value: {
-                    result: quoteData
-                  }
-                }]
-            },
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        data: {
-          showAdditionalInterestModal: false
-        },
-        modelName: 'bb'
-      }
-    };
-    const store = mockStore(initialState);
-
-    const props = {
-      zipCodeSettings: { timezone: 'American/NewYork' },
-      agencies: [{
-        _id: '3a5ba179de46e8f2c',
-        companyCode: 'TTIC',
-        state: 'FL',
-        agencyCode: 100011,
-        displayName: 'ABC Agency',
-        legalName: 'ABC Agency',
-        taxIdNumber: '123456789',
-        taxClassification: 'S-Corporation',
-        tier: 932,
-        primaryAgentCode: 100209,
-        mailingAddress: {
-          address1: '1000 Kennedy Blvd',
-          address2: 'Suite 200',
-          city: 'Tampa',
-          state: 'FL',
-          zip: '33607'
-        },
-        physicalAddress: {
-          address1: '1000 Kennedy Blvd',
-          address2: 'Suite 200',
-          city: 'Tampa',
-          county: 'Hillsborough',
-          state: 'FL',
-          zip: '33607',
-          latitude: 27.9513556,
-          longitude: -82.5354029
-        },
-        principalFirstName: 'John',
-        principalLastName: 'Doe',
-        contactFirstName: 'Jane',
-        contactLastName: 'Doe',
-        primaryPhoneNumber: '8135551234',
-        secondaryPhoneNumber: '813777777',
-        faxNumber: '8135555555',
-        principalEmailAddress: 'principal@abcagency.com',
-        contactEmailAddress: 'contact@abcagency.com',
-        customerServiceEmailAddress: 'customerservice@abcagency.com',
-        websiteUrl: 'www.abcagency.com',
-        licenseNumber: 'A50922',
-        licenseExpirationDate: '2018-02-02T00:00:00Z',
-        contract: 'STD REV 06-01-15',
-        addendum: 'STD REV 12-01-15',
-        eoExpirationDate: '2017-02-02T00:00:00Z',
-        affiliation: 'Independent',
-        status: 'Active',
-        createdAt: '2017-02-20T00:00:00Z',
-        createdBy: 'JDoe',
-        updatedAt: '2017-03-07T00:00:00Z',
-        updatedBy: 'JDoe'
-      }],
-      fieldQuestions: [],
-      dispatch: store.dispatch,
-      actions: {
-        quoteStateActions: {
-          getLatestQuote() {}
-        },
-        serviceActions: {
-          getAgentsByAgency(companyCode, state, agencyCode) { return Promise.resolve(() => {}); }
-        },
-        appStateActions: {
-          setAppState() { }
-        },
-        cgActions: {
-          startWorkflow() { return Promise.resolve(() => {}); },
-          batchCompleteTask() { return Promise.resolve(() => {}); }
-        }
-      },
-      appState: {
-        data: {
-          submitting: false
-        }
-      },
-      quoteData: {
-        AdditionalInterests: [{
-          id: '049a50b23c21c2ae3',
-          type: 'Mortgagee',
-          order: 1,
-          name1: 'BB&T Home Mortgage',
-          referenceNumber: '1234567',
-          mailingAddress: {
-            address1: '5115 Garden Vale Ave',
-            city: 'Tampa',
-            state: 'FL',
-            county: 'Hillsborough',
-            zip: '33624',
-            country: {
-              code: 'USA',
-              displayText: 'United States of America'
-            }
-          },
-          active: true
-        }]
-      }
-    };
-
-    handleAgencyChange(props, 100011, false);
-  });
-
   it('should test instance functions', () => {
     const initialState = {
       service: {
@@ -649,6 +511,7 @@ describe('Testing Coverage component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      change() {},
       zipCodeSettings: { timezone: 'American/NewYork' },
       initialValues: {},
       fieldValues: {
@@ -696,17 +559,17 @@ describe('Testing Coverage component', () => {
     const wrapper = shallow(<Coverage store={store} {...props} />);
 
     wrapper.instance().componentDidMount();
-    wrapper.instance().updateDwellingAndDependencies({ target: { value: '' } }, '');
+    wrapper.instance().normalizeDwellingDependencies('5000', '6000', {});
     wrapper.instance().updateDependencies({ target: { value: '' } }, 'calculatedSinkhole', 'dwellingAmount');
     wrapper.instance().updateCalculatedSinkhole();
     wrapper.instance().componentWillReceiveProps(props);
-    wrapper.instance().componentDidUpdate();
     expect(wrapper.instance().props.fieldValues.dwellingAmount).toEqual('');
 
     handleInitialize(initialState);
     handleGetZipCodeSettings(initialState);
-    clearSecondaryPolicyholder(false, props);
-    clearSecondaryPolicyholder(true, props);
+    wrapper.instance().clearSecondaryPolicyholder(false, props);
+    wrapper.instance().clearSecondaryPolicyholder(true, props);
+    wrapper.instance().handleAgencyChange(props, 100011, false);
   });
 
   it('should test componentWillMount', () => {
@@ -844,7 +707,5 @@ describe('Testing Coverage component', () => {
     const wrapper2 = shallow(<Coverage store={store} {...props} />);
     localStorage.setItem('isNewTab', false);
     wrapper2.instance().componentDidMount();
-
-    wrapper2.find('[name="agencyCode"]').simulate('change', { target: { value: '60000' } });
   });
 });
