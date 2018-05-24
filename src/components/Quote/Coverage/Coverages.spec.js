@@ -14,5 +14,6 @@ describe('Testing Quote Coverages component', () => {
       questions: {}
     };
     const wrapper = shallow(<CoveragesComponent {...props} />);
+    expect(wrapper);
   });
 });

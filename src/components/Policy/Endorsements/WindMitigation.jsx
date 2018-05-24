@@ -5,7 +5,9 @@ import GroupedInputs from '@exzeo/core-ui/lib/InputGrouped';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers } from '../../../utilities/forms';
 
-const { Select, Radio, Integer, Input } = GroupedInputs;
+const {
+  Select, Radio, Integer, Input
+} = GroupedInputs;
 const { validation } = lifecycle;
 
 const WindMitigation = ({ questions }) => (

@@ -29,7 +29,7 @@ import PolicyHolder from './PolicyHolder';
 import Property from './Property';
 import endorsementUtils from '../../../utilities/endorsementModel';
 import Coverages from './Coverages';
-
+import WindMitigation from './WindMitigation';
 
 const { Input, Phone } = Inputs;
 const { validation } = lifecycle;
@@ -358,30 +358,6 @@ export class Coverage extends Component {
     }
   };
 
-  // updateDwellingAndDependencies = (e, value) => {
-  //   const { dispatch, fieldValues } = this.props;
-
-  //   if (!value) return;
-  //   let dwellingNumber = String(value).replace(/\D+/g, '');
-
-  //   if (Number.isNaN(dwellingNumber)) { return; }
-
-  //   dwellingNumber = Math.round(dwellingNumber / 1000) * 1000;
-
-  //   if (fieldValues.otherStructures !== 'other') {
-  //     dispatch(change('Coverage', 'otherStructuresAmount', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.otherStructures)))));
-  //   }
-  //   if (fieldValues.personalProperty !== 'other') {
-  //     dispatch(change('Coverage', 'personalPropertyAmount', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.personalProperty)))));
-  //   }
-
-  //   dispatch(batchActions([
-  //     change('Coverage', 'calculatedHurricane', String(setPercentageOfValue(Number(dwellingNumber), Number(fieldValues.hurricane)))),
-  //     change('Coverage', 'lossOfUse', String(setPercentageOfValue(Number(dwellingNumber), 10))),
-  //     change('Coverage', 'calculatedSinkhole', String(setPercentageOfValue(Number(dwellingNumber), 10)))
-  //   ]));
-  // }
-
   normalizeDwellingAmount = (value, previousValue, allValues) => {
     const { change: changeF } = this.props;
 
@@ -574,142 +550,12 @@ export class Coverage extends Component {
                   normalizeIncidentalOccupancies={this.normalizeIncidentalOccupancies}
                   normalizeSinkholeAmount={this.normalizeSinkholeAmount}
                 />
-
-                <section className="wind flex-parent">
-                  <div className="wind-col1 flex-child">
-                    <h3>Wind Mitigation</h3>
-                    <div className="flex-parent wind-col1-row-1">
-                      <div className="flex-child wind-roof-covering">
-                        <SelectField
-                          name="roofCovering"
-                          component="select"
-                          styleName=""
-                          label="Roof Covering"
-                          onChange={function () {}}
-                          validations={['required']}
-                          answers={getAnswers('roofCovering', questions)}
-                        />
-                      </div>
-                    </div>
-                    <div className="flex-parent wind-col1-row-2">
-                      <div className="flex-child wind-roof-deck-attachment">
-                        <SelectField
-                          name="roofDeckAttachment"
-                          component="select"
-                          styleName=""
-                          label="Roof Deck Attachment"
-                          onChange={function () {}}
-                          validations={['required']}
-                          answers={getAnswers('roofDeckAttachment', questions)}
-                        />
-                      </div>
-                    </div>
-                    <div className="flex-parent wind-col1-row-3">
-                      <div className="flex-child wind-roof-to-wall-attachment">
-                        <SelectField
-                          name="roofToWallConnection"
-                          component="select"
-                          styleName="weakestRoofWallConnect"
-                          label="Roof to Wall Attachment"
-                          onChange={function () {}}
-                          validations={['required']}
-                          answers={getAnswers('roofToWallConnection', questions)}
-                        />
-                      </div>
-                    </div>
-                    <div className="flex-parent wind-col1-row-4">
-                      <div className="flex-child wind-roof-geometry">
-                        <SelectField
-                          name="roofGeometry"
-                          component="select"
-                          styleName=""
-                          label="Roof Geometry"
-                          onChange={function () {}}
-                          validations={['required']}
-                          answers={getAnswers('roofGeometry', questions)}
-                        />
-                      </div>
-                    </div>
-                    <div className="flex-parent wind-col1-row-5">
-                      <div className="flex-child wind-swr">
-                        <RadioField
-                          validations={['required']}
-                          name="secondaryWaterResistance"
-                          styleName=""
-                          label="Secondary Water Resistance (SWR)"
-                          onChange={function () {}}
-                          segmented
-                          answers={getAnswers('secondaryWaterResistance', questions)}
-                        />
-                      </div>
-                    </div>
-                    <div className="flex-parent wind-col1-row-6">
-                      <div className="flex-child wind-opening-protection">
-                        <SelectField
-                          name="openingProtection"
-                          component="select"
-                          styleName=""
-                          label="Opening Protection"
-                          onChange={function () {}}
-                          validations={['required']}
-                          answers={getAnswers('openingProtection', questions)}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="wind-col2 flex-child">
-                    <h3>&nbsp;</h3>
-                    <div className="flex-parent wind-col1-row-1">
-                      <div className="flex-child wind-fbc-wind-speed">
-                        <TextField validations={['required']} label="FBC Wind Speed" styleName="" name="floridaBuildingCodeWindSpeed" />
-                      </div>
-                    </div>
-                    <div className="flex-parent wind-col1-row-2">
-                      <div className="flex-child wind-fbc-wind-speed-design">
-                        <TextField validations={['required']} label="FBC Wind Speed Design" styleName="" name="floridaBuildingCodeWindSpeedDesign" />
-                      </div>
-                    </div>
-                    <div className="flex-parent wind-col1-row-3">
-                      <div className="flex-child wind-terrain">
-                        <SelectField
-                          name="terrain"
-                          component="select"
-                          styleName="propertyTerrain"
-                          label="Terrain"
-                          onChange={function () {}}
-                          validations={['required']}
-                          answers={getAnswers('terrain', questions)}
-                        />
-                      </div>
-                    </div>
-                    <div className="flex-parent wind-col1-row-4">
-                      <div className="flex-child wind-internal-pressure-design">
-                        <SelectField
-                          name="internalPressureDesign"
-                          component="select"
-                          styleName=""
-                          label="Internal Pressure Design"
-                          onChange={function () {}}
-                          validations={['required']}
-                          answers={getAnswers('internalPressureDesign', questions)}
-                        />
-                      </div>
-                    </div>
-                    <div className="flex-parent wind-col1-row-5">
-                      <div className="flex-child wind-wbdr">
-                        <RadioField
-                          validations={['required']}
-                          name="windBorneDebrisRegion"
-                          styleName=""
-                          label="Wind Borne Debris Region (WBDR)"
-                          onChange={function () {}}
-                          segmented
-                          answers={getAnswers('windBorneDebrisRegion', questions)}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </section>
+                <WindMitigation
+                  header="Wind Mitigation"
+                  sectionClass="wind flex-parent"
+                  sectionId="wind-mitigation"
+                  questions={questions}
+                />
               </div>
             </div>
           </Form> }
