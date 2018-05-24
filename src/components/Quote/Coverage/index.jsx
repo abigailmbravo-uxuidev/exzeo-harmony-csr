@@ -62,9 +62,8 @@ const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answ
 
 export const handleInitialize = (state) => {
   const quoteData = handleGetQuoteData(state);
-  if (!quoteData || !quoteData.quoteNumber) return {};
 
-  const { questions } = state.questions;
+  const { questions } = state;
   const values = {};
   values.clearFields = false;
   values.electronicDelivery = _.get(quoteData, 'policyHolders[0].electronicDelivery') || false;
@@ -317,7 +316,7 @@ export class Coverage extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props, nextProps)) {
-      const { quoteData } = nextProps.quoteData;
+      const { quoteData } = nextProps;
       if (quoteData && quoteData.companyCode && quoteData.state && quoteData.agencyCode && !setAgents) {
         this.props.actions.serviceActions.getAgencies(quoteData.companyCode, quoteData.state);
         this.props.actions.serviceActions.getAgentsByAgency(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
