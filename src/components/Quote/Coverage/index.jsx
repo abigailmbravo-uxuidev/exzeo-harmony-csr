@@ -7,32 +7,21 @@ import moment from 'moment';
 import momentTZ from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
 import { batchActions } from 'redux-batched-actions';
-import { reduxForm, Form, propTypes, change, Field } from 'redux-form';
-import Inputs from '@exzeo/core-ui/lib/Input';
-import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
+import { reduxForm, Form, change } from 'redux-form';
 import * as serviceActions from '../../../actions/serviceActions';
 import * as cgActions from '../../../actions/cgActions';
 import * as appStateActions from '../../../actions/appStateActions';
 import * as questionsActions from '../../../actions/questionsActions';
 import * as quoteStateActions from '../../../actions/quoteStateActions';
 import QuoteBaseConnect from '../../../containers/Quote';
-import TextField from '../../Form/inputs/TextField';
-import PhoneField from '../../Form/inputs/PhoneField';
 import HiddenField from '../../Form/inputs/HiddenField';
-import SelectField from '../../Form/inputs/SelectField';
-import RadioField from '../../Form/inputs/RadioField';
-import CurrencyField from '../../Form/inputs/CurrencyField';
-import DateField from '../../Form/inputs/DateField';
 import Footer from '../../Common/Footer';
 import ProducedBy from './ProducedBy';
 import PolicyHolder from './PolicyHolder';
 import Property from './Property';
-import endorsementUtils from '../../../utilities/endorsementModel';
+import { setPercentageOfValue } from '../../../utilities/endorsementModel';
 import Coverages from './Coverages';
 import WindMitigation from './WindMitigation';
-
-const { Input, Phone } = Inputs;
-const { validation } = lifecycle;
 
 export const handleGetQuoteData = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName])
@@ -71,13 +60,11 @@ export function calculatePercentage(oldFigure, newFigure) {
 }
 const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
-export const setPercentageOfValue = (value, percent) => Math.ceil(value * (percent / 100));
-
 export const handleInitialize = (state) => {
   const quoteData = handleGetQuoteData(state);
   if (!quoteData || !quoteData.quoteNumber) return {};
 
-  const questions = state.questions;
+  const { questions } = state.questions;
   const values = {};
   values.clearFields = false;
   values.electronicDelivery = _.get(quoteData, 'policyHolders[0].electronicDelivery') || false;
@@ -173,8 +160,6 @@ export const handleInitialize = (state) => {
 
 const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
 const checkSentToDocusign = state => state === 'Application Sent DocuSign';
-
-const getQuestionName = (name, questions) => _.get(_.find(questions, { name }), 'question') || '';
 
 export const handleFormSubmit = (data, dispatch, props) => {
   const workflowId = props.appState.instanceId;
@@ -330,16 +315,9 @@ export class Coverage extends Component {
     }
   }
 
-  componentDidUpdate() {
-    const { dispatch, fieldValues } = this.props;
-    if (fieldValues.personalProperty === '0') {
-      dispatch(change('Coverage', 'personalPropertyReplacementCostCoverage', false));
-    }
-  }
-
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(this.props, nextProps)) {
-      const quoteData = nextProps.quoteData;
+      const { quoteData } = nextProps.quoteData;
       if (quoteData && quoteData.companyCode && quoteData.state && quoteData.agencyCode && !setAgents) {
         this.props.actions.serviceActions.getAgencies(quoteData.companyCode, quoteData.state);
         this.props.actions.serviceActions.getAgentsByAgency(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
@@ -364,13 +342,13 @@ export class Coverage extends Component {
     const roundedDwellingAmount = Math.round(value / 1000) * 1000;
 
     if (allValues.otherStructures !== 'other') {
-      changeF('otherStructuresAmount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, allValues.otherStructures));
+      changeF('otherStructuresAmount', setPercentageOfValue(roundedDwellingAmount, allValues.otherStructures));
     }
     if (allValues.personalProperty !== 'other') {
-      changeF('personalPropertyAmount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, allValues.personalProperty));
+      changeF('personalPropertyAmount', setPercentageOfValue(roundedDwellingAmount, allValues.personalProperty));
     }
-    changeF('calculatedHurricane', String(endorsementUtils.setPercentageOfValue(roundedDwellingAmount, allValues.hurricane)));
-    changeF('lossOfUse', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, 10));
+    changeF('calculatedHurricane', String(setPercentageOfValue(roundedDwellingAmount, allValues.hurricane)));
+    changeF('lossOfUse', setPercentageOfValue(roundedDwellingAmount, 10));
     changeF('calculatedSinkhole', String(setPercentageOfValue(roundedDwellingAmount, 10)));
 
     return value;
@@ -379,7 +357,7 @@ export class Coverage extends Component {
   normalizeDwellingDependencies = (value, previousValue, allValues, field) => {
     if (Number.isNaN(value)) return;
     const { change: changeF } = this.props;
-    const fieldValue = endorsementUtils.setPercentageOfValue(allValues.dwellingAmount, value);
+    const fieldValue = setPercentageOfValue(allValues.dwellingAmount, value);
 
     changeF(field, Number.isNaN(fieldValue) ? '' : fieldValue);
     return value;
@@ -404,7 +382,7 @@ export class Coverage extends Component {
     const { change: changeF } = this.props;
     if (String(value) === 'true') {
       changeF('sinkhole', 10);
-      changeF('calculatedSinkhole', endorsementUtils.setPercentageOfValue(allValues.dwellingAmount, 10));
+      changeF('calculatedSinkhole', setPercentageOfValue(allValues.dwellingAmount, 10));
     } else {
       changeF('sinkhole', 0);
       changeF('calculatedSinkhole', 0);
@@ -582,7 +560,6 @@ Coverage.contextTypes = {
 // Property type definitions
 // ------------------------------------------------
 Coverage.propTypes = {
-  ...propTypes,
   zipCodeSettings: PropTypes.shape(),
   tasks: PropTypes.shape(),
   appState: PropTypes.shape({
