@@ -486,7 +486,7 @@ export class Coverage extends Component {
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         <div className="route-content">
 
-          { initialValues.dwellingAmount && <Form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+          <Form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
             <HiddenField name="propertyIncidentalOccupanciesMainDwelling" />
             <HiddenField name="propertyIncidentalOccupanciesOtherStructures" />
             <HiddenField name="liabilityIncidentalOccupancies" />
@@ -536,7 +536,7 @@ export class Coverage extends Component {
                 />
               </div>
             </div>
-          </Form> }
+          </Form>
         </div>
         <div className="basic-footer btn-footer">
           <Footer />
