@@ -19,11 +19,16 @@ const sinkholePerilCoverageAnswers = questions => (
 
 const Coverages = ({
   sectionId, sectionClass, questions,
-  fieldValues,
   normalizeDwellingAmount,
   normalizeDwellingDependencies,
   normalizePersonalPropertyPercentage,
-  normalizeSinkholeAmount
+  normalizeSinkholeAmount,
+  sinkholePerilCoverageValue,
+  dwellingMinValue,
+  dwellingMaxValue,
+  otherStructuresValue,
+  personalPropertyValue,
+  personalPropertyAmountValue
 }) => (
   <section id={sectionId} className={sectionClass}>
     <div className="coverages flex-child">
@@ -32,7 +37,7 @@ const Coverages = ({
         <Field
           styleName="flex-child"
           name="dwellingAmount"
-          label={`${getQuestionName('dwellingAmount', questions)} ($ ${String(fieldValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $ ${String(fieldValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`}
+          label={`${getQuestionName('dwellingAmount', questions)} ($ ${String(dwellingMinValue).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $ ${String(dwellingMaxValue).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`}
           component={Currency}
           validate={[validation.isRequired, validation.isDwellingRange]}
           normalize={normalizeDwellingAmount}
@@ -45,7 +50,7 @@ const Coverages = ({
           component={Currency}
           styleName="flex-child"
           validate={validation.isRequired}
-          disabled={fieldValues.otherStructures !== 'other'}
+          disabled={otherStructuresValue !== 'other'}
         />
         <Field
           name="otherStructures"
@@ -64,7 +69,7 @@ const Coverages = ({
           label={getQuestionName('personalPropertyAmount', questions)}
           component={Currency}
           validate={validation.isRequired}
-          disabled={fieldValues.personalProperty !== 'other'}
+          disabled={personalPropertyValue !== 'other'}
         />
         <Field
           styleName="flex-child"
@@ -137,7 +142,7 @@ const Coverages = ({
           component={Radio}
           answers={baseYesNoAnswers}
           segmented
-          disabled={parseInt(fieldValues.personalPropertyAmount, 10) === 0}
+          disabled={parseInt(personalPropertyAmountValue, 10) === 0}
         />
       </div>
       <div className="flex-parent other-coverages-row-4">
@@ -194,7 +199,7 @@ const Coverages = ({
           normalize={normalizeSinkholeAmount}
         />
       </div>
-      { String(fieldValues.sinkholePerilCoverage) === 'true' && <div className="flex-parent">
+      { String(sinkholePerilCoverageValue) === 'true' && <div className="flex-parent">
         <Field
           name="calculatedSinkhole"
           label="Calculated Sinkhole"
@@ -242,7 +247,6 @@ const Coverages = ({
 );
 
 Coverages.propTypes = {
-  fieldValues: PropTypes.object.isRequired,
   questions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
   normalizeDwellingAmount: PropTypes.func.isRequired,
   normalizeDwellingDependencies: PropTypes.func.isRequired,

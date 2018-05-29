@@ -6,7 +6,7 @@ import moment from 'moment';
 import momentTZ from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
 import { batchActions } from 'redux-batched-actions';
-import { reduxForm, Form, change } from 'redux-form';
+import { reduxForm, Form, change, formValueSelector } from 'redux-form';
 import { getAgencies, getAgentsByAgency } from '../../../actions/serviceActions';
 import { batchCompleteTask, startWorkflow } from '../../../actions/cgActions';
 import { setAppState } from '../../../actions/appStateActions';
@@ -328,8 +328,8 @@ export class Coverage extends Component {
   }
 
   setPHToggle = () => {
-    const { fieldValues, changeF } = this.props;
-    if (fieldValues.clearFields) {
+    const { clearFieldValue, changeF } = this.props;
+    if (clearFieldValue) {
       changeF('clearFields', false);
     }
   };
@@ -388,31 +388,6 @@ export class Coverage extends Component {
     return value;
   };
 
-  updateDependencies = (event, field, dependency) => {
-    const { dispatch, fieldValues } = this.props;
-    if (Number.isNaN(event.target.value)) { return; }
-
-    let dependencyValue = null;
-
-    if (dependency === 'dwellingAmount') {
-      dependencyValue = Math.round(Number(String(fieldValues[dependency]).replace(/\D+/g, '')) / 1000) * 1000;
-    } else dependencyValue = String(fieldValues[dependency]).replace(/\D+/g, '');
-
-    const fieldValue = setPercentageOfValue(Number(dependencyValue), Number(event.target.value));
-
-    dispatch(change('Coverage', field, Number.isNaN(fieldValue)
-      ? ''
-      : String(fieldValue)));
-  }
-
-  updateCalculatedSinkhole = () => {
-    const { dispatch, fieldValues } = this.props;
-
-    const dependencyValue = Math.round(Number(String(fieldValues.dwellingAmount).replace(/\D+/g, '')) / 1000) * 1000;
-
-    dispatch(change('Coverage', 'calculatedSinkhole', String(setPercentageOfValue(Number(dependencyValue), 10))));
-  }
-
   handleAgencyChange = (agencyCode, isInit) => {
     if (!isInit) {
       this.props.dispatch(batchActions([
@@ -463,7 +438,13 @@ export class Coverage extends Component {
 
   render() {
     const {
-      quoteData, fieldValues, handleSubmit, pristine, agents, agencies, questions, dirty
+      quoteData, handleSubmit, pristine, agents, agencies, questions, dirty,
+      sinkholePerilCoverageValue,
+      dwellingMinValue,
+      dwellingMaxValue,
+      otherStructuresValue,
+      personalPropertyValue,
+      personalPropertyAmountValue
     } = this.props;
 
     if (!quoteData) {
@@ -518,7 +499,12 @@ export class Coverage extends Component {
                 <Coverages
                   sectionId="coverage-deductibles-discounts"
                   sectionClass="coverage-options flex-parent coverage-deductibles-discounts"
-                  fieldValues={fieldValues}
+                  sinkholePerilCoverageValue={sinkholePerilCoverageValue}
+                  dwellingMinValue={dwellingMinValue}
+                  dwellingMaxValue={dwellingMaxValue}
+                  otherStructuresValue={otherStructuresValue}
+                  personalPropertyValue={personalPropertyValue}
+                  personalPropertyAmountValue={personalPropertyAmountValue}
                   questions={questions}
                   normalizeDwellingAmount={this.normalizeDwellingAmount}
                   normalizeDwellingDependencies={this.normalizeDwellingDependencies}
@@ -567,21 +553,49 @@ Coverage.propTypes = {
   })
 };
 
+const selector = formValueSelector('Coverage');
 // ------------------------------------------------
 // redux mapping
 // ------------------------------------------------
-const mapStateToProps = state => ({
-  getAgents: state.service.getAgents,
-  tasks: state.cg,
-  appState: state.appState,
-  agents: state.service.agents,
-  agencies: state.service.agencies,
-  fieldValues: _.get(state.form, 'Coverage.values', {}),
-  initialValues: handleInitialize(state),
-  quoteData: handleGetQuoteData(state),
-  zipCodeSettings: handleGetZipCodeSettings(state),
-  questions: state.questions
-});
+const mapStateToProps = (state) => {
+  const {
+    clearFieldValue,
+    sinkholePerilCoverageValue,
+    dwellingMinValue,
+    dwellingMaxValue,
+    otherStructuresValue,
+    personalPropertyAmountValue,
+    personalPropertyValue
+  } = selector(
+    state,
+    'clearField',
+    'sinkholePerilCoverage',
+    'dwellingMin',
+    'dwellingMax',
+    'otherStructures',
+    'personalPropertyAmount',
+    'personalProperty'
+  );
+
+  return {
+    getAgents: state.service.getAgents,
+    tasks: state.cg,
+    appState: state.appState,
+    agents: state.service.agents,
+    agencies: state.service.agencies,
+    initialValues: handleInitialize(state),
+    quoteData: handleGetQuoteData(state),
+    zipCodeSettings: handleGetZipCodeSettings(state),
+    questions: state.questions,
+    clearFieldValue,
+    sinkholePerilCoverageValue,
+    dwellingMinValue,
+    dwellingMaxValue,
+    otherStructuresValue,
+    personalPropertyAmountValue,
+    personalPropertyValue
+  };
+};
 
 // ------------------------------------------------
 // wire up redux form with the redux connect
