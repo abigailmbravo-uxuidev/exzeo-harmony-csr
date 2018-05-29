@@ -328,8 +328,8 @@ export class Coverage extends Component {
   }
 
   setPHToggle = () => {
-    const { clearFieldValue, changeF } = this.props;
-    if (clearFieldValue) {
+    const { clearFields, changeF } = this.props;
+    if (clearFields) {
       changeF('clearFields', false);
     }
   };
@@ -439,12 +439,12 @@ export class Coverage extends Component {
   render() {
     const {
       quoteData, handleSubmit, pristine, agents, agencies, questions, dirty,
-      sinkholePerilCoverageValue,
-      dwellingMinValue,
-      dwellingMaxValue,
-      otherStructuresValue,
-      personalPropertyValue,
-      personalPropertyAmountValue
+      sinkholePerilCoverage,
+      dwellingMin,
+      dwellingMax,
+      otherStructures,
+      personalProperty,
+      personalPropertyAmount
     } = this.props;
 
     if (!quoteData) {
@@ -499,12 +499,12 @@ export class Coverage extends Component {
                 <Coverages
                   sectionId="coverage-deductibles-discounts"
                   sectionClass="coverage-options flex-parent coverage-deductibles-discounts"
-                  sinkholePerilCoverageValue={sinkholePerilCoverageValue}
-                  dwellingMinValue={dwellingMinValue}
-                  dwellingMaxValue={dwellingMaxValue}
-                  otherStructuresValue={otherStructuresValue}
-                  personalPropertyValue={personalPropertyValue}
-                  personalPropertyAmountValue={personalPropertyAmountValue}
+                  sinkholePerilCoverageValue={sinkholePerilCoverage}
+                  dwellingMinValue={dwellingMin}
+                  dwellingMaxValue={dwellingMax}
+                  otherStructuresValue={otherStructures}
+                  personalPropertyValue={personalProperty}
+                  personalPropertyAmountValue={personalPropertyAmount}
                   questions={questions}
                   normalizeDwellingAmount={this.normalizeDwellingAmount}
                   normalizeDwellingDependencies={this.normalizeDwellingDependencies}
@@ -559,16 +559,16 @@ const selector = formValueSelector('Coverage');
 // ------------------------------------------------
 const mapStateToProps = (state) => {
   const {
-    clearFieldValue,
-    sinkholePerilCoverageValue,
-    dwellingMinValue,
-    dwellingMaxValue,
-    otherStructuresValue,
-    personalPropertyAmountValue,
-    personalPropertyValue
+    clearFields,
+    sinkholePerilCoverage,
+    dwellingMin,
+    dwellingMax,
+    otherStructures,
+    personalPropertyAmount,
+    personalProperty
   } = selector(
     state,
-    'clearField',
+    'clearFields',
     'sinkholePerilCoverage',
     'dwellingMin',
     'dwellingMax',
@@ -587,13 +587,13 @@ const mapStateToProps = (state) => {
     quoteData: handleGetQuoteData(state),
     zipCodeSettings: handleGetZipCodeSettings(state),
     questions: state.questions,
-    clearFieldValue,
-    sinkholePerilCoverageValue,
-    dwellingMinValue,
-    dwellingMaxValue,
-    otherStructuresValue,
-    personalPropertyAmountValue,
-    personalPropertyValue
+    clearFields,
+    sinkholePerilCoverage,
+    dwellingMin,
+    dwellingMax,
+    otherStructures,
+    personalPropertyAmount,
+    personalProperty
   };
 };
 
