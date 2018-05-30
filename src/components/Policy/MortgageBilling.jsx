@@ -76,14 +76,27 @@ export class MortgageBilling extends Component {
   };
 
   componentDidMount = () => {
+    const { policy, summaryLedger } = this.props;
     this.props.getPaymentHistory(this.props.policy.policyNumber);
     this.props.getPaymentOptionsApplyPayments();
     this.props.getUIQuestions('additionalInterestsCSR');
+
+    if (policy.rating && summaryLedger.currentPremium) {
+      const paymentOptions = {
+        effectiveDate: policy.effectiveDate,
+        policyHolders: policy.policyHolders,
+        additionalInterests: policy.additionalInterests,
+        currentPremium: summaryLedger.currentPremium,
+        fullyEarnedFees: policy.rating.worksheet.fees.empTrustFee + policy.rating.worksheet.fees.mgaPolicyFee
+      };
+      this.props.getBillingOptionsForPolicy(paymentOptions);
+    }
   };
 
   componentWillReceiveProps = (nextProps) => {
     if (nextProps && nextProps.policy && nextProps.policy.policyNumber && !_.isEqual(this.props.policy, nextProps.policy)) {
       nextProps.getSummaryLedger(nextProps.policy.policyNumber);
+      nextProps.getPaymentOptionsApplyPayments();
       nextProps.getPaymentHistory(nextProps.policy.policyNumber);
 
       const paymentOptions = {
