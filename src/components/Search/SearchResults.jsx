@@ -1,12 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import * as cgActions from '../../actions/cgActions';
-import * as appStateActions from '../../actions/appStateActions';
-import * as serviceActions from '../../actions/serviceActions';
-import * as searchActions from '../../actions/searchActions';
+import handleNewTab from '../../utilities/handleNewTab';
 import Loader from '../Common/Loader';
 import NoResults from './NoResultsForService';
 import NoPolicyResultsConnect from './NoPolicyResults';
@@ -19,18 +15,19 @@ import AddressTip from './AddressTip';
 
 export const onKeypressSubmit = (event, data, props) => {
   if (event.charCode === 13) {
-    props.handleNewTab(data, props);
+    handleNewTab(data, props.searchType);
   }
 };
 
-
 export const SearchResults = (props) => {
+  const { searchType, hasSearched, appState } = props;
+
+  // Old n busted
   const model = props.tasks[props.appState.modelName] || {};
   const previousTask = model.data && model.data.previousTask ? model.data.previousTask : {};
   const activeTask = model.data && model.data.activeTask ? model.data.activeTask : {};
 
-  const searchData = JSON.parse(localStorage.getItem('lastSearchData'));
-  if (props.search && props.search.searchType === 'policy') {
+  if (searchType === 'policy') {
     const { defaultPolicyResults } = props;
     const policyResults = [];
 
@@ -46,7 +43,7 @@ export const SearchResults = (props) => {
 
     return (
       <div className="policy-list">
-        {props.search && props.search.isLoading && <Loader />}
+        {appState.loading && <Loader />}
         {
           policyResults && policyResults.length > 0 && policyResults.map((policy, index) => (
             <PolicySearchCard
@@ -54,12 +51,12 @@ export const SearchResults = (props) => {
               policy={policy}
               index={index}
               key={index}
-              policySelection={() => props.handleNewTab(policy, props)}
+              policySelection={() => handleNewTab(policy, props.searchType)}
             />
           ))
       }
         {
-          props.search && props.search.hasSearched && !props.search.isLoading && policyResults && policyResults.length === 0 && <NoPolicyResultsConnect />
+          hasSearched && !appState.isLoading && policyResults && policyResults.length === 0 && <NoPolicyResultsConnect />
       }
       </div>
     );
@@ -77,7 +74,7 @@ export const SearchResults = (props) => {
                 address={address}
                 index={index}
                 key={index}
-                addressSelection={() => props.handleNewTab(address, props)}
+                addressSelection={() => handleNewTab(address, props.searchType)}
                 addressKeyEnter={event => onKeypressSubmit(event, address, props)}
               />
               ))
@@ -99,7 +96,7 @@ export const SearchResults = (props) => {
             quote={quote}
             index={index}
             key={index}
-            quoteSelection={() => props.handleNewTab(quote, props)}
+            quoteSelection={() => handleNewTab(quote, props.searchType)}
             quoteKeyEnter={event => onKeypressSubmit(event, quote, props)}
           />
         ))
@@ -107,10 +104,10 @@ export const SearchResults = (props) => {
       </div>);
   }
 
-  if (searchData && searchData.searchType === 'agency') {
+  if (searchType === 'agency') {
     const agencyResults = props.agencies ? props.agencies : [];
 
-    if (agencyResults.length <= 0 && searchData.searchType === 'agency' && props.appState.data && !props.appState.data.agentSubmitting) {
+    if (agencyResults.length <= 0 && searchType === 'agency' && props.appState.data && !props.appState.data.agentSubmitting) {
       return (
         <NoResults />
       );
@@ -120,15 +117,15 @@ export const SearchResults = (props) => {
         { props.appState.data && props.appState.data.agentSubmitting && <Loader />}
         {
         agencyResults && agencyResults.map((agency, index) => (
-          <AgencySearchCard agency={agency} index={index} key={index} agencySelection={() => props.handleNewTab(agency, props)} agencyKeyEnter={event => onKeypressSubmit(event, agency, props)} />
+          <AgencySearchCard agency={agency} index={index} key={index} agencySelection={() => handleNewTab(agency, props.searchType)} agencyKeyEnter={event => onKeypressSubmit(event, agency, props)} />
         ))
       }
       </div>);
   }
 
-  if (searchData && searchData.searchType === 'agent') {
+  if (searchType === 'agent') {
     const agentResults = props.agents ? props.agents : [];
-    if (props.appState.data && !props.appState.data.agentSubmitting && agentResults.length <= 0 && searchData.searchType === 'agent') {
+    if (props.appState.data && !props.appState.data.agentSubmitting && agentResults.length <= 0 && searchType === 'agent') {
       return (
         <NoResults />
       );
@@ -138,7 +135,7 @@ export const SearchResults = (props) => {
         { props.appState.data && props.appState.data.agentSubmitting && <Loader />}
         {
         agentResults && agentResults.map((agent, index) => (
-          <AgentSearchCard agent={agent} index={index} key={index} agentSelection={() => props.handleNewTab(agent, props)} agentKeyEnter={event => onKeypressSubmit(event, agent, props)} />
+          <AgentSearchCard agent={agent} index={index} key={index} agentSelection={() => handleNewTab(agent, props)} agentKeyEnter={event => onKeypressSubmit(event, agent, props)} />
           ))
             }
       </div>
@@ -157,16 +154,11 @@ SearchResults.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  tasks: state.cg, appState: state.appState, agencies: state.service.agencies, agents: state.service.agents, defaultPolicyResults: state.service.policyResults, search: state.search
+  tasks: state.cg,
+  appState: state.appState,
+  agencies: state.service.agencies,
+  agents: state.service.agents,
+  defaultPolicyResults: state.service.policyResults
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    cgActions: bindActionCreators(cgActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch),
-    searchActions: bindActionCreators(searchActions, dispatch)
-  }
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SearchResults);
+export default connect(mapStateToProps)(SearchResults);

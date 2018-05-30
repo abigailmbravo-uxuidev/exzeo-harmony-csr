@@ -1,26 +1,42 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { reduxForm, Form, Field, propTypes, getFormSyncErrors, change } from 'redux-form';
-import ReactTooltip from 'react-tooltip';
+import { reduxForm, Field, getFormSyncErrors, change } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
-import { getAnswers } from "../../utilities/forms";
-import * as cgActions from '../../actions/cgActions';
-import * as appStateActions from '../../actions/appStateActions';
-import * as errorActions from '../../actions/errorActions';
-import * as serviceActions from '../../actions/serviceActions';
-import * as searchActions from '../../actions/searchActions';
-import normalizeDate from '../Form/normalizeDate';
+import { moveToTaskAndExecuteComplete, completeTask, clearSearchResults } from '../../actions/cgActions';
+import { setAppState, toggleLoading } from '../../actions/appStateActions';
+import { clearAppError } from '../../actions/errorActions';
+import { searchPolicy, searchAgents, searchAgencies, getAgencies, clearPolicyResults, clearAgencies, clearAgent } from '../../actions/serviceActions';
+import { setSearch } from '../../actions/searchActions';
 import Pagination from '../Common/Pagination';
 import Rules from '../Form/Rules';
-import SelectField from '../Form/inputs/SelectField';
-import ReactSelectField from '../Form/inputs/ReactSelectField';
+// Components from Core
+import Inputs from '@exzeo/core-ui/lib/Input';
+import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
+import NewQuoteSearch from './components/NewQuoteSearch';
+import QuoteSearch from './components/QuoteSearch';
+import PolicySearch from './components/PolicySearch';
+import UserSearch from './components/UserSearch.jsx';
+import AgencySearch from './components/AgencySearch';
+import AgentSearch from './components/AgentSearch';
+
+const { Select, SelectTypeAhead, Input } = Inputs;
+const { isRequired, normalizeDate } = lifecycle;
 
 const userTasks = {
   handleSearchBarSubmit: 'search'
 };
+
+const agencySearchOptions = [
+  { answer: 'agent', label: 'Agent Search' },
+  { answer: 'agency', label: 'Agency Search' }
+];
+
+const nonAgencySearchOptions = [
+  { answer: 'address', label: 'New Quote' },
+  { answer: 'quote', label: 'Quote Search' },
+  { answer: 'policy', label: 'Policy Search' }
+];
 
 const handleInitialize = () => ({ searchType: 'policy', sortBy: 'policyNumber' });
 
@@ -41,20 +57,21 @@ export const handlePolicySearchSubmit = (data, dispatch, props) => {
     effectiveDate: (encodeURIComponent(data.effectiveDate) !== 'undefined' ? encodeURIComponent(moment(data.effectiveDate).utc().format('YYYY-MM-DD')) : '')
   };
 
-  props.actions.searchActions.setSearch(taskData);
+  props.setSearch(taskData);
   localStorage.setItem('lastSearchData', JSON.stringify(taskData));
-
-  props.actions.serviceActions.searchPolicy(taskData, data.sortBy).then(() => {
+  props.toggleLoading(true);
+  props.searchPolicy(taskData, data.sortBy).then(() => {
     taskData.isLoading = false;
-    props.actions.searchActions.setSearch(taskData);
+    props.setSearch(taskData);
+    props.toggleLoading(false);
   });
 };
 
 export const handleSearchBarSubmit = (data, dispatch, props) => {
-  const workflowId = props.appState.instanceId;
+  const { instanceId: workflowId } = props.appState;
   const taskName = userTasks.handleSearchBarSubmit;
-  const modelName = props.appState.modelName;
-  const searchType = props.fieldValues.searchType;
+  const { modelName } = props.appState;
+  const { searchType } = props.fieldValues;
   const taskData = {
     firstName: (encodeURIComponent(data.firstName) !== 'undefined' ? encodeURIComponent(data.firstName) : ''),
     lastName: (encodeURIComponent(data.lastName) !== 'undefined' ? encodeURIComponent(data.lastName) : ''),
@@ -82,48 +99,45 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
   };
 
   if (searchType === 'agency') {
-    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, {
+    props.setAppState(props.appState.modelName, workflowId, {
       ...props.appState.data,
       agentSubmitting: true
     });
 
-    props.actions.serviceActions.searchAgencies(
+    props.searchAgencies(
       'TTIC', 'FL', agencyAgentData.displayName,
       agencyAgentData.agencyCode, agencyAgentData.address, agencyAgentData.licNumber,
       agencyAgentData.fein, agencyAgentData.phone
     ).then(() => {
-      props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, agentSubmitting: false });
+      props.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, agentSubmitting: false });
     });
   }
 
   if (searchType === 'agent') {
-    props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, {
+    props.setAppState(props.appState.modelName, workflowId, {
       ...props.appState.data,
       agentSubmitting: true
     });
 
-    props.actions.serviceActions.searchAgents(
+    props.searchAgents(
       'TTIC', 'FL', agencyAgentData.firstName, agencyAgentData.lastName,
       agencyAgentData.agentCode, agencyAgentData.address, agencyAgentData.licNumber
     ).then(() => {
-      props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, agentSubmitting: false });
+      props.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, agentSubmitting: false });
     });
   }
 
   if (searchType !== 'agency' && searchType !== 'agent') {
     localStorage.setItem('lastSearchData', JSON.stringify(taskData));
-    props.actions.searchActions.setSearch(taskData);
+    props.setSearch(taskData);
   } else {
     localStorage.setItem('lastSearchData', JSON.stringify(agencyAgentData));
-    props.actions.searchActions.setSearch(agencyAgentData);
+    props.setSearch(agencyAgentData);
     return;
   }
 
-  props.actions.errorActions.clearAppError();
-  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, {
-    ...props.appState.data,
-    submitting: true
-  });
+  props.clearAppError();
+  props.toggleLoading(true);
 
   // we need to make sure the active task is search otherwise we need to reset the workflow
   if (props.tasks[modelName].data.activeTask && (props.tasks[modelName].data.activeTask.name !== userTasks.handleSearchBarSubmit)) {
@@ -131,13 +145,11 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
       stepName: taskName,
       data: taskData
     };
-    props.actions.cgActions.moveToTaskAndExecuteComplete(props.appState.modelName, workflowId, taskName, completeStep);
+    props.moveToTaskAndExecuteComplete(props.appState.modelName, workflowId, taskName, completeStep);
+    props.toggleLoading(true);
   } else {
-    props.actions.appStateActions.setAppState(modelName, workflowId, {
-      ...props.appState.data,
-      submitting: true
-    });
-    props.actions.cgActions.completeTask(modelName, workflowId, taskName, taskData);
+    props.toggleLoading(true);
+    props.completeTask(modelName, workflowId, taskName, taskData);
   }
 };
 
@@ -220,42 +232,14 @@ export const validate = (values) => {
   return errors;
 };
 
-const getErrorToolTip = (formErrors, fieldName) => {
-  const errorFieldName = `error${fieldName}`;
-  return (
-    (formErrors && formErrors[fieldName]) ?
-      <span>
-        <i className="fa fa-exclamation-circle" data-tip="data-tip" data-for={errorFieldName} />
-        <ReactTooltip place="right" id={errorFieldName} type="error" effect="float">{formErrors[fieldName]}</ReactTooltip>
-      </span> : <span />);
-};
-
-const generateField = (name, placeholder, labelText, formErrors, formGroupCss) => {
-  const field = (<div className={(
-      formErrors && formErrors[name]) ? `form-group error ${formGroupCss}` : `form-group ${formGroupCss}`}
-  >
-    <label htmlFor={name}>{getErrorToolTip(formErrors, name)}
-      {labelText}
-    </label>
-    <Field
-      name={name}
-      className=""
-      placeholder={placeholder}
-      type="text"
-      component="input"
-    />
-  </div>);
-  return field;
-};
-
-export class SearchForm extends Component {
+export class SearchBar extends Component {
   componentDidMount() {
     localStorage.removeItem('lastSearchData');
-    this.props.actions.serviceActions.getAgencies('TTIC', 'FL');
+    this.props.getAgencies('TTIC', 'FL');
   }
 
   componentWillReceiveProps(nextProps) {
-    const { dispatch } = nextProps;
+    const { change } = nextProps;
     const model = nextProps.tasks[nextProps.appState.modelName] || {};
     const previousTask = model.data && model.data.previousTask
       ? model.data.previousTask
@@ -266,71 +250,66 @@ export class SearchForm extends Component {
     if (nextProps.search.searchType === 'policy' && nextProps.search.hasSearched && nextProps.policyResults) {
       const totalPages = Math.ceil(nextProps.policyResults.totalNumberOfRecords / nextProps.policyResults.pageSize);
       const pageNumber = nextProps.policyResults.currentPage;
-      dispatch(change('SearchBar', 'pageNumber', pageNumber));
-      dispatch(change('SearchBar', 'totalPages', totalPages));
-      nextProps.actions.searchActions.setSearch({ ...nextProps.search, totalPages, pageNumber });
+      change('pageNumber', pageNumber);
+      change('totalPages', totalPages);
+      nextProps.setSearch({ ...nextProps.search, totalPages, pageNumber });
     }
 
 
     if (nextProps.search.searchType === 'quote' && nextProps.search.hasSearched) {
       const totalPages = Math.ceil(quoteSearchResponse.totalNumberOfRecords / quoteSearchResponse.pageSize);
       const pageNumber = quoteSearchResponse.currentPage;
-      dispatch(change('SearchBar', 'pageNumber', pageNumber));
-      dispatch(change('SearchBar', 'totalPages', totalPages));
-      nextProps.actions.searchActions.setSearch({ ...nextProps.search, totalPages, pageNumber });
+      change('pageNumber', pageNumber);
+      change('totalPages', totalPages);
+      nextProps.setSearch({ ...nextProps.search, totalPages, pageNumber });
     }
 
     if (nextProps.fieldValues && !nextProps.fieldValues.searchType) {
       this.clearForm();
       if (nextProps.pathName === '/') {
-        dispatch(change('SearchBar', 'searchType', 'policy'));
-        dispatch(change('SearchBar', 'sortBy', 'policyNumber'));
+        change('searchType', 'policy');
+        change('sortBy', 'policyNumber');
       } else {
-        dispatch(change('SearchBar', 'searchType', 'agency'));
+        change('searchType', 'agency');
       }
     }
   }
 
+  changeSearchType = (event, newValue) => {
+    const { changeSearchType } = this.props;
+    changeSearchType(newValue);
+    this.clearForm();
+    this.resetPolicySearch();
+  };
+
   resetPolicySearch = () => {
-    const { actions } = this.props;
-    actions.searchActions.setSearch({
+    const { setSearch, clearPolicyResults } = this.props;
+    setSearch({
       searchType: 'policy', hasSearched: false, isLoading: false, policyAdvanceSearch: false
     });
-    actions.serviceActions.clearPolicyResults();
-  };
-
-  togglePolicyAdvanceSearch = () => {
-    const { actions, search } = this.props;
-    actions.searchActions.setSearch({ ...search, policyAdvanceSearch: !search.policyAdvanceSearch });
-  };
-
-  setAgency = (val) => {
-    this.props.dispatch(change('SearchBar', 'agencyCode', val.value ? val.value : ''));
+    clearPolicyResults();
   };
 
   clearForm = () => {
-    const {
-      actions, appState, form, reset, tasks
-    } = this.props;
+    const { appState, form, reset, tasks, clearSearchResults, clearAppError, clearAgencies, clearAgent, setAppState, getAgencies } = this.props;
     const modelName = appState.modelName;
     const data = tasks[modelName].data;
-    const workflowId = appState.instanceId;
     const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData')) || {};
     lastSearchData.searchType = '';
     localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
     reset(form);
-    actions.cgActions.clearSearchResults(modelName, data);
-    actions.errorActions.clearAppError();
-    actions.serviceActions.clearAgencies();
-    actions.serviceActions.clearAgent();
+    clearSearchResults(modelName, data);
+    clearAppError();
+    clearAgencies();
+    clearAgent();
     this.resetPolicySearch();
-    actions.appStateActions.setAppState(appState.modelName, workflowId, { submitting: false });
-    actions.serviceActions.getAgencies('TTIC', 'FL');
+    getAgencies('TTIC', 'FL');
     change('sortBy', 'policyNumber');
+    toggleLoading(false);
   };
 
   changePageQuote = (isNext) => {
-    const { fieldValues, actions, appState, tasks } = this.props;
+    const { fieldValues, appState, tasks, setSearch, clearAppError, completeTask, moveToTaskAndExecuteComplete, toggleLoading } = this.props;
     const workflowId = appState.instanceId;
     const taskName = userTasks.handleSearchBarSubmit;
     const modelName = appState.modelName;
@@ -352,11 +331,11 @@ export class SearchForm extends Component {
 
     taskData.pageNumber = isNext ? String(Number(fieldValues.pageNumber) + 1) : String(Number(fieldValues.pageNumber) - 1);
 
-    actions.searchActions.setSearch(taskData);
+    setSearch(taskData);
     localStorage.setItem('lastSearchData', JSON.stringify(taskData));
 
-    actions.errorActions.clearAppError();
-    actions.appStateActions.setAppState(appState.modelName, workflowId, { ...appState.data, submitting: true });
+    clearAppError();
+    toggleLoading(true);
 
     // we need to make sure the active task is search otherwise we need to reset the workflow
     if (tasks[modelName].data.activeTask && (tasks[modelName].data.activeTask.name !== userTasks.handleSearchBarSubmit)) {
@@ -364,15 +343,15 @@ export class SearchForm extends Component {
         stepName: taskName,
         data: taskData
       };
-      actions.cgActions.moveToTaskAndExecuteComplete(appState.modelName, workflowId, taskName, completeStep);
+      moveToTaskAndExecuteComplete(appState.modelName, workflowId, taskName, completeStep);
     } else {
-      actions.appStateActions.setAppState(modelName, workflowId, { ...appState.data, submitting: true });
-      actions.cgActions.completeTask(modelName, workflowId, taskName, taskData);
+      toggleLoading(true);
+      completeTask(modelName, workflowId, taskName, taskData);
     }
   };
 
   changePagePolicy = (isNext) => {
-    const { fieldValues, actions,  } = this.props;
+    const { fieldValues, setSearch, searchPolicy,   } = this.props;
 
     const taskData = {
       firstName: (encodeURIComponent(fieldValues.firstName) !== 'undefined' ? encodeURIComponent(fieldValues.firstName) : ''),
@@ -390,35 +369,35 @@ export class SearchForm extends Component {
     };
 
     taskData.pageNumber = isNext ? Number(fieldValues.pageNumber) + 1 : Number(fieldValues.pageNumber) - 1;
-    actions.searchActions.setSearch(taskData);
-    actions.serviceActions.searchPolicy(taskData, fieldValues.sortBy).then(() => {
+    setSearch(taskData);
+    searchPolicy(taskData, fieldValues.sortBy).then(() => {
       taskData.isLoading = false;
-      actions.searchActions.setSearch(taskData);
+      setSearch(taskData);
     });
   };
 
   render() {
     const {
+      advancedSearch,
+      searchType,
+      toggleAdvancedSearch,
       appState,
       questions,
       handleSubmit,
       formErrors,
       fieldValues,
       policyResults,
-      search,
       agencyList,
       pathName
     } = this.props;
 
-    const agencyListValues = agencyList.map(agency => ({
+    const agencyListValues = (searchType === 'policy' && advancedSearch) ? agencyList.map(agency => ({
       label: agency.displayName,
       answer: agency.agencyCode,
       value: agency.agencyCode
-    }));
+    })) : [];
 
-    let searchHandler = handleSearchBarSubmit;
-
-    if (fieldValues.searchType === 'policy') searchHandler = handlePolicySearchSubmit;
+    let searchHandler = searchType === 'policy' ? handlePolicySearchSubmit : handleSearchBarSubmit;
 
     const model = this.props.tasks[this.props.appState.modelName] || {};
     const previousTask = model.data && model.data.previousTask
@@ -426,250 +405,88 @@ export class SearchForm extends Component {
       : {};
 
     const quoteResults = previousTask.value && previousTask.value.result ? previousTask.value.result : [];
+    const searchAnswers = pathName === '/agency' ? agencySearchOptions : nonAgencySearchOptions;
 
     return (
-      <Form id="SearchBar" onSubmit={handleSubmit(searchHandler)} noValidate>
+      <div id="SearchBar">
+        <form onSubmit={handleSubmit(handlePolicySearchSubmit)}>
         <div className="search-input-wrapper">
+
           <div className="form-group search-context">
-            { pathName === '/agency' ? <SelectField
-              id="searchType"
-              name="searchType"
-              component="select"
-              styleName=""
-              label="Search Context"
-              validations={['required']}
-              onChange={this.clearForm}
-              answers={[
-              {
-                answer: 'agent',
-                label: 'Agent Search'
-              }, {
-                answer: 'agency',
-                label: 'Agency Search'
-              }
-            ]}
-            /> :
-            <SelectField
-              id="searchType"
-              name="searchType"
-              component="select"
-              styleName=""
-              label="Search Context"
-              validations={['required']}
-              onChange={this.clearForm}
-              answers={[
-            {
-              answer: 'address',
-              label: 'New Quote'
-            },
-            {
-              answer: 'quote',
-              label: 'Quote Search'
-            },
-            {
-              answer: 'policy',
-              label: 'Policy Search'
-            }
-          ]}
-            />}
-          </div>
-          {fieldValues.searchType === 'address' && <div className="search-inputs fade-in">
-            {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
-            <button
-              className="btn btn-success multi-input"
-              type="submit"
-              form="SearchBar"
-              disabled={appState.data.submitting || formErrors || !fieldValues.address || !String(fieldValues.address).trim()}
-            >
-              <i className="fa fa-search" />Search
-            </button>
-          </div>
-        }
-          {fieldValues.searchType === 'quote' && <div className="search-inputs fade-in">
-
-            {generateField('firstName', 'First Name Search', 'First Name', formErrors, 'first-name-search')}
-            {generateField('lastName', 'Last Name Search', 'Last Name', formErrors, 'last-name-search')}
-            {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
-            {generateField('quoteNumber', 'Quote No Search', 'Quote Number', formErrors, 'quote-no-search')}
-            <div className="form-group quote-state">
-              <SelectField
-                name="quoteState"
-                component="select"
-                styleName=""
-                label="Quote Status"
-                answers={getAnswers('quoteState', questions)}
+              <Field
+                name="searchType"
+                label="Search Context"
+                component={Select}
+                id="searchType"
+                validate={isRequired}
+                onChange={this.changeSearchType}
+                answers={searchAnswers}
               />
-            </div>
-
-            <button
-              className="btn btn-success multi-input"
-              type="submit"
-              form="SearchBar"
-              disabled={appState.data.submitting || formErrors}
-            >
-              <i className="fa fa-search" />Search
-            </button>
           </div>
-        }
-          { fieldValues.searchType === 'quote' && quoteResults && quoteResults.quotes && quoteResults.quotes.length > 0 && fieldValues.totalPages > 1 &&
-          <Pagination changePageForward={() => this.changePageQuote(true)} changePageBack={() => this.changePageQuote(false)} fieldValues={fieldValues} />
-      }
-          {fieldValues.searchType === 'policy' && <div className="search-inputs fade-in p">
-            {generateField('firstName', 'First Name Search', 'First Name', formErrors, 'first-name-search')}
-            {generateField('lastName', 'Last Name Search', 'Last Name', formErrors, 'last-name-search')}
-            {generateField('address', 'Property Address Search', 'Property Address', formErrors, 'property-search')}
-            {generateField('policyNumber', 'Policy No Search', 'Policy Number', formErrors, 'policy-no-search')}
 
-            <button
-              id="searchPolicySubmit"
-              className="btn btn-success multi-input"
-              type="submit"
-              form="SearchBar"
-              disabled={appState.data.submitting || formErrors}
-            >
-              <i className="fa fa-search" />Search
-            </button>
-            <button type="button" className="advanced-search-btn btn-sm btn-icon" onClick={this.togglePolicyAdvanceSearch}><i className={this.props.search.policyAdvanceSearch ? 'fa fa-chevron-up' : 'fa fa-chevron-down'} /></button>
-          </div>
-        }
-          { fieldValues.searchType === 'policy' && policyResults && policyResults.policies && policyResults.policies.length > 0 && fieldValues.totalPages > 1 &&
-          <Pagination changePageForward={() => this.changePagePolicy(true)} changePageBack={() => this.changePagePolicy(false)} fieldValues={fieldValues} />
-      }
+          {searchType === 'address' &&
+            <NewQuoteSearch
+              disabled={appState.data.submitting || !fieldValues.address || !String(fieldValues.address).trim()}
+            />
+          }
+          {searchType === 'quote' &&
+            <QuoteSearch
+              questions={questions}
+              disabled={appState.data.submitting}
+            />
+          }
+          {searchType === 'policy' &&
+            <PolicySearch
+              questions={questions}
+              effectiveDateFormErrors={formErrors['effectiveDate']}
+              agencyListValues={agencyListValues}
+              advancedSearch={advancedSearch}
+              toggleAdvancedSearch={toggleAdvancedSearch}
+              disabled={appState.data.submitting}
+            />
+          }
+
           {/* <!-- Should be available only in user admin  --> */}
-          {fieldValues.searchType === 'user' && <div className="search-tools">
-            <div className="search-inputs fade-in">
-
-              {generateField('user', 'Search for user by name', 'User Name', formErrors, 'user-name-search')}
-
-              <button
-                className="btn btn-success multi-input"
-                type="submit"
-                form="SearchBar"
-                disabled={appState.data.submitting || formErrors}
-              >
-                <i className="fa fa-search" />Search
-              </button>
-            </div>
-            <div className="filters fade-in">FILTERS HERE</div>
-          </div>
-        }
-          {fieldValues.searchType === 'agency' && <div className="search-inputs fade-in">
-
-            {generateField('agencyCode', 'Agency ID Search', 'Agency ID', formErrors, 'agency-id-search')}
-            {generateField('displayName', 'Agency Name Search', 'Agency Name', formErrors, 'agency-name-search')}
-            {generateField('address', 'Agency Address Search', 'Agency Address', formErrors, 'agency-address-search')}
-            {generateField('licNumber', 'Lic No Search', 'Lic Number', formErrors, 'agency-reg-lic-fein-search')}
-            {generateField('fein', 'FEIN No Search', 'FEIN Number', formErrors, 'agency-reg-lic-fein-search')}
-            {generateField('phone', 'Phone No Search', 'Agency Phone Number', formErrors, 'agency-phone-search')}
-
-            <button
-              className="btn btn-success multi-input"
-              type="submit"
-              form="SearchBar"
-              disabled={appState.data.submitting || formErrors}
-            >
-              <i className="fa fa-search" />Search
-            </button>
-          </div>
-        }
-          {fieldValues.searchType === 'agent' && <div className="search-inputs fade-in">
-
-            {generateField('agentCode', 'Agent ID Search', 'Agent ID', formErrors, 'agency-id-search')}
-            {generateField('firstName', 'First Name Search', 'First Name', formErrors, 'first-name-search')}
-            {generateField('lastName', 'Last Name Search', 'Last Name', formErrors, 'last-name-search')}
-            {generateField('address', 'Agent Address Search', 'Agent Address', formErrors, 'agency-address-search')}
-            {generateField('licNumber', 'Lic No Search', 'Lic Number', formErrors, 'agency-reg-lic-fein-search')}
-
-            <button
-              className="btn btn-success multi-input"
-              type="submit"
-              form="SearchBar"
-              disabled={appState.data.submitting || formErrors}
-            >
-              <i className="fa fa-search" />Search
-            </button>
-          </div>
-      }
+          {searchType === 'user' &&
+            <UserSearch disabled={appState.data.submitting} />
+          }
+          {searchType === 'agency' &&
+            <AgencySearch disabled={appState.data.submitting} />
+          }
+          {searchType === 'agent' &&
+            <AgentSearch disabled={appState.data.submitting} />
+          }
           {/* <!-- End should be available only in user admin  --> */}
-          {/* <!-- Advanced search for policy --> */}
-          {
-  fieldValues.searchType === 'policy' && search.policyAdvanceSearch &&
-  <div className="advanced-search fade-in">
-    <ReactSelectField
-      label="Agency Name"
-      name="agencyCodeSelectField"
-      searchable
-      labelKey="label"
-      autoFocus
-      value={appState.data.selectedAgency}
-      answers={agencyListValues}
-      onChange={this.setAgency}
-    />
-    <div className="form-group effectiveDate">
-      <label htmlFor="effectiveDate">{getErrorToolTip(formErrors, 'effectiveDate')}
-        {'Effective Date'}
-      </label>
-      <Field name="effectiveDate" className="" placeholder="MM/DD/YYYY" type="text" normalize={normalizeDate} component="input" />
-    </div>
-    <div className="form-group policy-status">
-      <SelectField
-        name="policyStatus"
-        component="select"
-        styleName=""
-        label="Policy Status"
-        answers={getAnswers('policyStatus', questions)}
-      />
-    </div>
-    <SelectField
-      name="sortBy"
-      component="select"
-      label="Sort By"
-      validations={['required']}
-      answers={[
-      {
-      answer: 'policyNumber',
-      label: 'Policy Number'
-      }, {
-      answer: 'firstName',
-      label: 'First Name'
-      }, {
-      answer: 'lastName',
-      label: 'Last Name'
-      }
-      ]}
-    />
-  </div>
-  }
-          {/* <!-- End advanced search for policy --> */}
+
+          {searchType === 'quote' && quoteResults && quoteResults.quotes && quoteResults.quotes.length > 0 && fieldValues.totalPages > 1 &&
+          <Pagination
+            changePageForward={() => this.changePageQuote(true)}
+            changePageBack={() => this.changePageQuote(false)}
+            pageNumber={fieldValues.pageNumber}
+            totalPages={fieldValues.totalPages}
+          />
+          }
+
+          {searchType === 'policy' && policyResults && policyResults.policies && policyResults.policies.length > 0 && fieldValues.totalPages > 1 &&
+          <Pagination
+            changePageForward={() => this.changePagePolicy(true)}
+            changePageBack={() => this.changePagePolicy(false)}
+            pageNumber={fieldValues.pageNumber}
+            totalPages={fieldValues.totalPages}
+          />
+          }
         </div>
-      </Form>
+        </form>
+      </div>
     );
   }
 }
-
-export const SearchBar = props => new SearchForm(props);
-
-SearchBar.propTypes = {
-  ...propTypes,
-  handleSubmit: PropTypes.func,
-  tasks: PropTypes.shape({}),
-  appState: PropTypes.shape({
-    modelName: PropTypes.string,
-    instanceId: PropTypes.string,
-    data: PropTypes.shape({ submitting: PropTypes.boolean })
-  })
-};
-
-SearchForm.propTypes = {
-  ...propTypes
-};
 
 const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'SearchBar.values', {}),
   formErrors: getFormSyncErrors('SearchBar')(state),
-  searchType: state.appState.data.searchType,
   initialValues: handleInitialize(state),
   error: state.error,
   cleanForm: state.pristine,
@@ -682,16 +499,19 @@ const mapStateToProps = state => ({
   pathName: window.location.pathname
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    cgActions: bindActionCreators(cgActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch),
-    errorActions: bindActionCreators(errorActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch),
-    searchActions: bindActionCreators(searchActions, dispatch)
-  }
-});
-
-const searchBarForm = reduxForm({ form: 'SearchBar', enableReinitialize: true, validate })(SearchBar);
-
-export default connect(mapStateToProps, mapDispatchToProps)(searchBarForm);
+export default connect(mapStateToProps, {
+  moveToTaskAndExecuteComplete,
+  completeTask,
+  clearSearchResults,
+  setAppState,
+  clearAppError,
+  searchPolicy,
+  searchAgents,
+  searchAgencies,
+  getAgencies,
+  clearPolicyResults,
+  clearAgencies,
+  clearAgent,
+  setSearch,
+  toggleLoading
+})(reduxForm({ form: 'SearchBar', enableReinitialize: true, validate })(SearchBar));
