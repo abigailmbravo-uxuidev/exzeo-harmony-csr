@@ -20,7 +20,9 @@ export const onKeypressSubmit = (event, data, props) => {
 };
 
 export const SearchResults = (props) => {
-  const { searchType, hasSearched, appState } = props;
+  const {
+    searchType, hasSearched, appState, searchResults
+  } = props;
 
   // Old n busted
   const model = props.tasks[props.appState.modelName] || {};
@@ -43,9 +45,9 @@ export const SearchResults = (props) => {
 
     return (
       <div className="policy-list">
-        {appState.loading && <Loader />}
+        {/* {appState.loading && <Loader />} */}
         {
-          policyResults && policyResults.length > 0 && policyResults.map((policy, index) => (
+          searchResults && searchResults.map((policy, index) => (
             <PolicySearchCard
               policyKeyEnter={event => onKeypressSubmit(event, policy, props)}
               policy={policy}
@@ -56,20 +58,19 @@ export const SearchResults = (props) => {
           ))
       }
         {
-          hasSearched && !appState.isLoading && policyResults && policyResults.length === 0 && <NoPolicyResultsConnect />
+          hasSearched && !appState.isLoading && searchResults && searchResults.length === 0 && <NoPolicyResultsConnect />
       }
       </div>
     );
   }
 
-  if (previousTask && previousTask.name === 'searchAddress' && activeTask.name !== 'askToSearchAgain') {
-    const addresses = previousTask.value.result.IndexResult;
+  if (searchType === 'address') {
     return (
       <div>
         <ul id="property-search-results" className="results result-cards property-search-results">
           {
-          addresses
-            ? addresses.map((address, index) => (
+          searchResults
+            ? searchResults.map((address, index) => (
               <AddressSearchCard
                 address={address}
                 index={index}
@@ -85,13 +86,11 @@ export const SearchResults = (props) => {
       </div>);
   }
 
-  if (previousTask.value && activeTask.name === 'chooseQuote') {
-    const quoteResults = previousTask.value.result.quotes;
-
+  if (searchType === 'quote') {
     return (
       <div className="quote-list">
         {
-        quoteResults && quoteResults.map((quote, index) => (
+        searchResults && searchResults.map((quote, index) => (
           <QuoteSearchCard
             quote={quote}
             index={index}
@@ -158,7 +157,8 @@ const mapStateToProps = state => ({
   appState: state.appState,
   agencies: state.service.agencies,
   agents: state.service.agents,
-  defaultPolicyResults: state.service.policyResults
+  defaultPolicyResults: state.service.policyResults,
+  searchResults: state.search.searchResults
 });
 
 export default connect(mapStateToProps)(SearchResults);

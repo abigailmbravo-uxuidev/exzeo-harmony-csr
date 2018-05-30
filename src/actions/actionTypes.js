@@ -29,6 +29,8 @@ export const AUTH = 'AUTH';
 export const GET_QUOTE = 'GET_QUOTE';
 export const GET_POLICY = 'GET_POLICY';
 
+/* SEARCH ACTIONS */
 export const SEARCH = 'SEARCH';
+export const SET_SEARCH_RESULTS = 'SET_SEARCH_RESULTS';
 
 export const TOGGLE_NOTE = 'TOGGLE_NOTE';

@@ -7,7 +7,7 @@ import { moveToTaskAndExecuteComplete, completeTask, clearSearchResults } from '
 import { setAppState, toggleLoading } from '../../actions/appStateActions';
 import { clearAppError } from '../../actions/errorActions';
 import { searchPolicy, searchAgents, searchAgencies, getAgencies, clearPolicyResults, clearAgencies, clearAgent } from '../../actions/serviceActions';
-import { setSearch } from '../../actions/searchActions';
+import { setSearch, searchQuotes, searchAddresses, searchPolicies } from '../../actions/searchActions';
 import Pagination from '../Common/Pagination';
 import Rules from '../Form/Rules';
 // Components from Core
@@ -54,13 +54,14 @@ export const handlePolicySearchSubmit = (data, dispatch, props) => {
     pageSize: 25,
     policyStatus: (encodeURIComponent(data.policyStatus) !== 'undefined' ? encodeURIComponent(data.policyStatus) : ''),
     agencyCode: (encodeURIComponent(data.agencyCode) !== 'undefined' ? encodeURIComponent(data.agencyCode) : ''),
-    effectiveDate: (encodeURIComponent(data.effectiveDate) !== 'undefined' ? encodeURIComponent(moment(data.effectiveDate).utc().format('YYYY-MM-DD')) : '')
+    effectiveDate: (encodeURIComponent(data.effectiveDate) !== 'undefined' ? encodeURIComponent(moment(data.effectiveDate).utc().format('YYYY-MM-DD')) : ''),
+    sortBy: data.sortBy
   };
 
   props.setSearch(taskData);
   localStorage.setItem('lastSearchData', JSON.stringify(taskData));
   props.toggleLoading(true);
-  props.searchPolicy(taskData, data.sortBy).then(() => {
+  props.searchPolicies(taskData).then(() => {
     taskData.isLoading = false;
     props.setSearch(taskData);
     props.toggleLoading(false);
@@ -68,10 +69,7 @@ export const handlePolicySearchSubmit = (data, dispatch, props) => {
 };
 
 export const handleSearchBarSubmit = (data, dispatch, props) => {
-  const { instanceId: workflowId } = props.appState;
-  const taskName = userTasks.handleSearchBarSubmit;
-  const { modelName } = props.appState;
-  const { searchType } = props.fieldValues;
+  const { searchType } = props;
   const taskData = {
     firstName: (encodeURIComponent(data.firstName) !== 'undefined' ? encodeURIComponent(data.firstName) : ''),
     lastName: (encodeURIComponent(data.lastName) !== 'undefined' ? encodeURIComponent(data.lastName) : ''),
@@ -82,7 +80,9 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
     quoteState: (encodeURIComponent(data.quoteState) !== 'undefined' ? encodeURIComponent(data.quoteState) : ''),
     searchType,
     hasSearched: true,
-    pageNumber: '1'
+    pageNumber: '1',
+    sort: 'quoteNumber',
+    sortDirection: 'desc'
   };
 
   const agencyAgentData = {
@@ -99,7 +99,7 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
   };
 
   if (searchType === 'agency') {
-    props.setAppState(props.appState.modelName, workflowId, {
+    props.setAppState(props.appState.modelName, '', {
       ...props.appState.data,
       agentSubmitting: true
     });
@@ -109,12 +109,12 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
       agencyAgentData.agencyCode, agencyAgentData.address, agencyAgentData.licNumber,
       agencyAgentData.fein, agencyAgentData.phone
     ).then(() => {
-      props.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, agentSubmitting: false });
+      props.setAppState(props.appState.modelName, '', { ...props.appState.data, agentSubmitting: false });
     });
   }
 
   if (searchType === 'agent') {
-    props.setAppState(props.appState.modelName, workflowId, {
+    props.setAppState(props.appState.modelName, '', {
       ...props.appState.data,
       agentSubmitting: true
     });
@@ -123,7 +123,7 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
       'TTIC', 'FL', agencyAgentData.firstName, agencyAgentData.lastName,
       agencyAgentData.agentCode, agencyAgentData.address, agencyAgentData.licNumber
     ).then(() => {
-      props.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, agentSubmitting: false });
+      props.setAppState(props.appState.modelName, '', { ...props.appState.data, agentSubmitting: false });
     });
   }
 
@@ -135,21 +135,17 @@ export const handleSearchBarSubmit = (data, dispatch, props) => {
     props.setSearch(agencyAgentData);
     return;
   }
-
-  props.clearAppError();
-  props.toggleLoading(true);
-
-  // we need to make sure the active task is search otherwise we need to reset the workflow
-  if (props.tasks[modelName].data.activeTask && (props.tasks[modelName].data.activeTask.name !== userTasks.handleSearchBarSubmit)) {
-    const completeStep = {
-      stepName: taskName,
-      data: taskData
-    };
-    props.moveToTaskAndExecuteComplete(props.appState.modelName, workflowId, taskName, completeStep);
-    props.toggleLoading(true);
-  } else {
-    props.toggleLoading(true);
-    props.completeTask(modelName, workflowId, taskName, taskData);
+  // Just temp if Statement for quote
+  // This handleSubmit function needs some crazy refactoring
+  if (searchType === 'quote') {
+    props.clearAppError();
+    //  props.toggleLoading(true);
+    props.searchQuotes(taskData);
+  }
+  if (searchType === 'address') {
+    props.clearAppError();
+    //  props.toggleLoading(true);
+    props.searchAddresses(taskData.address);
   }
 };
 
@@ -236,6 +232,7 @@ export class SearchBar extends Component {
   componentDidMount() {
     localStorage.removeItem('lastSearchData');
     this.props.getAgencies('TTIC', 'FL');
+    this.props.toggleLoading(false);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -291,7 +288,9 @@ export class SearchBar extends Component {
   };
 
   clearForm = () => {
-    const { appState, form, reset, tasks, clearSearchResults, clearAppError, clearAgencies, clearAgent, setAppState, getAgencies } = this.props;
+    const {
+      appState, form, reset, tasks, clearSearchResults, clearAppError, clearAgencies, clearAgent, setAppState, getAgencies
+    } = this.props;
     const modelName = appState.modelName;
     const data = tasks[modelName].data;
     const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData')) || {};
@@ -309,7 +308,9 @@ export class SearchBar extends Component {
   };
 
   changePageQuote = (isNext) => {
-    const { fieldValues, appState, tasks, setSearch, clearAppError, completeTask, moveToTaskAndExecuteComplete, toggleLoading } = this.props;
+    const {
+      fieldValues, appState, tasks, setSearch, clearAppError, completeTask, moveToTaskAndExecuteComplete, toggleLoading
+    } = this.props;
     const workflowId = appState.instanceId;
     const taskName = userTasks.handleSearchBarSubmit;
     const modelName = appState.modelName;
@@ -351,7 +352,7 @@ export class SearchBar extends Component {
   };
 
   changePagePolicy = (isNext) => {
-    const { fieldValues, setSearch, searchPolicy,   } = this.props;
+    const { fieldValues, setSearch, searchPolicy } = this.props;
 
     const taskData = {
       firstName: (encodeURIComponent(fieldValues.firstName) !== 'undefined' ? encodeURIComponent(fieldValues.firstName) : ''),
@@ -397,7 +398,7 @@ export class SearchBar extends Component {
       value: agency.agencyCode
     })) : [];
 
-    let searchHandler = searchType === 'policy' ? handlePolicySearchSubmit : handleSearchBarSubmit;
+    const searchHandler = searchType === 'policy' ? handlePolicySearchSubmit : handleSearchBarSubmit;
 
     const model = this.props.tasks[this.props.appState.modelName] || {};
     const previousTask = model.data && model.data.previousTask
@@ -406,13 +407,12 @@ export class SearchBar extends Component {
 
     const quoteResults = previousTask.value && previousTask.value.result ? previousTask.value.result : [];
     const searchAnswers = pathName === '/agency' ? agencySearchOptions : nonAgencySearchOptions;
-
     return (
       <div id="SearchBar">
-        <form onSubmit={handleSubmit(handlePolicySearchSubmit)}>
-        <div className="search-input-wrapper">
+        <form onSubmit={handleSubmit(searchHandler)}>
+          <div className="search-input-wrapper">
 
-          <div className="form-group search-context">
+            <div className="form-group search-context">
               <Field
                 name="searchType"
                 label="Search Context"
@@ -422,23 +422,23 @@ export class SearchBar extends Component {
                 onChange={this.changeSearchType}
                 answers={searchAnswers}
               />
-          </div>
+            </div>
 
-          {searchType === 'address' &&
+            {searchType === 'address' &&
             <NewQuoteSearch
               disabled={appState.data.submitting || !fieldValues.address || !String(fieldValues.address).trim()}
             />
           }
-          {searchType === 'quote' &&
+            {searchType === 'quote' &&
             <QuoteSearch
               questions={questions}
               disabled={appState.data.submitting}
             />
           }
-          {searchType === 'policy' &&
+            {searchType === 'policy' &&
             <PolicySearch
               questions={questions}
-              effectiveDateFormErrors={formErrors['effectiveDate']}
+              effectiveDateFormErrors={formErrors.effectiveDate}
               agencyListValues={agencyListValues}
               advancedSearch={advancedSearch}
               toggleAdvancedSearch={toggleAdvancedSearch}
@@ -446,36 +446,36 @@ export class SearchBar extends Component {
             />
           }
 
-          {/* <!-- Should be available only in user admin  --> */}
-          {searchType === 'user' &&
+            {/* <!-- Should be available only in user admin  --> */}
+            {searchType === 'user' &&
             <UserSearch disabled={appState.data.submitting} />
           }
-          {searchType === 'agency' &&
+            {searchType === 'agency' &&
             <AgencySearch disabled={appState.data.submitting} />
           }
-          {searchType === 'agent' &&
+            {searchType === 'agent' &&
             <AgentSearch disabled={appState.data.submitting} />
           }
-          {/* <!-- End should be available only in user admin  --> */}
+            {/* <!-- End should be available only in user admin  --> */}
 
-          {searchType === 'quote' && quoteResults && quoteResults.quotes && quoteResults.quotes.length > 0 && fieldValues.totalPages > 1 &&
-          <Pagination
-            changePageForward={() => this.changePageQuote(true)}
-            changePageBack={() => this.changePageQuote(false)}
-            pageNumber={fieldValues.pageNumber}
-            totalPages={fieldValues.totalPages}
-          />
+            {searchType === 'quote' && quoteResults && quoteResults.quotes && quoteResults.quotes.length > 0 && fieldValues.totalPages > 1 &&
+            <Pagination
+              changePageForward={() => this.changePageQuote(true)}
+              changePageBack={() => this.changePageQuote(false)}
+              pageNumber={fieldValues.pageNumber}
+              totalPages={fieldValues.totalPages}
+            />
           }
 
-          {searchType === 'policy' && policyResults && policyResults.policies && policyResults.policies.length > 0 && fieldValues.totalPages > 1 &&
-          <Pagination
-            changePageForward={() => this.changePagePolicy(true)}
-            changePageBack={() => this.changePagePolicy(false)}
-            pageNumber={fieldValues.pageNumber}
-            totalPages={fieldValues.totalPages}
-          />
+            {searchType === 'policy' && policyResults && policyResults.policies && policyResults.policies.length > 0 && fieldValues.totalPages > 1 &&
+            <Pagination
+              changePageForward={() => this.changePagePolicy(true)}
+              changePageBack={() => this.changePagePolicy(false)}
+              pageNumber={fieldValues.pageNumber}
+              totalPages={fieldValues.totalPages}
+            />
           }
-        </div>
+          </div>
         </form>
       </div>
     );
@@ -513,5 +513,8 @@ export default connect(mapStateToProps, {
   clearAgencies,
   clearAgent,
   setSearch,
-  toggleLoading
+  toggleLoading,
+  searchQuotes,
+  searchAddresses,
+  searchPolicies
 })(reduxForm({ form: 'SearchBar', enableReinitialize: true, validate })(SearchBar));

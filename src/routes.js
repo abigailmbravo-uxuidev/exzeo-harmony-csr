@@ -15,7 +15,7 @@ import Callback from './containers/Callback';
 import SplashPage from './containers/Splash';
 import AgencySplashPage from './containers/AgencySplash';
 import NotFoundPage from './containers/NotFound';
-import QuoteCoverage from './components/Quote/Coverage';
+import QuoteCoverage from './components/Quote/Coverage/index';
 import QuoteUnderwriting from './components/Quote/Underwriting';
 import AdditionalInterests from './components/Quote/AdditionalInterests';
 import QuoteMailingAddressBilling from './components/Quote/MailingAddressBilling';
