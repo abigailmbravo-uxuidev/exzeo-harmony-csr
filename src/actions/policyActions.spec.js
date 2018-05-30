@@ -82,7 +82,9 @@ describe('Policy State Actions', () => {
       httpStub.onCall(1).returns(Promise.resolve({ data: { result: summaryLedger} }));
 
       await store.dispatch(policyStateActions.getPolicy(policyNumber));
-      expect(store.getActions()).toEqual(stateObj);
+      //TODO remove the outer array and sub-0 lookup in stateObj once the serviceRequest action is removed
+      const action = store.getActions();
+      expect([action[0]]).toEqual(stateObj);
     });
 
     it('should call dispatch on getSummaryLedger', async () => {

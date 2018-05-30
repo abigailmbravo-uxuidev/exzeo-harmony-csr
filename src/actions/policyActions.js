@@ -3,6 +3,8 @@ import * as serviceRunner from '../utilities/serviceRunner';
 import * as types from './actionTypes';
 import * as errorActions from "./errorActions";
 
+import { serviceRequest } from "./serviceActions";
+
 
 export function setPolicy(policy, summaryLedger) {
   return {
@@ -41,6 +43,8 @@ export function getPolicy(policyNumber) {
       ]);
 
       dispatch(setPolicy(policy, summaryLedger));
+      // TODO remove when we can get rid of all 'latestPolicy' references
+      dispatch(serviceRequest({ latestPolicy: policy }))
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
