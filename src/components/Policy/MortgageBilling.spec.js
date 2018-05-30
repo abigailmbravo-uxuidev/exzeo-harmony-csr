@@ -243,31 +243,12 @@ describe('Testing MortgageBilling component', () => {
         }
       },
       policy,
-      actions: {
-        questionsActions: {
-          getUIQuestions() {}
-        },
-        policyStateActions: {
-          updatePolicy() {}
-        },
-        serviceActions: {
-          createTransaction() { return Promise.resolve(); },
-          addTransaction() { return Promise.resolve(); },
-          getTransactionHistory() {},
-          getSummaryLedger() {},
-          getPaymentHistory() {},
-          getPaymentOptionsApplyPayments() {}
-        },
-        cgActions: {
-          batchCompleteTask() { return Promise.resolve({ payload: [{ workflowData: { endorsePolicyModelAI: { data: { modelName: '' } } } }] }); },
-          startWorkflow() { return Promise.resolve({ payload: [{ workflowData: { endorsePolicyModelAI: { data: { modelName: '' } } } }] }); }
-        },
-        appStateActions: {
-          setAppState() {}
-        }
-      },
       handleSubmit() {},
       fieldValues: {},
+      summaryLedger: {
+        currentPremium: '123',
+        cashReceived: '1'
+      },
       quoteData: {},
       dispatch() {},
       appState: {

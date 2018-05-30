@@ -541,8 +541,6 @@ describe('Testing Coverage component', () => {
 
     wrapper.instance().componentDidMount();
     wrapper.instance().normalizeDwellingDependencies('5000', '6000', {});
-    wrapper.instance().updateDependencies({ target: { value: '' } }, 'calculatedSinkhole', 'dwellingAmount');
-    wrapper.instance().updateCalculatedSinkhole();
     wrapper.instance().componentWillReceiveProps(props);
     expect(wrapper.instance().props.fieldValues.dwellingAmount).toEqual('');
 
