@@ -15,5 +15,7 @@ describe('Testing Quote Coverages component', () => {
     };
     const wrapper = shallow(<CoveragesComponent {...props} />);
     expect(wrapper);
+
+    wrapper.find('[name="otherStructures"]').simulate('change', { target: { value: 'ABC' } });
   });
 });

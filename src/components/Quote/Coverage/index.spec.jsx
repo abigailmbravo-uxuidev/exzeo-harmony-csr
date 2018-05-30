@@ -549,6 +549,12 @@ describe('Testing Coverage component', () => {
     wrapper.instance().clearSecondaryPolicyholder(false, props);
     wrapper.instance().clearSecondaryPolicyholder(true, props);
     wrapper.instance().handleAgencyChange(props, 100011, false);
+    wrapper.instance().normalizePersonalPropertyPercentage('50000', '40000', {}, 'property');
+    wrapper.instance().normalizeDwellingDependencies('50000', '40000', {}, 'property');
+    wrapper.instance().normalizeSinkholeAmount(true, false, {});
+    wrapper.instance().normalizeSinkholeAmount(false, true, {});
+    wrapper.instance().normalizeDwellingAmount('20000', '250000', {});
+    wrapper.instance().setPHToggle();
   });
 
   it('should test componentWillMount', () => {
