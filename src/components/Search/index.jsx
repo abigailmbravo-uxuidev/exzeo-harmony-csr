@@ -19,7 +19,6 @@ class SearchPage extends Component {
   state = {
     advancedSearch: false,
     searchType: 'policy',
-    hasSearched: false,
   };
 
   toggleAdvancedSearch = () => {
@@ -27,25 +26,19 @@ class SearchPage extends Component {
     this.setState({ advancedSearch: !advancedSearch })
   };
 
-  toggleHasSearched = (hasSearched) => {
-    this.setState({ hasSearched })
-  };
-
-  changeSearchType = (context) => {
-    this.setState({ searchType: context });
+  changeSearchType = (searchType) => {
+    this.setState({ searchType });
   };
 
   render() {
-    const { advancedSearch, searchType, hasSearched } = this.state;
+    const { advancedSearch, searchType } = this.state;
     return (
       <React.Fragment>
         <div className={advancedSearch ? 'policy-advanced search' : 'search'}>
           <SearchBar
             advancedSearch={advancedSearch}
-            hasSearched={hasSearched}
             searchType={searchType}
             toggleAdvancedSearch={this.toggleAdvancedSearch}
-            toggleHasSearched={this.toggleHasSearched}
             changeSearchType={this.changeSearchType}
           />
         </div>
@@ -57,9 +50,7 @@ class SearchPage extends Component {
                   <div className="survey-wrapper scroll">
                     <div className="results-wrapper">
                       <NoResultsConnect />
-                      <SearchResults
-                        searchType={searchType}
-                        hasSearched={hasSearched}
+                      <SearchResults searchType={searchType}
                       />
                     </div>
                     {this.props.children}

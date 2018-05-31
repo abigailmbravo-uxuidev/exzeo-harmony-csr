@@ -20,14 +20,7 @@ export const onKeypressSubmit = (event, data, props) => {
 };
 
 export const SearchResults = (props) => {
-  const {
-    searchType, hasSearched, appState, searchResults
-  } = props;
-
-  // Old n busted
-  const model = props.tasks[props.appState.modelName] || {};
-  const previousTask = model.data && model.data.previousTask ? model.data.previousTask : {};
-  const activeTask = model.data && model.data.activeTask ? model.data.activeTask : {};
+  const { searchType, hasSearched, appState, searchResults } = props;
 
   if (searchType === 'policy') {
     const { defaultPolicyResults } = props;
@@ -37,6 +30,7 @@ export const SearchResults = (props) => {
 
     for (let i = 0; i < policies.length; i += 1) {
       const currentPolicy = policies[i];
+
       const selectedPolicies = _.filter(policies, policy => policy && policy.policyNumber === currentPolicy.policyNumber);
       if (!_.some(policyResults, p => p && p.policyNumber === currentPolicy.policyNumber) && selectedPolicies.length > 0) {
         policyResults.push(_.maxBy(selectedPolicies, 'policyVersion'));
@@ -158,7 +152,7 @@ const mapStateToProps = state => ({
   agencies: state.service.agencies,
   agents: state.service.agents,
   defaultPolicyResults: state.service.policyResults,
-  searchResults: state.search.searchResults
+  searchResults: state.search.results
 });
 
 export default connect(mapStateToProps)(SearchResults);

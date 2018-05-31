@@ -23,10 +23,10 @@ export class Splash extends Component {
   }
 
   render() {
-    const { appState, auth } = this.props;
+    const { loading, auth } = this.props;
     return (
       <div className="app-wrapper csr">
-        {appState.loading && <Loader />}
+        {loading && <Loader />}
         <Helmet>
           <title>Harmony - CSR Portal</title>
         </Helmet>
@@ -51,9 +51,7 @@ Splash.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  tasks: state.cg,
-  appState: state.appState,
-  error: state.error
+  loading: state.search.loading
 });
 
 export default connect(mapStateToProps, {

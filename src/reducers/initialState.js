@@ -1,9 +1,23 @@
 export default {
-  search: {},
+  search: {
+    currentPage: 1,
+    loading: false,
+    pageSize: 0,
+    results: [],
+    sortBy: '',
+    sortDirection: '',
+    totalPages: 1,
+    totalRecords: 0,
+  },
   workflowData: {},
-  service: {},
   newNote: {},
+  error: {},
+  questions: [],
+  service: {
+    cancelOptions: []
+  },
   appState: {
+    loading: false,
     data: {
       submitting: false
     }
@@ -11,15 +25,14 @@ export default {
   navigation: {
     location: null
   },
-  error: {},
   quoteState: {
     quoteId: null,
     update: false
   },
-  questions: [],
   policyState: {
-    policyNumber: null,
-    update: false
+    policy: {},
+    summaryLedger: {},
+    getRate: {}
   },
   authState: {
     userProfile: null
