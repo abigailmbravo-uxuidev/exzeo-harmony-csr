@@ -8,17 +8,7 @@ import {
   completeTask,
   clearSearchResults
 } from '../../actions/cgActions';
-import { setAppState } from '../../actions/appStateActions';
 import { clearAppError } from '../../actions/errorActions';
-import {
-  searchPolicy,
-  searchAgents,
-  searchAgencies,
-  getAgencies,
-  clearPolicyResults,
-  clearAgencies,
-  clearAgent
-} from '../../actions/serviceActions';
 import {
   setSearch,
   searchQuotes,
@@ -29,7 +19,7 @@ import {
   toggleLoading } from '../../actions/searchActions';
 import Pagination from '../Common/Pagination';
 import Rules from '../Form/Rules';
-// Components from Core
+
 import { Select } from '@exzeo/core-ui/lib/Input';
 import { isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
 import NewQuoteSearch from './components/NewQuoteSearch';
@@ -138,7 +128,6 @@ export const validate = (values) => {
 export class SearchBar extends Component {
   componentDidMount() {
     localStorage.removeItem('lastSearchData');
-    this.props.getAgencies('TTIC', 'FL');
     this.props.toggleLoading(false);
   }
 
@@ -173,99 +162,17 @@ export class SearchBar extends Component {
     this.clearForm();
   };
 
-  resetPolicySearch = () => {
-    const { setSearch, clearPolicyResults } = this.props;
-    setSearch({
-      searchType: 'policy', hasSearched: false, isLoading: false, policyAdvanceSearch: false
-    });
-    clearPolicyResults();
-  };
-
   clearForm = () => {
-    const {
-      appState, form, reset, tasks, clearSearchResults, clearAppError, clearAgencies, clearAgent, setAppState, getAgencies
-    } = this.props;
-    const modelName = appState.modelName;
-    const data = tasks[modelName].data;
+    const { reset, clearAppError, advancedSearch, toggleAdvancedSearch } = this.props;
     const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData')) || {};
     lastSearchData.searchType = '';
     localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
-    reset(form);
-    clearSearchResults(modelName, data);
+    reset();
     clearAppError();
-    clearAgencies();
-    clearAgent();
-    this.resetPolicySearch();
-    getAgencies('TTIC', 'FL');
-    change('sortBy', 'policyNumber');
     toggleLoading(false);
-  };
-
-  changePageQuote = (isNext) => {
-    const {
-      fieldValues, appState, tasks, setSearch, clearAppError, completeTask, moveToTaskAndExecuteComplete, toggleLoading
-    } = this.props;
-    const workflowId = appState.instanceId;
-    const taskName = userTasks.handleSearchBarSubmit;
-    const modelName = appState.modelName;
-    const searchType = 'quote';
-
-    const taskData = {
-      firstName: (encodeURIComponent(fieldValues.firstName) !== 'undefined' ? encodeURIComponent(fieldValues.firstName) : ''),
-      lastName: (encodeURIComponent(fieldValues.lastName) !== 'undefined' ? encodeURIComponent(fieldValues.lastName) : ''),
-      address: (encodeURIComponent(fieldValues.address) !== 'undefined' ? encodeURIComponent(String(fieldValues.address).trim()) : ''),
-      quoteNumber: (encodeURIComponent(fieldValues.quoteNumber) !== 'undefined' ? encodeURIComponent(fieldValues.quoteNumber) : ''),
-      quoteState: (encodeURIComponent(fieldValues.quoteState) !== 'undefined' ? encodeURIComponent(fieldValues.quoteState) : ''),
-      searchType,
-      isLoading: true,
-      hasSearched: true,
-      resultStart: '60',
-      pageSize: '25'
-    };
-
-
-    taskData.pageNumber = isNext ? String(Number(fieldValues.pageNumber) + 1) : String(Number(fieldValues.pageNumber) - 1);
-
-    setSearch(taskData);
-    localStorage.setItem('lastSearchData', JSON.stringify(taskData));
-
-    clearAppError();
-    toggleLoading(true);
-
-    // we need to make sure the active task is search otherwise we need to reset the workflow
-    if (tasks[modelName].data.activeTask && (tasks[modelName].data.activeTask.name !== userTasks.handleSearchBarSubmit)) {
-      const completeStep = {
-        stepName: taskName,
-        data: taskData
-      };
-      moveToTaskAndExecuteComplete(appState.modelName, workflowId, taskName, completeStep);
-    } else {
-      toggleLoading(true);
-      completeTask(modelName, workflowId, taskName, taskData);
+    if (advancedSearch) {
+      toggleAdvancedSearch();
     }
-  };
-
-  changePagePolicy = async (isNext) => {
-    const { fieldValues, searchPolicies, changeCurrentPage } = this.props;
-    const pageNumber = isNext ? Number(fieldValues.pageNumber) + 1 : Number(fieldValues.pageNumber) - 1;
-    const taskData = {
-      firstName: (encodeURIComponent(fieldValues.firstName) !== 'undefined' ? encodeURIComponent(fieldValues.firstName) : ''),
-      lastName: (encodeURIComponent(fieldValues.lastName) !== 'undefined' ? encodeURIComponent(fieldValues.lastName) : ''),
-      address: (encodeURIComponent(fieldValues.address) !== 'undefined' ? encodeURIComponent(String(fieldValues.address).trim()) : ''),
-      policyNumber: (encodeURIComponent(fieldValues.policyNumber) !== 'undefined' ? encodeURIComponent(fieldValues.policyNumber) : ''),
-      searchType: 'policy',
-      isLoading: true,
-      hasSearched: true,
-      resultStart: 60,
-      pageSize: 25,
-      pageNumber,
-      policyStatus: (encodeURIComponent(fieldValues.policyStatus) !== 'undefined' ? encodeURIComponent(fieldValues.policyStatus) : ''),
-      agencyCode: (encodeURIComponent(fieldValues.agencyCode) !== 'undefined' ? encodeURIComponent(fieldValues.agencyCode) : ''),
-      effectiveDate: (encodeURIComponent(fieldValues.effectiveDate) !== 'undefined' ? encodeURIComponent(moment(fieldValues.effectiveDate).utc().format('YYYY-MM-DD')) : '')
-    };
-
-    changeCurrentPage(pageNumber);
-    await searchPolicies(taskData, fieldValues.sortBy);
   };
 
   render() {
@@ -273,8 +180,6 @@ export class SearchBar extends Component {
       advancedSearch,
       searchType,
       toggleAdvancedSearch,
-      currentPage,
-      totalPages,
       search,
       appState,
       questions,
@@ -380,15 +285,7 @@ export default connect(mapStateToProps, {
   moveToTaskAndExecuteComplete,
   completeTask,
   clearSearchResults,
-  setAppState,
   clearAppError,
-  searchPolicy,
-  searchAgents,
-  searchAgencies,
-  getAgencies,
-  clearPolicyResults,
-  clearAgencies,
-  clearAgent,
   setSearch,
   toggleLoading,
   searchQuotes,
@@ -399,5 +296,6 @@ export default connect(mapStateToProps, {
 })(reduxForm({
   form: 'SearchBar',
   enableReinitialize: true,
+  destroyOnUnmount: false,
   validate,
 })(SearchBar));

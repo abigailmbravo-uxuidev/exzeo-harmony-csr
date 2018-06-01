@@ -20,7 +20,7 @@ export const onKeypressSubmit = (event, data, props) => {
 };
 
 export const SearchResults = (props) => {
-  const { searchType, hasSearched, appState, searchResults } = props;
+  const { searchType, searchResults } = props;
 
   if (searchType === 'policy') {
     const { defaultPolicyResults } = props;
@@ -39,21 +39,18 @@ export const SearchResults = (props) => {
 
     return (
       <div className="policy-list">
-        {/* {appState.loading && <Loader />} */}
-        {
-          searchResults && searchResults.map((policy, index) => (
-            <PolicySearchCard
-              policyKeyEnter={event => onKeypressSubmit(event, policy, props)}
-              policy={policy}
-              index={index}
-              key={index}
-              policySelection={() => handleNewTab(policy, props.searchType)}
-            />
-          ))
-      }
-        {
-          hasSearched && !appState.isLoading && searchResults && searchResults.length === 0 && <NoPolicyResultsConnect />
-      }
+        {searchResults && searchResults.map((policy, index) => (
+          <PolicySearchCard
+            key={index}
+            index={index}
+            policy={policy}
+            policySelection={() => handleNewTab(policy, props.searchType)}
+            policyKeyEnter={event => onKeypressSubmit(event, policy, props)}
+          />
+        ))}
+        {/*{hasSearched && !appState.isLoading && searchResults && searchResults.length === 0 &&*/}
+          {/*<NoPolicyResultsConnect />*/}
+        {/*}*/}
       </div>
     );
   }
@@ -62,19 +59,15 @@ export const SearchResults = (props) => {
     return (
       <div>
         <ul id="property-search-results" className="results result-cards property-search-results">
-          {
-          searchResults
-            ? searchResults.map((address, index) => (
+          {searchResults && searchResults.map((address, index) => (
               <AddressSearchCard
-                address={address}
-                index={index}
                 key={index}
+                index={index}
+                address={address}
                 addressSelection={() => handleNewTab(address, props.searchType)}
                 addressKeyEnter={event => onKeypressSubmit(event, address, props)}
               />
-              ))
-            : null
-        }
+          ))}
           <AddressTip />
         </ul>
       </div>);
@@ -83,54 +76,58 @@ export const SearchResults = (props) => {
   if (searchType === 'quote') {
     return (
       <div className="quote-list">
-        {
-        searchResults && searchResults.map((quote, index) => (
+        {searchResults && searchResults.map((quote, index) => (
           <QuoteSearchCard
-            quote={quote}
-            index={index}
             key={index}
+            index={index}
+            quote={quote}
             quoteSelection={() => handleNewTab(quote, props.searchType)}
             quoteKeyEnter={event => onKeypressSubmit(event, quote, props)}
           />
-        ))
-      }
+        ))}
       </div>);
   }
 
   if (searchType === 'agency') {
-    const agencyResults = props.agencies ? props.agencies : [];
+    // const agencyResults = props.agencies ? props.agencies : [];
 
-    if (agencyResults.length <= 0 && searchType === 'agency' && props.appState.data && !props.appState.data.agentSubmitting) {
-      return (
-        <NoResults />
-      );
-    }
+    // if (agencyResults.length <= 0 && searchType === 'agency') {
+    //   return (
+    //     <NoResults />
+    //   );
+    // }
     return (
       <div className="user-list agency-list">
-        { props.appState.data && props.appState.data.agentSubmitting && <Loader />}
-        {
-        agencyResults && agencyResults.map((agency, index) => (
-          <AgencySearchCard agency={agency} index={index} key={index} agencySelection={() => handleNewTab(agency, props.searchType)} agencyKeyEnter={event => onKeypressSubmit(event, agency, props)} />
-        ))
-      }
+        { searchResults && searchResults.map((agency, index) => (
+          <AgencySearchCard
+            key={index}
+            index={index}
+            agency={agency}
+            agencySelection={() => handleNewTab(agency, props.searchType)}
+            agencyKeyEnter={event => onKeypressSubmit(event, agency, props)}
+          />
+
+        ))}
       </div>);
   }
 
   if (searchType === 'agent') {
-    const agentResults = props.agents ? props.agents : [];
-    if (props.appState.data && !props.appState.data.agentSubmitting && agentResults.length <= 0 && searchType === 'agent') {
-      return (
-        <NoResults />
-      );
-    }
+    // const agentResults = props.agents ? props.agents : [];
+    // if (props.appState.data && !props.appState.data.agentSubmitting && agentResults.length <= 0 && searchType === 'agent') {
+    //   return (
+    //     <NoResults />
+    //   );
+    // }
     return (
       <div className="user-list agent-list">
-        { props.appState.data && props.appState.data.agentSubmitting && <Loader />}
-        {
-        agentResults && agentResults.map((agent, index) => (
-          <AgentSearchCard agent={agent} index={index} key={index} agentSelection={() => handleNewTab(agent, props)} agentKeyEnter={event => onKeypressSubmit(event, agent, props)} />
-          ))
-            }
+        {searchResults && searchResults.map((agent, index) => (
+          <AgentSearchCard
+            index={index}
+            key={index}
+            agent={agent}
+            agentSelection={() => handleNewTab(agent, props)}
+            agentKeyEnter={event => onKeypressSubmit(event, agent, props)} />
+        ))}
       </div>
     );
   }
@@ -138,19 +135,9 @@ export const SearchResults = (props) => {
 };
 
 SearchResults.propTypes = {
-  appState: PropTypes.shape({
-    modelName: PropTypes.string,
-    instanceId: PropTypes.string,
-    data: PropTypes.shape({ dontSeeAddress: PropTypes.bool })
-  }),
-  tasks: PropTypes.shape()
 };
 
 const mapStateToProps = state => ({
-  tasks: state.cg,
-  appState: state.appState,
-  agencies: state.service.agencies,
-  agents: state.service.agents,
   defaultPolicyResults: state.service.policyResults,
   searchResults: state.search.results
 });

@@ -12,8 +12,8 @@ import LoginPage from './containers/Login';
 import AccessDenied from './containers/AccessDenied';
 import LoggedOut from './containers/LoggedOut';
 import Callback from './containers/Callback';
-import SplashPage from './containers/Splash';
-import AgencySplashPage from './containers/AgencySplash';
+import SearchAgency from './containers/SearchAgency';
+import SearchPolicy from './containers/SearchPolicy';
 import NotFoundPage from './containers/NotFound';
 import QuoteCoverage from './components/Quote/Coverage/index';
 import QuoteUnderwriting from './components/Quote/Underwriting';
@@ -30,14 +30,14 @@ import PolicyNotesFiles from './components/Policy/NotesFiles';
 import PolicyEndorsements from './components/Policy/Endorsements';
 import AgencyStaff from './components/Agency/Staff';
 import NoteUploader from './components/Common/NoteUploader';
-import * as appStateActions from './actions/appStateActions';
 import PolicyCancel from './components/Policy/Cancel';
+import * as appStateActions from './actions/appStateActions';
 import * as errorActions from './actions/errorActions';
 import * as authActions from './actions/authActions';
 
 const auth = new Auth();
 
-// logout the user if the server comesback with a 401
+// logout the user if the server comes back with a 401
 axios.interceptors.response.use(
   response => response,
   (error) => {
@@ -106,9 +106,9 @@ class Routes extends Component {
           </div>
         </Modal>
         {this.props.newNote && this.props.newNote.documentId &&
-          <NoteUploader 
-            noteType={this.props.newNote.noteType} 
-            documentId={this.props.newNote.documentId} 
+          <NoteUploader
+            noteType={this.props.newNote.noteType}
+            documentId={this.props.newNote.documentId}
             sourceId={this.props.newNote.sourceNumber}
           />
         }
@@ -123,8 +123,8 @@ class Routes extends Component {
         >
           <div className="routes">
             <Switch>
-              <Route exact path="/" render={props => <SplashPage auth={auth} {...props} />} />
-              <Route exact path="/agency" render={props => <AgencySplashPage auth={auth} {...props} />} />
+              <Route exact path="/" render={props => <SearchPolicy auth={auth} {...props} />} />
+              <Route exact path="/agency" render={props => <SearchAgency auth={auth} {...props} />} />
               <Route exact path="/quote/billing" render={props => <QuoteMailingAddressBilling auth={auth} {...props} />} />
               <Route exact path="/quote/notes" render={props => <QuoteNotesFiles auth={auth} {...props} />} />
               <Route exact path="/quote/summary" render={props => <QuoteSummary auth={auth} {...props} />} />

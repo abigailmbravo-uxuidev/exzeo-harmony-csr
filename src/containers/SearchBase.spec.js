@@ -3,9 +3,8 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
-import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
-import ConnectedApp, { Splash, handleNewTab, handleSelectQuote } from './Splash';
+import { SearchBase } from './SearchBase';
 import localStorageMock from '../setupTests';
 
 const middlewares = [thunk];
@@ -385,7 +384,7 @@ const policy = {
   product: 'HO3'
 };
 
-describe('Testing Splash component', () => {
+describe('Test SearchBase component', () => {
   it('should test handleNewTab address', async () => {
     const taskData = {
       firstName: '',
@@ -505,15 +504,15 @@ describe('Testing Splash component', () => {
       }
     };
     const wrapper = mount(<Provider store={store}><Router>
-      <Splash {...props} />
+      <SearchBase {...props} />
     </Router>
     </Provider>);
-    expect(wrapper.find(Splash).props()).toEqual(props);
+    expect(wrapper.find(SearchBase).props()).toEqual(props);
 
-    const wrapperComponent = shallow(<Splash {...props} />);
+    const wrapperComponent = shallow(<SearchBase {...props} />);
     wrapper.setProps({});
 
-    const wrapper2 = shallow(<Splash store={store} {...props} />);
+    const wrapper2 = shallow(<SearchBase {...props} />);
 
     wrapper2.instance().handleSelectQuote(quoteData, props);
     wrapper2.instance().handleSelectAddress({

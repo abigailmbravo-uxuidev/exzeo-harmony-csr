@@ -15,7 +15,7 @@ const workflowData = {
   dsUrl: `${process.env.REACT_APP_API_URL}/ds`
 };
 
-export class Splash extends Component {
+export class SearchBase extends Component {
   componentDidMount() {
     const { startWorkflow, getUIQuestions } = this.props;
     startWorkflow(workflowModelName, workflowData);
@@ -31,7 +31,7 @@ export class Splash extends Component {
           <title>Harmony - CSR Portal</title>
         </Helmet>
         <Header auth={auth} />
-        <Search>
+        <Search >
           <div className="basic-footer">
             <Footer />
           </div>
@@ -41,13 +41,10 @@ export class Splash extends Component {
   }
 }
 
-Splash.contextTypes = {
-  router: PropTypes.object
-};
-
-Splash.propTypes = {
+SearchBase.propTypes = {
   getUIQuestions: PropTypes.func,
-  startWorkflow: PropTypes.func
+  startWorkflow: PropTypes.func,
+  auth: PropTypes.object
 };
 
 const mapStateToProps = state => ({
@@ -57,4 +54,4 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   getUIQuestions,
   startWorkflow
-})(Splash);
+})(SearchBase);

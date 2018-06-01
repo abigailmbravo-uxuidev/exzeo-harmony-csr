@@ -3,17 +3,6 @@ import SearchBar from './SearchBar';
 import SearchResults from './SearchResults';
 import NoResultsConnect from './NoResults';
 
-const agencySearchOptions = [
-  { answer: 'agent', label: 'Agent Search' },
-  { answer: 'agency', label: 'Agency Search' }
-];
-
-const nonAgencySearchOptions = [
-  { answer: 'address', label: 'New Quote' },
-  { answer: 'quote', label: 'Quote Search' },
-  { answer: 'policy', label: 'Policy Search' }
-];
-
 class SearchPage extends Component {
 
   state = {
