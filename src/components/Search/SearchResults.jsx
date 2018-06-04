@@ -138,7 +138,6 @@ SearchResults.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  defaultPolicyResults: state.service.policyResults,
   searchResults: state.search.results
 });
 

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 
-export const NoResults = (props) => {
+export const NoResultsConnect = (props) => {
   const model = props.tasks[props.appState.modelName] || {};
   const previousTask = model.data && model.data.previousTask ? model.data.previousTask : {};
   const activeTask = model.data && model.data.activeTask ? model.data.activeTask : {};
@@ -51,7 +51,7 @@ export const NoResults = (props) => {
   return <span />;
 };
 
-NoResults.propTypes = {
+NoResultsConnect.propTypes = {
   appState: PropTypes.shape({
     modelName: PropTypes.string
   }),
@@ -71,4 +71,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(NoResults);
+export default connect(mapStateToProps, mapDispatchToProps)(NoResultsConnect);

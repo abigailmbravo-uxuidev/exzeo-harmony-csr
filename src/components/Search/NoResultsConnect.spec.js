@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { NoResults } from './NoResults';
+import ConnectedApp, { NoResultsConnect } from './NoResultsConnect';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -34,7 +34,7 @@ describe('Testing NoResults component', () => {
       },
       ...propTypes
     };
-    const wrapper = shallow(<NoResults {...props} />);
+    const wrapper = shallow(<NoResultsConnect {...props} />);
     expect(wrapper);
   });
 

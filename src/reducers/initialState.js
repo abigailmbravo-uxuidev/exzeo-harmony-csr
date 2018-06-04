@@ -1,13 +1,14 @@
 export default {
   search: {
-    currentPage: 1,
     loading: false,
+    currentPage: 1,
+    noResults: false,
     pageSize: 0,
     results: [],
     sortBy: '',
     sortDirection: '',
-    totalPages: 1,
-    totalRecords: 0,
+    totalPages: 0,
+    totalRecords: 0
   },
   workflowData: {},
   newNote: {},

@@ -23,7 +23,7 @@ export class SearchBase extends Component {
   }
 
   render() {
-    const { loading, auth } = this.props;
+    const { loading, auth, location } = this.props;
     return (
       <div className="app-wrapper csr">
         {loading && <Loader />}
@@ -31,7 +31,7 @@ export class SearchBase extends Component {
           <title>Harmony - CSR Portal</title>
         </Helmet>
         <Header auth={auth} />
-        <Search >
+        <Search pathName={location.pathname}>
           <div className="basic-footer">
             <Footer />
           </div>

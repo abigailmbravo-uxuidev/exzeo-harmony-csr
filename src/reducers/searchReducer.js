@@ -26,7 +26,8 @@ function setResults(state, action) {
     sortBy: action.sortBy,
     sortDirection: action.sortDirection,
     results: action.results,
-    totalRecords: action.totalRecords
+    totalRecords: action.totalRecords,
+    noResults: action.noResults
 
   };
 }

@@ -4,7 +4,15 @@ import { Field } from 'redux-form';
 import { Input, Select } from '@exzeo/core-ui/lib/Input';
 import { getAnswers } from '../../../utilities/forms';
 
-const NewQuoteSearch = ({ disabled, questions }) => (
+import Pagination from '../components/Pagination';
+
+const NewQuoteSearch = ({
+  submitting,
+  questions,
+  handlePagination,
+  search
+}) => (
+  <React.Fragment>
     <div className="search-inputs fade-in">
       <Field
         name='firstName'
@@ -46,11 +54,20 @@ const NewQuoteSearch = ({ disabled, questions }) => (
       <button
         className="btn btn-success multi-input"
         type="submit"
-        disabled={disabled}
+        disabled={submitting}
       >
         <i className="fa fa-search" />Search
       </button>
     </div>
+    {search.results.length && search.totalPages > 1 &&
+      <Pagination
+        changePageForward={() => handlePagination(true)}
+        changePageBack={() => handlePagination(false)}
+        pageNumber={search.currentPage}
+        totalPages={search.totalPages}
+      />
+    }
+  </React.Fragment>
   );
 
 NewQuoteSearch.propTypes = {};

@@ -28,7 +28,7 @@ const NewQuoteSearch = ({ disabled }) => {
         styleName='agency-address-search'
       />
       <Field
-        name='licNumber'
+        name='licenseNumber'
         component={Input}
         placeholder='Lic No Search'
         label='Lic Number'
