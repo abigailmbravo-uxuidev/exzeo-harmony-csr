@@ -6,9 +6,6 @@ import * as cgActions from '../../actions/cgActions';
 import * as appStateActions from '../../actions/appStateActions';
 
 export const NoResultsConnect = (props) => {
-  const model = props.tasks[props.appState.modelName] || {};
-  const previousTask = model.data && model.data.previousTask ? model.data.previousTask : {};
-  const activeTask = model.data && model.data.activeTask ? model.data.activeTask : {};
 
   /**
   /* Error Message
@@ -18,7 +15,7 @@ export const NoResultsConnect = (props) => {
       <div className="card">
         <div className="card-header"><h4><i className="fa fa-frown-o " />Error</h4></div>
         <div className="card-block">
-          <p>{ props.error.message }</p>
+          <p>{ error.message }</p>
         </div>
       </div>
     );

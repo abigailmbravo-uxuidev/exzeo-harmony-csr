@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import SearchBar from './SearchBar';
 import SearchResults from './components/SearchResults';
-import NoResultsConnect from './NoResultsConnect';
 import AddressSearch from './Address';
 import PolicySearch from './Policy';
 import QuoteSearch from './Quote';

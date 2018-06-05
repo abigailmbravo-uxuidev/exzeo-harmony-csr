@@ -12,12 +12,12 @@ import QuoteSearchCard from '../QuoteSearchCard';
 
 class SearchResults extends Component {
   render() {
-    const { searchType, search: { results } } = this.props;
+    const { searchType, search: { results }, error } = this.props;
     return (
       <div className="results-wrapper">
 
-        {search.noResults &&
-          <NoResults searchType={searchType} />
+        {(search.noResults || error) &&
+          <NoResults searchType={searchType} error={error} />
         }
 
         {searchType === 'address' && !!results.length &&
@@ -91,6 +91,7 @@ class SearchResults extends Component {
 }
 
 const mapStateToProps = state => ({
+  error: state.error,
   search: state.search
 });
 
