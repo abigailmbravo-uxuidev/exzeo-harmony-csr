@@ -13,7 +13,6 @@ import { setAppState } from '../../../actions/appStateActions';
 import { getUIQuestions } from '../../../actions/questionsActions';
 import { getLatestQuote } from '../../../actions/quoteStateActions';
 import QuoteBaseConnect from '../../../containers/Quote';
-import HiddenField from '../../Form/inputs/HiddenField';
 import Footer from '../../Common/Footer';
 import ProducedBy from './ProducedBy';
 import PolicyHolder from './PolicyHolder';
