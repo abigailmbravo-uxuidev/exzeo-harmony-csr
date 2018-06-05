@@ -15,7 +15,7 @@ function NoResults({ searchType, error }) {
       <div className="card">
         <div className="card-header"><h4><i className="fa fa-frown-o " />Error</h4></div>
         <div className="card-block">
-          <p>{ error.message }</p>
+          <p>{error.message}</p>
         </div>
       </div>
     );
