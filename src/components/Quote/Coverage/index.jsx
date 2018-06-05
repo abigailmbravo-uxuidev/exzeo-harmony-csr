@@ -365,14 +365,14 @@ export class Coverage extends Component {
     if (Number.isNaN(value)) return;
     const { change: changeF, initialValues } = this.props;
 
-    // apply percentage to personal property
-    this.normalizeDwellingDependencies(value, previousValue, allValues, field);
 
     if (value === 0) {
       changeF('personalPropertyReplacementCostCoverage', false);
     } else {
       changeF('personalPropertyReplacementCostCoverage', initialValues.personalPropertyReplacementCostCoverage || false);
     }
+    const fieldValue = setPercentageOfValue(allValues.dwellingAmount, value);
+    changeF(field, Number.isNaN(fieldValue) ? '' : fieldValue);
     return value;
   };
 
