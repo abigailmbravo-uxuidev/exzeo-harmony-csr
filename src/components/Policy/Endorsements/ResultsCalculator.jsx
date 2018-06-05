@@ -14,6 +14,7 @@ const ResultsCalculator = props => (
           label="Endorsement Effective Date"
           component={Date}
           validate={[validation.isDate, (value) => validation.isDateRange(value, props.min, props.max)]}
+          dataTest='endorsementDateNew'
         />
       </div>
       <Field
@@ -21,18 +22,21 @@ const ResultsCalculator = props => (
         label="New End Amount"
         component={Currency}
         disabled
+        dataTest='newEndorsementAmount'
       />
       <Field
         name="newEndorsementPremium"
         label="New End Premium"
         component={Currency}
         disabled
+        dataTest='newEndorsementPremium'
       />
       <Field
         name="newAnnualPremium"
         label="New Annual Premium"
         component={Currency}
         disabled
+        dataTest='newAnnualPremium'
       />
 
       {props.children}
