@@ -53,7 +53,7 @@ export class Endorsements extends React.Component {
 
   componentDidMount() {
     const {
- policy, getUnderwritingQuestions, getZipcodeSettings, getEndorsementHistory, getUIQuestions, clearRate 
+ policy, getUnderwritingQuestions, getZipcodeSettings, getEndorsementHistory, getUIQuestions, clearRate
 } = this.props;
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
     clearRate();
@@ -265,12 +265,12 @@ export class Endorsements extends React.Component {
                       policyHolders={policy.policyHolders}
                     />
 
-                    <FormSection name="policyHolderMailingAddress">
-                      <Address name="addresses" sectionId="addresses" header="Mailing Address" />
+                    <FormSection name="policyHolderMailingAddress" >
+                      <Address name="addresses" sectionId="addresses" header="Mailing Address" testPrefix='phMail' />
                     </FormSection>
 
                     <FormSection name="property.physicalAddress">
-                      <Address header="Property Address" />
+                      <Address header="Property Address" testPrefix='property' />
                     </FormSection>
 
                   </div>

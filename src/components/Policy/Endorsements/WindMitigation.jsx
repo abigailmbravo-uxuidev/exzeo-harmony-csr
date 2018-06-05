@@ -25,6 +25,7 @@ const WindMitigation = ({ questions }) => (
           answers={getAnswers('roofCovering', questions)}
           component={Select}
           validate={validation.isRequired}
+          dataTest='roofCovering'
         />
         <Field
           label="Roof Deck Attachment"
@@ -32,6 +33,7 @@ const WindMitigation = ({ questions }) => (
           answers={getAnswers('roofDeckAttachment', questions)}
           component={Select}
           validate={validation.isRequired}
+          dataTest='roofDeckAttachment'
         />
         <Field
           label="Roof to Wall Attachment"
@@ -40,6 +42,7 @@ const WindMitigation = ({ questions }) => (
           styleName="weakestRoofWallConnect"
           component={Select}
           validate={validation.isRequired}
+          dataTest='roofToWallConnection'
         />
         <Field
           label="Roof Geometry"
@@ -47,6 +50,7 @@ const WindMitigation = ({ questions }) => (
           answers={getAnswers('roofGeometry', questions)}
           component={Select}
           validate={validation.isRequired}
+          dataTest='roofGeometry'
         />
         <Field
           segmented
@@ -55,6 +59,7 @@ const WindMitigation = ({ questions }) => (
           answers={getAnswers('secondaryWaterResistance', questions)}
           component={Radio}
           validate={validation.isRequired}
+          dataTest='secondaryWaterResistance'
         />
         <Field
           label="Opening Protection"
@@ -62,6 +67,7 @@ const WindMitigation = ({ questions }) => (
           answers={getAnswers('openingProtection', questions)}
           component={Select}
           validate={validation.isRequired}
+          dataTest='openingProtection'
         />
       </div>
 
@@ -75,12 +81,14 @@ const WindMitigation = ({ questions }) => (
           name="property.windMitigation.floridaBuildingCodeWindSpeed"
           component={Integer}
           validate={[validation.isRequired, validation.isNumbersOnly]}
+          dataTest='floridaBuildingCodeWindSpeed'
         />
         <Field
           label="FBC Wind Speed Design"
           name="property.windMitigation.floridaBuildingCodeWindSpeedDesign"
           component={Integer}
           validate={[validation.isRequired, validation.isNumbersOnly]}
+          dataTest='floridaBuildingCodeWindSpeedDesign'
         />
         <Field
           label="FBC Wind Speed Design"
@@ -89,6 +97,7 @@ const WindMitigation = ({ questions }) => (
           component={Select}
           answers={getAnswers('terrain', questions)}
           validate={validation.isRequired}
+          dataTest='terrain'
         />
         <Field
           label="Internal Pressure Design"
@@ -96,6 +105,7 @@ const WindMitigation = ({ questions }) => (
           answers={getAnswers('internalPressureDesign', questions)}
           component={Select}
           validate={validation.isRequired}
+          dataTest='internalPressureDesign'
         />
         <Field
           segmented
@@ -104,12 +114,14 @@ const WindMitigation = ({ questions }) => (
           answers={getAnswers('windBorneDebrisRegion', questions)}
           component={Radio}
           validate={validation.isRequired}
+          dataTest='windBorneDebrisRegion'
         />
         <Field
           label="Wind Mit Factor"
           name="windMitFactor"
           component={Input}
           disabled
+          dataTest='windMitFactor'
         />
       </div>
     </div>
