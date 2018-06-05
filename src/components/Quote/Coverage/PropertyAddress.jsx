@@ -14,6 +14,7 @@ const PropertyAddress = ({ sectionId, className, header }) => (
         component={Input}
         validate={validation.isRequired}
         disabled
+        dataTest="address1"
       />
     </div>
     <div className="flex-parent property-risk-address-2-row">
@@ -23,6 +24,7 @@ const PropertyAddress = ({ sectionId, className, header }) => (
         label="Address 2"
         component={Input}
         disabled
+        dataTest="address2"
       />
     </div>
     <div className="flex-parent property-risk-city-row">
@@ -33,6 +35,7 @@ const PropertyAddress = ({ sectionId, className, header }) => (
         component={Input}
         validate={validation.isRequired}
         disabled
+        dataTest="city"
       />
     </div>
     <div className="flex-parent property-risk-state-zip-row">
@@ -43,6 +46,7 @@ const PropertyAddress = ({ sectionId, className, header }) => (
         component={Input}
         validate={validation.isRequired}
         disabled
+        dataTest="state"
       />
       <Field
         styleName="flex-child zip property-risk-zip"
@@ -51,6 +55,7 @@ const PropertyAddress = ({ sectionId, className, header }) => (
         component={Input}
         validate={validation.isRequired}
         disabled
+        dataTest="zip"
       />
     </div>
     <div className="flex-parent property-risk-spacer" />

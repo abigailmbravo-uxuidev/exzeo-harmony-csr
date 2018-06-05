@@ -16,6 +16,7 @@ const ProducedBy = ({
           validate={[validation.isRequired, validation.isDate]}
           label="Effective Date"
           name="effectiveDate"
+          dataTest="effectiveDate"
         />
       </div>
       <div className="flex-child agencyCode">
@@ -26,6 +27,7 @@ const ProducedBy = ({
           answers={agencies}
           normalize={value => handleAgencyChange(value)}
           validate={validation.isRequired}
+          dataTest="agencyCode"
         />
       </div>
       <div className="flex-child agentCode">
@@ -35,6 +37,7 @@ const ProducedBy = ({
           component={Select}
           answers={agents}
           validate={validation.isRequired}
+          dataTest="agentCode"
         />
       </div>
     </div>

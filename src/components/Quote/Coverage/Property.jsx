@@ -13,7 +13,7 @@ const Property = ({
     <PropertyAddress
       name="propertyAdress"
       sectionId="property-risk"
-      header="Primary Policyholder"
+      header="Property Address"
       className="property-address flex-child property-risk"
     />
     <div className="property-details flex-child home-location">
@@ -27,6 +27,7 @@ const Property = ({
           thousandSeparator={false}
           validate={validation.isNumbersOnly}
           disabled
+          dataTest="yearBuilt"
         />
         <Field
           styleName="flex-child"
@@ -35,6 +36,7 @@ const Property = ({
           component={SelectInteger}
           answers={getAnswers('protectionClass', questions)}
           disabled
+          dataTest="protectionClass"
         />
         <Field
           styleName="flex-child"
@@ -43,6 +45,7 @@ const Property = ({
           component={Numbers}
           decimalScale={2}
           disabled
+          dataTest="distanceToTidalWater"
         />
         <Field
           styleName="flex-child"
@@ -51,6 +54,7 @@ const Property = ({
           component={Select}
           answers={getAnswers('residenceType', questions)}
           disabled
+          dataTest="residenceType"
         />
       </div>
       <div className="flex-parent home-location-row-2">
@@ -61,6 +65,7 @@ const Property = ({
           component={Select}
           answers={getAnswers('constructionType', questions)}
           disabled
+          dataTest="constructionType"
         />
         <Field
           styleName="flex-child"
@@ -69,6 +74,7 @@ const Property = ({
           component={SelectInteger}
           answers={getAnswers('buildingCodeEffectivenessGrading', questions)}
           disabled
+          dataTest="buildingCodeEffectivenessGrading"
         />
         <Field
           styleName="flex-child"
@@ -77,6 +83,7 @@ const Property = ({
           component={Numbers}
           decimalScale={2}
           disabled
+          dataTest="distanceToFireHydrant"
         />
         <Field
           styleName="flex-child"
@@ -85,6 +92,7 @@ const Property = ({
           component={Integer}
           validate={validation.isRequired}
           disabled
+          dataTest="squareFeet"
         />
       </div>
       <div className="flex-parent home-location-row-3">
@@ -94,6 +102,7 @@ const Property = ({
           label="Year Roof Built"
           component={Integer}
           disabled
+          dataTest="yearOfRoof"
         />
         <Field
           styleName="flex-child"
@@ -102,6 +111,7 @@ const Property = ({
           component={Select}
           answers={getAnswers('familyUnits', questions)}
           disabled
+          dataTest="familyUnits"
         />
         <Field
           styleName="flex-child"
@@ -110,6 +120,7 @@ const Property = ({
           component={Numbers}
           decimalScale={2}
           disabled
+          dataTest="distanceToFireHydrant"
         />
         <Field
           styleName="flex-child"
@@ -118,6 +129,7 @@ const Property = ({
           component={Select}
           answers={getAnswers('floodZone', questions)}
           disabled
+          dataTest="floodZone"
         />
       </div>
     </div>
