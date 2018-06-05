@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import SearchBar from './SearchBar';
-import SearchResults from './SearchResults';
+import SearchResults from './components/SearchResults';
 import NoResultsConnect from './NoResultsConnect';
 import AddressSearch from './Address';
 import PolicySearch from './Policy';
@@ -20,13 +20,11 @@ const AGENCY_SEARCH_OPTIONS = [
   { answer: 'agent', label: 'Agent Search' },
   { answer: 'agency', label: 'Agency Search' }
 ];
-
 const POLICY_SEARCH_OPTIONS = [
   { answer: 'address', label: 'New Quote' },
   { answer: 'quote', label: 'Quote Search' },
   { answer: 'policy', label: 'Policy Search' }
 ];
-
 const SEARCH_CONFIG = {
   policy: {
     initialValues: POLICY_INITIAL_VALUES,
@@ -92,16 +90,14 @@ class SearchPage extends Component {
             searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
             searchType={searchType}
             toggleAdvancedSearch={this.toggleAdvancedSearch}
-            render={({ submitting, handlePagination }) => {
-              return(
-                <SearchForm
-                  submitting={submitting}
-                  handlePagination={handlePagination}
-                  advancedSearch={advancedSearch}
-                  toggleAdvancedSearch={this.toggleAdvancedSearch}
-                />
-              );
-            }}
+            render={({ submitting, handlePagination }) => (
+              <SearchForm
+                advancedSearch={advancedSearch}
+                handlePagination={handlePagination}
+                submitting={submitting}
+                toggleAdvancedSearch={this.toggleAdvancedSearch}
+              />
+            )}
           />
         </div>
         <main role="document" className={advancedSearch ? 'policy-advanced' : ''}>
@@ -110,11 +106,7 @@ class SearchPage extends Component {
               <div className="route">
                 <div className="search route-content">
                   <div className="survey-wrapper scroll">
-                    <div className="results-wrapper">
-                      <NoResultsConnect />
-                      <SearchResults searchType={searchType}
-                      />
-                    </div>
+                    <SearchResults searchType={searchType} />
                     {this.props.children}
                   </div>
                 </div>

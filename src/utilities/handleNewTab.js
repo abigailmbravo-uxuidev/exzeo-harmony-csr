@@ -1,4 +1,4 @@
-function handleNewTab(searchData, searchType) {
+export function handleNewTab(searchData, searchType) {
   localStorage.setItem('isNewTab', 'true');
 
   // new quote
@@ -18,6 +18,12 @@ function handleNewTab(searchData, searchType) {
   } else if (searchType === 'agency' || searchType === 'agent') {
     localStorage.setItem('agencyCode', searchData.agencyCode);
     window.open('/agency/staff', '_blank');
+  }
+}
+
+export function onKeypressSubmit(event, data, props) {
+  if (event.charCode === 13) {
+    handleNewTab(data, props.searchType);
   }
 }
 

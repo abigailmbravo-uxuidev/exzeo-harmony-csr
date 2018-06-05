@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const NoResults = (props) => {
+function NoResults({ searchType }) {
   return (
     <div></div>
   );
