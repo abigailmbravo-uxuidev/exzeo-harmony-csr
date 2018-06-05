@@ -466,9 +466,6 @@ export class Coverage extends Component {
         <div className="route-content">
 
           <Form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
-            <HiddenField name="propertyIncidentalOccupanciesMainDwelling" />
-            <HiddenField name="propertyIncidentalOccupanciesOtherStructures" />
-            <HiddenField name="liabilityIncidentalOccupancies" />
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
                 <ProducedBy
@@ -525,10 +522,10 @@ export class Coverage extends Component {
         <div className="basic-footer btn-footer">
           <Footer />
           <div className="btn-wrapper">
-            <button tabIndex="0" aria-label="reset-btn form-coverage" className="btn btn-secondary" type="button" form="Coverage" onClick={() => this.props.reset('Coverage')}>
+            <button data-test="coverage-reset" tabIndex="0" aria-label="reset-btn form-coverage" className="btn btn-secondary" type="button" form="Coverage" onClick={() => this.props.reset('Coverage')}>
               Reset
             </button>
-            <button tabIndex="0" aria-label="submit-btn form-coverage" className="btn btn-primary" type="submit" form="Coverage" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}>
+            <button data-test="coverage-submit" tabIndex="0" aria-label="submit-btn form-coverage" className="btn btn-primary" type="submit" form="Coverage" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}>
               Update
             </button>
           </div>
