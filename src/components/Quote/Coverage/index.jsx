@@ -286,7 +286,6 @@ export class Coverage extends Component {
             this.props.appState.modelName,
             startResult.modelInstanceId, { ...this.props.appState.data, selectedLink: 'customerData' }
           );
-          this.handleAgencyChange(this.props.quoteData.agencyCode);
         });
       });
     } else if (this.props.appState.instanceId) {
@@ -308,7 +307,6 @@ export class Coverage extends Component {
             selectedLink: 'customerData'
           });
         });
-      this.handleAgencyChange(this.props.quoteData.agencyCode);
     }
   }
 
@@ -388,17 +386,18 @@ export class Coverage extends Component {
   };
 
   handleAgencyChange = (agencyCode) => {
-    this.props.dispatch(change('Coverage', 'agencyCode', agencyCode));
+    const { change: changeF } = this.props;
     const agency = _.find(this.props.agencies, a => String(a.agencyCode) === String(agencyCode));
     if (agency) {
       this.props.getAgentsByAgencyAction(agency.companyCode, agency.state, agencyCode).then((response) => {
         if (response.payload && response.payload[0].data.agents && response.payload[0].data.agents.length === 1) {
-          this.props.dispatch(change('Coverage', 'agentCode', response.payload[0].data.agents[0].agentCode));
+          changeF('agentCode', response.payload[0].data.agents[0].agentCode);
         } else {
-          this.props.dispatch(change('Coverage', 'agentCode', ''));
+          changeF('agentCode', '');
         }
       });
     }
+    return agencyCode;
   };
 
   clearSecondaryPolicyholder = (value) => {
