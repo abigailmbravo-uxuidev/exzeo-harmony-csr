@@ -1,7 +1,7 @@
 import React from 'react';
-import normalizePhone from '../Form/normalizePhone';
+import normalizePhone from '../../Form/normalizePhone';
 
-function AgencySearchCard({
+function AgencyCard({
   handleKeyPress,
   handleClick,
   agency,
@@ -80,4 +80,4 @@ function AgencySearchCard({
   );
 }
 
-export default AgencySearchCard;
+export default AgencyCard;

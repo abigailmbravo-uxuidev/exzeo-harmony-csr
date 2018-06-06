@@ -1,6 +1,6 @@
 import React from 'react';
 
-function AddressSearchCard({
+function AddressCard({
   handleKeyPress,
   handleClick,
   address,
@@ -20,4 +20,4 @@ function AddressSearchCard({
   );
 }
 
-export default AddressSearchCard;
+export default AddressCard;

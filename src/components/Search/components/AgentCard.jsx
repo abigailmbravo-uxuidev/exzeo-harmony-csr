@@ -1,7 +1,7 @@
 import React from 'react';
-import normalizePhone from '../Form/normalizePhone';
+import normalizePhone from '../../Form/normalizePhone';
 
-const AgentSearchCard = ({
+const AgentCard = ({
   agentKeyEnter, agentSelection, agent, index
 }) => (
   <div className="agency agent contact card" key={index} onKeyPress={agentKeyEnter} tabIndex="0">
@@ -54,4 +54,4 @@ const AgentSearchCard = ({
   </div>
 );
 
-export default AgentSearchCard;
+export default AgentCard;

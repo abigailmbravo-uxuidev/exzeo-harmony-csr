@@ -2,7 +2,6 @@ import * as types from './actionTypes';
 import * as serviceRunner from '../utilities/serviceRunner';
 import * as errorActions from './errorActions';
 import moment from "moment/moment";
-import _ from "lodash";
 
 /**
  *
@@ -43,7 +42,7 @@ export function resetSearch() {
  * @param {object} searchResults - formatted search results object
  * @returns {{type: string, currentPage: *, pageSize: *, sortBy: *, sortDirection: *, results: *, totalRecords: *}}
  */
-export function setSearchResults({ currentPage, pageSize, sortBy, sortDirection, results, totalRecords }) {
+export function setSearchResults({ currentPage, pageSize, sortBy, sortDirection, results, totalRecords, noResults }) {
   return {
     type: types.SET_SEARCH_RESULTS,
     currentPage,
@@ -51,7 +50,8 @@ export function setSearchResults({ currentPage, pageSize, sortBy, sortDirection,
     sortBy,
     sortDirection,
     results,
-    totalRecords
+    totalRecords,
+    noResults
   };
 }
 
@@ -277,33 +277,12 @@ function formatQuoteResults(results) {
  * @returns {{currentPage: (number|*), pageSize: (number|*|string), sortBy: (*|string), sortDirection: (*|string|string), results: (policies|{policyTerm, updatedAt, policyHolders, state, companyCode, policyNumber, policyID, effectiveDate, property, product}|Array), totalRecords: number, noResults: boolean}}
  */
 function formatPolicyResults(results) {
-    const { policies } = results;
-    const filteredPolicies = [];
-
-    results.policies.forEach(policy => {
-      const duplicatePolicies = policies.filter(p => p.policyNumber === policy.policyNumber);
-      if (duplicatePolicies.length) {
-        filteredPolicies.push(duplicatePolicies.sort((pa, pb) => pb.policyVersion - pa.policyVersion)[0])
-      } else {
-        filteredPolicies.push(policy);
-      }
-    });
-
-    // for (let i = 0; i < policies.length; i += 1) {
-    //   const currentPolicy = policies[i];
-    //
-    //   const selectedPolicies = _.filter(policies, policy => policy && policy.policyNumber === currentPolicy.policyNumber);
-    //   if (!_.some(policyResults, p => p && p.policyNumber === currentPolicy.policyNumber) && selectedPolicies.length > 0) {
-    //     policyResults.push(_.maxBy(selectedPolicies, 'policyVersion'));
-    //   }
-    // }
-
   return {
     currentPage: results.currentPage || 0,
     pageSize: results.pageSize || 0,
     sortBy: results.sort || '',
     sortDirection: results.sortDirection,
-    results: filteredPolicies,
+    results: results.policies,
     totalRecords: results.totalNumberOfRecords,
     noResults: !results.totalNumberOfRecords
   }

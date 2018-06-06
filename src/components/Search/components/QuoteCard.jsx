@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-function QuoteSearchCard({
+function QuoteCard({
   handleKeyPress,
   handleClick,
   quote,
@@ -51,4 +51,4 @@ function QuoteSearchCard({
   );
 }
 
-export default QuoteSearchCard;
+export default QuoteCard;

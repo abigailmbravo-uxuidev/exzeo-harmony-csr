@@ -21,10 +21,4 @@ export function handleNewTab(searchData, searchType) {
   }
 }
 
-export function onKeypressSubmit(event, data, props) {
-  if (event.charCode === 13) {
-    handleNewTab(data, props.searchType);
-  }
-}
-
 export default handleNewTab

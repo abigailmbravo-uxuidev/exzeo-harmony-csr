@@ -6,7 +6,7 @@ import { getAnswers } from '../../../utilities/forms';
 
 import Pagination from '../components/Pagination';
 
-const NewQuoteSearch = ({
+const QuoteSearch = ({
   submitting,
   questions,
   handlePagination,
@@ -59,7 +59,7 @@ const NewQuoteSearch = ({
         <i className="fa fa-search" />Search
       </button>
     </div>
-    {search.results.length && search.totalPages > 1 &&
+    {!!search.results.length && search.totalPages > 1 &&
       <Pagination
         changePageForward={() => handlePagination(true)}
         changePageBack={() => handlePagination(false)}
@@ -70,8 +70,20 @@ const NewQuoteSearch = ({
   </React.Fragment>
   );
 
-NewQuoteSearch.propTypes = {};
+QuoteSearch.propTypes = {
+  submitting: PropTypes.bool,
+  questions: PropTypes.array,
+  handlePagination: PropTypes.func,
+  search: PropTypes.objectOf({
+    results: PropTypes.array,
+    totalPages: PropTypes.number,
+    currentPage: PropTypes.number
+  })
+};
 
-NewQuoteSearch.defaultProps = {};
+QuoteSearch.defaultProps = {
+  questions: [],
+  search: {}
+};
 
-export default NewQuoteSearch;
+export default QuoteSearch;

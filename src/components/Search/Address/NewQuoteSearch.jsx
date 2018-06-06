@@ -23,7 +23,9 @@ const NewQuoteSearch = ({ submitting }) => (
   </div>
 );
 
-NewQuoteSearch.propTypes = {};
+NewQuoteSearch.propTypes = {
+  submitting: PropTypes.bool
+};
 
 NewQuoteSearch.defaultProps = {};
 

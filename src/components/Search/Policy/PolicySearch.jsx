@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames'
 import { Field } from 'redux-form';
-import Pagination from '../components/Pagination';
 import {Input, Select, SelectTypeAhead } from '@exzeo/core-ui/lib/Input';
 import { normalizeDate, isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers } from "../../../utilities/forms";
+
+import Pagination from '../components/Pagination';
 
 const sortByOptions = [
   { answer: 'policyNumber', label: 'Policy Number' },
@@ -14,14 +15,14 @@ const sortByOptions = [
 ];
 
 const agencyListValues = (agencyList, advancedSearch) => {
-  advancedSearch ? agencyList.map(agency => ({
+  return advancedSearch ? agencyList.map(agency => ({
     label: agency.displayName,
     answer: agency.agencyCode,
     value: agency.agencyCode
   })) : [];
 };
 
-const NewQuoteSearch = ({
+const PolicySearch = ({
   agencyList,
   submitting,
   advancedSearch,
@@ -114,7 +115,7 @@ const NewQuoteSearch = ({
         />
       </div>
     }
-    {search.results.length && search.totalPages > 1 &&
+    {!!search.results.length && search.totalPages > 1 &&
       <Pagination
         changePageForward={handlePagination(true)}
         changePageBack={handlePagination(false)}
@@ -126,9 +127,24 @@ const NewQuoteSearch = ({
   </React.Fragment>
 );
 
+PolicySearch.propTypes = {
+  agencyList: PropTypes.array,
+  submitting: PropTypes.bool,
+  advancedSearch: PropTypes.bool,
+  questions: PropTypes.array,
+  toggleAdvancedSearch: PropTypes.func,
+  handlePagination: PropTypes.func,
+  search: PropTypes.objectOf({
+    results: PropTypes.array,
+    totalPages: PropTypes.number,
+    currentPage: PropTypes.number
+  })
+};
 
-NewQuoteSearch.propTypes = {};
+PolicySearch.defaultProps = {
+  agencyList: [],
+  questions: [],
+  search: {}
+};
 
-NewQuoteSearch.defaultProps = {};
-
-export default NewQuoteSearch;
+export default PolicySearch;

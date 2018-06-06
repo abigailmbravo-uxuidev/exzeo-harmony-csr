@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-function PolicySearchCard({
+function PolicyCard({
   handleKeyPress,
   handleClick,
   policy
@@ -43,4 +43,4 @@ function PolicySearchCard({
   );
 }
 
-export default PolicySearchCard;
+export default PolicyCard;

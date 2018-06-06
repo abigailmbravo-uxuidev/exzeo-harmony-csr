@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { Input } from '@exzeo/core-ui/lib/Input';
 
-const AgentSearch = ({ disabled }) => {
+const AgentSearch = ({ submitting }) => {
   return (
     <div className="search-inputs fade-in">
       <Field
@@ -45,7 +45,7 @@ const AgentSearch = ({ disabled }) => {
       <button
         className="btn btn-success multi-input"
         type="submit"
-        disabled={disabled}
+        disabled={submitting}
       >
         <i className="fa fa-search" />Search
       </button>
@@ -53,7 +53,9 @@ const AgentSearch = ({ disabled }) => {
   );
 };
 
-AgentSearch.propTypes = {};
+AgentSearch.propTypes = {
+  submitting: PropTypes.bool
+};
 
 AgentSearch.defaultProps = {};
 

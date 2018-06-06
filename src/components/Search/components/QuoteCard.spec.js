@@ -1,10 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import QuoteSearchCard from './QuoteSearchCard';
-import quoteTestData from '../Common/quoteTestData';
+import QuoteCard from './QuoteCard';
+import quoteTestData from '../../Common/quoteTestData';
 
 it('renders without crashing', () => {
-  const wrapper = shallow(<QuoteSearchCard
+  const wrapper = shallow(<QuoteCard
     policyKeyEnter={() => function () {}}
     quote={quoteTestData}
     index={1}

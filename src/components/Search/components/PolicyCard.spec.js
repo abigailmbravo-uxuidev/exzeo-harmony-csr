@@ -1,10 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import PolicySearchCard from './PolicySearchCard';
-import policyTestData from '../Common/policyTestData';
+import PolicyCard from './PolicyCard';
+import policyTestData from '../../Common/policyTestData';
 
 it('renders without crashing', () => {
-  const wrapper = shallow(<PolicySearchCard
+  const wrapper = shallow(<PolicyCard
     policyKeyEnter={() => function () {}}
     policy={policyTestData}
     index={1}

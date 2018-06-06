@@ -1,29 +1,35 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { handleNewTab, onKeypressSubmit } from '../../../utilities/handleNewTab';
+import handleNewTab from '../../../utilities/handleNewTab';
 
 import NoResults from '../components/NoResults';
-import PolicySearchCard from '../PolicySearchCard';
-import AddressSearchCard from '../AddressSearchCard';
-import AddressTip from '../AddressTip';
-import AgencySearchCard from '../AgencySearchCard.jsx';
-import AgentSearchCard from '../AgentSearchCard';
-import QuoteSearchCard from '../QuoteSearchCard';
+import PolicyCard from './PolicyCard';
+import AddressCard from './AddressCard';
+import AddressTip from './AddressTip';
+import AgencyCard from './AgencyCard.jsx';
+import AgentCard from './AgentCard';
+import QuoteCard from './QuoteCard';
+
+export function onKeypressSubmit(event, data, props) {
+  if (event.charCode === 13) {
+    handleNewTab(data, props.searchType);
+  }
+}
 
 class SearchResults extends Component {
   render() {
-    const { searchType, search: { results }, error } = this.props;
+    const { searchType, search: { results, noResults }, error } = this.props;
     return (
       <div className="results-wrapper">
 
-        {(search.noResults || error) &&
+        {(noResults || error.message) &&
           <NoResults searchType={searchType} error={error} />
         }
 
         {searchType === 'address' && !!results.length &&
           <ul id="property-search-results" className="results result-cards property-search-results">
             {!!results.length && results.map((address) => (
-              <AddressSearchCard
+              <AddressCard
                 key={address.id}
                 address={address}
                 handleKeyPress={(e) => onKeypressSubmit(e, address, searchType)}
@@ -34,23 +40,10 @@ class SearchResults extends Component {
           </ul>
         }
 
-        {searchType === 'policy' && !!results.length &&
-          <div className="policy-list">
-            {results.map((policy) => (
-              <PolicySearchCard
-                key={policy.policyID}
-                policy={policy}
-                handleKeyPress={(e) => onKeypressSubmit(e, policy, searchType)}
-                handleClick={() => handleNewTab(policy, searchType)}
-              />
-            ))}
-          </div>
-        }
-
         {searchType === 'quote' && !!results.length &&
           <div className="quote-list">
             {results.map((quote) => (
-              <QuoteSearchCard
+              <QuoteCard
                 key={quote._id}
                 quote={quote}
                 handleKeyPress={(e) => onKeypressSubmit(e, quote, searchType)}
@@ -60,10 +53,36 @@ class SearchResults extends Component {
           </div>
         }
 
+        {searchType === 'policy' && !!results.length &&
+          <div className="policy-list">
+            {results.map((policy) => (
+              <PolicyCard
+                key={policy.policyID}
+                policy={policy}
+                handleKeyPress={(e) => onKeypressSubmit(e, policy, searchType)}
+                handleClick={() => handleNewTab(policy, searchType)}
+              />
+            ))}
+          </div>
+        }
+
+        {searchType === 'agent' && !!results.length &&
+          <div className="user-list agent-list">
+            {results.map((agent) => (
+              <AgentCard
+                key={agent.licenseNumber}
+                agent={agent}
+                handleKeyPress={(e) => onKeypressSubmit(e, agent, searchType)}
+                handleClick={() => handleNewTab(agent, searchType)}
+              />
+            ))}
+          </div>
+        }
+
         {searchType === 'agency' && !!results.length &&
           <div className="user-list agency-list">
             {results.map((agency) => (
-              <AgencySearchCard
+              <AgencyCard
                 key={agency.agencyCode}
                 agency={agency}
                 handleKeyPress={(e) => onKeypressSubmit(e, agency, searchType)}
@@ -73,18 +92,6 @@ class SearchResults extends Component {
           </div>
         }
 
-        {searchType === 'agent' && !!results.length &&
-          <div className="user-list agent-list">
-            {results.map((agent) => (
-              <AgentSearchCard
-                key={agent.licenseNumber}
-                agent={agent}
-                handleKeyPress={(e) => onKeypressSubmit(e, agent, searchType)}
-                handleClick={() => handleNewTab(agent, searchType)}
-              />
-            ))}
-          </div>
-        }
       </div>
     );
   }
