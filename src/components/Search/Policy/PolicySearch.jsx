@@ -130,21 +130,20 @@ const PolicySearch = ({
 PolicySearch.propTypes = {
   agencyList: PropTypes.array,
   submitting: PropTypes.bool,
-  advancedSearch: PropTypes.bool,
+  advancedSearch: PropTypes.bool.isRequired,
   questions: PropTypes.array,
-  toggleAdvancedSearch: PropTypes.func,
+  toggleAdvancedSearch: PropTypes.func.isRequired,
   handlePagination: PropTypes.func,
-  search: PropTypes.objectOf({
+  search: PropTypes.shape({
     results: PropTypes.array,
     totalPages: PropTypes.number,
     currentPage: PropTypes.number
-  })
+  }).isRequired
 };
 
 PolicySearch.defaultProps = {
   agencyList: [],
-  questions: [],
-  search: {}
+  questions: []
 };
 
 export default PolicySearch;

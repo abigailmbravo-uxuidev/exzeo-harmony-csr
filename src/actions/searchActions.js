@@ -195,7 +195,7 @@ export async function fetchPolicies({
 
   try {
     const response = await serviceRunner.callService(config);
-    return response && response.data || [];
+    return response ? response.data : [];
   } catch (error) {
     throw error;
   }
