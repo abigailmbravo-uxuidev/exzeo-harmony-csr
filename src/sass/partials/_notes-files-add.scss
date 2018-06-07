@@ -122,8 +122,10 @@
           margin-top: $padding*2;
 
           .drag-drop {
-              position: relative;
-              overflow: hidden;
+            position: relative;
+            overflow: hidden;
+
+            .uppy-StatusBar {}
           }
 
           .uppy-Dashboard.uppy-Dashboard--wide {
@@ -379,34 +381,34 @@
         }
 
         .upload-list {
-            list-style: none;
+          display: flex;
+          flex-direction: column;
+          margin: ($padding*2) 0 0;
+          padding: 0;
+          list-style: none;
+          background: $warm-gray-00;
+
+          li {
             display: flex;
-            flex-direction: column;
-            padding: 0;
-            margin: ($padding*2) 0 0;
-            background: $warm-gray-00;
+            flex-grow: 0;
+            flex-shrink: 0;
+            height: auto;
+            padding: ($padding/2) $padding;
 
-            li {
-                display: flex;
-                height: auto;
-                flex-grow: 0;
-                flex-shrink: 0;
-                padding: ($padding/2) $padding;
-
-                span {
-                    flex-grow: 1;
-                    flex-shrink: 1;
-                }
-
-                i {
-                    flex-grow: 0;
-                    flex-shrink: 0;
-                }
-
-                &:nth-child(even) {
-                    background: $warm-gray-01;
-                }
+            span {
+              flex-grow: 1;
+              flex-shrink: 1;
             }
+
+            i {
+              flex-grow: 0;
+              flex-shrink: 0;
+            }
+
+            &:nth-child(even) {
+              background: $warm-gray-01;
+            }
+          }
         }
       }
 
