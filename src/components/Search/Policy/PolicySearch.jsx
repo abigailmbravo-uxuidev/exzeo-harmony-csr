@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames'
 import { Field } from 'redux-form';
 import {Input, Select, SelectTypeAhead } from '@exzeo/core-ui/lib/Input';
-import { normalizeDate, isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
-import { getAnswers } from "../../../utilities/forms";
+import { normalizeDate, isAlphaNumeric, isValidChar, isNumberDashOnly, isValidDateFormat } from '@exzeo/core-ui/lib/InputLifecycle';
+import { getAnswers } from '../../../utilities/forms';
+import { STANDARD_DATE_FORMAT } from '../constants';
 
 import Pagination from '../components/Pagination';
+
+const isValidDate = isValidDateFormat(STANDARD_DATE_FORMAT);
 
 const sortByOptions = [
   { answer: 'policyNumber', label: 'Policy Number' },
@@ -39,6 +42,8 @@ const PolicySearch = ({
         placeholder='First Name Search'
         component={Input}
         styleName='first-name-search'
+        validate={isAlphaNumeric}
+        errorHint
       />
       <Field
         name='lastName'
@@ -46,6 +51,8 @@ const PolicySearch = ({
         placeholder='Last Name Search'
         component={Input}
         styleName='last-name-search'
+        validate={isAlphaNumeric}
+        errorHint
       />
       <Field
         name='address'
@@ -53,6 +60,8 @@ const PolicySearch = ({
         placeholder='Property Address Search'
         component={Input}
         styleName='property-search'
+        validate={isValidChar}
+        errorHint
       />
       <Field
         name='policyNumber'
@@ -60,6 +69,8 @@ const PolicySearch = ({
         placeholder='Policy No Search'
         component={Input}
         styleName='policy-no-search'
+        validate={isNumberDashOnly}
+        errorHint
       />
       <button
         id="searchPolicySubmit"
@@ -92,10 +103,10 @@ const PolicySearch = ({
             name="effectiveDate"
             label='Effective Date'
             component={Input}
-            // hint={effectiveDateFormErrors}
-            errorHint
             placeholder="MM/DD/YYYY"
             normalize={normalizeDate}
+            validate={isValidDate}
+            errorHint
           />
         </div>
         <div className="form-group policy-status">
@@ -110,8 +121,8 @@ const PolicySearch = ({
           name="sortBy"
           label="Sort By"
           component={Select}
-          validate={isRequired}
           answers={sortByOptions}
+          showPlaceholder={false}
         />
       </div>
     }

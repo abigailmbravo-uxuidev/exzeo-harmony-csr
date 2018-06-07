@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { Input, Select } from '@exzeo/core-ui/lib/Input';
+import { isAlphaNumeric, isValidChar, isNumberDashOnly } from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers } from '../../../utilities/forms';
 
 import Pagination from '../components/Pagination';
@@ -20,6 +21,8 @@ const QuoteSearch = ({
         placeholder='First Name Search'
         component={Input}
         styleName='first-name-search'
+        validate={isAlphaNumeric}
+        errorHint
       />
       <Field
         name='lastName'
@@ -27,6 +30,8 @@ const QuoteSearch = ({
         placeholder='Last Name Search'
         component={Input}
         styleName='last-name-search'
+        validate={isAlphaNumeric}
+        errorHint
       />
       <Field
         name='address'
@@ -34,6 +39,8 @@ const QuoteSearch = ({
         placeholder='Property Address Search'
         component={Input}
         styleName='property-search'
+        validate={isValidChar}
+        errorHint
       />
       <Field
         name='quoteNumber'
@@ -41,6 +48,8 @@ const QuoteSearch = ({
         placeholder='Quote No Search'
         component={Input}
         styleName='quote-no-search'
+        validate={isNumberDashOnly}
+        errorHint
       />
       <div className="form-group quote-state">
         <Field

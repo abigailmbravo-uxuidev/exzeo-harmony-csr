@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { Input } from '@exzeo/core-ui/lib/Input';
+import { isValidChar } from '@exzeo/core-ui/lib/InputLifecycle';
 
 const NewQuoteSearch = ({ submitting }) => (
   <div className="search-inputs fade-in">
@@ -11,6 +12,8 @@ const NewQuoteSearch = ({ submitting }) => (
       placeholder="Property Address Search"
       component={Input}
       styleName="property-search"
+      errorHint
+      validate={isValidChar}
     />
     {/* name, placeholder, labelText, formErrors, formGroupCss */}
     <button

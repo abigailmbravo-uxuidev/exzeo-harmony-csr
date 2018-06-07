@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Input } from '@exzeo/core-ui/lib/Input';
+import { Input, Integer } from '@exzeo/core-ui/lib/Input';
+import { isAlphaNumeric, isValidChar } from '@exzeo/core-ui/lib/InputLifecycle';
 
 const AgentSearch = ({ submitting }) => {
   return (
     <div className="search-inputs fade-in">
       <Field
         name='agentCode'
-        component={Input}
+        component={Integer}
         placeholder='Agent ID Search'
         label='Agent ID'
         styleName='agency-id-search'
@@ -19,6 +20,8 @@ const AgentSearch = ({ submitting }) => {
         placeholder='First Name Search'
         label='First Name'
         styleName='first-name-search'
+        errorHint
+        validate={isAlphaNumeric}
       />
       <Field
         name='lastName'
@@ -26,6 +29,8 @@ const AgentSearch = ({ submitting }) => {
         placeholder='Last Name Search'
         label='Last Name'
         styleName='last-name-search'
+        errorHint
+        validate={isAlphaNumeric}
       />
       <Field
         name='address'
@@ -33,6 +38,8 @@ const AgentSearch = ({ submitting }) => {
         placeholder='Agent Address Search'
         label='Agent Address'
         styleName='agency-address-search'
+        errorHint
+        validate={isValidChar}
       />
       <Field
         name='licenseNumber'
