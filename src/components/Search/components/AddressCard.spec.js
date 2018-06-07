@@ -1,14 +1,23 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import AddressCard from './AddressCard';
-import addressTestData from '../../Common/addressTestData';
+import addressTestData from '../../../common/addressTestData';
 
-it('renders without crashing', () => {
-  const wrapper = shallow(<AddressCard
-    addressKeyEnter={() => function () {}}
-    address={addressTestData}
-    index={1}
-    addressSelection={() => function () {}}
-  />);
-  expect(wrapper);
+describe('Test AddressCard component', () => {
+  it('renders when provided correctly structured address', () => {
+    const wrapper = shallow(
+      <AddressCard
+        handleKeypress={() => null}
+        handleClick={() => null}
+        address={addressTestData}
+      />
+    );
+
+    const link = wrapper.find(`#${addressTestData.physicalAddress.address1}`);
+
+    expect(wrapper.exists()).toBeTruthy();
+    expect(link).toHaveLength(1);
+    link.simulate('click');
+    link.simulate('keypress', { key: 'Enter' })
+  });
 });

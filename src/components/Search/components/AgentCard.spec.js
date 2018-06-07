@@ -1,14 +1,22 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import AgentCard from './AgentCard';
-import agentTestData from '../../Common/agentTestData';
+import agentTestData from '../../../common/agentTestData';
 
-it('renders without crashing', () => {
-  const wrapper = shallow(<AgentCard
-    agentKeyEnter={() => function () {}}
-    agent={agentTestData}
-    index={1}
-    agentSelection={() => function () {}}
-  />);
-  expect(wrapper);
+describe('Test AgentCard component', () => {
+  it('renders when provided correctly structured agency', () => {
+    const wrapper = shallow(
+      <AgentCard
+        handleKeypress={() => null}
+        handleClick={() => null}
+        agent={agentTestData}
+      />
+    );
+
+    const link = wrapper.find(`#${agentTestData.licenseNumber}`);
+
+    expect(wrapper.exists()).toBeTruthy();
+    expect(link).toHaveLength(1);
+    link.simulate('click');
+  });
 });

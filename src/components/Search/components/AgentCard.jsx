@@ -2,9 +2,11 @@ import React from 'react';
 import normalizePhone from '../../Form/normalizePhone';
 
 const AgentCard = ({
-  agentKeyEnter, agentSelection, agent, index
+  handleKeypress,
+  handleClick,
+  agent,
 }) => (
-  <div className="agency agent contact card" key={index} onKeyPress={agentKeyEnter} tabIndex="0">
+  <div className="agency agent contact card" onKeyPress={handleKeypress} tabIndex="0">
     <div className="contact-title">
       <i className="fa fa-address-card margin bottom" />
       {agent.agentOfRecord ? <small><i className="card-icon fa fa-bookmark" /><label>AOR</label></small> : null }
@@ -12,7 +14,7 @@ const AgentCard = ({
     </div>
     <div className="contact-details">
       <div className="card-name">
-        <h4 onClick={agentSelection}><span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span> | <span className="agent-license">{agent.licenseNumber}</span></h4>
+        <h4 id={agent.licenseNumber} onClick={handleClick}><span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span> | <span className="agent-license">{agent.licenseNumber}</span></h4>
         <div className="contact-address">
           {agent.mailingAddress.address1},&nbsp;
           {agent.mailingAddress.address2}{agent.mailingAddress.address2 ? ', ' : ' ' }

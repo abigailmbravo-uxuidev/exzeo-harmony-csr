@@ -1,14 +1,23 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import AgencyCard from './AgencyCard';
-import agencyTestData from '../../Common/agencyTestData';
+import agencyTestData from '../../../common/agencyTestData';
 
-it('renders without crashing', () => {
-  const wrapper = shallow(<AgencyCard
-    agencyKeyEnter={() => function () {}}
-    agency={agencyTestData}
-    index={1}
-    agencySelection={() => function () {}}
-  />);
-  expect(wrapper);
+describe('Test AgencyCard component', () => {
+  it('renders when provided correctly structured agency', () => {
+    const wrapper = shallow(
+      <AgencyCard
+        handleKeypress={() => null}
+        handleClick={() => null}
+        agency={agencyTestData}
+      />
+    );
+
+    const link = wrapper.find(`#agency-code-${agencyTestData.agencyCode}`);
+
+    expect(wrapper.exists()).toBeTruthy();
+    expect(link).toHaveLength(1);
+    link.simulate('click');
+    link.simulate('keypress', { key: 'Enter' })
+  });
 });

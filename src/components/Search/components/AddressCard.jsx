@@ -3,7 +3,7 @@ import React from 'react';
 function AddressCard({
   handleKeyPress,
   handleClick,
-  address,
+  address
 }) {
   return (
     <li id={address.id} tabIndex="0" onKeyPress={handleKeyPress}>
