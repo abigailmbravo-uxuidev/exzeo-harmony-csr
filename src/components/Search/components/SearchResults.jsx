@@ -18,7 +18,7 @@ export function onKeypressSubmit(event, data, props) {
   }
 }
 
-class SearchResults extends Component {
+export class SearchResults extends Component {
   render() {
     const { searchType, search: { results, noResults }, error } = this.props;
     return (
