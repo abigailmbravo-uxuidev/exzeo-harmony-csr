@@ -137,15 +137,11 @@ export const getAgency = (companyCode, state, agencyCode) => (dispatch) => {
 
   return axios(axiosConfig).then((response) => {
     const data = { agency: response.data.result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
+    return dispatch(serviceRequest(data));
   })
     .catch((error) => {
       const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
+      return dispatch(errorActions.setAppError(message));
     });
 };
 
@@ -158,15 +154,11 @@ export const getAgentsByAgency = (companyCode, state, agencyCode) => (dispatch) 
 
   return axios(axiosConfig).then((response) => {
     const data = { agents: response.data.result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
+    return dispatch(serviceRequest(data));
   })
     .catch((error) => {
       const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
+      return dispatch(errorActions.setAppError(message));
     });
 };
 
@@ -357,7 +349,7 @@ export const updateBillPlan = paymentPlan => (dispatch) => {
 
   return axios(axiosConfig).then((response) => {
     const data = response.data.result;
-    dispatch(getPolicy(data.policyNumber));
+    return dispatch(getPolicy(data.policyNumber));
   })
     .catch((error) => {
       const message = handleError(error);
@@ -426,9 +418,7 @@ export const createTransaction = submitData => (dispatch) => {
     })
     .catch((error) => {
       const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
+      return dispatch(errorActions.setAppError(message));
     });
 };
 
@@ -466,15 +456,11 @@ export const getCancelOptions = () => (dispatch) => {
 
   return axios(axiosConfig).then((response) => {
     const data = { cancelOptions: response.data.cancelOptions };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
+    return dispatch(serviceRequest(data));
   })
     .catch((error) => {
       const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
+      return dispatch(errorActions.setAppError(message));
     });
 };
 

@@ -1214,4 +1214,209 @@ describe('Service Actions', () => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
       });
   });
+
+  it('should call start getAgency', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'agency',
+        method: 'GET',
+        path: 'v1/agency/TTIC/FL/HO3'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    return serviceActions.getAgency('TTIC', 'FL', 'HO3')(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
+      });
+  });
+
+  it('should fail start getAgency', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'agency',
+        method: 'GET',
+        path: 'v1/agency/TTIC/FL/HO3'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+    return serviceActions.getAgency(null)(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
+      });
+  });
+
+  it('should call start getAgentsByAgency', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'agency',
+        method: 'GET',
+        path: 'v1/agents/TTIC/FL?agencyCode=2'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    return serviceActions.getAgentsByAgency('TTIC', 'FL', 2)(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
+      });
+  });
+
+  it('should fail start getAgentsByAgency', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'agency',
+        method: 'GET',
+        path: 'v1/agents/TTIC/FL?agencyCode=2'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+    return serviceActions.getAgentsByAgency(null)(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
+      });
+  });
+
+  it('should call start getCancelOptions', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'policy-data',
+        method: 'GET',
+        path: 'cancelOptions'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    return serviceActions.getCancelOptions()(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
+      });
+  });
+
+
+  it('should call start createTransaction', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'policy-data',
+        method: 'POST',
+        path: 'transaction',
+        data: {}
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    return serviceActions.createTransaction({})(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
+      });
+  });
+
+  it('should fail start createTransaction', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'policy-data',
+        method: 'POST',
+        path: 'transaction',
+        data: {}
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: {
+        result: { policyNumber: '1234' }
+      }
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+    return serviceActions.createTransaction(null)(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
+      });
+  });
 });
