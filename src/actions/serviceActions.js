@@ -367,15 +367,11 @@ export const getBillingOptionsForPolicy = paymentOptions => (dispatch) => {
 
   return axios(axiosConfig).then((response) => {
     const data = { billingOptions: response.data.result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
+    return dispatch(serviceRequest(data));
   })
     .catch((error) => {
       const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
+      return dispatch(errorActions.setAppError(message));
     });
 };
 

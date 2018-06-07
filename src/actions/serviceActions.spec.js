@@ -1419,4 +1419,65 @@ describe('Service Actions', () => {
         expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
   });
+
+  it('should call start getBillingOptionsForPolicy', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'billing',
+        method: 'POST',
+        path: 'payment-options-for-policy',
+        data: {}
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    return serviceActions.getBillingOptionsForPolicy({})(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
+      });
+  });
+
+  it('should fail start getBillingOptionsForPolicy', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'billing',
+        method: 'POST',
+        path: 'payment-options-for-policy',
+        data: {}
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: {
+        result: { policyNumber: '1234' }
+      }
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+    return serviceActions.getBillingOptionsForPolicy(null)(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
+      });
+  });
 });
