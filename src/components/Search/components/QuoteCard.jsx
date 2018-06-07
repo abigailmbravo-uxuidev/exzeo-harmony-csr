@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import { STANDARD_DATE_FORMAT } from '../constants';
 
 function QuoteCard({
   handleKeyPress,
@@ -26,7 +27,7 @@ function QuoteCard({
             <span className="quote-no">Quote No.</span>
             <span className="property-address">Property Address</span>
             <span className="quote-state">Quote Status</span>
-            <span className="effctive-date">Effective Date</span>
+            <span className="effective-date">Effective Date</span>
             <span className="started-on">Started On</span>
             <span className="premium">Premium</span>
           </li>
@@ -35,8 +36,8 @@ function QuoteCard({
               <span className="quote-no">{quote.quoteNumber}</span>
               <span className="property-address">{`${quote.property.physicalAddress.address1} ${quote.property.physicalAddress.city}, ${quote.property.physicalAddress.state} ${quote.property.physicalAddress.zip}`}</span>
               <span className="quote-state">{quote.quoteState}</span>
-              <span className="effctive-date">{moment.utc(quote.effectiveDate).format('MM/DD/YYYY')}</span>
-              <span className="started-on">{moment.utc(quote.createdAt).format('MM/DD/YYYY')}</span>
+              <span className="effective-date">{moment.utc(quote.effectiveDate).format(STANDARD_DATE_FORMAT)}</span>
+              <span className="started-on">{moment.utc(quote.createdAt).format(STANDARD_DATE_FORMAT)}</span>
               <span className="premium">$ {
                 quote.rating
                   ? quote.rating.totalPremium

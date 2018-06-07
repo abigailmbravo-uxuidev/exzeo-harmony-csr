@@ -4,7 +4,7 @@ import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
 import ConnectedApp, { SearchForm, handleSearchBarSubmit, validate, handlePolicySearchSubmit, togglePolicyAdvanceSearch, changePageQuote, changePagePolicy } from './SearchBar';
-import localStorageMock from '../../setupTests';
+import localStorageMock from '../../../setupTests';
 
 global.localStorage = localStorageMock;
 

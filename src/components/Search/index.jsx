@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import SearchBar from './SearchBar';
+import { SEARCH_CONFIG, SEARCH_TYPES } from './constants';
+import SearchBar from './components/SearchBar';
 import SearchResults from './components/SearchResults';
 import AddressSearch from './Address';
 import PolicySearch from './Policy';
@@ -8,48 +9,21 @@ import AgencySearch from './Agency';
 import AgentSearch from './Agent';
 import UserSearch from './User';
 
-const POLICY_INITIAL_VALUES = {
-  searchType: 'policy',
-  sortBy: 'policyNumber'
-};
-const AGENCY_INITIAL_VALUES = {
-  searchType: 'agency'
-};
-const AGENCY_SEARCH_OPTIONS = [
-  { answer: 'agent', label: 'Agent Search' },
-  { answer: 'agency', label: 'Agency Search' }
-];
-const POLICY_SEARCH_OPTIONS = [
-  { answer: 'address', label: 'New Quote' },
-  { answer: 'quote', label: 'Quote Search' },
-  { answer: 'policy', label: 'Policy Search' }
-];
-const SEARCH_CONFIG = {
-  policy: {
-    initialValues: POLICY_INITIAL_VALUES,
-    searchOptions: POLICY_SEARCH_OPTIONS,
-  },
-  agency: {
-    initialValues: AGENCY_INITIAL_VALUES,
-    searchOptions: AGENCY_SEARCH_OPTIONS,
-  }
-};
-
 const SEARCH_FORMS = {
-  address: AddressSearch,
-  policy: PolicySearch,
-  quote: QuoteSearch,
-  agent: AgentSearch,
-  agency: AgencySearch,
-  user: UserSearch
+  [SEARCH_TYPES.newQuote]: AddressSearch,
+  [SEARCH_TYPES.policy]: PolicySearch,
+  [SEARCH_TYPES.quote]: QuoteSearch,
+  [SEARCH_TYPES.agent]: AgentSearch,
+  [SEARCH_TYPES.agency]: AgencySearch,
+  [SEARCH_TYPES.user]: UserSearch
 };
 
 class SearchPage extends Component {
 
   state = {
     advancedSearch: false,
-    searchType: 'policy',
-    searchConfig: 'policy'
+    searchType: SEARCH_TYPES.policy,
+    searchConfig: SEARCH_TYPES.policy
   };
 
   componentDidMount() {
@@ -62,21 +36,22 @@ class SearchPage extends Component {
   };
 
   changeSearchType = (searchType) => {
-    this.setState({ searchType });
+    this.setState({searchType});
   };
 
   setSearchConfig = () => {
     const { pathName } = this.props;
     if (pathName === '/') {
-      this.setState({ searchType: 'policy', searchConfig: 'policy' });
+      this.setState({ searchType: SEARCH_TYPES.policy, searchConfig: SEARCH_TYPES.policy });
     }
     if (pathName === '/agency') {
-      this.setState({ searchType: 'agency', searchConfig: 'agency' });
+      this.setState({ searchType: SEARCH_TYPES.agency, searchConfig: SEARCH_TYPES.agency });
     }
   };
 
   render() {
     const { advancedSearch, searchType, searchConfig } = this.state;
+
     const SearchForm = SEARCH_FORMS[searchType];
 
     return (
@@ -105,8 +80,10 @@ class SearchPage extends Component {
               <div className="route">
                 <div className="search route-content">
                   <div className="survey-wrapper scroll">
+
                     <SearchResults searchType={searchType} />
                     {this.props.children}
+
                   </div>
                 </div>
               </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import { STANDARD_DATE_FORMAT } from '../constants';
 
 function PolicyCard({
   handleKeyPress,
@@ -34,7 +35,7 @@ function PolicyCard({
               }
             </span>
               <span className="quote-state">{policy.status}</span>
-              <span className="effctive-date">{moment.utc(policy.effectiveDate).format('MM/DD/YYYY')}</span>
+              <span className="effctive-date">{moment.utc(policy.effectiveDate).format(STANDARD_DATE_FORMAT)}</span>
             </a>
           </li>
         </ul>

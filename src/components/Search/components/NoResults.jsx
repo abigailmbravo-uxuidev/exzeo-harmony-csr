@@ -1,13 +1,5 @@
 import React from 'react';
-
-const DEFAULT_NO_RESULTS_MESSAGE = 'We\'re sorry we couldn\'t find any results matching your search parameters. Please check your spelling and try a new search. You can also try a less specific search (such as street number and name).'
-const NO_RESULTS_MESSAGES = {
-  address: 'There are no quotes found matching that search criteria. Please try to search again, or start a new quote.',
-  policy: 'There are no policies found matching that search criteria. Please try to search again.',
-  quote: DEFAULT_NO_RESULTS_MESSAGE,
-  agency: DEFAULT_NO_RESULTS_MESSAGE,
-  agent: DEFAULT_NO_RESULTS_MESSAGE
-};
+import { NO_RESULTS_MESSAGES } from '../constants';
 
 function NoResults({ searchType, error }) {
   if (error && error.message) {
@@ -35,6 +27,8 @@ function NoResults({ searchType, error }) {
 
 NoResults.propTypes = {};
 
-NoResults.defaultProps = {};
+NoResults.defaultProps = {
+  error: {}
+};
 
 export default NoResults;

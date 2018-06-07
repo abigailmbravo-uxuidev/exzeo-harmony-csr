@@ -1,106 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import moment from 'moment';
-import { getAgencies } from "../../actions/serviceActions";
-import { clearAppError } from '../../actions/errorActions';
+import { getAgencies } from "../../../actions/serviceActions";
+import { clearAppError } from '../../../actions/errorActions';
 import {
-  setSearch,
   handleSearchSubmit,
   resetSearch,
-  toggleLoading } from '../../actions/searchActions';
-import Rules from '../Form/Rules';
+  toggleLoading
+} from '../../../actions/searchActions';
+import { LOCAL_STORAGE_KEY, DEFAULT_SEARCH_PARAMS } from '../constants';
 
 import { Select } from '@exzeo/core-ui/lib/Input';
 import { isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
 
-// TODO: reimplementing validation on a per field basis
-export const validate = (values) => {
-  const errors = {};
-  if (values.firstName) {
-    const onlyAlphaNumeric = Rules.onlyAlphaNumeric(values.firstName);
-    if (onlyAlphaNumeric) {
-      errors.firstName = onlyAlphaNumeric;
-    }
-  }
-
-  if (values.lastName) {
-    const onlyAlphaNumeric = Rules.onlyAlphaNumeric(values.lastName);
-    if (onlyAlphaNumeric) {
-      errors.lastName = onlyAlphaNumeric;
-    }
-  }
-
-  if (values.agentName) {
-    const onlyAlphaNumeric = Rules.onlyAlphaNumeric(values.agentName);
-    if (onlyAlphaNumeric) {
-      errors.agentName = onlyAlphaNumeric;
-    }
-  }
-
-  if (values.agentCode) {
-    const numbersOnly = Rules.numbersOnly(values.agentCode);
-    if (numbersOnly) {
-      errors.agentCode = numbersOnly;
-    }
-  }
-
-  if (values.agencyCode) {
-    const numbersOnly = Rules.numbersOnly(values.agencyCode);
-    if (numbersOnly) {
-      errors.agencyCode = numbersOnly;
-    }
-  }
-
-  if (values.quoteNumber) {
-    const numberDashesOnly = Rules.numberDashesOnly(values.quoteNumber);
-    if (numberDashesOnly) {
-      errors.quoteNumber = numberDashesOnly;
-    }
-  }
-
-  if (values.policyNumber) {
-    const numberDashesOnly = Rules.numberDashesOnly(values.policyNumber);
-    if (numberDashesOnly) {
-      errors.policyNumber = numberDashesOnly;
-    }
-  }
-
-  if (values.zip) {
-    const onlyAlphaNumeric = Rules.onlyAlphaNumeric(values.zip);
-    if (onlyAlphaNumeric) {
-      errors.zip = onlyAlphaNumeric;
-    }
-  }
-  if (values.address) {
-    const required = Rules.required(String(values.address).trim());
-    const invalidCharacters = Rules.invalidCharacters(values.address);
-    if (required) {
-      errors.address = required;
-    } else if (invalidCharacters) {
-      errors.address = invalidCharacters;
-    }
-  }
-
-  if (values.effectiveDate) {
-    const isDate = moment(values.effectiveDate, 'MM/DD/YYYY', true).isValid()
-      ? undefined
-      : 'Not a valid date';
-    if (isDate) {
-      errors.effectiveDate = isDate;
-    }
-  }
-
-  return errors;
-};
-
 export class SearchBar extends Component {
   componentDidMount() {
     const { getAgencies, toggleLoading } = this.props;
-    localStorage.removeItem('lastSearchData');
+    localStorage.removeItem(LOCAL_STORAGE_KEY);
     toggleLoading(false);
     // TODO try to avoid doing this every time this component mounts. Maybe handle this higher up the component tree (which means we can then search agencies from state rather than hitting the server)
-    getAgencies('TTIC', 'FL');
+    getAgencies(DEFAULT_SEARCH_PARAMS.companyCode, DEFAULT_SEARCH_PARAMS.state);
   }
 
   handleSearchFormSubmit = (data, dispatch, props) => {
@@ -124,9 +43,9 @@ export class SearchBar extends Component {
 
   clearForm = () => {
     const { reset, clearAppError, advancedSearch, toggleAdvancedSearch } = this.props;
-    let lastSearchData = JSON.parse(localStorage.getItem('lastSearchData')) || {};
+    let lastSearchData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
     lastSearchData.searchType = '';
-    localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(lastSearchData));
     reset();
     clearAppError();
     toggleLoading(false);
@@ -156,6 +75,7 @@ export class SearchBar extends Component {
                 validate={isRequired}
                 onChange={this.changeSearchType}
                 answers={searchTypeOptions}
+                showPlaceholder={false}
               />
             </div>
 
@@ -179,7 +99,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   clearAppError,
   getAgencies,
-  setSearch,
   toggleLoading,
   handleSearchSubmit,
   resetSearch
@@ -187,5 +106,4 @@ export default connect(mapStateToProps, {
   form: 'SearchBar',
   enableReinitialize: true,
   destroyOnUnmount: false,
-  validate,
 })(SearchBar));

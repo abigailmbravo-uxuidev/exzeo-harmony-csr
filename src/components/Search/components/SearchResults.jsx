@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import handleNewTab from '../../../utilities/handleNewTab';
+import { SEARCH_TYPES } from '../constants';
 
 import NoResults from '../components/NoResults';
 import PolicyCard from './PolicyCard';
@@ -26,7 +28,7 @@ class SearchResults extends Component {
           <NoResults searchType={searchType} error={error} />
         }
 
-        {searchType === 'address' && !!results.length &&
+        {searchType === SEARCH_TYPES.newQuote && !!results.length &&
           <ul id="property-search-results" className="results result-cards property-search-results">
             {!!results.length && results.map((address) => (
               <AddressCard
@@ -40,7 +42,7 @@ class SearchResults extends Component {
           </ul>
         }
 
-        {searchType === 'quote' && !!results.length &&
+        {searchType === SEARCH_TYPES.quote && !!results.length &&
           <div className="quote-list">
             {results.map((quote) => (
               <QuoteCard
@@ -53,7 +55,7 @@ class SearchResults extends Component {
           </div>
         }
 
-        {searchType === 'policy' && !!results.length &&
+        {searchType === SEARCH_TYPES.policy && !!results.length &&
           <div className="policy-list">
             {results.map((policy) => (
               <PolicyCard
@@ -66,7 +68,7 @@ class SearchResults extends Component {
           </div>
         }
 
-        {searchType === 'agent' && !!results.length &&
+        {searchType === SEARCH_TYPES.agent && !!results.length &&
           <div className="user-list agent-list">
             {results.map((agent) => (
               <AgentCard
@@ -79,7 +81,7 @@ class SearchResults extends Component {
           </div>
         }
 
-        {searchType === 'agency' && !!results.length &&
+        {searchType === SEARCH_TYPES.agency && !!results.length &&
           <div className="user-list agency-list">
             {results.map((agency) => (
               <AgencyCard
@@ -96,6 +98,10 @@ class SearchResults extends Component {
     );
   }
 }
+
+SearchResults.propTypes = {
+  searchType: PropTypes.string.isRequired
+};
 
 const mapStateToProps = state => ({
   error: state.error,
