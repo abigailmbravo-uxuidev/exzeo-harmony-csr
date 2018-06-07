@@ -5,10 +5,10 @@ import policyTestData from '../../Common/policyTestData';
 
 it('renders without crashing', () => {
   const wrapper = shallow(<PolicyCard
-    policyKeyEnter={() => function () {}}
+    policyKeyEnter={x => x}
     policy={policyTestData}
     index={1}
-    policySelection={() => function () {}}
+    policySelection={x => x}
   />);
   expect(wrapper);
 });

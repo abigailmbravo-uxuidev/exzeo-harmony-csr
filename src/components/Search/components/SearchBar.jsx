@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import { getAgencies } from "../../../actions/serviceActions";
+import { getAgencies } from '../../../actions/serviceActions';
 import { clearAppError } from '../../../actions/errorActions';
 import {
   handleSearchSubmit,
@@ -23,7 +23,7 @@ export class SearchBar extends Component {
   }
 
   handleSearchFormSubmit = (data, dispatch, props) => {
-    dispatch(handleSearchSubmit(data, props))
+    dispatch(handleSearchSubmit(data, props));
   };
 
   handlePagination = (isNext) => {
@@ -31,7 +31,7 @@ export class SearchBar extends Component {
     return handleSubmit((data, dispatch, props) => {
       const submitData = { ...data, isNext, currentPage: props.search.currentPage };
       dispatch(handleSearchSubmit(submitData, this.props));
-    })
+    });
   };
 
   changeSearchType = (event, newValue) => {
@@ -42,8 +42,10 @@ export class SearchBar extends Component {
   };
 
   clearForm = () => {
-    const { reset, clearAppError, advancedSearch, toggleAdvancedSearch } = this.props;
-    let lastSearchData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
+    const {
+      reset, clearAppError, advancedSearch, toggleAdvancedSearch
+    } = this.props;
+    const lastSearchData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
     lastSearchData.searchType = '';
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(lastSearchData));
     reset();
@@ -92,7 +94,7 @@ export class SearchBar extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   search: state.search
 });
 
@@ -105,5 +107,5 @@ export default connect(mapStateToProps, {
 })(reduxForm({ // initialValues prop is being passed in from parent component based on route/pathName
   form: 'SearchBar',
   enableReinitialize: true,
-  destroyOnUnmount: false,
+  destroyOnUnmount: false
 })(SearchBar));

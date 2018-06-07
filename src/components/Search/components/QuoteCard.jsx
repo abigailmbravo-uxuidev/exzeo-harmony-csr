@@ -5,7 +5,7 @@ import { STANDARD_DATE_FORMAT } from '../constants';
 function QuoteCard({
   handleKeyPress,
   handleClick,
-  quote,
+  quote
 }) {
   return (
     <div tabIndex="0" onKeyPress={handleKeyPress} id={quote._id} className="card">
@@ -43,7 +43,7 @@ function QuoteCard({
                   ? quote.rating.totalPremium
                   : '-'
               }
-            </span>
+              </span>
             </a>
           </li>
         </ul>

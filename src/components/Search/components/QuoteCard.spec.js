@@ -5,10 +5,10 @@ import quoteTestData from '../../Common/quoteTestData';
 
 it('renders without crashing', () => {
   const wrapper = shallow(<QuoteCard
-    policyKeyEnter={() => function () {}}
+    policyKeyEnter={x => x}
     quote={quoteTestData}
     index={1}
-    quoteSelection={() => function () {}}
+    quoteSelection={x => x}
   />);
   expect(wrapper);
 });
