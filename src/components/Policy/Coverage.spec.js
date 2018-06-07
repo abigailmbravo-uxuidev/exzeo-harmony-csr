@@ -31,6 +31,10 @@ describe('Testing Coverage component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      getUIQuestions() {},
+      getPolicy() {},
+      getCancelOptions() {},
+      getBillingOptionsForPolicy() {},
       summaryLedger: {
 
       },
@@ -77,6 +81,7 @@ describe('Testing Coverage component', () => {
     const wrapper2 = shallow(<Coverage store={store} {...props} />);
 
     wrapper2.instance().componentWillReceiveProps({
+      getBillingOptionsForPolicy() {},
       summaryLedger: { currentPremium: 100 },
       actions: {
         policyStateActions: {

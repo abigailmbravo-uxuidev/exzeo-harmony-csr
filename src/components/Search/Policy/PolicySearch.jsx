@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames'
+import classNames from 'classnames';
 import { Field } from 'redux-form';
-import {Input, Select, SelectTypeAhead } from '@exzeo/core-ui/lib/Input';
+import { Input, Select, SelectTypeAhead } from '@exzeo/core-ui/lib/Input';
 import { normalizeDate, isAlphaNumeric, isValidChar, isNumberDashOnly, isValidDateFormat } from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers } from '../../../utilities/forms';
 import { STANDARD_DATE_FORMAT } from '../constants';
@@ -17,13 +17,11 @@ const sortByOptions = [
   { answer: 'lastName', label: 'Last Name' }
 ];
 
-const agencyListValues = (agencyList, advancedSearch) => {
-  return advancedSearch ? agencyList.map(agency => ({
-    label: agency.displayName,
-    answer: agency.agencyCode,
-    value: agency.agencyCode
-  })) : [];
-};
+const agencyListValues = (agencyList, advancedSearch) => (advancedSearch ? agencyList.map(agency => ({
+  label: agency.displayName,
+  answer: agency.agencyCode,
+  value: agency.agencyCode
+})) : []);
 
 const PolicySearch = ({
   agencyList,
@@ -82,14 +80,15 @@ const PolicySearch = ({
         type="submit"
         disabled={submitting}
       >
-        <i className="fa fa-search"/>Search
+        <i className="fa fa-search" />Search
       </button>
       <button
         type="button"
         className="advanced-search-btn btn-sm btn-icon"
         data-test="search-policy-toggle-advanced"
-        onClick={toggleAdvancedSearch}>
-        <i className={classNames(advancedSearch ? "fa fa-chevron-up" : "fa fa-chevron-down")}/>
+        onClick={toggleAdvancedSearch}
+      >
+        <i className={classNames(advancedSearch ? 'fa fa-chevron-up' : 'fa fa-chevron-down')} />
       </button>
     </div>
 

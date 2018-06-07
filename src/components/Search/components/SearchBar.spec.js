@@ -8,7 +8,7 @@ import { SearchBar } from './SearchBar';
 const mockStore = configureStore([]);
 const store = mockStore({});
 
-it('renders without crashing', () => {
+it('renders SearchBar', () => {
   const props = {
     handleSubmit() {},
     render() {},

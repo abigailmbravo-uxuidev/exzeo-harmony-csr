@@ -46,17 +46,17 @@ export const AGENCY_SEARCH_OPTIONS = [
 export const SEARCH_CONFIG = {
   [SEARCH_TYPES.policy]: {
     initialValues: POLICY_INITIAL_VALUES,
-    searchOptions: POLICY_SEARCH_OPTIONS,
+    searchOptions: POLICY_SEARCH_OPTIONS
   },
   [SEARCH_TYPES.agency]: {
     initialValues: AGENCY_INITIAL_VALUES,
-    searchOptions: AGENCY_SEARCH_OPTIONS,
+    searchOptions: AGENCY_SEARCH_OPTIONS
   }
 };
 
 export const DEFAULT_SEARCH_PARAMS = {
   companyCode: 'TTIC',
-  state: 'FL',
+  state: 'FL'
 };
 
 export const RESULTS_PAGE_SIZE = 25;
