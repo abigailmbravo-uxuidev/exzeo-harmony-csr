@@ -1,17 +1,10 @@
 import React from 'react';
-import configureStore from 'redux-mock-store';
 import { shallow } from 'enzyme';
-
-import QuoteSearch from './index';
-
-const mockStore = configureStore([]);
-const store = mockStore({
-  service: {}
-});
+import QuoteSearch from './QuoteSearch';
 
 describe('Quote Search', () => {
   it('renders Quote Search', () => {
-    const wrapper = shallow(<QuoteSearch store={store} />);
+    const wrapper = shallow(<QuoteSearch handlePagination={x => x} search={{ totalPages: 5, results: [{}], currentPage: 1 }} />);
     expect(wrapper);
   });
 });
