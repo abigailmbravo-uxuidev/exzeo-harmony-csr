@@ -11,5 +11,5 @@ describe('Test AgencySearch component', () => {
   it('has a disabled submit button when passed \'submitting\' prop', () => {
     const wrapper = shallow(<AgentSearch submitting={true} />);
     expect(wrapper.find('button').prop('disabled')).toBeTruthy();
-  })
+  });
 });

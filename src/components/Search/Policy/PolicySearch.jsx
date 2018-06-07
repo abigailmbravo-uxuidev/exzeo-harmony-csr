@@ -152,7 +152,7 @@ PolicySearch.propTypes = {
   advancedSearch: PropTypes.bool.isRequired,
   questions: PropTypes.array,
   toggleAdvancedSearch: PropTypes.func.isRequired,
-  handlePagination: PropTypes.func,
+  handlePagination: PropTypes.func.isRequired,
   search: PropTypes.shape({
     results: PropTypes.array,
     totalPages: PropTypes.number,

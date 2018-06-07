@@ -89,7 +89,7 @@ QuoteSearch.propTypes = {
   submitting: PropTypes.bool,
   questions: PropTypes.array,
   handlePagination: PropTypes.func,
-  search: PropTypes.objectOf({
+  search: PropTypes.shape({
     results: PropTypes.array,
     totalPages: PropTypes.number,
     currentPage: PropTypes.number
