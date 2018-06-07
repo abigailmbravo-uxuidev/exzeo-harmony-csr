@@ -4,6 +4,7 @@
   top: 9rem;
   right: 2.5rem;
   bottom: 0;
+  overflow: hidden;
   width: 40%;
   background: $white;
   box-shadow: 0 0 30px 0 rgba($black, .3);
@@ -119,6 +120,11 @@
 
         .file-uploader {
           margin-top: $padding*2;
+
+          .drag-drop {
+              position: relative;
+              overflow: hidden;
+          }
 
           .uppy-Dashboard.uppy-Dashboard--wide {
             .uppy-Dashboard-inner {
@@ -370,6 +376,37 @@
               }
             }
           }
+        }
+
+        .upload-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            margin: ($padding*2) 0 0;
+            background: $warm-gray-00;
+
+            li {
+                display: flex;
+                height: auto;
+                flex-grow: 0;
+                flex-shrink: 0;
+                padding: ($padding/2) $padding;
+
+                span {
+                    flex-grow: 1;
+                    flex-shrink: 1;
+                }
+
+                i {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                }
+
+                &:nth-child(even) {
+                    background: $warm-gray-01;
+                }
+            }
         }
       }
 

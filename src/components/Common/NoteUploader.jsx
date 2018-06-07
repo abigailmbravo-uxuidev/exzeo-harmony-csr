@@ -40,8 +40,8 @@ export const validate = (values) => {
 
 export class Uploader extends Component {
   constructor(props) {
-    super(props); 
-    
+    super(props);
+
     this.uppy = new Uppy({
       autoProceed: true,
       restrictions: {
@@ -51,7 +51,7 @@ export class Uploader extends Component {
       onBeforeFileAdded: this.validateFile
     })
     .on('upload-success', (file, resp, uploadURL) => {
-      this.setState({ 
+      this.setState({
         attachments: [...this.state.attachments, resp],
         submitEnabled: true
       })
@@ -62,8 +62,8 @@ export class Uploader extends Component {
     });
   }
 
-  state = { 
-    attachments: [],
+  state = {
+    attachments: [{fileName:'4points-inspection.pdf'}, {fileName:'residency-document.pdf'}, {fileName:'claim-photo-1.jpeg'}, {fileName:'claim-photo-1.jpeg'}, {fileName:'claim-photo-1.jpeg'}, {fileName:'claim-photo-1.jpeg'}, {fileName:'claim-photo-1.jpeg'}, {fileName:'claim-photo-1.jpeg'}, {fileName:'claim-photo-1.jpeg'}],
     isSubmitting: false,
     submitEnabled: true
   }
@@ -145,7 +145,7 @@ export class Uploader extends Component {
 
   submitNote = (data, dispatch, props) => {
     const { actions, user, noteType, documentId, sourceId } = props;
-    
+
     if (!user.profile.given_name || !user.profile.family_name) {
       const message = 'There was a problem with your user profile. Please logout of Harmony and try logging in again.';
       this.closeButtonHandler();
@@ -167,12 +167,12 @@ export class Uploader extends Component {
         userId: user.sub,
         userName: `${user.profile.given_name} ${user.profile.family_name}`
       })
-    };   
-    
+    };
+
     actions.cgActions.startWorkflow('addNote', noteData)
       .then(result => {
         if(window.location.pathname.endsWith('/notes')) {
-          const ids = (noteData.noteType === 'Policy Note') 
+          const ids = (noteData.noteType === 'Policy Note')
             ? [noteData.number, noteData.source].toString()
             : noteData.number;
           actions.serviceActions.getNotes(ids, noteData.number);
@@ -185,17 +185,17 @@ export class Uploader extends Component {
         this.setState({ isSubmitting: false });
         this.closeButtonHandler();
       })
-    // 
+    //
   }
 
-  validateFile = (file, currentFiles) => !file.name.includes('.') 
-    ? Promise.reject('Uploads must have a file extension.') 
+  validateFile = (file, currentFiles) => !file.name.includes('.')
+    ? Promise.reject('Uploads must have a file extension.')
     : Promise.resolve()
 
   removeUpload = index => () => this.setState((prevState) => ({
     attachments: prevState.attachments.filter((_, i) => i !== index)
   }))
-  
+
   componentDidMount() {
     const idToken = localStorage.getItem('id_token');
     this.uppy.setMeta({ documentId: this.props.documentId });
@@ -246,11 +246,11 @@ export class Uploader extends Component {
               </Field>
               <div className="file-uploader">
                 <div className="drag-drop"></div>
-                <div>
+                <ul className="upload-list">
                   {this.state.attachments.map((file, i) =>
-                    <li key={i}>{file.fileName} <i className="fa fa-times-circle" onClick={this.removeUpload(i)} /></li>
+                    <li key={i}><span>{file.fileName}</span><i className="fa fa-trash" onClick={this.removeUpload(i)} /></li>
                   )}
-                </div>
+                </ul>
               </div>
             </div>
             <div className="buttons note-file-footer-button-group">
