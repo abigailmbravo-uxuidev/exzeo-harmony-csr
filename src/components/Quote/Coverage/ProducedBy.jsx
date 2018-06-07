@@ -13,7 +13,7 @@ const ProducedBy = ({
       <div className="flex-child effectiveDate">
         <Field
           component={Date}
-          validate={[validation.isRequired, validation.isDate]}
+          validate={[validation.isRequired, validation.isDate, validation.isValidUnderwritingDate]}
           label="Effective Date"
           name="effectiveDate"
           dataTest="effectiveDate"
