@@ -16,44 +16,49 @@ const QuoteSearch = ({
   <React.Fragment>
     <div className="search-inputs fade-in">
       <Field
-        name='firstName'
-        label='First Name'
-        placeholder='First Name Search'
+        name="firstName"
+        dataTest="firstName"
+        label="First Name"
+        placeholder="First Name Search"
         component={Input}
-        styleName='first-name-search'
+        styleName="first-name-search"
         validate={isAlphaNumeric}
         errorHint
       />
       <Field
-        name='lastName'
-        label='Last Name'
-        placeholder='Last Name Search'
+        name="lastName"
+        dataTest="lastName"
+        label="Last Name"
+        placeholder="Last Name Search"
         component={Input}
-        styleName='last-name-search'
+        styleName="last-name-search"
         validate={isAlphaNumeric}
         errorHint
       />
       <Field
-        name='address'
-        label='Property Address'
-        placeholder='Property Address Search'
+        name="address"
+        dataTest="address"
+        label="Property Address"
+        placeholder="Property Address Search"
         component={Input}
-        styleName='property-search'
+        styleName="property-search"
         validate={isValidChar}
         errorHint
       />
       <Field
-        name='quoteNumber'
-        label='Quote Number'
-        placeholder='Quote No Search'
+        name="quoteNumber"
+        dataTest="quoteNumber"
+        label="Quote Number"
+        placeholder="Quote No Search"
         component={Input}
-        styleName='quote-no-search'
+        styleName="quote-no-search"
         validate={isNumberDashOnly}
         errorHint
       />
       <div className="form-group quote-state">
         <Field
           name="quoteState"
+          dataTest="quoteState"
           label="Quote Status"
           component={Select}
           answers={getAnswers('quoteState', questions)}
@@ -62,6 +67,7 @@ const QuoteSearch = ({
 
       <button
         className="btn btn-success multi-input"
+        data-test="search-quote-submit"
         type="submit"
         disabled={submitting}
       >

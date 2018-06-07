@@ -37,44 +37,48 @@ const PolicySearch = ({
   <React.Fragment>
     <div className="search-inputs fade-in p">
       <Field
-        name='firstName'
-        label='First Name'
-        placeholder='First Name Search'
+        name="firstName"
+        dataTest="firstName"
+        label="First Name"
+        placeholder="First Name Search"
         component={Input}
-        styleName='first-name-search'
+        styleName="first-name-search"
         validate={isAlphaNumeric}
         errorHint
       />
       <Field
-        name='lastName'
-        label='Last Name'
-        placeholder='Last Name Search'
+        name="lastName"
+        dataTest="lastName"
+        label="Last Name"
+        placeholder="Last Name Search"
         component={Input}
-        styleName='last-name-search'
+        styleName="last-name-search"
         validate={isAlphaNumeric}
         errorHint
       />
       <Field
-        name='address'
-        label='Property Address'
-        placeholder='Property Address Search'
+        name="address"
+        dataTest="address"
+        label="Property Address"
+        placeholder="Property Address Search"
         component={Input}
-        styleName='property-search'
+        styleName="property-search"
         validate={isValidChar}
         errorHint
       />
       <Field
-        name='policyNumber'
-        label='Policy Number'
-        placeholder='Policy No Search'
+        name="policyNumber"
+        dataTest="policyNumber"
+        label="Policy Number"
+        placeholder="Policy No Search"
         component={Input}
-        styleName='policy-no-search'
+        styleName="policy-no-search"
         validate={isNumberDashOnly}
         errorHint
       />
       <button
-        id="searchPolicySubmit"
         className="btn btn-success multi-input"
+        data-test="search-policy-submit"
         type="submit"
         disabled={submitting}
       >
@@ -83,8 +87,9 @@ const PolicySearch = ({
       <button
         type="button"
         className="advanced-search-btn btn-sm btn-icon"
+        data-test="search-policy-toggle-advanced"
         onClick={toggleAdvancedSearch}>
-        <i className={classNames(advancedSearch ? 'fa fa-chevron-up' : 'fa fa-chevron-down')}/>
+        <i className={classNames(advancedSearch ? "fa fa-chevron-up" : "fa fa-chevron-down")}/>
       </button>
     </div>
 
@@ -92,18 +97,20 @@ const PolicySearch = ({
       <div className="advanced-search fade-in">
         <Field
           name="agencyCode"
+          dataTest="agencyCode"
           label="Agency Name"
           component={SelectTypeAhead}
-          styleName='agencyCodeSelectField'
+          styleName="agencyCodeSelectField"
           labelKey="label"
           answers={agencyListValues(agencyList, advancedSearch)}
         />
         <div className="form-group effectiveDate">
           <Field
             name="effectiveDate"
-            label='Effective Date'
+            dataTest="effectiveDate"
+            label="Effective Date"
             component={Input}
-            placeholder="MM/DD/YYYY"
+            placeholder={STANDARD_DATE_FORMAT}
             normalize={normalizeDate}
             validate={isValidDate}
             errorHint
@@ -112,6 +119,7 @@ const PolicySearch = ({
         <div className="form-group policy-status">
           <Field
             name="policyStatus"
+            dataTest="policyStatus"
             label="Policy Status"
             component={Select}
             answers={getAnswers('policyStatus', questions)}
@@ -119,6 +127,7 @@ const PolicySearch = ({
         </div>
         <Field
           name="sortBy"
+          dataTest="sortBy"
           label="Sort By"
           component={Select}
           answers={sortByOptions}

@@ -8,49 +8,55 @@ const AgentSearch = ({ submitting }) => {
   return (
     <div className="search-inputs fade-in">
       <Field
-        name='agentCode'
+        name="agentCode"
+        dataTest="agentCode"
         component={Integer}
-        placeholder='Agent ID Search'
-        label='Agent ID'
-        styleName='agency-id-search'
+        placeholder="Agent ID Search"
+        label="Agent ID"
+        styleName="agency-id-search"
       />
       <Field
-        name='firstName'
+        name="firstName"
+        dataTest="firstName"
         component={Input}
-        placeholder='First Name Search'
-        label='First Name'
-        styleName='first-name-search'
+        placeholder="First Name Search"
+        label="First Name"
+        styleName="first-name-search"
         errorHint
         validate={isAlphaNumeric}
       />
       <Field
-        name='lastName'
+        name="lastName"
+        dataTest="lastName"
         component={Input}
-        placeholder='Last Name Search'
-        label='Last Name'
-        styleName='last-name-search'
+        placeholder="Last Name Search"
+        label="Last Name"
+        styleName="last-name-search"
         errorHint
         validate={isAlphaNumeric}
       />
       <Field
-        name='address'
+        name="address"
+        dataTest="address"
         component={Input}
-        placeholder='Agent Address Search'
-        label='Agent Address'
-        styleName='agency-address-search'
+        placeholder="Agent Address Search"
+        label="Agent Address"
+        styleName="agency-address-search"
         errorHint
         validate={isValidChar}
       />
       <Field
-        name='licenseNumber'
+        name="licenseNumber"
+        dataTest="licenseNumber"
         component={Input}
-        placeholder='Lic No Search'
-        label='Lic Number'
-        styleName='agency-reg-lic-fein-search'
+        placeholder="Lic No Search"
+        label="Lic Number"
+        styleName="agency-reg-lic-fein-search"
       />
 
       <button
         className="btn btn-success multi-input"
+        data-test="search-agent-submit"
         type="submit"
         disabled={submitting}
       >

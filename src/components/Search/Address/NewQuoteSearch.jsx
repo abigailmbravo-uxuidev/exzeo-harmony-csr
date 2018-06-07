@@ -8,6 +8,7 @@ const NewQuoteSearch = ({ submitting }) => (
   <div className="search-inputs fade-in">
     <Field
       name="address"
+      dataTest="address"
       label="Property Address"
       placeholder="Property Address Search"
       component={Input}
@@ -18,6 +19,7 @@ const NewQuoteSearch = ({ submitting }) => (
     {/* name, placeholder, labelText, formErrors, formGroupCss */}
     <button
       className="btn btn-success multi-input"
+      data-test="search-new-quote-submit"
       type="submit"
       disabled={submitting}
     >
