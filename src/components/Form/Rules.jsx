@@ -21,7 +21,7 @@ const rules = {
   zipNumbersOnly: value => ((!value || validator.isNumeric(String(value))) ? undefined : 'Not a valid zip code'),
   numbersOnly: value => ((!value || validator.isNumeric(String(value))) ? undefined : 'Not a valid number'),
   dwellingRange: value => ((calculatedValue(value) <= 2000000 && calculatedValue(value) >= 125000) ? undefined : 'Not a valid range. Must be ($125,000 - $2,000,000)'),
-  dateCheck: value => (moment(value).isAfter(moment('2017-07-31').format('YYYY-MM-DD')) ? undefined : 'Date must be after 07/31/2017')
+  dateCheck: value => (moment(value).isAfter(moment('2017-07-31').format('YYYY-MM-DD')) ? undefined : 'Date must at least 08/01/2017')
 };
 
 export function combineRules(validations, variables) {
