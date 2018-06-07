@@ -63,7 +63,7 @@ export class Uploader extends Component {
   }
 
   state = {
-    attachments: [],
+    attachments: [{fileName:'4points-inspection.pdf'}, {fileName:'residency-document.pdf'}, {fileName:'claim-photo-1.jpeg'}, {fileName:'claim-photo-1.jpeg'}, {fileName:'claim-photo-1.jpeg'}, {fileName:'claim-photo-1.jpeg'}, {fileName:'claim-photo-1.jpeg'}, {fileName:'claim-photo-1.jpeg'}, {fileName:'claim-photo-1.jpeg'}],
     isSubmitting: false,
     submitEnabled: true
   }

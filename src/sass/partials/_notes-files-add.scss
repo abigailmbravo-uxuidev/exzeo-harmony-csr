@@ -125,7 +125,13 @@
             position: relative;
             overflow: hidden;
 
-            .uppy-StatusBar {}
+            .uppy-StatusBar {
+              position: absolute;
+              bottom: 0;
+              overflow: hidden;
+              width: 100%;
+              border-radius: 0 0 $border-radius $border-radius;
+            }
           }
 
           .uppy-Dashboard.uppy-Dashboard--wide {
@@ -386,7 +392,6 @@
           margin: ($padding*2) 0 0;
           padding: 0;
           list-style: none;
-          background: $warm-gray-00;
 
           li {
             display: flex;
@@ -394,15 +399,23 @@
             flex-shrink: 0;
             height: auto;
             padding: ($padding/2) $padding;
+            color: $warm-gray-14;
 
             span {
               flex-grow: 1;
               flex-shrink: 1;
+              font-size: $font-size-sm;
             }
 
             i {
               flex-grow: 0;
               flex-shrink: 0;
+              cursor: pointer;
+              color: $bright-blue;
+
+              &:hover {
+                color: $bright-blue-darken-01;
+              }
             }
 
             &:nth-child(even) {
