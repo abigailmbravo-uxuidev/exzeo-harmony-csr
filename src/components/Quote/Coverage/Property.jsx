@@ -115,12 +115,12 @@ const Property = ({
         />
         <Field
           styleName="flex-child"
-          name="distanceToFireHydrant"
+          name="distanceToFireStation"
           label="Fire Station Dist."
           component={Numbers}
           decimalScale={2}
           disabled
-          dataTest="distanceToFireHydrant"
+          dataTest="distanceToFireStation"
         />
         <Field
           styleName="flex-child"
