@@ -114,6 +114,8 @@
           margin: ($padding*2) 0;
 
           textarea {
+            flex-grow: 1;
+            flex-shrink: 1;
             height: auto;
           }
         }
@@ -121,96 +123,161 @@
         .file-uploader {
           margin-top: $padding*2;
 
+          * {
+            font-family: $font-family-base;
+          }
+
           .drag-drop {
             position: relative;
             overflow: hidden;
 
             .uppy-DragDrop-container {
-                @include transition(all .2s ease-in-out);
+              @include transition(all 0.2s ease-in-out);
 
-                &.is-dragdrop-supported {
-                    border: 2px dotted $warm-gray-10;
-                    background-color: $white;
+              &.is-dragdrop-supported {
+                border: 1px dotted $warm-gray-10;
+                background-color: $white;
 
+                .uppy-DragDrop-label {
+                  color: $warm-gray-14;
+
+                  .uppy-DragDrop-dragText {
+                    color: $bright-blue;
+                  }
                 }
-                &.drag {
-                    border: 2px dotted $bright-blue;
-                    background: rgba($bright-blue, .1);
+              }
+
+              &.drag {
+                border: 1px dotted $bright-blue;
+                background: rgba($bright-blue, .1);
+
+                .uppy-DragDrop-arrow {
+                  fill: $bright-blue;
                 }
+
+                .uppy-DragDrop-label {
+                  color: $bright-blue;
+
+                  .uppy-DragDrop-dragText {
+                    color: $warm-gray-14;
+                  }
+                }
+              }
             }
 
             .uppy-Informer {
-                height: 3rem;
-                display: flex;
-                align-items: center;
-                overflow: hidden;
-                width: 100%;
-                border-radius: 0 0 $border-radius $border-radius;
+              display: flex;
+              overflow: hidden;
+              align-items: center;
+              height: 3rem;
+              margin: 1px;
+              border-radius: 0 0 $border-radius $border-radius;
+              font-size: $font-size-base;
+              transition-delay: 0.75s;
+              transition-duration: 0.2s;
 
-                p {
-                    span {
-                        display: none;
-                    }
+              p {
+                  font-weight: $font-weight-normal;
+                span {
+                  display: none;
                 }
+              }
             }
 
             .uppy-StatusBar {
-              height: 3rem;
-              display: flex;
-              align-items: center;
               position: absolute;
-              bottom: 0;
+              right: 1px;
+              bottom: 1px;
+              left: 1px;
+              display: flex;
               overflow: hidden;
-              width: 100%;
+              align-items: center;
+              height: 3rem;
               border-radius: 0 0 $border-radius $border-radius;
+              font-size: $font-size-base;
+              background: $warm-gray-10;
+              @include transition(all 0.2s ease-in-out);
 
               &.is-waiting {
-                  height: 0;
+                height: 0;
               }
 
               .uppy-StatusBar-actions {
-                  button {
-                    @include button-variant($btn-secondary-color, $btn-secondary-bg, $btn-secondary-border);
+                right: $padding*2;
 
-                    &:hover {
-                      @include button-variant($btn-secondary-color, rgba($btn-secondary-bg, .9), $btn-secondary-border);
-                    }
+                button {
+                  @include button-variant($btn-secondary-color, $btn-secondary-bg, $btn-secondary-border);
+                  @include button-size($btn-padding-y, $btn-padding-x, $font-size-sm, $btn-border-radius);
 
-                      @include button-size($btn-padding-y, $btn-padding-x, $font-size-sm, $btn-border-radius);
+                  &:hover {
+                    @include button-variant($btn-secondary-color, rgba($btn-secondary-bg, .9), $btn-secondary-border);
                   }
+                }
               }
 
               .uppy-StatusBar-details {
-                  display: none;
+                display: none;
               }
 
               .uppy-StatusBar-statusIndicator {
-                  display: none;
+                display: none;
               }
 
               .uppy-StatusBar-content {
-                  display: flex;
-                  align-items: center;
+                display: flex;
+                overflow: hidden;
+                align-items: center;
+                flex-grow: 1;
+                flex-shrink: 1;
+                padding: 0 $padding*2;
+                text-overflow: ellipsis;
+
+                &[role="alert"] {
+                    padding-right: 6rem;
+                }
+
+                strong {
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  font-weight: $font-weight-bold;
+                }
+
+                span {
+                  overflow: hidden;
+                  flex-grow: 1;
+                  flex-shrink: 1;
+                  margin-left: $padding/2;
+                  text-overflow: ellipsis;
+                  font-weight: $font-weight-normal;
+                }
+
+                div[title="Uploading"] {
+                    overflow: hidden;
+                    flex-grow: 1;
+                    flex-shrink: 1;
+                    text-overflow: ellipsis;
+                    font-weight: $font-weight-normal;
+                    text-shadow: 0px 0px 8px rgba($black, .7);
+                }
               }
 
               &.is-error {
-
-                  .uppy-StatusBar-progress {
-                      background: $red-darken-02;
-                  }
+                .uppy-StatusBar-progress {
+                  background: $red-darken-02;
+                }
               }
 
               &.is-uploading {
                 background: $warm-gray-10;
-                box-shadow: inset 0px 0px 20px 0px rgba($black, .75);
+                box-shadow: inset 0 0 20px 0 rgba($black, .75);
 
                 .uppy-StatusBar-progress {
                   animation: animate-stripes 3s linear infinite;
+                  border-radius: 0 $border-radius $border-radius 0;
                   background-color: $bright-blue;
                   background-image: linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
                   background-size: 30px 30px;
-                  box-shadow: 0px 0px 30px 0px rgba($black, .75);
-                  border-radius: 0 $border-radius $border-radius 0;
+                  box-shadow: 0 0 30px 0 rgba($black, .75);
                 }
                 @keyframes animate-stripes {
                   0% {
@@ -225,9 +292,9 @@
             }
 
             .is-error {
-                +.uppy-Informer {
-                    background: $red !important;
-                }
+              +.uppy-Informer {
+                background: $red !important;
+              }
             }
           }
 
