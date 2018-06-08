@@ -73,6 +73,7 @@ describe('Search Actions', () => {
       store = mockStore(initialState);
       httpStub = sinon.stub();
       sandbox.stub(serviceRunner, 'callService').callsFake((...args) => httpStub(...args));
+      sandbox.stub(localStorage, 'setItem').callsFake(() => null)
     });
 
     afterEach(() => {
@@ -81,12 +82,60 @@ describe('Search Actions', () => {
       sandbox.reset();
     });
 
+    it('should call dispatch on handleAddressSearch', async () => {
+      const addressSearch = '1234';
+      const addresses = [{id: '1234'}, {id: '4321'}];
+      const stubAddressData = { data: { result: { IndexResults: addresses, TotalCount: addresses.length } } };
+      const payload = {
+        results: addresses,
+        totalRecords: 2,
+        noResults: false
+      };
+      const stateObj = [{
+        type: types.SET_SEARCH_RESULTS,
+        ...payload,
+        currentPage: 1,
+        pageSize: 0,
+        sortBy: '',
+        sortDirection: '',
+      }];
 
-    it('should call searchAddresses', async () => {
 
+      httpStub.onCall(0).returns(Promise.resolve(stubAddressData));
 
-      const stateObj = [];
+      await store.dispatch(searchActions.handleAddressSearch(addressSearch, {}));
+
+      sinon.assert.calledOnce(serviceRunner.callService);
+      expect(store.getActions()).toEqual(stateObj);
     });
+
+
+    it('should call dispatch on searchQuotes', async () => {
+      const quoteSearch = { quoteNumber: '1234' };
+      const quotes = [{id: '1234'}, {id: '4321'}];
+      const payload = {
+        results: quotes,
+        totalRecords: 2,
+        noResults: false
+      };
+      const stateObj = [{
+        type: types.SET_SEARCH_RESULTS,
+        ...payload,
+        currentPage: 1,
+        pageSize: 0,
+        sortBy: '',
+        sortDirection: 'desc',
+      }];
+
+      const stubReturnData = {data: {result: {quotes, sortDirection: -1, totalNumberOfRecords: quotes.length}}};
+      httpStub.onCall(0).returns(Promise.resolve(stubReturnData));
+
+      await store.dispatch(searchActions.handleQuoteSearch(quoteSearch));
+
+      sinon.assert.calledOnce(serviceRunner.callService);
+      expect(store.getActions()).toEqual(stateObj);
+    });
+
   });
 
 });

@@ -36,9 +36,9 @@ export function resetSearch() {
  * @param results
  * @param totalRecords
  * @param noResults
- * @returns {{type: string, currentPage: *, pageSize: *, sortBy: *, sortDirection: *, results: *, totalRecords: *, noResults: *}}
+ * @returns {{type: string, currentPage: number, pageSize: number, sortBy: string, sortDirection: string, results: array, totalRecords: number, noResults: boolean}}
  */
-export function setSearchResults({ currentPage, pageSize, sortBy, sortDirection, results, totalRecords, noResults }) {
+export function setSearchResults({ currentPage=1, pageSize=0, sortBy='', sortDirection='', results, totalRecords, noResults }) {
   return {
     type: types.SET_SEARCH_RESULTS,
     currentPage,
@@ -391,34 +391,6 @@ export function handleAddressSearch(data, props) {
  * @param props
  * @returns {Function}
  */
-export function handlePolicySearch(data, props) {
-  return async dispatch => {
-    const taskData = {
-      firstName: (encodeURIComponent(data.firstName) !== 'undefined' ? encodeURIComponent(data.firstName) : ''),
-      lastName: (encodeURIComponent(data.lastName) !== 'undefined' ? encodeURIComponent(data.lastName) : ''),
-      address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(String(data.address).trim()) : ''),
-      policyNumber: (encodeURIComponent(data.policyNumber) !== 'undefined' ? encodeURIComponent(data.policyNumber) : ''),
-      policyStatus: (encodeURIComponent(data.policyStatus) !== 'undefined' ? encodeURIComponent(data.policyStatus) : ''),
-      agencyCode: (encodeURIComponent(data.agencyCode) !== 'undefined' ? encodeURIComponent(data.agencyCode) : ''),
-      effectiveDate: (encodeURIComponent(data.effectiveDate) !== 'undefined' ? encodeURIComponent(moment(data.effectiveDate).utc().format('YYYY-MM-DD')) : ''),
-      currentPage: setPageNumber(data.currentPage, data.isNext),
-      sortBy: data.sortBy,
-      sortDirection: data.sortBy === 'policyNumber' ? 'desc' : 'asc',
-      resultStart: 60,
-      pageSize: RESULTS_PAGE_SIZE,
-    };
-
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(taskData));
-    await dispatch(searchPolicies(taskData));
-  }
-}
-
-/**
- *
- * @param data
- * @param props
- * @returns {Function}
- */
 export function handleQuoteSearch(data, props) {
   return async dispatch => {
     const taskData = {
@@ -444,6 +416,35 @@ export function handleQuoteSearch(data, props) {
     }
   }
 }
+
+/**
+ *
+ * @param data
+ * @param props
+ * @returns {Function}
+ */
+export function handlePolicySearch(data, props) {
+  return async dispatch => {
+    const taskData = {
+      firstName: (encodeURIComponent(data.firstName) !== 'undefined' ? encodeURIComponent(data.firstName) : ''),
+      lastName: (encodeURIComponent(data.lastName) !== 'undefined' ? encodeURIComponent(data.lastName) : ''),
+      address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(String(data.address).trim()) : ''),
+      policyNumber: (encodeURIComponent(data.policyNumber) !== 'undefined' ? encodeURIComponent(data.policyNumber) : ''),
+      policyStatus: (encodeURIComponent(data.policyStatus) !== 'undefined' ? encodeURIComponent(data.policyStatus) : ''),
+      agencyCode: (encodeURIComponent(data.agencyCode) !== 'undefined' ? encodeURIComponent(data.agencyCode) : ''),
+      effectiveDate: (encodeURIComponent(data.effectiveDate) !== 'undefined' ? encodeURIComponent(moment(data.effectiveDate).utc().format('YYYY-MM-DD')) : ''),
+      currentPage: setPageNumber(data.currentPage, data.isNext),
+      sortBy: data.sortBy,
+      sortDirection: data.sortBy === 'policyNumber' ? 'desc' : 'asc',
+      resultStart: 60,
+      pageSize: RESULTS_PAGE_SIZE,
+    };
+
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(taskData));
+    await dispatch(searchPolicies(taskData));
+  }
+}
+
 
 /**
  *
@@ -525,4 +526,5 @@ export function handleSearchSubmit(data, props) {
 
   }
 }
+
 
