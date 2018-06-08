@@ -171,13 +171,14 @@
               align-items: center;
               height: 3rem;
               margin: 1px;
-              border-radius: 0 0 $border-radius $border-radius;
-              font-size: $font-size-base;
               transition-delay: 0.75s;
               transition-duration: 0.2s;
+              border-radius: 0 0 $border-radius $border-radius;
+              font-size: $font-size-base;
 
               p {
-                  font-weight: $font-weight-normal;
+                font-weight: $font-weight-normal;
+
                 span {
                   display: none;
                 }
@@ -194,8 +195,8 @@
               align-items: center;
               height: 3rem;
               border-radius: 0 0 $border-radius $border-radius;
-              font-size: $font-size-base;
               background: $warm-gray-10;
+              font-size: $font-size-base;
               @include transition(all 0.2s ease-in-out);
 
               &.is-waiting {
@@ -233,7 +234,7 @@
                 text-overflow: ellipsis;
 
                 &[role="alert"] {
-                    padding-right: 6rem;
+                  padding-right: 6rem;
                 }
 
                 strong {
@@ -252,12 +253,12 @@
                 }
 
                 div[title="Uploading"] {
-                    overflow: hidden;
-                    flex-grow: 1;
-                    flex-shrink: 1;
-                    text-overflow: ellipsis;
-                    font-weight: $font-weight-normal;
-                    text-shadow: 0px 0px 8px rgba($black, .7);
+                  overflow: hidden;
+                  flex-grow: 1;
+                  flex-shrink: 1;
+                  text-overflow: ellipsis;
+                  text-shadow: 0 0 8px rgba($black, .7);
+                  font-weight: $font-weight-normal;
                 }
               }
 
