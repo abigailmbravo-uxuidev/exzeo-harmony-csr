@@ -104,7 +104,7 @@ const WindMitigation = ({
       <div className="flex-parent wind-col1-row-3">
         <Field
           styleName="flex-child"
-          label="FBC Wind Speed Design"
+          label="Terrain"
           name="terrain"
           component={Select}
           answers={getAnswers('terrain', questions)}
