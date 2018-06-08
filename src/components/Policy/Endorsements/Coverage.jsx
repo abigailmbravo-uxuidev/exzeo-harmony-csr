@@ -54,7 +54,7 @@ const Coverage = ({
         </div>
         <Field
           name="coverageLimits.dwelling.amount"
-          label={`Dwelling (A) ($ ${String(initialValues.dwellingMin).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $ ${String(initialValues.dwellingMax).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`}
+          label={`Dwelling (A) ($ ${String(initialValues.coverageLimits.dwelling.minAmount).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $ ${String(initialValues.coverageLimits.dwelling.maxAmount).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`}
           component={Currency}
           validate={[validation.isRequired, validation.isDwellingRange]}
           normalize={normalizeDwellingAmount}
