@@ -6,9 +6,13 @@ import { DEFAULT_SEARCH_PARAMS, RESULTS_PAGE_SIZE, SEARCH_TYPES, LOCAL_STORAGE_K
 
 
 /**
- *
- * @param loading
- * @returns {{type: string, loading: *}}
+ *  TODO: THIS FILE HAS A TREMENDOUS AMOUNT OF REPETITION, WILL BE ADDRESSING THIS IN A SUBSEQUENT PR
+ */
+
+/**
+ * Adjust loading state
+ * @param {boolean} loading
+ * @returns {{type: string, loading: boolean}}
  */
 export function toggleLoading(loading) {
   return {
@@ -18,7 +22,7 @@ export function toggleLoading(loading) {
 }
 
 /**
- *
+ * Reset search state
  * @returns {{type: string}}
  */
 export function resetSearch() {
@@ -28,17 +32,25 @@ export function resetSearch() {
 }
 
 /**
- *
- * @param currentPage
- * @param pageSize
- * @param sortBy
- * @param sortDirection
- * @param results
- * @param totalRecords
- * @param noResults
+ * Set search results
+ * @param {array} results
+ * @param {number} totalRecords
+ * @param {boolean} noResults
+ * @param {number} [currentPage]
+ * @param {number} [pageSize]
+ * @param {string} [sortBy]
+ * @param {string} [sortDirection]
  * @returns {{type: string, currentPage: number, pageSize: number, sortBy: string, sortDirection: string, results: array, totalRecords: number, noResults: boolean}}
  */
-export function setSearchResults({ currentPage=1, pageSize=0, sortBy='', sortDirection='', results, totalRecords, noResults }) {
+export function setSearchResults({
+  currentPage = 1,
+  pageSize = 0,
+  sortBy = '',
+  sortDirection = '',
+  results,
+  totalRecords,
+  noResults
+}) {
   return {
     type: types.SET_SEARCH_RESULTS,
     currentPage,
@@ -52,8 +64,8 @@ export function setSearchResults({ currentPage=1, pageSize=0, sortBy='', sortDir
 }
 
 /**
- *
- * @param address
+ * Search for addresses matching some given criteria, set results as state
+ * @param {string} address
  * @returns {Function}
  */
 export function searchAddresses(address) {
@@ -68,8 +80,8 @@ export function searchAddresses(address) {
 }
 
 /**
- *
- * @param quoteSearchData
+ * Search for quotes matching some given criteria, set results as state
+ * @param {object} quoteSearchData
  * @returns {Function}
  */
 export function searchQuotes(quoteSearchData) {
@@ -84,8 +96,8 @@ export function searchQuotes(quoteSearchData) {
 }
 
 /**
- *
- * @param policySearchData
+ * Search for policies matching some given criteria, set results as state
+ * @param {object} policySearchData
  * @returns {Function}
  */
 export function searchPolicies(policySearchData) {
@@ -100,8 +112,8 @@ export function searchPolicies(policySearchData) {
 }
 
 /**
- *
- * @param agentSearchData
+ * Search for agents matching some given criteria, set results as state
+ * @param {object} agentSearchData
  * @returns {Function}
  */
 export function searchAgents(agentSearchData) {
@@ -116,14 +128,14 @@ export function searchAgents(agentSearchData) {
 }
 
 /**
- *
- * @param agentSearchData
+ * Search for agencies matching some given criteria, set results as state
+ * @param {object} agencySearchData
  * @returns {Function}
  */
-export function searchAgencies(agentSearchData) {
+export function searchAgencies(agencySearchData) {
   return async (dispatch) => {
     try {
-      const results = await fetchAgencies(agentSearchData);
+      const results = await fetchAgencies(agencySearchData);
       dispatch(setSearchResults(formatAgencyResults(results)));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
@@ -132,8 +144,8 @@ export function searchAgencies(agentSearchData) {
 }
 
 /**
- *
- * @param address
+ * Build query string and call address search service
+ * @param {string} address
  * @returns {Promise<Array>}
  */
 export async function fetchAddresses(address) {
@@ -152,18 +164,18 @@ export async function fetchAddresses(address) {
 }
 
 /**
- *
- * @param firstName
- * @param lastName
- * @param address
- * @param companyCode
- * @param quoteNumber
- * @param quoteState
- * @param state
- * @param currentPage
- * @param pageSize
- * @param sort
- * @param sortDirection
+ * Build query string and call quote search service
+ * @param {string} firstName
+ * @param {string} lastName
+ * @param {string} address
+ * @param {string} companyCode
+ * @param {string} quoteNumber
+ * @param {string} quoteState
+ * @param {string} state
+ * @param {string} currentPage
+ * @param {string} pageSize
+ * @param {string} sort
+ * @param {string} sortDirection
  * @returns {Promise<Array>}
  */
 export async function fetchQuotes({
@@ -194,19 +206,19 @@ export async function fetchQuotes({
 }
 
 /**
- *
- * @param firstName
- * @param lastName
- * @param address
- * @param agencyCode
- * @param effectiveDate
- * @param policyNumber
- * @param policyStatus
- * @param currentPage
- * @param pageSize
- * @param resultStart
- * @param sortBy
- * @param sortDirection
+ * Build query string and call policy service
+ * @param {string} firstName
+ * @param {string} lastName
+ * @param {string} address
+ * @param {string} agencyCode
+ * @param {string} effectiveDate
+ * @param {string} policyNumber
+ * @param {string} policyStatus
+ * @param {string} currentPage
+ * @param {string} pageSize
+ * @param {string} resultStart
+ * @param {string} sortBy
+ * @param {string} sortDirection
  * @returns {Promise<Array>}
  */
 export async function fetchPolicies({
@@ -238,14 +250,14 @@ export async function fetchPolicies({
 }
 
 /**
- *
- * @param companyCode
- * @param state
- * @param firstName
- * @param lastName
- * @param agentCode
- * @param address
- * @param licenseNumber
+ * Build query string and call agency service to search agents
+ * @param {string} companyCode
+ * @param {string} state
+ * @param {string} firstName
+ * @param {string} lastName
+ * @param {string} agentCode
+ * @param {string} address
+ * @param {string} licenseNumber
  * @returns {Promise<Array>}
  */
 export async function fetchAgents({ companyCode, state, firstName, lastName, agentCode, address, licenseNumber }) {
@@ -264,15 +276,15 @@ export async function fetchAgents({ companyCode, state, firstName, lastName, age
 }
 
 /**
- *
- * @param companyCode
- * @param state
- * @param displayName
- * @param agencyCode
- * @param address
- * @param licenseNumber
- * @param fein
- * @param phone
+ * Build query string and call agency service to search agencies
+ * @param {string} companyCode
+ * @param {string} state
+ * @param {string} displayName
+ * @param {string} agencyCode
+ * @param {string} address
+ * @param {string} licenseNumber
+ * @param {string} fein
+ * @param {string} phone
  * @returns {Promise<Array>}
  */
 export async function fetchAgencies({ companyCode, state, displayName, agencyCode, address, licenseNumber, fein, phone }) {
@@ -291,8 +303,8 @@ export async function fetchAgencies({ companyCode, state, displayName, agencyCod
 }
 
 /**
- *
- * @param results
+ * Format results from address query for state
+ * @param {object} results
  * @returns {{results: *, totalRecords: *, noResults: boolean}}
  */
 function formatAddressResults(results) {
@@ -304,9 +316,9 @@ function formatAddressResults(results) {
 }
 
 /**
- *
- * @param results
- * @returns {{currentPage: (number|*), pageSize: (number|*|string), sortBy: *, sortDirection: string, results: *, totalRecords: number, noResults: boolean}}
+ * Format results from quote query for state
+ * @param {object} results
+ * @returns {{currentPage: number, pageSize: number, sortBy: string, sortDirection: string, results: array, totalRecords: number, noResults: boolean}}
  */
 function formatQuoteResults(results) {
   return {
@@ -321,9 +333,9 @@ function formatQuoteResults(results) {
 }
 
 /**
- *
- * @param results
- * @returns {{currentPage: (number|*), pageSize: (number|*|string), sortBy: (*|string), sortDirection: (*|string|string), results: (policies|{policyTerm, updatedAt, policyHolders, state, companyCode, policyNumber, policyID, effectiveDate, property, product}|Array), totalRecords: number, noResults: boolean}}
+ * Format results from policy query for state
+ * @param {object} results
+ * @returns {{currentPage: number, pageSize: number, sortBy: string, sortDirection: string, results: array, totalRecords: number, noResults: boolean}}
  */
 function formatPolicyResults(results) {
   return {
@@ -338,29 +350,39 @@ function formatPolicyResults(results) {
 }
 
 /**
- *
+ * Format results from agent query for state
  * @param results
- * @returns {{results: *, noResults: boolean}}
+ * @returns {{results: [], totalRecords: number, noResults: boolean}}
  */
 function formatAgentResults(results) {
+  const totalRecords = Array.isArray(results) ? results.length : 0;
   return {
     results: results,
-    noResults: !(Array.isArray(results) && results.length)
+    totalRecords,
+    noResults: !totalRecords
   }
 }
 
 /**
- *
+ * Format results from agency query for state
  * @param results
- * @returns {{results: *, noResults: boolean}}
+ * @returns {{results: [], totalRecords: number, noResults: boolean}}
  */
 function formatAgencyResults(results) {
+  const totalRecords = Array.isArray(results) ? results.length : 0;
   return {
     results: results,
-    noResults: !(Array.isArray(results) && results.length)
+    totalRecords,
+    noResults: !totalRecords
   }
 }
 
+/**
+ * Set page number based on whether or not there is a current page and/or if we are going backwards/forwards
+ * @param currentPage
+ * @param isNext
+ * @returns {*}
+ */
 export function setPageNumber(currentPage, isNext) {
   if (typeof isNext === 'undefined') {
     return currentPage || 1;
@@ -369,12 +391,11 @@ export function setPageNumber(currentPage, isNext) {
 }
 
 /**
- *
- * @param data
- * @param props
+ * Entry point for AddressSearch form
+ * @param {object} data - form data
  * @returns {Function}
  */
-export function handleAddressSearch(data, props) {
+export function handleAddressSearch(data) {
   return async dispatch => {
     const taskData = {
       address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(String(data.address).trim()) : ''),
@@ -386,12 +407,11 @@ export function handleAddressSearch(data, props) {
 }
 
 /**
- *
- * @param data
- * @param props
+ * Entry point for QuoteSearch form
+ * @param {object} data - form data
  * @returns {Function}
  */
-export function handleQuoteSearch(data, props) {
+export function handleQuoteSearch(data) {
   return async dispatch => {
     const taskData = {
       firstName: (encodeURIComponent(data.firstName) !== 'undefined' ? encodeURIComponent(data.firstName) : ''),
@@ -418,12 +438,11 @@ export function handleQuoteSearch(data, props) {
 }
 
 /**
- *
- * @param data
- * @param props
+ * Entry point for PolicySearch form
+ * @param {object} data - form data
  * @returns {Function}
  */
-export function handlePolicySearch(data, props) {
+export function handlePolicySearch(data) {
   return async dispatch => {
     const taskData = {
       firstName: (encodeURIComponent(data.firstName) !== 'undefined' ? encodeURIComponent(data.firstName) : ''),
@@ -445,14 +464,12 @@ export function handlePolicySearch(data, props) {
   }
 }
 
-
 /**
- *
- * @param data
- * @param props
+ * Entry point for AgentSearch form
+ * @param {object} data - form data
  * @returns {Function}
  */
-export function handleAgentSearch(data, props) {
+export function handleAgentSearch(data) {
   return dispatch => {
     const taskData = {
       agentCode: (encodeURIComponent(data.agentCode) !== 'undefined' ? encodeURIComponent(data.agentCode) : ''),
@@ -470,12 +487,11 @@ export function handleAgentSearch(data, props) {
 }
 
 /**
- *
- * @param data
- * @param props
+ * Entry point for AgencySearch form
+ * @param {object} data - form data
  * @returns {Function}
  */
-export function handleAgencySearch(data, props) {
+export function handleAgencySearch(data) {
   return dispatch => {
 
     const taskData = {
@@ -495,9 +511,9 @@ export function handleAgencySearch(data, props) {
 }
 
 /**
- *
- * @param data
- * @param props
+ * Main submit handler for Search. Determine which type of search is being requested and kick it off
+ * @param {object} data - form data
+ * @param {object} props - props passed to search form at time of search
  * @returns {Function}
  */
 export function handleSearchSubmit(data, props) {
@@ -507,23 +523,22 @@ export function handleSearchSubmit(data, props) {
     dispatch(toggleLoading(true));
 
     if (searchType === SEARCH_TYPES.newQuote) {
-      await dispatch(handleAddressSearch(data, props));
+      await dispatch(handleAddressSearch(data));
     }
     if (searchType === SEARCH_TYPES.quote) {
-      await dispatch(handleQuoteSearch(data, props));
+      await dispatch(handleQuoteSearch(data));
     }
     if (searchType === SEARCH_TYPES.policy) {
-      await dispatch(handlePolicySearch(data, props));
+      await dispatch(handlePolicySearch(data));
     }
     if (searchType === SEARCH_TYPES.agent) {
-      await dispatch(handleAgentSearch(data, props));
+      await dispatch(handleAgentSearch(data));
     }
     if (searchType === SEARCH_TYPES.agency) {
-      await dispatch(handleAgencySearch(data, props));
+      await dispatch(handleAgencySearch(data));
     }
 
     dispatch(toggleLoading(false));
-
   }
 }
 

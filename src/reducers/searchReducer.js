@@ -19,11 +19,11 @@ export default function searchReducer(state = SEARCH, action) {
 function setResults(state, action) {
   return {
     ...state,
-    currentPage: action.currentPage || SEARCH.currentPage,
-    pageSize: action.pageSize || SEARCH.pageSize,
-    totalPages: Math.round(action.totalRecords / PAGE_SIZE) || SEARCH.totalPages,
-    sortBy: action.sortBy || SEARCH.sortBy,
-    sortDirection: action.sortDirection || SEARCH.sortDirection,
+    currentPage: action.currentPage,
+    pageSize: action.pageSize,
+    totalPages: Math.round(action.totalRecords / PAGE_SIZE) || 0,
+    sortBy: action.sortBy,
+    sortDirection: action.sortDirection,
     results: action.results,
     totalRecords: action.totalRecords,
     noResults: action.noResults
