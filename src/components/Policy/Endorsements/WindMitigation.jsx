@@ -91,7 +91,7 @@ const WindMitigation = ({ questions }) => (
           dataTest='floridaBuildingCodeWindSpeedDesign'
         />
         <Field
-          label="FBC Wind Speed Design"
+          label="Terrain"
           name="property.windMitigation.terrain"
           styleName="propertyTerrain"
           component={Select}
