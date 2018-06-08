@@ -74,7 +74,7 @@ const PolicyHolder = ({ setSecondaryPolicyHolder, policyHolders, setPHToggle }) 
               type="checkbox"
               normalize={setSecondaryPolicyHolder}
               disabled={!(policyHolders && policyHolders[1])}
-              dataTest='clearFields'
+              data-test='clearFields'
             />
             <label htmlFor="clearFields">Remove</label>
           </div>
