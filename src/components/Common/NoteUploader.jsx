@@ -171,7 +171,7 @@ export class Uploader extends Component {
     
     actions.cgActions.startWorkflow('addNote', noteData)
       .then(result => {
-        if(window.location.pathname.endsWith('/notes')) {
+        if (window.location.pathname.endsWith('/notes')) {
           const ids = (noteData.noteType === 'Policy Note') 
             ? [noteData.number, noteData.source].toString()
             : noteData.number;
