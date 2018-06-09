@@ -15,7 +15,7 @@ import Callback from './containers/Callback';
 import SearchAgency from './containers/SearchAgency';
 import SearchPolicy from './containers/SearchPolicy';
 import NotFoundPage from './containers/NotFound';
-import QuoteCoverage from './components/Quote/Coverage/index';
+import QuoteCoverage from './components/Quote/Coverage';
 import QuoteUnderwriting from './components/Quote/Underwriting';
 import AdditionalInterests from './components/Quote/AdditionalInterests';
 import QuoteMailingAddressBilling from './components/Quote/MailingAddressBilling';

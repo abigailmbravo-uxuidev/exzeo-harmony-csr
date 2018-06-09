@@ -7,9 +7,9 @@ import appState from './appStateReducer';
 import error from './errorReducer';
 import service from './serviceReducer';
 import newNote from './newNoteReducer';
-import policyState from './policyReducer';
+import policyState from './policyStateReducer';
 import questions from './questionsReducer';
-import quoteState from './quoteReducer';
+import quoteState from './quoteStateReducer';
 import search from './searchReducer';
 
 const rootReducer = combineReducers({

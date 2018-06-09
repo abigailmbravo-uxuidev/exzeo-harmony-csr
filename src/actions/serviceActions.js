@@ -2,7 +2,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { batchActions } from 'redux-batched-actions';
 import endorsementUtils from '../utilities/endorsementModel';
-import { getPolicy } from './policyActions';
+// import { getPolicy } from './policyStateActions'; TODO: replace once previous PR gets merged
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
 
@@ -349,7 +349,7 @@ export const updateBillPlan = paymentPlan => (dispatch) => {
 
   return axios(axiosConfig).then((response) => {
     const data = response.data.result;
-    return dispatch(getPolicy(data.policyNumber));
+    // return dispatch(getPolicy(data.policyNumber)); TODO: replace once previous PR gets merged
   })
     .catch((error) => {
       const message = handleError(error);
@@ -562,7 +562,7 @@ export function submitEndorsementForm(formData, formProps) {
     submitData.forms = forms;
     const newPolicy = await dispatch(createTransaction(submitData));
 
-    dispatch(getPolicy(newPolicy.policyNumber));
+    // dispatch(getPolicy(newPolicy.policyNumber)); TODO: replace once previous PR gets merged
   };
 }
 /**
