@@ -290,11 +290,6 @@ main[role="document"] {
   background: $white;
   @include transition(all 0.2s ease-in-out);
 
-  &.policy-advanced {
-    height: calc(100vh - 12.375rem);
-    min-height: calc(100vh - 12.375rem);
-  }
-
   .content-wrapper {
     display: flex;
     overflow: hidden;

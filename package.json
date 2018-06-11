@@ -3,6 +3,7 @@
   "version": "0.9.1",
   "private": true,
   "dependencies": {
+    "@exzeo/core-ui": "0.1.x",
     "@fortawesome/fontawesome": "~1.0.0",
     "@fortawesome/react-fontawesome": "~0.0.14",
     "auth0-js": "~8.10.1",
@@ -37,7 +38,7 @@
     "react-tooltip": "~3.4.0",
     "redux": "~3.7.2",
     "redux-batched-actions": "~0.1.6",
-    "redux-form": "~6.6.3",
+    "redux-form": "7.3.x",
     "redux-persist": "~4.10.2",
     "redux-thunk": "~2.2.0",
     "reselect": "^3.0.1",
