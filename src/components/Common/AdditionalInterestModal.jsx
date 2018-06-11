@@ -92,6 +92,7 @@ export class AdditionalInterestModal extends React.Component {
               }
               <Field
                 name="name1"
+                dataTest="name1"
                 label={checkAdditionalInterestForName(addAdditionalInterestType) ? 'First Name' : 'Name 1'}
                 component={Input}
                 styleName="name-1"
@@ -99,12 +100,14 @@ export class AdditionalInterestModal extends React.Component {
               />
               <Field
                 name="name2"
+                dataTest="name2"
                 label={checkAdditionalInterestForName(addAdditionalInterestType) ? 'Last Name' : 'Name 2'}
                 component={Input}
                 styleName="name-2"
               />
               <Field
                 name="address1"
+                dataTest="address1"
                 label="Address 1"
                 component={Input}
                 styleName="address-1"
@@ -112,6 +115,7 @@ export class AdditionalInterestModal extends React.Component {
               />
               <Field
                 name="address2"
+                dataTest="address2"
                 label="Address 2"
                 component={Input}
                 styleName="address-2"
@@ -119,6 +123,7 @@ export class AdditionalInterestModal extends React.Component {
               <div className="flex-form">
                 <Field
                   name="city"
+                  dataTest="city"
                   label="City"
                   component={Input}
                   styleName="city"
@@ -126,6 +131,7 @@ export class AdditionalInterestModal extends React.Component {
                 />
                 <Field
                   name="state"
+                  dataTest="state"
                   label="State"
                   component={Input}
                   styleName="state"
@@ -133,6 +139,7 @@ export class AdditionalInterestModal extends React.Component {
                 />
                 <Field
                   name="zip"
+                  dataTest="zip"
                   label="Zip Code"
                   component={Input}
                   styleName="zip"
@@ -142,6 +149,7 @@ export class AdditionalInterestModal extends React.Component {
               <div className="flex-form">
                 <Field
                   name="phoneNumber"
+                  dataTest="phoneNumber"
                   label="Phone Number"
                   component={Phone}
                   styleName="phone"
@@ -150,6 +158,7 @@ export class AdditionalInterestModal extends React.Component {
                 />
                 <Field
                   name="referenceNumber"
+                  dataTest="referenceNumber"
                   label="Reference Number"
                   component={Input}
                   styleName="reference-number"
@@ -158,6 +167,7 @@ export class AdditionalInterestModal extends React.Component {
                 {isEditing && selectedAI.type === 'Mortgagee' &&
                 <Field
                   name="order"
+                  dataTest="order"
                   component={Select}
                   label="Order"
                   validate={validation.isRequired}
@@ -168,6 +178,7 @@ export class AdditionalInterestModal extends React.Component {
                 {!isEditing && addAdditionalInterestType === 'Mortgagee' &&
                   <Field
                     name="order"
+                    dataTest="order"
                     component={Select}
                     styleName=""
                     label="Order"
@@ -179,6 +190,7 @@ export class AdditionalInterestModal extends React.Component {
               <div className="flex-form">
                 <Field
                   name="aiType"
+                  dataTest="aiType"
                   label="Type"
                   component={Select}
                   answers={validAdditionalInterestTypes}
