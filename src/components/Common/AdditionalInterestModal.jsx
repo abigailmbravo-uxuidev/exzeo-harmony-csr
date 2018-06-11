@@ -2,28 +2,41 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
-import { reduxForm, Field, propTypes, initialize, reset } from 'redux-form';
-import { Input, Select, Phone, SelectTypeAhead } from '@exzeo/core-ui/lib/Input';
-import { validation, format } from '@exzeo/core-ui/lib/InputLifecycle';
+import { reduxForm, Field, propTypes, initialize, reset, change } from 'redux-form';
+import { batchActions } from 'redux-batched-actions';
+import Inputs from '@exzeo/core-ui/lib/Input';
+import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
+// TODO refactor this out next
+import ReactSelectField from '../Form/inputs/ReactSelectField';
 import Loader from './Loader';
+
+const { validation } = lifecycle;
+const { Input, Select, Phone } = Inputs;
 
 export const setMortgageeValues = (val, props) => {
   const selectedMortgagee = val;
 
   if (selectedMortgagee) {
-    props.initializeForm('AdditionalInterestModal', {
-      name1: selectedMortgagee.AIName1,
-      name2: selectedMortgagee.AIName2,
-      address1: selectedMortgagee.AIAddress1,
-      address2: selectedMortgagee.AIAddress2 || '',
-      city: selectedMortgagee.AICity,
-      state: selectedMortgagee.AIState,
-      zip: selectedMortgagee.AIZip ? String(selectedMortgagee.AIZip) : ''
-    });
+    props.dispatch(batchActions([
+      change('AdditionalInterestModal', 'name1', selectedMortgagee.AIName1),
+      change('AdditionalInterestModal', 'name2', selectedMortgagee.AIName2),
+      change('AdditionalInterestModal', 'address1', selectedMortgagee.AIAddress1),
+      change('AdditionalInterestModal', 'city', selectedMortgagee.AICity),
+      change('AdditionalInterestModal', 'state', selectedMortgagee.AIState),
+      change('AdditionalInterestModal', 'zip', String(selectedMortgagee.AIZip))
+    ]));
   } else {
-    props.resetForm('AdditionalInterestModal');
+    props.dispatch(batchActions([
+      change('AdditionalInterestModal', 'name1', ''),
+      change('AdditionalInterestModal', 'name2', ''),
+      change('AdditionalInterestModal', 'address1', ''),
+      change('AdditionalInterestModal', 'city', ''),
+      change('AdditionalInterestModal', 'state', ''),
+      change('AdditionalInterestModal', 'zip', '')
+    ]));
   }
 };
+
 
 export const checkAdditionalInterestForName = aiType => aiType === 'Additional Insured' || aiType === 'Additional Interest' || aiType === 'Bill Payer';
 
@@ -56,7 +69,7 @@ export class AdditionalInterestModal extends React.Component {
     return (
       <div className="modal" style={this.modalStyle}>
         <form
-          id={isEditing ? 'AdditionalInterestEditModal' : 'AdditionalInterestModal'}
+          id={isEditing ? 'AdditionalInterestModal' : 'AdditionalInterestModal'}
           className={classNames('AdditionalInterestModal', { [selectedAI.type]: isEditing, [addAdditionalInterestType]: !isEditing })}
           onSubmit={handleSubmit(verify)}
         >
@@ -67,11 +80,12 @@ export class AdditionalInterestModal extends React.Component {
             </div>
             <div className="card-block">
               {(addAdditionalInterestType || selectedAI.type) === 'Mortgagee' &&
-              <Field
+              <ReactSelectField
                 label="Top Mortgagees"
                 name="mortgagee"
-                component={SelectTypeAhead}
+                searchable
                 labelKey="displayText"
+                autoFocus
                 answers={getAnswers('mortgagee', questions)}
                 onChange={val => setMortgageeValues(val, this.props)}
               />
