@@ -49,7 +49,8 @@ export const getMortgageeOrderAnswers = (questions, additionalInterests) => {
 
   if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 0) {
     answers = answers.filter(answer => Number(answer.answer) === 0);
-  } else if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 1) {
+  }
+  if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 1) {
     answers = answers.filter(answer => Number(answer.answer) === 1);
   }
   return answers;

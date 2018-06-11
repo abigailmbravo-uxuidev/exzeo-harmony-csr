@@ -35,16 +35,7 @@ export const getMortgageeOrderAnswers = (questions, additionalInterests) => {
   return answers;
 };
 
-export const getMortgageeOrderAnswersForEdit = (questions, additionalInterests) => {
-  const answers = _.cloneDeep(getAnswers('order', questions));
-
-  if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length < 2) {
-    _.remove(answers, answer => Number(answer.answer) === 1);
-  }
-  return answers;
-};
-
-export const handleFormSubmit = (data, dispatch, props) => {
+export const handleFormSubmit = async (data, dispatch, props) => {
   const { appState, actions, quoteData } = props;
 
   const workflowId = appState.instanceId;
@@ -125,7 +116,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
     }
   ];
 
-  actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
+  return actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
     .then(() => {
       props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
 
@@ -177,7 +168,7 @@ export const hideAdditionalInterestModal = (props) => {
   );
 };
 
-export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
+export const deleteAdditionalInterest = async (selectedAdditionalInterest, props) => {
   const { appState, actions, quoteData } = props;
   const workflowId = appState.instanceId;
   actions.appStateActions.setAppState(
@@ -216,7 +207,7 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
   }
   ];
 
-  actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
+  return actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
     .then(() => {
       props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
 
@@ -345,10 +336,18 @@ export class AdditionalInterests extends Component {
   };
 
   render() {
-    const { appState, quoteData, questions } = this.props;
+    const {
+      appState, quoteData, questions
+    } = this.props;
     _.forEach(getAnswers('mortgagee', questions), (answer) => {
       answer.displayText = `${answer.AIName1}, ${answer.AIAddress1}, ${answer.AICity} ${answer.AIState}, ${answer.AIZip}`;
     });
+
+    let mortgageeOrderAnswers;
+    if (quoteData && appState.data.addAdditionalInterestType === 'Mortgagee') {
+      mortgageeOrderAnswers = getMortgageeOrderAnswers(questions, quoteData.additionalInterests || null);
+    }
+
     if (!quoteData.rating) {
       return (
         <QuoteBaseConnect>
@@ -411,6 +410,7 @@ export class AdditionalInterests extends Component {
             quoteData={quoteData}
             verify={handleFormSubmit}
             hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)}
+            isDeleting={this.props.appState.data.submittingAI}
             deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)}
           /> }
           { appState.data.showAdditionalInterestModal && <AdditionalInterestPopup
@@ -420,7 +420,7 @@ export class AdditionalInterests extends Component {
             addAdditionalInterestType={appState.data.addAdditionalInterestType}
             additionalInterests={this.props.quoteData.additionalInterests}
             questions={this.props.questions}
-            initialValues={{ order: 0 }}
+            initialValues={{ order: mortgageeOrderAnswers && mortgageeOrderAnswers.length === 1 ? mortgageeOrderAnswers[0].answer : '' }}
             quoteData={quoteData}
             verify={handleFormSubmit}
             appState={this.props.appState}

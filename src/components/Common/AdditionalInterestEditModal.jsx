@@ -57,7 +57,8 @@ export const AdditionalInterestEditModal = (props) => {
 
   if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length < 3) {
     _.remove(mortgageeOrderAnswers, answer => Number(answer.answer) === 2);
-  } else if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length < 2) {
+  }
+  if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length < 2) {
     _.remove(mortgageeOrderAnswers, answer => Number(answer.answer) === 1 || Number(answer.answer) === 2);
   }
 
