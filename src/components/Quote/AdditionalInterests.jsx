@@ -420,6 +420,7 @@ export class AdditionalInterests extends Component {
             addAdditionalInterestType={appState.data.addAdditionalInterestType}
             additionalInterests={this.props.quoteData.additionalInterests}
             questions={this.props.questions}
+            initialValues={{ order: 0 }}
             quoteData={quoteData}
             verify={handleFormSubmit}
             appState={this.props.appState}
