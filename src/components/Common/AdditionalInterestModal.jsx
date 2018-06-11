@@ -18,7 +18,7 @@ export const setMortgageeValues = (val, props) => {
       address2: selectedMortgagee.AIAddress2 || '',
       city: selectedMortgagee.AICity,
       state: selectedMortgagee.AIState,
-      zip: String(selectedMortgagee.AIZip)
+      zip: selectedMortgagee.AIZip ? String(selectedMortgagee.AIZip) : ''
     });
   } else {
     props.resetForm('AdditionalInterestModal');
@@ -122,7 +122,6 @@ export class AdditionalInterestModal extends React.Component {
                   label="Zip Code"
                   component={Input}
                   styleName="zip"
-                  format={format.toString}
                   validate={[validation.isRequired, validation.isZipCode]}
                 />
               </div>
