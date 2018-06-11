@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { Input, Integer, Phone } from '@exzeo/core-ui/lib/Input';
-import { isValidChar, isNumbersOnly } from '@exzeo/core-ui/lib/InputLifecycle';
+import { isValidChar } from '@exzeo/core-ui/lib/InputLifecycle';
 
 const AgencySearch = ({ submitting }) => {
   return (

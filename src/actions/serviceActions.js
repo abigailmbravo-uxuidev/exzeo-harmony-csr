@@ -348,8 +348,8 @@ export const updateBillPlan = paymentPlan => (dispatch) => {
   });
 
   return axios(axiosConfig).then((response) => {
-    const data = response.data.result;
-    // return dispatch(getPolicy(data.policyNumber)); TODO: replace once previous PR gets merged
+    // const data = response.data.result; TODO: replace once previous PR gets merged
+    // return dispatch(getPolicy(data.policyNumber));
   })
     .catch((error) => {
       const message = handleError(error);
@@ -560,9 +560,9 @@ export function submitEndorsementForm(formData, formProps) {
     const submitData = endorsementUtils.generateModel(formData, formProps);
     const forms = await getListOfForms(formProps.policy, formProps.getRate.rating, 'New Business');
     submitData.forms = forms;
-    const newPolicy = await dispatch(createTransaction(submitData));
+    // const newPolicy = await dispatch(createTransaction(submitData)); TODO: replace once previous PR gets merged
 
-    // dispatch(getPolicy(newPolicy.policyNumber)); TODO: replace once previous PR gets merged
+    // dispatch(getPolicy(newPolicy.policyNumber));
   };
 }
 /**
