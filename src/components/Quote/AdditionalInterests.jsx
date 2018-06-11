@@ -22,6 +22,28 @@ const handleInitialize = () => {
   return values;
 };
 
+const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
+
+export const getMortgageeOrderAnswers = (questions, additionalInterests) => {
+  let answers = _.cloneDeep(getAnswers('order', questions));
+
+  if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 0) {
+    answers = answers.filter(answer => Number(answer.answer) === 0);
+  } else if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 1) {
+    answers = answers.filter(answer => Number(answer.answer) === 1);
+  }
+  return answers;
+};
+
+export const getMortgageeOrderAnswersForEdit = (questions, additionalInterests) => {
+  const answers = _.cloneDeep(getAnswers('order', questions));
+
+  if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length < 2) {
+    _.remove(answers, answer => Number(answer.answer) === 1);
+  }
+  return answers;
+};
+
 export const handleFormSubmit = (data, dispatch, props) => {
   const { appState, actions, quoteData } = props;
 
@@ -132,7 +154,9 @@ export const addAdditionalInterest = (type, props) => {
   if (checkQuoteState(props.quoteData)) return;
   props.actions.appStateActions.setAppState(
     props.appState.modelName, props.appState.instanceId,
-    { ...props.appState.data, showAdditionalInterestModal: true, addAdditionalInterestType: type }
+    {
+      ...props.appState.data, showAdditionalInterestModal: true, addAdditionalInterestType: type, selectedAI: {}
+    }
   );
 };
 
@@ -213,7 +237,6 @@ export const deleteAdditionalInterest = (selectedAdditionalInterest, props) => {
     });
 };
 
-const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 export const editAIOnEnter = (event, ai, props) => {
   if (event.key === 'Enter') {
@@ -280,13 +303,12 @@ export class AdditionalInterests extends Component {
     }
   }
 
-  getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
   handleAIInitialize = () => {
     const { selectedAI } = this.props.appState.data;
 
     if (selectedAI) {
-      const mortgagee = _.get(_.find(this.getAnswers('mortgagee', this.props.questions), a => a.AIName1 === selectedAI.name1 &&
+      const mortgagee = _.get(_.find(getAnswers('mortgagee', this.props.questions), a => a.AIName1 === selectedAI.name1 &&
       a.AIAddress1 === selectedAI.mailingAddress.address1));
 
       return {
@@ -391,7 +413,19 @@ export class AdditionalInterests extends Component {
             hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)}
             deleteAdditionalInterest={() => deleteAdditionalInterest(this.props.appState.data.selectedAI, this.props)}
           /> }
-          { appState.data.showAdditionalInterestModal && <AdditionalInterestPopup addAdditionalInterestType={appState.data.addAdditionalInterestType} additionalInterests={this.props.quoteData.additionalInterests} questions={this.props.questions} quoteData={quoteData} verify={handleFormSubmit} hideAdditionalInterestModal={() => hideAdditionalInterestModal(this.props)} /> }
+          { appState.data.showAdditionalInterestModal && <AdditionalInterestPopup
+            getAnswers={getAnswers}
+            getMortgageeOrderAnswers={getMortgageeOrderAnswers}
+            selectedAI={this.props.appState.data.selectedAI}
+            addAdditionalInterestType={appState.data.addAdditionalInterestType}
+            additionalInterests={this.props.quoteData.additionalInterests}
+            questions={this.props.questions}
+            quoteData={quoteData}
+            verify={handleFormSubmit}
+            appState={this.props.appState}
+            actions={this.props.actions}
+            hideModal={() => hideAdditionalInterestModal(this.props)}
+          /> }
         </div>
         <div className="basic-footer">
           <Footer />
