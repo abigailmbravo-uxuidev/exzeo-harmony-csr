@@ -3,14 +3,9 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { reduxForm, Field, propTypes, initialize, reset } from 'redux-form';
-import Inputs from '@exzeo/core-ui/lib/Input';
-import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
-// TODO refactor this out next
-import ReactSelectField from '../Form/inputs/ReactSelectField';
+import { Input, Select, Phone, SelectTypeAhead } from '@exzeo/core-ui/lib/Input';
+import { validation, format } from '@exzeo/core-ui/lib/InputLifecycle';
 import Loader from './Loader';
-
-const { validation, format } = lifecycle;
-const { Input, Select, Phone } = Inputs;
 
 export const setMortgageeValues = (val, props) => {
   const selectedMortgagee = val;
@@ -72,12 +67,11 @@ export class AdditionalInterestModal extends React.Component {
             </div>
             <div className="card-block">
               {(addAdditionalInterestType || selectedAI.type) === 'Mortgagee' &&
-              <ReactSelectField
+              <Field
                 label="Top Mortgagees"
                 name="mortgagee"
-                searchable
+                component={SelectTypeAhead}
                 labelKey="displayText"
-                autoFocus
                 answers={getAnswers('mortgagee', questions)}
                 onChange={val => setMortgageeValues(val, this.props)}
               />

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Select, Currency, Radio, Input } from '@exzeo/core-ui/lib/Input';
+import { Select, Currency, Radio } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers, getQuestionName } from '../../../utilities/forms';
 
