@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { SEARCH_CONFIG, SEARCH_TYPES } from './constants';
+import {resetSearch} from "../../actions/searchActions";
+
 import SearchBar from './components/SearchBar';
 import SearchResults from './components/SearchResults';
 import AddressSearch from './Address';
@@ -30,12 +33,17 @@ class SearchPage extends Component {
     this.setSearchConfig();
   }
 
+  componentWillUnmount() {
+    this.props.resetSearch();
+  }
+
   toggleAdvancedSearch = () => {
     const { advancedSearch } = this.state;
     this.setState({ advancedSearch: !advancedSearch })
   };
 
   changeSearchType = (searchType) => {
+    this.props.resetSearch();
     this.setState({searchType});
   };
 
@@ -95,4 +103,4 @@ class SearchPage extends Component {
   }
 }
 
-export default SearchPage;
+export default connect(null, { resetSearch })(SearchPage);

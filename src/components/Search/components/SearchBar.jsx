@@ -35,9 +35,8 @@ export class SearchBar extends Component {
   };
 
   changeSearchType = (event, newValue) => {
-    const { changeSearchType, resetSearch } = this.props;
+    const { changeSearchType } = this.props;
     changeSearchType(newValue);
-    resetSearch();
     this.clearForm();
   };
 
@@ -71,6 +70,7 @@ export class SearchBar extends Component {
             <div className="form-group search-context">
               <Field
                 name="searchType"
+                dataTest="searchType"
                 label="Search Context"
                 component={Select}
                 id="searchType"
@@ -102,8 +102,7 @@ export default connect(mapStateToProps, {
   clearAppError,
   getAgencies,
   toggleLoading,
-  handleSearchSubmit,
-  resetSearch
+  handleSearchSubmit
 })(reduxForm({ // initialValues prop is being passed in from parent component based on route/pathName
   form: 'SearchBar',
   enableReinitialize: true,
