@@ -16,6 +16,7 @@ const Pagination = ({ changePageBack, changePageForward, pageNumber, totalPages 
         styleName="pageNumber"
         size="2"
         disabled
+        dataTest="pageNumber"
       />
       <span className="pagination-operand">of</span>
       <Input
@@ -23,6 +24,7 @@ const Pagination = ({ changePageBack, changePageForward, pageNumber, totalPages 
         styleName="totalPages"
         size="2"
         disabled
+        dataTest="totalPages"
       />
     </div>
     <button

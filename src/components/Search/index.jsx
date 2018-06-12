@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { SEARCH_CONFIG, SEARCH_TYPES } from './constants';
-import {resetSearch} from "../../actions/searchActions";
+import { resetSearch } from "../../actions/searchActions";
 
 import SearchBar from './components/SearchBar';
 import SearchResults from './components/SearchResults';
