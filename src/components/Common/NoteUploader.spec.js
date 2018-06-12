@@ -1,6 +1,7 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
 import axios from 'axios';
+import thunk from 'redux-thunk';
 import MockAdapter from 'axios-mock-adapter';
 import { propTypes } from 'redux-form';
 import { mount, shallow } from 'enzyme';
@@ -13,53 +14,86 @@ const localStorageMock = {
   clear() {}
 };
 global.localStorage = localStorageMock;
-const middlewares = [];
+const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 
 describe('Testing NoteUploader component', () => {
   it('should test connected app', () => {
     const initialState = {
       authState: {
+        userProfile: {
+          profile: {
+            given_name: 'Test',
+            family_name: "Test"
+          }
+        }
+      },
+      appState: {
+        data: {
+          minimize: false
+        }
       }
     };
     const store = mockStore(initialState);
     const props = {
-      actions: {
-        serviceActions: {
-          addNote() {}
-        },
-        newNoteActions: {
-          toggleNote() {}
-        },
-        errorActions: {
-          setAppError() {}
+      documentId: 'testid',
+      noteType: 'Policy Note'
+    };
+    const formData = {
+      noteContent: 'test note',
+      fileType: 'test',
+      contactType: 'Agent'
+    };
+
+    Object.defineProperty(window.location, 'pathname', {
+      writable: true,
+      value: '/notes'
+    });
+
+    const wrapper = shallow(<ConnectedApp store={store} {...props} />);
+    const component = wrapper.dive().dive().dive().dive();
+    const instance = component.instance();
+    expect(instance.state).toEqual({ attachments: [], isSubmitting: false, submitEnabled: true });
+
+    instance.props.actions.cgActions.startWorkflow = jest.fn().mockImplementation(() =>
+      Promise.resolve({result: true}));
+
+    instance.state.attachments = [{fileName: 'test.jpg'}];
+    expect(instance.removeUpload(0)());
+    expect(instance.state.attachments).toHaveLength(0);
+
+    expect(instance.submitNote(formData, store.dispatch, instance.props));
+    expect(instance.props.actions.cgActions.startWorkflow).toHaveBeenCalled();
+  });
+
+  it('should test empty profile', () => {
+    const initialState = {
+      authState: {
+        userProfile: {
+          profile: {}
         }
       },
-      closeButtonHandler() {},
-      user: {
-        profile: {}
-      },
-      fieldQuestions: [],
-      quoteData: {},
-      dispatch: store.dispatch,
       appState: {
         data: {
-          submitting: false
+          minimize: false
         }
-      },
-      handleSubmit() {}
+      }
     };
+    const store = mockStore(initialState);
+    const props = {
+      documentId: 'testid',
+      noteType: 'Policy Note'
+    };
+    const formData = {
+      noteContent: 'test note',
+      fileType: 'test',
+      contactType: 'Agent'
+    };
+
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
-    expect(wrapper.instance().props.fieldQuestions).toEqual([]);
-
-    const wrapper2 = shallow(<Uploader store={store} {...props} />);
-    wrapper2.instance().submitNote({}, props.dispatch, props);
-
-    props.user = {
-      profile: { family_name: 'test', given_name: 'test' }
-    };
-    const wrapper3 = shallow(<Uploader store={store} {...props} />);
-    wrapper3.instance().submitNote({}, props.dispatch, props);
+    const component = wrapper.dive().dive().dive().dive();
+    const instance = component.instance();
+    expect(instance.submitNote(formData, store.dispatch, instance.props));
   });
 
   it('should test submit note and minimzeButtonHandler', () => {
@@ -87,7 +121,6 @@ describe('Testing NoteUploader component', () => {
           setAppError() {}
         }
       },
-      fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,
       appState: {
@@ -101,7 +134,6 @@ describe('Testing NoteUploader component', () => {
     minimzeButtonHandler(props);
 
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
-    expect(wrapper.instance().props.fieldQuestions).toEqual([]);
 
     props.appState.data.minimize = true;
 

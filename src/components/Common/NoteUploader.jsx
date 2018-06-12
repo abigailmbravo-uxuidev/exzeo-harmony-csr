@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Field, Form, reduxForm, propTypes } from 'redux-form';
+import { Field, Form, reduxForm } from 'redux-form';
 import Uppy from 'uppy/lib/core';
-import DragDrop from 'uppy/lib/plugins/DragDrop';
-import ProgressBar from 'uppy/lib/plugins/ProgressBar';
-import StatusBar from 'uppy/lib/plugins/StatusBar';
-import Informer from 'uppy/lib/plugins/Informer';
+import { DragDrop, ProgressBar, StatusBar } from 'uppy/lib/react';
+import { Informer } from './Informer.js';
 import XHRUpload from 'uppy/lib/plugins/XHRUpload';
 import moment from 'moment';
 import Loader from '../Common/Loader';
@@ -40,18 +38,17 @@ export const validate = (values) => {
 
 export class Uploader extends Component {
   constructor(props) {
-    super(props); 
-    
+    super(props);
+
     this.uppy = new Uppy({
       autoProceed: true,
       restrictions: {
         maxFileSize: 10000000,
-        maxNumberOfFiles: 1
       },
       onBeforeFileAdded: this.validateFile
     })
     .on('upload-success', (file, resp, uploadURL) => {
-      this.setState({ 
+      this.setState({
         attachments: [...this.state.attachments, resp],
         submitEnabled: true
       })
@@ -62,9 +59,9 @@ export class Uploader extends Component {
     });
   }
 
-  state = { 
+  state = {
     attachments: [],
-    isSubmitting: false,
+    loading: false,
     submitEnabled: true
   }
 
@@ -145,7 +142,7 @@ export class Uploader extends Component {
 
   submitNote = (data, dispatch, props) => {
     const { actions, user, noteType, documentId, sourceId } = props;
-    
+
     if (!user.profile.given_name || !user.profile.family_name) {
       const message = 'There was a problem with your user profile. Please logout of Harmony and try logging in again.';
       this.closeButtonHandler();
@@ -153,7 +150,7 @@ export class Uploader extends Component {
       return false;
     }
 
-    this.setState({ isSubmitting: true });
+    this.setState({ loading: true });
     const noteAttachments = this.state.attachments.map(item => ({...item, fileType: data.fileType}));
     const noteData = {
       number: documentId,
@@ -167,51 +164,38 @@ export class Uploader extends Component {
         userId: user.sub,
         userName: `${user.profile.given_name} ${user.profile.family_name}`
       })
-    };   
-    
+    };
+
     actions.cgActions.startWorkflow('addNote', noteData)
       .then(result => {
-        if (window.location.pathname.endsWith('/notes')) {
-          const ids = (noteData.noteType === 'Policy Note') 
+        if(window.location.pathname.endsWith('/notes')) {
+          const ids = (noteData.noteType === 'Policy Note')
             ? [noteData.number, noteData.source].toString()
             : noteData.number;
           actions.serviceActions.getNotes(ids, noteData.number);
         }
+        this.setState({ loading: false });
+        this.closeButtonHandler();
       })
       .catch(err => {
         actions.errorActions.setAppError({ message: err });
-      })
-      .finally(() => {
-        this.setState({ isSubmitting: false });
+        this.setState({ loading: false });
         this.closeButtonHandler();
-      })
-    // 
+      });
   }
 
-  validateFile = (file, currentFiles) => !file.name.includes('.') 
-    ? Promise.reject('Uploads must have a file extension.') 
+  validateFile = (file, currentFiles) => !file.name.includes('.')
+    ? Promise.reject('Uploads must have a file extension.')
     : Promise.resolve()
 
   removeUpload = index => () => this.setState((prevState) => ({
     attachments: prevState.attachments.filter((_, i) => i !== index)
   }))
-  
+
   componentDidMount() {
     const idToken = localStorage.getItem('id_token');
     this.uppy.setMeta({ documentId: this.props.documentId });
-    this.uppy.use(DragDrop, {
-      target: '.drag-drop'
-    }).use(StatusBar, {
-      target: '.drag-drop',
-      showProgressDetails: true,
-      hideAfterFinish: true
-    }).use(ProgressBar, {
-      hideAfterFinish: true
-    })
-    .use(Informer, {
-      target: '.drag-drop',
-    })
-    .use(XHRUpload, {
+    this.uppy.use(XHRUpload, {
         endpoint: `${process.env.REACT_APP_API_URL}/upload`,
         fieldName: 'files[]',
         headers: {
@@ -232,7 +216,7 @@ export class Uploader extends Component {
           </div>
         </div>
         <div className="mainContainer">
-          {this.state.isSubmitting && <Loader />}
+          {this.state.loading && <Loader />}
           <Form id="NewNoteFileUploader" onSubmit={this.props.handleSubmit(this.submitNote)} noValidate>
             <div className="content">
               <label>Contact</label>
@@ -245,12 +229,15 @@ export class Uploader extends Component {
                 { this.docTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
               </Field>
               <div className="file-uploader">
-                <div className="drag-drop"></div>
-                <div>
+                <DragDrop uppy={this.uppy} maxHeight={350} showProgressDetails hideUploadButton />
+                <ProgressBar uppy={this.uppy} />
+                <StatusBar uppy={this.uppy} />
+                <Informer uppy={this.uppy} />
+                <ul className="upload-list">
                   {this.state.attachments.map((file, i) =>
-                    <li key={i}>{file.fileName} <i className="fa fa-times-circle" onClick={this.removeUpload(i)} /></li>
+                    <li key={i}><span>{file.fileName}</span><i className="fa fa-trash" onClick={this.removeUpload(i)} /></li>
                   )}
-                </div>
+                </ul>
               </div>
             </div>
             <div className="buttons note-file-footer-button-group">
@@ -265,7 +252,6 @@ export class Uploader extends Component {
 }
 
 Uploader.propTypes = {
-  ...propTypes,
   documentId: PropTypes.string,
   noteType: PropTypes.string
 };

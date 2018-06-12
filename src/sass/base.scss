@@ -178,6 +178,7 @@ a {
 //main site structure
 /*------------------------------------------------------------------------------------*/
 html {
+  overflow: hidden;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -635,9 +636,9 @@ ul.list-cards {
             display: flex;
             width: 100%;
             padding: 0;
+            color: $bright-blue;
             border-width: 0;
             border-radius: 0;
-            color: $bright-blue;
 
             &:hover {
               background: rgba($bright-blue, .1);
