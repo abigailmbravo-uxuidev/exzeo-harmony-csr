@@ -188,7 +188,13 @@ select {
   }
 
   .Select-menu-outer {
-    border-color: $input-border-focus;
+    border-color: $warm-gray-06;
+
+    .Select-option {
+        &.is-focused {
+            background-color: rgba($bright-blue, .1);
+        }
+    }
   }
 }
 //
