@@ -114,6 +114,8 @@
           margin: ($padding*2) 0;
 
           textarea {
+            flex-grow: 1;
+            flex-shrink: 1;
             height: auto;
           }
         }
@@ -121,16 +123,235 @@
         .file-uploader {
           margin-top: $padding*2;
 
+          * {
+            font-family: $font-family-base;
+          }
+
           .drag-drop {
             position: relative;
             overflow: hidden;
 
+            .uppy-DragDrop-container {
+              @include transition(all 0.2s ease-in-out);
+
+              &.is-dragdrop-supported {
+                border: 1px dotted $warm-gray-10;
+                background-color: $white;
+
+                .uppy-DragDrop-label {
+                  color: $warm-gray-14;
+
+                  .uppy-DragDrop-dragText {
+                    color: $bright-blue;
+                  }
+                }
+              }
+
+              &.drag {
+                border: 1px dotted $bright-blue;
+                background: rgba($bright-blue, .1);
+
+                .uppy-DragDrop-arrow {
+                  fill: $bright-blue;
+                }
+
+                .uppy-DragDrop-label {
+                  color: $bright-blue;
+
+                  .uppy-DragDrop-dragText {
+                    color: $warm-gray-14;
+                  }
+                }
+              }
+            }
+
+            .uppy-Informer {
+              display: flex;
+              overflow: hidden;
+              align-items: center;
+              height: 3rem;
+              margin: 1px;
+              transition-delay: 0.75s;
+              transition-duration: 0.2s;
+              border-radius: 0 0 $border-radius $border-radius;
+              font-size: $font-size-base;
+
+              p {
+                font-weight: $font-weight-normal;
+
+                span {
+                  display: none;
+                }
+              }
+            }
+
             .uppy-StatusBar {
               position: absolute;
-              bottom: 0;
+              right: 1px;
+              bottom: 1px;
+              left: 1px;
+              display: flex;
               overflow: hidden;
-              width: 100%;
+              align-items: center;
+              height: 3rem;
               border-radius: 0 0 $border-radius $border-radius;
+              background: $warm-gray-10;
+              font-size: $font-size-base;
+              @include transition(all 0.2s ease-in-out);
+
+              &.is-waiting {
+                height: 0;
+              }
+
+              .uppy-StatusBar-actions {
+                right: $padding*2;
+
+                button {
+                  @include button-variant($btn-secondary-color, $btn-secondary-bg, $btn-secondary-border);
+                  @include button-size($btn-padding-y, $btn-padding-x, $font-size-sm, $btn-border-radius);
+
+                  &:hover {
+                    @include button-variant($btn-secondary-color, rgba($btn-secondary-bg, .9), $btn-secondary-border);
+                  }
+                }
+              }
+
+              .uppy-StatusBar-details {
+                display: none;
+              }
+
+              .uppy-StatusBar-statusIndicator {
+                display: none;
+              }
+
+              .uppy-StatusBar-content {
+                display: flex;
+                overflow: hidden;
+                align-items: center;
+                flex-grow: 1;
+                flex-shrink: 1;
+                padding: 0 $padding*2;
+                text-overflow: ellipsis;
+
+                &[role="alert"] {
+                  padding-right: 6rem;
+                }
+
+                strong {
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  font-weight: $font-weight-bold;
+                }
+
+                span {
+                  overflow: hidden;
+                  flex-grow: 1;
+                  flex-shrink: 1;
+                  margin-left: $padding/2;
+                  text-overflow: ellipsis;
+                  font-weight: $font-weight-normal;
+                }
+
+                div[title="Uploading"] {
+                  overflow: hidden;
+                  flex-grow: 1;
+                  flex-shrink: 1;
+                  text-overflow: ellipsis;
+                  text-shadow: 0 0 8px rgba($black, .7);
+                  font-weight: $font-weight-normal;
+                }
+              }
+
+              &.is-error {
+                .uppy-StatusBar-progress {
+                  background: $red-darken-02;
+                }
+              }
+
+              &.is-complete {
+                .uppy-StatusBar-progress {
+                  background: $green-darken-03;
+                }
+              }
+
+              &.is-uploading {
+                background: $warm-gray-10;
+                box-shadow: inset 0 0 20px 0 rgba($black, .75);
+
+                .uppy-StatusBar-progress {
+                  animation: animate-stripes 3s linear infinite;
+                  border-radius: 0 $border-radius $border-radius 0;
+                  background-color: $bright-blue;
+                  background-image: linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+                  background-size: 30px 30px;
+                  box-shadow: 0 0 30px 0 rgba($black, .75);
+                }
+                @keyframes animate-stripes {
+                  0% {
+                    background-position: 0 0;
+                  }
+
+                  100% {
+                    background-position: 60px 0;
+                  }
+                }
+              }
+            }
+
+            .is-error {
+              +.uppy-Informer {
+                display: flex;
+                align-items: center;
+                background: $red !important;
+
+                p {
+                  display: flex;
+                  align-items: center;
+                  width: 100%;
+
+                  &:before {
+                    display: flex;
+                    align-items: center;
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    justify-content: center;
+                    width: 1rem;
+                    height: 1rem;
+                    margin-right: $padding;
+                    content: '\f06a';
+                    font-family: $font-family-icon;
+                    font-size: $font-size-base;
+                  }
+                }
+              }
+            }
+
+            .is-complete {
+              +.uppy-Informer {
+                display: flex;
+                align-items: center;
+                background: $green-darken-01 !important;
+
+                p {
+                  display: flex;
+                  align-items: center;
+                  width: 100%;
+
+                  &:before {
+                    display: flex;
+                    align-items: center;
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    justify-content: center;
+                    width: 1rem;
+                    height: 1rem;
+                    margin-right: $padding;
+                    content: '\f058';
+                    font-family: $font-family-icon;
+                    font-size: $font-size-base;
+                  }
+                }
+              }
             }
           }
 
@@ -389,7 +610,7 @@
         .upload-list {
           display: flex;
           flex-direction: column;
-          margin: ($padding*2) 0 0;
+          margin: 0;
           padding: 0;
           list-style: none;
 
@@ -400,6 +621,10 @@
             height: auto;
             padding: ($padding/2) $padding;
             color: $warm-gray-14;
+
+            &:first-child {
+                padding-top: $padding*2;
+            }
 
             span {
               flex-grow: 1;
