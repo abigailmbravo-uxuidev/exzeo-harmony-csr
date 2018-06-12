@@ -32,8 +32,8 @@
     }
 
     > form {
-      height: 4.5rem;
       width: 100%;
+      height: 4.5rem;
       background-color: $warm-gray-08;
       @include transition(all 0.2s ease-in-out);
 
@@ -51,23 +51,24 @@
 
         .search-inputs {
           display: flex;
-          flex-grow: 1;
           align-self: flex-start;
+          flex-grow: 1;
 
           .form-group {
-            align-self: flex-end;
             position: relative;
+            align-self: flex-end;
 
             &.error {
-                input {
-                    border-width: 2px;
-                    background-color: mix($highlight, $red, 85%);
-                }
-                span {
-                    position: absolute;
-                    right: $padding;
-                    top: 1.875rem;
-                }
+              input {
+                border-width: 2px;
+                background-color: mix($highlight, $red, 85%);
+              }
+
+              span {
+                position: absolute;
+                top: 1.875rem;
+                right: $padding;
+              }
             }
           }
 
@@ -215,7 +216,7 @@
             justify-content: center;
             width: 2rem;
             height: 2rem;
-            margin: 0 0 0 $padding;
+            margin: 0 0 ($padding/2) $padding;
             padding: 0;
             border-radius: 50%;
             @include button-variant($bright-blue-darken-03, $warm-gray-01, $warm-gray-01);
@@ -269,27 +270,28 @@
   }
 
   &.policy-advanced {
-      height: 9rem;
-      overflow: visible;
+    overflow: visible;
+    height: 9rem;
+
     #SearchBar {
-      height: 9rem;
       overflow: visible;
+      height: 9rem;
 
       > form {
         height: 9rem;
 
         .search-input-wrapper {
+          overflow: visible;
           flex-wrap: wrap;
           height: 9rem;
-          overflow: visible;
         }
 
         .advanced-search {
           display: flex;
+          overflow: visible;
           width: 100%;
           height: 4.75rem;
           padding: $padding 10rem $padding 0;
-          overflow: visible;
           animation-duration: 0.8s;
 
           input {
@@ -303,7 +305,7 @@
           }
 
           .form-group {
-              position: relative;
+            position: relative;
 
             &.agencyCodeSelectField {
               flex-grow: 1;
@@ -311,8 +313,8 @@
               margin-right: $padding;
 
               .Select {
-                height: 2.375rem;
                 width: 100%;
+                height: 2.375rem;
                 margin-bottom: 0;
 
                 .Select-control {
@@ -339,8 +341,8 @@
               margin-right: $padding;
 
               select {
-                height: 2.375rem;
                 width: 100%;
+                height: 2.375rem;
               }
             }
 
@@ -350,21 +352,22 @@
               width: 20rem;
 
               select {
-                height: 2.375rem;
                 width: 100%;
+                height: 2.375rem;
               }
             }
 
             &.error {
-                input {
-                    border-width: 2px;
-                    background-color: mix($highlight, $red, 85%);
-                }
-                span {
-                    position: absolute;
-                    right: $padding;
-                    top: 1.875rem;
-                }
+              input {
+                border-width: 2px;
+                background-color: mix($highlight, $red, 85%);
+              }
+
+              span {
+                position: absolute;
+                top: 1.875rem;
+                right: $padding;
+              }
             }
           }
         }
@@ -374,16 +377,17 @@
 }
 
 main[role="document"] {
-    &.policy-advanced {
-      height: calc(100vh - 12.375rem);
-      min-height: calc(100vh - 12.375rem);
+  &.policy-advanced {
+    height: calc(100vh - 12.375rem);
+    min-height: calc(100vh - 12.375rem);
+  }
+
+  .survey-wrapper {
+    &.scroll {
+      flex-grow: 1;
+      flex-shrink: 1;
+      width: 100%;
+      padding: 0;
     }
-    .survey-wrapper  {
-        &.scroll {
-            flex-grow: 1;
-            flex-shrink: 1;
-            width: 100%;
-            padding: 0;
-        }
-    }
+  }
 }
