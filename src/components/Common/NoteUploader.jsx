@@ -229,10 +229,18 @@ class NoteUploader extends Component {
                 { this.docTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
               </Field>
               <div className="file-uploader">
-                <DragDrop uppy={this.uppy} maxHeight={350} showProgressDetails hideUploadButton />
-                <ProgressBar uppy={this.uppy} />
-                <StatusBar uppy={this.uppy} />
-                <Informer uppy={this.uppy} />
+                <div className="uppy-DragDrop-wrapper">
+                  <DragDrop uppy={this.uppy} maxHeight={350} showProgressDetails hideUploadButton />
+                </div>
+                <div className="uppy-ProgressBar-wrapper">
+                  <ProgressBar uppy={this.uppy} />
+                </div>
+                <div className="uppy-StatusBar-wrapper">
+                  <StatusBar uppy={this.uppy} />
+                </div>
+                <div className="uppy-Informer-wrapper">
+                  <Informer uppy={this.uppy} />
+                </div>
                 <ul className="upload-list">
                   {this.state.attachments.map((file, i) =>
                     <li key={i}><span>{file.fileName}</span><i className="fa fa-trash" onClick={this.removeUpload(i)} /></li>

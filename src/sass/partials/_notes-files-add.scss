@@ -93,6 +93,7 @@
 
       .content {
         display: flex;
+        overflow-x: hidden;
         overflow-y: auto;
         flex-direction: column;
         flex-grow: 1;
@@ -121,70 +122,66 @@
         }
 
         .file-uploader {
+          position: relative;
+          overflow: hidden;
+          flex-grow: 0;
+          flex-shrink: 0;
+          height: 18.75rem;
           margin-top: $padding*2;
 
           * {
             font-family: $font-family-base;
           }
 
-          .drag-drop {
-            position: relative;
-            overflow: hidden;
+          .uppy-DragDrop-wrapper {
+            height: 18.75rem;
 
-            .uppy-DragDrop-container {
-              @include transition(all 0.2s ease-in-out);
+            > div {
+              height: 18.75rem;
 
-              &.is-dragdrop-supported {
-                border: 1px dotted $warm-gray-10;
-                background-color: $white;
+              .uppy-DragDrop-container {
+                @include transition(all 0.2s ease-in-out);
 
-                .uppy-DragDrop-label {
-                  color: $warm-gray-14;
+                &.is-dragdrop-supported {
+                  border: 1px dotted $warm-gray-10;
+                  background-color: $white;
 
-                  .uppy-DragDrop-dragText {
-                    color: $bright-blue;
-                  }
-                }
-              }
-
-              &.drag {
-                border: 1px dotted $bright-blue;
-                background: rgba($bright-blue, .1);
-
-                .uppy-DragDrop-arrow {
-                  fill: $bright-blue;
-                }
-
-                .uppy-DragDrop-label {
-                  color: $bright-blue;
-
-                  .uppy-DragDrop-dragText {
+                  .uppy-DragDrop-label {
                     color: $warm-gray-14;
+
+                    .uppy-DragDrop-dragText {
+                      color: $bright-blue;
+                    }
+                  }
+                }
+
+                &.drag {
+                  border: 1px dotted $bright-blue;
+                  background: rgba($bright-blue, .1);
+
+                  .uppy-DragDrop-arrow {
+                    fill: $bright-blue;
+                  }
+
+                  .uppy-DragDrop-label {
+                    color: $bright-blue;
+
+                    .uppy-DragDrop-dragText {
+                      color: $warm-gray-14;
+                    }
                   }
                 }
               }
             }
+          }
 
-            .uppy-Informer {
-              display: flex;
-              overflow: hidden;
-              align-items: center;
-              height: 3rem;
-              margin: 1px;
-              transition-delay: 0.75s;
-              transition-duration: 0.2s;
-              border-radius: 0 0 $border-radius $border-radius;
-              font-size: $font-size-base;
+          .uppy-ProgressBar-wrapper {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+          }
 
-              p {
-                font-weight: $font-weight-normal;
-
-                span {
-                  display: none;
-                }
-              }
-            }
-
+          .uppy-StatusBar-wrapper {
             .uppy-StatusBar {
               position: absolute;
               right: 1px;
@@ -297,314 +294,87 @@
                 }
               }
             }
+          }
 
-            .is-error {
-              +.uppy-Informer {
-                display: flex;
-                align-items: center;
-                background: $red !important;
+          .uppy-Informer-wrapper {
+            .uppy-Informer {
+              display: flex;
+              overflow: hidden;
+              align-items: center;
+              height: 3rem;
+              margin: 1px;
+              transition-delay: 0.75s;
+              transition-duration: 0.2s;
+              border-radius: 0 0 $border-radius $border-radius;
+              font-size: $font-size-base;
 
-                p {
-                  display: flex;
-                  align-items: center;
-                  width: 100%;
+              p {
+                font-weight: $font-weight-normal;
 
-                  &:before {
-                    display: flex;
-                    align-items: center;
-                    flex-grow: 0;
-                    flex-shrink: 0;
-                    justify-content: center;
-                    width: 1rem;
-                    height: 1rem;
-                    margin-right: $padding;
-                    content: '\f06a';
-                    font-family: $font-family-icon;
-                    font-size: $font-size-base;
-                  }
-                }
-              }
-            }
-
-            .is-complete {
-              +.uppy-Informer {
-                display: flex;
-                align-items: center;
-                background: $green-darken-01 !important;
-
-                p {
-                  display: flex;
-                  align-items: center;
-                  width: 100%;
-
-                  &:before {
-                    display: flex;
-                    align-items: center;
-                    flex-grow: 0;
-                    flex-shrink: 0;
-                    justify-content: center;
-                    width: 1rem;
-                    height: 1rem;
-                    margin-right: $padding;
-                    content: '\f058';
-                    font-family: $font-family-icon;
-                    font-size: $font-size-base;
-                  }
+                span {
+                  display: none;
                 }
               }
             }
           }
 
-          .uppy-Dashboard.uppy-Dashboard--wide {
-            .uppy-Dashboard-inner {
-              width: 100%;
-              height: auto;
-              max-height: none;
-              border-color: $input-border-color;
-              background: $white;
+          .is-error {
+            +.uppy-Informer {
+              display: flex;
+              align-items: center;
+              background: $red !important;
 
-              .uppy-Dashboard-innerWrap {
-                min-height: 240px;
+              p {
+                display: flex;
+                align-items: center;
+                width: 100%;
 
-                .uppy-DashboardTabs {
-                  padding: 0;
-                  border-bottom: 1px solid $warm-gray-04;
-                  background: $warm-gray-02;
-
-                  .uppy-DashboardTabs-title {
-                    padding: $padding;
-                    line-height: unset;
-
-                    .uppy-Dashboard-browse {
-                      color: $bright-blue-lighten-01;
-                    }
-                  }
-                }
-
-                .uppy-Dashboard-filesContainer {
-                  .uppy-DashboardItem {
-                    margin: $padding*2;
-
-                    .uppy-DashboardItem-previewInnerWrap {
-                      border-radius: $border-radius;
-                      box-shadow: 0 0 4px rgba(0,0,0,0.2);
-                    }
-
-                    .uppy-DashboardItem-action {
-                      top: -.75rem;
-                      right: -.75rem;
-
-                      .uppy-DashboardItem-remove {
-                        width: 1rem;
-                        height: 1rem;
-
-                        &:before {
-                          display: flex;
-                          align-items: center;
-                          justify-content: center;
-                          width: 1rem;
-                          height: 1rem;
-                          content: '\f057';
-                          color: $red-darken-01;
-                          font-family: $font-family-icon;
-                          font-size: $font-size-base;
-                        }
-
-                        svg {
-                          display: none;
-                        }
-                      }
-                    }
-
-                    .uppy-DashboardItem-edit {
-                      width: 1rem;
-                      height: 1rem;
-
-                      &:before {
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        width: 1rem;
-                        height: 1rem;
-                        content: '\f040';
-                        color: $bright-blue-darken-01;
-                        font-family: $font-family-icon;
-                        font-size: $font-size-sm;
-                      }
-
-                      svg {
-                        display: none;
-                      }
-                    }
-                  }
-                }
-
-                .uppy-DashboardFileCard {
-                  > div {
-                    display: flex;
-                    flex-direction: column;
-
-                    .uppy-DashboardContent-bar {
-                      position: relative;
-                      top: auto;
-                      right: auto;
-                      bottom: auto;
-                      left: auto;
-                      display: flex;
-                      align-items: center;
-                      flex-grow: 0;
-                      flex-shrink: 0;
-                      height: auto;
-                      height: auto;
-                      padding: $padding;
-                      border-bottom: 1px solid $warm-gray-04;
-                      background: $warm-gray-02;
-
-                      .uppy-DashboardContent-title {
-                        position: relative;
-                        top: auto;
-                        right: auto;
-                        bottom: auto;
-                        left: auto;
-                        flex-grow: 1;
-                        flex-shrink: 1;
-                        max-width: 100%;
-                        margin: 0;
-                        padding: 0;
-                        text-align: left;
-                        font-size: $font-size-base;
-                        line-height: unset;
-                        line-height: normal;
-
-                        .uppy-DashboardContent-titleFile {
-                          top: auto;
-                          right: auto;
-                          bottom: auto;
-                          left: auto;
-                          margin: 0;
-                          padding: 0;
-                          text-align: left;
-                          font-size: $font-size-base;
-                          line-height: 1;
-                        }
-                      }
-
-                      .uppy-DashboardContent-back {
-                        position: relative;
-                        top: auto;
-                        right: auto;
-                        bottom: auto;
-                        left: auto;
-                        margin: 0;
-                        padding: 0;
-                        font-size: $font-size-base;
-                        line-height: 1;
-                      }
-                    }
-
-                    .uppy-DashboardFileCard-inner {
-                      position: relative;
-                      top: auto;
-                      right: auto;
-                      bottom: auto;
-                      left: auto;
-                      display: flex;
-                      flex-direction: column;
-                      flex-grow: 1;
-                      flex-shrink: 1;
-                      margin: 0;
-                      padding: 0;
-
-                      .uppy-DashboardFileCard-preview {
-                        display: flex;
-                        overflow: hidden;
-                        align-items: center;
-                        flex-grow: 1;
-                        flex-shrink: 1;
-                        justify-content: center;
-                        height: 6.25rem;
-                        padding: $padding;
-                        border-bottom-width: 0;
-                        background-color: $white !important;
-
-                        img {
-                          display: block;
-                          width: auto;
-                          height: 6.25rem;
-                          box-shadow: 0 0 0 rgba(0,0,0,0);
-                        }
-                      }
-
-                      .uppy-DashboardFileCard-info {
-                        flex-grow: 0;
-                        flex-shrink: 0;
-                        height: auto;
-                        padding: $padding ($padding*8) $padding $padding;
-                        background-color: $white;
-
-                        fieldset {
-                          display: flex;
-                          flex-grow: 1;
-                          flex-shrink: 1;
-                          width: auto;
-                          max-width: none;
-                          margin: 0;
-
-                          label {
-                            width: 100%;
-                            color: $warm-gray-10;
-                            font-size: $font-size-base;
-                          }
-
-                          input {
-                            width: 100%;
-                            margin: 0;
-                            padding: $padding;
-                            border: $border-width solid $warm-gray-06;
-                          }
-                        }
-                      }
-                    }
-
-                    .uppy-Dashboard-actions {
-                      right: 1rem;
-                      bottom: 0.5rem;
-
-                      .UppyButton--circular {
-                        position: relative;
-                        width: 2rem;
-                        height: 2rem;
-
-                        &.UppyButton--blue {
-                          background: $bright-blue-darken-01;
-
-                          &.uppy-DashboardFileCard-done {
-                            &:before {
-                              position: absolute;
-                              top: 0;
-                              left: 0;
-                              display: flex;
-                              align-items: center;
-                              justify-content: center;
-                              width: 2rem;
-                              height: 2rem;
-                              content: '\f00c';
-                              color: $white;
-                              font-family: $font-family-icon;
-                            }
-
-                            svg {
-                              display: none;
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
+                &:before {
+                  display: flex;
+                  align-items: center;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  justify-content: center;
+                  width: 1rem;
+                  height: 1rem;
+                  margin-right: $padding;
+                  content: '\f06a';
+                  font-family: $font-family-icon;
+                  font-size: $font-size-base;
                 }
               }
             }
           }
+
+          .is-complete {
+            +.uppy-Informer {
+              display: flex;
+              align-items: center;
+              background: $green-darken-01 !important;
+
+              p {
+                display: flex;
+                align-items: center;
+                width: 100%;
+
+                &:before {
+                  display: flex;
+                  align-items: center;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  justify-content: center;
+                  width: 1rem;
+                  height: 1rem;
+                  margin-right: $padding;
+                  content: '\f058';
+                  font-family: $font-family-icon;
+                  font-size: $font-size-base;
+                }
+              }
+            }
+          }
+
+        
         }
 
         .upload-list {
@@ -623,7 +393,7 @@
             color: $warm-gray-14;
 
             &:first-child {
-                padding-top: $padding*2;
+              padding-top: $padding*2;
             }
 
             span {

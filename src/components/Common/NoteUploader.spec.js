@@ -54,7 +54,7 @@ describe('Testing NoteUploader component', () => {
 
   it('should map state to props', () => {
     const store = mockStore(initialState);
-    const wrapper = shallow(<NoteUploader store={store} {...props} />).dive().dive().dive().dive();
+    const wrapper = shallow(<NoteUploader store={store} {...props} />).first().shallow();
     console.log(wrapper.debug())
   });
 });
