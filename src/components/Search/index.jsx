@@ -51,10 +51,10 @@ class SearchPage extends Component {
   setSearchConfig = () => {
     const { pathName } = this.props;
     if (pathName === '/') {
-      this.setState({ searchType: SEARCH_TYPES.policy });
+      this.setState({ searchType: SEARCH_TYPES.policy, searchConfig: SEARCH_TYPES.policy });
     }
     if (pathName === '/agency') {
-      this.setState({ searchType: SEARCH_TYPES.agency });
+      this.setState({ searchType: SEARCH_TYPES.agency, searchConfig: SEARCH_TYPES.agency });
     }
   };
 
@@ -64,7 +64,7 @@ class SearchPage extends Component {
   };
 
   render() {
-    const { advancedSearch, hasSearched, searchType } = this.state;
+    const { advancedSearch, hasSearched, searchType, searchConfig } = this.state;
 
     const SearchForm = SEARCH_FORMS[searchType];
 
@@ -74,9 +74,9 @@ class SearchPage extends Component {
           <SearchBar
             advancedSearch={advancedSearch}
             changeSearchType={this.changeSearchType}
-            initialValues={SEARCH_CONFIG[searchType].initialValues}
+            initialValues={SEARCH_CONFIG[searchConfig].initialValues}
             onSubmitSuccess={() => this.setHasSearched(true)}
-            searchTypeOptions={SEARCH_CONFIG[searchType].searchOptions}
+            searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
             searchType={searchType}
             setHasSearched={this.setHasSearched}
             toggleAdvancedSearch={this.toggleAdvancedSearch}
