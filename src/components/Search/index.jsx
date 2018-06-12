@@ -25,6 +25,7 @@ class SearchPage extends Component {
 
   state = {
     advancedSearch: false,
+    hasSearched: false,
     searchType: SEARCH_TYPES.policy,
     searchConfig: SEARCH_TYPES.policy
   };
@@ -34,31 +35,36 @@ class SearchPage extends Component {
   }
 
   componentWillUnmount() {
+    // this.setHasSearched(false);
     this.props.resetSearch();
   }
+
+  changeSearchType = (searchType) => {
+    this.setState({ searchType, hasSearched: false });
+    this.props.resetSearch();
+  };
+
+  setHasSearched = (hasSearched) => {
+    this.setState({ hasSearched });
+  };
+
+  setSearchConfig = () => {
+    const { pathName } = this.props;
+    if (pathName === '/') {
+      this.setState({ searchType: SEARCH_TYPES.policy });
+    }
+    if (pathName === '/agency') {
+      this.setState({ searchType: SEARCH_TYPES.agency });
+    }
+  };
 
   toggleAdvancedSearch = () => {
     const { advancedSearch } = this.state;
     this.setState({ advancedSearch: !advancedSearch })
   };
 
-  changeSearchType = (searchType) => {
-    this.props.resetSearch();
-    this.setState({searchType});
-  };
-
-  setSearchConfig = () => {
-    const { pathName } = this.props;
-    if (pathName === '/') {
-      this.setState({ searchType: SEARCH_TYPES.policy, searchConfig: SEARCH_TYPES.policy });
-    }
-    if (pathName === '/agency') {
-      this.setState({ searchType: SEARCH_TYPES.agency, searchConfig: SEARCH_TYPES.agency });
-    }
-  };
-
   render() {
-    const { advancedSearch, searchType, searchConfig } = this.state;
+    const { advancedSearch, hasSearched, searchType } = this.state;
 
     const SearchForm = SEARCH_FORMS[searchType];
 
@@ -68,14 +74,17 @@ class SearchPage extends Component {
           <SearchBar
             advancedSearch={advancedSearch}
             changeSearchType={this.changeSearchType}
-            initialValues={SEARCH_CONFIG[searchConfig].initialValues}
-            searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
+            initialValues={SEARCH_CONFIG[searchType].initialValues}
+            onSubmitSuccess={() => this.setHasSearched(true)}
+            searchTypeOptions={SEARCH_CONFIG[searchType].searchOptions}
             searchType={searchType}
+            setHasSearched={this.setHasSearched}
             toggleAdvancedSearch={this.toggleAdvancedSearch}
             render={({ submitting, handlePagination }) => (
               <SearchForm
                 advancedSearch={advancedSearch}
                 handlePagination={handlePagination}
+                hasSearched={hasSearched}
                 submitting={submitting}
                 toggleAdvancedSearch={this.toggleAdvancedSearch}
               />
@@ -89,7 +98,11 @@ class SearchPage extends Component {
                 <div className="search route-content">
                   <div className="survey-wrapper scroll">
 
-                    <SearchResults searchType={searchType} />
+                    <SearchResults
+                      hasSearched={hasSearched}
+                      searchType={searchType}
+                    />
+
                     {this.props.children}
 
                   </div>

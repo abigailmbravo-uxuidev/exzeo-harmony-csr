@@ -5,7 +5,6 @@ import { getAgencies } from '../../../actions/serviceActions';
 import { clearAppError } from '../../../actions/errorActions';
 import {
   handleSearchSubmit,
-  resetSearch,
   toggleLoading
 } from '../../../actions/searchActions';
 import { LOCAL_STORAGE_KEY, DEFAULT_SEARCH_PARAMS } from '../constants';
@@ -15,11 +14,12 @@ import { isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
 
 export class SearchBar extends Component {
   componentDidMount() {
-    const { getAgencies, toggleLoading } = this.props;
+    const { agencies, getAgencies, toggleLoading } = this.props;
     localStorage.removeItem(LOCAL_STORAGE_KEY);
     toggleLoading(false);
-    // TODO try to avoid doing this every time this component mounts. Maybe handle this higher up the component tree (which means we can then search agencies from state rather than hitting the server)
-    getAgencies(DEFAULT_SEARCH_PARAMS.companyCode, DEFAULT_SEARCH_PARAMS.state);
+    if (!agencies.length) {
+      getAgencies(DEFAULT_SEARCH_PARAMS.companyCode, DEFAULT_SEARCH_PARAMS.state);
+    }
   }
 
   handleSearchFormSubmit = (data, dispatch, props) => {
@@ -41,9 +41,7 @@ export class SearchBar extends Component {
   };
 
   clearForm = () => {
-    const {
-      reset, clearAppError, advancedSearch, toggleAdvancedSearch
-    } = this.props;
+    const { advancedSearch, clearAppError, reset, toggleAdvancedSearch } = this.props;
     const lastSearchData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
     lastSearchData.searchType = '';
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(lastSearchData));
@@ -95,7 +93,8 @@ export class SearchBar extends Component {
 }
 
 const mapStateToProps = state => ({
-  search: state.search
+  search: state.search,
+  agencies: state.service.agencies || []
 });
 
 export default connect(mapStateToProps, {

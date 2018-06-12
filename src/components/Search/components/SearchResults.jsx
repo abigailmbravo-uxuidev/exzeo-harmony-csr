@@ -20,15 +20,15 @@ export function onKeypressSubmit(event, data, props) {
 
 export class SearchResults extends Component {
   render() {
-    const { searchType, search: { results, noResults }, error } = this.props;
+    const { hasSearched, searchType, search: { results, noResults }, error } = this.props;
     return (
       <div className="results-wrapper">
 
-        {(noResults || error.message) &&
+        {hasSearched && (noResults || error.message) &&
           <NoResults searchType={searchType} error={error} />
         }
 
-        {searchType === SEARCH_TYPES.newQuote && !!results.length &&
+        {hasSearched && searchType === SEARCH_TYPES.newQuote && !!results.length &&
           <ul id="property-search-results" className="results result-cards property-search-results">
             {!!results.length && results.map((address) => (
               <AddressCard
@@ -42,7 +42,7 @@ export class SearchResults extends Component {
           </ul>
         }
 
-        {searchType === SEARCH_TYPES.quote && !!results.length &&
+        {hasSearched && searchType === SEARCH_TYPES.quote && !!results.length &&
           <div className="quote-list">
             {results.map((quote) => (
               <QuoteCard
@@ -55,7 +55,7 @@ export class SearchResults extends Component {
           </div>
         }
 
-        {searchType === SEARCH_TYPES.policy && !!results.length &&
+        {hasSearched && searchType === SEARCH_TYPES.policy && !!results.length &&
           <div className="policy-list">
             {results.map((policy) => (
               <PolicyCard
@@ -68,7 +68,7 @@ export class SearchResults extends Component {
           </div>
         }
 
-        {searchType === SEARCH_TYPES.agent && !!results.length &&
+        {hasSearched && searchType === SEARCH_TYPES.agent && !!results.length &&
           <div className="user-list agent-list">
             {results.map((agent) => (
               <AgentCard
@@ -81,7 +81,7 @@ export class SearchResults extends Component {
           </div>
         }
 
-        {searchType === SEARCH_TYPES.agency && !!results.length &&
+        {hasSearched && searchType === SEARCH_TYPES.agency && !!results.length &&
           <div className="user-list agency-list">
             {results.map((agency) => (
               <AgencyCard
