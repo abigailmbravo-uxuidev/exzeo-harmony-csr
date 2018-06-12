@@ -36,7 +36,7 @@ export const validate = (values) => {
   return errors;
 };
 
-export class Uploader extends Component {
+class NoteUploader extends Component {
   constructor(props) {
     super(props);
 
@@ -217,7 +217,7 @@ export class Uploader extends Component {
         </div>
         <div className="mainContainer">
           {this.state.loading && <Loader />}
-          <Form id="NewNoteFileUploader" onSubmit={this.props.handleSubmit(this.submitNote)} noValidate>
+          <Form id="NoteUploader" onSubmit={this.props.handleSubmit(this.submitNote)} noValidate>
             <div className="content">
               <label>Contact</label>
               <Field component="select" name="contactType" disabled={!this.contactTypes.length}>
@@ -251,7 +251,7 @@ export class Uploader extends Component {
   }
 }
 
-Uploader.propTypes = {
+NoteUploader.propTypes = {
   documentId: PropTypes.string,
   noteType: PropTypes.string
 };
@@ -272,7 +272,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
-  form: 'NewNoteFileUploader',
+  form: 'NoteUploader',
   initialValues: { contactType: 'Agent', fileType: 'Other' },
   validate
-})(Uploader));
+})(NoteUploader));
