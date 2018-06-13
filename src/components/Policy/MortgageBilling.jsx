@@ -6,7 +6,7 @@ import { reduxForm, Field, formValueSelector } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import _ from 'lodash';
 import moment from 'moment';
-import { getCashDescriptionOptions, getCashTypeAnswers } from "../../selectors/policy.selectors";
+import { getCashDescriptionOptions, getCashTypeAnswers } from '../../selectors/policy.selectors';
 
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
@@ -29,6 +29,9 @@ import setRank from '../Common/additionalInterestRank';
 
 const { validation } = lifecycle;
 const { Input, Select, Currency } = Inputs;
+
+const validateBatchNumber = validation.isDateMatchMin10('cashDate', 'YYYYMMDD');
+const validateAmount = validation.isRange(-1000000, 1000000);
 
 export const handleInitialize = (state) => {
   const policy = state.policyState.policy || {};
@@ -424,7 +427,7 @@ export class MortgageBilling extends Component {
                           dataTest="batchNumber"
                           label="Batch Number"
                           component={Input}
-                          validate={(value, allValues) => validation.isDateMatchMin10(value, allValues, 'cashDate', 'YYYYMMDD')}
+                          validate={validateBatchNumber}
                         />
                       </div>
                     </div>
@@ -462,7 +465,7 @@ export class MortgageBilling extends Component {
                           dataTest="amount"
                           label="Amount"
                           component={Currency}
-                          validate={value => validation.isRange(value, -1000000, 1000000)}
+                          validate={validateAmount}
                           min={-1000000}
                           max={1000000}
                         />
