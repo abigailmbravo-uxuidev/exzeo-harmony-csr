@@ -4,12 +4,16 @@ import questionsReducer from './questionsReducer';
 
 describe('Questions State Reducer', () => {
   it('should call questionsReducer GET_QUESTIONS', () => {
-    const inputProps = [{ quoteId: '234', update: true }];
+    const inputProps = [{ quoteId: '234', update: true, name: 'test' }];
     const action = {
       type: types.GET_QUESTIONS,
       questions: inputProps
     };
 
-    expect(questionsReducer(initialState.questions, action)).toEqual(inputProps);
+    const map = {
+      [inputProps[0].name]: inputProps[0]
+    };
+
+    expect(questionsReducer(initialState.questions, action)).toEqual(map);
   });
 });
