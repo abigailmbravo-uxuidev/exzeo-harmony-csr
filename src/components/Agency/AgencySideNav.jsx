@@ -19,10 +19,24 @@ import * as cgActions from '../../state/actions/cgActions';
  * }
  */
 const csrLinks = [{
-  key: 'staff',
-  link: '/agency/staff',
-  label: 'Staff',
-  styleName: 'staff',
+  key: 'overview',
+  link: '/agency/overview',
+  label: 'Overview',
+  styleName: 'overview',
+  exact: true
+},
+{
+  key: 'contracts',
+  link: '/agency/contracts',
+  label: 'Contracts',
+  styleName: 'contracts',
+  exact: true
+},
+{
+  key: 'agents',
+  link: '/agency/agents',
+  label: 'Agents',
+  styleName: 'contracts',
   exact: true
 }, {
   key: 'notes',
@@ -39,7 +53,7 @@ export const SideNav = props => (
       {csrLinks && csrLinks.length > 0 && csrLinks.map((agentLink, index) => (
         agentLink.outside ?
           <li key={index}>
-            {/* <a className={agentLink.styleName} href={agentLink.link}>*/}
+            {/* <a className={agentLink.styleName} href={agentLink.link}> */}
             <a className="csr-dashboard" href="/">
               <span>{agentLink.label}</span>
             </a>
