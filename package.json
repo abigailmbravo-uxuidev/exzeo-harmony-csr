@@ -3,9 +3,9 @@
   "version": "0.9.1",
   "private": true,
   "dependencies": {
+    "@exzeo/core-ui": "0.1.x",
     "@fortawesome/fontawesome": "~1.0.0",
     "@fortawesome/react-fontawesome": "~0.0.14",
-    "@exzeo/core-ui": "0.1.x",
     "auth0-js": "~8.10.1",
     "axios": "~0.15.2",
     "classnames": "~2.2.5",
@@ -41,6 +41,7 @@
     "redux-form": "7.3.x",
     "redux-persist": "~4.10.2",
     "redux-thunk": "~2.2.0",
+    "reselect": "^3.0.1",
     "uppy": "^0.23.1",
     "validator": "~7.2.0"
   },
