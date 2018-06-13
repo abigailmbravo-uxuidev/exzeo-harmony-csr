@@ -52,8 +52,8 @@ export class Endorsements extends React.Component {
 
   componentDidMount() {
     const {
- policy, getUnderwritingQuestions, getZipcodeSettings, getEndorsementHistory, getUIQuestions, clearRate
-} = this.props;
+     policy, getUnderwritingQuestions, getZipcodeSettings, getEndorsementHistory, getUIQuestions, clearRate
+    } = this.props;
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
     clearRate();
     if (policy && policy.policyNumber && policy.property && policy.property.physicalAddress) {
@@ -75,11 +75,10 @@ export class Endorsements extends React.Component {
 
   setCalculate = (rate = {}) => {
     const { change, initialize } = this.props;
-    const { getRate = {} } = rate;
-    const windMitFactor = getRate.rating ? getRate.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount : 0;
-    change('newEndorsementAmount', getRate.endorsementAmount || 0);
-    change('newEndorsementPremium', getRate.newCurrentPremium || '');
-    change('newAnnualPremium', getRate.newAnnualPremium || '');
+    const windMitFactor = rate.rating ? rate.rating.worksheet.elements.windMitigationFactors.windMitigationDiscount : 0;
+    change('newEndorsementAmount', rate.endorsementAmount || 0);
+    change('newEndorsementPremium', rate.newCurrentPremium || '');
+    change('newAnnualPremium', rate.newAnnualPremium || '');
     change('windMitFactor', windMitFactor);
     initialize({}, { keepValues: true });
   };

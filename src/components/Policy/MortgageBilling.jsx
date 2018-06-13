@@ -610,7 +610,6 @@ MortgageBilling.propTypes = {
   policy: PropTypes.shape().isRequired
 };
 
-const defaultArray = [];
 const selector = formValueSelector('MortgageBilling');
 const mapStateToProps = state => ({
   cashTypeValue: selector(state, 'cashType'),
