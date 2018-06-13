@@ -124,11 +124,12 @@ export class MortgageBilling extends Component {
     dispatch(change('MortgageBilling', 'batchNumber', moment.utc(value).format('YYYYMMDD')));
   };
 
-  getPaymentDescription = (event) => {
-    const selectedDescriptionType = this.props.paymentOptions.find(type => type.paymentType === event.target.value) || [];
+  getPaymentDescription = (value) => {
+    const selectedDescriptionType = this.props.paymentOptions.find(type => type.paymentType === value) || [];
     const { dispatch } = this.props;
     dispatch(change('MortgageBilling', 'cashDescription', ''));
     this.setState({ paymentDescription: selectedDescriptionType.paymentDescription });
+    return value;
   };
 
   addAdditionalInterest = (type) => {
@@ -431,7 +432,7 @@ export class MortgageBilling extends Component {
                           name="cashType"
                           dataTest="cashType"
                           label="Cash Type"
-                          onChange={this.getPaymentDescription}
+                          normalize={this.getPaymentDescription}
                           component={Select}
                           validate={validation.isRequired}
                           answers={_.map(this.props.paymentOptions, type => ({ answer: type.paymentType }))}
