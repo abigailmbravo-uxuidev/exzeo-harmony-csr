@@ -601,7 +601,7 @@ MortgageBilling.propTypes = {
 const defaultArray = [];
 const mapStateToProps = state => ({
   auth: state.authState,
-  billingOptions: state.service.billingOptions
+  billingOptions: state.service.billingOptions,
   initialValues: handleInitialize(state),
   summaryLedger: state.policyState.summaryLedger,
   policy: state.policyState.policy || {},
