@@ -10,12 +10,11 @@ import moment from 'moment';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 
-import { updatePolicy, getPolicy } from '../../actions/policyActions';
+import { getPolicy, getSummaryLedger } from '../../actions/policyActions';
 import { getUIQuestions } from '../../actions/questionsActions';
 import {
   getPaymentOptionsApplyPayments,
   getBillingOptionsForPolicy,
-  getSummaryLedger,
   getPaymentHistory,
   addTransaction,
   createTransaction
@@ -404,6 +403,7 @@ export class MortgageBilling extends Component {
                       <div className="form-group">
                         <Field
                           name="cashDate"
+                          dataTest="cashDate"
                           label="Cash Date"
                           component={Input}
                           type="date"
@@ -416,6 +416,7 @@ export class MortgageBilling extends Component {
                       <div className="form-group">
                         <Field
                           name="batchNumber"
+                          dataTest="batchNumber"
                           label="Batch Number"
                           component={Input}
                           validate={(value, allValues) => validation.isDateMatchMin10(value, allValues, 'cashDate', 'YYYYMMDD')}
@@ -428,6 +429,7 @@ export class MortgageBilling extends Component {
                       <div className="form-group">
                         <Field
                           name="cashType"
+                          dataTest="cashType"
                           label="Cash Type"
                           onChange={this.getPaymentDescription}
                           component={Select}
@@ -440,6 +442,7 @@ export class MortgageBilling extends Component {
                       <div className="form-group">
                         <Field
                           name="cashDescription"
+                          dataTest="cashDescription"
                           label="Description"
                           component={Select}
                           validate={validation.isRequired}
@@ -451,6 +454,7 @@ export class MortgageBilling extends Component {
                       <div className="form-group">
                         <Field
                           name="amount"
+                          dataTest="amount"
                           label="Amount"
                           component={Currency}
                           validate={value => validation.isRange(value, -1000000, 1000000)}
@@ -620,7 +624,6 @@ export default connect(mapStateToProps, {
   addTransaction,
   createTransaction,
   getUIQuestions,
-  updatePolicy,
   getPolicy
 })(reduxForm({
   form: 'MortgageBilling',

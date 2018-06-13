@@ -6,7 +6,7 @@ import moment from 'moment';
 import momentTZ from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
 import { batchActions } from 'redux-batched-actions';
-import { reduxForm, Form, change, formValueSelector } from 'redux-form';
+import { reduxForm, Form, formValueSelector } from 'redux-form';
 import { getAgencies, getAgentsByAgency } from '../../../actions/serviceActions';
 import { batchCompleteTask, startWorkflow } from '../../../actions/cgActions';
 import { setAppState } from '../../../actions/appStateActions';
@@ -325,75 +325,75 @@ export class Coverage extends Component {
   }
 
   setPHToggle = () => {
-    const { clearFields, changeF } = this.props;
+    const { clearFields, change } = this.props;
     if (clearFields) {
-      changeF('clearFields', false);
+      change('clearFields', false);
     }
   };
 
   normalizeDwellingAmount = (value, previousValue, allValues) => {
-    const { change: changeF } = this.props;
+    const { change } = this.props;
 
     const roundedDwellingAmount = Math.round(value / 1000) * 1000;
 
     if (allValues.otherStructures !== 'other') {
-      changeF('otherStructuresAmount', setPercentageOfValue(roundedDwellingAmount, allValues.otherStructures));
+      change('otherStructuresAmount', setPercentageOfValue(roundedDwellingAmount, allValues.otherStructures));
     }
     if (allValues.personalProperty !== 'other') {
-      changeF('personalPropertyAmount', setPercentageOfValue(roundedDwellingAmount, allValues.personalProperty));
+      change('personalPropertyAmount', setPercentageOfValue(roundedDwellingAmount, allValues.personalProperty));
     }
-    changeF('calculatedHurricane', String(setPercentageOfValue(roundedDwellingAmount, allValues.hurricane)));
-    changeF('lossOfUse', setPercentageOfValue(roundedDwellingAmount, 10));
-    changeF('calculatedSinkhole', String(setPercentageOfValue(roundedDwellingAmount, 10)));
+    change('calculatedHurricane', String(setPercentageOfValue(roundedDwellingAmount, allValues.hurricane)));
+    change('lossOfUse', setPercentageOfValue(roundedDwellingAmount, 10));
+    change('calculatedSinkhole', String(setPercentageOfValue(roundedDwellingAmount, 10)));
 
     return value;
   };
 
   normalizeDwellingDependencies = (value, previousValue, allValues, field) => {
     if (Number.isNaN(value)) return;
-    const { change: changeF } = this.props;
+    const { change } = this.props;
     const fieldValue = setPercentageOfValue(allValues.dwellingAmount, value);
 
-    changeF(field, Number.isNaN(fieldValue) ? '' : fieldValue);
+    change(field, Number.isNaN(fieldValue) ? '' : fieldValue);
     return value;
   };
 
   normalizePersonalPropertyPercentage = (value, previousValue, allValues, field) => {
     if (Number.isNaN(value)) return;
-    const { change: changeF, initialValues } = this.props;
+    const { change, initialValues } = this.props;
 
 
     if (value === 0) {
-      changeF('personalPropertyReplacementCostCoverage', false);
+      change('personalPropertyReplacementCostCoverage', false);
     } else {
-      changeF('personalPropertyReplacementCostCoverage', initialValues.personalPropertyReplacementCostCoverage || false);
+      change('personalPropertyReplacementCostCoverage', initialValues.personalPropertyReplacementCostCoverage || false);
     }
     const fieldValue = setPercentageOfValue(allValues.dwellingAmount, value);
-    changeF(field, Number.isNaN(fieldValue) ? '' : fieldValue);
+    change(field, Number.isNaN(fieldValue) ? '' : fieldValue);
     return value;
   };
 
   normalizeSinkholeAmount = (value, previousValue, allValues) => {
-    const { change: changeF } = this.props;
+    const { change } = this.props;
     if (String(value) === 'true') {
-      changeF('sinkhole', 10);
-      changeF('calculatedSinkhole', setPercentageOfValue(allValues.dwellingAmount, 10));
+      change('sinkhole', 10);
+      change('calculatedSinkhole', setPercentageOfValue(allValues.dwellingAmount, 10));
     } else {
-      changeF('sinkhole', 0);
-      changeF('calculatedSinkhole', 0);
+      change('sinkhole', 0);
+      change('calculatedSinkhole', 0);
     }
     return value;
   };
 
   handleAgencyChange = (agencyCode) => {
-    const { change: changeF } = this.props;
+    const { change } = this.props;
     const agency = _.find(this.props.agencies, a => String(a.agencyCode) === String(agencyCode));
     if (agency) {
       this.props.getAgentsByAgencyAction(agency.companyCode, agency.state, agencyCode).then((response) => {
         if (response.payload && response.payload[0].data.agents && response.payload[0].data.agents.length === 1) {
-          changeF('agentCode', response.payload[0].data.agents[0].agentCode);
+          change('agentCode', response.payload[0].data.agents[0].agentCode);
         } else {
-          changeF('agentCode', '');
+          change('agentCode', '');
         }
       });
     }
@@ -401,7 +401,7 @@ export class Coverage extends Component {
   };
 
   clearSecondaryPolicyholder = (value) => {
-    const { dispatch, quoteData } = this.props;
+    const { dispatch, quoteData, change } = this.props;
     if (!value) {
       const pH2email = _.get(quoteData, 'policyHolders[1].emailAddress');
       const pH2FirstName = _.get(quoteData, 'policyHolders[1].firstName');
@@ -430,13 +430,19 @@ export class Coverage extends Component {
 
   render() {
     const {
-      quoteData, handleSubmit, pristine, agents, agencies, questions, dirty,
-      sinkholePerilCoverage,
+      agencies,
+      agents,
+      dirty,
       dwellingMin,
       dwellingMax,
+      handleSubmit,
       otherStructures,
       personalProperty,
-      personalPropertyAmount
+      personalPropertyAmount,
+      pristine,
+      questions,
+      quoteData,
+      sinkholePerilCoverage
     } = this.props;
 
     if (!quoteData) {
