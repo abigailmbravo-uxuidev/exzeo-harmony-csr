@@ -502,7 +502,7 @@ export class MortgageBilling extends Component {
                   </div>
                   <dl className="total">
                     <div>
-                      {this.props.summaryLedger && `Payments Received ${this.amountFormatter(this.props.summaryLedger.cashReceived.$numberDecimal || '0')}`} <br />
+                      {this.props.summaryLedger && this.props.summaryLedger.cashReceived && `Payments Received ${this.amountFormatter(this.props.summaryLedger.cashReceived.$numberDecimal || '0')}`} <br />
                     </div>
                   </dl>
                 </div>
