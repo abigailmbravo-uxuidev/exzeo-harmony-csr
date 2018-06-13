@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
-import { reduxForm, Field, change, formValueSelector } from 'redux-form';
+import { reduxForm, Field, formValueSelector } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import _ from 'lodash';
 import moment from 'moment';
+import { getCashDescriptionOptions, getCashTypeAnswers } from "../../selectors/policy.selectors";
 
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
@@ -118,15 +119,15 @@ export class MortgageBilling extends Component {
   };
 
   setBatch = (value) => {
-    const { dispatch } = this.props;
+    const { change } = this.props;
 
-    dispatch(change('MortgageBilling', 'cashDate', value));
-    dispatch(change('MortgageBilling', 'batchNumber', moment.utc(value).format('YYYYMMDD')));
+    change('cashDate', value);
+    change('batchNumber', moment.utc(value).format('YYYYMMDD'));
   };
 
-  getPaymentDescription = (value) => {
-    const { dispatch } = this.props;
-    dispatch(change('MortgageBilling', 'cashDescription', ''));
+  normalizeCashType = (value) => {
+    const { change } = this.props;
+    change('cashDescription', '');
     return value;
   };
 
@@ -363,6 +364,8 @@ export class MortgageBilling extends Component {
 
   render() {
     const {
+      cashDescriptionOptions,
+      cashTypeAnswers,
       handleSubmit,
       pristine,
       policy,
@@ -389,7 +392,7 @@ export class MortgageBilling extends Component {
 
     const validAdditionalInterestTypes = this.checkValidTypes(additionalInterests, this.state.selectedAI || {});
 
-    const cashDescriptionAnswers = this.props.paymentOptions.find(type => type.paymentType === cashTypeValue);
+    const cashDescriptionAnswers = cashDescriptionOptions[cashTypeValue] || [];
 
     return (
       <PolicyConnect>
@@ -433,10 +436,10 @@ export class MortgageBilling extends Component {
                           name="cashType"
                           dataTest="cashType"
                           label="Cash Type"
-                          normalize={this.getPaymentDescription}
+                          normalize={this.normalizeCashType}
                           component={Select}
                           validate={validation.isRequired}
-                          answers={_.map(this.props.paymentOptions, type => ({ answer: type.paymentType }))}
+                          answers={cashTypeAnswers}
                         />
                       </div>
                     </div>
@@ -448,7 +451,7 @@ export class MortgageBilling extends Component {
                           label="Description"
                           component={Select}
                           validate={validation.isRequired}
-                          answers={_.map(cashDescriptionAnswers || [], description => ({ answer: description }))}
+                          answers={cashDescriptionAnswers}
                         />
                       </div>
                     </div>
@@ -614,7 +617,9 @@ const mapStateToProps = state => ({
   summaryLedger: state.policyState.summaryLedger,
   policy: state.policyState.policy || {},
   paymentHistory: state.service.paymentHistory,
-  paymentOptions: state.service.paymentOptions || defaultArray,
+  paymentOptions: state.service.paymentOptions,
+  cashTypeAnswers: getCashTypeAnswers(state),
+  cashDescriptionOptions: getCashDescriptionOptions(state),
   questions: state.questions,
   tasks: state.cg
 });
