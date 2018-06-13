@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
-import { reduxForm, Field, change } from 'redux-form';
+import { reduxForm, Field, change, formValueSelector } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import _ from 'lodash';
 import moment from 'moment';
@@ -125,10 +125,8 @@ export class MortgageBilling extends Component {
   };
 
   getPaymentDescription = (value) => {
-    const selectedDescriptionType = this.props.paymentOptions.find(type => type.paymentType === value) || [];
     const { dispatch } = this.props;
     dispatch(change('MortgageBilling', 'cashDescription', ''));
-    this.setState({ paymentDescription: selectedDescriptionType.paymentDescription });
     return value;
   };
 
@@ -372,7 +370,8 @@ export class MortgageBilling extends Component {
       questions,
       billingOptions,
       submitting,
-      reset: resetForm
+      reset: resetForm,
+      cashTypeValue
     } = this.props;
 
     setRank(additionalInterests);
@@ -389,6 +388,8 @@ export class MortgageBilling extends Component {
     });
 
     const validAdditionalInterestTypes = this.checkValidTypes(additionalInterests, this.state.selectedAI || {});
+
+    const cashDescriptionAnswers = this.props.paymentOptions.find(type => type.paymentType === cashTypeValue);
 
     return (
       <PolicyConnect>
@@ -447,7 +448,7 @@ export class MortgageBilling extends Component {
                           label="Description"
                           component={Select}
                           validate={validation.isRequired}
-                          answers={_.map(this.state.paymentDescription || [], description => ({ answer: description }))}
+                          answers={_.map(cashDescriptionAnswers || [], description => ({ answer: description }))}
                         />
                       </div>
                     </div>
@@ -604,7 +605,9 @@ MortgageBilling.propTypes = {
 };
 
 const defaultArray = [];
+const selector = formValueSelector('MortgageBilling');
 const mapStateToProps = state => ({
+  cashTypeValue: selector(state, 'cashType'),
   auth: state.authState,
   billingOptions: state.service.billingOptions,
   initialValues: handleInitialize(state),
