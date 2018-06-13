@@ -430,7 +430,7 @@ export class SearchForm extends Component {
       <Form id="SearchBar" onSubmit={handleSubmit(searchHandler)} noValidate>
         <div className="search-input-wrapper">
           <div className="form-group search-context">
-            { pathName === '/agency' ? <SelectField
+            { pathName === '/agencySearch' ? <SelectField
               id="searchType"
               name="searchType"
               component="select"

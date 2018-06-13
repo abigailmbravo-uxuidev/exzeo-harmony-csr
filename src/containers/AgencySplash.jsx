@@ -24,7 +24,7 @@ export const handleNewTab = (searchData) => {
 
   if (lastSearchData.searchType === 'agency' || lastSearchData.searchType === 'agent') {
     localStorage.setItem('agencyCode', searchData.agencyCode);
-    window.open('/agency/staff', '_blank');
+    window.open('/agency/overview', '_blank');
   }
 };
 
