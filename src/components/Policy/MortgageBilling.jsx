@@ -6,6 +6,7 @@ import { reduxForm, Field, formValueSelector } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import _ from 'lodash';
 import moment from 'moment';
+import { getAnswers } from '../../utilities/forms';
 import { getCashDescriptionOptions, getCashTypeAnswers } from '../../selectors/policy.selectors';
 
 import Inputs from '@exzeo/core-ui/lib/Input';
@@ -43,8 +44,6 @@ export const handleInitialize = (state) => {
 
   return values;
 };
-
-const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 export const getMortgageeOrderAnswers = (questions, additionalInterests) => {
   let answers = _.cloneDeep(getAnswers('order', questions));
@@ -576,7 +575,6 @@ export class MortgageBilling extends Component {
               validAdditionalInterestTypes={validAdditionalInterestTypes}
               selectedAI={this.state.selectedAI}
               additionalInterests={additionalInterests}
-              getAnswers={getAnswers}
               getMortgageeOrderAnswers={getMortgageeOrderAnswers}
               getMortgageeOrderAnswersForEdit={getMortgageeOrderAnswersForEdit}
               questions={questions}

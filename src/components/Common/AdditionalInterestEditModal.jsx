@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { reduxForm, Form, propTypes, change } from 'redux-form';
 import { batchActions } from 'redux-batched-actions';
+import { getAnswers } from '../../utilities/forms';
 import TextField from '../Form/inputs/TextField';
 import PhoneField from '../Form/inputs/PhoneField';
 import HiddenField from '../Form/inputs/HiddenField';
@@ -17,9 +18,6 @@ import * as serviceActions from '../../actions/serviceActions';
 import * as policyStateActions from '../../actions/policyActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 import Loader from './Loader';
-
-const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
-
 
 export const setMortgageeValues = (val, props) => {
   const selectedMortgagee = val;

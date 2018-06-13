@@ -4,11 +4,10 @@ import * as types from './actionTypes';
 import * as errorActions from './errorActions';
 
 export const getQuestions = (questions) => {
-  const stateObj = {
+  return {
     type: types.GET_QUESTIONS,
     questions
   };
-  return stateObj;
 };
 
 const handleError = (dispatch, error) => {

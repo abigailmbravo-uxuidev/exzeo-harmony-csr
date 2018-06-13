@@ -7,6 +7,7 @@ import momentTZ from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
 import { batchActions } from 'redux-batched-actions';
 import { reduxForm, Form, formValueSelector } from 'redux-form';
+import { getAnswers } from '../../../utilities/forms';
 import { setPercentageOfValue } from '../../../utilities/endorsementModel';
 import { getAgencies, getAgentsByAgency } from '../../../actions/serviceActions';
 import { batchCompleteTask, startWorkflow } from '../../../actions/cgActions';
@@ -56,7 +57,6 @@ export function calculatePercentage(oldFigure, newFigure) {
 
   return percentChange;
 }
-const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 export const handleInitialize = (state) => {
   const quoteData = handleGetQuoteData(state);

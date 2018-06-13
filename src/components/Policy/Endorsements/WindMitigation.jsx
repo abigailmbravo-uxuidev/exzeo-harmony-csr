@@ -129,7 +129,7 @@ const WindMitigation = ({ questions }) => (
 );
 
 WindMitigation.propTypes = {
-  questions: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
+  questions: PropTypes.object
 };
 
 WindMitigation.defaultProps = {};

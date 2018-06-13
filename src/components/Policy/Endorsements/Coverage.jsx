@@ -280,7 +280,7 @@ const Coverage = ({
 Coverage.propTypes = {
   initialValues: PropTypes.object.isRequired,
   personalPropertyNewVal: PropTypes.number,
-  questions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
+  questions: PropTypes.object.isRequired,
   underwritingQuestions: PropTypes.array,
   normalizeDwellingAmount: PropTypes.func.isRequired,
   normalizeDwellingDependencies: PropTypes.func.isRequired,

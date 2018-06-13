@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { reduxForm } from 'redux-form';
+import { getAnswers } from '../../utilities/forms';
 import * as cgActions from '../../actions/cgActions';
 import * as questionsActions from '../../actions/questionsActions';
 import * as appStateActions from '../../actions/appStateActions';
@@ -21,8 +22,6 @@ const handleInitialize = () => {
   const values = {};
   return values;
 };
-
-const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 export const getMortgageeOrderAnswers = (questions, additionalInterests) => {
   let answers = _.cloneDeep(getAnswers('order', questions));

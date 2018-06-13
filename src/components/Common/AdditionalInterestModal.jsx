@@ -6,6 +6,7 @@ import { reduxForm, Field, propTypes, initialize, reset, change } from 'redux-fo
 import { batchActions } from 'redux-batched-actions';
 import { Input, Select, Phone } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
+import { getAnswers } from '../../utilities/forms';
 import ReactSelectField from '../Form/inputs/ReactSelectField';
 import Loader from './Loader';
 
@@ -53,7 +54,6 @@ export class AdditionalInterestModal extends React.Component {
       addAdditionalInterestType,
       isEditing,
       isEndorsement,
-      getAnswers,
       getMortgageeOrderAnswers,
       getMortgageeOrderAnswersForEdit,
       deleteAdditionalInterest,

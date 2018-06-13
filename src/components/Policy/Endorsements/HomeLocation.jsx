@@ -117,7 +117,7 @@ const HomeLocation = ({ questions }) => (
 );
 
 HomeLocation.propTypes = {
-  questions: PropTypes.array
+  questions: PropTypes.object
 };
 
 HomeLocation.defaultProps = {};

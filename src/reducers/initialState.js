@@ -18,7 +18,7 @@ export default {
     quoteId: null,
     update: false
   },
-  questions: [],
+  questions: {},
   policyState: {
     policy: {},
     summaryLedger: {},

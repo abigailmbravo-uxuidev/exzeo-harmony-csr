@@ -16,6 +16,7 @@ import * as searchActions from '../../actions/searchActions';
 import normalizeDate from '../Form/normalizeDate';
 import Pagination from '../Common/Pagination';
 import ReactSelectField from '../Form/inputs/ReactSelectField';
+import { getAnswers } from '../../utilities/forms';
 
 const userTasks = {
   handleSearchBarSubmit: 'search'
@@ -326,8 +327,6 @@ const generateField = (name, placeholder, labelText, formErrors, formGroupCss) =
   </div>);
   return field;
 };
-
-const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
 
 export class SearchForm extends Component {
   componentDidMount() {
