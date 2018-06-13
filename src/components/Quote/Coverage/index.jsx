@@ -7,6 +7,7 @@ import momentTZ from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
 import { batchActions } from 'redux-batched-actions';
 import { reduxForm, Form, formValueSelector } from 'redux-form';
+import { setPercentageOfValue } from '../../../utilities/endorsementModel';
 import { getAgencies, getAgentsByAgency } from '../../../actions/serviceActions';
 import { batchCompleteTask, startWorkflow } from '../../../actions/cgActions';
 import { setAppState } from '../../../actions/appStateActions';
@@ -17,7 +18,6 @@ import Footer from '../../Common/Footer';
 import ProducedBy from './ProducedBy';
 import PolicyHolder from './PolicyHolder';
 import Property from './Property';
-import { setPercentageOfValue } from '../../../utilities/endorsementModel';
 import Coverages from './Coverages';
 import WindMitigation from './WindMitigation';
 
@@ -549,9 +549,6 @@ Coverage.propTypes = {
 };
 
 const selector = formValueSelector('Coverage');
-// ------------------------------------------------
-// redux mapping
-// ------------------------------------------------
 const mapStateToProps = (state) => {
   const {
     clearFields,
@@ -592,18 +589,15 @@ const mapStateToProps = (state) => {
   };
 };
 
-// ------------------------------------------------
-// wire up redux form with the redux connect
-// ------------------------------------------------
-export default connect(
-  mapStateToProps,
-  {
-    getAgenciesAction: getAgencies,
-    getAgentsByAgencyAction: getAgentsByAgency,
-    batchCompleteTaskAction: batchCompleteTask,
-    startWorkflowAction: startWorkflow,
-    setAppStateAction: setAppState,
-    getUIQuestionsAction: getUIQuestions,
-    getLatestQuoteAction: getLatestQuote
-  }
-)(reduxForm({ form: 'Coverage', enableReinitialize: true })(Coverage));
+export default connect(mapStateToProps, {
+  getAgenciesAction: getAgencies,
+  getAgentsByAgencyAction: getAgentsByAgency,
+  batchCompleteTaskAction: batchCompleteTask,
+  startWorkflowAction: startWorkflow,
+  setAppStateAction: setAppState,
+  getUIQuestionsAction: getUIQuestions,
+  getLatestQuoteAction: getLatestQuote
+})(reduxForm({
+  form: 'Coverage',
+  enableReinitialize: true
+})(Coverage));
