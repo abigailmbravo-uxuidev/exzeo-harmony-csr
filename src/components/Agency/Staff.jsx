@@ -27,23 +27,24 @@ export class Staff extends Component {
   render() {
     const { agency, agents } = this.props;
     if (!agency) {
-      return (<AgencyConnect />);
+      return (<div />);
     }
-    return (<AgencyConnect>
-      <div className="route-content">
-        <div className="scroll">
-          <div className="form-group survey-wrapper" role="group">
-            <section>
-              <h3>Contacts</h3>
-              <div className="contact card">
-                <div className="contact-title">
-                  <i className="fa fa-phone-square" />
-                  <label>Contact</label>
-                </div>
-                <div className="contact-details">
-                  <h4>{`${agency.contactFirstName} ${agency.contactLastName}`}</h4>
-                  <div className="additional-contacts">
-                    <ul>
+    return (
+      <React.Fragment>
+        <div className="route-content">
+          <div className="scroll">
+            <div className="form-group survey-wrapper" role="group">
+              <section>
+                <h3>Contacts</h3>
+                <div className="contact card">
+                  <div className="contact-title">
+                    <i className="fa fa-phone-square" />
+                    <label>Contact</label>
+                  </div>
+                  <div className="contact-details">
+                    <h4>{`${agency.contactFirstName} ${agency.contactLastName}`}</h4>
+                    <div className="additional-contacts">
+                      <ul>
                       <li>
                         <div className="contact-methods">
                           {
@@ -81,18 +82,18 @@ export class Staff extends Component {
                         </div>
                       </li>
                     </ul>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="contact card">
-                <div className="contact-title">
-                  <i className="fa fa-black-tie" />
-                  <label>Principal</label>
-                </div>
-                <div className="contact-details">
-                  <h4>{`${agency.principalFirstName} ${agency.principalLastName}`}</h4>
-                  <div className="additional-contacts">
-                    <ul>
+                <div className="contact card">
+                  <div className="contact-title">
+                    <i className="fa fa-black-tie" />
+                    <label>Principal</label>
+                  </div>
+                  <div className="contact-details">
+                    <h4>{`${agency.principalFirstName} ${agency.principalLastName}`}</h4>
+                    <div className="additional-contacts">
+                      <ul>
                       <li>
                         <div className="contact-methods">
                           {
@@ -104,13 +105,13 @@ export class Staff extends Component {
                         </div>
                       </li>
                     </ul>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </section>
-            <h3>Agents</h3>
-            <section>
-              {
+              </section>
+              <h3>Agents</h3>
+              <section>
+                {
               agents.length > 0 ? agents.map((agent, index) => (
                 <div className="agency agent contact card" key={index}>
                   <div className="contact-title">
@@ -138,48 +139,48 @@ export class Staff extends Component {
                       </div>
                       <div className="additional-contacts">
                         <ul>
-                            <li>
-                              <div className="contact-methods">
-                                {
+                          <li>
+                            <div className="contact-methods">
+                              {
                                   agent.primaryPhoneNumber ? <p className="phone">
                                     <i className="fa fa-phone-square" />
                                     <a href={`tel:${agent.primaryPhoneNumber}`}>{normalizePhone(agent.primaryPhoneNumber)}</a>
                                   </p> : null
                                 }
-                                {
+                              {
                                   agent.secondaryPhoneNumber ? <p className="phone">
                                     <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
                                     <a href={`tel:${agent.secondaryPhoneNumber}`}>{normalizePhone(agent.secondaryPhoneNumber)}</a>
                                   </p> : null
                                 }
-                                {
+                              {
                                   agent.faxNumber ? <p className="fax">
                                     <i className="fa fa-fax" />
                                     <a href={`tel:${agent.faxNumber}`}>{normalizePhone(agent.faxNumber)}</a>
                                   </p> : null
                                 }
-                                {
+                              {
                                   agent.emailAddress ? <p>
                                     <i className="fa fa-envelope" />
                                     <a href={`mailto:${agent.emailAddress}`}>{agent.emailAddress}</a>
                                   </p> : null
                                 }
-                              </div>
-                            </li>
-                          </ul>
+                            </div>
+                          </li>
+                        </ul>
                       </div>
                     </div>
                   </div>
                 </div>
                 )) : null
             }</section>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="basic-footer">
-        <Footer />
-      </div>
-    </AgencyConnect>);
+        <div className="basic-footer">
+          <Footer />
+        </div>
+      </React.Fragment>);
   }
 }
 

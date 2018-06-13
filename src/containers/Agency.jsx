@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Helmet } from 'react-helmet';
+import { Route } from 'react-router-dom';
 import AgencyHeader from '../components/Agency/AgencyHeader';
 import AgencySideNav from '../components/Agency/AgencySideNav';
 import AgencyDetailHeader from '../components/Agency/DetailHeader';
+import Staff from '../components/Agency/Staff';
 import Loader from '../components/Common/Loader';
 import * as appStateActions from '../actions/appStateActions';
 import * as serviceActions from '../actions/serviceActions';
@@ -24,6 +26,7 @@ export const Agency = props => (
         {props.children}
       </div>
     </main>
+    <Route exact path={`${props.match.url}/overview`} render={prop => <Staff auth={props.auth} {...prop} />} />
   </div>
 );
 
