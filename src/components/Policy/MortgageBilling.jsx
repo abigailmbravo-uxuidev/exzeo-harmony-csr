@@ -98,10 +98,6 @@ export class MortgageBilling extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     if (nextProps && nextProps.policy && nextProps.policy.policyNumber && (this.props.policyID !== nextProps.policy.policyID)) {
-      nextProps.getSummaryLedger(nextProps.policy.policyNumber);
-      nextProps.getPaymentOptionsApplyPayments();
-      nextProps.getPaymentHistory(nextProps.policy.policyNumber);
-
       const paymentOptions = {
         effectiveDate: nextProps.policy.effectiveDate,
         policyHolders: nextProps.policy.policyHolders,
