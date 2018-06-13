@@ -25,14 +25,14 @@ const HomeLocation = ({ questions }) => (
           component={Integer}
           thousandSeparator={false}
           validate={validation.isNumbersOnly}
-          dataTest='yearBuilt'
+          dataTest="yearBuilt"
         />
         <Field
           name="property.constructionType"
           label="Construction"
           component={Select}
           answers={getAnswers('constructionType', questions)}
-          dataTest='constructionType'
+          dataTest="constructionType"
 
         />
         <Field
@@ -40,28 +40,28 @@ const HomeLocation = ({ questions }) => (
           label="Protection Class"
           component={SelectInteger}
           answers={getAnswers('protectionClass', questions)}
-          dataTest='protectionClass'
+          dataTest="protectionClass"
         />
         <Field
           name="property.buildingCodeEffectivenessGrading"
           label="BCEG"
           component={SelectInteger}
           answers={getAnswers('buildingCodeEffectivenessGrading', questions)}
-          dataTest='buildingCodeEffectivenessGrading'
+          dataTest="buildingCodeEffectivenessGrading"
         />
         <Field
           name="property.familyUnits"
           label="Family Units"
           component={Select}
           answers={getAnswers('familyUnits', questions)}
-          dataTest='familyUnits'
+          dataTest="familyUnits"
         />
         <Field
           name="property.floodZone"
           label="Flood Zone"
           component={Select}
           answers={getAnswers('floodZone', questions)}
-          dataTest='floodZone'
+          dataTest="floodZone"
         />
       </div>
       {/* Col2 */}
@@ -74,41 +74,41 @@ const HomeLocation = ({ questions }) => (
           label="Tidal Waters Dist."
           component={Numbers}
           decimalScale={2}
-          dataTest='distanceToTidalWater'
+          dataTest="distanceToTidalWater"
         />
         <Field
           name="property.distanceToFireHydrant"
           label="Fire Hydrant Dist."
           component={Numbers}
           decimalScale={2}
-          dataTest='distanceToFireHydrant'
+          dataTest="distanceToFireHydrant"
         />
         <Field
           name="property.distanceToFireStation"
           label="Fire Station Dist."
           component={Numbers}
           decimalScale={2}
-          dataTest='distanceToFireStation'
+          dataTest="distanceToFireStation"
         />
         <Field
           name="property.residenceType"
           label="Residence Type"
           component={Select}
           answers={getAnswers('residenceType', questions)}
-          dataTest='residenceType'
+          dataTest="residenceType"
         />
         <Field
           name="property.squareFeet"
           label="Sq. Ft. of Home"
           component={Integer}
           validate={validation.isRequired}
-          dataTest='squareFeet'
+          dataTest="squareFeet"
         />
         <Field
           name="property.yearOfRoof"
           label="Year Roof Built"
           component={Integer}
-          dataTest='yearOfRoof'
+          dataTest="yearOfRoof"
         />
       </div>
 
@@ -117,7 +117,7 @@ const HomeLocation = ({ questions }) => (
 );
 
 HomeLocation.propTypes = {
-  questions: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
+  questions: PropTypes.array
 };
 
 HomeLocation.defaultProps = {};
