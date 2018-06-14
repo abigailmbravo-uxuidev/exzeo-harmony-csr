@@ -20,5 +20,5 @@ export function clearAppError() {
   return{
     type: types.APP_ERROR_CLEAR,
     error: {}
-  };
+  }
 }
