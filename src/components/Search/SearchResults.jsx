@@ -157,7 +157,7 @@ SearchResults.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  tasks: state.cg, appState: state.appState, agencies: state.service.agencies, agents: state.service.agents, defaultPolicyResults: state.service.policyResults, search: state.search
+  tasks: state.cg, appState: state.appState, agencies: state.agencyState.agencies, agents: state.service.agents, defaultPolicyResults: state.service.policyResults, search: state.search
 });
 
 const mapDispatchToProps = dispatch => ({

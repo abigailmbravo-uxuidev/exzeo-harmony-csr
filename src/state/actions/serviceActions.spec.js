@@ -1147,7 +1147,7 @@ describe('Service Actions', () => {
 
     const initialState = {};
     const store = mockStore(initialState);
-    serviceActions.getAgencies(store.dispatch);
+    //serviceActions.getAgencies(store.dispatch);
 
     const taskData = {
       policyNumber: '123'
