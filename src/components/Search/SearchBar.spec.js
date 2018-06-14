@@ -228,6 +228,7 @@ describe('Testing SearchBar component', () => {
         },
         serviceActions: {
           clearAgent() {},
+          clearAgencies() {},
           clearPolicyResults() {},
           searchPolicy() { return Promise.resolve(() => {}); }
         },
