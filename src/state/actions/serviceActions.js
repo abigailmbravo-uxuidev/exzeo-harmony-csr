@@ -28,32 +28,36 @@ export const serviceRequest = data => ({
   data
 });
 
-
 export function getNotes(noteId, sysNoteId) {
   return async (dispatch) => {
-    const [notes, docsResult] = await Promise.all([
-      fetchNotes(noteId),
-      fetchDocuments(sysNoteId)
-    ]);
+    try {
+      const [notes, docsResult] = await Promise.all([
+        fetchNotes(noteId),
+        fetchDocuments(sysNoteId)
+      ]);
 
-    docsResult.forEach((doc) => {
-      const newNote = {
-        _id: doc.envelopeId ? doc.envelopeId : doc.fileUrl,
-        contactType: 'system',
-        createdBy: {userName: 'System', userId: doc.createdBy},
-        createdDate: moment.unix(doc.createdDate),
-        attachments: [
-          {
-            fileType: 'System',
-            fileName: doc.fileName,
-            fileUrl: doc.fileUrl
-          }
-        ]
-      };
-      notes.push(newNote);
-    });
+      docsResult.forEach((doc) => {
+        const newNote = {
+          _id: doc.envelopeId ? doc.envelopeId : doc.fileUrl,
+          contactType: 'system',
+          createdBy: {userName: 'System', userId: doc.createdBy},
+          createdDate: moment.unix(doc.createdDate),
+          attachments: [
+            {
+              fileType: 'System',
+              fileName: doc.fileName,
+              fileUrl: doc.fileUrl
+            }
+          ]
+        };
+        notes.push(newNote);
+      });
 
-    return dispatch(serviceRequest({notes}));
+      return dispatch(serviceRequest({notes}));
+
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
   }
 }
 
@@ -68,7 +72,7 @@ async function fetchNotes(noteId) {
     const response = await serviceRunner.callService(notesRequest);
     return response.data && response.data.result ? response.data.result : [];
   } catch (error) {
-    dispatch(errorActions.setAppError(error));
+    throw error;
   }
 }
 
@@ -83,7 +87,7 @@ async function fetchDocuments(sysNoteId) {
     const response = await serviceRunner.callService(docsRequest);
     return response.data && response.data.result ? response.data.result : [];
   } catch (error) {
-    dispatch(errorActions.setAppError(error));
+    throw error
   }
 }
 
