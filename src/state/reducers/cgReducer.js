@@ -2,7 +2,7 @@ import * as persistTypes from 'redux-persist/constants';
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 
-export default function cgReducer(state = initialState.workflowData, action) {
+export default function cgReducer(state = initialState.cg, action) {
   let newState = state;
   switch (action.type) {
     case types.CG_START:

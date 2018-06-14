@@ -1,5 +1,6 @@
 export default {
   search: {},
+  cg: {},
   service: {
     cancelOptions: []
   },
@@ -9,6 +10,9 @@ export default {
       submitting: false
     }
   },
+  // navigation: {
+  //   location: null
+  // },
   error: {},
   quoteState: {
     quoteId: null,
