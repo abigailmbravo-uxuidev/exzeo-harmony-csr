@@ -229,14 +229,14 @@ const Coverage = ({
           name="underwritingAnswers.rented.answer"
           label="Property Ever Rented"
           component={Select}
-          answers={formUtils.getAnswers('rented', underwritingQuestions)}
+          answers={formUtils.getUnderwritingAnswers('rented', underwritingQuestions)}
           dataTest='rented'
         />
         <Field
           name="underwritingAnswers.monthsOccupied.answer"
           label="Months Occupied"
           component={Select}
-          answers={formUtils.getAnswers('monthsOccupied', underwritingQuestions)}
+          answers={formUtils.getUnderwritingAnswers('monthsOccupied', underwritingQuestions)}
           dataTest='monthsOccupied'
         />
         <Field
