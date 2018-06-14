@@ -14,6 +14,7 @@ const mockStore = configureStore(middlewares);
 describe('Testing SearchBar component', () => {
   it('should test connected app', () => {
     const initialState = {
+      agencyState: {},
       service: {
       },
       cg: {
@@ -223,7 +224,7 @@ describe('Testing SearchBar component', () => {
       dispatch: store.dispatch,
       actions: {
         agencyStateActions: {
-          getAgencies() {},
+          getAgencies() {}
         },
         serviceActions: {
           clearAgent() {},
@@ -280,8 +281,6 @@ describe('Testing SearchBar component', () => {
       }]
     });
 
-    wrapper2.find('#searchType').simulate('change', { target: { value: 'quote' } });
-    wrapper2.find('#searchType').simulate('change', { target: { value: 'policy' } });
     wrapper2.find('#searchPolicySubmit').simulate('click');
     handlePolicySearchSubmit({}, props.dispatch, props);
     togglePolicyAdvanceSearch(props);
