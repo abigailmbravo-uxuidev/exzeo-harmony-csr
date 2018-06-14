@@ -14,6 +14,7 @@ const mockStore = configureStore(middlewares);
 describe('Testing SearchBar component', () => {
   it('should test connected app', () => {
     const initialState = {
+      agencyState: {},
       service: {
       },
       cg: {
@@ -223,7 +224,7 @@ describe('Testing SearchBar component', () => {
       dispatch: store.dispatch,
       actions: {
         agencyStateActions: {
-          getAgencies() {},
+          getAgencies() {}
         },
         serviceActions: {
           clearAgent() {},

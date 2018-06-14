@@ -1082,7 +1082,6 @@ describe('Service Actions', () => {
       });
   });
 
-
   it('should call searchPolicy', () => {
     const mockAdapter = new MockAdapter(axios);
 
