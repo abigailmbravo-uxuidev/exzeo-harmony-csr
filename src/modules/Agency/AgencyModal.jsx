@@ -3,6 +3,9 @@ import { reduxForm, Form, change, Field } from 'redux-form';
 import { batchActions } from 'redux-batched-actions';
 import { Select, Phone, Radio, Input } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
+import CSRFields from './Overview/CSRFields';
+import ContactFields from './Overview/ContactFields';
+import PrincipalFields from './Overview/PrincipalFields';
 
 export const resetSameAsMailing = (dispatch) => {
   dispatch(change('AgencyModal', 'sameAsMailing', false));
@@ -293,88 +296,15 @@ const AgencyModal = ({
           </section>
           <section className="agency-csr">
             <h4>CSR Contact Information</h4>
-            <div className="flex-form">
-              <Field
-                label="CSR Phone 1"
-                styleName="primaryPhoneNumber"
-                name="primaryPhoneNumber"
-                component={Phone}
-                validate={validation.isRequired}
-              />
-              <Field
-                label="CSR Phone 2"
-                styleName="secondaryPhoneNumber"
-                name="secondaryPhoneNumber"
-                component={Phone}
-                validate={validation.isRequired}
-              />
-              <Field
-                label="CSR Fax"
-                styleName="faxNumber"
-                name="faxNumber"
-                component={Phone}
-                validate={validation.isRequired}
-              />
-              <Field
-                label="CSR Email Address"
-                styleName="customerServiceEmailAddress"
-                name="customerServiceEmailAddress"
-                component={Input}
-                validate={[validation.isRequired, validation.isEmail]}
-              />
-            </div>
+            <CSRFields />
           </section>
           <section className="agency-contact">
             <h4>Agency Contact Information</h4>
-            <div className="flex-form">
-              <Field
-                label="Contact First Name"
-                styleName="contactFirstName flex-item"
-                name="contactFirstName"
-                component={Input}
-                validate={validation.isRequired}
-              />
-              <Field
-                label="Contact Last Name"
-                styleName="contactLastName flex-item"
-                name="contactLastName"
-                component={Input}
-                validate={validation.isRequired}
-              />
-              <Field
-                label="Contact Email Address"
-                styleName="contactEmailAddress"
-                name="contactEmailAddress"
-                component={Input}
-                validate={validation.isRequired}
-              />
-            </div>
+            <ContactFields />
           </section>
           <section className="agency-principal">
             <h4>Agency Principal Information</h4>
-            <div className="flex-form">
-              <Field
-                label="Principal First Name"
-                styleName="principalFirstName"
-                name="principalFirstName"
-                component={Input}
-                validate={validation.isRequired}
-              />
-              <Field
-                label="Principal Last Name"
-                styleName="principalLastName"
-                name="principalLastName"
-                component={Input}
-                validate={validation.isRequired}
-              />
-              <Field
-                label="Principal Email Address"
-                styleName="principalEmailAddress flex-item"
-                name="principalEmailAddress"
-                component={Input}
-                validate={[validation.isRequired, validation.isEmail]}
-              />
-            </div>
+            <PrincipalFields />
           </section>
         </div>
         <div className="card-footer">
