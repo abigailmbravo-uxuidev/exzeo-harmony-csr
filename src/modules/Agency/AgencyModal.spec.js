@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { AgencyModal, copyAddress } from './AgencyModal';
-import mockAgency from './index.spec';
+import mockAgency from './mockAgency';
 
 describe('Testing Agency Base component', () => {
   it('should render', () => {
@@ -13,7 +13,7 @@ describe('Testing Agency Base component', () => {
         sameAsMailing: true
       }
     };
-    const wrapper = shallow(<AgencyModal initialValues={props.agency} {...props} />);
+    const wrapper = shallow(<AgencyModal initialValues={mockAgency} {...props} />);
     expect(wrapper).toBeTruthy;
     wrapper.find('[name="mailingAddress.address1"]').simulate('change', {});
     wrapper.find('[name="mailingAddress.address2"]').simulate('change', {});

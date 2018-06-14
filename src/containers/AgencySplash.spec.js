@@ -32,6 +32,7 @@ describe('Testing AgencySplash component', () => {
 
   it('should test mount', () => {
     const initialState = {
+      agencyState: {},
       service: {
         agencies: []
       },
@@ -53,6 +54,7 @@ describe('Testing AgencySplash component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      agencyState: {},
       search: {
         policyAdvanceSearch: false
       },
