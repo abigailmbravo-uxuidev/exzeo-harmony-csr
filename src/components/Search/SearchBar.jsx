@@ -331,7 +331,7 @@ const generateField = (name, placeholder, labelText, formErrors, formGroupCss) =
 export class SearchForm extends Component {
   componentDidMount() {
     localStorage.removeItem('lastSearchData');
-    this.props.actions.serviceActions.getAgencies('TTIC', 'FL');
+    this.props.actions.appStateActions.getAgencies('TTIC', 'FL');
   }
 
   componentWillReceiveProps(nextProps) {
@@ -392,7 +392,7 @@ export class SearchForm extends Component {
     actions.serviceActions.clearAgent();
     resetPolicySearch(this.props);
     actions.appStateActions.setAppState(appState.modelName, workflowId, { submitting: false });
-    actions.serviceActions.getAgencies('TTIC', 'FL');
+    actions.appStateActions.getAgencies('TTIC', 'FL');
     change('sortBy', 'policyNumber');
   }
 

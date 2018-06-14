@@ -23,3 +23,8 @@ export async function callService(data) {
     throw friendlyError;
   }
 }
+
+export default {
+  callService,
+  handleError
+}
