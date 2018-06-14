@@ -4,8 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, Form, reduxForm } from 'redux-form';
 import Uppy from 'uppy/lib/core';
-import { DragDrop, ProgressBar, StatusBar } from 'uppy/lib/react';
-import { Informer } from './Informer.js';
+import { Dashboard } from 'uppy/lib/react';
 import XHRUpload from 'uppy/lib/plugins/XHRUpload';
 import moment from 'moment';
 import Loader from '../Common/Loader';
@@ -14,6 +13,7 @@ import * as appStateActions from '../../actions/appStateActions';
 import * as newNoteActions from '../../actions/newNoteActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as errorActions from '../../actions/errorActions';
+import 'uppy/dist/uppy.css';
 
 export const minimzeButtonHandler = (props) => {
   if (props.appState.data.minimize) {
@@ -36,12 +36,14 @@ export const validate = (values) => {
   return errors;
 };
 
-class NoteUploader extends Component {
+export class NoteUploader extends Component {
   constructor(props) {
     super(props);
 
+    const idToken = localStorage.getItem('id_token');
+
     this.uppy = new Uppy({
-      autoProceed: true,
+      autoProceed: false,
       restrictions: {
         maxFileSize: 10000000,
       },
@@ -56,7 +58,16 @@ class NoteUploader extends Component {
       this.setState({ submitEnabled: true });
     }).on('upload', (result) => {
       this.setState({ submitEnabled: false });
-    });
+    }).use(XHRUpload, {
+        endpoint: `${process.env.REACT_APP_API_URL}/upload`,
+        fieldName: 'files[]',
+        headers: {
+          accept: 'application/json',
+          authorization: `bearer ${idToken}`
+        }
+    }).run();
+
+    this.uppy.setMeta({ documentId: this.props.documentId });
   }
 
   state = {
@@ -150,8 +161,15 @@ class NoteUploader extends Component {
       return false;
     }
 
-    this.setState({ loading: true });
-    const noteAttachments = this.state.attachments.map(item => ({...item, fileType: data.fileType}));
+    const filelist = Object.values(this.uppy.getState().files);
+    const uploads = filelist.filter(file => file.progress.uploadComplete);
+
+    if (filelist.length > uploads.length) {
+      this.uppy.info('You have files that are not uploaded.', 'error');
+      return false;
+    }
+
+    const noteAttachments = uploads.map(file => ({ ...file.response.body, fileType: data.fileType }));
     const noteData = {
       number: documentId,
       source: sourceId,
@@ -166,7 +184,10 @@ class NoteUploader extends Component {
       })
     };
 
-    actions.cgActions.startWorkflow('addNote', noteData)
+    //const a = Object.keys(this.uppy.getState().files).map(i => this.uppy.getState().files[i]);
+    console.log(noteAttachments)
+
+    /*actions.cgActions.startWorkflow('addNote', noteData)
       .then(result => {
         if(window.location.pathname.endsWith('/notes')) {
           const ids = (noteData.noteType === 'Policy Note')
@@ -181,7 +202,7 @@ class NoteUploader extends Component {
         actions.errorActions.setAppError({ message: err });
         this.setState({ loading: false });
         this.closeButtonHandler();
-      });
+      });*/
   }
 
   validateFile = (file, currentFiles) => !file.name.includes('.')
@@ -193,16 +214,7 @@ class NoteUploader extends Component {
   }))
 
   componentDidMount() {
-    const idToken = localStorage.getItem('id_token');
-    this.uppy.setMeta({ documentId: this.props.documentId });
-    this.uppy.use(XHRUpload, {
-        endpoint: `${process.env.REACT_APP_API_URL}/upload`,
-        fieldName: 'files[]',
-        headers: {
-          accept: 'application/json',
-          authorization: `bearer ${idToken}`
-        }
-    }).run();
+    
   }
 
   render() {
@@ -228,25 +240,7 @@ class NoteUploader extends Component {
               <Field component="select" name="fileType" disabled={!this.docTypes.length}>
                 { this.docTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
               </Field>
-              <div className="file-uploader">
-                <div className="uppy-DragDrop-wrapper">
-                  <DragDrop uppy={this.uppy} maxHeight={350} showProgressDetails hideUploadButton />
-                </div>
-                <div className="uppy-ProgressBar-wrapper">
-                  <ProgressBar uppy={this.uppy} />
-                </div>
-                <div className="uppy-StatusBar-wrapper">
-                  <StatusBar uppy={this.uppy} />
-                </div>
-                <div className="uppy-Informer-wrapper">
-                  <Informer uppy={this.uppy} />
-                </div>
-                <ul className="upload-list">
-                  {this.state.attachments.map((file, i) =>
-                    <li key={i}><span>{file.fileName}</span><i className="fa fa-trash" onClick={this.removeUpload(i)} /></li>
-                  )}
-                </ul>
-              </div>
+              <Dashboard uppy={this.uppy} maxHeight={350} showProgressDetails hideProgressAfterFinish />
             </div>
             <div className="buttons note-file-footer-button-group">
               <button tabIndex="0" aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={this.closeButtonHandler}>Cancel</button>

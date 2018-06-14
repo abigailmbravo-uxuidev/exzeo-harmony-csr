@@ -307,24 +307,10 @@
               transition-duration: 0.2s;
               border-radius: 0 0 $border-radius $border-radius;
               font-size: $font-size-base;
+              background-color: $red !important;
 
               p {
-                font-weight: $font-weight-normal;
-
-                span {
-                  display: none;
-                }
-              }
-            }
-          }
-
-          .is-error {
-            +.uppy-Informer {
-              display: flex;
-              align-items: center;
-              background: $red !important;
-
-              p {
+                  font-weight: $font-weight-normal;
                 display: flex;
                 align-items: center;
                 width: 100%;
@@ -342,39 +328,13 @@
                   font-family: $font-family-icon;
                   font-size: $font-size-base;
                 }
-              }
-            }
-          }
 
-          .is-complete {
-            +.uppy-Informer {
-              display: flex;
-              align-items: center;
-              background: $green-darken-01 !important;
-
-              p {
-                display: flex;
-                align-items: center;
-                width: 100%;
-
-                &:before {
-                  display: flex;
-                  align-items: center;
-                  flex-grow: 0;
-                  flex-shrink: 0;
-                  justify-content: center;
-                  width: 1rem;
-                  height: 1rem;
-                  margin-right: $padding;
-                  content: '\f058';
-                  font-family: $font-family-icon;
-                  font-size: $font-size-base;
+                span {
+                    display: none;
                 }
               }
             }
           }
-
-        
         }
 
         .upload-list {

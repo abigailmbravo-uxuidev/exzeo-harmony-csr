@@ -47,14 +47,14 @@ describe('Testing NoteUploader component', () => {
   it('should map state to props', () => {
     const store = mockStore(initialState);
     const wrapper = shallow(<NoteUploader store={store} {...props} />);
-    //console.log(wrapper.props())
     expect(wrapper.props().appState).toEqual({ data: { minimize: false } });
     expect(wrapper.props().user).toEqual({ profile: { given_name: 'Test', family_name: 'Test' } });
   });
 
-  it('should map state to props', () => {
+  it('should have local state', () => {
     const store = mockStore(initialState);
-    const wrapper = shallow(<NoteUploader store={store} {...props} />).first().shallow();
-    console.log(wrapper.debug())
+    const wrapper = shallow(<NoteUploader store={store} {...props} />).dive().dive().dive().dive();
+    const instance = wrapper.instance();
+    expect(instance.state).toEqual({ attachments: [], loading: false, submitEnabled: true });
   });
 });
