@@ -142,5 +142,6 @@ describe('Testing Coverage component', () => {
     };
     expect(getPropertyAppraisalLink(policy.property.physicalAddress.county, questions).label).toEqual('ALACHUA');
     expect(getPropertyAppraisalLink(policy.property.physicalAddress.county, questions).answer).toEqual('http://www.acpafl.org/');
+    expect(getPropertyAppraisalLink(policy.property.physicalAddress.county, null)).toEqual({});
   });
 });
