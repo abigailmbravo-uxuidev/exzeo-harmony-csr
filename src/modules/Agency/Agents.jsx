@@ -1,8 +1,8 @@
 import React from 'react';
 
 export const Agents = () => (
-  <React.Fragment>
-    <div />
-  </React.Fragment>);
+  <div>
+    Agents
+  </div>);
 
 export default Agents;
