@@ -1,9 +1,8 @@
 import React from 'react';
 
 export const Contracts = () => (
-  <React.Fragment>
-    <div />
-  </React.Fragment>
-);
+  <div>
+    Contracts
+  </div>);
 
 export default Contracts;
