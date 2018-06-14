@@ -450,6 +450,7 @@ describe('Testing Splash component', () => {
 
   it('should test mount', () => {
     const initialState = {
+      agencyState: {},
       search: {
         policyAdvanceSearch: true
       },

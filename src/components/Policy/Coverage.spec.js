@@ -37,6 +37,9 @@ describe('Testing Coverage component', () => {
       policy: {
         rating: {}
       },
+      getUIQuestions() {},
+      getPolicy() {},
+      getCancelOptions() { return Promise.resolve(); },
       actions: {
         policyStateActions: {
           updatePolicy() {}
@@ -48,9 +51,7 @@ describe('Testing Coverage component', () => {
           batchCompleteTask() { return Promise.resolve({ payload: [{ data: { policy: { } } }] }); },
           startWorkflow() { return Promise.resolve({ payload: [{ data: { policy: { } } }] }); }
         },
-        questionsActions: {
-          getUIQuestions() {}
-        },
+        getUIQuestions() {},
         serviceActions: {
           getCancelOptions() { return Promise.resolve(); },
           getBillingOptionsForPolicy() { return Promise.resolve(); },
@@ -89,9 +90,7 @@ describe('Testing Coverage component', () => {
           batchCompleteTask() { return Promise.resolve({ payload: [{ data: { policy: { } } }] }); },
           startWorkflow() { return Promise.resolve({ payload: [{ data: { policy: { } } }] }); }
         },
-        questionsActions: {
-          getUIQuestions() {}
-        },
+        getUIQuestions() {},
         serviceActions: {
           getCancelOptions() { return Promise.resolve(); },
           getBillingOptionsForPolicy() { return Promise.resolve(); },
@@ -140,5 +139,6 @@ describe('Testing Coverage component', () => {
     ];
     expect(getPropertyAppraisalLink(policy.property.physicalAddress.county, questions).label).toEqual('ALACHUA');
     expect(getPropertyAppraisalLink(policy.property.physicalAddress.county, questions).answer).toEqual('http://www.acpafl.org/');
+    expect(getPropertyAppraisalLink(policy.property.physicalAddress.county, null)).toEqual({});
   });
 });
