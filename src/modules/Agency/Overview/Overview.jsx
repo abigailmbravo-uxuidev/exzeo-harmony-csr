@@ -63,7 +63,7 @@ export class Overview extends Component {
             </div>
           </div>
         </div>
-        {/* {this.state.showAgencyEdit && (
+        {this.state.showAgencyEdit && (
           <AgencyModal
             initialValues={{
               ...agency,
@@ -77,7 +77,7 @@ export class Overview extends Component {
             isEdit
             closeModal={this.toggleAgencyModal}
           />
-        )} */}
+        )}
       </div>);
   }
 }
