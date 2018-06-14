@@ -1,5 +1,4 @@
 import configureStore from 'redux-mock-store';
-import sinon from 'sinon';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import * as types from './actionTypes';
@@ -1080,66 +1079,6 @@ describe('Service Actions', () => {
     return serviceActions.getZipcodeSettings(null)(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
-      });
-  });
-
-  it('should call start getAgencies', () => {
-    const mockAdapter = new MockAdapter(axios);
-
-    const axiosOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'agency',
-        method: 'GET',
-        path: 'v1/agencies/TTIC/FL?pageSize=1000&sort=displayName&SortDirection=asc'
-      }
-    };
-
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
-    });
-
-    const initialState = {};
-    const store = mockStore(initialState);
-    serviceActions.getAgencies(store.dispatch);
-
-    return serviceActions.getAgencies('TTIC', 'FL')(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
-      });
-  });
-
-  it('should fail start getAgencies', () => {
-    const mockAdapter = new MockAdapter(axios);
-
-    const axiosOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'agency',
-        method: 'GET',
-        path: 'v1/agencies/TTIC/FL'
-      }
-    };
-
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
-    });
-
-    const initialState = {};
-    const store = mockStore(initialState);
-    serviceActions.getAgencies(store.dispatch);
-
-    return serviceActions.getAgencies(null, 'FL')(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
   });
 
