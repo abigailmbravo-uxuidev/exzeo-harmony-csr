@@ -47,23 +47,16 @@ const csrLinks = [{
 }];
 
 
-export const SideNav = props => (
+export const SideNav = () => (
   <nav className="site-nav">
     <ul>
       {csrLinks && csrLinks.length > 0 && csrLinks.map((agentLink, index) => (
-        agentLink.outside ?
-          <li key={index}>
-            {/* <a className={agentLink.styleName} href={agentLink.link}> */}
-            <a className="csr-dashboard" href="/">
-              <span>{agentLink.label}</span>
-            </a>
-          </li> :
-          <li key={index}>
-            <span className={agentLink.styleName}>
-              <NavLink to={agentLink.link} activeClassName="active" exact>{agentLink.label}</NavLink>
-            </span>
-          </li>
-      ))}
+        <li key={index}>
+          <span className={agentLink.styleName}>
+            <NavLink to={agentLink.link} activeClassName="active" exact>{agentLink.label}</NavLink>
+          </span>
+        </li>))
+      }
     </ul>
   </nav>);
 

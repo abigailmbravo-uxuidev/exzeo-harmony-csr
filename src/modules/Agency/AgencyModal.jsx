@@ -52,7 +52,7 @@ export const copyAddress = (value, allValues, dispatch) => {
   return value;
 };
 
-const AgencyModal = ({
+export const AgencyModal = ({
   handleSubmit,
   saveAgency,
   closeModal,
