@@ -28,7 +28,7 @@ import PolicyPolicyholderAgent from './components/Policy/PolicyholderAgent';
 import PolicyMortgageBilling from './components/Policy/MortgageBilling';
 import PolicyNotesFiles from './components/Policy/NotesFiles';
 import PolicyEndorsements from './components/Policy/Endorsements';
-import Agency from './containers/Agency';
+import Agency from './modules/Agency';
 import NoteUploader from './components/Common/NoteUploader';
 import PolicyCancel from './components/Policy/Cancel';
 
