@@ -15,7 +15,7 @@ export const Agency = props => (
     <AgencyHeader />
     <AgencyDetailHeader />
     <main role="document">
-      { !props.agency && <Loader />}
+      {/* { !props.agency && <Loader />} */}
       <aside className="content-panel-left">
         <AgencySideNav />
       </aside>

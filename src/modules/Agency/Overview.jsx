@@ -1,8 +1,8 @@
 import React from 'react';
 
 export const Overview = () => (
-  <React.Fragment>
-    <div />
-  </React.Fragment>);
+  <div>
+    Overview
+  </div>);
 
 export default Overview;
