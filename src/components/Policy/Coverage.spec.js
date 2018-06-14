@@ -117,7 +117,7 @@ describe('Testing Coverage component', () => {
       }
     };
     const questions = {
-      'propertyAppraisal': {
+      propertyAppraisal: {
         _id: '32432424234234234',
         name: 'propertyAppraisal',
         steps: [
