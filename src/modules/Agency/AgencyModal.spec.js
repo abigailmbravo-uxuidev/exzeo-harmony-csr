@@ -1,12 +1,13 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { AgencyModal, copyAddress } from './AgencyModal';
+import mockAgency from './index.spec';
 
 describe('Testing Agency Base component', () => {
   it('should render', () => {
     const props = {
       dispatch() {},
-      agency: { agencyCode: 123, mailingAddress: {} },
+      agency: mockAgency,
       handleSubmit() {},
       fieldValues: {
         sameAsMailing: true
