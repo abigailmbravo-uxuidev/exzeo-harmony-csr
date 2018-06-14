@@ -45,22 +45,4 @@ describe('App State Actions', () => {
     expect(store.getActions()).toEqual(stateObj);
   });
 
-  it('should call dispatchAppState', () => {
-    const initialState = {};
-    const store = mockStore(initialState);
-
-    const inputProps = {
-      modelName: 'bb',
-      instanceId: '123',
-      data: { bb: '123' }
-    }
-
-    const stateObj = [{
-      type: types.APPSTATE_SET,
-      appState: { ...inputProps }
-    }];
-
-    appStateActions.dispatchAppState(inputProps.modelName, inputProps.instanceId, inputProps.data)(store.dispatch);
-  });
-
 });

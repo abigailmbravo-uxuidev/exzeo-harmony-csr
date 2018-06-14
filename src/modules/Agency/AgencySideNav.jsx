@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { reduxForm, propTypes } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import * as appStateActions from '../../state/actions/appStateActions';
 import * as cgActions from '../../state/actions/cgActions';
 // import NewNoteFileUploader from '../Common/NewNoteFileUploader';
@@ -62,7 +62,6 @@ export const SideNav = () => (
 
 // TODO: Needs to be connected to wherever it's gonnna get nav links from
 SideNav.propTypes = {
-  ...propTypes,
   completedTasks: PropTypes.any, // eslint-disable-line
   activateRedirectLink: PropTypes.string,
   activateRedirect: PropTypes.bool

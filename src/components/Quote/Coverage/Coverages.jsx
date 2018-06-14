@@ -18,7 +18,9 @@ const sinkholePerilCoverageAnswers = questions => (
 );
 
 const Coverages = ({
-  sectionId, sectionClass, questions,
+  sectionId,
+  sectionClass,
+  questions,
   normalizeDwellingAmount,
   normalizeDwellingDependencies,
   normalizePersonalPropertyPercentage,
@@ -270,7 +272,6 @@ const Coverages = ({
 );
 
 Coverages.propTypes = {
-  questions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
   normalizeDwellingAmount: PropTypes.func.isRequired,
   normalizeDwellingDependencies: PropTypes.func.isRequired,
   normalizePersonalPropertyPercentage: PropTypes.func.isRequired,
