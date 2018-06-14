@@ -23,10 +23,9 @@ export const Agency = props => (
         <AgencySideNav />
       </aside>
       <div className="content-wrapper">
-        {props.children}
+        <Route exact path={`${props.match.url}/overview`} render={prop => <Staff auth={props.auth} {...prop} />} />
       </div>
     </main>
-    <Route exact path={`${props.match.url}/overview`} render={prop => <Staff auth={props.auth} {...prop} />} />
   </div>
 );
 
