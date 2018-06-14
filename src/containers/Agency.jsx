@@ -7,7 +7,8 @@ import { Route } from 'react-router-dom';
 import AgencyHeader from '../components/Agency/AgencyHeader';
 import AgencySideNav from '../components/Agency/AgencySideNav';
 import AgencyDetailHeader from '../components/Agency/DetailHeader';
-import Staff from '../components/Agency/Staff';
+import AgencyModule from '../../modules/Agency';
+
 import Loader from '../components/Common/Loader';
 import * as appStateActions from '../state/actions/appStateActions';
 import * as serviceActions from '../state/actions/serviceActions';
@@ -23,7 +24,7 @@ export const Agency = props => (
         <AgencySideNav />
       </aside>
       <div className="content-wrapper">
-        <Route exact path={`${props.match.url}/overview`} render={prop => <Staff auth={props.auth} {...prop} />} />
+        <AgencyModule />
       </div>
     </main>
   </div>
