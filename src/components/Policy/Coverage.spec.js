@@ -56,7 +56,7 @@ describe('Testing Coverage component', () => {
           getBillingOptionsForPolicy() { return Promise.resolve(); },
           getSummaryLedger() { return Promise.resolve(); }
         },
-        errorActions: { dispatchClearAppError() { } }
+        errorActions: { clearAppError() { } }
       },
       fieldQuestions: [],
       quoteData: {},
@@ -97,7 +97,7 @@ describe('Testing Coverage component', () => {
           getBillingOptionsForPolicy() { return Promise.resolve(); },
           getSummaryLedger() { return Promise.resolve(); }
         },
-        errorActions: { dispatchClearAppError() { } }
+        errorActions: { clearAppError() { } }
       },
       policy: { policyNumber: '324324', rating: { worksheet: { fees: {} } } }
     });

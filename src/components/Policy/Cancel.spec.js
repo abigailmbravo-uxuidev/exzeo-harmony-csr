@@ -69,12 +69,21 @@ describe('Testing Cancel component', () => {
       zipCodeSettings: initialState.zipCodeSettings,
       appState: initialState.appState,
       dispatch: store.dispatch,
+      cancelOptions,
     };
     const wrapper = shallow(<CancelPolicy label="test" store={store} {...props} />);
     expect(wrapper);
 
     wrapper.instance().componentWillReceiveProps({
       ...props,
+      fieldValues: { cancelType: 'Voluntary Cancellation' },
+      summaryLedger: {},
+      policy: { property: { physicalAddress: { zip: 33607 } }, policyNumber: '1234', rating: { worksheet: { fees: {} } } }
+    });
+
+    wrapper.instance().componentWillReceiveProps({
+      ...props,
+      fieldValues: { cancelType: 'Underwriting Non-Renewal' },
       summaryLedger: {},
       policy: { property: { physicalAddress: { zip: 33607 } }, policyNumber: '1234', rating: { worksheet: { fees: {} } } }
     });

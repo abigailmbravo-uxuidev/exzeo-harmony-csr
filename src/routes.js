@@ -64,7 +64,7 @@ class Routes extends Component {
 
       if (!this.props.authState.userProfile) {
         const profile = JSON.parse(localStorage.getItem('user_profile'));
-        this.props.actions.authActions.dispatchUserProfile(profile);
+        this.props.actions.authActions.setUserProfile(profile);
       }
     } else if (!isAuthenticated() && checkPublicPath(window.location.pathname)) {
       history.push('/login');

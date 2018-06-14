@@ -1,7 +1,9 @@
 import * as types from './actionTypes';
 
-export const toggleNote = noteMeta => ({
-  type: types.TOGGLE_NOTE,
-  noteMeta
-});
+export function toggleNote(noteMeta) {
+  return {
+    type: types.TOGGLE_NOTE,
+    noteMeta
+  };
+}
 

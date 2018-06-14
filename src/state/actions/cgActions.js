@@ -287,19 +287,3 @@ export const moveToTaskAndExecuteComplete = (modelName, workflowId, stepName, co
     })
     .catch(error => handleError(dispatch, modelName, workflowId, error));
 };
-
-export const submitEndorsement = (data, props) => {
-  return async (dispatch) => {
-    const submitData = endorsementUtils.generateModel(data, props.policy, props);
-
-    submitData.rating = props.getRate.rating;
-    submitData.summaryLedger = props.summaryLedger;
-    const result = await dispatch(startWorkflow('endorsePolicyModelSave', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID }));
-    const steps = [{
-      name: 'saveEndorsement',
-      data: submitData
-    }];
-    const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelSave.data : {};
-    await dispatch(batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps));
-  }
-};

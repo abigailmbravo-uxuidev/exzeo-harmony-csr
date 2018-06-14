@@ -8,32 +8,18 @@ describe('authActions', () => {
   it('should call setUserPofile', () => {
     const initialState = {};
     const store = mockStore(initialState);
+    const userProfile = {
+      name: 'tester'
+    };
 
     const stateObj = [{
       type: types.AUTH,
       authState: {
-        userProfile: {}
+        userProfile
       }
     }];
 
-    store.dispatch(authActions.setUserProfile({}));
-
-    expect(store.getActions()).toEqual(stateObj);
-  });
-
-  it('should dispatchUserProfile', () => {
-    const initialState = {};
-    const store = mockStore(initialState);
-
-    const stateObj = [{
-      type: types.AUTH,
-      authState: {
-        userProfile: {}
-      }
-    }];
-
-    authActions.dispatchUserProfile({});
-    store.dispatch(authActions.setUserProfile({}));
+    store.dispatch(authActions.setUserProfile(userProfile));
 
     expect(store.getActions()).toEqual(stateObj);
   });

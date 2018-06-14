@@ -5,6 +5,7 @@ import * as appStateActions from './appStateActions';
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 describe('App State Actions', () => {
+
   it('should call setAppState', () => {
     const initialState = {};
     const store = mockStore(initialState);
@@ -24,6 +25,7 @@ describe('App State Actions', () => {
 
     expect(store.getActions()).toEqual(stateObj);
   });
+
   it('should call setAppStateError', () => {
     const initialState = {};
     const store = mockStore(initialState);
@@ -42,6 +44,7 @@ describe('App State Actions', () => {
     store.dispatch(appStateActions.setAppStateError(inputProps.modelName, inputProps.instanceId, inputProps.error));
     expect(store.getActions()).toEqual(stateObj);
   });
+
   it('should call dispatchAppState', () => {
     const initialState = {};
     const store = mockStore(initialState);
@@ -59,4 +62,5 @@ describe('App State Actions', () => {
 
     appStateActions.dispatchAppState(inputProps.modelName, inputProps.instanceId, inputProps.data)(store.dispatch);
   });
+
 });

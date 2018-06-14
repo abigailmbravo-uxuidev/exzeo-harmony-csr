@@ -1,10 +1,12 @@
 import configureStore from 'redux-mock-store';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
+import thunk from 'redux-thunk';
 import * as types from './actionTypes';
 import * as questionsActions from './questionsActions';
 
-const middlewares = [];
+
+const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 
 describe('Questions Actions', () => {
@@ -97,7 +99,7 @@ describe('Questions Actions', () => {
 
     return questionsActions.getUIQuestions(step)(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
   });
 });

@@ -2,9 +2,10 @@ import axios from 'axios';
 import moment from 'moment';
 import { batchActions } from 'redux-batched-actions';
 import endorsementUtils from '../../utilities/endorsementModel';
-import { getPolicy } from './policyActions';
+import * as serviceRunner from '../../utilities/serviceRunner';
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
+import { getPolicy } from './policyActions';
 
 export const handleError = (err) => {
   let error = err.response && err.response.data ? err.response.data : err;
@@ -12,11 +13,6 @@ export const handleError = (err) => {
   if (!error.message) error.message = 'There was an error.';
   return { ...error };
 };
-
-export const serviceRequest = data => ({
-  type: types.SERVICE_REQUEST,
-  data
-});
 
 export const runnerSetup = data => ({
   method: 'POST',
@@ -27,49 +23,69 @@ export const runnerSetup = data => ({
   data
 });
 
-export const getNotes = (id, sysNoteId) => (dispatch) => {
-  const notesRequest = runnerSetup({
+export const serviceRequest = data => ({
+  type: types.SERVICE_REQUEST,
+  data
+});
+
+
+export function getNotes(noteId, sysNoteId) {
+  return async (dispatch) => {
+    const [notes, docsResult] = await Promise.all([
+      fetchNotes(noteId),
+      fetchDocuments(sysNoteId)
+    ]);
+
+    docsResult.forEach((doc) => {
+      const newNote = {
+        _id: doc.envelopeId ? doc.envelopeId : doc.fileUrl,
+        contactType: 'system',
+        createdBy: {userName: 'System', userId: doc.createdBy},
+        createdDate: moment.unix(doc.createdDate),
+        attachments: [
+          {
+            fileType: 'System',
+            fileName: doc.fileName,
+            fileUrl: doc.fileUrl
+          }
+        ]
+      };
+      notes.push(newNote);
+    });
+
+    return dispatch(serviceRequest({notes}));
+  }
+}
+
+async function fetchNotes(noteId) {
+  const notesRequest = {
     service: 'transaction-logs',
     method: 'GET',
-    path: `history?number=${id}`
-  });
+    path: `history?number=${noteId}`
+  };
 
-  const docsRequest = runnerSetup({
+  try {
+    const response = await serviceRunner.callService(notesRequest);
+    return response.data && response.data.result ? response.data.result : [];
+  } catch (error) {
+    dispatch(errorActions.setAppError(error));
+  }
+}
+
+async function fetchDocuments(sysNoteId) {
+  const docsRequest = {
     service: 'file-index',
     method: 'GET',
     path: `v1/fileindex/${sysNoteId}`
-  });
+  };
 
-  return Promise.all([
-    axios(notesRequest),
-    axios(docsRequest)
-  ])
-    .then(([notesResult, docsResult]) => {
-      const notes = notesResult.data.result;
-      docsResult.data.result.forEach((doc) => {
-        const newNote = {
-          _id: doc.envelopeId ? doc.envelopeId : doc.fileUrl,
-          contactType: 'system',
-          createdBy: { userName: 'System', userId: doc.createdBy },
-          createdDate: moment.unix(doc.createdDate),
-          attachments: [
-            {
-              fileType: 'System',
-              fileName: doc.fileName,
-              fileUrl: doc.fileUrl
-            }
-          ]
-        };
-        notes.push(newNote);
-      });
-
-      return dispatch(serviceRequest({ notes }));
-    })
-    .catch((error) => {
-      const message = handleError(error);
-      dispatch(errorActions.setAppError(message));
-    });
-};
+  try {
+    const response = await serviceRunner.callService(docsRequest);
+    return response.data && response.data.result ? response.data.result : [];
+  } catch (error) {
+    dispatch(errorActions.setAppError(error));
+  }
+}
 
 export const addNote = (data, files) => (dispatch) => {
   const form = new FormData();

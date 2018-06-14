@@ -1,4 +1,5 @@
 import configureStore from 'redux-mock-store';
+import sinon from 'sinon';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import * as types from './actionTypes';
@@ -200,7 +201,6 @@ describe('Service Actions', () => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
       });
   });
-
 
   it('should fail start getAgents', () => {
     const mockAdapter = new MockAdapter(axios);
@@ -802,7 +802,6 @@ describe('Service Actions', () => {
       });
   });
 
-
   it('should call start getBillingOptions', () => {
     const mockAdapter = new MockAdapter(axios);
 
@@ -1025,28 +1024,6 @@ describe('Service Actions', () => {
       });
   });
 
-  const ai = {
-    additionalInterestId: '123',
-    name1: 'data.name1',
-    name2: 'data.name2',
-    referenceNumber: 'data.referenceNumber',
-    order: 0,
-    active: true,
-    type: 'Additional Interest',
-    phoneNumber: '555-555-5555',
-    mailingAddress: {
-      address1: 'data.address1',
-      address2: 'data.address2',
-      city: 'data.city',
-      state: 'FL',
-      zip: '33607',
-      country: {
-        code: 'USA',
-        displayText: 'United States of America'
-      }
-    }
-  };
-
   it('should call start getZipcodeSettings', () => {
     const mockAdapter = new MockAdapter(axios);
 
@@ -1105,7 +1082,6 @@ describe('Service Actions', () => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
       });
   });
-
 
   it('should call start getAgencies', () => {
     const mockAdapter = new MockAdapter(axios);
