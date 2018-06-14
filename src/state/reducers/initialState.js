@@ -9,7 +9,6 @@ export default {
     data: {
       submitting: false
     },
-    agencies: [],
   },
   navigation: {
     location: null
@@ -29,6 +28,7 @@ export default {
     userProfile: null
   },
   agencyState: {
+    agencies: [],
     agency: {},
     agents: []
   }
