@@ -3,6 +3,7 @@ import _ from 'lodash';
 import AgencyDetails from './AgencyDetails';
 import AgencyContacts from './AgencyContacts';
 import AgencyModal from '../AgencyModal';
+import EditContact from './EditContact';
 
 export class Overview extends Component {
   state = {
@@ -47,7 +48,7 @@ export class Overview extends Component {
 
     return (
       <div>
-        {/* {this.state.showEditContact &&
+        {this.state.showEditContact &&
           this.state.editType && (
             <EditContact
               initialValues={agency}
@@ -55,7 +56,7 @@ export class Overview extends Component {
               editType={this.state.editType}
               updateContact={this.updateContact}
             />
-          )} */}
+          )}
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
