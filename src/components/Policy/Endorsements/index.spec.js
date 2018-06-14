@@ -74,7 +74,7 @@ const baseProps = {
   reset() {},
   handleSubmit() {},
   initialize() {},
-  errorActions: { dispatchClearAppError() { } },
+  errorActions: { clearAppError() { } },
   getZipcodeSettings() {},
   getUnderwritingQuestions() {},
   getEndorsementHistory() {},

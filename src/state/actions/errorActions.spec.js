@@ -22,6 +22,7 @@ describe('Error Actions', () => {
 
     expect(store.getActions()).toEqual(stateObj);
   });
+
   it('should call clearAppError', () => {
     const initialState = {};
     const store = mockStore(initialState);
@@ -34,16 +35,5 @@ describe('Error Actions', () => {
     store.dispatch(errorActions.clearAppError());
     expect(store.getActions()).toEqual(stateObj);
   });
-  it('should call dispatchClearAppError', () => {
-    const initialState = {};
-    const store = mockStore(initialState);
 
-    const stateObj = [{
-      type: types.APP_ERROR_CLEAR,
-      error: {}
-    }];
-
-    errorActions.dispatchClearAppError()(store.dispatch);
-    expect(store.getActions()).toEqual(stateObj);
-  });
 });

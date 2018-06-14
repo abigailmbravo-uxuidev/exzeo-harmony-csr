@@ -10,6 +10,7 @@ import Rules from '../Form/Rules';
 import SelectField from '../Form/inputs/SelectField';
 import * as cgActions from '../../state/actions/cgActions';
 import * as appStateActions from '../../state/actions/appStateActions';
+import * as agencyStateActions from '../../state/actions/agencyActions';
 import * as errorActions from '../../state/actions/errorActions';
 import * as serviceActions from '../../state/actions/serviceActions';
 import * as searchActions from '../../state/actions/searchActions';
@@ -331,7 +332,7 @@ const generateField = (name, placeholder, labelText, formErrors, formGroupCss) =
 export class SearchForm extends Component {
   componentDidMount() {
     localStorage.removeItem('lastSearchData');
-    this.props.actions.serviceActions.getAgencies('TTIC', 'FL');
+    this.props.actions.agencyStateActions.getAgencies('TTIC', 'FL');
   }
 
   componentWillReceiveProps(nextProps) {
@@ -392,7 +393,7 @@ export class SearchForm extends Component {
     actions.serviceActions.clearAgent();
     resetPolicySearch(this.props);
     actions.appStateActions.setAppState(appState.modelName, workflowId, { submitting: false });
-    actions.serviceActions.getAgencies('TTIC', 'FL');
+    actions.agencyStateActions.getAgencies('TTIC', 'FL');
     change('sortBy', 'policyNumber');
   }
 
@@ -668,7 +669,7 @@ const mapStateToProps = state => ({
   questions: state.questions,
   agencies: state.agencies,
   agents: state.agents,
-  agencyList: state.service.agencies || [],
+  agencyList: state.agencyState.agencies || [],
   policyResults: state.service.policyResults,
   search: state.search,
   pathName: window.location.pathname
@@ -677,6 +678,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: {
     cgActions: bindActionCreators(cgActions, dispatch),
+    agencyStateActions: bindActionCreators(agencyStateActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch),
     errorActions: bindActionCreators(errorActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),

@@ -1,13 +1,23 @@
 import * as types from './actionTypes';
 
-export const setAppError = error => ({
-  type: types.APP_ERROR,
-  error
-});
+/**
+ *
+ * @param error
+ * @returns {{type: string, error: *}}
+ */
+export function setAppError(error) {
+  return {
+    type: types.APP_ERROR,
+    error
+  };
+}
 
-export const clearAppError = () => ({
-  type: types.APP_ERROR_CLEAR,
-  error: {}
-});
-
-export const dispatchClearAppError = () => dispatch => dispatch(clearAppError());
+/**
+ *
+ * @returns {{type: string}}
+ */
+export function clearAppError() {
+  return{
+    type: types.APP_ERROR_CLEAR,
+  }
+}

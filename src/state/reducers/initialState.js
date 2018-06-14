@@ -8,7 +8,7 @@ export default {
   appState: {
     data: {
       submitting: false
-    }
+    },
   },
   navigation: {
     location: null
@@ -26,5 +26,10 @@ export default {
   },
   authState: {
     userProfile: null
+  },
+  agencyState: {
+    agencies: [],
+    agency: {},
+    agents: []
   }
 };
