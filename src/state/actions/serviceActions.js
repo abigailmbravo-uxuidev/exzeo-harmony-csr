@@ -635,24 +635,6 @@ export const saveBillingInfo = (id, billToType, billToId, billPlan) => (dispatch
     });
 };
 
-export const getAgencies = (companyCode, state) => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'agency',
-    method: 'GET',
-    path: `v1/agencies/${companyCode}/${state}?pageSize=1000&sort=displayName&SortDirection=asc`
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const result = response.data && response.data.result ? response.data.result : [];
-    const data = { agencies: result };
-    return dispatch(serviceRequest(data));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(errorActions.setAppError(message));
-    });
-};
-
 export const searchPolicy = (taskData, sort) => (dispatch) => {
   const formattedAddress = taskData.address ? taskData.address.replace(' ', '&#32;') : '';
   const sortDirection = sort === 'policyNumber' ? 'desc' : 'asc';
