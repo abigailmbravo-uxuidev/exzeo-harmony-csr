@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import AgencyDetails from './AgencyDetails';
 import AgencyContacts from './AgencyContacts';
+import AgencyModal from '../AgencyModal';
 
 export class Overview extends Component {
   state = {
