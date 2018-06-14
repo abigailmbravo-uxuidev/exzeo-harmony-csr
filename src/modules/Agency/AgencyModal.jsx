@@ -231,7 +231,7 @@ const AgencyModal = ({
                 <h4>
                   Physical Address
                   <Field
-                    normalize={value => copyAddress(value)}
+                    normalize={(value, previousValue, allValues) => copyAddress(value, allValues, dispatch)}
                     name="sameAsMailing"
                     id="sameAsMailing"
                     component="input"
