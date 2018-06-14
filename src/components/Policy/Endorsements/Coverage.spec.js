@@ -5,7 +5,7 @@ import CoverageComponent from './Coverage';
 describe('Testing Endorsements / Coverage component', () => {
   it('should test app render', () => {
     const props = {
-      initialValues: { dwellingMin: 1, dwellingMax: 2 },
+      initialValues: { coverageLimits: { dwelling: { minAmount: 1, maxAmount: 2 } } },
       normalizeDwellingAmount: value => value,
       normalizeDwellingDependencies: value => value,
       normalizePersonalPropertyPercentage: value => value,

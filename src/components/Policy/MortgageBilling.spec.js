@@ -226,6 +226,8 @@ describe('Testing MortgageBilling component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      cashDescriptionOptions: { 'test': []},
+      cashTypeValue: 'test',
       paymentOptions: [],
       batchActions() {},
       getPaymentHistory() {},
@@ -238,6 +240,7 @@ describe('Testing MortgageBilling component', () => {
       updatePolicy() {},
       getPolicy() {},
       billingOptions: [],
+      change() {},
       reset() {},
       auth: {
         userProfile: {
@@ -269,7 +272,6 @@ describe('Testing MortgageBilling component', () => {
     wrapper.instance().editAdditionalInterest(additionalInterests[0]);
     wrapper.instance().hideAdditionalInterestModal(props);
     wrapper.instance().setIsActive(additionalInterests);
-    wrapper.instance().getPaymentDescription({ target: { value: '' } });
     wrapper.instance().editAIOnEnter({ key: 'Enter' }, additionalInterests[0]);
 
     wrapper.instance().handleFormSubmit({ body });

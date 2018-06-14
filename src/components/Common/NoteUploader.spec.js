@@ -4,7 +4,7 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { propTypes } from 'redux-form';
 import { mount, shallow } from 'enzyme';
-import * as serviceActions from '../actions/serviceActions';
+import * as serviceActions from '../../state/actions/serviceActions';
 import ConnectedApp, { minimzeButtonHandler, validate, renderNotes, Uploader } from './NoteUploader';
 
 const localStorageMock = {

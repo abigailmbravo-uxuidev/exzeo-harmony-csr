@@ -114,8 +114,8 @@ describe('Testing Coverage component', () => {
         }
       }
     };
-    const questions = [
-      {
+    const questions = {
+      'propertyAppraisal': {
         _id: '32432424234234234',
         name: 'propertyAppraisal',
         steps: [
@@ -137,7 +137,7 @@ describe('Testing Coverage component', () => {
           }
         ]
       }
-    ];
+    };
     expect(getPropertyAppraisalLink(policy.property.physicalAddress.county, questions).label).toEqual('ALACHUA');
     expect(getPropertyAppraisalLink(policy.property.physicalAddress.county, questions).answer).toEqual('http://www.acpafl.org/');
   });

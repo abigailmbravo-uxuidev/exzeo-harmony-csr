@@ -1,6 +1,5 @@
 export default {
   search: {},
-  workflowData: {},
   service: {
     cancelOptions: []
   },
@@ -9,9 +8,6 @@ export default {
     data: {
       submitting: false
     }
-  },
-  navigation: {
-    location: null
   },
   error: {},
   quoteState: {

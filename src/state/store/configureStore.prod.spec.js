@@ -1,4 +1,4 @@
-import initialState from '../../reducers/initialState';
+import initialState from '../../state/reducers//initialState';
 import configureStoreProd from './configureStore.prod';
 
 describe('configure store prod', () => {
