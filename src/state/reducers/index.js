@@ -11,7 +11,7 @@ import policyState from './policyReducer';
 import questions from './questionsReducer';
 import quoteState from './quoteReducer';
 import search from './searchReducer';
-import agency from './agencyReducer';
+import agencyState from './agencyReducer';
 
 const rootReducer = combineReducers({
   form: formReducer,
@@ -25,7 +25,7 @@ const rootReducer = combineReducers({
   error,
   quoteState,
   search,
-  agency
+  agencyState
 });
 
 export default rootReducer;
