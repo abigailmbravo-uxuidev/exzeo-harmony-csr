@@ -17,6 +17,7 @@ const policy = policyTestData;
 describe('Testing SearchBar component', () => {
   it('should test connected app', () => {
     const initialState = {
+      agencyState: {},
       service: {
         agencies: []
       },
@@ -38,6 +39,7 @@ describe('Testing SearchBar component', () => {
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,
+      agencyState: {},
       appState: {
         data: {
           submitting: false
@@ -147,6 +149,7 @@ describe('Testing SearchBar component', () => {
 
   it('should test props for SearchResults policy', () => {
     const initialState = {
+      agencyState: {},
       service: {},
       search: {
         searchType: 'policy'
