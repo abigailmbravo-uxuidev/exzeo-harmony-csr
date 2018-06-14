@@ -801,6 +801,7 @@ describe('Service Actions', () => {
       });
   });
 
+
   it('should call start getBillingOptions', () => {
     const mockAdapter = new MockAdapter(axios);
 
