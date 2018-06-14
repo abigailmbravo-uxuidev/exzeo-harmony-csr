@@ -237,6 +237,7 @@ describe('Testing AdditionalInterestEditModal component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      questions: [],
       selectedAI: {
         type: 'Mortgagee',
         phoneNumber: '43543543535',

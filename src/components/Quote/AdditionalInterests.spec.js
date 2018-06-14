@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { shallow, mount } from 'enzyme';
 
 import ConnectedApp, { AdditionalInterests, handleGetQuoteData, handleFormSubmit,
-   deleteAdditionalInterest, addAdditionalInterest, editAdditionalInterest, hideAdditionalInterestModal } from './AdditionalInterests';
+  deleteAdditionalInterest, addAdditionalInterest, editAdditionalInterest, hideAdditionalInterestModal } from './AdditionalInterests';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -348,7 +348,7 @@ describe('Testing AdditionalInterests component', () => {
       },
       actions: {
         questionsActions: {
-          getUIQuestions() {},
+          getUIQuestions() {}
         }
       },
       quoteData
@@ -656,7 +656,7 @@ describe('Testing AdditionalInterests component', () => {
     const store = mockStore(initialState);
 
     const props = {
-      fieldQuestions: [],
+      questions: [],
       dispatch: store.dispatch,
       actions: {
         quoteStateActions: {
