@@ -1,33 +1,80 @@
+import serviceRunner from '../../utilities/serviceRunner';
 import * as types from './actionTypes';
+import * as errorActions from "./errorActions";
 
 // these actions are to allow the composite controls to communicate when their models are complete
 // this communication allows the workflow to move to the next step
-
-export const setAppState = (modelName, instanceId, data) => {
-  const newAppStateData = {
-    modelName,
-    instanceId,
-    data
-  };
-  const stateObj = {
+// TODO these should eventually be consolidated with above
+/**
+ *
+ * @param modelName
+ * @param instanceId
+ * @param data
+ * @returns {{type: string, appState: {modelName: *, instanceId: *, data: *}}}
+ */
+export function setAppState(modelName, instanceId, data) {
+  return {
     type: types.APPSTATE_SET,
-    appState: newAppStateData
+    appState: {
+      modelName,
+      instanceId,
+      data
+    }
   };
-  return stateObj;
-};
+}
 
-export const setAppStateError = (modelName, instanceId, error) => {
-  const newAppStateData = {
-    modelName,
-    instanceId,
-    error
-  };
-  const stateObj = {
+/**
+ *
+ * @param modelName
+ * @param instanceId
+ * @param error
+ * @returns {{type: string, appState: {modelName: *, instanceId: *, error: *}}}
+ */
+export function setAppStateError(modelName, instanceId, error) {
+  return {
     type: types.APPSTATE_ERROR,
-    appState: newAppStateData
+    appState: {
+      modelName,
+      instanceId,
+      error
+    }
   };
-  return stateObj;
-};
+}
 
-// thunk if needed
-export const dispatchAppState = (modelName, instanceId, data) => dispatch => dispatch(setAppState(modelName, instanceId, data));
+/**
+ *
+ * @param companyCode
+ * @param state
+ * @returns {Function}
+ */
+export function getAgencies(companyCode, state) {
+  return async (dispatch) => {
+    try {
+      const agencies = await fetchAgencies(companyCode, state);
+      dispatch(getAgencies(agencies));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  }
+}
+
+/**
+ *
+ * @param companyCode
+ * @param state
+ * @returns {Promise<Array>}
+ */
+export async function fetchAgencies(companyCode, state) {
+  const config = {
+    service: 'agency',
+    method: 'GET',
+    path: `v1/agencies/${companyCode}/${state}?pageSize=1000&sort=displayName&SortDirection=asc`
+  };
+
+  try {
+    const response = await serviceRunner.callService(config);
+    return response.data && response.data.result ? response.data.result : [];
+  } catch (error) {
+    throw error;
+  }
+}
