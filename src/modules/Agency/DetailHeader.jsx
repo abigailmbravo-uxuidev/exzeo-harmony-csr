@@ -14,51 +14,10 @@ export class DetailHeader extends Component {
     return (
       <div className="detailHeader">
         <section id="agencyDetails" className="agencyDetails">
-          <dl>
-            <div>
-              <dd className="font-size-base">{agency.agencyCode}</dd>
-              <dd>{agency.displayName}</dd>
-            </div>
-          </dl>
+          <h4 className="agency-code">{agency.agencyCode}</h4>
         </section>
-        <section id="entityName" className="entityName">
-          <dl>
-            <div>
-              <dt>Entity Name</dt>
-              <dd>{agency.legalName}</dd>
-              <div className="flex-row">
-                <section>
-                  <dt>Status</dt>
-                  <dd>{agency.status}</dd>
-                </section>
-                <section><dt>Tier</dt><dd>{agency.tier >= 0 ? agency.tier : ''}</dd></section>
-                <section>
-                  <dt>Website</dt>
-                  <dd><a href={agency.websiteUrl} target="_blank">{agency.websiteUrl}</a></dd>
-                </section>
-              </div>
-            </div>
-          </dl>
-        </section>
-        <section id="physicalAddress" className="physicalAddress">
-          <dl>
-            <div>
-              <dt>Physical Address</dt>
-              <dd>{agency.physicalAddress.address1}</dd>
-              <dd>{agency.physicalAddress.address2 ? agency.physicalAddress.address2 : null }</dd>
-              <dd>{`${agency.physicalAddress.city}, ${agency.physicalAddress.state} ${agency.physicalAddress.zip}`}</dd>
-            </div>
-          </dl>
-        </section>
-        <section id="mailingAddress" className="mailingAddress">
-          <dl>
-            <div>
-              <dt>Mailing Address</dt>
-              <dd>{agency.mailingAddress.address1}</dd>
-              <dd>{agency.mailingAddress.address2 ? agency.mailingAddress.address2 : null }</dd>
-              <dd>{`${agency.mailingAddress.city}, ${agency.mailingAddress.state} ${agency.mailingAddress.zip}`}</dd>
-            </div>
-          </dl>
+        <section id="agency-name" className="entityName">
+          <h4 className="agency-name">{agency.displayName} <span className="font-weight-normal legal-name">| {agency.legalName}</span></h4>
         </section>
       </div>
     );
