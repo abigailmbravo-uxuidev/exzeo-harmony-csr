@@ -27,8 +27,3 @@ export async function callService(data) {
     throw handleError(error);
   }
 }
-
-export default {
-  callService,
-  handleError
-}
