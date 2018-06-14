@@ -1,5 +1,5 @@
 import * as persistTypes from 'redux-persist/constants';
-import * as types from './../actions/actionTypes';
+import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 
 export default function appStateReducer(state = initialState.appState, action) {

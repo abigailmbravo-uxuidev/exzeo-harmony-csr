@@ -30,10 +30,11 @@ import PolicyNotesFiles from './components/Policy/NotesFiles';
 import PolicyEndorsements from './components/Policy/Endorsements';
 import AgencyStaff from './components/Agency/Staff';
 import NoteUploader from './components/Common/NoteUploader';
-import * as appStateActions from './actions/appStateActions';
 import PolicyCancel from './components/Policy/Cancel';
-import * as errorActions from './actions/errorActions';
-import * as authActions from './actions/authActions';
+
+import * as appStateActions from './state/actions/appStateActions';
+import * as errorActions from './state/actions/errorActions';
+import * as authActions from './state/actions/authActions';
 
 const auth = new Auth();
 
@@ -106,9 +107,9 @@ class Routes extends Component {
           </div>
         </Modal>
         {this.props.newNote && this.props.newNote.documentId &&
-          <NoteUploader 
-            noteType={this.props.newNote.noteType} 
-            documentId={this.props.newNote.documentId} 
+          <NoteUploader
+            noteType={this.props.newNote.noteType}
+            documentId={this.props.newNote.documentId}
             sourceId={this.props.newNote.sourceNumber}
           />
         }

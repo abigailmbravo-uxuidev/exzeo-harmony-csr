@@ -4,9 +4,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Form, propTypes } from 'redux-form';
 import moment from 'moment';
-import * as cgActions from '../../actions/cgActions';
-import * as appStateActions from '../../actions/appStateActions';
-import * as quoteStateActions from '../../actions/quoteStateActions';
+import * as cgActions from '../../state/actions/cgActions';
+import * as appStateActions from '../../state/actions/appStateActions';
+import * as quoteStateActions from '../../state/actions/quoteStateActions';
 import Loader from './Loader';
 
 const QuoteSummary = ({

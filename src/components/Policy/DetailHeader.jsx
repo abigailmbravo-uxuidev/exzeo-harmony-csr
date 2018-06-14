@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _get from 'lodash/get';
 import moment from 'moment';
-import { setAppState } from '../../actions/appStateActions';
-import { getEffectiveDateChangeReasons } from '../../actions/serviceActions';
+import { setAppState } from '../../state/actions/appStateActions';
+import { getEffectiveDateChangeReasons } from '../../state/actions/serviceActions';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 

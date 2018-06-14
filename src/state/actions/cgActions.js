@@ -5,7 +5,7 @@ import Promise from 'bluebird';
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
 import * as appStateActions from './appStateActions';
-import endorsementUtils from "../utilities/endorsementModel";
+import endorsementUtils from "../../utilities/endorsementModel";
 
 export const start = (modelName, workflowData) => {
   const newWorkflowData = {};

@@ -3,11 +3,11 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Form } from 'redux-form';
 import _ from 'lodash';
-import * as questionsActions from '../../actions/questionsActions';
-import * as cgActions from '../../actions/cgActions';
-import * as appStateActions from '../../actions/appStateActions';
-import * as serviceActions from '../../actions/serviceActions';
-import * as policyStateActions from '../../actions/policyActions';
+import * as questionsActions from '../../state/actions/questionsActions';
+import * as cgActions from '../../state/actions/cgActions';
+import * as appStateActions from '../../state/actions/appStateActions';
+import * as serviceActions from '../../state/actions/serviceActions';
+import * as policyStateActions from '../../state/actions/policyActions';
 import CheckField from '../Form/inputs/CheckField';
 import Loader from '../Common/Loader';
 

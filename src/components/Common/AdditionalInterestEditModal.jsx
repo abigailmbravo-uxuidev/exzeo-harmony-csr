@@ -11,12 +11,12 @@ import PhoneField from '../Form/inputs/PhoneField';
 import HiddenField from '../Form/inputs/HiddenField';
 import SelectField from '../Form/inputs/SelectField';
 import ReactSelectField from '../Form/inputs/ReactSelectField';
-import * as questionsActions from '../../actions/questionsActions';
-import * as cgActions from '../../actions/cgActions';
-import * as appStateActions from '../../actions/appStateActions';
-import * as serviceActions from '../../actions/serviceActions';
-import * as policyStateActions from '../../actions/policyActions';
-import * as quoteStateActions from '../../actions/quoteStateActions';
+import * as questionsActions from '../../state/actions/questionsActions';
+import * as cgActions from '../../state/actions/cgActions';
+import * as appStateActions from '../../state/actions/appStateActions';
+import * as serviceActions from '../../state/actions/serviceActions';
+import * as policyStateActions from '../../state/actions/policyActions';
+import * as quoteStateActions from '../../state/actions/quoteStateActions';
 import Loader from './Loader';
 
 export const setMortgageeValues = (val, props) => {

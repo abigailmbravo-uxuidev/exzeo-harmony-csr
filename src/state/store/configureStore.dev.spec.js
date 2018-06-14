@@ -1,4 +1,4 @@
-import initialState from '../reducers/initialState';
+import initialState from '../../reducers/initialState';
 import configureStoreDev from './configureStore.dev';
 
 describe('configure store dev', () => {

@@ -1,5 +1,5 @@
-import { convertToRateData } from "../utilities/endorsementModel";
-import * as serviceRunner from '../utilities/serviceRunner';
+import { convertToRateData } from "../../utilities/endorsementModel";
+import * as serviceRunner from '../../utilities/serviceRunner';
 import * as types from './actionTypes';
 import * as errorActions from "./errorActions";
 

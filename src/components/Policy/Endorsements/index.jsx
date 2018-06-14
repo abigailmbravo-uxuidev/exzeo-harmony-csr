@@ -5,14 +5,14 @@ import { Prompt } from 'react-router-dom';
 import { reduxForm, formValueSelector, FormSection } from 'redux-form';
 import { premiumEndorsementList } from './constants/endorsementTypes';
 import endorsementUtils from '../../../utilities/endorsementModel';
-import { getUIQuestions } from '../../../actions/questionsActions';
-import { getNewRate, clearRate } from '../../../actions/policyActions';
+import { getUIQuestions } from '../../../state/actions/questionsActions';
+import { getNewRate, clearRate } from '../../../state/actions/policyActions';
 import {
   getUnderwritingQuestions,
   submitEndorsementForm,
   getEndorsementHistory,
   getZipcodeSettings,
-} from '../../../actions/serviceActions';
+} from '../../../state/actions/serviceActions';
 // Component Sections
 import PolicyConnect from '../../../containers/Policy';
 import Footer from '../../Common/Footer';

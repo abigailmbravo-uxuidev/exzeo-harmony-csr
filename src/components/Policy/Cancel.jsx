@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm, change, getFormValues } from 'redux-form';
 import moment from 'moment-timezone';
-import { getCancelOptions, getPaymentHistory, getBillingOptionsForPolicy } from '../../actions/serviceActions';
-import { startWorkflow, batchCompleteTask } from '../../actions/cgActions';
-import { setAppState } from '../../actions/appStateActions';
-import { getPolicy } from '../../actions/policyActions';
+import { getCancelOptions, getPaymentHistory, getBillingOptionsForPolicy } from '../../state/actions/serviceActions';
+import { startWorkflow, batchCompleteTask } from '../../state/actions/cgActions';
+import { setAppState } from '../../state/actions/appStateActions';
+import { getPolicy } from '../../state/actions/policyActions';
 
 import PolicyConnect from '../../containers/Policy';
 import RadioField from '../Form/inputs/RadioField';

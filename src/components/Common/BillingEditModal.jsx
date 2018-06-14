@@ -5,7 +5,7 @@ import { reduxForm, Field, propTypes as rfPropTypes, change, getFormValues } fro
 import SelectInput from '../Form/base/Select';
 import BillingRadio from '../Form/inputs/BillingRadio';
 import { requireField } from "../Form/validations/index";
-import { updateBillPlan } from '../../actions/serviceActions';
+import { updateBillPlan } from '../../state/actions/serviceActions';
 import 'react-select/dist/react-select.css';
 const FORM_NAME = 'BillingEditModal';
 

@@ -7,20 +7,20 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import _ from 'lodash';
 import moment from 'moment';
 import { getAnswers } from '../../utilities/forms';
-import { getCashDescriptionOptions, getCashTypeAnswers } from '../../selectors/policy.selectors';
+import { getCashDescriptionOptions, getCashTypeAnswers } from '../../state/selectors/policy.selectors';
 
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 
-import { getPolicy, getSummaryLedger } from '../../actions/policyActions';
-import { getUIQuestions } from '../../actions/questionsActions';
+import { getPolicy, getSummaryLedger } from '../../state/actions/policyActions';
+import { getUIQuestions } from '../../state/actions/questionsActions';
 import {
   getPaymentOptionsApplyPayments,
   getBillingOptionsForPolicy,
   getPaymentHistory,
   addTransaction,
   createTransaction
-} from '../../actions/serviceActions';
+} from '../../state/actions/serviceActions';
 import PolicyConnect from '../../containers/Policy';
 
 import BillingModal from '../../components/Common/BillingEditModal';

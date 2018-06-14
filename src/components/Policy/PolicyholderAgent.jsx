@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import PolicyConnect from '../../containers/Policy';
 import normalizePhone from '../Form/normalizePhone';
-import * as appStateActions from '../../actions/appStateActions';
-import * as serviceActions from '../../actions/serviceActions';
+import * as appStateActions from '../../state/actions/appStateActions';
+import * as serviceActions from '../../state/actions/serviceActions';
 import Footer from '../Common/Footer';
 
 // turn this into class and use the service runner

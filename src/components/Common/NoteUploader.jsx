@@ -7,10 +7,10 @@ import Uppy from 'uppy/lib/core';
 import { Dashboard } from 'uppy/lib/react';
 import XHRUpload from 'uppy/lib/plugins/XHRUpload';
 import moment from 'moment';
-import * as serviceActions from '../../actions/serviceActions';
-import * as appStateActions from '../../actions/appStateActions';
-import * as newNoteActions from '../../actions/newNoteActions';
-import * as errorActions from '../../actions/errorActions';
+import * as serviceActions from '../../state/actions/serviceActions';
+import * as appStateActions from '../../state/actions/appStateActions';
+import * as newNoteActions from '../../state/actions/newNoteActions';
+import * as errorActions from '../../state/actions/errorActions';
 
 export const minimzeButtonHandler = (props) => {
   if (props.appState.data.minimize) {
