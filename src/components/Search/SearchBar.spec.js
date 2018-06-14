@@ -222,9 +222,10 @@ describe('Testing SearchBar component', () => {
       fieldQuestions: [],
       dispatch: store.dispatch,
       actions: {
-        serviceActions: {
+        agencyStateActions: {
           getAgencies() {},
-          clearAgencies() {},
+        },
+        serviceActions: {
           clearAgent() {},
           clearPolicyResults() {},
           searchPolicy() { return Promise.resolve(() => {}); }

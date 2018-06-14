@@ -18,6 +18,7 @@ export const DETAILS_GET = 'DETAILS_GET';
 /* APP STATE ACTIONS */
 export const APPSTATE_SET = 'APPSTATE_SET';
 export const APPSTATE_ERROR = 'APPSTATE_ERROR';
+export const SET_AGENCIES = 'SET_AGENCIES';
 
 export const APP_ERROR = 'APP_ERROR';
 export const APP_ERROR_CLEAR = 'APP_ERROR_CLEAR';
