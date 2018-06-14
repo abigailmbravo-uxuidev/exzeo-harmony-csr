@@ -14,7 +14,8 @@ import PolicyConnect from '../../containers/Policy';
 import Footer from '../Common/Footer';
 
 export const getPropertyAppraisalLink = (county, questions) => {
-  const question = questions['propertyAppraisal'] || {};
+  if (!questions || !Array.isArray(questions)) return {};
+  const question = questions.find(q => q.name === 'propertyAppraisal') || {};
   const answers = question.answers || [];
   return _find(answers, { label: county }) || {};
 };
