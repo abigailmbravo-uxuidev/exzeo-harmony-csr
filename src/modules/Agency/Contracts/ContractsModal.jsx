@@ -43,8 +43,8 @@ export const ContractsModal = (props) => {
                 />
                 <Field
                   label="License Effective Date"
-                  styleName="licenseExpirationDate"
-                  name="licenseExpirationDate"
+                  styleName="licenseEffectiveDate"
+                  name="licenseEffectiveDate"
                   component={Date}
                   validate={[validation.isRequired, validation.isDate]}
                 />
@@ -112,4 +112,4 @@ ContractsModal.propTypes = {
   saveContract: PropTypes.func.isRequired
 };
 
-export default reduxForm({ form: 'ContractModal', enableReinitialize: true })(ContractsModal);
+export default reduxForm({ form: 'ContractsModal', enableReinitialize: true })(ContractsModal);

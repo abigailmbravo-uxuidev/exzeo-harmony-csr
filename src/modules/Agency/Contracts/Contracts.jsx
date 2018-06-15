@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import moment from 'moment';
 import TaxDetails from './TaxDetails';
 import AgencyModal from '../AgencyModal';
 import ContractsCard from './ContractsCard';
@@ -46,7 +47,8 @@ export class Contracts extends Component {
     delete matchedPhysicalAddress.longitude;
     delete matchedPhysicalAddress.county;
 
-    console.log(agency);
+    agency.eoExpirationDate = moment(agency.eoExpirationDate).format('YYYY-MM-DD');
+    agency.licenseEffectiveDate = moment(agency.licenseEffectiveDate).format('YYYY-MM-DD');
 
     return (
       <div>
