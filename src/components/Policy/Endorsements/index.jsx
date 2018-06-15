@@ -109,12 +109,16 @@ export class Endorsements extends React.Component {
       change('policyHolders[1].lastName', initialValues.policyHolders[1].lastName);
       change('policyHolders[1].primaryPhoneNumber', initialValues.policyHolders[1].primaryPhoneNumber);
       change('policyHolders[1].secondaryPhoneNumber', initialValues.policyHolders[1].secondaryPhoneNumber);
+      change('policyHolders[1].entityType', initialValues.policyHolders[1].entityType);
+      change('policyHolders[1].order', initialValues.policyHolders[1].order)
     } else {
       change('policyHolders[1].emailAddress', '');
       change('policyHolders[1].firstName', '');
       change('policyHolders[1].lastName', '');
       change('policyHolders[1].primaryPhoneNumber', '');
       change('policyHolders[1].secondaryPhoneNumber', '');
+      change('policyHolders[1].entityType', '');
+      change('policyHolders[1].order', '')
     }
     return value;
   };

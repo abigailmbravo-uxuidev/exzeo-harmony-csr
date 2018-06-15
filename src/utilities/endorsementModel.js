@@ -98,6 +98,13 @@ export function generateModel(data, props) {
   data.property.yearOfRoof = String(data.property.yearOfRoof).length > 0 ? data.property.yearOfRoof : null;
 
   data.deductibles.hurricane.calculatedAmount = String(data.deductibles.hurricane.calculatedAmount);
+  // ensure that we have order and entityType properties set for secondary policyHolder if there is one.
+  if (data.policyHolders.length > 1) {
+    const order = data.policyHolders[1].order;
+    const entityType = data.policyHolders[1].entityType;
+    data.policyHolders[1].order = order || 1;
+    data.policyHolders[1].entityType = entityType || 'Person';
+  }
 
   return {
     ...data,
