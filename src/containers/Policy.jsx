@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import moment from 'moment-timezone';
 import { Helmet } from 'react-helmet';
 import PolicyHeader from '../components/Policy/PolicyHeader';
-import QuoteSideNav from '../components/Policy/PolicySideNav';
+import PolicySideNav from '../components/Policy/PolicySideNav';
 import PolicyDetailHeader from '../components/Policy/DetailHeader';
 import Loader from '../components/Common/Loader';
 import * as appStateActions from '../actions/appStateActions';
@@ -86,7 +86,7 @@ export class Policy extends React.Component {
         <main role="document">
           {appState.data.submitting && <Loader />}
           <aside className="content-panel-left">
-            <QuoteSideNav />
+            <PolicySideNav />
           </aside>
           <div className="content-wrapper">
             {children}
