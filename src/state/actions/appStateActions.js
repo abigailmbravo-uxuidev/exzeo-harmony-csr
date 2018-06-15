@@ -18,7 +18,7 @@ export function setAppState(modelName, instanceId, data) {
       data
     }
   };
-};
+}
 
 /**
  *

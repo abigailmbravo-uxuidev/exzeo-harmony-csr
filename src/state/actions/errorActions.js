@@ -14,10 +14,10 @@ export function setAppError(error) {
 
 /**
  *
- * @returns {{type: string}}
+ * @returns {{type: string, error: object}}
  */
 export function clearAppError() {
-  return{
+  return {
     type: types.APP_ERROR_CLEAR,
     error: {}
   }

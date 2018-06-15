@@ -10,6 +10,6 @@ describe('Testing Agency Base component', () => {
       match: { url: '/agency' }
     };
     const wrapper = shallow(<Agency {...props} />);
-    expect(wrapper).toBeTruthy;
+    expect(wrapper).toBeTruthy();
   });
 });
