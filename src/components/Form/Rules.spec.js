@@ -122,4 +122,13 @@ describe('Rules', () => {
       expect(ruleArray[0].length).toEqual(1);
     });
   });
+
+  describe('dateCheck', () => {
+    it('should return undefined when date is at least 08/01/2017', () => {
+      expect(rules.dateCheck('2017-08-01')).toBeUndefined();
+    });
+    it('should return error when date is less than 08/01/2017', () => {
+      expect(rules.dateCheck('2017-07-31')).toEqual('Date must at least 08/01/2017');
+    });
+  });
 });
