@@ -59,7 +59,7 @@ export const AgencyModal = ({
   isSubmitting,
   isEdit,
   dispatch,
-  fieldValues,
+  sameAsMailingValue,
   initialValues
 }) => (
   <div className="modal agency-crud">
@@ -249,7 +249,7 @@ export const AgencyModal = ({
                 name="physicalAddress.address1"
                 component={Input}
                 validate={validation.isRequired}
-                disabled={fieldValues.sameAsMailing}
+                disabled={sameAsMailingValue}
               />
               <Field
                 label="Address 2"
@@ -257,7 +257,7 @@ export const AgencyModal = ({
                 name="physicalAddress.address2"
                 component={Input}
                 validate={validation.isRequired}
-                disabled={fieldValues.sameAsMailing}
+                disabled={sameAsMailingValue}
               />
               <div className="flex-form">
                 <Field
@@ -266,7 +266,7 @@ export const AgencyModal = ({
                   name="physicalAddress.city"
                   component={Input}
                   validate={validation.isRequired}
-                  disabled={fieldValues.sameAsMailing}
+                  disabled={sameAsMailingValue}
                 />
                 <Field
                   label="State"
@@ -274,7 +274,7 @@ export const AgencyModal = ({
                   name="physicalAddress.state"
                   component={Input}
                   validate={validation.isRequired}
-                  disabled={fieldValues.sameAsMailing}
+                  disabled={sameAsMailingValue}
                 />
                 <Field
                   label="Zip Code"
@@ -282,7 +282,7 @@ export const AgencyModal = ({
                   name="physicalAddress.zip"
                   component={Input}
                   validate={validation.isRequired}
-                  disabled={fieldValues.sameAsMailing}
+                  disabled={sameAsMailingValue}
                 />
               </div>
               <Field

@@ -39,7 +39,7 @@ export class Overview extends Component {
   };
 
   render() {
-    const { agency } = this.props;
+    const { agency, sameAsMailingValue } = this.props;
     if (!agency) return <div />;
     const matchedPhysicalAddress = _.cloneDeep(agency.physicalAddress);
     delete matchedPhysicalAddress.latitude;
@@ -74,7 +74,7 @@ export class Overview extends Component {
                 agency.mailingAddress
               )
             }}
-            fieldValues={_.get(this.props.form, 'AgencyModal.values', {})}
+            sameAsMailingValue={sameAsMailingValue}
             saveAgency={this.saveAgency}
             isEdit
             closeModal={this.toggleAgencyModal}
