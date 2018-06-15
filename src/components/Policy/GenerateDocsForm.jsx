@@ -8,19 +8,8 @@ import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 import DateField from '../Form/inputs/DateField';
 import Loader from '../Common/Loader';
 
-export const reqConfig = data => ({
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  responseType: 'blob',
-  url: `${process.env.REACT_APP_API_URL}/generate-document`,
-  data
-});
-
 const { Select } = Inputs;
 const { validation } = lifecycle;
-
 const validate = values => !values.documentType ? { documentType: 'Required' } : null;
 
 export class GenerateDocsForm extends Component {
@@ -44,7 +33,7 @@ export class GenerateDocsForm extends Component {
   generateDoc = (data, dispatch, props) => {
     const { documentType, effectiveDate } = data;
     const { policyNumber, errorHandler, updateNotes } = props;
-    const req = reqConfig({
+    const req = this.reqConfig({
       documentNumber: policyNumber,
       documentType,
       effectiveDate
