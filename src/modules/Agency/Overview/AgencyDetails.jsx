@@ -54,7 +54,7 @@ export const AgencyDetails = ({ agency, editAgency }) => (
       <div className="flex-child">
         <label>Web Address</label>
         <div>
-          <a href="{agency.websiteUrl}" target="_blank">
+          <a href={agency.websiteUrl} target="_blank">
             {agency.websiteUrl}
           </a>
         </div>
