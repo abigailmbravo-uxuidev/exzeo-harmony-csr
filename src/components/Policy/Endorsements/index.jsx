@@ -169,11 +169,11 @@ export class Endorsements extends React.Component {
       change('coverageOptions.personalPropertyReplacementCost.answer', false);
     } else {
       change('coverageOptions.personalPropertyReplacementCost.answer', initialValues.coverageOptions.personalPropertyReplacementCost.answer || false);
-      return value;
     }
 
     const fieldValue = endorsementUtils.setPercentageOfValue(allValues.coverageLimits.dwelling.amount, value);
     change(field, Number.isNaN(fieldValue) ? '' : fieldValue);
+    // always return value at the end of 'normalize' functions
     return value;
   };
 
