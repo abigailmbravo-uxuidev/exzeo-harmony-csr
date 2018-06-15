@@ -6,7 +6,8 @@ import mockAgency from './mockAgency';
 describe('Testing Agency Base component', () => {
   it('should render', () => {
     const props = {
-      dispatch() {},
+      change() {},
+      sameAsMailingValue: true,
       agency: mockAgency,
       handleSubmit() {},
       fieldValues: {
@@ -20,8 +21,10 @@ describe('Testing Agency Base component', () => {
     wrapper.find('[name="mailingAddress.city"]').simulate('change', {});
     wrapper.find('[name="mailingAddress.state"]').simulate('change', {});
     wrapper.find('[name="mailingAddress.zip"]').simulate('change', {});
-
-    expect(copyAddress(true, props.agency, props.dispatch)).toEqual(true);
-    expect(copyAddress(false, props.agency, props.dispatch)).toEqual(false);
+    const wrapperInstance = wrapper.instance();
+    expect(wrapperInstance.handleSameAsMailing(true, false, props.agency)).toEqual(true);
+    expect(wrapperInstance.handleSameAsMailing(false, true, props.agency)).toEqual(false);
+    expect(wrapperInstance.resetSameAsMailing(true)).toEqual(true);
+    expect(wrapperInstance.resetSameAsMailing(false)).toEqual(false);
   });
 });
