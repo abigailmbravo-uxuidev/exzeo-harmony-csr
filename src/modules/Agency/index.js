@@ -4,7 +4,6 @@ import { Route } from 'react-router-dom';
 import AgencyHeader from './AgencyHeader';
 import AgencySideNav from './AgencySideNav';
 import AgencyDetailHeader from './DetailHeader';
-import Loader from '../../components/Common/Loader';
 import Overview from './Overview';
 import Contracts from './Contracts';
 import Agents from './Agents';
