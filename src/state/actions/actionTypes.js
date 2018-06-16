@@ -18,7 +18,6 @@ export const DETAILS_GET = 'DETAILS_GET';
 /* APP STATE ACTIONS */
 export const APPSTATE_SET = 'APPSTATE_SET';
 export const APPSTATE_ERROR = 'APPSTATE_ERROR';
-export const SET_AGENCIES = 'SET_AGENCIES';
 
 export const APP_ERROR = 'APP_ERROR';
 export const APP_ERROR_CLEAR = 'APP_ERROR_CLEAR';
@@ -39,3 +38,8 @@ export const SET_POLICY = 'SET_POLICY';
 export const SET_RATE = 'SET_RATE';
 export const CLEAR_RATE = 'CLEAR_RATE';
 export const SET_SUMMARY_LEDGER = 'SET_SUMMARY_LEDGER';
+
+/* AGENCY */
+export const SET_AGENCIES = 'SET_AGENCIES';
+export const SET_AGENCY = 'SET_AGENCY';
+export const SET_AGENTS = 'SET_AGENTS';

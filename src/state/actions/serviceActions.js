@@ -169,28 +169,6 @@ export const clearAgent = () => (dispatch) => {
   return dispatch(serviceRequest(data));
 };
 
-
-export const getAgency = (companyCode, state, agencyCode) => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'agency',
-    method: 'GET',
-    path: `v1/agency/${companyCode}/${state}/${agencyCode}`
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = { agency: response.data.result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
-};
-
 export const getAgentsByAgency = (companyCode, state, agencyCode) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'agency',

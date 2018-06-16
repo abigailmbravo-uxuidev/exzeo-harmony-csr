@@ -1,5 +1,4 @@
 import React from 'react';
-import { normalizePhone } from '@exzeo/core-ui/lib/InputLifecycle';
 import ContactCard from './ContactCard';
 
 export const AgencyContacts = ({ agency, editContact }) => (

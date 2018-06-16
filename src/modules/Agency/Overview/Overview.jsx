@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 import AgencyDetails from './AgencyDetails';
 import AgencyContacts from './AgencyContacts';
 import AgencyModal from '../AgencyModal';
@@ -9,7 +8,7 @@ export class Overview extends Component {
   state = {
     showEditContact: false,
     editType: null,
-    showAgencyEdit: false
+    editAgency: false
   };
 
   componentDidMount() {
@@ -31,20 +30,12 @@ export class Overview extends Component {
   };
 
   toggleAgencyModal = () => {
-    this.setState({ showAgencyEdit: !this.state.showAgencyEdit });
-  };
-
-  saveAgency = (data, dispatch, props) => {
-    this.toggleAgencyModal();
+    this.setState({ editAgency: !this.state.editAgency });
   };
 
   render() {
-    const { agency, sameAsMailingValue } = this.props;
-    if (!agency) return <div />;
-    const matchedPhysicalAddress = _.cloneDeep(agency.physicalAddress);
-    delete matchedPhysicalAddress.latitude;
-    delete matchedPhysicalAddress.longitude;
-    delete matchedPhysicalAddress.county;
+    const { agency } = this.props;
+    if (!agency._id) return <div />;
 
     return (
       <div>
@@ -65,21 +56,9 @@ export class Overview extends Component {
             </div>
           </div>
         </div>
-        {this.state.showAgencyEdit && (
-          <AgencyModal
-            initialValues={{
-              ...agency,
-              sameAsMailing: _.isEqual(
-                matchedPhysicalAddress,
-                agency.mailingAddress
-              )
-            }}
-            sameAsMailingValue={sameAsMailingValue}
-            saveAgency={this.saveAgency}
-            isEdit
-            closeModal={this.toggleAgencyModal}
-          />
-        )}
+        {this.state.editAgency &&
+          <AgencyModal closeModal={this.toggleAgencyModal} isEdit />
+        }
       </div>);
   }
 }

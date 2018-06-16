@@ -1,12 +1,9 @@
 import { connect } from 'react-redux';
-import { formValueSelector } from 'redux-form';
-import OverviewComponent from './Overview';
-import { getAgency } from '../../../state/actions/serviceActions';
+import Overview from './Overview';
+import { getAgency } from '../../../state/actions/agencyActions';
 
-const agencyModalSelector = formValueSelector('AgencyModal');
 const mapStateToProps = state => ({
-  agency: state.service.agency,
-  sameAsMailingValue: agencyModalSelector(state, 'sameAsMailing')
+  agency: state.agencyState.agency,
 });
 
-export default connect(mapStateToProps, { getAgency })(OverviewComponent);
+export default connect(mapStateToProps, { getAgency })(Overview);

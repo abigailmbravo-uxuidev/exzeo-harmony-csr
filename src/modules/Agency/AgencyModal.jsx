@@ -1,13 +1,34 @@
 import React, { Component } from 'react';
-import { reduxForm, Field } from 'redux-form';
+import { connect } from 'react-redux';
+import {reduxForm, Field, formValueSelector } from 'redux-form';
 import { Select, Radio, Input } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
+import { getAgency } from '../../state/actions/agencyActions';
+import { getEditModalInitialValues } from '../../state/selectors/agency.selector';
 import CSRFields from './Overview/CSRFields';
 import ContactFields from './Overview/ContactFields';
 import PrincipalFields from './Overview/PrincipalFields';
 
+const statusAnswers = [
+  { answer: 'Active', label: 'Active' },
+  { answer: 'InActive', label: 'InActive' }
+];
+
+const okToPayAnswers = [
+  { answer: false, label: 'No' },
+  { answer: true, label: 'Yes' }
+];
+
+const taxClassificationAnswers = [
+  { answer: 'LLC', label: 'LLC' },
+  { answer: 'Corporation', label: 'Corporation'}
+];
 
 export class AgencyModal extends Component {
+  saveAgency = (data, dispatch, props) => {
+    this.toggleAgencyModal();
+  };
+
   resetSameAsMailing = (value) => {
     const { change, sameAsMailingValue } = this.props;
     if (!sameAsMailingValue) return value;
@@ -32,22 +53,21 @@ export class AgencyModal extends Component {
       change('physicalAddress.zip', '');
     }
     return value;
-  }
+  };
 
   render() {
     const {
-      handleSubmit,
-      saveAgency,
       closeModal,
-      isSubmitting,
+      handleSubmit,
+      initialValues,
       isEdit,
       sameAsMailingValue,
-      initialValues
+      submitting
     } = this.props;
 
     return (
       <div className="modal agency-crud">
-        <form noValidate="noValidate" onSubmit={handleSubmit(saveAgency)}>
+        <form onSubmit={handleSubmit(this.saveAgency)}>
           <div className="card">
             <div className="card-header">
               <h4>
@@ -64,7 +84,7 @@ export class AgencyModal extends Component {
                     name="agencyCode"
                     component={Input}
                     validate={validation.isRequired}
-                    disabled={initialValues.agencyCode}
+                    disabled={!!initialValues.agencyCode}
                   />
                   <Field
                     label="Agency Name"
@@ -89,16 +109,7 @@ export class AgencyModal extends Component {
                     label="Status"
                     component={Select}
                     validate={validation.isRequired}
-                    answers={[
-                  {
-                    answer: 'Active',
-                    label: 'Active'
-                  },
-                  {
-                    answer: 'InActive',
-                    label: 'InActive'
-                  }
-                ]}
+                    answers={statusAnswers}
                   />
                   <Field
                     label="TPAID"
@@ -114,16 +125,7 @@ export class AgencyModal extends Component {
                     validate={validation.isRequired}
                     component={Radio}
                     segmented
-                    answers={[
-                  {
-                    answer: false,
-                    label: 'No'
-                  },
-                  {
-                    answer: true,
-                    label: 'Yes'
-                  }
-                ]}
+                    answers={okToPayAnswers}
                   />
                   <Field
                     label="Tier"
@@ -200,16 +202,7 @@ export class AgencyModal extends Component {
                       label="Tax Classification"
                       component={Select}
                       validate={validation.isRequired}
-                      answers={[
-                    {
-                      answer: 'LLC',
-                      label: 'LLC'
-                    },
-                    {
-                      answer: 'Corporation',
-                      label: 'Corporation'
-                    }
-                  ]}
+                      answers={taxClassificationAnswers}
                     />
                   </div>
                 </div>
@@ -305,7 +298,7 @@ export class AgencyModal extends Component {
                   tabIndex="0"
                   className="btn btn-primary"
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={submitting}
                 >
               Save
                 </button>
@@ -318,4 +311,17 @@ export class AgencyModal extends Component {
   }
 }
 
-export default reduxForm({ form: 'AgencyModal', enableReinitialize: true })(AgencyModal);
+const selector = formValueSelector('AgencyModal');
+const mapStateToProps = state => {
+  return {
+    initialValues: getEditModalInitialValues(state),
+    sameAsMailingValue: selector(state, 'sameAsMailing')
+  }
+};
+
+export default connect(mapStateToProps, {
+  getAgency
+})(reduxForm({
+  form: 'AgencyModal',
+  enableReinitialize: true
+})(AgencyModal));

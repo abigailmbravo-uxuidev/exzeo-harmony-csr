@@ -4,15 +4,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import PolicyConnect from '../../containers/Policy';
 import normalizePhone from '../Form/normalizePhone';
-import * as appStateActions from '../../state/actions/appStateActions';
-import * as serviceActions from '../../state/actions/serviceActions';
+import * as agencyActions from '../../state/actions/agencyActions';
 import Footer from '../Common/Footer';
 
 // turn this into class and use the service runner
 export class PolicyholderAgent extends Component {
   componentDidMount() {
     const policy = this.props.policy;
-    const actions = this.props.actions.serviceActions;
+    const actions = this.props.actions.agencyActions;
 
     if (policy && policy.companyCode && policy.state && policy.agencyCode) {
       actions.getAgents(policy.companyCode, policy.state);
@@ -160,15 +159,14 @@ PolicyholderAgent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  agents: state.service.agents,
-  agency: state.service.agency,
-  policy: state.service.latestPolicy || {}
+  agents: state.agencyState.agents,
+  agency: state.agencyState.agency,
+  policy: state.policyState.policy || {}
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    appStateActions: bindActionCreators(appStateActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch)
+    agencyActions: bindActionCreators(agencyActions, dispatch)
   }
 });
 
