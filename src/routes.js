@@ -38,7 +38,7 @@ import * as authActions from './state/actions/authActions';
 
 const auth = new Auth();
 
-// logout the user if the server comesback with a 401
+// logout the user if the server comes back with a 401
 axios.interceptors.response.use(
   response => response,
   (error) => {
@@ -89,6 +89,7 @@ class Routes extends Component {
       left: '20%'
     }
   };
+
   render() {
     return (
       <div>

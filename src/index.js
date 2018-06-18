@@ -17,7 +17,8 @@ const holder = document.getElementById('root');
 const c = document.createComment(`Version: ${process.env.VERSION_NO}`);
 document.body.appendChild(c);
 render(
-  <Provider store={store}><Routes store={store} />
+  <Provider store={store}>
+    <Routes />
   </Provider>,
   holder
 );
