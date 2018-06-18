@@ -1,30 +1,27 @@
 export default {
-  search: {},
-  cg: {},
-  service: {
-    cancelOptions: []
+  authState: {
+    userProfile: null
   },
-  newNote: {},
   appState: {
     data: {
       submitting: false
     }
   },
-  // navigation: {
-  //   location: null
-  // },
+  cg: {},
   error: {},
+  newNote: {},
+  questions: {},
   quoteState: {
     quoteId: null,
     update: false
   },
-  questions: {},
   policyState: {
     policy: {},
     summaryLedger: {},
     getRate: {}
   },
-  authState: {
-    userProfile: null
+  search: {},
+  service: {
+    cancelOptions: []
   }
 };
