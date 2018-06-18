@@ -34,7 +34,7 @@ describe('Testing Policy component', () => {
           code: 13
         }
       },
-      zipCodeSetting: {},
+      zipCodeSetting: { timezone: '' },
       policy: {
         policyNumber: '1234',
         property: {

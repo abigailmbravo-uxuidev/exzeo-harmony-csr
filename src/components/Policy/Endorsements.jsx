@@ -701,8 +701,8 @@ export class Endorsements extends React.Component {
       return endorsement;
     });
 
-    const canPremiumEndorse = userProfile && userProfile.resources 
-      ? userProfile.resources.some(resource => resource['uri'] === 'TTIC:FL:HO3:PolicyData:PremiumEndorse' && resource['right'] === 'UPDATE')
+    const canPremiumEndorse = userProfile && userProfile.resources
+      ? userProfile.resources.some(resource => resource.uri === 'TTIC:FL:HO3:PolicyData:PremiumEndorse' && resource.right === 'UPDATE')
       : false;
 
     if (!canPremiumEndorse) {
@@ -1545,7 +1545,7 @@ const mapStateToProps = state => ({
   getRate: state.service.getRate,
   newPolicyNumber: getNewPolicyNumber(state),
   summaryLedger: state.service.getSummaryLedger || {},
-  zipcodeSettings: state.service.getZipcodeSettings,
+  zipcodeSettings: state.service.getZipcodeSettings || { timezone: '' },
   userProfile: state.authState.userProfile || {}
 });
 

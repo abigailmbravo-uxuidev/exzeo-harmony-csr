@@ -25,7 +25,7 @@ const convertDateToTimeZone = (date, zipCodeSettings) => {
 };
 export const handleInitialize = (state) => {
   const summaryLedger = state.service.getSummaryLedger || {};
-  const zipCodeSettings = state.service.getZipcodeSettings || {};
+  const zipCodeSettings = state.service.getZipcodeSettings || { timezone: '' };
   const latestDate = convertDateToTimeZone(moment.utc(), zipCodeSettings) > convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings) ? convertDateToTimeZone(moment.utc(), zipCodeSettings).format('YYYY-MM-DD') : convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings).format('YYYY-MM-DD');
   return ({
     equityDate: moment.utc(summaryLedger.equityDate).format('MM/DD/YYYY'),
@@ -148,7 +148,7 @@ export class CancelPolicy extends React.Component {
         } else {
           nextProps.dispatch(change('CancelPolicy', 'effectiveDate', now.add(120, 'days').format('YYYY-MM-DD')));
         }
-      } else if (nextProps.fieldValues.cancelType === 'Voluntary Cancellation') {        
+      } else if (nextProps.fieldValues.cancelType === 'Voluntary Cancellation') {
         nextProps.dispatch(change('CancelPolicy', 'effectiveDate', notice.format('YYYY-MM-DD')));
       } else if (nextProps.fieldValues.cancelType === 'Underwriting Non-Renewal') {
         const endDate = convertDateToTimeZone(moment.utc(policy.endDate), zipCodeSettings);
