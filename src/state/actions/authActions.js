@@ -1,10 +1,15 @@
 import * as types from './actionTypes';
 
-export const setUserProfile = (userProfile) => {
+/**
+ *
+ * @param userProfile
+ * @returns {{type: string, authState: {userProfile: *}}}
+ */
+export function setUserProfile(userProfile) {
   return {
     type: types.AUTH,
     authState: {
       userProfile
     }
   };
-};
+}

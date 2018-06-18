@@ -14,6 +14,8 @@ export default function policyStateReducer(state = initialState.policyState, act
       return clearRate(state, action);
     case types.SET_SUMMARY_LEDGER:
       return setSummaryLedger(state, action);
+    case types.SET_EFFECTIVE_DATE_CHANGE_REASONS:
+      return setEffectiveDateChangeReasons(state, action);
     case persistTypes.REHYDRATE:
       return rehydrate(state, action);
     default:
@@ -54,6 +56,13 @@ function setSummaryLedger(state, action) {
   return {
     ...state,
     summaryLedger: action.summaryLedger
+  }
+}
+
+function setEffectiveDateChangeReasons(state, action) {
+  return {
+    ...state,
+    effectiveDateReasons: action.effectiveDateReasons
   }
 }
 

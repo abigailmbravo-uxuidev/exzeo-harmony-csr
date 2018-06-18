@@ -2,10 +2,14 @@ import { convertToRateData } from "../../utilities/endorsementModel";
 import * as serviceRunner from '../../utilities/serviceRunner';
 import * as types from './actionTypes';
 import * as errorActions from "./errorActions";
-
 import { serviceRequest } from "./serviceActions";
 
-
+/**
+ *
+ * @param policy
+ * @param summaryLedger
+ * @returns {{type: string, policy: *, summaryLedger: *}}
+ */
 export function setPolicy(policy, summaryLedger) {
   return {
     type: types.SET_POLICY,
@@ -14,6 +18,11 @@ export function setPolicy(policy, summaryLedger) {
   }
 }
 
+/**
+ *
+ * @param summaryLedger
+ * @returns {{type: string, summaryLedger: *}}
+ */
 export function setSummaryLedger(summaryLedger) {
   return {
     type: types.SET_SUMMARY_LEDGER,
@@ -21,6 +30,11 @@ export function setSummaryLedger(summaryLedger) {
   }
 }
 
+/**
+ *
+ * @param rate
+ * @returns {{type: string, rate: *}}
+ */
 export function setNewRate(rate) {
   return {
     type: types.SET_RATE,
@@ -28,12 +42,33 @@ export function setNewRate(rate) {
   }
 }
 
+/**
+ *
+ * @param effectiveDateReasons
+ * @returns {{type: string, effectiveDateChangeReasons: *}}
+ */
+export function setEffectiveDateChangeReasons(effectiveDateReasons) {
+  return {
+    type: types.SET_EFFECTIVE_DATE_CHANGE_REASONS,
+    effectiveDateReasons
+  }
+}
+
+/**
+ *
+ * @returns {{type: string}}
+ */
 export function clearRate() {
   return {
     type: types.CLEAR_RATE
   }
 }
 
+/**
+ *
+ * @param policyNumber
+ * @returns {Function}
+ */
 export function getPolicy(policyNumber) {
   return async (dispatch) => {
     try {
@@ -51,6 +86,11 @@ export function getPolicy(policyNumber) {
   }
 }
 
+/**
+ *
+ * @param policyNumber
+ * @returns {Function}
+ */
 export function getSummaryLedger(policyNumber) {
   return async (dispatch) => {
     try {
@@ -62,6 +102,12 @@ export function getSummaryLedger(policyNumber) {
   }
 }
 
+/**
+ *
+ * @param formData
+ * @param formProps
+ * @returns {Function}
+ */
 export function getNewRate(formData, formProps) {
   return async (dispatch) => {
       const rateData = convertToRateData(formData, formProps);
@@ -83,6 +129,24 @@ export function getNewRate(formData, formProps) {
   };
 }
 
+export function getEffectiveDateChangeReasons() {
+  return async (dispatch) => {
+    try {
+      const reasons = await fetchEffectiveDateChangeReasons();
+      dispatch(setEffectiveDateChangeReasons(reasons))
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  }
+}
+
+/* TODO: move out network calls into a separate utility or service */
+
+/**
+ *
+ * @param policyNumber
+ * @returns {Promise<{}>}
+ */
 export async function fetchPolicy(policyNumber) {
   const config = {
     service: 'policy-data',
@@ -98,6 +162,11 @@ export async function fetchPolicy(policyNumber) {
   }
 }
 
+/**
+ *
+ * @param policyNumber
+ * @returns {Promise<{}>}
+ */
 export async function fetchSummaryLedger(policyNumber) {
   const config = {
     service: 'billing',
@@ -108,6 +177,25 @@ export async function fetchSummaryLedger(policyNumber) {
   try {
     const response = await serviceRunner.callService(config);
     return response && response.data && response.data.result ? response.data.result : {};
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
+ * @returns {Promise<*>}
+ */
+export async function fetchEffectiveDateChangeReasons() {
+  const config = {
+    service: 'policy-data',
+    method: 'GET',
+    path: 'effectiveDateChangeReasons'
+  };
+
+  try {
+    const response = await serviceRunner.callService(config);
+    return response && response.data ? response.data.effectiveDateReasons : [];
   } catch (error) {
     throw error;
   }

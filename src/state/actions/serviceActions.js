@@ -169,7 +169,6 @@ export const clearAgent = () => (dispatch) => {
   return dispatch(serviceRequest(data));
 };
 
-
 export const getAgency = (companyCode, state, agencyCode) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'agency',
@@ -237,7 +236,6 @@ export const clearAgencies = () => (dispatch) => {
   ]));
 };
 
-
 export const currentAgent = (companyCode, state, agentCode) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'agency',
@@ -247,27 +245,6 @@ export const currentAgent = (companyCode, state, agentCode) => (dispatch) => {
 
   return axios(axiosConfig).then((response) => {
     const data = { currentAgent: response.data.result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
-};
-
-export const getEffectiveDateChangeReasons = () => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'policy-data',
-    method: 'GET',
-    path: 'effectiveDateChangeReasons'
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = { effectiveDateReasons: response.data.effectiveDateReasons ? response.data.effectiveDateReasons : [] };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));
