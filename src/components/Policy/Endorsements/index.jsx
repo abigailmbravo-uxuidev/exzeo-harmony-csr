@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import _find from 'lodash/find';
 import { Prompt } from 'react-router-dom';
 import { reduxForm, formValueSelector, FormSection } from 'redux-form';
+import {validation} from "@exzeo/core-ui/lib/InputLifecycle/index";
 import { premiumEndorsementList } from './constants/endorsementTypes';
 import endorsementUtils from '../../../utilities/endorsementModel';
 import { getUIQuestions } from '../../../state/actions/questionsActions';
-import { getNewRate, clearRate } from '../../../state/actions/policyActions';
+import { getNewRate } from '../../../state/actions/policyActions';
 import {
   getUnderwritingQuestions,
   submitEndorsementForm,
@@ -46,16 +47,26 @@ export class Endorsements extends React.Component {
     super(props);
 
     this.state = {
-      isCalculated: false
+      isCalculated: false,
     };
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    // need to account for when a user has made a call to getNewRate, and then makes more changes to the coverage.
+    if (state.isCalculated && props.anyTouched) {
+      return {
+        ...state,
+        isCalculated: false
+      }
+    }
+    return null;
   }
 
   componentDidMount() {
     const {
-     policy, getUnderwritingQuestions, getZipcodeSettings, getEndorsementHistory, getUIQuestions, clearRate
+     policy, getUnderwritingQuestions, getZipcodeSettings, getEndorsementHistory, getUIQuestions
     } = this.props;
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
-    clearRate();
     if (policy && policy.policyNumber && policy.property && policy.property.physicalAddress) {
       getUnderwritingQuestions(policy.companyCode, policy.state, policy.product, policy.property);
       getEndorsementHistory(policy.policyNumber);
@@ -64,12 +75,13 @@ export class Endorsements extends React.Component {
   }
 
   clearCalculate = () => {
-    const { change, clearRate, initialValues } = this.props;
+    const { change, initialValues } = this.props;
     change('endorsementDate', initialValues.endorsementDate);
     change('newEndorsementAmount', '');
     change('newEndorsementPremium', '');
     change('newAnnualPremium', '');
-    clearRate();
+    change('windMitFactor', '');
+    change('rating', '');
     this.setState({ isCalculated: false });
   };
 
@@ -80,18 +92,20 @@ export class Endorsements extends React.Component {
     change('newEndorsementPremium', rate.newCurrentPremium || '');
     change('newAnnualPremium', rate.newAnnualPremium || '');
     change('windMitFactor', windMitFactor);
+    change('rating', rate.rating);
     initialize({}, { keepValues: true });
+    this.setState({ isCalculated: true });
   };
 
-  calculate = async (data, dispatch, props) => {
-    const { getNewRate } = props;
-    const rate = await getNewRate(data, props);
-    this.setState({ isCalculated: true }, () => this.setCalculate(rate, data));
-  };
-
-  save = async (data, dispatch, props) => {
-    await props.submitEndorsementForm(data, props);
-    this.setState({ isCalculated: false }, this.setCalculate);
+  handleEndorsementFormSubmit = async (data, dispatch, props) => {
+    const { isCalculated } = this.state;
+    if (isCalculated) {
+      await props.submitEndorsementForm(data, props);
+      this.setState({ isCalculated: false }, this.clearCalculate);
+    } else {
+      const rate = await props.getNewRate(data, props);
+      this.setCalculate(rate);
+    }
   };
 
   setPHToggle = () => {
@@ -190,10 +204,16 @@ export class Endorsements extends React.Component {
     return value;
   };
 
+  validateEndorsementDate = (...args) => {
+    // we shouldn't need to do this, waiting for a patch from redux-form
+    const { policy } = this.props;
+    if (!policy) return undefined;
+    return validation.isDateRange(policy.effectiveDate, policy.endDate)(...args);
+  };
+
   render() {
     const { isCalculated } = this.state;
     const {
-      anyTouched,
       dirty,
       endorsementHistory,
       handleSubmit,
@@ -238,7 +258,7 @@ export class Endorsements extends React.Component {
           <form
             id="Endorsements"
             className="content-wrapper"
-            onSubmit={isCalculated ? handleSubmit(this.save) : handleSubmit(this.calculate)}
+            onSubmit={handleSubmit(this.handleEndorsementFormSubmit)}
             onKeyPress={e => (e.key === 'Enter' && e.target.type !== 'submit') && e.preventDefault()}
           >
 
@@ -277,7 +297,7 @@ export class Endorsements extends React.Component {
 
                   </div>
                 </div>
-                <ResultsCalculator min={policy.effectiveDate} max={policy.endDate}>
+                <ResultsCalculator min={policy.effectiveDate} max={policy.endDate} validateEndorsementDate={this.validateEndorsementDate}>
                   <button
                     id="cancel-button"
                     type="button"
@@ -292,7 +312,7 @@ export class Endorsements extends React.Component {
                     tabIndex="0"
                     className="btn btn-primary"
                     disabled={(!isCalculated && pristine) || submitting}
-                  >{(isCalculated && !anyTouched) ? 'Save' : 'Review'}</button>
+                  >{isCalculated ? 'Save' : 'Review'}</button>
                 </ResultsCalculator>
 
               </div>
@@ -327,7 +347,6 @@ const mapStateToProps = state => ({
   newPolicyNumber: getNewPolicyNumber(state),
   policy: state.policyState.policy || defaultObj,
   summaryLedger: state.policyState.summaryLedger || defaultObj,
-  getRate: state.policyState.getRate || defaultObj,
   questions: state.questions,
   selectedValues: selector(state, 'coverageLimits.personalProperty.amount', 'clearFields'),
   underwritingQuestions: state.service.underwritingQuestions,
@@ -337,7 +356,6 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getNewRate,
-  clearRate,
   getUnderwritingQuestions,
   submitEndorsementForm,
   getEndorsementHistory,

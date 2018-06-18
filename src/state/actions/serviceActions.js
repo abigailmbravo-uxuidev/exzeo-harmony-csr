@@ -697,7 +697,7 @@ export const getListOfForms = (policy, rating, transactionType) => {
 export function submitEndorsementForm(formData, formProps) {
   return async (dispatch) => {
     const submitData = endorsementUtils.generateModel(formData, formProps);
-    const forms = await getListOfForms(formProps.policy, formProps.getRate.rating, 'New Business');
+    const forms = await getListOfForms(formProps.policy, submitData.rating, 'New Business');
     submitData.forms = forms;
     const newPolicy = await dispatch(createTransaction(submitData));
 

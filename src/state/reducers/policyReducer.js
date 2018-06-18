@@ -8,10 +8,6 @@ export default function policyStateReducer(state = initialState.policyState, act
       return getPolicy(state, action);
     case types.SET_POLICY:
       return setPolicy(state, action);
-    case types.SET_RATE:
-      return setRate(state, action);
-    case types.CLEAR_RATE:
-      return clearRate(state, action);
     case types.SET_SUMMARY_LEDGER:
       return setSummaryLedger(state, action);
     case types.SET_EFFECTIVE_DATE_CHANGE_REASONS:
@@ -35,20 +31,6 @@ function setPolicy(state, action) {
     ...state,
     policy: action.policy,
     summaryLedger: action.summaryLedger
-  }
-}
-
-function setRate(state, action) {
-  return {
-    ...state,
-    getRate: action.rate
-  }
-}
-
-function clearRate(state, action) {
-  return {
-    ...state,
-    getRate: {}
   }
 }
 

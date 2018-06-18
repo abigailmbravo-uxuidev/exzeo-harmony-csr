@@ -32,18 +32,6 @@ export function setSummaryLedger(summaryLedger) {
 
 /**
  *
- * @param rate
- * @returns {{type: string, rate: *}}
- */
-export function setNewRate(rate) {
-  return {
-    type: types.SET_RATE,
-    rate
-  }
-}
-
-/**
- *
  * @param effectiveDateReasons
  * @returns {{type: string, effectiveDateChangeReasons: *}}
  */
@@ -51,16 +39,6 @@ export function setEffectiveDateChangeReasons(effectiveDateReasons) {
   return {
     type: types.SET_EFFECTIVE_DATE_CHANGE_REASONS,
     effectiveDateReasons
-  }
-}
-
-/**
- *
- * @returns {{type: string}}
- */
-export function clearRate() {
-  return {
-    type: types.CLEAR_RATE
   }
 }
 
@@ -110,6 +88,7 @@ export function getSummaryLedger(policyNumber) {
  */
 export function getNewRate(formData, formProps) {
   return async (dispatch) => {
+    try {
       const rateData = convertToRateData(formData, formProps);
       const config = {
         service: 'rating-engine',
@@ -117,14 +96,11 @@ export function getNewRate(formData, formProps) {
         path: 'endorsement',
         data: rateData
       };
-    try {
       const response = await serviceRunner.callService(config);
       const rate = response && response.data && response.data.result ? response.data.result : {};
-      dispatch(setNewRate(rate));
       return { ...rate };
     } catch (error) {
       dispatch(errorActions.setAppError(error));
-      throw error;
     }
   };
 }

@@ -18,7 +18,6 @@ export default {
   policyState: {
     policy: {},
     summaryLedger: {},
-    getRate: {},
     effectiveDateReasons: []
   },
   search: {},

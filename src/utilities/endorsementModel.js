@@ -91,7 +91,6 @@ export function generateModel(data, props) {
   const endorsementDate = calculateEndorsementDate(data.endorsementDate, props.zipcodeSettings.timezone);
 
   data.transactionType = 'Endorsement';
-  data.rating = props.getRate.rating;
   data.billingStatus = props.summaryLedger.status.code;
 
   data.property.distanceToFireHydrant = Number(data.property.distanceToFireHydrant);
