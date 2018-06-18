@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import Overview from './Overview';
-import { getAgency } from '../../../state/actions/agencyActions';
+import { getAgency, getAgents } from '../../../state/actions/agencyActions';
 
 const mapStateToProps = state => ({
-  agency: state.agencyState.agency,
+  agency: state.agencyState.agency
 });
 
-export default connect(mapStateToProps, { getAgency })(Overview);
+export default connect(mapStateToProps, { getAgency, getAgents })(Overview);

@@ -8,6 +8,7 @@ import * as serviceActions from '../../state/actions/serviceActions';
 export class DetailHeader extends Component {
   render() {
     const { agency } = this.props;
+    console.log(agency);
     if (!agency || !agency.agencyCode) {
       return (<div className="detailHeader" />);
     }
@@ -30,7 +31,7 @@ DetailHeader.propTypes = {
 
 
 const mapStateToProps = state => ({
-  agency: state.service.agency
+  agency: state.agencyState.agency
 });
 
 const mapDispatchToProps = dispatch => ({

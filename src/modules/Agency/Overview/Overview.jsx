@@ -14,6 +14,7 @@ export class Overview extends Component {
   componentDidMount() {
     const agencyCode = localStorage.getItem('agencyCode');
     this.props.getAgency('TTIC', 'FL', agencyCode);
+    this.props.getAgents('TTIC', 'FL');
   }
 
   toggleContactModal = editType => () =>
