@@ -137,11 +137,11 @@ const Property = ({
 );
 
 Property.propTypes = {
-  questions: PropTypes.array
+  questions: PropTypes.object
 };
 
 Property.defaultProps = {
-  questions: []
+  questions: {}
 };
 
 export default Property;

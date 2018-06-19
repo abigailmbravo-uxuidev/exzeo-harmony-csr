@@ -2,9 +2,6 @@ import { convertToRateData } from "../../utilities/endorsementModel";
 import * as serviceRunner from '../../utilities/serviceRunner';
 import * as types from './actionTypes';
 import * as errorActions from "./errorActions";
-
-import {handleError, runnerSetup, serviceRequest} from "./serviceActions";
-import {batchActions} from "redux-batched-actions/lib/index";
 import endorsementUtils from "../../utilities/endorsementModel";
 
 /**
