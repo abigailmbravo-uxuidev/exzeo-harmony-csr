@@ -3,6 +3,7 @@
   "version": "0.9.1",
   "private": true,
   "dependencies": {
+    "@exzeo/core-ui": "0.1.x",
     "@fortawesome/fontawesome": "~1.0.0",
     "@fortawesome/react-fontawesome": "~0.0.14",
     "auth0-js": "~8.10.1",
@@ -22,7 +23,7 @@
     "node-sass": "~4.7.2",
     "prop-types": "~15.6.0",
     "react": "~16.2.0",
-    "react-bootstrap-table": "~4.0.3",
+    "react-bootstrap-table": "^4.3.1",
     "react-cookie": "~2.1.2",
     "react-dom": "~16.2.0",
     "react-dropzone": "~4.2.3",
@@ -73,7 +74,7 @@
     "server": "./replace-dotenv.sh && exframe-web",
     "build": "npm run build-css && react-scripts build",
     "cover": "npm test -- --coverage",
-    "test": "react-scripts test --env=jsdom",
+    "test": "react-scripts test --env=jsdom --coverage",
     "eject": "react-scripts eject"
   },
   "jest": {

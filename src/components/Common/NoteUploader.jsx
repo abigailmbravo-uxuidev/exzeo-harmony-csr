@@ -49,19 +49,11 @@ export class NoteUploader extends Component {
           authorization: `bearer ${idToken}`
         }
     }).run();
-
-    this.uppy.setMeta({ documentId: this.props.documentId });
   }
-
-  state = { loading: false }
 
   minimzeButtonHandler = () => {
     const { actions, appState } = this.props;
-    if (appState.data.minimize) {
-      actions.appStateActions.setAppState(appState.modelName, appState.instanceId, { ...appState.data, minimize: false });
-    } else {
-      actions.appStateActions.setAppState(appState.modelName, appState.instanceId, { ...appState.data, minimize: true });
-    }
+    actions.appStateActions.setAppState(appState.modelName, appState.instanceId, { ...appState.data, minimize: appState.data.minimize });
   }
 
   // TODO: Pull this from the list service
@@ -165,20 +157,20 @@ export class NoteUploader extends Component {
       })
     };
 
-    actions.cgActions.startWorkflow('addNote', noteData)
+    return actions.cgActions.startWorkflow('addNote', noteData)
       .then(result => {
+        console.log(window.location.pathname)
         if(window.location.pathname.endsWith('/notes')) {
           const ids = (noteData.noteType === 'Policy Note')
             ? [noteData.number, noteData.source].toString()
             : noteData.number;
           actions.serviceActions.getNotes(ids, noteData.number);
         }
-        this.setState({ loading: false });
+
         this.closeButtonHandler();
       })
       .catch(err => {
         actions.errorActions.setAppError({ message: err });
-        this.setState({ loading: false });
         this.closeButtonHandler();
       });
   }
@@ -208,7 +200,7 @@ export class NoteUploader extends Component {
           </div>
         </div>
         <div className="mainContainer">
-          {this.state.loading && <Loader />}
+          {this.props.submitting && <Loader />}
           <Form id="NoteUploader" onSubmit={this.props.handleSubmit(this.submitNote)} noValidate>
             <div className="content">
               <label>Contact</label>
