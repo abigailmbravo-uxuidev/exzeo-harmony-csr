@@ -53,7 +53,7 @@ export class NoteUploader extends Component {
 
   minimzeButtonHandler = () => {
     const { actions, appState } = this.props;
-    actions.appStateActions.setAppState(appState.modelName, appState.instanceId, { ...appState.data, minimize: appState.data.minimize });
+    actions.appStateActions.setAppState(appState.modelName, appState.instanceId, { ...appState.data, minimize: !appState.data.minimize });
   }
 
   // TODO: Pull this from the list service
@@ -159,7 +159,6 @@ export class NoteUploader extends Component {
 
     return actions.cgActions.startWorkflow('addNote', noteData)
       .then(result => {
-        console.log(window.location.pathname)
         if(window.location.pathname.endsWith('/notes')) {
           const ids = (noteData.noteType === 'Policy Note')
             ? [noteData.number, noteData.source].toString()
@@ -226,8 +225,8 @@ export class NoteUploader extends Component {
 }
 
 NoteUploader.propTypes = {
-  documentId: PropTypes.string,
-  noteType: PropTypes.string
+  documentId: PropTypes.string.isRequired,
+  noteType: PropTypes.string.isRequired
 };
 
 const mapStateToProps = state => ({
