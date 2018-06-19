@@ -100,7 +100,8 @@ export class SideNav extends React.Component {
               <GenerateDocsForm 
                 policyNumber={policy.policyNumber}
                 updateNotes={this.updateNotes(this.props)}
-                errorHandler={(err) => actions.errorActions.setAppError(err)} 
+                startWorkflow={actions.cgActions.startWorkflow}
+                errorHandler={actions.errorActions.setAppError} 
             />}
             </li>
           </ul>

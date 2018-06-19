@@ -16,8 +16,9 @@ const initialState = {
 const store = mockStore(initialState);
 const props = {
   policyNumber: '123',
-  errorHandler: () => {},
-  updateNotes: () => {}
+  errorHandler: jest.fn(),
+  startWorkflow: jest.fn(),
+  updateNotes: () => jest.fn()
 };
 
 describe('Testing GenerateDocsForm component', () => {
@@ -34,17 +35,12 @@ describe('Testing GenerateDocsForm component', () => {
   });
 
   it('should test generateDoc', () => {
-    const mock = new MockAdapter(axios);
-    const blob = new Blob(['test'], {type: 'application/pdf' });
-    mock.onPost(`${process.env.REACT_APP_API_URL}/generate-document`).reply(200, 
-      'testing', 
-      {'content-disposition': 'attachment; filename=test.pdf'}
-    );
+    
 
     const wrapper = shallow(<FormComponent store={store} {...props} />).dive().dive().dive().instance();
     const data =  { documentType: 'policyInvoice', effectiveDate: null }
     const res = wrapper.generateDoc(data, null, wrapper.props);
-    expect(wrapper.state.isSubmitting).toBe(true);
+
   });
 
   it('updateNotes should exist', () => {

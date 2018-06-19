@@ -31,12 +31,38 @@ export class GenerateDocsForm extends Component {
 
   generateDoc = (data, dispatch, props) => {
     const { documentType, effectiveDate } = data;
-    const { policyNumber, errorHandler, updateNotes } = props;
+    const { errorHandler, policyNumber, updateNotes, startWorkflow } = props;
     const req = this.reqConfig({
       documentNumber: policyNumber,
       documentType,
       effectiveDate
     });
+
+    return startWorkflow('policyInvoiceGenerator', { documentNumber: policyNumber }, false)
+      .then(result => {
+        if (window.location.pathname === '/policy/notes') updateNotes();
+        const fileUrl = result.workflowData.policyInvoiceGenerator.data.previousTask.value.result[0].fileUrl;
+        const fileName = result.workflowData.policyInvoiceGenerator.data.previousTask.value.result[0].fileName;
+        const proxyUrl = `${process.env.REACT_APP_API_URL}/download`;
+        const params = { url: fileUrl };
+        return axios.get(proxyUrl, { responseType: 'blob', params });
+      })
+      .then(res => {
+        const contentDisposition = res.headers['content-disposition'];
+        const filename = contentDisposition.match(/filename="(.+)"/)[1] || policyNumber;
+        const blobUrl = window.URL.createObjectURL(res.data);
+        const link = window.document.createElement('a');
+        link.href = blobUrl;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        return true;
+      })
+      .catch((err) => {
+        const error = err.response ? err.response.statusText : err;
+        return errorHandler({ message: error });
+      });
 
     /*
     return axios(req)
@@ -94,6 +120,7 @@ export class GenerateDocsForm extends Component {
 GenerateDocsForm.propTypes = {
   policyNumber: PropTypes.string.isRequired,
   updateNotes: PropTypes.func.isRequired,
+  startWorkflow: PropTypes.func.isRequired,
   errorHandler: PropTypes.func.isRequired
 };
 
