@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {reduxForm, Field, formValueSelector } from 'redux-form';
-import { Select, Radio, Input } from '@exzeo/core-ui/lib/Input';
+import { reduxForm, Field, formValueSelector } from 'redux-form';
+import { Select, Radio, Input, Integer } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
-import { getAgency } from '../../state/actions/agencyActions';
+import { getAgency, updateAgency } from '../../state/actions/agencyActions';
 import { getEditModalInitialValues } from '../../state/selectors/agency.selector';
 import CSRFields from './Overview/CSRFields';
 import ContactFields from './Overview/ContactFields';
@@ -21,12 +21,13 @@ const okToPayAnswers = [
 
 const taxClassificationAnswers = [
   { answer: 'LLC', label: 'LLC' },
-  { answer: 'Corporation', label: 'Corporation'}
+  { answer: 'Corporation', label: 'Corporation' }
 ];
 
 export class AgencyModal extends Component {
-  saveAgency = (data, dispatch, props) => {
-    this.toggleAgencyModal();
+  saveAgency = async (data, dispatch, props) => {
+    await props.updateAgency(data);
+    props.closeModal();
   };
 
   resetSameAsMailing = (value) => {
@@ -115,7 +116,7 @@ export class AgencyModal extends Component {
                     label="TPAID"
                     styleName="tPaid"
                     name="tPaid"
-                    component={Input}
+                    component={Integer}
                     validate={[validation.isRequired, validation.isNumbersOnly]}
                   />
                   <Field
@@ -233,7 +234,6 @@ export class AgencyModal extends Component {
                     styleName="physicalAddress2"
                     name="physicalAddress.address2"
                     component={Input}
-                    validate={validation.isRequired}
                     disabled={sameAsMailingValue}
                   />
                   <div className="flex-form">
@@ -312,15 +312,13 @@ export class AgencyModal extends Component {
 }
 
 const selector = formValueSelector('AgencyModal');
-const mapStateToProps = state => {
-  return {
-    initialValues: getEditModalInitialValues(state),
-    sameAsMailingValue: selector(state, 'sameAsMailing')
-  }
-};
+const mapStateToProps = state => ({
+  initialValues: getEditModalInitialValues(state),
+  sameAsMailingValue: selector(state, 'sameAsMailing')
+});
 
 export default connect(mapStateToProps, {
-  getAgency
+  getAgency, updateAgency
 })(reduxForm({
   form: 'AgencyModal',
   enableReinitialize: true

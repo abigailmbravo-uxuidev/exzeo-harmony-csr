@@ -7,10 +7,13 @@ export const getEditModalInitialValues = createSelector(
   [getAgency],
   (agency) => {
     // noinspection JSUnusedLocalSymbols
-    const { latitude, longitude, county, ...physicalAddress } = agency.physicalAddress;
+    delete agency.createdBy; // agency service errors when passed
+    const {
+      latitude, longitude, county, ...physicalAddress
+    } = agency.physicalAddress;
     return {
       ...agency,
       sameAsMailing: isEqual(physicalAddress, agency.mailingAddress)
-    }
+    };
   }
 );

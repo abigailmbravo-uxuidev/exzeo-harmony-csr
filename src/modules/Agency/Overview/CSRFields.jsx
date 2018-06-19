@@ -17,7 +17,7 @@ export const CSRFields = () => (
       styleName="secondaryPhoneNumber"
       name="secondaryPhoneNumber"
       component={Phone}
-      validate={[validation.isRequired, validation.isPhone]}
+      validate={validation.isPhone}
     />
     <Field
       label="CSR Fax"

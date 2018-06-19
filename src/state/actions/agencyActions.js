@@ -1,6 +1,6 @@
-import * as types from "./actionTypes";
-import * as errorActions from "./errorActions";
-import * as serviceRunner from "../../utilities/serviceRunner";
+import * as types from './actionTypes';
+import * as errorActions from './errorActions';
+import * as serviceRunner from '../../utilities/serviceRunner';
 
 /**
  *
@@ -11,7 +11,7 @@ export function setAgencies(agencies) {
   return {
     type: types.SET_AGENCIES,
     agencies
-  }
+  };
 }
 
 /**
@@ -23,7 +23,7 @@ export function setAgency(agency) {
   return {
     type: types.SET_AGENCY,
     agency
-  }
+  };
 }
 
 /**
@@ -35,7 +35,7 @@ export function setAgents(agents) {
   return {
     type: types.SET_AGENTS,
     agents
-  }
+  };
 }
 
 /**
@@ -52,7 +52,7 @@ export function getAgencies(companyCode, state) {
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
-  }
+  };
 }
 
 /**
@@ -87,11 +87,11 @@ export function getAgency(companyCode, state, agencyCode) {
   return async (dispatch) => {
     try {
       const agency = await fetchAgency(companyCode, state, agencyCode);
-      dispatch(setAgency(agency))
+      dispatch(setAgency(agency));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
-  }
+  };
 }
 
 /**
@@ -129,7 +129,7 @@ export function getAgents(companyCode, state) {
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
-  }
+  };
 }
 
 /**
@@ -148,6 +148,43 @@ export async function fetchAgents(companyCode, state) {
     const response = await serviceRunner.callService(config);
     return response.data && response.data.result ? response.data.result : [];
   } catch (error) {
-    throw error
+    throw error;
   }
 }
+
+/**
+ *
+ * @param agencyData
+ * @returns {Promise<Array>}
+ */
+export async function saveAgency(agencyData) {
+  try {
+    const config = {
+      service: 'agency',
+      method: 'PUT',
+      path: `v1/agency/${agencyData.agencyCode}`,
+      data: agencyData
+    };
+    const response = await serviceRunner.callService(config);
+    return response.data && response.data.result ? response.data.result : {};
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
+ * @param agencyData
+ * @returns {Function}
+ */
+export function updateAgency(agencyData) {
+  return async (dispatch) => {
+    try {
+      const agency = await saveAgency(agencyData);
+      dispatch(setAgency(agency));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
