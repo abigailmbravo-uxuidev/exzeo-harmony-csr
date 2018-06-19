@@ -14,8 +14,7 @@ const validate = values => !values.documentType ? { documentType: 'Required' } :
 
 export class GenerateDocsForm extends Component {
   state = {
-    showDate: false,
-    isSubmitting: false
+    showDate: false
   };
 
   fieldsWithDate = []
@@ -39,8 +38,8 @@ export class GenerateDocsForm extends Component {
       effectiveDate
     });
 
-    this.setState({ isSubmitting: true });
-    axios(req)
+    /*
+    return axios(req)
     .then(res => {
       const contentDisposition = res.headers['content-disposition'];
       const filename = contentDisposition.match(/filename="(.+)"/)[1] || policyNumber;
@@ -57,18 +56,18 @@ export class GenerateDocsForm extends Component {
     })
     .catch((err) => {
       const error = err.response ? err.response.statusText : err;
-      this.setState({ isSubmitting: false });
       return errorHandler({ message: error });
     });
+    */
   }
 
   toggleDate = (event, value) => this.setState({ showDate: value && this.fieldsWithDate.includes(value) })
 
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, submitting } = this.props;
     return (
       <div className="fade-in">
-        {this.state.isSubmitting && <Loader />}
+        {submitting && <Loader />}
         <form onSubmit={handleSubmit(this.generateDoc)}>
           <Field
             name="documentType"

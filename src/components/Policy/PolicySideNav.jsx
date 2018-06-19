@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import GenerateDocsForm from './GenerateDocsForm';
+import * as cgActions from '../../actions/cgActions';
 import * as newNoteActions from '../../actions/newNoteActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as errorActions from '../../actions/errorActions';
@@ -118,6 +119,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    cgActions: bindActionCreators(cgActions, dispatch),
     newNoteActions: bindActionCreators(newNoteActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     errorActions: bindActionCreators(errorActions, dispatch)
