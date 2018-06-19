@@ -17,8 +17,10 @@ export default {
   },
   policyState: {
     policy: {},
-    summaryLedger: {},
-    effectiveDateReasons: []
+    summaryLedger: '',
+    effectiveDateReasons: '',
+    paymentHistory: '',
+    endorsementHistory: ''
   },
   search: {},
   service: {

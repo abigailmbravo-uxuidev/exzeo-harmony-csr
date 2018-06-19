@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import moment from 'moment-timezone';
 import { Helmet } from 'react-helmet';
 import { setAppState } from '../state/actions/appStateActions';
-import { createTransaction, getZipcodeSettings } from '../state/actions/serviceActions';
-import { getPolicy } from '../state/actions/policyActions';
+import { getZipcodeSettings } from '../state/actions/serviceActions';
+import { getPolicy, createTransaction } from '../state/actions/policyActions';
 import { startWorkflow, batchCompleteTask } from '../state/actions/cgActions';
 import EditEffectiveDataPopUp from '../components/Policy/EditEffectiveDatePopup';
 import ReinstatePolicyPopup from '../components/Policy/ReinstatePolicyPopup';
@@ -91,8 +91,19 @@ export class Policy extends React.Component {
           <div className="content-wrapper">
             {children}
           </div>
-          {appState.data.showReinstatePolicyPopUp && <ReinstatePolicyPopup {...this.props} reinstatePolicySubmit={reinstatePolicySubmit} hideReinstatePolicyModal={() => hideReinstatePolicyPopUp(this.props)} />}
-          {appState.data.showEffectiveDateChangePopUp && <EditEffectiveDataPopUp {...this.props} changeEffectiveDateSubmit={changeEffectiveDate} hideEffectiveDateModal={() => hideEffectiveDatePopUp(this.props)} />}
+          {appState.data.showReinstatePolicyPopUp &&
+            <ReinstatePolicyPopup
+              {...this.props}
+              reinstatePolicySubmit={reinstatePolicySubmit}
+              hideReinstatePolicyModal={() => hideReinstatePolicyPopUp(this.props)}
+            />}
+          {appState.data.showEffectiveDateChangePopUp &&
+            <EditEffectiveDataPopUp
+              changeEffectiveDateSubmit={changeEffectiveDate}
+              hideEffectiveDateModal={() => hideEffectiveDatePopUp(this.props)}
+            />
+          }
+
         </main>
       </div>
     );

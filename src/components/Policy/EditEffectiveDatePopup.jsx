@@ -10,7 +10,7 @@ import Loader from '../Common/Loader';
 export const reasonAnswers = (reasons) => reasons.map(reason => ({ answer: reason, label: reason }));
 
 export const handleInitialize = (state) => {
-  const policy = state.service.latestPolicy || {};
+  const policy = state.policyState.policy || {};
 
   return {
     effectiveDate: moment.utc(policy.effectiveDate).format('YYYY-MM-DD'),
@@ -19,7 +19,7 @@ export const handleInitialize = (state) => {
 };
 
 export const EditEffectiveDatePopup = (props) => {
-  const { effectiveDateReasons, hideEffectiveDateModal, handleSubmit, changeEffectiveDateSubmit, pristine } = props;
+  const { effectiveDateReasons, hideEffectiveDateModal, handleSubmit, changeEffectiveDateSubmit, pristine, appState } = props;
   const reasons = reasonAnswers(effectiveDateReasons);
   return (
     <div id="effective-date" className="modal effective-date">
@@ -30,9 +30,17 @@ export const EditEffectiveDatePopup = (props) => {
             <h4>Edit Effective Date</h4>
           </div>
           <div className="card-block">
-            <DateField label={'Effective Date'} name={'effectiveDate'} validations={['required']} />
+            <DateField
+              label={'Effective Date'}
+              name={'effectiveDate'}
+              validations={['required']} />
             <SelectField
-              name="effectiveDateChangeReason" component="select" label={'Reason For Change'} styleName={''} validations={['required']} answers={reasons}
+              name="effectiveDateChangeReason"
+              component="select"
+              label={'Reason For Change'}
+              styleName={''}
+              validations={['required']}
+              answers={reasons}
             />
           </div>
           <div className="card-footer">
@@ -45,7 +53,7 @@ export const EditEffectiveDatePopup = (props) => {
                   Cancel
                 </button>
               <button
-                disabled={props.appState.data.submitting || pristine}
+                disabled={appState.data.submitting || pristine}
                 className="btn btn-primary"
                 type="submit"
               >
@@ -69,7 +77,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   effectiveDateReasons: state.policyState.effectiveDateReasons,
   initialValues: handleInitialize(state),
-  latestPolicy: state.service.latestPolicy,
+  policy: state.policyState.policy,
   tasks: state.cg,
 });
 

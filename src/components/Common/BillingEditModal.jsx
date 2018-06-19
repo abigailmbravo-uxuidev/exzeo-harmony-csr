@@ -10,16 +10,17 @@ import 'react-select/dist/react-select.css';
 const FORM_NAME = 'BillingEditModal';
 
 export const handleInitialize = (state) => {
-  const { billingOptions, latestPolicy } = state.service;
+  const { billingOptions } = state.service;
+  const { policy } = state.policyState;
 
-  if (billingOptions.length === 1 && !latestPolicy.billTo && !latestPolicy.billPlan) {
+  if (billingOptions.length === 1 && !policy.billTo && !policy.billPlan) {
     return {
       billToId: billingOptions.options[0].billToId,
       billToType: billingOptions.options[0].billToType,
       billPlan: 'Annual'
     };
   }
-  return state.service.latestPolicy;
+  return policy;
 };
 
 export const handleBillingFormSubmit = async (data, dispatch, props) => {
@@ -43,6 +44,7 @@ export class BillingEditModal extends React.Component {
 
     this.modalStyle = { flexDirection: 'row' };
   }
+
   normalizeBilling = (value) => {
     const { billingOptions, changeField } = this.props;
     const billToType = billingOptions.find(o => o.billToId === value).billToType;
@@ -135,7 +137,7 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   selectedAI: state.appState.data.selectedAI,
   initialValues: handleInitialize(state),
-  policy: state.service.latestPolicy,
+  policy: state.policyState.policy,
   fieldValues: getFormValues(FORM_NAME)(state),
 });
 

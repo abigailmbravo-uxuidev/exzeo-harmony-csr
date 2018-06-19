@@ -162,7 +162,7 @@ PolicyholderAgent.propTypes = {
 const mapStateToProps = state => ({
   agents: state.service.agents,
   agency: state.service.agency,
-  policy: state.service.latestPolicy || {}
+  policy: state.policyState.policy || {}
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -12,6 +12,10 @@ export default function policyStateReducer(state = initialState.policyState, act
       return setSummaryLedger(state, action);
     case types.SET_EFFECTIVE_DATE_CHANGE_REASONS:
       return setEffectiveDateChangeReasons(state, action);
+    case types.SET_PAYMENT_HISTORY:
+      return setPaymentHistory(state, action);
+    case types.SET_ENDORSEMENT_HISTORY:
+      return setEndorsementHistory(state, action);
     case persistTypes.REHYDRATE:
       return rehydrate(state, action);
     default:
@@ -45,6 +49,20 @@ function setEffectiveDateChangeReasons(state, action) {
   return {
     ...state,
     effectiveDateReasons: action.effectiveDateReasons
+  }
+}
+
+function setPaymentHistory(state, action) {
+  return {
+    ...state,
+    paymentHistory: action.paymentHistory
+  }
+}
+
+function setEndorsementHistory(state, action) {
+  return {
+    ...state,
+    endorsementHistory: action.endorsementHistory
   }
 }
 

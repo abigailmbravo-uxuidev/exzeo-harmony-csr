@@ -7,8 +7,8 @@ import _get from 'lodash/get';
 import _find from 'lodash/find';
 import moment from 'moment';
 import { getUIQuestions } from '../../state/actions/questionsActions';
-import { getCancelOptions, getBillingOptionsForPolicy } from '../../state/actions/serviceActions';
-import { getPolicy } from '../../state/actions/policyActions';
+import { getCancelOptions } from '../../state/actions/serviceActions';
+import { getPolicy, getBillingOptionsForPolicy } from '../../state/actions/policyActions';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import PolicyConnect from '../../containers/Policy';
 import Footer from '../Common/Footer';
@@ -387,7 +387,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   fieldValues: _get(state.form, 'Coverage.values', {}),
   initialValues: handleInitialize(state),
-  paymentOptions: state.service.billingOptions,
+  paymentOptions: state.policyState.billingOptions,
   policy: state.policyState.policy,
   summaryLedger: state.policyState.summaryLedger,
   questions: state.questions,
