@@ -58,7 +58,7 @@ export const ReinstatePolicyPopup = (props) => {
 };
 
 const mapStateToProps = state => ({
-  latestPolicy: state.service.latestPolicy,
+  latestPolicy: state.policyState.policy,
   initialValues: handleInitialize(state),
   fieldValues: _.get(state.form, 'ReinstatePolicyPopup.values', {}),
 });

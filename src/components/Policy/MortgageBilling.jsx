@@ -12,17 +12,20 @@ import { getCashDescriptionOptions, getCashTypeAnswers } from '../../state/selec
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 
-import { getPolicy, getSummaryLedger } from '../../state/actions/policyActions';
 import { getUIQuestions } from '../../state/actions/questionsActions';
 import {
-  getPaymentOptionsApplyPayments,
-  getBillingOptionsForPolicy,
-  getPaymentHistory,
+  getPolicy,
+  getSummaryLedger,
   addTransaction,
+  getPaymentHistory,
+  getBillingOptionsForPolicy,
   createTransaction
+} from '../../state/actions/policyActions';
+import {
+  getPaymentOptionsApplyPayments,
 } from '../../state/actions/serviceActions';
-import PolicyConnect from '../../containers/Policy';
 
+import PolicyConnect from '../../containers/Policy';
 import BillingModal from '../../components/Common/BillingEditModal';
 import AIModal from '../../components/Common/AdditionalInterestModal';
 import Footer from '../Common/Footer';
@@ -79,10 +82,11 @@ export class MortgageBilling extends Component {
 
   componentDidMount = () => {
     const { policy, summaryLedger } = this.props;
-    this.props.getPaymentHistory(this.props.policy.policyNumber);
-    this.props.getPaymentOptionsApplyPayments();
-    this.props.getUIQuestions('additionalInterestsCSR');
-
+    if (policy.policyID) {
+      this.props.getPaymentHistory(this.props.policy.policyNumber);
+      this.props.getPaymentOptionsApplyPayments();
+      this.props.getUIQuestions('additionalInterestsCSR');
+    }
     if (policy.rating && summaryLedger.currentPremium) {
       const paymentOptions = {
         effectiveDate: policy.effectiveDate,
@@ -96,7 +100,11 @@ export class MortgageBilling extends Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
-    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && (this.props.policyID !== nextProps.policy.policyID)) {
+    // TODO figure out a better way to handle policy not being in state on mount
+    if (nextProps.policy.policyID && (nextProps.policy.policyID !== this.props.policy.policyID)) {
+      this.props.getPaymentHistory(nextProps.policy.policyNumber);
+      this.props.getPaymentOptionsApplyPayments();
+      this.props.getUIQuestions('additionalInterestsCSR');
       const paymentOptions = {
         effectiveDate: nextProps.policy.effectiveDate,
         policyHolders: nextProps.policy.policyHolders,
@@ -279,10 +287,8 @@ export class MortgageBilling extends Component {
   };
 
 
-  handleFormSubmit = (data) => {
-    const {
-      policy, reset: resetForm, addTransaction, getPaymentHistory, getSummaryLedger
-    } = this.props;
+  handleFormSubmit = async (data) => {
+    const { reset: resetForm, addTransaction } = this.props;
     const submitData = data;
 
     submitData.cashDate = moment.utc(data.cashDate);
@@ -293,11 +299,7 @@ export class MortgageBilling extends Component {
     submitData.companyCode = 'TTIC';
     submitData.policy = this.props.policy;
 
-    addTransaction(submitData)
-      .then(() => {
-        getPaymentHistory(policy.policyNumber);
-        getSummaryLedger(policy.policyNumber);
-      });
+    await addTransaction(submitData);
 
     resetForm();
   };
@@ -306,7 +308,7 @@ export class MortgageBilling extends Component {
   dateFormatter = cell => `${cell.substring(0, 10)}`;
 
   initAdditionalInterestModal = () => {
-    const { service = {}, questions = {} } = this.props;
+    const { service = {}, questions = {}, policy } = this.props;
     const { addAdditionalInterestType, selectedAI, isEditingAI } = this.state;
     const initialValues = {
       name1: '',
@@ -351,8 +353,8 @@ export class MortgageBilling extends Component {
     }
 
     let mortgageeOrderAnswers = '';
-    if ((service.latestPolicy || service.quote) && addAdditionalInterestType === 'Mortgagee') {
-      mortgageeOrderAnswers = getMortgageeOrderAnswers(questions, service.latestPolicy.additionalInterests || service.quote.additionalInterests || null);
+    if ((policy.additionalInterests || service.quote) && addAdditionalInterestType === 'Mortgagee') {
+      mortgageeOrderAnswers = getMortgageeOrderAnswers(questions, (policy.additionalInterests || service.quote.additionalInterests || null));
     }
     return {
       ...initialValues,
@@ -608,12 +610,13 @@ const selector = formValueSelector('MortgageBilling');
 const mapStateToProps = state => ({
   cashTypeValue: selector(state, 'cashType'),
   auth: state.authState,
-  billingOptions: state.service.billingOptions,
+  billingOptions: state.policyState.billingOptions,
   initialValues: handleInitialize(state),
   summaryLedger: state.policyState.summaryLedger,
   policy: state.policyState.policy || {},
-  paymentHistory: state.service.paymentHistory,
+  paymentHistory: state.policyState.paymentHistory,
   paymentOptions: state.service.paymentOptions,
+  service: state.service,
   cashTypeAnswers: getCashTypeAnswers(state),
   cashDescriptionOptions: getCashDescriptionOptions(state),
   questions: state.questions,

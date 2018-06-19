@@ -7,11 +7,9 @@ import {validation} from "@exzeo/core-ui/lib/InputLifecycle/index";
 import { premiumEndorsementList } from './constants/endorsementTypes';
 import endorsementUtils from '../../../utilities/endorsementModel';
 import { getUIQuestions } from '../../../state/actions/questionsActions';
-import { getNewRate } from '../../../state/actions/policyActions';
+import { getNewRate, submitEndorsementForm, getEndorsementHistory } from '../../../state/actions/policyActions';
 import {
   getUnderwritingQuestions,
-  submitEndorsementForm,
-  getEndorsementHistory,
   getZipcodeSettings,
 } from '../../../state/actions/serviceActions';
 // Component Sections
@@ -342,8 +340,8 @@ const defaultObj = {};
 const defaultArr = [];
 const selector = formValueSelector('Endorsements');
 const mapStateToProps = state => ({
-  endorsementHistory: state.service.endorsementHistory || defaultArr,
-  initialValues: endorsementUtils.initializeEndorsementForm(state.service.latestPolicy),
+  endorsementHistory: state.policyState.endorsementHistory || defaultArr,
+  initialValues: endorsementUtils.initializeEndorsementForm(state.policyState.policy),
   newPolicyNumber: getNewPolicyNumber(state),
   policy: state.policyState.policy || defaultObj,
   summaryLedger: state.policyState.summaryLedger || defaultObj,

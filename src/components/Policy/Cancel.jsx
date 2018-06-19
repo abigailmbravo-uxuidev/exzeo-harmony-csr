@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm, change, getFormValues } from 'redux-form';
 import moment from 'moment-timezone';
-import { getCancelOptions, getPaymentHistory, getBillingOptionsForPolicy } from '../../state/actions/serviceActions';
+import { getCancelOptions, getBillingOptionsForPolicy } from '../../state/actions/serviceActions';
 import { startWorkflow, batchCompleteTask } from '../../state/actions/cgActions';
 import { setAppState } from '../../state/actions/appStateActions';
-import { getPolicy } from '../../state/actions/policyActions';
+import { getPolicy, getPaymentHistory } from '../../state/actions/policyActions';
 
 import PolicyConnect from '../../containers/Policy';
 import RadioField from '../Form/inputs/RadioField';
@@ -78,7 +78,7 @@ export class CancelPolicy extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { policy, summaryLedger, zipCodeSettings, getPaymentHistory, getBillingOptionsForPolicy } = nextProps;
-    if (policy && policy.policyNumber) {
+    if (nextProps.policy.policyID && (nextProps.policy.policyID !== this.props.policy.policyID)) {
       getPaymentHistory(policy.policyNumber);
 
       const paymentOptions = {
@@ -241,10 +241,10 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   fieldValues: getFormValues('CancelPolicy')(state) || defaultObj,
   initialValues: handleInitialize(state),
-  paymentHistory: state.service.paymentHistory,
+  paymentHistory: state.policyState.paymentHistory,
   policy: state.policyState.policy,
   summaryLedger: state.policyState.summaryLedger,
-  paymentOptions: state.service.billingOptions,
+  paymentOptions: state.policyState.billingOptions,
   cancelOptions: state.service.cancelOptions,
   zipCodeSettings: state.service.getZipcodeSettings
 });

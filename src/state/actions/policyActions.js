@@ -2,7 +2,10 @@ import { convertToRateData } from "../../utilities/endorsementModel";
 import * as serviceRunner from '../../utilities/serviceRunner';
 import * as types from './actionTypes';
 import * as errorActions from "./errorActions";
-import { serviceRequest } from "./serviceActions";
+
+import {handleError, runnerSetup, serviceRequest} from "./serviceActions";
+import {batchActions} from "redux-batched-actions/lib/index";
+import endorsementUtils from "../../utilities/endorsementModel";
 
 /**
  *
@@ -44,6 +47,42 @@ export function setEffectiveDateChangeReasons(effectiveDateReasons) {
 
 /**
  *
+ * @param paymentHistory
+ * @returns {{type: string, paymentHistory: *}}
+ */
+export function setPaymentHistory(paymentHistory) {
+  return {
+    type: types.SET_PAYMENT_HISTORY,
+    paymentHistory
+  }
+}
+
+/**
+ *
+ * @param billingOptions
+ * @returns {{type: string, billingOptions: *}}
+ */
+export function setBillingOptions(billingOptions) {
+  return {
+    type: types.SET_BILLING_OPTIONS,
+    billingOptions
+  }
+}
+
+/**
+ *
+ * @param endorsementHistory
+ * @returns {{type: string, endorsementHistory: *}}
+ */
+export function setEndorsementHistory(endorsementHistory) {
+  return {
+    type: types.SET_ENDORSEMENT_HISTORY,
+    endorsementHistory
+  }
+}
+
+/**
+ *
  * @param policyNumber
  * @returns {Function}
  */
@@ -56,8 +95,6 @@ export function getPolicy(policyNumber) {
       ]);
 
       dispatch(setPolicy(policy, summaryLedger));
-      // TODO remove when we can get rid of all 'latestPolicy' references
-      dispatch(serviceRequest({ latestPolicy: policy }))
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
@@ -105,6 +142,10 @@ export function getNewRate(formData, formProps) {
   };
 }
 
+/**
+ *
+ * @returns {Function}
+ */
 export function getEffectiveDateChangeReasons() {
   return async (dispatch) => {
     try {
@@ -114,6 +155,132 @@ export function getEffectiveDateChangeReasons() {
       dispatch(errorActions.setAppError(error));
     }
   }
+}
+
+/**
+ *
+ * @param policyNumber
+ * @returns {Function}
+ */
+export function getPaymentHistory(policyNumber) {
+  return async (dispatch) => {
+    try {
+      const paymentHistory = await fetchPaymentHistory(policyNumber);
+      dispatch(setPaymentHistory(paymentHistory));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
+/**
+ *
+ * @param submitData
+ * @returns {Function}
+ */
+export function addTransaction(submitData) {
+  return async (dispatch) => {
+    const config = {
+      service: 'billing',
+      method: 'POST',
+      path: 'post-payment-transaction',
+      data: {
+        companyCode: submitData.companyCode,
+        state: submitData.policy.state,
+        product: submitData.policy.product,
+        policyNumber: submitData.policy.policyNumber,
+        policyTerm: submitData.policy.policyTerm,
+        policyAccountCode: submitData.policy.policyAccountCode,
+        date: submitData.cashDate,
+        type: submitData.cashType,
+        description: submitData.cashDescription,
+        batch: submitData.batchNumber,
+        amount: submitData.amount
+      }
+    };
+
+    try {
+      await serviceRunner.callService(config);
+    } catch (error) {
+      dispatch(errorActions.setAppError(error))
+    }
+    dispatch(getPaymentHistory(submitData.policy.policyNumber));
+    dispatch(getSummaryLedger(submitData.policy.policyNumber));
+  };
+}
+
+/**
+ *
+ * @param paymentOptions
+ * @returns {function(*): Promise<any>}
+ */
+export function getBillingOptionsForPolicy(paymentOptions) {
+  return async (dispatch) => {
+    try {
+      const billingOptions = await fetchBillingOptions(paymentOptions);
+      dispatch(setBillingOptions(billingOptions));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
+/**
+ *
+ * @param policyNumber
+ * @returns {function(*): Promise<any>}
+ */
+export function getEndorsementHistory(policyNumber) {
+  return async (dispatch) => {
+    try {
+      const endorsementHistory = await fetchEndorsementHistory(policyNumber);
+      dispatch(setEndorsementHistory(endorsementHistory))
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  }
+};
+
+/**
+ *
+ * @param submitData
+ * @returns {Function}
+ */
+export function createTransaction(submitData) {
+  return async (dispatch) => {
+    const config = {
+      service: 'policy-data',
+      method: 'POST',
+      path: 'transaction',
+      data: submitData
+    };
+
+    try {
+      const response = await serviceRunner.callService(config);
+      return response.data && response.data.result ? response.data.result : {};
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  }
+}
+
+/**
+ *
+ * @param formData
+ * @param formProps
+ * @returns {Function}
+ */
+export function submitEndorsementForm(formData, formProps) {
+  return async (dispatch) => {
+    const submitData = endorsementUtils.generateModel(formData, formProps);
+    const forms = await fetchListOfForms(formProps.policy, submitData.rating, 'New Business');
+    submitData.forms = forms;
+    const newPolicy = await dispatch(createTransaction(submitData));
+
+    if (newPolicy.policyNumber) {
+      dispatch(getPolicy(newPolicy.policyNumber));
+    }
+  };
 }
 
 /* TODO: move out network calls into a separate utility or service */
@@ -172,6 +339,95 @@ export async function fetchEffectiveDateChangeReasons() {
   try {
     const response = await serviceRunner.callService(config);
     return response && response.data ? response.data.effectiveDateReasons : [];
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
+ * @param policyNumber
+ * @returns {Promise<*|{}>}
+ */
+export async function fetchPaymentHistory(policyNumber) {
+    const config = {
+      service: 'billing',
+      method: 'GET',
+      path: `payment-history/${policyNumber}`
+    };
+  try {
+    const response = await serviceRunner.callService(config);
+    return response.data && response.data.result ? response.data.result : {};
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
+ * @param policy
+ * @param rating
+ * @param transactionType
+ * @returns {Promise<*>}
+ */
+export async function fetchListOfForms(policy, rating, transactionType) {
+  const config = {
+    service: 'form-list',
+    method: 'POST',
+    path: '/v1',
+    data: {
+      quote: {
+        ...policy,
+        rating
+      },
+      transactionType: transactionType || 'New Business'
+    }
+  };
+
+  try {
+    const response = await serviceRunner.callService(config);
+    return response.data && response.data.result && response.data.result.forms ? response.data.result.forms : [];
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
+ * @param paymentOptions
+ * @returns {Promise<{}>}
+ */
+export async function fetchBillingOptions(paymentOptions) {
+  const config = {
+    service: 'billing',
+    method: 'POST',
+    path: 'payment-options-for-policy',
+    data: paymentOptions
+  };
+
+  try {
+    const response = await serviceRunner.callService(config);
+    return response.data && response.data.result ? response.data.result : {};
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
+ * @param policyNumber
+ * @returns {Promise<*>}
+ */
+export async function fetchEndorsementHistory(policyNumber) {
+  const config = {
+    service: 'policy-data',
+    method: 'GET',
+    path: `transactionDetails/${policyNumber}?endorsement=endorsement`
+  };
+
+  try {
+    const response = await serviceRunner.callService(config);
+    return response.data
   } catch (error) {
     throw error;
   }
