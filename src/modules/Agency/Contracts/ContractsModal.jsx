@@ -81,6 +81,15 @@ export const ContractsModal = (props) => {
                 />
                 <label htmlFor="af3"> AF3</label>
               </div>
+              <div className="product-wrapper">
+                <Field
+                  name={`license[${contractIndex}].product`}
+                  id="ho3"
+                  component="input"
+                  type="checkbox"
+                />
+                <label htmlFor="ho3"> HO3</label>
+              </div>
             </section>
           </div>
           <div className="card-footer">
