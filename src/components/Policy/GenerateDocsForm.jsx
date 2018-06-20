@@ -20,13 +20,11 @@ export class GenerateDocsForm extends Component {
   fieldsWithDate = [];
 
   generateDoc = (data, dispatch, props) => {
-    const { documentType, effectiveDate } = data;
     const { errorHandler, policyNumber, updateNotes, startWorkflow } = props;
     return startWorkflow('policyInvoiceGenerator', { documentNumber: policyNumber }, false)
       .then(result => {
         if (window.location.pathname === '/policy/notes') updateNotes();
         const fileUrl = result.workflowData.policyInvoiceGenerator.data.previousTask.value.result[0].fileUrl;
-        const fileName = result.workflowData.policyInvoiceGenerator.data.previousTask.value.result[0].fileName;
         const proxyUrl = `${process.env.REACT_APP_API_URL}/download`;
         const params = { url: fileUrl };
         return axios.get(proxyUrl, { responseType: 'blob', params });
