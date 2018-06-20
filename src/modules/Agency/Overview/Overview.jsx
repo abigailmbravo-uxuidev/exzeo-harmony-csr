@@ -12,7 +12,8 @@ export class Overview extends Component {
   };
 
   componentDidMount() {
-    const agencyCode = localStorage.getItem('agencyCode');
+    const { match } = this.props;
+    const { agencyCode } = match.params;
     this.props.getAgency('TTIC', 'FL', agencyCode);
     this.props.getAgents('TTIC', 'FL');
   }

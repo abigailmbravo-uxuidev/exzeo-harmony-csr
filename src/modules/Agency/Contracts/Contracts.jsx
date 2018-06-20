@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
-import moment from 'moment';
 import TaxDetails from './TaxDetails';
 import AgencyModal from '../AgencyModal';
 import ContractsCard from './ContractsCard';
@@ -42,13 +40,6 @@ export class Contracts extends Component {
   render() {
     const { agency, sameAsMailingValue } = this.props;
     if (!agency) return <div />;
-    const matchedPhysicalAddress = _.cloneDeep(agency.physicalAddress);
-    delete matchedPhysicalAddress.latitude;
-    delete matchedPhysicalAddress.longitude;
-    delete matchedPhysicalAddress.county;
-
-    agency.eoExpirationDate = moment(agency.eoExpirationDate).format('YYYY-MM-DD');
-    agency.licenseEffectiveDate = moment(agency.licenseEffectiveDate).format('YYYY-MM-DD');
 
     return (
       <div>
@@ -83,14 +74,6 @@ export class Contracts extends Component {
         </div>
         {this.state.showAgencyEdit && (
           <AgencyModal
-            initialValues={{
-              ...agency,
-              sameAsMailing: _.isEqual(
-                matchedPhysicalAddress,
-                agency.mailingAddress
-              )
-            }}
-            sameAsMailingValue={sameAsMailingValue}
             saveAgency={this.saveAgency}
             isEdit
             closeModal={this.toggleAgencyModal}

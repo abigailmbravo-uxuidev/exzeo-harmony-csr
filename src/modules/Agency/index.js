@@ -7,6 +7,7 @@ import AgencyDetailHeader from './DetailHeader';
 import Overview from './Overview';
 import Contracts from './Contracts';
 import Agents from './Agents';
+import Loader from '../../components/Common/Loader';
 
 export const Agency = props => (
   <div className="app-wrapper csr agency">
@@ -14,14 +15,13 @@ export const Agency = props => (
     <AgencyHeader />
     <AgencyDetailHeader />
     <main role="document">
-      {/* { !props.agency && <Loader />} */}
       <aside className="content-panel-left">
         <AgencySideNav />
       </aside>
       <div className="content-wrapper">
-        <Route exact path={`${props.match.url}/overview`} render={prop => <Overview auth={props.auth} {...prop} />} />
-        <Route exact path={`${props.match.url}/contracts`} render={prop => <Contracts auth={props.auth} {...prop} />} />
-        <Route exact path={`${props.match.url}/agents`} render={prop => <Agents auth={props.auth} {...prop} />} />
+        <Route exact path={`${props.match.url}/:agencyCode/overview`} render={prop => <Overview auth={props.auth} {...prop} />} />
+        <Route exact path={`${props.match.url}/:agencyCode/contracts`} render={prop => <Contracts auth={props.auth} {...prop} />} />
+        <Route exact path={`${props.match.url}/:agencyCode/agents`} render={prop => <Agents auth={props.auth} {...prop} />} />
       </div>
     </main>
   </div>

@@ -18,25 +18,25 @@ import * as cgActions from '../../state/actions/cgActions';
  *  outside
  * }
  */
-const csrLinks = [{
+const csrLinks = agencyCode => [{
   key: 'overview',
-  link: '/agency/overview',
+  link: `/agency/${agencyCode}/overview`,
   label: 'Overview',
   styleName: 'overview',
   exact: true
 },
 {
   key: 'contracts',
-  link: '/agency/contracts',
+  link: `/agency/${agencyCode}/contracts`,
   label: 'Contracts',
   styleName: 'contracts',
   exact: true
 },
 {
   key: 'agents',
-  link: '/agency/agents',
+  link: `/agency/${agencyCode}/agents`,
   label: 'Agents',
-  styleName: 'contracts',
+  styleName: 'agents',
   exact: true
 }, {
   key: 'notes',
@@ -47,10 +47,10 @@ const csrLinks = [{
 }];
 
 
-export const SideNav = () => (
+export const SideNav = ({ agency }) => (
   <nav className="site-nav">
     <ul>
-      {csrLinks && csrLinks.length > 0 && csrLinks.map((agentLink, index) => (
+      {csrLinks(agency.agencyCode).map((agentLink, index) => (
         <li key={index}>
           <span className={agentLink.styleName}>
             <NavLink to={agentLink.link} activeClassName="active" exact>{agentLink.label}</NavLink>
@@ -70,7 +70,7 @@ SideNav.propTypes = {
 const mapStateToProps = state => ({
   activateRedirectLink: state.appState.data.activateRedirectLink,
   activateRedirect: state.appState.data.activateRedirect,
-  agency: state.service.agency || {}
+  agency: state.agencyState.agency
 });
 
 const mapDispatchToProps = dispatch => ({

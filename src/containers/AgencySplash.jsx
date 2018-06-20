@@ -18,13 +18,9 @@ const workflowData = {
 };
 
 export const handleNewTab = (searchData) => {
-  localStorage.setItem('isNewTab', true);
-
   const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData'));
-
   if (lastSearchData.searchType === 'agency' || lastSearchData.searchType === 'agent') {
-    localStorage.setItem('agencyCode', searchData.agencyCode);
-    window.open('/agency/overview', '_blank');
+    window.open(`/agency/${searchData.agencyCode}/overview`, '_blank');
   }
 };
 
