@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-export const ContractsCard = ({ agency, editContract }) => (
+export const ContractsCard = ({ contract, editContract, contractIndex }) => (
   <div className="contract card">
     <div className="contract-title">
       <i className="fa fa-file" />
@@ -9,32 +9,32 @@ export const ContractsCard = ({ agency, editContract }) => (
     </div>
     <div className="contract-details">
       <h4 className="contract-csp">
-        <strong>{agency.companyCode}</strong> |{' '}
-        <strong>{agency.state}</strong> |{' '}
-        <span>PRODUCT 1 &bull; PRODUCT 2 &bull; PRODUCT 3</span>
+        <strong>{contract.companyCode}</strong> |{' '}
+        <strong>{contract.state}</strong> |{' '}
+        <span>{contract.product.map((product, index) => (contract.product.length === (index + 1) ? <span>{product}</span> : <span>{product} &bull;</span>))}</span>
       </h4>
       <div className="contract-info">
-        {agency.licenseNumber}
+        {contract.licenseNumber}
         <span className="additional-contract-info license-effective-date">
           <label>License Effective Date:&nbsp;</label>
-          {moment(agency.licenseEffectiveDate).format('MM/DD/YYYY')}
+          {moment(contract.licenseEffectiveDate).format('MM/DD/YYYY')}
         </span>
-        {agency.contract ? (
+        {contract.contract ? (
           <span className="additional-contract-info contract">
             <label>Contract:&nbsp;</label>
-            {agency.contract}
+            {contract.contract}
           </span>
         ) : null}
-        {agency.addendum ? (
+        {contract.addendum ? (
           <span className="additional-contract-info addendum">
             <label>Addendum:&nbsp;</label>
-            {agency.addendum}
+            {contract.addendum}
           </span>
         ) : null}
-        {agency.eoExpirationDate ? (
+        {contract.eoExpirationDate ? (
           <span className="additional-contract-info eo-exp-date">
             <label>EO Exp. Date:&nbsp;</label>
-            {moment(agency.eoExpirationDate).format('MM/DD/YYYY')}
+            {moment(contract.eoExpirationDate).format('MM/DD/YYYY')}
           </span>
         ) : null}
       </div>
@@ -42,7 +42,7 @@ export const ContractsCard = ({ agency, editContract }) => (
     <div className="contract-actions">
       <button
         className="btn btn-link btn-sm"
-        onClick={editContract('Edit')}
+        onClick={editContract('Edit', contractIndex)}
       >
         <i className="fa fa-pencil-square" />Edit
       </button>

@@ -6,7 +6,7 @@ import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 
 export const ContractsModal = (props) => {
   const {
-    toggleModal, saveContract, handleSubmit, editType
+    toggleModal, saveContract, handleSubmit, editType, contractIndex
   } = props;
   return (
     <div className="modal contract-crud">
@@ -21,14 +21,14 @@ export const ContractsModal = (props) => {
                 <Field
                   label="Company Code"
                   styleName="companyCode"
-                  name="companyCode"
+                  name={`license[${contractIndex}].companyCode`}
                   component={Input}
                   validate={validation.isRequired}
                 />
                 <Field
                   label="State"
                   styleName="state"
-                  name="state"
+                  name={`license[${contractIndex}].stateLicense`}
                   component={Input}
                   validate={validation.isRequired}
                 />
@@ -37,14 +37,14 @@ export const ContractsModal = (props) => {
                 <Field
                   label="License Number"
                   styleName="licenseNumber"
-                  name="licenseNumber"
+                  name={`license[${contractIndex}].licenseNumber`}
                   component={Input}
                   validate={validation.isRequired}
                 />
                 <Field
                   label="License Effective Date"
                   styleName="licenseEffectiveDate"
-                  name="licenseEffectiveDate"
+                  name={`license[${contractIndex}].licenseEffectiveDate`}
                   component={Date}
                   validate={[validation.isRequired, validation.isDate]}
                 />
@@ -52,20 +52,20 @@ export const ContractsModal = (props) => {
               <Field
                 label="Contract"
                 styleName="contract"
-                name="contract"
+                name={`license[${contractIndex}].contract`}
                 component={Input}
                 validate={validation.isRequired}
               />
               <Field
                 label="Addendum"
                 styleName="addendum"
-                name="addendum"
+                name={`license[${contractIndex}].addendum`}
                 component={Input}
               />
               <Field
                 label="EO Expiration Date"
                 styleName="eoExpirationDate"
-                name="eoExpirationDate"
+                name={`license[${contractIndex}].eoExpirationDate`}
                 component={Date}
                 validate={[validation.isRequired, validation.isDate]}
               />
@@ -74,21 +74,12 @@ export const ContractsModal = (props) => {
               <label>Products</label>
               <div className="product-wrapper">
                 <Field
-                  name="af3"
+                  name={`license[${contractIndex}].product`}
                   id="af3"
                   component="input"
                   type="checkbox"
                 />
                 <label htmlFor="af3"> AF3</label>
-              </div>
-              <div className="product-wrapper">
-                <Field
-                  name="ho3"
-                  id="ho3"
-                  component="input"
-                  type="checkbox"
-                />
-                <label htmlFor="ho3"> HO3</label>
               </div>
             </section>
           </div>
