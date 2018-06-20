@@ -114,8 +114,8 @@ export class AgencyModal extends Component {
                   />
                   <Field
                     label="TPAID"
-                    styleName="tPaid"
-                    name="tPaid"
+                    styleName="tpaid"
+                    name="tpaid"
                     component={Integer}
                     validate={[validation.isRequired, validation.isNumbersOnly]}
                   />
@@ -123,7 +123,6 @@ export class AgencyModal extends Component {
                     name="okToPay"
                     styleName="okToPay"
                     label="Ok to Pay"
-                    validate={validation.isRequired}
                     component={Radio}
                     segmented
                     answers={okToPayAnswers}

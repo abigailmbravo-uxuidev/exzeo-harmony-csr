@@ -24,12 +24,6 @@ export class Overview extends Component {
       showEditContact: !this.state.showEditContact
     });
 
-  updateContact = (values) => {
-    /*
-      call update action when agency endpoint is implemented
-    */
-    this.setState({ editType: null, showEditContact: false });
-  };
 
   toggleAgencyModal = () => {
     this.setState({ editAgency: !this.state.editAgency });

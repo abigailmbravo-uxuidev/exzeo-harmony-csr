@@ -45,7 +45,7 @@ export const AgencyDetails = ({ agency, editAgency }) => (
       </div>
       <div className="flex-child">
         <label>OK to Pay</label>
-        <div>{agency.okToPay}</div>
+        <div>{agency.okToPay ? 'Yes' : 'No'}</div>
       </div>
       <div className="flex-child">
         <label>Tier</label>

@@ -1,17 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { reduxForm, Form } from 'redux-form';
-import CSRFields from './CSRFields';
-import ContactFields from './ContactFields';
-import PrincipalFields from './PrincipalFields';
+import { connect } from 'react-redux';
+import { updateAgency } from '../../../state/actions/agencyActions';
+import { getEditModalInitialValues } from '../../../state/selectors/agency.selector';
+import CSR from './CSRFields';
+import Contact from './ContactFields';
+import Principal from './PrincipalFields';
+
+export const saveAgency = async (data, dispatch, props) => {
+  await props.updateAgency(data);
+  props.toggleModal()();
+};
 
 export const EditContact = (props) => {
   const {
-    toggleModal, updateContact, handleSubmit, pristine, editType
+    toggleModal, handleSubmit, pristine, editType
   } = props;
   return (
     <div className="modal contact-crud">
-      <Form noValidate onSubmit={handleSubmit(updateContact)}>
+      <Form noValidate onSubmit={handleSubmit(saveAgency)}>
         <div className="card">
           <div className="card-header">
             <h4>
@@ -19,9 +26,9 @@ export const EditContact = (props) => {
             </h4>
           </div>
           <div className="card-block">
-            {editType === 'CSR' && <CSRFields />}
-            {editType === 'Contact' && <ContactFields />}
-            {editType === 'Principal' && <PrincipalFields />}
+            {editType === 'CSR' && <CSR />}
+            {editType === 'Contact' && <Contact />}
+            {editType === 'Principal' && <Principal />}
           </div>
           <div className="card-footer">
             <div className="btn-footer">
@@ -49,9 +56,12 @@ export const EditContact = (props) => {
   );
 };
 
-EditContact.propTypes = {
-  toggleModal: PropTypes.func.isRequired,
-  updateContact: PropTypes.func.isRequired
-};
+const mapStateToProps = state => ({
+  initialValues: getEditModalInitialValues(state)
+});
 
-export default reduxForm({ form: 'EditContact', enableReinitialize: true })(EditContact);
+export default connect(mapStateToProps, { updateAgency })(reduxForm({
+  form: 'EditContact',
+  enableReinitialize: true
+})(EditContact));
+
