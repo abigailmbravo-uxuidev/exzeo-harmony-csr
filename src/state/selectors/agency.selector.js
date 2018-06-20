@@ -7,6 +7,7 @@ const getAgency = state => state.agencyState.agency;
 export const getEditModalInitialValues = createSelector(
   [getAgency],
   (agency) => {
+    if (!agency.agencyCode) return {};
     // noinspection JSUnusedLocalSymbols
     delete agency.createdBy; // agency service errors when passed
     agency.eoExpirationDate = moment(agency.eoExpirationDate).format('YYYY-MM-DD');

@@ -61,7 +61,6 @@ export const ContractsModal = (props) => {
                 styleName="addendum"
                 name="addendum"
                 component={Input}
-                validate={validation.isRequired}
               />
               <Field
                 label="EO Expiration Date"

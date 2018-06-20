@@ -180,8 +180,8 @@ export async function saveAgency(agencyData) {
 export function updateAgency(agencyData) {
   return async (dispatch) => {
     try {
-      const agency = await saveAgency(agencyData);
-      dispatch(setAgency(agency));
+      await saveAgency(agencyData);
+      dispatch(getAgency(agencyData.companyCode, agencyData.state, agencyData.agencyCode));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
