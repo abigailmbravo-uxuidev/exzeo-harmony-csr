@@ -16,11 +16,14 @@ export default {
     update: false
   },
   policyState: {
+    policyID: '',
     policy: {},
-    summaryLedger: '',
-    effectiveDateReasons: '',
-    paymentHistory: '',
-    endorsementHistory: ''
+    billingOptions: {},
+    cancelOptions: [],
+    effectiveDateReasons: [],
+    endorsementHistory: [],
+    paymentHistory: {},
+    summaryLedger: {},
   },
   search: {},
   service: {

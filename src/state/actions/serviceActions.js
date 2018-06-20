@@ -1,11 +1,9 @@
 import axios from 'axios';
 import moment from 'moment';
 import { batchActions } from 'redux-batched-actions';
-import endorsementUtils from '../../utilities/endorsementModel';
 import * as serviceRunner from '../../utilities/serviceRunner';
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
-import { getPolicy } from './policyActions';
 
 export const handleError = (err) => {
   let error = err.response && err.response.data ? err.response.data : err;
@@ -236,27 +234,6 @@ export const clearAgencies = () => (dispatch) => {
   ]));
 };
 
-export const currentAgent = (companyCode, state, agentCode) => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'agency',
-    method: 'GET',
-    path: `v1/agent/${companyCode}/${state}/${agentCode}`
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = { currentAgent: response.data.result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
-};
-
 export const addTransaction = submitData => (dispatch) => {
   const body = {
     service: 'billing',
@@ -392,24 +369,6 @@ export const getBillingOptions = paymentOptions => (dispatch) => {
     });
 };
 
-export const updateBillPlan = paymentPlan => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'policy-data',
-    method: 'POST',
-    path: 'transaction',
-    data: paymentPlan
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = response.data.result;
-    dispatch(getPolicy(data.policyNumber));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(errorActions.setAppError(message));
-    });
-};
-
 export const clearRate = () => dispatch => dispatch(batchActions([
   serviceRequest({ getRate: {} })
 ]));
@@ -423,27 +382,6 @@ export const getQuote = quoteId => (dispatch) => {
 
   return axios(axiosConfig).then((response) => {
     const data = { quote: response.data ? response.data.result : {} };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
-};
-
-export const getCancelOptions = () => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'policy-data',
-    method: 'GET',
-    path: 'cancelOptions'
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = { cancelOptions: response.data.cancelOptions };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));

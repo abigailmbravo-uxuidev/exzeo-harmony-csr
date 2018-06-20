@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { batchActions } from 'redux-batched-actions';
 import { reduxForm, Field, formValueSelector } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import _ from 'lodash';
@@ -15,7 +14,6 @@ import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 import { getUIQuestions } from '../../state/actions/questionsActions';
 import {
   getPolicy,
-  getSummaryLedger,
   addTransaction,
   getPaymentHistory,
   getBillingOptionsForPolicy,
@@ -81,30 +79,15 @@ export class MortgageBilling extends Component {
   };
 
   componentDidMount = () => {
-    const { policy, summaryLedger } = this.props;
-    if (policy.policyID) {
-      this.props.getPaymentHistory(this.props.policy.policyNumber);
-      this.props.getPaymentOptionsApplyPayments();
-      this.props.getUIQuestions('additionalInterestsCSR');
-    }
-    if (policy.rating && summaryLedger.currentPremium) {
-      const paymentOptions = {
-        effectiveDate: policy.effectiveDate,
-        policyHolders: policy.policyHolders,
-        additionalInterests: policy.additionalInterests,
-        currentPremium: summaryLedger.currentPremium,
-        fullyEarnedFees: policy.rating.worksheet.fees.empTrustFee + policy.rating.worksheet.fees.mgaPolicyFee
-      };
-      this.props.getBillingOptionsForPolicy(paymentOptions);
-    }
+    this.props.getUIQuestions('additionalInterestsCSR');
   };
 
   componentWillReceiveProps = (nextProps) => {
-    // TODO figure out a better way to handle policy not being in state on mount
-    if (nextProps.policy.policyID && (nextProps.policy.policyID !== this.props.policy.policyID)) {
+    // TODO this is probably not needed, but leaving here for now until we solidify the pattern
+    const { policyID } = this.props;
+    if (nextProps.policyID !== policyID) {
       this.props.getPaymentHistory(nextProps.policy.policyNumber);
       this.props.getPaymentOptionsApplyPayments();
-      this.props.getUIQuestions('additionalInterestsCSR');
       const paymentOptions = {
         effectiveDate: nextProps.policy.effectiveDate,
         policyHolders: nextProps.policy.policyHolders,
@@ -325,6 +308,9 @@ export class MortgageBilling extends Component {
 
     if (isEditingAI) {
       if (selectedAI) {
+        getAnswers('mortgagee', questions).forEach((answer) => {
+          answer.displayText = `${answer.AIName1}, ${answer.AIAddress1}, ${answer.AICity} ${answer.AIState}, ${answer.AIZip}`;
+        });
         const mortgagee = _.get(_.find(getAnswers('mortgagee', this.props.questions), a => a.AIName1 === selectedAI.name1 &&
           a.AIAddress1 === selectedAI.mailingAddress.address1), 'ID');
 
@@ -379,10 +365,6 @@ export class MortgageBilling extends Component {
 
     setRank(additionalInterests);
     this.setIsActive(additionalInterests);
-
-    getAnswers('mortgagee', questions).forEach((answer) => {
-      answer.displayText = `${answer.AIName1}, ${answer.AIAddress1}, ${answer.AICity} ${answer.AIState}, ${answer.AIZip}`;
-    });
 
     const paymentHistory = _.orderBy(this.props.paymentHistory || [], ['date', 'createdAt'], ['desc', 'desc']);
 
@@ -589,7 +571,6 @@ export class MortgageBilling extends Component {
         </div>
         {this.state.showBillingEditModal &&
           <BillingModal
-            policy={policy}
             billingOptions={billingOptions.options}
             hideBillingModal={this.hideBillingModal}
           />
@@ -613,7 +594,8 @@ const mapStateToProps = state => ({
   billingOptions: state.policyState.billingOptions,
   initialValues: handleInitialize(state),
   summaryLedger: state.policyState.summaryLedger,
-  policy: state.policyState.policy || {},
+  policy: state.policyState.policy,
+  policyID: state.policyState.policyID,
   paymentHistory: state.policyState.paymentHistory,
   paymentOptions: state.service.paymentOptions,
   service: state.service,
@@ -624,11 +606,9 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  batchActions,
   getPaymentHistory,
   getPaymentOptionsApplyPayments,
   getBillingOptionsForPolicy,
-  getSummaryLedger,
   addTransaction,
   createTransaction,
   getUIQuestions,

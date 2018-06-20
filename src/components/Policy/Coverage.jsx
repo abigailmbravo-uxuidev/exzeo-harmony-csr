@@ -7,8 +7,8 @@ import _get from 'lodash/get';
 import _find from 'lodash/find';
 import moment from 'moment';
 import { getUIQuestions } from '../../state/actions/questionsActions';
-import { getCancelOptions } from '../../state/actions/serviceActions';
-import { getPolicy, getBillingOptionsForPolicy } from '../../state/actions/policyActions';
+import { getPaymentOptionsApplyPayments } from '../../state/actions/serviceActions';
+import { getPolicy, getBillingOptionsForPolicy, getPaymentHistory, getCancelOptions } from '../../state/actions/policyActions';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import PolicyConnect from '../../containers/Policy';
 import Footer from '../Common/Footer';
@@ -36,8 +36,9 @@ export class Coverage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { policy, summaryLedger } = nextProps;
-    if (policy && policy.policyNumber && summaryLedger.currentPremium) {
+    const { policyID } = this.props;
+    const { policy, summaryLedger, getBillingOptionsForPolicy, getPaymentHistory, getPaymentOptionsApplyPayments } = nextProps;
+    if (!policyID && nextProps.policyID && (nextProps.policyID !== policyID) && summaryLedger.currentPremium) {
       const paymentOptions = {
         effectiveDate: policy.effectiveDate,
         policyHolders: policy.policyHolders,
@@ -46,6 +47,8 @@ export class Coverage extends Component {
         fullyEarnedFees: policy.rating.worksheet.fees.empTrustFee + policy.rating.worksheet.fees.mgaPolicyFee
       };
       getBillingOptionsForPolicy(paymentOptions);
+      getPaymentHistory(policy.policyNumber);
+      getPaymentOptionsApplyPayments();
     }
   }
 
@@ -389,6 +392,7 @@ const mapStateToProps = state => ({
   initialValues: handleInitialize(state),
   paymentOptions: state.policyState.billingOptions,
   policy: state.policyState.policy,
+  policyID: state.policyState.policyID,
   summaryLedger: state.policyState.summaryLedger,
   questions: state.questions,
   tasks: state.cg
@@ -399,5 +403,7 @@ export default connect(mapStateToProps, {
   getBillingOptionsForPolicy,
   getCancelOptions,
   getUIQuestions,
-  getPolicy
+  getPolicy,
+  getPaymentHistory,
+  getPaymentOptionsApplyPayments
 })(reduxForm({ form: 'Coverage' })(Coverage));

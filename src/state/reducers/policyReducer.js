@@ -16,6 +16,10 @@ export default function policyStateReducer(state = initialState.policyState, act
       return setPaymentHistory(state, action);
     case types.SET_ENDORSEMENT_HISTORY:
       return setEndorsementHistory(state, action);
+    case types.SET_BILLING_OPTIONS:
+      return setBillingOptions(state, action);
+    case types.SET_CANCEL_OPTIONS:
+      return setCancelOptions(state, action);
     case persistTypes.REHYDRATE:
       return rehydrate(state, action);
     default:
@@ -33,6 +37,7 @@ function getPolicy(state, action) {
 function setPolicy(state, action) {
   return {
     ...state,
+    policyID: action.policy.policyID,
     policy: action.policy,
     summaryLedger: action.summaryLedger
   }
@@ -63,6 +68,20 @@ function setEndorsementHistory(state, action) {
   return {
     ...state,
     endorsementHistory: action.endorsementHistory
+  }
+}
+
+function setBillingOptions(state, action) {
+  return {
+    ...state,
+    billingOptions: action.billingOptions
+  }
+}
+
+function setCancelOptions(state, action) {
+  return {
+    ...state,
+    cancelOptions: action.cancelOptions
   }
 }
 

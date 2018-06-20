@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm, change, getFormValues } from 'redux-form';
 import moment from 'moment-timezone';
-import { getCancelOptions } from '../../state/actions/serviceActions';
 import { startWorkflow, batchCompleteTask } from '../../state/actions/cgActions';
 import { setAppState } from '../../state/actions/appStateActions';
-import { getPolicy, getPaymentHistory, getBillingOptionsForPolicy } from '../../state/actions/policyActions';
+import { getPolicy, getPaymentHistory, getBillingOptionsForPolicy, getCancelOptions } from '../../state/actions/policyActions';
 
 import PolicyConnect from '../../containers/Policy';
 import RadioField from '../Form/inputs/RadioField';
@@ -140,7 +139,9 @@ export class CancelPolicy extends React.Component {
       reset
     } = this.props;
 
-    const cancelGroup = cancelOptions ? cancelOptions.map(option => ({ answer: option.cancelType })) : [];
+    // TODO move this to a selector, or better yet, handle this mapping in the reducer when setting the options.
+    const cancelGroup = cancelOptions ? cancelOptions.map(option => ({ answer: option.cancelType, label: option.cancelType })) : [];
+
     return (
       <PolicyConnect>
         {appState.data.isSubmitting && <Loader />}
@@ -245,7 +246,7 @@ const mapStateToProps = state => ({
   policy: state.policyState.policy,
   summaryLedger: state.policyState.summaryLedger,
   paymentOptions: state.policyState.billingOptions,
-  cancelOptions: state.service.cancelOptions,
+  cancelOptions: state.policyState.cancelOptions,
   zipCodeSettings: state.service.getZipcodeSettings
 });
 
@@ -257,4 +258,8 @@ export default connect(mapStateToProps, {
   batchCompleteTask,
   setAppState,
   getPolicy
-})(reduxForm({ form: 'CancelPolicy', enableReinitialize: true })(CancelPolicy));
+})(reduxForm({
+  form: 'CancelPolicy',
+  enableReinitialize: true
+})(CancelPolicy));
+

@@ -1,4 +1,4 @@
-import { convertToRateData } from "../../utilities/endorsementModel";
+import {convertToRateData} from "../../utilities/endorsementModel";
 import * as serviceRunner from '../../utilities/serviceRunner';
 import * as types from './actionTypes';
 import * as errorActions from "./errorActions";
@@ -78,6 +78,13 @@ export function setEndorsementHistory(endorsementHistory) {
   }
 }
 
+export function setCancelOptions(cancelOptions) {
+  return {
+    type: types.SET_CANCEL_OPTIONS,
+    cancelOptions
+  }
+}
+
 /**
  *
  * @param policyNumber
@@ -86,7 +93,7 @@ export function setEndorsementHistory(endorsementHistory) {
 export function getPolicy(policyNumber) {
   return async (dispatch) => {
     try {
-      const [policy, summaryLedger ] = await Promise.all([
+      const [policy, summaryLedger] = await Promise.all([
         fetchPolicy(policyNumber),
         fetchSummaryLedger(policyNumber)
       ]);
@@ -132,7 +139,7 @@ export function getNewRate(formData, formProps) {
       };
       const response = await serviceRunner.callService(config);
       const rate = response && response.data && response.data.result ? response.data.result : {};
-      return { ...rate };
+      return {...rate};
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
@@ -236,7 +243,7 @@ export function getEndorsementHistory(policyNumber) {
       dispatch(errorActions.setAppError(error));
     }
   }
-};
+}
 
 /**
  *
@@ -259,6 +266,49 @@ export function createTransaction(submitData) {
       dispatch(errorActions.setAppError(error));
     }
   }
+}
+
+/**
+ *
+ * @param paymentPlan
+ * @returns {Function}
+ */
+export function updateBillPlan(paymentPlan) {
+  return async (dispatch) => {
+    const config = {
+      service: 'policy-data',
+      method: 'POST',
+      path: 'transaction',
+      data: paymentPlan
+    };
+
+    try {
+      const response = await serviceRunner.callService(config);
+      const policy = response.data && response.data.result ? response.data.result : {};
+      if (policy.policyNumber) {
+        dispatch(getPolicy(policy.policyNumber));
+      } else {
+        dispatch(errorActions.setAppError({message: 'Could not GET updated Policy'}));
+      }
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  }
+}
+
+/**
+ *
+ * @returns {Function}
+ */
+export function getCancelOptions() {
+  return async (dispatch) => {
+    try {
+      const cancelOptions = await fetchCancelOptions();
+      dispatch(setCancelOptions(cancelOptions));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error))
+    }
+  };
 }
 
 /**
@@ -347,11 +397,11 @@ export async function fetchEffectiveDateChangeReasons() {
  * @returns {Promise<*|{}>}
  */
 export async function fetchPaymentHistory(policyNumber) {
-    const config = {
-      service: 'billing',
-      method: 'GET',
-      path: `payment-history/${policyNumber}`
-    };
+  const config = {
+    service: 'billing',
+    method: 'GET',
+    path: `payment-history/${policyNumber}`
+  };
   try {
     const response = await serviceRunner.callService(config);
     return response.data && response.data.result ? response.data.result : {};
@@ -424,7 +474,26 @@ export async function fetchEndorsementHistory(policyNumber) {
 
   try {
     const response = await serviceRunner.callService(config);
-    return response.data
+    return response.data || [];
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
+ * @returns {Promise<Array>}
+ */
+export async function fetchCancelOptions() {
+  const config = {
+    service: 'policy-data',
+    method: 'GET',
+    path: 'cancelOptions'
+  };
+
+  try {
+    const response = await serviceRunner.callService(config);
+    return response && response.data && response.data.cancelOptions ? response.data.cancelOptions : []
   } catch (error) {
     throw error;
   }
