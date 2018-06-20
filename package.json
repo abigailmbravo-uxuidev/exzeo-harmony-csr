@@ -73,7 +73,7 @@
     "server": "./replace-dotenv.sh && exframe-web",
     "build": "npm run build-css && react-scripts build",
     "cover": "npm test -- --coverage",
-    "test": "react-scripts test --env=jsdom",
+    "test": "npm run build && react-scripts test --env=jsdom --coverage",
     "eject": "react-scripts eject"
   },
   "jest": {
