@@ -2,7 +2,7 @@ import React , { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { reduxForm, Field } from 'redux-form';
-import moment from 'moment-timezone'
+import moment from 'moment-timezone';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 import DateField from '../Form/inputs/DateField';
@@ -17,27 +17,11 @@ export class GenerateDocsForm extends Component {
     showDate: false
   };
 
-  fieldsWithDate = []
-
-  reqConfig = data => ({
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    responseType: 'blob',
-    url: `${process.env.REACT_APP_API_URL}/generate-document`,
-    data
-  })
+  fieldsWithDate = [];
 
   generateDoc = (data, dispatch, props) => {
     const { documentType, effectiveDate } = data;
     const { errorHandler, policyNumber, updateNotes, startWorkflow } = props;
-    const req = this.reqConfig({
-      documentNumber: policyNumber,
-      documentType,
-      effectiveDate
-    });
-
     return startWorkflow('policyInvoiceGenerator', { documentNumber: policyNumber }, false)
       .then(result => {
         if (window.location.pathname === '/policy/notes') updateNotes();
@@ -63,31 +47,9 @@ export class GenerateDocsForm extends Component {
         const error = err.response ? err.response.statusText : err;
         return errorHandler({ message: error });
       });
-
-    /*
-    return axios(req)
-    .then(res => {
-      const contentDisposition = res.headers['content-disposition'];
-      const filename = contentDisposition.match(/filename="(.+)"/)[1] || policyNumber;
-      const blobUrl = window.URL.createObjectURL(res.data);
-      const link = window.document.createElement('a');
-      link.href = blobUrl;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      this.setState({ isSubmitting: false });
-      if (window.location.pathname === '/policy/notes') updateNotes();
-      return true;
-    })
-    .catch((err) => {
-      const error = err.response ? err.response.statusText : err;
-      return errorHandler({ message: error });
-    });
-    */
   }
 
-  toggleDate = (event, value) => this.setState({ showDate: value && this.fieldsWithDate.includes(value) })
+  toggleDate = (_, value) => this.setState({ showDate: value && this.fieldsWithDate.includes(value) })
 
   render() {
     const { handleSubmit, submitting } = this.props;
