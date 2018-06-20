@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { reduxForm, Form, Field } from 'redux-form';
 import { Input, Date } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
+import CheckBoxGroup from '../CheckBoxGroup';
 
 export const ContractsModal = (props) => {
   const {
@@ -75,20 +76,13 @@ export const ContractsModal = (props) => {
               <div className="product-wrapper">
                 <Field
                   name={`license[${contractIndex}].product`}
-                  id="af3"
-                  component="input"
+                  id="product"
                   type="checkbox"
+                  options={[{ label: 'HO3', value: 'HO3' }, { label: 'AF3', value: 'AF3' }]}
+                  component={CheckBoxGroup}
+                  validate={validation.isRequiredArray}
+
                 />
-                <label htmlFor="af3"> AF3</label>
-              </div>
-              <div className="product-wrapper">
-                <Field
-                  name={`license[${contractIndex}].product`}
-                  id="ho3"
-                  component="input"
-                  type="checkbox"
-                />
-                <label htmlFor="ho3"> HO3</label>
               </div>
             </section>
           </div>
