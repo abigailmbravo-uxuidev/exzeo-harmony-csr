@@ -23,6 +23,7 @@ export default {
     effectiveDateReasons: [],
     endorsementHistory: [],
     paymentHistory: {},
+    paymentOptions: [],
     summaryLedger: {},
   },
   search: {},

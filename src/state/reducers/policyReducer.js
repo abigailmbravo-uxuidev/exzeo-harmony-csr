@@ -20,6 +20,8 @@ export default function policyStateReducer(state = initialState.policyState, act
       return setBillingOptions(state, action);
     case types.SET_CANCEL_OPTIONS:
       return setCancelOptions(state, action);
+    case types.SET_PAYMENT_OPTIONS:
+      return setPaymentOptions(state, action);
     case persistTypes.REHYDRATE:
       return rehydrate(state, action);
     default:
@@ -82,6 +84,13 @@ function setCancelOptions(state, action) {
   return {
     ...state,
     cancelOptions: action.cancelOptions
+  }
+}
+
+function setPaymentOptions(state, action) {
+  return {
+    ...state,
+    paymentOptions: action.paymentOptions
   }
 }
 

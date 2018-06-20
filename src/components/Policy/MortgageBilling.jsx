@@ -17,11 +17,9 @@ import {
   addTransaction,
   getPaymentHistory,
   getBillingOptionsForPolicy,
-  createTransaction
+  createTransaction,
+  getPaymentOptionsApplyPayments
 } from '../../state/actions/policyActions';
-import {
-  getPaymentOptionsApplyPayments,
-} from '../../state/actions/serviceActions';
 
 import PolicyConnect from '../../containers/Policy';
 import BillingModal from '../../components/Common/BillingEditModal';
@@ -597,7 +595,6 @@ const mapStateToProps = state => ({
   policy: state.policyState.policy,
   policyID: state.policyState.policyID,
   paymentHistory: state.policyState.paymentHistory,
-  paymentOptions: state.service.paymentOptions,
   service: state.service,
   cashTypeAnswers: getCashTypeAnswers(state),
   cashDescriptionOptions: getCashDescriptionOptions(state),

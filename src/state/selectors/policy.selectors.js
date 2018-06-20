@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-const getPaymentOptions = state => state.service.paymentOptions;
+const getPaymentOptions = state => state.policyState.paymentOptions;
 
 export const getCashDescriptionOptions = createSelector(
   [getPaymentOptions],

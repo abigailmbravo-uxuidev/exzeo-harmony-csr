@@ -1,8 +1,9 @@
-import {convertToRateData} from "../../utilities/endorsementModel";
+import { convertToRateData } from "../../utilities/endorsementModel";
 import * as serviceRunner from '../../utilities/serviceRunner';
 import * as types from './actionTypes';
 import * as errorActions from "./errorActions";
 import endorsementUtils from "../../utilities/endorsementModel";
+
 
 /**
  *
@@ -68,6 +69,18 @@ export function setBillingOptions(billingOptions) {
 
 /**
  *
+ * @param paymentOptions
+ * @returns {{type: string, paymentOptions: *}}
+ */
+export function setPaymentOptions(paymentOptions) {
+  return {
+    type: types.SET_PAYMENT_OPTIONS,
+    paymentOptions
+  }
+}
+
+/**
+ *
  * @param endorsementHistory
  * @returns {{type: string, endorsementHistory: *}}
  */
@@ -78,6 +91,11 @@ export function setEndorsementHistory(endorsementHistory) {
   }
 }
 
+/**
+ *
+ * @param cancelOptions
+ * @returns {{type: string, cancelOptions: *}}
+ */
 export function setCancelOptions(cancelOptions) {
   return {
     type: types.SET_CANCEL_OPTIONS,
@@ -231,6 +249,21 @@ export function getBillingOptionsForPolicy(paymentOptions) {
 
 /**
  *
+ * @returns {Function}
+ */
+export function getPaymentOptionsApplyPayments() {
+  return async (dispatch) => {
+    try {
+      const paymentOptions = await fetchPaymentOptionsApplyPayments();
+      dispatch(setPaymentOptions(paymentOptions));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
+/**
+ *
  * @param policyNumber
  * @returns {function(*): Promise<any>}
  */
@@ -252,16 +285,11 @@ export function getEndorsementHistory(policyNumber) {
  */
 export function createTransaction(submitData) {
   return async (dispatch) => {
-    const config = {
-      service: 'policy-data',
-      method: 'POST',
-      path: 'transaction',
-      data: submitData
-    };
-
     try {
-      const response = await serviceRunner.callService(config);
-      return response.data && response.data.result ? response.data.result : {};
+      // performance issues can arise from returning an 'await'ed function - https://eslint.org/docs/rules/no-return-await
+      // noinspection UnnecessaryLocalVariableJS
+      const response = await postCreatTransation(submitData);
+      return response
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
@@ -275,16 +303,8 @@ export function createTransaction(submitData) {
  */
 export function updateBillPlan(paymentPlan) {
   return async (dispatch) => {
-    const config = {
-      service: 'policy-data',
-      method: 'POST',
-      path: 'transaction',
-      data: paymentPlan
-    };
-
     try {
-      const response = await serviceRunner.callService(config);
-      const policy = response.data && response.data.result ? response.data.result : {};
+      const policy = await postUpdatedBillPlan(paymentPlan);
       if (policy.policyNumber) {
         dispatch(getPolicy(policy.policyNumber));
       } else {
@@ -330,7 +350,11 @@ export function submitEndorsementForm(formData, formProps) {
   };
 }
 
-/* TODO: move out network calls into a separate utility or service */
+/*
+  TODO: We need to agree on a solution to this repetition. There are two problems to solve:
+  todo    1) Dynamically pass in the config (easy, and actually already solved with service runner
+  todo    2) Dynamically pass in the property to return off the network request (i.e. result.data or result.data.data or result.policy)
+ */
 
 /**
  *
@@ -412,6 +436,25 @@ export async function fetchPaymentHistory(policyNumber) {
 
 /**
  *
+ * @returns {Promise<*>}
+ */
+export async function fetchPaymentOptionsApplyPayments() {
+  const config = {
+    service: 'billing',
+    method: 'GET',
+    path: 'payment-options-apply-payment'
+  };
+
+  try {
+    const response = await serviceRunner.callService(config);
+    return response.data && response.data.paymentOptions ? response.data.paymentOptions : {};
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
  * @param policy
  * @param rating
  * @param transactionType
@@ -477,6 +520,49 @@ export async function fetchEndorsementHistory(policyNumber) {
     return response.data || [];
   } catch (error) {
     throw error;
+  }
+}
+
+/**
+ *
+ * @param submitData
+ * @returns {Promise<{}>}
+ */
+export async function postCreatTransation(submitData) {
+  const config = {
+    service: 'policy-data',
+    method: 'POST',
+    path: 'transaction',
+    data: submitData
+  };
+
+  try {
+    const response = await serviceRunner.callService(config);
+    return response.data && response.data.result ? response.data.result : {};
+  } catch (error) {
+    throw error
+  }
+}
+
+
+/**
+ *
+ * @param paymentPlan
+ * @returns {Promise<{}>}
+ */
+export async function postUpdatedBillPlan(paymentPlan) {
+  const config = {
+    service: 'policy-data',
+    method: 'POST',
+    path: 'transaction',
+    data: paymentPlan
+  };
+
+  try {
+    const response = await serviceRunner.callService(config);
+    return response.data && response.data.result ? response.data.result : {}
+  } catch (error) {
+    throw error
   }
 }
 

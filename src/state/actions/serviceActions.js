@@ -300,27 +300,6 @@ export const getUnderwritingQuestions = (companyCode, state, product, property) 
     });
 };
 
-export const getPaymentOptionsApplyPayments = () => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'billing',
-    method: 'GET',
-    path: 'payment-options-apply-payment'
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = { paymentOptions: response.data.paymentOptions };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
-};
-
 export const saveUnderwritingExceptions = (id, underwritingExceptions) => (dispatch) => {
   const body = {
     service: 'quote-data',
