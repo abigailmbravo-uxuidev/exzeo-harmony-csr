@@ -31,6 +31,8 @@ describe('Testing Coverage component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      getPolicy() {},
+      getCancelOptions() { return Promise.resolve(); },
       getUIQuestions() {},
       summaryLedger: {
 
