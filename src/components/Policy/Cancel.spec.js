@@ -45,7 +45,7 @@ describe('Testing Cancel component', () => {
       },
       policyState: {
         policy: {},
-        summaryLedger: { status: { code: 0} }
+        summaryLedger: { status: { code: 0 } }
       }
     };
     const store = mockStore(initialState);
@@ -54,7 +54,7 @@ describe('Testing Cancel component', () => {
       startWorkflow() { return Promise.resolve({ payload: [{ workflowData: { cancelPolicyModelUI: { data: {} }, cancelPolicy: { data: {} } } }] }); },
       setAppState() {},
       getPolicy() {},
-      getCancelOptions() { return Promise.resolve() },
+      getCancelOptions() { return Promise.resolve(); },
       getBillingOptionsForPolicy() { return Promise.resolve(); },
       getPaymentHistory() {},
       getZipcodeSettings() {},
@@ -66,10 +66,10 @@ describe('Testing Cancel component', () => {
       quoteData: {},
       policy: initialState.policyState.policy,
       summaryLedger: initialState.policyState.summaryLedger,
-      zipCodeSettings: initialState.zipCodeSettings,
+      zipCodeSettings: { timezone: 'America/New_York' },
       appState: initialState.appState,
       dispatch: store.dispatch,
-      cancelOptions,
+      cancelOptions
     };
     const wrapper = shallow(<CancelPolicy label="test" store={store} {...props} />);
     expect(wrapper);

@@ -104,7 +104,7 @@ describe('Test endorsementModel', () => {
     it('Should set premiumAmountFormatter', () => {
       const result = endorsementModel.generateModel(
         { ...policyMock, endorsementDate: '2017-05-05' },
-        { getRate: {}, zipcodeSettings: 'America/New_York', summaryLedger: { status: { code: 5 } } }
+        { getRate: {}, zipcodeSettings: { timezone: 'America/New_York' }, summaryLedger: { status: { code: 5 } } }
       );
       expect(result.policyID).toBe('123');
       expect(result.property.distanceToFireHydrant).toBe(0);

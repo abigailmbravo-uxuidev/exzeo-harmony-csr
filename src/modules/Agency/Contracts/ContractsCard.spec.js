@@ -5,7 +5,7 @@ import mockAgency from '../mockAgency';
 
 describe('Testing ContractsCard component', () => {
   it('should render', () => {
-    const wrapper = shallow(<ContractsCard agency={mockAgency} editContract={x => x} />);
+    const wrapper = shallow(<ContractsCard contract={mockAgency.license[0]} editContract={x => x} />);
     expect(wrapper).toBeTruthy();
   });
 });

@@ -24,7 +24,7 @@ const convertDateToTimeZone = (date, zipCodeSettings) => {
 };
 export const handleInitialize = (state) => {
   const summaryLedger = state.policyState.summaryLedger || {};
-  const zipCodeSettings = state.service.getZipcodeSettings || {};
+  const zipCodeSettings = state.service.getZipcodeSettings || { timezone: '' };
   const latestDate = convertDateToTimeZone(moment.utc(), zipCodeSettings) > convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings) ? convertDateToTimeZone(moment.utc(), zipCodeSettings).format('YYYY-MM-DD') : convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings).format('YYYY-MM-DD');
   return ({
     equityDate: moment.utc(summaryLedger.equityDate).format('MM/DD/YYYY'),
@@ -77,7 +77,9 @@ export class CancelPolicy extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { policy, summaryLedger, zipCodeSettings, getPaymentHistory, getBillingOptionsForPolicy } = nextProps;
+    const {
+      policy, summaryLedger, zipCodeSettings, getPaymentHistory, getBillingOptionsForPolicy
+    } = nextProps;
     if (policy && policy.policyNumber) {
       getPaymentHistory(policy.policyNumber);
 
@@ -124,7 +126,7 @@ export class CancelPolicy extends React.Component {
     return options && options.cancelReason ? options.cancelReason.map(reason => ({
       answer: reason,
       label: reason
-    })) : []
+    })) : [];
   };
 
   render() {

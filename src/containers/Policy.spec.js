@@ -53,20 +53,20 @@ describe('Testing Policy component', () => {
       getZipcodeSettings() { return Promise.resolve(); },
       getSummaryLedger() { return Promise.resolve(); },
       dispatch: store.dispatch,
-      zipCodeSetting: initialState.service.getZipcodeSettings,
+      zipCodeSetting: { timezone: 'America/New_York' },
       appState: initialState.appState,
       policyState: initialState.policyState,
       policy: initialState.policyState.policy,
       summaryLedger: initialState.policyState.summaryLedger,
-      tasks: initialState.cg,
+      tasks: initialState.cg
     };
 
     const wrapper = shallow(<Policy store={store} {...props} />);
     expect(wrapper);
-    wrapper.instance().componentWillReceiveProps();
+    wrapper.instance().componentWillReceiveProps(props);
     changeEffectiveDate({}, props.dispatch, props);
     reinstatePolicySubmit({}, props.dispatch, props);
     showEffectiveDatePopUp(props);
-    hideEffectiveDatePopUp(props)
+    hideEffectiveDatePopUp(props);
   });
 });

@@ -5,8 +5,10 @@ import mockAgency from '../mockAgency';
 
 describe('Testing Overview component', () => {
   it('should render', () => {
-    const props = { getAgency: x => x };
-    const wrapper = shallow(<Overview {...props} agency={mockAgency} />);
+    const props = {
+      getAgency: x => x, match: { params: { agencyCode: '123' } }, getAgents: x => x, agency: mockAgency
+    };
+    const wrapper = shallow(<Overview {...props} />);
     expect(wrapper).toBeTruthy;
   });
 });
