@@ -2,58 +2,73 @@ import React from 'react';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
-import FormComponent, { GenerateDocsForm }  from './GenerateDocsForm';
-
-const middlewares = [];
-const mockStore = configureStore(middlewares);
-const initialState = {
-  service: {
-    latestPolicy: {}
-  }
-};
-const store = mockStore(initialState);
-const props = {
-  policyNumber: '123',
-  errorHandler: () => {},
-  updateNotes: () => {}
-};
+import moment from 'moment-timezone';
+import GenerateDocsForm  from './GenerateDocsForm';
 
 describe('Testing GenerateDocsForm component', () => {
-  it('should test app', () => {
-    const wrapper = shallow(<FormComponent  store={store} {...props} />);
-    const inst = wrapper.dive().dive().dive().instance();
-    expect(inst).toBeInstanceOf(GenerateDocsForm);
+  const middlewares = [];
+  const mockStore = configureStore(middlewares);
+  let initialState;
+  let store;
+  let props;
+  let wrapper;
+  let instance;
+
+  beforeEach(() => {
+    initialState = {
+      authState: {
+        userProfile: {
+          profile: {
+            given_name: 'Test',
+            family_name: "Test"
+          }
+        }
+      },
+      appState: {
+        data: {
+          minimize: false
+        }
+      }
+    };
+
+    const result = {
+      result: {
+        workflowData: {
+          policyInvoiceGenerator: {
+            data: { previousTask: { value: { result: [{ fileUrl: 'http://test.pdf', fileName: 'test.pdf' }] } } }
+          }
+        }
+      }
+    }
+
+    props = {
+      policyNumber: '123',
+      errorHandler: jest.fn(),
+      startWorkflow: jest.fn(() => Promise.resolve(result)),
+      updateNotes: () => jest.fn()
+    };
+
+    store = mockStore(initialState);
+    wrapper = shallow(<GenerateDocsForm store={store} {...props} />);
+    instance = wrapper.dive().dive().dive().instance();
   });
 
   it('should toggle date', () => {
-    const wrapper = shallow(<FormComponent store={store} {...props} />).dive().dive().dive().instance();
-    wrapper.toggleDate({}, 'test');
-    expect(wrapper.state.showDate).toBe(false);
+    instance.fieldsWithDate = ['test'];
+    instance.toggleDate({}, 'test');
+    expect(instance.state.showDate).toBe(true);
+  });
+
+  it('initial effectiveDate ahould be set', () => {
+    expect(instance.props.initialValues.effectiveDate).toBe(moment.utc().format('YYYY-MM-DD'));
   });
 
   it('should test generateDoc', () => {
-    const mock = new MockAdapter(axios);
-    const blob = new Blob(['test'], {type: 'application/pdf' });
-    mock.onPost(`${process.env.REACT_APP_API_URL}/generate-document`).reply(200, 
-      'testing', 
-      {'content-disposition': 'attachment; filename=test.pdf'}
-    );
-
-    const wrapper = shallow(<FormComponent store={store} {...props} />).dive().dive().dive().instance();
-    const data =  { documentType: 'policyInvoice', effectiveDate: null }
-    const res = wrapper.generateDoc(data, null, wrapper.props);
-    expect(wrapper.state.isSubmitting).toBe(true);
-  });
-
-  it('updateNotes should exist', () => {
-    const wrapper = shallow(<FormComponent store={store} {...props} />).dive().dive().dive().instance();
-    expect(wrapper.props.updateNotes());
-  });
-
-  it('errorHandler should exist', () => {
-    const wrapper = shallow(<FormComponent store={store} {...props} />).dive().dive().dive().instance();
-    expect(wrapper.props.errorHandler());
+    const data =  { documentType: 'policyInvoice', effectiveDate: null };
+    return instance.generateDoc(data, store.dispatch, instance.props)
+      .then(() => {
+        expect(instance.props.startWorkflow).toBeCalledWith('policyInvoiceGenerator', {documentNumber: '123'}, false);
+      });
+    expect(instance.props.updateNotes).toHaveBeenCalled();
   });
 });
