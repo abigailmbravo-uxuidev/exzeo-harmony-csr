@@ -10,40 +10,45 @@ import { startWorkflow, batchCompleteTask } from '../state/actions/cgActions';
 import EditEffectiveDataPopUp from '../components/Policy/EditEffectiveDatePopup';
 import ReinstatePolicyPopup from '../components/Policy/ReinstatePolicyPopup';
 import PolicyDetailHeader from '../components/Policy/DetailHeader';
-import QuoteSideNav from '../components/Policy/PolicySideNav';
+import PolicySideNav from '../components/Policy/PolicySideNav';
 import PolicyHeader from '../components/Policy/PolicyHeader';
 import Loader from '../components/Common/Loader';
 
 export const hideEffectiveDatePopUp = (props) => {
-  props.setAppState(props.appState.modelName, props.appState.instanceId,
-      { ...props.appState.data, showEffectiveDateChangePopUp: false });
+  props.setAppState(
+    props.appState.modelName, props.appState.instanceId,
+    { ...props.appState.data, showEffectiveDateChangePopUp: false }
+  );
 };
 
 export const showEffectiveDatePopUp = (props) => {
-  props.setAppState(props.appState.modelName, props.appState.instanceId,
-      { ...props.appState.data, showEffectiveDateChangePopUp: true });
+  props.setAppState(
+    props.appState.modelName, props.appState.instanceId,
+    { ...props.appState.data, showEffectiveDateChangePopUp: true }
+  );
 };
 
 export const hideReinstatePolicyPopUp = (props) => {
-  props.setAppState(props.appState.modelName, props.appState.instanceId,
-      { ...props.appState.data, showReinstatePolicyPopUp: false, submitting: false });
+  props.setAppState(
+    props.appState.modelName, props.appState.instanceId,
+    { ...props.appState.data, showReinstatePolicyPopUp: false, submitting: false }
+  );
 };
 
 export const reinstatePolicySubmit = (data, dispatch, props) => {
-
   props.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, submitting: true });
 
   const { policy, summaryLedger } = props;
   const submitData = {
-    "policyID": policy.policyID,
-    "policyNumber": policy.policyNumber,
-    "billingStatus": summaryLedger.status.code,
-    "transactionType":  "Reinstatement"
-    };
-    props.createTransaction(submitData).then(() => {
-      hideReinstatePolicyPopUp(props);
-      props.getPolicy(policy.policyNumber);
-    });
+    policyID: policy.policyID,
+    policyNumber: policy.policyNumber,
+    billingStatus: summaryLedger.status.code,
+    transactionType: 'Reinstatement'
+  };
+  props.createTransaction(submitData).then(() => {
+    hideReinstatePolicyPopUp(props);
+    props.getPolicy(policy.policyNumber);
+  });
 };
 
 export const changeEffectiveDate = (data, dispatch, props) => {
@@ -54,7 +59,9 @@ export const changeEffectiveDate = (data, dispatch, props) => {
   props.startWorkflow('effectiveDateChangeModel', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID }).then((result) => {
     const steps = [{
       name: 'saveEffectiveDate',
-      data: { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID, effectiveDateChangeReason: data.effectiveDateChangeReason, effectiveDate: effectiveDateUTC }
+      data: {
+        policyNumber: props.policy.policyNumber, policyID: props.policy.policyID, effectiveDateChangeReason: data.effectiveDateChangeReason, effectiveDate: effectiveDateUTC
+      }
     }];
     const startResult = result.payload ? result.payload[0].workflowData.effectiveDateChangeModel.data : {};
 
@@ -78,15 +85,15 @@ export class Policy extends React.Component {
     const { policy, appState, children } = this.props;
     return (
       <div className="app-wrapper csr policy">
-        {/* TODO: dynamically add policy # to title*/}
+        {/* TODO: dynamically add policy # to title */}
         <Helmet><title>{policy && policy.policyNumber ? `P: ${policy.policyNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
-        {/* <NewNoteFileUploader/>*/}
+        {/* <NewNoteFileUploader/> */}
         <PolicyHeader />
         <PolicyDetailHeader />
         <main role="document">
           {appState.data.submitting && <Loader />}
           <aside className="content-panel-left">
-            <QuoteSideNav />
+            <PolicySideNav />
           </aside>
           <div className="content-wrapper">
             {children}

@@ -22,8 +22,8 @@ const convertDateToTimeZone = (date, zipCodeSettings) => {
   return moment.tz(formattedDateString, zipCodeSettings.timezone).utc();
 };
 export const handleInitialize = (state) => {
+  const zipCodeSettings = state.service.getZipcodeSettings || { timezone: '' };
   const summaryLedger = state.policyState.summaryLedger || {};
-  const zipCodeSettings = state.service.getZipcodeSettings || {};
   const latestDate = convertDateToTimeZone(moment.utc(), zipCodeSettings) > convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings) ? convertDateToTimeZone(moment.utc(), zipCodeSettings).format('YYYY-MM-DD') : convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings).format('YYYY-MM-DD');
   return ({
     equityDate: moment.utc(summaryLedger.equityDate).format('MM/DD/YYYY'),

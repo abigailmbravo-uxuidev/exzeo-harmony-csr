@@ -10,6 +10,7 @@ const mockStore = configureStore(middlewares);
 describe('Testing BillingEditModal component', () => {
   it('should test connected app', () => {
     const initialState = {
+      policyState: { billingOptions: [] },
       authState: {
       },
       cg: {
@@ -23,7 +24,7 @@ describe('Testing BillingEditModal component', () => {
       },
       service: {
         latestPolicy: {},
-        billingOptions: { 
+        billingOptions: {
           options: [{ billToId: '23432432432432430', billToType: 'Annual' }],
           paymentPlans: {
             annual: {},
@@ -63,6 +64,5 @@ describe('Testing BillingEditModal component', () => {
     const wrapper = shallow(<BillingEditModal store={store} {...props} />);
     expect(wrapper.instance().props.fieldValues).toEqual({ billToId: '23432432432432430' });
     handleInitialize(initialState);
-
   });
 });

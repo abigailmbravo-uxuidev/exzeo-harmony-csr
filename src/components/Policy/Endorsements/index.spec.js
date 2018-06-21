@@ -94,14 +94,12 @@ const baseProps = {
   zipcodeSettings: {},
   summaryLedger: {},
   quoteData: {},
-  selectedValues: { clearFields: false,  coverageLimits: { personalProperty: { amount: 0 } } },
+  selectedValues: { clearFields: false, coverageLimits: { personalProperty: { amount: 0 } } },
   initialValues: policy,
   policy
 };
 
 describe('Test the Endorsements form component', () => {
-
-
   beforeEach(() => {
     localStorage.setItem('isNewTab', true);
     localStorage.setItem('lastSearchData', JSON.stringify({
@@ -148,15 +146,12 @@ describe('Test the Endorsements form component', () => {
 
     inst.clearCalculate();
     inst.setCalculate();
-    inst.calculate(policy, fn, baseProps);
-    inst.save(policy, fn, baseProps);
     inst.setPHToggle();
     inst.setSecondaryPolicyHolder(true);
     inst.normalizeSinkholeAmount(false, false, policy);
     inst.normalizeSinkholeAmount(true, false, policy);
     inst.normalizeDwellingAmount(1000, 1100, policy);
     inst.normalizeIncidentalOccupancies(true, true, policy);
-    inst.normalizePersonalPropertyPercentage(10, 10, policy, 'test')
-
-  })
+    inst.normalizePersonalPropertyPercentage(10, 10, policy, 'test');
+  });
 });

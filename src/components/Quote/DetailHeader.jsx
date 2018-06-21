@@ -27,6 +27,11 @@ export class DetailHeader extends Component {
       if (!quoteData || !quoteData._id) { // eslint-disable-line
       return <div className="detailHeader" />;
     }
+
+    const loc = quoteData.property.physicalAddress;
+    const mapQuery = encodeURIComponent(`${loc.address1} ${loc.address2} ${loc.city}, ${loc.state} ${loc.zip}`)
+    const mapUri = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
+
     return (<div className="detailHeader">
       <section id="quoteDetails" className="quoteDetails">
         <dl>
@@ -64,7 +69,7 @@ export class DetailHeader extends Component {
       <section id="propertyAddress" className="propertyAddress">
         <dl>
           <div>
-            <dt>Property Address</dt>
+            <dt>Property Address <a className="btn btn-link btn-xs btn-alt-light no-padding" target="_blank" href={mapUri}><i className="fa fa-map-marker" />Map</a></dt>
             <dd>{quoteData.property.physicalAddress.address1}</dd>
             <dd>{quoteData.property.physicalAddress.address2}</dd>
             <dd>
@@ -112,7 +117,7 @@ export class DetailHeader extends Component {
           <div>
             <dt>Premium</dt>
             <dd>
-                   $ {quoteData.rating && quoteData.rating.totalPremium ? quoteData.rating.totalPremium.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '--'}
+              $ {quoteData.rating && quoteData.rating.totalPremium ? quoteData.rating.totalPremium.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '--'}
             </dd>
           </div>
         </dl>

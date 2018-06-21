@@ -12,7 +12,7 @@ describe('Testing Policy component', () => {
     const initialState = {
       service: {
         latestPolicy: {},
-        getZipcodeSettings: {}
+        getZipcodeSettings: { timezone: '' }
       },
       policyState: {
         policy: {
@@ -58,7 +58,7 @@ describe('Testing Policy component', () => {
       policyState: initialState.policyState,
       policy: initialState.policyState.policy,
       summaryLedger: initialState.policyState.summaryLedger,
-      tasks: initialState.cg,
+      tasks: initialState.cg
     };
 
     const wrapper = shallow(<Policy store={store} {...props} />);
@@ -67,6 +67,6 @@ describe('Testing Policy component', () => {
     changeEffectiveDate({}, props.dispatch, props);
     reinstatePolicySubmit({}, props.dispatch, props);
     showEffectiveDatePopUp(props);
-    hideEffectiveDatePopUp(props)
+    hideEffectiveDatePopUp(props);
   });
 });

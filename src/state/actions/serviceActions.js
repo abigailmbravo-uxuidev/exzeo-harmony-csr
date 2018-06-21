@@ -381,7 +381,7 @@ export const getZipcodeSettings = (companyCode, state, product, zip) => (dispatc
   });
 
   return axios(axiosConfig).then((response) => {
-    const data = { getZipcodeSettings: response.data && response.data.result ? response.data.result[0] : {} };
+    const data = { getZipcodeSettings: response.data && response.data.result ? response.data.result[0] : { timezone: '' } };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));
