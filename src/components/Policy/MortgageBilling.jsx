@@ -443,6 +443,7 @@ export class MortgageBilling extends Component {
                           label="Amount"
                           component={Currency}
                           validate={validateAmount}
+                          noDecimal={false}
                           min={-1000000}
                           max={1000000}
                         />
