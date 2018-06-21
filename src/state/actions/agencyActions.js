@@ -44,10 +44,10 @@ export function setAgents(agents) {
  * @param state
  * @returns {Function}
  */
-export function getAgencies(companyCode, state) {
+export function getAgencies(companyCode, state, agencyCode) {
   return async (dispatch) => {
     try {
-      const agencies = await fetchAgencies(companyCode, state);
+      const agencies = await fetchAgencies(companyCode, state, agencyCode);
       dispatch(setAgencies(agencies));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
@@ -61,11 +61,11 @@ export function getAgencies(companyCode, state) {
  * @param state
  * @returns {Promise<Array>}
  */
-export async function fetchAgencies(companyCode, state) {
+export async function fetchAgencies(companyCode, state, agencyCode = '') {
   const config = {
     service: 'agency',
     method: 'GET',
-    path: `v1/agencies/${companyCode}/${state}?pageSize=1000&sort=displayName&SortDirection=asc`
+    path: `v1/agencies/${companyCode}/${state}?pageSize=1000&sort=displayName&SortDirection=asc?agencyCode=${agencyCode}`
   };
 
   try {
@@ -83,10 +83,10 @@ export async function fetchAgencies(companyCode, state) {
  * @param agencyCode
  * @returns {Function}
  */
-export function getAgency(companyCode, state, agencyCode) {
+export function getAgency(agencyCode) {
   return async (dispatch) => {
     try {
-      const agency = await fetchAgency(companyCode, state, agencyCode);
+      const agency = await fetchAgency(agencyCode);
       dispatch(setAgency(agency));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
@@ -101,15 +101,15 @@ export function getAgency(companyCode, state, agencyCode) {
  * @param agencyCode
  * @returns {Promise<{}>}
  */
-export async function fetchAgency(companyCode, state, agencyCode) {
+export async function fetchAgency(agencyCode) {
   try {
     const config = {
       service: 'agency',
       method: 'GET',
-      path: `v1/agency/${companyCode}/${state}/${agencyCode}`
+      path: `v1/agencies?agencyCode=${agencyCode}`
     };
     const response = await serviceRunner.callService(config);
-    return response.data && response.data.result ? response.data.result : {};
+    return response.data && response.data.result ? response.data.result[0] : {};
   } catch (error) {
     throw error;
   }
@@ -181,7 +181,7 @@ export function updateAgency(agencyData) {
   return async (dispatch) => {
     try {
       await saveAgency(agencyData);
-      dispatch(getAgency(agencyData.companyCode, agencyData.state, agencyData.agencyCode));
+      dispatch(getAgency(agencyData.agencyCode));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }

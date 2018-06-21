@@ -9,9 +9,14 @@ export const getEditModalInitialValues = createSelector(
   (agency) => {
     if (!agency.agencyCode) return {};
     // noinspection JSUnusedLocalSymbols
-    delete agency.createdBy; // agency service errors when passed
     agency.eoExpirationDate = moment(agency.eoExpirationDate).format('YYYY-MM-DD');
     agency.licenseEffectiveDate = moment(agency.licenseEffectiveDate).format('YYYY-MM-DD');
+
+    agency.license.map((lic) => {
+      lic.eoExpirationDate = moment(lic.eoExpirationDate).format('YYYY-MM-DD');
+      lic.licenseEffectiveDate = moment(lic.licenseEffectiveDate).format('YYYY-MM-DD');
+      return lic;
+    });
     const {
       latitude, longitude, county, ...physicalAddress
     } = agency.physicalAddress;
@@ -21,3 +26,4 @@ export const getEditModalInitialValues = createSelector(
     };
   }
 );
+export default getEditModalInitialValues;

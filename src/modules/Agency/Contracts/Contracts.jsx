@@ -32,33 +32,6 @@ export class Contracts extends Component {
   };
 
   saveContract = async (data) => {
-    // agency has the wrong schema
-
-    // const license = [
-    //   {
-    //     product: [
-    //       'HO3'
-    //     ],
-    //     agent: [
-    //       {
-    //         agentCode: 61201,
-    //         agentOfRecord: true,
-    //         appointed: true
-    //       }
-    //     ],
-    //     addendum: null,
-    //     primaryAgent: 61201,
-    //     companyCode: 'TTIC',
-    //     contract: 'Flood 03 16',
-    //     eoExpirationDate: '1987-08-01T00:00:00.000Z',
-    //     licenseEffectiveDate: '1987-09-06T00:00:00.000Z',
-    //     licenseNumber: 'R013307',
-    //     stateLicense: 'FL'
-    //   }
-    // ];
-
-    // data.license = license;
-
     this.props.updateAgency(data);
     this.setState({ editType: null, showEditAgencyContract: false });
   };
@@ -67,36 +40,13 @@ export class Contracts extends Component {
     const { agency, contractInitialValues } = this.props;
     if (!agency) return <div />;
 
-    agency.license = [
-      {
-        product: [
-          'HO3', 'AF3'
-        ],
-        agent: [
-          {
-            agentCode: 61201,
-            agentOfRecord: true,
-            appointed: true
-          }
-        ],
-        addendum: null,
-        primaryAgent: 61201,
-        companyCode: 'TTIC',
-        contract: 'Flood 03 16',
-        eoExpirationDate: '1987-08-01',
-        licenseEffectiveDate: '1987-09-06',
-        licenseNumber: 'R013307',
-        stateLicense: 'FL'
-      }
-    ];
-
     const { license } = agency;
 
     return (
       <div>
         {this.state.showEditAgencyContract && (
         <ContractsModal
-          initialValues={this.state.editType === 'New' ? {} : agency}
+          initialValues={contractInitialValues}
           toggleModal={this.toggleContractModal}
           editType={this.state.editType}
           contractIndex={this.state.contractIndex}
@@ -115,7 +65,7 @@ export class Contracts extends Component {
                   <hr />
                   <button
                     className="btn btn-sm btn-primary"
-                    onClick={this.toggleContractModal('New')}
+                    onClick={this.toggleContractModal('New', license ? license.length : 0)}
                   >
                     <i className="fa fa-plus" /> Contract
                   </button>

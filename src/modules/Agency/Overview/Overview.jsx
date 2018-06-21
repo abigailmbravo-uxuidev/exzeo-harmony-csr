@@ -14,7 +14,7 @@ export class Overview extends Component {
   componentDidMount() {
     const { match } = this.props;
     const { agencyCode } = match.params;
-    this.props.getAgency('TTIC', 'FL', agencyCode);
+    this.props.getAgency(agencyCode);
     this.props.getAgents('TTIC', 'FL');
   }
 

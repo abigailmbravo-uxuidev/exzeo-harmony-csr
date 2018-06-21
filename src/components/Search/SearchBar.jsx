@@ -103,7 +103,8 @@ export const changePageQuote = (props, isNext) => {
   }
 };
 
-const handleInitialize = () => ({ searchType: 'policy', sortBy: 'policyNumber' });
+const handleInitialize = () => (window.location.pathname === '/agencySearch' ?
+  { searchType: 'agency', sortBy: '' } : { searchType: 'policy', sortBy: 'policyNumber' });
 
 export const handlePolicySearchSubmit = (data, dispatch, props) => {
   const taskData = {
