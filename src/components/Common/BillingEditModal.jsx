@@ -48,7 +48,9 @@ export const selectBillTo = (event, props) => {
 };
 
 export const BillingEditModal = (props) => {
-  const { appState, handleSubmit, handleBillingFormSubmit, hideBillingModal, billingOptions, fieldValues } = props;
+  const {
+    appState, handleSubmit, handleBillingFormSubmit, hideBillingModal, billingOptions, fieldValues, pristine
+  } = props;
   const options = billingOptions.options.find(option => option.billToId === fieldValues.billToId);
 
   return (<div className="modal" style={{ flexDirection: 'row' }}>
@@ -62,14 +64,14 @@ export const BillingEditModal = (props) => {
             name="billToId"
             component="select"
             label="Bill To"
-            onChange={(e) => selectBillTo(e, props)}
+            onChange={e => selectBillTo(e, props)}
             validations={['required']}
             answers={billingOptions.options}
           />
           <RadioFieldBilling
             validations={['required']}
-            name={'billPlan'}
-            label={'Bill Plan'}
+            name="billPlan"
+            label="Bill Plan"
             onChange={value => selectBillPlan(value, props)}
             validate={[value => (value ? undefined : 'Field Required')]}
             segmented
@@ -79,19 +81,21 @@ export const BillingEditModal = (props) => {
         </div>
         <div className="card-footer">
           <div className="btn-group">
-            <button 
-              tabIndex={'0'} 
-              aria-label="reset-btn form-editBilling" 
-              className="btn btn-secondary" 
-              type="button" 
-              onClick={() => hideBillingModal(props)}>Cancel
+            <button
+              tabIndex="0"
+              aria-label="reset-btn form-editBilling"
+              className="btn btn-secondary"
+              type="button"
+              onClick={() => hideBillingModal(props)}
+            >Cancel
             </button>
-            <button 
-              tabIndex={'0'} 
-              aria-label="submit-btn form-editBilling" 
-              className="btn btn-primary" 
-              type="submit" 
-              disabled={appState.data.submitting}>Update
+            <button
+              tabIndex="0"
+              aria-label="submit-btn form-editBilling"
+              className="btn btn-primary"
+              type="submit"
+              disabled={appState.data.submitting || pristine}
+            >Update
             </button>
           </div>
         </div>
