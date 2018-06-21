@@ -9,6 +9,7 @@ export const getEditModalInitialValues = createSelector(
   (agency) => {
     if (!agency.agencyCode) return {};
     // noinspection JSUnusedLocalSymbols
+    delete agency.createdBy; // need to delete this for some reason because the endpoint fails
     agency.eoExpirationDate = moment(agency.eoExpirationDate).format('YYYY-MM-DD');
     agency.licenseEffectiveDate = moment(agency.licenseEffectiveDate).format('YYYY-MM-DD');
 
