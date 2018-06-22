@@ -305,7 +305,7 @@ export function updateBillPlan(paymentPlan) {
   return async (dispatch) => {
     try {
       const policy = await postUpdatedBillPlan(paymentPlan);
-      if (policy.policyNumber) {
+      if (policy && policy.policyNumber) {
         dispatch(getPolicy(policy.policyNumber));
       } else {
         dispatch(errorActions.setAppError({message: 'Could not GET updated Policy'}));
