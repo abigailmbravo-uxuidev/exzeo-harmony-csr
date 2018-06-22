@@ -1545,7 +1545,7 @@ const mapStateToProps = state => ({
   getRate: state.service.getRate,
   newPolicyNumber: getNewPolicyNumber(state),
   summaryLedger: state.service.getSummaryLedger || {},
-  zipcodeSettings: state.service.getZipcodeSettings || { timezone: '' },
+  zipcodeSettings: state.service.getZipcodeSettings,
   userProfile: state.authState.userProfile || {}
 });
 

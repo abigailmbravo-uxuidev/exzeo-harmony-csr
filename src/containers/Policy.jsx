@@ -120,7 +120,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   summaryLedger: state.service.getSummaryLedger,
   policy: state.service.latestPolicy || {},
-  zipCodeSetting: state.service.getZipcodeSettings || { timezone: '' }
+  zipCodeSetting: state.service.getZipcodeSettings
 });
 
 const mapDispatchToProps = dispatch => ({
