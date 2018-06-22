@@ -109,6 +109,8 @@ const HomeLocation = ({ questions }) => (
           label="Year Roof Built"
           component={Integer}
           dataTest="yearOfRoof"
+          thousandSeparator={false}
+          allowNegative={false}
         />
       </div>
 

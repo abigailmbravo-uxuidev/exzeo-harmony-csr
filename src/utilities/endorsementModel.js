@@ -88,7 +88,6 @@ export function generateModel(data, props) {
   data.transactionType = 'Endorsement';
   data.billingStatus = props.summaryLedger.status.code;
 
-  data.property.distanceToFireHydrant = Number(data.property.distanceToFireHydrant);
   data.property.yearOfRoof = String(data.property.yearOfRoof).length > 0 ? data.property.yearOfRoof : null;
 
   data.deductibles.hurricane.calculatedAmount = String(data.deductibles.hurricane.calculatedAmount);
