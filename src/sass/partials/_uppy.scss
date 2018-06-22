@@ -361,67 +361,6 @@
   line-height: 1;
 }
 
-.UppyButton--blue {
-  color: #fff;
-  background-color: #4A90E2;
-
-  &:focus,
-  &:hover {
-    background-color: #2275d7;
-  }
-}
-
-.UppyButton--white {
-  color: #525252;
-  background-color: #fff;
-
-  &:focus,
-  &:hover {
-    color: #fff;
-    background-color: #2275d7;
-  }
-}
-
-.UppyButton--yellow {
-  color: #fff;
-  background-color: #FFD600;
-
-  &:focus,
-  &:hover {
-    background-color: #e6c100;
-  }
-}
-
-.UppyButton--green {
-  color: #fff;
-  background-color: #7AC824;
-
-  &:focus,
-  &:hover {
-    background-color: #609d1c;
-  }
-}
-
-.UppyButton--red {
-  color: #fff;
-  background-color: #D32F2F;
-
-  &:focus,
-  &:hover {
-    background-color: #ab2424;
-  }
-}
-
-.UppyButton--sizeM {
-  width: 60px;
-  height: 60px;
-}
-
-.UppyButton--sizeS {
-  width: 45px;
-  height: 45px;
-}
-
 .uppy-FileInput-container {
   margin-bottom: 15px;
 }
@@ -449,48 +388,54 @@
 }
 
 .uppy-Informer {
+    display: flex;
+    align-items: center;
   position: absolute;
   z-index: 1004;
   right: 0;
   bottom: 0;
   left: 0;
-  height: 30px;
-  padding: 0 15px;
-  transition: all 300ms ease-in;
+  height: 4rem;
+  padding: 0 ($padding*2);
+  @include transition(all .2s ease-in-out);
   transform: none;
   text-align: center;
   opacity: 1;
-  color: #fff;
-  background-color: #000;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 30px;
+  color: $white;
+  background-color: $black;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
 }
 
 .uppy-Dashboard--wide .uppy-Informer {
-  height: 40px;
-  font-size: 13px;
-  line-height: 40px;
+    height: 4rem;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
 }
 
 .uppy-Informer {
   &[aria-hidden=true] {
-    transition: all 300ms ease-in;
+    @include transition(all .2s ease-in-out);
     transform: translateY(200%);
     opacity: 0;
   }
 
   p {
-    height: 30px;
+      display: flex;
+      align-items: center;
     margin: 0;
     padding: 0;
-    line-height: 30px;
+    height: 4rem;
+    line-height: $line-height-base;
   }
 }
 
 .uppy-Dashboard--wide .uppy-Informer p {
-  height: 40px;
-  line-height: 40px;
+    margin: 0;
+    padding: 0;
+    height: 4rem;
+    line-height: $line-height-base;
+    font-weight: $font-weight-normal;
 }
 
 .uppy-Informer span {
@@ -510,6 +455,10 @@
   &:after {
     word-wrap: break-word;
     line-height: 1.3;
+  }
+
+  &[role='tooltip'] {
+      display: none;
   }
 }
 
@@ -653,12 +602,16 @@
   padding: 0;
   cursor: pointer;
   color: inherit;
-  color: #2275d7;
+  color: $bright-blue;
   border: 0;
   background: none;
   font-family: inherit;
   font-size: inherit;
   line-height: 1;
+
+  &:hover {
+      color: $bright-blue-darken-01;
+  }
 }
 
 .uppy-DashboardTabs-list {
@@ -752,7 +705,7 @@
   right: 0;
   left: 0;
   overflow-x: hidden;
-  max-width: 170px;
+  max-width: 80%;
   margin: auto;
   text-align: center;
   white-space: nowrap;
@@ -763,7 +716,7 @@
 }
 
 .uppy-Dashboard--wide .uppy-DashboardContent-title {
-  max-width: 300px;
+  max-width: 80%;
   font-size: 16px;
   line-height: 50px;
 }
@@ -1263,8 +1216,10 @@
 }
 
 .uppy-Dashboard--wide .uppy-DashboardItem.is-error .uppy-DashboardItem-progressIndicator {
-  width: 28px;
-  height: 28px;
+  width: 2rem;
+  height: 2rem;
+  margin: $padding;
+  padding: $padding/2;
 }
 
 .uppy-DashboardItem.is-complete .uppy-DashboardItem-progressIndicator {
@@ -1434,13 +1389,13 @@
 
 .uppy-Dashboard-upload {
   position: relative;
-  width: 50px;
-  height: 50px;
+  width: 4rem;
+  height: 4rem;
 }
 
 .uppy-Dashboard--wide .uppy-Dashboard-upload {
-  width: 60px;
-  height: 60px;
+    width: 4rem;
+    height: 4rem;
 }
 
 .uppy-Dashboard-upload .UppyIcon {
@@ -1491,6 +1446,8 @@
 .uppy-DashboardFileCard-inner {
   height: 100%;
   padding-top: 40px;
+  display: flex;
+  flex-direction: column;
 }
 
 .uppy-Dashboard--wide .uppy-DashboardFileCard-inner {
@@ -1502,7 +1459,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 45%;
+  height: auto;
+  flex-grow: 1;
+  flex-shrink: 1;
   border-bottom: 1px solid rgba(147, 147, 147, 0.3);
   background-color: #f9f9f9;
 
@@ -1516,72 +1475,75 @@
 
 .uppy-DashboardFileCard-info {
   overflow-y: auto;
-  height: 55%;
-  padding: 30px 20px 20px;
+  height: 6rem;
+  margin-right: 5rem;
+  padding: $padding*2;
 }
 
 .uppy-DashboardFileCard-fieldset {
-  max-width: 450px;
-  margin: auto auto 15px;
+  max-width: 100%;
   padding: 0;
   border: 0;
   font-size: 0;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
 }
 
 .uppy-DashboardFileCard-label {
-  display: inline-block;
-  width: 25%;
-  vertical-align: middle;
-  color: #525252;
-  font-size: 11px;
+  display: block;
+  width: 100%;
+  color: $warm-gray-08;
+  font-size: $font-size-base;
+  margin-bottom: $padding;
 }
 
 .uppy-Dashboard--wide .uppy-DashboardFileCard-label {
-  font-size: 13px;
+  font-size: $font-size-base;
 }
 
 .uppy-DashboardFileCard-input {
-  display: inline-block;
-  width: 75%;
+  display: block;
+  width: 100%;
   margin: auto;
-  padding-left: 5px;
+  padding-left: $padding;
   vertical-align: middle;
-  border: 0;
-  border-bottom: 1px solid rgba(82, 82, 82, 0.3);
-  outline: none;
-  font-size: 16px;
+  border: 1px solid $warm-gray-06;
+  outline: inherit;
+  font-size: $font-size-base;
   line-height: 1.8;
 
   &:focus {
-    border-color: #525252;
+    border-color: $warm-gray-08;
   }
 }
 
 .uppy-DashboardFileCard-done {
-  width: 50px;
-  height: 50px;
+  width: 3rem;
+  height: 3rem;
+  box-shadow: 0 0 0 0 rgba($black, 0);
+  border-width: 1px;
+  border-style: solid;
+  @include button-variant($btn-secondary-color, $btn-secondary-bg, $btn-secondary-border);
 }
 
 .uppy-Dashboard--wide .uppy-DashboardFileCard-done {
-  width: 60px;
-  height: 60px;
+  width: 3rem;
+  height: 3rem;
 }
 
 .uppy-DashboardFileCard-done .UppyIcon {
-  width: 25px;
-  height: 25px;
+  display: none;
 }
 
 .uppy-Dashboard--wide {
-  .uppy-DashboardFileCard-done .UppyIcon {
-    width: 30px;
-    height: 30px;
-  }
 
   .uppy-StatusBar {
-    height: 40px;
+    height: 65px;
     font-size: 14px;
     line-height: 40px;
+    display: flex;
+    align-items: center;
   }
 }
 
@@ -2145,11 +2107,24 @@
   height: 30px;
   transition: height 0.2s;
   color: #fff;
-  background-color: rgba(82, 82, 82, 0.7);
+  background-color: $bright-blue-darken-04;
   box-shadow: 1px 1px 4px 0 rgba(82, 82, 82, 0.3);
   font-size: 12px;
   font-weight: 500;
   line-height: 30px;
+  overflow: hidden;
+
+  &.is-uploading {
+
+
+    .uppy-StatusBar-progress {
+    animation: statusBarProgressStripes 1s linear infinite;
+    background-image: linear-gradient(45deg, $bright-blue-darken-04 25%, transparent 25%, transparent 50%, $bright-blue-darken-04 50%, $bright-blue-darken-04 75%, transparent 75%, transparent);
+    background-size: 4rem 4rem;
+    border-radius: 0 $border-radius $border-radius 0;
+        box-shadow: 0 0 4rem rgba($black, .375);
+    }
+  }
 
   &[aria-hidden=true] {
     overflow-y: hidden;
@@ -2157,11 +2132,11 @@
   }
 
   &.is-complete .uppy-StatusBar-progress {
-    background-color: #7AC824;
-  }
+    background-color: $green-darken-03;
+}
 
   &.is-error .uppy-StatusBar-progress {
-    background-color: #D32F2F;
+    background-color: $red-darken-01;
   }
 
   &.is-complete .uppy-StatusBar-content {
@@ -2181,13 +2156,9 @@
   z-index: 1001;
   height: 100%;
   transition: background-color, width 0.3s ease-out;
-  background-color: #4A90E2;
+  background-color: $bright-blue-darken-03;
 
-  &.is-indeterminate {
-    animation: statusBarProgressStripes 1s linear infinite;
-    background-image: linear-gradient(45deg, #2275d7 25%, transparent 25%, transparent 50%, #2275d7 50%, #2275d7 75%, transparent 75%, transparent);
-    background-size: 64px 64px;
-  }
+
 }
 
 .uppy-StatusBar.is-waiting .uppy-StatusBar-progress {
@@ -2243,6 +2214,8 @@ button.uppy-StatusBar-statusIndicator {
   z-index: 1004;
   top: 0;
   bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -2251,10 +2224,26 @@ button.uppy-StatusBar-statusIndicator {
 }
 
 .uppy-StatusBar.is-waiting .uppy-StatusBar-actions {
-
+    left: 0;
+    right: 0;
 }
 
 .uppy-StatusBar-actionBtn {
+    display: inline-block;
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    text-transform: uppercase;
+    border: $input-btn-border-width solid transparent;
+    font-weight: $btn-font-weight;
+    line-height: $btn-line-height;
+    @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $btn-border-radius);
+    @include transition(all .2s ease-in-out);
+    @include hover-focus {
+      text-decoration: none;
+    }
 
 
   &:not(:last-child) {
@@ -2263,7 +2252,7 @@ button.uppy-StatusBar-statusIndicator {
 }
 
 .uppy-StatusBar.is-waiting .uppy-StatusBar-actionBtn {
-
+    @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $btn-border-radius);
 }
 
 .uppy-StatusBar-actionBtn--upload {
@@ -2275,90 +2264,13 @@ button.uppy-StatusBar-statusIndicator {
 }
 
 .uppy-StatusBar-actionBtn--retry {
-
+    @include button-variant($bright-blue-darken-04, $white, $bright-blue-darken-04);
 }
 
 .uppy-StatusBar-details {
-  position: relative;
-  top: -1px;
-  left: 6px;
-  display: inline-block;
-  width: 13px;
-  height: 13px;
-  text-align: center;
-  vertical-align: middle;
-  color: #D32F2F;
-  border-radius: 50%;
-  background-color: #fff;
-  font-size: 10px;
-  line-height: 12px;
-
-  &:after {
-    word-wrap: break-word;
-    line-height: 1.3;
-  }
-}
-
-.uppy-Webcam-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-}
-
-.uppy-Webcam-videoContainer {
-  width: 100%;
-  height: 100%;
-}
-
-.uppy-Dashboard--wide .uppy-Webcam-videoContainer {
-  height: initial;
-}
-
-.uppy-Webcam-video {
-  width: 100%;
-  max-width: 100%;
-  height: 100%;
-  max-height: 100%;
-}
-
-.uppy-Webcam-video--mirrored {
-  transform: scaleX(-1);
-}
-
-.uppy-Webcam-buttonContainer {
-  position: absolute;
-  right: 30px;
-  bottom: 30px;
-}
-
-.uppy-Webcam-recordButton .UppyIcon {
-  position: relative;
-  top: -1px;
-  width: 50%;
-  height: 50%;
-}
-
-.uppy-Webcam-permissons {
-  display: flex;
-  align-items: center;
-  flex-flow: column wrap;
-  justify-content: center;
-  height: 100%;
-  padding: 15px;
+  display: none;
 
   p {
     line-height: 1.4;
   }
-}
-
-.uppy-Webcam-Title {
-  max-width: 500px;
-  margin-bottom: 30px;
-  padding: 0 15px;
-  text-align: center;
-  font-size: 22px;
-  font-weight: 300;
-  line-height: 1.35;
 }

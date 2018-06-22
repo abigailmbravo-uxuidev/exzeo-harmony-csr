@@ -104,6 +104,10 @@
         select {
           flex-grow: 0;
           flex-shrink: 0;
+
+          &[name='fileType'] {
+              margin-bottom: $padding;
+          }
         }
 
         .text-area-wrapper {
