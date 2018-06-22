@@ -154,6 +154,41 @@ export async function fetchAgents(companyCode, state) {
 
 /**
  *
+ * @param agencyCode
+ * @returns {Function}
+ */
+export function getAgentsByAgencyCode(agencyCode) {
+  return async (dispatch) => {
+    try {
+      const agents = await fetchAgentsByCompanyCode(agencyCode);
+      dispatch(setAgents(agents));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
+/**
+ *
+ * @param agencyCode
+ * @returns {Promise<Array>}
+ */
+export async function fetchAgentsByCompanyCode(agencyCode) {
+  try {
+    const config = {
+      service: 'agency',
+      method: 'GET',
+      path: `v1/agents?agencyCode=${agencyCode}`
+    };
+    const response = await serviceRunner.callService(config);
+    return response.data && response.data.result ? response.data.result : [];
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
  * @param agencyData
  * @returns {Promise<Array>}
  */
@@ -182,6 +217,42 @@ export function updateAgency(agencyData) {
     try {
       await saveAgency(agencyData);
       dispatch(getAgency(agencyData.agencyCode));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
+/**
+ *
+ * @param agentData
+ * @returns {Promise<Array>}
+ */
+export async function saveAgent(agentData) {
+  try {
+    const config = {
+      service: 'agency',
+      method: 'PUT',
+      path: `v1/agent/${agentData.agentCode}`,
+      data: agentData
+    };
+    const response = await serviceRunner.callService(config);
+    return response.data && response.data.result ? response.data.result : {};
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
+ * @param agentData
+ * @returns {Function}
+ */
+export function updateAgent(agentData, agency) {
+  return async (dispatch) => {
+    try {
+      await saveAgent(agentData);
+      dispatch(getAgentsByAgencyCode(agency.agencyCode));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }

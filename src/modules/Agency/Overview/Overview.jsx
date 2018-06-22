@@ -15,7 +15,7 @@ export class Overview extends Component {
     const { match } = this.props;
     const { agencyCode } = match.params;
     this.props.getAgency(agencyCode);
-    this.props.getAgents('TTIC', 'FL');
+    this.props.getAgentsByAgencyCode(agencyCode);
   }
 
   toggleContactModal = editType => () =>
@@ -31,7 +31,7 @@ export class Overview extends Component {
 
   render() {
     const { agency } = this.props;
-    if (!agency._id) return <div />;
+    if (!agency || !agency._id) return <div />;
 
     return (
       <div>

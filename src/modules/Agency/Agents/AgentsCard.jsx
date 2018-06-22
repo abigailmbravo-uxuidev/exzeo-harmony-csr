@@ -2,7 +2,7 @@ import React from 'react';
 import { normalizePhone } from '@exzeo/core-ui/lib/InputLifecycle';
 
 export const AgentsCard = ({
-  agency, agent, agentIndex, editAgentModal, removeAgentModal
+  agency, agent, agentIndex, toggleAgentModal, removeAgentModal
 }) => (
   <div className="agency agent contact card" key={agentIndex}>
     <div className="contact-title">
@@ -47,7 +47,7 @@ export const AgentsCard = ({
         </div>
         <div className="card-actions">
           <button className="btn btn-link" onClick={() => removeAgentModal(agent)}><i className="fa fa-times-circle" />Remove</button>
-          <button className="btn btn-link" onClick={() => editAgentModal(agent)}><i className="fa fa-pencil-square" />Edit</button>
+          <button className="btn btn-link" onClick={() => toggleAgentModal(agent)}><i className="fa fa-pencil-square" />Edit</button>
         </div>
 
       </div>
