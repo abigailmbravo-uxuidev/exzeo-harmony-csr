@@ -344,7 +344,7 @@ export function submitEndorsementForm(formData, formProps) {
     submitData.forms = forms;
     const newPolicy = await dispatch(createTransaction(submitData));
 
-    if (newPolicy.policyNumber) {
+    if (newPolicy && newPolicy.policyNumber) {
       dispatch(getPolicy(newPolicy.policyNumber));
     }
   };
