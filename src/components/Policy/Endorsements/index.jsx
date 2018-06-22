@@ -137,14 +137,14 @@ export class Endorsements extends React.Component {
 
   normalizeSinkholeAmount = (value, previousValue, allValues) => {
     const { change } = this.props;
-    if (String(value) === 'true') {
+    if (value === 'true') {
       change('deductibles.sinkhole.amount', 10);
       change('deductibles.sinkhole.calculatedAmount', endorsementUtils.setPercentageOfValue(allValues.coverageLimits.dwelling.amount, 10));
     } else {
       change('deductibles.sinkhole.amount', 0);
       change('deductibles.sinkhole.calculatedAmount', 0);
     }
-    return value;
+    return value === 'true';
   };
 
   normalizeDwellingAmount = (value, previousValue, allValues) => {
