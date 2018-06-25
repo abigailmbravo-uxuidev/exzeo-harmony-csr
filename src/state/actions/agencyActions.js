@@ -40,6 +40,18 @@ export function setAgents(agents) {
 
 /**
  *
+ * @param agencyAgents
+ * @returns {{type: string, agencyAgents: *}}
+ */
+export function setAgencyAgents(agencyAgents) {
+  return {
+    type: types.SET_AGENCY_AGENTS,
+    agencyAgents
+  };
+}
+
+/**
+ *
  * @param companyCode
  * @param state
  * @returns {Function}
@@ -161,7 +173,7 @@ export function getAgentsByAgencyCode(agencyCode) {
   return async (dispatch) => {
     try {
       const agents = await fetchAgentsByCompanyCode(agencyCode);
-      dispatch(setAgents(agents));
+      dispatch(setAgencyAgents(agents));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
@@ -253,6 +265,42 @@ export function updateAgent(agentData, agency) {
     try {
       await saveAgent(agentData);
       dispatch(getAgentsByAgencyCode(agency.agencyCode));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
+/**
+ *
+ * @param agentData
+ * @returns {Promise<Array>}
+ */
+export async function addExistingAgent(agentData) {
+  try {
+    const config = {
+      service: 'agency',
+      method: 'POST',
+      path: 'v1/agent',
+      data: agentData
+    };
+    const response = await serviceRunner.callService(config);
+    return response.data && response.data.result ? response.data.result : {};
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ *
+ * @param agentData
+ * @returns {Function}
+ */
+export function addAgent(agentData) {
+  return async (dispatch) => {
+    try {
+      await addExistingAgent(agentData);
+      dispatch(getAgentsByAgencyCode(agentData.agencyCode));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }

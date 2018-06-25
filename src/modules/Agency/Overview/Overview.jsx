@@ -16,6 +16,7 @@ export class Overview extends Component {
     const { agencyCode } = match.params;
     this.props.getAgency(agencyCode);
     this.props.getAgentsByAgencyCode(agencyCode);
+    this.props.getAgents('TTIC', 'FL');
   }
 
   toggleContactModal = editType => () =>

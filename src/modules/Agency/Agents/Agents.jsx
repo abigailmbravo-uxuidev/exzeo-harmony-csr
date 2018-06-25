@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AgentsCard from './AgentsCard';
 import AgentModal from './AgentModal';
+import ExistingAgentModal from './ExistingAgentModal';
 
 export class Agents extends Component {
   state = {
@@ -24,9 +25,17 @@ export class Agents extends Component {
       showEditAgent: !this.state.showEditAgent
     });
 
-  render() {
-    const { agency, agents, updateAgent } = this.props;
+  toggleExistingAgentModal = () =>
+    this.setState({
+      showAddExistingAgent: !this.state.showAddExistingAgent
+    });
 
+  render() {
+    const {
+      agency, agencyAgents, agents, updateAgent, addAgent
+    } = this.props;
+
+    const listOfAgents = agents ? agents.map(a => ({ answer: a.agentCode, label: `${a.firstName} ${a.lastName}` })) : [];
     return (
       <div className="route-content">
         {this.state.showEditAgent &&
@@ -40,14 +49,23 @@ export class Agents extends Component {
               updateAgent={updateAgent}
             />
           )}
+        {this.state.showAddExistingAgent && (
+          <ExistingAgentModal
+            agency={agency}
+            agents={agents}
+            listOfAgents={listOfAgents}
+            toggleModal={this.toggleExistingAgentModal}
+            addAgent={addAgent}
+          />
+          )}
         <div className="scroll">
           <div className="form-group survey-wrapper" role="group">
-            {agents.map((agent, index) => (
+            {agencyAgents && agencyAgents.map((agent, index) => (
               <AgentsCard agency={agency} agent={agent} agentIndex={index} toggleAgentModal={this.toggleAgentModal('Edit')} removeAgentModal={this.removeAgentModal} />
             ))}
             <div className="agent-actions">
               <hr />
-              <button className="btn btn-sm btn-primary margin right" onClick={this.toggleAddModal}><i className="fa fa-plus" />Existing Agent</button>
+              <button className="btn btn-sm btn-primary margin right" onClick={this.toggleExistingAgentModal}><i className="fa fa-plus" />Existing Agent</button>
               <button className="btn btn-sm btn-primary" onClick={() => this.toggleAgentModal('Add')({ agencyCode: agency.agencyCode })}><i className="fa fa-plus" />New Agent</button>
               <hr />
             </div>
@@ -60,7 +78,8 @@ export class Agents extends Component {
 
 Agents.propTypes = {
   agency: PropTypes.shape(),
-  agents: PropTypes.shape()
+  agencyAgents: PropTypes.shape(),
+  listOfAgents: PropTypes.shape()
 };
 
 export default Agents;

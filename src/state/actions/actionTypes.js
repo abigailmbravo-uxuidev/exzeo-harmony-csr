@@ -43,3 +43,4 @@ export const SET_SUMMARY_LEDGER = 'SET_SUMMARY_LEDGER';
 export const SET_AGENCIES = 'SET_AGENCIES';
 export const SET_AGENCY = 'SET_AGENCY';
 export const SET_AGENTS = 'SET_AGENTS';
+export const SET_AGENCY_AGENTS = 'SET_AGENCY_AGENTS';
