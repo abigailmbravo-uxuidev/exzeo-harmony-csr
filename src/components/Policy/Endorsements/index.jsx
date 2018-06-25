@@ -158,7 +158,7 @@ export class Endorsements extends React.Component {
     if (allValues.coverageLimits.personalProperty.percentage !== 'other') {
       change('coverageLimits.personalProperty.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, allValues.coverageLimits.personalProperty.percentage));
     }
-    change('deductibles.hurricane.calculatedAmount', String(endorsementUtils.setPercentageOfValue(roundedDwellingAmount, allValues.deductibles.hurricane.amount)));
+    change('deductibles.hurricane.calculatedAmount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, allValues.deductibles.hurricane.amount));
     change('coverageLimits.lossOfUse.amount', endorsementUtils.setPercentageOfValue(roundedDwellingAmount, 10));
 
     return value;
