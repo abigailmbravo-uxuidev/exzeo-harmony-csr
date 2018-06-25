@@ -1219,6 +1219,10 @@
   font-family: inherit;
   font-size: inherit;
   line-height: 1;
+
+  &:hover, &:focus {
+      background-color: rgba($black, .1);
+  }
 }
 
 .uppy-Dashboard--wide .uppy-DashboardItem-progressIndicator {
@@ -1673,142 +1677,6 @@
   &:hover {
     color: #fff;
     background-color: #2275d7;
-  }
-}
-
-.uppy-Provider-breadcrumbs {
-  button {
-    margin: 0;
-    padding: 0;
-    cursor: pointer;
-    color: inherit;
-    border: 0;
-    background: none;
-    font-family: inherit;
-    font-size: inherit;
-    font-size: 14px;
-    line-height: 1;
-
-    &:hover {
-      text-decoration: underline;
-    }
-
-    &:focus {
-      outline: 1px dotted #aaa;
-    }
-  }
-
-  li {
-    display: inline-block;
-    margin: 0;
-
-    ~ li:before {
-      padding: 0 10px;
-      content: '/';
-    }
-  }
-}
-
-.uppy-ProviderBrowser {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  font-size: 13px;
-  font-weight: 400;
-}
-
-.uppy-ProviderBrowser-user {
-  margin: 16px 0;
-}
-
-.uppy-ProviderBrowser-header {
-  position: relative;
-  z-index: 1001;
-  border-bottom: 1px solid #ebebeb;
-}
-
-:-ms-input-placeholder,
-::-moz-placeholder,
-::-webkit-input-placeholder {
-  color: rgba(119, 119, 119, 0.75);
-}
-
-.uppy-ProviderBrowser-headerBar {
-  z-index: 1001;
-  display: flex;
-  align-items: center;
-  height: 50px;
-  padding-left: 16px;
-  background-color: #f9f9f9;
-  line-height: 50px;
-}
-
-.uppy-ProviderBrowser-search {
-  position: absolute;
-  z-index: 1002;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 50px;
-  transition: all 0.2s;
-  transform: translate(0, -50px);
-  background-color: #f9f9f9;
-
-  &:not([aria-hidden=true]) {
-    transform: translate(0, 0);
-  }
-
-  input {
-    flex: 1;
-    padding: 0 16px;
-    border: 0;
-    outline: 0;
-    background-color: transparent;
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 50px;
-  }
-}
-
-.uppy-ProviderBrowser-searchToggle {
-  width: 15px;
-  margin: 0;
-  padding: 0;
-  cursor: pointer;
-  transition: all 0.2s;
-  color: inherit;
-  color: #939393;
-  border: 0;
-  background: none;
-  font-family: inherit;
-  font-size: inherit;
-  line-height: 1;
-
-  &:hover {
-    color: #000;
-  }
-}
-
-.uppy-ProviderBrowser-searchClose {
-  position: relative;
-  right: 16px;
-  width: 12px;
-  margin: 0;
-  padding: 0;
-  cursor: pointer;
-  transition: all 0.2s;
-  color: inherit;
-  color: #939393;
-  border: 0;
-  background: none;
-  font-family: inherit;
-  font-size: inherit;
-  line-height: 1;
-
-  &:hover {
-    color: #000;
   }
 }
 
