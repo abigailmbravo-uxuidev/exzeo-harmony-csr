@@ -388,16 +388,15 @@
 }
 
 .uppy-Informer {
-    display: flex;
-    align-items: center;
   position: absolute;
   z-index: 1004;
   right: 0;
   bottom: 0;
   left: 0;
+  display: flex;
+  align-items: center;
   height: 4rem;
   padding: 0 ($padding*2);
-  @include transition(all .2s ease-in-out);
   transform: none;
   text-align: center;
   opacity: 1;
@@ -405,37 +404,38 @@
   background-color: $black;
   font-size: $font-size-base;
   line-height: $line-height-base;
+  @include transition(all 0.2s ease-in-out);
 }
 
 .uppy-Dashboard--wide .uppy-Informer {
-    height: 4rem;
-    font-size: $font-size-base;
-    line-height: $line-height-base;
+  height: 4rem;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
 }
 
 .uppy-Informer {
   &[aria-hidden=true] {
-    @include transition(all .2s ease-in-out);
     transform: translateY(200%);
     opacity: 0;
+    @include transition(all 0.2s ease-in-out);
   }
 
   p {
-      display: flex;
-      align-items: center;
+    display: flex;
+    align-items: center;
+    height: 4rem;
     margin: 0;
     padding: 0;
-    height: 4rem;
     line-height: $line-height-base;
   }
 }
 
 .uppy-Dashboard--wide .uppy-Informer p {
-    margin: 0;
-    padding: 0;
-    height: 4rem;
-    line-height: $line-height-base;
-    font-weight: $font-weight-normal;
+  height: 4rem;
+  margin: 0;
+  padding: 0;
+  font-weight: $font-weight-normal;
+  line-height: $line-height-base;
 }
 
 .uppy-Informer span {
@@ -458,7 +458,7 @@
   }
 
   &[role='tooltip'] {
-      display: none;
+    display: none;
   }
 }
 
@@ -610,7 +610,7 @@
   line-height: 1;
 
   &:hover {
-      color: $bright-blue-darken-01;
+    color: $bright-blue-darken-01;
   }
 }
 
@@ -686,11 +686,11 @@
 
 .uppy-DashboardContent-bar {
   position: relative;
-  display: flex;
-  align-items: center;
   z-index: 1004;
   top: auto;
   left: auto;
+  display: flex;
+  align-items: center;
   width: 100%;
   height: 3.5rem;
   border-bottom: 1px solid rgba($black, .2);
@@ -708,17 +708,16 @@
   left: auto;
   overflow-x: hidden;
   max-width: 100%;
-  margin: auto;
+  margin: auto auto auto $padding;
   text-align: left;
   white-space: nowrap;
   text-overflow: ellipsis;
   font-size: $font-size-base;
   font-weight: $font-weight-bold;
   line-height: 1.5;
-  margin-left: $padding;
 
   span {
-      font-weight: $font-weight-normal;
+    font-weight: $font-weight-normal;
   }
 }
 
@@ -740,21 +739,21 @@
   cursor: pointer;
   color: inherit;
   border: 0;
+  border-width: 1px;
+  border-style: solid;
   background: none;
   font-family: inherit;
   font-weight: $font-weight-bold;
   line-height: 1;
-  border-width: 1px;
-  border-style: solid;
   @include button-variant($btn-secondary-color, $btn-secondary-bg, $btn-secondary-border);
+  @include button-size($btn-padding-y, $btn-padding-x, $font-size-sm, $btn-border-radius);
+  @include transition(all 0.2s ease-in-out);
+  @include hover-focus {
+    text-decoration: none;
+  }
 
   &:hover {
     @include button-variant($btn-secondary-color, rgba($btn-secondary-bg, .9), $btn-secondary-border);
-  }
-  @include button-size($btn-padding-y, $btn-padding-x, $font-size-sm, $btn-border-radius);
-  @include transition(all .2s ease-in-out);
-  @include hover-focus {
-    text-decoration: none;
   }
 }
 
@@ -1053,8 +1052,8 @@
   padding: 0;
   white-space: nowrap;
   text-overflow: ellipsis;
-  font-size: $font-size-sm;
   color: $warm-gray-14;
+  font-size: $font-size-sm;
 }
 
 .uppy-Dashboard--wide .uppy-DashboardItem-name {
@@ -1091,22 +1090,24 @@
   cursor: pointer;
   text-align: left;
   color: inherit;
+  color: $bright-blue;
   border: 0;
   background: none;
   font-family: inherit;
   font-size: inherit;
   font-size: $font-size-base;
   line-height: 1;
-  color: $bright-blue;
+
   &:before {
-      content: '\f040';
-      font-family: $font-family-icon;
-      width: 1rem;
-      height: 1rem;
+    width: 1rem;
+    height: 1rem;
+    content: '\f040';
+    font-family: $font-family-icon;
   }
+
   &:hover {
-      color: $bright-blue-darken-01;
-      background: rgba($white, .25);
+    color: $bright-blue-darken-01;
+    background: rgba($white, .25);
   }
 }
 
@@ -1117,7 +1118,6 @@
 .uppy-Dashboard--wide .uppy-DashboardItem-edit .UppyIcon {
   display: none;
 }
-
 
 .uppy-DashboardItem-action {
   position: absolute;
@@ -1132,6 +1132,10 @@
 }
 
 .uppy-DashboardItem-remove {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 1rem;
   height: 1rem;
   margin: 0;
@@ -1140,23 +1144,21 @@
   color: inherit;
   color: $red;
   border: 0;
+  border-radius: 50%;
   background: none;
   line-height: 1;
-  position: relative;
-  border-radius: 50%;
 
   svg {
-      display: none;
+    display: none;
   }
 
-
   &:before {
-      content: '\f057';
-      font-family: $font-family-icon;
-      width: 1rem;
-      height: 1rem;
-      background: $white;
-      border-radius: 50%;
+    width: 1rem;
+    height: 1rem;
+    content: '\f057';
+    border-radius: 50%;
+    background: $white;
+    font-family: $font-family-icon;
   }
 }
 
@@ -1166,7 +1168,7 @@
   color: $red-darken-01;
 
   &:hover {
-     color: $red;
+    color: $red;
   }
 }
 
@@ -1392,8 +1394,8 @@
 }
 
 .uppy-Dashboard--wide .uppy-Dashboard-actions {
-    right: $padding;
-    bottom: $padding;
+  right: $padding;
+  bottom: $padding;
 }
 
 .uppy-Dashboard-pauseResume .UppyIcon {
@@ -1408,8 +1410,8 @@
 }
 
 .uppy-Dashboard--wide .uppy-Dashboard-upload {
-    width: 4rem;
-    height: 4rem;
+  width: 4rem;
+  height: 4rem;
 }
 
 .uppy-Dashboard-upload .UppyIcon {
@@ -1457,26 +1459,26 @@
   }
 
   > div {
-      display: flex;
-      flex-direction: column;
+    display: flex;
+    flex-direction: column;
   }
 }
 
 .uppy-DashboardFileCard-inner {
-  height: 100%;
-  padding-top: 0 !important;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  padding-top: 0 !important;
 }
 
 .uppy-DashboardFileCard-preview {
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
-  height: auto;
   flex-grow: 1;
   flex-shrink: 1;
+  justify-content: center;
+  height: auto;
   border-bottom: 1px solid rgba(147, 147, 147, 0.3);
   background-color: #f9f9f9;
 
@@ -1496,21 +1498,21 @@
 }
 
 .uppy-DashboardFileCard-fieldset {
+  display: flex;
+  flex-direction: column;
   max-width: 100%;
+  margin-bottom: 0;
   padding: 0;
   border: 0;
   font-size: 0;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 0;
 }
 
 .uppy-DashboardFileCard-label {
   display: block;
   width: 100%;
+  margin-bottom: $padding;
   color: $warm-gray-08;
   font-size: $font-size-base;
-  margin-bottom: $padding;
 }
 
 .uppy-Dashboard--wide .uppy-DashboardFileCard-label {
@@ -1536,15 +1538,15 @@
 .uppy-DashboardFileCard-done {
   width: 3rem;
   height: 3rem;
-  box-shadow: 0 0 0 0 rgba($black, 0);
   border-width: 1px;
   border-style: solid;
+  box-shadow: 0 0 0 0 rgba($black, 0);
   @include button-variant($btn-secondary-color, $btn-secondary-bg, $btn-secondary-border);
 
   &:before {
-      content: '\f00c';
-      font-family: $font-family-icon;
-      font-size: $font-size-h3;
+    content: '\f00c';
+    font-family: $font-family-icon;
+    font-size: $font-size-h3;
   }
 }
 
@@ -1558,13 +1560,12 @@
 }
 
 .uppy-Dashboard--wide {
-
   .uppy-StatusBar {
+    display: flex;
+    align-items: center;
     height: 65px;
     font-size: 14px;
     line-height: 40px;
-    display: flex;
-    align-items: center;
   }
 }
 
@@ -2125,6 +2126,7 @@
 .uppy-StatusBar {
   position: relative;
   z-index: 1001;
+  overflow: hidden;
   height: 30px;
   transition: height 0.2s;
   color: #fff;
@@ -2133,17 +2135,14 @@
   font-size: 12px;
   font-weight: 500;
   line-height: 30px;
-  overflow: hidden;
 
   &.is-uploading {
-
-
     .uppy-StatusBar-progress {
-    animation: statusBarProgressStripes 1s linear infinite;
-    background-image: linear-gradient(45deg, $bright-blue-darken-04 25%, transparent 25%, transparent 50%, $bright-blue-darken-04 50%, $bright-blue-darken-04 75%, transparent 75%, transparent);
-    background-size: 4rem 4rem;
-    border-radius: 0 $border-radius $border-radius 0;
-        box-shadow: 0 0 4rem rgba($black, .375);
+      animation: statusBarProgressStripes 1s linear infinite;
+      border-radius: 0 $border-radius $border-radius 0;
+      background-image: linear-gradient(45deg, $bright-blue-darken-04 25%, transparent 25%, transparent 50%, $bright-blue-darken-04 50%, $bright-blue-darken-04 75%, transparent 75%, transparent);
+      background-size: 4rem 4rem;
+      box-shadow: 0 0 4rem rgba($black, .375);
     }
   }
 
@@ -2154,7 +2153,7 @@
 
   &.is-complete .uppy-StatusBar-progress {
     background-color: $green-darken-03;
-}
+  }
 
   &.is-error .uppy-StatusBar-progress {
     background-color: $red-darken-01;
@@ -2178,8 +2177,6 @@
   height: 100%;
   transition: background-color, width 0.3s ease-out;
   background-color: $bright-blue-darken-03;
-
-
 }
 
 .uppy-StatusBar.is-waiting .uppy-StatusBar-progress {
@@ -2234,9 +2231,9 @@ button.uppy-StatusBar-statusIndicator {
   position: absolute;
   z-index: 1004;
   top: 0;
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -2245,27 +2242,26 @@ button.uppy-StatusBar-statusIndicator {
 }
 
 .uppy-StatusBar.is-waiting .uppy-StatusBar-actions {
-    left: 0;
-    right: 0;
+  right: 0;
+  left: 0;
 }
 
 .uppy-StatusBar-actionBtn {
-    display: inline-block;
-    cursor: pointer;
-    user-select: none;
-    text-align: center;
-    vertical-align: middle;
-    white-space: nowrap;
-    text-transform: uppercase;
-    border: $input-btn-border-width solid transparent;
-    font-weight: $btn-font-weight;
-    line-height: $btn-line-height;
-    @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $btn-border-radius);
-    @include transition(all .2s ease-in-out);
-    @include hover-focus {
-      text-decoration: none;
-    }
-
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-transform: uppercase;
+  border: $input-btn-border-width solid transparent;
+  font-weight: $btn-font-weight;
+  line-height: $btn-line-height;
+  @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $btn-border-radius);
+  @include transition(all 0.2s ease-in-out);
+  @include hover-focus {
+    text-decoration: none;
+  }
 
   &:not(:last-child) {
     margin-right: 5px;
@@ -2273,19 +2269,19 @@ button.uppy-StatusBar-statusIndicator {
 }
 
 .uppy-StatusBar.is-waiting .uppy-StatusBar-actionBtn {
-    @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $btn-border-radius);
+  @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $btn-border-radius);
 }
 
 .uppy-StatusBar-actionBtn--upload {
-    @include button-variant($bright-blue-darken-04, $white, $bright-blue-darken-04);
+  @include button-variant($bright-blue-darken-04, $white, $bright-blue-darken-04);
 }
 
 .uppy-StatusBar.is-waiting .uppy-StatusBar-actionBtn--upload {
-    @include button-variant($bright-blue-darken-04, $white, $bright-blue-darken-04);
+  @include button-variant($bright-blue-darken-04, $white, $bright-blue-darken-04);
 }
 
 .uppy-StatusBar-actionBtn--retry {
-    @include button-variant($bright-blue-darken-04, $white, $bright-blue-darken-04);
+  @include button-variant($bright-blue-darken-04, $white, $bright-blue-darken-04);
 }
 
 .uppy-StatusBar-details {
