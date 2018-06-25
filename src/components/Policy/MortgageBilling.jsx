@@ -306,9 +306,6 @@ export class MortgageBilling extends Component {
 
     if (isEditingAI) {
       if (selectedAI) {
-        getAnswers('mortgagee', questions).forEach((answer) => {
-          answer.displayText = `${answer.AIName1}, ${answer.AIAddress1}, ${answer.AICity} ${answer.AIState}, ${answer.AIZip}`;
-        });
         const mortgagee = _.get(_.find(getAnswers('mortgagee', this.props.questions), a => a.AIName1 === selectedAI.name1 &&
           a.AIAddress1 === selectedAI.mailingAddress.address1), 'ID');
 

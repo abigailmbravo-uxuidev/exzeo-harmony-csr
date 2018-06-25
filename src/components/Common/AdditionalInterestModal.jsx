@@ -2,38 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
-import { reduxForm, Field, propTypes, initialize, reset, change } from 'redux-form';
-import { batchActions } from 'redux-batched-actions';
-import { Input, Select, Phone } from '@exzeo/core-ui/lib/Input';
+import { reduxForm, Field, propTypes, initialize, reset } from 'redux-form';
+import { Input, Select, Phone, SelectTypeAhead } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
-import { getAnswers } from '../../utilities/forms';
-import ReactSelectField from '../Form/inputs/ReactSelectField';
+import { getTopMortgageeAnswers } from "../../state/selectors/questions.selectors";
 import Loader from './Loader';
-
-export const setMortgageeValues = (val, props) => {
-  const selectedMortgagee = val;
-
-  if (selectedMortgagee) {
-    props.dispatch(batchActions([
-      change('AdditionalInterestModal', 'name1', selectedMortgagee.AIName1),
-      change('AdditionalInterestModal', 'name2', selectedMortgagee.AIName2),
-      change('AdditionalInterestModal', 'address1', selectedMortgagee.AIAddress1),
-      change('AdditionalInterestModal', 'city', selectedMortgagee.AICity),
-      change('AdditionalInterestModal', 'state', selectedMortgagee.AIState),
-      change('AdditionalInterestModal', 'zip', String(selectedMortgagee.AIZip))
-    ]));
-  } else {
-    props.dispatch(batchActions([
-      change('AdditionalInterestModal', 'name1', ''),
-      change('AdditionalInterestModal', 'name2', ''),
-      change('AdditionalInterestModal', 'address1', ''),
-      change('AdditionalInterestModal', 'city', ''),
-      change('AdditionalInterestModal', 'state', ''),
-      change('AdditionalInterestModal', 'zip', '')
-    ]));
-  }
-};
-
 
 export const checkAdditionalInterestForName = aiType => aiType === 'Additional Insured' || aiType === 'Additional Interest' || aiType === 'Bill Payer';
 
@@ -43,6 +16,27 @@ export class AdditionalInterestModal extends React.Component {
 
     this.modalStyle = { flexDirection: 'row' };
   }
+
+  setMortgageeValues = (value) => {
+    const { change } = this.props;
+    if (value) {
+        change('name1', value.AIName1);
+        change('name2', value.AIName2);
+        change('address1', value.AIAddress1);
+        change('city', value.AICity);
+        change('state', value.AIState);
+        change('zip', value.AIZip)
+    } else {
+        change('name1', '');
+        change('name2', '');
+        change('address1', '');
+        change('city', '');
+        change('state', '');
+        change('zip', '')
+    }
+    return value;
+  };
+
   render() {
     const {
       handleSubmit,
@@ -59,7 +53,8 @@ export class AdditionalInterestModal extends React.Component {
       deleteAdditionalInterest,
       validAdditionalInterestTypes,
       selectedAI,
-      isDeleting
+      isDeleting,
+      mortgageeAnswers
     } = this.props;
 
     return (
@@ -76,14 +71,15 @@ export class AdditionalInterestModal extends React.Component {
             </div>
             <div className="card-block">
               {(addAdditionalInterestType || selectedAI.type) === 'Mortgagee' &&
-              <ReactSelectField
+              <Field
                 label="Top Mortgagees"
                 name="mortgagee"
-                searchable
+                dataTest="mortgage"
+                component={SelectTypeAhead}
+                valueKey="displayText"
                 labelKey="displayText"
-                autoFocus
-                answers={getAnswers('mortgagee', questions)}
-                onChange={val => setMortgageeValues(val, this.props)} />
+                answers={mortgageeAnswers}
+                normalize={this.setMortgageeValues} />
               }
               <Field
                 name="name1"
@@ -221,7 +217,8 @@ AdditionalInterestModal.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  tasks: state.cg
+  tasks: state.cg,
+  mortgageeAnswers: getTopMortgageeAnswers(state),
 });
 
 AdditionalInterestModal = reduxForm({
