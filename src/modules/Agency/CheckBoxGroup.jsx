@@ -19,7 +19,7 @@ const CheckboxGroup = ({ input, meta, options }) => {
     };
     const checked = inputValue.includes(value);
     return (
-      <label key={`checkbox-${index}`}>
+      <label key={`checkbox-${label}`}>
         <input type="checkbox" name={`${name}[${index}]`} value={value} checked={checked} onChange={handleChange} onFocus={onFocus} />
         <span>{label}</span>
       </label>

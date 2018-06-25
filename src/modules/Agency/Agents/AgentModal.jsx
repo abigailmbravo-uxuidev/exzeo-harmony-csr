@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import { Radio, Input, Integer } from '@exzeo/core-ui/lib/Input';
+import { Radio, Input, Phone } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 
 const radioAnswers = [
@@ -16,7 +16,8 @@ const radioStatusAnswers = [
 
 export class AgentModal extends Component {
   saveAgent = async (data, dispatch, props) => {
-    await props.updateAgent(data, props.agency);
+    const { createdBy, createdAt, ...agent } = data;
+    await props.updateAgent(agent, props.agency);
     props.toggleModal('')();
   };
 
@@ -52,24 +53,16 @@ export class AgentModal extends Component {
                     disabled
                   />
                   <Field
-                    label="Agency ID"
-                    styleName="agentCode"
-                    name="agencyCode"
-                    component={Input}
-                    validate={validation.isRequired}
-                    disabled
-                  />
-                  <Field
-                    label="Company Code"
-                    styleName="companyCode"
-                    name="companyCode"
+                    label="License Number"
+                    styleName="licenseNumber"
+                    name="license[0].licenseNumber"
                     component={Input}
                     validate={validation.isRequired}
                   />
                   <Field
                     label="State"
                     styleName="state"
-                    name="state"
+                    name="license[0].state"
                     component={Input}
                     validate={validation.isRequired}
                   />
@@ -95,21 +88,20 @@ export class AgentModal extends Component {
                     label="Primary Phone"
                     styleName="primaryPhoneNumber"
                     name="primaryPhoneNumber"
-                    component={Input}
+                    component={Phone}
                     validate={validation.isRequired}
                   />
                   <Field
                     label="Secondary Phone"
                     styleName="secondaryPhoneNumber"
                     name="secondaryPhoneNumber"
-                    component={Input}
+                    component={Phone}
                   />
                   <Field
-                    label="Email Address"
-                    styleName="emailAddress"
-                    name="emailAddress"
-                    component={Input}
-                    validate={[validation.isRequired, validation.isEmail]}
+                    label="Fax Number"
+                    styleName="faxNumber"
+                    name="faxNumber"
+                    component={Phone}
                   />
                 </div>
                 <div className="flex-form">
@@ -122,28 +114,11 @@ export class AgentModal extends Component {
                     answers={radioStatusAnswers}
                   />
                   <Field
-                    id="licenseNumber"
-                    name="licenseNumber"
-                    styleName="licenseNumber"
-                    label="License Number"
+                    label="Email Address"
+                    styleName="emailAddress"
+                    name="emailAddress"
                     component={Input}
-                    validate={validation.isRequired}
-                  />
-                  <Field
-                    name="agentOfRecord"
-                    styleName="agentOfRecord"
-                    label="Agent Of Record"
-                    component={Radio}
-                    segmented
-                    answers={radioAnswers}
-                  />
-                  <Field
-                    name="appointed"
-                    styleName="appointed"
-                    label="Is Appoinnted"
-                    component={Radio}
-                    segmented
-                    answers={radioAnswers}
+                    validate={[validation.isRequired, validation.isEmail]}
                   />
                 </div>
               </section>
