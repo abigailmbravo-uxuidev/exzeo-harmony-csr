@@ -111,10 +111,8 @@ export function setCancelOptions(cancelOptions) {
 export function getPolicy(policyNumber) {
   return async (dispatch) => {
     try {
-      const [policy, summaryLedger] = await Promise.all([
-        fetchPolicy(policyNumber),
-        fetchSummaryLedger(policyNumber)
-      ]);
+      const policy = await fetchPolicy(policyNumber);
+      const summaryLedger = await fetchSummaryLedger(policyNumber);
 
       dispatch(setPolicy(policy, summaryLedger));
     } catch (error) {

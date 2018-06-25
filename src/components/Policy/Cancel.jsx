@@ -5,7 +5,7 @@ import { reduxForm, change, getFormValues } from 'redux-form';
 import moment from 'moment-timezone';
 import { startWorkflow, batchCompleteTask } from '../../state/actions/cgActions';
 import { setAppState } from '../../state/actions/appStateActions';
-import { getPolicy, getPaymentHistory, getBillingOptionsForPolicy, getCancelOptions } from '../../state/actions/policyActions';
+import { getPolicy, getPaymentHistory, getBillingOptionsForPolicy, getCancelOptions, getSummaryLedger } from '../../state/actions/policyActions';
 
 import PolicyConnect from '../../containers/Policy';
 import RadioField from '../Form/inputs/RadioField';
@@ -76,9 +76,10 @@ export class CancelPolicy extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { policy, summaryLedger, zipCodeSettings, getPaymentHistory, getBillingOptionsForPolicy } = nextProps;
+    const { policy, summaryLedger, zipCodeSettings, getPaymentHistory, getSummaryLedger, getBillingOptionsForPolicy } = nextProps;
     if (nextProps.policy.policyID && (nextProps.policy.policyID !== this.props.policy.policyID)) {
       getPaymentHistory(policy.policyNumber);
+      getSummaryLedger(policy.policyNumber);
 
       const paymentOptions = {
         effectiveDate: policy.effectiveDate,
@@ -257,7 +258,8 @@ export default connect(mapStateToProps, {
   startWorkflow,
   batchCompleteTask,
   setAppState,
-  getPolicy
+  getPolicy,
+  getSummaryLedger
 })(reduxForm({
   form: 'CancelPolicy',
   enableReinitialize: true
