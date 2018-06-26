@@ -491,11 +491,11 @@
   width: 100%;
   max-width: 100%;
   height: auto !important;
-  max-height: auto !important;
   min-height: 16rem;
+  max-height: 100%;
   border: 1px dotted $warm-gray-10;
   outline: none;
-  background-color: rgba($warm-gray-10, .1);
+  background-color: $white;
 }
 
 .uppy-Dashboard--modal .uppy-Dashboard-inner {
@@ -574,9 +574,8 @@
 }
 
 .uppy-DashboardTabs {
-  padding-top: 7px;
-  padding-bottom: 7px;
-  border-bottom: 1px dotted $warm-gray-12;
+  padding: 0;
+  border-bottom: 1px solid $warm-gray-10;
 
   &[aria-hidden=true] {
     display: none;
@@ -695,7 +694,7 @@
   width: 100%;
   height: 3.5rem;
   border-bottom: 1px solid rgba($black, .2);
-  background-color: rgba($warm-gray-10, .1);
+  background-color: $white;
 }
 
 .uppy-Dashboard--wide .uppy-DashboardContent-bar {
@@ -729,7 +728,7 @@
 }
 
 .uppy-DashboardContent-titleFile {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .uppy-DashboardContent-back {
@@ -860,16 +859,18 @@
   left: 0;
   overflow-y: auto;
   margin: 0;
-  padding: $padding;
+  padding: 0;
+  background: $white;
 }
 
 .uppy-Dashboard.drag {
   .uppy-Dashboard-innerWrap {
-    background-color: rgba($black, .1);
+    background: rgba($bright-blue-lighten-04, .25);
   }
 
   .uppy-Dashboard-files--noFiles {
-    border-color: #b1b1b1;
+    border-color: $warm-gray-14;
+    background: rgba($bright-blue-lighten-04, .25);
   }
 }
 
@@ -922,26 +923,41 @@
 }
 
 .uppy-Dashboard--wide .uppy-Dashboard-note {
-  font-size: 13px;
+  font-size: $font-size-sm;
 }
 
 .uppy-DashboardItem {
   position: relative;
   display: flex;
   align-items: center;
-  margin: 10px 0;
+  flex-direction: row;
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 100%;
+  height: 5rem;
+  margin: 0;
+  padding: $padding;
   list-style: none;
-  background-color: #fff;
+  border: 0;
+  background-color: $white;
+
+  &:nth-of-type(even) {
+    background-color: $warm-gray-01;
+  }
 }
 
 .uppy-Dashboard--wide .uppy-DashboardItem {
-  float: left;
-  flex-direction: column;
-  width: 140px;
-  height: 170px;
-  margin: 5px 15px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 5rem;
+  margin: 0;
   border: 0;
-  background-color: initial;
+  background-color: $white;
+
+  &:nth-of-type(even) {
+    background-color: $warm-gray-01;
+  }
 }
 
 .uppy-DashboardItem-preview {
@@ -949,14 +965,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
+  width: 4rem;
+  height: 4rem;
   border-bottom: 0;
 }
 
 .uppy-Dashboard--wide .uppy-DashboardItem-preview {
-  width: 100%;
-  height: 100px;
+  width: 4rem;
+  height: 4rem;
   border: 0;
 }
 
@@ -1034,22 +1050,29 @@
 
 .uppy-DashboardItem-info {
   position: relative;
-  max-width: 70%;
-  padding: 10px 19px 0 25px;
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 0 1rem 0 $padding;
 }
 
 .uppy-Dashboard--wide .uppy-DashboardItem-info {
-  flex: 1;
-  width: 100%;
+  flex-basis: auto;
+  flex-grow: 1;
+  flex-shrink: 1;
+  width: auto;
   max-width: 100%;
-  padding-left: 3px;
+  height: 4rem;
+  padding: 0 1rem 0 $padding;
   border-top: 0;
 }
 
 .uppy-DashboardItem-name {
   overflow: hidden;
+  flex-grow: 1;
+  flex-shrink: 1;
   max-height: 28px;
-  margin: 0 0 3px;
+  margin: 0;
   padding: 0;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -1068,7 +1091,10 @@
 }
 
 .uppy-DashboardItem-status {
-  margin-bottom: $padding/2;
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: auto;
+  margin: 0 0 $padding/2;
   color: $warm-gray-06;
   font-size: $font-size-xs;
   font-weight: normal;
@@ -1083,11 +1109,14 @@
 
 .uppy-DashboardItem-copyLink,
 .uppy-DashboardItem-edit {
-  position: absolute;
-  top: $padding;
-  right: -$padding;
+  position: relative;
+  top: auto;
+  right: auto;
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: auto;
   margin: 0;
-  padding: $padding/4;
+  padding: 0;
   cursor: pointer;
   text-align: left;
   color: inherit;
@@ -1120,16 +1149,22 @@
   display: none;
 }
 
+.uppy-Dashboard--wide .uppy-DashboardItem-copyLink,
+.uppy-Dashboard--wide .uppy-DashboardItem-edit {
+  top: auto;
+  right: auto;
+}
+
 .uppy-DashboardItem-action {
-  position: absolute;
+  position: relative;
   z-index: 1002;
-  top: 8px;
-  right: 5px;
+  top: auto;
+  right: auto;
 }
 
 .uppy-Dashboard--wide .uppy-DashboardItem-action {
-  top: -$padding;
-  right: -$padding;
+  top: auto;
+  right: auto;
 }
 
 .uppy-DashboardItem-remove {
@@ -1221,8 +1256,9 @@
   font-size: inherit;
   line-height: 1;
 
-  &:hover, &:focus {
-      background-color: rgba($black, .1);
+  &:focus,
+  &:hover {
+    background-color: rgba($black, .1);
   }
 }
 
@@ -1471,7 +1507,7 @@
 
 .uppy-DashboardFileCard-inner {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   height: 100%;
   padding-top: 0 !important;
 }
@@ -1480,12 +1516,14 @@
   position: relative;
   display: flex;
   align-items: center;
-  flex-grow: 1;
-  flex-shrink: 1;
+  flex-grow: 0;
+  flex-shrink: 0;
   justify-content: center;
+  width: 10rem;
   height: auto;
-  border-bottom: 1px solid rgba(147, 147, 147, 0.3);
-  background-color: #f9f9f9;
+  margin: $padding;
+  border-bottom: 1px solid rgba($black, 0.3);
+  background-color: $warm-gray-01;
 
   img {
     max-width: 90%;
@@ -1497,8 +1535,10 @@
 
 .uppy-DashboardFileCard-info {
   overflow-y: auto;
+  flex-grow: 1;
+  flex-shrink: 1;
   height: auto;
-  margin-right: 4rem;
+  margin: 0;
   padding: $padding;
 }
 
@@ -1568,9 +1608,9 @@
   .uppy-StatusBar {
     display: flex;
     align-items: center;
-    height: 65px;
+    height: 48px;
     font-size: 14px;
-    line-height: 40px;
+    line-height: 48px;
   }
 }
 
@@ -1771,7 +1811,7 @@
 
   .uppy-ProviderBrowserItem-checkbox {
     label:before {
-      border-color: rgba(82, 82, 82, 0.3);
+      border-color: rgba($black, 0.3);
     }
 
     input:checked + label:before {
@@ -1938,7 +1978,7 @@
   width: 80%;
   height: 50px;
   padding-left: 10px;
-  border: 1px solid rgba(147, 147, 147, 0.5);
+  border: 1px solid rgba($black, 0.5);
   border-right: 0;
   font-size: 15px;
 }
@@ -2034,9 +2074,9 @@
   }
 
   &:not([aria-hidden=true]).is-waiting {
-    height: 65px;
+    height: 48px;
     background-color: #fff;
-    line-height: 65px;
+    line-height: 48px;
   }
 }
 
@@ -2107,7 +2147,7 @@ button.uppy-StatusBar-statusIndicator {
   align-items: center;
   justify-content: flex-end;
   width: 100%;
-  padding: $padding;
+  padding: 0 $padding;
 }
 
 .uppy-StatusBar.is-waiting .uppy-StatusBar-actions {
