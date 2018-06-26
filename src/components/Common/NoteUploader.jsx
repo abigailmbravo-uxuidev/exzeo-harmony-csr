@@ -9,7 +9,6 @@ import XHRUpload from 'uppy/lib/plugins/XHRUpload';
 import moment from 'moment';
 import Loader from '../Common/Loader';
 import * as cgActions from '../../actions/cgActions';
-import * as appStateActions from '../../actions/appStateActions';
 import * as newNoteActions from '../../actions/newNoteActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as errorActions from '../../actions/errorActions';
@@ -33,11 +32,11 @@ export class NoteUploader extends Component {
     super(props);
 
     const idToken = localStorage.getItem('id_token');
-
+    
     this.uppy = new Uppy({
       autoProceed: false,
       restrictions: {
-        maxFileSize: 100000000,
+        maxFileSize: process.env.REACT_APP_REQUEST_SIZE.slice(0, -2) * 1000000
       },
       meta: { documentId: this.props.documentId },
       onBeforeFileAdded: this.validateFile
@@ -48,19 +47,18 @@ export class NoteUploader extends Component {
           accept: 'application/json',
           authorization: `bearer ${idToken}`
         }
-    }).run();
+    });
   }
 
-  minimzeButtonHandler = () => {
-    const { actions, appState } = this.props;
-    actions.appStateActions.setAppState(appState.modelName, appState.instanceId, { ...appState.data, minimize: !appState.data.minimize });
-  }
+  state = { minimize: false }
+
+  minimzeButtonHandler = () => this.setState({ minimize: !this.state.minimize })
 
   // TODO: Pull this from the list service
   contactTypeOptions = {
     'Quote Note': ['Agent', 'Policyholder', 'Inspector', 'Other'],
     'Policy Note': ['Agent', 'Policyholder', 'Lienholder', 'Internal', 'Inspector', 'Other']
-  };
+  }
 
   docTypeOptions = {
     'Quote Note': [
@@ -124,12 +122,20 @@ export class NoteUploader extends Component {
       'Wind Exclusion',
       'Wind Mitigation'
     ]
-  };
+  }
 
-  contactTypes = this.props.noteType ? this.contactTypeOptions[this.props.noteType] : [];
-  docTypes = this.props.noteType ? this.docTypeOptions[this.props.noteType] : [];
+  contactTypes = this.props.noteType ? this.contactTypeOptions[this.props.noteType] : []
+  docTypes = this.props.noteType ? this.docTypeOptions[this.props.noteType] : []
 
-  closeButtonHandler = () => this.props.actions.newNoteActions.toggleNote({});
+  closeButtonHandler = () => this.props.actions.newNoteActions.toggleNote({})
+
+  validateFile = (file, currentFiles) => {
+    if (!file.name.includes('.')) {
+      this.uppy.info('Uploads must have a file extension.');
+      return false;
+    }
+    return true;
+  }
 
   submitNote = (data, dispatch, props) => {
     const { actions, user, noteType, documentId, sourceId } = props;
@@ -155,7 +161,7 @@ export class NoteUploader extends Component {
         userId: user.sub,
         userName: `${user.profile.given_name} ${user.profile.family_name}`
       })
-    };
+    }
 
     return actions.cgActions.startWorkflow('addNote', noteData)
       .then(result => {
@@ -171,12 +177,8 @@ export class NoteUploader extends Component {
       .catch(err => {
         actions.errorActions.setAppError({ message: err });
         this.closeButtonHandler();
-      });
+      })
   }
-
-  validateFile = (file, currentFiles) => !file.name.includes('.')
-    ? Promise.reject('Uploads must have a file extension.')
-    : Promise.resolve()
 
   componentDidMount() {
     const { actions, user } = this.props;
@@ -190,7 +192,7 @@ export class NoteUploader extends Component {
 
   render() {
     return (
-      <div className={this.props.appState.data.minimize === true ? 'new-note-file minimize' : 'new-note-file'} >
+      <div className={this.state.minimize ? 'new-note-file minimize' : 'new-note-file'} >
         <div className="title-bar">
           <div className="title title-minimze-button" onClick={() => this.minimzeButtonHandler(this.props)}>Note / File</div>
           <div className="controls note-file-header-button-group">
@@ -211,7 +213,14 @@ export class NoteUploader extends Component {
               <Field component="select" name="fileType" disabled={!this.docTypes.length}>
                 { this.docTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
               </Field>
-              <Dashboard uppy={this.uppy} maxHeight={350} showProgressDetails hideProgressAfterFinish />
+              <Dashboard 
+                uppy={this.uppy} 
+                maxHeight={350} 
+                proudlyDisplayPoweredByUppy={false} 
+                metaFields={[{ id: 'name', name: 'Name', placeholder: 'file name' }]}
+                showProgressDetails 
+                hideProgressAfterFinish
+              />
             </div>
             <div className="buttons note-file-footer-button-group">
               <button tabIndex="0" aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={this.closeButtonHandler}>Cancel</button>
@@ -230,14 +239,12 @@ NoteUploader.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  appState: state.appState,
   user: state.authState.userProfile
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
     cgActions: bindActionCreators(cgActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch),
     newNoteActions: bindActionCreators(newNoteActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     errorActions: bindActionCreators(errorActions, dispatch)

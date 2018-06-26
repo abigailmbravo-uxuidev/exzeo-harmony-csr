@@ -54,12 +54,13 @@ describe('Testing NoteUploader component', () => {
     });
 
     it('should map state to props', () => {
-      expect(wrapper.props().appState).toEqual({ data: { minimize: false } });
       expect(wrapper.props().user).toEqual({ profile: { given_name: 'Test', family_name: 'Test' } });
     });
 
-    it('minimize should be false', () => {
-      expect(instance.props.appState.data.minimize).toEqual(false);
+    it('test minimzeButtonHandler', () => {
+      expect(instance.state.minimize).toEqual(false);
+      instance.minimzeButtonHandler();
+      expect(instance.state.minimize).toEqual(true);
     });
 
     it('should submit note', () => {
