@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import { Radio, Input, Phone } from '@exzeo/core-ui/lib/Input';
+import { Radio, Input, Phone, AutocompleteChips, Integer } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 
 const radioAnswers = [
@@ -15,23 +15,57 @@ const radioStatusAnswers = [
 ];
 
 export class AgentModal extends Component {
-  saveAgent = async (data, dispatch, props) => {
+  update = async (data, dispatch, props) => {
     const { createdBy, createdAt, ...agent } = data;
     await props.updateAgent(agent, props.agency);
+    await this.applyLicenseToAgency(data, props);
     props.toggleModal('')();
   };
+  add = async (data, dispatch, props) => {
+    const { createdBy, createdAt, ...agent } = data;
+    await props.addAgent(agent, props.agency);
+    await this.applyLicenseToAgency(data, props);
+    props.toggleModal('')();
+  };
+
+  applyLicenseToAgency = async (data, props) => {
+    const { agency } = props;
+    data.agencyLicense.forEach((l) => {
+      const license = agency.license.find(li => li.licenseNumber === l);
+      const selectedAgent = license && license.agent ? license.agent.find(a => a.agentCode === data.agentCode) : null;
+
+      if (license && license.agent && !selectedAgent) {
+        const { agencyLicense, ...submitData } = data
+        license.agent.push({
+          agentCode: data.agentCode,
+          appointed: true,
+          agentOfRecord: true,
+        });
+        const licenseIndex = agency.license.findIndex(li => li.licenseNumber === l);
+        agency.license.splice(licenseIndex, 1, license);
+      } else if (license && license.agent && selectedAgent) {
+        const agentIndex = license.agent.findIndex(a => a.agentCode === data.agentCode);
+        selectedAgent.agentInfo = data;
+        license.agent.splice(agentIndex, 1, selectedAgent);
+        const licenseIndex = agency.license.findIndex(li => li.licenseNumber === l);
+        agency.license.splice(licenseIndex, 1, license);
+      }
+    });
+    await props.updateAgency(agency);
+  }
 
   render() {
     const {
       toggleModal,
       handleSubmit,
       editType,
-      submitting
+      submitting,
+      agencyLicenseArray
     } = this.props;
 
     return (
       <div className="modal agent-crud">
-        <form onSubmit={handleSubmit(this.saveAgent)}>
+        <form onSubmit={handleSubmit(editType === 'Edit' ? this.update : this.add)}>
           <div className="card">
             <div className="card-header">
               <h4>
@@ -48,9 +82,10 @@ export class AgentModal extends Component {
                     label="Agent ID"
                     styleName="agentCode"
                     name="agentCode"
-                    component={Input}
-                    validate={validation.isRequired}
-                    disabled
+                    validate={[validation.isRequired, validation.isNumbersOnly]}
+                    disabled={editType === 'Edit'}
+                    component={Integer}
+                    thousandSeparator={false}
                   />
                   <Field
                     label="License Number"
@@ -112,6 +147,7 @@ export class AgentModal extends Component {
                     component={Radio}
                     segmented
                     answers={radioStatusAnswers}
+                    validate={validation.isRequired}
                   />
                   <Field
                     label="Email Address"
@@ -119,6 +155,14 @@ export class AgentModal extends Component {
                     name="emailAddress"
                     component={Input}
                     validate={[validation.isRequired, validation.isEmail]}
+                  />
+                    <Field
+                    label="Agency License"
+                    styleName="agencyLicense"
+                    name="agencyLicense"
+                    autoSuggest={agencyLicenseArray}
+                    component={AutocompleteChips}
+                    validate={validation.isRequiredArray}
                   />
                 </div>
               </section>

@@ -47,7 +47,7 @@ export const AgentsCard = ({
         </div>
         <div className="card-actions">
           <button className="btn btn-link" onClick={() => removeAgentModal(agent)}><i className="fa fa-times-circle" />Remove</button>
-          <button className="btn btn-link" onClick={() => toggleAgentModal(agent)}><i className="fa fa-pencil-square" />Edit</button>
+          <button className="btn btn-link" onClick={() => toggleAgentModal(agent, agency)}><i className="fa fa-pencil-square" />Edit</button>
         </div>
 
       </div>

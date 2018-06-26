@@ -276,7 +276,7 @@ export function updateAgent(agentData, agency) {
  * @param agentData
  * @returns {Promise<Array>}
  */
-export async function addExistingAgent(agentData) {
+export async function addNewAgent(agentData) {
   try {
     const config = {
       service: 'agency',
@@ -299,7 +299,7 @@ export async function addExistingAgent(agentData) {
 export function addAgent(agentData) {
   return async (dispatch) => {
     try {
-      await addExistingAgent(agentData);
+      await addNewAgent(agentData);
       dispatch(getAgentsByAgencyCode(agentData.agencyCode));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
