@@ -52,7 +52,7 @@ export const reinstatePolicySubmit = (data, dispatch, props) => {
 };
 
 export const changeEffectiveDate = (data, dispatch, props) => {
-  const effectiveDateUTC = moment.tz(moment.utc(data.effectiveDate).format('YYYY-MM-DD'), props.zipCodeSetting.timezone).format();
+  const effectiveDateUTC = moment.tz(moment.utc(data.effectiveDate).format('YYYY-MM-DD'), props.zipcodeSettings.timezone).format();
   const workflowId = props.appState.instanceId;
   props.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
 
@@ -76,7 +76,7 @@ export const changeEffectiveDate = (data, dispatch, props) => {
 
 export class Policy extends React.Component {
   componentWillReceiveProps() {
-    if (!this.props.zipCodeSetting && this.props && this.props.policy && this.props.policy.policyNumber) {
+    if (!this.props.zipcodeSettings && this.props && this.props.policy && this.props.policy.policyNumber) {
       this.props.getZipcodeSettings(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property.physicalAddress.zip);
     }
   }
@@ -130,7 +130,7 @@ const mapStateToProps = state => ({
   policy: state.policyState.policy,
   summaryLedger: state.policyState.summaryLedger,
   tasks: state.cg,
-  zipCodeSetting: state.service.getZipcodeSettings
+  zipcodeSettings: state.service.getZipcodeSettings
 });
 
 export default connect(mapStateToProps, {
