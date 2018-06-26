@@ -67,10 +67,13 @@ export const handleFormSubmit = (data, dispatch, props) => {
 
 export class CancelPolicy extends React.Component {
   componentDidMount() {
-    const { appState, getCancelOptions, setAppState } = this.props;
+    const { appState, getCancelOptions, setAppState, getSummaryLedger, policy } = this.props;
     if (appState && appState.instanceId) {
       const workflowId = appState.instanceId;
       setAppState(appState.modelName, workflowId, { ...appState.data, isSubmitting: false });
+    }
+    if (policy.policyID) {
+      getSummaryLedger(policy.policyNumber);
     }
     getCancelOptions();
   }
@@ -198,7 +201,7 @@ export class CancelPolicy extends React.Component {
                   <div className="form-group flex-parent billing">
                     <div className="flex-child">
                       <label>Bill To</label>
-                      <div>{paymentOptions && paymentOptions.options.find(option => option.billToId === policy.billToId).displayText}</div>
+                      <div>{!!paymentOptions.length && paymentOptions.find(option => option.billToId === policy.billToId).displayText}</div>
                     </div>
                     <div className="flex-child">
                       <label>Bill Plan</label>
@@ -237,6 +240,7 @@ CancelPolicy.propTypes = {
 };
 
 const defaultObj = {};
+const defaultArr = [];
 const mapStateToProps = state => ({
   appState: state.appState,
   userProfile: state.authState.userProfile,
@@ -246,7 +250,7 @@ const mapStateToProps = state => ({
   paymentHistory: state.policyState.paymentHistory,
   policy: state.policyState.policy,
   summaryLedger: state.policyState.summaryLedger,
-  paymentOptions: state.policyState.billingOptions,
+  paymentOptions: state.policyState.billingOptions.options || defaultArr,
   cancelOptions: state.policyState.cancelOptions,
   zipCodeSettings: state.service.getZipcodeSettings
 });

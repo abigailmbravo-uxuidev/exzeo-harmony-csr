@@ -22,7 +22,7 @@ export default {
     cancelOptions: [],
     effectiveDateReasons: [],
     endorsementHistory: [],
-    paymentHistory: {},
+    paymentHistory: [],
     paymentOptions: [],
     summaryLedger: {},
   },
