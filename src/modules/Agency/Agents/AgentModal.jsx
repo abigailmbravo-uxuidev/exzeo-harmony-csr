@@ -4,11 +4,6 @@ import { reduxForm, Field } from 'redux-form';
 import { Radio, Input, Phone, AutocompleteChips, Integer } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 
-const radioAnswers = [
-  { answer: false, label: 'No' },
-  { answer: true, label: 'Yes' }
-];
-
 const radioStatusAnswers = [
   { answer: 'Inactive', label: 'Inactive' },
   { answer: 'Active', label: 'Active' }
@@ -35,11 +30,10 @@ export class AgentModal extends Component {
       const selectedAgent = license && license.agent ? license.agent.find(a => a.agentCode === data.agentCode) : null;
 
       if (license && license.agent && !selectedAgent) {
-        const { agencyLicense, ...submitData } = data
         license.agent.push({
           agentCode: data.agentCode,
           appointed: true,
-          agentOfRecord: true,
+          agentOfRecord: true
         });
         const licenseIndex = agency.license.findIndex(li => li.licenseNumber === l);
         agency.license.splice(licenseIndex, 1, license);
@@ -157,7 +151,7 @@ export class AgentModal extends Component {
                     component={Input}
                     validate={[validation.isRequired, validation.isEmail]}
                   />
-                    <Field
+                  <Field
                     label="Agency License"
                     styleName="agencyLicense"
                     name="agencyLicense"
