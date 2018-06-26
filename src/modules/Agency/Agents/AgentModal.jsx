@@ -51,7 +51,8 @@ export class AgentModal extends Component {
         agency.license.splice(licenseIndex, 1, license);
       }
     });
-    await props.updateAgency(agency);
+    const { createdAt, createdBy, ...selectedAgency } = agency;
+    await props.updateAgency(selectedAgency);
   }
 
   render() {
