@@ -651,6 +651,9 @@ describe('Testing AdditionalInterests component', () => {
           showAdditionalInterestModal: false
         },
         modelName: 'bb'
+      },
+      service: {
+        quote: {}
       }
     };
     const store = mockStore(initialState);
@@ -682,7 +685,7 @@ describe('Testing AdditionalInterests component', () => {
     };
     handleFormSubmit(quoteData.additionalInterests, store.dispatch, props);
 
-    const wrapper = shallow(<AdditionalInterests store={store} {...props} />);
+    const wrapper = shallow(<ConnectedApp store={store} {...props} />);
 
     wrapper.instance().componentDidMount();
   });

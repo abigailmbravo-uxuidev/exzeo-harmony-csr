@@ -173,8 +173,9 @@ describe('Testing AdditionalInterestModal component', () => {
           selectedAI: null,
           showAdditionalInterestModal: false
         },
-        modelName: 'bb'
-      }
+        modelName: 'bb',
+      },
+      questions: {}
     };
     const store = mockStore(initialState);
     const props = {
@@ -221,10 +222,6 @@ describe('Testing AdditionalInterestModal component', () => {
         }]
       }
     };
-
-    setMortgageeValues(1, props);
-    setMortgageeValues(null, props);
-
 
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
     expect(wrapper.props().selectedAI).toEqual(null);
