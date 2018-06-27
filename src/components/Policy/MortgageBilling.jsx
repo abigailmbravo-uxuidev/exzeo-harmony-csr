@@ -6,6 +6,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import _ from 'lodash';
 import moment from 'moment';
 import { getAnswers } from '../../utilities/forms';
+import { getMortgageeOrderAnswers, getMortgageeOrderAnswersForEdit } from "../../utilities/additionalInterests";
 import { getCashDescriptionOptions, getCashTypeAnswers } from '../../state/selectors/policy.selectors';
 
 import Inputs from '@exzeo/core-ui/lib/Input';
@@ -44,28 +45,6 @@ export const handleInitialize = (state) => {
   return values;
 };
 
-export const getMortgageeOrderAnswers = (questions, additionalInterests) => {
-  let answers = _.cloneDeep(getAnswers('order', questions));
-
-  if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 0) {
-    answers = answers.filter(answer => Number(answer.answer) === 0);
-  }
-  if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 1) {
-    answers = answers.filter(answer => Number(answer.answer) === 1);
-  }
-  return answers;
-};
-
-export const getMortgageeOrderAnswersForEdit = (questions, additionalInterests) => {
-  const answers = _.cloneDeep(getAnswers('order', questions));
-
-  if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length < 2) {
-    _.remove(answers, answer => Number(answer.answer) === 1);
-  }
-  return answers;
-};
-
-
 export class MortgageBilling extends Component {
   state = {
     addAdditionalInterestType: null,
@@ -82,10 +61,9 @@ export class MortgageBilling extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     // TODO this is probably not needed, but leaving here for now until we solidify the pattern
-    const { policyID } = this.props;
-    if (nextProps.policyID !== policyID) {
-      this.props.getPaymentHistory(nextProps.policy.policyNumber);
-      this.props.getPaymentOptionsApplyPayments();
+    const { policy } = this.props;
+    if (!policy.policyID && nextProps.policy.policyID && (nextProps.policyID !== policy.policyID)) {
+      const { getPaymentHistory, getPaymentOptionsApplyPayments, getBillingOptionsForPolicy } = nextProps;
       const paymentOptions = {
         effectiveDate: nextProps.policy.effectiveDate,
         policyHolders: nextProps.policy.policyHolders,
@@ -93,7 +71,9 @@ export class MortgageBilling extends Component {
         currentPremium: nextProps.summaryLedger.currentPremium,
         fullyEarnedFees: nextProps.policy.rating.worksheet.fees.empTrustFee + nextProps.policy.rating.worksheet.fees.mgaPolicyFee
       };
-      nextProps.getBillingOptionsForPolicy(paymentOptions);
+      getBillingOptionsForPolicy(paymentOptions);
+      getPaymentHistory(nextProps.policy.policyNumber);
+      getPaymentOptionsApplyPayments();
     }
   };
 
@@ -212,7 +192,6 @@ export class MortgageBilling extends Component {
     });
   };
 
-
   deleteAdditionalInterest = (selectedAdditionalInterest) => {
     this.setState({
       isDeleting: true
@@ -267,7 +246,6 @@ export class MortgageBilling extends Component {
     return ais;
   };
 
-
   handleFormSubmit = async (data) => {
     const { reset: resetForm, addTransaction } = this.props;
     const submitData = data;
@@ -286,6 +264,7 @@ export class MortgageBilling extends Component {
   };
 
   amountFormatter = cell => (cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '');
+
   dateFormatter = cell => `${cell.substring(0, 10)}`;
 
   initAdditionalInterestModal = () => {
@@ -351,7 +330,6 @@ export class MortgageBilling extends Component {
       pristine,
       policy,
       policy: { additionalInterests },
-      questions,
       billingOptions,
       submitting,
       reset: resetForm,
@@ -547,21 +525,20 @@ export class MortgageBilling extends Component {
           </div>
           {this.state.showAdditionalInterestModal &&
             <AIModal
-              isEditing={this.state.isEditingAI}
-              isEndorsement={this.state.isEditingAI}
-              hideModal={this.hideAdditionalInterestModal}
-              initialValues={this.initAdditionalInterestModal()}
-              addAdditionalInterestType={this.state.addAdditionalInterestType}
-              validAdditionalInterestTypes={validAdditionalInterestTypes}
-              selectedAI={this.state.selectedAI}
               additionalInterests={additionalInterests}
+              addAdditionalInterestType={this.state.addAdditionalInterestType}
+              deleteAdditionalInterest={this.deleteAdditionalInterest}
               getMortgageeOrderAnswers={getMortgageeOrderAnswers}
               getMortgageeOrderAnswersForEdit={getMortgageeOrderAnswersForEdit}
-              questions={questions}
+              hideModal={this.hideAdditionalInterestModal}
+              initialValues={this.initAdditionalInterestModal()}
+              isDeleting={this.state.isDeleting}
+              isEditing={this.state.isEditingAI}
+              selectedAI={this.state.selectedAI}
+              validAdditionalInterestTypes={validAdditionalInterestTypes}
               policy={policy}
               verify={this.handleAISubmit}
-              deleteAdditionalInterest={this.deleteAdditionalInterest}
-              isDeleting={this.state.isDeleting}
+              isPolicy
             />
           }
         </div>

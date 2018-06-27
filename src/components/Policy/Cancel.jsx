@@ -79,25 +79,24 @@ export class CancelPolicy extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { policy, summaryLedger, zipCodeSettings, getPaymentHistory, getSummaryLedger, getBillingOptionsForPolicy } = nextProps;
-    if (nextProps.policy.policyID && (nextProps.policy.policyID !== this.props.policy.policyID)) {
-      getPaymentHistory(policy.policyNumber);
-      getSummaryLedger(policy.policyNumber);
-
+    const { policy } = this.props;
+    if (!policy.policyID && nextProps.policy.policyID && (nextProps.policyID !== policy.policyID) && nextProps.summaryLedger.currentPremium) {
+      const { getPaymentHistory, getSummaryLedger, getBillingOptionsForPolicy } = nextProps;
       const paymentOptions = {
-        effectiveDate: policy.effectiveDate,
-        policyHolders: policy.policyHolders,
-        additionalInterests: policy.additionalInterests,
-        currentPremium: summaryLedger.currentPremium,
-        fullyEarnedFees: policy.rating.worksheet.fees.empTrustFee + policy.rating.worksheet.fees.mgaPolicyFee
+        effectiveDate: nextProps.policy.effectiveDate,
+        policyHolders: nextProps.policy.policyHolders,
+        additionalInterests: nextProps.policy.additionalInterests,
+        currentPremium: nextProps.summaryLedger.currentPremium,
+        fullyEarnedFees: nextProps.policy.rating.worksheet.fees.empTrustFee + nextProps.policy.rating.worksheet.fees.mgaPolicyFee
       };
-
       getBillingOptionsForPolicy(paymentOptions);
+      getPaymentHistory(nextProps.policy.policyNumber);
+      getSummaryLedger(nextProps.policy.policyNumber);
     }
 
     if (this.props.fieldValues.cancelType !== nextProps.fieldValues.cancelType) {
-      const now = convertDateToTimeZone(moment.utc().startOf('day'), zipCodeSettings);
-      const effectiveDate = convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate).startOf('day'), zipCodeSettings);
+      const now = convertDateToTimeZone(moment.utc().startOf('day'), nextProps.zipCodeSettings);
+      const effectiveDate = convertDateToTimeZone(moment.utc(nextProps.summaryLedger.effectiveDate).startOf('day'), nextProps.zipCodeSettings);
       const notice = effectiveDate.isAfter(now) ? effectiveDate : now;
 
       if (nextProps.fieldValues.cancelType === 'Underwriting Cancellation') {
@@ -109,7 +108,7 @@ export class CancelPolicy extends React.Component {
       } else if (nextProps.fieldValues.cancelType === 'Voluntary Cancellation') {
         nextProps.dispatch(change('CancelPolicy', 'effectiveDate', notice.format('YYYY-MM-DD')));
       } else if (nextProps.fieldValues.cancelType === 'Underwriting Non-Renewal') {
-        const endDate = convertDateToTimeZone(moment.utc(policy.endDate), zipCodeSettings);
+        const endDate = convertDateToTimeZone(moment.utc(policy.endDate), nextProps.zipCodeSettings);
         nextProps.dispatch(change('CancelPolicy', 'effectiveDate', endDate.format('YYYY-MM-DD')));
       }
     }
@@ -243,15 +242,15 @@ const defaultObj = {};
 const defaultArr = [];
 const mapStateToProps = state => ({
   appState: state.appState,
-  userProfile: state.authState.userProfile,
-  tasks: state.cg,
+  cancelOptions: state.policyState.cancelOptions,
   fieldValues: getFormValues('CancelPolicy')(state) || defaultObj,
   initialValues: handleInitialize(state),
   paymentHistory: state.policyState.paymentHistory,
+  paymentOptions: state.policyState.billingOptions.options || defaultArr,
   policy: state.policyState.policy,
   summaryLedger: state.policyState.summaryLedger,
-  paymentOptions: state.policyState.billingOptions.options || defaultArr,
-  cancelOptions: state.policyState.cancelOptions,
+  userProfile: state.authState.userProfile,
+  tasks: state.cg,
   zipCodeSettings: state.service.getZipcodeSettings
 });
 

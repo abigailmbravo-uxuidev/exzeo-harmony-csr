@@ -47,7 +47,7 @@ export class AdditionalInterestModal extends React.Component {
       submitting,
       addAdditionalInterestType,
       isEditing,
-      isEndorsement,
+      isPolicy,
       getMortgageeOrderAnswers,
       getMortgageeOrderAnswersForEdit,
       deleteAdditionalInterest,
@@ -60,7 +60,7 @@ export class AdditionalInterestModal extends React.Component {
     return (
       <div className="modal" style={this.modalStyle}>
         <form
-          id={isEditing ? 'AdditionalInterestModal' : 'AdditionalInterestModal'}
+          id={isEditing ? 'AdditionalInterestEditModal' : 'AdditionalInterestModal'}
           className={classNames('AdditionalInterestModal', { [selectedAI.type]: isEditing, [addAdditionalInterestType]: !isEditing })}
           onSubmit={handleSubmit(verify)}
         >
@@ -171,13 +171,13 @@ export class AdditionalInterestModal extends React.Component {
                     name="order"
                     dataTest="order"
                     component={Select}
-                    styleName=""
                     label="Order"
+                    validate={validation.isRequired}
                     answers={getMortgageeOrderAnswers(questions, additionalInterests)}
                   />
                 }
               </div>
-              {isEndorsement &&
+              {isPolicy &&
               <div className="flex-form">
                 <Field
                   name="aiType"
@@ -216,19 +216,18 @@ AdditionalInterestModal.propTypes = {
   })
 };
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state) => ({
+  questions: state.questions,
   tasks: state.cg,
   mortgageeAnswers: getTopMortgageeAnswers(state),
 });
 
-AdditionalInterestModal = reduxForm({
-  form: 'AdditionalInterestModal',
-  enableReinitialize: true
-})(AdditionalInterestModal);
-
 AdditionalInterestModal = connect(mapStateToProps, {
   initializeForm: initialize,
   resetForm: reset
-})(AdditionalInterestModal);
+})(reduxForm({
+  form: 'AdditionalInterestModal',
+  enableReinitialize: true
+})(AdditionalInterestModal));
 
 export default AdditionalInterestModal;

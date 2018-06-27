@@ -35,18 +35,18 @@ export class Coverage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { policyID } = this.props;
-    const { policy, summaryLedger, getBillingOptionsForPolicy, getPaymentHistory, getPaymentOptionsApplyPayments } = nextProps;
-    if (!policyID && nextProps.policyID && (nextProps.policyID !== policyID) && summaryLedger.currentPremium) {
+    const { policy } = this.props;
+    const { summaryLedger, getBillingOptionsForPolicy, getPaymentHistory, getPaymentOptionsApplyPayments } = nextProps;
+    if (!policy.policyID && nextProps.policyID && (nextProps.policyID !== policy.policyID) && summaryLedger.currentPremium) {
       const paymentOptions = {
-        effectiveDate: policy.effectiveDate,
-        policyHolders: policy.policyHolders,
-        additionalInterests: policy.additionalInterests,
-        currentPremium: summaryLedger.currentPremium,
-        fullyEarnedFees: policy.rating.worksheet.fees.empTrustFee + policy.rating.worksheet.fees.mgaPolicyFee
+        effectiveDate: nextProps.policy.effectiveDate,
+        policyHolders: nextProps.policy.policyHolders,
+        additionalInterests: nextProps.policy.additionalInterests,
+        currentPremium: nextProps.summaryLedger.currentPremium,
+        fullyEarnedFees: nextProps.policy.rating.worksheet.fees.empTrustFee + nextProps.policy.rating.worksheet.fees.mgaPolicyFee
       };
       getBillingOptionsForPolicy(paymentOptions);
-      getPaymentHistory(policy.policyNumber);
+      getPaymentHistory(nextProps.policy.policyNumber);
       getPaymentOptionsApplyPayments();
     }
   }
