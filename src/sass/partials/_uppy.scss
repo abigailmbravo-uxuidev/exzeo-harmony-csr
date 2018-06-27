@@ -487,13 +487,16 @@
 
 .uppy-Dashboard-inner {
   position: relative;
+  display: flex !important;
   overflow: hidden;
+  flex-grow: 1 !important;
+  flex-shrink: 1 !important;
   width: 100%;
   max-width: 100%;
   height: auto !important;
-  min-height: 16rem;
+  min-height: 1rem !important;
   max-height: 100%;
-  border: 1px dotted $warm-gray-10;
+  border: 1px solid $warm-gray-06 !important;
   outline: none;
   background-color: $white;
 }
@@ -501,19 +504,15 @@
 .uppy-Dashboard--modal .uppy-Dashboard-inner {
   z-index: 1002;
 }
-@media only screen and (min-width: 768px) {
-  .uppy-Dashboard-inner {
-    height: 550px;
-    border-radius: 5px;
-  }
-}
 
 .uppy-Dashboard-innerWrap {
   display: flex;
   overflow: hidden;
   flex-direction: column;
-  height: 100%;
-  min-height: 15.875rem;
+  width: 100%;
+  height: auto !important;
+  min-height: unset !important;
+  max-height: unset !important;
 }
 
 .uppy-Dashboard--modal .uppy-Dashboard-inner {
@@ -521,14 +520,6 @@
   top: 0;
   left: 0;
   border: none;
-}
-@media only screen and (min-width: 768px) {
-  .uppy-Dashboard--modal .uppy-Dashboard-inner {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 20px 7px rgba(147, 147, 147, 0.15);
-  }
 }
 
 .uppy-Dashboard-close {
@@ -574,7 +565,7 @@
 }
 
 .uppy-DashboardTabs {
-  padding: 0;
+  padding: 0 !important;
   border-bottom: 1px solid $warm-gray-10;
 
   &[aria-hidden=true] {
@@ -840,8 +831,11 @@
 
 .uppy-Dashboard-filesContainer {
   position: relative;
+  display: flex !important;
   overflow-y: hidden;
-  flex: 1;
+  flex-direction: column;
+  flex-grow: 1 !important;
+  flex-shrink: 1 !important;
   margin: 0;
 
   &:after {
@@ -852,12 +846,15 @@
 }
 
 .uppy-Dashboard-files {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  position: relative !important;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  display: flex !important;
   overflow-y: auto;
+  flex-grow: 1 !important;
+  flex-shrink: 1 !important;
   margin: 0;
   padding: 0;
   background: $white;
@@ -1879,74 +1876,6 @@
   }
 }
 
-.uppy-Dashboard--wide .uppy-ProviderBrowser-viewType--grid .uppy-ProviderBrowserItem {
-  width: 20%;
-}
-
-.uppy-ProviderBrowserItem-checkbox {
-  position: relative;
-  top: -3px;
-  display: inline-block;
-  margin-right: 25px;
-
-  input {
-    opacity: 0;
-  }
-
-  label {
-    display: block;
-
-    &::after,
-    &::before {
-      position: absolute;
-      cursor: pointer;
-    }
-
-    &:before {
-      top: 0;
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      content: "";
-      border: 1px solid #4A90E2;
-      border-radius: 50%;
-      background-color: #fff;
-    }
-
-    &:after {
-      top: 7px;
-      left: 6px;
-      display: inline-block;
-      width: 8px;
-      height: 5px;
-      content: '';
-      transform: rotate(-45deg);
-      border-bottom: 2px solid #fff;
-      border-left: 2px solid #fff;
-    }
-  }
-
-  input {
-    + label::after {
-      content: none;
-    }
-
-    &:checked + label {
-      &::after {
-        content: '';
-      }
-
-      &::before {
-        background-color: #4A90E2;
-      }
-    }
-
-    &:focus + label::before {
-      outline: #3b99fc auto 5px;
-    }
-  }
-}
-
 .uppy-ProviderBrowser-doneBtn {
   position: absolute;
   z-index: 1002;
@@ -2171,10 +2100,6 @@ button.uppy-StatusBar-statusIndicator {
   @include hover-focus {
     text-decoration: none;
   }
-
-  &:not(:last-child) {
-    margin-right: 5px;
-  }
 }
 
 .uppy-StatusBar.is-waiting .uppy-StatusBar-actionBtn {
@@ -2193,10 +2118,14 @@ button.uppy-StatusBar-statusIndicator {
   @include button-variant($bright-blue-darken-04, $white, $bright-blue-darken-04);
 }
 
-.uppy-StatusBar-details {
-  display: none;
-
-  p {
-    line-height: 1.4;
-  }
+.uppy-Root {
+  display: flex !important;
+  overflow: hidden !important;
+  flex-direction: column;
+  flex-grow: 1 !important;
+  flex-shrink: 1 !important;
+  height: unset !important;
+  min-height: unset !important;
+  max-height: unset !important;
+  font-family: $font-family-base !important;
 }
