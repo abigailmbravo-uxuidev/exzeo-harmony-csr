@@ -1,6 +1,7 @@
 import React from 'react';
 
-const CheckboxGroup = ({ input, meta, options }) => {
+export const CheckboxGroup = (props) => {
+  const { input, meta, options } = props;
   const {
     name, onChange, onFocus
   } = input;

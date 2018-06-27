@@ -7,7 +7,10 @@ import AgencyDetailHeader from './DetailHeader';
 import Overview from './Overview';
 import Contracts from './Contracts';
 import Agents from './Agents';
-import Loader from '../../components/Common/Loader';
+
+const OverviewRender = props => <Overview auth={props.auth} {...props} />;
+const ContractsRender = props => <Contracts auth={props.auth} {...props} />;
+const AgentsRender = props => <Agents auth={props.auth} {...props} />;
 
 export const Agency = props => (
   <div className="app-wrapper csr agency">
@@ -19,9 +22,9 @@ export const Agency = props => (
         <AgencySideNav />
       </aside>
       <div className="content-wrapper">
-        <Route exact path={`${props.match.url}/:agencyCode/overview`} render={prop => <Overview auth={props.auth} {...prop} />} />
-        <Route exact path={`${props.match.url}/:agencyCode/contracts`} render={prop => <Contracts auth={props.auth} {...prop} />} />
-        <Route exact path={`${props.match.url}/:agencyCode/agents`} render={prop => <Agents auth={props.auth} {...prop} />} />
+        <Route exact path={`${props.match.url}/:agencyCode/overview`} render={OverviewRender} />
+        <Route exact path={`${props.match.url}/:agencyCode/contracts`} render={ContractsRender} />
+        <Route exact path={`${props.match.url}/:agencyCode/agents`} render={AgentsRender} />
       </div>
     </main>
   </div>

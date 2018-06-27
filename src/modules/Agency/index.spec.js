@@ -12,4 +12,13 @@ describe('Testing Agency Base component', () => {
     const wrapper = shallow(<Agency {...props} />);
     expect(wrapper).toBeTruthy();
   });
+
+  it('should render without agency', () => {
+    const props = {
+      agency: null,
+      match: { url: '/agency' }
+    };
+    const wrapper = shallow(<Agency {...props} />);
+    expect(wrapper).toBeTruthy();
+  });
 });
