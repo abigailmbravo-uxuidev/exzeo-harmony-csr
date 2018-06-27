@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import AgentsCard from './AgentsCard';
 import AgentModal from './AgentModal';
 import ExistingAgentModal from './ExistingAgentModal';
+import RemoveAgentModal from './RemoveAgentModal';
 
 export class Agents extends Component {
   state = {
@@ -12,11 +13,12 @@ export class Agents extends Component {
     selectedAgent: null
   };
 
-  removeAgentModal = selectedAgent =>
+  removeAgentModal = () => (selectedAgent) => {
     this.setState({
       selectedAgent,
       showRemoveAgent: !this.state.showRemoveAgent
     });
+  };
 
     toggleNewAgentModal = (agency) => {
       this.setState({
@@ -87,10 +89,18 @@ export class Agents extends Component {
             addAgent={addAgent}
           />
           )}
+        {this.state.showRemoveAgent &&
+          this.state.selectedAgent &&
+          <RemoveAgentModal
+            agency={agency}
+            selectedAgent={this.state.selectedAgent}
+            toggleModal={this.removeAgentModal}
+            updateAgency={updateAgency}
+          />}
         <div className="scroll">
           <div className="form-group survey-wrapper" role="group">
             {agencyAgents && agencyAgents.map((agent, index) => (
-              <AgentsCard agency={agency} agent={agent} agentIndex={index} toggleAgentModal={this.toggleAgentModal('Edit')} removeAgentModal={this.removeAgentModal} />
+              <AgentsCard agency={agency} agent={agent} agentIndex={index} toggleAgentModal={this.toggleAgentModal('Edit')} removeAgentModal={this.removeAgentModal()} />
             ))}
             <div className="agent-actions">
               <hr />

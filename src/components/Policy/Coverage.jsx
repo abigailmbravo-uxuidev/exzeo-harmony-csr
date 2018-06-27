@@ -7,7 +7,7 @@ import _get from 'lodash/get';
 import _find from 'lodash/find';
 import moment from 'moment';
 import { getUIQuestions } from '../../state/actions/questionsActions';
-import { getCancelOptions, getBillingOptionsForPolicy } from '../../state/actions/serviceActions';
+import { getCancelOptions, getBillingOptionsForPolicy, getZipcodeSettings } from '../../state/actions/serviceActions';
 import { getPolicy } from '../../state/actions/policyActions';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import PolicyConnect from '../../containers/Policy';
