@@ -83,10 +83,11 @@ export class Agents extends Component {
         {this.state.showAddExistingAgent && (
           <ExistingAgentModal
             agency={agency}
+            agencyLicenseArray={agencyLicenseArray}
             agents={agents}
             listOfAgents={listOfAgents}
             toggleModal={this.toggleExistingAgentModal}
-            addAgent={addAgent}
+            updateAgency={updateAgency}
           />
           )}
         {this.state.showRemoveAgent &&

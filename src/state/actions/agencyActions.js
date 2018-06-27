@@ -229,6 +229,7 @@ export function updateAgency(agencyData) {
     try {
       await saveAgency(agencyData);
       dispatch(getAgency(agencyData.agencyCode));
+      dispatch(getAgentsByAgencyCode(agencyData.agencyCode));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }

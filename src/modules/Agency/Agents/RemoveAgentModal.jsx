@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { reduxForm, Field } from 'redux-form';
-import { Radio, Input, Phone, AutocompleteChips, Integer } from '@exzeo/core-ui/lib/Input';
-import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
-
-const radioStatusAnswers = [
-  { answer: 'Inactive', label: 'Inactive' },
-  { answer: 'Active', label: 'Active' }
-];
+import { reduxForm } from 'redux-form';
 
 export class RemoveAgentModal extends Component {
   removeAgent = async (data, dispatch, props) => {
@@ -30,7 +22,8 @@ export class RemoveAgentModal extends Component {
       toggleModal,
       handleSubmit,
       submitting,
-      selectedAgent
+      selectedAgent,
+      agency
     } = this.props;
 
     return (
@@ -39,13 +32,12 @@ export class RemoveAgentModal extends Component {
           <div className="card">
             <div className="card-header">
               <h4>
-                <i className="fa fa-address-book" />
-            Remove Agent
+                <i className="fa fa-remove" /> Remove Agent
               </h4>
             </div>
             <div className="card-block">
               <section className="agent-details">
-                <h4>Are you sure you want to remove {selectedAgent.firstName}</h4>
+                <h4>Are you sure you want to remove {selectedAgent.firstName} from {agency.displayName}?</h4>
               </section>
             </div>
             <div className="card-footer">
@@ -56,7 +48,7 @@ export class RemoveAgentModal extends Component {
                   type="button"
                   onClick={toggleModal()}
                 >
-              Cancel
+              No
                 </button>
                 <button
                   tabIndex="0"
@@ -64,7 +56,7 @@ export class RemoveAgentModal extends Component {
                   type="submit"
                   disabled={submitting}
                 >
-              Save
+              Yes
                 </button>
               </div>
             </div>
