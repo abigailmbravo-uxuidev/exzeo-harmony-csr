@@ -70,6 +70,7 @@ export const ContractsModal = (props) => {
                 component={Date}
                 validate={[validation.isRequired, validation.isDate]}
               />
+              {/* TODO: Add Agent Code Chips to Modal so that the agent can be applied to a Contract */}
             </section>
             <section className="product-details">
               <label>Products</label>

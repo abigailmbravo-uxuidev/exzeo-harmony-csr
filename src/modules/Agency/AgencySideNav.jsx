@@ -46,7 +46,7 @@ const csrLinks = agencyCode => [{
   exact: true
 }];
 
-
+/* TODO: Figure out why the active class is not applied correctly  */
 export const SideNav = ({ agency }) => (
   <nav className="site-nav">
     <ul>

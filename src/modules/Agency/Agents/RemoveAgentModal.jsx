@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
 
 export class RemoveAgentModal extends Component {
+  // TODO: Clean up this logic!
   removeAgent = async (data, dispatch, props) => {
     const { agency } = props;
     agency.license.forEach((l) => {

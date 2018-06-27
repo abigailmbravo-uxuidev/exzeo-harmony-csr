@@ -23,6 +23,7 @@ export class AgentModal extends Component {
     props.toggleModal('')();
   };
 
+  // TODO: Clean up this logic!
   applyLicenseToAgency = async (data, props) => {
     const { agency } = props;
     data.agencyLicense.forEach((l) => {
