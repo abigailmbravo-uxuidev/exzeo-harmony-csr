@@ -18,7 +18,9 @@ export class ExistingAgentModal extends Component {
           agentOfRecord: true
         });
         const licenseIndex = agency.license.findIndex(li => li.licenseNumber === l);
-        agency.license.splice(licenseIndex, 1, license);
+        if (licenseIndex !== -1) {
+          agency.license.splice(licenseIndex, 1, license);
+        }
       }
     });
     const { createdAt, createdBy, ...selectedAgency } = agency;

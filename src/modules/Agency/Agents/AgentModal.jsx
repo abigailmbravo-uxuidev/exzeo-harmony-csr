@@ -36,13 +36,19 @@ export class AgentModal extends Component {
           agentOfRecord: true
         });
         const licenseIndex = agency.license.findIndex(li => li.licenseNumber === l);
-        agency.license.splice(licenseIndex, 1, license);
+        if (licenseIndex !== -1) {
+          agency.license.splice(licenseIndex, 1, license);
+        }
       } else if (license && license.agent && selectedAgent) {
         const agentIndex = license.agent.findIndex(a => a.agentCode === data.agentCode);
         selectedAgent.agentInfo = data;
-        license.agent.splice(agentIndex, 1, selectedAgent);
+        if (agentIndex !== -1) {
+          license.agent.splice(agentIndex, 1, selectedAgent);
+        }
         const licenseIndex = agency.license.findIndex(li => li.licenseNumber === l);
-        agency.license.splice(licenseIndex, 1, license);
+        if (licenseIndex !== -1) {
+          agency.license.splice(licenseIndex, 1, license);
+        }
       }
     });
     const { createdAt, createdBy, ...selectedAgency } = agency;

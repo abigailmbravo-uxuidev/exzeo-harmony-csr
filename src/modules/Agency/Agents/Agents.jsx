@@ -94,7 +94,7 @@ export class Agents extends Component {
           this.state.selectedAgent &&
           <RemoveAgentModal
             agency={agency}
-            selectedAgent={this.state.selectedAgent}
+            initialValues={this.state.selectedAgent}
             toggleModal={this.removeAgentModal}
             updateAgency={updateAgency}
           />}
