@@ -9,21 +9,24 @@ import SelectField from '../Form/inputs/SelectField';
 
 export const reasonAnswers = (reasons) => reasons.map(reason => ({ answer: reason, label: reason }));
 
-export const handleInitialize = (state) => {
-  const policy = state.policyState.policy || {};
-
+export const handleInitialize = ({ policyState }) => {
   return {
-    effectiveDate: moment.utc(policy.effectiveDate).format('YYYY-MM-DD'),
+    effectiveDate: moment.utc((policyState.policy || {}).effectiveDate).format('YYYY-MM-DD'),
     effectiveDateChangeReason: ''
   };
 };
 
-export const EditEffectiveDatePopup = (props) => {
-  const { effectiveDateReasons, hideEffectiveDateModal, handleSubmit, changeEffectiveDateSubmit, pristine, appState } = props;
-  const reasons = reasonAnswers(effectiveDateReasons);
+export const EditEffectiveDatePopup = ({
+  appState,
+  changeEffectiveDateSubmit,
+  effectiveDateReasons,
+  hideEffectiveDateModal,
+  handleSubmit,
+  pristine
+}) => {
   return (
     <div id="effective-date" className="modal effective-date">
-      {props.appState.data.submitting && <Loader />}
+      {appState.data.submitting && <Loader />}
       <div className="card unsaved-changes">
         <form id="EditEffectiveDatePopup" onSubmit={handleSubmit(changeEffectiveDateSubmit)}>
           <div className="card-header">
@@ -40,7 +43,7 @@ export const EditEffectiveDatePopup = (props) => {
               label={'Reason For Change'}
               styleName={''}
               validations={['required']}
-              answers={reasons}
+              answers={reasonAnswers(effectiveDateReasons)}
             />
           </div>
           <div className="card-footer">
@@ -49,16 +52,12 @@ export const EditEffectiveDatePopup = (props) => {
                 className="btn btn-secondary"
                 type="button"
                 onClick={hideEffectiveDateModal}
-              >
-                  Cancel
-                </button>
+              >Cancel</button>
               <button
                 disabled={appState.data.submitting || pristine}
                 className="btn btn-primary"
                 type="submit"
-              >
-                  Update
-                </button>
+              >Update</button>
             </div>
           </div>
         </form>
@@ -71,7 +70,6 @@ EditEffectiveDatePopup.propTypes = {
   showEffectiveDatePopup: PropTypes.func,
   effectiveDate: PropTypes.string
 };
-
 
 const mapStateToProps = state => ({
   appState: state.appState,
