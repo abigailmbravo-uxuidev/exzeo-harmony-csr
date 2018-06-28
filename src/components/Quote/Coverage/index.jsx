@@ -317,6 +317,9 @@ export class Coverage extends Component {
       getAgentsByAgencyAction(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
       setAgents = true;
     }
+    if (this.props.quoteData._id !== nextProps.quoteData._id) {
+      this.props.getLatestQuoteAction(true, nextProps.quoteData._id);
+    }
   }
 
   setPHToggle = () => {
