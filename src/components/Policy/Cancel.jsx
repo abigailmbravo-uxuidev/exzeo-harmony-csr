@@ -200,7 +200,7 @@ export class CancelPolicy extends React.Component {
                   <div className="form-group flex-parent billing">
                     <div className="flex-child">
                       <label>Bill To</label>
-                      <div>{!!paymentOptions.length && paymentOptions.find(option => option.billToId === policy.billToId).displayText}</div>
+                      <div>{!!paymentOptions.length && (paymentOptions.find(option => option.billToId === policy.billToId) || {}).displayText}</div>
                     </div>
                     <div className="flex-child">
                       <label>Bill Plan</label>
