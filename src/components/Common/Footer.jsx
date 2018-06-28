@@ -1,12 +1,15 @@
 import React from 'react';
 
 const Footer = () =>
-  <footer>
+  (<footer>
     <div role="banner">
-      <small>
+      <small className="copyright">
         &copy;2017 TypTap Management Company. All rights reserved.
       </small>
+      <small>
+        v.{process.env.REACT_APP_VERSION}
+      </small>
     </div>
-  </footer>;
+  </footer>);
 
 export default Footer;

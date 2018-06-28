@@ -15,5 +15,6 @@ services:
       - AUTH0_CLIENT_ID=_aVZ55R37kcyZ3NtQcps0bwZ09YYdPLd
       - AUTH0_CONNECTION=ashton-sandbox
       - AUTH0_AUDIENCE=http://harmony-sandbox
+      - REACT_APP_VERSION="1.0"
     ports:
       - "8383:80"
