@@ -53,7 +53,7 @@ describe('Testing Policy component', () => {
       getZipcodeSettings() { return Promise.resolve(); },
       getSummaryLedger() { return Promise.resolve(); },
       dispatch: store.dispatch,
-      zipCodeSetting: initialState.service.getZipcodeSettings,
+      zipcodeSettings: initialState.service.getZipcodeSettings,
       appState: initialState.appState,
       policyState: initialState.policyState,
       policy: initialState.policyState.policy,
