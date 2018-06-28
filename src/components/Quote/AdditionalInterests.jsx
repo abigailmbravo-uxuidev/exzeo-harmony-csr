@@ -361,7 +361,6 @@ export class AdditionalInterests extends Component {
     return (
       <QuoteBaseConnect>
         <div className="route-content" id="AddAdditionalInterestPage">
-          {/*<form>*/}
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
                 <h3>Additional Interests</h3>
@@ -420,9 +419,9 @@ export class AdditionalInterests extends Component {
                 </div>
               </div>
             </div>
-          {/*</form>*/}
 
-          {showAdditionalInterestModal &&          <AIModal
+          {showAdditionalInterestModal &&
+            <AIModal
               additionalInterests={quoteData.additionalInterests}
               addAdditionalInterestType={this.state.addAdditionalInterestType}
               deleteAdditionalInterest={this.deleteAdditionalInterest}
