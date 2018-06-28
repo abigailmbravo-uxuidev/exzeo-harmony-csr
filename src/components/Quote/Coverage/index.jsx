@@ -14,6 +14,7 @@ import { batchCompleteTask, startWorkflow } from '../../../state/actions/cgActio
 import { setAppState } from '../../../state/actions/appStateActions';
 import { getUIQuestions } from '../../../state/actions/questionsActions';
 import { getLatestQuote } from '../../../state/actions/quoteStateActions';
+import { checkQuoteState } from "../../../state/selectors/quote.selectors";
 import QuoteBaseConnect from '../../../containers/Quote';
 import Footer from '../../Common/Footer';
 import ProducedBy from './ProducedBy';
@@ -155,7 +156,6 @@ export const handleInitialize = (state) => {
   return values;
 };
 
-const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Received'], state => state === quoteData.quoteState);
 const checkSentToDocusign = state => state === 'Application Sent DocuSign';
 
 export const handleFormSubmit = (data, dispatch, props) => {
@@ -311,16 +311,11 @@ export class Coverage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!_.isEqual(this.props, nextProps)) {
-      const { quoteData, getAgenciesAction, getAgentsByAgencyAction } = nextProps;
-      if (quoteData && quoteData.companyCode && quoteData.state && quoteData.agencyCode && !setAgents) {
-        getAgenciesAction(quoteData.companyCode, quoteData.state);
-        getAgentsByAgencyAction(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
-        setAgents = true;
-      }
-      if (!_.isEqual(this.props.quoteData, nextProps.quoteData)) {
-        this.props.getLatestQuoteAction(true, nextProps.quoteData._id);
-      }
+    const { quoteData, getAgenciesAction, getAgentsByAgencyAction } = nextProps;
+    if (!setAgents && quoteData && quoteData.companyCode && quoteData.state && quoteData.agencyCode) {
+      getAgenciesAction(quoteData.companyCode, quoteData.state);
+      getAgentsByAgencyAction(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
+      setAgents = true;
     }
   }
 
@@ -435,6 +430,7 @@ export class Coverage extends Component {
       dirty,
       dwellingMin,
       dwellingMax,
+      editingDisabled,
       handleSubmit,
       otherStructures,
       personalProperty,
@@ -523,7 +519,7 @@ export class Coverage extends Component {
             <button data-test="coverage-reset" tabIndex="0" aria-label="reset-btn form-coverage" className="btn btn-secondary" type="button" form="Coverage" onClick={() => this.props.reset('Coverage')}>
               Reset
             </button>
-            <button data-test="coverage-submit" tabIndex="0" aria-label="submit-btn form-coverage" className="btn btn-primary" type="submit" form="Coverage" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData)}>
+            <button data-test="coverage-submit" tabIndex="0" aria-label="submit-btn form-coverage" className="btn btn-primary" type="submit" form="Coverage" disabled={pristine || editingDisabled}>
               Update
             </button>
           </div>
@@ -579,6 +575,7 @@ const mapStateToProps = (state) => {
     quoteData: handleGetQuoteData(state),
     zipCodeSettings: handleGetZipCodeSettings(state),
     questions: state.questions,
+    editingDisabled: checkQuoteState(state),
     clearFields,
     sinkholePerilCoverage,
     dwellingMin,
