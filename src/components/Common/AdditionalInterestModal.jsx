@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import { reduxForm, Field, propTypes, initialize, reset } from 'redux-form';
 import { Input, Select, Phone, SelectTypeAhead } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
+import Loader from '@exzeo/core-ui/lib/Loader';
 import { getTopMortgageeAnswers } from "../../state/selectors/questions.selectors";
-import Loader from './Loader';
 
 export const checkAdditionalInterestForName = aiType => aiType === 'Additional Insured' || aiType === 'Additional Interest' || aiType === 'Bill Payer';
 

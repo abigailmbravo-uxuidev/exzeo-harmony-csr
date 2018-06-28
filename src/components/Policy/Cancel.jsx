@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm, change, getFormValues } from 'redux-form';
 import moment from 'moment-timezone';
+import Loader from '@exzeo/core-ui/lib/Loader';
 import { startWorkflow, batchCompleteTask } from '../../state/actions/cgActions';
 import { setAppState } from '../../state/actions/appStateActions';
 import { getPolicy, getPaymentHistory, getBillingOptionsForPolicy, getCancelOptions, getSummaryLedger } from '../../state/actions/policyActions';
@@ -15,7 +16,6 @@ import TextField from '../Form/inputs/TextField';
 import Payments from './Payments';
 import Claims from './Claims';
 import Footer from '../Common/Footer';
-import Loader from '../Common/Loader';
 
 const convertDateToTimeZone = (date, zipCodeSettings) => {
   const formattedDateString = date.format('YYYY-MM-DD');

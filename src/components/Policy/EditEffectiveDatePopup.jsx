@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import moment from 'moment-timezone';
+import Loader from '@exzeo/core-ui/lib/Loader';
 import DateField from '../Form/inputs/DateField';
 import SelectField from '../Form/inputs/SelectField';
-import Loader from '../Common/Loader';
 
 export const reasonAnswers = (reasons) => reasons.map(reason => ({ answer: reason, label: reason }));
 

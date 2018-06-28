@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
+import Loader from '@exzeo/core-ui/lib/Loader';
 import BaseConnect from './Base';
 import Footer from '../components/Common/Footer';
 import * as cgActions from '../state/actions/cgActions';
@@ -10,7 +11,6 @@ import * as appStateActions from '../state/actions/appStateActions';
 import * as questionsActions from '../state/actions/questionsActions';
 import SearchResults from '../components/Search/SearchResults';
 import NoResultsConnect from '../components/Search/NoResults';
-import Loader from '../components/Common/Loader';
 
 const workflowModelName = 'csrQuote';
 const workflowData = {

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment-timezone';
 import { Helmet } from 'react-helmet';
+import Loader from '@exzeo/core-ui/lib/Loader';
 import { setAppState } from '../state/actions/appStateActions';
 import { getZipcodeSettings } from '../state/actions/serviceActions';
 import { getPolicy, createTransaction } from '../state/actions/policyActions';
@@ -12,7 +13,6 @@ import ReinstatePolicyPopup from '../components/Policy/ReinstatePolicyPopup';
 import PolicyDetailHeader from '../components/Policy/DetailHeader';
 import PolicySideNav from '../components/Policy/PolicySideNav';
 import PolicyHeader from '../components/Policy/PolicyHeader';
-import Loader from '../components/Common/Loader';
 
 export const hideEffectiveDatePopUp = (props) => {
   props.setAppState(

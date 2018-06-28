@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import _find from 'lodash/find';
 import { Prompt } from 'react-router-dom';
 import { reduxForm, formValueSelector, FormSection } from 'redux-form';
+import Loader from '@exzeo/core-ui/lib/Loader';
 import {validation} from "@exzeo/core-ui/lib/InputLifecycle/index";
 import { premiumEndorsementList } from './constants/endorsementTypes';
 import endorsementUtils from '../../../utilities/endorsementModel';
@@ -15,7 +16,6 @@ import {
 // Component Sections
 import PolicyConnect from '../../../containers/Policy';
 import Footer from '../../Common/Footer';
-import Loader from '../../Common/Loader';
 import Coverage from './Coverage';
 import WindMitigation from './WindMitigation';
 import HomeLocation from './HomeLocation';
