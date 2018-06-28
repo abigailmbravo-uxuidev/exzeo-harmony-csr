@@ -31,7 +31,7 @@ describe('Testing Endorsements component', () => {
     };
     const store = mockStore(initialState);
     const props = {
-      zipcodeSettings: {},
+      zipcodeSettings: { timezone: '' },
       summaryLedger: {},
       reset() {},
       getRate: {},

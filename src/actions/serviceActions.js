@@ -74,12 +74,12 @@ export const addNote = (data, files) => (dispatch) => {
   const form = new FormData();
   const url = `${process.env.REACT_APP_API_URL}/upload`;
 
-  Object.keys(data).forEach((key) => form.append(key, data[key]));
-  files.map(file => {
+  Object.keys(data).forEach(key => form.append(key, data[key]));
+  files.map((file) => {
     const fileName = !file.name.endsWith(file.meta.name.extension)
       ? `${file.meta.name}.${file.extension}`
       : file.meta.name;
-    return form.append(file.name, file.data, fileName)
+    return form.append(file.name, file.data, fileName);
   });
 
   axios.post(url, form, {
@@ -89,16 +89,16 @@ export const addNote = (data, files) => (dispatch) => {
       'Content-Type': `multipart/form-data; boundary=${form._boundary}`
     }
   })
-  .then(response => {
-    const ids = (data.noteType === 'Policy Note') 
-      ? [response.data.number, data.source].toString()
-      : response.data.number;
-    dispatch(getNotes(ids, response.data.number))
-  })
-  .catch((error) => {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
-  });
+    .then((response) => {
+      const ids = (data.noteType === 'Policy Note')
+        ? [response.data.number, data.source].toString()
+        : response.data.number;
+      dispatch(getNotes(ids, response.data.number));
+    })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(errorActions.setAppError(message));
+    });
 };
 
 export const getAgents = (companyCode, state) => (dispatch) => {
@@ -203,10 +203,10 @@ export const searchAgencies = (companyCode, state, displayName, agencyCode, addr
     const data = { agencies: result };
     return dispatch(serviceRequest(data));
   })
-  .catch((error) => {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
-  });
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(errorActions.setAppError(message));
+    });
 };
 
 export const clearAgencies = () => (dispatch) => {
@@ -683,7 +683,7 @@ export const getZipcodeSettings = (companyCode, state, product, zip) => (dispatc
   });
 
   return axios(axiosConfig).then((response) => {
-    const data = { getZipcodeSettings: response.data && response.data.result ? response.data.result[0] : {} };
+    const data = { getZipcodeSettings: response.data && response.data.result ? response.data.result[0] : { timezone: '' } };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));
@@ -728,7 +728,7 @@ export const getAgencies = (companyCode, state) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'agency',
     method: 'GET',
-    path: `v1/agencies/${companyCode}/${state}?pageSize=100&sort=displayName&SortDirection=asc`
+    path: `v1/agencies/${companyCode}/${state}?pageSize=1000&sort=displayName&SortDirection=asc`
   });
 
   return axios(axiosConfig).then((response) => {
@@ -736,10 +736,10 @@ export const getAgencies = (companyCode, state) => (dispatch) => {
     const data = { agencies: result };
     return dispatch(serviceRequest(data));
   })
-  .catch((error) => {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
-  });
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(errorActions.setAppError(message));
+    });
 };
 
 export const searchPolicy = (taskData, sort) => (dispatch) => {
