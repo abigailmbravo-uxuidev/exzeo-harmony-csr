@@ -17,3 +17,5 @@ sh.exe.stackdump
 
 # JetBrains IDEs (Webstorm, etc.)
 .idea
+
+\.npmrc

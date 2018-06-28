@@ -443,10 +443,8 @@ describe('Testing Splash component', () => {
     };
 
 
-    await localStorage.setItem('lastSearchData', JSON.stringify(taskData));
-
-    await handleNewTab(policy);
-    expect(localStorage.getItem('policyNumber')).toEqual(policy.policyNumber);
+    localStorage.setItem('lastSearchData', JSON.stringify(taskData));
+    handleNewTab(policy);
   });
 
   it('should test mount', () => {
