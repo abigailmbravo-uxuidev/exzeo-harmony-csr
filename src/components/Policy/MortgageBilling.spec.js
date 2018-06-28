@@ -226,7 +226,7 @@ describe('Testing MortgageBilling component', () => {
     };
     const store = mockStore(initialState);
     const props = {
-      cashDescriptionOptions: { 'test': []},
+      cashDescriptionOptions: { test: [] },
       cashTypeValue: 'test',
       paymentOptions: [],
       batchActions() {},
@@ -266,8 +266,6 @@ describe('Testing MortgageBilling component', () => {
     expect(wrapper);
 
     handleInitialize(initialState);
-    getMortgageeOrderAnswers([], additionalInterests);
-    getMortgageeOrderAnswersForEdit([], additionalInterests);
     wrapper.instance().addAdditionalInterest('Mortgagee');
     wrapper.instance().editAdditionalInterest(additionalInterests[0]);
     wrapper.instance().hideAdditionalInterestModal(props);
