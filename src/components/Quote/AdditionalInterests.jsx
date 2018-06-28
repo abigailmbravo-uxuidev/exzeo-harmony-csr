@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { reduxForm, getFormValues } from 'redux-form';
-import {ADDITIONAL_INTERESTS} from "../../constants/quote";
+import { ADDITIONAL_INTERESTS } from "../../constants/quote";
 import { getAnswers } from '../../utilities/forms';
 import { getMortgageeOrderAnswers, getMortgageeOrderAnswersForEdit } from "../../utilities/additionalInterests";
 import { batchCompleteTask } from '../../state/actions/cgActions';
@@ -12,7 +12,6 @@ import { setAppState } from '../../state/actions/appStateActions';
 import { getLatestQuote } from '../../state/actions/quoteStateActions';
 import { getBillingOptions, saveBillingInfo } from '../../state/actions/serviceActions';
 import { getGroupedAdditionalInterests, getSortedAdditionalInterests, checkQuoteState } from "../../state/selectors/quote.selectors";
-import applyRank from '../Common/additionalInterestRank';
 import normalizePhone from '../Form/normalizePhone';
 
 import QuoteBaseConnect from '../../containers/Quote';
@@ -134,11 +133,20 @@ export class AdditionalInterests extends Component {
   };
 
   initAdditionalInterestModal = () => {
-    const { questions, quoteData } = this.props;
-    const { isEditingAI, selectedAI } = this.state;
+    const { questions, quoteData, groupedAdditionalInterests } = this.props;
+    const { isEditingAI, selectedAI, addAdditionalInterestType } = this.state;
     const mortgageeOrderAnswers = getMortgageeOrderAnswers(questions, quoteData.additionalInterests);
 
-    if (!isEditingAI) return { order: mortgageeOrderAnswers && mortgageeOrderAnswers.length === 1 ? mortgageeOrderAnswers[0].answer : '' };
+    if (!isEditingAI) {
+      if (addAdditionalInterestType === ADDITIONAL_INTERESTS.mortgagee) {
+        return {
+          order: mortgageeOrderAnswers[0].answer
+        };
+      }
+      return {
+        order: groupedAdditionalInterests[addAdditionalInterestType].length
+      }
+    }
 
     if (selectedAI) {
       const mortgageeAnswers = getAnswers('mortgagee', questions);
@@ -179,9 +187,9 @@ export class AdditionalInterests extends Component {
     };
   };
 
-  handleFormSubmit = async (data) => {
-    const { appState, quoteData, setAppState, batchCompleteTask, getLatestQuote } = this.props;
-    const { addAdditionalInterestType, selectedAI } = this.state;
+  handleFormSubmit = async (data, dispatch, formProps) => {
+    const { appState, quoteData, setAppState, batchCompleteTask, getLatestQuote, groupedAdditionalInterests } = this.props;
+    const { addAdditionalInterestType, isEditingAI } = this.state;
 
     const workflowId = appState.instanceId;
     setAppState(
@@ -191,26 +199,12 @@ export class AdditionalInterests extends Component {
       }
     );
 
-    let additionalInterests = quoteData.additionalInterests || [];
-
-    let { order } = data;
-
-    const isMortgagee = addAdditionalInterestType === 'Mortgagee';
-    // type mortgagee allows the user to select order and the AI edit will pass in order
-    if (!isMortgagee && !data._id) {
-      order = _.filter(additionalInterests, ai => ai.type === addAdditionalInterestType).length === 0 ? 0 : 1;
-    }
-    // remove any existing items before submission
-    const modifiedAIs = _.cloneDeep(additionalInterests);
-
-    _.remove(modifiedAIs, ai => ai._id === data._id); // eslint-disable-line
-
-    const aiData = {
+    let aiData = {
       _id: data._id, // eslint-disable-line
       name1: data.name1,
       name2: data.name2,
       referenceNumber: data.referenceNumber || '',
-      order,
+      order: data.order,
       active: true,
       type: addAdditionalInterestType,
       phoneNumber: String(data.phoneNumber).length > 0 ? String(data.phoneNumber).replace(/[^\d]/g, '') : '',
@@ -227,17 +221,28 @@ export class AdditionalInterests extends Component {
       }
     };
 
-    if (isMortgagee && data._id) {
-      _.forEach(modifiedAIs.filter(ai => ai.type === 'Mortgagee'), (mortgagee) => {
-        if (String(mortgagee.order) === String(data.order)) {
-          mortgagee.order = Number(selectedAI.order);
-        }
-      });
-    }
+    const isMortgagee = addAdditionalInterestType === ADDITIONAL_INTERESTS.mortgagee;
+    let additionalInterests;
 
-    modifiedAIs.push(aiData);
-    // console.log(modifiedAIs.filter(ai => ai.type === 'Mortgagee'));
-    applyRank(modifiedAIs);
+    if (isEditingAI) {
+      additionalInterests = (quoteData.additionalInterests || []).filter(ai => ai._id !== data._id);
+
+      if (!isMortgagee) {
+        aiData.order = groupedAdditionalInterests[addAdditionalInterestType].length;
+      } else {
+        if (data.order !== formProps.initialValues.order) {
+          // if user changed the order of mortgagee, make sure we swap the order of mortgagee that currently holds that order
+          additionalInterests.forEach(ai => {
+            if (ai.type === ADDITIONAL_INTERESTS.mortgagee && ai.order === data.order) {
+              ai.order = formProps.initialValues.order;
+            }
+          });
+        }
+      }
+    } else {
+      additionalInterests = _.cloneDeep(quoteData.additionalInterests) || [];
+    }
+    additionalInterests.push(aiData);
 
     const steps = [
       {
@@ -246,7 +251,7 @@ export class AdditionalInterests extends Component {
       },
       {
         name: 'askadditionalInterests',
-        data: { additionalInterests: modifiedAIs }
+        data: { additionalInterests }
       },
       {
         name: 'moveTo',
@@ -258,7 +263,6 @@ export class AdditionalInterests extends Component {
       .then(() => {
         getLatestQuote(true, quoteData._id);
 
-        additionalInterests = modifiedAIs;
         // now update the workflow details so the recalculated rate shows
         setAppState(
           appState.modelName,
@@ -357,7 +361,6 @@ export class AdditionalInterests extends Component {
       );
     }
 
-    applyRank(quoteData.additionalInterests);
     return (
       <QuoteBaseConnect>
         <div className="route-content" id="AddAdditionalInterestPage">

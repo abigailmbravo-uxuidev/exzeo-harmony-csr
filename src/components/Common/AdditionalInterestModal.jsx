@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { reduxForm, Field, propTypes, initialize, reset } from 'redux-form';
-import { Input, Select, Phone, SelectTypeAhead } from '@exzeo/core-ui/lib/Input';
+import { Input, Select, Phone, SelectTypeAhead, SelectInteger } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 import Loader from '@exzeo/core-ui/lib/Loader';
 import { getTopMortgageeAnswers } from "../../state/selectors/questions.selectors";
@@ -159,7 +159,7 @@ export class AdditionalInterestModal extends React.Component {
                 <Field
                   name="order"
                   dataTest="order"
-                  component={Select}
+                  component={SelectInteger}
                   label="Order"
                   validate={validation.isRequired}
                   answers={getMortgageeOrderAnswersForEdit(questions, additionalInterests)}
@@ -170,7 +170,7 @@ export class AdditionalInterestModal extends React.Component {
                   <Field
                     name="order"
                     dataTest="order"
-                    component={Select}
+                    component={SelectInteger}
                     label="Order"
                     validate={validation.isRequired}
                     answers={getMortgageeOrderAnswers(questions, additionalInterests)}
