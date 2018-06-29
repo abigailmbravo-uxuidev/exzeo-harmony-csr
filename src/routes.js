@@ -106,9 +106,9 @@ class Routes extends Component {
           </div>
         </Modal>
         {this.props.newNote && this.props.newNote.documentId &&
-          <NoteUploader 
-            noteType={this.props.newNote.noteType} 
-            documentId={this.props.newNote.documentId} 
+          <NoteUploader
+            noteType={this.props.newNote.noteType}
+            documentId={this.props.newNote.documentId}
             sourceId={this.props.newNote.sourceNumber}
           />
         }
@@ -132,7 +132,7 @@ class Routes extends Component {
               <Route exact path="/quote/coverage" render={props => <QuoteCoverage auth={auth} {...props} />} />
               <Route exact path="/quote/underwriting" render={props => <QuoteUnderwriting auth={auth} {...props} />} />
               <Route exact path="/quote/application" render={props => <QuoteApplication auth={auth} {...props} />} />
-              <Route exact path="/policy/coverage" render={props => <PolicyCoverage auth={auth} {...props} />} />
+              <Route exact path="/policy/coverage/:policyNumber" render={props => <PolicyCoverage auth={auth} {...props} />} />
               <Route exact path="/policy/policyholder" render={props => <PolicyPolicyholderAgent auth={auth} {...props} />} />
               <Route exact path="/policy/billing" render={props => <PolicyMortgageBilling auth={auth} {...props} />} />
               <Route exact path="/policy/notes" render={props => <PolicyNotesFiles auth={auth} {...props} />} />

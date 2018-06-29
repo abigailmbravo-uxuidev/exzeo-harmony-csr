@@ -9,9 +9,19 @@ import * as newNoteActions from '../../actions/newNoteActions';
 import * as serviceActions from '../../actions/serviceActions';
 import * as errorActions from '../../actions/errorActions';
 
-const csrLinks = [{
+// Example of a possible schema
+/**
+ * {
+ *  link,
+ *  label,
+ *  styleName,
+ *  exact,
+ *  outside
+ * }
+ */
+const csrLinks = ({ policyNumber }) => [{
   key: 'coverage',
-  link: '/policy/coverage',
+  link: `/policy/coverage/${policyNumber}`,
   label: 'Coverage / Rating',
   styleName: 'coverage',
   exact: true
@@ -55,7 +65,7 @@ export class SideNav extends React.Component {
   }
 
   newNote = (props) => {
-    props.actions.newNoteActions.toggleNote({noteType: 'Policy Note', documentId: props.policy.policyNumber, sourceNumber: props.policy.sourceNumber})
+    props.actions.newNoteActions.toggleNote({ noteType: 'Policy Note', documentId: props.policy.policyNumber, sourceNumber: props.policy.sourceNumber });
   }
 
   generateDoc = (props) => {
@@ -67,48 +77,48 @@ export class SideNav extends React.Component {
     const ids = [policy.policyNumber, policy.sourceNumber];
     return () => {
       actions.serviceActions.getNotes(ids.toString(), policy.policyNumber);
-    }
+    };
   }
 
   render() {
     const { actions, policy } = this.props;
     return (
       <nav className="site-nav">
-          <ul>
-            {csrLinks && csrLinks.length > 0 && csrLinks.map((link, index) => (
+        <ul>
+          {csrLinks && csrLinks.length > 0 && csrLinks({ policyNumber: policy.policyNumber }).map((link, index) => (
               link.outside ?
-              <li key={index}>
-                <a className="csr-dashboard" href="/">
-                  <span>{link.label}</span>
-                </a>
-              </li> :
-              <li key={index}>
-                <span className={link.styleName}>
-                  <NavLink to={link.link} activeClassName="active" exact>{link.label}</NavLink>
-                </span>
-              </li>
+                <li key={index}>
+                  <a className="csr-dashboard" href="/">
+                    <span>{link.label}</span>
+                  </a>
+                </li> :
+                <li key={index}>
+                  <span className={link.styleName}>
+                    <NavLink to={link.link} activeClassName="active" exact>{link.label}</NavLink>
+                  </span>
+                </li>
             ))}
-            <hr className="nav-division" />
-            <li>
-              <button aria-label="open-btn form-newNote" data-test="newNote" className="btn btn-primary btn-sm btn-block" onClick={() => this.newNote(this.props)}><i className="fa fa-plus" />Note / File</button>
-            </li>
-            <li>
-              <button aria-label="open-btn" className="btn btn-primary btn-sm btn-block" onClick={() => this.generateDoc(this.props)}><i className="fa fa-plus" />Document</button>
-            </li>
-            <li className={this.state.showDocsForm ? 'document-panel show' : 'document-panel hidden'  }>
-             {this.state.showDocsForm && 
-              <GenerateDocsForm 
+          <hr className="nav-division" />
+          <li>
+            <button aria-label="open-btn form-newNote" data-test="newNote" className="btn btn-primary btn-sm btn-block" onClick={() => this.newNote(this.props)}><i className="fa fa-plus" />Note / File</button>
+          </li>
+          <li>
+            <button aria-label="open-btn" className="btn btn-primary btn-sm btn-block" onClick={() => this.generateDoc(this.props)}><i className="fa fa-plus" />Document</button>
+          </li>
+          <li className={this.state.showDocsForm ? 'document-panel show' : 'document-panel hidden'}>
+            {this.state.showDocsForm &&
+              <GenerateDocsForm
                 policyNumber={policy.policyNumber}
                 updateNotes={this.updateNotes(this.props)}
                 startWorkflow={actions.cgActions.startWorkflow}
-                errorHandler={actions.errorActions.setAppError} 
-            />}
-            </li>
-          </ul>
-        </nav>
-      )
-  };
-};
+                errorHandler={actions.errorActions.setAppError}
+              />}
+          </li>
+        </ul>
+      </nav>
+    );
+  }
+}
 
 SideNav.propTypes = {
   policy: PropTypes.object

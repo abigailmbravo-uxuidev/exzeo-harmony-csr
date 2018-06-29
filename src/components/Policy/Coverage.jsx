@@ -24,17 +24,13 @@ const handleInitialize = state => state.service.latestPolicy;
 
 export class Coverage extends Component {
   async componentDidMount() {
-    const { actions } = this.props;
+    const { actions, match } = this.props;
+    const { policyNumber } = match.params;
 
     actions.questionsActions.getUIQuestions('propertyAppraisalCSR');
-    const isNewTab = await localStorage.getItem('isNewTab') === 'true';
-    if (isNewTab) {
-      const policyNumber = await localStorage.getItem('policyNumber');
-      actions.policyStateActions.updatePolicy(true, policyNumber);
-      actions.serviceActions.getCancelOptions();
-      actions.serviceActions.getSummaryLedger(policyNumber);
-      localStorage.setItem('isNewTab', false);
-    }
+    actions.policyStateActions.updatePolicy(true, policyNumber);
+    actions.serviceActions.getCancelOptions();
+    actions.serviceActions.getSummaryLedger(policyNumber);
   }
 
   componentWillReceiveProps(nextProps) {
