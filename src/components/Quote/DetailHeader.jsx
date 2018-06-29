@@ -7,12 +7,9 @@ import normalizePhone from '../Form/normalizePhone';
 import * as serviceActions from '../../actions/serviceActions';
 import * as quoteStateActions from '../../actions/quoteStateActions';
 
-export const selectPolicy = (quote, props) => {
+export const selectPolicy = (quote) => {
   if (!quote.quoteNumber) return;
-
-  localStorage.setItem('isNewTab', true);
-  localStorage.setItem('policyNumber', quote.policyNumber);
-  window.open('/policy/coverage', '_blank');
+  window.open(`/policy/coverage/${quote.policyNumber}`, '_blank');
 };
 
 export class DetailHeader extends Component {
@@ -29,7 +26,7 @@ export class DetailHeader extends Component {
     }
 
     const loc = quoteData.property.physicalAddress;
-    const mapQuery = encodeURIComponent(`${loc.address1} ${loc.address2} ${loc.city}, ${loc.state} ${loc.zip}`)
+    const mapQuery = encodeURIComponent(`${loc.address1} ${loc.address2} ${loc.city}, ${loc.state} ${loc.zip}`);
     const mapUri = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
 
     return (<div className="detailHeader">
