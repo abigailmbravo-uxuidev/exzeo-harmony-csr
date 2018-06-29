@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { reduxForm, getFormValues } from 'redux-form';
-import { ADDITIONAL_INTERESTS } from '../../constants/quote';
+import { ADDITIONAL_INTERESTS } from '../../constants/additionalInterests';
 import { getAnswers } from '../../utilities/forms';
 import { getMortgageeOrderAnswers, getMortgageeOrderAnswersForEdit } from '../../utilities/additionalInterests';
 import { batchCompleteTask } from '../../state/actions/cgActions';
@@ -15,15 +15,16 @@ import { getGroupedAdditionalInterests, getSortedAdditionalInterests, checkQuote
 import normalizePhone from '../Form/normalizePhone';
 
 import QuoteBaseConnect from '../../containers/Quote';
-import AIModal from '../../components/Common/AdditionalInterestModal';
+import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';
+import AdditionalInterestCard from "../AdditionalInterestCard";
 
 export class AdditionalInterests extends Component {
   state = {
-    addAdditionalInterestType: null,
+    addAdditionalInterestType: '',
+    isEditingAI: false,
     selectedAI: {},
     showAdditionalInterestModal: false,
-    isEditingAI: false
   };
 
   componentDidMount() {
@@ -84,6 +85,47 @@ export class AdditionalInterests extends Component {
     }
   }
 
+  handleAISubmit = async (additionalInterests) => {
+    const {
+      appState, quoteData, batchCompleteTask, getLatestQuote, setAppState
+    } = this.props;
+    const { addAdditionalInterestType } = this.state;
+    const workflowId = appState.instanceId;
+
+    const steps = [
+      {
+        name: 'hasUserEnteredData',
+        data: { answer: 'Yes' }
+      },
+      {
+        name: 'askadditionalInterests',
+        data: { additionalInterests }
+      },
+      {
+        name: 'moveTo',
+        data: { key: 'additionalInterests' }
+      }
+    ];
+
+    await batchCompleteTask(appState.modelName, workflowId, steps);
+    await getLatestQuote(true, quoteData._id);
+
+    // now update the workflow details so the recalculated rate shows
+    setAppState(
+      appState.modelName,
+      workflowId, {
+        ...appState.data,
+        selectedMortgageeOption: null,
+        addAdditionalInterestType,
+        deleteAdditionalInterestType: '',
+        submittingAI: false,
+        selectedLink: 'additionalInterests'
+      }
+    );
+
+    this.hideAdditionalInterestModal();
+  };
+
   addAdditionalInterest = (type) => {
     const { appState, setAppState, editingDisabled } = this.props;
     if (editingDisabled) return;
@@ -100,12 +142,6 @@ export class AdditionalInterests extends Component {
     });
   };
 
-  editAIOnEnter = (event, ai) => {
-    if (event.key === 'Enter') {
-      this.editAdditionalInterest(ai);
-    }
-  };
-
   editAdditionalInterest = (ai) => {
     const { appState, setAppState, editingDisabled } = this.props;
     if (editingDisabled) return;
@@ -120,15 +156,6 @@ export class AdditionalInterests extends Component {
       isEditingAI: true,
       showAdditionalInterestModal: true,
       selectedAI: ai
-    });
-  };
-
-  hideAdditionalInterestModal = () => {
-    this.setState({
-      addAdditionalInterestType: null,
-      showAdditionalInterestModal: false,
-      selectedAI: {},
-      isEditingAI: false
     });
   };
 
@@ -185,45 +212,13 @@ export class AdditionalInterests extends Component {
     };
   };
 
-  handleFormSubmit = async (additionalInterests) => {
-    const {
-      appState, quoteData, batchCompleteTask, getLatestQuote, setAppState
-    } = this.props;
-    const { addAdditionalInterestType } = this.state;
-    const workflowId = appState.instanceId;
-
-    const steps = [
-      {
-        name: 'hasUserEnteredData',
-        data: { answer: 'Yes' }
-      },
-      {
-        name: 'askadditionalInterests',
-        data: { additionalInterests }
-      },
-      {
-        name: 'moveTo',
-        data: { key: 'additionalInterests' }
-      }
-    ];
-
-    await batchCompleteTask(appState.modelName, workflowId, steps);
-    await getLatestQuote(true, quoteData._id);
-
-    // now update the workflow details so the recalculated rate shows
-    setAppState(
-      appState.modelName,
-      workflowId, {
-        ...appState.data,
-        selectedMortgageeOption: null,
-        addAdditionalInterestType,
-        deleteAdditionalInterestType: '',
-        submittingAI: false,
-        selectedLink: 'additionalInterests'
-      }
-    );
-
-    this.hideAdditionalInterestModal();
+  hideAdditionalInterestModal = () => {
+    this.setState({
+      addAdditionalInterestType: null,
+      showAdditionalInterestModal: false,
+      selectedAI: {},
+      isEditingAI: false
+    });
   };
 
   deleteAdditionalInterest = async (selectedAdditionalInterest) => {
@@ -257,14 +252,14 @@ export class AdditionalInterests extends Component {
       name: 'hasUserEnteredData',
       data: { answer: 'Yes' }
     },
-    {
-      name: 'askadditionalInterests',
-      data: { additionalInterests: modifiedAIs }
-    },
-    {
-      name: 'moveTo',
-      data: { key: 'additionalInterests' }
-    }
+      {
+        name: 'askadditionalInterests',
+        data: { additionalInterests: modifiedAIs }
+      },
+      {
+        name: 'moveTo',
+        data: { key: 'additionalInterests' }
+      }
     ];
 
     return batchCompleteTask(appState.modelName, workflowId, steps)
@@ -289,6 +284,12 @@ export class AdditionalInterests extends Component {
           addAdditionalInterestType: ''
         });
       });
+  };
+
+  editAIOnEnter = (event, ai) => {
+    if (event.key === 'Enter') {
+      this.editAdditionalInterest(ai);
+    }
   };
 
   render() {
@@ -357,22 +358,13 @@ export class AdditionalInterests extends Component {
               <div className="results-wrapper">
                 <ul className="results result-cards">
                   {sortedAdditionalInterests.map(ai => (
-                    <li key={ai._id}>
-                      <a onKeyPress={this.editAIOnEnter} onClick={() => this.editAdditionalInterest(ai)}>
-                        {/* add className based on type - i.e. mortgagee could have class of mortgagee */}
-                        <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {ai.order + 1}</label></div>
-                        <section><h4>{ai.name1}&nbsp;{ai.name2}</h4><p className="address">{`${ai.mailingAddress.address1}, ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city}, ${ai.mailingAddress.state} ${ai.mailingAddress.zip}`}</p></section>
-                        <div className="ref-number">
-                          <label htmlFor="ref-number">Reference Number</label>
-                          <span>{`${ai.referenceNumber || '-'}`}</span>
-                        </div>
-                        <span className="edit-btn">
-                          <i className="fa fa-pencil-square" />
-                          <span>EDIT</span>
-                        </span>
-                      </a>
-                    </li>
-                    ))}
+                    <AdditionalInterestCard
+                      key={ai._id}
+                      ai={ai}
+                      handleOnEnter={this.editAIOnEnter}
+                      handleClick={this.editAdditionalInterest}
+                    />
+                  ))}
                 </ul>
               </div>
             </div>

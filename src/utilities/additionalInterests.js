@@ -17,11 +17,15 @@ export const getMortgageeOrderAnswersForEdit = (questions, additionalInterests) 
   return orderAnswers.filter(answer => Number(answer.answer) < (activeMortgagees.length));
 };
 
-export const applyAdditionalInterestRanking = (additionalInterests) => {
+export const applyAdditionalInterestRanking = (additionalInterests, sortActive = false) => {
   // add rank to sort by a specific way
   if(!Array.isArray(additionalInterests)) return;
 
   additionalInterests.forEach((value) => {
+    if (sortActive) {
+      value.sortInactive = !value.active;
+    }
+
     switch (value.type) {
       case 'Mortgagee':
         value.rank = 1; // eslint-disable-line

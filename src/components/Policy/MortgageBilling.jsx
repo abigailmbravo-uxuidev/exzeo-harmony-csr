@@ -2,17 +2,22 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm, Field, formValueSelector } from 'redux-form';
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import _ from 'lodash';
 import moment from 'moment';
-import { getAnswers } from '../../utilities/forms';
-import { getMortgageeOrderAnswers, getMortgageeOrderAnswersForEdit } from '../../utilities/additionalInterests';
-import { getCashDescriptionOptions, getCashTypeAnswers } from '../../state/selectors/policy.selectors';
-
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 
-import { getUIQuestions } from '../../state/actions/questionsActions';
+import { getAnswers } from '../../utilities/forms';
+import {
+  getMortgageeOrderAnswers,
+  getMortgageeOrderAnswersForEdit
+} from '../../utilities/additionalInterests';
+import {
+  getCashDescriptionOptions,
+  getCashTypeAnswers,
+  getFormattedPaymentHistory,
+  getSortedAdditionalInterests
+} from '../../state/selectors/policy.selectors';
 import {
   getPolicy,
   addTransaction,
@@ -21,12 +26,14 @@ import {
   createTransaction,
   getPaymentOptionsApplyPayments
 } from '../../state/actions/policyActions';
+import { getUIQuestions } from '../../state/actions/questionsActions';
 
 import PolicyConnect from '../../containers/Policy';
 import BillingModal from '../../components/Common/BillingEditModal';
-import AIModal from '../../components/Common/AdditionalInterestModal';
+import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';
-import setRank from '../Common/additionalInterestRank';
+import AdditionalInterestCard from "../AdditionalInterestCard";
+import PaymentHistoryTable from "../PaymentHistoryTable";
 
 const { validation } = lifecycle;
 const { Input, Select, Currency } = Inputs;
@@ -47,22 +54,18 @@ export const handleInitialize = (state) => {
 
 export class MortgageBilling extends Component {
   state = {
-    addAdditionalInterestType: null,
+    addAdditionalInterestType: '',
+    isEditingAI: false,
     paymentDescription: [],
     selectedAI: {},
     showAdditionalInterestModal: false,
-    isEditingAI: false,
     showBillingEditModal: false
-  };
-
-  componentDidMount = () => {
-    this.props.getUIQuestions('additionalInterestsCSR');
   };
 
   componentWillReceiveProps = (nextProps) => {
     // TODO this is probably not needed, but leaving here for now until we solidify the pattern
     const { policy } = this.props;
-    if (!policy.policyID && nextProps.policy.policyID && (nextProps.policyID !== policy.policyID)) {
+    if (nextProps.policyID && (nextProps.policyID !== policy.policyID)) {
       const { getPaymentHistory, getPaymentOptionsApplyPayments, getBillingOptionsForPolicy } = nextProps;
       const paymentOptions = {
         effectiveDate: nextProps.policy.effectiveDate,
@@ -75,58 +78,6 @@ export class MortgageBilling extends Component {
       getPaymentHistory(nextProps.policy.policyNumber);
       getPaymentOptionsApplyPayments();
     }
-  };
-
-  setIsActive = (additionalInterests) => {
-    if (!additionalInterests) return;
-    additionalInterests.forEach((value) => {
-      value.sortInactive = !value.active;
-      return value;
-    });
-  };
-
-  setBatch = (value) => {
-    const { change } = this.props;
-
-    change('cashDate', value);
-    change('batchNumber', moment.utc(value).format('YYYYMMDD'));
-  };
-
-  normalizeCashType = (value) => {
-    const { change } = this.props;
-    change('cashDescription', '');
-    return value;
-  };
-
-  addAdditionalInterest = (type) => {
-    this.setState({
-      showAdditionalInterestModal: true,
-      isEditingAI: false,
-      selectedAI: {},
-      addAdditionalInterestType: type
-    });
-  };
-
-  editAdditionalInterest = (ai) => {
-    this.setState({
-      showAdditionalInterestModal: true,
-      isEditingAI: true,
-      selectedAI: ai,
-      addAdditionalInterestType: ai.type
-    });
-  };
-
-  editAIOnEnter = (event, ai) => {
-    if (event.key === 'Enter') {
-      this.editAdditionalInterest(ai);
-    }
-  };
-
-  hideAdditionalInterestModal = () => {
-    this.setState({
-      showAdditionalInterestModal: false,
-      isEditingAI: false
-    });
   };
 
   handleAISubmit = async (additionalInterests, aiData) => {
@@ -150,80 +101,23 @@ export class MortgageBilling extends Component {
     });
   };
 
-  deleteAdditionalInterest = (selectedAdditionalInterest) => {
+  addAdditionalInterest = (type) => {
     this.setState({
-      isDeleting: true
-    });
-
-    const additionalInterests = this.props.policy.additionalInterests || [];
-    // remove any existing items before submission
-    const modifiedAIs = _.cloneDeep(additionalInterests);
-    // remove any existing items before submission
-      _.remove(modifiedAIs, ai => ai._id === selectedAdditionalInterest._id); // eslint-disable-line
-
-    if (_.filter(modifiedAIs, ai => ai.type === selectedAdditionalInterest.type).length === 1) {
-      const index = _.findIndex(modifiedAIs, { type: selectedAdditionalInterest.type });
-      const ai = modifiedAIs[index];
-      ai.order = 0;
-      modifiedAIs.splice(index, 1, ai);
-    }
-    const offset = new Date(this.props.policy.effectiveDate).getTimezoneOffset() / 60;
-
-    const submitData = {
-      additionalInterestId: selectedAdditionalInterest._id,
-      ...this.props.policy,
-      endorsementDate: moment(this.props.policy.effectiveDate).utcOffset(offset),
-      transactionType: 'AI Removal'
-    };
-
-    this.props.createTransaction(submitData).then(() => {
-      this.props.getPolicy(this.props.policy.policyNumber);
-      this.setState({
-        showAdditionalInterestModal: false,
-        isEditingAI: false,
-        isDeleting: false
-      });
+      showAdditionalInterestModal: true,
+      isEditingAI: false,
+      selectedAI: {},
+      addAdditionalInterestType: type
     });
   };
 
-  handleBillingEdit = () => {
-    this.setState({ showBillingEditModal: true });
+  editAdditionalInterest = (ai) => {
+    this.setState({
+      showAdditionalInterestModal: true,
+      isEditingAI: true,
+      selectedAI: ai,
+      addAdditionalInterestType: ai.type
+    });
   };
-
-  hideBillingModal = () => {
-    this.setState({ showBillingEditModal: false });
-  };
-
-  checkValidTypes = (additionalInterests, selectedAI) => {
-    const ais = [];
-    if (selectedAI.type === 'Mortgagee' || _.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length <= 1) ais.push({ answer: 'Mortgagee' });
-    if (selectedAI.type === 'Additional Insured' || _.filter(additionalInterests, ai => ai.type === 'Additional Insured' && ai.active).length <= 1) ais.push({ answer: 'Additional Insured' });
-    if (selectedAI.type === 'Additional Interest' || _.filter(additionalInterests, ai => ai.type === 'Additional Interest' && ai.active).length <= 1) ais.push({ answer: 'Additional Interest' });
-    if (selectedAI.type === 'Premium Finance' || _.filter(additionalInterests, ai => ai.type === 'Premium Finance' && ai.active).length <= 1) ais.push({ answer: 'Premium Finance' });
-    if (selectedAI.type === 'Bill Payer' || _.filter(additionalInterests, ai => ai.type === 'Bill Payer' && ai.active).length === 0) ais.push({ answer: 'Bill Payer' });
-    return ais;
-  };
-
-  handleFormSubmit = async (data) => {
-    const { reset: resetForm, addTransaction } = this.props;
-    const submitData = data;
-
-    submitData.cashDate = moment.utc(data.cashDate);
-    submitData.batchNumber = String(data.batchNumber);
-    submitData.amount = Number(String(data.amount).replace(/[^\d.-]/g, ''));
-    submitData.cashType = String(data.cashType);
-    submitData.cashDescription = String(data.cashDescription);
-    submitData.companyCode = 'TTIC';
-    submitData.policy = this.props.policy;
-
-    await addTransaction(submitData);
-
-    resetForm();
-  };
-
-  amountFormatter = cell => (cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '');
-
-  dateFormatter = cell => `${cell.substring(0, 10)}`;
 
   initAdditionalInterestModal = () => {
     const { service = {}, questions = {}, policy } = this.props;
@@ -238,7 +132,7 @@ export class MortgageBilling extends Component {
       state: '',
       zip: '',
       referenceNumber: '',
-      type: ''
+      type: addAdditionalInterestType
     };
 
     if (isEditingAI) {
@@ -280,31 +174,123 @@ export class MortgageBilling extends Component {
     };
   };
 
+  hideAdditionalInterestModal = () => {
+    this.setState({
+      showAdditionalInterestModal: false,
+      isEditingAI: false
+    });
+  };
+
+  deleteAdditionalInterest = (selectedAdditionalInterest) => {
+    this.setState({
+      isDeleting: true
+    });
+
+    const additionalInterests = this.props.policy.additionalInterests || [];
+    // remove any existing items before submission
+    const modifiedAIs = _.cloneDeep(additionalInterests);
+    // remove any existing items before submission
+    _.remove(modifiedAIs, ai => ai._id === selectedAdditionalInterest._id); // eslint-disable-line
+
+    if (_.filter(modifiedAIs, ai => ai.type === selectedAdditionalInterest.type).length === 1) {
+      const index = _.findIndex(modifiedAIs, { type: selectedAdditionalInterest.type });
+      const ai = modifiedAIs[index];
+      ai.order = 0;
+      modifiedAIs.splice(index, 1, ai);
+    }
+    const offset = new Date(this.props.policy.effectiveDate).getTimezoneOffset() / 60;
+
+    const submitData = {
+      additionalInterestId: selectedAdditionalInterest._id,
+      ...this.props.policy,
+      endorsementDate: moment(this.props.policy.effectiveDate).utcOffset(offset),
+      transactionType: 'AI Removal'
+    };
+
+    this.props.createTransaction(submitData).then(() => {
+      this.props.getPolicy(this.props.policy.policyNumber);
+      this.setState({
+        showAdditionalInterestModal: false,
+        isEditingAI: false,
+        isDeleting: false
+      });
+    });
+  };
+
+  editAIOnEnter = (event, ai) => {
+    if (event.key === 'Enter') {
+      this.editAdditionalInterest(ai);
+    }
+  };
+
+  setBatch = (value) => {
+    const { change } = this.props;
+
+    change('cashDate', value);
+    change('batchNumber', moment.utc(value).format('YYYYMMDD'));
+  };
+
+  normalizeCashType = (value) => {
+    const { change } = this.props;
+    change('cashDescription', '');
+    return value;
+  };
+
+  handleBillingEdit = () => {
+    this.setState({ showBillingEditModal: true });
+  };
+
+  hideBillingModal = () => {
+    this.setState({ showBillingEditModal: false });
+  };
+
+  checkValidTypes = (additionalInterests, selectedAI) => {
+    const ais = [];
+    if (selectedAI.type === 'Mortgagee' || _.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length <= 1) ais.push({ answer: 'Mortgagee' });
+    if (selectedAI.type === 'Additional Insured' || _.filter(additionalInterests, ai => ai.type === 'Additional Insured' && ai.active).length <= 1) ais.push({ answer: 'Additional Insured' });
+    if (selectedAI.type === 'Additional Interest' || _.filter(additionalInterests, ai => ai.type === 'Additional Interest' && ai.active).length <= 1) ais.push({ answer: 'Additional Interest' });
+    if (selectedAI.type === 'Premium Finance' || _.filter(additionalInterests, ai => ai.type === 'Premium Finance' && ai.active).length <= 1) ais.push({ answer: 'Premium Finance' });
+    if (selectedAI.type === 'Bill Payer' || _.filter(additionalInterests, ai => ai.type === 'Bill Payer' && ai.active).length === 0) ais.push({ answer: 'Bill Payer' });
+    return ais;
+  };
+
+  handleFormSubmit = async (data) => {
+    const { reset: resetForm, addTransaction } = this.props;
+    const submitData = data;
+
+    submitData.cashDate = moment.utc(data.cashDate);
+    submitData.batchNumber = String(data.batchNumber);
+    submitData.amount = Number(String(data.amount).replace(/[^\d.-]/g, ''));
+    submitData.cashType = String(data.cashType);
+    submitData.cashDescription = String(data.cashDescription);
+    submitData.companyCode = 'TTIC';
+    submitData.policy = this.props.policy;
+
+    await addTransaction(submitData);
+    resetForm();
+  };
+
+  amountFormatter = cell => (cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '');
+
+  dateFormatter = cell => `${cell.substring(0, 10)}`;
+
   render() {
     const {
       cashDescriptionOptions,
       cashTypeAnswers,
       handleSubmit,
+      paymentHistory,
       pristine,
       policy,
       policy: { additionalInterests },
       billingOptions,
       submitting,
       reset: resetForm,
-      cashTypeValue
+      cashTypeValue,
+      sortedAdditionalInterests
     } = this.props;
 
-    setRank(additionalInterests);
-    this.setIsActive(additionalInterests);
-
-    const paymentHistory = _.orderBy(this.props.paymentHistory || [], ['date', 'createdAt'], ['desc', 'desc']);
-
-    paymentHistory.forEach((payment) => {
-      payment.amountDisplay = payment.amount.$numberDecimal;
-    });
-
     const validAdditionalInterestTypes = this.checkValidTypes(additionalInterests, this.state.selectedAI || {});
-
     const cashDescriptionAnswers = cashDescriptionOptions[cashTypeValue] || [];
 
     return (
@@ -410,15 +396,9 @@ export class MortgageBilling extends Component {
                   <h3 className="flex-child">Payments</h3>
                 </div>
                 <div className="payment-summary grid">
-                  <div className="table-view">
-                    <BootstrapTable className="" data={paymentHistory} striped hover>
-                      <TableHeaderColumn isKey dataField="date" dataFormat={this.dateFormatter} className="date" columnClassName="date" width="150" dataSort>Date</TableHeaderColumn>
-                      <TableHeaderColumn dataField="type" className="type" columnClassName="type" dataSort width="150" >Type</TableHeaderColumn>
-                      <TableHeaderColumn dataField="description" className="description" columnClassName="description" dataSort>Description</TableHeaderColumn>
-                      <TableHeaderColumn dataField="batch" className="note" columnClassName="note" dataSort width="200" >Note</TableHeaderColumn>
-                      <TableHeaderColumn dataField="amountDisplay" dataFormat={this.amountFormatter} className="amount" columnClassName="amount" width="150" dataSort dataAlign="right">Amount</TableHeaderColumn>
-                    </BootstrapTable>
-                  </div>
+
+                  <PaymentHistoryTable paymentHistory={paymentHistory} />
+
                   <dl className="total">
                     <div>
                       {this.props.summaryLedger && this.props.summaryLedger.cashReceived && `Payments Received ${this.amountFormatter(this.props.summaryLedger.cashReceived.$numberDecimal || '0')}`} <br />
@@ -437,44 +417,13 @@ export class MortgageBilling extends Component {
                     <button tabIndex="0" disabled={(policy && (_.filter(policy.additionalInterests, ai => ai.type === 'Bill Payer' && ai.active).length > 0 || _.filter(policy.additionalInterests, ai => ai.type === 'Premium Finance' && ai.active).length > 0))} onClick={() => this.addAdditionalInterest('Bill Payer')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
                   </div>
                   <ul className="results result-cards">
-                    {additionalInterests && _.sortBy(additionalInterests, ['sortInactive', 'rank', 'order']).map((ai, index) => (
-                      <li key={index}>
-                        {ai.active &&
-                          <a onKeyPress={event => this.editAIOnEnter(event, ai)} onClick={() => this.editAdditionalInterest(ai)}>
-                            {/* add className based on type - i.e. mortgagee could have class of mortgagee */}
-                            <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {ai.order + 1}</label></div>
-                            <section><h4>{ai.name1}&nbsp;{ai.name2}</h4>
-                              <p className="address">
-                                {`${ai.mailingAddress.address1},
-                                  ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city},
-                                  ${ai.mailingAddress.state}
-                                  ${ai.mailingAddress.zip}`}
-                              </p>
-                            </section>
-                            <div className="ref-number">
-                              <label htmlFor="ref-number">Reference Number</label>
-                              <span>{` ${ai.referenceNumber || ' - '}`}</span>
-                            </div>
-                          </a>
-                        }
-                        {!ai.active &&
-                          <a style={{ cursor: 'not-allowed' }}>
-                            <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {'Inactive'}</label></div>
-                            <section><h4>{ai.name1}&nbsp;{ai.name2} (Inactive)</h4>
-                              <p className="address">
-                                {`${ai.mailingAddress.address1},
-                                  ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city},
-                                  ${ai.mailingAddress.state}
-                                  ${ai.mailingAddress.zip}`}
-                              </p>
-                            </section>
-                            <div className="ref-number">
-                              <label htmlFor="ref-number">Reference Number</label>
-                              <span>{` ${ai.referenceNumber || ' - '}`}</span>
-                            </div>
-                          </a>
-                        }
-                      </li>
+                    {sortedAdditionalInterests.map(ai => (
+                      <AdditionalInterestCard
+                        key={ai._id}
+                        ai={ai}
+                        handleOnEnter={this.editAIOnEnter}
+                        handleClick={this.editAdditionalInterest}
+                      />
                     ))}
                   </ul>
                 </div>
@@ -527,10 +476,11 @@ const mapStateToProps = state => ({
   summaryLedger: state.policyState.summaryLedger,
   policy: state.policyState.policy,
   policyID: state.policyState.policyID,
-  paymentHistory: state.policyState.paymentHistory,
+  paymentHistory: getFormattedPaymentHistory(state),
   service: state.service,
   cashTypeAnswers: getCashTypeAnswers(state),
   cashDescriptionOptions: getCashDescriptionOptions(state),
+  sortedAdditionalInterests: getSortedAdditionalInterests(state),
   questions: state.questions,
   tasks: state.cg
 });

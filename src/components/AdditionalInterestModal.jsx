@@ -7,10 +7,10 @@ import { reduxForm, Field, propTypes, initialize, reset } from 'redux-form';
 import { Input, Select, Phone, SelectTypeAhead, SelectInteger } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 import Loader from '@exzeo/core-ui/lib/Loader';
-import { getTopMortgageeAnswers } from '../../state/selectors/questions.selectors';
-import { ADDITIONAL_INTERESTS } from '../../constants/quote';
-import { setAppState } from '../../state/actions/appStateActions';
-import { getGroupedAdditionalInterests, getSortedAdditionalInterests } from '../../state/selectors/quote.selectors';
+import { getTopMortgageeAnswers } from '../state/selectors/questions.selectors';
+import { ADDITIONAL_INTERESTS } from '../constants/additionalInterests';
+import { setAppState } from '../state/actions/appStateActions';
+import { getGroupedAdditionalInterests, getSortedAdditionalInterests } from '../state/selectors/quote.selectors';
 
 export const checkAdditionalInterestForName = aiType => aiType === 'Additional Insured' || aiType === 'Additional Interest' || aiType === 'Bill Payer';
 
@@ -43,7 +43,7 @@ export class AdditionalInterestModal extends React.Component {
 
   handleFormSubmit = async (data, dispatch, formProps) => {
     const {
-      appState, entity, setAppStateAction, addAdditionalInterestType, isEditing
+      appState, entity, setAppStateAction, isEditing
     } = formProps;
 
     const workflowId = appState.instanceId;
@@ -61,7 +61,7 @@ export class AdditionalInterestModal extends React.Component {
       referenceNumber: data.referenceNumber || '',
       order: data.order,
       active: true,
-      type: addAdditionalInterestType,
+      type: data.type,
       phoneNumber: String(data.phoneNumber).length > 0 ? String(data.phoneNumber).replace(/[^\d]/g, '') : '',
       mailingAddress: {
         address1: data.address1,
@@ -76,7 +76,7 @@ export class AdditionalInterestModal extends React.Component {
       }
     };
 
-    const isMortgagee = addAdditionalInterestType === ADDITIONAL_INTERESTS.mortgagee;
+    const isMortgagee = data.type === ADDITIONAL_INTERESTS.mortgagee;
     let additionalInterests;
 
     if (isEditing) {
@@ -242,12 +242,12 @@ export class AdditionalInterestModal extends React.Component {
               {isPolicy &&
               <div className="flex-form">
                 <Field
-                  name="aiType"
+                  name="type"
                   dataTest="aiType"
                   label="Type"
                   component={Select}
                   answers={validAdditionalInterestTypes}
-                  validations={validation.isRequired}
+                  validate={validation.isRequired}
                 />
               </div>
               }
