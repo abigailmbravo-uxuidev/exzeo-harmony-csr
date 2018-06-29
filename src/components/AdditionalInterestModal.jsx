@@ -62,7 +62,7 @@ export class AdditionalInterestModal extends React.Component {
       order: data.order,
       active: true,
       type: data.type,
-      phoneNumber: String(data.phoneNumber).length > 0 ? String(data.phoneNumber).replace(/[^\d]/g, '') : '',
+      phoneNumber: String(data.phoneNumber).length > 0 ? data.phoneNumber : '',
       mailingAddress: {
         address1: data.address1,
         address2: data.address2,

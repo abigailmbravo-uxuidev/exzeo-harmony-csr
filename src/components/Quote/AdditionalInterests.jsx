@@ -17,14 +17,14 @@ import normalizePhone from '../Form/normalizePhone';
 import QuoteBaseConnect from '../../containers/Quote';
 import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';
-import AdditionalInterestCard from "../AdditionalInterestCard";
+import AdditionalInterestCard from '../AdditionalInterestCard';
 
 export class AdditionalInterests extends Component {
   state = {
     addAdditionalInterestType: '',
     isEditingAI: false,
-    selectedAI: null,
-    showAdditionalInterestModal: false,
+    selectedAI: {},
+    showAdditionalInterestModal: false
   };
 
   componentDidMount() {
@@ -138,7 +138,7 @@ export class AdditionalInterests extends Component {
     this.setState({
       showAdditionalInterestModal: true,
       addAdditionalInterestType: type,
-      selectedAI: null
+      selectedAI: { type, mailingAddress: {} }
     });
   };
 
@@ -187,31 +187,29 @@ export class AdditionalInterests extends Component {
         };
       }
       return {
-        initialValues,
+        ...initialValues,
         order: groupedAdditionalInterests[addAdditionalInterestType].length
       };
-
-    } else {
-      const mortgageeAnswers = getAnswers('mortgagee', questions);
-      const mortgagee = mortgageeAnswers.find(ai => ai.AIName1 === selectedAI.name1 && ai.AIAddress1 === selectedAI.mailingAddress.address1);
-
-      return {
-        mortgagee,
-        _id: selectedAI._id, // eslint-disable-line
-        name1: selectedAI.name1,
-        name2: selectedAI.name2,
-        phoneNumber: String(selectedAI.phoneNumber).length > 0 ? normalizePhone(String(selectedAI.phoneNumber)) : '',
-        address1: selectedAI.mailingAddress.address1,
-        address2: selectedAI.mailingAddress.address2,
-        city: selectedAI.mailingAddress.city,
-        state: selectedAI.mailingAddress.state,
-        zip: String(selectedAI.mailingAddress.zip),
-        referenceNumber: selectedAI.referenceNumber,
-        type: selectedAI.type,
-        aiType: selectedAI.type,
-        order: selectedAI.order
-      };
     }
+    const mortgageeAnswers = getAnswers('mortgagee', questions);
+    const mortgagee = mortgageeAnswers.find(ai => ai.AIName1 === selectedAI.name1 && ai.AIAddress1 === selectedAI.mailingAddress.address1);
+
+    return {
+      mortgagee,
+        _id: selectedAI._id, // eslint-disable-line
+      name1: selectedAI.name1,
+      name2: selectedAI.name2,
+      phoneNumber: String(selectedAI.phoneNumber).length > 0 ? String(selectedAI.phoneNumber) : '',
+      address1: selectedAI.mailingAddress.address1,
+      address2: selectedAI.mailingAddress.address2,
+      city: selectedAI.mailingAddress.city,
+      state: selectedAI.mailingAddress.state,
+      zip: String(selectedAI.mailingAddress.zip),
+      referenceNumber: selectedAI.referenceNumber,
+      type: selectedAI.type,
+      aiType: selectedAI.type,
+      order: selectedAI.order
+    };
   };
 
   hideAdditionalInterestModal = () => {
@@ -254,14 +252,14 @@ export class AdditionalInterests extends Component {
       name: 'hasUserEnteredData',
       data: { answer: 'Yes' }
     },
-      {
-        name: 'askadditionalInterests',
-        data: { additionalInterests: modifiedAIs }
-      },
-      {
-        name: 'moveTo',
-        data: { key: 'additionalInterests' }
-      }
+    {
+      name: 'askadditionalInterests',
+      data: { additionalInterests: modifiedAIs }
+    },
+    {
+      name: 'moveTo',
+      data: { key: 'additionalInterests' }
+    }
     ];
 
     return batchCompleteTask(appState.modelName, workflowId, steps)
@@ -283,7 +281,9 @@ export class AdditionalInterests extends Component {
         this.setState({
           isDeleting: false,
           showAdditionalInterestModal: false,
-          addAdditionalInterestType: ''
+          addAdditionalInterestType: '',
+          isEditingAI: false,
+          selectedAI: {}
         });
       });
   };
