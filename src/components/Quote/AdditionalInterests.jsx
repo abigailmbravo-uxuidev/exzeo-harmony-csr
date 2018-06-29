@@ -175,7 +175,7 @@ export class AdditionalInterests extends Component {
         city: '',
         state: '',
         zip: '',
-        referenceNumber: ''
+        referenceNumber: '',
         aiType: addAdditionalInterestType,
         type: addAdditionalInterestType
       };
