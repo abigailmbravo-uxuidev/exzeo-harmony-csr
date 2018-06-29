@@ -12,7 +12,6 @@ import { setAppState } from '../../state/actions/appStateActions';
 import { getLatestQuote } from '../../state/actions/quoteStateActions';
 import { getBillingOptions, saveBillingInfo } from '../../state/actions/serviceActions';
 import { getGroupedAdditionalInterests, getSortedAdditionalInterests, checkQuoteState } from '../../state/selectors/quote.selectors';
-import normalizePhone from '../Form/normalizePhone';
 
 import QuoteBaseConnect from '../../containers/Quote';
 import AIModal from '../AdditionalInterestModal';
@@ -199,7 +198,7 @@ export class AdditionalInterests extends Component {
         _id: selectedAI._id, // eslint-disable-line
       name1: selectedAI.name1,
       name2: selectedAI.name2,
-      phoneNumber: String(selectedAI.phoneNumber).length > 0 ? String(selectedAI.phoneNumber) : '',
+      phoneNumber: selectedAI.phoneNumber ? String(selectedAI.phoneNumber) : '',
       address1: selectedAI.mailingAddress.address1,
       address2: selectedAI.mailingAddress.address2,
       city: selectedAI.mailingAddress.city,
@@ -376,17 +375,13 @@ export class AdditionalInterests extends Component {
             <AIModal
               additionalInterests={quoteData.additionalInterests}
               addAdditionalInterestType={this.state.addAdditionalInterestType}
+              completeSubmit={this.handleAISubmit}
               deleteAdditionalInterest={this.deleteAdditionalInterest}
-              getMortgageeOrderAnswers={getMortgageeOrderAnswers}
-              getMortgageeOrderAnswersForEdit={getMortgageeOrderAnswersForEdit}
               hideModal={this.hideAdditionalInterestModal}
               initialValues={this.initAdditionalInterestModal()}
               isDeleting={this.state.isDeleting}
               isEditing={this.state.isEditingAI}
               selectedAI={this.state.selectedAI}
-              entity={quoteData}
-              completeSubmit={this.handleAISubmit}
-              isPolicy={false}
             />
           }
         </div>

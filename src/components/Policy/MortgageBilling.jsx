@@ -9,10 +9,6 @@ import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 
 import { getAnswers } from '../../utilities/forms';
 import {
-  getMortgageeOrderAnswers,
-  getMortgageeOrderAnswersForEdit
-} from '../../utilities/additionalInterests';
-import {
   getCashDescriptionOptions,
   getCashTypeAnswers,
   getFormattedPaymentHistory,
@@ -434,17 +430,14 @@ export class MortgageBilling extends Component {
             <AIModal
               additionalInterests={additionalInterests}
               addAdditionalInterestType={this.state.addAdditionalInterestType}
+              completeSubmit={this.handleAISubmit}
               deleteAdditionalInterest={this.deleteAdditionalInterest}
-              getMortgageeOrderAnswers={getMortgageeOrderAnswers}
-              getMortgageeOrderAnswersForEdit={getMortgageeOrderAnswersForEdit}
               hideModal={this.hideAdditionalInterestModal}
               initialValues={this.initAdditionalInterestModal()}
               isDeleting={this.state.isDeleting}
               isEditing={this.state.isEditingAI}
               selectedAI={this.state.selectedAI}
               validAdditionalInterestTypes={validAdditionalInterestTypes}
-              entity={policy}
-              completeSubmit={this.handleAISubmit}
               isPolicy
             />
           }

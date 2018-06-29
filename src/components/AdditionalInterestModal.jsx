@@ -3,10 +3,14 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import cloneDeep from 'lodash/cloneDeep';
-import { reduxForm, Field, propTypes, initialize, reset } from 'redux-form';
+import { reduxForm, Field, reset } from 'redux-form';
 import { Input, Select, Phone, SelectTypeAhead, SelectInteger } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 import Loader from '@exzeo/core-ui/lib/Loader';
+import {
+  getMortgageeOrderAnswers,
+  getMortgageeOrderAnswersForEdit
+} from '../utilities/additionalInterests';
 import { getTopMortgageeAnswers } from '../state/selectors/questions.selectors';
 import { ADDITIONAL_INTERESTS } from '../constants/additionalInterests';
 import { setAppState } from '../state/actions/appStateActions';
@@ -43,7 +47,7 @@ export class AdditionalInterestModal extends React.Component {
 
   handleFormSubmit = async (data, dispatch, formProps) => {
     const {
-      appState, entity, setAppStateAction, isEditing
+      appState, additionalInterests, setAppStateAction, isEditing
     } = formProps;
 
     const workflowId = appState.instanceId;
@@ -77,50 +81,47 @@ export class AdditionalInterestModal extends React.Component {
     };
 
     const isMortgagee = data.type === ADDITIONAL_INTERESTS.mortgagee;
-    let additionalInterests;
+    let updatedAdditionalInterests;
 
     if (isEditing) {
-      additionalInterests = (entity.additionalInterests || []).filter(ai => ai._id !== data._id);
+      updatedAdditionalInterests = (additionalInterests || []).filter(ai => ai._id !== data._id);
 
       if (isMortgagee && data.order !== formProps.initialValues.order) {
         // if user changed the order of mortgagee, make sure we swap the order of mortgagee that currently holds that order
-        additionalInterests.forEach((ai) => {
+        updatedAdditionalInterests.forEach((ai) => {
           if (ai.type === ADDITIONAL_INTERESTS.mortgagee && ai.order === data.order) {
             ai.order = formProps.initialValues.order;
           }
         });
       }
     } else {
-      additionalInterests = cloneDeep(entity.additionalInterests) || [];
+      updatedAdditionalInterests = cloneDeep(additionalInterests) || [];
     }
-    additionalInterests.push(aiData);
+    updatedAdditionalInterests.push(aiData);
 
-    formProps.completeSubmit(additionalInterests, aiData);
+    await formProps.completeSubmit(updatedAdditionalInterests, aiData);
   };
 
   render() {
     const {
+      additionalInterests,
+      addAdditionalInterestType,
+      deleteAdditionalInterest,
       handleSubmit,
       hideModal,
-      questions,
-      additionalInterests,
-      submitting,
-      addAdditionalInterestType,
+      isDeleting,
       isEditing,
       isPolicy,
-      getMortgageeOrderAnswers,
-      getMortgageeOrderAnswersForEdit,
-      deleteAdditionalInterest,
-      validAdditionalInterestTypes,
+      mortgageeAnswers,
+      questions,
       selectedAI,
-      isDeleting,
-      mortgageeAnswers
+      submitting,
+      validAdditionalInterestTypes
     } = this.props;
 
     return (
       <div className="modal" style={this.modalStyle}>
         {(submitting || isDeleting) && <Loader />}
-
         <form
           id={isEditing ? 'AdditionalInterestEditModal' : 'AdditionalInterestModal'}
           className={classNames('AdditionalInterestModal', { [selectedAI.type]: isEditing, [addAdditionalInterestType]: !isEditing })}
@@ -229,14 +230,14 @@ export class AdditionalInterestModal extends React.Component {
                 }
 
                 {!isEditing && addAdditionalInterestType === 'Mortgagee' &&
-                  <Field
-                    name="order"
-                    dataTest="order"
-                    component={SelectInteger}
-                    label="Order"
-                    validate={validation.isRequired}
-                    answers={getMortgageeOrderAnswers(questions, additionalInterests)}
-                  />
+                <Field
+                  name="order"
+                  dataTest="order"
+                  component={SelectInteger}
+                  label="Order"
+                  validate={validation.isRequired}
+                  answers={getMortgageeOrderAnswers(questions, additionalInterests)}
+                />
                 }
               </div>
               {isPolicy &&
@@ -267,15 +268,11 @@ export class AdditionalInterestModal extends React.Component {
 }
 
 AdditionalInterestModal.propTypes = {
-  ...propTypes,
-  verify: PropTypes.func.isRequired,
-  appState: PropTypes.shape({
-    modelName: PropTypes.string,
-    data: PropTypes.shape({
-      recalc: PropTypes.bool,
-      submitting: PropTypes.bool
-    })
-  })
+  completeSubmit: PropTypes.func.isRequired,
+};
+
+AdditionalInterestModal.defaultProps = {
+  isPolicy: false
 };
 
 const mapStateToProps = state => ({
@@ -289,7 +286,6 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   setAppStateAction: setAppState,
-  initializeForm: initialize,
   resetForm: reset
 })(reduxForm({
   form: 'AdditionalInterestModal',
