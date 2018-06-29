@@ -6,7 +6,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import _ from 'lodash';
 import moment from 'moment';
 import { getAnswers } from '../../utilities/forms';
-import { getMortgageeOrderAnswers, getMortgageeOrderAnswersForEdit } from "../../utilities/additionalInterests";
+import { getMortgageeOrderAnswers, getMortgageeOrderAnswersForEdit } from '../../utilities/additionalInterests';
 import { getCashDescriptionOptions, getCashTypeAnswers } from '../../state/selectors/policy.selectors';
 
 import Inputs from '@exzeo/core-ui/lib/Input';
@@ -129,49 +129,9 @@ export class MortgageBilling extends Component {
     });
   };
 
-  handleAISubmit = async (data, dispatch, props) => {
-    const { getPolicy, createTransaction } = this.props;
-    const { policy } = props;
-
-    const additionalInterests = policy.additionalInterests || [];
-    const type = data.aiType || this.state.addAdditionalInterestType;
-
-    let { order } = data;
-
-    const isMortgagee = type === 'Mortgagee';
-    // type mortgagee allows the user to select order and the AI edit will pass in order
-    if (!isMortgagee && !data._id) {
-      order = additionalInterests.filter(ai => ai.type === type && ai.active).length === 0 ? 0 : 1;
-    }
-    // remove any existing items before submission
-    const modifiedAIs = _.cloneDeep(additionalInterests);
-
-    _.remove(modifiedAIs, ai => ai._id === data._id); // eslint-disable-line
-
-    const aiData = {
-      additionalInterestId: data._id, // eslint-disable-line
-      name1: data.name1,
-      name2: data.name2,
-      referenceNumber: data.referenceNumber || '',
-      order,
-      active: true,
-      type,
-      phoneNumber: String(data.phoneNumber).length > 0 ? String(data.phoneNumber).replace(/[^\d]/g, '') : '',
-      mailingAddress: {
-        address1: data.address1,
-        address2: data.address2,
-        city: data.city,
-        state: data.state,
-        zip: data.zip,
-        country: {
-          code: 'USA',
-          displayText: 'United States of America'
-        }
-      }
-    };
-
-    modifiedAIs.push(aiData);
-    setRank(modifiedAIs);
+  handleAISubmit = async (additionalInterests, aiData) => {
+    const { getPolicy, createTransaction, policy } = this.props;
+    const { isEditingAI } = this.state;
 
     const offset = new Date(policy.effectiveDate).getTimezoneOffset() / 60;
 
@@ -179,8 +139,8 @@ export class MortgageBilling extends Component {
       ...aiData,
       ...policy,
       endorsementDate: moment(policy.effectiveDate).utcOffset(offset),
-      transactionType: data._id ? 'AI Update' : 'AI Addition', // eslint-disable-line
-      additionalInterests: modifiedAIs
+      transactionType: isEditingAI ? 'AI Update' : 'AI Addition', // eslint-disable-line
+      additionalInterests
     };
 
     await createTransaction(submitData);
@@ -536,8 +496,8 @@ export class MortgageBilling extends Component {
               isEditing={this.state.isEditingAI}
               selectedAI={this.state.selectedAI}
               validAdditionalInterestTypes={validAdditionalInterestTypes}
-              policy={policy}
-              verify={this.handleAISubmit}
+              entity={policy}
+              completeSubmit={this.handleAISubmit}
               isPolicy
             />
           }

@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { reduxForm, getFormValues } from 'redux-form';
-import { ADDITIONAL_INTERESTS } from "../../constants/quote";
+import { ADDITIONAL_INTERESTS } from '../../constants/quote';
 import { getAnswers } from '../../utilities/forms';
-import { getMortgageeOrderAnswers, getMortgageeOrderAnswersForEdit } from "../../utilities/additionalInterests";
+import { getMortgageeOrderAnswers, getMortgageeOrderAnswersForEdit } from '../../utilities/additionalInterests';
 import { batchCompleteTask } from '../../state/actions/cgActions';
 import { getUIQuestions } from '../../state/actions/questionsActions';
 import { setAppState } from '../../state/actions/appStateActions';
 import { getLatestQuote } from '../../state/actions/quoteStateActions';
 import { getBillingOptions, saveBillingInfo } from '../../state/actions/serviceActions';
-import { getGroupedAdditionalInterests, getSortedAdditionalInterests, checkQuoteState } from "../../state/selectors/quote.selectors";
+import { getGroupedAdditionalInterests, getSortedAdditionalInterests, checkQuoteState } from '../../state/selectors/quote.selectors';
 import normalizePhone from '../Form/normalizePhone';
 
 import QuoteBaseConnect from '../../containers/Quote';
@@ -23,7 +23,7 @@ export class AdditionalInterests extends Component {
     addAdditionalInterestType: null,
     selectedAI: {},
     showAdditionalInterestModal: false,
-    isEditingAI: false,
+    isEditingAI: false
   };
 
   componentDidMount() {
@@ -97,7 +97,7 @@ export class AdditionalInterests extends Component {
       showAdditionalInterestModal: true,
       addAdditionalInterestType: type,
       selectedAI: {}
-    })
+    });
   };
 
   editAIOnEnter = (event, ai) => {
@@ -119,7 +119,7 @@ export class AdditionalInterests extends Component {
       addAdditionalInterestType: ai.type,
       isEditingAI: true,
       showAdditionalInterestModal: true,
-      selectedAI: ai,
+      selectedAI: ai
     });
   };
 
@@ -145,14 +145,12 @@ export class AdditionalInterests extends Component {
       }
       return {
         order: groupedAdditionalInterests[addAdditionalInterestType].length
-      }
+      };
     }
 
     if (selectedAI) {
       const mortgageeAnswers = getAnswers('mortgagee', questions);
-      const mortgagee = mortgageeAnswers.find(ai => {
-        return ai.AIName1 === selectedAI.name1 && ai.AIAddress1 === selectedAI.mailingAddress.address1
-      });
+      const mortgagee = mortgageeAnswers.find(ai => ai.AIName1 === selectedAI.name1 && ai.AIAddress1 === selectedAI.mailingAddress.address1);
 
       return {
         mortgagee,
@@ -187,62 +185,12 @@ export class AdditionalInterests extends Component {
     };
   };
 
-  handleFormSubmit = async (data, dispatch, formProps) => {
-    const { appState, quoteData, setAppState, batchCompleteTask, getLatestQuote, groupedAdditionalInterests } = this.props;
-    const { addAdditionalInterestType, isEditingAI } = this.state;
-
+  handleFormSubmit = async (additionalInterests) => {
+    const {
+      appState, quoteData, batchCompleteTask, getLatestQuote, setAppState
+    } = this.props;
+    const { addAdditionalInterestType } = this.state;
     const workflowId = appState.instanceId;
-    setAppState(
-      appState.modelName,
-      workflowId, {
-        ...appState.data
-      }
-    );
-
-    let aiData = {
-      _id: data._id, // eslint-disable-line
-      name1: data.name1,
-      name2: data.name2,
-      referenceNumber: data.referenceNumber || '',
-      order: data.order,
-      active: true,
-      type: addAdditionalInterestType,
-      phoneNumber: String(data.phoneNumber).length > 0 ? String(data.phoneNumber).replace(/[^\d]/g, '') : '',
-      mailingAddress: {
-        address1: data.address1,
-        address2: data.address2,
-        city: data.city,
-        state: data.state,
-        zip: data.zip,
-        country: {
-          code: 'USA',
-          displayText: 'United States of America'
-        }
-      }
-    };
-
-    const isMortgagee = addAdditionalInterestType === ADDITIONAL_INTERESTS.mortgagee;
-    let additionalInterests;
-
-    if (isEditingAI) {
-      additionalInterests = (quoteData.additionalInterests || []).filter(ai => ai._id !== data._id);
-
-      if (!isMortgagee) {
-        aiData.order = groupedAdditionalInterests[addAdditionalInterestType].length;
-      } else {
-        if (data.order !== formProps.initialValues.order) {
-          // if user changed the order of mortgagee, make sure we swap the order of mortgagee that currently holds that order
-          additionalInterests.forEach(ai => {
-            if (ai.type === ADDITIONAL_INTERESTS.mortgagee && ai.order === data.order) {
-              ai.order = formProps.initialValues.order;
-            }
-          });
-        }
-      }
-    } else {
-      additionalInterests = _.cloneDeep(quoteData.additionalInterests) || [];
-    }
-    additionalInterests.push(aiData);
 
     const steps = [
       {
@@ -276,19 +224,21 @@ export class AdditionalInterests extends Component {
           }
         );
 
-        this.hideAdditionalInterestModal()
+        this.hideAdditionalInterestModal();
       });
   };
 
   deleteAdditionalInterest = async (selectedAdditionalInterest) => {
-    const { appState, quoteData, setAppState, batchCompleteTask, getLatestQuote } = this.props;
+    const {
+      appState, quoteData, setAppState, batchCompleteTask, getLatestQuote
+    } = this.props;
     const workflowId = appState.instanceId;
     setAppState(
       appState.modelName,
       workflowId, {
         ...appState.data,
         deleteAdditionalInterestType: selectedAdditionalInterest.type,
-        showAdditionalInterestModal: appState.data.showAdditionalInterestModal,
+        showAdditionalInterestModal: appState.data.showAdditionalInterestModal
       }
     );
     // For now, hijacking appState calls with local state where we can.
@@ -309,14 +259,14 @@ export class AdditionalInterests extends Component {
       name: 'hasUserEnteredData',
       data: { answer: 'Yes' }
     },
-      {
-        name: 'askadditionalInterests',
-        data: { additionalInterests: modifiedAIs }
-      },
-      {
-        name: 'moveTo',
-        data: { key: 'additionalInterests' }
-      }
+    {
+      name: 'askadditionalInterests',
+      data: { additionalInterests: modifiedAIs }
+    },
+    {
+      name: 'moveTo',
+      data: { key: 'additionalInterests' }
+    }
     ];
 
     return batchCompleteTask(appState.modelName, workflowId, steps)
@@ -330,7 +280,7 @@ export class AdditionalInterests extends Component {
             ...appState.data,
             selectedLink: 'additionalInterests',
             deleteAdditionalInterestType: selectedAdditionalInterest.type,
-            selectedMortgageeOption: null,
+            selectedMortgageeOption: null
           }
         );
 
@@ -339,12 +289,14 @@ export class AdditionalInterests extends Component {
           isDeleting: false,
           showAdditionalInterestModal: false,
           addAdditionalInterestType: ''
-        })
+        });
       });
   };
 
   render() {
-    const { quoteData, groupedAdditionalInterests, sortedAdditionalInterests, editingDisabled } = this.props;
+    const {
+      quoteData, groupedAdditionalInterests, sortedAdditionalInterests, editingDisabled
+    } = this.props;
     const { showAdditionalInterestModal } = this.state;
 
     if (!quoteData.rating) {
@@ -364,64 +316,69 @@ export class AdditionalInterests extends Component {
     return (
       <QuoteBaseConnect>
         <div className="route-content" id="AddAdditionalInterestPage">
-            <div className="scroll">
-              <div className="form-group survey-wrapper" role="group">
-                <h3>Additional Interests</h3>
-                <div className="button-group">
-                  <button
-                    className="btn btn-sm btn-secondary"
-                    onClick={() => this.addAdditionalInterest('Mortgagee')}
-                    disabled={groupedAdditionalInterests[ADDITIONAL_INTERESTS.mortgagee].length > 3 || editingDisabled}
-                    type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div>
-                  </button>
-                  <button
-                    className="btn btn-sm btn-secondary"
-                    onClick={() => this.addAdditionalInterest('Additional Insured')}
-                    disabled={(groupedAdditionalInterests[ADDITIONAL_INTERESTS.additionalInsured].length > 1) || editingDisabled}
-                    type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div>
-                  </button>
-                  <button
-                    className="btn btn-sm btn-secondary"
-                    onClick={() => this.addAdditionalInterest('Additional Interest')}
-                    disabled={(groupedAdditionalInterests[ADDITIONAL_INTERESTS.additionalInterest].length > 1) || editingDisabled}
-                    type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div>
-                  </button>
-                  <button
-                    onClick={() => this.addAdditionalInterest('Premium Finance')}
-                    disabled={(groupedAdditionalInterests[ADDITIONAL_INTERESTS.premiumFinance].length > 0 || groupedAdditionalInterests[ADDITIONAL_INTERESTS.billPayer].length > 0) || editingDisabled}
-                    className="btn btn-sm btn-secondary"
-                    type="button"><div><i className="fa fa-plus" /><span>Premium Finance</span></div>
-                  </button>
-                  <button
-                    className="btn btn-sm btn-secondary"
-                    onClick={() => this.addAdditionalInterest('Bill Payer')}
-                    disabled={(groupedAdditionalInterests[ADDITIONAL_INTERESTS.billPayer].length > 0 || groupedAdditionalInterests[ADDITIONAL_INTERESTS.premiumFinance].length > 0) || editingDisabled}
-                    type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div>
-                  </button>
-                </div>
-                <div className="results-wrapper">
-                  <ul className="results result-cards">
-                    {sortedAdditionalInterests.map(ai => (
-                      <li key={ai._id}>
-                        <a onKeyPress={this.editAIOnEnter} onClick={() => this.editAdditionalInterest(ai)}>
-                          {/* add className based on type - i.e. mortgagee could have class of mortgagee */}
-                          <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {ai.order + 1}</label></div>
-                          <section><h4>{ai.name1}&nbsp;{ai.name2}</h4><p className="address">{`${ai.mailingAddress.address1}, ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city}, ${ai.mailingAddress.state} ${ai.mailingAddress.zip}`}</p></section>
-                          <div className="ref-number">
-                            <label htmlFor="ref-number">Reference Number</label>
-                            <span>{`${ai.referenceNumber || '-'}`}</span>
-                          </div>
-                          <span className="edit-btn">
-                            <i className="fa fa-pencil-square" />
-                            <span>EDIT</span>
-                          </span>
-                        </a>
-                      </li>
+          <div className="scroll">
+            <div className="form-group survey-wrapper" role="group">
+              <h3>Additional Interests</h3>
+              <div className="button-group">
+                <button
+                  className="btn btn-sm btn-secondary"
+                  onClick={() => this.addAdditionalInterest('Mortgagee')}
+                  disabled={groupedAdditionalInterests[ADDITIONAL_INTERESTS.mortgagee].length > 3 || editingDisabled}
+                  type="button"
+                > <div><i className="fa fa-plus" /><span>Mortgagee</span></div>
+                </button>
+                <button
+                  className="btn btn-sm btn-secondary"
+                  onClick={() => this.addAdditionalInterest('Additional Insured')}
+                  disabled={(groupedAdditionalInterests[ADDITIONAL_INTERESTS.additionalInsured].length > 1) || editingDisabled}
+                  type="button"
+                ><div><i className="fa fa-plus" /><span>Additional Insured</span></div>
+                </button>
+                <button
+                  className="btn btn-sm btn-secondary"
+                  onClick={() => this.addAdditionalInterest('Additional Interest')}
+                  disabled={(groupedAdditionalInterests[ADDITIONAL_INTERESTS.additionalInterest].length > 1) || editingDisabled}
+                  type="button"
+                ><div><i className="fa fa-plus" /><span>Additional Interest</span></div>
+                </button>
+                <button
+                  onClick={() => this.addAdditionalInterest('Premium Finance')}
+                  disabled={(groupedAdditionalInterests[ADDITIONAL_INTERESTS.premiumFinance].length > 0 || groupedAdditionalInterests[ADDITIONAL_INTERESTS.billPayer].length > 0) || editingDisabled}
+                  className="btn btn-sm btn-secondary"
+                  type="button"
+                ><div><i className="fa fa-plus" /><span>Premium Finance</span></div>
+                </button>
+                <button
+                  className="btn btn-sm btn-secondary"
+                  onClick={() => this.addAdditionalInterest('Bill Payer')}
+                  disabled={(groupedAdditionalInterests[ADDITIONAL_INTERESTS.billPayer].length > 0 || groupedAdditionalInterests[ADDITIONAL_INTERESTS.premiumFinance].length > 0) || editingDisabled}
+                  type="button"
+                ><div><i className="fa fa-plus" /><span>Billpayer</span></div>
+                </button>
+              </div>
+              <div className="results-wrapper">
+                <ul className="results result-cards">
+                  {sortedAdditionalInterests.map(ai => (
+                    <li key={ai._id}>
+                      <a onKeyPress={this.editAIOnEnter} onClick={() => this.editAdditionalInterest(ai)}>
+                        {/* add className based on type - i.e. mortgagee could have class of mortgagee */}
+                        <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {ai.order + 1}</label></div>
+                        <section><h4>{ai.name1}&nbsp;{ai.name2}</h4><p className="address">{`${ai.mailingAddress.address1}, ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city}, ${ai.mailingAddress.state} ${ai.mailingAddress.zip}`}</p></section>
+                        <div className="ref-number">
+                          <label htmlFor="ref-number">Reference Number</label>
+                          <span>{`${ai.referenceNumber || '-'}`}</span>
+                        </div>
+                        <span className="edit-btn">
+                          <i className="fa fa-pencil-square" />
+                          <span>EDIT</span>
+                        </span>
+                      </a>
+                    </li>
                     ))}
-                  </ul>
-                </div>
+                </ul>
               </div>
             </div>
+          </div>
 
           {showAdditionalInterestModal &&
             <AIModal
@@ -435,8 +392,8 @@ export class AdditionalInterests extends Component {
               isDeleting={this.state.isDeleting}
               isEditing={this.state.isEditingAI}
               selectedAI={this.state.selectedAI}
-              quoteData={quoteData}
-              verify={this.handleFormSubmit}
+              entity={quoteData}
+              completeSubmit={this.handleFormSubmit}
               isPolicy={false}
             />
           }
@@ -468,7 +425,7 @@ const mapStateToProps = state => ({
   quoteData: state.service.quote || defaultObj,
   sortedAdditionalInterests: getSortedAdditionalInterests(state),
   groupedAdditionalInterests: getGroupedAdditionalInterests(state),
-  tasks: state.cg,
+  tasks: state.cg
 });
 
 export default connect(mapStateToProps, {

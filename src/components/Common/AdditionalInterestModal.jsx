@@ -2,11 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
+import cloneDeep from 'lodash/cloneDeep';
 import { reduxForm, Field, propTypes, initialize, reset } from 'redux-form';
 import { Input, Select, Phone, SelectTypeAhead, SelectInteger } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 import Loader from '@exzeo/core-ui/lib/Loader';
-import { getTopMortgageeAnswers } from "../../state/selectors/questions.selectors";
+import { getTopMortgageeAnswers } from '../../state/selectors/questions.selectors';
+import { ADDITIONAL_INTERESTS } from '../../constants/quote';
+import { setAppState } from '../../state/actions/appStateActions';
+import { getGroupedAdditionalInterests, getSortedAdditionalInterests } from '../../state/selectors/quote.selectors';
 
 export const checkAdditionalInterestForName = aiType => aiType === 'Additional Insured' || aiType === 'Additional Interest' || aiType === 'Bill Payer';
 
@@ -20,27 +24,83 @@ export class AdditionalInterestModal extends React.Component {
   setMortgageeValues = (value) => {
     const { change } = this.props;
     if (value) {
-        change('name1', value.AIName1);
-        change('name2', value.AIName2);
-        change('address1', value.AIAddress1);
-        change('city', value.AICity);
-        change('state', value.AIState);
-        change('zip', value.AIZip)
+      change('name1', value.AIName1);
+      change('name2', value.AIName2);
+      change('address1', value.AIAddress1);
+      change('city', value.AICity);
+      change('state', value.AIState);
+      change('zip', value.AIZip);
     } else {
-        change('name1', '');
-        change('name2', '');
-        change('address1', '');
-        change('city', '');
-        change('state', '');
-        change('zip', '')
+      change('name1', '');
+      change('name2', '');
+      change('address1', '');
+      change('city', '');
+      change('state', '');
+      change('zip', '');
     }
     return value;
+  };
+
+  handleFormSubmit = async (data, dispatch, formProps) => {
+    const {
+      appState, entity, setAppStateAction, addAdditionalInterestType, isEditing
+    } = formProps;
+
+    const workflowId = appState.instanceId;
+    setAppStateAction(
+      appState.modelName,
+      workflowId, {
+        ...appState.data
+      }
+    );
+
+    const aiData = {
+      _id: data._id, // eslint-disable-line
+      name1: data.name1,
+      name2: data.name2,
+      referenceNumber: data.referenceNumber || '',
+      order: data.order,
+      active: true,
+      type: addAdditionalInterestType,
+      phoneNumber: String(data.phoneNumber).length > 0 ? String(data.phoneNumber).replace(/[^\d]/g, '') : '',
+      mailingAddress: {
+        address1: data.address1,
+        address2: data.address2,
+        city: data.city,
+        state: data.state,
+        zip: data.zip,
+        country: {
+          code: 'USA',
+          displayText: 'United States of America'
+        }
+      }
+    };
+
+    const isMortgagee = addAdditionalInterestType === ADDITIONAL_INTERESTS.mortgagee;
+    let additionalInterests;
+
+    if (isEditing) {
+      additionalInterests = (entity.additionalInterests || []).filter(ai => ai._id !== data._id);
+
+      if (isMortgagee && data.order !== formProps.initialValues.order) {
+        // if user changed the order of mortgagee, make sure we swap the order of mortgagee that currently holds that order
+        additionalInterests.forEach((ai) => {
+          if (ai.type === ADDITIONAL_INTERESTS.mortgagee && ai.order === data.order) {
+            ai.order = formProps.initialValues.order;
+          }
+        });
+      }
+    } else {
+      additionalInterests = cloneDeep(entity.additionalInterests) || [];
+    }
+    additionalInterests.push(aiData);
+
+    formProps.completeSubmit(additionalInterests, aiData);
   };
 
   render() {
     const {
       handleSubmit,
-      verify,
       hideModal,
       questions,
       additionalInterests,
@@ -59,12 +119,13 @@ export class AdditionalInterestModal extends React.Component {
 
     return (
       <div className="modal" style={this.modalStyle}>
+        {(submitting || isDeleting) && <Loader />}
+
         <form
           id={isEditing ? 'AdditionalInterestEditModal' : 'AdditionalInterestModal'}
           className={classNames('AdditionalInterestModal', { [selectedAI.type]: isEditing, [addAdditionalInterestType]: !isEditing })}
-          onSubmit={handleSubmit(verify)}
+          onSubmit={handleSubmit(this.handleFormSubmit)}
         >
-          {(submitting || isDeleting) && <Loader />}
           <div className="card">
             <div className="card-header">
               <h4><i className={`fa fa-circle ${addAdditionalInterestType}`} /> {addAdditionalInterestType}</h4>
@@ -79,7 +140,8 @@ export class AdditionalInterestModal extends React.Component {
                 valueKey="displayText"
                 labelKey="displayText"
                 answers={mortgageeAnswers}
-                normalize={this.setMortgageeValues} />
+                normalize={this.setMortgageeValues}
+              />
               }
               <Field
                 name="name1"
@@ -216,18 +278,20 @@ AdditionalInterestModal.propTypes = {
   })
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
+  appState: state.appState,
   questions: state.questions,
   tasks: state.cg,
   mortgageeAnswers: getTopMortgageeAnswers(state),
+  sortedAdditionalInterests: getSortedAdditionalInterests(state),
+  groupedAdditionalInterests: getGroupedAdditionalInterests(state)
 });
 
-AdditionalInterestModal = connect(mapStateToProps, {
+export default connect(mapStateToProps, {
+  setAppStateAction: setAppState,
   initializeForm: initialize,
   resetForm: reset
 })(reduxForm({
   form: 'AdditionalInterestModal',
   enableReinitialize: true
 })(AdditionalInterestModal));
-
-export default AdditionalInterestModal;
