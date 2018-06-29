@@ -16,7 +16,9 @@ const PaymentHistoryTable = ({ paymentHistory }) => (
   </div>
 );
 
-PaymentHistoryTable.propTypes = {};
+PaymentHistoryTable.propTypes = {
+  paymentHistory: PropTypes.object
+};
 
 PaymentHistoryTable.defaultProps = {};
 

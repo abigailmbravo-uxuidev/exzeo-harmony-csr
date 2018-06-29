@@ -23,7 +23,7 @@ export class AdditionalInterests extends Component {
   state = {
     addAdditionalInterestType: '',
     isEditingAI: false,
-    selectedAI: {},
+    selectedAI: null,
     showAdditionalInterestModal: false,
   };
 
@@ -138,7 +138,7 @@ export class AdditionalInterests extends Component {
     this.setState({
       showAdditionalInterestModal: true,
       addAdditionalInterestType: type,
-      selectedAI: {}
+      selectedAI: null
     });
   };
 
@@ -165,17 +165,33 @@ export class AdditionalInterests extends Component {
     const mortgageeOrderAnswers = getMortgageeOrderAnswers(questions, quoteData.additionalInterests);
 
     if (!isEditingAI) {
+      const initialValues = {
+        _id: '',
+        name1: '',
+        name2: '',
+        phoneNumber: '',
+        address1: '',
+        address2: '',
+        city: '',
+        state: '',
+        zip: '',
+        referenceNumber: '',
+        aiType: addAdditionalInterestType,
+        type: addAdditionalInterestType
+      };
+
       if (addAdditionalInterestType === ADDITIONAL_INTERESTS.mortgagee) {
         return {
+          ...initialValues,
           order: mortgageeOrderAnswers[0].answer
         };
       }
       return {
+        initialValues,
         order: groupedAdditionalInterests[addAdditionalInterestType].length
       };
-    }
 
-    if (selectedAI) {
+    } else {
       const mortgageeAnswers = getAnswers('mortgagee', questions);
       const mortgagee = mortgageeAnswers.find(ai => ai.AIName1 === selectedAI.name1 && ai.AIAddress1 === selectedAI.mailingAddress.address1);
 
@@ -196,20 +212,6 @@ export class AdditionalInterests extends Component {
         order: selectedAI.order
       };
     }
-
-    return {
-      _id: '',
-      name1: '',
-      name2: '',
-      phoneNumber: '',
-      address1: '',
-      address2: '',
-      city: '',
-      state: '',
-      zip: '',
-      referenceNumber: '',
-      type: ''
-    };
   };
 
   hideAdditionalInterestModal = () => {
