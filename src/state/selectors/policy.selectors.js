@@ -2,7 +2,6 @@ import { createSelector } from 'reselect';
 import sortBy from 'lodash/sortBy';
 import cloneDeep from 'lodash/cloneDeep';
 import {applyAdditionalInterestRanking} from "../../utilities/additionalInterests";
-import {DEFAULT_ADDITIONAL_INTERESTS_MAP} from "../../constants/additionalInterests";
 import orderBy from "lodash/orderBy";
 
 const getPolicy = state => state.policyState.policy;

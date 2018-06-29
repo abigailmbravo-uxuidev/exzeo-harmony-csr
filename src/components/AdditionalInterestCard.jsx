@@ -30,7 +30,11 @@ const AdditionalInterestCard = ({ ai, handleOnEnter, handleClick }) => {
   );
 };
 
-AdditionalInterestCard.propTypes = {};
+AdditionalInterestCard.propTypes = {
+  ai: PropTypes.object,
+  handleOnEnter: PropTypes.func,
+  handleOnClick: PropTypes.func
+};
 
 AdditionalInterestCard.defaultProps = {};
 
