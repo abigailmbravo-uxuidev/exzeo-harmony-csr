@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { AdditionalInterestModal, setMortgageeValues, checkAdditionalInterestForName } from './AdditionalInterestModal';
+import ConnectedApp, { AdditionalInterestModal, checkAdditionalInterestForName } from './AdditionalInterestModal';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -11,6 +11,9 @@ const mockStore = configureStore(middlewares);
 describe('Testing AdditionalInterestModal component', () => {
   it('should test connected app', () => {
     const initialState = {
+      service: {
+        quote: {}
+      },
       cg: {
         bb: {
           data: {
@@ -150,15 +153,11 @@ describe('Testing AdditionalInterestModal component', () => {
       }
     };
     const wrapper = shallow(<AdditionalInterestModal store={store} {...props} />);
-    expect(wrapper.props().selectedAI).toEqual({
-      type: 'Mortgagee',
-      phoneNumber: '43543543535',
-      mailingAddress: {}
-    });
   });
 
   it('should test setMortgageeValues', () => {
     const initialState = {
+      service: { quote: {} },
       cg: {
         bb: {
           data: {
@@ -173,7 +172,7 @@ describe('Testing AdditionalInterestModal component', () => {
           selectedAI: null,
           showAdditionalInterestModal: false
         },
-        modelName: 'bb',
+        modelName: 'bb'
       },
       questions: {}
     };

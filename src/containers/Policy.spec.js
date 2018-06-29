@@ -64,9 +64,5 @@ describe('Testing Policy component', () => {
     const wrapper = shallow(<Policy store={store} {...props} />);
     expect(wrapper);
     wrapper.instance().componentWillReceiveProps();
-    changeEffectiveDate({}, props.dispatch, props);
-    reinstatePolicySubmit({}, props.dispatch, props);
-    showEffectiveDatePopUp(props);
-    hideEffectiveDatePopUp(props);
   });
 });
