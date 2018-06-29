@@ -383,7 +383,7 @@ export class AdditionalInterests extends Component {
               isEditing={this.state.isEditingAI}
               selectedAI={this.state.selectedAI}
               entity={quoteData}
-              completeSubmit={this.handleFormSubmit}
+              completeSubmit={this.handleAISubmit}
               isPolicy={false}
             />
           }
