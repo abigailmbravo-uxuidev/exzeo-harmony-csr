@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
 import { shallow, mount } from 'enzyme';
-import ConnectedApp, { Coverage, handleFormSubmit, handleInitialize, handleGetZipCodeSettings } from './index';
+import { Coverage, handleFormSubmit, handleInitialize, handleGetZipCodeSettings } from './index';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
@@ -355,9 +355,7 @@ describe('Testing Coverage component', () => {
       searchType: 'address'
     }));
 
-    const wrapper = mount(<Provider store={store} >
-      <Router><ConnectedApp {...props} /></Router>
-    </Provider>);
+    const wrapper = shallow(<Coverage {...props} />);
     expect(wrapper);
   });
 
@@ -474,7 +472,7 @@ describe('Testing Coverage component', () => {
           },
           active: true
         }]
-      },
+      }
     };
 
     handleFormSubmit({
@@ -482,7 +480,7 @@ describe('Testing Coverage component', () => {
     }, store.dispatch, props);
   });
 
-  const initialState = {}
+  const initialState = {};
   const store = mockStore(initialState);
   const props = {
     change() {},

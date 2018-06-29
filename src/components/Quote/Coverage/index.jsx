@@ -14,7 +14,7 @@ import { batchCompleteTask, startWorkflow } from '../../../state/actions/cgActio
 import { setAppState } from '../../../state/actions/appStateActions';
 import { getUIQuestions } from '../../../state/actions/questionsActions';
 import { getLatestQuote } from '../../../state/actions/quoteStateActions';
-import { checkQuoteState } from "../../../state/selectors/quote.selectors";
+import { checkQuoteState } from '../../../state/selectors/quote.selectors';
 import QuoteBaseConnect from '../../../containers/Quote';
 import Footer from '../../Common/Footer';
 import ProducedBy from './ProducedBy';
