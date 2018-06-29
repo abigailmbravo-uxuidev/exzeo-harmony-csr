@@ -55,8 +55,8 @@ describe('Testing AdditionalInterestModal component', () => {
           submitting: false
         }
       },
-      handleSubmit: fn => fn,
-      verify: fn => fn,
+      handleSubmit() {},
+      verify() {},
       quoteData: {
         AdditionalInterests: [{
           id: '049a50b23c21c2ae3',
@@ -111,8 +111,11 @@ describe('Testing AdditionalInterestModal component', () => {
     };
     const store = mockStore(initialState);
     const props = {
-      handleSubmit: fn => fn,
-      verify: fn => fn,
+      completeSubmit() {},
+      setAppStateAction() {},
+      change() {},
+      handleSubmit() {},
+      verify() {},
       selectedAI: {
         type: 'Mortgagee',
         phoneNumber: '43543543535',
@@ -150,9 +153,35 @@ describe('Testing AdditionalInterestModal component', () => {
           },
           active: true
         }]
+      },
+      entity: {
+        AdditionalInterests: [{
+          id: '049a50b23c21c2ae3',
+          type: 'Mortgagee',
+          order: 1,
+          name1: 'BB&T Home Mortgage',
+          referenceNumber: '1234567',
+          mailingAddress: {
+            address1: '5115 Garden Vale Ave',
+            city: 'Tampa',
+            state: 'FL',
+            county: 'Hillsborough',
+            zip: '33624',
+            country: {
+              code: 'USA',
+              displayText: 'United States of America'
+            }
+          },
+          active: true
+        }]
       }
     };
     const wrapper = shallow(<AdditionalInterestModal store={store} {...props} />);
+    const wi = wrapper.instance();
+
+    wi.setMortgageeValues(true);
+    wi.setMortgageeValues(false);
+    wi.handleFormSubmit({}, () => {}, props);
   });
 
   it('should test setMortgageeValues', () => {
@@ -197,8 +226,8 @@ describe('Testing AdditionalInterestModal component', () => {
           submitting: false
         }
       },
-      handleSubmit: fn => fn,
-      verify: fn => fn,
+      handleSubmit() {},
+      verify() {},
       quoteData: {
         AdditionalInterests: [{
           id: '049a50b23c21c2ae3',
