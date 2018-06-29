@@ -16,10 +16,6 @@ const PaymentHistoryTable = ({ paymentHistory }) => (
   </div>
 );
 
-PaymentHistoryTable.propTypes = {
-  paymentHistory: PropTypes.object
-};
-
 PaymentHistoryTable.defaultProps = {};
 
 export default PaymentHistoryTable;
