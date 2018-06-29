@@ -27,7 +27,9 @@ export const getGroupedAdditionalInterests = createSelector(
     if (!quoteData.additionalInterests) return DEFAULT_ADDITIONAL_INTERESTS_MAP;
 
     return quoteData.additionalInterests.reduce((aiMap, ai) => {
-      aiMap[ai.type].push(ai);
+      if (aiMap[ai.type]) {
+        aiMap[ai.type].push(ai);
+      }
       return aiMap;
     }, {
       [ADDITIONAL_INTERESTS.mortgagee]: [],
