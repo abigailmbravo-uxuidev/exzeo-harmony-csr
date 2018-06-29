@@ -207,25 +207,23 @@ export class AdditionalInterests extends Component {
       }
     ];
 
-    return batchCompleteTask(appState.modelName, workflowId, steps)
-      .then(() => {
-        getLatestQuote(true, quoteData._id);
+    await batchCompleteTask(appState.modelName, workflowId, steps);
+    await getLatestQuote(true, quoteData._id);
 
-        // now update the workflow details so the recalculated rate shows
-        setAppState(
-          appState.modelName,
-          workflowId, {
-            ...appState.data,
-            selectedMortgageeOption: null,
-            addAdditionalInterestType,
-            deleteAdditionalInterestType: '',
-            submittingAI: false,
-            selectedLink: 'additionalInterests'
-          }
-        );
+    // now update the workflow details so the recalculated rate shows
+    setAppState(
+      appState.modelName,
+      workflowId, {
+        ...appState.data,
+        selectedMortgageeOption: null,
+        addAdditionalInterestType,
+        deleteAdditionalInterestType: '',
+        submittingAI: false,
+        selectedLink: 'additionalInterests'
+      }
+    );
 
-        this.hideAdditionalInterestModal();
-      });
+    this.hideAdditionalInterestModal();
   };
 
   deleteAdditionalInterest = async (selectedAdditionalInterest) => {

@@ -133,8 +133,6 @@ export class MortgageBilling extends Component {
     const { getPolicy, createTransaction, policy } = this.props;
     const { isEditingAI } = this.state;
 
-    const offset = new Date(policy.effectiveDate).getTimezoneOffset() / 60;
-
     const submitData = {
       ...aiData,
       additionalInterestId: aiData._id,
