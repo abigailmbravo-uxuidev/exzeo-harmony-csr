@@ -137,10 +137,10 @@ export class MortgageBilling extends Component {
 
     const submitData = {
       ...aiData,
-      ...policy,
-      endorsementDate: moment(policy.effectiveDate).utcOffset(offset),
+      additionalInterestId: aiData._id,
+      policyID: policy.policyID,
+      policyNumber: policy.policyNumber,
       transactionType: isEditingAI ? 'AI Update' : 'AI Addition', // eslint-disable-line
-      additionalInterests
     };
 
     await createTransaction(submitData);
