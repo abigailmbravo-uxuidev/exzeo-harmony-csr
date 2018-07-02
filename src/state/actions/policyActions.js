@@ -1,8 +1,8 @@
-import { convertToRateData } from "../../utilities/endorsementModel";
+import { convertToRateData } from '../../utilities/endorsementModel';
 import * as serviceRunner from '../../utilities/serviceRunner';
 import * as types from './actionTypes';
-import * as errorActions from "./errorActions";
-import endorsementUtils from "../../utilities/endorsementModel";
+import * as errorActions from './errorActions';
+import endorsementUtils from '../../utilities/endorsementModel';
 
 
 /**
@@ -16,7 +16,7 @@ export function setPolicy(policy, summaryLedger) {
     type: types.SET_POLICY,
     policy,
     summaryLedger
-  }
+  };
 }
 
 /**
@@ -28,7 +28,7 @@ export function setSummaryLedger(summaryLedger) {
   return {
     type: types.SET_SUMMARY_LEDGER,
     summaryLedger
-  }
+  };
 }
 
 /**
@@ -40,7 +40,7 @@ export function setEffectiveDateChangeReasons(effectiveDateReasons) {
   return {
     type: types.SET_EFFECTIVE_DATE_CHANGE_REASONS,
     effectiveDateReasons
-  }
+  };
 }
 
 /**
@@ -52,7 +52,7 @@ export function setPaymentHistory(paymentHistory) {
   return {
     type: types.SET_PAYMENT_HISTORY,
     paymentHistory
-  }
+  };
 }
 
 /**
@@ -64,7 +64,7 @@ export function setBillingOptions(billingOptions) {
   return {
     type: types.SET_BILLING_OPTIONS,
     billingOptions
-  }
+  };
 }
 
 /**
@@ -76,7 +76,7 @@ export function setPaymentOptions(paymentOptions) {
   return {
     type: types.SET_PAYMENT_OPTIONS,
     paymentOptions
-  }
+  };
 }
 
 /**
@@ -88,7 +88,7 @@ export function setEndorsementHistory(endorsementHistory) {
   return {
     type: types.SET_ENDORSEMENT_HISTORY,
     endorsementHistory
-  }
+  };
 }
 
 /**
@@ -100,7 +100,7 @@ export function setCancelOptions(cancelOptions) {
   return {
     type: types.SET_CANCEL_OPTIONS,
     cancelOptions
-  }
+  };
 }
 
 /**
@@ -118,7 +118,7 @@ export function getPolicy(policyNumber) {
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
-  }
+  };
 }
 
 /**
@@ -134,7 +134,7 @@ export function getSummaryLedger(policyNumber) {
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
-  }
+  };
 }
 
 /**
@@ -155,7 +155,7 @@ export function getNewRate(formData, formProps) {
       };
       const response = await serviceRunner.callService(config);
       const rate = response && response.data && response.data.result ? response.data.result : {};
-      return {...rate};
+      return { ...rate };
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
@@ -170,11 +170,11 @@ export function getEffectiveDateChangeReasons() {
   return async (dispatch) => {
     try {
       const reasons = await fetchEffectiveDateChangeReasons();
-      dispatch(setEffectiveDateChangeReasons(reasons))
+      dispatch(setEffectiveDateChangeReasons(reasons));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
-  }
+  };
 }
 
 /**
@@ -222,7 +222,7 @@ export function addTransaction(submitData) {
     try {
       await serviceRunner.callService(config);
     } catch (error) {
-      dispatch(errorActions.setAppError(error))
+      dispatch(errorActions.setAppError(error));
     }
     dispatch(getPaymentHistory(submitData.policy.policyNumber));
     dispatch(getSummaryLedger(submitData.policy.policyNumber));
@@ -269,11 +269,11 @@ export function getEndorsementHistory(policyNumber) {
   return async (dispatch) => {
     try {
       const endorsementHistory = await fetchEndorsementHistory(policyNumber);
-      dispatch(setEndorsementHistory(endorsementHistory))
+      dispatch(setEndorsementHistory(endorsementHistory));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
-  }
+  };
 }
 
 /**
@@ -287,11 +287,11 @@ export function createTransaction(submitData) {
       // performance issues can arise from returning an 'await'ed function - https://eslint.org/docs/rules/no-return-await
       // noinspection UnnecessaryLocalVariableJS
       const response = await postCreatTransation(submitData);
-      return response
+      return response;
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
-  }
+  };
 }
 
 /**
@@ -306,12 +306,12 @@ export function updateBillPlan(paymentPlan) {
       if (policy && policy.policyNumber) {
         dispatch(getPolicy(policy.policyNumber));
       } else {
-        dispatch(errorActions.setAppError({message: 'Could not GET updated Policy'}));
+        dispatch(errorActions.setAppError({ message: 'Could not GET updated Policy' }));
       }
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
-  }
+  };
 }
 
 /**
@@ -324,7 +324,7 @@ export function getCancelOptions() {
       const cancelOptions = await fetchCancelOptions();
       dispatch(setCancelOptions(cancelOptions));
     } catch (error) {
-      dispatch(errorActions.setAppError(error))
+      dispatch(errorActions.setAppError(error));
     }
   };
 }
@@ -538,7 +538,7 @@ export async function postCreatTransation(submitData) {
     const response = await serviceRunner.callService(config);
     return response.data && response.data.result ? response.data.result : {};
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
@@ -558,9 +558,9 @@ export async function postUpdatedBillPlan(paymentPlan) {
 
   try {
     const response = await serviceRunner.callService(config);
-    return response.data && response.data.result ? response.data.result : {}
+    return response.data && response.data.result ? response.data.result : {};
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
@@ -577,7 +577,7 @@ export async function fetchCancelOptions() {
 
   try {
     const response = await serviceRunner.callService(config);
-    return response && response.data && response.data.cancelOptions ? response.data.cancelOptions : []
+    return response && response.data && response.data.cancelOptions ? response.data.cancelOptions : [];
   } catch (error) {
     throw error;
   }

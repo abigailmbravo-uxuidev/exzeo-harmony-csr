@@ -33,7 +33,7 @@ function getPolicy(state, action) {
   return {
     ...state,
     ...action.policyState
-  }
+  };
 }
 
 function setPolicy(state, action) {
@@ -42,56 +42,56 @@ function setPolicy(state, action) {
     policyID: action.policy.policyID,
     policy: action.policy,
     summaryLedger: action.summaryLedger
-  }
+  };
 }
 
 function setSummaryLedger(state, action) {
   return {
     ...state,
     summaryLedger: action.summaryLedger
-  }
+  };
 }
 
 function setEffectiveDateChangeReasons(state, action) {
   return {
     ...state,
     effectiveDateReasons: action.effectiveDateReasons
-  }
+  };
 }
 
 function setPaymentHistory(state, action) {
   return {
     ...state,
     paymentHistory: action.paymentHistory
-  }
+  };
 }
 
 function setEndorsementHistory(state, action) {
   return {
     ...state,
     endorsementHistory: action.endorsementHistory
-  }
+  };
 }
 
 function setBillingOptions(state, action) {
   return {
     ...state,
     billingOptions: action.billingOptions
-  }
+  };
 }
 
 function setCancelOptions(state, action) {
   return {
     ...state,
     cancelOptions: action.cancelOptions
-  }
+  };
 }
 
 function setPaymentOptions(state, action) {
   return {
     ...state,
     paymentOptions: action.paymentOptions
-  }
+  };
 }
 
 function rehydrate(state, action) {
@@ -99,5 +99,5 @@ function rehydrate(state, action) {
   return {
     ...state,
     ...policyState
-  }
+  };
 }

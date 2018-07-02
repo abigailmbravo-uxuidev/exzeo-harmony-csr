@@ -1,8 +1,8 @@
 import { createSelector } from 'reselect';
 import sortBy from 'lodash/sortBy';
 import cloneDeep from 'lodash/cloneDeep';
-import {applyAdditionalInterestRanking} from "../../utilities/additionalInterests";
-import orderBy from "lodash/orderBy";
+import { applyAdditionalInterestRanking } from '../../utilities/additionalInterests';
+import orderBy from 'lodash/orderBy';
 
 const getPolicy = state => state.policyState.policy;
 const getPaymentOptions = state => state.policyState.paymentOptions;
@@ -12,7 +12,7 @@ export const getCashDescriptionOptions = createSelector(
   [getPaymentOptions],
   (paymentOptions) => {
     if (!paymentOptions) {
-      return {}
+      return {};
     }
 
     return paymentOptions.reduce((optionMap, option) => {
@@ -22,7 +22,7 @@ export const getCashDescriptionOptions = createSelector(
       }));
 
       return optionMap;
-    }, {})
+    }, {});
   }
 );
 
@@ -63,7 +63,7 @@ export const getFormattedPaymentHistory = createSelector(
     return orderedPaymentHistory.map(payment => ({
       ...payment,
       amountDisplay: payment.amount.$numberDecimal
-    }))
+    }));
   }
 );
 

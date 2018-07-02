@@ -1,4 +1,4 @@
-import { createSelector } from "reselect";
+import { createSelector } from 'reselect';
 
 const getQuestions = state => state.questions;
 
@@ -7,7 +7,7 @@ export const getTopMortgageeAnswers = createSelector(
   (questions) => {
     if (!questions) return [];
 
-    const mortgagees = (questions['mortgagee'] || {}).answers;
+    const mortgagees = (questions.mortgagee || {}).answers;
 
     if (mortgagees) {
       return mortgagees.map(answer => ({
