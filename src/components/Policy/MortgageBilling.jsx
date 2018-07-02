@@ -141,19 +141,19 @@ export class MortgageBilling extends Component {
 
         return {
           mortgagee,
-          _id: selectedAI._id, // eslint-disable-line
-          name1: selectedAI.name1,
-          name2: selectedAI.name2,
-          phoneNumber: selectedAI.phoneNumber,
-          address1: selectedAI.mailingAddress.address1,
-          address2: selectedAI.mailingAddress.address2,
-          city: selectedAI.mailingAddress.city,
-          state: selectedAI.mailingAddress.state,
-          zip: selectedAI.mailingAddress.zip,
-          referenceNumber: selectedAI.referenceNumber,
-          type: selectedAI.type,
-          aiType: selectedAI.type,
-          order: selectedAI.order
+          _id: selectedAI._id || '', // eslint-disable-line
+          name1: selectedAI.name1 || '',
+          name2: selectedAI.name2 || '',
+          phoneNumber: selectedAI.phoneNumber ? String(selectedAI.phoneNumber) : '',
+          address1: selectedAI.mailingAddress.address1 || '',
+          address2: selectedAI.mailingAddress.address2 || '',
+          city: selectedAI.mailingAddress.city || '',
+          state: selectedAI.mailingAddress.state || '',
+          zip: String(selectedAI.mailingAddress.zip) || '',
+          referenceNumber: selectedAI.referenceNumber || '',
+          type: selectedAI.type || '',
+          aiType: selectedAI.type || '',
+          order: selectedAI.order || ''
         };
       }
 
