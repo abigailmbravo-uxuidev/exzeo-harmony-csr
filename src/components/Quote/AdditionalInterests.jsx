@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { reduxForm, getFormValues } from 'redux-form';
 import { ADDITIONAL_INTERESTS } from '../../constants/additionalInterests';
 import { getAnswers } from '../../utilities/forms';
-import { getMortgageeOrderAnswers, getMortgageeOrderAnswersForEdit } from '../../utilities/additionalInterests';
+import { getMortgageeOrderAnswers } from '../../utilities/additionalInterests';
 import { batchCompleteTask } from '../../state/actions/cgActions';
 import { getUIQuestions } from '../../state/actions/questionsActions';
 import { setAppState } from '../../state/actions/appStateActions';
