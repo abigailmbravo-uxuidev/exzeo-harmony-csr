@@ -61,6 +61,10 @@ export class MortgageBilling extends Component {
     showBillingEditModal: false
   };
 
+  componentDidMount() {
+    this.props.getUIQuestions('additionalInterestsCSR');
+  }
+
   componentWillReceiveProps = (nextProps) => {
     // TODO this is probably not needed, but leaving here for now until we solidify the pattern
     const { policy } = this.props;
@@ -119,57 +123,51 @@ export class MortgageBilling extends Component {
   };
 
   initAdditionalInterestModal = () => {
-    const { service = {}, questions = {}, policy } = this.props;
+    const { questions = {}, policy } = this.props;
     const { addAdditionalInterestType, selectedAI, isEditingAI } = this.state;
-    const initialValues = {
-      name1: '',
-      name2: '',
-      phoneNumber: '',
-      address1: '',
-      address2: '',
-      city: '',
-      state: '',
-      zip: '',
-      referenceNumber: '',
-      type: addAdditionalInterestType
-    };
 
-    if (isEditingAI) {
-      if (selectedAI) {
-        const mortgagee = _.get(_.find(getAnswers('mortgagee', this.props.questions), a => a.AIName1 === selectedAI.name1 &&
-          a.AIAddress1 === selectedAI.mailingAddress.address1), 'ID');
+    if (!isEditingAI) {
+      const initialValues = {
+        name1: '',
+        name2: '',
+        phoneNumber: '',
+        address1: '',
+        address2: '',
+        city: '',
+        state: '',
+        zip: '',
+        referenceNumber: '',
+        type: addAdditionalInterestType
+      };
 
-        return {
-          mortgagee,
-          _id: selectedAI._id || '', // eslint-disable-line
-          name1: selectedAI.name1 || '',
-          name2: selectedAI.name2 || '',
-          phoneNumber: selectedAI.phoneNumber ? String(selectedAI.phoneNumber) : '',
-          address1: selectedAI.mailingAddress.address1 || '',
-          address2: selectedAI.mailingAddress.address2 || '',
-          city: selectedAI.mailingAddress.city || '',
-          state: selectedAI.mailingAddress.state || '',
-          zip: String(selectedAI.mailingAddress.zip) || '',
-          referenceNumber: selectedAI.referenceNumber || '',
-          type: selectedAI.type || '',
-          aiType: selectedAI.type || '',
-          order: selectedAI.order || ''
-        };
+      let mortgageeOrderAnswers = '';
+      if (policy.additionalInterests && addAdditionalInterestType === 'Mortgagee') {
+        mortgageeOrderAnswers = getMortgageeOrderAnswers(questions, (policy.additionalInterests || null));
       }
-
       return {
         ...initialValues,
-        _id: ''
+        order: mortgageeOrderAnswers.length === 1 ? mortgageeOrderAnswers[0].answer : ''
       };
     }
 
-    let mortgageeOrderAnswers = '';
-    if ((policy.additionalInterests || service.quote) && addAdditionalInterestType === 'Mortgagee') {
-      mortgageeOrderAnswers = getMortgageeOrderAnswers(questions, (policy.additionalInterests || service.quote.additionalInterests || null));
-    }
+    const mortgageeAnswers = getAnswers('mortgagee', questions)
+    const mortgagee = mortgageeAnswers.find(ai => ai.AIName1 === selectedAI.name1 && ai.AIAddress1 === selectedAI.mailingAddress.address1);
+
     return {
-      ...initialValues,
-      order: mortgageeOrderAnswers.length === 1 ? mortgageeOrderAnswers[0].answer : ''
+      mortgagee,
+      _id: selectedAI._id || '', // eslint-disable-line
+      name1: selectedAI.name1 || '',
+      name2: selectedAI.name2 || '',
+      phoneNumber: selectedAI.phoneNumber ? String(selectedAI.phoneNumber) : '',
+      address1: selectedAI.mailingAddress.address1 || '',
+      address2: selectedAI.mailingAddress.address2 || '',
+      city: selectedAI.mailingAddress.city || '',
+      state: selectedAI.mailingAddress.state || '',
+      zip: String(selectedAI.mailingAddress.zip) || '',
+      referenceNumber: selectedAI.referenceNumber || '',
+      type: selectedAI.type || '',
+      aiType: selectedAI.type || '',
+      order: selectedAI.order
     };
   };
 

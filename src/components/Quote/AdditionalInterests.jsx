@@ -159,9 +159,8 @@ export class AdditionalInterests extends Component {
   };
 
   initAdditionalInterestModal = () => {
-    const { questions, quoteData, groupedAdditionalInterests } = this.props;
+    const { questions = {}, quoteData, groupedAdditionalInterests } = this.props;
     const { isEditingAI, selectedAI, addAdditionalInterestType } = this.state;
-    const mortgageeOrderAnswers = getMortgageeOrderAnswers(questions, quoteData.additionalInterests);
 
     if (!isEditingAI) {
       const initialValues = {
@@ -180,6 +179,7 @@ export class AdditionalInterests extends Component {
       };
 
       if (addAdditionalInterestType === ADDITIONAL_INTERESTS.mortgagee) {
+        const mortgageeOrderAnswers = getMortgageeOrderAnswers(questions, quoteData.additionalInterests);
         return {
           ...initialValues,
           order: mortgageeOrderAnswers[0].answer
@@ -207,7 +207,7 @@ export class AdditionalInterests extends Component {
       referenceNumber: selectedAI.referenceNumber || '',
       type: selectedAI.type || '',
       aiType: selectedAI.type || '',
-      order: selectedAI.order || ''
+      order: selectedAI.order
     };
   };
 
