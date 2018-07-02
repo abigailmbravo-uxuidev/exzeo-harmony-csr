@@ -4,6 +4,8 @@ import moment from 'moment';
 
 const getAgency = state => state.agencyState.agency;
 
+const getAgents = state => state.agencyState.agents;
+
 export const getEditModalInitialValues = createSelector(
   [getAgency],
   (agency) => {
@@ -27,4 +29,20 @@ export const getEditModalInitialValues = createSelector(
     };
   }
 );
-export default getEditModalInitialValues;
+
+export const getListOfAgents = createSelector(
+  [getAgents],
+  (agent) => {
+    if (!agent || !Array.isArray(agent)) return [];
+    return agent.map(a => ({ answer: a.agentCode, label: `${a.firstName} ${a.lastName}` }));
+  }
+);
+
+export const agencyLicenseArray = createSelector(
+  [getAgency],
+  (agency) => {
+    if (!agency || !agency.license || !Array.isArray(agency.license)) return [];
+    return agency.license.map(al => al.licenseNumber);
+  }
+);
+

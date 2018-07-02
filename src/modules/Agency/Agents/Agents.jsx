@@ -59,11 +59,8 @@ export class Agents extends Component {
 
   render() {
     const {
-      agency, agencyAgents, agents, updateAgency, addAgent, updateAgent
+      agency, agencyAgents, agents, updateAgency, addAgent, updateAgent, listOfAgents, agencyLicenseArray
     } = this.props;
-
-    const listOfAgents = agents ? agents.map(a => ({ answer: a.agentCode, label: `${a.firstName} ${a.lastName}` })) : [];
-    const agencyLicenseArray = agency && agency.license && agency.license.map(al => al.licenseNumber);
     return (
       <div className="route-content">
         {this.state.showEditAgent &&
