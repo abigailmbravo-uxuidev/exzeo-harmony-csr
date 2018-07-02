@@ -60,13 +60,6 @@ export const getGroupedExceptions = (quoteData = {}) => {
 };
 
 export class UnderwritingValidationBar extends React.Component {
-  componentWillReceiveProps(nextProps) {
-    nextProps.exceptions && nextProps.exceptions.overridableExceptions.forEach((uw) => {
-      if (!nextProps.fieldValues[uw._id]) {
-        nextProps.dispatch(change('UnderwritingOverride', uw._id, uw.overridden));
-      }
-    });
-  }
   render() {
     const {
       handleSubmit,
