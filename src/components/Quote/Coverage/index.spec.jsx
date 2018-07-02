@@ -1,11 +1,9 @@
 import React from 'react';
 import thunk from 'redux-thunk';
-import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
-import { shallow, mount } from 'enzyme';
-import ConnectedApp, { Coverage, handleFormSubmit, handleInitialize, handleGetZipCodeSettings } from './index';
+import { shallow } from 'enzyme';
+import { Coverage, handleFormSubmit, handleInitialize, handleGetZipCodeSettings } from './index';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
@@ -308,58 +306,6 @@ const quoteData = {
 };
 
 describe('Testing Coverage component', () => {
-  it('should test connected app', () => {
-    const initialState = {
-      authState: {},
-      service: {
-        getAgents() {}
-      },
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {},
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        data: {
-
-        },
-        modelName: 'bb'
-      }
-    };
-    const store = mockStore(initialState);
-    const props = {
-      handleSubmit: fn => fn,
-      getUIQuestionsAction() { return Promise.resolve(() => {}); },
-      getLatestQuoteAction() {},
-      getAgenciesAction() {},
-      getAgentsByAgencyAction() {},
-      setAppStateAction() { return Promise.resolve(() => {}); },
-      startWorkflowAction() { return Promise.resolve(() => {}); },
-      batchCompleteTaskAction() { return Promise.resolve(() => {}); },
-      fieldQuestions: [],
-      quoteData,
-      dispatch: store.dispatch,
-      appState: {
-        data: {
-          submitting: false
-        }
-      }
-    };
-
-    localStorage.setItem('isNewTab', true);
-    localStorage.setItem('lastSearchData', JSON.stringify({
-      searchType: 'address'
-    }));
-
-    const wrapper = mount(<Provider store={store} >
-      <Router><ConnectedApp {...props} /></Router>
-    </Provider>);
-    expect(wrapper);
-  });
   it('should test handleGetQuoteData', () => {
     const initialState = {
       service: {

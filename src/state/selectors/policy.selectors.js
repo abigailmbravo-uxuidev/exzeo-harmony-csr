@@ -6,7 +6,7 @@ export const getCashDescriptionOptions = createSelector(
   [getPaymentOptions],
   (paymentOptions) => {
     if (!paymentOptions) {
-      return {}
+      return {};
     }
 
     return paymentOptions.reduce((optionMap, option) => {
@@ -16,7 +16,7 @@ export const getCashDescriptionOptions = createSelector(
       }));
 
       return optionMap;
-    }, {})
+    }, {});
   }
 );
 

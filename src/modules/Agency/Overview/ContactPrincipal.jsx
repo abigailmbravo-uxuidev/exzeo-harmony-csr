@@ -1,5 +1,5 @@
 import React from 'react';
-import { normalizePhone } from '@exzeo/core-ui/lib/InputLifecycle';
+import normalizePhone from '../../../components/Form/normalizePhone';
 
 export const ContactPrincipal = ({ agency }) => (
   <div className="contact-details">

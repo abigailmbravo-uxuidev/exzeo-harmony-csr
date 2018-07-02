@@ -9,7 +9,7 @@ const getAgents = state => state.agencyState.agents;
 export const getEditModalInitialValues = createSelector(
   [getAgency],
   (agency) => {
-    if (!agency.agencyCode) return {};
+    if (!agency || !agency.agencyCode) return {};
     // noinspection JSUnusedLocalSymbols
     delete agency.createdBy; // need to delete this for some reason because the endpoint fails
     agency.eoExpirationDate = moment(agency.eoExpirationDate).format('YYYY-MM-DD');
