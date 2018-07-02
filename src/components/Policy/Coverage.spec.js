@@ -31,6 +31,11 @@ describe('Testing Coverage component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      match: {
+        params: {
+          policyNumber: '324'
+        }
+      },
       summaryLedger: {
 
       },
@@ -77,6 +82,11 @@ describe('Testing Coverage component', () => {
     const wrapper2 = shallow(<Coverage store={store} {...props} />);
 
     wrapper2.instance().componentWillReceiveProps({
+      match: {
+        params: {
+          policyNumber: '324'
+        }
+      },
       summaryLedger: { currentPremium: 100 },
       actions: {
         policyStateActions: {

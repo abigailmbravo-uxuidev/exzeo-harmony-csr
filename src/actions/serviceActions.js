@@ -172,10 +172,10 @@ export const searchAgencies = (companyCode, state, displayName, agencyCode, addr
     const data = { agencies: result };
     return dispatch(serviceRequest(data));
   })
-  .catch((error) => {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
-  });
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(errorActions.setAppError(message));
+    });
 };
 
 export const clearAgencies = () => (dispatch) => {
@@ -652,7 +652,7 @@ export const getZipcodeSettings = (companyCode, state, product, zip) => (dispatc
   });
 
   return axios(axiosConfig).then((response) => {
-    const data = { getZipcodeSettings: response.data && response.data.result ? response.data.result[0] : {} };
+    const data = { getZipcodeSettings: response.data && response.data.result ? response.data.result[0] : { timezone: '' } };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));
@@ -705,10 +705,10 @@ export const getAgencies = (companyCode, state) => (dispatch) => {
     const data = { agencies: result };
     return dispatch(serviceRequest(data));
   })
-  .catch((error) => {
-    const message = handleError(error);
-    return dispatch(errorActions.setAppError(message));
-  });
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(errorActions.setAppError(message));
+    });
 };
 
 export const searchPolicy = (taskData, sort) => (dispatch) => {
