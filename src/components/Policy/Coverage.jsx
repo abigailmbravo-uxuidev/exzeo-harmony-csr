@@ -13,7 +13,7 @@ import PolicyConnect from '../../containers/Policy';
 import Footer from '../Common/Footer';
 
 export const getPropertyAppraisalLink = (county, questions) => {
-  const question = questions['propertyAppraisal'] || {};
+  const question = questions.propertyAppraisal || {};
   const answers = question.answers || [];
   return _find(answers, { label: county }) || {};
 };
@@ -22,21 +22,20 @@ const handleInitialize = state => state.policyState.policy;
 
 export class Coverage extends Component {
   async componentDidMount() {
-    const { getUIQuestions, getPolicy, getCancelOptions } = this.props;
+    const { actions, match } = this.props;
+    const { policyNumber } = match.params;
 
-    getUIQuestions('propertyAppraisalCSR');
-    const isNewTab = await localStorage.getItem('isNewTab') === 'true';
-    if (isNewTab) {
-      const policyNumber = await localStorage.getItem('policyNumber');
-      getPolicy(policyNumber);
-      getCancelOptions();
-      localStorage.setItem('isNewTab', 'false');
-    }
+    actions.questionsActions.getUIQuestions('propertyAppraisalCSR');
+    actions.policyStateActions.updatePolicy(true, policyNumber);
+    actions.serviceActions.getCancelOptions();
+    actions.serviceActions.getSummaryLedger(policyNumber);
   }
 
   componentWillReceiveProps(nextProps) {
     const { policy } = this.props;
-    const { summaryLedger, getBillingOptionsForPolicy, getPaymentHistory, getPaymentOptionsApplyPayments } = nextProps;
+    const {
+      summaryLedger, getBillingOptionsForPolicy, getPaymentHistory, getPaymentOptionsApplyPayments
+    } = nextProps;
     if (!policy.policyID && nextProps.policyID && (nextProps.policyID !== policy.policyID) && summaryLedger.currentPremium) {
       const paymentOptions = {
         effectiveDate: nextProps.policy.effectiveDate,

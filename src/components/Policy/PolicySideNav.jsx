@@ -8,9 +8,19 @@ import * as cgActions from '../../state/actions/cgActions';
 import * as errorActions from '../../state/actions/errorActions';
 import GenerateDocsForm from './GenerateDocsForm';
 
-const csrLinks = [{
+// Example of a possible schema
+/**
+ * {
+ *  link,
+ *  label,
+ *  styleName,
+ *  exact,
+ *  outside
+ * }
+ */
+const csrLinks = ({ policyNumber }) => [{
   key: 'coverage',
-  link: '/policy/coverage',
+  link: `/policy/coverage/${policyNumber}`,
   label: 'Coverage / Rating',
   styleName: 'coverage',
   exact: true
@@ -74,7 +84,7 @@ export class SideNav extends React.Component {
     return (
       <nav className="site-nav">
         <ul>
-          {csrLinks && csrLinks.length > 0 && csrLinks.map((link, index) => (
+          {csrLinks && csrLinks.length > 0 && csrLinks({ policyNumber: policy.policyNumber }).map((link, index) => (
               link.outside ?
                 <li key={index}>
                   <a className="csr-dashboard" href="/">

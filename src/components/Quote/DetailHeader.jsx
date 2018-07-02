@@ -7,12 +7,9 @@ import normalizePhone from '../Form/normalizePhone';
 import * as serviceActions from '../../state/actions/serviceActions';
 import * as quoteStateActions from '../../state/actions/quoteStateActions';
 
-export const selectPolicy = (quote, props) => {
+export const selectPolicy = (quote) => {
   if (!quote.quoteNumber) return;
-
-  localStorage.setItem('isNewTab', true);
-  localStorage.setItem('policyNumber', quote.policyNumber);
-  window.open('/policy/coverage', '_blank');
+  window.open(`/policy/coverage/${quote.policyNumber}`, '_blank');
 };
 
 export class DetailHeader extends Component {
