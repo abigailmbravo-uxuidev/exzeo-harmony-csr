@@ -3,7 +3,7 @@ import React from 'react';
 const Footer = () =>
   (<footer>
     <div role="banner">
-      <small>
+      <small className="copyright">
         &copy;{new Date().getFullYear()} TypTap Management Company. All rights reserved.
       </small>
       <small>
