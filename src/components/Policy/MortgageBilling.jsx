@@ -6,11 +6,8 @@ import _ from 'lodash';
 import moment from 'moment';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
-
 import { getAnswers } from '../../utilities/forms';
-import {
-  getMortgageeOrderAnswers
-} from '../../utilities/additionalInterests';
+import { getMortgageeOrderAnswers } from '../../utilities/additionalInterests';
 import {
   getCashDescriptionOptions,
   getCashTypeAnswers,
