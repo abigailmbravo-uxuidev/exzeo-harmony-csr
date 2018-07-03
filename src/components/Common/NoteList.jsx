@@ -20,12 +20,16 @@ export const Notes = (props) => {
   const { notes, attachmentStatus, setNoteStatus } = props;
 
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
-  const showCreatedBy = createdBy => createdBy ? `${createdBy.userName}` : '';
-  const attachmentCount = attachments => attachments ? `${attachments.length}` : 0;
+  const showCreatedBy = createdBy => createdBy ? createdBy.userName : '';
+  const attachmentCount = attachments => attachments ? attachments.length : 0;
   const attachmentType = attachments => attachments.length > 0 ? attachments[0].fileType : '';
   const formatCreatedDate = createdDate => `${moment.tz(moment.utc(createdDate), 'America/New_York').format('MM/DD/YYYY h:mm A')} EST`;
   const formatNote = note => note ? note.replace(/\r|\n/g, '<br>') : '';
   const attachmentFilter = cell => cell.length > 0 ? cell[0].fileName : null;
+  const sortAuthor = (a, b, order) => order === 'desc' 
+    ? a.createdBy.userName > b.createdBy.userName ? 1 : -1
+    : a.createdBy.userName < b.createdBy.userName ? 1 : -1;
+
   const attachmentUrl = attachments => (
     <span>
       { attachments.map((attachment, i) =>
@@ -54,7 +58,7 @@ export const Notes = (props) => {
       >
         <TableHeaderColumn dataField="_id" isKey hidden>ID</TableHeaderColumn>
         <TableHeaderColumn className="created-date" columnClassName="created-date" dataField="createdDate" dataSort dataFormat={formatCreatedDate} filterFormatted >Created</TableHeaderColumn>
-        <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataSort dataFormat={showCreatedBy} >Author</TableHeaderColumn>
+        <TableHeaderColumn className="created-by" columnClassName="created-by" dataField="createdBy" dataSort dataFormat={showCreatedBy} sortFunc={sortAuthor}>Author</TableHeaderColumn>
         <TableHeaderColumn className="note-type" columnClassName="note-type" dataField="contactType" dataSort hidden={attachmentStatus} >Contact</TableHeaderColumn>
         <TableHeaderColumn className="note" columnClassName="note" dataField="content" dataSort dataFormat={formatNote} hidden={attachmentStatus} >Note</TableHeaderColumn>
         <TableHeaderColumn className="count" columnClassName="count" dataField="attachments" dataFormat={attachmentCount} hidden />
