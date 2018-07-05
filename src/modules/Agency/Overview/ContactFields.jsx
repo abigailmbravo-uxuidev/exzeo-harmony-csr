@@ -9,6 +9,7 @@ export const ContactFields = () => (
       label="Contact First Name"
       styleName="contactFirstName flex-item"
       name="contactFirstName"
+      dataTest="contactFirstName"
       component={Input}
       validate={validation.isRequired}
     />
@@ -16,6 +17,7 @@ export const ContactFields = () => (
       label="Contact Last Name"
       styleName="contactLastName flex-item"
       name="contactLastName"
+      dataTest="contactLastName"
       component={Input}
       validate={validation.isRequired}
     />
@@ -23,6 +25,7 @@ export const ContactFields = () => (
       label="Contact Email Address"
       styleName="contactEmailAddress"
       name="contactEmailAddress"
+      dataTest="contactEmailAddress"
       component={Input}
       validate={validation.isRequired}
     />

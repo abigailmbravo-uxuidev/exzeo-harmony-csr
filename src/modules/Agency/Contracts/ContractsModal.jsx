@@ -23,6 +23,7 @@ export const ContractsModal = (props) => {
                   label="Company Code"
                   styleName="companyCode"
                   name={`license[${contractIndex}].companyCode`}
+                  dataTest={`license[${contractIndex}].companyCode`}
                   component={Input}
                   validate={validation.isRequired}
                 />
@@ -30,6 +31,7 @@ export const ContractsModal = (props) => {
                   label="State"
                   styleName="state"
                   name={`license[${contractIndex}].stateLicense`}
+                  dataTest={`license[${contractIndex}].stateLicense`}
                   component={Input}
                   validate={validation.isRequired}
                 />
@@ -39,6 +41,7 @@ export const ContractsModal = (props) => {
                   label="License Number"
                   styleName="licenseNumber"
                   name={`license[${contractIndex}].licenseNumber`}
+                  dataTest={`license[${contractIndex}].licenseNumber`}
                   component={Input}
                   validate={validation.isRequired}
                 />
@@ -46,6 +49,7 @@ export const ContractsModal = (props) => {
                   label="License Effective Date"
                   styleName="licenseEffectiveDate"
                   name={`license[${contractIndex}].licenseEffectiveDate`}
+                  dataTest={`license[${contractIndex}].licenseEffectiveDate`}
                   component={Date}
                   validate={[validation.isRequired, validation.isDate]}
                 />
@@ -54,6 +58,7 @@ export const ContractsModal = (props) => {
                 label="Contract"
                 styleName="contract"
                 name={`license[${contractIndex}].contract`}
+                dataTest={`license[${contractIndex}].contract`}
                 component={Input}
                 validate={validation.isRequired}
               />
@@ -61,12 +66,14 @@ export const ContractsModal = (props) => {
                 label="Addendum"
                 styleName="addendum"
                 name={`license[${contractIndex}].addendum`}
+                dataTest={`license[${contractIndex}].addendum`}
                 component={Input}
               />
               <Field
                 label="EO Expiration Date"
                 styleName="eoExpirationDate"
                 name={`license[${contractIndex}].eoExpirationDate`}
+                dataTest={`license[${contractIndex}].eoExpirationDate`}
                 component={Date}
                 validate={[validation.isRequired, validation.isDate]}
               />
@@ -74,6 +81,7 @@ export const ContractsModal = (props) => {
                 label="Agents"
                 styleName="agencyLicense"
                 name="agentList"
+                dataTest="agentList"
                 autoSuggest={agencyAgentsList}
                 component={AutocompleteChips}
                 validate={[validation.isRequiredArray, existsInAgentsList]}
@@ -84,6 +92,7 @@ export const ContractsModal = (props) => {
               <div className="product-wrapper">
                 <Field
                   name={`license[${contractIndex}].product`}
+                  dataTest={`license[${contractIndex}].product`}
                   id="product"
                   type="checkbox"
                   options={[{ label: 'HO3', value: 'HO3' }, { label: 'AF3', value: 'AF3' }]}

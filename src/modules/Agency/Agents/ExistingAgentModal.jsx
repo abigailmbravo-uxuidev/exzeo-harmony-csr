@@ -60,6 +60,7 @@ export class ExistingAgentModal extends Component {
                     label="Agents"
                     styleName="selectedAgent"
                     name="selectedAgent"
+                    dataTest="selectedAgent"
                     component={Select}
                     validate={validation.isRequired}
                     answers={listOfAgents}
@@ -68,6 +69,7 @@ export class ExistingAgentModal extends Component {
                     label="Agency License"
                     styleName="agencyLicense"
                     name="agencyLicense"
+                    dataTest="agencyLicense"
                     autoSuggest={agencyLicenseArray}
                     component={AutocompleteChips}
                     validate={[validation.isRequiredArray, existsInAgencyLicense]}
@@ -76,6 +78,7 @@ export class ExistingAgentModal extends Component {
                     label="Agent Of Record"
                     styleName="agentOfRecord"
                     name="agentOfRecord"
+                    dataTest="agentOfRecord"
                     component={Radio}
                     segmented
                     answers={radioDefaultAnswers}
@@ -85,6 +88,7 @@ export class ExistingAgentModal extends Component {
                     label="Appointed"
                     styleName="appointed"
                     name="appointed"
+                    dataTest="appointed"
                     component={Radio}
                     segmented
                     answers={radioDefaultAnswers}

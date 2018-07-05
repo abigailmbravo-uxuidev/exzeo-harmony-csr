@@ -62,6 +62,7 @@ export class AgentModal extends Component {
                     label="Agent ID"
                     styleName="agentCode"
                     name="agentCode"
+                    dataTest="agentCode"
                     validate={[validation.isRequired, validation.isNumbersOnly]}
                     disabled={editType === 'Edit'}
                     component={Integer}
@@ -71,6 +72,7 @@ export class AgentModal extends Component {
                     label="License Number"
                     styleName="licenseNumber"
                     name="license[0].licenseNumber"
+                    dataTest="license[0].licenseNumber"
                     component={Input}
                     validate={validation.isRequired}
                   />
@@ -78,6 +80,7 @@ export class AgentModal extends Component {
                     label="State"
                     styleName="state"
                     name="license[0].state"
+                    dataTest="license[0].state"
                     component={Input}
                     validate={validation.isRequired}
                   />
@@ -87,6 +90,7 @@ export class AgentModal extends Component {
                     label="First Name"
                     styleName="firstName"
                     name="firstName"
+                    dataTest="firstName"
                     component={Input}
                     validate={validation.isRequired}
                   />
@@ -94,6 +98,7 @@ export class AgentModal extends Component {
                     label="Last Name"
                     styleName="lastName"
                     name="lastName"
+                    dataTest="lastName"
                     component={Input}
                     validate={validation.isRequired}
                   />
@@ -101,6 +106,7 @@ export class AgentModal extends Component {
                     label="Agent Of Record"
                     styleName="agentOfRecord"
                     name="agentOfRecord"
+                    dataTest="agentOfRecord"
                     component={Radio}
                     segmented
                     answers={radioDefaultAnswers}
@@ -110,6 +116,7 @@ export class AgentModal extends Component {
                     label="Appointed"
                     styleName="appointed"
                     name="appointed"
+                    dataTest="appointed"
                     component={Radio}
                     segmented
                     answers={radioDefaultAnswers}
@@ -121,6 +128,7 @@ export class AgentModal extends Component {
                     label="Primary Phone"
                     styleName="primaryPhoneNumber"
                     name="primaryPhoneNumber"
+                    dataTest="primaryPhoneNumber"
                     component={Phone}
                     validate={validation.isRequired}
                   />
@@ -128,12 +136,14 @@ export class AgentModal extends Component {
                     label="Secondary Phone"
                     styleName="secondaryPhoneNumber"
                     name="secondaryPhoneNumber"
+                    dataTest="secondaryPhoneNumber"
                     component={Phone}
                   />
                   <Field
                     label="Fax Number"
                     styleName="faxNumber"
                     name="faxNumber"
+                    dataTest="faxNumber"
                     component={Phone}
                   />
                 </div>
@@ -142,6 +152,7 @@ export class AgentModal extends Component {
                     label="Status"
                     styleName="status"
                     name="status"
+                    dataTest="status"
                     component={Radio}
                     segmented
                     answers={radioStatusAnswers}
@@ -151,6 +162,7 @@ export class AgentModal extends Component {
                     label="Email Address"
                     styleName="emailAddress"
                     name="emailAddress"
+                    dataTest="emailAddress"
                     component={Input}
                     validate={[validation.isRequired, validation.isEmail]}
                   />
@@ -158,6 +170,7 @@ export class AgentModal extends Component {
                     label="Agency License"
                     styleName="agencyLicense"
                     name="agencyLicense"
+                    dataTest="agencyLicense"
                     autoSuggest={agencyLicenseArray}
                     component={AutocompleteChips}
                     validate={[validation.isRequiredArray, existsInAgencyLicense]}
@@ -171,6 +184,7 @@ export class AgentModal extends Component {
                     label="Address 1"
                     styleName="mailingAddress1"
                     name="mailingAddress.address1"
+                    dataTest="mailingAddress.address1"
                     component={Input}
                     validate={validation.isRequired}
                   />
@@ -178,6 +192,7 @@ export class AgentModal extends Component {
                     label="Address 2"
                     styleName="mailingAddress2"
                     name="mailingAddress.address2"
+                    dataTest="mailingAddress.address2"
                     component={Input}
                   />
                   <div className="flex-form">
@@ -185,6 +200,7 @@ export class AgentModal extends Component {
                       label="City"
                       styleName="mailingCity"
                       name="mailingAddress.city"
+                      dataTest="mailingAddress.city"
                       component={Input}
                       validate={validation.isRequired}
                     />
@@ -192,6 +208,7 @@ export class AgentModal extends Component {
                       label="State"
                       styleName="mailingState"
                       name="mailingAddress.state"
+                      dataTest="mailingAddress.state"
                       component={Input}
                       validate={validation.isRequired}
                     />
@@ -199,6 +216,7 @@ export class AgentModal extends Component {
                       label="Zip Code"
                       styleName="mailingZip"
                       name="mailingAddress.zip"
+                      dataTest="mailingAddress.zip"
                       component={Input}
                       validate={[validation.isRequired, validation.isZipCode]}
                     />

@@ -83,6 +83,7 @@ export class AgencyModal extends Component {
                     label="Agency ID"
                     styleName="agencyCode"
                     name="agencyCode"
+                    dataTest="agencyCode"
                     component={Input}
                     validate={validation.isRequired}
                     disabled={!!initialValues.agencyCode}
@@ -91,6 +92,7 @@ export class AgencyModal extends Component {
                     label="Agency Name"
                     styleName="agencyName"
                     name="displayName"
+                    dataTest="displayName"
                     component={Input}
                     validate={validation.isRequired}
                   />
@@ -98,6 +100,7 @@ export class AgencyModal extends Component {
                     label="Entity Name"
                     styleName="entityName"
                     name="legalName"
+                    dataTest="legalName"
                     component={Input}
                     validate={validation.isRequired}
                   />
@@ -106,6 +109,7 @@ export class AgencyModal extends Component {
                   <Field
                     id="status"
                     name="status"
+                    dataTest="status"
                     styleName="status"
                     label="Status"
                     component={Select}
@@ -116,11 +120,13 @@ export class AgencyModal extends Component {
                     label="TPAID"
                     styleName="tpaid"
                     name="tpaid"
+                    dataTest="tpaid"
                     component={Integer}
                     validate={[validation.isRequired, validation.isNumbersOnly]}
                   />
                   <Field
                     name="okToPay"
+                    dataTest="okToPay"
                     styleName="okToPay"
                     label="Ok to Pay"
                     component={Radio}
@@ -131,6 +137,7 @@ export class AgencyModal extends Component {
                     label="Tier"
                     styleName="tier"
                     name="tier"
+                    dataTest="tier"
                     component={Input}
                     validate={[validation.isRequired, validation.isNumbersOnly]}
                   />
@@ -138,6 +145,7 @@ export class AgencyModal extends Component {
                     label="Web Address"
                     styleName="webAddress"
                     name="websiteUrl"
+                    dataTest="websiteUrl"
                     component={Input}
                   />
                   {/* web address validaiton */}
@@ -150,6 +158,7 @@ export class AgencyModal extends Component {
                     label="Address 1"
                     styleName="mailingAddress1"
                     name="mailingAddress.address1"
+                    dataTest="mailingAddress.address1"
                     component={Input}
                     validate={validation.isRequired}
                     normalize={this.resetSameAsMailing}
@@ -158,6 +167,7 @@ export class AgencyModal extends Component {
                     label="Address 2"
                     styleName="mailingAddress2"
                     name="mailingAddress.address2"
+                    dataTest="mailingAddress.address2"
                     component={Input}
                     normalize={this.resetSameAsMailing}
                   />
@@ -166,6 +176,7 @@ export class AgencyModal extends Component {
                       label="City"
                       styleName="mailingCity"
                       name="mailingAddress.city"
+                      dataTest="mailingAddress.city"
                       component={Input}
                       validate={validation.isRequired}
                       normalize={this.resetSameAsMailing}
@@ -174,6 +185,7 @@ export class AgencyModal extends Component {
                       label="State"
                       styleName="mailingState"
                       name="mailingAddress.state"
+                      dataTest="mailingAddress.state"
                       component={Input}
                       validate={validation.isRequired}
                       normalize={this.resetSameAsMailing}
@@ -182,6 +194,7 @@ export class AgencyModal extends Component {
                       label="Zip Code"
                       styleName="mailingZip"
                       name="mailingAddress.zip"
+                      dataTest="mailingAddress.zip"
                       component={Input}
                       validate={[validation.isRequired, validation.isZipCode]}
                       normalize={this.resetSameAsMailing}
@@ -192,12 +205,14 @@ export class AgencyModal extends Component {
                       label="Tax ID"
                       styleName="taxId"
                       name="taxIdNumber"
+                      dataTest="taxIdNumber"
                       component={Input}
                       validate={validation.isRequired}
                     />
                     <Field
                       id="taxClassification"
                       name="taxClassification"
+                      dataTest="taxClassification"
                       styleName="taxClassification"
                       label="Tax Classification"
                       component={Select}
@@ -213,6 +228,7 @@ export class AgencyModal extends Component {
                       <Field
                         normalize={this.handleSameAsMailing}
                         name="sameAsMailing"
+                        dataTest="sameAsMailing"
                         id="sameAsMailing"
                         component="input"
                         type="checkbox"
@@ -224,6 +240,7 @@ export class AgencyModal extends Component {
                     label="Address 1"
                     styleName="physicalAddress1"
                     name="physicalAddress.address1"
+                    dataTest="physicalAddress.address1"
                     component={Input}
                     validate={validation.isRequired}
                     disabled={sameAsMailingValue}
@@ -232,6 +249,7 @@ export class AgencyModal extends Component {
                     label="Address 2"
                     styleName="physicalAddress2"
                     name="physicalAddress.address2"
+                    dataTest="physicalAddress.address2"
                     component={Input}
                     disabled={sameAsMailingValue}
                   />
@@ -240,6 +258,7 @@ export class AgencyModal extends Component {
                       label="City"
                       styleName="physicalCity"
                       name="physicalAddress.city"
+                      dataTest="physicalAddress.city"
                       component={Input}
                       validate={validation.isRequired}
                       disabled={sameAsMailingValue}
@@ -248,6 +267,7 @@ export class AgencyModal extends Component {
                       label="State"
                       styleName="physicalState"
                       name="physicalAddress.state"
+                      dataTest="physicalAddress.state"
                       component={Input}
                       validate={validation.isRequired}
                       disabled={sameAsMailingValue}
@@ -256,6 +276,7 @@ export class AgencyModal extends Component {
                       label="Zip Code"
                       styleName="physicalZip"
                       name="physicalAddress.zip"
+                      dataTest="physicalAddress.zip"
                       component={Input}
                       validate={validation.isRequired}
                       disabled={sameAsMailingValue}
@@ -265,6 +286,7 @@ export class AgencyModal extends Component {
                     label="County"
                     styleName="county"
                     name="physicalAddress.county"
+                    dataTest="physicalAddress.county"
                     component={Input}
                     validate={validation.isRequired}
                   />

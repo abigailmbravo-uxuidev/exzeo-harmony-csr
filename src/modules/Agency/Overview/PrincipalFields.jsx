@@ -9,6 +9,7 @@ export const PrincipalFields = () => (
       label="Principal First Name"
       styleName="principalFirstName"
       name="principalFirstName"
+      dataTest="principalFirstName"
       component={Input}
       validate={validation.isRequired}
     />
@@ -16,6 +17,7 @@ export const PrincipalFields = () => (
       label="Principal Last Name"
       styleName="principalLastName"
       name="principalLastName"
+      dataTest="principalLastName"
       component={Input}
       validate={validation.isRequired}
     />
@@ -23,6 +25,7 @@ export const PrincipalFields = () => (
       label="Principal Email Address"
       styleName="principalEmailAddress flex-item"
       name="principalEmailAddress"
+      dataTest="principalEmailAddress"
       component={Input}
       validate={[validation.isRequired, validation.isEmail]}
     />

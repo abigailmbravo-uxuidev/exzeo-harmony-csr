@@ -9,6 +9,7 @@ export const CSRFields = () => (
       label="CSR Phone 1"
       styleName="primaryPhoneNumber"
       name="primaryPhoneNumber"
+      dataTest="primaryPhoneNumber"
       component={Phone}
       validate={[validation.isRequired, validation.isPhone]}
     />
@@ -16,6 +17,7 @@ export const CSRFields = () => (
       label="CSR Phone 2"
       styleName="secondaryPhoneNumber"
       name="secondaryPhoneNumber"
+      dataTest="secondaryPhoneNumber"
       component={Phone}
       validate={validation.isPhone}
     />
@@ -23,6 +25,7 @@ export const CSRFields = () => (
       label="CSR Fax"
       styleName="faxNumber"
       name="faxNumber"
+      dataTest="faxNumber"
       component={Phone}
       validate={[validation.isRequired, validation.isPhone]}
     />
@@ -30,6 +33,7 @@ export const CSRFields = () => (
       label="CSR Email Address"
       styleName="customerServiceEmailAddress"
       name="customerServiceEmailAddress"
+      dataTest="customerServiceEmailAddress"
       component={Input}
       validate={[validation.isRequired, validation.isEmail]}
     />
