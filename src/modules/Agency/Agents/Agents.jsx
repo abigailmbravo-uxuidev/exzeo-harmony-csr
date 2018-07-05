@@ -40,8 +40,11 @@ export class Agents extends Component {
     }
     const agencyLicense = [];
     agency.license.forEach((l) => {
-      if (l.agent.find(a => a.agentCode === selectedAgent.agentCode)) {
+      const ag = l.agent.find(a => a.agentCode === selectedAgent.agentCode);
+      if (ag) {
         agencyLicense.push(l.licenseNumber);
+        selectedAgent.agentOfRecord = String(ag.agentOfRecord);
+        selectedAgent.appointed = String(ag.appointed);
       }
     });
     selectedAgent.agencyLicense = agencyLicense;

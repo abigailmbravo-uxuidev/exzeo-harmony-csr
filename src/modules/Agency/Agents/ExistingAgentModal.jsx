@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
-import { Select, AutocompleteChips } from '@exzeo/core-ui/lib/Input';
+import { Select, AutocompleteChips, Radio } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 
+const radioDefaultAnswers = [
+  { answer: 'true', label: 'Yes' },
+  { answer: 'false', label: 'No' }
+];
 
 export class ExistingAgentModal extends Component {
   // TODO: Clean up this logic!
@@ -15,8 +19,8 @@ export class ExistingAgentModal extends Component {
       if (license && license.agent && !selectedAgent) {
         license.agent.push({
           agentCode: Number(data.selectedAgent),
-          appointed: true,
-          agentOfRecord: true
+          appointed: String(data.appointed) === 'true',
+          agentOfRecord: String(data.agentOfRecord) === 'true'
         });
         const licenseIndex = agency.license.findIndex(li => li.licenseNumber === l);
         if (licenseIndex !== -1) {
@@ -67,6 +71,24 @@ export class ExistingAgentModal extends Component {
                     autoSuggest={agencyLicenseArray}
                     component={AutocompleteChips}
                     validate={[validation.isRequiredArray, existsInAgencyLicense]}
+                  />
+                  <Field
+                    label="Agent Of Record"
+                    styleName="agentOfRecord"
+                    name="agentOfRecord"
+                    component={Radio}
+                    segmented
+                    answers={radioDefaultAnswers}
+                    validate={validation.isRequired}
+                  />
+                  <Field
+                    label="Appointed"
+                    styleName="appointed"
+                    name="appointed"
+                    component={Radio}
+                    segmented
+                    answers={radioDefaultAnswers}
+                    validate={validation.isRequired}
                   />
                 </div>
               </section>

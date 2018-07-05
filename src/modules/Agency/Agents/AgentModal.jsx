@@ -9,6 +9,11 @@ const radioStatusAnswers = [
   { answer: 'Active', label: 'Active' }
 ];
 
+const radioDefaultAnswers = [
+  { answer: 'true', label: 'Yes' },
+  { answer: 'false', label: 'No' }
+];
+
 export class AgentModal extends Component {
   update = async (data, dispatch, props) => {
     const { createdBy, createdAt, ...agent } = data;
@@ -33,8 +38,8 @@ export class AgentModal extends Component {
       if (license && license.agent && !selectedAgent) {
         license.agent.push({
           agentCode: data.agentCode,
-          appointed: true,
-          agentOfRecord: true
+          appointed: String(data.appointed) === 'true',
+          agentOfRecord: String(data.agentOfRecord) === 'true'
         });
         const licenseIndex = agency.license.findIndex(li => li.licenseNumber === l);
         if (licenseIndex !== -1) {
@@ -42,6 +47,8 @@ export class AgentModal extends Component {
         }
       } else if (license && license.agent && selectedAgent) {
         const agentIndex = license.agent.findIndex(a => a.agentCode === data.agentCode);
+        selectedAgent.appointed = String(data.appointed) === 'true';
+        selectedAgent.agentOfRecord = String(data.agentOfRecord) === 'true';
         selectedAgent.agentInfo = data;
         if (agentIndex !== -1) {
           license.agent.splice(agentIndex, 1, selectedAgent);
@@ -118,6 +125,24 @@ export class AgentModal extends Component {
                     styleName="lastName"
                     name="lastName"
                     component={Input}
+                    validate={validation.isRequired}
+                  />
+                  <Field
+                    label="Agent Of Record"
+                    styleName="agentOfRecord"
+                    name="agentOfRecord"
+                    component={Radio}
+                    segmented
+                    answers={radioDefaultAnswers}
+                    validate={validation.isRequired}
+                  />
+                  <Field
+                    label="Appointed"
+                    styleName="appointed"
+                    name="appointed"
+                    component={Radio}
+                    segmented
+                    answers={radioDefaultAnswers}
                     validate={validation.isRequired}
                   />
                 </div>
