@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm, change, getFormValues } from 'redux-form';
 import moment from 'moment-timezone';
-import { getCancelOptions, getPaymentHistory, getBillingOptionsForPolicy } from '../../state/actions/serviceActions';
+import Loader from '@exzeo/core-ui/lib/Loader';
 import { startWorkflow, batchCompleteTask } from '../../state/actions/cgActions';
 import { setAppState } from '../../state/actions/appStateActions';
-import { getPolicy } from '../../state/actions/policyActions';
+import { getPolicy, getPaymentHistory, getBillingOptionsForPolicy, getCancelOptions, getSummaryLedger } from '../../state/actions/policyActions';
 
 import PolicyConnect from '../../containers/Policy';
 import RadioField from '../Form/inputs/RadioField';
@@ -16,15 +16,14 @@ import TextField from '../Form/inputs/TextField';
 import Payments from './Payments';
 import Claims from './Claims';
 import Footer from '../Common/Footer';
-import Loader from '../Common/Loader';
 
 const convertDateToTimeZone = (date, zipCodeSettings) => {
   const formattedDateString = date.format('YYYY-MM-DD');
   return moment.tz(formattedDateString, zipCodeSettings.timezone).utc();
 };
 export const handleInitialize = (state) => {
-  const summaryLedger = state.policyState.summaryLedger || {};
   const zipCodeSettings = state.service.getZipcodeSettings || { timezone: '' };
+  const summaryLedger = state.policyState.summaryLedger || {};
   const latestDate = convertDateToTimeZone(moment.utc(), zipCodeSettings) > convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings) ? convertDateToTimeZone(moment.utc(), zipCodeSettings).format('YYYY-MM-DD') : convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate), zipCodeSettings).format('YYYY-MM-DD');
   return ({
     equityDate: moment.utc(summaryLedger.equityDate).format('MM/DD/YYYY'),
@@ -68,35 +67,36 @@ export const handleFormSubmit = (data, dispatch, props) => {
 
 export class CancelPolicy extends React.Component {
   componentDidMount() {
-    const { appState, getCancelOptions, setAppState } = this.props;
+    const { appState, getCancelOptions, setAppState, getSummaryLedger, policy } = this.props;
     if (appState && appState.instanceId) {
       const workflowId = appState.instanceId;
       setAppState(appState.modelName, workflowId, { ...appState.data, isSubmitting: false });
+    }
+    if (policy.policyID) {
+      getSummaryLedger(policy.policyNumber);
     }
     getCancelOptions();
   }
 
   componentWillReceiveProps(nextProps) {
-    const {
-      policy, summaryLedger, zipCodeSettings, getPaymentHistory, getBillingOptionsForPolicy
-    } = nextProps;
-    if (policy && policy.policyNumber) {
-      getPaymentHistory(policy.policyNumber);
-
+    const { policy } = this.props;
+    if (!policy.policyID && nextProps.policy.policyID && (nextProps.policyID !== policy.policyID) && nextProps.summaryLedger.currentPremium) {
+      const { getPaymentHistory, getSummaryLedger, getBillingOptionsForPolicy } = nextProps;
       const paymentOptions = {
-        effectiveDate: policy.effectiveDate,
-        policyHolders: policy.policyHolders,
-        additionalInterests: policy.additionalInterests,
-        currentPremium: summaryLedger.currentPremium,
-        fullyEarnedFees: policy.rating.worksheet.fees.empTrustFee + policy.rating.worksheet.fees.mgaPolicyFee
+        effectiveDate: nextProps.policy.effectiveDate,
+        policyHolders: nextProps.policy.policyHolders,
+        additionalInterests: nextProps.policy.additionalInterests,
+        currentPremium: nextProps.summaryLedger.currentPremium,
+        fullyEarnedFees: nextProps.policy.rating.worksheet.fees.empTrustFee + nextProps.policy.rating.worksheet.fees.mgaPolicyFee
       };
-
       getBillingOptionsForPolicy(paymentOptions);
+      getPaymentHistory(nextProps.policy.policyNumber);
+      getSummaryLedger(nextProps.policy.policyNumber);
     }
 
     if (this.props.fieldValues.cancelType !== nextProps.fieldValues.cancelType) {
-      const now = convertDateToTimeZone(moment.utc().startOf('day'), zipCodeSettings);
-      const effectiveDate = convertDateToTimeZone(moment.utc(summaryLedger.effectiveDate).startOf('day'), zipCodeSettings);
+      const now = convertDateToTimeZone(moment.utc().startOf('day'), nextProps.zipCodeSettings);
+      const effectiveDate = convertDateToTimeZone(moment.utc(nextProps.summaryLedger.effectiveDate).startOf('day'), nextProps.zipCodeSettings);
       const notice = effectiveDate.isAfter(now) ? effectiveDate : now;
 
       if (nextProps.fieldValues.cancelType === 'Underwriting Cancellation') {
@@ -108,7 +108,7 @@ export class CancelPolicy extends React.Component {
       } else if (nextProps.fieldValues.cancelType === 'Voluntary Cancellation') {
         nextProps.dispatch(change('CancelPolicy', 'effectiveDate', notice.format('YYYY-MM-DD')));
       } else if (nextProps.fieldValues.cancelType === 'Underwriting Non-Renewal') {
-        const endDate = convertDateToTimeZone(moment.utc(policy.endDate), zipCodeSettings);
+        const endDate = convertDateToTimeZone(moment.utc(policy.endDate), nextProps.zipCodeSettings);
         nextProps.dispatch(change('CancelPolicy', 'effectiveDate', endDate.format('YYYY-MM-DD')));
       }
     }
@@ -142,7 +142,9 @@ export class CancelPolicy extends React.Component {
       reset
     } = this.props;
 
-    const cancelGroup = cancelOptions ? cancelOptions.map(option => ({ answer: option.cancelType })) : [];
+    // TODO move this to a selector, or better yet, handle this mapping in the reducer when setting the options.
+    const cancelGroup = cancelOptions ? cancelOptions.map(option => ({ answer: option.cancelType, label: option.cancelType })) : [];
+
     return (
       <PolicyConnect>
         {appState.data.isSubmitting && <Loader />}
@@ -198,7 +200,7 @@ export class CancelPolicy extends React.Component {
                   <div className="form-group flex-parent billing">
                     <div className="flex-child">
                       <label>Bill To</label>
-                      <div>{paymentOptions && paymentOptions.options.find(option => option.billToId === policy.billToId).displayText}</div>
+                      <div>{!!paymentOptions.length && (paymentOptions.find(option => option.billToId === policy.billToId) || {}).displayText}</div>
                     </div>
                     <div className="flex-child">
                       <label>Bill Plan</label>
@@ -237,17 +239,18 @@ CancelPolicy.propTypes = {
 };
 
 const defaultObj = {};
+const defaultArr = [];
 const mapStateToProps = state => ({
   appState: state.appState,
-  userProfile: state.authState.userProfile,
-  tasks: state.cg,
+  cancelOptions: state.policyState.cancelOptions,
   fieldValues: getFormValues('CancelPolicy')(state) || defaultObj,
   initialValues: handleInitialize(state),
-  paymentHistory: state.service.paymentHistory,
+  paymentHistory: state.policyState.paymentHistory,
+  paymentOptions: state.policyState.billingOptions.options || defaultArr,
   policy: state.policyState.policy,
   summaryLedger: state.policyState.summaryLedger,
-  paymentOptions: state.service.billingOptions,
-  cancelOptions: state.service.cancelOptions,
+  userProfile: state.authState.userProfile,
+  tasks: state.cg,
   zipCodeSettings: state.service.getZipcodeSettings
 });
 
@@ -258,5 +261,10 @@ export default connect(mapStateToProps, {
   startWorkflow,
   batchCompleteTask,
   setAppState,
-  getPolicy
-})(reduxForm({ form: 'CancelPolicy', enableReinitialize: true })(CancelPolicy));
+  getPolicy,
+  getSummaryLedger
+})(reduxForm({
+  form: 'CancelPolicy',
+  enableReinitialize: true
+})(CancelPolicy));
+

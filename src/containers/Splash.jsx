@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
+import Loader from '@exzeo/core-ui/lib/Loader';
 import BaseConnect from './Base';
 import Footer from '../components/Common/Footer';
 import * as cgActions from '../state/actions/cgActions';
@@ -10,28 +11,26 @@ import * as appStateActions from '../state/actions/appStateActions';
 import * as questionsActions from '../state/actions/questionsActions';
 import SearchResults from '../components/Search/SearchResults';
 import NoResultsConnect from '../components/Search/NoResults';
-import Loader from '../components/Common/Loader';
 
 const workflowModelName = 'csrQuote';
 const workflowData = {
   dsUrl: `${process.env.REACT_APP_API_URL}/ds`
 };
 
-export const handleNewTab = async (searchData) => {
-  await localStorage.setItem('isNewTab', true);
+export const handleNewTab = (searchData) => {
+  localStorage.setItem('isNewTab', true);
 
-  const lastSearchData = await JSON.parse(localStorage.getItem('lastSearchData'));
+  const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData'));
 
   if (lastSearchData.searchType === 'address') {
-    await localStorage.setItem('stateCode', searchData.physicalAddress.state);
-    await localStorage.setItem('igdID', searchData.id);
+    localStorage.setItem('stateCode', searchData.physicalAddress.state);
+    localStorage.setItem('igdID', searchData.id);
     window.open('/quote/coverage', '_blank');
   } else if (lastSearchData.searchType === 'quote') {
-    await localStorage.setItem('quoteId', searchData._id);
+    localStorage.setItem('quoteId', searchData._id);
     window.open('/quote/coverage', '_blank');
   } else if (lastSearchData.searchType === 'policy') {
-    await localStorage.setItem('policyNumber', searchData.policyNumber);
-    window.open('/policy/coverage', '_blank');
+    window.open(`/policy/coverage/${searchData.policyNumber}`, '_blank');
   }
 };
 

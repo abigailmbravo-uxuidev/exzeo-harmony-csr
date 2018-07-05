@@ -2,6 +2,7 @@ import * as types from './actionTypes';
 
 // these actions are to allow the composite controls to communicate when their models are complete
 // this communication allows the workflow to move to the next step
+
 /**
  *
  * @param modelName
@@ -18,7 +19,7 @@ export function setAppState(modelName, instanceId, data) {
       data
     }
   };
-};
+}
 
 /**
  *

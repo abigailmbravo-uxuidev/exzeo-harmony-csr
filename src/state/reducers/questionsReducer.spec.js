@@ -6,7 +6,7 @@ describe('Questions State Reducer', () => {
   it('should call questionsReducer GET_QUESTIONS', () => {
     const inputProps = [{ quoteId: '234', update: true, name: 'test' }];
     const action = {
-      type: types.GET_QUESTIONS,
+      type: types.SET_QUESTIONS,
       questions: inputProps
     };
 

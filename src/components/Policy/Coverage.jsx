@@ -6,9 +6,9 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import _get from 'lodash/get';
 import _find from 'lodash/find';
 import moment from 'moment';
+import Loader from '@exzeo/core-ui/lib/Loader';
 import { getUIQuestions } from '../../state/actions/questionsActions';
-import { getCancelOptions, getBillingOptionsForPolicy, getZipcodeSettings } from '../../state/actions/serviceActions';
-import { getPolicy } from '../../state/actions/policyActions';
+import { getPolicy, getBillingOptionsForPolicy, getPaymentHistory, getCancelOptions, getPaymentOptionsApplyPayments } from '../../state/actions/policyActions';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import PolicyConnect from '../../containers/Policy';
 import Footer from '../Common/Footer';
@@ -23,29 +23,32 @@ const handleInitialize = state => state.policyState.policy;
 
 export class Coverage extends Component {
   async componentDidMount() {
-    const { getUIQuestions, getPolicy, getCancelOptions } = this.props;
+    const {
+      getUIQuestions, getPolicy, getCancelOptions, match
+    } = this.props;
+    const { policyNumber } = match.params;
 
     getUIQuestions('propertyAppraisalCSR');
-    const isNewTab = await localStorage.getItem('isNewTab') === 'true';
-    if (isNewTab) {
-      const policyNumber = await localStorage.getItem('policyNumber');
-      getPolicy(policyNumber);
-      getCancelOptions();
-      localStorage.setItem('isNewTab', 'false');
-    }
+    getPolicy(policyNumber);
+    getCancelOptions();
   }
 
   componentWillReceiveProps(nextProps) {
-    const { policy, summaryLedger } = nextProps;
-    if (policy && policy.policyNumber && summaryLedger.currentPremium) {
+    const { policy } = this.props;
+    const {
+      summaryLedger, getBillingOptionsForPolicy, getPaymentHistory, getPaymentOptionsApplyPayments
+    } = nextProps;
+    if (!policy.policyID && nextProps.policyID && (nextProps.policyID !== policy.policyID) && summaryLedger.currentPremium) {
       const paymentOptions = {
-        effectiveDate: policy.effectiveDate,
-        policyHolders: policy.policyHolders,
-        additionalInterests: policy.additionalInterests,
-        currentPremium: summaryLedger.currentPremium,
-        fullyEarnedFees: policy.rating.worksheet.fees.empTrustFee + policy.rating.worksheet.fees.mgaPolicyFee
+        effectiveDate: nextProps.policy.effectiveDate,
+        policyHolders: nextProps.policy.policyHolders,
+        additionalInterests: nextProps.policy.additionalInterests,
+        currentPremium: nextProps.summaryLedger.currentPremium,
+        fullyEarnedFees: nextProps.policy.rating.worksheet.fees.empTrustFee + nextProps.policy.rating.worksheet.fees.mgaPolicyFee
       };
       getBillingOptionsForPolicy(paymentOptions);
+      getPaymentHistory(nextProps.policy.policyNumber);
+      getPaymentOptionsApplyPayments();
     }
   }
 
@@ -185,7 +188,7 @@ export class Coverage extends Component {
     ];
 
     const propertyData = property || {};
-    if (!this.props.policy.policyID) return (<PolicyConnect />);
+    if (!this.props.policy.policyID) return (<PolicyConnect><Loader /> </PolicyConnect>);
 
     return (
       <PolicyConnect>
@@ -387,8 +390,9 @@ const mapStateToProps = state => ({
   appState: state.appState,
   fieldValues: _get(state.form, 'Coverage.values', {}),
   initialValues: handleInitialize(state),
-  paymentOptions: state.service.billingOptions,
+  paymentOptions: state.policyState.billingOptions,
   policy: state.policyState.policy,
+  policyID: state.policyState.policyID,
   summaryLedger: state.policyState.summaryLedger,
   questions: state.questions,
   tasks: state.cg
@@ -399,5 +403,7 @@ export default connect(mapStateToProps, {
   getBillingOptionsForPolicy,
   getCancelOptions,
   getUIQuestions,
-  getPolicy
+  getPolicy,
+  getPaymentHistory,
+  getPaymentOptionsApplyPayments
 })(reduxForm({ form: 'Coverage' })(Coverage));

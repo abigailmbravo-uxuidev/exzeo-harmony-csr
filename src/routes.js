@@ -38,7 +38,7 @@ import * as authActions from './state/actions/authActions';
 
 const auth = new Auth();
 
-// logout the user if the server comesback with a 401
+// logout the user if the server comes back with a 401
 axios.interceptors.response.use(
   response => response,
   (error) => {
@@ -89,6 +89,7 @@ class Routes extends Component {
       left: '20%'
     }
   };
+
   render() {
     return (
       <div>
@@ -133,7 +134,7 @@ class Routes extends Component {
               <Route exact path="/quote/coverage" render={props => <QuoteCoverage auth={auth} {...props} />} />
               <Route exact path="/quote/underwriting" render={props => <QuoteUnderwriting auth={auth} {...props} />} />
               <Route exact path="/quote/application" render={props => <QuoteApplication auth={auth} {...props} />} />
-              <Route exact path="/policy/coverage" render={props => <PolicyCoverage auth={auth} {...props} />} />
+              <Route exact path="/policy/coverage/:policyNumber" render={props => <PolicyCoverage auth={auth} {...props} />} />
               <Route exact path="/policy/policyholder" render={props => <PolicyPolicyholderAgent auth={auth} {...props} />} />
               <Route exact path="/policy/billing" render={props => <PolicyMortgageBilling auth={auth} {...props} />} />
               <Route exact path="/policy/notes" render={props => <PolicyNotesFiles auth={auth} {...props} />} />

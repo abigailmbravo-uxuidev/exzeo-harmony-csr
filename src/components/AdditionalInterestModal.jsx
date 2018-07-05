@@ -2,38 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
-import { reduxForm, Field, propTypes, initialize, reset, change } from 'redux-form';
-import { batchActions } from 'redux-batched-actions';
-import { Input, Select, Phone } from '@exzeo/core-ui/lib/Input';
+import cloneDeep from 'lodash/cloneDeep';
+import { reduxForm, Field, reset } from 'redux-form';
+import { Input, Select, Phone, SelectTypeAhead, SelectInteger } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
-import { getAnswers } from '../../utilities/forms';
-import ReactSelectField from '../Form/inputs/ReactSelectField';
-import Loader from './Loader';
-
-export const setMortgageeValues = (val, props) => {
-  const selectedMortgagee = val;
-
-  if (selectedMortgagee) {
-    props.dispatch(batchActions([
-      change('AdditionalInterestModal', 'name1', selectedMortgagee.AIName1),
-      change('AdditionalInterestModal', 'name2', selectedMortgagee.AIName2),
-      change('AdditionalInterestModal', 'address1', selectedMortgagee.AIAddress1),
-      change('AdditionalInterestModal', 'city', selectedMortgagee.AICity),
-      change('AdditionalInterestModal', 'state', selectedMortgagee.AIState),
-      change('AdditionalInterestModal', 'zip', String(selectedMortgagee.AIZip))
-    ]));
-  } else {
-    props.dispatch(batchActions([
-      change('AdditionalInterestModal', 'name1', ''),
-      change('AdditionalInterestModal', 'name2', ''),
-      change('AdditionalInterestModal', 'address1', ''),
-      change('AdditionalInterestModal', 'city', ''),
-      change('AdditionalInterestModal', 'state', ''),
-      change('AdditionalInterestModal', 'zip', '')
-    ]));
-  }
-};
-
+import Loader from '@exzeo/core-ui/lib/Loader';
+import {
+  getMortgageeOrderAnswers,
+  getMortgageeOrderAnswersForEdit
+} from '../utilities/additionalInterests';
+import { getTopMortgageeAnswers } from '../state/selectors/questions.selectors';
+import { ADDITIONAL_INTERESTS } from '../constants/additionalInterests';
+import { setAppState } from '../state/actions/appStateActions';
+import { getGroupedAdditionalInterests, getSortedAdditionalInterests } from '../state/selectors/quote.selectors';
 
 export const checkAdditionalInterestForName = aiType => aiType === 'Additional Insured' || aiType === 'Additional Interest' || aiType === 'Bill Payer';
 
@@ -43,47 +24,125 @@ export class AdditionalInterestModal extends React.Component {
 
     this.modalStyle = { flexDirection: 'row' };
   }
+
+  setMortgageeValues = (value) => {
+    const { change } = this.props;
+    if (value) {
+      change('name1', value.AIName1);
+      change('name2', value.AIName2);
+      change('address1', value.AIAddress1);
+      change('city', value.AICity);
+      change('state', value.AIState);
+      change('zip', value.AIZip);
+    } else {
+      change('name1', '');
+      change('name2', '');
+      change('address1', '');
+      change('city', '');
+      change('state', '');
+      change('zip', '');
+    }
+    return value;
+  };
+
+  handleFormSubmit = async (data, dispatch, formProps) => {
+    const {
+      appState, additionalInterests, setAppStateAction, isEditing
+    } = formProps;
+
+    const workflowId = appState.instanceId;
+    setAppStateAction(
+      appState.modelName,
+      workflowId, {
+        ...appState.data
+      }
+    );
+
+    const aiData = {
+      _id: data._id, // eslint-disable-line
+      name1: data.name1,
+      name2: data.name2,
+      referenceNumber: data.referenceNumber || '',
+      order: data.order,
+      active: true,
+      type: data.type,
+      phoneNumber: String(data.phoneNumber).length > 0 ? data.phoneNumber : '',
+      mailingAddress: {
+        address1: data.address1,
+        address2: data.address2,
+        city: data.city,
+        state: data.state,
+        zip: data.zip,
+        country: {
+          code: 'USA',
+          displayText: 'United States of America'
+        }
+      }
+    };
+
+    const isMortgagee = data.type === ADDITIONAL_INTERESTS.mortgagee;
+    let updatedAdditionalInterests;
+
+    if (isEditing) {
+      updatedAdditionalInterests = (additionalInterests || []).filter(ai => ai._id !== data._id);
+
+      if (isMortgagee && data.order !== formProps.initialValues.order) {
+        // if user changed the order of mortgagee, make sure we swap the order of mortgagee that currently holds that order
+        updatedAdditionalInterests.forEach((ai) => {
+          if (ai.type === ADDITIONAL_INTERESTS.mortgagee && ai.order === data.order) {
+            ai.order = formProps.initialValues.order;
+          }
+        });
+      }
+    } else {
+      updatedAdditionalInterests = cloneDeep(additionalInterests) || [];
+    }
+    updatedAdditionalInterests.push(aiData);
+
+    await formProps.completeSubmit(updatedAdditionalInterests, aiData);
+  };
+
   render() {
     const {
-      handleSubmit,
-      verify,
-      hideModal,
-      questions,
       additionalInterests,
-      submitting,
       addAdditionalInterestType,
-      isEditing,
-      isEndorsement,
-      getMortgageeOrderAnswers,
-      getMortgageeOrderAnswersForEdit,
       deleteAdditionalInterest,
-      validAdditionalInterestTypes,
+      handleSubmit,
+      hideModal,
+      isDeleting,
+      isEditing,
+      isPolicy,
+      mortgageeAnswers,
+      questions,
       selectedAI,
-      isDeleting
+      submitting,
+      validAdditionalInterestTypes
     } = this.props;
 
     return (
       <div className="modal" style={this.modalStyle}>
+        {(submitting || isDeleting) && <Loader />}
         <form
-          id={isEditing ? 'AdditionalInterestModal' : 'AdditionalInterestModal'}
+          id={isEditing ? 'AdditionalInterestEditModal' : 'AdditionalInterestModal'}
           className={classNames('AdditionalInterestModal', { [selectedAI.type]: isEditing, [addAdditionalInterestType]: !isEditing })}
-          onSubmit={handleSubmit(verify)}
+          onSubmit={handleSubmit(this.handleFormSubmit)}
         >
-          {(submitting || isDeleting) && <Loader />}
           <div className="card">
             <div className="card-header">
               <h4><i className={`fa fa-circle ${addAdditionalInterestType}`} /> {addAdditionalInterestType}</h4>
             </div>
             <div className="card-block">
               {(addAdditionalInterestType || selectedAI.type) === 'Mortgagee' &&
-              <ReactSelectField
+              <Field
                 label="Top Mortgagees"
                 name="mortgagee"
-                searchable
+                dataTest="mortgage"
+                component={SelectTypeAhead}
+                valueKey="displayText"
                 labelKey="displayText"
-                autoFocus
-                answers={getAnswers('mortgagee', questions)}
-                onChange={val => setMortgageeValues(val, this.props)} />
+                answers={mortgageeAnswers}
+                normalize={this.setMortgageeValues}
+              />
               }
               <Field
                 name="name1"
@@ -163,7 +222,7 @@ export class AdditionalInterestModal extends React.Component {
                 <Field
                   name="order"
                   dataTest="order"
-                  component={Select}
+                  component={SelectInteger}
                   label="Order"
                   validate={validation.isRequired}
                   answers={getMortgageeOrderAnswersForEdit(questions, additionalInterests)}
@@ -171,25 +230,25 @@ export class AdditionalInterestModal extends React.Component {
                 }
 
                 {!isEditing && addAdditionalInterestType === 'Mortgagee' &&
-                  <Field
-                    name="order"
-                    dataTest="order"
-                    component={Select}
-                    styleName=""
-                    label="Order"
-                    answers={getMortgageeOrderAnswers(questions, additionalInterests)}
-                  />
+                <Field
+                  name="order"
+                  dataTest="order"
+                  component={SelectInteger}
+                  label="Order"
+                  validate={validation.isRequired}
+                  answers={getMortgageeOrderAnswers(questions, additionalInterests)}
+                />
                 }
               </div>
-              {isEndorsement &&
+              {isPolicy &&
               <div className="flex-form">
                 <Field
-                  name="aiType"
+                  name="type"
                   dataTest="aiType"
                   label="Type"
                   component={Select}
                   answers={validAdditionalInterestTypes}
-                  validations={validation.isRequired}
+                  validate={validation.isRequired}
                 />
               </div>
               }
@@ -209,29 +268,26 @@ export class AdditionalInterestModal extends React.Component {
 }
 
 AdditionalInterestModal.propTypes = {
-  ...propTypes,
-  verify: PropTypes.func.isRequired,
-  appState: PropTypes.shape({
-    modelName: PropTypes.string,
-    data: PropTypes.shape({
-      recalc: PropTypes.bool,
-      submitting: PropTypes.bool
-    })
-  })
+  completeSubmit: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => ({
-  tasks: state.cg
+AdditionalInterestModal.defaultProps = {
+  isPolicy: false
+};
+
+const mapStateToProps = state => ({
+  appState: state.appState,
+  questions: state.questions,
+  tasks: state.cg,
+  mortgageeAnswers: getTopMortgageeAnswers(state),
+  sortedAdditionalInterests: getSortedAdditionalInterests(state),
+  groupedAdditionalInterests: getGroupedAdditionalInterests(state)
 });
 
-AdditionalInterestModal = reduxForm({
+export default connect(mapStateToProps, {
+  setAppStateAction: setAppState,
+  resetForm: reset
+})(reduxForm({
   form: 'AdditionalInterestModal',
   enableReinitialize: true
-})(AdditionalInterestModal);
-
-AdditionalInterestModal = connect(mapStateToProps, {
-  initializeForm: initialize,
-  resetForm: reset
-})(AdditionalInterestModal);
-
-export default AdditionalInterestModal;
+})(AdditionalInterestModal));

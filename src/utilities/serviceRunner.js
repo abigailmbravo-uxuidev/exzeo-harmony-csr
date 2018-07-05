@@ -27,3 +27,19 @@ export async function callService(data) {
     throw handleError(error);
   }
 }
+
+export async function callQuestions(data) {
+  const axiosConfig = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    url: `${process.env.REACT_APP_API_URL}/questions`,
+    data
+  };
+
+  try {
+    const response = await axios(axiosConfig);
+    return response;
+  } catch (error) {
+    throw handleError(error);
+  }
+}

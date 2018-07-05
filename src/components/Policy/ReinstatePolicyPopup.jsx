@@ -1,36 +1,40 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { reduxForm, Form } from 'redux-form';
-import _ from 'lodash';
-import * as questionsActions from '../../state/actions/questionsActions';
-import * as cgActions from '../../state/actions/cgActions';
-import * as appStateActions from '../../state/actions/appStateActions';
-import * as serviceActions from '../../state/actions/serviceActions';
-import * as policyStateActions from '../../state/actions/policyActions';
+import { reduxForm, formValueSelector } from 'redux-form';
+import Loader from '@exzeo/core-ui/lib/Loader';
 import CheckField from '../Form/inputs/CheckField';
-import Loader from '../Common/Loader';
 
-export const handleInitialize = (state) => {
+export const handleInitialize = () => {
   return {
     reinstatePolicy: false
   };
 };
 
-export const ReinstatePolicyPopup = (props) => {
-  const { hideReinstatePolicyModal, handleSubmit, reinstatePolicySubmit, pristine, fieldValues, latestPolicy } = props;
+export const ReinstatePolicyPopup = ({
+  appState,
+  handleSubmit,
+  hideReinstatePolicyModal,
+  latestPolicy,
+  pristine,
+  reinstatePolicySubmit,
+  reinstatePolicyValue
+}) => {
   return (
     <div id="reinstate-policy" className="modal reinstate-policy">
-      {props.appState.data.submitting && <Loader />}
+      {appState.data.submitting && <Loader />}
       <div className="card unsaved-changes">
-        <Form id="ReinstatePolicyPopup" noValidate onSubmit={handleSubmit(reinstatePolicySubmit)}>
+        <form id="ReinstatePolicyPopup" onSubmit={handleSubmit(reinstatePolicySubmit)}>
           <div className="card-header">
             <h4> Reinstate Policy</h4>
           </div>
           <div className="card-block">
             <h5>Reinstate this policy?</h5>
             <CheckField
-              name="reinstatePolicy" component="select" label={`Yes, I want to reinstate policy: ${latestPolicy.policyNumber} `} styleName={''} validations={['required']}
+              name="reinstatePolicy"
+              component="select"
+              label={`Yes, I want to reinstate policy: ${latestPolicy.policyNumber} `}
+              styleName={''}
+              validations={['required']}
             />
           </div>
           <div className="card-footer">
@@ -39,41 +43,29 @@ export const ReinstatePolicyPopup = (props) => {
                 className="btn btn-secondary"
                 type="button"
                 onClick={hideReinstatePolicyModal}
-              >
-                  Cancel
-                </button>
+              >Cancel</button>
               <button
-                disabled={props.appState.data.submitting || pristine || !fieldValues.reinstatePolicy}
+                disabled={appState.data.submitting || pristine || !reinstatePolicyValue}
                 className="btn btn-primary"
                 type="submit"
-              >
-                  Update
-                </button>
+              >Update</button>
             </div>
           </div>
-        </Form>
+        </form>
       </div>
     </div>
   );
 };
 
+const selector = formValueSelector('ReinstatePolicyPopup');
 const mapStateToProps = state => ({
-  latestPolicy: state.service.latestPolicy,
+  appState: state.appState,
+  latestPolicy: state.policyState.policy,
   initialValues: handleInitialize(state),
-  fieldValues: _.get(state.form, 'ReinstatePolicyPopup.values', {}),
+  reinstatePolicyValue: selector(state, 'reinstatePolicy')
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    policyStateActions: bindActionCreators(policyStateActions, dispatch),
-    questionsActions: bindActionCreators(questionsActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch),
-    cgActions: bindActionCreators(cgActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
-  }
-});
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
-  form: 'ReinstatePolicyPopup', enableReinitialize: true
+export default connect(mapStateToProps)(reduxForm({
+  form: 'ReinstatePolicyPopup',
+  enableReinitialize: true
 })(ReinstatePolicyPopup));

@@ -159,8 +159,8 @@ PolicyholderAgent.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  agents: state.agencyState.agents,
-  agency: state.agencyState.agency,
+  agents: state.service.agents,
+  agency: state.service.agency,
   policy: state.policyState.policy || {}
 });
 

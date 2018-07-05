@@ -14,7 +14,7 @@ export function setAppError(error) {
 
 /**
  *
- * @returns {{type: string, error: object}}
+ * @returns {{type: string, error: {}}}
  */
 export function clearAppError() {
   return{

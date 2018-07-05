@@ -14,10 +14,11 @@ const store = configureStore();
 persistStore(store, { storage: asyncSessionStorage });
 
 const holder = document.getElementById('root');
-const c = document.createComment(`Version: ${process.env.VERSION_NO}`);
+const c = document.createComment(`Version: ${JSON.stringify(process.env.REACT_APP_VERSION)}`);
 document.body.appendChild(c);
 render(
-  <Provider store={store}><Routes store={store} />
+  <Provider store={store}>
+    <Routes />
   </Provider>,
   holder
 );

@@ -112,9 +112,7 @@ export class Uploader extends Component {
   closeButtonHandler = () => this.props.actions.newNoteActions.toggleNote({});
 
   submitNote = (data, dispatch, props) => {
-    const {
- actions, user, noteType, documentId, sourceId
-} = props;
+    const { actions, user, noteType, documentId, sourceId } = props;
     const attachments = Object.values(this.uppy.getState().files);
     if (!user.profile.given_name || !user.profile.family_name) {
       const message = 'There was a problem with your user profile. Please logout of Harmony and try logging in again.';
@@ -157,23 +155,21 @@ export class Uploader extends Component {
       onBeforeFileAdded: this.validateFile,
       onBeforeUpload: (files) => {
         if (files) return Promise.resolve();
-        return this.uppy.addFile({
- source: 'uppy', preview: null, name: 'hidden', type: null, data: new Uint8Array()
-})
+        return this.uppy.addFile({ source: 'uppy', preview: null, name: 'hidden', type: null, data: new Uint8Array() })
           .then(done => Promise.resolve());
       }
     })
-      .use(XHRUpload, {
-        endpoint: `${process.env.REACT_APP_API_URL}/upload`,
-        formData: true,
-        bundle: true,
-        fieldName: 'files[]',
-        headers: {
-          accept: 'application/json',
-          authorization: `bearer ${idToken}`
-        }
-      })
-      .run();
+    .use(XHRUpload, {
+      endpoint: `${process.env.REACT_APP_API_URL}/upload`,
+      formData: true,
+      bundle: true,
+      fieldName: 'files[]',
+      headers: {
+        accept: 'application/json',
+        authorization: `bearer ${idToken}`
+      }
+    })
+    .run();
   }
 
   render() {
@@ -208,9 +204,9 @@ export class Uploader extends Component {
                 </div>
               </div>
             <div className="buttons note-file-footer-button-group">
-                <button tabIndex="0" aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={this.closeButtonHandler}>Cancel</button>
-                <button tabIndex="0" aria-label="submit-btn form-newNote" className="btn btn-primary submit-button">Save</button>
-              </div>
+              <button tabIndex="0" aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={this.closeButtonHandler}>Cancel</button>
+              <button tabIndex="0" aria-label="submit-btn form-newNote" className="btn btn-primary submit-button">Save</button>
+            </div>
           </Form>
         </div>
       </div>

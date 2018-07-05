@@ -16,11 +16,11 @@ describe('Questions Actions', () => {
 
 
     const stateObj = [{
-      type: types.GET_QUESTIONS,
+      type: types.SET_QUESTIONS,
       questions: []
     }];
 
-    store.dispatch(questionsActions.getQuestions([]));
+    store.dispatch(questionsActions.setQuestions([]));
     expect(store.getActions()).toEqual(stateObj);
   });
 
@@ -59,7 +59,7 @@ describe('Questions Actions', () => {
 
     return questionsActions.getUIQuestions(step)(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].type).toEqual(types.GET_QUESTIONS);
+        expect(store.getActions()[0].type).toEqual(types.SET_QUESTIONS);
       });
   });
 

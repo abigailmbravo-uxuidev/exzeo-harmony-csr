@@ -1,25 +1,25 @@
 import React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { reduxForm, Field, propTypes as rfPropTypes, change, getFormValues } from 'redux-form';
+import { reduxForm, Field, getFormValues } from 'redux-form';
 import SelectInput from '../Form/base/Select';
 import BillingRadio from '../Form/inputs/BillingRadio';
 import { requireField } from "../Form/validations/index";
-import { updateBillPlan } from '../../state/actions/serviceActions';
+import { updateBillPlan } from '../../state/actions/policyActions';
 import 'react-select/dist/react-select.css';
 const FORM_NAME = 'BillingEditModal';
 
 export const handleInitialize = (state) => {
-  const { billingOptions, latestPolicy } = state.service;
+  const { policy, billingOptions } = state.policyState;
 
-  if (billingOptions.length === 1 && !latestPolicy.billTo && !latestPolicy.billPlan) {
+  if (billingOptions.length === 1 && !policy.billTo && !policy.billPlan) {
     return {
       billToId: billingOptions.options[0].billToId,
       billToType: billingOptions.options[0].billToType,
       billPlan: 'Annual'
     };
   }
-  return state.service.latestPolicy;
+  return policy;
 };
 
 export const handleBillingFormSubmit = async (data, dispatch, props) => {
@@ -43,11 +43,12 @@ export class BillingEditModal extends React.Component {
 
     this.modalStyle = { flexDirection: 'row' };
   }
+
   normalizeBilling = (value) => {
-    const { billingOptions, changeField } = this.props;
+    const { billingOptions, change } = this.props;
     const billToType = billingOptions.find(o => o.billToId === value).billToType;
-    changeField(FORM_NAME, 'billPlan', 'Annual');
-    changeField(FORM_NAME, 'billToType', billToType);
+    change('billPlan', 'Annual');
+    change('billToType', billToType);
     return value;
   };
 
@@ -64,7 +65,7 @@ export class BillingEditModal extends React.Component {
     return (
       <div className="modal" style={this.modalStyle}>
         <div className="card card-billing-edit-modal">
-          <form id="BillingEditModal" className="BillingEditModal" noValidate onSubmit={handleSubmit(handleBillingFormSubmit)}>
+          <form id="BillingEditModal" className="BillingEditModal" onSubmit={handleSubmit(handleBillingFormSubmit)}>
             <div className="card-header">
               <h4>Edit Billing</h4>
             </div>
@@ -114,7 +115,6 @@ export class BillingEditModal extends React.Component {
 }
 
 BillingEditModal.propTypes = {
-  ...rfPropTypes,
   showBillingEditModalModal: propTypes.func,
   verify: propTypes.func,
   appState: propTypes.shape({
@@ -135,7 +135,7 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   selectedAI: state.appState.data.selectedAI,
   initialValues: handleInitialize(state),
-  policy: state.service.latestPolicy,
+  policy: state.policyState.policy,
   fieldValues: getFormValues(FORM_NAME)(state),
 });
 
@@ -146,7 +146,6 @@ BillingEditModal = reduxForm({
 
 BillingEditModal = connect(mapStateToProps, {
   updateBillPlan,
-  changeField: change
 })(BillingEditModal);
 
 export default BillingEditModal;

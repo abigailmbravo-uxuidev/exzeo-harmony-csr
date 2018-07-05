@@ -1,32 +1,35 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { batchActions } from 'redux-batched-actions';
 import { reduxForm, Field, formValueSelector } from 'redux-form';
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import _ from 'lodash';
 import moment from 'moment';
-import { getAnswers } from '../../utilities/forms';
-import { getCashDescriptionOptions, getCashTypeAnswers } from '../../state/selectors/policy.selectors';
-
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
-
-import { getPolicy, getSummaryLedger } from '../../state/actions/policyActions';
-import { getUIQuestions } from '../../state/actions/questionsActions';
+import { getAnswers } from '../../utilities/forms';
+import { getMortgageeOrderAnswers } from '../../utilities/additionalInterests';
 import {
-  getPaymentOptionsApplyPayments,
-  getBillingOptionsForPolicy,
-  getPaymentHistory,
+  getCashDescriptionOptions,
+  getCashTypeAnswers,
+  getFormattedPaymentHistory,
+  getSortedAdditionalInterests
+} from '../../state/selectors/policy.selectors';
+import {
+  getPolicy,
   addTransaction,
-  createTransaction
-} from '../../state/actions/serviceActions';
-import PolicyConnect from '../../containers/Policy';
+  getPaymentHistory,
+  getBillingOptionsForPolicy,
+  createTransaction,
+  getPaymentOptionsApplyPayments
+} from '../../state/actions/policyActions';
+import { getUIQuestions } from '../../state/actions/questionsActions';
 
+import PolicyConnect from '../../containers/Policy';
 import BillingModal from '../../components/Common/BillingEditModal';
-import AIModal from '../../components/Common/AdditionalInterestModal';
+import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';
-import setRank from '../Common/additionalInterestRank';
+import AdditionalInterestCard from "../AdditionalInterestCard";
+import PaymentHistoryTable from "../PaymentHistoryTable";
 
 const { validation } = lifecycle;
 const { Input, Select, Currency } = Inputs;
@@ -45,58 +48,25 @@ export const handleInitialize = (state) => {
   return values;
 };
 
-export const getMortgageeOrderAnswers = (questions, additionalInterests) => {
-  let answers = _.cloneDeep(getAnswers('order', questions));
-
-  if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 0) {
-    answers = answers.filter(answer => Number(answer.answer) === 0);
-  }
-  if (additionalInterests && additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length === 1) {
-    answers = answers.filter(answer => Number(answer.answer) === 1);
-  }
-  return answers;
-};
-
-export const getMortgageeOrderAnswersForEdit = (questions, additionalInterests) => {
-  const answers = _.cloneDeep(getAnswers('order', questions));
-
-  if (_.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length < 2) {
-    _.remove(answers, answer => Number(answer.answer) === 1);
-  }
-  return answers;
-};
-
-
 export class MortgageBilling extends Component {
   state = {
-    addAdditionalInterestType: null,
+    addAdditionalInterestType: '',
+    isEditingAI: false,
     paymentDescription: [],
     selectedAI: {},
     showAdditionalInterestModal: false,
-    isEditingAI: false,
     showBillingEditModal: false
   };
 
-  componentDidMount = () => {
-    const { policy, summaryLedger } = this.props;
-    this.props.getPaymentHistory(this.props.policy.policyNumber);
-    this.props.getPaymentOptionsApplyPayments();
+  componentDidMount() {
     this.props.getUIQuestions('additionalInterestsCSR');
-
-    if (policy.rating && summaryLedger.currentPremium) {
-      const paymentOptions = {
-        effectiveDate: policy.effectiveDate,
-        policyHolders: policy.policyHolders,
-        additionalInterests: policy.additionalInterests,
-        currentPremium: summaryLedger.currentPremium,
-        fullyEarnedFees: policy.rating.worksheet.fees.empTrustFee + policy.rating.worksheet.fees.mgaPolicyFee
-      };
-      this.props.getBillingOptionsForPolicy(paymentOptions);
-    }
-  };
+  }
 
   componentWillReceiveProps = (nextProps) => {
-    if (nextProps && nextProps.policy && nextProps.policy.policyNumber && (this.props.policyID !== nextProps.policy.policyID)) {
+    // TODO this is probably not needed, but leaving here for now until we solidify the pattern
+    const { policy } = this.props;
+    if (nextProps.policyID && (nextProps.policyID !== policy.policyID)) {
+      const { getPaymentHistory, getPaymentOptionsApplyPayments, getBillingOptionsForPolicy } = nextProps;
       const paymentOptions = {
         effectiveDate: nextProps.policy.effectiveDate,
         policyHolders: nextProps.policy.policyHolders,
@@ -104,29 +74,31 @@ export class MortgageBilling extends Component {
         currentPremium: nextProps.summaryLedger.currentPremium,
         fullyEarnedFees: nextProps.policy.rating.worksheet.fees.empTrustFee + nextProps.policy.rating.worksheet.fees.mgaPolicyFee
       };
-      nextProps.getBillingOptionsForPolicy(paymentOptions);
+      getBillingOptionsForPolicy(paymentOptions);
+      getPaymentHistory(nextProps.policy.policyNumber);
+      getPaymentOptionsApplyPayments();
     }
   };
 
-  setIsActive = (additionalInterests) => {
-    if (!additionalInterests) return;
-    additionalInterests.forEach((value) => {
-      value.sortInactive = !value.active;
-      return value;
+  handleAISubmit = async (additionalInterests, aiData) => {
+    const { getPolicy, createTransaction, policy } = this.props;
+    const { isEditingAI } = this.state;
+
+    const submitData = {
+      ...aiData,
+      additionalInterestId: aiData._id,
+      policyID: policy.policyID,
+      policyNumber: policy.policyNumber,
+      transactionType: isEditingAI ? 'AI Update' : 'AI Addition', // eslint-disable-line
+    };
+
+    await createTransaction(submitData);
+    getPolicy(policy.policyNumber);
+
+    this.setState({
+      showAdditionalInterestModal: false,
+      isEditingAI: false
     });
-  };
-
-  setBatch = (value) => {
-    const { change } = this.props;
-
-    change('cashDate', value);
-    change('batchNumber', moment.utc(value).format('YYYYMMDD'));
-  };
-
-  normalizeCashType = (value) => {
-    const { change } = this.props;
-    change('cashDescription', '');
-    return value;
   };
 
   addAdditionalInterest = (type) => {
@@ -147,10 +119,53 @@ export class MortgageBilling extends Component {
     });
   };
 
-  editAIOnEnter = (event, ai) => {
-    if (event.key === 'Enter') {
-      this.editAdditionalInterest(ai);
+  initAdditionalInterestModal = () => {
+    const { questions = {}, policy } = this.props;
+    const { addAdditionalInterestType, selectedAI, isEditingAI } = this.state;
+
+    if (!isEditingAI) {
+      const initialValues = {
+        name1: '',
+        name2: '',
+        phoneNumber: '',
+        address1: '',
+        address2: '',
+        city: '',
+        state: '',
+        zip: '',
+        referenceNumber: '',
+        type: addAdditionalInterestType
+      };
+
+      let mortgageeOrderAnswers = '';
+      if (policy.additionalInterests && addAdditionalInterestType === 'Mortgagee') {
+        mortgageeOrderAnswers = getMortgageeOrderAnswers(questions, (policy.additionalInterests || null));
+      }
+      return {
+        ...initialValues,
+        order: mortgageeOrderAnswers.length === 1 ? mortgageeOrderAnswers[0].answer : ''
+      };
     }
+
+    const mortgageeAnswers = getAnswers('mortgagee', questions)
+    const mortgagee = mortgageeAnswers.find(ai => ai.AIName1 === selectedAI.name1 && ai.AIAddress1 === selectedAI.mailingAddress.address1);
+
+    return {
+      mortgagee,
+      _id: selectedAI._id || '', // eslint-disable-line
+      name1: selectedAI.name1 || '',
+      name2: selectedAI.name2 || '',
+      phoneNumber: selectedAI.phoneNumber ? String(selectedAI.phoneNumber) : '',
+      address1: selectedAI.mailingAddress.address1 || '',
+      address2: selectedAI.mailingAddress.address2 || '',
+      city: selectedAI.mailingAddress.city || '',
+      state: selectedAI.mailingAddress.state || '',
+      zip: String(selectedAI.mailingAddress.zip) || '',
+      referenceNumber: selectedAI.referenceNumber || '',
+      type: selectedAI.type || '',
+      aiType: selectedAI.type || '',
+      order: selectedAI.order
+    };
   };
 
   hideAdditionalInterestModal = () => {
@@ -159,70 +174,6 @@ export class MortgageBilling extends Component {
       isEditingAI: false
     });
   };
-
-  handleAISubmit = async (data, dispatch, props) => {
-    const { getPolicy, createTransaction } = this.props;
-    const { policy } = props;
-
-    const additionalInterests = policy.additionalInterests || [];
-    const type = data.aiType || this.state.addAdditionalInterestType;
-
-    let { order } = data;
-
-    const isMortgagee = type === 'Mortgagee';
-    // type mortgagee allows the user to select order and the AI edit will pass in order
-    if (!isMortgagee && !data._id) {
-      order = additionalInterests.filter(ai => ai.type === type && ai.active).length === 0 ? 0 : 1;
-    }
-    // remove any existing items before submission
-    const modifiedAIs = _.cloneDeep(additionalInterests);
-
-    _.remove(modifiedAIs, ai => ai._id === data._id); // eslint-disable-line
-
-    const aiData = {
-      additionalInterestId: data._id, // eslint-disable-line
-      name1: data.name1,
-      name2: data.name2,
-      referenceNumber: data.referenceNumber || '',
-      order,
-      active: true,
-      type,
-      phoneNumber: String(data.phoneNumber).length > 0 ? String(data.phoneNumber).replace(/[^\d]/g, '') : '',
-      mailingAddress: {
-        address1: data.address1,
-        address2: data.address2,
-        city: data.city,
-        state: data.state,
-        zip: data.zip,
-        country: {
-          code: 'USA',
-          displayText: 'United States of America'
-        }
-      }
-    };
-
-    modifiedAIs.push(aiData);
-    setRank(modifiedAIs);
-
-    const offset = new Date(policy.effectiveDate).getTimezoneOffset() / 60;
-
-    const submitData = {
-      ...aiData,
-      ...policy,
-      endorsementDate: moment(policy.effectiveDate).utcOffset(offset),
-      transactionType: data._id ? 'AI Update' : 'AI Addition', // eslint-disable-line
-      additionalInterests: modifiedAIs
-    };
-
-    await createTransaction(submitData);
-    getPolicy(policy.policyNumber);
-
-    this.setState({
-      showAdditionalInterestModal: false,
-      isEditingAI: false
-    });
-  };
-
 
   deleteAdditionalInterest = (selectedAdditionalInterest) => {
     this.setState({
@@ -233,7 +184,7 @@ export class MortgageBilling extends Component {
     // remove any existing items before submission
     const modifiedAIs = _.cloneDeep(additionalInterests);
     // remove any existing items before submission
-      _.remove(modifiedAIs, ai => ai._id === selectedAdditionalInterest._id); // eslint-disable-line
+    _.remove(modifiedAIs, ai => ai._id === selectedAdditionalInterest._id); // eslint-disable-line
 
     if (_.filter(modifiedAIs, ai => ai.type === selectedAdditionalInterest.type).length === 1) {
       const index = _.findIndex(modifiedAIs, { type: selectedAdditionalInterest.type });
@@ -260,6 +211,25 @@ export class MortgageBilling extends Component {
     });
   };
 
+  editAIOnEnter = (event, ai) => {
+    if (event.key === 'Enter') {
+      this.editAdditionalInterest(ai);
+    }
+  };
+
+  setBatch = (value) => {
+    const { change } = this.props;
+
+    change('cashDate', value);
+    change('batchNumber', moment.utc(value).format('YYYYMMDD'));
+  };
+
+  normalizeCashType = (value) => {
+    const { change } = this.props;
+    change('cashDescription', '');
+    return value;
+  };
+
   handleBillingEdit = () => {
     this.setState({ showBillingEditModal: true });
   };
@@ -278,11 +248,8 @@ export class MortgageBilling extends Component {
     return ais;
   };
 
-
-  handleFormSubmit = (data) => {
-    const {
-      policy, reset: resetForm, addTransaction, getPaymentHistory, getSummaryLedger
-    } = this.props;
+  handleFormSubmit = async (data) => {
+    const { reset: resetForm, addTransaction } = this.props;
     const submitData = data;
 
     submitData.cashDate = moment.utc(data.cashDate);
@@ -293,103 +260,31 @@ export class MortgageBilling extends Component {
     submitData.companyCode = 'TTIC';
     submitData.policy = this.props.policy;
 
-    addTransaction(submitData)
-      .then(() => {
-        getPaymentHistory(policy.policyNumber);
-        getSummaryLedger(policy.policyNumber);
-      });
-
+    await addTransaction(submitData);
     resetForm();
   };
 
   amountFormatter = cell => (cell ? Number(cell).toLocaleString('en-US', { style: 'currency', currency: 'USD' }) : '');
+
   dateFormatter = cell => `${cell.substring(0, 10)}`;
-
-  initAdditionalInterestModal = () => {
-    const { service = {}, questions = {} } = this.props;
-    const { addAdditionalInterestType, selectedAI, isEditingAI } = this.state;
-    const initialValues = {
-      name1: '',
-      name2: '',
-      phoneNumber: '',
-      address1: '',
-      address2: '',
-      city: '',
-      state: '',
-      zip: '',
-      referenceNumber: '',
-      type: ''
-    };
-
-    if (isEditingAI) {
-      if (selectedAI) {
-        const mortgagee = _.get(_.find(getAnswers('mortgagee', this.props.questions), a => a.AIName1 === selectedAI.name1 &&
-          a.AIAddress1 === selectedAI.mailingAddress.address1), 'ID');
-
-        return {
-          mortgagee,
-          _id: selectedAI._id, // eslint-disable-line
-          name1: selectedAI.name1,
-          name2: selectedAI.name2,
-          phoneNumber: selectedAI.phoneNumber,
-          address1: selectedAI.mailingAddress.address1,
-          address2: selectedAI.mailingAddress.address2,
-          city: selectedAI.mailingAddress.city,
-          state: selectedAI.mailingAddress.state,
-          zip: selectedAI.mailingAddress.zip,
-          referenceNumber: selectedAI.referenceNumber,
-          type: selectedAI.type,
-          aiType: selectedAI.type,
-          order: selectedAI.order
-        };
-      }
-
-      return {
-        ...initialValues,
-        _id: ''
-      };
-    }
-
-    let mortgageeOrderAnswers = '';
-    if ((service.latestPolicy || service.quote) && addAdditionalInterestType === 'Mortgagee') {
-      mortgageeOrderAnswers = getMortgageeOrderAnswers(questions, service.latestPolicy.additionalInterests || service.quote.additionalInterests || null);
-    }
-    return {
-      ...initialValues,
-      order: mortgageeOrderAnswers.length === 1 ? mortgageeOrderAnswers[0].answer : ''
-    };
-  };
 
   render() {
     const {
       cashDescriptionOptions,
       cashTypeAnswers,
       handleSubmit,
+      paymentHistory,
       pristine,
       policy,
       policy: { additionalInterests },
-      questions,
       billingOptions,
       submitting,
       reset: resetForm,
-      cashTypeValue
+      cashTypeValue,
+      sortedAdditionalInterests
     } = this.props;
 
-    setRank(additionalInterests);
-    this.setIsActive(additionalInterests);
-
-    getAnswers('mortgagee', questions).forEach((answer) => {
-      answer.displayText = `${answer.AIName1}, ${answer.AIAddress1}, ${answer.AICity} ${answer.AIState}, ${answer.AIZip}`;
-    });
-
-    const paymentHistory = _.orderBy(this.props.paymentHistory || [], ['date', 'createdAt'], ['desc', 'desc']);
-
-    paymentHistory.forEach((payment) => {
-      payment.amountDisplay = payment.amount.$numberDecimal;
-    });
-
     const validAdditionalInterestTypes = this.checkValidTypes(additionalInterests, this.state.selectedAI || {});
-
     const cashDescriptionAnswers = cashDescriptionOptions[cashTypeValue] || [];
 
     return (
@@ -461,6 +356,7 @@ export class MortgageBilling extends Component {
                           label="Amount"
                           component={Currency}
                           validate={validateAmount}
+                          noDecimal={false}
                           min={-1000000}
                           max={1000000}
                         />
@@ -494,15 +390,9 @@ export class MortgageBilling extends Component {
                   <h3 className="flex-child">Payments</h3>
                 </div>
                 <div className="payment-summary grid">
-                  <div className="table-view">
-                    <BootstrapTable className="" data={paymentHistory} striped hover>
-                      <TableHeaderColumn isKey dataField="date" dataFormat={this.dateFormatter} className="date" columnClassName="date" width="150" dataSort>Date</TableHeaderColumn>
-                      <TableHeaderColumn dataField="type" className="type" columnClassName="type" dataSort width="150" >Type</TableHeaderColumn>
-                      <TableHeaderColumn dataField="description" className="description" columnClassName="description" dataSort>Description</TableHeaderColumn>
-                      <TableHeaderColumn dataField="batch" className="note" columnClassName="note" dataSort width="200" >Note</TableHeaderColumn>
-                      <TableHeaderColumn dataField="amountDisplay" dataFormat={this.amountFormatter} className="amount" columnClassName="amount" width="150" dataSort dataAlign="right">Amount</TableHeaderColumn>
-                    </BootstrapTable>
-                  </div>
+
+                  <PaymentHistoryTable paymentHistory={paymentHistory} />
+
                   <dl className="total">
                     <div>
                       {this.props.summaryLedger && this.props.summaryLedger.cashReceived && `Payments Received ${this.amountFormatter(this.props.summaryLedger.cashReceived.$numberDecimal || '0')}`} <br />
@@ -521,44 +411,13 @@ export class MortgageBilling extends Component {
                     <button tabIndex="0" disabled={(policy && (_.filter(policy.additionalInterests, ai => ai.type === 'Bill Payer' && ai.active).length > 0 || _.filter(policy.additionalInterests, ai => ai.type === 'Premium Finance' && ai.active).length > 0))} onClick={() => this.addAdditionalInterest('Bill Payer')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Billpayer</span></div></button>
                   </div>
                   <ul className="results result-cards">
-                    {additionalInterests && _.sortBy(additionalInterests, ['sortInactive', 'rank', 'order']).map((ai, index) => (
-                      <li key={index}>
-                        {ai.active &&
-                          <a onKeyPress={event => this.editAIOnEnter(event, ai)} onClick={() => this.editAdditionalInterest(ai)}>
-                            {/* add className based on type - i.e. mortgagee could have class of mortgagee */}
-                            <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {ai.order + 1}</label></div>
-                            <section><h4>{ai.name1}&nbsp;{ai.name2}</h4>
-                              <p className="address">
-                                {`${ai.mailingAddress.address1},
-                                  ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city},
-                                  ${ai.mailingAddress.state}
-                                  ${ai.mailingAddress.zip}`}
-                              </p>
-                            </section>
-                            <div className="ref-number">
-                              <label htmlFor="ref-number">Reference Number</label>
-                              <span>{` ${ai.referenceNumber || ' - '}`}</span>
-                            </div>
-                          </a>
-                        }
-                        {!ai.active &&
-                          <a style={{ cursor: 'not-allowed' }}>
-                            <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {'Inactive'}</label></div>
-                            <section><h4>{ai.name1}&nbsp;{ai.name2} (Inactive)</h4>
-                              <p className="address">
-                                {`${ai.mailingAddress.address1},
-                                  ${ai.mailingAddress.address2 ? `${ai.mailingAddress.address2},` : ''} ${ai.mailingAddress.city},
-                                  ${ai.mailingAddress.state}
-                                  ${ai.mailingAddress.zip}`}
-                              </p>
-                            </section>
-                            <div className="ref-number">
-                              <label htmlFor="ref-number">Reference Number</label>
-                              <span>{` ${ai.referenceNumber || ' - '}`}</span>
-                            </div>
-                          </a>
-                        }
-                      </li>
+                    {sortedAdditionalInterests.map(ai => (
+                      <AdditionalInterestCard
+                        key={ai._id}
+                        ai={ai}
+                        handleOnEnter={this.editAIOnEnter}
+                        handleClick={this.editAdditionalInterest}
+                      />
                     ))}
                   </ul>
                 </div>
@@ -567,27 +426,22 @@ export class MortgageBilling extends Component {
           </div>
           {this.state.showAdditionalInterestModal &&
             <AIModal
-              isEditing={this.state.isEditingAI}
-              isEndorsement={this.state.isEditingAI}
+              additionalInterests={additionalInterests}
+              addAdditionalInterestType={this.state.addAdditionalInterestType}
+              completeSubmit={this.handleAISubmit}
+              deleteAdditionalInterest={this.deleteAdditionalInterest}
               hideModal={this.hideAdditionalInterestModal}
               initialValues={this.initAdditionalInterestModal()}
-              addAdditionalInterestType={this.state.addAdditionalInterestType}
-              validAdditionalInterestTypes={validAdditionalInterestTypes}
-              selectedAI={this.state.selectedAI}
-              additionalInterests={additionalInterests}
-              getMortgageeOrderAnswers={getMortgageeOrderAnswers}
-              getMortgageeOrderAnswersForEdit={getMortgageeOrderAnswersForEdit}
-              questions={questions}
-              policy={policy}
-              verify={this.handleAISubmit}
-              deleteAdditionalInterest={this.deleteAdditionalInterest}
               isDeleting={this.state.isDeleting}
+              isEditing={this.state.isEditingAI}
+              selectedAI={this.state.selectedAI}
+              validAdditionalInterestTypes={validAdditionalInterestTypes}
+              isPolicy
             />
           }
         </div>
         {this.state.showBillingEditModal &&
           <BillingModal
-            policy={policy}
             billingOptions={billingOptions.options}
             hideBillingModal={this.hideBillingModal}
           />
@@ -608,24 +462,24 @@ const selector = formValueSelector('MortgageBilling');
 const mapStateToProps = state => ({
   cashTypeValue: selector(state, 'cashType'),
   auth: state.authState,
-  billingOptions: state.service.billingOptions,
+  billingOptions: state.policyState.billingOptions,
   initialValues: handleInitialize(state),
   summaryLedger: state.policyState.summaryLedger,
-  policy: state.policyState.policy || {},
-  paymentHistory: state.service.paymentHistory,
-  paymentOptions: state.service.paymentOptions,
+  policy: state.policyState.policy,
+  policyID: state.policyState.policyID,
+  paymentHistory: getFormattedPaymentHistory(state),
+  service: state.service,
   cashTypeAnswers: getCashTypeAnswers(state),
   cashDescriptionOptions: getCashDescriptionOptions(state),
+  sortedAdditionalInterests: getSortedAdditionalInterests(state),
   questions: state.questions,
   tasks: state.cg
 });
 
 export default connect(mapStateToProps, {
-  batchActions,
   getPaymentHistory,
   getPaymentOptionsApplyPayments,
   getBillingOptionsForPolicy,
-  getSummaryLedger,
   addTransaction,
   createTransaction,
   getUIQuestions,

@@ -14,7 +14,7 @@ describe('App State Actions', () => {
       modelName: 'bb',
       instanceId: '123',
       data: { bb: '123' }
-    }
+    };
 
     const stateObj = [{
       type: types.APPSTATE_SET,
@@ -34,7 +34,7 @@ describe('App State Actions', () => {
       modelName: 'bb',
       instanceId: '123',
       error: 'my error'
-    }
+    };
 
     const stateObj = [{
       type: types.APPSTATE_ERROR,
@@ -44,5 +44,4 @@ describe('App State Actions', () => {
     store.dispatch(appStateActions.setAppStateError(inputProps.modelName, inputProps.instanceId, inputProps.error));
     expect(store.getActions()).toEqual(stateObj);
   });
-
 });

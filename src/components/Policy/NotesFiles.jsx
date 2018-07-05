@@ -40,7 +40,7 @@ NotesFiles.propTypes = {
 
 const mapStateToProps = state => ({
   notes: state.service.notes,
-  policy: state.service.latestPolicy || {},
+  policy: state.policyState.policy || {},
   error: state.error
 });
 

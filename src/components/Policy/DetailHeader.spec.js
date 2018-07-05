@@ -7,7 +7,6 @@ import ConnectedApp, { DetailHeader, showEffectiveDatePopUp, showReinstatePolicy
 
 describe('Testing DetailHeader component', () => {
   const props = {
-    policyState: {},
     policy: {
       policyID: '234',
       product: 'HO3',

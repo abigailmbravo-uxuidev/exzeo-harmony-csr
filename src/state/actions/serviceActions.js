@@ -1,11 +1,9 @@
 import axios from 'axios';
 import moment from 'moment';
 import { batchActions } from 'redux-batched-actions';
-import endorsementUtils from '../../utilities/endorsementModel';
 import * as serviceRunner from '../../utilities/serviceRunner';
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
-import { getPolicy } from './policyActions';
 
 export const handleError = (err) => {
   let error = err.response && err.response.data ? err.response.data : err;
@@ -169,6 +167,27 @@ export const clearAgent = () => (dispatch) => {
   return dispatch(serviceRequest(data));
 };
 
+export const getAgency = (companyCode, state, agencyCode) => (dispatch) => {
+  const axiosConfig = runnerSetup({
+    service: 'agency',
+    method: 'GET',
+    path: `v1/agency/${companyCode}/${state}/${agencyCode}`
+  });
+
+  return axios(axiosConfig).then((response) => {
+    const data = { agency: response.data.result };
+    return dispatch(batchActions([
+      serviceRequest(data)
+    ]));
+  })
+    .catch((error) => {
+      const message = handleError(error);
+      return dispatch(batchActions([
+        errorActions.setAppError(message)
+      ]));
+    });
+};
+
 export const getAgentsByAgency = (companyCode, state, agencyCode) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'agency',
@@ -213,72 +232,6 @@ export const clearAgencies = () => (dispatch) => {
   return dispatch(batchActions([
     serviceRequest(data)
   ]));
-};
-
-
-export const currentAgent = (companyCode, state, agentCode) => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'agency',
-    method: 'GET',
-    path: `v1/agent/${companyCode}/${state}/${agentCode}`
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = { currentAgent: response.data.result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
-};
-
-export const getEffectiveDateChangeReasons = () => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'policy-data',
-    method: 'GET',
-    path: 'effectiveDateChangeReasons'
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = { effectiveDateReasons: response.data.effectiveDateReasons ? response.data.effectiveDateReasons : [] };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
-};
-
-export const getTransactionHistory = policyNumber => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'billing',
-    method: 'GET',
-    path: `transaction-history/${policyNumber}`
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = { getTransactionHistory: response.data.result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-      // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-        // appStateActions.setAppState('modelName', 'workflowId', { submitting: false })
-      ]));
-    });
 };
 
 export const addTransaction = submitData => (dispatch) => {
@@ -347,48 +300,6 @@ export const getUnderwritingQuestions = (companyCode, state, product, property) 
     });
 };
 
-export const getPaymentOptionsApplyPayments = () => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'billing',
-    method: 'GET',
-    path: 'payment-options-apply-payment'
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = { paymentOptions: response.data.paymentOptions };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
-};
-
-export const getPaymentHistory = policyNumber => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'billing',
-    method: 'GET',
-    path: `payment-history/${policyNumber}`
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = { paymentHistory: response.data.result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
-};
-
 export const saveUnderwritingExceptions = (id, underwritingExceptions) => (dispatch) => {
   const body = {
     service: 'quote-data',
@@ -437,91 +348,6 @@ export const getBillingOptions = paymentOptions => (dispatch) => {
     });
 };
 
-export const updateBillPlan = paymentPlan => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'policy-data',
-    method: 'POST',
-    path: 'transaction',
-    data: paymentPlan
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = response.data.result;
-    dispatch(getPolicy(data.policyNumber));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(errorActions.setAppError(message));
-    });
-};
-
-export const getBillingOptionsForPolicy = paymentOptions => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'billing',
-    method: 'POST',
-    path: 'payment-options-for-policy',
-    data: paymentOptions
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = { billingOptions: response.data.result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
-};
-
-export const getEndorsementHistory = policyNumber => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'policy-data',
-    method: 'GET',
-    path: `transactionDetails/${policyNumber}?endorsement=endorsement`
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = { endorsementHistory: response.data };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
-};
-
-export const createTransaction = submitData => (dispatch) => {
-  const body = {
-    service: 'policy-data',
-    method: 'POST',
-    path: 'transaction',
-    data: submitData
-  };
-  const axiosConfig = runnerSetup(body);
-
-  return axios(axiosConfig)
-    .then((response) => {
-      const data = { addTransaction: response.data.result };
-      dispatch(serviceRequest(data));
-
-      return response.data.result;
-    })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
-};
-
 export const clearRate = () => dispatch => dispatch(batchActions([
   serviceRequest({ getRate: {} })
 ]));
@@ -547,27 +373,6 @@ export const getQuote = quoteId => (dispatch) => {
     });
 };
 
-export const getCancelOptions = () => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'policy-data',
-    method: 'GET',
-    path: 'cancelOptions'
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = { cancelOptions: response.data.cancelOptions };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
-};
-
 export const getZipcodeSettings = (companyCode, state, product, zip) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'underwriting',
@@ -576,7 +381,7 @@ export const getZipcodeSettings = (companyCode, state, product, zip) => (dispatc
   });
 
   return axios(axiosConfig).then((response) => {
-    const data = { getZipcodeSettings: response.data && response.data.result ? response.data.result[0] : {} };
+    const data = { getZipcodeSettings: response.data && response.data.result ? response.data.result[0] : { timezone: '' } };
     return dispatch(batchActions([
       serviceRequest(data)
     ]));
@@ -648,45 +453,3 @@ export const clearPolicyResults = () => (dispatch) => {
     serviceRequest(data)
   ]));
 };
-
-export const getListOfForms = (policy, rating, transactionType) => {
-  const body = {
-    service: 'form-list',
-    method: 'POST',
-    path: '/v1',
-    data: {
-      quote: {
-        ...policy,
-        rating
-      },
-      transactionType: transactionType || 'New Business'
-    }
-  };
-  const axiosConfig = runnerSetup(body);
-
-  return axios(axiosConfig)
-    .then(response => ((response.data && response.data.result && response.data.result.forms)
-      ? response.data.result.forms
-      : []))
-    .catch((error) => {
-      throw new Error(error);
-    });
-};
-
-/**
- * TODO: move out of service actions (most likely to policy, or some other state)
- * START - Save Endorsement form to get new rate and update policy coverage
- */
-export function submitEndorsementForm(formData, formProps) {
-  return async (dispatch) => {
-    const submitData = endorsementUtils.generateModel(formData, formProps);
-    const forms = await getListOfForms(formProps.policy, formProps.getRate.rating, 'New Business');
-    submitData.forms = forms;
-    const newPolicy = await dispatch(createTransaction(submitData));
-
-    dispatch(getPolicy(newPolicy.policyNumber));
-  };
-}
-/**
- * END
- */

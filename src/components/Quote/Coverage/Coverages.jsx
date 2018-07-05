@@ -272,6 +272,7 @@ const Coverages = ({
 );
 
 Coverages.propTypes = {
+  questions: PropTypes.object.isRequired,
   normalizeDwellingAmount: PropTypes.func.isRequired,
   normalizeDwellingDependencies: PropTypes.func.isRequired,
   normalizePersonalPropertyPercentage: PropTypes.func.isRequired,

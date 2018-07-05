@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import _get from 'lodash/get';
 import moment from 'moment';
 import { setAppState } from '../../state/actions/appStateActions';
-import { getEffectiveDateChangeReasons } from '../../state/actions/serviceActions';
+import { getEffectiveDateChangeReasons } from '../../state/actions/policyActions';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 
@@ -166,7 +166,6 @@ DetailHeader.propTypes = {
 
 const mapStateToProps = state => ({
   appState: state.appState,
-  policyState: state.policy,
   policy: state.policyState.policy,
   summaryLedger: state.policyState.summaryLedger
 });

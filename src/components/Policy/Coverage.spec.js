@@ -31,9 +31,14 @@ describe('Testing Coverage component', () => {
     };
     const store = mockStore(initialState);
     const props = {
-      getUIQuestions() {},
+      match: {
+        params: {
+          policyNumber: '324'
+        }
+      },
       getPolicy() {},
       getCancelOptions() { return Promise.resolve(); },
+      getUIQuestions() {},
       summaryLedger: {
 
       },
@@ -81,6 +86,11 @@ describe('Testing Coverage component', () => {
     const wrapper2 = shallow(<Coverage store={store} {...props} />);
 
     wrapper2.instance().componentWillReceiveProps({
+      match: {
+        params: {
+          policyNumber: '324'
+        }
+      },
       summaryLedger: { currentPremium: 100 },
       actions: {
         policyStateActions: {
@@ -117,7 +127,7 @@ describe('Testing Coverage component', () => {
       }
     };
     const questions = {
-      'propertyAppraisal': {
+      propertyAppraisal: {
         _id: '32432424234234234',
         name: 'propertyAppraisal',
         steps: [

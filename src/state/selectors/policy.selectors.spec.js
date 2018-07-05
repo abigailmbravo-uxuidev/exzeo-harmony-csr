@@ -3,7 +3,7 @@ import { getCashDescriptionOptions, getCashTypeAnswers } from './policy.selector
 describe('Testing getCashDescriptionOptions', () => {
   it('should test getCashDescriptionOptions', () => {
     const state = {
-      service: {
+      policyState: {
         paymentOptions: [
           { paymentType: 'test', paymentDescription: [{}] }
         ]
@@ -16,7 +16,7 @@ describe('Testing getCashDescriptionOptions', () => {
 
   it('should test getCashDescriptionOptions with no payment Options', () => {
     const state = {
-      service: {
+      policyState: {
         paymentOptions: null
       }
     };
@@ -28,7 +28,7 @@ describe('Testing getCashDescriptionOptions', () => {
 describe('Testing getCashTypeAnswers', () => {
   it('should test getCashTypeAnswers', () => {
     const state = {
-      service: {
+      policyState: {
         paymentOptions: [
           { paymentType: 'test', paymentDescription: [{}] }
         ]
@@ -41,7 +41,7 @@ describe('Testing getCashTypeAnswers', () => {
 
   it('should test getCashDescriptionOptions with no payment Options', () => {
     const state = {
-      service: {
+      policyState: {
         paymentOptions: null
       }
     };

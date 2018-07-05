@@ -13,7 +13,7 @@ const ResultsCalculator = props => (
           name="endorsementDate"
           label="Endorsement Effective Date"
           component={Date}
-          validate={[validation.isDate, (value) => validation.isDateRange(value, props.min, props.max)]}
+          validate={[validation.isDate, props.validateEndorsementDate]}
           dataTest='endorsementDateNew'
         />
       </div>

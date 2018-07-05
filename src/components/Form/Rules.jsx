@@ -20,8 +20,9 @@ const rules = {
   numberDashesOnly: value => (value.match(/^(\d+-?)+\d+$/) ? undefined : 'Only numbers and dashes allowed'),
   zipNumbersOnly: value => ((!value || validator.isNumeric(String(value))) ? undefined : 'Not a valid zip code'),
   numbersOnly: value => ((!value || validator.isNumeric(String(value))) ? undefined : 'Not a valid number'),
+  dateCheck: value => (moment(value).isAfter(moment('2017-07-31').format('YYYY-MM-DD')) ? undefined : 'Date must be at least 08/01/2017'),
   dwellingRange: value => ((calculatedValue(value) <= 2000000 && calculatedValue(value) >= 125000) ? undefined : 'Not a valid range. Must be ($125,000 - $2,000,000)'),
-  dependsOn: (dependsOnValues) => (value, allValues) => {
+  dependsOn: dependsOnValues => (value, allValues) => {
     if (value && value.length > 0) return undefined;
     for (const field of dependsOnValues) {
       if (allValues[field]) return 'Field Required';

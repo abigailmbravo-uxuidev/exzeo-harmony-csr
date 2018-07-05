@@ -1,12 +1,10 @@
 import React from 'react';
-import configureStore from 'redux-mock-store';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
+import cloneDeep from 'lodash/cloneDeep';
+import { AdditionalInterests } from './AdditionalInterests';
+import { getGroupedAdditionalInterests, getSortedAdditionalInterests, checkQuoteState } from '../../state/selectors/quote.selectors';
+import { getUIQuestions } from '../../state/actions/questionsActions';
 
-import ConnectedApp, { AdditionalInterests, handleGetQuoteData, handleFormSubmit,
-  deleteAdditionalInterest, addAdditionalInterest, editAdditionalInterest, hideAdditionalInterestModal } from './AdditionalInterests';
-
-const middlewares = [];
-const mockStore = configureStore(middlewares);
 
 const quoteData = {
   _id: '5866c036a46eb72908f3f547',
@@ -63,6 +61,11 @@ const quoteData = {
     pool: false
   },
   rating: {
+    worksheet: {
+      fees: {
+
+      }
+    },
     totalPremium: '123',
     engineCode: 'HO3ByPeril',
     rateCode: '0417',
@@ -243,7 +246,7 @@ const quoteData = {
       }
     },
     {
-      type: 'PremiumFinance',
+      type: 'Premium Finance',
       name1: 'BB3',
       referenceNumber: '1001',
       phoneNumber: '1234567890',
@@ -317,373 +320,52 @@ const quoteData = {
 
 describe('Testing AdditionalInterests component', () => {
   it('should test connected app', () => {
-    const initialState = {
+    const state = {
       service: {
         quote: quoteData
-      },
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {},
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        data: {
-          showAdditionalInterestModal: false
-        },
-        modelName: 'bb'
       }
     };
-    const store = mockStore(initialState);
+    const groupedAdditionalInterests = getGroupedAdditionalInterests(state);
+    const sortedAdditionalInterests = getSortedAdditionalInterests(state);
     const props = {
-      fieldQuestions: [],
-      dispatch: store.dispatch,
+      billingOptions: {},
+      saveBillingInfo() {},
+      getBillingOptions() {},
+      setAppState() {},
+      batchCompleteTask() { return Promise.resolve(() => {}); },
+      getLatestQuote() {},
       appState: {
+        instanceId: '1245',
         data: {
-          submitting: false
+          addAdditionalInterestType: 'Bill Payer'
         }
       },
-      actions: {
-        questionsActions: {
-          getUIQuestions() {}
-        }
-      },
-      quoteData
+      quoteData,
+      groupedAdditionalInterests,
+      sortedAdditionalInterests,
+      editingDisabled: false,
+      getUIQuestions() {}
     };
-    const wrapper = shallow(<ConnectedApp store={store} {...props} />);
+    const wrapper = shallow(<AdditionalInterests {...props} />);
 
-    expect(wrapper);
-  });
+    expect(wrapper.exists()).toBeTruthy();
 
-  it('should test handleGetQuoteData', () => {
-    const initialState = {
-      service: {
-        quote: quoteData
-      },
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {
-              variables: [
-                {
-                  name: 'retrieveQuote',
-                  value: {
-                    result: quoteData
-                  }
-                }, {
-                  name: 'getQuoteBeforePageLoop',
-                  value: {
-                    result: quoteData
-                  }
-                }]
-            },
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        data: {
-          showAdditionalInterestModal: false
-        },
-        modelName: 'bb'
-      }
-    };
-    expect(initialState.service.quote).toEqual(quoteData);
-  });
+    const wi = wrapper.instance();
 
-  it('should test deleteAdditionalInterest', () => {
-    const initialState = {
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {
-              variables: [
-                {
-                  name: 'retrieveQuote',
-                  value: {
-                    result: quoteData
-                  }
-                }, {
-                  name: 'getQuoteBeforePageLoop',
-                  value: {
-                    result: quoteData
-                  }
-                }]
-            },
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        data: {
-          showAdditionalInterestModal: false
-        },
-        modelName: 'bb'
-      }
-    };
-    const store = mockStore(initialState);
-    const props = {
-      fieldQuestions: [],
-      dispatch: store.dispatch,
-      actions: {
-        quoteStateActions: {
-          getLatestQuote() {}
-        },
-        appStateActions: {
-          setAppState() { }
-        },
-        cgActions: {
-          batchCompleteTask() { return Promise.resolve(() => {}); }
-        }
-      },
-      appState: {
-        data: {
-          submitting: false
-        }
-      },
-      quoteData
-    };
-    deleteAdditionalInterest(quoteData.additionalInterests[0], props);
-  });
+    const nextProps = cloneDeep(props);
+    nextProps.quoteData.additionalInterests.pop();
+    nextProps.billingOptions = { options: [{ billToId: '123', billToType: 'Policyholder' }] };
+    wi.componentWillReceiveProps(nextProps);
 
-  it('should test addAdditionalInterest', () => {
-    const initialState = {
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {
-              variables: [
-                {
-                  name: 'retrieveQuote',
-                  value: {
-                    result: quoteData
-                  }
-                }, {
-                  name: 'getQuoteBeforePageLoop',
-                  value: {
-                    result: quoteData
-                  }
-                }]
-            },
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        data: {
-          showAdditionalInterestModal: false
-        },
-        modelName: 'bb'
-      }
-    };
-    const store = mockStore(initialState);
-    const props = {
-      fieldQuestions: [],
-      dispatch: store.dispatch,
-      actions: {
-        quoteStateActions: {
-          getLatestQuote() {}
-        },
-        appStateActions: {
-          setAppState() { }
-        },
-        cgActions: {
-          batchCompleteTask() { return Promise.resolve(() => {}); }
-        }
-      },
-      appState: {
-        data: {
-          showAdditionalInterestModal: false,
-          submitting: false
-        }
-      },
-      quoteData
-    };
-    addAdditionalInterest(quoteData.additionalInterests[0], props);
-  });
+    const evenNextProps = cloneDeep(nextProps);
+    evenNextProps.appState.data.addAdditionalInterestType = null;
+    evenNextProps.appState.data.deleteAdditionalInterestType = 'Bill Payer';
+    wi.componentWillReceiveProps(evenNextProps);
 
-  it('should test addAdditionalInterest', () => {
-    const initialState = {
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {
-              variables: [
-                {
-                  name: 'retrieveQuote',
-                  value: {
-                    result: quoteData
-                  }
-                }, {
-                  name: 'getQuoteBeforePageLoop',
-                  value: {
-                    result: quoteData
-                  }
-                }]
-            },
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        data: {
-          showAdditionalInterestModal: false
-        },
-        modelName: 'bb'
-      }
-    };
-    const store = mockStore(initialState);
-    const props = {
-      fieldQuestions: [],
-      dispatch: store.dispatch,
-      actions: {
-        quoteStateActions: {
-          getLatestQuote() {}
-        },
-        appStateActions: {
-          setAppState() { }
-        },
-        cgActions: {
-          batchCompleteTask() { return Promise.resolve(() => {}); }
-        }
-      },
-      appState: {
-        data: {
-          showAdditionalInterestModal: false,
-          submitting: false
-        }
-      },
-      quoteData
-    };
-    editAdditionalInterest(quoteData.additionalInterests[0], props);
-  });
-
-  it('should test hideAdditionalInterestModal', () => {
-    const initialState = {
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {
-              variables: [
-                {
-                  name: 'retrieveQuote',
-                  value: {
-                    result: quoteData
-                  }
-                }, {
-                  name: 'getQuoteBeforePageLoop',
-                  value: {
-                    result: quoteData
-                  }
-                }]
-            },
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        data: {
-          showAdditionalInterestModal: false
-        },
-        modelName: 'bb'
-      }
-    };
-    const store = mockStore(initialState);
-    const props = {
-      fieldQuestions: [],
-      dispatch: store.dispatch,
-      actions: {
-        quoteStateActions: {
-          getLatestQuote() {}
-        },
-        appStateActions: {
-          setAppState() { }
-        },
-        cgActions: {
-          batchCompleteTask() { return Promise.resolve(() => {}); }
-        }
-      },
-      appState: {
-        data: {
-          showAdditionalInterestModal: false,
-          submitting: false
-        }
-      },
-      quoteData
-    };
-    hideAdditionalInterestModal(props);
-  });
-
-  it('should test handleFormSubmit', () => {
-    const initialState = {
-      cg: {
-        bb: {
-          data: {
-            modelInstanceId: '123',
-            model: {
-              variables: [
-                {
-                  name: 'retrieveQuote',
-                  value: {
-                    result: quoteData
-                  }
-                }, {
-                  name: 'getQuoteBeforePageLoop',
-                  value: {
-                    result: quoteData
-                  }
-                }]
-            },
-            uiQuestions: []
-          }
-        }
-      },
-      appState: {
-        data: {
-          showAdditionalInterestModal: false
-        },
-        modelName: 'bb'
-      }
-    };
-    const store = mockStore(initialState);
-
-    const props = {
-      questions: [],
-      dispatch: store.dispatch,
-      actions: {
-        quoteStateActions: {
-          getLatestQuote() {}
-        },
-        questionsActions: {
-          getUIQuestions() {}
-        },
-        appStateActions: {
-          setAppState() { }
-        },
-        cgActions: {
-          batchCompleteTask() { return Promise.resolve(() => {}); }
-        }
-      },
-      appState: {
-        instanceId: 1,
-        data: {
-          submitting: false
-        }
-      },
-      quoteData
-    };
-    handleFormSubmit(quoteData.additionalInterests, store.dispatch, props);
-
-    const wrapper = shallow(<AdditionalInterests store={store} {...props} />);
-
-    wrapper.instance().componentDidMount();
+    wi.handleAISubmit(quoteData.additionalInterests);
+    wi.addAdditionalInterest('Bill Payer');
+    wi.editAdditionalInterest(quoteData.additionalInterests[0]);
+    wi.deleteAdditionalInterest(quoteData.additionalInterests[0]);
+    wi.editAIOnEnter({ key: 'Enter' }, quoteData.additionalInterests[0]);
   });
 });

@@ -1,35 +1,38 @@
 export default {
-  search: {},
-  cg: {},
-  service: {
-    cancelOptions: []
+  authState: {
+    userProfile: null
   },
-  newNote: {},
   appState: {
     data: {
       submitting: false
-    },
+    }
   },
-  // navigation: {
-  //   location: null
-  // },
+  cg: {},
   error: {},
+  newNote: {},
+  questions: {},
   quoteState: {
     quoteId: null,
     update: false
   },
-  questions: {},
   policyState: {
+    policyID: '',
     policy: {},
-    summaryLedger: {},
-    getRate: {}
-  },
-  authState: {
-    userProfile: null
+    billingOptions: {},
+    cancelOptions: [],
+    effectiveDateReasons: [],
+    endorsementHistory: [],
+    paymentHistory: [],
+    paymentOptions: [],
+    summaryLedger: {}
   },
   agencyState: {
     agencies: [],
     agency: {},
     agents: []
+  },
+  search: {},
+  service: {
+    cancelOptions: []
   }
 };

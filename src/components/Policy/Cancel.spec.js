@@ -2,7 +2,7 @@ import React from 'react';
 import configureStore from 'redux-mock-store';
 import { shallow } from 'enzyme';
 
-import { CancelPolicy, handleInitialize, Payments, Claims, handleFormSubmit, resetCancelReasons } from './Cancel';
+import { CancelPolicy, handleInitialize, handleFormSubmit } from './Cancel';
 
 const mockStore = configureStore([]);
 
@@ -44,6 +44,7 @@ describe('Testing Cancel component', () => {
         }
       },
       policyState: {
+        billingOptions: {},
         policy: {},
         summaryLedger: { status: { code: 0 } }
       }
@@ -69,9 +70,10 @@ describe('Testing Cancel component', () => {
       zipCodeSettings: { timezone: 'America/New_York' },
       appState: initialState.appState,
       dispatch: store.dispatch,
-      cancelOptions
+      cancelOptions,
+      paymentOptions: []
     };
-    const wrapper = shallow(<CancelPolicy label="test" store={store} {...props} />);
+    const wrapper = shallow(<CancelPolicy label="test" {...props} />);
     expect(wrapper);
 
     wrapper.instance().componentWillReceiveProps({
