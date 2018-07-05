@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
-import ConnectedApp, { Coverage, getPropertyAppraisialLink } from './Coverage';
+import ConnectedApp, { Coverage, getPropertyAppraisalLink } from './Coverage';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
@@ -36,6 +36,9 @@ describe('Testing Coverage component', () => {
           policyNumber: '324'
         }
       },
+      getPolicy() {},
+      getCancelOptions() { return Promise.resolve(); },
+      getUIQuestions() {},
       summaryLedger: {
 
       },
@@ -61,7 +64,7 @@ describe('Testing Coverage component', () => {
           getBillingOptionsForPolicy() { return Promise.resolve(); },
           getSummaryLedger() { return Promise.resolve(); }
         },
-        errorActions: { dispatchClearAppError() { } }
+        errorActions: { clearAppError() { } }
       },
       fieldQuestions: [],
       quoteData: {},
@@ -107,7 +110,7 @@ describe('Testing Coverage component', () => {
           getBillingOptionsForPolicy() { return Promise.resolve(); },
           getSummaryLedger() { return Promise.resolve(); }
         },
-        errorActions: { dispatchClearAppError() { } }
+        errorActions: { clearAppError() { } }
       },
       policy: { policyNumber: '324324', rating: { worksheet: { fees: {} } } }
     });
@@ -116,7 +119,7 @@ describe('Testing Coverage component', () => {
     wrapper2.instance().componentDidMount();
   });
 
-  it('should test getPropertyAppraisialLink', () => {
+  it('should test getPropertyAppraisalLink', () => {
     const policy = {
       property: {
         physicalAddress: {
@@ -124,8 +127,8 @@ describe('Testing Coverage component', () => {
         }
       }
     };
-    const questions = [
-      {
+    const questions = {
+      propertyAppraisal: {
         _id: '32432424234234234',
         name: 'propertyAppraisal',
         steps: [
@@ -147,8 +150,8 @@ describe('Testing Coverage component', () => {
           }
         ]
       }
-    ];
-    expect(getPropertyAppraisialLink(policy.property.physicalAddress.county, questions).label).toEqual('ALACHUA');
-    expect(getPropertyAppraisialLink(policy.property.physicalAddress.county, questions).answer).toEqual('http://www.acpafl.org/');
+    };
+    expect(getPropertyAppraisalLink(policy.property.physicalAddress.county, questions).label).toEqual('ALACHUA');
+    expect(getPropertyAppraisalLink(policy.property.physicalAddress.county, questions).answer).toEqual('http://www.acpafl.org/');
   });
 });

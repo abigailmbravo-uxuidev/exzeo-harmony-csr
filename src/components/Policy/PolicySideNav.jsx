@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import * as newNoteActions from '../../state/actions/newNoteActions';
+import * as cgActions from '../../state/actions/cgActions';
+import * as errorActions from '../../state/actions/errorActions';
 import GenerateDocsForm from './GenerateDocsForm';
-import * as cgActions from '../../actions/cgActions';
-import * as newNoteActions from '../../actions/newNoteActions';
-import * as serviceActions from '../../actions/serviceActions';
-import * as errorActions from '../../actions/errorActions';
 
 // Example of a possible schema
 /**
@@ -125,14 +124,18 @@ SideNav.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  policy: state.service.latestPolicy || {}
+  appState: state.appState,
+  completedTasks: state.completedTasks,
+  activateRedirectLink: state.appState.data.activateRedirectLink,
+  activateRedirect: state.appState.data.activateRedirect,
+  cg: state.cg,
+  policy: state.policyState.policy || {}
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
     cgActions: bindActionCreators(cgActions, dispatch),
     newNoteActions: bindActionCreators(newNoteActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch),
     errorActions: bindActionCreators(errorActions, dispatch)
   }
 });
