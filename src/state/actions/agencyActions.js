@@ -308,3 +308,35 @@ export function addAgent(agentData) {
   };
 }
 
+export async function applyLicenseToAgency(data, agency) {
+  data.agencyLicense.forEach((l) => {
+    const license = agency.license.find(li => li.licenseNumber === l);
+    const selectedAgent = license && license.agent ? license.agent.find(a => a.agentCode === data.agentCode) : null;
+
+    if (license && license.agent && !selectedAgent) {
+      license.agent.push({
+        agentCode: data.agentCode,
+        appointed: String(data.appointed) === 'true',
+        agentOfRecord: String(data.agentOfRecord) === 'true'
+      });
+      const licenseIndex = agency.license.findIndex(li => li.licenseNumber === l);
+      if (licenseIndex !== -1) {
+        agency.license.splice(licenseIndex, 1, license);
+      }
+    } else if (license && license.agent && selectedAgent) {
+      const agentIndex = license.agent.findIndex(a => a.agentCode === data.agentCode);
+      selectedAgent.appointed = String(data.appointed) === 'true';
+      selectedAgent.agentOfRecord = String(data.agentOfRecord) === 'true';
+      selectedAgent.agentInfo = data;
+      if (agentIndex !== -1) {
+        license.agent.splice(agentIndex, 1, selectedAgent);
+      }
+      const licenseIndex = agency.license.findIndex(li => li.licenseNumber === l);
+      if (licenseIndex !== -1) {
+        agency.license.splice(licenseIndex, 1, license);
+      }
+    }
+  });
+  const { createdAt, createdBy, ...selectedAgency } = agency;
+  return selectedAgency;
+}

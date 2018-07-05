@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { Radio, Input, Phone, AutocompleteChips, Integer } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
+import { applyLicenseToAgency } from '../../../state/actions/agencyActions';
 
 const radioStatusAnswers = [
   { answer: 'Inactive', label: 'Inactive' },
@@ -17,51 +18,20 @@ const radioDefaultAnswers = [
 export class AgentModal extends Component {
   update = async (data, dispatch, props) => {
     const { createdBy, createdAt, ...agent } = data;
+    const { agency } = props;
     await props.updateAgent(agent, props.agency);
-    await this.applyLicenseToAgency(data, props);
+    const agencyData = await applyLicenseToAgency(data, agency);
+    await props.updateAgency(agencyData);
     props.toggleModal('')();
   };
   add = async (data, dispatch, props) => {
     const { createdBy, createdAt, ...agent } = data;
-    await props.addAgent(agent, props.agency);
-    await this.applyLicenseToAgency(data, props);
+    const { agency } = props;
+    await props.addAgent(agent, agency);
+    const agencyData = await applyLicenseToAgency(data, agency);
+    await props.updateAgency(agencyData);
     props.toggleModal('')();
   };
-
-  // TODO: Clean up this logic!
-  applyLicenseToAgency = async (data, props) => {
-    const { agency } = props;
-    data.agencyLicense.forEach((l) => {
-      const license = agency.license.find(li => li.licenseNumber === l);
-      const selectedAgent = license && license.agent ? license.agent.find(a => a.agentCode === data.agentCode) : null;
-
-      if (license && license.agent && !selectedAgent) {
-        license.agent.push({
-          agentCode: data.agentCode,
-          appointed: String(data.appointed) === 'true',
-          agentOfRecord: String(data.agentOfRecord) === 'true'
-        });
-        const licenseIndex = agency.license.findIndex(li => li.licenseNumber === l);
-        if (licenseIndex !== -1) {
-          agency.license.splice(licenseIndex, 1, license);
-        }
-      } else if (license && license.agent && selectedAgent) {
-        const agentIndex = license.agent.findIndex(a => a.agentCode === data.agentCode);
-        selectedAgent.appointed = String(data.appointed) === 'true';
-        selectedAgent.agentOfRecord = String(data.agentOfRecord) === 'true';
-        selectedAgent.agentInfo = data;
-        if (agentIndex !== -1) {
-          license.agent.splice(agentIndex, 1, selectedAgent);
-        }
-        const licenseIndex = agency.license.findIndex(li => li.licenseNumber === l);
-        if (licenseIndex !== -1) {
-          agency.license.splice(licenseIndex, 1, license);
-        }
-      }
-    });
-    const { createdAt, createdBy, ...selectedAgency } = agency;
-    await props.updateAgency(selectedAgency);
-  }
 
   render() {
     const {
