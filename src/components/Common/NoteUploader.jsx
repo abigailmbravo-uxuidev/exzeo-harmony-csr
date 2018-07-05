@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Field, Form, reduxForm, propTypes } from 'redux-form';
+import { Field, Form, reduxForm } from 'redux-form';
 import Uppy from 'uppy/lib/core';
 import { Dashboard } from 'uppy/lib/react';
 import XHRUpload from 'uppy/lib/plugins/XHRUpload';
 import moment from 'moment';
-import * as serviceActions from '../../actions/serviceActions';
-import * as appStateActions from '../../actions/appStateActions';
-import * as newNoteActions from '../../actions/newNoteActions';
-import * as errorActions from '../../actions/errorActions';
+import * as serviceActions from '../../state/actions/serviceActions';
+import * as appStateActions from '../../state/actions/appStateActions';
+import * as newNoteActions from '../../state/actions/newNoteActions';
+import * as errorActions from '../../state/actions/errorActions';
 
 export const minimzeButtonHandler = (props) => {
   if (props.appState.data.minimize) {
@@ -21,7 +21,7 @@ export const minimzeButtonHandler = (props) => {
 };
 
 export const renderNotes = ({
- input, label, type, meta: { touched, error } 
+ input, label, type, meta: { touched, error }
 }) => (
   <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
     <textarea {...input} placeholder={label} rows="10" cols="40" />
@@ -139,8 +139,8 @@ export class Uploader extends Component {
     this.closeButtonHandler();
   };
 
-  validateFile = (file, currentFiles) => !file.name.includes('.') 
-      ? Promise.reject('Uploads must have a file extension.') 
+  validateFile = (file, currentFiles) => !file.name.includes('.')
+      ? Promise.reject('Uploads must have a file extension.')
       : Promise.resolve()
 
   componentWillMount() {
@@ -215,7 +215,6 @@ export class Uploader extends Component {
 }
 
 Uploader.propTypes = {
-  ...propTypes,
   noteType: PropTypes.string
 };
 

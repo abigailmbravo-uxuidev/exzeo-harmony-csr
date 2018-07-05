@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { reduxForm, propTypes } from 'redux-form';
-import * as appStateActions from '../../actions/appStateActions';
-import * as cgActions from '../../actions/cgActions';
+import * as appStateActions from '../../state/actions/appStateActions';
+import * as cgActions from '../../state/actions/cgActions';
 // import NewNoteFileUploader from '../Common/NewNoteFileUploader';
 
 // Example of a possible schema

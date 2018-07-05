@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import normalizePhone from '../Form/normalizePhone';
-import * as serviceActions from '../../actions/serviceActions';
-import * as quoteStateActions from '../../actions/quoteStateActions';
+import * as serviceActions from '../../state/actions/serviceActions';
+import * as quoteStateActions from '../../state/actions/quoteStateActions';
 
 export const selectPolicy = (quote) => {
   if (!quote.quoteNumber) return;

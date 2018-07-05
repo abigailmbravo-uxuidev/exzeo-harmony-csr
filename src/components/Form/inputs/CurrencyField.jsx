@@ -44,10 +44,10 @@ export const CurrencyInput = ({
       {Label}
       <NumberFormat
         {...input}
-        tabIndex={'0'}
-        displayType={'input'}
+        tabIndex="0"
+        displayType="input"
         thousandSeparator
-        prefix={'$ '}
+        prefix="$ "
         min={min}
         max={max}
         disabled={disabled}
@@ -92,7 +92,7 @@ CurrencyInput.propTypes = {
     warning: PropTypes.string
   }),
 
-    /**
+  /**
    * Max and min limit for range slider
    */
   max: PropTypes.number,

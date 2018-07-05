@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { reduxForm, propTypes } from 'redux-form';
-import * as serviceActions from '../../actions/serviceActions';
+import { reduxForm } from 'redux-form';
+import * as serviceActions from '../../state/actions/serviceActions';
 import AgencyConnect from '../../containers/Agency';
 import Footer from '../Common/Footer';
 import normalizePhone from '../Form/normalizePhone';
@@ -189,7 +189,6 @@ Property type definitions
 ------------------------------------------------
 */
 Staff.propTypes = {
-  ...propTypes,
   tasks: PropTypes.shape(),
   appState: PropTypes.shape({
     modelName: PropTypes.string,

@@ -5,8 +5,8 @@ import { reduxForm, Field } from 'redux-form';
 import moment from 'moment-timezone';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
+import Loader from '@exzeo/core-ui/lib/Loader';
 import DateField from '../Form/inputs/DateField';
-import Loader from '../Common/Loader';
 
 const { Select } = Inputs;
 const { validation } = lifecycle;
