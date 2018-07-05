@@ -17,10 +17,6 @@ export class Contracts extends Component {
     this.setState({ showAgencyEdit: showPopup });
   };
 
-  saveAgency = (data, dispatch, props) => {
-    this.displayAgencyPopup(false);
-  };
-
   toggleContractModal = (editType, contractIndex) => () =>
     this.setState({
       editType,
@@ -82,7 +78,6 @@ export class Contracts extends Component {
         </div>
         {this.state.showAgencyEdit && (
           <AgencyModal
-            saveAgency={this.saveAgency}
             isEdit
             closeModal={this.toggleAgencyModal}
           />

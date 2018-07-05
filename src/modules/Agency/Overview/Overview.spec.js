@@ -10,5 +10,10 @@ describe('Testing Overview component', () => {
     };
     const wrapper = shallow(<Overview {...props} />);
     expect(wrapper.exists()).toBeTruthy();
+
+    const wi = wrapper.instance();
+
+    wi.toggleContactModal('CSR')();
+    wi.toggleAgencyModal();
   });
 });

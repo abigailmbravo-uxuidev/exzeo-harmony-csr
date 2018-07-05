@@ -1,11 +1,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { AgencyContacts } from './AgencyContacts';
+import { AgencyDetails } from './AgencyDetails';
 import mockAgency from '../mockAgency';
 
 describe('Testing Agency Base component', () => {
   it('should render', () => {
-    const wrapper = shallow(<AgencyContacts agency={mockAgency} editContact={x => x} />);
-    expect(wrapper).toBeTruthy;
+    const wrapper = shallow(<AgencyDetails agency={mockAgency} editAgency={x => x} />);
+    expect(wrapper.exists()).toBeTruthy();
   });
 });
