@@ -6,6 +6,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import _get from 'lodash/get';
 import _find from 'lodash/find';
 import moment from 'moment';
+import Loader from '@exzeo/core-ui/lib/Loader';
 import { getUIQuestions } from '../../state/actions/questionsActions';
 import { getPolicy, getBillingOptionsForPolicy, getPaymentHistory, getCancelOptions, getPaymentOptionsApplyPayments } from '../../state/actions/policyActions';
 import normalizeNumbers from '../Form/normalizeNumbers';
@@ -187,7 +188,7 @@ export class Coverage extends Component {
     ];
 
     const propertyData = property || {};
-    if (!this.props.policy.policyID) return (<PolicyConnect />);
+    if (!this.props.policy.policyID) return (<PolicyConnect><Loader /> </PolicyConnect>);
 
     return (
       <PolicyConnect>
