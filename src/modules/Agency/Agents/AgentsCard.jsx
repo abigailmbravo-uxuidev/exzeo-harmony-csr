@@ -7,8 +7,8 @@ export const AgentsCard = ({
   <div className="agency agent contact card" key={agentIndex}>
     <div className="contact-title">
       <i className="fa fa-address-card margin bottom" />
-      {agent.agentOfRecord ? <small><i className="card-icon fa fa-bookmark" /><label>AOR</label></small> : null }
-      {agent.appointed ? <small><i className="card-icon fa fa-certificate" /><label>Appointed</label></small> : null }
+      {/* {agent.agentOfRecord ? <small><i className="card-icon fa fa-bookmark" /><label>AOR</label></small> : null }
+      {agent.appointed ? <small><i className="card-icon fa fa-certificate" /><label>Appointed</label></small> : null } */}
     </div>
     <div className="contact-details">
       <div className="card-name">
