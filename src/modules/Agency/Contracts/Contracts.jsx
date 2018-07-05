@@ -4,6 +4,7 @@ import TaxDetails from './TaxDetails';
 import AgencyModal from '../AgencyModal';
 import ContractsCard from './ContractsCard';
 import ContractsModal from './ContractsModal';
+import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 
 export class Contracts extends Component {
   state = {
@@ -36,16 +37,19 @@ export class Contracts extends Component {
     this.setState({ editType: null, showEditAgencyContract: false });
   };
 
+  existsInAgentsList = () => validation.isInArray(this.props.agencyAgentsList);
+
+
   render() {
     const { agency, contractInitialValues, agencyAgentsList } = this.props;
     if (!agency) return <div />;
 
     const { license } = agency;
-    console.log(agencyAgentsList);
     return (
       <div>
         {this.state.showEditAgencyContract && (
         <ContractsModal
+          existsInAgentsList={this.existsInAgentsList()}
           agencyAgentsList={agencyAgentsList}
           initialValues={contractInitialValues}
           toggleModal={this.toggleContractModal}

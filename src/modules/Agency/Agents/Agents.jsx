@@ -4,6 +4,7 @@ import AgentsCard from './AgentsCard';
 import AgentModal from './AgentModal';
 import ExistingAgentModal from './ExistingAgentModal';
 import RemoveAgentModal from './RemoveAgentModal';
+import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 
 export class Agents extends Component {
   state = {
@@ -57,6 +58,8 @@ export class Agents extends Component {
       showAddExistingAgent: !this.state.showAddExistingAgent
     });
 
+  existsInAgencyLicense = () => validation.isInArray(this.props.agencyLicenseArray);
+
   render() {
     const {
       agency, agencyAgents, agents, updateAgency, addAgent, updateAgent, listOfAgents, agencyLicenseArray
@@ -68,6 +71,7 @@ export class Agents extends Component {
           this.state.editType && (
             <AgentModal
               agency={agency}
+              existsInAgencyLicense={this.existsInAgencyLicense()}
               agencyLicenseArray={agencyLicenseArray}
               initialValues={this.state.selectedAgent}
               toggleModal={this.toggleAgentModal}
@@ -80,6 +84,7 @@ export class Agents extends Component {
         {this.state.showAddExistingAgent && (
           <ExistingAgentModal
             agency={agency}
+            existsInAgencyLicense={this.existsInAgencyLicense()}
             agencyLicenseArray={agencyLicenseArray}
             agents={agents}
             listOfAgents={listOfAgents}

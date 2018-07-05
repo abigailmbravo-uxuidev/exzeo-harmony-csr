@@ -7,7 +7,7 @@ import CheckBoxGroup from '../CheckBoxGroup';
 
 export const ContractsModal = (props) => {
   const {
-    toggleModal, saveContract, handleSubmit, editType, contractIndex, agencyAgentsList
+    toggleModal, saveContract, handleSubmit, editType, contractIndex, agencyAgentsList, existsInAgentsList
   } = props;
   return (
     <div className="modal contract-crud">
@@ -76,7 +76,7 @@ export const ContractsModal = (props) => {
                 name="agentList"
                 autoSuggest={agencyAgentsList}
                 component={AutocompleteChips}
-                validate={validation.isRequiredArray}
+                validate={[validation.isRequiredArray, existsInAgentsList]}
               />
             </section>
             <section className="product-details">

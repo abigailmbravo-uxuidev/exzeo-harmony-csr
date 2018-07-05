@@ -62,7 +62,8 @@ export class AgentModal extends Component {
       handleSubmit,
       editType,
       submitting,
-      agencyLicenseArray
+      agencyLicenseArray,
+      existsInAgencyLicense
     } = this.props;
 
     return (
@@ -164,7 +165,7 @@ export class AgentModal extends Component {
                     name="agencyLicense"
                     autoSuggest={agencyLicenseArray}
                     component={AutocompleteChips}
-                    validate={validation.isRequiredArray}
+                    validate={[validation.isRequiredArray, existsInAgencyLicense]}
                   />
                 </div>
               </section>
