@@ -6,6 +6,8 @@ const getAgency = state => state.agencyState.agency;
 
 const getAgents = state => state.agencyState.agents;
 
+const getAgencyAgents = state => state.agencyState.agencyAgents;
+
 export const getEditModalInitialValues = createSelector(
   [getAgency],
   (agency) => {
@@ -15,9 +17,15 @@ export const getEditModalInitialValues = createSelector(
     agency.eoExpirationDate = moment(agency.eoExpirationDate).format('YYYY-MM-DD');
     agency.licenseEffectiveDate = moment(agency.licenseEffectiveDate).format('YYYY-MM-DD');
 
+    agency.agentList = [];
     agency.license.map((lic) => {
       lic.eoExpirationDate = moment(lic.eoExpirationDate).format('YYYY-MM-DD');
       lic.licenseEffectiveDate = moment(lic.licenseEffectiveDate).format('YYYY-MM-DD');
+      const agentCodes = lic.agent.map(a => String(a.agentCode));
+
+      agentCodes.forEach((ac) => {
+        agency.agentList.push(ac);
+      });
       return lic;
     });
     const {
@@ -35,6 +43,14 @@ export const getListOfAgents = createSelector(
   (agent) => {
     if (!agent || !Array.isArray(agent)) return [];
     return agent.map(a => ({ answer: a.agentCode, label: `${a.firstName} ${a.lastName}` }));
+  }
+);
+
+export const getListOfAgencyAgents = createSelector(
+  [getAgencyAgents],
+  (agent) => {
+    if (!agent || !Array.isArray(agent)) return [];
+    return agent.map(a => String(a.agentCode));
   }
 );
 

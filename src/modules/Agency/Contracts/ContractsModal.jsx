@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, Form, Field } from 'redux-form';
-import { Input, Date } from '@exzeo/core-ui/lib/Input';
+import { Input, Date, AutocompleteChips } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 import CheckBoxGroup from '../CheckBoxGroup';
 
 export const ContractsModal = (props) => {
   const {
-    toggleModal, saveContract, handleSubmit, editType, contractIndex
+    toggleModal, saveContract, handleSubmit, editType, contractIndex, agencyAgentsList
   } = props;
   return (
     <div className="modal contract-crud">
@@ -70,7 +70,14 @@ export const ContractsModal = (props) => {
                 component={Date}
                 validate={[validation.isRequired, validation.isDate]}
               />
-              {/* TODO: Add Agent Code Chips to Modal so that the agent can be applied to a Contract */}
+              <Field
+                label="Agents"
+                styleName="agencyLicense"
+                name="agentList"
+                autoSuggest={agencyAgentsList}
+                component={AutocompleteChips}
+                validate={validation.isRequiredArray}
+              />
             </section>
             <section className="product-details">
               <label>Products</label>

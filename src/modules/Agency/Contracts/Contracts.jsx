@@ -37,15 +37,16 @@ export class Contracts extends Component {
   };
 
   render() {
-    const { agency, contractInitialValues } = this.props;
+    const { agency, contractInitialValues, agencyAgentsList } = this.props;
     if (!agency) return <div />;
 
     const { license } = agency;
-
+    console.log(agencyAgentsList);
     return (
       <div>
         {this.state.showEditAgencyContract && (
         <ContractsModal
+          agencyAgentsList={agencyAgentsList}
           initialValues={contractInitialValues}
           toggleModal={this.toggleContractModal}
           editType={this.state.editType}
