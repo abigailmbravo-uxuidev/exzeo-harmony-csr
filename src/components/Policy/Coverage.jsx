@@ -22,13 +22,14 @@ const handleInitialize = state => state.policyState.policy;
 
 export class Coverage extends Component {
   async componentDidMount() {
-    const { actions, match } = this.props;
+    const {
+      getUIQuestions, getPolicy, getCancelOptions, match
+    } = this.props;
     const { policyNumber } = match.params;
 
-    actions.questionsActions.getUIQuestions('propertyAppraisalCSR');
-    actions.policyStateActions.updatePolicy(true, policyNumber);
-    actions.serviceActions.getCancelOptions();
-    actions.serviceActions.getSummaryLedger(policyNumber);
+    getUIQuestions('propertyAppraisalCSR');
+    getPolicy(policyNumber);
+    getCancelOptions();
   }
 
   componentWillReceiveProps(nextProps) {
