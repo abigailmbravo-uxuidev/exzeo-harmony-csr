@@ -6,6 +6,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import _get from 'lodash/get';
 import _find from 'lodash/find';
 import moment from 'moment';
+import Loader from '@exzeo/core-ui/lib/Loader';
 import { getUIQuestions } from '../../state/actions/questionsActions';
 import { getPolicy, getBillingOptionsForPolicy, getPaymentHistory, getCancelOptions, getPaymentOptionsApplyPayments } from '../../state/actions/policyActions';
 import normalizeNumbers from '../Form/normalizeNumbers';
@@ -22,13 +23,14 @@ const handleInitialize = state => state.policyState.policy;
 
 export class Coverage extends Component {
   async componentDidMount() {
-    const { actions, match } = this.props;
+    const {
+      getUIQuestions, getPolicy, getCancelOptions, match
+    } = this.props;
     const { policyNumber } = match.params;
 
-    actions.questionsActions.getUIQuestions('propertyAppraisalCSR');
-    actions.policyStateActions.updatePolicy(true, policyNumber);
-    actions.serviceActions.getCancelOptions();
-    actions.serviceActions.getSummaryLedger(policyNumber);
+    getUIQuestions('propertyAppraisalCSR');
+    getPolicy(policyNumber);
+    getCancelOptions();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -186,7 +188,7 @@ export class Coverage extends Component {
     ];
 
     const propertyData = property || {};
-    if (!this.props.policy.policyID) return (<PolicyConnect />);
+    if (!this.props.policy.policyID) return (<PolicyConnect><Loader /> </PolicyConnect>);
 
     return (
       <PolicyConnect>
