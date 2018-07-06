@@ -1,13 +1,13 @@
 @import "_variables";
 @import "utilities/_borders"; // scss-lint:disable QualifyingElement
-//
+$input-height: 2rem; //
 // Textual form controls
 //
 
 input,
 select,
 textarea {
-  height: 2rem;
+  height: $input-height;
   // // Make inputs at least the height of their button counterpart (base line-height + padding + border)
   //padding: $input-padding-y $input-padding-x;
   padding: 0;
@@ -56,6 +56,13 @@ textarea {
   &[type="file"] {
     width: 100%;
     //box-shadow: none;
+  }
+
+  &.react-tagsinput-input {
+    height: calc(2rem - 2px);
+    margin: 0;
+    padding: 0;
+    border-width: 0;
   }
   // Note: This has no effect on <select>s in some browsers, due to the limited stylability of `<select>`s in CSS.
   @if $enable-rounded {
@@ -318,8 +325,8 @@ label {
 
           &.selected {
             span {
-              background: $bright-blue-darken-04;
               color: $white;
+              background: $bright-blue-darken-04;
             }
           }
 
@@ -420,11 +427,10 @@ label {
             }
 
             &.selected {
-
               span {
-              cursor: not-allowed;
-              color: $white;
-              background: rgba($bright-blue-darken-04, .5);
+                cursor: not-allowed;
+                color: $white;
+                background: rgba($bright-blue-darken-04, .5);
               }
             }
 
@@ -977,6 +983,90 @@ label {
   &.info {
     span {
       color: $green;
+    }
+  }
+}
+
+.react-tagsinput {
+  overflow: visible;
+  min-height: $input-height;
+  padding: 0;
+  border: 1px solid $warm-gray-06;
+  border-radius: $border-radius;
+
+  > span {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    line-height: 1;
+
+    .react-tagsinput-tag {
+      flex-grow: 0;
+      flex-shrink: 0;
+      width: auto;
+      margin: $padding/4;
+      background: $bright-blue-darken-04;
+      color: $white;
+      font-family: $font-family-sans-serif;
+      font-weight: $font-weight-normal;
+      font-size: $font-size-base;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-width: 0;
+      border-radius: 1rem;
+      padding-left: $padding;
+      @include transition(all 0.2s ease-in-out);
+
+      .react-tagsinput-remove {
+          margin-left: $padding/2;
+          @include transition(all 0.2s ease-in-out);
+          &:before {
+              font-family: $font-family-icon;
+              content: '\f057';
+              color: rgba($white, .5);
+              @include transition(all 0.2s ease-in-out);
+          }
+          &:hover {
+              &:before {
+                  color: rgba($white, 1);
+              }
+          }
+      }
+    }
+
+    .react-autosuggest__container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 0;
+      flex-shrink: 0;
+      width: auto;
+
+      .react-tagsinput-input {
+          font-family: $font-family-sans-serif;
+          font-weight: $font-weight-normal;
+          padding-left: $padding;
+      }
+
+      .react-autosuggest__suggestions-container {
+        position: absolute;
+        top: 1.875rem;
+        padding: $padding;
+        border-width: 0 1px 1px 1px;
+        border-style: solid;
+        border-color: $warm-gray-06;
+        border-radius: 0 0 $border-radius $border-radius;
+        background: $white;
+        box-shadow: 0 4px 4px 2px rgba($black, .1);
+
+        ul {
+          margin: 0;
+          padding: 0;
+          list-style: none;
+          font-family: $font-family-sans-serif;
+        }
+      }
     }
   }
 }

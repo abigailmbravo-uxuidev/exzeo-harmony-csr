@@ -84,6 +84,15 @@ export class AgentModal extends Component {
                     component={Input}
                     validate={validation.isRequired}
                   />
+                  <Field
+                    label="Agency License"
+                    styleName="agencyLicense"
+                    name="agencyLicense"
+                    dataTest="agencyLicense"
+                    autoSuggest={agencyLicenseArray}
+                    component={AutocompleteChips}
+                    validate={[validation.isRequiredArray, existsInAgencyLicense]}
+                  />
                 </div>
                 <div className="flex-form">
                   <Field
@@ -165,15 +174,6 @@ export class AgentModal extends Component {
                     dataTest="emailAddress"
                     component={Input}
                     validate={[validation.isRequired, validation.isEmail]}
-                  />
-                  <Field
-                    label="Agency License"
-                    styleName="agencyLicense"
-                    name="agencyLicense"
-                    dataTest="agencyLicense"
-                    autoSuggest={agencyLicenseArray}
-                    component={AutocompleteChips}
-                    validate={[validation.isRequiredArray, existsInAgencyLicense]}
                   />
                 </div>
               </section>
