@@ -978,6 +978,31 @@ label {
       font-size: $font-size-sm;
       line-height: 1.4;
     }
+
+    .react-tagsinput {
+      border-color: $red;
+
+      > span {
+        .react-autosuggest__container {
+          .react-tagsinput-input {
+            border-width: 0;
+          }
+        }
+
+        .react-autosuggest__suggestions-container {
+          border-color: $red;
+
+          ul {
+            li {
+              span {
+                color: $warm-gray-10;
+                font-size: $font-size-base;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   &.info {
@@ -1001,37 +1026,39 @@ label {
     line-height: 1;
 
     .react-tagsinput-tag {
-      flex-grow: 0;
-      flex-shrink: 0;
-      width: auto;
-      margin: $padding/4;
-      background: $bright-blue-darken-04;
-      color: $white;
-      font-family: $font-family-sans-serif;
-      font-weight: $font-weight-normal;
-      font-size: $font-size-base;
       display: flex;
       align-items: center;
+      flex-grow: 0;
+      flex-shrink: 0;
       justify-content: center;
+      width: auto;
+      margin: $padding/4;
+      padding-left: $padding*1.5;
+      color: $white;
       border-width: 0;
       border-radius: 1rem;
-      padding-left: $padding;
+      background: $bright-blue-darken-04;
+      font-family: $font-family-sans-serif;
+      font-size: $font-size-base;
+      font-weight: $font-weight-normal;
       @include transition(all 0.2s ease-in-out);
 
       .react-tagsinput-remove {
-          margin-left: $padding/2;
+        margin-left: $padding;
+        @include transition(all 0.2s ease-in-out);
+
+        &:before {
+          content: '\f057';
+          color: rgba($white, .5);
+          font-family: $font-family-icon;
           @include transition(all 0.2s ease-in-out);
+        }
+
+        &:hover {
           &:before {
-              font-family: $font-family-icon;
-              content: '\f057';
-              color: rgba($white, .5);
-              @include transition(all 0.2s ease-in-out);
+            color: rgba($white, 1);
           }
-          &:hover {
-              &:before {
-                  color: rgba($white, 1);
-              }
-          }
+        }
       }
     }
 
@@ -1044,9 +1071,9 @@ label {
       width: auto;
 
       .react-tagsinput-input {
-          font-family: $font-family-sans-serif;
-          font-weight: $font-weight-normal;
-          padding-left: $padding;
+        padding-left: $padding;
+        font-family: $font-family-sans-serif;
+        font-weight: $font-weight-normal;
       }
 
       .react-autosuggest__suggestions-container {
@@ -1058,7 +1085,10 @@ label {
         border-color: $warm-gray-06;
         border-radius: 0 0 $border-radius $border-radius;
         background: $white;
-        box-shadow: 0 4px 4px 2px rgba($black, .1);
+
+        &.react-autosuggest__suggestions-container--open {
+          box-shadow: 0 4px 4px 2px rgba($black, .1);
+        }
 
         ul {
           margin: 0;
@@ -1067,15 +1097,15 @@ label {
           font-family: $font-family-sans-serif;
 
           li {
-              min-height: 2rem;
-              display: flex;
-              align-items: center;
-              padding: $padding;
+            display: flex;
+            align-items: center;
+            min-height: 2rem;
+            padding: $padding;
 
-              &:hover {
-                  background: rgba($bright-blue, .1);
-                  cursor: pointer;
-              }
+            &:hover {
+              cursor: pointer;
+              background: rgba($bright-blue, .1);
+            }
           }
         }
       }

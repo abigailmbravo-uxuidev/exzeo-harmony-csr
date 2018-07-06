@@ -44,17 +44,14 @@ export class ExistingAgentModal extends Component {
     } = this.props;
 
     return (
-      <div className="modal agent-crud">
+      <div className="modal agent-crud existing-agent-modal">
         <form onSubmit={handleSubmit(this.saveAgent)}>
           <div className="card">
             <div className="card-header">
-              <h4>
-                <i className="fa fa-address-book" />
-            Existing Agent
-              </h4>
+              <h4> <i className="fa fa-address-book" /> Existing Agent</h4>
             </div>
             <div className="card-block">
-              <section className="agent-details">
+              <section className="existing-agent-details">
                 <div className="flex-form">
                   <Field
                     label="Agents"
@@ -75,6 +72,8 @@ export class ExistingAgentModal extends Component {
                     component={AutocompleteChips}
                     validate={[validation.isRequiredArray, existsInAgencyLicense]}
                   />
+              </div>
+              <div className="flex-form">
                   <Field
                     label="Agent Of Record"
                     styleName="agentOfRecord"

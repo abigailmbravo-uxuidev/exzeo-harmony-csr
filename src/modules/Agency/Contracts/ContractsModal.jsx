@@ -77,16 +77,6 @@ export const ContractsModal = (props) => {
                 component={Date}
                 validate={[validation.isRequired, validation.isDate]}
               />
-              <Field
-                label="Agents"
-                styleName="agencyLicense"
-                name="agentList"
-                dataTest="agentList"
-                placeholder="Add Agent"
-                autoSuggest={agencyAgentsList}
-                component={AutocompleteChips}
-                validate={[validation.isRequiredArray, existsInAgentsList]}
-              />
             </section>
             <section className="product-details">
               <label>Products</label>
@@ -99,9 +89,18 @@ export const ContractsModal = (props) => {
                   options={[{ label: 'HO3', value: 'HO3' }, { label: 'AF3', value: 'AF3' }]}
                   component={CheckBoxGroup}
                   validate={validation.isRequiredArray}
-
                 />
               </div>
+              <Field
+                label="Agents"
+                styleName="agencyLicense"
+                name="agentList"
+                dataTest="agentList"
+                placeholder="Add Agent"
+                autoSuggest={agencyAgentsList}
+                component={AutocompleteChips}
+                validate={[validation.isRequiredArray, existsInAgentsList]}
+              />
             </section>
           </div>
           <div className="card-footer">
