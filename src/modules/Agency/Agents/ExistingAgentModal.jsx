@@ -70,6 +70,7 @@ export class ExistingAgentModal extends Component {
                     styleName="agencyLicense"
                     name="agencyLicense"
                     dataTest="agencyLicense"
+                    placeholder="Add license"
                     autoSuggest={agencyLicenseArray}
                     component={AutocompleteChips}
                     validate={[validation.isRequiredArray, existsInAgencyLicense]}
