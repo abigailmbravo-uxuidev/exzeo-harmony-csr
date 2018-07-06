@@ -71,18 +71,13 @@ export function initializeEndorsementForm(policy = {}) {
   values.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer = policy.coverageOptions.propertyIncidentalOccupanciesOtherStructures.answer || false;
   values.coverageOptions.liabilityIncidentalOccupancies.answer = policy.coverageOptions.liabilityIncidentalOccupancies.answer || false;
   // Wind Mitigation
-  values.property.yearOfRoof = policy.property.yearOfRoof || null;
   values.property.protectionClass = policy.property.protectionClass || '';
   values.property.buildingCodeEffectivenessGrading = policy.property.buildingCodeEffectivenessGrading || null;
-  values.buildingCodeEffectivenessGradingNew = values.property.buildingCodeEffectivenessGrading;
   values.property.familyUnits = policy.property.familyUnits || '';
-  // Home/Location Bottom Right
-  values.property.distanceToTidalWater = policy.property.distanceToTidalWater || '';
-  values.property.distanceToFireHydrant = policy.property.distanceToFireHydrant || '';
-  values.property.distanceToFireStation = policy.property.distanceToFireStation || '';
-  values.property.residenceType = policy.property.residenceType || '';
-  values.property.squareFeet = policy.property.squareFeet || '';
   values.property.floodZone = policy.property.floodZone || '';
+  // Home/Location Bottom Right
+  values.property.residenceType = policy.property.residenceType || '';
+  values.property.yearOfRoof = policy.property.yearOfRoof || null;
 
   return values;
 }
@@ -91,13 +86,18 @@ export function generateModel(data, props) {
   const endorsementDate = calculateEndorsementDate(data.endorsementDate, props.zipcodeSettings.timezone);
 
   data.transactionType = 'Endorsement';
-  data.rating = props.getRate.rating;
   data.billingStatus = props.summaryLedger.status.code;
 
-  data.property.distanceToFireHydrant = Number(data.property.distanceToFireHydrant);
   data.property.yearOfRoof = String(data.property.yearOfRoof).length > 0 ? data.property.yearOfRoof : null;
 
   data.deductibles.hurricane.calculatedAmount = String(data.deductibles.hurricane.calculatedAmount);
+  // ensure that we have order and entityType properties set for secondary policyHolder if there is one.
+  if (data.policyHolders.length > 1) {
+    const order = data.policyHolders[1].order;
+    const entityType = data.policyHolders[1].entityType;
+    data.policyHolders[1].order = order || 1;
+    data.policyHolders[1].entityType = entityType || 'Person';
+  }
 
   return {
     ...data,

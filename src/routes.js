@@ -31,9 +31,10 @@ import PolicyEndorsements from './components/Policy/Endorsements';
 import AgencyStaff from './components/Agency/Staff';
 import NoteUploader from './components/Common/NoteUploader';
 import PolicyCancel from './components/Policy/Cancel';
-import * as appStateActions from './actions/appStateActions';
-import * as errorActions from './actions/errorActions';
-import * as authActions from './actions/authActions';
+
+import * as appStateActions from './state/actions/appStateActions';
+import * as errorActions from './state/actions/errorActions';
+import * as authActions from './state/actions/authActions';
 
 const auth = new Auth();
 
@@ -63,7 +64,7 @@ class Routes extends Component {
 
       if (!this.props.authState.userProfile) {
         const profile = JSON.parse(localStorage.getItem('user_profile'));
-        this.props.actions.authActions.dispatchUserProfile(profile);
+        this.props.actions.authActions.setUserProfile(profile);
       }
     } else if (!isAuthenticated() && checkPublicPath(window.location.pathname)) {
       history.push('/login');
@@ -88,6 +89,7 @@ class Routes extends Component {
       left: '20%'
     }
   };
+
   render() {
     return (
       <div>
@@ -132,7 +134,7 @@ class Routes extends Component {
               <Route exact path="/quote/coverage" render={props => <QuoteCoverage auth={auth} {...props} />} />
               <Route exact path="/quote/underwriting" render={props => <QuoteUnderwriting auth={auth} {...props} />} />
               <Route exact path="/quote/application" render={props => <QuoteApplication auth={auth} {...props} />} />
-              <Route exact path="/policy/coverage" render={props => <PolicyCoverage auth={auth} {...props} />} />
+              <Route exact path="/policy/coverage/:policyNumber" render={props => <PolicyCoverage auth={auth} {...props} />} />
               <Route exact path="/policy/policyholder" render={props => <PolicyPolicyholderAgent auth={auth} {...props} />} />
               <Route exact path="/policy/billing" render={props => <PolicyMortgageBilling auth={auth} {...props} />} />
               <Route exact path="/policy/notes" render={props => <PolicyNotesFiles auth={auth} {...props} />} />

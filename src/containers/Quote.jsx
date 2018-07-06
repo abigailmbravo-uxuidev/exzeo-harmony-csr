@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
+import Loader from '@exzeo/core-ui/lib/Loader';
 import QuoteHeader from '../components/Quote/QuoteHeader';
 import QuoteSideNav from '../components/Quote/QuoteSideNav';
 import QuoteDetailHeader from '../components/Quote/DetailHeader';
 import UnderwritingValidationBarConnect from '../components/Quote/UnderwritingValidationBar';
-import Loader from '../components/Common/Loader';
 
 
 export const QuoteBase = props => (

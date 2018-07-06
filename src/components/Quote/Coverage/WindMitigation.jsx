@@ -19,6 +19,7 @@ const WindMitigation = ({
           answers={getAnswers('roofCovering', questions)}
           component={Select}
           validate={validation.isRequired}
+          dataTest="roofCovering"
         />
       </div>
       <div className="flex-parent wind-col1-row-2">
@@ -29,6 +30,7 @@ const WindMitigation = ({
           answers={getAnswers('roofDeckAttachment', questions)}
           component={Select}
           validate={validation.isRequired}
+          dataTest="roofDeckAttachment"
         />
       </div>
       <div className="flex-parent wind-col1-row-3">
@@ -39,6 +41,7 @@ const WindMitigation = ({
           answers={getAnswers('roofToWallConnection', questions)}
           component={Select}
           validate={validation.isRequired}
+          dataTest="roofToWallConnection"
         />
       </div>
       <div className="flex-parent wind-col1-row-4">
@@ -49,6 +52,7 @@ const WindMitigation = ({
           answers={getAnswers('roofGeometry', questions)}
           component={Select}
           validate={validation.isRequired}
+          dataTest="roofGeometry"
         />
       </div>
       <div className="flex-parent wind-col1-row-5">
@@ -60,6 +64,7 @@ const WindMitigation = ({
           answers={getAnswers('secondaryWaterResistance', questions)}
           component={Radio}
           validate={validation.isRequired}
+          dataTest="secondaryWaterResistance"
         />
       </div>
       <div className="flex-parent wind-col1-row-6">
@@ -70,6 +75,7 @@ const WindMitigation = ({
           answers={getAnswers('openingProtection', questions)}
           component={Select}
           validate={validation.isRequired}
+          dataTest="openingProtection"
         />
       </div>
     </div>
@@ -82,6 +88,7 @@ const WindMitigation = ({
           name="floridaBuildingCodeWindSpeed"
           component={Integer}
           validate={[validation.isRequired, validation.isNumbersOnly]}
+          dataTest="floridaBuildingCodeWindSpeed"
         />
       </div>
       <div className="flex-parent wind-col1-row-2">
@@ -91,16 +98,18 @@ const WindMitigation = ({
           name="floridaBuildingCodeWindSpeedDesign"
           component={Integer}
           validate={[validation.isRequired, validation.isNumbersOnly]}
+          dataTest="floridaBuildingCodeWindSpeedDesign"
         />
       </div>
       <div className="flex-parent wind-col1-row-3">
         <Field
           styleName="flex-child"
-          label="FBC Wind Speed Design"
+          label="Terrain"
           name="terrain"
           component={Select}
           answers={getAnswers('terrain', questions)}
           validate={validation.isRequired}
+          dataTest="terrain"
         />
       </div>
       <div className="flex-parent wind-col1-row-4">
@@ -111,6 +120,7 @@ const WindMitigation = ({
           answers={getAnswers('internalPressureDesign', questions)}
           component={Select}
           validate={validation.isRequired}
+          dataTest="internalPressureDesign"
         />
       </div>
       <div className="flex-parent wind-col1-row-5">
@@ -122,6 +132,7 @@ const WindMitigation = ({
           answers={getAnswers('windBorneDebrisRegion', questions)}
           component={Radio}
           validate={validation.isRequired}
+          dataTest="windBorneDebrisRegion"
         />
       </div>
     </div>
@@ -129,11 +140,11 @@ const WindMitigation = ({
 );
 
 WindMitigation.propTypes = {
-  questions: PropTypes.array
+  questions: PropTypes.object
 };
 
 WindMitigation.defaultProps = {
-  questions: []
+  questions: {}
 };
 
 export default WindMitigation;

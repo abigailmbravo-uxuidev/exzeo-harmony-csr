@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp from './AgencyHeader';
+import ConnectedApp, { AgencyHeader } from './AgencyHeader';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -38,6 +38,12 @@ describe('Testing AgencyHeader component', () => {
       ...propTypes
     };
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
+    expect(wrapper);
+  });
+
+  it('should test connected app', () => {
+    const props = {};
+    const wrapper = shallow(<AgencyHeader {...props} />);
     expect(wrapper);
   });
 });
