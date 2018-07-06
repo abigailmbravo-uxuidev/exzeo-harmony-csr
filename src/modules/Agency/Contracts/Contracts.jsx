@@ -29,14 +29,14 @@ export class Contracts extends Component {
   };
 
   saveContract = async (data) => {
-    // const agentArray = [];
+    const agentArray = [];
 
-    // data.agentList.forEach((code) => {
-    //   const agentIndex = this.props.agencyAgents.findIndex(ag => String(ag.agentCode) === code);
-    //   if (agentIndex !== -1) { agentArray.push(this.props.agencyAgents[agentIndex]); }
-    // });
+    data.agentList.forEach((code) => {
+      const agentIndex = this.props.agencyAgents.findIndex(ag => String(ag.agentCode) === code);
+      if (agentIndex !== -1) { agentArray.push(this.props.agencyAgents[agentIndex]); }
+    });
 
-    // data.license[this.state.contractIndex].agent = agentArray;
+    data.license[this.state.contractIndex].agent = agentArray;
 
     this.props.updateAgency(data);
     this.setState({ editType: null, showEditAgencyContract: false });
