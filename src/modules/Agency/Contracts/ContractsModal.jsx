@@ -82,6 +82,7 @@ export const ContractsModal = (props) => {
                 styleName="agencyLicense"
                 name="agentList"
                 dataTest="agentList"
+                placeholder="Add Agent"
                 autoSuggest={agencyAgentsList}
                 component={AutocompleteChips}
                 validate={[validation.isRequiredArray, existsInAgentsList]}

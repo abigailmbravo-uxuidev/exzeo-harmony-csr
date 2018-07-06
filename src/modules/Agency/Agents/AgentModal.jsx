@@ -89,6 +89,7 @@ export class AgentModal extends Component {
                     styleName="agencyLicense"
                     name="agencyLicense"
                     dataTest="agencyLicense"
+                    placeholder="Add license"
                     autoSuggest={agencyLicenseArray}
                     component={AutocompleteChips}
                     validate={[validation.isRequiredArray, existsInAgencyLicense]}
@@ -174,6 +175,16 @@ export class AgentModal extends Component {
                     dataTest="emailAddress"
                     component={Input}
                     validate={[validation.isRequired, validation.isEmail]}
+                  />
+                  <Field
+                    label="Agency License"
+                    styleName="agencyLicense"
+                    name="agencyLicense"
+                    dataTest="agencyLicense"
+                    placeholder="Add license"
+                    autoSuggest={agencyLicenseArray}
+                    component={AutocompleteChips}
+                    validate={[validation.isRequiredArray, existsInAgencyLicense]}
                   />
                 </div>
               </section>

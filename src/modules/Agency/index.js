@@ -19,7 +19,7 @@ export const Agency = props => (
     <AgencyDetailHeader />
     <main role="document">
       <aside className="content-panel-left">
-        <AgencySideNav />
+        <AgencySideNav location={props.location} />
       </aside>
       <div className="content-wrapper">
         <Route exact path={`${props.match.url}/:agencyCode/overview`} render={OverviewRender} />
