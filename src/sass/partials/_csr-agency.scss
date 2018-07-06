@@ -701,35 +701,41 @@
         }
 
         .agency-csr {
-            .primaryPhoneNumber, .secondaryPhoneNumber, .faxNumber {
-                width: 10rem;
-                flex-grow: 0;
-                flex-shrink: 0;
-            }
+          .faxNumber,
+          .primaryPhoneNumber,
+          .secondaryPhoneNumber {
+            flex-grow: 0;
+            flex-shrink: 0;
+            width: 10rem;
+          }
         }
+
         .agency-contact {
-            .contactFirstName {
-                width: 18rem;
-                flex-grow: 0;
-                flex-shrink: 0;
-            }
-            .contactLastName {
-                width: 18rem;
-                flex-grow: 0;
-                flex-shrink: 0;
-            }
+          .contactFirstName {
+            flex-grow: 0;
+            flex-shrink: 0;
+            width: 18rem;
+          }
+
+          .contactLastName {
+            flex-grow: 0;
+            flex-shrink: 0;
+            width: 18rem;
+          }
         }
+
         .agency-principal {
-            .principalFirstName {
-                width: 18rem;
-                flex-grow: 0;
-                flex-shrink: 0;
-            }
-            .principalLastName {
-                width: 18rem;
-                flex-grow: 0;
-                flex-shrink: 0;
-            }
+          .principalFirstName {
+            flex-grow: 0;
+            flex-shrink: 0;
+            width: 18rem;
+          }
+
+          .principalLastName {
+            flex-grow: 0;
+            flex-shrink: 0;
+            width: 18rem;
+          }
         }
       }
     }
@@ -784,7 +790,7 @@
           .contract-details {
             display: flex;
             flex-wrap: wrap;
-            width: 80%;
+            width: 70%;
             margin-right: $padding*2;
             padding-right: $padding*2;
             border-right: 1px dotted $warm-gray-01;
@@ -824,11 +830,12 @@
           .product-details {
             display: flex;
             flex-direction: column;
-            width: 20%;
+            width: 30%;
 
-            .product-wrapper {
+            .product-wrapper > div > div {
               display: flex;
-              align-items: center;
+              align-items: flex-start;
+              flex-direction: column;
               margin-bottom: $padding;
 
               label {
@@ -877,6 +884,14 @@
     }
   }
 
+  &.existing-agent-modal {
+    form {
+      .card {
+        max-width: 40rem;
+      }
+    }
+  }
+
   &.agent-crud {
     flex-direction: row;
 
@@ -921,44 +936,59 @@
             padding-right: $padding*2;
             border-right: 1px dotted $warm-gray-02;
 
-            .agent-id {
-              .agentCode {
+            .form-group {
+              flex-grow: 1;
+              flex-shrink: 1;
+
+              &.agentCode {
                 flex-grow: 0;
                 flex-shrink: 0;
-                width: 6rem;
+                width: 25%;
               }
-            }
 
-            .agent-contact {
-              .status {
+              &.licenseNumber {
                 flex-grow: 0;
                 flex-shrink: 0;
-                width: 11rem;
+                width: 25%;
               }
-            }
 
-            .agent-additional {
-              .segmented {
+              &.state {
                 flex-grow: 0;
                 flex-shrink: 0;
-                width: 9rem;
+                width: 10%;
+              }
+
+              &.emailAddress {
+                flex-grow: 0;
+                flex-shrink: 0;
+                width: 66.6%;
               }
             }
+          }
 
-            .agent-mailing-address {
-              .city-state-zip {
-                .mailingState {
-                  flex-grow: 0;
-                  flex-shrink: 0;
-                  width: 4rem;
+          .existing-agent-details {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            flex-shrink: 1;
+            height: 100%;
+          }
+
+          .agent-mailing-address {
+              .form-group {
+                flex-grow: 1;
+                flex-shrink: 1;
+
+                &.mailingState {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    width: 15%
                 }
-
-                .mailingZip {
-                  flex-grow: 0;
-                  flex-shrink: 0;
-                  width: 9rem;
+                &.mailingZip {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    width: 25%
                 }
-              }
             }
           }
 

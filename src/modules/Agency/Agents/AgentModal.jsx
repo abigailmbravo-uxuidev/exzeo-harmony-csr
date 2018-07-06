@@ -6,8 +6,8 @@ import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 import { applyLicenseToAgency } from '../../../state/actions/agencyActions';
 
 const radioStatusAnswers = [
-  { answer: 'Inactive', label: 'Inactive' },
-  { answer: 'Active', label: 'Active' }
+  { answer: 'Active', label: 'Active' },
+  { answer: 'Inactive', label: 'Inactive' }
 ];
 
 const radioDefaultAnswers = [
@@ -69,6 +69,56 @@ export class AgentModal extends Component {
                     thousandSeparator={false}
                   />
                   <Field
+                    label="First Name"
+                    styleName="firstName"
+                    name="firstName"
+                    dataTest="firstName"
+                    component={Input}
+                    validate={validation.isRequired}
+                  />
+                  <Field
+                    label="Last Name"
+                    styleName="lastName"
+                    name="lastName"
+                    dataTest="lastName"
+                    component={Input}
+                    validate={validation.isRequired}
+                  />
+                </div>
+                <div className="flex-form">
+                  <Field
+                    label="Status"
+                    styleName="status"
+                    name="status"
+                    dataTest="status"
+                    component={Radio}
+                    segmented
+                    answers={radioStatusAnswers}
+                    validate={validation.isRequired}
+                  />
+                  <Field
+                    label="Agent Of Record"
+                    styleName="agentOfRecord"
+                    name="agentOfRecord"
+                    dataTest="agentOfRecord"
+                    component={Radio}
+                    segmented
+                    answers={radioDefaultAnswers}
+                    validate={validation.isRequired}
+                  />
+                  <Field
+                    label="Appointed"
+                    styleName="appointed"
+                    name="appointed"
+                    dataTest="appointed"
+                    component={Radio}
+                    segmented
+                    answers={radioDefaultAnswers}
+                    validate={validation.isRequired}
+                  />
+                </div>
+                <div className="flex-form">
+                  <Field
                     label="License Number"
                     styleName="licenseNumber"
                     name="license[0].licenseNumber"
@@ -97,44 +147,6 @@ export class AgentModal extends Component {
                 </div>
                 <div className="flex-form">
                   <Field
-                    label="First Name"
-                    styleName="firstName"
-                    name="firstName"
-                    dataTest="firstName"
-                    component={Input}
-                    validate={validation.isRequired}
-                  />
-                  <Field
-                    label="Last Name"
-                    styleName="lastName"
-                    name="lastName"
-                    dataTest="lastName"
-                    component={Input}
-                    validate={validation.isRequired}
-                  />
-                  <Field
-                    label="Agent Of Record"
-                    styleName="agentOfRecord"
-                    name="agentOfRecord"
-                    dataTest="agentOfRecord"
-                    component={Radio}
-                    segmented
-                    answers={radioDefaultAnswers}
-                    validate={validation.isRequired}
-                  />
-                  <Field
-                    label="Appointed"
-                    styleName="appointed"
-                    name="appointed"
-                    dataTest="appointed"
-                    component={Radio}
-                    segmented
-                    answers={radioDefaultAnswers}
-                    validate={validation.isRequired}
-                  />
-                </div>
-                <div className="flex-form">
-                  <Field
                     label="Primary Phone"
                     styleName="primaryPhoneNumber"
                     name="primaryPhoneNumber"
@@ -158,16 +170,6 @@ export class AgentModal extends Component {
                   />
                 </div>
                 <div className="flex-form">
-                  <Field
-                    label="Status"
-                    styleName="status"
-                    name="status"
-                    dataTest="status"
-                    component={Radio}
-                    segmented
-                    answers={radioStatusAnswers}
-                    validate={validation.isRequired}
-                  />
                   <Field
                     label="Email Address"
                     styleName="emailAddress"
