@@ -24,7 +24,7 @@ export const getEditModalInitialValues = createSelector(
       const agentCodes = lic.agent.map(a => String(a.agentCode));
 
       agentCodes.forEach((ac) => {
-        agency.agentList.push(ac);
+        if (!agency.agentList.includes(ac)) { agency.agentList.push(ac); }
       });
       return lic;
     });

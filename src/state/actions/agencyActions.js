@@ -337,6 +337,14 @@ export async function applyLicenseToAgency(data, agency) {
       }
     }
   });
+
+  agency.license.filter(l => !data.agencyLicense.includes(l.licenseNumber)).forEach((license) => {
+    const agentIndex = license.agent.findIndex(a => a.agentCode === data.agentCode);
+    if (agentIndex !== -1) {
+      license.agent.splice(agentIndex, 1);
+    }
+  });
+
   const { createdAt, createdBy, ...selectedAgency } = agency;
   return selectedAgency;
 }
