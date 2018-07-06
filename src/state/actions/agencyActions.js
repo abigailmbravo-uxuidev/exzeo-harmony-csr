@@ -309,10 +309,14 @@ export function addAgent(agentData) {
 }
 
 export async function applyLicenseToAgency(data, agency) {
+  // loop over available licenses to apply to an agent
+  /* nested deep in the agency object:  agency.license[0].agents[0]
+     agent: { agentCode :123, appointed: true, agentOfRecord: true  }
+  */
   data.agencyLicense.forEach((l) => {
     const license = agency.license.find(li => li.licenseNumber === l);
     const selectedAgent = license && license.agent ? license.agent.find(a => a.agentCode === data.agentCode) : null;
-
+    // this handles new agent objects
     if (license && license.agent && !selectedAgent) {
       license.agent.push({
         agentCode: data.agentCode,
@@ -323,7 +327,7 @@ export async function applyLicenseToAgency(data, agency) {
       if (licenseIndex !== -1) {
         agency.license.splice(licenseIndex, 1, license);
       }
-    } else if (license && license.agent && selectedAgent) {
+    } else if (license && license.agent && selectedAgent) { // this handles existing agent objects
       const agentIndex = license.agent.findIndex(a => a.agentCode === data.agentCode);
       selectedAgent.appointed = String(data.appointed) === 'true';
       selectedAgent.agentOfRecord = String(data.agentOfRecord) === 'true';
@@ -338,6 +342,7 @@ export async function applyLicenseToAgency(data, agency) {
     }
   });
 
+  // any licenses that were not selected in the agencyLicense array need to be removed from the agent array inside the license array on the agency
   agency.license.filter(l => !data.agencyLicense.includes(l.licenseNumber)).forEach((license) => {
     const agentIndex = license.agent.findIndex(a => a.agentCode === data.agentCode);
     if (agentIndex !== -1) {

@@ -29,6 +29,15 @@ export class Contracts extends Component {
   };
 
   saveContract = async (data) => {
+    // const agentArray = [];
+
+    // data.agentList.forEach((code) => {
+    //   const agentIndex = this.props.agencyAgents.findIndex(ag => String(ag.agentCode) === code);
+    //   if (agentIndex !== -1) { agentArray.push(this.props.agencyAgents[agentIndex]); }
+    // });
+
+    // data.license[this.state.contractIndex].agent = agentArray;
+
     this.props.updateAgency(data);
     this.setState({ editType: null, showEditAgencyContract: false });
   };
@@ -37,7 +46,9 @@ export class Contracts extends Component {
 
 
   render() {
-    const { agency, contractInitialValues, agencyAgentsList } = this.props;
+    const {
+      agency, contractInitialValues, agencyAgentsList, agencyAgents
+    } = this.props;
     if (!agency) return <div />;
 
     const { license } = agency;
@@ -45,6 +56,7 @@ export class Contracts extends Component {
       <div>
         {this.state.showEditAgencyContract && (
         <ContractsModal
+          agencyAgents={agencyAgents}
           existsInAgentsList={this.existsInAgentsList()}
           agencyAgentsList={agencyAgentsList}
           initialValues={contractInitialValues}

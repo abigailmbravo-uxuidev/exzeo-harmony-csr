@@ -7,6 +7,7 @@ import { getEditModalInitialValues, getListOfAgencyAgents } from '../../../state
 const agencyModalSelector = formValueSelector('AgencyModal');
 const mapStateToProps = state => ({
   agency: state.agencyState.agency,
+  agencyAgents: state.agencyState.agencyAgents,
   sameAsMailingValue: agencyModalSelector(state, 'sameAsMailing'),
   contractInitialValues: getEditModalInitialValues(state),
   agencyAgentsList: getListOfAgencyAgents(state)
