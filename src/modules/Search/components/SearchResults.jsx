@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import handleNewTab from '../../../utilities/handleNewTab';
-import { SEARCH_TYPES } from '../constants';
+import { SEARCH_TYPES } from '../../../constants/search';
 
-import NoResults from '../components/NoResults';
+import NoResults from './NoResults';
 import PolicyCard from './PolicyCard';
 import AddressCard from './AddressCard';
 import AddressTip from './AddressTip';

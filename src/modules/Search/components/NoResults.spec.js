@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { SEARCH_TYPES, NO_RESULTS_MESSAGES } from '../constants';
+import { SEARCH_TYPES, NO_RESULTS_MESSAGES } from '../../../constants/search';
 import NoResults from './NoResults';
 
 describe('Test the NoResults component', () => {

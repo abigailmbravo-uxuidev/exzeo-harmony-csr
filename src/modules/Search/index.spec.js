@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import { SEARCH_TYPES } from './constants';
+import { SEARCH_TYPES } from '../../constants/search';
 import Search from './index';
 
 describe('Test Search component class', () => {

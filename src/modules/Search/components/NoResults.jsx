@@ -1,5 +1,5 @@
 import React from 'react';
-import { NO_RESULTS_MESSAGES } from '../constants';
+import { NO_RESULTS_MESSAGES } from '../../../constants/search';
 
 function NoResults({ searchType, error }) {
   if (error && error.message) {

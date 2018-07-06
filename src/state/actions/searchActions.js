@@ -1,8 +1,14 @@
 import * as types from './actionTypes';
-import * as serviceRunner from '../utilities/serviceRunner';
+import * as serviceRunner from '../../utilities/serviceRunner';
 import * as errorActions from './errorActions';
 import moment from "moment/moment";
-import { DEFAULT_SEARCH_PARAMS, RESULTS_PAGE_SIZE, SEARCH_TYPES, LOCAL_STORAGE_KEY } from "../components/Search/constants";
+import {
+  DEFAULT_SEARCH_PARAMS,
+  RESULTS_PAGE_SIZE,
+  SEARCH_TYPES,
+  LOCAL_STORAGE_KEY,
+  SECONDARY_DATE_FORMAT
+} from "../../constants/search";
 
 
 /**
@@ -226,6 +232,7 @@ export async function fetchPolicies({
   lastName,
   address,
   agencyCode,
+  companyCode,
   effectiveDate,
   policyNumber,
   policyStatus,
@@ -234,11 +241,12 @@ export async function fetchPolicies({
   resultStart,
   sortBy,
   sortDirection,
+  state,
 }) {
   const config = {
     service: 'policy-data',
     method: 'GET',
-    path: `/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=${policyNumber}&firstName=${firstName}&lastName=${lastName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&resultStart=${resultStart}&sort=${sortBy}&sortDirection=${sortDirection}&effectiveDate=${effectiveDate}&agencyCode=${agencyCode}&status=${policyStatus}`
+    path: `/transactions?companyCode=${companyCode}&state=${state}&product=HO3&policyNumber=${policyNumber}&firstName=${firstName}&lastName=${lastName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&resultStart=${resultStart}&sort=${sortBy}&sortDirection=${sortDirection}&effectiveDate=${effectiveDate}&agencyCode=${agencyCode}&status=${policyStatus}`
   };
 
   try {
@@ -451,12 +459,14 @@ export function handlePolicySearch(data) {
       policyNumber: (encodeURIComponent(data.policyNumber) !== 'undefined' ? encodeURIComponent(data.policyNumber) : ''),
       policyStatus: (encodeURIComponent(data.policyStatus) !== 'undefined' ? encodeURIComponent(data.policyStatus) : ''),
       agencyCode: (encodeURIComponent(data.agencyCode) !== 'undefined' ? encodeURIComponent(data.agencyCode) : ''),
-      effectiveDate: (encodeURIComponent(data.effectiveDate) !== 'undefined' ? encodeURIComponent(moment(data.effectiveDate).utc().format('YYYY-MM-DD')) : ''),
+      effectiveDate: (encodeURIComponent(data.effectiveDate) !== 'undefined' ? encodeURIComponent(moment(data.effectiveDate).utc().format(SECONDARY_DATE_FORMAT)) : ''),
       currentPage: setPageNumber(data.currentPage, data.isNext),
       sortBy: data.sortBy,
       sortDirection: data.sortBy === 'policyNumber' ? 'desc' : 'asc',
       resultStart: 60,
       pageSize: RESULTS_PAGE_SIZE,
+      companyCode: 'TTIC',
+      state: 'FL'
     };
 
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(taskData));

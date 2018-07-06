@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import PolicyCard from './PolicyCard';
-import policyTestData from '../../Common/policyTestData';
+import policyTestData from '../../../components/Common/policyTestData';
 
 it('renders without crashing', () => {
   const wrapper = shallow(<PolicyCard

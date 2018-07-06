@@ -5,7 +5,7 @@ import { Field } from 'redux-form';
 import { Input, Select, SelectTypeAhead } from '@exzeo/core-ui/lib/Input';
 import { normalizeDate, isAlphaNumeric, isValidChar, isNumberDashOnly, isValidDateFormat } from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers } from '../../../utilities/forms';
-import { STANDARD_DATE_FORMAT } from '../constants';
+import { STANDARD_DATE_FORMAT } from '../../../constants/search';
 
 import Pagination from '../components/Pagination';
 

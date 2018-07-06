@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { SearchResults } from './SearchResults';
-import {SEARCH_TYPES} from "../constants";
+import {SEARCH_TYPES} from "../../../constants/search";
 
 describe('Test SearchResults component', () => {
   const baseSearch = { results: [], noResults: false };

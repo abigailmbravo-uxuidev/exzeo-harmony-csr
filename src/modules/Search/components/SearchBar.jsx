@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import { getAgencies } from '../../../actions/serviceActions';
-import { clearAppError } from '../../../actions/errorActions';
+import { LOCAL_STORAGE_KEY, DEFAULT_SEARCH_PARAMS } from '../../../constants/search';
+import { getAgencies } from '../../../state/actions/serviceActions';
+import { clearAppError } from '../../../state/actions/errorActions';
 import {
   handleSearchSubmit,
   toggleLoading
-} from '../../../actions/searchActions';
-import { LOCAL_STORAGE_KEY, DEFAULT_SEARCH_PARAMS } from '../constants';
+} from '../../../state/actions/searchActions';
 
 import { Select } from '@exzeo/core-ui/lib/Input';
 import { isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
@@ -22,8 +22,9 @@ export class SearchBar extends Component {
     }
   }
 
-  handleSearchFormSubmit = (data, dispatch, props) => {
-    dispatch(handleSearchSubmit(data, props));
+  handleSearchFormSubmit = async (data, dispatch, props) => {
+    const { handleSearchSubmit } = this.props;
+    await handleSearchSubmit(data, props);
   };
 
   handlePagination = (isNext) => {
@@ -102,7 +103,7 @@ export default connect(mapStateToProps, {
   getAgencies,
   toggleLoading,
   handleSearchSubmit
-})(reduxForm({ // initialValues prop is being passed in from parent component based on route/pathName
+})(reduxForm({ // 'initialValues' prop is being passed in from parent component based on route/pathName
   form: 'SearchBar',
   enableReinitialize: true,
   destroyOnUnmount: false

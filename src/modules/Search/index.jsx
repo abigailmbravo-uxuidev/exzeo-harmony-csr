@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SEARCH_CONFIG, SEARCH_TYPES } from './constants';
-import { resetSearch } from "../../actions/searchActions";
+import { SEARCH_CONFIG, SEARCH_TYPES } from '../../constants/search';
+import { resetSearch } from "../../state/actions/searchActions";
 
 import SearchBar from './components/SearchBar';
 import SearchResults from './components/SearchResults';
-import AddressSearch from './Address';
-import PolicySearch from './Policy';
-import QuoteSearch from './Quote';
-import AgencySearch from './Agency';
-import AgentSearch from './Agent';
-import UserSearch from './User';
+import AddressSearch from './Address/index';
+import PolicySearch from './Policy/index';
+import QuoteSearch from './Quote/index';
+import AgencySearch from './Agency/index';
+import AgentSearch from './Agent/index';
+import UserSearch from './User/index';
 
 const SEARCH_FORMS = {
   [SEARCH_TYPES.newQuote]: AddressSearch,

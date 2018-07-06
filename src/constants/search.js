@@ -1,4 +1,8 @@
 export const LOCAL_STORAGE_KEY = 'lastSearchData';
+export const WORK_FLOW_MODEL_NAME = 'csrQuote';
+export const WORK_FLOW_DATA = {
+  dsUrl: `${process.env.REACT_APP_API_URL}/ds`
+};
 
 export const SEARCH_TYPES = {
   newQuote: 'address',
@@ -71,3 +75,4 @@ export const NO_RESULTS_MESSAGES = {
 };
 
 export const STANDARD_DATE_FORMAT = 'MM/DD/YYYY';
+export const SECONDARY_DATE_FORMAT = 'YYYY-MM-DD';

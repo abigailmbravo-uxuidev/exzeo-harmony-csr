@@ -2,23 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { startWorkflow } from '../actions/cgActions';
-import { getUIQuestions } from '../actions/questionsActions';
-import Loader from '../components/Common/Loader';
+import Loader from '@exzeo/core-ui/lib/Loader';
+import { WORK_FLOW_DATA, WORK_FLOW_MODEL_NAME } from "../constants/search";
+import { startWorkflow } from '../state/actions/cgActions';
+import { getUIQuestions } from '../state/actions/questionsActions';
 import Header from '../components/Common/Header';
 import Footer from '../components/Common/Footer';
-import Search from '../components/Search';
-
-
-const workflowModelName = 'csrQuote';
-const workflowData = {
-  dsUrl: `${process.env.REACT_APP_API_URL}/ds`
-};
+import Search from '../modules/Search';
 
 export class SearchBase extends Component {
   componentDidMount() {
     const { startWorkflow, getUIQuestions } = this.props;
-    startWorkflow(workflowModelName, workflowData);
+    startWorkflow(WORK_FLOW_MODEL_NAME, WORK_FLOW_DATA);
     getUIQuestions('searchCSR');
   }
 
@@ -44,7 +39,8 @@ export class SearchBase extends Component {
 SearchBase.propTypes = {
   getUIQuestions: PropTypes.func,
   startWorkflow: PropTypes.func,
-  auth: PropTypes.object
+  auth: PropTypes.object,
+  loading: PropTypes.bool
 };
 
 const mapStateToProps = state => ({

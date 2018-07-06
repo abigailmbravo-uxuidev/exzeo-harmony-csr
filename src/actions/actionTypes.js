@@ -1,8 +1,0 @@
-
-/* SEARCH ACTIONS */
-export const SEARCH = 'SEARCH';
-export const RESET_SEARCH = 'RESET_SEARCH';
-export const SET_SEARCH_RESULTS = 'SET_SEARCH_RESULTS';
-export const TOGGLE_LOADING = 'TOGGLE_LOADING';
-
-export const TOGGLE_NOTE = 'TOGGLE_NOTE';

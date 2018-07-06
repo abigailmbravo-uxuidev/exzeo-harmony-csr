@@ -1,5 +1,5 @@
 import React from 'react';
-import normalizePhone from '../../Form/normalizePhone';
+import normalizePhone from '../../../components/Form/normalizePhone';
 
 const AgentCard = ({
   handleKeypress,
