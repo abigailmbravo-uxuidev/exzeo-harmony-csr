@@ -91,16 +91,6 @@ export const ContractsModal = (props) => {
                   validate={validation.isRequiredArray}
                 />
               </div>
-              <Field
-                label="Agents"
-                styleName="agencyLicense"
-                name="agentList"
-                dataTest="agentList"
-                placeholder="Add Agent"
-                autoSuggest={agencyAgentsList}
-                component={AutocompleteChips}
-                validate={[validation.isRequiredArray, existsInAgentsList]}
-              />
             </section>
           </div>
           <div className="card-footer">
