@@ -1147,6 +1147,7 @@ label {
         border-radius: 0 0 $border-radius $border-radius;
         background: $white;
         box-shadow: 0 4px 4px 2px rgba($black, .1);
+        overflow: hidden;
 
         &.react-autosuggest__suggestions-container--open {
           opacity: 1;
@@ -1157,6 +1158,9 @@ label {
           padding: 0;
           list-style: none;
           font-family: $font-family-sans-serif;
+          max-height: 12.5rem;
+          overflow-y: auto;
+          overflow-x: hidden;
 
           li {
             display: flex;
