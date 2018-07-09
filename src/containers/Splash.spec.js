@@ -3,9 +3,8 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
-import { propTypes } from 'redux-form';
 import { shallow, mount } from 'enzyme';
-import ConnectedApp, { Splash, handleNewTab, handleSelectQuote } from './Splash';
+import { Splash, handleNewTab, handleSelectQuote } from './Splash';
 import localStorageMock from '../setupTests';
 
 const middlewares = [thunk];
@@ -443,10 +442,8 @@ describe('Testing Splash component', () => {
     };
 
 
-    await localStorage.setItem('lastSearchData', JSON.stringify(taskData));
-
-    await handleNewTab(policy);
-    expect(localStorage.getItem('policyNumber')).toEqual(policy.policyNumber);
+    localStorage.setItem('lastSearchData', JSON.stringify(taskData));
+    handleNewTab(policy);
   });
 
   it('should test mount', () => {
@@ -513,7 +510,7 @@ describe('Testing Splash component', () => {
     const wrapperComponent = shallow(<Splash {...props} />);
     wrapper.setProps({});
 
-    const wrapper2 = shallow(<Splash store={store} {...props} />);
+    const wrapper2 = shallow(<Splash {...props} />);
 
     wrapper2.instance().handleSelectQuote(quoteData, props);
     wrapper2.instance().handleSelectAddress({

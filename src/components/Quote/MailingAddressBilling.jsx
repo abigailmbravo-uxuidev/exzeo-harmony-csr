@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Prompt } from 'react-router-dom';
 import moment from 'moment';
-import { reduxForm, Form, change, propTypes } from 'redux-form';
-import * as cgActions from '../../actions/cgActions';
-import * as appStateActions from '../../actions/appStateActions';
-import * as quoteStateActions from '../../actions/quoteStateActions';
-import * as serviceActions from '../../actions/serviceActions';
+import { reduxForm, Form, change } from 'redux-form';
+import * as cgActions from '../../state/actions/cgActions';
+import * as appStateActions from '../../state/actions/appStateActions';
+import * as quoteStateActions from '../../state/actions/quoteStateActions';
+import * as serviceActions from '../../state/actions/serviceActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import CheckField from '../Form/inputs/CheckField';
 import TextField from '../Form/inputs/TextField';
@@ -230,7 +230,7 @@ export class MailingAddressBilling extends Component {
 
   render() {
     const { handleSubmit, billingOptions, pristine, quoteData, dirty } = this.props;
-    
+
     if (!quoteData.rating) {
       return (
         <QuoteBaseConnect>
@@ -341,7 +341,6 @@ MailingAddressBilling.contextTypes = {
 // Property type definitions
 // ------------------------------------------------
 MailingAddressBilling.propTypes = {
-  ...propTypes,
   tasks: PropTypes.shape(),
   appState: PropTypes.shape({
     modelName: PropTypes.string,

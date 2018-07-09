@@ -30,14 +30,15 @@ import PolicyNotesFiles from './components/Policy/NotesFiles';
 import PolicyEndorsements from './components/Policy/Endorsements';
 import AgencyStaff from './components/Agency/Staff';
 import NoteUploader from './components/Common/NoteUploader';
-import * as appStateActions from './actions/appStateActions';
 import PolicyCancel from './components/Policy/Cancel';
-import * as errorActions from './actions/errorActions';
-import * as authActions from './actions/authActions';
+
+import * as appStateActions from './state/actions/appStateActions';
+import * as errorActions from './state/actions/errorActions';
+import * as authActions from './state/actions/authActions';
 
 const auth = new Auth();
 
-// logout the user if the server comesback with a 401
+// logout the user if the server comes back with a 401
 axios.interceptors.response.use(
   response => response,
   (error) => {
@@ -63,7 +64,7 @@ class Routes extends Component {
 
       if (!this.props.authState.userProfile) {
         const profile = JSON.parse(localStorage.getItem('user_profile'));
-        this.props.actions.authActions.dispatchUserProfile(profile);
+        this.props.actions.authActions.setUserProfile(profile);
       }
     } else if (!isAuthenticated() && checkPublicPath(window.location.pathname)) {
       history.push('/login');
@@ -88,6 +89,7 @@ class Routes extends Component {
       left: '20%'
     }
   };
+
   render() {
     return (
       <div>
@@ -106,9 +108,9 @@ class Routes extends Component {
           </div>
         </Modal>
         {this.props.newNote && this.props.newNote.documentId &&
-          <NoteUploader 
-            noteType={this.props.newNote.noteType} 
-            documentId={this.props.newNote.documentId} 
+          <NoteUploader
+            noteType={this.props.newNote.noteType}
+            documentId={this.props.newNote.documentId}
             sourceId={this.props.newNote.sourceNumber}
           />
         }
@@ -132,7 +134,7 @@ class Routes extends Component {
               <Route exact path="/quote/coverage" render={props => <QuoteCoverage auth={auth} {...props} />} />
               <Route exact path="/quote/underwriting" render={props => <QuoteUnderwriting auth={auth} {...props} />} />
               <Route exact path="/quote/application" render={props => <QuoteApplication auth={auth} {...props} />} />
-              <Route exact path="/policy/coverage" render={props => <PolicyCoverage auth={auth} {...props} />} />
+              <Route exact path="/policy/coverage/:policyNumber" render={props => <PolicyCoverage auth={auth} {...props} />} />
               <Route exact path="/policy/policyholder" render={props => <PolicyPolicyholderAgent auth={auth} {...props} />} />
               <Route exact path="/policy/billing" render={props => <PolicyMortgageBilling auth={auth} {...props} />} />
               <Route exact path="/policy/notes" render={props => <PolicyNotesFiles auth={auth} {...props} />} />
