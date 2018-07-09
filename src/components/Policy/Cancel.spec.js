@@ -2,10 +2,9 @@ import React from 'react';
 import configureStore from 'redux-mock-store';
 import { shallow } from 'enzyme';
 
-import { CancelPolicy, handleInitialize, Payments, Claims, handleFormSubmit, resetCancelReasons } from './Cancel';
+import { CancelPolicy, handleInitialize, handleFormSubmit } from './Cancel';
 
-const middlewares = [];
-const mockStore = configureStore(middlewares);
+const mockStore = configureStore([]);
 
 const cancelOptions = [
   {
@@ -27,7 +26,7 @@ describe('Testing Cancel component', () => {
     const initialState = {
       zipCodeSettings: { timezone: 'America/New_York' },
       service: {
-
+        cancelOptions
       },
       cg: {
         bb: {
@@ -39,79 +38,61 @@ describe('Testing Cancel component', () => {
         }
       },
       appState: {
-        modelName: 'bb'
+        modelName: 'bb',
+        data: {
+          submitting: false
+        }
+      },
+      policyState: {
+        billingOptions: {},
+        policy: {},
+        summaryLedger: { status: { code: 0} }
       }
     };
     const store = mockStore(initialState);
     const props = {
-      zipCodeSettings: { timezone: 'America/New_York' },
+      batchCompleteTask() { return Promise.resolve(); },
+      startWorkflow() { return Promise.resolve({ payload: [{ workflowData: { cancelPolicyModelUI: { data: {} }, cancelPolicy: { data: {} } } }] }); },
+      setAppState() {},
+      getPolicy() {},
+      getCancelOptions() { return Promise.resolve() },
+      getBillingOptionsForPolicy() { return Promise.resolve(); },
+      getPaymentHistory() {},
+      getZipcodeSettings() {},
       reset() {},
-      userProfile: {},
-      actions: {
-        cgActions: {
-          batchCompleteTask() { return Promise.resolve(); },
-          startWorkflow() { return Promise.resolve({ payload: [{ workflowData: { cancelPolicyModelUI: { data: {} }, cancelPolicy: { data: {} } } }] }); }
-        },
-        appStateActions: {
-          setAppState() {}
-        },
-        policyStateActions: {
-          updatePolicy() {}
-        },
-        serviceActions: {
-          getBillingOptionsForPolicy() { return Promise.resolve(); },
-          getBillingOptions() { return Promise.resolve(); },
-          getSummaryLedger() { return Promise.resolve(); }
-        }
-      },
-      policy: {
-
-      },
-      fieldValues: {
-        cancelType: 'Underwriting Cancellation'
-      },
-      summaryLedger: { status: { code: 0 } },
       handleSubmit() {},
+      fieldValues: { cancelType: 'Underwriting Cancellation' },
+      userProfile: {},
       fieldQuestions: [],
       quoteData: {},
+      policy: initialState.policyState.policy,
+      summaryLedger: initialState.policyState.summaryLedger,
+      zipCodeSettings: initialState.zipCodeSettings,
+      appState: initialState.appState,
       dispatch: store.dispatch,
-      appState: {
-        data: {
-          submitting: false
-        }
-      }
+      cancelOptions,
+      paymentOptions: []
     };
-    const wrapper = shallow(<CancelPolicy label="test" store={store} {...props} />);
+    const wrapper = shallow(<CancelPolicy label="test" {...props} />);
     expect(wrapper);
 
     wrapper.instance().componentWillReceiveProps({
-      dispatch: store.dispatch,
-      fieldValues: {
-        cancelType: 'Underwriting Cancellation'
-      },
-      zipCodeSettings: { timezone: 'America/New_York' },
+      ...props,
+      fieldValues: { cancelType: 'Voluntary Cancellation' },
       summaryLedger: {},
-      actions: {
-        policyStateActions: {
-          updatePolicy() {}
-        },
-        serviceActions: {
-          getCancelOptions() {},
-          getBillingOptionsForPolicy() { return Promise.resolve(); },
-          getPaymentHistory() { return Promise.resolve(); },
-          getBillingOptions() { return Promise.resolve(); },
-          getSummaryLedger() { return Promise.resolve(); },
-          getZipcodeSettings() { }
-        }
-      },
       policy: { property: { physicalAddress: { zip: 33607 } }, policyNumber: '1234', rating: { worksheet: { fees: {} } } }
     });
 
-    handleInitialize(initialState);
+    wrapper.instance().componentWillReceiveProps({
+      ...props,
+      fieldValues: { cancelType: 'Underwriting Non-Renewal' },
+      summaryLedger: {},
+      policy: { property: { physicalAddress: { zip: 33607 } }, policyNumber: '1234', rating: { worksheet: { fees: {} } } }
+    });
 
-    Payments({});
-    Claims({});
+    wrapper.instance().resetCancelReasons();
+
+    handleInitialize(initialState);
     handleFormSubmit({}, props.dispatch, props);
-    resetCancelReasons(props);
   });
 });

@@ -55,7 +55,7 @@ a {
     }
   }
 
-  &.Lienholder {
+  &.Premium {
     &:before {
       content: "\F27E";
     }
@@ -403,9 +403,14 @@ main[role="document"] {
 
   &.btn-footer {
     padding: $padding;
+          
+    .btn-wrapper {
+      margin-left: 1rem;
+    }
 
     footer {
       align-self: flex-end;
+
     }
   }
 
@@ -415,11 +420,18 @@ main[role="document"] {
     width: auto;
 
     div[role="banner"] {
+      display: flex;
       line-height: $font-size-xs;
 
       small {
         font-size: $font-size-xs;
         line-height: 1;
+
+        &.copyright {
+          padding-right: 1rem;
+          flex-grow: 1;
+          flex-shrink: 1;
+        }
       }
     }
   }

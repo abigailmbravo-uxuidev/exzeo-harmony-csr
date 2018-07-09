@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Field, Form, reduxForm, propTypes } from 'redux-form';
+import { Field, Form, reduxForm } from 'redux-form';
 import Uppy from 'uppy/lib/core';
 import { Dashboard } from 'uppy/lib/react';
 import XHRUpload from 'uppy/lib/plugins/XHRUpload';
 import moment from 'moment';
-import * as serviceActions from '../../actions/serviceActions';
-import * as appStateActions from '../../actions/appStateActions';
-import * as newNoteActions from '../../actions/newNoteActions';
-import * as errorActions from '../../actions/errorActions';
+import * as serviceActions from '../../state/actions/serviceActions';
+import * as appStateActions from '../../state/actions/appStateActions';
+import * as newNoteActions from '../../state/actions/newNoteActions';
+import * as errorActions from '../../state/actions/errorActions';
 
 export const minimzeButtonHandler = (props) => {
   if (props.appState.data.minimize) {
@@ -21,7 +21,7 @@ export const minimzeButtonHandler = (props) => {
 };
 
 export const renderNotes = ({
- input, label, type, meta: { touched, error } 
+ input, label, type, meta: { touched, error }
 }) => (
   <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
     <textarea {...input} placeholder={label} rows="10" cols="40" />
@@ -112,9 +112,7 @@ export class Uploader extends Component {
   closeButtonHandler = () => this.props.actions.newNoteActions.toggleNote({});
 
   submitNote = (data, dispatch, props) => {
-    const {
- actions, user, noteType, documentId, sourceId 
-} = props;
+    const { actions, user, noteType, documentId, sourceId } = props;
     const attachments = Object.values(this.uppy.getState().files);
     if (!user.profile.given_name || !user.profile.family_name) {
       const message = 'There was a problem with your user profile. Please logout of Harmony and try logging in again.';
@@ -141,8 +139,8 @@ export class Uploader extends Component {
     this.closeButtonHandler();
   };
 
-  validateFile = (file, currentFiles) => !file.name.includes('.') 
-      ? Promise.reject('Uploads must have a file extension.') 
+  validateFile = (file, currentFiles) => !file.name.includes('.')
+      ? Promise.reject('Uploads must have a file extension.')
       : Promise.resolve()
 
   componentWillMount() {
@@ -157,23 +155,21 @@ export class Uploader extends Component {
       onBeforeFileAdded: this.validateFile,
       onBeforeUpload: (files) => {
         if (files) return Promise.resolve();
-        return this.uppy.addFile({
- source: 'uppy', preview: null, name: 'hidden', type: null, data: new Uint8Array() 
-})
+        return this.uppy.addFile({ source: 'uppy', preview: null, name: 'hidden', type: null, data: new Uint8Array() })
           .then(done => Promise.resolve());
       }
     })
-      .use(XHRUpload, {
-        endpoint: `${process.env.REACT_APP_API_URL}/upload`,
-        formData: true,
-        bundle: true,
-        fieldName: 'files[]',
-        headers: {
-          accept: 'application/json',
-          authorization: `bearer ${idToken}`
-        }
-      })
-      .run();
+    .use(XHRUpload, {
+      endpoint: `${process.env.REACT_APP_API_URL}/upload`,
+      formData: true,
+      bundle: true,
+      fieldName: 'files[]',
+      headers: {
+        accept: 'application/json',
+        authorization: `bearer ${idToken}`
+      }
+    })
+    .run();
   }
 
   render() {
@@ -208,9 +204,9 @@ export class Uploader extends Component {
                 </div>
               </div>
             <div className="buttons note-file-footer-button-group">
-                <button tabIndex="0" aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={this.closeButtonHandler}>Cancel</button>
-                <button tabIndex="0" aria-label="submit-btn form-newNote" className="btn btn-primary submit-button">Save</button>
-              </div>
+              <button tabIndex="0" aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={this.closeButtonHandler}>Cancel</button>
+              <button tabIndex="0" aria-label="submit-btn form-newNote" className="btn btn-primary submit-button">Save</button>
+            </div>
           </Form>
         </div>
       </div>
@@ -219,7 +215,6 @@ export class Uploader extends Component {
 }
 
 Uploader.propTypes = {
-  ...propTypes,
   noteType: PropTypes.string
 };
 

@@ -1,48 +1,49 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { reduxForm, Form } from 'redux-form';
-import _ from 'lodash';
+import { reduxForm } from 'redux-form';
 import moment from 'moment-timezone';
-import * as questionsActions from '../../actions/questionsActions';
-import * as cgActions from '../../actions/cgActions';
-import * as appStateActions from '../../actions/appStateActions';
-import * as serviceActions from '../../actions/serviceActions';
-import * as policyStateActions from '../../actions/policyStateActions';
+import Loader from '@exzeo/core-ui/lib/Loader';
 import DateField from '../Form/inputs/DateField';
 import SelectField from '../Form/inputs/SelectField';
-import Loader from '../Common/Loader';
 
-export const reasonAnswers = (reasons) => {
-  const reformattedReasons = _.concat([], reasons).map(reason => ({ answer: reason, label: reason }));
-  return reformattedReasons || [];
-};
+export const reasonAnswers = (reasons) => reasons.map(reason => ({ answer: reason, label: reason }));
 
-export const handleInitialize = (state) => {
-  const policy = state.service.latestPolicy || {};
-
+export const handleInitialize = ({ policyState }) => {
   return {
-    effectiveDate: moment.utc(policy.effectiveDate).format('YYYY-MM-DD'),
+    effectiveDate: moment.utc((policyState.policy || {}).effectiveDate).format('YYYY-MM-DD'),
     effectiveDateChangeReason: ''
   };
 };
 
-export const EditEffectiveDatePopup = (props) => {
-  const { effectiveDateReasons, hideEffectiveDateModal, handleSubmit, changeEffectiveDateSubmit, pristine } = props;
-  const reasons = reasonAnswers(effectiveDateReasons);
+export const EditEffectiveDatePopup = ({
+  appState,
+  changeEffectiveDateSubmit,
+  effectiveDateReasons,
+  hideEffectiveDateModal,
+  handleSubmit,
+  pristine
+}) => {
   return (
     <div id="effective-date" className="modal effective-date">
-      {props.appState.data.submitting && <Loader />}
+      {appState.data.submitting && <Loader />}
       <div className="card unsaved-changes">
-        <Form id="EditEffectiveDatePopup" noValidate onSubmit={handleSubmit(changeEffectiveDateSubmit)}>
+        <form id="EditEffectiveDatePopup" onSubmit={handleSubmit(changeEffectiveDateSubmit)}>
           <div className="card-header">
             <h4>Edit Effective Date</h4>
           </div>
           <div className="card-block">
-            <DateField label={'Effective Date'} name={'effectiveDate'} validations={['required']} />
+            <DateField
+              label={'Effective Date'}
+              name={'effectiveDate'}
+              validations={['required']} />
             <SelectField
-              name="effectiveDateChangeReason" component="select" label={'Reason For Change'} styleName={''} validations={['required']} answers={reasons}
+              name="effectiveDateChangeReason"
+              component="select"
+              label={'Reason For Change'}
+              styleName={''}
+              validations={['required']}
+              answers={reasonAnswers(effectiveDateReasons)}
             />
           </div>
           <div className="card-footer">
@@ -51,19 +52,15 @@ export const EditEffectiveDatePopup = (props) => {
                 className="btn btn-secondary"
                 type="button"
                 onClick={hideEffectiveDateModal}
-              >
-                  Cancel
-                </button>
+              >Cancel</button>
               <button
-                disabled={props.appState.data.submitting || pristine}
+                disabled={appState.data.submitting || pristine}
                 className="btn btn-primary"
                 type="submit"
-              >
-                  Update
-                </button>
+              >Update</button>
             </div>
           </div>
-        </Form>
+        </form>
       </div>
     </div>
   );
@@ -74,26 +71,15 @@ EditEffectiveDatePopup.propTypes = {
   effectiveDate: PropTypes.string
 };
 
-
 const mapStateToProps = state => ({
-  effectiveDateReasons: state.service.effectiveDateReasons,
-  latestPolicy: state.service.latestPolicy,
-  tasks: state.cg,
   appState: state.appState,
-  initialValues: handleInitialize(state)
+  effectiveDateReasons: state.policyState.effectiveDateReasons,
+  initialValues: handleInitialize(state),
+  policy: state.policyState.policy,
+  tasks: state.cg,
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    policyStateActions: bindActionCreators(policyStateActions, dispatch),
-    questionsActions: bindActionCreators(questionsActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch),
-    cgActions: bindActionCreators(cgActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
-  }
-});
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
-  form: 'EditEffectiveDatePopup', enableReinitialize: true
+export default connect(mapStateToProps)(reduxForm({
+  form: 'EditEffectiveDatePopup',
+  enableReinitialize: true
 })(EditEffectiveDatePopup));

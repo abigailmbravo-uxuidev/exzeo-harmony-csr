@@ -2,20 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { reduxForm, Form, Field, propTypes, getFormSyncErrors, change } from 'redux-form';
+import { reduxForm, Form, Field, getFormSyncErrors, change } from 'redux-form';
 import ReactTooltip from 'react-tooltip';
 import _ from 'lodash';
 import moment from 'moment';
 import Rules from '../Form/Rules';
 import SelectField from '../Form/inputs/SelectField';
-import * as cgActions from '../../actions/cgActions';
-import * as appStateActions from '../../actions/appStateActions';
-import * as errorActions from '../../actions/errorActions';
-import * as serviceActions from '../../actions/serviceActions';
-import * as searchActions from '../../actions/searchActions';
+import * as cgActions from '../../state/actions/cgActions';
+import * as appStateActions from '../../state/actions/appStateActions';
+import * as errorActions from '../../state/actions/errorActions';
+import * as serviceActions from '../../state/actions/serviceActions';
+import * as searchActions from '../../state/actions/searchActions';
 import normalizeDate from '../Form/normalizeDate';
 import Pagination from '../Common/Pagination';
 import ReactSelectField from '../Form/inputs/ReactSelectField';
+import { getAnswers } from '../../utilities/forms';
 
 const userTasks = {
   handleSearchBarSubmit: 'search'
@@ -327,35 +328,10 @@ const generateField = (name, placeholder, labelText, formErrors, formGroupCss) =
   return field;
 };
 
-const getAnswers = (name, questions) => _.get(_.find(questions, { name }), 'answers') || [];
-
-export const setAgency = (val, props) => {
-  props.dispatch(change('SearchBar', 'agencyCode', val.value ? val.value: ""));
-};
-
-
 export class SearchForm extends Component {
-  clearForm = () => {
-    const { actions, appState, change, form, reset, tasks} = this.props;
-    const modelName = appState.modelName;
-    const data = tasks[modelName].data;
-    const workflowId = appState.instanceId;
-    const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData')) || {};
-    lastSearchData.searchType = '';
-    localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
-    reset(form);
-    actions.cgActions.clearSearchResults(modelName, data);
-    actions.errorActions.clearAppError();
-    actions.serviceActions.clearAgencies();
-    actions.serviceActions.clearAgent();
-    resetPolicySearch(this.props);
-    actions.appStateActions.setAppState(appState.modelName, workflowId, { submitting: false });
-    actions.serviceActions.getAgencies('TTIC', 'FL');
-    change('sortBy', 'policyNumber');
-  }
-
   componentDidMount() {
     localStorage.removeItem('lastSearchData');
+    this.props.actions.serviceActions.getAgencies('TTIC', 'FL');
   }
 
   componentWillReceiveProps(nextProps) {
@@ -367,12 +343,12 @@ export class SearchForm extends Component {
 
     const quoteSearchResponse = previousTask.value && previousTask.value.result ? previousTask.value.result : {};
 
-    if (nextProps.search.searchType === 'policy' && nextProps.search.hasSearched) {
+    if (nextProps.search.searchType === 'policy' && nextProps.search.hasSearched && nextProps.policyResults) {
       const totalPages = Math.ceil(nextProps.policyResults.totalNumberOfRecords / nextProps.policyResults.pageSize);
       const pageNumber = nextProps.policyResults.currentPage;
       dispatch(change('SearchBar', 'pageNumber', pageNumber));
       dispatch(change('SearchBar', 'totalPages', totalPages));
-      nextProps.actions.searchActions.setSearch({...nextProps.search, totalPages, pageNumber });
+      nextProps.actions.searchActions.setSearch({ ...nextProps.search, totalPages, pageNumber });
     }
 
 
@@ -395,6 +371,31 @@ export class SearchForm extends Component {
     }
   }
 
+  setAgency = (val) => {
+    this.props.dispatch(change('SearchBar', 'agencyCode', val.value ? val.value : ''));
+  };
+
+  clearForm = () => {
+    const {
+      actions, appState, form, reset, tasks
+    } = this.props;
+    const modelName = appState.modelName;
+    const data = tasks[modelName].data;
+    const workflowId = appState.instanceId;
+    const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData')) || {};
+    lastSearchData.searchType = '';
+    localStorage.setItem('lastSearchData', JSON.stringify(lastSearchData));
+    reset(form);
+    actions.cgActions.clearSearchResults(modelName, data);
+    actions.errorActions.clearAppError();
+    actions.serviceActions.clearAgencies();
+    actions.serviceActions.clearAgent();
+    resetPolicySearch(this.props);
+    actions.appStateActions.setAppState(appState.modelName, workflowId, { submitting: false });
+    actions.serviceActions.getAgencies('TTIC', 'FL');
+    change('sortBy', 'policyNumber');
+  }
+
   render() {
     const {
       appState,
@@ -410,7 +411,8 @@ export class SearchForm extends Component {
 
     const agencyListValues = agencyList.map(agency => ({
       label: agency.displayName,
-      answer: agency.agencyCode
+      answer: agency.agencyCode,
+      value: agency.agencyCode
     }));
 
     let searchHandler = handleSearchBarSubmit;
@@ -476,7 +478,7 @@ export class SearchForm extends Component {
               className="btn btn-success multi-input"
               type="submit"
               form="SearchBar"
-              disabled={appState.data.submitting || formErrors || !fieldValues.address || !String(fieldValues.address).trim()}
+              disabled={appState.data.submitting || !fieldValues.address || !String(fieldValues.address).trim()}
             >
               <i className="fa fa-search" />Search
             </button>
@@ -502,7 +504,7 @@ export class SearchForm extends Component {
               className="btn btn-success multi-input"
               type="submit"
               form="SearchBar"
-              disabled={appState.data.submitting || formErrors}
+              disabled={appState.data.submitting}
             >
               <i className="fa fa-search" />Search
             </button>
@@ -522,7 +524,7 @@ export class SearchForm extends Component {
               className="btn btn-success multi-input"
               type="submit"
               form="SearchBar"
-              disabled={appState.data.submitting || formErrors}
+              disabled={appState.data.submitting}
             >
               <i className="fa fa-search" />Search
             </button>
@@ -542,7 +544,7 @@ export class SearchForm extends Component {
                 className="btn btn-success multi-input"
                 type="submit"
                 form="SearchBar"
-                disabled={appState.data.submitting || formErrors}
+                disabled={appState.data.submitting}
               >
                 <i className="fa fa-search" />Search
               </button>
@@ -563,7 +565,7 @@ export class SearchForm extends Component {
               className="btn btn-success multi-input"
               type="submit"
               form="SearchBar"
-              disabled={appState.data.submitting || formErrors}
+              disabled={appState.data.submitting}
             >
               <i className="fa fa-search" />Search
             </button>
@@ -581,7 +583,7 @@ export class SearchForm extends Component {
               className="btn btn-success multi-input"
               type="submit"
               form="SearchBar"
-              disabled={appState.data.submitting || formErrors}
+              disabled={appState.data.submitting}
             >
               <i className="fa fa-search" />Search
             </button>
@@ -600,7 +602,7 @@ export class SearchForm extends Component {
       autoFocus
       value={appState.data.selectedAgency}
       answers={agencyListValues}
-      onChange={val => setAgency(val, this.props)}
+      onChange={this.setAgency}
     />
     <div className="form-group effectiveDate">
       <label htmlFor="effectiveDate">{getErrorToolTip(formErrors, 'effectiveDate')}
@@ -614,7 +616,7 @@ export class SearchForm extends Component {
         component="select"
         styleName=""
         label="Policy Status"
-      answers={getAnswers('policyStatus', questions)}
+        answers={getAnswers('policyStatus', questions)}
       />
     </div>
     <SelectField
@@ -644,10 +646,7 @@ export class SearchForm extends Component {
   }
 }
 
-export const SearchBar = props => new SearchForm(props);
-
-SearchBar.propTypes = {
-  ...propTypes,
+SearchForm.propTypes = {
   handleSubmit: PropTypes.func,
   tasks: PropTypes.shape({}),
   appState: PropTypes.shape({
@@ -655,10 +654,6 @@ SearchBar.propTypes = {
     instanceId: PropTypes.string,
     data: PropTypes.shape({ submitting: PropTypes.boolean })
   })
-};
-
-SearchForm.propTypes = {
-  ...propTypes
 };
 
 const mapStateToProps = state => ({
@@ -689,6 +684,5 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-const searchBarForm = reduxForm({ form: 'SearchBar', enableReinitialize: true, validate })(SearchBar);
 
-export default connect(mapStateToProps, mapDispatchToProps)(searchBarForm);
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'SearchBar', enableReinitialize: true, validate })(SearchForm));

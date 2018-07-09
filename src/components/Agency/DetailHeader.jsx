@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as serviceActions from '../../actions/serviceActions';
+import * as serviceActions from '../../state/actions/serviceActions';
 
 
 export class DetailHeader extends Component {

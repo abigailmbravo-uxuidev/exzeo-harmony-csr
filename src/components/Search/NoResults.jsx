@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as cgActions from '../../actions/cgActions';
-import * as appStateActions from '../../actions/appStateActions';
+import * as cgActions from '../../state/actions/cgActions';
+import * as appStateActions from '../../state/actions/appStateActions';
 
 export const NoResults = (props) => {
   const model = props.tasks[props.appState.modelName] || {};

@@ -1,24 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
-import _ from 'lodash';
 import { connect } from 'react-redux';
+import _get from 'lodash/get';
 import moment from 'moment';
-import * as appStateActions from '../../actions/appStateActions';
+import { setAppState } from '../../state/actions/appStateActions';
+import { getEffectiveDateChangeReasons } from '../../state/actions/policyActions';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
-import * as serviceActions from '../../actions/serviceActions';
-import * as policyStateActions from '../../actions/policyStateActions';
 
 export const showEffectiveDatePopUp = (props) => {
-  props.actions.appStateActions.setAppState(
+  props.setAppState(
     props.appState.modelName, props.appState.instanceId,
     { ...props.appState.data, showEffectiveDateChangePopUp: true }
   );
 };
 
 export const showReinstatePolicyPopUp = (props) => {
-  props.actions.appStateActions.setAppState(
+  props.setAppState(
     props.appState.modelName, props.appState.instanceId,
     { ...props.appState.data, showReinstatePolicyPopUp: true }
   );
@@ -26,34 +24,25 @@ export const showReinstatePolicyPopUp = (props) => {
 
 export class DetailHeader extends Component {
   componentDidMount() {
-    this.props.actions.serviceActions.getEffectiveDateChangeReasons();
+    this.props.getEffectiveDateChangeReasons();
   }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.policyState && nextProps.policyState.update && nextProps.policyState.policyNumber) {
-      this.props.actions.serviceActions.getLatestPolicy(nextProps.policyState.policyNumber);
-      this.props.actions.policyStateActions.updatePolicy(false, nextProps.policyState.policyNumber);
-    }
-    if (!_.isEqual(this.props.policy, nextProps.policy) && nextProps.policy && nextProps.policy.policyNumber) {
-      this.props.actions.serviceActions.getSummaryLedger(nextProps.policy.policyNumber);
-    }
-  }
+
   render() {
     const { policy, summaryLedger } = this.props;
+
+    if (!policy || !policy.policyID) return (<div className="detailHeader" />);
+
     const billingStatusCode = summaryLedger && summaryLedger.status ? summaryLedger.status.code : null;
 
     let cancellationDate = '';
 
-    if (policy && summaryLedger && (policy.status.includes('Pending') || policy.status.includes('Cancel') || billingStatusCode > 8)) { 
-      cancellationDate = policy.cancelDate 
+    if (policy && policy.status && (policy.status.includes('Pending') || policy.status.includes('Cancel') || billingStatusCode > 8) && summaryLedger) {
+      cancellationDate = policy.cancelDate
         ? moment.utc(policy.cancelDate).format('MM/DD/YYYY')
         : moment.utc(summaryLedger.nonPaymentNoticeDueDate).format('MM/DD/YYYY');
     }
     if (policy && policy.endDate && billingStatusCode === 99) {
       cancellationDate = moment.utc(policy.endDate).format('MM/DD/YYYY');
-    }
-
-    if (!policy || !policy.policyID) {
-      return (<div className="detailHeader" />);
     }
 
     const loc = policy.property.physicalAddress;
@@ -65,9 +54,9 @@ export class DetailHeader extends Component {
       <section id="policyDetails" className="policyDetails">
         <dl>
           <div>
-            <dd>{_.get(policy, 'product') === 'HO3' ? `${_.get(policy, 'product')} Homeowners` : _.get(policy, 'product')}</dd>
-            <dd>{_.get(policy, 'policyNumber')}</dd>
-            <dd className="policy-status">{`${_.get(policy, 'status')} / ${_.get(summaryLedger, 'status.displayText')}`}</dd>
+            <dd>{_get(policy, 'product') === 'HO3' ? `${_get(policy, 'product')} Homeowners` : _get(policy, 'product')}</dd>
+            <dd>{_get(policy, 'policyNumber')}</dd>
+            <dd className="policy-status">{`${_get(policy, 'status')} / ${_get(summaryLedger, 'status.displayText')}`}</dd>
           </div>
         </dl>
       </section>
@@ -75,8 +64,8 @@ export class DetailHeader extends Component {
         <dl>
           <div>
             <dt>Policyholder</dt>
-            <dd>{`${_.get(policy, 'policyHolders[0].firstName')} ${_.get(policy, 'policyHolders[0].lastName')}`}</dd>
-            <dd>{normalizePhone(_.get(policy, 'policyHolders[0].primaryPhoneNumber'))}</dd>
+            <dd>{`${_get(policy, 'policyHolders[0].firstName')} ${_get(policy, 'policyHolders[0].lastName')}`}</dd>
+            <dd>{normalizePhone(_get(policy, 'policyHolders[0].primaryPhoneNumber'))}</dd>
           </div>
         </dl>
       </section>
@@ -84,9 +73,9 @@ export class DetailHeader extends Component {
         <dl>
           <div>
             <dt>Mailing Address</dt>
-            <dd>{_.get(policy, 'policyHolderMailingAddress.address1')}</dd>
-            <dd>{_.get(policy, 'policyHolderMailingAddress.address2')}</dd>
-            <dd>{`${_.get(policy, 'policyHolderMailingAddress.city')}, ${_.get(policy, 'policyHolderMailingAddress.state')} ${_.get(policy, 'policyHolderMailingAddress.zip')}`}</dd>
+            <dd>{_get(policy, 'policyHolderMailingAddress.address1')}</dd>
+            <dd>{_get(policy, 'policyHolderMailingAddress.address2')}</dd>
+            <dd>{`${_get(policy, 'policyHolderMailingAddress.city')}, ${_get(policy, 'policyHolderMailingAddress.state')} ${_get(policy, 'policyHolderMailingAddress.zip')}`}</dd>
           </div>
         </dl>
       </section>
@@ -94,9 +83,9 @@ export class DetailHeader extends Component {
           <dl>
             <div>
               <dt>Property Address <a className="btn btn-link btn-xs btn-alt-light no-padding" target="_blank" href={mapUri}><i className="fa fa-map-marker" />Map</a></dt>
-              <dd>{_.get(policy, 'property.physicalAddress.address1')}</dd>
-              <dd>{_.get(policy, 'property.physicalAddress.address2')}</dd>
-              <dd>{`${_.get(policy, 'property.physicalAddress.city')}, ${_.get(policy, 'property.physicalAddress.state')} ${_.get(policy, 'property.physicalAddress.zip')}`}</dd>
+              <dd>{_get(policy, 'property.physicalAddress.address1')}</dd>
+              <dd>{_get(policy, 'property.physicalAddress.address2')}</dd>
+              <dd>{`${_get(policy, 'property.physicalAddress.city')}, ${_get(policy, 'property.physicalAddress.state')} ${_get(policy, 'property.physicalAddress.zip')}`}</dd>
             </div>
           </dl>
         </section>
@@ -106,7 +95,7 @@ export class DetailHeader extends Component {
             <dl>
               <div>
                 <dt>Property County</dt>
-                <dd>{_.get(policy, 'property.physicalAddress.county')}</dd>
+                <dd>{_get(policy, 'property.physicalAddress.county')}</dd>
               </div>
             </dl>
           </section>
@@ -114,7 +103,7 @@ export class DetailHeader extends Component {
             <dl>
               <div>
                 <dt>Territory</dt>
-                <dd>{_.get(policy, 'property.territory')}</dd>
+                <dd>{_get(policy, 'property.territory')}</dd>
               </div>
             </dl>
           </section>
@@ -122,7 +111,7 @@ export class DetailHeader extends Component {
             <dl>
               <div>
                 <dt>Construction Type</dt>
-                <dd>{_.get(policy, 'property.constructionType')}</dd>
+                <dd>{_get(policy, 'property.constructionType')}</dd>
               </div>
             </dl>
           </section>
@@ -132,7 +121,7 @@ export class DetailHeader extends Component {
             <dl>
               <div>
                 <dt>Source Number</dt>
-                <dd>{_.get(policy, 'sourceNumber')}</dd>
+                <dd>{_get(policy, 'sourceNumber')}</dd>
               </div>
             </dl>
           </section>
@@ -140,7 +129,7 @@ export class DetailHeader extends Component {
             <dl>
               <div>
                 <dt>Effective Date <button id="effective-date" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showEffectiveDatePopUp(this.props)}><i className="fa fa-pencil-square" />Edit</button></dt>
-                <dd>{moment.utc(_.get(policy, 'effectiveDate')).format('MM/DD/YYYY')}</dd>
+                <dd>{moment.utc(_get(policy, 'effectiveDate')).format('MM/DD/YYYY')}</dd>
               </div>
             </dl>
           </section>
@@ -176,20 +165,14 @@ DetailHeader.propTypes = {
   policy: PropTypes.shape()
 };
 
-
 const mapStateToProps = state => ({
-  policyState: state.policy,
   appState: state.appState,
-  summaryLedger: state.service.getSummaryLedger,
-  policy: state.service.latestPolicy
+  policy: state.policyState.policy,
+  summaryLedger: state.policyState.summaryLedger
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    policyStateActions: bindActionCreators(policyStateActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
-  }
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(DetailHeader);
+export default connect(mapStateToProps, {
+  setAppState,
+  getEffectiveDateChangeReasons
+})(DetailHeader);

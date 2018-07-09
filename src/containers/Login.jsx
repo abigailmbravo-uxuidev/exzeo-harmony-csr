@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import Loader from '@exzeo/core-ui/lib/Loader';
 
 import history from '../history';
-import Loader from '../components/Common/Loader';
 
 class Login extends Component {
 

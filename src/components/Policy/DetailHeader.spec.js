@@ -3,109 +3,65 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 import thunk from 'redux-thunk';
-import ConnectedApp, { DetailHeader, showEffectiveDatePopUp } from './DetailHeader';
-
-const middlewares = [];
-const mockStore = configureStore(middlewares);
+import ConnectedApp, { DetailHeader, showEffectiveDatePopUp, showReinstatePolicyPopUp } from './DetailHeader';
 
 describe('Testing DetailHeader component', () => {
+  const props = {
+    policy: {
+      policyID: '234',
+      product: 'HO3',
+      status: 'Pending Cancellation',
+      endDate: '2018-12-12',
+      property: {
+        physicalAddress: {
+          address1: 'test',
+          address2: '',
+          city: 'Tampa',
+          state: 'FL',
+          zip: '33606'
+        }
+      }
+    },
+    summaryLedger: {
+      status: { code: 99 }
+    },
+    setAppState() {},
+    getEffectiveDateChangeReasons() {},
+    fieldQuestions: [],
+    quoteData: {},
+    appState: {
+      data: {
+        submitting: false
+      }
+    },
+    ...propTypes
+  };
+
   it('should test app', () => {
-    const store = mockStore();
-    const props = {
-      policyState: {},
-      policy: {
-        policyID: '234',
-        product: 'HO3',
-        status: 'Pending Cancellation',
-        endDate: '2018-12-12',
-        property: {
-          physicalAddress: {
-            address1: 'test',
-            address2: '',
-            city: 'Tampa',
-            state: 'FL',
-            zip: '33606'
-          }
-        }
-      },
-      summaryLedger: {
-        status: { code: 99 }
-      },
-      actions: {
-        appStateActions: {
-          setAppState() {}
-        },
-        policyStateActions: {
-          updatePolicy() {}
-        },
-        serviceActions: {
-          getEffectiveDateChangeReasons() {},
-          getLatestPolicy() {},
-          getTransactionHistory() {}
-        }
-      },
-      fieldQuestions: [],
-      quoteData: {},
-      dispatch: store.dispatch,
-      appState: {
-        data: {
-          submitting: false
-        }
-      },
-      ...propTypes
-    };
-    const wrapper = shallow(<DetailHeader store={store} {...props} />);
+    const wrapper = shallow(<DetailHeader {...props} />);
     expect(wrapper);
     wrapper.instance().componentDidMount();
-    wrapper.instance().componentWillReceiveProps({ 
-      policy: {
-        policyID: '234',
-        product: 'HO3',
-        cancelDate: '2018-04-04'
-      },
-      policyState: { update: true, policyNumber: '123'} , ...props });
     wrapper.find('button#effective-date').simulate('click');
+
+    showEffectiveDatePopUp(props);
+    showReinstatePolicyPopUp(props);
   });
 
   it('should test connected app', () => {
-    const middlewares = [thunk]
-    const mockStore = configureStore(middlewares);
     const initialState = {
-      service: {
-      },
+      service: {},
       appState: {
         modelName: 'bb',
         data: {}
-      }
+      },
+      policyState: {}
     };
+    const middlewares = [thunk];
+    const mockStore = configureStore(middlewares);
     const store = mockStore(initialState);
-    const props = {
-      fieldQuestions: [],
-      quoteData: {},
-      dispatch: store.dispatch,
-      actions: {
-        appStateActions: {
-          setAppState: () => {}
-        },
-        policyStateActions: {
-          updatePolicy: () => {}
-        },
-        serviceActions: {
-          getEffectiveDateChangeReasons: () => {},
-          getLatestPolicy: () => {},
-          getTransactionHistory: () => {},
-          getSummaryLedger: () => {}
-        }
-      },
-      appState: {
-        data: {
-          submitting: false
-        }
-      },
-      ...propTypes
-    };
+
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
-    
+
     expect(wrapper.dive());
   });
 });

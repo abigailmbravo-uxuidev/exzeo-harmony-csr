@@ -16,6 +16,7 @@ const EXCEPTION_LEVELS = {
     listIconClass: 'fa-li fa fa-exclamation-circle',
   },
   overridable: {
+    canShowButton: true,
     sectionClass: 'msg-caution',
     iconClass: 'fa fa-exclamation-triangle',
     label: 'Caution',
@@ -26,13 +27,14 @@ const EXCEPTION_LEVELS = {
 
 class UnderwritingExceptions extends React.Component {
   render() {
-    const {exceptionLevel, exceptions} = this.props;
+    const {exceptionLevel, exceptions, pristine } = this.props;
     const severity = EXCEPTION_LEVELS[exceptionLevel];
 
     return (
       <section className={severity.sectionClass}>
         <h5>
           <i className={severity.iconClass} aria-hidden="true"/><span>{severity.label}</span>
+          {!pristine && severity.canShowButton && <button tabIndex="0" className="btn btn-sm btn-primary" type="submit">Save</button>}
         </h5>
         <div>
           <ul className="fa-ul">
