@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { mount, shallow } from 'enzyme';
-import ConnectedApp, { Staff, handleInitialize } from './Staff';
+import { Staff, handleInitialize } from './Staff';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
@@ -34,7 +34,7 @@ describe('Testing Staff component', () => {
     const props = {
       initialValues: {},
       agents: [{
- name: 'test', status: true, agentOfRecord: true, appointed: true, mailingAddress: {} 
+ name: 'test', status: true, agentOfRecord: true, appointed: true, mailingAddress: {}
 }],
       agency: {
         name: 'Test Agency',

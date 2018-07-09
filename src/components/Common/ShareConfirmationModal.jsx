@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as cgActions from '../../actions/cgActions';
-import * as appStateActions from '../../actions/appStateActions';
-import * as quoteStateActions from '../../actions/quoteStateActions';
+import * as cgActions from '../../state/actions/cgActions';
+import * as appStateActions from '../../state/actions/appStateActions';
+import * as quoteStateActions from '../../state/actions/quoteStateActions';
 
 const ShareConfirmation = ({ hideShareConfirmationModal }) => <div className="modal quote-summary">
   <div className="card">
