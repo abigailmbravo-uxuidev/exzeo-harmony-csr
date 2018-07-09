@@ -403,7 +403,7 @@ main[role="document"] {
 
   &.btn-footer {
     padding: $padding;
-          
+
     .btn-wrapper {
       margin-left: 1rem;
     }
@@ -870,7 +870,7 @@ ul.list-cards {
 }
 //Additional Interests
 /*------------------------------------------------------------------------------------*/
-#AddAdditionalInterestPage {
+#AddAdditionalInterestPage, .additional-interests {
   .detail-wrapper {
     flex-direction: column;
   }

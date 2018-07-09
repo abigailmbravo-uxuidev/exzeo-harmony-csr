@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const AdditionalInterestCard = ({ ai, handleOnEnter, handleClick }) => {
   const { active } = ai;
   return (
-    <li key={ai._id}>
+    <li key={ai._id} className="card">
       <a style={active ? null : { cursor: 'not-allowed' }} onKeyPress={active ? event => handleOnEnter(event, ai) : null} onClick={active ? () => handleClick(ai) : null}>
         {/* add className based on type - i.e. mortgagee could have class of mortgagee */}
         <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {active ? (ai.order + 1) : 'Inactive'}</label></div>

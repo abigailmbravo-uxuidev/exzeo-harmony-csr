@@ -46,15 +46,15 @@ export const AgentsCard = ({
           </div>
         </div>
         <div className="card-actions">
-          <button className="btn btn-link" onClick={() => removeAgentModal(agent, agency)}><i className="fa fa-times-circle" />Remove</button>
-          <button className="btn btn-link" onClick={() => toggleAgentModal(agent, agency)}><i className="fa fa-pencil-square" />Edit</button>
+          <button className="btn btn-link btn-sm" onClick={() => removeAgentModal(agent, agency)}><i className="fa fa-times-circle" />Remove</button>
+          <button className="btn btn-link btn-sm" onClick={() => toggleAgentModal(agent, agency)}><i className="fa fa-pencil-square" />Edit</button>
         </div>
 
       </div>
       <footer>
         <h5><span className="agency-code">{agency.agencyCode}</span> | <span className="agency">{agency.displayName}</span></h5>
         <div className="footer-actions">
-          <button className="btn btn-link"><i className="fa fa-download" />Agent Book</button>
+          <button className="btn btn-link btn-sm"><i className="fa fa-download" />Agent Book</button>
         </div>
       </footer>
     </div>
