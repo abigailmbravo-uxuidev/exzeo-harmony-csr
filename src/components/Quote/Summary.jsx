@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { reduxForm, Form, propTypes, reset } from 'redux-form';
+import { reduxForm, Form, reset } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
-import * as cgActions from '../../actions/cgActions';
+import * as cgActions from '../../state/actions/cgActions';
 import TextField from '../Form/inputs/TextField';
-import * as appStateActions from '../../actions/appStateActions';
-import * as serviceActions from '../../actions/serviceActions';
-import * as quoteStateActions from '../../actions/quoteStateActions';
+import * as appStateActions from '../../state/actions/appStateActions';
+import * as serviceActions from '../../state/actions/serviceActions';
+import * as quoteStateActions from '../../state/actions/quoteStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
@@ -377,7 +377,6 @@ Summary.contextTypes = {
 };
 
 Summary.propTypes = {
-  ...propTypes,
   handleSubmit: PropTypes.func,
   appState: PropTypes.shape({
     modelName: PropTypes.string,

@@ -15,7 +15,6 @@ export const SelectFieldBilling = ({
   const { onChange, name, value, disabled } = input;
   const { touched, error, warning } = meta;
   const Error = touched && (error || warning) && <span>{error || warning}</span>;
-
   const formGroupStyles = classNames('form-group', { styleName }, { name }, Error ? 'error' : '');
   const Hint = hint && (<FieldHint name={name} hint={hint} />);
 
