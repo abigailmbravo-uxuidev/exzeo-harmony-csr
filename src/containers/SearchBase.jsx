@@ -21,7 +21,9 @@ export class SearchBase extends Component {
     const { loading, auth, location } = this.props;
     return (
       <div className="app-wrapper csr">
-        {loading && <Loader />}
+        {loading &&
+          <Loader />
+        }
         <Helmet>
           <title>Harmony - CSR Portal</title>
         </Helmet>

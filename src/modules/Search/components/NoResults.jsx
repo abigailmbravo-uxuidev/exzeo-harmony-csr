@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { NO_RESULTS_MESSAGES } from '../../../constants/search';
 
 function NoResults({ searchType, error }) {
@@ -25,7 +26,10 @@ function NoResults({ searchType, error }) {
   );
 }
 
-NoResults.propTypes = {};
+NoResults.propTypes = {
+  searchType: PropTypes.string,
+  error: PropTypes.object
+};
 
 NoResults.defaultProps = {
   error: {}

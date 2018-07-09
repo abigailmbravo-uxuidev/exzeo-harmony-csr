@@ -53,9 +53,9 @@ export function setSearchResults({
   pageSize = 0,
   sortBy = '',
   sortDirection = '',
-  results,
-  totalRecords,
-  noResults
+  results = [],
+  totalRecords = 0,
+  noResults = true
 }) {
   return {
     type: types.SET_SEARCH_RESULTS,
@@ -158,7 +158,7 @@ export async function fetchAddresses(address) {
   const config = {
     service: 'property-search',
     method: 'GET',
-    path: `/v1/search/${address.replace(' ', '&#32;')}/1/10`
+    path: `/v1/search/${address}/1/10`
   };
 
   try {
@@ -200,7 +200,7 @@ export async function fetchQuotes({
   const config = {
     service: 'quote-data',
     method: 'GET',
-    path: `/quotes?companyCode=${companyCode}&state=${state}&product=HO3&quoteNumber=${quoteNumber}&lastName=${lastName}&firstName=${firstName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&sort=${sort}&sortDirection=${sortDirection}&quoteState=${quoteState.replace(' ', '%20')}`
+    path: `/quotes?companyCode=${companyCode}&state=${state}&product=HO3&quoteNumber=${quoteNumber}&lastName=${lastName}&firstName=${firstName}&propertyAddress=${address}&page=${currentPage}&pageSize=${pageSize}&sort=${sort}&sortDirection=${sortDirection}&quoteState=${quoteState}`
   };
 
   try {
@@ -213,18 +213,20 @@ export async function fetchQuotes({
 
 /**
  * Build query string and call policy service
- * @param {string} firstName
- * @param {string} lastName
- * @param {string} address
- * @param {string} agencyCode
- * @param {string} effectiveDate
- * @param {string} policyNumber
- * @param {string} policyStatus
- * @param {string} currentPage
- * @param {string} pageSize
- * @param {string} resultStart
- * @param {string} sortBy
- * @param {string} sortDirection
+ * @param firstName
+ * @param lastName
+ * @param address
+ * @param agencyCode
+ * @param companyCode
+ * @param effectiveDate
+ * @param policyNumber
+ * @param policyStatus
+ * @param currentPage
+ * @param pageSize
+ * @param resultStart
+ * @param sortBy
+ * @param sortDirection
+ * @param state
  * @returns {Promise<Array>}
  */
 export async function fetchPolicies({
@@ -317,7 +319,7 @@ export async function fetchAgencies({ companyCode, state, displayName, agencyCod
  */
 function formatAddressResults(results) {
   return {
-    results: results.IndexResults,
+    results: results.IndexResult,
     totalRecords: results.TotalCount,
     noResults: !results.TotalCount
   }
@@ -436,12 +438,9 @@ export function handleQuoteSearch(data) {
       sortDirection: 'desc',
       pageSize: RESULTS_PAGE_SIZE
     };
-    try {
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(taskData));
-      await dispatch(searchQuotes(taskData));
-    } catch (err) {
-      console.error(err);
-    }
+
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(taskData));
+    await dispatch(searchQuotes(taskData));
   }
 }
 
@@ -465,8 +464,8 @@ export function handlePolicySearch(data) {
       sortDirection: data.sortBy === 'policyNumber' ? 'desc' : 'asc',
       resultStart: 60,
       pageSize: RESULTS_PAGE_SIZE,
-      companyCode: 'TTIC',
-      state: 'FL'
+      companyCode: DEFAULT_SEARCH_PARAMS.companyCode,
+      state: DEFAULT_SEARCH_PARAMS.state
     };
 
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(taskData));
@@ -480,7 +479,7 @@ export function handlePolicySearch(data) {
  * @returns {Function}
  */
 export function handleAgentSearch(data) {
-  return dispatch => {
+  return async dispatch => {
     const taskData = {
       agentCode: (encodeURIComponent(data.agentCode) !== 'undefined' ? encodeURIComponent(data.agentCode) : ''),
       firstName: (encodeURIComponent(data.firstName) !== 'undefined' ? encodeURIComponent(data.firstName) : ''),
@@ -492,7 +491,7 @@ export function handleAgentSearch(data) {
     };
 
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(taskData));
-    dispatch(searchAgents(taskData));
+    await dispatch(searchAgents(taskData));
   }
 }
 
@@ -502,7 +501,7 @@ export function handleAgentSearch(data) {
  * @returns {Function}
  */
 export function handleAgencySearch(data) {
-  return dispatch => {
+  return async dispatch => {
 
     const taskData = {
       agencyCode: (encodeURIComponent(data.agencyCode) !== 'undefined' ? encodeURIComponent(data.agencyCode) : ''),
@@ -516,7 +515,7 @@ export function handleAgencySearch(data) {
     };
 
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(taskData));
-    dispatch(searchAgencies(taskData));
+    await dispatch(searchAgencies(taskData));
   }
 }
 
@@ -532,20 +531,24 @@ export function handleSearchSubmit(data, props) {
 
     dispatch(toggleLoading(true));
 
-    if (searchType === SEARCH_TYPES.newQuote) {
-      await dispatch(handleAddressSearch(data));
-    }
-    if (searchType === SEARCH_TYPES.quote) {
-      await dispatch(handleQuoteSearch(data));
-    }
-    if (searchType === SEARCH_TYPES.policy) {
-      await dispatch(handlePolicySearch(data));
-    }
-    if (searchType === SEARCH_TYPES.agent) {
-      await dispatch(handleAgentSearch(data));
-    }
-    if (searchType === SEARCH_TYPES.agency) {
-      await dispatch(handleAgencySearch(data));
+    try {
+      if (searchType === SEARCH_TYPES.newQuote) {
+        await dispatch(handleAddressSearch(data));
+      }
+      if (searchType === SEARCH_TYPES.quote) {
+        await dispatch(handleQuoteSearch(data));
+      }
+      if (searchType === SEARCH_TYPES.policy) {
+        await dispatch(handlePolicySearch(data));
+      }
+      if (searchType === SEARCH_TYPES.agent) {
+        await dispatch(handleAgentSearch(data));
+      }
+      if (searchType === SEARCH_TYPES.agency) {
+        await dispatch(handleAgencySearch(data));
+      }
+    } catch (error) {
+      dispatch(errorActions.setAppError(error))
     }
 
     dispatch(toggleLoading(false));

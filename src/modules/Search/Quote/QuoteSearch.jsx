@@ -87,7 +87,7 @@ const QuoteSearch = ({
 
 QuoteSearch.propTypes = {
   submitting: PropTypes.bool,
-  questions: PropTypes.array,
+  questions: PropTypes.object,
   handlePagination: PropTypes.func,
   search: PropTypes.shape({
     results: PropTypes.array,
@@ -97,7 +97,7 @@ QuoteSearch.propTypes = {
 };
 
 QuoteSearch.defaultProps = {
-  questions: [],
+  questions: {},
   search: {}
 };
 

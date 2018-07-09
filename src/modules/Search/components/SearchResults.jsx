@@ -8,11 +8,11 @@ import NoResults from './NoResults';
 import PolicyCard from './PolicyCard';
 import AddressCard from './AddressCard';
 import AddressTip from './AddressTip';
-import AgencyCard from './AgencyCard.jsx';
+import AgencyCard from './AgencyCard';
 import AgentCard from './AgentCard';
 import QuoteCard from './QuoteCard';
 
-export function onKeypressSubmit(event, data, props) {
+export function onKeyPressSubmit(event, data, props) {
   if (event.charCode === 13) {
     handleNewTab(data, props.searchType);
   }
@@ -34,7 +34,7 @@ export class SearchResults extends Component {
               <AddressCard
                 key={address.id}
                 address={address}
-                handleKeyPress={(e) => onKeypressSubmit(e, address, searchType)}
+                handleKeyPress={(e) => onKeyPressSubmit(e, address, searchType)}
                 handleClick={() => handleNewTab(address, searchType)}
               />
             ))}
@@ -48,7 +48,7 @@ export class SearchResults extends Component {
               <QuoteCard
                 key={quote._id}
                 quote={quote}
-                handleKeyPress={(e) => onKeypressSubmit(e, quote, searchType)}
+                handleKeyPress={(e) => onKeyPressSubmit(e, quote, searchType)}
                 handleClick={() => handleNewTab(quote, searchType)}
               />
             ))}
@@ -61,7 +61,7 @@ export class SearchResults extends Component {
               <PolicyCard
                 key={policy.policyID}
                 policy={policy}
-                handleKeyPress={(e) => onKeypressSubmit(e, policy, searchType)}
+                handleKeyPress={(e) => onKeyPressSubmit(e, policy, searchType)}
                 handleClick={() => handleNewTab(policy, searchType)}
               />
             ))}
@@ -72,9 +72,9 @@ export class SearchResults extends Component {
           <div className="user-list agent-list">
             {results.map((agent) => (
               <AgentCard
-                key={agent.licenseNumber}
+                key={agent._id}
                 agent={agent}
-                handleKeyPress={(e) => onKeypressSubmit(e, agent, searchType)}
+                handleKeyPress={(e) => onKeyPressSubmit(e, agent, searchType)}
                 handleClick={() => handleNewTab(agent, searchType)}
               />
             ))}
@@ -87,7 +87,7 @@ export class SearchResults extends Component {
               <AgencyCard
                 key={agency.agencyCode}
                 agency={agency}
-                handleKeyPress={(e) => onKeypressSubmit(e, agency, searchType)}
+                handleKeyPress={(e) => onKeyPressSubmit(e, agency, searchType)}
                 handleClick={() => handleNewTab(agency, searchType)}
               />
             ))}

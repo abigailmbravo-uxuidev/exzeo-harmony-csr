@@ -17,12 +17,6 @@ const sortByOptions = [
   { answer: 'lastName', label: 'Last Name' }
 ];
 
-const agencyListValues = (agencyList, advancedSearch) => (advancedSearch ? agencyList.map(agency => ({
-  label: agency.displayName,
-  answer: agency.agencyCode,
-  value: agency.agencyCode
-})) : []);
-
 const PolicySearch = ({
   agencyList,
   submitting,
@@ -100,8 +94,7 @@ const PolicySearch = ({
           label="Agency Name"
           component={SelectTypeAhead}
           styleName="agencyCodeSelectField"
-          labelKey="label"
-          answers={agencyListValues(agencyList, advancedSearch)}
+          answers={agencyList}
         />
         <div className="form-group effectiveDate">
           <Field
@@ -142,7 +135,6 @@ const PolicySearch = ({
         totalPages={search.totalPages}
       />
     }
-
   </React.Fragment>
 );
 
@@ -150,7 +142,7 @@ PolicySearch.propTypes = {
   agencyList: PropTypes.array,
   submitting: PropTypes.bool,
   advancedSearch: PropTypes.bool.isRequired,
-  questions: PropTypes.array,
+  questions: PropTypes.object,
   toggleAdvancedSearch: PropTypes.func.isRequired,
   handlePagination: PropTypes.func.isRequired,
   search: PropTypes.shape({
@@ -162,7 +154,7 @@ PolicySearch.propTypes = {
 
 PolicySearch.defaultProps = {
   agencyList: [],
-  questions: []
+  questions: {}
 };
 
 export default PolicySearch;

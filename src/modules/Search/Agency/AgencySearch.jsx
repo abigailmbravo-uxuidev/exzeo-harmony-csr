@@ -44,7 +44,7 @@ const AgencySearch = ({ submitting }) => {
       />
       <Field
         name="fein"
-        dataTest="fien"
+        dataTest="fein"
         component={Input}
         placeholder="FEIN No Search"
         label="FEIN Number"

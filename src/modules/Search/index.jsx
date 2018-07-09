@@ -35,7 +35,6 @@ class SearchPage extends Component {
   }
 
   componentWillUnmount() {
-    // this.setHasSearched(false);
     this.props.resetSearch();
   }
 
@@ -50,6 +49,7 @@ class SearchPage extends Component {
 
   setSearchConfig = () => {
     const { pathName } = this.props;
+    // determine which page we are on and setup correct search properties
     if (pathName === '/') {
       this.setState({ searchType: SEARCH_TYPES.policy, searchConfig: SEARCH_TYPES.policy });
     }
@@ -78,8 +78,6 @@ class SearchPage extends Component {
             onSubmitSuccess={() => this.setHasSearched(true)}
             searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
             searchType={searchType}
-            setHasSearched={this.setHasSearched}
-            toggleAdvancedSearch={this.toggleAdvancedSearch}
             render={({ submitting, handlePagination }) => (
               <SearchForm
                 advancedSearch={advancedSearch}

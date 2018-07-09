@@ -30,6 +30,7 @@ export class SearchBar extends Component {
   handlePagination = (isNext) => {
     const { handleSubmit } = this.props;
     return handleSubmit((data, dispatch, props) => {
+      // submit function is looking for these two added properties to determine if this is an initial submit or pagination submit.
       const submitData = { ...data, isNext, currentPage: props.search.currentPage };
       dispatch(handleSearchSubmit(submitData, this.props));
     });
@@ -102,9 +103,9 @@ export default connect(mapStateToProps, {
   clearAppError,
   getAgencies,
   toggleLoading,
-  handleSearchSubmit
-})(reduxForm({ // 'initialValues' prop is being passed in from parent component based on route/pathName
+  handleSearchSubmit,
+})(reduxForm({
+  // 'initialValues' prop is being passed in from parent component based on route/pathName
   form: 'SearchBar',
-  enableReinitialize: true,
-  destroyOnUnmount: false
+  enableReinitialize: true
 })(SearchBar));
