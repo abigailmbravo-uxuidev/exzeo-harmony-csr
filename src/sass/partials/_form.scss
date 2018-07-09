@@ -156,6 +156,12 @@ select {
   }
 
   &.is-focused {
+    &.is-open {
+      .Select-value {
+        background: rgba($warm-gray-04, .1);
+      }
+    }
+
     &:not(.is-open) {
       .Select-control {
         color: $input-color-focus;
@@ -168,7 +174,24 @@ select {
   }
 
   .Select-menu-outer {
+    overflow: hidden;
+    width: 100%;
     border-color: $input-border-focus;
+    border-top-style: dotted;
+    border-top-color: $warm-gray-06;
+    border-radius: 0 0 $border-radius $border-radius;
+    box-shadow: 0 4px 4px 2px rgba($black, .1);
+
+    .Select-option {
+      &.is-selected,
+      &.is-selected.is-focused {
+        background: rgba($bright-blue, .3);
+      }
+
+      &.is-focused {
+        background: rgba($bright-blue, .1);
+      }
+    }
   }
 }
 //
@@ -1024,7 +1047,7 @@ label {
     align-items: center;
     flex-wrap: wrap;
     line-height: 1;
-
+    //CHIP
     .react-tagsinput-tag {
       display: flex;
       align-items: center;
@@ -1066,28 +1089,67 @@ label {
       position: relative;
       display: flex;
       flex-direction: column;
-      flex-grow: 0;
-      flex-shrink: 0;
+      flex-grow: 1;
+      flex-shrink: 1;
       width: auto;
+      min-width: 10rem;
 
       .react-tagsinput-input {
+        flex-grow: 1;
+        flex-shrink: 1;
+        width: 100%;
+        padding-right: 1.5rem;
         padding-left: $padding;
         font-family: $font-family-sans-serif;
         font-weight: $font-weight-normal;
       }
 
+      &:after {
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        content: '\f0d7';
+        color: $warm-gray-06;
+        font-family: $font-family-icon;
+      }
+
+      &.react-autosuggest__container--open {
+        .react-tagsinput-input {
+          border-top: 1px solid rgba($warm-gray-04, .3);
+          border-right: 1px solid rgba($warm-gray-04, .3);
+          border-left: 1px solid rgba($warm-gray-04, .3);
+          border-radius: 0;
+          background: rgba($warm-gray-04, .1);
+        }
+
+        &:after {
+          content: '\f0d8';
+        }
+      }
+
       .react-autosuggest__suggestions-container {
         position: absolute;
-        top: 1.875rem;
+        top: 30px;
+        left: 2px;
+        width: calc(100% - 4px);
         padding: 0;
-        border-width: 0 1px 1px 1px;
+        opacity: 0;
+        border-width: 1px;
         border-style: solid;
-        border-color: $warm-gray-06;
+        border-color: $input-border-focus;
+        border-top-style: dotted;
+        border-top-color: $warm-gray-06;
         border-radius: 0 0 $border-radius $border-radius;
         background: $white;
+        box-shadow: 0 4px 4px 2px rgba($black, .1);
 
         &.react-autosuggest__suggestions-container--open {
-          box-shadow: 0 4px 4px 2px rgba($black, .1);
+          opacity: 1;
         }
 
         ul {
@@ -1101,6 +1163,7 @@ label {
             align-items: center;
             min-height: 2rem;
             padding: $padding;
+            color: $warm-gray-10;
 
             &:hover {
               cursor: pointer;

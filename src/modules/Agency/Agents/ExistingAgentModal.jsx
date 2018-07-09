@@ -62,6 +62,8 @@ export class ExistingAgentModal extends Component {
                     validate={validation.isRequired}
                     answers={listOfAgents}
                   />
+            </div>
+            <div className="flex-form">
                   <Field
                     label="Agency License"
                     styleName="agencyLicense"
