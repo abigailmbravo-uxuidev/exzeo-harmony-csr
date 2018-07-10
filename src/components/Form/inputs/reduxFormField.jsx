@@ -21,12 +21,12 @@ export default function reduxFormField(fieldComponent) {
       /**
        * String to put in label
        */
-      label: PropTypes.string.isRequired,
+      label: PropTypes.string,
 
       /**
        * Name of input element, needed for onChange
        */
-      name: PropTypes.string.isRequired,
+      name: PropTypes.string,
 
       /**
        * Type for input
@@ -66,7 +66,8 @@ export default function reduxFormField(fieldComponent) {
       disabled: false,
       hint: '',
       styleName: '',
-      type: 'text'
+      type: 'text',
+      dependsOn: []
     }
 
     render() {
@@ -84,7 +85,7 @@ export default function reduxFormField(fieldComponent) {
         dateString
       } = this.props;
 
-      const ruleArray = combineRules(validations, { min, max, dependsOn, dateString });
+      const ruleArray = dependsOn.concat(combineRules(validations, { min, max, dateString }));
 
       return (
         <Field

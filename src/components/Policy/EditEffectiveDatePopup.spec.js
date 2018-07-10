@@ -1,6 +1,5 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
-import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
 import ConnectedApp, { EditEffectiveDatePopup, handleInitialize } from './EditEffectiveDatePopup';
@@ -22,8 +21,10 @@ describe('Testing BillingEditModal component', () => {
           }
         }
       },
-      service: {
+      policyState: {
         effectiveDateReasons: {},
+      },
+      service: {
         latestPolicy: {}
       },
       appState: {

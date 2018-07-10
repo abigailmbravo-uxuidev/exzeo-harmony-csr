@@ -1,6 +1,10 @@
 FROM node:8-alpine
 
 LABEL maintainer=Exzeo
+ 
+ARG NPM_TOKEN 
+
+COPY package.json package.json  
 
 ARG NPM_TOKEN
 
@@ -21,4 +25,7 @@ RUN apk update && apk --no-cache add bash libc6-compat && \
 
 RUN rm -f .npmrc
 
+RUN rm -f .npmrc
+
 CMD ["npm", "run", "server"]
+

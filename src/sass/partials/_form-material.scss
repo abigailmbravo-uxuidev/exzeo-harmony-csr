@@ -229,24 +229,6 @@ label {
         flex-shrink: 0;
         width: auto;
 
-        &.radio-column-1 {}
-
-        &.radio-column-2 {
-          //width: 50%;
-        }
-
-        &.radio-column-3 {
-          //width: 33.33%;
-        }
-
-        &.radio-column-4 {
-          //width: 25%;
-        }
-
-        &.radio-column-5 {
-          //width: 20%;
-        }
-
         &:hover {
           cursor: pointer;
         }
