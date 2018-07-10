@@ -9,19 +9,19 @@ export const ContractsCard = ({ contract, editContract, contractIndex }) => (
     </div>
     <div className="contract-details">
       <div className="contract-header">
-      <h4 className="contract-csp">
-        <strong>{contract.companyCode}</strong> |{' '}
-        <strong>{contract.stateLicense}</strong> |{' '}
-        <span>{contract.product.map((product, index) => (contract.product.length === (index + 1) ? <span key={product}>{product}</span> : <span key={product}>{product} &bull;</span>))}</span>
-      </h4>
-      <div className="contract-actions">
-        <button
-          className="btn btn-link btn-sm"
-          onClick={editContract('Edit', contractIndex)}
-        >
-          <i className="fa fa-pencil-square" />Edit
-        </button>
-      </div>
+        <h4 className="contract-csp">
+          <strong>{contract.companyCode}</strong> |{' '}
+          <strong>{contract.stateLicense}</strong> |{' '}
+          <span>{contract.product.map((product, index) => (contract.product.length === (index + 1) ? <span key={product}>{product}</span> : <span key={product}>{product} &bull;</span>))}</span>
+        </h4>
+        <div className="contract-actions">
+          <button
+            className="btn btn-link btn-sm"
+            onClick={editContract('Edit', contractIndex)}
+          >
+            <i className="fa fa-pencil-square" />Edit
+          </button>
+        </div>
       </div>
       <div className="contract-info">
         <span className="additional-contract-info license">
@@ -54,7 +54,7 @@ export const ContractsCard = ({ contract, editContract, contractIndex }) => (
         ) : null}
       </div>
       <ul className="contract-agent-list">
-        {/*list headers*/}
+        {/* list headers */}
         <li className="header">
           <span className="is-primary label">Primary</span>
           <span className="agent-id label">Agent ID</span>
@@ -63,15 +63,15 @@ export const ContractsCard = ({ contract, editContract, contractIndex }) => (
           <span className="appointed label">Appointed</span>
           <span className="aor label">AOR</span>
         </li>
-        {/*Start loop of agents associated with this contract*/}
-        {/*agent 1*/}
+        {/* Start loop of agents associated with this contract */}
+        {/* agent 1 */}
         <li className="agent-detail">
-          <span className="is-primary display">[is primary true => <i className="fa fa-check"/> : null]</span>
+          <span className="is-primary display">[is primary true => <i className="fa fa-check" /> : null]</span>
           <span className="agent-id display">[agent id]]</span>
           <span className="agent-name display">[agent name]</span>
           <span className="license-array display">[array of agent licenses]</span>
-          <span className="appointed display">[is appointed true => <i className="fa fa-check"/> : null]</span>
-          <span className="aor display">[is aor true => <i className="fa fa-check"/> : null]</span>
+          <span className="appointed display">[is appointed true => <i className="fa fa-check" /> : null]</span>
+          <span className="aor display">[is aor true => <i className="fa fa-check" /> : null]</span>
         </li>
       </ul>
     </div>
