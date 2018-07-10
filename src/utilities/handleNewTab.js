@@ -13,7 +13,7 @@ export function handleNewTab(searchData, searchType) {
     // policy
   } else if (searchType === 'policy') {
     localStorage.setItem('policyNumber', searchData.policyNumber);
-    window.open('/policy/coverage', '_blank');
+    window.open(`/policy/coverage/${searchData.policyNumber}`, '_blank');
     // agency
   } else if (searchType === 'agency' || searchType === 'agent') {
     localStorage.setItem('agencyCode', searchData.agencyCode);

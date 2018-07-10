@@ -14,12 +14,13 @@ import { isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
 
 export class SearchBar extends Component {
   componentDidMount() {
-    const { agencies, getAgencies, toggleLoading } = this.props;
+    const { agencies, getAgencies, toggleLoading, initialize, initialValues } = this.props;
     localStorage.removeItem(LOCAL_STORAGE_KEY);
     toggleLoading(false);
     if (!agencies.length) {
       getAgencies(DEFAULT_SEARCH_PARAMS.companyCode, DEFAULT_SEARCH_PARAMS.state);
     }
+    initialize(initialValues)
   }
 
   handleSearchFormSubmit = async (data, dispatch, props) => {
@@ -78,6 +79,7 @@ export class SearchBar extends Component {
                 onChange={this.changeSearchType}
                 answers={searchTypeOptions}
                 showPlaceholder={false}
+                errorHint
               />
             </div>
 
@@ -106,6 +108,5 @@ export default connect(mapStateToProps, {
   handleSearchSubmit,
 })(reduxForm({
   // 'initialValues' prop is being passed in from parent component based on route/pathName
-  form: 'SearchBar',
-  enableReinitialize: true
+  form: 'SEARCH_BAR'
 })(SearchBar));

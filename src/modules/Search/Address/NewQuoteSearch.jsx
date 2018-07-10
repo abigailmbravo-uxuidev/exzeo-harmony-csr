@@ -13,8 +13,8 @@ const NewQuoteSearch = ({ submitting }) => (
       placeholder="Property Address Search"
       component={Input}
       styleName="property-search"
+      validate={isRequired}
       errorHint
-      validate={[isValidChar, isRequired]}
     />
 
     <button
