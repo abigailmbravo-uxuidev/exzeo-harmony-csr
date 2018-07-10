@@ -18,7 +18,11 @@ export const handleInitialize = (state) => {
       billPlan: 'Annual'
     };
   }
-  return policy;
+  return {
+    billToId: policy.billToId,
+    billToType: policy.billToType,
+    billPlan: policy.billPlan
+  };
 };
 
 export const handleBillingFormSubmit = async (data, dispatch, props) => {
@@ -41,21 +45,21 @@ export class BillingEditModal extends React.Component {
     super(props);
 
     this.modalStyle = { flexDirection: 'row' };
-    this.billToOptions = props.billingOptions.map(option => ({ label: option.displayText, answer: option.billToId }))
+    this.billToOptions = props.billingOptions.map(option => ({ label: option.displayText, answer: option.billToId }));
   }
 
   normalizeBilling = (value) => {
     const { billingOptions, change } = this.props;
-    const billToType = billingOptions.find(o => o.billToId === value).billToType;
+    const billToType = (billingOptions.find(o => o.billToId === value) || {}).billToType || '';
     change('billPlan', 'Annual');
     change('billToType', billToType);
     return value;
   };
 
   getBillingOptions() {
-    const { billingOptions, billToId } = this.props;
-    const planOptions = billingOptions.find(option => option.billToId === billToId);
-    return (planOptions || {}).payPlans || [];
+    const { billingOptions, billToIdValue } = this.props;
+    const payPlans = (billingOptions.find(option => option.billToId === billToIdValue) || {}).payPlans;
+    return (payPlans || []).map(plan => ({ label: plan, answer: plan}));
   }
 
   render() {
@@ -75,20 +79,20 @@ export class BillingEditModal extends React.Component {
             <div className="card-block">
               <Field
                 name="billToId"
-                dataTest="billToId"
                 label="Bill To"
-                normalize={this.normalizeBilling}
                 component={Select}
+                normalize={this.normalizeBilling}
                 validate={isRequired}
                 answers={this.billToOptions}
+                dataTest="billToId"
               />
               <Field
                 name="billPlan"
-                dataTest="billPlan"
                 label="Bill Plan"
                 component={Radio}
                 validate={isRequired}
                 answers={this.getBillingOptions()}
+                dataTest="billPlan"
                 segmented
               />
             </div>
@@ -132,7 +136,7 @@ BillingEditModal.propTypes = {
 };
 
 BillingEditModal.defaultProps = {
-  fieldValues: {},
+  billToId: '',
   billingOptions: []
 };
 
