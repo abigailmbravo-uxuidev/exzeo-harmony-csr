@@ -2,7 +2,7 @@ import React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm, Field, formValueSelector } from 'redux-form';
-import { Radio, Select } from '@exzeo/core-ui/lib/Input'
+import { Radio, Select } from '@exzeo/core-ui/lib/Input';
 import { isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
 import { updateBillPlan } from '../../state/actions/policyActions';
 
@@ -59,14 +59,15 @@ export class BillingEditModal extends React.Component {
   getBillingOptions() {
     const { billingOptions, billToIdValue } = this.props;
     const payPlans = (billingOptions.find(option => option.billToId === billToIdValue) || {}).payPlans;
-    return (payPlans || []).map(plan => ({ label: plan, answer: plan}));
+    return (payPlans || []).map(plan => ({ label: plan, answer: plan }));
   }
 
   render() {
     const {
       handleSubmit,
       hideBillingModal,
-      submitting
+      submitting,
+      pristine
     } = this.props;
 
     return (
@@ -111,7 +112,7 @@ export class BillingEditModal extends React.Component {
                   aria-label="submit-btn form-editBilling"
                   className="btn btn-primary"
                   type="submit"
-                  disabled={submitting}
+                  disabled={submitting || pristine}
                 >Update
                 </button>
               </div>
