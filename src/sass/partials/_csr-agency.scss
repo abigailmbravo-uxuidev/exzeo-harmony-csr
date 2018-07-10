@@ -358,13 +358,21 @@
                 flex-shrink: 1;
                 margin-left: $padding*2;
 
-                .contract-csp {
+                .contract-header {
+                  display: flex;
+                  justify-content: space-between;
                   width: 100%;
-                  font-weight: $font-weight-normal;
+
+                  .contract-csp {
+                    font-weight: $font-weight-normal;
+                  }
                 }
+
+                .contract-actions {}
 
                 .contract-info {
                   display: flex;
+                  margin-bottom: $padding;
 
                   .additional-contract-info {
                     display: flex;
@@ -397,6 +405,22 @@
                           }
                         }
                       }
+                    }
+                  }
+                }
+
+                ul {
+                  &.contract-agent-list {
+                    margin: 0;
+                    padding: 0;
+                    list-style: none;
+
+                    li {
+                      font-size: $font-size-sm;
+                    }
+
+                    .header {
+                      background: $warm-gray-02;
                     }
                   }
                 }
