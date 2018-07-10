@@ -35,7 +35,7 @@ export class Overview extends Component {
     if (!agency || !agency._id) return <div />;
 
     return (
-      <div>
+      <div className="route-content-wrapper">
         {this.state.showEditContact &&
           this.state.editType && (
             <EditContact
