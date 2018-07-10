@@ -105,53 +105,59 @@ export const ContractsModal = (props) => {
               </div>
               {/*list of added agents with the ability to check appointed and/or agent of record to apply those attributes*/}
               <div>
-                <dl>
+                <ul>
                   {/*list headers*/}
-                  <dt>Agent Name</dt>
-                  <dt>Appointed</dt>
-                  <dt>Agent of Record</dt>
+                  <li>
+                    <span>Agent Name</span>
+                    <span>Appointed</span>
+                    <span>Agent of Record</span>
+                  </li>
                   {/*LOOP OF AGENTS ASSIGNED TO CONTRACT*/}
                   {/*Agent 1*/}
-                  <dd>AGENT NAME</dd>
-                  <dd>
-                    <Field
-                        name="appointed"
-                        dataTest="appointed"
-                        id="appointed"
-                        component="input"
-                        type="checkbox"
-                      />
-                  </dd>
-                  <dd>
-                    <Field
-                        name="appointed"
-                        dataTest="appointed"
-                        id="appointed"
-                        component="input"
-                        type="checkbox"
-                      />
-                  </dd>
+                  <li>
+                    <span>AGENT NAME</span>
+                    <span>
+                      <Field
+                          name="appointed"
+                          dataTest="appointed"
+                          id="appointed"
+                          component="input"
+                          type="checkbox"
+                        />
+                    </span>
+                    <span>
+                      <Field
+                          name="appointed"
+                          dataTest="appointed"
+                          id="appointed"
+                          component="input"
+                          type="checkbox"
+                        />
+                    </span>
+                  </li>
                   {/*Agent 2*/}
-                  <dd>AGENT NAME</dd>
-                  <dd>
-                    <Field
-                        name="appointed"
-                        dataTest="appointed"
-                        id="appointed"
-                        component="input"
-                        type="checkbox"
-                      />
-                  </dd>
-                  <dd>
-                    <Field
-                        name="appointed"
-                        dataTest="appointed"
-                        id="appointed"
-                        component="input"
-                        type="checkbox"
-                      />
-                  </dd>
-                </dl>
+                  <li>
+                    <span>AGENT NAME</span>
+                    <span>
+                      <Field
+                          name="appointed"
+                          dataTest="appointed"
+                          id="appointed"
+                          component="input"
+                          type="checkbox"
+                        />
+                    </span>
+                    <span>
+                      <Field
+                          name="appointed"
+                          dataTest="appointed"
+                          id="appointed"
+                          component="input"
+                          type="checkbox"
+                        />
+                    </span>
+                  </li>
+                </ul>
               </div>
             </section>
           </div>

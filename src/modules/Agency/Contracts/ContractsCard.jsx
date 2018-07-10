@@ -38,6 +38,7 @@ export const ContractsCard = ({ contract, editContract, contractIndex }) => (
           </span>
         ) : null}
       </div>
+
     </div>
     <div className="contract-actions">
       <button
