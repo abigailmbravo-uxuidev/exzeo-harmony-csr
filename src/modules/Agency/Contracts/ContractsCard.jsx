@@ -12,7 +12,7 @@ export const ContractsCard = ({ contract, editContract, contractIndex }) => (
       <h4 className="contract-csp">
         <strong>{contract.companyCode}</strong> |{' '}
         <strong>{contract.stateLicense}</strong> |{' '}
-        <span>{contract.product.map((product, index) => (contract.product.length === (index + 1) ? <span>{product}</span> : <span>{product} &bull;</span>))}</span>
+        <span>{contract.product.map((product, index) => (contract.product.length === (index + 1) ? <span key={product}>{product}</span> : <span key={product}>{product} &bull;</span>))}</span>
       </h4>
       <div className="contract-actions">
         <button

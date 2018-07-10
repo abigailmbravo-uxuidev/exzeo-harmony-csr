@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, Form, Field } from 'redux-form';
-import { Input, Date, AutocompleteChips } from '@exzeo/core-ui/lib/Input';
+import { Input, Date, Select } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 import CheckBoxGroup from '../CheckBoxGroup';
 
 export const ContractsModal = (props) => {
   const {
-    toggleModal, saveContract, handleSubmit, editType, contractIndex, agencyAgentsList, existsInAgentsList
+    toggleModal, saveContract, handleSubmit, editType, contractIndex, removeAgentFromList, initialValues, listOfAgents, addAgentFromList
   } = props;
   return (
     <div className="modal contract-crud">
@@ -93,70 +93,54 @@ export const ContractsModal = (props) => {
               </div>
             </section>
             <section className="agent-details">
-              {/*Combo box/Tupe ahead component listing all agents that are associated with this agency and are not currently in list below*/}
+              {/* Combo box/Tupe ahead component listing all agents that are associated with this agency and are not currently in list below */}
               <div className="form-group">
-              <label>Add Agent</label>
-                <select>
-                  <option>AGENT ID <span>AGENT NAME</span> [AGENT LICENSE | AGENT LICENSE | AGENT LICENSE]</option>
-                  <option>AGENT ID <span>AGENT NAME</span> [AGENT LICENSE | AGENT LICENSE | AGENT LICENSE]</option>
-                  <option>AGENT ID <span>AGENT NAME</span> [AGENT LICENSE | AGENT LICENSE | AGENT LICENSE]</option>
-                  <option>AGENT ID <span>AGENT NAME</span> [AGENT LICENSE | AGENT LICENSE | AGENT LICENSE]</option>
-                </select>
+                <label>Add Agent</label>
+                <Field
+                  label="Agents"
+                  styleName="selectedAgent"
+                  name="selectedAgent"
+                  dataTest="selectedAgent"
+                  component={Select}
+                  answers={listOfAgents}
+                  onChange={addAgentFromList}
+                />
               </div>
-              {/*list of added agents with the ability to check appointed and/or agent of record to apply those attributes*/}
+              {/* list of added agents with the ability to check appointed and/or agent of record to apply those attributes */}
               <div>
                 <ul className="contract-agent-list">
-                  {/*list headers*/}
+                  {/* list headers */}
                   <li className="header">
                     <span className="agent-name label">Agent Name</span>
                     <span className="appointed label">Appointed</span>
                     <span className="aor label">Agent of Record</span>
                   </li>
-                  {/*LOOP OF AGENTS ASSIGNED TO CONTRACT*/}
-                  {/*Agent 1*/}
-                  <li className="agent-detail">
-                    <span className="agent-name display">AGENT NAME</span>
-                    <span className="appointed display">
-                      <Field
-                          name="appointed"
-                          dataTest="appointed"
+                  {/* LOOP OF AGENTS ASSIGNED TO CONTRACT */}
+                  {/* Agent 1 */}
+                  {initialValues && initialValues.license && initialValues.license[contractIndex] &&
+                  initialValues.license[contractIndex].agent && initialValues.license[contractIndex].agent.map((a, index) =>
+                    (<li className="agent-detail" key={`license[${contractIndex}].agent[${index}].agentCode`}>
+                      <span className="agent-name display">{`${a.agentInfo.firstName} ${a.agentInfo.firstName}`}</span>
+                      <span className="appointed display">
+                        <Field
+                          name={`license[${contractIndex}].agent[${index}].appointed`}
+                          dataTest={`license[${contractIndex}].agent[${index}].appointed`}
                           id="appointed"
                           component="input"
                           type="checkbox"
                         />
-                    </span>
-                    <span className="aor display">
-                      <Field
-                          name="agentOfRecord"
-                          dataTest="agentOfRecord"
+                      </span>
+                      <span className="aor display">
+                        <Field
+                          name={`license[${contractIndex}].agent[${index}].agentOfRecord`}
+                          dataTest={`license[${contractIndex}].agent[${index}].agentOfRecord`}
                           id="agentOfRecord"
                           component="input"
                           type="checkbox"
                         />
-                    </span>
-                  </li>
-                  {/*Agent 2*/}
-                  <li className="agent-detail">
-                    <span className="agent-name display">AGENT NAME</span>
-                    <span className="appointed display">
-                      <Field
-                          name="appointed"
-                          dataTest="appointed"
-                          id="appointed"
-                          component="input"
-                          type="checkbox"
-                        />
-                    </span>
-                    <span className="aor display">
-                      <Field
-                          name="agentOfRecord"
-                          dataTest="agentOfRecord"
-                          id="agentOfRecord"
-                          component="input"
-                          type="checkbox"
-                        />
-                    </span>
-                  </li>
+                      </span>
+                      <button tabIndex="0" className="btn btn-secondary" onClick={e => removeAgentFromList(e, a.agencyCode)}>X</button>
+                    </li>))}
                 </ul>
               </div>
             </section>

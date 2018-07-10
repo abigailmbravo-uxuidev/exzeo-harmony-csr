@@ -42,7 +42,9 @@ export const getListOfAgents = createSelector(
   [getAgents],
   (agent) => {
     if (!agent || !Array.isArray(agent)) return [];
-    return agent.map(a => ({ answer: a.agentCode, label: `${a.firstName} ${a.lastName}` }));
+    return agent.map(a => ({
+      answer: a.agentCode, label: `${a.firstName} ${a.lastName}`, agentCode: a.agentCode, agentInfo: { ...a }, agentOfRecord: a.agentOfRecord, appointed: a.appointed
+    }));
   }
 );
 

@@ -1,26 +1,28 @@
 import React, { Component } from 'react';
+import { change } from 'redux-form';
 import PropTypes from 'prop-types';
 import TaxDetails from './TaxDetails';
 import AgencyModal from '../AgencyModal';
 import ContractsCard from './ContractsCard';
 import ContractsModal from './ContractsModal';
-import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 
 export class Contracts extends Component {
   state = {
     showEditAgencyContract: false,
     editType: null,
-    showAgencyEdit: false
+    showAgencyEdit: false,
+    agentsInContract: []
   };
 
   displayAgencyPopup = (showPopup) => {
     this.setState({ showAgencyEdit: showPopup });
   };
 
-  toggleContractModal = (editType, contractIndex) => () =>
+  toggleContractModal = (editType, contractIndex, agentsInContract) => () =>
     this.setState({
       editType,
       contractIndex,
+      agentsInContract,
       showEditAgencyContract: !this.state.showEditAgencyContract
     });
 
@@ -34,12 +36,39 @@ export class Contracts extends Component {
     this.setState({ editType: null, showEditAgencyContract: false });
   };
 
-  existsInAgentsList = () => validation.isInArray(this.props.agencyAgentsList);
+  removeAgentFromList = (e, agentCode) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const { contractIndex } = this.state;
+    const { contractInitialValues } = this.props;
+    const agentsInContract = contractInitialValues.license[contractIndex].agent;
+    change('ContractsModal', `license[${contractIndex}].agent`, agentsInContract.filter(a => a.agentCode !== agentCode));
+  }
+
+  addAgentFromList = (event) => {
+    const { value } = event.target;
+    const { listOfAgents, contractInitialValues } = this.props;
+    const { contractIndex } = this.state;
+
+    const agentsInContract = contractInitialValues.license[contractIndex].agent;
+
+    const agent = listOfAgents.find(a => a.agentCode === Number(value));
+    const {
+      appointed, agentOfRecord, agentCode, agentInfo
+    } = agent;
+    if (agentsInContract.filter(a => a.agentCode === agent.agentCode).length === 0) {
+      agentsInContract.push({
+        appointed, agentOfRecord, agentCode, agentInfo: agentInfo || { ...agent }
+      });
+      change('ContractsModal', `license[${contractIndex}].agent`, agentsInContract);
+    }
+    return value;
+  }
 
 
   render() {
     const {
-      agency, contractInitialValues, agencyAgentsList, agencyAgents
+      agency, contractInitialValues, listOfAgents
     } = this.props;
     if (!agency) return <div />;
 
@@ -48,14 +77,15 @@ export class Contracts extends Component {
       <div id="agency-contracts" className="agency-contracts">
         {this.state.showEditAgencyContract && (
         <ContractsModal
-          agencyAgents={agencyAgents}
-          existsInAgentsList={this.existsInAgentsList()}
-          agencyAgentsList={agencyAgentsList}
+          agentsInContract={this.state.agentsInContract}
           initialValues={contractInitialValues}
           toggleModal={this.toggleContractModal}
           editType={this.state.editType}
           contractIndex={this.state.contractIndex}
           saveContract={this.saveContract}
+          removeAgentFromList={this.removeAgentFromList}
+          listOfAgents={listOfAgents}
+          addAgentFromList={this.addAgentFromList}
         />
           )}
         <div className="route-content">
@@ -65,7 +95,7 @@ export class Contracts extends Component {
               <section>
                 <h3>Contracts</h3>
                 { license && license.length > 0 && license.map((contract, index) =>
-                  <ContractsCard contractIndex={index} contract={contract} editContract={this.toggleContractModal} />)}
+                  <ContractsCard key={contract.licenseNumber} contractIndex={index} contract={contract} editContract={this.toggleContractModal} />)}
                 <div className="create-contract">
                   <hr />
                   <button
