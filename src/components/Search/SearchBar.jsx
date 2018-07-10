@@ -393,7 +393,7 @@ export class SearchForm extends Component {
     resetPolicySearch(this.props);
     actions.appStateActions.setAppState(appState.modelName, workflowId, { submitting: false });
     actions.serviceActions.getAgencies('TTIC', 'FL');
-    change('sortBy', 'policyNumber');
+    this.props.dispatch(change('SearchBar', 'sortBy', 'policyNumber'));
   }
 
   render() {
