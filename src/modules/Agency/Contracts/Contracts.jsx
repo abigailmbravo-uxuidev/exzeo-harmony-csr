@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { change } from 'redux-form';
+import { change, reset } from 'redux-form';
 import PropTypes from 'prop-types';
 import TaxDetails from './TaxDetails';
 import AgencyModal from '../AgencyModal';
@@ -18,13 +18,16 @@ export class Contracts extends Component {
     this.setState({ showAgencyEdit: showPopup });
   };
 
-  toggleContractModal = (editType, contractIndex, agentsInContract) => () =>
+  toggleContractModal = (editType, contractIndex, agentsInContract) => () => {
+    reset('ContractsModal');
+
     this.setState({
       editType,
       contractIndex,
       agentsInContract,
       showEditAgencyContract: !this.state.showEditAgencyContract
     });
+  };
 
   toggleAgencyModal = () => {
     this.setState({ showAgencyEdit: !this.state.showAgencyEdit });
@@ -40,17 +43,17 @@ export class Contracts extends Component {
     e.preventDefault();
     e.stopPropagation();
     const { contractIndex } = this.state;
-    const { contractInitialValues } = this.props;
-    const agentsInContract = contractInitialValues.license[contractIndex].agent;
+    const { contractFieldValues } = this.props;
+    const agentsInContract = contractFieldValues.license[contractIndex].agent;
     change('ContractsModal', `license[${contractIndex}].agent`, agentsInContract.filter(a => a.agentCode !== agentCode));
   }
 
   addAgentFromList = (event) => {
     const { value } = event.target;
-    const { listOfAgents, contractInitialValues } = this.props;
+    const { listOfAgents, contractFieldValues } = this.props;
     const { contractIndex } = this.state;
 
-    const agentsInContract = contractInitialValues.license[contractIndex].agent;
+    const agentsInContract = contractFieldValues.license[contractIndex].agent;
 
     const agent = listOfAgents.find(a => a.agentCode === Number(value));
     const {
@@ -68,10 +71,9 @@ export class Contracts extends Component {
 
   render() {
     const {
-      agency, contractInitialValues, listOfAgents
+      agency, contractInitialValues, listOfAgents, contractFieldValues
     } = this.props;
     if (!agency) return <div />;
-
     const { license } = agency;
     return (
       <div id="agency-contracts" className="agency-contracts">
@@ -79,6 +81,7 @@ export class Contracts extends Component {
         <ContractsModal
           agentsInContract={this.state.agentsInContract}
           initialValues={contractInitialValues}
+          fieldValues={contractFieldValues}
           toggleModal={this.toggleContractModal}
           editType={this.state.editType}
           contractIndex={this.state.contractIndex}
