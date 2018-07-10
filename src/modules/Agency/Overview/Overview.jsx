@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import AgencyDetails from './AgencyDetails';
-import AgencyContacts from './AgencyContacts';
 import AgencyModal from '../AgencyModal';
 import EditContact from './EditContact';
 
@@ -49,7 +48,6 @@ export class Overview extends Component {
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
               <AgencyDetails agency={agency} editAgency={this.toggleAgencyModal} />
-              <AgencyContacts agency={agency} editContact={this.toggleContactModal} />
             </div>
           </div>
         </div>
