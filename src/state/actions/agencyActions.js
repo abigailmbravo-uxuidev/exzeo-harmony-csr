@@ -172,7 +172,7 @@ export async function fetchAgents(companyCode, state) {
 export function getAgentsByAgencyCode(agencyCode) {
   return async (dispatch) => {
     try {
-      const agents = await fetchAgentsByCompanyCode(agencyCode);
+      const agents = await fetchAgentsByAgencyCode(agencyCode);
       dispatch(setAgencyAgents(agents));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
@@ -185,7 +185,7 @@ export function getAgentsByAgencyCode(agencyCode) {
  * @param agencyCode
  * @returns {Promise<Array>}
  */
-export async function fetchAgentsByCompanyCode(agencyCode) {
+export async function fetchAgentsByAgencyCode(agencyCode) {
   try {
     const config = {
       service: 'agency',

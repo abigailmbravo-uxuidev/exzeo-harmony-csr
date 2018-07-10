@@ -40,8 +40,6 @@ export class Contracts extends Component {
   };
 
   removeAgentFromList = (e, agentCode) => {
-    e.preventDefault();
-    e.stopPropagation();
     const { contractIndex } = this.state;
     const { contractFieldValues } = this.props;
     const agentsInContract = contractFieldValues.license[contractIndex].agent;
