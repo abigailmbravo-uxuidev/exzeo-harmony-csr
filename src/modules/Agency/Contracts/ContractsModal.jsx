@@ -94,10 +94,9 @@ export const ContractsModal = (props) => {
             </section>
             <section className="agent-details">
               {/* Combo box/Tupe ahead component listing all agents that are associated with this agency and are not currently in list below */}
-              <div className="form-group">
-                <label>Add Agent</label>
+
                 <Field
-                  label="Agents"
+                  label="Add Agents"
                   styleName="selectedAgent"
                   name="selectedAgent"
                   dataTest="selectedAgent"
@@ -105,7 +104,7 @@ export const ContractsModal = (props) => {
                   answers={listOfAgents}
                   onChange={addAgentFromList}
                 />
-              </div>
+
               {/* list of added agents with the ability to check appointed and/or agent of record to apply those attributes */}
               <div>
                 <ul className="contract-agent-list">
@@ -113,7 +112,8 @@ export const ContractsModal = (props) => {
                   <li className="header">
                     <span className="agent-name label">Agent Name</span>
                     <span className="appointed label">Appointed</span>
-                    <span className="aor label">Agent of Record</span>
+                    <span className="aor label">AOR</span>
+                    <span className="actions label"></span>
                   </li>
                   {/* LOOP OF AGENTS ASSIGNED TO CONTRACT */}
                   {/* Agent 1 */}
@@ -139,7 +139,9 @@ export const ContractsModal = (props) => {
                           type="checkbox"
                         />
                       </span>
-                      <button tabIndex="0" className="btn btn-secondary" onClick={e => removeAgentFromList(e, a.agencyCode)}>X</button>
+                      <span className="actions display">
+                        <button tabIndex="0" className="btn btn-link btn-sm" onClick={e => removeAgentFromList(e, a.agencyCode)}><i className="fa fa-times-rectangle" />Remove</button>
+                      </span>
                     </li>))}
                 </ul>
               </div>

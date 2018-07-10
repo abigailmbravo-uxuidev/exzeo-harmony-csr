@@ -417,10 +417,51 @@
 
                     li {
                       font-size: $font-size-sm;
-                    }
+                      display: flex;
+                      align-items: flex-start;
+                      padding: ($padding/2) ($padding*.75);
 
-                    .header {
-                      background: $warm-gray-02;
+                      &:nth-of-type(odd) {
+                        background: $warm-gray-01;
+                      }
+
+                      &.header {
+                        background: $warm-gray-02;
+                        color: $warm-gray-08;
+                      }
+
+                      span {
+                          flex-grow: 0;
+                          flex-shrink: 0;
+                          color: $warm-gray-08;
+
+                          &.label {
+                              font-weight: $font-weight-bold;
+                          }
+                          &.is-primary {
+                              width: 3.5rem;
+                              text-align: center;
+                              margin-right: $padding*2;
+                          }
+
+                          &.appointed, &.aor {
+                              width: 4.5rem;
+                              text-align: center;
+                          }
+
+                          &.agent-id {
+                              width: 6rem;
+                          }
+
+                          &.agent-name {
+                              flex-grow: 1;
+                              flex-shrink: 1;
+                          }
+
+                          &.license-array {
+                              width: 20rem;
+                          }
+                      }
                     }
                   }
                 }
@@ -548,7 +589,7 @@
       margin: 0 ($padding*2);
       padding: 0;
       border-width: 0;
-      border-top: 2px solid $warm-gray-04;
+      border-top: 1px solid $warm-gray-04;
     }
 
     .btn {
@@ -840,7 +881,7 @@
         flex-direction: column;
         flex-grow: 1;
         flex-shrink: 1;
-        width: 90%;
+        width: 70%;
 
         .card-block {
           display: flex;
@@ -912,8 +953,67 @@
 
           .agent-details {
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
             width: 45%;
+
+            ul {
+                &.contract-agent-list {
+                    list-style: none;
+                    margin: 0;
+                    padding: 0;
+
+                    li {
+                      font-size: $font-size-sm;
+                      display: flex;
+                      align-items: flex-start;
+                      padding: ($padding/2) ($padding*.75);
+
+                      &:nth-of-type(odd) {
+                        background: $warm-gray-01;
+                      }
+
+                      &.header {
+                        background: $warm-gray-02;
+                        color: $warm-gray-08;
+                      }
+
+                      span {
+                          flex-grow: 0;
+                          flex-shrink: 0;
+                          color: $warm-gray-08;
+
+                          &.label {
+                              font-weight: $font-weight-bold;
+                          }
+
+                          &.display {
+                               min-height: 1.3125rem;
+                          }
+
+                          &.appointed, &.aor {
+                              width: 4.5rem;
+                              text-align: center;
+                              display: flex;
+                              align-items: center;
+                              justify-content: center;
+
+                              input {
+                                  margin: 0;
+                              }
+                          }
+
+                          &.agent-name {
+                              flex-grow: 1;
+                              flex-shrink: 1;
+                          }
+
+                          &.actions {
+                              width: 5rem;
+                          }
+                      }
+                    }
+                }
+            }
           }
         }
       }
