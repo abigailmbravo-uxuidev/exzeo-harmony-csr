@@ -14,13 +14,15 @@ export const ContractsCard = ({ contract, editContract, contractIndex }) => (
         <span>{contract.product.map((product, index) => (contract.product.length === (index + 1) ? <span>{product}</span> : <span>{product} &bull;</span>))}</span>
       </h4>
       <div className="contract-info">
-        <span className="license">
+        <span className="additional-contract-info license">
           <label>License</label>
-          <display>{contract.licenseNumber}</display>
-        </span>
-        <span className="additional-contract-info license-effective-date">
-          <label>License Effective Date</label>
-          <display>{moment(contract.licenseEffectiveDate).format('MM/DD/YYYY')}</display>
+          <div className="license-date-wrapper">
+            <display>{contract.licenseNumber}</display>
+            <span className="license-effective-date">
+              <label>Effective</label>
+              <display>{moment(contract.licenseEffectiveDate).format('MM/DD/YYYY')}</display>
+            </span>
+          </div>
         </span>
         {contract.contract ? (
           <span className="additional-contract-info contract">

@@ -75,6 +75,14 @@
         flex-wrap: nowrap;
         width: auto;
 
+        .agency-contracts {
+          display: flex;
+          overflow: hidden;
+          flex-direction: column;
+          flex-grow: 1;
+          flex-shrink: 1;
+        }
+
         .route-content {
           display: flex;
           overflow: hidden;
@@ -356,13 +364,39 @@
                 }
 
                 .contract-info {
+                  display: flex;
+
                   .additional-contract-info {
-                    margin-left: $padding;
-                    font-size: $font-size-sm;
+                    display: flex;
+                    flex-direction: column;
+                    margin-right: $padding*2;
 
                     label {
-                      margin: 0;
-                      font-size: $font-size-xs;
+                      margin-bottom: 0;
+                      font-size: $font-size-sm;
+                    }
+
+                    display {
+                      font-size: $font-size-base;
+                    }
+
+                    &.license {
+                      .license-date-wrapper {
+                        display {
+                          margin-right: $padding;
+                        }
+
+                        .license-effective-date {
+                          label {
+                            margin-right: $padding/2;
+                            font-weight: $font-weight-normal;
+                          }
+
+                          display {
+                            font-size: $font-size-sm;
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -853,9 +887,9 @@
           }
 
           .agent-details {
-              display: flex;
-              flex-wrap: wrap;
-              width: 45%;
+            display: flex;
+            flex-wrap: wrap;
+            width: 45%;
           }
         }
       }
@@ -969,24 +1003,25 @@
             }
 
             .agent-mailing-address {
-                h4 {
-                    width: 100%;
+              h4 {
+                width: 100%;
+              }
+
+              .form-group {
+                flex-grow: 1;
+                flex-shrink: 1;
+
+                &.mailingState {
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  width: 15%;
                 }
 
-                .form-group {
-                  flex-grow: 1;
-                  flex-shrink: 1;
-
-                  &.mailingState {
-                      flex-grow: 0;
-                      flex-shrink: 0;
-                      width: 15%
-                  }
-                  &.mailingZip {
-                      flex-grow: 0;
-                      flex-shrink: 0;
-                      width: 25%
-                  }
+                &.mailingZip {
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  width: 25%;
+                }
               }
             }
           }
@@ -1008,14 +1043,14 @@
             height: 100%;
 
             .state-license-wrapper {
-              width: 100%;
               display: flex;
+              width: 100%;
 
               .state {
                 flex-grow: 0;
                 flex-shrink: 0;
-                margin-right: $padding*2;
                 width: 4rem;
+                margin-right: $padding*2;
               }
             }
           }

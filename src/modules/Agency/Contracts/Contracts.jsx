@@ -45,7 +45,7 @@ export class Contracts extends Component {
 
     const { license } = agency;
     return (
-      <div>
+      <div id="agency-contracts" className="agency-contracts">
         {this.state.showEditAgencyContract && (
         <ContractsModal
           agencyAgents={agencyAgents}
