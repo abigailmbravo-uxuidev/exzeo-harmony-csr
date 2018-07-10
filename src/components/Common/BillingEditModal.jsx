@@ -1,10 +1,12 @@
 import React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { reduxForm, Field, formValueSelector } from 'redux-form';
-import { Radio, Select } from '@exzeo/core-ui/lib/Input'
-import { isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
+import { reduxForm, Field, getFormValues } from 'redux-form';
+import SelectInput from '../Form/base/Select';
+import BillingRadio from '../Form/inputs/BillingRadio';
+import { requireField } from '../Form/validations/index';
 import { updateBillPlan } from '../../state/actions/policyActions';
+import 'react-select/dist/react-select.css';
 
 const FORM_NAME = 'BillingEditModal';
 
@@ -18,11 +20,7 @@ export const handleInitialize = (state) => {
       billPlan: 'Annual'
     };
   }
-  return {
-    billToId: policy.billToId,
-    billToType: policy.billToType,
-    billPlan: policy.billPlan
-  };
+  return policy;
 };
 
 export const handleBillingFormSubmit = async (data, dispatch, props) => {
@@ -45,29 +43,27 @@ export class BillingEditModal extends React.Component {
     super(props);
 
     this.modalStyle = { flexDirection: 'row' };
-    this.billToOptions = props.billingOptions.map(option => ({ label: option.displayText, answer: option.billToId }));
   }
 
   normalizeBilling = (value) => {
     const { billingOptions, change } = this.props;
-    const billToType = (billingOptions.find(o => o.billToId === value) || {}).billToType || '';
+    const billToType = billingOptions.find(o => o.billToId === value).billToType;
     change('billPlan', 'Annual');
     change('billToType', billToType);
     return value;
   };
 
   getBillingOptions() {
-    const { billingOptions, billToIdValue } = this.props;
-    const payPlans = (billingOptions.find(option => option.billToId === billToIdValue) || {}).payPlans;
-    return (payPlans || []).map(plan => ({ label: plan, answer: plan}));
+    const { billingOptions, fieldValues } = this.props;
+    const planOptions = billingOptions.find(option => option.billToId === fieldValues.billToId);
+    return (planOptions || {}).payPlans || [];
   }
 
   render() {
     const {
-      handleSubmit,
-      hideBillingModal,
-      submitting
+      hideBillingModal, billingOptions, submitting, handleSubmit, pristine
     } = this.props;
+    const billToOptions = billingOptions.map(option => ({ label: option.displayText, answer: option.billToId }));
 
     return (
       <div className="modal" style={this.modalStyle}>
@@ -79,20 +75,18 @@ export class BillingEditModal extends React.Component {
             <div className="card-block">
               <Field
                 name="billToId"
-                label="Bill To"
-                component={Select}
                 normalize={this.normalizeBilling}
-                validate={isRequired}
-                answers={this.billToOptions}
-                dataTest="billToId"
+                component={SelectInput}
+                label="Bill To"
+                validate={requireField}
+                answers={billToOptions}
               />
               <Field
                 name="billPlan"
                 label="Bill Plan"
-                component={Radio}
-                validate={isRequired}
+                component={BillingRadio}
+                validate={requireField}
                 answers={this.getBillingOptions()}
-                dataTest="billPlan"
                 segmented
               />
             </div>
@@ -111,7 +105,7 @@ export class BillingEditModal extends React.Component {
                   aria-label="submit-btn form-editBilling"
                   className="btn btn-primary"
                   type="submit"
-                  disabled={submitting}
+                  disabled={pristine || submitting}
                 >Update
                 </button>
               </div>
@@ -136,21 +130,20 @@ BillingEditModal.propTypes = {
 };
 
 BillingEditModal.defaultProps = {
-  billToId: '',
+  fieldValues: {},
   billingOptions: []
 };
 
-const selector = formValueSelector(FORM_NAME);
 const mapStateToProps = state => ({
   tasks: state.cg,
   selectedAI: state.appState.data.selectedAI,
   initialValues: handleInitialize(state),
   policy: state.policyState.policy,
-  billToIdValue: selector(state, 'billToId')
+  fieldValues: getFormValues(FORM_NAME)(state)
 });
 
 BillingEditModal = reduxForm({
-  form: FORM_NAME,
+  form: 'BillingEditModal',
   enableReinitialize: true
 })(BillingEditModal);
 
