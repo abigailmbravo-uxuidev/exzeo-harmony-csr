@@ -297,11 +297,11 @@ export class AgencyModal extends Component {
                 <CSRFields />
               </section>
               <section className="agency-contact">
-                <h4>Agency Contact Information</h4>
+                <h4>Contact</h4>
                 <ContactFields />
               </section>
               <section className="agency-principal">
-                <h4>Agency Principal Information</h4>
+                <h4>Principal</h4>
                 <PrincipalFields />
               </section>
             </div>

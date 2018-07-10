@@ -782,7 +782,7 @@
         flex-direction: column;
         flex-grow: 1;
         flex-shrink: 1;
-        width: 50%;
+        width: 90%;
 
         .card-block {
           display: flex;
@@ -790,7 +790,7 @@
           .contract-details {
             display: flex;
             flex-wrap: wrap;
-            width: 70%;
+            width: 40%;
             margin-right: $padding*2;
             padding-right: $padding*2;
             border-right: 1px dotted $warm-gray-01;
@@ -830,7 +830,10 @@
           .product-details {
             display: flex;
             flex-direction: column;
-            width: 30%;
+            width: 15%;
+            margin-right: $padding*2;
+            padding-right: $padding*2;
+            border-right: 1px dotted $warm-gray-01;
 
             .product-wrapper > div > div {
               display: flex;
@@ -847,6 +850,12 @@
                 margin-left: 0;
               }
             }
+          }
+
+          .agent-details {
+              display: flex;
+              flex-wrap: wrap;
+              width: 45%;
           }
         }
       }
@@ -957,12 +966,6 @@
                 flex-shrink: 0;
                 width: 10%;
               }
-
-              &.emailAddress {
-                flex-grow: 0;
-                flex-shrink: 0;
-                width: 50%;
-              }
             }
 
             .agent-mailing-address {
@@ -995,8 +998,6 @@
             flex-shrink: 1;
             height: 100%;
           }
-
-
 
           .agent-license {
             display: flex;

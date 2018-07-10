@@ -92,15 +92,26 @@ export class AgentModal extends Component {
               </div>
               <div className="flex-form">
                 <Field label="Email Address" styleName="emailAddress" name="emailAddress" dataTest="emailAddress" component={Input} validate={[validation.isRequired, validation.isEmail]}/>
-                <Field label="Primary" styleName="primaryAgent" name="primaryAgent" dataTest="primaryAgent" component={Radio} segmented="segmented" answers={radioDefaultAnswers} validate={validation.isRequired}/>
+                <Field label="Doing Business As Agency" styleName="DBA" name="DBA" dataTest="DBA" component={Input}/>
+                {/*<Field label="Primary" styleName="primaryAgent" name="primaryAgent" dataTest="primaryAgent" component={Radio} segmented="segmented" answers={radioDefaultAnswers} validate={validation.isRequired}/>
                 <Field label="Agent Of Record" styleName="agentOfRecord" name="agentOfRecord" dataTest="agentOfRecord" component={Radio} segmented="segmented" answers={radioDefaultAnswers} validate={validation.isRequired}/>
-                <Field label="Appointed" styleName="appointed" name="appointed" dataTest="appointed" component={Radio} segmented="segmented" answers={radioDefaultAnswers} validate={validation.isRequired}/>
+                <Field label="Appointed" styleName="appointed" name="appointed" dataTest="appointed" component={Radio} segmented="segmented" answers={radioDefaultAnswers} validate={validation.isRequired}/>*/}
               </div>
               <div className="flex-form">
                 <Field label="Agency License" styleName="agencyLicense" name="agencyLicense" dataTest="agencyLicense" placeholder="Add license" noMatchText="No More Licenses Available" autoSuggest={agencyLicenseArray} component={AutocompleteChips} validate={[validation.isRequiredArray, existsInAgencyLicense]}/>
               </div>
               <div className="agent-mailing-address">
-                <h4>Mailing Address</h4>
+                <h4>Mailing Address
+                  <Field
+                    normalize={this.handleSameAsMailing}
+                    name="sameAsMailing"
+                    dataTest="sameAsMailing"
+                    id="sameAsMailing"
+                    component="input"
+                    type="checkbox"
+                  />
+                <label htmlFor="sameAsMailing">Same as Agency Mailing Address</label>
+                </h4>
                 <div className="flex-form">
                   <Field label="Address 1" styleName="mailingAddress1" name="mailingAddress.address1" dataTest="mailingAddress.address1" component={Input} validate={validation.isRequired}/>
                   <Field label="Address 2" styleName="mailingAddress2" name="mailingAddress.address2" dataTest="mailingAddress.address2" component={Input}/>

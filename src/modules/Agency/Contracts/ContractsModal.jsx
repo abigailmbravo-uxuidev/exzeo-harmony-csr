@@ -92,6 +92,20 @@ export const ContractsModal = (props) => {
                 />
               </div>
             </section>
+            <section className="agent-details">
+              <div className="form-group">
+              <label>Add Agent</label>
+              <div className="agent-details">
+                {/*Combo box/Tupe ahead component listing all agents that are associated with this agency and are not currently in list below*/}
+                <select>
+                  <option>AGENT ID <span>AGENT NAME</span> [AGENT LICENSE | AGENT LICENSE | AGENT LICENSE]</option>
+                  <option>AGENT ID <span>AGENT NAME</span> [AGENT LICENSE | AGENT LICENSE | AGENT LICENSE]</option>
+                  <option>AGENT ID <span>AGENT NAME</span> [AGENT LICENSE | AGENT LICENSE | AGENT LICENSE]</option>
+                  <option>AGENT ID <span>AGENT NAME</span> [AGENT LICENSE | AGENT LICENSE | AGENT LICENSE]</option>
+                </select>
+              </div>
+              </div>
+            </section>
           </div>
           <div className="card-footer">
             <div className="btn-footer">
