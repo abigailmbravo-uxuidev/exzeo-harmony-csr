@@ -11,6 +11,7 @@ const mockStore = configureStore(middlewares);
 describe('Testing ReinstatePolicyPopup component', () => {
   it('should test connected app', () => {
     const initialState = {
+      policyState: {},
       authState: {
       },
       cg: {
@@ -88,7 +89,7 @@ describe('Testing ReinstatePolicyPopup component', () => {
       }
     };
     const wrapper = shallow(<ReinstatePolicyPopup store={store} {...props} />);
-    expect(wrapper)
+    expect(wrapper);
     wrapper.find('.btn-primary').simulate('click');
     wrapper.find('.btn-secondary').simulate('click');
   });

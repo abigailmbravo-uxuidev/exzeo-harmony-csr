@@ -6,6 +6,7 @@ describe('Testing NotesFiles component', () => {
   const props = {
     notes: [
       {
+        _id:'1234',
         createdDate: new Date(),
         createdBy: { userName: 'Tester' },
         contactType: 'Other',

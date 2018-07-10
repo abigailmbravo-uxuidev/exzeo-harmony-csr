@@ -1,15 +1,11 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
 import { shallow } from 'enzyme';
-import _ from 'lodash';
 import {
+  getMortgageeOrderAnswers,
+  getMortgageeOrderAnswersForEdit,
   MortgageBilling,
-  handleInitialize,
-  addAdditionalInterest,
-  editAdditionalInterest,
-  hideAdditionalInterestModal,
-  handleAISubmit,
-  deleteAdditionalInterest
+  handleInitialize
 } from './MortgageBilling';
 
 const middlewares = [];
@@ -128,6 +124,7 @@ const body = {
 };
 
 const policy = {
+  additionalInterests,
   policyTerm: 1,
   updatedAt: '2017-06-30T14:59:40.455Z',
   policyHolders: [
@@ -212,6 +209,7 @@ describe('Testing MortgageBilling component', () => {
     const initialState = {
       service: {
       },
+      policyState: {},
       cg: {
         bb: {
           data: {
@@ -228,6 +226,22 @@ describe('Testing MortgageBilling component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      sortedAdditionalInterests: [],
+      cashDescriptionOptions: { test: [] },
+      cashTypeValue: 'test',
+      paymentOptions: [],
+      batchActions() {},
+      getPaymentHistory() {},
+      getPaymentOptionsApplyPayments() {},
+      getBillingOptionsForPolicy() {},
+      getSummaryLedger() {},
+      addTransaction() { return Promise.resolve(); },
+      createTransaction() { return Promise.resolve(); },
+      getUIQuestions() {},
+      updatePolicy() {},
+      getPolicy() {},
+      billingOptions: [],
+      change() {},
       reset() {},
       auth: {
         userProfile: {
@@ -235,31 +249,12 @@ describe('Testing MortgageBilling component', () => {
         }
       },
       policy,
-      actions: {
-        questionsActions: {
-          getUIQuestions() {}
-        },
-        policyStateActions: {
-          updatePolicy() {}
-        },
-        serviceActions: {
-          createTransaction() { return Promise.resolve(); },
-          addTransaction() { return Promise.resolve(); },
-          getTransactionHistory() {},
-          getSummaryLedger() {},
-          getPaymentHistory() {},
-          getPaymentOptionsApplyPayments() {}
-        },
-        cgActions: {
-          batchCompleteTask() { return Promise.resolve({ payload: [{ workflowData: { endorsePolicyModelAI: { data: { modelName: '' } } } }] }); },
-          startWorkflow() { return Promise.resolve({ payload: [{ workflowData: { endorsePolicyModelAI: { data: { modelName: '' } } } }] }); }
-        },
-        appStateActions: {
-          setAppState() {}
-        }
-      },
       handleSubmit() {},
       fieldValues: {},
+      summaryLedger: {
+        currentPremium: '123',
+        cashReceived: '1'
+      },
       quoteData: {},
       dispatch() {},
       appState: {
@@ -268,32 +263,35 @@ describe('Testing MortgageBilling component', () => {
         }
       }
     };
-    const wrapper = shallow(<MortgageBilling store={store} {...props} />);
+    const wrapper = shallow(<MortgageBilling {...props} />);
     expect(wrapper);
+
     handleInitialize(initialState);
-
-
-    addAdditionalInterest('Mortgagee', props);
-    editAdditionalInterest(additionalInterests[0], props);
-    hideAdditionalInterestModal(props);
-    handleAISubmit(additionalInterests[0], props.dispatch, props);
-    deleteAdditionalInterest(additionalInterests[0], props);
+    wrapper.instance().addAdditionalInterest('Mortgagee');
+    wrapper.instance().editAdditionalInterest(additionalInterests[0]);
+    wrapper.instance().hideAdditionalInterestModal(props);
+    wrapper.instance().editAIOnEnter({ key: 'Enter' }, additionalInterests[0]);
 
     wrapper.instance().handleFormSubmit({ body });
     wrapper.instance().handleBillingEdit();
     wrapper.instance().setBatch('');
-    wrapper.instance().checkPayments();
 
     wrapper.instance().amountFormatter(100);
     wrapper.instance().dateFormatter('123');
+    wrapper.instance().handleAISubmit({ type: 'Mortgagee' }, props.dispatch, props);
+    wrapper.instance().deleteAdditionalInterest(additionalInterests[1], props);
 
     wrapper.instance().componentWillReceiveProps({
-      getSummaryLedger() {},
+      ...props,
+      summaryLedger: {},
       policy: { policyNumber: '1234', rating: { worksheet: { fees: {} } } },
       appState: {
 
       },
       actions: {
+        questionsActions: {
+          getUIQuestions() {}
+        },
         appStateActions: {
           setAppState() {}
         },

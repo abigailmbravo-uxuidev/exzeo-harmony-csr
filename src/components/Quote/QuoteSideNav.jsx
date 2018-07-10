@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import { reduxForm, propTypes } from 'redux-form';
-import * as appStateActions from '../../actions/appStateActions';
+import * as appStateActions from '../../state/actions/appStateActions';
 import UWconditions from '../Common/UWconditions';
-import * as newNoteActions from '../../actions/newNoteActions';
-import * as cgActions from '../../actions/cgActions';
+import * as newNoteActions from '../../state/actions/newNoteActions';
+import * as cgActions from '../../state/actions/cgActions';
 
 // Example of a possible schema
 /**
