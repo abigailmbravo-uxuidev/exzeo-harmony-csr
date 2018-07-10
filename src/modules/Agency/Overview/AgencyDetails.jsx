@@ -69,8 +69,7 @@ export class AgencyModal extends Component {
 
     return (
         <form onSubmit={handleSubmit(this.saveAgency)}>
-              <h4><i className="fa fa-address-book" /> Agency</h4>
-
+              <h4>Details</h4>
               <section className="agency-details">
                 <div className="agency-id">
                   <Field
@@ -121,7 +120,7 @@ export class AgencyModal extends Component {
                   <Field
                     name="okToPay"
                     dataTest="okToPay"
-                    styleName="okToPay"
+                    styleName="okToPay-wrapper"
                     label="Ok to Pay"
                     component={Radio}
                     segmented

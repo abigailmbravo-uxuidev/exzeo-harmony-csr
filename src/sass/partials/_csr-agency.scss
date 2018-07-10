@@ -95,6 +95,218 @@
             flex-shrink: 0;
             width: 100%;
 
+            form {
+              display: flex;
+              overflow: hidden;
+              flex-direction: row;
+              flex-direction: column;
+              flex-grow: 1;
+              flex-shrink: 1;
+              justify-content: center;
+              max-height: 90%;
+
+                .agency-details {
+                  display: flex;
+                  flex-direction: column;
+
+                  .agency-id {
+                    display: flex;
+                    width: 100%;
+
+                    .agencyCode {
+                      flex-grow: 1;
+                      flex-shrink: 1;
+                      margin-right: $padding*2;
+                    }
+
+                    .agencyName {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 40%;
+                      margin-right: $padding*2;
+                    }
+
+                    .entityName {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 40%;
+                    }
+                  }
+
+                  .agency-description {
+                    display: flex;
+                    width: 100%;
+
+                    .status {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 12.5%;
+                      margin-right: $padding*2;
+                    }
+
+                    .tpaid {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 12.5%;
+                      margin-right: $padding*2;
+                    }
+
+                    .okToPay-wrapper {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 12.5%;
+                      margin-right: $padding*2;
+                    }
+
+                    .tier {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 12.5%;
+                      margin-right: $padding*2;
+                    }
+
+                    .webAddress {
+                      flex-grow: 1;
+                      flex-shrink: 1;
+                    }
+                  }
+                }
+
+                .agency-address {
+                  display: flex;
+                  width: 100%;
+
+                  .agency-mailing-address {
+                    flex-grow: 1;
+                    flex-shrink: 1;
+                    width: 50%;
+                    margin-right: $padding;
+
+                    .flex-form {
+                      display: flex;
+
+                      .mailingCity {
+                        flex-grow: 1;
+                        flex-shrink: 1;
+                        margin-right: $padding*2;
+                      }
+
+                      .mailingState {
+                        flex-grow: 0;
+                        flex-shrink: 0;
+                        width: 4rem;
+                        margin-right: $padding*2;
+                      }
+
+                      .mailingZip {
+                        flex-grow: 0;
+                        flex-shrink: 0;
+                        width: 6rem;
+                      }
+                    }
+
+                    .tax-detail {
+                      display: flex;
+
+                      .taxId {
+                        flex-grow: 1;
+                        flex-shrink: 1;
+                        margin-right: $padding*2;
+                      }
+
+                      .taxClassification {
+                        flex-grow: 1;
+                        flex-shrink: 1;
+                      }
+                    }
+                  }
+
+                  .agency-physical-address {
+                    flex-grow: 1;
+                    flex-shrink: 1;
+                    width: 50%;
+                    margin-left: $padding;
+
+                    h4 {
+                      input[type="checkbox"] {
+                        margin-right: $padding;
+                      }
+
+                      label {
+                        margin-bottom: 0;
+                      }
+                    }
+
+                    .flex-form {
+                      display: flex;
+
+                      .physicalCity {
+                        flex-grow: 1;
+                        flex-shrink: 1;
+                        margin-right: $padding*2;
+                      }
+
+                      .physicalState {
+                        flex-grow: 0;
+                        flex-shrink: 0;
+                        width: 4rem;
+                        margin-right: $padding*2;
+                      }
+
+                      .physicalZip {
+                        flex-grow: 0;
+                        flex-shrink: 0;
+                        width: 6rem;
+                      }
+                    }
+
+                    .county {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 100%;
+                    }
+                  }
+                }
+
+                .agency-csr {
+                  .faxNumber,
+                  .primaryPhoneNumber,
+                  .secondaryPhoneNumber {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    width: 10rem;
+                  }
+                }
+
+                .agency-contact {
+                  .contactFirstName {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    width: 18rem;
+                  }
+
+                  .contactLastName {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    width: 18rem;
+                  }
+                }
+
+                .agency-principal {
+                  .principalFirstName {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    width: 18rem;
+                  }
+
+                  .principalLastName {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    width: 18rem;
+                  }
+                }
+            }
+
             .card {
               flex-direction: row;
               margin: 0 (-$padding/2) ($padding);
@@ -615,230 +827,6 @@
     }
   }
 
-  &.agency-crud {
-    flex-direction: row;
-
-    > form {
-      display: flex;
-      overflow: hidden;
-      align-items: center;
-      flex-direction: row;
-      flex-direction: column;
-      flex-grow: 1;
-      flex-shrink: 1;
-      justify-content: center;
-      max-height: 90%;
-
-      .card {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-        flex-shrink: 1;
-        width: 80%;
-
-        .agency-details {
-          display: flex;
-          flex-direction: column;
-
-          .agency-id {
-            display: flex;
-            width: 100%;
-
-            .agencyCode {
-              flex-grow: 1;
-              flex-shrink: 1;
-              margin-right: $padding*2;
-            }
-
-            .agencyName {
-              flex-grow: 0;
-              flex-shrink: 0;
-              width: 40%;
-              margin-right: $padding*2;
-            }
-
-            .entityName {
-              flex-grow: 0;
-              flex-shrink: 0;
-              width: 40%;
-            }
-          }
-
-          .agency-description {
-            display: flex;
-            width: 100%;
-
-            .status {
-              flex-grow: 0;
-              flex-shrink: 0;
-              width: 15%;
-              margin-right: $padding*2;
-            }
-
-            .tPaid {
-              flex-grow: 0;
-              flex-shrink: 0;
-              width: 15%;
-              margin-right: $padding*2;
-            }
-
-            .okToPay {
-              flex-grow: 0;
-              flex-shrink: 0;
-              width: 15%;
-              margin-right: $padding*2;
-            }
-
-            .tier {
-              flex-grow: 0;
-              flex-shrink: 0;
-              width: 15%;
-              margin-right: $padding*2;
-            }
-
-            .webAddress {
-              flex-grow: 1;
-              flex-shrink: 1;
-            }
-          }
-        }
-
-        .agency-address {
-          display: flex;
-          width: 100%;
-
-          .agency-mailing-address {
-            flex-grow: 1;
-            flex-shrink: 1;
-            width: 50%;
-            margin-right: $padding;
-
-            .flex-form {
-              display: flex;
-
-              .mailingCity {
-                flex-grow: 1;
-                flex-shrink: 1;
-                margin-right: $padding*2;
-              }
-
-              .mailingState {
-                flex-grow: 0;
-                flex-shrink: 0;
-                width: 4rem;
-                margin-right: $padding*2;
-              }
-
-              .mailingZip {
-                flex-grow: 0;
-                flex-shrink: 0;
-                width: 6rem;
-              }
-            }
-
-            .tax-detail {
-              display: flex;
-
-              .taxId {
-                flex-grow: 1;
-                flex-shrink: 1;
-                margin-right: $padding*2;
-              }
-
-              .taxClassification {
-                flex-grow: 1;
-                flex-shrink: 1;
-              }
-            }
-          }
-
-          .agency-physical-address {
-            flex-grow: 1;
-            flex-shrink: 1;
-            width: 50%;
-            margin-left: $padding;
-
-            h4 {
-              input[type="checkbox"] {
-                margin-right: $padding;
-              }
-
-              label {
-                margin-bottom: 0;
-              }
-            }
-
-            .flex-form {
-              display: flex;
-
-              .physicalCity {
-                flex-grow: 1;
-                flex-shrink: 1;
-                margin-right: $padding*2;
-              }
-
-              .physicalState {
-                flex-grow: 0;
-                flex-shrink: 0;
-                width: 4rem;
-                margin-right: $padding*2;
-              }
-
-              .physicalZip {
-                flex-grow: 0;
-                flex-shrink: 0;
-                width: 6rem;
-              }
-            }
-
-            .county {
-              flex-grow: 0;
-              flex-shrink: 0;
-              width: 100%;
-            }
-          }
-        }
-
-        .agency-csr {
-          .faxNumber,
-          .primaryPhoneNumber,
-          .secondaryPhoneNumber {
-            flex-grow: 0;
-            flex-shrink: 0;
-            width: 10rem;
-          }
-        }
-
-        .agency-contact {
-          .contactFirstName {
-            flex-grow: 0;
-            flex-shrink: 0;
-            width: 18rem;
-          }
-
-          .contactLastName {
-            flex-grow: 0;
-            flex-shrink: 0;
-            width: 18rem;
-          }
-        }
-
-        .agency-principal {
-          .principalFirstName {
-            flex-grow: 0;
-            flex-shrink: 0;
-            width: 18rem;
-          }
-
-          .principalLastName {
-            flex-grow: 0;
-            flex-shrink: 0;
-            width: 18rem;
-          }
-        }
-      }
-    }
-  }
 
   &.contact-crud {
     flex-direction: row;
