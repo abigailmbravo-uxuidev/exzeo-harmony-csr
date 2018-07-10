@@ -105,18 +105,18 @@ export const ContractsModal = (props) => {
               </div>
               {/*list of added agents with the ability to check appointed and/or agent of record to apply those attributes*/}
               <div>
-                <ul>
+                <ul className="contract-agent-list">
                   {/*list headers*/}
-                  <li>
-                    <span>Agent Name</span>
-                    <span>Appointed</span>
-                    <span>Agent of Record</span>
+                  <li className="header">
+                    <span className="agent-name label">Agent Name</span>
+                    <span className="appointed label">Appointed</span>
+                    <span className="aor label">Agent of Record</span>
                   </li>
                   {/*LOOP OF AGENTS ASSIGNED TO CONTRACT*/}
                   {/*Agent 1*/}
-                  <li>
-                    <span>AGENT NAME</span>
-                    <span>
+                  <li className="agent-detail">
+                    <span className="agent-name display">AGENT NAME</span>
+                    <span className="appointed display">
                       <Field
                           name="appointed"
                           dataTest="appointed"
@@ -125,20 +125,20 @@ export const ContractsModal = (props) => {
                           type="checkbox"
                         />
                     </span>
-                    <span>
+                    <span className="aor display">
                       <Field
-                          name="appointed"
-                          dataTest="appointed"
-                          id="appointed"
+                          name="agentOfRecord"
+                          dataTest="agentOfRecord"
+                          id="agentOfRecord"
                           component="input"
                           type="checkbox"
                         />
                     </span>
                   </li>
                   {/*Agent 2*/}
-                  <li>
-                    <span>AGENT NAME</span>
-                    <span>
+                  <li className="agent-detail">
+                    <span className="agent-name display">AGENT NAME</span>
+                    <span className="appointed display">
                       <Field
                           name="appointed"
                           dataTest="appointed"
@@ -147,11 +147,11 @@ export const ContractsModal = (props) => {
                           type="checkbox"
                         />
                     </span>
-                    <span>
+                    <span className="aor display">
                       <Field
-                          name="appointed"
-                          dataTest="appointed"
-                          id="appointed"
+                          name="agentOfRecord"
+                          dataTest="agentOfRecord"
+                          id="agentOfRecord"
                           component="input"
                           type="checkbox"
                         />
