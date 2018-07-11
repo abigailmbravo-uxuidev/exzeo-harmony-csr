@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-export const LicenseCard = ({ license, editContract, contractIndex }) => (
+export const LicenseCard = ({ license, editLicense, contractIndex }) => (
   <div className="contract card">
     <div className="contract-title">
       <i className="fa fa-file" />
@@ -17,7 +17,7 @@ export const LicenseCard = ({ license, editContract, contractIndex }) => (
         <div className="contract-actions">
           <button
             className="btn btn-link btn-sm"
-            onClick={editContract('Edit', contractIndex)}
+            onClick={editLicense}
           >
             <i className="fa fa-pencil-square" />Edit
           </button>
@@ -66,7 +66,7 @@ export const LicenseCard = ({ license, editContract, contractIndex }) => (
         {license.agent.map((a) => {
           const { agentInfo: { firstName, lastName, ...agentInfo }, appointed, agentOfRecord } = a;
           const isPrimary = license.primaryAgent === a.agentCode;
-          return (<li className="agent-detail">
+          return (<li key={a.agentCode} className="agent-detail">
             <span className="is-primary display">{ isPrimary ? <i className="fa fa-check" /> : null}</span>
             <span className="agent-id display">{a.agentCode}</span>
             <span className="agent-name display">{`${firstName} ${lastName}`}</span>

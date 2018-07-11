@@ -4,7 +4,7 @@ import moment from 'moment';
 
 const getAgency = state => state.agencyState.agency;
 
-const getAgents = state => state.agencyState.agents;
+const getAgents = state => state.agencyState.agentList;
 
 const getAgencyAgents = state => state.agencyState.agencyAgents;
 
@@ -43,7 +43,14 @@ export const getListOfAgents = createSelector(
   (agent) => {
     if (!agent || !Array.isArray(agent)) return [];
     return agent.map(a => ({
-      answer: a.agentCode, label: `${a.firstName} ${a.lastName}`, agentCode: a.agentCode, agentInfo: { ...a }, agentOfRecord: a.agentOfRecord, appointed: a.appointed
+      value: {
+        agentCode: a.agentCode,
+        agentInfo: { ...a },
+        agentOfRecord: a.agentOfRecord,
+        appointed: a.appointed
+      },
+      answer: a.agentCode,
+      label: `${a.firstName} ${a.lastName}`
     }));
   }
 );

@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TaxDetail from './TaxDetails';
 import License from './LicenseCard';
-import ContractsPopup from './ContractsModal';
+import LicenseModal from './LicenseModal';
 
 export class Contracts extends Component {
   state = {
     showModal: false,
-    isEditing: false
+    isEditing: false,
+    activeIndex: null
   }
 
   handleAddLicense = () => {
@@ -17,12 +18,13 @@ export class Contracts extends Component {
     });
   }
 
-  handleEditLicense = () => {
+  handleEditLicense = index => () => {
     this.setState({
       showModal: true,
-      isEditing: true
+      isEditing: true,
+      activeIndex: index
     });
-  }
+  };
 
   handleCloseModal = () => {
     this.setState({
@@ -37,13 +39,20 @@ export class Contracts extends Component {
 
   render() {
     const {
-      agency
+      agency,
+      listOfAgents
     } = this.props;
+    const { showModal, isEditing, activeIndex } = this.state;
     if (!agency) return <div />;
     const { license } = agency;
     return (
       <div id="agency-contracts" className="agency-contracts">
         { /* needs contract pop up */}
+        { showModal && <LicenseModal
+          initialValues={agency.license[activeIndex]}
+          isEditing={isEditing}
+          listOfAgents={listOfAgents}
+        />}
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
@@ -51,7 +60,7 @@ export class Contracts extends Component {
               <section>
                 <h3>Contracts</h3>
                 { license && license.length > 0 && license.map((l, index) =>
-                  <License key={`${l.licenseNumber}_${index}`} contractIndex={index} license={l} editContract={x => x} />)}
+                  <License key={l.licenseNumber} license={l} editLicense={this.handleEditLicense(index)} />)}
                 <div className="create-contract">
                   <hr />
                   <button
