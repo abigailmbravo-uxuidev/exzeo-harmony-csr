@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-export const ContractsCard = ({ license, editContract, contractIndex }) => (
+export const LicenseCard = ({ license, editContract, contractIndex }) => (
   <div className="contract card">
     <div className="contract-title">
       <i className="fa fa-file" />
@@ -80,4 +80,4 @@ export const ContractsCard = ({ license, editContract, contractIndex }) => (
 
   </div>);
 
-export default ContractsCard;
+export default LicenseCard;
