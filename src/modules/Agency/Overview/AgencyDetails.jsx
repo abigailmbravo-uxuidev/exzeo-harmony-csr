@@ -65,78 +65,74 @@ export class AgencyModal extends Component {
       <form onSubmit={handleSubmit(this.saveAgency)}>
         <h4>Details</h4>
         <section className="agency-details">
-          <div className="agency-id">
-            <Field
-              label="Agency ID"
-              styleName="agencyCode"
-              name="agencyCode"
-              dataTest="agencyCode"
-              component={Input}
-              validate={validation.isRequired}
-              disabled={!!initialValues.agencyCode}
-            />
-            <Field
-              label="Agency Name"
-              styleName="agencyName"
-              name="displayName"
-              dataTest="displayName"
-              component={Input}
-              validate={validation.isRequired}
-            />
-            <Field
-              label="Entity Name"
-              styleName="entityName"
-              name="legalName"
-              dataTest="legalName"
-              component={Input}
-              validate={validation.isRequired}
-            />
-          </div>
-          <div className="agency-description">
-            <Field
-              id="status"
-              name="status"
-              dataTest="status"
-              styleName="status"
-              label="Status"
-              component={Select}
-              validate={validation.isRequired}
-              answers={statusAnswers}
-            />
-            <Field
-              label="TPAID"
-              styleName="tpaid"
-              name="tpaid"
-              dataTest="tpaid"
-              component={Integer}
-              validate={[validation.isRequired, validation.isNumbersOnly]}
-            />
-            <Field
-              name="okToPay"
-              dataTest="okToPay"
-              styleName="okToPay-wrapper"
-              label="Ok to Pay"
-              component={Radio}
-              segmented
-              answers={okToPayAnswers}
-            />
-            <Field
-              label="Tier"
-              styleName="tier"
-              name="tier"
-              dataTest="tier"
-              component={Input}
-              validate={[validation.isRequired, validation.isNumbersOnly]}
-            />
-            <Field
-              label="Web Address"
-              styleName="webAddress"
-              name="websiteUrl"
-              dataTest="websiteUrl"
-              component={Input}
-            />
-            {/* web address validaiton */}
-          </div>
+          <Field
+            label="Agency ID"
+            styleName="agencyCode"
+            name="agencyCode"
+            dataTest="agencyCode"
+            component={Input}
+            validate={validation.isRequired}
+            disabled={!!initialValues.agencyCode}
+          />
+          <Field
+            label="Agency Name"
+            styleName="agencyName"
+            name="displayName"
+            dataTest="displayName"
+            component={Input}
+            validate={validation.isRequired}
+          />
+          <Field
+            label="Entity Name"
+            styleName="entityName"
+            name="legalName"
+            dataTest="legalName"
+            component={Input}
+            validate={validation.isRequired}
+          />
+          <Field
+            id="status"
+            name="status"
+            dataTest="status"
+            styleName="status"
+            label="Status"
+            component={Select}
+            validate={validation.isRequired}
+            answers={statusAnswers}
+          />
+          <Field
+            label="TPAID"
+            styleName="tpaid"
+            name="tpaid"
+            dataTest="tpaid"
+            component={Integer}
+            validate={[validation.isRequired, validation.isNumbersOnly]}
+          />
+          <Field
+            name="okToPay"
+            dataTest="okToPay"
+            styleName="okToPay-wrapper"
+            label="Ok to Pay"
+            component={Radio}
+            segmented
+            answers={okToPayAnswers}
+          />
+          <Field
+            label="Tier"
+            styleName="tier"
+            name="tier"
+            dataTest="tier"
+            component={Input}
+            validate={[validation.isRequired, validation.isNumbersOnly]}
+          />
+          <Field
+            label="Web Address"
+            styleName="webAddress"
+            name="websiteUrl"
+            dataTest="websiteUrl"
+            component={Input}
+          />
+          {/* web address validaiton */}
         </section>
         <section className="agency-address">
           <div className="agency-mailing-address">
@@ -161,15 +157,11 @@ export class AgencyModal extends Component {
         </section>
         <section className="agency-contact">
           <h4>Contact</h4>
-          <div className="flex-form">
-            <ContactFields />
-          </div>
+          <ContactFields />
         </section>
         <section className="agency-principal">
           <h4>Principal</h4>
-          <div className="flex-form">
-            <PrincipalFields />
-          </div>
+          <PrincipalFields />
         </section>
         <div className="basic-footer btn-footer">
           <button
