@@ -10,8 +10,8 @@ export default function agencyReducer(state = initialState.agencyState, action) 
       return setAgency(state, action);
     case types.SET_AGENTS:
       return setAgents(state, action);
-    case types.SET_AGENCY_AGENTS:
-      return setAgencyAgents(state, action);
+    case types.SET_AGENTS_LIST:
+      return setAgentList(state, action);
     case persistTypes.REHYDRATE:
       return action.payload && action.payload.agencyState ? { ...initialState.agencyState, ...action.payload.agencyState } : state;
     default:
@@ -33,17 +33,17 @@ function setAgency(state, action) {
   };
 }
 
-function setAgencyAgents(state, action) {
-  return {
-    ...state,
-    agencyAgents: action.agencyAgents
-  };
-}
-
-
 function setAgents(state, action) {
   return {
     ...state,
     agents: action.agents
+  };
+}
+
+
+function setAgentList(state, action) {
+  return {
+    ...state,
+    agentList: action.agentList
   };
 }

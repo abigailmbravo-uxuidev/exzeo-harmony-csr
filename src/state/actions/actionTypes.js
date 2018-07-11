@@ -37,4 +37,4 @@ export const SERVICE_REQUEST = 'SERVICE_REQUEST';
 export const SET_AGENCIES = 'SET_AGENCIES';
 export const SET_AGENCY = 'SET_AGENCY';
 export const SET_AGENTS = 'SET_AGENTS';
-export const SET_AGENCY_AGENTS = 'SET_AGENCY_AGENTS';
+export const SET_AGENTS_LIST = 'SET_AGENTS_LIST';

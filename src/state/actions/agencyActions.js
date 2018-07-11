@@ -40,13 +40,13 @@ export function setAgents(agents) {
 
 /**
  *
- * @param agencyAgents
+ * @param agentList
  * @returns {{type: string, agencyAgents: *}}
  */
-export function setAgencyAgents(agencyAgents) {
+export function setAgentList(agentList) {
   return {
-    type: types.SET_AGENCY_AGENTS,
-    agencyAgents
+    type: types.SET_AGENTS_LIST,
+    agentList
   };
 }
 
@@ -133,11 +133,11 @@ export async function fetchAgency(agencyCode) {
  * @param state
  * @returns {Function}
  */
-export function getAgents(companyCode, state) {
+export function getAgentList(companyCode, state) {
   return async (dispatch) => {
     try {
-      const agents = await fetchAgents(companyCode, state);
-      dispatch(setAgents(agents));
+      const agents = await fetchAgentList(companyCode, state);
+      dispatch(setAgentList(agents));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
@@ -150,7 +150,7 @@ export function getAgents(companyCode, state) {
  * @param state
  * @returns {Promise<Array>}
  */
-export async function fetchAgents(companyCode, state) {
+export async function fetchAgentList(companyCode, state) {
   try {
     const config = {
       service: 'agency',
@@ -173,7 +173,7 @@ export function getAgentsByAgencyCode(agencyCode) {
   return async (dispatch) => {
     try {
       const agents = await fetchAgentsByAgencyCode(agencyCode);
-      dispatch(setAgencyAgents(agents));
+      dispatch(setAgents(agents));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
