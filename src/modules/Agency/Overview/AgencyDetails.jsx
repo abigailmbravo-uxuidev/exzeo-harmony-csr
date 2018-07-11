@@ -163,71 +163,65 @@ export class AgencyModal extends Component {
               component={Input}
               normalize={this.resetSameAsMailing}
             />
-            <div className="flex-form">
-              <Field
-                label="City"
-                styleName="mailingCity"
-                name="mailingAddress.city"
-                dataTest="mailingAddress.city"
-                component={Input}
-                validate={validation.isRequired}
-                normalize={this.resetSameAsMailing}
-              />
-              <Field
-                label="State"
-                styleName="mailingState"
-                name="mailingAddress.state"
-                dataTest="mailingAddress.state"
-                component={Input}
-                validate={validation.isRequired}
-                normalize={this.resetSameAsMailing}
-              />
-              <Field
-                label="Zip Code"
-                styleName="mailingZip"
-                name="mailingAddress.zip"
-                dataTest="mailingAddress.zip"
-                component={Input}
-                validate={[validation.isRequired, validation.isZipCode]}
-                normalize={this.resetSameAsMailing}
-              />
-            </div>
-            <div className="tax-detail">
-              <Field
-                label="Tax ID"
-                styleName="taxId"
-                name="taxIdNumber"
-                dataTest="taxIdNumber"
-                component={Input}
-                validate={validation.isRequired}
-              />
-              <Field
-                id="taxClassification"
-                name="taxClassification"
-                dataTest="taxClassification"
-                styleName="taxClassification"
-                label="Tax Classification"
-                component={Select}
-                validate={validation.isRequired}
-                answers={taxClassificationAnswers}
-              />
-            </div>
+            <Field
+              label="City"
+              styleName="mailingCity"
+              name="mailingAddress.city"
+              dataTest="mailingAddress.city"
+              component={Input}
+              validate={validation.isRequired}
+              normalize={this.resetSameAsMailing}
+            />
+            <Field
+              label="State"
+              styleName="mailingState"
+              name="mailingAddress.state"
+              dataTest="mailingAddress.state"
+              component={Input}
+              validate={validation.isRequired}
+              normalize={this.resetSameAsMailing}
+            />
+            <Field
+              label="Zip Code"
+              styleName="mailingZip"
+              name="mailingAddress.zip"
+              dataTest="mailingAddress.zip"
+              component={Input}
+              validate={[validation.isRequired, validation.isZipCode]}
+              normalize={this.resetSameAsMailing}
+            />
+            <Field
+              label="Tax ID"
+              styleName="taxId"
+              name="taxIdNumber"
+              dataTest="taxIdNumber"
+              component={Input}
+              validate={validation.isRequired}
+            />
+            <Field
+              id="taxClassification"
+              name="taxClassification"
+              dataTest="taxClassification"
+              styleName="taxClassification"
+              label="Tax Classification"
+              component={Select}
+              validate={validation.isRequired}
+              answers={taxClassificationAnswers}
+            />
           </div>
           <div className="agency-physical-address">
-            <div className="flex-form">
-              <h4>
+            <h4>
                   Physical Address
-                <Field
-                  normalize={this.handleSameAsMailing}
-                  name="sameAsMailing"
-                  dataTest="sameAsMailing"
-                  id="sameAsMailing"
-                  component="input"
-                  type="checkbox"
-                />
-                <label htmlFor="sameAsMailing">Same as Mailing Address</label>
-              </h4>
-            </div>
+              <Field
+                normalize={this.handleSameAsMailing}
+                name="sameAsMailing"
+                dataTest="sameAsMailing"
+                id="sameAsMailing"
+                component="input"
+                type="checkbox"
+              />
+              <label htmlFor="sameAsMailing">Same as Mailing Address</label>
+            </h4>
             <Field
               label="Address 1"
               styleName="physicalAddress1"
@@ -245,35 +239,33 @@ export class AgencyModal extends Component {
               component={Input}
               disabled={sameAsMailingValue}
             />
-            <div className="flex-form">
-              <Field
-                label="City"
-                styleName="physicalCity"
-                name="physicalAddress.city"
-                dataTest="physicalAddress.city"
-                component={Input}
-                validate={validation.isRequired}
-                disabled={sameAsMailingValue}
-              />
-              <Field
-                label="State"
-                styleName="physicalState"
-                name="physicalAddress.state"
-                dataTest="physicalAddress.state"
-                component={Input}
-                validate={validation.isRequired}
-                disabled={sameAsMailingValue}
-              />
-              <Field
-                label="Zip Code"
-                styleName="physicalZip"
-                name="physicalAddress.zip"
-                dataTest="physicalAddress.zip"
-                component={Input}
-                validate={validation.isRequired}
-                disabled={sameAsMailingValue}
-              />
-            </div>
+            <Field
+              label="City"
+              styleName="physicalCity"
+              name="physicalAddress.city"
+              dataTest="physicalAddress.city"
+              component={Input}
+              validate={validation.isRequired}
+              disabled={sameAsMailingValue}
+            />
+            <Field
+              label="State"
+              styleName="physicalState"
+              name="physicalAddress.state"
+              dataTest="physicalAddress.state"
+              component={Input}
+              validate={validation.isRequired}
+              disabled={sameAsMailingValue}
+            />
+            <Field
+              label="Zip Code"
+              styleName="physicalZip"
+              name="physicalAddress.zip"
+              dataTest="physicalAddress.zip"
+              component={Input}
+              validate={validation.isRequired}
+              disabled={sameAsMailingValue}
+            />
             <Field
               label="County"
               styleName="county"
