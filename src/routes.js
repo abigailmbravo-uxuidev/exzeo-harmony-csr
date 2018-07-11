@@ -140,7 +140,7 @@ class Routes extends Component {
               <Route exact path="/policy/notes" render={props => <PolicyNotesFiles auth={auth} {...props} />} />
               <Route exact path="/policy/cancel" render={props => <PolicyCancel auth={auth} {...props} />} />
               <Route exact path="/policy/endorsements" render={props => <PolicyEndorsements auth={auth} {...props} />} />
-              <Route path="/agency" render={props => <Agency auth={auth} {...props} />} />
+              <Route path="/agency/:agencyCode" render={props => <Agency auth={auth} {...props} />} />
               <Route exact path="/reports" render={props => <Reports auth={auth} {...props} />} />
               <Route exact path="/login" render={props => <LoginPage auth={auth} {...props} />} />
               <Route exact path="/accessDenied" render={props => <AccessDenied auth={auth} {...props} />} />

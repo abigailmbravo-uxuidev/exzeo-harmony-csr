@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { getAgency, getAgents, getAgentsByAgencyCode } from '../../state/actions/agencyActions';
 import AgencyHeader from './AgencyHeader';
 import AgencySideNav from './AgencySideNav';
 import AgencyDetailHeader from './DetailHeader';
@@ -12,22 +14,33 @@ const OverviewRender = props => <Overview auth={props.auth} {...props} />;
 const ContractsRender = props => <Contracts auth={props.auth} {...props} />;
 const AgentsRender = props => <Agents auth={props.auth} {...props} />;
 
-export const Agency = props => (
-  <div className="app-wrapper csr agency">
-    <Helmet><title>{props.agency && props.agency.agencyCode ? `A: ${props.agency.agencyCode}` : 'Harmony - CSR Portal'}</title></Helmet>
-    <AgencyHeader />
-    <AgencyDetailHeader />
-    <main role="document">
-      <aside className="content-panel-left">
-        <AgencySideNav location={props.location} />
-      </aside>
-      <div className="content-wrapper">
-        <Route exact path={`${props.match.url}/:agencyCode/overview`} render={OverviewRender} />
-        <Route exact path={`${props.match.url}/:agencyCode/contracts`} render={ContractsRender} />
-        <Route exact path={`${props.match.url}/:agencyCode/agents`} render={AgentsRender} />
-      </div>
-    </main>
-  </div>
-);
+export class Agency extends Component {
+  componentDidMount() {
+    const { match: { params: { agencyCode } } } = this.props;
+    this.props.getAgency(agencyCode);
+    this.props.getAgentsByAgencyCode(agencyCode);
+    this.props.getAgents('TTIC', 'FL');
+  }
 
-export default Agency;
+  render() {
+    const { location, match: { params: { agencyCode }, url } } = this.props;
+
+    return (<div className="app-wrapper csr agency">
+      <Helmet><title>{`A: ${agencyCode}`}</title></Helmet>
+      <AgencyHeader />
+      <AgencyDetailHeader />
+      <main role="document">
+        <aside className="content-panel-left">
+          <AgencySideNav agencyCode={agencyCode} location={location} />
+        </aside>
+        <div className="content-wrapper">
+          <Route exact path={`${url}/overview`} render={OverviewRender} />
+          <Route exact path={`${url}/contracts`} render={ContractsRender} />
+          <Route exact path={`${url}/agents`} render={AgentsRender} />
+        </div>
+      </main>
+    </div>
+    );
+  }
+}
+export default connect(null, { getAgency, getAgents, getAgentsByAgencyCode })(Agency);

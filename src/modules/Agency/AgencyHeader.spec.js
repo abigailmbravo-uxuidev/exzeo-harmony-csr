@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { AgencyHeader } from './AgencyHeader';
+import AgencyHeader from './AgencyHeader';
 
 describe('Testing AgencyHeader component', () => {
   it('should render', () => {
