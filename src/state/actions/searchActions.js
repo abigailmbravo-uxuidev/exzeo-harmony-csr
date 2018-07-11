@@ -457,7 +457,8 @@ export function handlePolicySearch(data) {
       address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(String(data.address).trim()) : ''),
       policyNumber: (encodeURIComponent(data.policyNumber) !== 'undefined' ? encodeURIComponent(data.policyNumber) : ''),
       policyStatus: (encodeURIComponent(data.policyStatus) !== 'undefined' ? encodeURIComponent(data.policyStatus) : ''),
-      agencyCode: (encodeURIComponent(data.agencyCode) !== 'undefined' ? encodeURIComponent(data.agencyCode) : ''),
+      // TODO: update this once the SelecTypeAhead is fixex. Currently is puts the entire 'answer' object in state rather than just the value.
+      agencyCode: (encodeURIComponent(data.agencyCode.answer) !== 'undefined' ? encodeURIComponent(data.agencyCode.answer) : ''),
       effectiveDate: (encodeURIComponent(data.effectiveDate) !== 'undefined' ? encodeURIComponent(moment(data.effectiveDate).utc().format(SECONDARY_DATE_FORMAT)) : ''),
       currentPage: setPageNumber(data.currentPage, data.isNext),
       sortBy: data.sortBy,

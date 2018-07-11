@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Field } from 'redux-form';
 import { Input, Select, SelectTypeAhead } from '@exzeo/core-ui/lib/Input';
-import { normalizeDate, isAlphaNumeric, isValidChar, isNumberDashOnly, isValidDateFormat, isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
+import { normalizeDate, isAlphaNumeric, isValidChar, isNumberDashOnly, isValidDateFormat } from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers } from '../../../utilities/forms';
 import { STANDARD_DATE_FORMAT } from '../../../constants/search';
 
@@ -55,7 +55,7 @@ const PolicySearch = ({
         placeholder="Property Address Search"
         component={Input}
         styleName="property-search"
-        validate={isRequired}
+        validate={isValidChar}
         errorHint
       />
       <Field
@@ -93,6 +93,7 @@ const PolicySearch = ({
           dataTest="agencyCode"
           label="Agency Name"
           component={SelectTypeAhead}
+
           styleName="agencyCodeSelectField"
           answers={agencyList}
         />
