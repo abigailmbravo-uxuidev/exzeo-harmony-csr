@@ -95,15 +95,15 @@ export const ContractsModal = (props) => {
             <section className="agent-details">
               {/* Combo box/Tupe ahead component listing all agents that are associated with this agency and are not currently in list below */}
 
-                <Field
-                  label="Add Agents"
-                  styleName="selectedAgent"
-                  name="selectedAgent"
-                  dataTest="selectedAgent"
-                  component={Select}
-                  answers={listOfAgents}
-                  onChange={addAgentFromList}
-                />
+              <Field
+                label="Add Agents"
+                styleName="selectedAgent"
+                name="selectedAgent"
+                dataTest="selectedAgent"
+                component={Select}
+                answers={listOfAgents}
+                onChange={addAgentFromList}
+              />
 
               {/* list of added agents with the ability to check appointed and/or agent of record to apply those attributes */}
               <div>
@@ -113,14 +113,13 @@ export const ContractsModal = (props) => {
                     <span className="agent-name label">Agent Name</span>
                     <span className="appointed label">Appointed</span>
                     <span className="aor label">AOR</span>
-                    <span className="actions label"></span>
+                    <span className="actions label" />
                   </li>
                   {/* LOOP OF AGENTS ASSIGNED TO CONTRACT */}
                   {/* Agent 1 */}
-                  {initialValues && initialValues.license && initialValues.license[contractIndex] &&
-                  initialValues.license[contractIndex].agent && initialValues.license[contractIndex].agent.map((a, index) =>
+                  {initialValues.license[contractIndex].agent.map((a, index) =>
                     (<li className="agent-detail" key={`license[${contractIndex}].agent[${index}].agentCode`}>
-                      <span className="agent-name display">{`${a.agentInfo.firstName} ${a.agentInfo.firstName}`}</span>
+                      <span className="agent-name display">{`${a.agentInfo.firstName} ${a.agentInfo.lastName}`}</span>
                       <span className="appointed display">
                         <Field
                           name={`license[${contractIndex}].agent[${index}].appointed`}
