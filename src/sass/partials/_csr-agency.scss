@@ -106,82 +106,52 @@
               justify-content: center;
 
               .agency-details {
-                display: flex;
-                flex-direction: column;
+                  display: grid;
+                  padding-bottom: $padding*4;
+                  margin-bottom: $padding*2;
+                  grid-template-columns: repeat(12, [col-start] 1fr);
+                  grid-gap: $padding*2;
 
-                .agency-id {
-                  display: flex;
-                  width: 100%;
-
+                  .form-group {
+                    margin: 0;
+                  }
                   .agencyCode {
-                    flex-grow: 1;
-                    flex-shrink: 1;
-                    margin-right: $padding*2;
+                      grid-column: span 2;
                   }
-
                   .agencyName {
-                    flex-grow: 0;
-                    flex-shrink: 0;
-                    width: 40%;
-                    margin-right: $padding*2;
+                      grid-column: span 5;
                   }
-
                   .entityName {
-                    flex-grow: 0;
-                    flex-shrink: 0;
-                    width: 40%;
+                      grid-column: span 5;
                   }
-                }
-
-                .agency-description {
-                  display: flex;
-                  width: 100%;
-
                   .status {
-                    flex-grow: 0;
-                    flex-shrink: 0;
-                    width: 12.5%;
-                    margin-right: $padding*2;
+                      grid-column: span 2;
                   }
-
                   .tpaid {
-                    flex-grow: 0;
-                    flex-shrink: 0;
-                    width: 12.5%;
-                    margin-right: $padding*2;
+                      grid-column: span 1;
                   }
-
                   .okToPay-wrapper {
-                    flex-grow: 0;
-                    flex-shrink: 0;
-                    width: 12.5%;
-                    margin-right: $padding*2;
+                      grid-column: span 2;
                   }
-
                   .tier {
-                    flex-grow: 0;
-                    flex-shrink: 0;
-                    width: 12.5%;
-                    margin-right: $padding*2;
+                      grid-column: span 1;
+                  }
+                  .webAddress {
+                      grid-column: span 6;
                   }
 
-                  .webAddress {
-                    flex-grow: 1;
-                    flex-shrink: 1;
-                  }
-                }
               }
 
               .agency-address {
                 display: flex;
                 width: 100%;
+                padding-bottom: $padding*2;
 
-                .agency-mailing-address, .agency-physical-address {
+                .agency-mailing-address,
+                .agency-physical-address {
+                  display: grid;
                   flex-grow: 1;
                   flex-shrink: 1;
-                  width: 50%;
-                  margin-right: $padding;
-                  display: grid;
                   margin-bottom: $padding*2;
                   grid-template-columns: repeat(12, [col-start] 1fr);
                   grid-gap: $padding*2;
@@ -190,51 +160,58 @@
                     margin: 0;
                   }
 
-                  h4, .mailingAddress1, .mailingAddress2, .physicalAddress1, .physicalAddress2, .county  {
-                      grid-column: span 12;
-                      margin: 0;
+                  .address1,
+                  .address2,
+                  .county,
+                  h4 {
+                    margin: 0;
+                    grid-column: span 12;
 
-                      input[type="checkbox"] {
-                        margin-right: $padding;
-                      }
+                    input[type="checkbox"] {
+                      margin-right: $padding;
+                    }
 
-                      label {
-                        margin-bottom: 0;
-                      }
+                    label {
+                      margin-bottom: 0;
+                    }
                   }
 
-                  .taxClassification, .taxIdNumber {
-                      grid-column: span 6;
+                  .taxClassification,
+                  .taxId {
+                    grid-column: span 6;
                   }
 
-                  .mailingCity, .physicalCity {
-                      grid-column: span 7;
+                  .city {
+                    grid-column: span 7;
                   }
 
-                  .mailingState, .physicalState {
-                      grid-column: span 2;
+                  .state {
+                    grid-column: span 2;
                   }
 
-                  .mailingZip, .physicalZip {
-                      grid-column: span 3;
+                  .zip {
+                    grid-column: span 3;
                   }
-
                 }
 
                 .agency-physical-address {
-                  margin-left: $padding;
+                  margin-left: $padding*2;
                 }
               }
 
               .agency-contact {
-                .flex-form {
                   display: grid;
                   margin-bottom: $padding*2;
+                  padding-bottom: $padding*4;
                   grid-template-columns: repeat(12, [col-start] 1fr);
                   grid-gap: $padding*2;
 
                   .form-group {
                     margin: 0;
+                  }
+
+                  h4 {
+                      grid-column: span 12;
                   }
 
                   .contactFirstName,
@@ -252,13 +229,12 @@
                   .customerServiceEmailAddress {
                     grid-column: span 6;
                   }
-                }
               }
 
               .agency-principal {
-                .flex-form {
                   display: grid;
                   margin-bottom: $padding*2;
+                  padding-bottom: $padding*4;
                   grid-template-columns: repeat(12, [col-start] 1fr);
                   grid-gap: $padding*2;
 
@@ -266,12 +242,15 @@
                     margin: 0;
                   }
 
+                  h4 {
+                      grid-column: span 12;
+                  }
+
                   .principalEmailAddress,
                   .principalFirstName,
                   .principalLastName {
                     grid-column: span 6;
                   }
-                }
               }
             }
 
@@ -696,12 +675,10 @@
             form {
               section {
                 margin-bottom: $padding*2;
-                padding-bottom: $padding*2;
                 border-bottom: 1px dashed mix($bright-blue-darken-02, $green, 80%);
 
                 &.agency-principal {
                   margin-bottom: 0;
-                  padding-bottom: 0;
                   border-bottom-width: 0;
                 }
 
