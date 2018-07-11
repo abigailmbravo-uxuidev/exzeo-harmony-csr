@@ -180,11 +180,11 @@ export class AgencyModal extends Component {
         </section>
         <section className="agency-contact">
           <h4>Contact</h4>
-          <ContactFields />
+          <ContactSection />
         </section>
         <section className="agency-principal">
           <h4>Principal</h4>
-          <PrincipalFields />
+          <PrincipalSection />
         </section>
         <div className="basic-footer btn-footer">
           <button
