@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { PrincipalFields } from './PrincipalFields';
+import { PrincipalFields } from './Principal';
 
 describe('Testing ContactCard component', () => {
   it('should render', () => {

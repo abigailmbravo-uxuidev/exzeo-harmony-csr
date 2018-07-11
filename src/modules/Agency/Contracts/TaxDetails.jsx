@@ -1,15 +1,9 @@
 import React from 'react';
 
-export const TaxDetails = ({ agency, editAgency }) => (
+export const TaxDetails = ({ agency }) => (
   <section>
     <h3>
       Details{' '}
-      <button
-        className="btn btn-link btn-sm"
-        onClick={editAgency}
-      >
-        <i className="fa fa-pencil-square" />Edit
-      </button>
     </h3>
     <div className="form-group flex-parent billing">
       <div className="flex-child">

@@ -3,13 +3,7 @@ import { Field } from 'redux-form';
 import { Input, Select } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 
-const taxClassificationAnswers = [
-  { answer: 'LLC', label: 'LLC' },
-  { answer: 'Corporation', label: 'Corporation' }
-];
-
-
-export const Address = ({ isMailing, sameAsMailingValue }) => (
+export const Address = ({ showCounty, sameAsMailingValue }) => (
   <React.Fragment>
     <Field
       label="Address 1"
@@ -55,29 +49,7 @@ export const Address = ({ isMailing, sameAsMailingValue }) => (
       validate={validation.isRequired}
       disabled={sameAsMailingValue}
     />
-    {isMailing &&
-      <React.Fragment>
-        <Field
-          label="Tax ID"
-          styleName="taxId"
-          name="taxIdNumber"
-          dataTest="taxIdNumber"
-          component={Input}
-          validate={validation.isRequired}
-        />
-        <Field
-          id="taxClassification"
-          name="taxClassification"
-          dataTest="taxClassification"
-          styleName="taxClassification"
-          label="Tax Classification"
-          component={Select}
-          validate={validation.isRequired}
-          answers={taxClassificationAnswers}
-        />
-      </React.Fragment>
-    }
-    {!isMailing && <Field
+    {showCounty && <Field
       label="County"
       styleName="county"
       name="county"
