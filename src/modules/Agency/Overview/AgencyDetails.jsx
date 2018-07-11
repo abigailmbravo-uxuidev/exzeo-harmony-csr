@@ -56,9 +56,12 @@ export class AgencyModal extends Component {
     return value;
   };
 
+  resetForm = () => {
+    this.props.reset();
+  }
+
   render() {
     const {
-      closeModal,
       handleSubmit,
       initialValues,
       sameAsMailingValue,
@@ -199,7 +202,7 @@ export class AgencyModal extends Component {
             tabIndex="0"
             className="btn btn-secondary"
             type="button"
-            onClick={closeModal}
+            onClick={this.resetForm}
           >
               Cancel
           </button>
