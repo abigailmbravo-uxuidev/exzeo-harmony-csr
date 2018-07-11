@@ -42,8 +42,7 @@ export class GenerateDocsForm extends Component {
         return true;
       })
       .catch((err) => {
-        const error = err.response ? err.response.statusText : err;
-        return errorHandler({ message: error });
+        return errorHandler({ message: err.message });
       });
   }
 
