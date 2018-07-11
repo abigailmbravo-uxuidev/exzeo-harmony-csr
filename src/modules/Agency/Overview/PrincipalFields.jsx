@@ -4,31 +4,32 @@ import { Input } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 
 export const PrincipalFields = () => (
-  <div className="flex-form">
-    <Field
-      label="Principal First Name"
-      styleName="principalFirstName"
-      name="principalFirstName"
-      dataTest="principalFirstName"
-      component={Input}
-      validate={validation.isRequired}
-    />
-    <Field
-      label="Principal Last Name"
-      styleName="principalLastName"
-      name="principalLastName"
-      dataTest="principalLastName"
-      component={Input}
-      validate={validation.isRequired}
-    />
-    <Field
-      label="Principal Email Address"
-      styleName="principalEmailAddress flex-item"
-      name="principalEmailAddress"
-      dataTest="principalEmailAddress"
-      component={Input}
-      validate={[validation.isRequired, validation.isEmail]}
-    />
-  </div>);
+  <React.Fragment>
+      <Field
+        label="First Name"
+        styleName="principalFirstName"
+        name="principalFirstName"
+        dataTest="principalFirstName"
+        component={Input}
+        validate={validation.isRequired}
+      />
+      <Field
+        label="Last Name"
+        styleName="principalLastName"
+        name="principalLastName"
+        dataTest="principalLastName"
+        component={Input}
+        validate={validation.isRequired}
+      />
+      <Field
+        label="Email Address"
+        styleName="principalEmailAddress flex-item"
+        name="principalEmailAddress"
+        dataTest="principalEmailAddress"
+        component={Input}
+        validate={[validation.isRequired, validation.isEmail]}
+      />
+  </React.Fragment>
+);
 
 export default PrincipalFields;

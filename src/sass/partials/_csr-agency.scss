@@ -75,7 +75,8 @@
         flex-wrap: nowrap;
         width: auto;
 
-        .agency-contracts, .route-content-wrapper {
+        .agency-contracts,
+        .route-content-wrapper {
           display: flex;
           overflow: hidden;
           flex-direction: column;
@@ -105,206 +106,218 @@
               justify-content: center;
               max-height: 90%;
 
-                .agency-details {
-                  display: flex;
-                  flex-direction: column;
+              .agency-details {
+                display: flex;
+                flex-direction: column;
 
-                  .agency-id {
-                    display: flex;
-                    width: 100%;
-
-                    .agencyCode {
-                      flex-grow: 1;
-                      flex-shrink: 1;
-                      margin-right: $padding*2;
-                    }
-
-                    .agencyName {
-                      flex-grow: 0;
-                      flex-shrink: 0;
-                      width: 40%;
-                      margin-right: $padding*2;
-                    }
-
-                    .entityName {
-                      flex-grow: 0;
-                      flex-shrink: 0;
-                      width: 40%;
-                    }
-                  }
-
-                  .agency-description {
-                    display: flex;
-                    width: 100%;
-
-                    .status {
-                      flex-grow: 0;
-                      flex-shrink: 0;
-                      width: 12.5%;
-                      margin-right: $padding*2;
-                    }
-
-                    .tpaid {
-                      flex-grow: 0;
-                      flex-shrink: 0;
-                      width: 12.5%;
-                      margin-right: $padding*2;
-                    }
-
-                    .okToPay-wrapper {
-                      flex-grow: 0;
-                      flex-shrink: 0;
-                      width: 12.5%;
-                      margin-right: $padding*2;
-                    }
-
-                    .tier {
-                      flex-grow: 0;
-                      flex-shrink: 0;
-                      width: 12.5%;
-                      margin-right: $padding*2;
-                    }
-
-                    .webAddress {
-                      flex-grow: 1;
-                      flex-shrink: 1;
-                    }
-                  }
-                }
-
-                .agency-address {
+                .agency-id {
                   display: flex;
                   width: 100%;
 
-                  .agency-mailing-address {
+                  .agencyCode {
                     flex-grow: 1;
                     flex-shrink: 1;
-                    width: 50%;
-                    margin-right: $padding;
-
-                    .flex-form {
-                      display: flex;
-
-                      .mailingCity {
-                        flex-grow: 1;
-                        flex-shrink: 1;
-                        margin-right: $padding*2;
-                      }
-
-                      .mailingState {
-                        flex-grow: 0;
-                        flex-shrink: 0;
-                        width: 4rem;
-                        margin-right: $padding*2;
-                      }
-
-                      .mailingZip {
-                        flex-grow: 0;
-                        flex-shrink: 0;
-                        width: 6rem;
-                      }
-                    }
-
-                    .tax-detail {
-                      display: flex;
-
-                      .taxId {
-                        flex-grow: 1;
-                        flex-shrink: 1;
-                        margin-right: $padding*2;
-                      }
-
-                      .taxClassification {
-                        flex-grow: 1;
-                        flex-shrink: 1;
-                      }
-                    }
+                    margin-right: $padding*2;
                   }
 
-                  .agency-physical-address {
+                  .agencyName {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    width: 40%;
+                    margin-right: $padding*2;
+                  }
+
+                  .entityName {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    width: 40%;
+                  }
+                }
+
+                .agency-description {
+                  display: flex;
+                  width: 100%;
+
+                  .status {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    width: 12.5%;
+                    margin-right: $padding*2;
+                  }
+
+                  .tpaid {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    width: 12.5%;
+                    margin-right: $padding*2;
+                  }
+
+                  .okToPay-wrapper {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    width: 12.5%;
+                    margin-right: $padding*2;
+                  }
+
+                  .tier {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    width: 12.5%;
+                    margin-right: $padding*2;
+                  }
+
+                  .webAddress {
                     flex-grow: 1;
                     flex-shrink: 1;
-                    width: 50%;
-                    margin-left: $padding;
+                  }
+                }
+              }
 
-                    h4 {
-                      input[type="checkbox"] {
-                        margin-right: $padding;
-                      }
+              .agency-address {
+                display: flex;
+                width: 100%;
 
-                      label {
-                        margin-bottom: 0;
-                      }
+                .agency-mailing-address {
+                  flex-grow: 1;
+                  flex-shrink: 1;
+                  width: 50%;
+                  margin-right: $padding;
+
+                  .flex-form {
+                    display: flex;
+
+                    .mailingCity {
+                      flex-grow: 1;
+                      flex-shrink: 1;
+                      margin-right: $padding*2;
                     }
 
-                    .flex-form {
-                      display: flex;
-
-                      .physicalCity {
-                        flex-grow: 1;
-                        flex-shrink: 1;
-                        margin-right: $padding*2;
-                      }
-
-                      .physicalState {
-                        flex-grow: 0;
-                        flex-shrink: 0;
-                        width: 4rem;
-                        margin-right: $padding*2;
-                      }
-
-                      .physicalZip {
-                        flex-grow: 0;
-                        flex-shrink: 0;
-                        width: 6rem;
-                      }
-                    }
-
-                    .county {
+                    .mailingState {
                       flex-grow: 0;
                       flex-shrink: 0;
-                      width: 100%;
+                      width: 4rem;
+                      margin-right: $padding*2;
+                    }
+
+                    .mailingZip {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 6rem;
+                    }
+                  }
+
+                  .tax-detail {
+                    display: flex;
+
+                    .taxId {
+                      flex-grow: 1;
+                      flex-shrink: 1;
+                      margin-right: $padding*2;
+                    }
+
+                    .taxClassification {
+                      flex-grow: 1;
+                      flex-shrink: 1;
                     }
                   }
                 }
 
-                .agency-csr {
-                  .faxNumber,
-                  .primaryPhoneNumber,
-                  .secondaryPhoneNumber {
+                .agency-physical-address {
+                  flex-grow: 1;
+                  flex-shrink: 1;
+                  width: 50%;
+                  margin-left: $padding;
+
+                  h4 {
+                    input[type="checkbox"] {
+                      margin-right: $padding;
+                    }
+
+                    label {
+                      margin-bottom: 0;
+                    }
+                  }
+
+                  .flex-form {
+                    display: flex;
+
+                    .physicalCity {
+                      flex-grow: 1;
+                      flex-shrink: 1;
+                      margin-right: $padding*2;
+                    }
+
+                    .physicalState {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 4rem;
+                      margin-right: $padding*2;
+                    }
+
+                    .physicalZip {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 6rem;
+                    }
+                  }
+
+                  .county {
                     flex-grow: 0;
                     flex-shrink: 0;
-                    width: 10rem;
+                    width: 100%;
                   }
                 }
+              }
 
-                .agency-contact {
-                  .contactFirstName {
-                    flex-grow: 0;
-                    flex-shrink: 0;
-                    width: 18rem;
-                  }
+              .agency-csr {
+                .faxNumber,
+                .primaryPhoneNumber,
+                .secondaryPhoneNumber {
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  width: 10rem;
+                }
+              }
 
-                  .contactLastName {
-                    flex-grow: 0;
-                    flex-shrink: 0;
-                    width: 18rem;
+              .agency-contact {
+                .flex-form {
+                  display: flex;
+                  flex-wrap: wrap;
+
+                  .form-group {
+                      flex-grow: 1;
+                      flex-shrink: 1;
+                      margin-right: $padding*2;
+
+                      &:last-child {
+                          margin-right: 0;
+                      }
                   }
                 }
+              }
 
-                .agency-principal {
-                  .principalFirstName {
-                    flex-grow: 0;
-                    flex-shrink: 0;
-                    width: 18rem;
+              .agency-principal {
+                .flex-form {
+                  display: flex;
+                  flex-wrap: wrap;
+
+                  .form-group {
+                      flex-grow: 1;
+                      flex-shrink: 1;
+                      margin-right: $padding*2;
+
+                      &:last-child {
+                          margin-right: 0;
+                      }
                   }
 
-                  .principalLastName {
-                    flex-grow: 0;
-                    flex-shrink: 0;
-                    width: 18rem;
+                  .principalEmailAddress {
+                      width: 50%;
+                      flex-grow: 0;
+                      flex-shrink: 0;
                   }
                 }
+              }
             }
 
             .card {
@@ -628,51 +641,53 @@
                     list-style: none;
 
                     li {
-                      font-size: $font-size-sm;
                       display: flex;
                       align-items: flex-start;
                       padding: ($padding/2) ($padding*.75);
+                      font-size: $font-size-sm;
 
                       &:nth-of-type(odd) {
                         background: $warm-gray-01;
                       }
 
                       &.header {
-                        background: $warm-gray-02;
                         color: $warm-gray-08;
+                        background: $warm-gray-02;
                       }
 
                       span {
-                          flex-grow: 0;
-                          flex-shrink: 0;
-                          color: $warm-gray-08;
+                        flex-grow: 0;
+                        flex-shrink: 0;
+                        color: $warm-gray-08;
 
-                          &.label {
-                              font-weight: $font-weight-bold;
-                          }
-                          &.is-primary {
-                              width: 3.5rem;
-                              text-align: center;
-                              margin-right: $padding*2;
-                          }
+                        &.label {
+                          font-weight: $font-weight-bold;
+                        }
 
-                          &.appointed, &.aor {
-                              width: 4.5rem;
-                              text-align: center;
-                          }
+                        &.is-primary {
+                          width: 3.5rem;
+                          margin-right: $padding*2;
+                          text-align: center;
+                        }
 
-                          &.agent-id {
-                              width: 6rem;
-                          }
+                        &.aor,
+                        &.appointed {
+                          width: 4.5rem;
+                          text-align: center;
+                        }
 
-                          &.agent-name {
-                              flex-grow: 1;
-                              flex-shrink: 1;
-                          }
+                        &.agent-id {
+                          width: 6rem;
+                        }
 
-                          &.license-array {
-                              width: 20rem;
-                          }
+                        &.agent-name {
+                          flex-grow: 1;
+                          flex-shrink: 1;
+                        }
+
+                        &.license-array {
+                          width: 20rem;
+                        }
                       }
                     }
                   }
@@ -723,51 +738,54 @@
           .form-group.survey-wrapper {
             flex-direction: column;
 
-            section {
-              margin-bottom: $padding*2;
-              padding-bottom: $padding*2;
-              border-bottom: 1px dashed mix($bright-blue-darken-02, $green, 80%);
+            form {
+              section {
+                margin-bottom: $padding*2;
+                padding-bottom: $padding*2;
+                border-bottom: 1px dashed mix($bright-blue-darken-02, $green, 80%);
 
-              &:last-child {
-                margin-bottom: 0;
-                border-bottom-width: 0;
-              }
-
-              dl {
-                div {
-                  margin-right: $padding*4;
-
-                  dt {
-                    margin-bottom: $padding;
-                    color: $warm-gray-08;
-                    font-size: $font-size-h5;
-                  }
-
-                  dd {
-                    display: inline-flex;
-                    margin-bottom: $padding*2;
-                    color: $warm-gray-10;
-                  }
+                &.agency-principal {
+                  margin-bottom: 0;
+                  padding-bottom: 0;
+                  border-bottom-width: 0;
                 }
-              }
-
-              h4 {
-                font-weight: normal;
-              }
-
-              .property-info {
-                justify-content: space-between;
-              }
-
-              .tax-info {
-                display: flex;
 
                 dl {
-                  margin-right: $padding*2;
-                  margin-bottom: 0;
+                  div {
+                    margin-right: $padding*4;
 
-                  &:last-child {
-                    margin-right: 0;
+                    dt {
+                      margin-bottom: $padding;
+                      color: $warm-gray-08;
+                      font-size: $font-size-h5;
+                    }
+
+                    dd {
+                      display: inline-flex;
+                      margin-bottom: $padding*2;
+                      color: $warm-gray-10;
+                    }
+                  }
+                }
+
+                h4 {
+                  font-weight: normal;
+                }
+
+                .property-info {
+                  justify-content: space-between;
+                }
+
+                .tax-info {
+                  display: flex;
+
+                  dl {
+                    margin-right: $padding*2;
+                    margin-bottom: 0;
+
+                    &:last-child {
+                      margin-right: 0;
+                    }
                   }
                 }
               }
@@ -826,7 +844,6 @@
       }
     }
   }
-
 
   &.contact-crud {
     flex-direction: row;
@@ -945,62 +962,63 @@
             width: 45%;
 
             ul {
-                &.contract-agent-list {
-                    list-style: none;
-                    margin: 0;
-                    padding: 0;
+              &.contract-agent-list {
+                margin: 0;
+                padding: 0;
+                list-style: none;
 
-                    li {
-                      font-size: $font-size-sm;
+                li {
+                  display: flex;
+                  align-items: flex-start;
+                  padding: ($padding/2) ($padding*.75);
+                  font-size: $font-size-sm;
+
+                  &:nth-of-type(odd) {
+                    background: $warm-gray-01;
+                  }
+
+                  &.header {
+                    color: $warm-gray-08;
+                    background: $warm-gray-02;
+                  }
+
+                  span {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    color: $warm-gray-08;
+
+                    &.label {
+                      font-weight: $font-weight-bold;
+                    }
+
+                    &.display {
+                      min-height: 1.3125rem;
+                    }
+
+                    &.aor,
+                    &.appointed {
                       display: flex;
-                      align-items: flex-start;
-                      padding: ($padding/2) ($padding*.75);
+                      align-items: center;
+                      justify-content: center;
+                      width: 4.5rem;
+                      text-align: center;
 
-                      &:nth-of-type(odd) {
-                        background: $warm-gray-01;
-                      }
-
-                      &.header {
-                        background: $warm-gray-02;
-                        color: $warm-gray-08;
-                      }
-
-                      span {
-                          flex-grow: 0;
-                          flex-shrink: 0;
-                          color: $warm-gray-08;
-
-                          &.label {
-                              font-weight: $font-weight-bold;
-                          }
-
-                          &.display {
-                               min-height: 1.3125rem;
-                          }
-
-                          &.appointed, &.aor {
-                              width: 4.5rem;
-                              text-align: center;
-                              display: flex;
-                              align-items: center;
-                              justify-content: center;
-
-                              input {
-                                  margin: 0;
-                              }
-                          }
-
-                          &.agent-name {
-                              flex-grow: 1;
-                              flex-shrink: 1;
-                          }
-
-                          &.actions {
-                              width: 5rem;
-                          }
+                      input {
+                        margin: 0;
                       }
                     }
+
+                    &.agent-name {
+                      flex-grow: 1;
+                      flex-shrink: 1;
+                    }
+
+                    &.actions {
+                      width: 5rem;
+                    }
+                  }
                 }
+              }
             }
           }
         }

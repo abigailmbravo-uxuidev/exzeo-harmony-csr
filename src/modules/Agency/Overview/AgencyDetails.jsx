@@ -285,21 +285,19 @@ export class AgencyModal extends Component {
                   />
                 </div>
               </section>
-              <section className="agency-csr">
-                <h4>CSR Contact Information</h4>
-                <CSRFields />
-              </section>
               <section className="agency-contact">
                 <h4>Contact</h4>
-                <ContactFields />
+                <div className="flex-form">
+                  <ContactFields />
+                </div>
               </section>
               <section className="agency-principal">
                 <h4>Principal</h4>
-                <PrincipalFields />
+                <div className="flex-form">
+                  <PrincipalFields />
+                </div>
               </section>
-
-
-              <div className="btn-footer">
+              <div className="basic-footer btn-footer">
                 <button
                   tabIndex="0"
                   className="btn btn-secondary"
