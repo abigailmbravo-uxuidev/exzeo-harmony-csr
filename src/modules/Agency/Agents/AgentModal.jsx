@@ -103,8 +103,10 @@ export class AgentModal extends Component {
               <Field label="Zip Code" styleName="mailingZip" name="mailingAddress.zip" dataTest="mailingAddress.zip" component={Input} validate={[validation.isRequired, validation.isZipCode]}/>
             </section>
             <section className="agent-license">
+              <div className="license-wrapper">
               <Field label="State" styleName="state" name="license[0].state" dataTest="license[0].state" component={Input} validate={validation.isRequired}/>
               <Field label="License" styleName="licenseNumber" name="license[0].licenseNumber" dataTest="license[0].licenseNumber" component={Input} validate={validation.isRequired}/>
+              </div>
               <button className="btn btn-secondary btn-sm"><i className="fa fa-plus" />License</button>
             </section>
           </div>
