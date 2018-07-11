@@ -5,6 +5,36 @@ import License from './LicenseCard';
 import ContractsPopup from './ContractsModal';
 
 export class Contracts extends Component {
+  state = {
+    showModal: false,
+    isEditing: false
+  }
+
+  handleAddLicense = () => {
+    this.setState({
+      showModal: true,
+      isEditing: false
+    });
+  }
+
+  handleEditLicense = () => {
+    this.setState({
+      showModal: true,
+      isEditing: true
+    });
+  }
+
+  handleCloseModal = () => {
+    this.setState({
+      showModal: false,
+      isEditing: false
+    });
+  }
+
+  saveLicense = (data, dispatch, props) => {
+    this.handleCloseModal();
+  }
+
   render() {
     const {
       agency
