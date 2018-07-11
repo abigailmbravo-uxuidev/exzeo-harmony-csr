@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 import AgentsCard from './AgentsCard';
 import AgentModal from './AgentModal';
 import ExistingAgentModal from './ExistingAgentModal';
 import RemoveAgentModal from './RemoveAgentModal';
-import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 
 export class Agents extends Component {
   state = {
@@ -65,7 +65,7 @@ export class Agents extends Component {
 
   render() {
     const {
-      agency, agencyAgents, agents, updateAgency, addAgent, updateAgent, listOfAgents, agencyLicenseArray
+      agency, agents, updateAgency, addAgent, updateAgent, listOfAgents, agencyLicenseArray
     } = this.props;
     return (
       <div className="route-content">
@@ -105,7 +105,7 @@ export class Agents extends Component {
           />}
         <div className="scroll">
           <div className="form-group survey-wrapper" role="group">
-            {agencyAgents && agencyAgents.map((agent, index) => (
+            {agents && agents.map((agent, index) => (
               <AgentsCard agency={agency} agent={agent} agentIndex={index} toggleAgentModal={this.toggleAgentModal('Edit')} removeAgentModal={this.removeAgentModal()} />
             ))}
             <div className="agent-actions">
@@ -123,7 +123,7 @@ export class Agents extends Component {
 
 Agents.propTypes = {
   agency: PropTypes.shape(),
-  agencyAgents: PropTypes.shape(),
+  agents: PropTypes.shape(),
   listOfAgents: PropTypes.shape()
 };
 

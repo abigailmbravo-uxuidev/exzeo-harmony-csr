@@ -45,7 +45,7 @@ export const getListOfAgents = createSelector(
     return agent.map(a => ({
       value: {
         agentCode: a.agentCode,
-        agentInfo: { license: [{ licenseNumber: a.licenseNumber, state: a.state }], ...a },
+        agentInfo: a.agentInfo || { license: [{ licenseNumber: a.licenseNumber, state: a.state }], ...a },
         agentOfRecord: a.agentOfRecord,
         appointed: a.appointed
       },

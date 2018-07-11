@@ -6,7 +6,6 @@ import { getListOfAgents, agencyLicenseArray } from '../../../state/selectors/ag
 
 const mapStateToProps = state => ({
   agency: state.agencyState.agency,
-  agencyAgents: state.agencyState.agencyAgents,
   agents: state.agencyState.agents,
   listOfAgents: getListOfAgents(state),
   agencyLicenseArray: agencyLicenseArray(state)

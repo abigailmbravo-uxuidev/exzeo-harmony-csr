@@ -36,8 +36,10 @@ export class Contracts extends Component {
 
   handleSaveLicense = async (data, dispatch, props) => {
     const { agency } = this.props;
-    const { activeIndex } = this.state;
-    agency.license[activeIndex] = data;
+    const { activeIndex, isEditing } = this.state;
+    if (isEditing) {
+      agency.license[activeIndex] = data;
+    } else agency.license.push(data);
     await this.props.updateAgency(agency);
     this.handleCloseModal();
   }
@@ -52,9 +54,8 @@ export class Contracts extends Component {
     const { license } = agency;
     return (
       <div id="agency-contracts" className="agency-contracts">
-        { /* needs contract pop up */}
         { showModal && <LicenseModal
-          initialValues={agency.license[activeIndex]}
+          initialValues={isEditing ? agency.license[activeIndex] : { agent: [] }}
           isEditing={isEditing}
           listOfAgents={listOfAgents}
           handleCloseModal={this.handleCloseModal}
@@ -72,7 +73,7 @@ export class Contracts extends Component {
                   <hr />
                   <button
                     className="btn btn-sm btn-primary"
-                    onClick={x => x}
+                    onClick={this.handleAddLicense}
                   >
                     <i className="fa fa-plus" /> Contract
                   </button>

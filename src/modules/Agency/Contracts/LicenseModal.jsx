@@ -13,7 +13,7 @@ export class LicenseModal extends Component {
 handleAddAgent = (e, agentValue) => {
   const { array } = this.props;
   e.preventDefault();
-  array.push('agent', agentValue);
+  array.push('agent', agentValue.value);
 }
 
 handleRemoveAgent = (agentIndex) => {
@@ -23,7 +23,7 @@ handleRemoveAgent = (agentIndex) => {
 
 render() {
   const {
-    isEditing, handleSubmit, agentValue, listOfAgents, handleCloseModal, handleSaveLicense
+    isEditing, handleSubmit, agentValue, listOfAgents, handleCloseModal, handleSaveLicense, initialValues
   } = this.props;
   return (
     <div className="modal contract-crud">
@@ -123,7 +123,7 @@ render() {
 
               {/* list of added agents with the ability to check appointed and/or agent of record to apply those attributes */}
               <div>
-                {agentValue.length > 0 && <FieldArray name="agent" component={Agents} agent={agentValue} handleRemoveAgent={this.handleRemoveAgent} />}
+                {agentValue.length > 0 && <FieldArray name="agent" primaryAgentCode={initialValues.primaryAgent} component={Agents} agent={agentValue} handleRemoveAgent={this.handleRemoveAgent} />}
               </div>
             </section>
           </div>

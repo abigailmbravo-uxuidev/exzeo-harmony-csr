@@ -2,7 +2,9 @@ import React from 'react';
 import { Field } from 'redux-form';
 
 const Agents = (props) => {
-  const { fields, agent, handleRemoveAgent } = props;
+  const {
+ fields, agent, handleRemoveAgent, primaryAgentCode 
+} = props;
   return (
     <ul className="contract-agent-list">
       {/* list headers */}
@@ -36,7 +38,7 @@ const Agents = (props) => {
              />
            </span>
            <span className="actions display">
-             <button tabIndex="0" className="btn btn-link btn-sm" onClick={() => handleRemoveAgent(index)}><i className="fa fa-times-rectangle" />Remove</button>
+             {primaryAgentCode !== agent[index].agentCode && <button tabIndex="0" className="btn btn-link btn-sm" onClick={() => handleRemoveAgent(index)}><i className="fa fa-times-rectangle" />Remove</button>}
            </span>
          </li>))
       }
