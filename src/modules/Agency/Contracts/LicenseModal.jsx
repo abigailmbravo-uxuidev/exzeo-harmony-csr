@@ -23,11 +23,11 @@ handleRemoveAgent = (agentIndex) => {
 
 render() {
   const {
-    isEditing, handleSubmit, agentValue, listOfAgents
+    isEditing, handleSubmit, agentValue, listOfAgents, handleCloseModal, handleSaveLicense
   } = this.props;
   return (
     <div className="modal contract-crud">
-      <form onSubmit={handleSubmit(x => x)}>
+      <form onSubmit={handleSubmit(handleSaveLicense)}>
         <div className="card">
           <div className="card-header">
             <h4><i className="fa fa-file" /> {isEditing ? 'Edit' : 'New'} Contract</h4>
@@ -129,7 +129,7 @@ render() {
           </div>
           <div className="card-footer">
             <div className="btn-footer">
-              <button tabIndex="0" className="btn btn-secondary" type="button" onClick={x => x}>Cancel</button>
+              <button tabIndex="0" className="btn btn-secondary" type="button" onClick={handleCloseModal}>Cancel</button>
               <button tabIndex="0" className="btn btn-primary" type="submit">Save</button>
             </div>
           </div>

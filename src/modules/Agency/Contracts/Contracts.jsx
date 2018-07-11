@@ -29,11 +29,16 @@ export class Contracts extends Component {
   handleCloseModal = () => {
     this.setState({
       showModal: false,
-      isEditing: false
+      isEditing: false,
+      activeIndex: null
     });
   }
 
-  saveLicense = (data, dispatch, props) => {
+  handleSaveLicense = async (data, dispatch, props) => {
+    const { agency } = this.props;
+    const { activeIndex } = this.state;
+    agency.license[activeIndex] = data;
+    await this.props.updateAgency(agency);
     this.handleCloseModal();
   }
 
@@ -52,6 +57,8 @@ export class Contracts extends Component {
           initialValues={agency.license[activeIndex]}
           isEditing={isEditing}
           listOfAgents={listOfAgents}
+          handleCloseModal={this.handleCloseModal}
+          handleSaveLicense={this.handleSaveLicense}
         />}
         <div className="route-content">
           <div className="scroll">
