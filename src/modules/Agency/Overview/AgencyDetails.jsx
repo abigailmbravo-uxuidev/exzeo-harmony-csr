@@ -7,8 +7,8 @@ import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAgency, updateAgency } from '../../../state/actions/agencyActions';
 import { getEditModalInitialValues } from '../../../state/selectors/agency.selector';
 import Address from './Address';
-import ContactFields from './ContactFields';
-import PrincipalFields from './PrincipalFields';
+import ContactSection from './Contact';
+import PrincipalSection from './Principal';
 
 const statusAnswers = [
   { answer: 'Active', label: 'Active' },
@@ -18,6 +18,11 @@ const statusAnswers = [
 const okToPayAnswers = [
   { answer: false, label: 'No' },
   { answer: true, label: 'Yes' }
+];
+
+const taxClassificationAnswers = [
+  { answer: 'LLC', label: 'LLC' },
+  { answer: 'Corporation', label: 'Corporation' }
 ];
 
 export class AgencyModal extends Component {
@@ -141,7 +146,25 @@ export class AgencyModal extends Component {
         <section className="agency-address">
           <div className="agency-mailing-address">
             <h4>Mailing Address</h4>
-            <FormSection name="mailingAddress" component={Address} isMailing />
+            <FormSection name="mailingAddress" component={Address} />
+            <Field
+              label="Tax ID"
+              styleName="taxId"
+              name="taxIdNumber"
+              dataTest="taxIdNumber"
+              component={Input}
+              validate={validation.isRequired}
+            />
+            <Field
+              id="taxClassification"
+              name="taxClassification"
+              dataTest="taxClassification"
+              styleName="taxClassification"
+              label="Tax Classification"
+              component={Select}
+              validate={validation.isRequired}
+              answers={taxClassificationAnswers}
+            />
           </div>
           <div className="agency-physical-address">
             <h4>
@@ -149,26 +172,26 @@ export class AgencyModal extends Component {
               <Field
                 normalize={this.handleSameAsMailing}
                 name="sameAsMailing"
-                dataTest="sameAsMailing"
+                data-test="sameAsMailing"
                 id="sameAsMailing"
                 component="input"
                 type="checkbox"
               />
               <label htmlFor="sameAsMailing">Same as Mailing Address</label>
             </h4>
-            <FormSection name="physicalAddress" component={Address} sameAsMailingValue={sameAsMailingValue} />
+            <FormSection name="physicalAddress" component={Address} sameAsMailingValue={sameAsMailingValue} showCounty />
           </div>
         </section>
         <section className="agency-contact">
           <h4>Contact</h4>
           <div className="flex-form">
-            <ContactFields />
+            <ContactSection />
           </div>
         </section>
         <section className="agency-principal">
           <h4>Principal</h4>
           <div className="flex-form">
-            <PrincipalFields />
+            <PrincipalSection />
           </div>
         </section>
         <div className="basic-footer btn-footer">

@@ -6,8 +6,7 @@ import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAgency, updateAgency } from '../../state/actions/agencyActions';
 import { getEditModalInitialValues } from '../../state/selectors/agency.selector';
 import CSRFields from './Overview/CSRFields';
-import ContactFields from './Overview/ContactFields';
-import PrincipalFields from './Overview/PrincipalFields';
+import PrincipalFields from './Overview/Principal';
 
 const statusAnswers = [
   { answer: 'Active', label: 'Active' },
@@ -298,7 +297,7 @@ export class AgencyModal extends Component {
               </section>
               <section className="agency-contact">
                 <h4>Contact</h4>
-                <ContactFields />
+                {/* <ContactFields /> */}
               </section>
               <section className="agency-principal">
                 <h4>Principal</h4>
