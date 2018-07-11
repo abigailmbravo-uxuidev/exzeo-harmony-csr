@@ -23,12 +23,12 @@ export class Agency extends Component {
   }
 
   render() {
-    const { location, match: { params: { agencyCode }, url } } = this.props;
+    const { agency, location, match: { params: { agencyCode }, url } } = this.props;
 
     return (<div className="app-wrapper csr agency">
       <Helmet><title>{`A: ${agencyCode}`}</title></Helmet>
       <AgencyHeader />
-      <AgencyDetailHeader />
+      <AgencyDetailHeader agency={agency} />
       <main role="document">
         <aside className="content-panel-left">
           <AgencySideNav agencyCode={agencyCode} location={location} />
@@ -43,4 +43,10 @@ export class Agency extends Component {
     );
   }
 }
-export default connect(null, { getAgency, getAgents, getAgentsByAgencyCode })(Agency);
+
+const mapStateToProps = state => ({
+  agency: state.agencyState.agency
+});
+
+export default connect(mapStateToProps, { getAgency, getAgents, getAgentsByAgencyCode })(Agency);
+

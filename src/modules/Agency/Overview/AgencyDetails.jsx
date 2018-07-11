@@ -1,12 +1,12 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, Field, formValueSelector } from 'redux-form';
+import { reduxForm, Field, formValueSelector, FormSection } from 'redux-form';
 import { Select, Radio, Input, Integer } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAgency, updateAgency } from '../../../state/actions/agencyActions';
 import { getEditModalInitialValues } from '../../../state/selectors/agency.selector';
-import CSRFields from './CSRFields';
+import Address from './Address';
 import ContactFields from './ContactFields';
 import PrincipalFields from './PrincipalFields';
 
@@ -18,11 +18,6 @@ const statusAnswers = [
 const okToPayAnswers = [
   { answer: false, label: 'No' },
   { answer: true, label: 'Yes' }
-];
-
-const taxClassificationAnswers = [
-  { answer: 'LLC', label: 'LLC' },
-  { answer: 'Corporation', label: 'Corporation' }
 ];
 
 export class AgencyModal extends Component {
@@ -146,68 +141,7 @@ export class AgencyModal extends Component {
         <section className="agency-address">
           <div className="agency-mailing-address">
             <h4>Mailing Address</h4>
-            <Field
-              label="Address 1"
-              styleName="mailingAddress1"
-              name="mailingAddress.address1"
-              dataTest="mailingAddress.address1"
-              component={Input}
-              validate={validation.isRequired}
-              normalize={this.resetSameAsMailing}
-            />
-            <Field
-              label="Address 2"
-              styleName="mailingAddress2"
-              name="mailingAddress.address2"
-              dataTest="mailingAddress.address2"
-              component={Input}
-              normalize={this.resetSameAsMailing}
-            />
-            <Field
-              label="City"
-              styleName="mailingCity"
-              name="mailingAddress.city"
-              dataTest="mailingAddress.city"
-              component={Input}
-              validate={validation.isRequired}
-              normalize={this.resetSameAsMailing}
-            />
-            <Field
-              label="State"
-              styleName="mailingState"
-              name="mailingAddress.state"
-              dataTest="mailingAddress.state"
-              component={Input}
-              validate={validation.isRequired}
-              normalize={this.resetSameAsMailing}
-            />
-            <Field
-              label="Zip Code"
-              styleName="mailingZip"
-              name="mailingAddress.zip"
-              dataTest="mailingAddress.zip"
-              component={Input}
-              validate={[validation.isRequired, validation.isZipCode]}
-              normalize={this.resetSameAsMailing}
-            />
-            <Field
-              label="Tax ID"
-              styleName="taxId"
-              name="taxIdNumber"
-              dataTest="taxIdNumber"
-              component={Input}
-              validate={validation.isRequired}
-            />
-            <Field
-              id="taxClassification"
-              name="taxClassification"
-              dataTest="taxClassification"
-              styleName="taxClassification"
-              label="Tax Classification"
-              component={Select}
-              validate={validation.isRequired}
-              answers={taxClassificationAnswers}
-            />
+            <FormSection name="mailingAddress" component={Address} isMailing />
           </div>
           <div className="agency-physical-address">
             <h4>
@@ -222,58 +156,7 @@ export class AgencyModal extends Component {
               />
               <label htmlFor="sameAsMailing">Same as Mailing Address</label>
             </h4>
-            <Field
-              label="Address 1"
-              styleName="physicalAddress1"
-              name="physicalAddress.address1"
-              dataTest="physicalAddress.address1"
-              component={Input}
-              validate={validation.isRequired}
-              disabled={sameAsMailingValue}
-            />
-            <Field
-              label="Address 2"
-              styleName="physicalAddress2"
-              name="physicalAddress.address2"
-              dataTest="physicalAddress.address2"
-              component={Input}
-              disabled={sameAsMailingValue}
-            />
-            <Field
-              label="City"
-              styleName="physicalCity"
-              name="physicalAddress.city"
-              dataTest="physicalAddress.city"
-              component={Input}
-              validate={validation.isRequired}
-              disabled={sameAsMailingValue}
-            />
-            <Field
-              label="State"
-              styleName="physicalState"
-              name="physicalAddress.state"
-              dataTest="physicalAddress.state"
-              component={Input}
-              validate={validation.isRequired}
-              disabled={sameAsMailingValue}
-            />
-            <Field
-              label="Zip Code"
-              styleName="physicalZip"
-              name="physicalAddress.zip"
-              dataTest="physicalAddress.zip"
-              component={Input}
-              validate={validation.isRequired}
-              disabled={sameAsMailingValue}
-            />
-            <Field
-              label="County"
-              styleName="county"
-              name="physicalAddress.county"
-              dataTest="physicalAddress.county"
-              component={Input}
-              validate={validation.isRequired}
-            />
+            <FormSection name="physicalAddress" component={Address} sameAsMailingValue={sameAsMailingValue} />
           </div>
         </section>
         <section className="agency-contact">
