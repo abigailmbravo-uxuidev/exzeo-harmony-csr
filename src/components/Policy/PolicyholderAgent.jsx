@@ -14,7 +14,7 @@ export class PolicyholderAgent extends Component {
     const actions = this.props.actions.agencyActions;
 
     if (policy && policy.companyCode && policy.state && policy.agencyCode) {
-      actions.getAgents(policy.companyCode, policy.state);
+      actions.getAgentList(policy.companyCode, policy.state);
       actions.getAgency(policy.companyCode, policy.state, policy.agencyCode);
     }
   }
