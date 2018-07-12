@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import cloneDeep from 'lodash/cloneDeep'
 import TaxDetail from './TaxDetails';
 import License from './LicenseCard';
 import LicenseModal from './LicenseModal';
@@ -9,14 +10,14 @@ export class Contracts extends Component {
     showModal: false,
     isEditing: false,
     activeIndex: null
-  }
+  };
 
   handleAddLicense = () => {
     this.setState({
       showModal: true,
       isEditing: false
     });
-  }
+  };
 
   handleEditLicense = index => () => {
     this.setState({
@@ -32,17 +33,20 @@ export class Contracts extends Component {
       isEditing: false,
       activeIndex: null
     });
-  }
+  };
 
   handleSaveLicense = async (data, dispatch, props) => {
     const { agency } = this.props;
+    const newAgency = cloneDeep(agency);
     const { activeIndex, isEditing } = this.state;
     if (isEditing) {
-      agency.license[activeIndex] = data;
-    } else agency.license.push(data);
-    await this.props.updateAgency(agency);
+      newAgency.license[activeIndex] = data;
+    } else {
+      newAgency.license.push(data);
+    }
+    await this.props.updateAgency(newAgency);
     this.handleCloseModal();
-  }
+  };
 
   render() {
     const {
@@ -67,8 +71,13 @@ export class Contracts extends Component {
               <TaxDetail agency={agency} editAgency={this.toggleAgencyModal} />
               <section>
                 <h3>Contracts</h3>
-                { license && license.length > 0 && license.map((l, index) =>
-                  <License key={l.licenseNumber} license={l} editLicense={this.handleEditLicense(index)} />)}
+                {license && license.length > 0 && license.map((l, index) => (
+                  <License
+                    key={l.licenseNumber}
+                    license={l}
+                    editLicense={this.handleEditLicense(index)}
+                  />
+                ))}
                 <div className="create-contract">
                   <hr />
                   <button

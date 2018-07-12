@@ -52,6 +52,22 @@ export function setAgentList(agentList) {
 
 /**
  *
+ * @param agencyCode
+ * @returns {Function}
+ */
+export function getAgency(agencyCode) {
+  return async (dispatch) => {
+    try {
+      const agency = await fetchAgency(agencyCode);
+      dispatch(setAgency(agency));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
+/**
+ *
  * @param companyCode
  * @param state
  * @returns {Function}
@@ -65,6 +81,107 @@ export function getAgencies(companyCode, state, agencyCode) {
       dispatch(errorActions.setAppError(error));
     }
   };
+}
+
+/**
+ *
+ * @param agencyCode
+ * @returns {Function}
+ */
+export function getAgentsByAgencyCode(agencyCode) {
+  return async (dispatch) => {
+    try {
+      const agents = await fetchAgentsByAgencyCode(agencyCode);
+      dispatch(setAgents(agents));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
+/**
+ *
+ * @param companyCode
+ * @param state
+ * @returns {Function}
+ */
+export function getAgentList(companyCode, state) {
+  return async (dispatch) => {
+    try {
+      const agents = await fetchAgentList(companyCode, state);
+      dispatch(setAgentList(agents));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
+/**
+ *
+ * @param agencyData
+ * @returns {Function}
+ */
+export function updateAgency(agencyData) {
+  return async (dispatch) => {
+    try {
+      await saveAgency(agencyData);
+      dispatch(getAgency(agencyData.agencyCode));
+      dispatch(getAgentsByAgencyCode(agencyData.agencyCode));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
+/**
+ *
+ * @param agentData
+ * @returns {Function}
+ */
+export function addAgent(agentData) {
+  return async (dispatch) => {
+    try {
+      await addNewAgent(agentData);
+      dispatch(getAgentsByAgencyCode(agentData.agencyCode));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
+/**
+ *
+ * @param agentData
+ * @returns {Function}
+ */
+export function updateAgent(agentData, agency) {
+  return async (dispatch) => {
+    try {
+      await saveAgent(agentData);
+      dispatch(getAgentsByAgencyCode(agency.agencyCode));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
+/**
+ *
+ * @param agencyCode
+ * @returns {Promise<{}>}
+ */
+export async function fetchAgency(agencyCode) {
+  try {
+    const config = {
+      service: 'agency',
+      method: 'GET',
+      path: `v1/agencies?agencyCode=${agencyCode}`
+    };
+    const response = await serviceRunner.callService(config);
+    return response.data && response.data.result ? response.data.result[0] : {};
+  } catch (error) {
+    throw error;
+  }
 }
 
 /**
@@ -90,58 +207,21 @@ export async function fetchAgencies(companyCode, state, agencyCode = '') {
 
 /**
  *
- * @param companyCode
- * @param state
  * @param agencyCode
- * @returns {Function}
+ * @returns {Promise<Array>}
  */
-export function getAgency(agencyCode) {
-  return async (dispatch) => {
-    try {
-      const agency = await fetchAgency(agencyCode);
-      dispatch(setAgency(agency));
-    } catch (error) {
-      dispatch(errorActions.setAppError(error));
-    }
-  };
-}
-
-/**
- *
- * @param companyCode
- * @param state
- * @param agencyCode
- * @returns {Promise<{}>}
- */
-export async function fetchAgency(agencyCode) {
+export async function fetchAgentsByAgencyCode(agencyCode) {
   try {
     const config = {
       service: 'agency',
       method: 'GET',
-      path: `v1/agencies?agencyCode=${agencyCode}`
+      path: `v1/agents?agencyCode=${agencyCode}`
     };
     const response = await serviceRunner.callService(config);
-    return response.data && response.data.result ? response.data.result[0] : {};
+    return response.data && response.data.result ? response.data.result : [];
   } catch (error) {
     throw error;
   }
-}
-
-/**
- *
- * @param companyCode
- * @param state
- * @returns {Function}
- */
-export function getAgentList(companyCode, state) {
-  return async (dispatch) => {
-    try {
-      const agents = await fetchAgentList(companyCode, state);
-      dispatch(setAgentList(agents));
-    } catch (error) {
-      dispatch(errorActions.setAppError(error));
-    }
-  };
 }
 
 /**
@@ -166,43 +246,8 @@ export async function fetchAgentList(companyCode, state) {
 
 /**
  *
- * @param agencyCode
- * @returns {Function}
- */
-export function getAgentsByAgencyCode(agencyCode) {
-  return async (dispatch) => {
-    try {
-      const agents = await fetchAgentsByAgencyCode(agencyCode);
-      dispatch(setAgents(agents));
-    } catch (error) {
-      dispatch(errorActions.setAppError(error));
-    }
-  };
-}
-
-/**
- *
- * @param agencyCode
- * @returns {Promise<Array>}
- */
-export async function fetchAgentsByAgencyCode(agencyCode) {
-  try {
-    const config = {
-      service: 'agency',
-      method: 'GET',
-      path: `v1/agents?agencyCode=${agencyCode}`
-    };
-    const response = await serviceRunner.callService(config);
-    return response.data && response.data.result ? response.data.result : [];
-  } catch (error) {
-    throw error;
-  }
-}
-
-/**
- *
  * @param agencyData
- * @returns {Promise<Array>}
+ * @returns {Promise<{}>}
  */
 export async function saveAgency(agencyData) {
   try {
@@ -221,25 +266,8 @@ export async function saveAgency(agencyData) {
 
 /**
  *
- * @param agencyData
- * @returns {Function}
- */
-export function updateAgency(agencyData) {
-  return async (dispatch) => {
-    try {
-      await saveAgency(agencyData);
-      dispatch(getAgency(agencyData.agencyCode));
-      dispatch(getAgentsByAgencyCode(agencyData.agencyCode));
-    } catch (error) {
-      dispatch(errorActions.setAppError(error));
-    }
-  };
-}
-
-/**
- *
  * @param agentData
- * @returns {Promise<Array>}
+ * @returns {Promise<{}>}
  */
 export async function saveAgent(agentData) {
   try {
@@ -254,22 +282,6 @@ export async function saveAgent(agentData) {
   } catch (error) {
     throw error;
   }
-}
-
-/**
- *
- * @param agentData
- * @returns {Function}
- */
-export function updateAgent(agentData, agency) {
-  return async (dispatch) => {
-    try {
-      await saveAgent(agentData);
-      dispatch(getAgentsByAgencyCode(agency.agencyCode));
-    } catch (error) {
-      dispatch(errorActions.setAppError(error));
-    }
-  };
 }
 
 /**
@@ -294,20 +306,10 @@ export async function addNewAgent(agentData) {
 
 /**
  *
- * @param agentData
- * @returns {Function}
+ * @param data
+ * @param agency
+ * @returns {Promise<*>}
  */
-export function addAgent(agentData) {
-  return async (dispatch) => {
-    try {
-      await addNewAgent(agentData);
-      dispatch(getAgentsByAgencyCode(agentData.agencyCode));
-    } catch (error) {
-      dispatch(errorActions.setAppError(error));
-    }
-  };
-}
-
 export async function applyLicenseToAgency(data, agency) {
   // loop over available licenses to apply to an agent
   /* nested deep in the agency object:  agency.license[0].agents[0]

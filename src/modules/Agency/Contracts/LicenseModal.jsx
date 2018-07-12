@@ -14,19 +14,19 @@ handleAddAgent = (e, agentValue) => {
   const { array } = this.props;
   e.preventDefault();
   array.push('agent', agentValue.value);
-}
+};
 
 handleRemoveAgent = (agentIndex) => {
   const { array } = this.props;
   array.remove('agent', agentIndex);
-}
+};
 
 render() {
   const {
     isEditing, handleSubmit, agentValue, listOfAgents, handleCloseModal, handleSaveLicense, initialValues
   } = this.props;
   return (
-    <div className="modal contract-crud">    
+    <div className="modal contract-crud">
       <div className="card">
         <form onSubmit={handleSubmit(handleSaveLicense)}>
           <div className="card-header">
@@ -123,7 +123,15 @@ render() {
 
               {/* list of added agents with the ability to check appointed and/or agent of record to apply those attributes */}
               <div>
-                {agentValue.length > 0 && <FieldArray name="agent" primaryAgentCode={initialValues.primaryAgent} component={Agents} agent={agentValue} handleRemoveAgent={this.handleRemoveAgent} />}
+                {agentValue.length > 0 &&
+                  <FieldArray
+                    name="agent"
+                    primaryAgentCode={initialValues.primaryAgent}
+                    component={Agents}
+                    agent={agentValue}
+                    handleRemoveAgent={this.handleRemoveAgent}
+                  />
+                }
               </div>
             </section>
           </div>

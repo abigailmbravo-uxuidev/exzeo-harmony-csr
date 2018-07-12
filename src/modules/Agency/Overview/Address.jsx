@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field } from 'redux-form';
-import { Input, Select } from '@exzeo/core-ui/lib/Input';
+import { Input } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 
 export const Address = ({ showCounty, sameAsMailingValue }) => (
