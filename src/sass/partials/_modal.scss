@@ -29,6 +29,32 @@
     }
   }
 
+  &.contract-crud {
+      .card  {
+          width: 70rem;
+      }
+  }
+
+  &.add-agent-crud {}
+
+  &.existing-agent-modal {
+      .card {
+        max-width: 40rem;
+      }
+  }
+
+  &.agent-crud {
+      .card  {
+          width: 70rem;
+      }
+  }
+
+  &.agent-remove {
+      .card {
+        width: 40rem;
+      }
+  }
+
   .card {
     display: flex;
     align-content: flex-start;
@@ -40,6 +66,9 @@
   }
 
   > form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
     justify-content: center;
 
     &.AdditionalInterestModal {
@@ -93,7 +122,7 @@
 }
 
 .ReactModalPortal {
-    .ReactModal__Overlay {
-        z-index: 10000;
-    }
+  .ReactModal__Overlay {
+    z-index: 10000;
+  }
 }

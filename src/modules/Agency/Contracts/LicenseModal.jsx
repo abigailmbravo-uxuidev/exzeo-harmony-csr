@@ -26,9 +26,9 @@ render() {
     isEditing, handleSubmit, agentValue, listOfAgents, handleCloseModal, handleSaveLicense, initialValues
   } = this.props;
   return (
-    <div className="modal contract-crud">
-      <form onSubmit={handleSubmit(handleSaveLicense)}>
-        <div className="card">
+    <div className="modal contract-crud">    
+      <div className="card">
+        <form onSubmit={handleSubmit(handleSaveLicense)}>
           <div className="card-header">
             <h4><i className="fa fa-file" /> {isEditing ? 'Edit' : 'New'} Contract</h4>
           </div>
@@ -133,8 +133,8 @@ render() {
               <button tabIndex="0" className="btn btn-primary" type="submit">Save</button>
             </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }

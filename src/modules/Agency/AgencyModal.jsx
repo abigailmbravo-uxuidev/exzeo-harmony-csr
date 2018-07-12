@@ -72,7 +72,7 @@ export class AgencyModal extends Component {
             <div className="card-header">
               <h4>
                 <i className="fa fa-address-book" /> {isEdit ? 'Edit ' : 'New '}
-            Agency
+                Agency
               </h4>
             </div>
             <div className="card-block">
@@ -312,7 +312,7 @@ export class AgencyModal extends Component {
                   type="button"
                   onClick={closeModal}
                 >
-              Cancel
+                Cancel
                 </button>
                 <button
                   tabIndex="0"
@@ -320,7 +320,7 @@ export class AgencyModal extends Component {
                   type="submit"
                   disabled={submitting}
                 >
-              Save
+                Save
                 </button>
               </div>
             </div>

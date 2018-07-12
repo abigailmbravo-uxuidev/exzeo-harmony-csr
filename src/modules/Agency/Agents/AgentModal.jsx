@@ -62,9 +62,9 @@ export class AgentModal extends Component {
     } = this.props;
 
     return (<div className="modal agent-crud">
-      <form onSubmit={handleSubmit(
-          editType === 'Edit' ? this.update : this.add)}>
-        <div className="card">
+      <div className="card">
+        <form onSubmit={handleSubmit(
+            editType === 'Edit' ? this.update : this.add)}>
           <div className="card-header">
             <h4>
               <i className="fa fa-address-book"/> {
@@ -120,8 +120,8 @@ export class AgentModal extends Component {
               </button>
             </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>);
   }
 }

@@ -31,9 +31,9 @@ export class RemoveAgentModal extends Component {
     } = this.props;
 
     return (
-      <div className="modal agent-crud">
-        <form onSubmit={handleSubmit(this.removeAgent)}>
-          <div className="card">
+      <div className="modal agent-remove">
+        <div className="card">
+          <form onSubmit={handleSubmit(this.removeAgent)}>
             <div className="card-header">
               <h4>
                 <i className="fa fa-remove" /> Remove Agent
@@ -64,8 +64,8 @@ export class RemoveAgentModal extends Component {
                 </button>
               </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>        
       </div>
     );
   }
