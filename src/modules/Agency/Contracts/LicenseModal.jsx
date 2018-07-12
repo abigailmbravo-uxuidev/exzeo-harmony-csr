@@ -30,7 +30,7 @@ render() {
       <div className="card">
         <form onSubmit={handleSubmit(handleSaveLicense)}>
           <div className="card-header">
-            <h4><i className="fa fa-file" /> {isEditing ? 'Edit' : 'New'} Contract</h4>
+            <h4><i className="fa fa-file" /> {isEditing ? ' Edit' : ' New'} Contract</h4>
           </div>
           <div className="card-block">
             <section className="contract-details">

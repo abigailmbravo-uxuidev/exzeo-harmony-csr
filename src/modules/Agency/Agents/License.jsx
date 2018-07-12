@@ -7,12 +7,14 @@ import {validation} from "@exzeo/core-ui/lib/InputLifecycle/index";
 const License = ({ licenseValue, fields }) => {
   return (
     <React.Fragment>
-      <div className="license-wrapper">
-        {fields.map((license) => (
-          <React.Fragment key={license}>
+      <div className="label-wrapper">
+        <label className="state">State</label>
+        <label className="licenseNumber">License</label>
+      </div>
+        {fields.map((license, index) => (
+          <div className="license-wrapper" key={license}>
             <Field
               name={`${license}.state`}
-              label="State"
               component={Input}
               styleName="state"
               dataTest={`${license}.state`}
@@ -20,16 +22,16 @@ const License = ({ licenseValue, fields }) => {
             />
             <Field
               name={`${license}.licenseNumber`}
-              label="License"
               component={Input}
               styleName="licenseNumber"
               dataTest={`${license}.licenseNumber`}
               validate={validation.isRequired}
             />
-          </React.Fragment>
+          <button type="button" className="btn btn-link btn-sm" onClick={() => fields.remove(index)}><i className="fa fa-times-circle" />REMOVE</button>
+          </div>
           ))}
-      </div>
-      <button className="btn btn-secondary btn-sm" type="button" onClick={() => fields.push({})}><i className="fa fa-plus" />License</button>
+
+      <button className="btn btn-secondary btn-sm add-license" type="button" onClick={() => fields.push({})}><i className="fa fa-plus" />License</button>
     </React.Fragment>
   );
 };
