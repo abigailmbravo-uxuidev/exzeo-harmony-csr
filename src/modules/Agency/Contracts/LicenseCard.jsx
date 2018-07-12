@@ -27,23 +27,23 @@ export const LicenseCard = ({ license, editLicense, contractIndex }) => (
         <span className="additional-contract-info license">
           <label>License</label>
           <div className="license-date-wrapper">
-            <display>{license.licenseNumber}</display>
+            <div>{license.licenseNumber}</div>
             <span className="license-effective-date">
               <label>Effective</label>
-              <display>{moment(license.licenseEffectiveDate).format('MM/DD/YYYY')}</display>
+              <div>{moment(license.licenseEffectiveDate).format('MM/DD/YYYY')}</div>
             </span>
           </div>
         </span>
         {license.contract ? (
           <span className="additional-contract-info contract">
             <label>Contract</label>
-            <display>{license.contract}</display>
+            <div>{license.contract}</div>
           </span>
         ) : null}
         {license.addendum ? (
           <span className="additional-contract-info addendum">
             <label>Addendum</label>
-            <display>{license.addendum}</display>
+            <div>{license.addendum}</div>
           </span>
         ) : null}
         {license.eoExpirationDate ? (
