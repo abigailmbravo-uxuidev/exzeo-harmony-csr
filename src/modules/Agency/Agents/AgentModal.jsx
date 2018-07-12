@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {reduxForm, Field} from 'redux-form';
+import {reduxForm, Field, FieldArray, getFormValues } from 'redux-form';
 import {Radio, Input, Phone, AutocompleteChips, Integer} from '@exzeo/core-ui/lib/Input';
 import {validation} from '@exzeo/core-ui/lib/InputLifecycle';
 import {applyLicenseToAgency} from '../../../state/actions/agencyActions';
+import License from "./License";
+
+const FORM_NAME = 'AgentModal';
 
 const radioStatusAnswers = [
   {
@@ -58,38 +61,96 @@ export class AgentModal extends Component {
       editType,
       submitting,
       agencyLicenseArray,
-      existsInAgencyLicense
+      existsInAgencyLicense,
+      licenseValue
     } = this.props;
 
     return (<div className="modal agent-crud">
       <div className="card">
-        <form onSubmit={handleSubmit(
-            editType === 'Edit' ? this.update : this.add)}>
+        <form onSubmit={handleSubmit(editType === 'Edit' ? this.update : this.add)}>
           <div className="card-header">
             <h4>
-              <i className="fa fa-address-book"/> {
-                editType === 'Edit' ? 'Edit ' : 'New '
-              }
-              Agent
+              <i className="fa fa-address-book"/>{editType === 'Edit' ? 'Edit ' : 'New '} Agent
             </h4>
           </div>
           <div className="card-block">
             <section className="agent-details">
-              <Field label="Agent ID" styleName="agentCode" name="agentCode" dataTest="agentCode" validate={[validation.isRequired, validation.isNumbersOnly]} disabled={editType === 'Edit'} component={Integer} thousandSeparator={false}/>
-              <Field label="First Name" styleName="firstName" name="firstName" dataTest="firstName" component={Input} validate={validation.isRequired}/>
-              <Field label="Last Name" styleName="lastName" name="lastName" dataTest="lastName" component={Input} validate={validation.isRequired}/>
-              <Field label="Primary Phone" styleName="primaryPhoneNumber" name="primaryPhoneNumber" dataTest="primaryPhoneNumber" component={Phone} validate={validation.isRequired}/>
-              <Field label="Secondary Phone" styleName="secondaryPhoneNumber" name="secondaryPhoneNumber" dataTest="secondaryPhoneNumber" component={Phone}/>
-              <Field label="Fax Number" styleName="faxNumber" name="faxNumber" dataTest="faxNumber" component={Phone}/>
-              <Field label="Status" styleName="status" name="status" dataTest="status" component={Radio} segmented="segmented" answers={radioStatusAnswers} validate={validation.isRequired}/>
-              <Field label="Email Address" styleName="emailAddress" name="emailAddress" dataTest="emailAddress" component={Input} validate={[validation.isRequired, validation.isEmail]}/>
-              <Field label="Doing Business As Agency" styleName="DBA" name="DBA" dataTest="DBA" component={Input}/>
-              <Field label="Agency License" styleName="agencyLicense" name="agencyLicense" dataTest="agencyLicense" placeholder="Add license" noMatchText="No More Licenses Available" autoSuggest={agencyLicenseArray} component={AutocompleteChips} validate={[validation.isRequiredArray, existsInAgencyLicense]}/>
+              <Field
+                label="Agent ID"
+                styleName="agentCode"
+                name="agentCode"
+                dataTest="agentCode"
+                validate={[validation.isRequired, validation.isNumbersOnly]}
+                disabled={editType === 'Edit'}
+                component={Integer}
+                thousandSeparator={false}
+              />
+              <Field
+                label="First Name"
+                styleName="firstName"
+                name="firstName"
+                dataTest="firstName"
+                component={Input}
+                validate={validation.isRequired}
+              />
+              <Field
+                label="Last Name"
+                styleName="lastName"
+                name="lastName"
+                dataTest="lastName"
+                component={Input}
+                validate={validation.isRequired}
+              />
+              <Field
+                label="Primary Phone"
+                styleName="primaryPhoneNumber"
+                name="primaryPhoneNumber"
+                dataTest="primaryPhoneNumber"
+                component={Phone}
+                validate={validation.isRequired}
+              />
+              <Field
+                label="Secondary Phone"
+                styleName="secondaryPhoneNumber"
+                name="secondaryPhoneNumber"
+                dataTest="secondaryPhoneNumber"
+                component={Phone}
+              />
+              <Field
+                label="Fax Number"
+                styleName="faxNumber"
+                name="faxNumber"
+                dataTest="faxNumber"
+                component={Phone}/>
+              <Field
+                label="Status"
+                styleName="status"
+                name="status"
+                dataTest="status"
+                component={Radio} segmented answers={radioStatusAnswers} validate={validation.isRequired}/>
+              <Field
+                label="Email Address"
+                styleName="emailAddress"
+                name="emailAddress"
+                dataTest="emailAddress"
+                component={Input} validate={[validation.isRequired, validation.isEmail]}/>
+              <Field
+                label="Doing Business As Agency"
+                styleName="DBA"
+                name="DBA"
+                dataTest="DBA"
+                component={Input}/>
+              <Field
+                label="Agency License"
+                styleName="agencyLicense"
+                name="agencyLicense"
+                dataTest="agencyLicense"
+                placeholder="Add license" noMatchText="No More Licenses Available" autoSuggest={agencyLicenseArray} component={AutocompleteChips} validate={[validation.isRequiredArray, existsInAgencyLicense]}/>
               <h4>Mailing Address
                 <Field
                   normalize={this.handleSameAsMailing}
                   name="sameAsMailing"
-                  dataTest="sameAsMailing"
+                  data-test="sameAsMailing"
                   id="sameAsMailing"
                   component="input"
                   type="checkbox"
@@ -103,11 +164,7 @@ export class AgentModal extends Component {
               <Field label="Zip Code" styleName="mailingZip" name="mailingAddress.zip" dataTest="mailingAddress.zip" component={Input} validate={[validation.isRequired, validation.isZipCode]}/>
             </section>
             <section className="agent-license">
-              <div className="license-wrapper">
-              <Field label="State" styleName="state" name="license[0].state" dataTest="license[0].state" component={Input} validate={validation.isRequired}/>
-              <Field label="License" styleName="licenseNumber" name="license[0].licenseNumber" dataTest="license[0].licenseNumber" component={Input} validate={validation.isRequired}/>
-              </div>
-              <button className="btn btn-secondary btn-sm"><i className="fa fa-plus" />License</button>
+              <FieldArray name='license' component={License} licenseValue={licenseValue}/>
             </section>
           </div>
           <div className="card-footer">
@@ -126,4 +183,13 @@ export class AgentModal extends Component {
   }
 }
 
-export default reduxForm({form: 'AgentModal', enableReinitialize: true})(AgentModal);
+const selector = getFormValues(FORM_NAME);
+const defaultArr = [];
+const mapStateToProps = state => ({
+  licenseValue: selector(state, 'license') || defaultArr
+});
+
+export default connect(mapStateToProps)(reduxForm({
+  form: FORM_NAME,
+  enableReinitialize: true
+})(AgentModal));

@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
+import {validation} from '@exzeo/core-ui/lib/InputLifecycle';
 import AgentsCard from './AgentsCard';
 import AgentModal from './AgentModal';
 import ExistingAgentModal from './ExistingAgentModal';
@@ -21,13 +21,13 @@ export class Agents extends Component {
     });
   };
 
-    toggleNewAgentModal = (agency) => {
-      this.setState({
-        showEditAgent: !this.state.showEditAgent,
-        selectedAgent: { agencyCode: agency.agencyCode },
-        editType: 'New'
-      });
-    }
+  toggleNewAgentModal = (agency) => {
+    this.setState({
+      showEditAgent: !this.state.showEditAgent,
+      selectedAgent: {agencyCode: agency.agencyCode},
+      editType: 'New'
+    });
+  };
 
   toggleAgentModal = editType => (selectedAgent, agency) => {
     if (!selectedAgent || !agency) {
@@ -70,20 +70,20 @@ export class Agents extends Component {
     return (
       <div className="route-content">
         {this.state.showEditAgent &&
-          this.state.selectedAgent &&
-          this.state.editType && (
-            <AgentModal
-              agency={agency}
-              existsInAgencyLicense={this.existsInAgencyLicense()}
-              agencyLicenseArray={agencyLicenseArray}
-              initialValues={this.state.selectedAgent}
-              toggleModal={this.toggleAgentModal}
-              editType={this.state.editType}
-              updateAgency={updateAgency}
-              updateAgent={updateAgent}
-              addAgent={addAgent}
-            />
-          )}
+        this.state.selectedAgent &&
+        this.state.editType && (
+          <AgentModal
+            agency={agency}
+            existsInAgencyLicense={this.existsInAgencyLicense()}
+            agencyLicenseArray={agencyLicenseArray}
+            initialValues={this.state.selectedAgent}
+            toggleModal={this.toggleAgentModal}
+            editType={this.state.editType}
+            updateAgency={updateAgency}
+            updateAgent={updateAgent}
+            addAgent={addAgent}
+          />
+        )}
         {this.state.showAddExistingAgent && (
           <ExistingAgentModal
             agency={agency}
@@ -94,25 +94,36 @@ export class Agents extends Component {
             toggleModal={this.toggleExistingAgentModal}
             updateAgency={updateAgency}
           />
-          )}
+        )}
         {this.state.showRemoveAgent &&
-          this.state.selectedAgent &&
-          <RemoveAgentModal
-            agency={agency}
-            initialValues={this.state.selectedAgent}
-            toggleModal={this.removeAgentModal}
-            updateAgency={updateAgency}
-          />}
+        this.state.selectedAgent &&
+        <RemoveAgentModal
+          agency={agency}
+          initialValues={this.state.selectedAgent}
+          toggleModal={this.removeAgentModal}
+          updateAgency={updateAgency}
+        />}
         <div className="scroll">
           <div className="form-group survey-wrapper" role="group">
             {agents && agents.map((agent, index) => (
-              <AgentsCard agency={agency} agent={agent} agentIndex={index} toggleAgentModal={this.toggleAgentModal('Edit')} removeAgentModal={this.removeAgentModal()} />
+              <AgentsCard
+                key={index}
+                agency={agency}
+                agent={agent}
+                agentIndex={index}
+                toggleAgentModal={this.toggleAgentModal('Edit')}
+                removeAgentModal={this.removeAgentModal()}
+              />
             ))}
             <div className="agent-actions">
-              <hr />
-              <button className="btn btn-sm btn-primary margin right" onClick={this.toggleExistingAgentModal}><i className="fa fa-plus" />Existing Agent</button>
-              <button className="btn btn-sm btn-primary" onClick={() => this.toggleNewAgentModal(agency)}><i className="fa fa-plus" />New Agent</button>
-              <hr />
+              <hr/>
+              <button className="btn btn-sm btn-primary margin right" onClick={this.toggleExistingAgentModal}>
+                <i className="fa fa-plus"/>Existing Agent
+              </button>
+              <button className="btn btn-sm btn-primary" onClick={() => this.toggleNewAgentModal(agency)}>
+                <i className="fa fa-plus"/>New Agent
+              </button>
+              <hr/>
             </div>
           </div>
         </div>
@@ -120,11 +131,5 @@ export class Agents extends Component {
     );
   }
 }
-
-Agents.propTypes = {
-  agency: PropTypes.shape(),
-  agents: PropTypes.shape(),
-  listOfAgents: PropTypes.shape()
-};
 
 export default Agents;
