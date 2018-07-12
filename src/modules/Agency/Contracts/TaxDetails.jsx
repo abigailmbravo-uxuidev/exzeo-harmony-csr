@@ -5,12 +5,12 @@ export const TaxDetails = ({ agency }) => (
     <h3>
       Details{' '}
     </h3>
-    <div className="form-group flex-parent billing">
-      <div className="flex-child">
+    <div className="tax-details">
+      <div className="tax-id">
         <label>Tax ID</label>
         <div>{agency.taxIdNumber}</div>
       </div>
-      <div className="flex-child">
+      <div className="tax-classification">
         <label>Tax Calssification</label>
         <div>{agency.taxClassification}</div>
       </div>

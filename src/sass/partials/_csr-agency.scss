@@ -82,6 +82,15 @@
           flex-direction: column;
           flex-grow: 1;
           flex-shrink: 1;
+
+          .tax-details {
+              display: flex;
+              margin-bottom: $padding*2;
+
+              > div {
+                  margin-right: $padding*2;
+              }
+          }
         }
 
         .route-content {
@@ -550,23 +559,26 @@
                       font-size: $font-size-sm;
                     }
 
-                    display {
+                    > div {
                       font-size: $font-size-base;
                     }
 
                     &.license {
                       .license-date-wrapper {
-                        display {
+                          display: flex;
+                          align-items: flex-end;
+                        > div {
                           margin-right: $padding;
                         }
 
                         .license-effective-date {
+                            display: flex;
                           label {
                             margin-right: $padding/2;
                             font-weight: $font-weight-normal;
                           }
 
-                          display {
+                          > div {
                             font-size: $font-size-sm;
                           }
                         }
@@ -780,29 +792,6 @@
 
       &:last-child {
         margin-right: 0;
-      }
-    }
-  }
-
-  &.contact-crud {
-    flex-direction: row;
-
-    > form {
-      display: flex;
-      overflow: hidden;
-      align-items: center;
-      flex-direction: column;
-      flex-grow: 1;
-      flex-shrink: 1;
-      justify-content: center;
-      max-height: 90%;
-
-      .card {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-        flex-shrink: 1;
-        width: 50%;
       }
     }
   }
