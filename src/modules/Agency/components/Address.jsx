@@ -3,7 +3,7 @@ import { Field } from 'redux-form';
 import { Input } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 
-export const Address = ({ showCounty, sameAsMailingValue }) => (
+export const Address = ({ showCounty, sectionDisabled }) => (
   <React.Fragment>
     <Field
       label="Address 1"
@@ -12,7 +12,7 @@ export const Address = ({ showCounty, sameAsMailingValue }) => (
       dataTest="address1"
       component={Input}
       validate={validation.isRequired}
-      disabled={sameAsMailingValue}
+      disabled={sectionDisabled}
     />
     <Field
       label="Address 2"
@@ -20,7 +20,7 @@ export const Address = ({ showCounty, sameAsMailingValue }) => (
       name="address2"
       dataTest="address2"
       component={Input}
-      disabled={sameAsMailingValue}
+      disabled={sectionDisabled}
     />
     <Field
       label="City"
@@ -29,7 +29,7 @@ export const Address = ({ showCounty, sameAsMailingValue }) => (
       dataTest="city"
       component={Input}
       validate={validation.isRequired}
-      disabled={sameAsMailingValue}
+      disabled={sectionDisabled}
     />
     <Field
       label="State"
@@ -38,7 +38,7 @@ export const Address = ({ showCounty, sameAsMailingValue }) => (
       dataTest="state"
       component={Input}
       validate={validation.isRequired}
-      disabled={sameAsMailingValue}
+      disabled={sectionDisabled}
     />
     <Field
       label="Zip Code"
@@ -47,17 +47,24 @@ export const Address = ({ showCounty, sameAsMailingValue }) => (
       dataTest="zip"
       component={Input}
       validate={validation.isRequired}
-      disabled={sameAsMailingValue}
+      disabled={sectionDisabled}
     />
-    {showCounty && <Field
-      label="County"
-      styleName="county"
-      name="county"
-      dataTest="county"
-      component={Input}
-      validate={validation.isRequired}
-    />}
+    {showCounty &&
+      <Field
+        label="County"
+        styleName="county"
+        name="county"
+        dataTest="county"
+        component={Input}
+        validate={validation.isRequired}
+        disabled={sectionDisabled}
+      />
+    }
   </React.Fragment>
 );
+
+Address.defaultProps = {
+  normalizeAddress
+}
 
 export default Address;

@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field, formValueSelector, FormSection } from 'redux-form';
@@ -6,7 +5,7 @@ import { Select, Radio, Input, Integer } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAgency, updateAgency } from '../../../state/actions/agencyActions';
 import { getEditModalInitialValues } from '../../../state/selectors/agency.selector';
-import Address from './Address';
+import Address from '../components/Address';
 import ContactSection from './Contact';
 import PrincipalSection from './Principal';
 
@@ -146,6 +145,7 @@ export class AgencyModal extends Component {
           <div className="agency-mailing-address">
             <h4>Mailing Address</h4>
             <FormSection name="mailingAddress" component={Address} />
+
             <Field
               label="Tax ID"
               styleName="taxId"
@@ -178,7 +178,7 @@ export class AgencyModal extends Component {
               />
               <label htmlFor="sameAsMailing">Same as Mailing Address</label>
             </h4>
-            <FormSection name="physicalAddress" component={Address} sameAsMailingValue={sameAsMailingValue} showCounty />
+            <FormSection name="physicalAddress" component={Address} sectionDisabled={sameAsMailingValue} showCounty />
           </div>
         </section>
         <section className="agency-contact">
