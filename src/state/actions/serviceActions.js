@@ -26,12 +26,15 @@ export const serviceRequest = data => ({
   data
 });
 
-export function getNotes(noteId, sysNoteId) {
+export function getNotes(noteId, sourceId) {
+  const reduceId = id => id.replace(/(\d{2}-\d{7})-\d{2}/g, (_, group) => group);
+  const query = sourceId ? reduceId(`${noteId},${sourceId}`) : reduceId(noteId);
+
   return async (dispatch) => {
     try {
       const [notes, docsResult] = await Promise.all([
-        fetchNotes(noteId),
-        fetchDocuments(sysNoteId)
+        fetchNotes(query),
+        fetchDocuments(query)
       ]);
 
       docsResult.forEach((doc) => {
@@ -108,12 +111,7 @@ export const addNote = (data, files) => (dispatch) => {
       'Content-Type': `multipart/form-data; boundary=${form._boundary}`
     }
   })
-    .then((response) => {
-      const ids = (data.noteType === 'Policy Note')
-        ? [response.data.number, data.source].toString()
-        : response.data.number;
-      dispatch(getNotes(ids, response.data.number));
-    })
+    .then((response) => dispatch(getNotes(response.data.number, data.source)))
     .catch((error) => {
       const message = handleError(error);
       return dispatch(errorActions.setAppError(message));

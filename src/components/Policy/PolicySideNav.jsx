@@ -73,9 +73,8 @@ export class SideNav extends React.Component {
 
   updateNotes = (props) => {
     const { actions, policy } = this.props;
-    const ids = [policy.policyNumber, policy.sourceNumber];
     return () => {
-      actions.serviceActions.getNotes(ids.toString(), policy.policyNumber);
+      actions.serviceActions.getNotes(policy.policyNumber, policy.sourceNumber);
     };
   }
 

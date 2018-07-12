@@ -13,8 +13,7 @@ export class NotesFiles extends Component {
   componentDidMount () {
     const { actions, policy } = this.props;
     if (policy && policy.policyNumber) {
-      const ids = [policy.policyNumber, policy.sourceNumber];
-      actions.serviceActions.getNotes(ids.toString(), policy.policyNumber);
+      actions.serviceActions.getNotes(policy.policyNumber, policy.sourceNumber);
     }
   }
 
