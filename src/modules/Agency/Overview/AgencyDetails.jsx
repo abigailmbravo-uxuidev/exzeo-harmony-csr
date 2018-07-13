@@ -1,23 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field, formValueSelector, FormSection } from 'redux-form';
-import { Select, Radio, Input, Integer } from '@exzeo/core-ui/lib/Input';
+import { Select, Input } from '@exzeo/core-ui/lib/Input';
+import Button from '@exzeo/core-ui/lib/Button'
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAgency, updateAgency } from '../../../state/actions/agencyActions';
 import { getEditModalInitialValues } from '../../../state/selectors/agency.selector';
 import Address from '../components/Address';
-import ContactSection from './Contact';
-import PrincipalSection from './Principal';
-
-const statusAnswers = [
-  { answer: 'Active', label: 'Active' },
-  { answer: 'InActive', label: 'InActive' }
-];
-
-const okToPayAnswers = [
-  { answer: false, label: 'No' },
-  { answer: true, label: 'Yes' }
-];
+import Contact from './Contact';
+import Details from './Details';
+import Principal from './Principal';
 
 const taxClassificationAnswers = [
   { answer: 'LLC', label: 'LLC' },
@@ -27,13 +19,6 @@ const taxClassificationAnswers = [
 export class AgencyModal extends Component {
   saveAgency = async (data, dispatch, props) => {
     await props.updateAgency(data);
-  };
-
-  resetSameAsMailing = (value) => {
-    const { change, sameAsMailingValue } = this.props;
-    if (!sameAsMailingValue) return value;
-    change('sameAsMailing', false);
-    return value;
   };
 
   handleSameAsMailing = (value, previousValue, allValues) => {
@@ -57,7 +42,7 @@ export class AgencyModal extends Component {
 
   resetForm = () => {
     this.props.reset();
-  }
+  };
 
   render() {
     const {
@@ -65,86 +50,27 @@ export class AgencyModal extends Component {
       initialValues,
       sameAsMailingValue,
       submitting,
-      pristine
+      pristine,
+      change
     } = this.props;
 
     return (
       <form onSubmit={handleSubmit(this.saveAgency)}>
         <h4>Details</h4>
         <section className="agency-details">
-          <Field
-            label="Agency ID"
-            styleName="agencyCode"
-            name="agencyCode"
-            dataTest="agencyCode"
-            component={Input}
-            validate={validation.isRequired}
-            disabled={!!initialValues.agencyCode}
-          />
-          <Field
-            label="Agency Name"
-            styleName="agencyName"
-            name="displayName"
-            dataTest="displayName"
-            component={Input}
-            validate={validation.isRequired}
-          />
-          <Field
-            label="Entity Name"
-            styleName="entityName"
-            name="legalName"
-            dataTest="legalName"
-            component={Input}
-            validate={validation.isRequired}
-          />
-          <Field
-            id="status"
-            name="status"
-            dataTest="status"
-            styleName="status"
-            label="Status"
-            component={Select}
-            validate={validation.isRequired}
-            answers={statusAnswers}
-          />
-          <Field
-            label="TPAID"
-            styleName="tpaid"
-            name="tpaid"
-            dataTest="tpaid"
-            component={Integer}
-            validate={[validation.isRequired, validation.isNumbersOnly]}
-          />
-          <Field
-            name="okToPay"
-            dataTest="okToPay"
-            styleName="okToPay-wrapper"
-            label="Ok to Pay"
-            component={Radio}
-            segmented
-            answers={okToPayAnswers}
-          />
-          <Field
-            label="Tier"
-            styleName="tier"
-            name="tier"
-            dataTest="tier"
-            component={Input}
-            validate={[validation.isRequired, validation.isNumbersOnly]}
-          />
-          <Field
-            label="Web Address"
-            styleName="webAddress"
-            name="websiteUrl"
-            dataTest="websiteUrl"
-            component={Input}
-          />
+          <Details agencyCodeDisabled={!!initialValues.agencyCode} />
           {/* web address validaiton */}
         </section>
         <section className="agency-address">
           <div className="agency-mailing-address">
             <h4>Mailing Address</h4>
-            <FormSection name="mailingAddress" component={Address} />
+            <FormSection name="mailingAddress">
+              <Address
+                sameAsMailingValue={sameAsMailingValue}
+                changeField={change}
+                mailingAddress
+              />
+            </FormSection>
 
             <Field
               label="Tax ID"
@@ -166,49 +92,37 @@ export class AgencyModal extends Component {
             />
           </div>
           <div className="agency-physical-address">
-            <h4>
-                  Physical Address
+            <h4>Physical Address
               <Field
-                normalize={this.handleSameAsMailing}
                 name="sameAsMailing"
-                data-test="sameAsMailing"
-                id="sameAsMailing"
                 component="input"
+                id="sameAsMailing"
                 type="checkbox"
+                data-test="sameAsMailing"
+                normalize={this.handleSameAsMailing}
               />
               <label htmlFor="sameAsMailing">Same as Mailing Address</label>
             </h4>
-            <FormSection name="physicalAddress" component={Address} sectionDisabled={sameAsMailingValue} showCounty />
+            <FormSection name="physicalAddress">
+              <Address
+                sectionDisabled={sameAsMailingValue}
+                showCounty
+              />
+            </FormSection>
           </div>
         </section>
         <section className="agency-contact">
           <h4>Contact</h4>
-          <ContactSection />
+          <Contact />
         </section>
         <section className="agency-principal">
           <h4>Principal</h4>
-          <PrincipalSection />
+          <Principal />
         </section>
         <div className="basic-footer btn-footer">
-          <button
-            tabIndex="0"
-            className="btn btn-secondary"
-            type="button"
-            onClick={this.resetForm}
-          >
-              Cancel
-          </button>
-          <button
-            tabIndex="0"
-            className="btn btn-primary"
-            type="submit"
-            disabled={submitting || pristine}
-          >
-              Save
-          </button>
+          <Button baseClass="secondary" onClick={this.resetForm}>Cancel</Button>
+          <Button baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
         </div>
-
-
       </form>
     );
   }

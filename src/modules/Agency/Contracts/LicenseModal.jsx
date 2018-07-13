@@ -4,8 +4,11 @@ import { connect } from 'react-redux';
 import { reduxForm, Field, FieldArray, formValueSelector } from 'redux-form';
 import { Input, Date, SelectTypeAhead } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
+import Button from '@exzeo/core-ui/lib/Button';
 import CheckBoxGroup from '../CheckBoxGroup';
 import Agents from './Agents';
+
+const FORM_NAME = 'LicenseModal';
 
 export const productOptions = [{ label: 'HO3', value: 'HO3' }, { label: 'AF3', value: 'AF3' }];
 
@@ -23,7 +26,13 @@ handleRemoveAgent = (agentIndex) => {
 
 render() {
   const {
-    isEditing, handleSubmit, agentValue, listOfAgents, handleCloseModal, handleSaveLicense, initialValues
+    isEditing,
+    handleSubmit,
+    agentValue,
+    listOfAgents,
+    handleCloseModal,
+    handleSaveLicense,
+    initialValues
   } = this.props;
   return (
     <div className="modal contract-crud">
@@ -137,8 +146,14 @@ render() {
           </div>
           <div className="card-footer">
             <div className="btn-footer">
-              <button tabIndex="0" className="btn btn-secondary" type="button" onClick={handleCloseModal}>Cancel</button>
-              <button tabIndex="0" className="btn btn-primary" type="submit">Save</button>
+              <Button
+                baseClass="secondary"
+                onClick={handleCloseModal}
+                dataTest="modal-cancel">Cancel</Button>
+              <Button
+                baseClass="primary"
+                type="submit"
+                dataTest="modal-submit">Save</Button>
             </div>
           </div>
         </form>
@@ -152,7 +167,7 @@ LicenseModal.propTypes = {
   initialValues: PropTypes.shape().isRequired
 };
 
-const licenseFormSelector = formValueSelector('LicenseModal');
+const licenseFormSelector = formValueSelector(FORM_NAME);
 const defaultArray = [];
 const mapStateToProps = state => ({
   agentValue: licenseFormSelector(state, 'agent') || defaultArray
@@ -160,6 +175,6 @@ const mapStateToProps = state => ({
 
 
 export default connect(mapStateToProps)(reduxForm({
-  form: 'LicenseModal',
+  form: FORM_NAME,
   enableReinitialize: true
 })(LicenseModal));

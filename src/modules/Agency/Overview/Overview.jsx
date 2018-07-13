@@ -11,11 +11,12 @@ export class Overview extends Component {
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
-              <AgencyDetails agency={agency} editAgency={this.toggleAgencyModal} />
+              <AgencyDetails agency={agency} />
             </div>
           </div>
         </div>
-      </div>);
+      </div>
+    );
   }
 }
 

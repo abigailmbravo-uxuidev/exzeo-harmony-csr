@@ -63,7 +63,7 @@ export const getListOfAgencyAgents = createSelector(
   }
 );
 
-export const agencyLicenseArray = createSelector(
+export const getAgencyLicenseArray = createSelector(
   [getAgency],
   (agency) => {
     if (!agency || !agency.license || !Array.isArray(agency.license)) return [];

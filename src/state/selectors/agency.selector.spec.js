@@ -1,4 +1,4 @@
-import { getEditModalInitialValues, getListOfAgents, agencyLicenseArray } from './agency.selector';
+import { getEditModalInitialValues, getListOfAgents, getAgencyLicenseArray } from './agency.selector';
 import mockAgency from '../../modules/Agency/mockAgency';
 
 describe('Testing getEditModalInitialValues', () => {
@@ -65,7 +65,7 @@ describe('Testing agencyLicenseArray', () => {
         }
       }
     };
-    const result = agencyLicenseArray(state);
+    const result = getAgencyLicenseArray(state);
     const res = [60562];
     expect(result).toEqual(res);
   });

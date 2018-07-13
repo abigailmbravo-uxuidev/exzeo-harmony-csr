@@ -61,11 +61,17 @@ export class Agents extends Component {
       showAddExistingAgent: !this.state.showAddExistingAgent
     });
 
-  existsInAgencyLicense = () => validation.isInArray(this.props.agencyLicenseArray);
+  isInAgencyLicenseArray = () => validation.isInArray(this.props.agencyLicenseArray);
 
   render() {
     const {
-      agency, agents, updateAgency, addAgent, updateAgent, listOfAgents, agencyLicenseArray
+      addAgent,
+      agency,
+      agencyLicenseArray,
+      agents,
+      listOfAgents,
+      updateAgency,
+      updateAgent,
     } = this.props;
     return (
       <div className="route-content">
@@ -74,7 +80,7 @@ export class Agents extends Component {
         this.state.editType && (
           <AgentModal
             agency={agency}
-            existsInAgencyLicense={this.existsInAgencyLicense()}
+            isInAgencyLicenseArray={this.isInAgencyLicenseArray()}
             agencyLicenseArray={agencyLicenseArray}
             initialValues={this.state.selectedAgent}
             toggleModal={this.toggleAgentModal}
@@ -87,7 +93,7 @@ export class Agents extends Component {
         {this.state.showAddExistingAgent && (
           <ExistingAgentModal
             agency={agency}
-            existsInAgencyLicense={this.existsInAgencyLicense()}
+            existsInAgencyLicense={this.isInAgencyLicenseArray()}
             agencyLicenseArray={agencyLicenseArray}
             agents={agents}
             listOfAgents={listOfAgents}

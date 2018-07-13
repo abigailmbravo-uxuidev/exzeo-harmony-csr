@@ -4,7 +4,17 @@ import { Field } from 'redux-form';
 import {AutoCompleteChips, Input, Integer, Phone, Radio} from "@exzeo/core-ui/lib/Input/index";
 import {validation} from "@exzeo/core-ui/lib/InputLifecycle/index";
 
-const Details = (props) => {
+const radioStatusAnswers = [
+  {
+    answer: 'Active',
+    label: 'Active'
+  }, {
+    answer: 'Inactive',
+    label: 'Inactive'
+  }
+];
+
+const Details = ({editType, agencyLicenseArray, isInAgencyLicenseArray}) => {
   return (
     <React.Fragment>
       <Field
@@ -88,7 +98,7 @@ const Details = (props) => {
         noMatchText="No More Licenses Available"
         autoSuggest={agencyLicenseArray}
         component={AutoCompleteChips}
-        validate={[validation.isRequiredArray, existsInAgencyLicense]}
+        validate={[validation.isRequiredArray, isInAgencyLicenseArray]}
       />
     </React.Fragment>
   );
