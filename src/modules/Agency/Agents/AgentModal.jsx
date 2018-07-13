@@ -70,7 +70,7 @@ export class AgentModal extends Component {
         <form onSubmit={handleSubmit(editType === 'Edit' ? this.update : this.add)}>
           <div className="card-header">
             <h4>
-              <i className="fa fa-address-book"/>{editType === 'Edit' ? 'Edit ' : 'New '} Agent
+              <i className="fa fa-address-book"/>{editType === 'Edit' ? ' Edit ' : ' New '} Agent
             </h4>
           </div>
           <div className="card-block">

@@ -2,7 +2,7 @@ import React from 'react';
 import { normalize } from '@exzeo/core-ui/lib/InputLifecycle';
 
 export const AgentsCard = ({
-  agency, agent, agentIndex, toggleAgentModal, removeAgentModal
+  agency, agent, agentIndex, toggleAgentModal, removeAgentModal, isPrimaryAgent
 }) => (
   <div className="agency agent contact card" key={agentIndex}>
     <div className="contact-title">
