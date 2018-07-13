@@ -343,7 +343,10 @@ export function submitEndorsementForm(formData, formProps) {
     const newPolicy = await dispatch(createTransaction(submitData));
 
     if (newPolicy && newPolicy.policyNumber) {
-      dispatch(getPolicy(newPolicy.policyNumber));
+      // createTransaction sends data to a messaging queue which doesn't update fast enough when this is called
+      // Should implement messaging onthe  UI to subscribe to the queue
+      await setTimeout(async x => x, 3000);
+      await dispatch(getPolicy(newPolicy.policyNumber));
     }
   };
 }

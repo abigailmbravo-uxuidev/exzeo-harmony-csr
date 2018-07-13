@@ -65,7 +65,7 @@ export class Endorsements extends React.Component {
 
   componentDidUpdate(prevProps) {
     const {
-      anyTouched, initialValues, clearFields, change
+      anyTouched, initialValues, clearFields, change, submitting
     } = this.props;
     const { isCalculated } = this.state;
     if (isCalculated && anyTouched) {
@@ -73,7 +73,7 @@ export class Endorsements extends React.Component {
         isCalculated: false
       });
     }
-    if (isCalculated && (prevProps.anyTouched !== anyTouched)) {
+    if (isCalculated && (prevProps.anyTouched !== anyTouched) && !submitting) {
       clearFields(false, false, 'newEndorsementAmount', 'newEndorsementPremium', 'newAnnualPremium');
       change('windMitFactor', initialValues.windMitFactor);
       change('rating', initialValues.rating);
