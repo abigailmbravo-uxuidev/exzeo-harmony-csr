@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cloneDeep from 'lodash/cloneDeep'
+import Button from '@exzeo/core-ui/lib/Button'
 import TaxDetail from './TaxDetails';
 import License from './LicenseCard';
 import LicenseModal from './LicenseModal';
@@ -53,39 +54,45 @@ export class Contracts extends Component {
       agency,
       listOfAgents
     } = this.props;
-    const { showModal, isEditing, activeIndex } = this.state;
+    const {
+      activeIndex,
+      isEditing,
+      showModal,
+    } = this.state;
+
     if (!agency) return <div />;
-    const { license } = agency;
+
     return (
       <div id="agency-contracts" className="agency-contracts">
-        { showModal && <LicenseModal
-          initialValues={isEditing ? agency.license[activeIndex] : { agent: [] }}
-          isEditing={isEditing}
-          listOfAgents={listOfAgents}
-          handleCloseModal={this.handleCloseModal}
-          handleSaveLicense={this.handleSaveLicense}
-        />}
+        {showModal &&
+          <LicenseModal
+            initialValues={isEditing ? agency.license[activeIndex] : { agent: [] }}
+            isEditing={isEditing}
+            listOfAgents={listOfAgents}
+            handleCloseModal={this.handleCloseModal}
+            handleSaveLicense={this.handleSaveLicense}
+          />
+        }
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
-              <TaxDetail agency={agency} editAgency={this.toggleAgencyModal} />
+              <TaxDetail agency={agency} />
               <section>
                 <h3>Contracts</h3>
-                {license && license.length > 0 && license.map((l, index) => (
+                {Array.isArray(agency.license) && agency.license.map((li, index) => (
                   <License
-                    key={l.licenseNumber}
-                    license={l}
+                    key={li.licenseNumber}
+                    license={li}
                     editLicense={this.handleEditLicense(index)}
                   />
                 ))}
                 <div className="create-contract">
                   <hr />
-                  <button
-                    className="btn btn-sm btn-primary"
+                  <Button
+                    baseClass="primary"
+                    size="small"
                     onClick={this.handleAddLicense}
-                  >
-                    <i className="fa fa-plus" /> Contract
-                  </button>
+                  ><i className="fa fa-plus" /> Contract</Button>
                   <hr />
                 </div>
               </section>

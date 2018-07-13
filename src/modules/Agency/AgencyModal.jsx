@@ -29,13 +29,6 @@ export class AgencyModal extends Component {
     props.closeModal();
   };
 
-  resetSameAsMailing = (value) => {
-    const { change, sameAsMailingValue } = this.props;
-    if (!sameAsMailingValue) return value;
-    change('sameAsMailing', false);
-    return value;
-  };
-
   handleSameAsMailing = (value, previousValue, allValues) => {
     const { change } = this.props;
     const { mailingAddress } = allValues;
