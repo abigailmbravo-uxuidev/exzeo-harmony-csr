@@ -1016,8 +1016,8 @@
 
             .DBA,
             .emailAddress,
-            .mailingAddress1,
-            .mailingAddress2 {
+            .address1,
+            .address2 {
               grid-column: span 6;
             }
 
@@ -1031,15 +1031,15 @@
                 z-index: 10;
             }
 
-            .mailingCity {
+            .city {
               grid-column: span 7;
             }
 
-            .mailingState {
+            .state {
               grid-column: span 2;
             }
 
-            .mailingZip {
+            .zip {
               grid-column: span 3;
             }
           }
