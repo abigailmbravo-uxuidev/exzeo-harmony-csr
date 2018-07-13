@@ -29,6 +29,10 @@ export const Notes = (props) => {
   const sortAuthor = (a, b, order) => order === 'desc' 
     ? a.createdBy.userName > b.createdBy.userName ? 1 : -1
     : a.createdBy.userName < b.createdBy.userName ? 1 : -1;
+    
+  const sortFiles = (a, b, order) => order === 'desc' 
+    ? a.attachments[0].fileName > b.attachments[0].fileName ? 1 : -1
+    : a.attachments[0].fileName < b.attachments[0].fileName ? 1 : -1;
 
   const attachmentUrl = attachments => (
     <span>
@@ -63,7 +67,7 @@ export const Notes = (props) => {
         <TableHeaderColumn className="note" columnClassName="note" dataField="content" dataSort dataFormat={formatNote} hidden={attachmentStatus} >Note</TableHeaderColumn>
         <TableHeaderColumn className="count" columnClassName="count" dataField="attachments" dataFormat={attachmentCount} hidden />
         <TableHeaderColumn className="file-type" columnClassName="file-type" dataField="attachments" dataSort dataFormat={attachmentType} >File Type</TableHeaderColumn>
-        <TableHeaderColumn className="attachments" columnClassName="attachments" dataField="attachments" dataFormat={attachmentUrl} filterValue={attachmentFilter} dataSort >File</TableHeaderColumn>
+        <TableHeaderColumn className="attachments" columnClassName="attachments" dataField="attachments" dataSort dataFormat={attachmentUrl} filterValue={attachmentFilter} sortFunc={sortFiles}>File</TableHeaderColumn>
       </BootstrapTable>
     </div>
   );
