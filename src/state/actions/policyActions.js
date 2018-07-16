@@ -352,7 +352,7 @@ export function submitEndorsementForm(formData, formProps) {
     const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelSave.data : {};
     await dispatch(cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps));
     // TODO: Implement some type of pub/sub for message queue
-    await setTimeout(async x => x, 3000);
+    await setTimeout(x => x, 3000);
     await dispatch(getPolicy(submitData.policyNumber));
   };
 }
