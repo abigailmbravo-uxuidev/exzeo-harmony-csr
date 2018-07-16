@@ -71,7 +71,7 @@ export class Agents extends Component {
     });
   };
 
-  removeAgent = async (data, dispatch, props) => {
+  handleRemoveAgent = async (data, props) => {
     const { agency } = props;
     agency.license.forEach((l) => {
       const licenseIndex = agency.license.findIndex(li => li.licenseNumber === l.licenseNumber);
@@ -84,6 +84,7 @@ export class Agents extends Component {
         agency.license.splice(licenseIndex, 1, l);
       }
     });
+    // noinspection JSUnusedLocalSymbols
     const { createdAt, createdBy, ...selectedAgency } = agency;
     await props.updateAgency(selectedAgency);
     props.toggleModal()();
@@ -165,7 +166,7 @@ export class Agents extends Component {
             agencyName={agency.displayName}
             agent={agents[this.state.activeIndex]}
             handleCancel={this.handleCloseRemoveAgentModal}
-            handleConfirm={() => {}}
+            handleConfirm={this.handleRemoveAgent}
           />
         }
 
