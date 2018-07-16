@@ -1,3 +1,4 @@
+import cloneDeep from 'lodash/cloneDeep'
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
 import * as serviceRunner from '../../utilities/serviceRunner';
@@ -287,7 +288,7 @@ export async function saveAgent(agentData) {
 /**
  *
  * @param agentData
- * @returns {Promise<Array>}
+ * @returns {Promise<{}>}
  */
 export async function addNewAgent(agentData) {
   try {
@@ -352,6 +353,40 @@ export async function applyLicenseToAgency(data, agency) {
     }
   });
 
+  // noinspection JSUnusedLocalSymbols
   const { createdAt, createdBy, ...selectedAgency } = agency;
   return selectedAgency;
+}
+
+/**
+ *
+ * @param formData
+ * @param formProps
+ * @returns {Function}
+ */
+export function addAgentToAgency(formData, formProps ) {
+  return async dispatch => {
+    const agency = cloneDeep(formProps.agency);
+
+    formData.agencyLicense.forEach((l) => {
+      const license = agency.license.find(li => li.licenseNumber === l);
+      const selectedAgent = license && license.agent ? license.agent.find(a => a.agentCode === formData.agentCode) : null;
+
+      if (license && license.agent && !selectedAgent) {
+        license.agent.push({
+          agentCode: Number(formData.selectedAgent),
+          appointed: String(formData.appointed) === 'true',
+          agentOfRecord: String(formData.agentOfRecord) === 'true'
+        });
+        const licenseIndex = agency.license.findIndex(li => li.licenseNumber === l);
+        if (licenseIndex !== -1) {
+          agency.license.splice(licenseIndex, 1, license);
+        }
+      }
+    });
+
+    // noinspection JSUnusedLocalSymbols
+    const { createdAt, createdBy, ...selectedAgency } = agency;
+    await dispatch(updateAgency(selectedAgency));
+  }
 }

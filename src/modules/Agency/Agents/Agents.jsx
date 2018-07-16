@@ -3,22 +3,36 @@ import PropTypes from 'prop-types';
 import {validation} from '@exzeo/core-ui/lib/InputLifecycle';
 import Button from '@exzeo/core-ui/lib/Button'
 import AgentsCard from './AgentsCard';
-import AgentModal from './AgentModal';
-import ExistingAgentModal from './ExistingAgentModal';
+import AgentDetailModal from './AgentModal';
+import AddExistingAgentModal from './ExistingAgentModal';
 import RemoveAgentModal from './RemoveAgentModal';
 
 export class Agents extends Component {
   state = {
-    showAgentModal: false,
-    showRemoveAgentModal: false,
+    activeIndex: null,
     isEditing: null,
-    activeIndex: null
+    showAddExistingAgentModal: false,
+    showAgentDetailModal: false,
+    showRemoveAgentModal: false,
   };
 
-  removeAgentModal = () => (selectedAgent) => {
+  handleOpenRemoveAgentModal = (activeIndex) => {
     this.setState({
-      selectedAgent,
-      showRemoveAgent: !this.state.showRemoveAgent
+      showRemoveAgentModal: true,
+      activeIndex
+    })
+  };
+
+  handleCloseRemoveAgentModal = () => {
+    this.setState({
+      showRemoveAgentModal: false,
+      activeIndex: null
+    })
+  };
+
+  toggleExistingAgentModal = () => {
+    this.setState({
+      showAddExistingAgent: !this.state.showAddExistingAgent
     });
   };
 
@@ -57,11 +71,6 @@ export class Agents extends Component {
     });
   };
 
-  toggleExistingAgentModal = () =>
-    this.setState({
-      showAddExistingAgent: !this.state.showAddExistingAgent
-    });
-
   removeAgent = async (data, dispatch, props) => {
     const { agency } = props;
     agency.license.forEach((l) => {
@@ -85,6 +94,7 @@ export class Agents extends Component {
   render() {
     const {
       addAgent,
+      addAgentToAgency,
       agency,
       agencyLicenseArray,
       agents,
@@ -92,53 +102,19 @@ export class Agents extends Component {
       updateAgency,
       updateAgent,
     } = this.props;
+
     return (
       <div className="route-content">
-        {this.state.showEditAgent &&
-        this.state.selectedAgent &&
-        this.state.editType && (
-          <AgentModal
-            agency={agency}
-            isInAgencyLicenseArray={this.isInAgencyLicenseArray()}
-            agencyLicenseArray={agencyLicenseArray}
-            initialValues={this.state.selectedAgent}
-            toggleModal={this.toggleAgentModal}
-            editType={this.state.editType}
-            updateAgency={updateAgency}
-            updateAgent={updateAgent}
-            addAgent={addAgent}
-          />
-        )}
-        {this.state.showAddExistingAgent && (
-          <ExistingAgentModal
-            agency={agency}
-            existsInAgencyLicense={this.isInAgencyLicenseArray()}
-            agencyLicenseArray={agencyLicenseArray}
-            agents={agents}
-            listOfAgents={listOfAgents}
-            toggleModal={this.toggleExistingAgentModal}
-            updateAgency={updateAgency}
-          />
-        )}
-        {this.state.showRemoveAgent &&
-        this.state.selectedAgent &&
-        <RemoveAgentModal
-          agencyName={agency.displayName}
-          agent={this.state.selectedAgent}
-          toggleModal={this.removeAgentModal}
-          handleCancel={() => {}}
-          handleConfirm={() => {}}
-        />}
         <div className="scroll">
           <div className="form-group survey-wrapper" role="group">
             {agents && agents.map((agent, index) => (
               <AgentsCard
-                key={index}
+                key={agent.agentCode}
                 agency={agency}
                 agent={agent}
                 agentIndex={index}
-                toggleAgentModal={this.toggleAgentModal('Edit')}
-                removeAgentModal={this.removeAgentModal()}
+                handleEditAgent={this.toggleAgentModal('Edit')}
+                handleRemoveAgent={this.handleOpenRemoveAgentModal}
               />
             ))}
             <div className="agent-actions">
@@ -160,6 +136,39 @@ export class Agents extends Component {
             </div>
           </div>
         </div>
+
+        {this.state.showAgentModal &&
+        <AgentDetailModal
+          agency={agency}
+          isInAgencyLicenseArray={this.isInAgencyLicenseArray()}
+          agencyLicenseArray={agencyLicenseArray}
+          initialValues={this.state.selectedAgent}
+          toggleModal={this.toggleAgentModal}
+          editType={this.state.editType}
+          updateAgency={updateAgency}
+          updateAgent={updateAgent}
+          addAgent={addAgent}
+        />
+        }
+        {this.state.showAddExistingAgent && (
+          <AddExistingAgentModal
+            addAgentToAgency={addAgentToAgency}
+            agency={agency}
+            agencyLicenseArray={agencyLicenseArray}
+            existsInAgencyLicense={this.isInAgencyLicenseArray()}
+            listOfAgents={listOfAgents}
+            toggleModal={this.toggleExistingAgentModal}
+          />
+        )}
+        {this.state.showRemoveAgentModal &&
+          <RemoveAgentModal
+            agencyName={agency.displayName}
+            agent={agents[this.state.activeIndex]}
+            handleCancel={this.handleCloseRemoveAgentModal}
+            handleConfirm={() => {}}
+          />
+        }
+
       </div>
     );
   }

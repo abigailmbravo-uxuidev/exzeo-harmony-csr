@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
-import { Select, AutocompleteChips, Radio } from '@exzeo/core-ui/lib/Input';
+import { Select, AutoCompleteChips, Radio } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
+import Button from '@exzeo/core-ui/lib/Button'
 
 const radioDefaultAnswers = [
   { answer: 'true', label: 'Yes' },
@@ -9,44 +10,26 @@ const radioDefaultAnswers = [
 ];
 
 export class ExistingAgentModal extends Component {
-  // TODO: Clean up this logic!
-  saveAgent = async (data, dispatch, props) => {
-    const { agency } = props;
-    data.agencyLicense.forEach((l) => {
-      const license = agency.license.find(li => li.licenseNumber === l);
-      const selectedAgent = license && license.agent ? license.agent.find(a => a.agentCode === data.agentCode) : null;
-
-      if (license && license.agent && !selectedAgent) {
-        license.agent.push({
-          agentCode: Number(data.selectedAgent),
-          appointed: String(data.appointed) === 'true',
-          agentOfRecord: String(data.agentOfRecord) === 'true'
-        });
-        const licenseIndex = agency.license.findIndex(li => li.licenseNumber === l);
-        if (licenseIndex !== -1) {
-          agency.license.splice(licenseIndex, 1, license);
-        }
-      }
-    });
-    const { createdAt, createdBy, ...selectedAgency } = agency;
-    await props.updateAgency(selectedAgency);
-    props.toggleModal();
-  }
+  handleSave = async (data, dispatch, props) => {
+    const { addAgentToAgency, toggleModal } = props;
+    await addAgentToAgency(data, props);
+    toggleModal();
+  };
 
   render() {
     const {
-      toggleModal,
-      handleSubmit,
-      submitting,
-      listOfAgents,
       agencyLicenseArray,
-      existsInAgencyLicense
+      existsInAgencyLicense,
+      handleSubmit,
+      listOfAgents,
+      submitting,
+      toggleModal
     } = this.props;
 
     return (
       <div className="modal existing-agent-modal">
         <div className="card">
-          <form onSubmit={handleSubmit(this.saveAgent)}>
+          <form onSubmit={handleSubmit(this.handleSave)}>
             <div className="card-header">
               <h4> <i className="fa fa-address-book" /> Existing Agent</h4>
             </div>
@@ -62,8 +45,8 @@ export class ExistingAgentModal extends Component {
                     validate={validation.isRequired}
                     answers={listOfAgents}
                   />
-            </div>
-            <div className="flex-form">
+                </div>
+                <div className="flex-form">
                   <Field
                     label="Agency License"
                     styleName="agencyLicense"
@@ -71,11 +54,11 @@ export class ExistingAgentModal extends Component {
                     dataTest="agencyLicense"
                     placeholder="Add license"
                     autoSuggest={agencyLicenseArray}
-                    component={AutocompleteChips}
+                    component={AutoCompleteChips}
                     validate={[validation.isRequiredArray, existsInAgencyLicense]}
                   />
-              </div>
-              <div className="flex-form">
+                </div>
+                <div className="flex-form">
                   <Field
                     label="Agent Of Record"
                     styleName="agentOfRecord"
@@ -101,22 +84,17 @@ export class ExistingAgentModal extends Component {
             </div>
             <div className="card-footer">
               <div className="btn-footer">
-                <button
-                  tabIndex="0"
-                  className="btn btn-secondary"
-                  type="button"
+                <Button
+                  baseClass="secondary"
+                  dataTest="modal-cancel"
                   onClick={toggleModal}
-                >
-              Cancel
-                </button>
-                <button
-                  tabIndex="0"
-                  className="btn btn-primary"
+                >Cancel</Button>
+                <Button
+                  baseClass="primary"
                   type="submit"
+                  dataTest="modal-submit"
                   disabled={submitting}
-                >
-              Save
-                </button>
+                >Save</Button>
               </div>
             </div>
           </form>
@@ -127,4 +105,7 @@ export class ExistingAgentModal extends Component {
 }
 
 
-export default reduxForm({ form: 'ExistingAgentModal', enableReinitialize: true })(ExistingAgentModal);
+export default reduxForm({
+  form: 'ExistingAgentModal',
+  enableReinitialize: true
+})(ExistingAgentModal);

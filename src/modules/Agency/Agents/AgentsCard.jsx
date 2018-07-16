@@ -1,10 +1,16 @@
 import React from 'react';
 import { normalize } from '@exzeo/core-ui/lib/InputLifecycle';
+import Button from '@exzeo/core-ui/lib/Button';
 
 export const AgentsCard = ({
-  agency, agent, agentIndex, toggleAgentModal, removeAgentModal, isPrimaryAgent
+  agency,
+  agent,
+  agentIndex,
+  toggleAgentModal,
+  handleRemoveAgent,
+  isPrimaryAgent
 }) => (
-  <div className="agency agent contact card" key={agentIndex}>
+  <div className="agency agent contact card">
     <div className="contact-title">
       <i className="fa fa-address-card margin bottom" />
       {/* {agent.agentOfRecord ? <small><i className="card-icon fa fa-bookmark" /><label>AOR</label></small> : null }
@@ -20,44 +26,62 @@ export const AgentsCard = ({
             {agent.mailingAddress.city},&nbsp;
             {agent.mailingAddress.state}&nbsp;
             {agent.mailingAddress.zip}
-            {agent.status ? <span className="additional-data status"><label>STATUS:&nbsp;</label>{agent.status}</span> : null}
+            {agent.status &&
+              <span className="additional-data status"><label>STATUS:&nbsp;</label>{agent.status}</span>
+            }
           </div>
           <div className="contact-methods">
-            {agent.primaryPhoneNumber ?
+            {agent.primaryPhoneNumber &&
               <p className="phone">
                 <i className="fa fa-phone-square" />
                 <a href={`tel:${agent.primaryPhoneNumber}`}>{normalize.phone(agent.primaryPhoneNumber)}</a>
-              </p> : null }
-            {agent.secondaryPhoneNumber ?
+              </p>
+            }
+            {agent.secondaryPhoneNumber &&
               <p className="phone">
                 <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
                 <a href={`tel:${agent.secondaryPhoneNumber}`}>{normalize.phone(agent.secondaryPhoneNumber)}</a>
-              </p> : null }
-            {agent.faxNumber ?
+              </p>
+            }
+            {agent.faxNumber &&
               <p className="fax">
                 <i className="fa fa-fax" />
                 <a href={`tel:${agent.faxNumber}`}>{normalize.phone(agent.faxNumber)}</a>
-              </p> : null }
-            {agent.emailAddress ?
+              </p>
+            }
+            {agent.emailAddress &&
               <p>
                 <i className="fa fa-envelope" />
                 <a href={`mailto:${agent.emailAddress}`}>{agent.emailAddress}</a>
-              </p> : null }
+              </p>
+            }
           </div>
         </div>
         <div className="card-actions">
-          <button className="btn btn-link btn-sm" onClick={() => removeAgentModal(agent, agency)}><i className="fa fa-times-circle" />Remove</button>
-          <button className="btn btn-link btn-sm" onClick={() => toggleAgentModal(agent, agency)}><i className="fa fa-pencil-square" />Edit</button>
+          <Button
+            baseClass="link"
+            size="small"
+            onClick={() => handleRemoveAgent(agentIndex)}
+          ><i className="fa fa-times-circle" />Remove</Button>
+          <Button
+            baseClass="link"
+            size="small"
+            onClick={() => toggleAgentModal(agentIndex)}
+          ><i className="fa fa-pencil-square" />Edit</Button>
         </div>
 
       </div>
       <footer>
         <h5><span className="agency-code">{agency.agencyCode}</span> | <span className="agency">{agency.displayName}</span></h5>
         <div className="footer-actions">
-          <button className="btn btn-link btn-sm"><i className="fa fa-download" />Agent Book</button>
+          <Button
+            baseClass="link"
+            size="small"
+          ><i className="fa fa-download" />Agent Book</Button>
         </div>
       </footer>
     </div>
-  </div>);
+  </div>
+);
 
 export default AgentsCard;

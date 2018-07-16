@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import 'react-tagsinput/react-tagsinput.css';
 import Agents from './Agents';
-import { updateAgent, addAgent, updateAgency } from '../../../state/actions/agencyActions';
+import { updateAgent, addAgent, updateAgency, addAgentToAgency } from '../../../state/actions/agencyActions';
 import { getListOfAgents, getAgencyLicenseArray } from '../../../state/selectors/agency.selector';
 
 const mapStateToProps = state => ({
@@ -11,4 +11,9 @@ const mapStateToProps = state => ({
   agencyLicenseArray: getAgencyLicenseArray(state)
 });
 
-export default connect(mapStateToProps, { updateAgent, addAgent, updateAgency })(Agents);
+export default connect(mapStateToProps, {
+  updateAgent,
+  addAgent,
+  updateAgency,
+  addAgentToAgency
+})(Agents);
