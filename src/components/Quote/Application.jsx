@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { reduxForm, Form, propTypes } from 'redux-form';
+import { reduxForm, Form } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import * as cgActions from '../../actions/cgActions';
-import * as appStateActions from '../../actions/appStateActions';
-import * as quoteStateActions from '../../actions/quoteStateActions';
+import * as cgActions from '../../state/actions/cgActions';
+import * as appStateActions from '../../state/actions/appStateActions';
+import * as quoteStateActions from '../../state/actions/quoteStateActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import QuoteSummaryModal from '../../components/Common/QuoteSummaryModal';
 import Footer from '../Common/Footer';
@@ -141,7 +141,6 @@ QuoteApplication.contextTypes = {
 // Property type definitions
 // ------------------------------------------------
 QuoteApplication.propTypes = {
-  ...propTypes,
   tasks: PropTypes.shape(),
   appState: PropTypes.shape({
     modelName: PropTypes.string,

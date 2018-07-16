@@ -8,10 +8,10 @@ import { Dashboard } from 'uppy/lib/react';
 import XHRUpload from 'uppy/lib/plugins/XHRUpload';
 import moment from 'moment';
 import Loader from '../Common/Loader';
-import * as cgActions from '../../actions/cgActions';
-import * as newNoteActions from '../../actions/newNoteActions';
-import * as serviceActions from '../../actions/serviceActions';
-import * as errorActions from '../../actions/errorActions';
+import * as cgActions from '../../state/actions/cgActions';
+import * as newNoteActions from '../../state/actions/newNoteActions';
+import * as serviceActions from '../../state/actions/serviceActions';
+import * as errorActions from '../../state/actions/errorActions';
 import 'uppy/dist/uppy.css';
 
 export const renderNotes = ({ input, label, type, meta: { touched, error } }) => (

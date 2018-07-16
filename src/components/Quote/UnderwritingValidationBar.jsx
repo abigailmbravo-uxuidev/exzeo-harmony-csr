@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { reduxForm, Form, change, getFormValues } from 'redux-form';
+import { reduxForm, Form, getFormValues } from 'redux-form';
 import orderBy from 'lodash/orderBy';
 import moment from 'moment';
-import {saveUnderwritingExceptions } from '../../actions/serviceActions';
-import { getLatestQuote } from '../../actions/quoteStateActions';
+import { saveUnderwritingExceptions } from '../../state/actions/serviceActions';
+import { getLatestQuote } from '../../state/actions/quoteStateActions';
 import CheckField from '../Form/inputs/CheckField';
 import UnderwritingExceptions from './UnderwritingExceptions';
 
@@ -60,13 +60,6 @@ export const getGroupedExceptions = (quoteData = {}) => {
 };
 
 export class UnderwritingValidationBar extends React.Component {
-  componentWillReceiveProps(nextProps) {
-    nextProps.exceptions && nextProps.exceptions.overridableExceptions.forEach((uw) => {
-      if (!nextProps.fieldValues[uw._id]) {
-        nextProps.dispatch(change('UnderwritingOverride', uw._id, uw.overridden));
-      }
-    });
-  }
   render() {
     const {
       handleSubmit,
@@ -147,7 +140,7 @@ const mapStateToProps = state => ({
   exceptions: getGroupedExceptions(state.service.quote || defaultObject),
 });
 
-// ------------------------------------------------
-// wire up redux form with the redux connect
-// ------------------------------------------------
-export default connect(mapStateToProps, { getLatestQuote, saveUnderwritingExceptions })(reduxForm({ form: 'UnderwritingOverride', enableReinitialize: true })(UnderwritingValidationBar));
+export default connect(mapStateToProps, {
+  getLatestQuote,
+  saveUnderwritingExceptions
+})(reduxForm({ form: 'UnderwritingOverride', enableReinitialize: true })(UnderwritingValidationBar));

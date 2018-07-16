@@ -4,6 +4,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+      - NPM_TOKEN=ENTER_NPM_TOKEN_HERE
     command: npm run server
     container_name: harmony-csr
     environment:

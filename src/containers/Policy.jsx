@@ -1,85 +1,95 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import moment from 'moment-timezone';
 import { Helmet } from 'react-helmet';
-import PolicyHeader from '../components/Policy/PolicyHeader';
-import PolicySideNav from '../components/Policy/PolicySideNav';
-import PolicyDetailHeader from '../components/Policy/DetailHeader';
-import Loader from '../components/Common/Loader';
-import * as appStateActions from '../actions/appStateActions';
-import * as serviceActions from '../actions/serviceActions';
-import * as policyStateActions from '../actions/policyStateActions';
+import Loader from '@exzeo/core-ui/lib/Loader';
+import { setAppState } from '../state/actions/appStateActions';
+import { getZipcodeSettings } from '../state/actions/serviceActions';
+import { getPolicy, createTransaction } from '../state/actions/policyActions';
+import { startWorkflow, batchCompleteTask } from '../state/actions/cgActions';
 import EditEffectiveDataPopUp from '../components/Policy/EditEffectiveDatePopup';
 import ReinstatePolicyPopup from '../components/Policy/ReinstatePolicyPopup';
-
-export const hideEffectiveDatePopUp = (props) => {
-  props.actions.appStateActions.setAppState(
-    props.appState.modelName, props.appState.instanceId,
-    { ...props.appState.data, showEffectiveDateChangePopUp: false }
-  );
-};
-
-export const showEffectiveDatePopUp = (props) => {
-  props.actions.appStateActions.setAppState(
-    props.appState.modelName, props.appState.instanceId,
-    { ...props.appState.data, showEffectiveDateChangePopUp: true }
-  );
-};
-
-export const hideReinstatePolicyPopUp = (props) => {
-  props.actions.appStateActions.setAppState(
-    props.appState.modelName, props.appState.instanceId,
-    { ...props.appState.data, showReinstatePolicyPopUp: false, submitting: false }
-  );
-};
-
-export const reinstatePolicySubmit = (data, dispatch, props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, submitting: true });
-
-  const { policy, summaryLedger } = props;
-  const submitData = {
-    policyID: policy.policyID,
-    policyNumber: policy.policyNumber,
-    billingStatus: summaryLedger.status.code,
-    transactionType: 'Reinstatement'
-  };
-  props.actions.serviceActions.createTransaction(submitData).then(() => {
-    hideReinstatePolicyPopUp(props);
-    props.actions.policyStateActions.updatePolicy(true, policy.policyNumber);
-  });
-};
-
-export const changeEffectiveDate = (data, dispatch, props) => {
-  const effectiveDateUTC = moment.tz(moment.utc(data.effectiveDate).format('YYYY-MM-DD'), props.zipCodeSetting.timezone).format();
-  const workflowId = props.appState.instanceId;
-  props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, isSubmitting: true });
-
-  props.actions.cgActions.startWorkflow('effectiveDateChangeModel', { policyNumber: props.policy.policyNumber, policyID: props.policy.policyID }).then((result) => {
-    const steps = [{
-      name: 'saveEffectiveDate',
-      data: {
-        policyNumber: props.policy.policyNumber, policyID: props.policy.policyID, effectiveDateChangeReason: data.effectiveDateChangeReason, effectiveDate: effectiveDateUTC
-      }
-    }];
-    const startResult = result.payload ? result.payload[0].workflowData.effectiveDateChangeModel.data : {};
-
-    props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, submitting: true });
-
-    props.actions.cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
-      props.actions.appStateActions.setAppState(startResult.modelName, startResult.modelInstanceId, { ...props.appState.data, submitting: false, showEffectiveDateChangePopUp: false });
-      props.actions.policyStateActions.updatePolicy(true, props.policy.policyNumber);
-    });
-  });
-};
+import PolicyDetailHeader from '../components/Policy/DetailHeader';
+import PolicySideNav from '../components/Policy/PolicySideNav';
+import PolicyHeader from '../components/Policy/PolicyHeader';
 
 export class Policy extends React.Component {
   componentWillReceiveProps() {
-    if (!this.props.zipCodeSetting && this.props && this.props.policy && this.props.policy.policyNumber) {
-      this.props.actions.serviceActions.getZipcodeSettings(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property.physicalAddress.zip);
+    if (!this.props.zipcodeSettings && this.props && this.props.policy && this.props.policy.policyNumber) {
+      this.props.getZipcodeSettings(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property.physicalAddress.zip);
     }
   }
+
+  hideEffectiveDatePopUp = () => {
+    const { appState, setAppState } = this.props;
+
+    setAppState(
+      appState.modelName, appState.instanceId,
+      { ...appState.data, showEffectiveDateChangePopUp: false }
+    );
+  };
+
+  changeEffectiveDate = (data) => {
+    const {
+      zipcodeSettings, appState, policy, setAppState, batchCompleteTask, getPolicy, startWorkflow
+    } = this.props;
+    const effectiveDateUTC = moment.tz(moment.utc(data.effectiveDate).format('YYYY-MM-DD'), zipcodeSettings.timezone).format();
+    const workflowId = appState.instanceId;
+    setAppState(appState.modelName, workflowId, { ...appState.data, isSubmitting: true });
+
+    startWorkflow('effectiveDateChangeModel', { policyNumber: policy.policyNumber, policyID: policy.policyID }).then((result) => {
+      const steps = [{
+        name: 'saveEffectiveDate',
+        data: {
+          policyNumber: policy.policyNumber, policyID: policy.policyID, effectiveDateChangeReason: data.effectiveDateChangeReason, effectiveDate: effectiveDateUTC
+        }
+      }];
+      const startResult = result.payload ? result.payload[0].workflowData.effectiveDateChangeModel.data : {};
+
+      setAppState(startResult.modelName, startResult.modelInstanceId, { ...appState.data, submitting: true });
+
+      batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
+        setAppState(startResult.modelName, startResult.modelInstanceId, { ...appState.data, submitting: false, showEffectiveDateChangePopUp: false });
+        getPolicy(policy.policyNumber);
+      });
+    });
+  };
+
+  showEffectiveDatePopUp = () => {
+    const { setAppState, appState } = this.props;
+
+    setAppState(
+      appState.modelName, appState.instanceId,
+      { ...appState.data, showEffectiveDateChangePopUp: true }
+    );
+  };
+
+  hideReinstatePolicyPopUp = () => {
+    const { setAppState, appState } = this.props;
+    setAppState(
+      appState.modelName, appState.instanceId,
+      { ...appState.data, showReinstatePolicyPopUp: false, submitting: false }
+    );
+  };
+
+  reinstatePolicySubmit = (data) => {
+    const {
+      setAppState, appState, policy, summaryLedger, createTransaction, getPolicy
+    } = this.props;
+    setAppState(appState.modelName, appState.instanceId, { ...appState.data, submitting: true });
+
+    const submitData = {
+      policyID: policy.policyID,
+      policyNumber: policy.policyNumber,
+      billingStatus: summaryLedger.status.code,
+      transactionType: 'Reinstatement'
+    };
+    createTransaction(submitData).then(() => {
+      this.hideReinstatePolicyPopUp();
+      getPolicy(policy.policyNumber);
+    });
+  };
 
   render() {
     const { policy, appState, children } = this.props;
@@ -98,8 +108,20 @@ export class Policy extends React.Component {
           <div className="content-wrapper">
             {children}
           </div>
-          {appState.data.showReinstatePolicyPopUp && <ReinstatePolicyPopup {...this.props} reinstatePolicySubmit={reinstatePolicySubmit} hideReinstatePolicyModal={() => hideReinstatePolicyPopUp(this.props)} />}
-          {appState.data.showEffectiveDateChangePopUp && <EditEffectiveDataPopUp {...this.props} changeEffectiveDateSubmit={changeEffectiveDate} hideEffectiveDateModal={() => hideEffectiveDatePopUp(this.props)} />}
+
+          {appState.data.showReinstatePolicyPopUp &&
+            <ReinstatePolicyPopup
+              reinstatePolicySubmit={this.reinstatePolicySubmit}
+              hideReinstatePolicyModal={this.hideReinstatePolicyPopUp}
+            />
+          }
+
+          {appState.data.showEffectiveDateChangePopUp &&
+            <EditEffectiveDataPopUp
+              changeEffectiveDateSubmit={this.changeEffectiveDate}
+              hideEffectiveDateModal={this.hideEffectiveDatePopUp}
+            />
+          }
         </main>
       </div>
     );
@@ -115,20 +137,18 @@ Policy.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  policyState: state.policy,
-  tasks: state.cg,
   appState: state.appState,
-  summaryLedger: state.service.getSummaryLedger,
-  policy: state.service.latestPolicy || {},
-  zipCodeSetting: state.service.getZipcodeSettings || { timezone: '' }
+  policy: state.policyState.policy,
+  summaryLedger: state.policyState.summaryLedger,
+  tasks: state.cg,
+  zipcodeSettings: state.service.getZipcodeSettings
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    policyStateActions: bindActionCreators(policyStateActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
-  }
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Policy);
+export default connect(mapStateToProps, {
+  setAppState,
+  createTransaction,
+  getZipcodeSettings,
+  getPolicy,
+  startWorkflow,
+  batchCompleteTask
+})(Policy);

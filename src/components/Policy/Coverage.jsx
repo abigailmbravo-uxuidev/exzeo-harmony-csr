@@ -1,189 +1,197 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import _ from 'lodash';
-import moment from 'moment';
-import { reduxForm, propTypes } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import * as questionsActions from '../../actions/questionsActions';
-import * as serviceActions from '../../actions/serviceActions';
-import * as cgActions from '../../actions/cgActions';
-import * as appStateActions from '../../actions/appStateActions';
-import * as policyStateActions from '../../actions/policyStateActions';
-import PolicyConnect from '../../containers/Policy';
+import _get from 'lodash/get';
+import _find from 'lodash/find';
+import moment from 'moment';
+import Loader from '@exzeo/core-ui/lib/Loader';
+import { getUIQuestions } from '../../state/actions/questionsActions';
+import { getPolicy, getBillingOptionsForPolicy, getPaymentHistory, getCancelOptions, getPaymentOptionsApplyPayments } from '../../state/actions/policyActions';
 import normalizeNumbers from '../Form/normalizeNumbers';
+import PolicyConnect from '../../containers/Policy';
 import Footer from '../Common/Footer';
 
-export const getPropertyAppraisialLink = (county, questions) => {
-  const answers = _.get(_.find(questions, { name: 'propertyAppraisal' }), 'answers') || [];
-  return _.find(answers, { label: county }) || {};
+export const getPropertyAppraisalLink = (county, questions) => {
+  const question = questions.propertyAppraisal || {};
+  const answers = question.answers || [];
+  return _find(answers, { label: county }) || {};
 };
 
-const handleInitialize = state => state.service.latestPolicy;
+const handleInitialize = state => state.policyState.policy;
 
 export class Coverage extends Component {
   async componentDidMount() {
-    const { actions, match } = this.props;
+    const {
+      getUIQuestions, getPolicy, getCancelOptions, match
+    } = this.props;
     const { policyNumber } = match.params;
 
-    actions.questionsActions.getUIQuestions('propertyAppraisalCSR');
-    actions.policyStateActions.updatePolicy(true, policyNumber);
-    actions.serviceActions.getCancelOptions();
-    actions.serviceActions.getSummaryLedger(policyNumber);
+    getUIQuestions('propertyAppraisalCSR');
+    getPolicy(policyNumber);
+    getCancelOptions();
   }
 
   componentWillReceiveProps(nextProps) {
-    const { actions, policy, summaryLedger } = nextProps;
-    if (policy && policy.policyNumber && summaryLedger.currentPremium) {
+    const { policy } = this.props;
+    const {
+      summaryLedger, getBillingOptionsForPolicy, getPaymentHistory, getPaymentOptionsApplyPayments
+    } = nextProps;
+    if (!policy.policyID && nextProps.policyID && (nextProps.policyID !== policy.policyID) && summaryLedger.currentPremium) {
       const paymentOptions = {
-        effectiveDate: policy.effectiveDate,
-        policyHolders: policy.policyHolders,
-        additionalInterests: policy.additionalInterests,
-        currentPremium: summaryLedger.currentPremium,
-        fullyEarnedFees: policy.rating.worksheet.fees.empTrustFee + policy.rating.worksheet.fees.mgaPolicyFee
+        effectiveDate: nextProps.policy.effectiveDate,
+        policyHolders: nextProps.policy.policyHolders,
+        additionalInterests: nextProps.policy.additionalInterests,
+        currentPremium: nextProps.summaryLedger.currentPremium,
+        fullyEarnedFees: nextProps.policy.rating.worksheet.fees.empTrustFee + nextProps.policy.rating.worksheet.fees.mgaPolicyFee
       };
-      actions.serviceActions.getBillingOptionsForPolicy(paymentOptions);
+      getBillingOptionsForPolicy(paymentOptions);
+      getPaymentHistory(nextProps.policy.policyNumber);
+      getPaymentOptionsApplyPayments();
     }
   }
 
   render() {
     const {
-      coverageLimits,
-      coverageOptions,
-      deductibles,
-      property,
-      rating,
-      underwritingAnswers
-    } = this.props.policy;
-
-    const {
-      policy, questions, summaryLedger, paymentOptions
+      summaryLedger,
+      questions,
+      paymentOptions,
+      policy,
+      policy: {
+        coverageLimits,
+        coverageOptions,
+        deductibles,
+        property,
+        rating,
+        underwritingAnswers
+      }
     } = this.props;
+
+    const monthsOccupied = underwritingAnswers ? underwritingAnswers.monthsOccupied.answer : null;
 
     const discountSurcharge = [
       {
         discountSurcharge: 'Townhouse/Rowhouse',
-        value: _.get(property, 'townhouseRowhouse') === false ? 'No' : 'Yes'
+        value: _get(property, 'townhouseRowhouse') === false ? 'No' : 'Yes'
       }, {
         discountSurcharge: 'Property Ever Rented',
-        value: _.get(underwritingAnswers, 'rented.answer') === 'Yes' ? 'Yes' : 'No'
+        value: _get(underwritingAnswers, 'rented.answer') === 'Yes' ? 'Yes' : 'No'
       }, {
         discountSurcharge: 'Seasonally Occupied',
-        value: _.get(underwritingAnswers, 'monthsOccupied.answer') !== '10+' ? 'Yes' : 'No'
+        value: monthsOccupied === '10+' || monthsOccupied === '7-9' ? 'No' : 'Yes'
       }, {
         discountSurcharge: 'No Prior Insurance',
-        value: _.get(underwritingAnswers, 'noPriorInsuranceSurcharge.answer')
+        value: _get(underwritingAnswers, 'noPriorInsuranceSurcharge.answer')
       }, {
         discountSurcharge: 'Burglar Alarm',
-        value: _.get(property, 'burglarAlarm') ? 'Yes' : 'No'
+        value: _get(property, 'burglarAlarm') ? 'Yes' : 'No'
       }, {
         discountSurcharge: 'Fire Alarm',
-        value: _.get(property, 'fireAlarm') ? 'Yes' : 'No'
+        value: _get(property, 'fireAlarm') ? 'Yes' : 'No'
       }, {
         discountSurcharge: 'Sprinkler',
-        value: _.get(property, 'sprinkler') === 'N' ? 'No' : _.get(property, 'sprinkler')
+        value: _get(property, 'sprinkler') === 'N' ? 'No' : _get(property, 'sprinkler')
       }, {
         discountSurcharge: 'Wind Mit Factor',
-        value: _.get(rating, 'worksheet.elements.windMitigationFactors.windMitigationDiscount') ? _.get(rating, 'worksheet.elements.windMitigationFactors.windMitigationDiscount') : '0'
+        value: _get(rating, 'worksheet.elements.windMitigationFactors.windMitigationDiscount') ? _get(rating, 'worksheet.elements.windMitigationFactors.windMitigationDiscount') : '0'
       }
     ];
 
     const coverageLimitsData = [
       {
         coverage: 'Dwelling Limit',
-        value: `$ ${normalizeNumbers(_.get(coverageLimits, 'dwelling.amount'))}`
+        value: `$ ${normalizeNumbers(_get(coverageLimits, 'dwelling.amount'))}`
       }, {
         coverage: 'Other Structures Limit',
-        value: `$ ${normalizeNumbers(_.get(coverageLimits, 'otherStructures.amount'))}`
+        value: `$ ${normalizeNumbers(_get(coverageLimits, 'otherStructures.amount'))}`
       }, {
         coverage: 'Personal Property Limit',
-        value: `$ ${normalizeNumbers(_.get(coverageLimits, 'personalProperty.amount'))}`
+        value: `$ ${normalizeNumbers(_get(coverageLimits, 'personalProperty.amount'))}`
       }, {
         coverage: 'Loss of Use Limit',
-        value: `$ ${normalizeNumbers(_.get(coverageLimits, 'lossOfUse.amount'))}`
+        value: `$ ${normalizeNumbers(_get(coverageLimits, 'lossOfUse.amount'))}`
       }, {
         coverage: 'Personal Liability Limit',
-        value: `$ ${normalizeNumbers(_.get(coverageLimits, 'personalLiability.amount'))}`
+        value: `$ ${normalizeNumbers(_get(coverageLimits, 'personalLiability.amount'))}`
       }, {
         coverage: 'Medical Payments to Others Limit',
-        value: `$ ${normalizeNumbers(_.get(coverageLimits, 'medicalPayments.amount'))}`
+        value: `$ ${normalizeNumbers(_get(coverageLimits, 'medicalPayments.amount'))}`
       }
     ];
 
     const coverageOptionsData = [
       {
         coverage: 'Mold Property Limit',
-        value: `$ ${normalizeNumbers(_.get(coverageLimits, 'moldProperty.amount'))}`
+        value: `$ ${normalizeNumbers(_get(coverageLimits, 'moldProperty.amount'))}`
       }, {
         coverage: 'Mold Liability Limit',
-        value: `$ ${normalizeNumbers(_.get(coverageLimits, 'moldLiability.amount'))}`
+        value: `$ ${normalizeNumbers(_get(coverageLimits, 'moldLiability.amount'))}`
       }, {
         coverage: 'Personal Property Repl Cost',
-        value: _.get(coverageOptions, 'personalPropertyReplacementCost.answer') ? 'Yes' : 'No'
+        value: _get(coverageOptions, 'personalPropertyReplacementCost.answer') ? 'Yes' : 'No'
       }, {
         coverage: 'Ordinance or Law Coverage Limit',
-        value: `${_.get(coverageLimits, 'ordinanceOrLaw.amount')}%`
+        value: `${_get(coverageLimits, 'ordinanceOrLaw.amount')}%`
       }, {
         coverage: 'Incidental Occ Main',
-        value: _.get(coverageOptions, 'propertyIncidentalOccupanciesMainDwelling.answer') ? 'Yes' : 'No'
+        value: _get(coverageOptions, 'propertyIncidentalOccupanciesMainDwelling.answer') ? 'Yes' : 'No'
       }, {
         coverage: 'Incidental Occ Other',
-        value: _.get(coverageOptions, 'propertyIncidentalOccupanciesOtherStructures.answer') ? 'Yes' : 'No'
+        value: _get(coverageOptions, 'propertyIncidentalOccupanciesOtherStructures.answer') ? 'Yes' : 'No'
       },
       {
         coverage: 'Incidental Occ Liability',
-        value: _.get(coverageOptions, 'liabilityIncidentalOccupancies.answer') ? 'Yes' : 'No'
+        value: _get(coverageOptions, 'liabilityIncidentalOccupancies.answer') ? 'Yes' : 'No'
       }
     ];
 
     const premium = [{
       premium: 'Current Premium',
-      value: `$ ${normalizeNumbers(_.get(summaryLedger, 'currentPremium') || 0)}`
+      value: `$ ${normalizeNumbers(_get(summaryLedger, 'currentPremium') || 0)}`
     }, {
       premium: 'Initial Premium',
-      value: `$ ${normalizeNumbers(_.get(summaryLedger, 'initialPremium') || 0)}`
+      value: `$ ${normalizeNumbers(_get(summaryLedger, 'initialPremium') || 0)}`
     },
     {
       premium: 'Balance Due',
-      value: `$ ${normalizeNumbers(_.get(summaryLedger, 'balance.$numberDecimal') || 0)}`
+      value: `$ ${normalizeNumbers(_get(summaryLedger, 'balance.$numberDecimal') || 0)}`
     }];
 
     const billing = [
       {
         coverage: 'Next Payment',
-        value: `$ ${normalizeNumbers(_.get(summaryLedger, 'noticeAmountDue.$numberDecimal') || 0)}`
+        value: `$ ${normalizeNumbers(_get(summaryLedger, 'noticeAmountDue.$numberDecimal') || 0)}`
       },
       {
         coverage: 'Payment Due',
-        value: _.get(summaryLedger, 'invoiceDueDate') ? (moment(_.get(summaryLedger, 'invoiceDueDate'))).format('L') : '-'
+        value: _get(summaryLedger, 'invoiceDueDate') ? (moment(_get(summaryLedger, 'invoiceDueDate'))).format('L') : '-'
       },
       {
         coverage: 'Bill To',
-        value: `${_.get(_.find(_.get(paymentOptions, 'options'), option => option.billToId === _.get(policy, 'billToId')), 'displayText')}`
+        value: `${_get(_find(_get(paymentOptions, 'options'), option => option.billToId === _get(policy, 'billToId')), 'displayText')}`
       }, {
         coverage: 'Bill Plan',
-        value: _.get(policy, 'billPlan')
+        value: _get(policy, 'billPlan')
       }
     ];
 
     const deductibleData = [
       {
         displayText: 'All Other Perils',
-        amount: `$ ${normalizeNumbers(_.get(deductibles, 'allOtherPerils.amount'))}`
+        amount: `$ ${normalizeNumbers(_get(deductibles, 'allOtherPerils.amount'))}`
       }, {
         displayText: 'Hurricane',
-        amount: `${_.get(deductibles, 'hurricane.amount')}%`
+        amount: `${_get(deductibles, 'hurricane.amount')}%`
       }, {
         displayText: 'Sinkhole',
-        amount: _.get(deductibles, 'sinkhole.amount') ? `${_.get(deductibles, 'sinkhole.amount')}%` : 'No'
+        amount: _get(deductibles, 'sinkhole.amount') ? `${_get(deductibles, 'sinkhole.amount')}%` : 'No'
       }
     ];
 
     const propertyData = property || {};
-    if (!this.props.policy.policyID) {
-      return (<PolicyConnect />);
-    }
+    if (!this.props.policy.policyID) return (<PolicyConnect><Loader /> </PolicyConnect>);
+
     return (
       <PolicyConnect>
         <div className="route-content">
@@ -284,11 +292,11 @@ export class Coverage extends Component {
                         <a
                           target="_blank"
                           rel="noopener noreferrer"
-                          href={getPropertyAppraisialLink(propertyData.physicalAddress.county, questions).answer}
-                        >{getPropertyAppraisialLink(propertyData.physicalAddress.county, questions).label}</a>
+                          href={getPropertyAppraisalLink(propertyData.physicalAddress.county, questions).answer}
+                        >{getPropertyAppraisalLink(propertyData.physicalAddress.county, questions).label}</a>
                       </dd>
                       <dt className="territory">Territory</dt>
-                      <dd className="territory">{_.get(rating, 'worksheet.elements.territoryFactors.name') || '-'}</dd>
+                      <dd className="territory">{_get(rating, 'worksheet.elements.territoryFactors.name') || '-'}</dd>
                     </div>
                   </dl>
                 </div>
@@ -333,7 +341,7 @@ export class Coverage extends Component {
                       <dt className="WBDR">Wind Borne Debris Region (WBDR)</dt>
                       <dd className="WBDR">{property.windMitigation.windBorneDebrisRegion}</dd>
                       <dt className="windMitFactor">Wind Mit Factor</dt>
-                      <dd className="windMitFactor">{_.get(_.find(discountSurcharge, { discountSurcharge: 'Wind Mit Factor' }), 'value')}</dd>
+                      <dd className="windMitFactor">{_get(_find(discountSurcharge, { discountSurcharge: 'Wind Mit Factor' }), 'value')}</dd>
                     </div>
                   </dl>
                 </div>
@@ -367,7 +375,6 @@ Property type definitions
 ------------------------------------------------
 */
 Coverage.propTypes = {
-  ...propTypes,
   tasks: PropTypes.shape(),
   appState: PropTypes.shape({
     modelName: PropTypes.string,
@@ -382,25 +389,23 @@ redux mapping
 ------------------------------------------------
 */
 const mapStateToProps = state => ({
-  paymentOptions: state.service.billingOptions,
-  summaryLedger: state.service.getSummaryLedger || {},
-  tasks: state.cg,
   appState: state.appState,
-  fieldValues: _.get(state.form, 'Coverage.values', {}),
+  fieldValues: _get(state.form, 'Coverage.values', {}),
   initialValues: handleInitialize(state),
-  policy: state.service.latestPolicy || {},
-  questions: state.questions
+  paymentOptions: state.policyState.billingOptions,
+  policy: state.policyState.policy,
+  policyID: state.policyState.policyID,
+  summaryLedger: state.policyState.summaryLedger,
+  questions: state.questions,
+  tasks: state.cg
 
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    policyStateActions: bindActionCreators(policyStateActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch),
-    questionsActions: bindActionCreators(questionsActions, dispatch),
-    cgActions: bindActionCreators(cgActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
-  }
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Coverage' })(Coverage));
+export default connect(mapStateToProps, {
+  getBillingOptionsForPolicy,
+  getCancelOptions,
+  getUIQuestions,
+  getPolicy,
+  getPaymentHistory,
+  getPaymentOptionsApplyPayments
+})(reduxForm({ form: 'Coverage' })(Coverage));
