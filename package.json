@@ -20,13 +20,8 @@
     "node-sass": "~4.7.2",
     "npm-run-all": "~4.1.2",
     "prop-types": "~15.6.0",
-<<<<<<< HEAD
-    "react": "~16.2.0",
+    "react": "~16.4.x",
     "react-bootstrap-table": "^4.3.1",
-=======
-    "react": "16.4.x",
-    "react-bootstrap-table": "~4.0.3",
->>>>>>> develop
     "react-cookie": "~2.1.2",
     "react-dom": "16.4.x",
     "react-dropzone": "~4.2.3",
@@ -44,12 +39,8 @@
     "redux-form": "7.3.x",
     "redux-persist": "~4.10.2",
     "redux-thunk": "~2.2.0",
-<<<<<<< HEAD
     "uppy": "^0.25.6",
-=======
     "reselect": "^3.0.1",
-    "uppy": "^0.23.1",
->>>>>>> develop
     "validator": "~7.2.0"
   },
   "devDependencies": {

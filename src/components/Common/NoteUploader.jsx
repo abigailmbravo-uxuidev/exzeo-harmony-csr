@@ -7,7 +7,7 @@ import Uppy from 'uppy/lib/core';
 import { Dashboard } from 'uppy/lib/react';
 import XHRUpload from 'uppy/lib/plugins/XHRUpload';
 import moment from 'moment';
-import Loader from '../Common/Loader';
+import Loader from '@exzeo/core-ui/lib/Loader';
 import * as cgActions from '../../state/actions/cgActions';
 import * as newNoteActions from '../../state/actions/newNoteActions';
 import * as serviceActions from '../../state/actions/serviceActions';

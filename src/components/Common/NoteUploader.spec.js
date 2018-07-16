@@ -5,8 +5,7 @@ import thunk from 'redux-thunk';
 import MockAdapter from 'axios-mock-adapter';
 import { propTypes } from 'redux-form';
 import { mount, shallow } from 'enzyme';
-<<<<<<< HEAD
-import * as serviceActions from '../../actions/serviceActions';
+import * as serviceActions from '../../state/actions/serviceActions';
 import NoteUploader, { validate, renderNotes } from './NoteUploader';
 
 describe('Testing NoteUploader component', () => { 
@@ -30,34 +29,6 @@ describe('Testing NoteUploader component', () => {
               family_name: "Test"
             }
           }
-=======
-import * as serviceActions from '../../state/actions/serviceActions';
-import ConnectedApp, { minimzeButtonHandler, validate, renderNotes, Uploader } from './NoteUploader';
-
-const localStorageMock = {
-  getItem() {},
-  setItem() {},
-  clear() {}
-};
-global.localStorage = localStorageMock;
-const middlewares = [];
-const mockStore = configureStore(middlewares);
-
-describe('Testing NoteUploader component', () => {
-  it('should test connected app', () => {
-    const initialState = {
-      authState: {
-      }
-    };
-    const store = mockStore(initialState);
-    const props = {
-      actions: {
-        serviceActions: {
-          addNote() {}
-        },
-        newNoteActions: {
-          toggleNote() {}
->>>>>>> develop
         },
         appState: {
           data: {
