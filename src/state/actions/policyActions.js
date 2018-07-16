@@ -343,13 +343,13 @@ export function submitEndorsementForm(formData, formProps) {
     submitData.forms = forms;
 
     // TODO: Make cg actions a utility rather than stored in state
-    const result = await dispatch(cgActions.startWorkflow('endorse0616'));
+    const result = await dispatch(cgActions.startWorkflow('endorsePolicyModelSave'));
 
     const steps = [{
       name: 'saveEndorsement',
       data: submitData
     }];
-    const startResult = result.payload ? result.payload[0].workflowData.endorse0616.data : {};
+    const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelSave.data : {};
     await dispatch(cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps));
     // TODO: Implement some type of pub/sub for message queue
     await setTimeout(async x => x, 3000);
