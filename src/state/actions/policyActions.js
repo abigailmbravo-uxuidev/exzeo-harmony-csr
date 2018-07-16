@@ -2,6 +2,7 @@ import { convertToRateData } from '../../utilities/endorsementModel';
 import * as serviceRunner from '../../utilities/serviceRunner';
 import * as types from './actionTypes';
 import * as errorActions from './errorActions';
+import * as cgActions from './cgActions';
 import endorsementUtils from '../../utilities/endorsementModel';
 
 
@@ -340,11 +341,17 @@ export function submitEndorsementForm(formData, formProps) {
     const submitData = endorsementUtils.generateModel(formData, formProps);
     const forms = await fetchListOfForms(formProps.policy, submitData.rating, 'New Business');
     submitData.forms = forms;
-    const newPolicy = await dispatch(createTransaction(submitData));
 
-    if (newPolicy && newPolicy.policyNumber) {
-      dispatch(getPolicy(newPolicy.policyNumber));
-    }
+    // TODO: Make cg actions a utility rather than stored in state
+    const result = await dispatch(cgActions.startWorkflow('endorsePolicyModelSave'));
+
+    const steps = [{
+      name: 'saveEndorsement',
+      data: submitData
+    }];
+    const startResult = result.payload ? result.payload[0].workflowData.endorsePolicyModelSave.data : {};
+    await dispatch(cgActions.batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps));
+    await dispatch(getPolicy(submitData.policyNumber));
   };
 }
 
