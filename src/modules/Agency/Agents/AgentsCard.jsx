@@ -6,7 +6,7 @@ export const AgentsCard = ({
   agency,
   agent,
   agentIndex,
-  toggleAgentModal,
+  handleEditAgent,
   handleRemoveAgent,
   isPrimaryAgent
 }) => (
@@ -66,7 +66,7 @@ export const AgentsCard = ({
           <Button
             baseClass="link"
             size="small"
-            onClick={() => toggleAgentModal(agentIndex)}
+            onClick={() => handleEditAgent(agentIndex)}
           ><i className="fa fa-pencil-square" />Edit</Button>
         </div>
 

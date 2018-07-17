@@ -18,87 +18,88 @@ const Details = ({editType, agencyLicenseArray, isInAgencyLicenseArray}) => {
   return (
     <React.Fragment>
       <Field
-        label="Agent ID"
-        styleName="agentCode"
         name="agentCode"
+        label="Agent ID"
+        component={Integer}
         dataTest="agentCode"
+        styleName="agentCode"
         validate={[validation.isRequired, validation.isNumbersOnly]}
         disabled={editType === 'Edit'}
-        component={Integer}
         thousandSeparator={false}
       />
       <Field
-        label="First Name"
-        styleName="firstName"
         name="firstName"
+        label="First Name"
+        component={Input}
         dataTest="firstName"
-        component={Input}
+        styleName="firstName"
         validate={validation.isRequired}
       />
       <Field
-        label="Last Name"
-        styleName="lastName"
         name="lastName"
+        label="Last Name"
+        component={Input}
         dataTest="lastName"
-        component={Input}
+        styleName="lastName"
         validate={validation.isRequired}
       />
       <Field
-        label="Primary Phone"
-        styleName="primaryPhoneNumber"
         name="primaryPhoneNumber"
+        label="Primary Phone"
+        component={Phone}
         dataTest="primaryPhoneNumber"
-        component={Phone}
+        styleName="primaryPhoneNumber"
         validate={validation.isRequired}
       />
       <Field
-        label="Secondary Phone"
-        styleName="secondaryPhoneNumber"
         name="secondaryPhoneNumber"
-        dataTest="secondaryPhoneNumber"
+        label="Secondary Phone"
         component={Phone}
+        dataTest="secondaryPhoneNumber"
+        styleName="secondaryPhoneNumber"
       />
       <Field
-        label="Fax Number"
-        styleName="faxNumber"
         name="faxNumber"
+        label="Fax Number"
+        component={Phone}
         dataTest="faxNumber"
-        component={Phone}/>
-      <Field
-        label="Status"
-        styleName="status"
-        name="status"
-        dataTest="status"
-        component={Radio}
-        segmented
-        answers={radioStatusAnswers}
-        validate={validation.isRequired}
+        styleName="faxNumber"
       />
       <Field
-        label="Email Address"
-        styleName="emailAddress"
+        name="status"
+        label="Status"
+        component={Radio}
+        dataTest="status"
+        styleName="status"
+        validate={validation.isRequired}
+        answers={radioStatusAnswers}
+        segmented
+      />
+      <Field
         name="emailAddress"
-        dataTest="emailAddress"
+        label="Email Address"
         component={Input}
+        dataTest="emailAddress"
+        styleName="emailAddress"
         validate={[validation.isRequired, validation.isEmail]}
       />
       <Field
-        label="Doing Business As Agency"
-        styleName="DBA"
         name="DBA"
-        dataTest="DBA"
+        label="Doing Business As Agency"
         component={Input}
+        dataTest="DBA"
+        styleName="DBA"
       />
       <Field
-        label="Agency License"
-        styleName="agencyLicense"
         name="agencyLicense"
+        label="Agency License"
+        component={AutoCompleteChips}
         dataTest="agencyLicense"
+        styleName="agencyLicense"
+        validate={[validation.isRequiredArray, isInAgencyLicenseArray]}
         placeholder="Add license"
         noMatchText="No More Licenses Available"
         autoSuggest={agencyLicenseArray}
-        component={AutoCompleteChips}
-        validate={[validation.isRequiredArray, isInAgencyLicenseArray]}
       />
     </React.Fragment>
   );

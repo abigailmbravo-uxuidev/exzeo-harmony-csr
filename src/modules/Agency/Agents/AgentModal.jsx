@@ -1,54 +1,33 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {reduxForm, Field, FieldArray, FormSection, getFormValues} from 'redux-form';
-import {applyLicenseToAgency} from '../../../state/actions/agencyActions';
+import Button from '@exzeo/core-ui/lib/Button';
 import Address from "../components/Address";
 import Details from './Details';
 import License from "./License";
 
-const FORM_NAME = 'AgentModal';
+const FORM_NAME = 'AgentDetails';
 
-const radioDefaultAnswers = [
-  {
-    answer: 'true',
-    label: 'Yes'
-  }, {
-    answer: 'false',
-    label: 'No'
-  }
-];
+// const radioDefaultAnswers = [
+//   {
+//     answer: 'true',
+//     label: 'Yes'
+//   }, {
+//     answer: 'false',
+//     label: 'No'
+//   }
+// ];
 
 export class AgentModal extends Component {
-  update = async (data, dispatch, props) => {
-    const {
-      createdBy,
-      createdAt,
-      ...agent
-    } = data;
-    const {agency} = props;
-    await props.updateAgent(agent, props.agency);
-    const agencyData = await applyLicenseToAgency(data, agency);
-    await props.updateAgency(agencyData);
-    props.toggleModal('')();
-  };
-  add = async (data, dispatch, props) => {
-    const {
-      createdBy,
-      createdAt,
-      ...agent
-    } = data;
-    const {agency} = props;
-    await props.addAgent(agent, agency);
-    const agencyData = await applyLicenseToAgency(data, agency);
-    await props.updateAgency(agencyData);
-    props.toggleModal('')();
+  handleSave = async (data) => {
+    await this.props.handleSaveAgent(data)
   };
 
   render() {
     const {
       toggleModal,
       handleSubmit,
-      editType,
+      isEditing,
       submitting,
       agencyLicenseArray,
       isInAgencyLicenseArray,
@@ -58,10 +37,10 @@ export class AgentModal extends Component {
     return (
       <div className="modal agent-crud">
         <div className="card">
-          <form onSubmit={handleSubmit(editType === 'Edit' ? this.update : this.add)}>
+          <form onSubmit={handleSubmit(this.handleSave)}>
             <div className="card-header">
               <h4>
-                <i className="fa fa-address-book"/>{editType === 'Edit' ? ' Edit ' : ' New '} Agent
+                <i className="fa fa-address-book"/>{isEditing ? ' Edit ' : ' New '} Agent
               </h4>
             </div>
             <div className="card-block">
@@ -88,19 +67,24 @@ export class AgentModal extends Component {
 
               </section>
               <section className="agent-license">
-
-                <FieldArray name='license' component={License} licenseValue={licenseValue}/>
-
+                <FieldArray
+                  name='license'
+                  component={License}
+                  licenseValue={licenseValue}
+                />
               </section>
             </div>
             <div className="card-footer">
               <div className="btn-footer">
-                <button tabIndex="0" className="btn btn-secondary" type="button" onClick={toggleModal()}>
-                  Cancel
-                </button>
-                <button tabIndex="0" className="btn btn-primary" type="submit" disabled={submitting}>
-                  Save
-                </button>
+                <Button
+                  baseClass="secondary"
+                  onClick={toggleModal()}
+                >Cancel</Button>
+                <Button
+                  baseClass="primary"
+                  type="submit"
+                  disabled={submitting}
+                >Save</Button>
               </div>
             </div>
           </form>

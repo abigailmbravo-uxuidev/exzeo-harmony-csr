@@ -305,13 +305,15 @@ export async function addNewAgent(agentData) {
   }
 }
 
+
+// TODO move to utilities
 /**
  *
  * @param data
  * @param agency
  * @returns {Promise<*>}
  */
-export async function applyLicenseToAgency(data, agency) {
+export function applyLicenseToAgency(data, agency) {
   // loop over available licenses to apply to an agent
   /* nested deep in the agency object:  agency.license[0].agents[0]
      agent: { agentCode :123, appointed: true, agentOfRecord: true  }
@@ -361,12 +363,12 @@ export async function applyLicenseToAgency(data, agency) {
 /**
  *
  * @param formData
- * @param formProps
+ * @param currentAgency
  * @returns {Function}
  */
-export function addAgentToAgency(formData, formProps ) {
+export function addAgentToAgency(formData, currentAgency) {
   return async dispatch => {
-    const agency = cloneDeep(formProps.agency);
+    const agency = cloneDeep(currentAgency);
 
     formData.agencyLicense.forEach((l) => {
       const license = agency.license.find(li => li.licenseNumber === l);

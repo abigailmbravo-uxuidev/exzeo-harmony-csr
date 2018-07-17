@@ -10,10 +10,8 @@ const radioDefaultAnswers = [
 ];
 
 export class ExistingAgentModal extends Component {
-  handleSave = async (data, dispatch, props) => {
-    const { addAgentToAgency, toggleModal } = props;
-    await addAgentToAgency(data, props);
-    toggleModal();
+  handleSave = async (data) => {
+    await this.props.handleSaveAgent(data)
   };
 
   render() {
