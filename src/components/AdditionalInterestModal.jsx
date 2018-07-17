@@ -63,7 +63,7 @@ export class AdditionalInterestModal extends React.Component {
       name1: data.name1,
       name2: data.name2,
       referenceNumber: data.referenceNumber || '',
-      order: data.order,
+      order: Number(data.order) || 0,
       active: true,
       type: data.type,
       phoneNumber: String(data.phoneNumber).length > 0 ? data.phoneNumber : '',
@@ -90,7 +90,7 @@ export class AdditionalInterestModal extends React.Component {
         // if user changed the order of mortgagee, make sure we swap the order of mortgagee that currently holds that order
         updatedAdditionalInterests.forEach((ai) => {
           if (ai.type === ADDITIONAL_INTERESTS.mortgagee && ai.order === data.order) {
-            ai.order = formProps.initialValues.order;
+            ai.order = Number(formProps.initialValues.order);
           }
         });
       }

@@ -41,10 +41,7 @@ export class GenerateDocsForm extends Component {
         document.body.removeChild(link);
         return true;
       })
-      .catch((err) => {
-        const error = err.response ? err.response.statusText : err;
-        return errorHandler({ message: error });
-      });
+      .catch((err) => errorHandler({ message: err.message }));
   }
 
   toggleDate = (_, value) => this.setState({ showDate: value && this.fieldsWithDate.includes(value) })
