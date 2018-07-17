@@ -137,17 +137,21 @@ export class MortgageBilling extends Component {
         type: addAdditionalInterestType
       };
 
-      let mortgageeOrderAnswers = '';
+
       if (policy.additionalInterests && addAdditionalInterestType === 'Mortgagee') {
-        mortgageeOrderAnswers = getMortgageeOrderAnswers(questions, (policy.additionalInterests || null));
+        const mortgageeOrderAnswers = getMortgageeOrderAnswers(questions, (policy.additionalInterests || null));
+        return {
+          ...initialValues,
+          order: mortgageeOrderAnswers.length === 1 ? mortgageeOrderAnswers[0].answer : ''
+        };
       }
       return {
         ...initialValues,
-        order: mortgageeOrderAnswers.length === 1 ? mortgageeOrderAnswers[0].answer : ''
-      };
+        order: policy.additionalInterests.filter(ai => ai.active && ai.type === addAdditionalInterestType).length
+      }
     }
 
-    const mortgageeAnswers = getAnswers('mortgagee', questions)
+    const mortgageeAnswers = getAnswers('mortgagee', questions);
     const mortgagee = mortgageeAnswers.find(ai => ai.AIName1 === selectedAI.name1 && ai.AIAddress1 === selectedAI.mailingAddress.address1);
 
     return {
