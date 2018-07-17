@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {validation} from '@exzeo/core-ui/lib/InputLifecycle';
+import cloneDeep from 'lodash/cloneDeep';
+import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 import Button from '@exzeo/core-ui/lib/Button'
 import AgentsCard from './AgentsCard';
 import AgentDetailModal from './AgentModal';
@@ -16,23 +17,16 @@ export class Agents extends Component {
     showRemoveAgentModal: false,
   };
 
-  handleOpenRemoveAgentModal = (activeIndex) => {
+  toggleRemoveAgentModal = (activeIndex) => {
     this.setState({
-      showRemoveAgentModal: true,
-      activeIndex
-    })
-  };
-
-  handleCloseRemoveAgentModal = () => {
-    this.setState({
-      showRemoveAgentModal: false,
-      activeIndex: null
+      showRemoveAgentModal: !!activeIndex,
+      activeIndex: activeIndex || null
     })
   };
 
   toggleExistingAgentModal = () => {
     this.setState({
-      showAddExistingAgent: !this.state.showAddExistingAgent
+      showAddExistingAgentModal: !this.state.showAddExistingAgentModal
     });
   };
 
@@ -72,8 +66,10 @@ export class Agents extends Component {
   };
 
   handleRemoveAgent = async (data, props) => {
-    const { agency } = props;
-    agency.license.forEach((l) => {
+    const { agency, updateAgency } = this.props;
+    const updatedAgency = cloneDeep(agency);
+
+    updatedAgency.license.forEach((l) => {
       const licenseIndex = agency.license.findIndex(li => li.licenseNumber === l.licenseNumber);
       const agentIndex = l.agent.findIndex(a => a.agentCode === Number(data.agentCode));
 
@@ -85,12 +81,14 @@ export class Agents extends Component {
       }
     });
     // noinspection JSUnusedLocalSymbols
-    const { createdAt, createdBy, ...selectedAgency } = agency;
-    await props.updateAgency(selectedAgency);
-    props.toggleModal()();
+    const { createdAt, createdBy, ...selectedAgency } = updatedAgency;
+    await updateAgency(selectedAgency);
+    this.toggleRemoveAgentModal();
   };
 
-  isInAgencyLicenseArray = () => validation.isInArray(this.props.agencyLicenseArray);
+  isInAgencyLicenseArray = () => {
+    return validation.isInArray(this.props.agencyLicenseArray);
+  };
 
   render() {
     const {
@@ -115,7 +113,7 @@ export class Agents extends Component {
                 agent={agent}
                 agentIndex={index}
                 handleEditAgent={this.toggleAgentModal('Edit')}
-                handleRemoveAgent={this.handleOpenRemoveAgentModal}
+                handleRemoveAgent={this.toggleRemoveAgentModal}
               />
             ))}
             <div className="agent-actions">
@@ -151,7 +149,7 @@ export class Agents extends Component {
           addAgent={addAgent}
         />
         }
-        {this.state.showAddExistingAgent && (
+        {this.state.showAddExistingAgentModal &&
           <AddExistingAgentModal
             addAgentToAgency={addAgentToAgency}
             agency={agency}
@@ -160,12 +158,12 @@ export class Agents extends Component {
             listOfAgents={listOfAgents}
             toggleModal={this.toggleExistingAgentModal}
           />
-        )}
+        }
         {this.state.showRemoveAgentModal &&
           <RemoveAgentModal
             agencyName={agency.displayName}
-            agent={agents[this.state.activeIndex]}
-            handleCancel={this.handleCloseRemoveAgentModal}
+            initialValues={agents[this.state.activeIndex]}
+            handleCancel={this.toggleRemoveAgentModal}
             handleConfirm={this.handleRemoveAgent}
           />
         }
