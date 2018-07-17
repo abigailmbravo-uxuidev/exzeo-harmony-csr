@@ -8,3 +8,4 @@ config:
     - auth0_connection
     - auth0_domain
     - auth0_primary_url
+    - request_size
