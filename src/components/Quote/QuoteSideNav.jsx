@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { NavLink } from 'react-router-dom';
-import { reduxForm, propTypes } from 'redux-form';
 import * as appStateActions from '../../state/actions/appStateActions';
 import UWconditions from '../Common/UWconditions';
 import * as newNoteActions from '../../state/actions/newNoteActions';
@@ -66,7 +65,7 @@ const csrLinks = ({quoteId}) => {
 };
 
 export const NewNoteFileUploaderPopup = (props) => {
-  props.actions.newNoteActions.toggleNote({noteType: 'Quote Note', documentId: props.quoteData.quoteNumber})
+  props.actions.newNoteActions.toggleNote({ noteType: 'Quote Note', documentId: props.quoteData.quoteNumber })
 };
 
 export const UWconditionsPopup = (props) => {
@@ -87,7 +86,7 @@ export const SideNav = (props) => {
     <nav className="site-nav">
       { redirect }
       <ul>
-        {csrLinks({quoteId: quoteData._id}).map((link, index) => (
+        {csrLinks({quoteId: quoteData._id}).map((link) => (
           <li key={link.key}>
             <span className={link.styleName}>
               <NavLink to={link.link} activeClassName="active" exact>{link.label}</NavLink>
@@ -110,7 +109,6 @@ export const SideNav = (props) => {
 
 // TODO: Needs to be connected to wherever it's gonnna get nav links from
 SideNav.propTypes = {
-  ...propTypes,
   completedTasks: PropTypes.any, // eslint-disable-line
   activateRedirectLink: PropTypes.string,
   activateRedirect: PropTypes.bool,
@@ -142,4 +140,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'SideNav' })(SideNav));
+export default connect(mapStateToProps, mapDispatchToProps)(SideNav);

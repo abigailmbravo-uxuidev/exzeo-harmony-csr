@@ -20,83 +20,81 @@ import GenerateDocsForm from './GenerateDocsForm';
  */
 const csrLinks = ({ policyNumber }) => [{
   key: 'coverage',
-  link: `/policy/coverage/${policyNumber}`,
+  link: `/policy/${policyNumber}/coverage`,
   label: 'Coverage / Rating',
   styleName: 'coverage',
   exact: true
 }, {
   key: 'policyholder',
-  link: '/policy/policyholder',
+  link: `/policy/${policyNumber}/policyHolder`,
   label: 'Policyholder / Agent',
   styleName: 'policyholder',
   exact: true
 }, {
   key: 'billing',
-  link: '/policy/billing',
+  link: `/policy/${policyNumber}/billing`,
   label: 'Mortgage / Billing',
   styleName: 'billing',
   exact: true
 }, {
   key: 'notes',
-  link: '/policy/notes',
+  link: `/policy/${policyNumber}/notes`,
   label: 'Notes / Files',
   styleName: 'notes',
   exact: true
 }, {
   key: 'cancel',
-  link: '/policy/cancel',
+  link: `/policy/${policyNumber}/cancel`,
   label: 'Cancel Policy',
   styleName: 'cancel',
   exact: true
 },
 {
   key: 'endorsements',
-  link: '/policy/endorsements',
+  link: `/policy/${policyNumber}/endorsements`,
   label: 'Endorsements',
-  styleName: 'endoresments',
+  styleName: 'endorsements',
   exact: true
 }];
 
 export class SideNav extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { showDocsForm: false };
-  }
+  state = {
+    showDocsForm: false
+  };
 
-  newNote = (props) => {
-    props.actions.newNoteActions.toggleNote({ noteType: 'Policy Note', documentId: props.policy.policyNumber, sourceNumber: props.policy.sourceNumber });
-  }
+  newNote = () => {
+    const { actions, policy } = this.props;
+    actions.newNoteActions.toggleNote({
+      noteType: 'Policy Note',
+      documentId: policy.policyNumber,
+      sourceNumber: policy.sourceNumber
+    });
+  };
 
-  generateDoc = (props) => {
+  generateDoc = () => {
     this.setState({ showDocsForm: !this.state.showDocsForm });
   };
 
-  updateNotes = (props) => {
+  updateNotes = () => {
     const { actions, policy } = this.props;
     const ids = [policy.policyNumber, policy.sourceNumber];
     return () => {
       actions.serviceActions.getNotes(ids.toString(), policy.policyNumber);
     };
-  }
+  };
 
   render() {
     const { actions, policy } = this.props;
     return (
       <nav className="site-nav">
         <ul>
-          {csrLinks({ policyNumber: policy.policyNumber }).map((link, index) => (
-              link.outside ?
-                <li key={index}>
-                  <a className="csr-dashboard" href="/">
-                    <span>{link.label}</span>
-                  </a>
-                </li> :
-                <li key={index}>
-                  <span className={link.styleName}>
-                    <NavLink to={link.link} activeClassName="active" exact>{link.label}</NavLink>
-                  </span>
-                </li>
-            ))}
+          {csrLinks({ policyNumber: policy.policyNumber }).map((link) => (
+            <li key={link.key}>
+              <span className={link.styleName}>
+                <NavLink to={link.link} activeClassName="active" exact>{link.label}</NavLink>
+              </span>
+            </li>
+          ))}
           <hr className="nav-division" />
           <li>
             <button aria-label="open-btn form-newNote" data-test="newNote" className="btn btn-primary btn-sm btn-block" onClick={() => this.newNote(this.props)}><i className="fa fa-plus" />Note / File</button>
@@ -111,7 +109,8 @@ export class SideNav extends React.Component {
                 updateNotes={this.updateNotes(this.props)}
                 startWorkflow={actions.cgActions.startWorkflow}
                 errorHandler={actions.errorActions.setAppError}
-              />}
+              />
+            }
           </li>
         </ul>
       </nav>
