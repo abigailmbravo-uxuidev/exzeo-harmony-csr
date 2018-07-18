@@ -58,45 +58,43 @@ const csrLinks = ({ policyNumber }) => [{
 }];
 
 export class SideNav extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { showDocsForm: false };
-  }
-
-  newNote = (props) => {
-    props.actions.newNoteActions.toggleNote({ noteType: 'Policy Note', documentId: props.policy.policyNumber, sourceNumber: props.policy.sourceNumber });
+  state = {
+    showDocsForm: false
   };
 
-  generateDoc = (props) => {
+  newNote = () => {
+    const { actions, policy } = this.props;
+    actions.newNoteActions.toggleNote({
+      noteType: 'Policy Note',
+      documentId: policy.policyNumber,
+      sourceNumber: policy.sourceNumber
+    });
+  };
+
+  generateDoc = () => {
     this.setState({ showDocsForm: !this.state.showDocsForm });
   };
 
-  updateNotes = (props) => {
+  updateNotes = () => {
     const { actions, policy } = this.props;
     const ids = [policy.policyNumber, policy.sourceNumber];
     return () => {
       actions.serviceActions.getNotes(ids.toString(), policy.policyNumber);
     };
-  }
+  };
 
   render() {
     const { actions, policy } = this.props;
     return (
       <nav className="site-nav">
         <ul>
-          {csrLinks({ policyNumber: policy.policyNumber }).map((link, index) => (
-              link.outside ?
-                <li key={index}>
-                  <a className="csr-dashboard" href="/">
-                    <span>{link.label}</span>
-                  </a>
-                </li> :
-                <li key={index}>
-                  <span className={link.styleName}>
-                    <NavLink to={link.link} activeClassName="active" exact>{link.label}</NavLink>
-                  </span>
-                </li>
-            ))}
+          {csrLinks({ policyNumber: policy.policyNumber }).map((link) => (
+            <li key={link.key}>
+              <span className={link.styleName}>
+                <NavLink to={link.link} activeClassName="active" exact>{link.label}</NavLink>
+              </span>
+            </li>
+          ))}
           <hr className="nav-division" />
           <li>
             <button aria-label="open-btn form-newNote" data-test="newNote" className="btn btn-primary btn-sm btn-block" onClick={() => this.newNote(this.props)}><i className="fa fa-plus" />Note / File</button>
@@ -111,7 +109,8 @@ export class SideNav extends React.Component {
                 updateNotes={this.updateNotes(this.props)}
                 startWorkflow={actions.cgActions.startWorkflow}
                 errorHandler={actions.errorActions.setAppError}
-              />}
+              />
+            }
           </li>
         </ul>
       </nav>
