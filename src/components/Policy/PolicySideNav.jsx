@@ -84,7 +84,7 @@ export class SideNav extends React.Component {
     return (
       <nav className="site-nav">
         <ul>
-          {csrLinks && csrLinks.length > 0 && csrLinks({ policyNumber: policy.policyNumber }).map((link, index) => (
+          {csrLinks({ policyNumber: policy.policyNumber }).map((link, index) => (
               link.outside ?
                 <li key={index}>
                   <a className="csr-dashboard" href="/">
