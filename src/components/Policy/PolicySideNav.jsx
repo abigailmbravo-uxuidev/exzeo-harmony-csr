@@ -20,40 +20,40 @@ import GenerateDocsForm from './GenerateDocsForm';
  */
 const csrLinks = ({ policyNumber }) => [{
   key: 'coverage',
-  link: `/policy/coverage/${policyNumber}`,
+  link: `/policy/${policyNumber}/coverage`,
   label: 'Coverage / Rating',
   styleName: 'coverage',
   exact: true
 }, {
   key: 'policyholder',
-  link: '/policy/policyholder',
+  link: `/policy/${policyNumber}/policyHolder`,
   label: 'Policyholder / Agent',
   styleName: 'policyholder',
   exact: true
 }, {
   key: 'billing',
-  link: '/policy/billing',
+  link: `/policy/${policyNumber}/billing`,
   label: 'Mortgage / Billing',
   styleName: 'billing',
   exact: true
 }, {
   key: 'notes',
-  link: '/policy/notes',
+  link: `/policy/${policyNumber}/notes`,
   label: 'Notes / Files',
   styleName: 'notes',
   exact: true
 }, {
   key: 'cancel',
-  link: '/policy/cancel',
+  link: `/policy/${policyNumber}/cancel`,
   label: 'Cancel Policy',
   styleName: 'cancel',
   exact: true
 },
 {
   key: 'endorsements',
-  link: '/policy/endorsements',
+  link: `/policy/${policyNumber}/endorsements`,
   label: 'Endorsements',
-  styleName: 'endoresments',
+  styleName: 'endorsements',
   exact: true
 }];
 
@@ -65,7 +65,7 @@ export class SideNav extends React.Component {
 
   newNote = (props) => {
     props.actions.newNoteActions.toggleNote({ noteType: 'Policy Note', documentId: props.policy.policyNumber, sourceNumber: props.policy.sourceNumber });
-  }
+  };
 
   generateDoc = (props) => {
     this.setState({ showDocsForm: !this.state.showDocsForm });
