@@ -332,6 +332,7 @@ describe('Testing Coverage component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      history: { action: 'PUSH' },
       handleSubmit: fn => fn,
       getUIQuestionsAction() { return Promise.resolve(() => {}); },
       getLatestQuoteAction() {},
@@ -437,6 +438,7 @@ describe('Testing Coverage component', () => {
     const store = mockStore(initialState);
 
     const props = {
+      history: { action: 'PUSH' },
       zipCodeSettings: { timezone: 'America/New_York' },
       fieldQuestions: [],
       dispatch: store.dispatch,
@@ -483,6 +485,7 @@ describe('Testing Coverage component', () => {
   const initialState = {};
   const store = mockStore(initialState);
   const props = {
+    history: { action: 'PUSH' },
     change() {},
     zipCodeSettings: { timezone: 'America/New_York' },
     initialValues: {},

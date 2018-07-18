@@ -14,7 +14,9 @@ import * as serviceActions from '../../state/actions/serviceActions';
 import * as errorActions from '../../state/actions/errorActions';
 import 'uppy/dist/uppy.css';
 
-export const renderNotes = ({ input, label, type, meta: { touched, error } }) => (
+export const renderNotes = ({
+  input, label, type, meta: { touched, error }
+}) => (
   <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
     <textarea {...input} placeholder={label} rows="10" cols="40" />
     { touched && error && <span className="error-message">{ error }</span> }
@@ -32,7 +34,7 @@ export class NoteUploader extends Component {
     super(props);
 
     const idToken = localStorage.getItem('id_token');
-    
+
     this.uppy = new Uppy({
       autoProceed: false,
       restrictions: {
@@ -41,12 +43,12 @@ export class NoteUploader extends Component {
       meta: { documentId: this.props.documentId },
       onBeforeFileAdded: this.validateFile
     }).use(XHRUpload, {
-        endpoint: `${process.env.REACT_APP_API_URL}/upload`,
-        fieldName: 'files[]',
-        headers: {
-          accept: 'application/json',
-          authorization: `bearer ${idToken}`
-        }
+      endpoint: `${process.env.REACT_APP_API_URL}/upload`,
+      fieldName: 'files[]',
+      headers: {
+        accept: 'application/json',
+        authorization: `bearer ${idToken}`
+      }
     });
   }
 
@@ -138,7 +140,9 @@ export class NoteUploader extends Component {
   }
 
   submitNote = (data, dispatch, props) => {
-    const { actions, user, noteType, documentId, sourceId } = props;
+    const {
+      actions, user, noteType, documentId, sourceId
+    } = props;
 
     const filelist = Object.values(this.uppy.getState().files);
     const uploads = filelist.filter(file => file.progress.uploadComplete);
@@ -161,11 +165,11 @@ export class NoteUploader extends Component {
         userId: user.sub,
         userName: `${user.profile.given_name} ${user.profile.family_name}`
       })
-    }
+    };
 
     return actions.cgActions.startWorkflow('addNote', noteData)
-      .then(result => {
-        if(window.location.pathname.endsWith('/notes')) {
+      .then((result) => {
+        if (window.location.pathname.endsWith('/notes')) {
           const ids = (noteData.noteType === 'Policy Note')
             ? [noteData.number, noteData.source].toString()
             : noteData.number;
@@ -174,10 +178,10 @@ export class NoteUploader extends Component {
 
         this.closeButtonHandler();
       })
-      .catch(err => {
+      .catch((err) => {
         actions.errorActions.setAppError({ message: err });
         this.closeButtonHandler();
-      })
+      });
   }
 
   componentDidMount() {
@@ -213,12 +217,12 @@ export class NoteUploader extends Component {
               <Field component="select" name="fileType" disabled={!this.docTypes.length}>
                 { this.docTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
               </Field>
-              <Dashboard 
-                uppy={this.uppy} 
-                maxHeight={350} 
-                proudlyDisplayPoweredByUppy={false} 
+              <Dashboard
+                uppy={this.uppy}
+                maxHeight={350}
+                proudlyDisplayPoweredByUppy={false}
                 metaFields={[{ id: 'name', name: 'Name', placeholder: 'file name' }]}
-                showProgressDetails 
+                showProgressDetails
                 hideProgressAfterFinish
               />
             </div>
