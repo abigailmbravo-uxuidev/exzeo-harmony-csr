@@ -1,11 +1,11 @@
-import { getTopMortgageeAnswers } from './questions.selectors';
+import { getTopAnswers } from './questions.selectors';
 
 describe('Test questions selectors', () => {
-  describe('Test getTopMortgageeAnswers', () => {
+  describe('Test getTopAnswers', () => {
     it('should return an empty array if there are no questions', () => {
       const state = {};
 
-      const result = getTopMortgageeAnswers(state);
+      const result = getTopAnswers(state);
       expect(result).toEqual([]);
     });
 
@@ -15,28 +15,27 @@ describe('Test questions selectors', () => {
         questions: {}
       };
 
-      const result = getTopMortgageeAnswers(state);
+      const result = getTopAnswers(state);
       expect(result).toEqual([]);
     });
 
-    it('should test getTopMortgageeAnswers', () => {
+    it('should test getTopAnswers', () => {
       const state = {
         questions: {
-            mortgagee: {
-              answers: [{
-                AIName1: 'test',
-                AIAddress1: 'address',
-                AICity: 'city',
-                AIState: 'FL',
-                AIZip: 435435
-              }]
-            }
+          mortgagee: {
+            answers: [{
+              AIName1: 'test',
+              AIAddress1: 'address',
+              AICity: 'city',
+              AIState: 'FL',
+              AIZip: 435435
+            }]
           }
+        }
       };
 
-      const result = getTopMortgageeAnswers(state);
+      const result = getTopAnswers(state);
       expect(result.length).toEqual(1);
     });
-
   });
 });
