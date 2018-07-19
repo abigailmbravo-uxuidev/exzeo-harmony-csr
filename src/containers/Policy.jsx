@@ -31,7 +31,9 @@ export class Policy extends React.Component {
   };
 
   changeEffectiveDate = (data) => {
-    const { zipcodeSettings, appState, policy, setAppState, batchCompleteTask, getPolicy, startWorkflow  } = this.props;
+    const {
+      zipcodeSettings, appState, policy, setAppState, batchCompleteTask, getPolicy, startWorkflow
+    } = this.props;
     const effectiveDateUTC = moment.tz(moment.utc(data.effectiveDate).format('YYYY-MM-DD'), zipcodeSettings.timezone).format();
     const workflowId = appState.instanceId;
     setAppState(appState.modelName, workflowId, { ...appState.data, isSubmitting: true });
@@ -72,7 +74,9 @@ export class Policy extends React.Component {
   };
 
   reinstatePolicySubmit = (data) => {
-    const { setAppState, appState, policy, summaryLedger, createTransaction, getPolicy } = this.props;
+    const {
+      setAppState, appState, policy, summaryLedger, createTransaction, getPolicy
+    } = this.props;
     setAppState(appState.modelName, appState.instanceId, { ...appState.data, submitting: true });
 
     const submitData = {

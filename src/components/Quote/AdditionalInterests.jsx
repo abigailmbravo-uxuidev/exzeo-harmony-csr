@@ -353,7 +353,7 @@ export class AdditionalInterests extends Component {
                   onClick={() => this.addAdditionalInterest('Bill Payer')}
                   disabled={(groupedAdditionalInterests[ADDITIONAL_INTERESTS.billPayer].length > 0 || groupedAdditionalInterests[ADDITIONAL_INTERESTS.premiumFinance].length > 0) || editingDisabled}
                   type="button"
-                ><div><i className="fa fa-plus" /><span>Billpayer</span></div>
+                ><div><i className="fa fa-plus" /><span>Bill Payer</span></div>
                 </button>
               </div>
               <div className="results-wrapper">
