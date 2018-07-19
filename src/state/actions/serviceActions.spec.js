@@ -124,46 +124,6 @@ describe('Service Actions', () => {
       });
   });
 
-  it('should call start addNotes', () => {
-    const mockAdapter = new MockAdapter(axios);
-    const createdAt = new Date().getTime();
-    const note = {
-      noteType: 'quoteNote',
-      noteContent: 'test',
-      contactType: 'Agent',
-      createdAt,
-      noteAttachments: [],
-      createdBy: {},
-      updatedBy: {}
-    };
-
-    const form = new FormData();
-
-    Object.keys(note).forEach((key) => {
-      const value = note[key];
-      const fieldValue = key === 'createdBy' ? JSON.stringify(value) : value;
-      form.append(key, fieldValue);
-    });
-
-    const url = `${process.env.REACT_APP_API_URL}/upload`;
-
-    mockAdapter.onPost(url, form, {
-      headers: {
-        accept: 'application/json',
-        'Accept-Language': 'en-US,en;q=0.8',
-        'Content-Type': `multipart/form-data; boundary=${form._boundary}`
-      }
-    }).reply(200, {
-      data: [note]
-    });
-
-    const initialState = {};
-    const store = mockStore(initialState);
-    serviceActions.addNote(store.dispatch);
-
-    const result = serviceActions.addNote(note, [])(store.dispatch);
-  });
-
   it('should clear agent', () => {
     const initialState = { service: { agents: ['Test Agent'] } };
     const store = mockStore(initialState);

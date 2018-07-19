@@ -92,6 +92,7 @@ async function fetchDocuments(sysNoteId) {
   }
 }
 
+<<<<<<< HEAD
 export const addNote = (data, files) => (dispatch) => {
   const form = new FormData();
   const url = `${process.env.REACT_APP_API_URL}/upload`;
@@ -118,6 +119,8 @@ export const addNote = (data, files) => (dispatch) => {
     });
 };
 
+=======
+>>>>>>> develop
 export const getAgents = (companyCode, state) => (dispatch) => {
   const axiosConfig = runnerSetup({
     service: 'agency',
