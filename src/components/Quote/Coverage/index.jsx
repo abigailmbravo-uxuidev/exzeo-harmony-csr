@@ -12,6 +12,7 @@ import { setPercentageOfValue } from '../../../utilities/endorsementModel';
 import { getAgencies, getAgentsByAgency } from '../../../state/actions/serviceActions';
 import { batchCompleteTask, startWorkflow } from '../../../state/actions/cgActions';
 import { setAppState } from '../../../state/actions/appStateActions';
+import { setAppError } from '../../../state/actions/errorActions';
 import { getUIQuestions } from '../../../state/actions/questionsActions';
 import { getLatestQuote } from '../../../state/actions/quoteStateActions';
 import { checkQuoteState, getQuoteDataFromCgState } from '../../../state/selectors/quote.selectors';
@@ -145,7 +146,7 @@ export const handleFormSubmit = (data, dispatch, props) => {
   const workflowId = props.appState.instanceId;
   const submitData = data;
 
-  props.setAppStateAction(props.appState.modelName, workflowId, {
+  props.setAppState(props.appState.modelName, workflowId, {
     ...props.appState.data,
     submitting: true
   });
@@ -208,11 +209,11 @@ export const handleFormSubmit = (data, dispatch, props) => {
 
   ];
 
-  props.batchCompleteTaskAction(props.appState.modelName, workflowId, steps)
+  props.batchCompleteTask(props.appState.modelName, workflowId, steps)
     .then(() => {
-      props.getLatestQuoteAction(true, props.quoteData._id);
+      props.getLatestQuote(true, props.quoteData._id);
       // now update the workflow details so the recalculated rate shows
-      props.setAppStateAction(
+      props.setAppState(
         props.appState.modelName,
         workflowId, { ...props.appState.data, submitting: false, selectedLink: 'customerData' }
       );
@@ -223,36 +224,38 @@ let setAgents = false;
 
 export class Coverage extends Component {
   componentDidMount() {
-    const { history, getUIQuestionsAction, setAppStateAction, batchCompleteTaskAction, appState  } = this.props;
-    getUIQuestionsAction('askToCustomizeDefaultQuoteCSR');
+    const { history, getUIQuestions, setAppState, batchCompleteTask, appState  } = this.props;
+    getUIQuestions('askToCustomizeDefaultQuoteCSR');
 
-    if (history.action === 'PUSH') {
-      // this.props.startWorkflowAction('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` }).then((result) => {
-        const steps = [
-          { name: 'hasUserEnteredData', data: { answer: 'No' } },
-          { name: 'moveTo', data: { key: 'customerData' } }
-        ];
+    // history.length will be 2 if redirected from the QuoteLanding component. We only want to call 'completeTask' if we are mounting from a redirect from QuoteLanding.
+    if (history.length === 2 && appState.modelName && appState.instanceId) {
+      // this.props.startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` }).then((result) => {
+      const steps = [
+        { name: 'hasUserEnteredData', data: { answer: 'No' } },
+        { name: 'moveTo', data: { key: 'customerData' } }
+      ];
 
-        setAppStateAction('csrQuote', appState.instanceId, {
-          ...appState.data,
-          submitting: true,
-          selectedLink: 'customerData'
-        });
-        batchCompleteTaskAction(appState.modelName, appState.instanceId, steps)
+      setAppState('csrQuote', appState.instanceId, {
+        ...appState.data,
+        submitting: true,
+        selectedLink: 'customerData'
+      });
+      batchCompleteTask(appState.modelName, appState.instanceId, steps)
+    } else {
 
     }
 
   }
 
   componentWillReceiveProps(nextProps) {
-    const { quoteData, getAgenciesAction, getAgentsByAgencyAction } = nextProps;
+    const { quoteData, getAgencies, getAgentsByAgency } = nextProps;
     if (!setAgents && quoteData && quoteData.companyCode && quoteData.state && quoteData.agencyCode) {
-      getAgenciesAction(quoteData.companyCode, quoteData.state);
-      getAgentsByAgencyAction(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
+      getAgencies(quoteData.companyCode, quoteData.state);
+      getAgentsByAgency(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
       setAgents = true;
     }
     if (this.props.quoteData._id !== nextProps.quoteData._id) {
-      this.props.getLatestQuoteAction(true, nextProps.quoteData._id);
+      this.props.getLatestQuote(true, nextProps.quoteData._id);
     }
   }
 
@@ -294,7 +297,6 @@ export class Coverage extends Component {
     if (Number.isNaN(value)) return;
     const { change, initialValues } = this.props;
 
-
     if (value === 0) {
       change('personalPropertyReplacementCostCoverage', false);
     } else {
@@ -318,10 +320,10 @@ export class Coverage extends Component {
   };
 
   handleAgencyChange = (agencyCode) => {
-    const { change } = this.props;
+    const { change, getAgentsByAgency } = this.props;
     const agency = _.find(this.props.agencies, a => String(a.agencyCode) === String(agencyCode));
     if (agency) {
-      this.props.getAgentsByAgencyAction(agency.companyCode, agency.state, agencyCode).then((response) => {
+      getAgentsByAgency(agency.companyCode, agency.state, agencyCode).then((response) => {
         if (response.payload && response.payload[0].data.agents && response.payload[0].data.agents.length === 1) {
           change('agentCode', response.payload[0].data.agents[0].agentCode);
         } else {
@@ -526,13 +528,14 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, {
-  getAgenciesAction: getAgencies,
-  getAgentsByAgencyAction: getAgentsByAgency,
-  batchCompleteTaskAction: batchCompleteTask,
-  startWorkflowAction: startWorkflow,
-  setAppStateAction: setAppState,
-  getUIQuestionsAction: getUIQuestions,
-  getLatestQuoteAction: getLatestQuote
+  getAgencies,
+  getAgentsByAgency,
+  batchCompleteTask,
+  startWorkflow,
+  setAppState,
+  getUIQuestions,
+  getLatestQuote,
+  setAppError
 })(reduxForm({
   form: 'Coverage',
   enableReinitialize: true

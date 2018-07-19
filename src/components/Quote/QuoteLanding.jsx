@@ -7,7 +7,6 @@ import { setAppState } from '../../state/actions/appStateActions';
 import { setAppError } from '../../state/actions/errorActions';
 import { getQuoteDataFromCgState } from '../../state/selectors/quote.selectors';
 
-
 class QuoteLanding extends Component {
   async componentDidMount() {
     const { match: { params }, startWorkflow, setAppState, appState, batchCompleteTask, newQuote } = this.props;
