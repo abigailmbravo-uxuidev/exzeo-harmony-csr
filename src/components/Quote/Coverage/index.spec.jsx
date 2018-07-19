@@ -1,14 +1,33 @@
 import React from 'react';
 import thunk from 'redux-thunk';
-import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import { Coverage, handleFormSubmit, handleInitialize, handleGetZipCodeSettings } from './index';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
-
+const baseProps = {
+  history: { action: 'PUSH' },
+  zipCodeSettings: { timezone: 'America/New_York' },
+  fieldQuestions: [],
+  questions: {},
+  quoteData: {},
+  batchCompleteTask() { return Promise.resolve(() => {}); },
+  change() {},
+  dispatch() {},
+  getAgencies() {},
+  getAgentsByAgency() {},
+  getLatestQuote() {},
+  getUIQuestions() { return Promise.resolve(() => {}); },
+  handleSubmit() {},
+  setAppState() { return Promise.resolve(() => {}); },
+  startWorkflow() { return Promise.resolve(() => {}); },
+  appState: {
+    data: {
+      submitting: false
+    }
+  },
+};
 const quoteData = {
   _id: '5866c036a46eb72908f3f547',
   companyCode: 'TTIC',
@@ -309,9 +328,9 @@ const quoteData = {
 describe('Testing Coverage component', () => {
   it('should test connected app', () => {
     const initialState = {
-      authState: {},
-      service: {
-        getAgents() {}
+      appState: {
+        data: {},
+        modelName: 'bb'
       },
       cg: {
         bb: {
@@ -322,39 +341,18 @@ describe('Testing Coverage component', () => {
           }
         }
       },
-      appState: {
-        data: {
-
-        },
-        modelName: 'bb'
-      },
+      service: {},
       questions: {}
     };
     const store = mockStore(initialState);
     const props = {
-      history: { action: 'PUSH' },
-      handleSubmit: fn => fn,
-      getUIQuestionsAction() { return Promise.resolve(() => {}); },
-      getLatestQuoteAction() {},
-      getAgenciesAction() {},
-      getAgentsByAgencyAction() {},
-      setAppStateAction() { return Promise.resolve(() => {}); },
-      startWorkflowAction() { return Promise.resolve(() => {}); },
-      batchCompleteTaskAction() { return Promise.resolve(() => {}); },
-      fieldQuestions: [],
-      quoteData,
+      ...baseProps,
       dispatch: store.dispatch,
-      appState: {
-        data: {
-          submitting: false
-        }
-      }
+      quoteData
     };
 
-    localStorage.setItem('isNewTab', true);
-    localStorage.setItem('lastSearchData', JSON.stringify({
-      searchType: 'address'
-    }));
+    localStorage.setItem('isNewTab', JSON.stringify(true));
+    localStorage.setItem('lastSearchData', JSON.stringify({ searchType: 'address' }));
 
     const wrapper = shallow(<Coverage {...props} />);
     expect(wrapper);
@@ -362,8 +360,11 @@ describe('Testing Coverage component', () => {
 
   it('should test handleGetQuoteData', () => {
     const initialState = {
-      service: {
-        quote: quoteData
+      appState: {
+        data: {
+          showAdditionalInterestModal: false
+        },
+        modelName: 'bb'
       },
       cg: {
         bb: {
@@ -387,25 +388,22 @@ describe('Testing Coverage component', () => {
           }
         }
       },
-      appState: {
-        data: {
-          showAdditionalInterestModal: false
-        },
-        modelName: 'bb'
-      }
+      service: {
+        quote: quoteData
+      },
     };
-    let quote = {};
 
-    quote = initialState.service.quote;
-    expect(quote).toEqual(quoteData);
+    expect(initialState.service.quote).toEqual(quoteData);
   });
 
   it('should test handleFormSubmit', () => {
     const initialState = {
-      service: {
-
+      appState: {
+        data: {
+          showAdditionalInterestModal: false
+        },
+        modelName: 'bb'
       },
-      questions: {},
       cg: {
         bb: {
           data: {
@@ -428,32 +426,13 @@ describe('Testing Coverage component', () => {
           }
         }
       },
-      appState: {
-        data: {
-          showAdditionalInterestModal: false
-        },
-        modelName: 'bb'
-      }
+      questions: {},
+      service: {},
     };
     const store = mockStore(initialState);
-
     const props = {
-      history: { action: 'PUSH' },
-      zipCodeSettings: { timezone: 'America/New_York' },
-      fieldQuestions: [],
+      ...baseProps,
       dispatch: store.dispatch,
-      getUIQuestionsAction() { return Promise.resolve(() => {}); },
-      getLatestQuoteAction() {},
-      getAgenciesAction() {},
-      getAgentsByAgencyAction() {},
-      setAppStateAction() { return Promise.resolve(() => {}); },
-      startWorkflowAction() { return Promise.resolve(() => {}); },
-      batchCompleteTaskAction() { return Promise.resolve(() => {}); },
-      appState: {
-        data: {
-          submitting: false
-        }
-      },
       quoteData: {
         AdditionalInterests: [{
           id: '049a50b23c21c2ae3',
@@ -477,17 +456,13 @@ describe('Testing Coverage component', () => {
       }
     };
 
-    handleFormSubmit({
-      pH1phone: '4345435343'
-    }, store.dispatch, props);
+    handleFormSubmit({ pH1phone: '4345435343' }, store.dispatch, props);
   });
 
   const initialState = {};
   const store = mockStore(initialState);
   const props = {
-    history: { action: 'PUSH' },
-    change() {},
-    zipCodeSettings: { timezone: 'America/New_York' },
+    ...baseProps,
     initialValues: {},
     fieldValues: {
       dwellingAmount: '',
@@ -496,30 +471,13 @@ describe('Testing Coverage component', () => {
     agency: {
       agencyCode: 20000
     },
-    questions: {},
-    handleSubmit: fn => fn,
-    getUIQuestionsAction() { return Promise.resolve(() => {}); },
-    getLatestQuoteAction() {},
-    getAgenciesAction() {},
-    getAgentsByAgencyAction() {},
-    setAppStateAction() { return Promise.resolve(() => {}); },
-    startWorkflowAction() { return Promise.resolve(() => {}); },
-    batchCompleteTaskAction() { return Promise.resolve(() => {}); },
-    fieldQuestions: [],
     quoteData,
     dispatch: store.dispatch,
-    appState: {
-      data: {
-        submitting: false
-      }
-    }
   };
 
   it('should test instance functions', () => {
-    localStorage.setItem('isNewTab', true);
-    localStorage.setItem('lastSearchData', JSON.stringify({
-      searchType: 'address'
-    }));
+    localStorage.setItem('isNewTab', JSON.stringify(true));
+    localStorage.setItem('lastSearchData', JSON.stringify({ searchType: 'address' }));
 
     const wrapper = shallow(<Coverage {...props} />);
 
@@ -541,18 +499,16 @@ describe('Testing Coverage component', () => {
     wrapper.instance().setPHToggle();
   });
 
-  it('should test componentWillMount', () => {
+  it('should test componentWillMount when newTab === true', () => {
     const wrapper2 = shallow(<Coverage {...props} />);
-    localStorage.setItem('isNewTab', true);
-    localStorage.setItem('lastSearchData', JSON.stringify({
-      searchType: 'quote'
-    }));
+    localStorage.setItem('isNewTab', JSON.stringify(true));
+    localStorage.setItem('lastSearchData', JSON.stringify({ searchType: 'quote' }));
     wrapper2.instance().componentDidMount();
   });
 
-  it('should test componentWillMount newTab === false', () => {
+  it('should test componentWillMount when newTab === false', () => {
     const wrapper2 = shallow(<Coverage {...props} />);
-    localStorage.setItem('isNewTab', false);
+    localStorage.setItem('isNewTab', JSON.stringify(false));
     wrapper2.instance().componentDidMount();
   });
 });

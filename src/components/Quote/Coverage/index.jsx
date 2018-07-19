@@ -398,7 +398,7 @@ export class Coverage extends Component {
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         <div className="route-content">
 
-          <Form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+          <form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} >
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
                 <ProducedBy
@@ -450,7 +450,7 @@ export class Coverage extends Component {
                 />
               </div>
             </div>
-          </Form>
+          </form>
         </div>
         <div className="basic-footer btn-footer">
           <Footer />
