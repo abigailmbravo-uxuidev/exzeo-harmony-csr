@@ -5,7 +5,8 @@ describe('Test questions selectors', () => {
     it('should return an empty array if there are no questions', () => {
       const state = {};
 
-      const result = getTopAnswers(state);
+      const answerFunc = getTopAnswers('mortgagee');
+      const result = answerFunc(state);
       expect(result).toEqual([]);
     });
 
@@ -14,8 +15,8 @@ describe('Test questions selectors', () => {
       const state = {
         questions: {}
       };
-
-      const result = getTopAnswers(state);
+      const answerFunc = getTopAnswers('mortgagee');
+      const result = answerFunc(state);
       expect(result).toEqual([]);
     });
 
@@ -34,7 +35,8 @@ describe('Test questions selectors', () => {
         }
       };
 
-      const result = getTopAnswers(state);
+      const answerFunc = getTopAnswers('mortgagee');
+      const result = answerFunc(state);
       expect(result.length).toEqual(1);
     });
   });
