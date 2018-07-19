@@ -16,7 +16,7 @@ import SplashPage from './containers/Splash';
 import AgencySplashPage from './containers/AgencySplash';
 import NotFoundPage from './containers/NotFound';
 import QuoteCoverage from './components/Quote/Coverage';
-import QuoteResultHandler from "./components/Quote/NewQuoteHandler";
+import QuoteLanding from "./components/Quote/QuoteLanding";
 import QuoteUnderwriting from './components/Quote/Underwriting';
 import AdditionalInterests from './components/Quote/AdditionalInterests';
 import QuoteMailingAddressBilling from './components/Quote/MailingAddressBilling';
@@ -116,8 +116,8 @@ class Routes extends Component {
             <Switch>
               <Route exact path="/" render={props => <SplashPage auth={auth} {...props} />} />
               <Route exact path="/agency" render={props => <AgencySplashPage auth={auth} {...props} />} />
-              <Route exact path="/quote/new/:stateCode/:propertyId" render={props => <QuoteResultHandler auth={auth} newQuote {...props} />} />
-              <Route exact path="/quote/:quoteId" render={props => <QuoteResultHandler auth={auth} {...props} />} />
+              <Route exact path="/quote/new/:stateCode/:propertyId" render={props => <QuoteLanding auth={auth} newQuote {...props} />} />
+              <Route exact path="/quote/:quoteId" render={props => <QuoteLanding auth={auth} {...props} />} />
               <Route exact path="/quote/:quoteId/billing" render={props => <QuoteMailingAddressBilling auth={auth} {...props} />} />
               <Route exact path="/quote/:quoteId/notes" render={props => <QuoteNotesFiles auth={auth} {...props} />} />
               <Route exact path="/quote/:quoteId/summary" render={props => <QuoteSummary auth={auth} {...props} />} />

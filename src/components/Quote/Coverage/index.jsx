@@ -14,7 +14,7 @@ import { batchCompleteTask, startWorkflow } from '../../../state/actions/cgActio
 import { setAppState } from '../../../state/actions/appStateActions';
 import { getUIQuestions } from '../../../state/actions/questionsActions';
 import { getLatestQuote } from '../../../state/actions/quoteStateActions';
-import { checkQuoteState } from '../../../state/selectors/quote.selectors';
+import { checkQuoteState, getQuoteDataFromCgState } from '../../../state/selectors/quote.selectors';
 import QuoteBaseConnect from '../../../containers/Quote';
 import Footer from '../../Common/Footer';
 import ProducedBy from './ProducedBy';
@@ -22,20 +22,6 @@ import PolicyHolder from './PolicyHolder';
 import Property from './Property';
 import Coverages from './Coverages';
 import WindMitigation from './WindMitigation';
-
-export const handleGetQuoteData = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName])
-    ? state.cg[state.appState.modelName].data
-    : null;
-  if (!taskData) { return {}; }
-  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
-    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
-    : {};
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
-    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
-    : quoteEnd;
-  return quoteData;
-};
 
 export const handleGetZipCodeSettings = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
@@ -59,10 +45,7 @@ export function calculatePercentage(oldFigure, newFigure) {
   return percentChange;
 }
 
-export const handleInitialize = (state) => {
-  const quoteData = handleGetQuoteData(state);
-
-  const { questions } = state;
+export const handleInitialize = (quoteData, questions) => {
   const values = {};
   values.clearFields = false;
   values.electronicDelivery = _.get(quoteData, 'policyHolders[0].electronicDelivery') || false;
@@ -518,6 +501,8 @@ const mapStateToProps = (state) => {
     'personalPropertyAmount',
     'personalProperty'
   );
+  const quoteData = getQuoteDataFromCgState(state);
+  const questions = state.questions;
 
   return {
     getAgents: state.service.getAgents,
@@ -525,10 +510,10 @@ const mapStateToProps = (state) => {
     appState: state.appState,
     agents: state.service.agents,
     agencies: state.service.agencies,
-    initialValues: handleInitialize(state),
-    quoteData: handleGetQuoteData(state),
+    initialValues: handleInitialize(quoteData, questions),
+    quoteData,
     zipCodeSettings: handleGetZipCodeSettings(state),
-    questions: state.questions,
+    questions,
     editingDisabled: checkQuoteState(state),
     clearFields,
     sinkholePerilCoverage,
