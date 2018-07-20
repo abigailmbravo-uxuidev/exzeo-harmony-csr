@@ -6,7 +6,7 @@ import moment from 'moment';
 import momentTZ from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
 import { batchActions } from 'redux-batched-actions';
-import { reduxForm, Form, formValueSelector } from 'redux-form';
+import { reduxForm, formValueSelector } from 'redux-form';
 import { getAnswers } from '../../../utilities/forms';
 import { setPercentageOfValue } from '../../../utilities/endorsementModel';
 import { getAgencies, getAgentsByAgency } from '../../../state/actions/serviceActions';
