@@ -14,9 +14,7 @@ import * as serviceActions from '../../state/actions/serviceActions';
 import * as errorActions from '../../state/actions/errorActions';
 import 'uppy/dist/uppy.css';
 
-export const renderNotes = ({
-  input, label, type, meta: { touched, error }
-}) => (
+export const renderNotes = ({ input, label, type, meta: { touched, error } }) => (
   <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
     <textarea {...input} placeholder={label} rows="10" cols="40" />
     { touched && error && <span className="error-message">{ error }</span> }
@@ -43,12 +41,12 @@ export class NoteUploader extends Component {
       meta: { documentId: this.props.documentId },
       onBeforeFileAdded: this.validateFile
     }).use(XHRUpload, {
-      endpoint: `${process.env.REACT_APP_API_URL}/upload`,
-      fieldName: 'files[]',
-      headers: {
-        accept: 'application/json',
-        authorization: `bearer ${idToken}`
-      }
+        endpoint: `${process.env.REACT_APP_API_URL}/upload`,
+        fieldName: 'files[]',
+        headers: {
+          accept: 'application/json',
+          authorization: `bearer ${idToken}`
+        }
     });
   }
 
@@ -137,12 +135,10 @@ export class NoteUploader extends Component {
       return false;
     }
     return true;
-  }
+  };
 
   submitNote = (data, dispatch, props) => {
-    const {
-      actions, user, noteType, documentId, sourceId
-    } = props;
+    const { actions, user, noteType, documentId, sourceId } = props;
 
     const filelist = Object.values(this.uppy.getState().files);
     const uploads = filelist.filter(file => file.progress.uploadComplete);
@@ -167,8 +163,8 @@ export class NoteUploader extends Component {
       })
     };
 
-    return actions.cgActions.startWorkflow('addNote', noteData)
-      .then((result) => {
+    return actions.cgActions.startWorkflow('addNote', noteData, false)
+      .then(result => {
         if (window.location.pathname.endsWith('/notes')) {
           const ids = (noteData.noteType === 'Policy Note')
             ? [noteData.number, noteData.source].toString()
