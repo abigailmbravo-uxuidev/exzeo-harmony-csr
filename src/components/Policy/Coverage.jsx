@@ -68,6 +68,8 @@ export class Coverage extends Component {
       }
     } = this.props;
 
+    const monthsOccupied = underwritingAnswers ? underwritingAnswers.monthsOccupied.answer : null;
+
     const discountSurcharge = [
       {
         discountSurcharge: 'Townhouse/Rowhouse',
@@ -77,7 +79,7 @@ export class Coverage extends Component {
         value: _get(underwritingAnswers, 'rented.answer') === 'Yes' ? 'Yes' : 'No'
       }, {
         discountSurcharge: 'Seasonally Occupied',
-        value: _get(underwritingAnswers, 'monthsOccupied.answer') !== '10+' ? 'Yes' : 'No'
+        value: monthsOccupied === '10+' || monthsOccupied === '7-9' ? 'No' : 'Yes'
       }, {
         discountSurcharge: 'No Prior Insurance',
         value: _get(underwritingAnswers, 'noPriorInsuranceSurcharge.answer')

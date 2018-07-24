@@ -38,18 +38,6 @@ import * as authActions from './state/actions/authActions';
 
 const auth = new Auth();
 
-// logout the user if the server comes back with a 401
-axios.interceptors.response.use(
-  response => response,
-  (error) => {
-    if (error.response.status === 401) {
-      auth.logout();
-    }
-    return Promise.reject(error);
-  }
-);
-
-
 const checkPublicPath = (path) => {
   const publicPaths = ['/login', '/logout', '/accessDenied', '/loggedOut', '/callback'];
   return (publicPaths.indexOf(path) === -1);

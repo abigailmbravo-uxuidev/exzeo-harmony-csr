@@ -2,16 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import _find from 'lodash/find';
 import { Prompt } from 'react-router-dom';
-import { reduxForm, formValueSelector, FormSection } from 'redux-form';
+import { reduxForm, formValueSelector, FormSection, clearFields } from 'redux-form';
 import Loader from '@exzeo/core-ui/lib/Loader';
-import {validation} from "@exzeo/core-ui/lib/InputLifecycle/index";
+import { validation } from '@exzeo/core-ui/lib/InputLifecycle/index';
 import { premiumEndorsementList } from './constants/endorsementTypes';
 import endorsementUtils from '../../../utilities/endorsementModel';
 import { getUIQuestions } from '../../../state/actions/questionsActions';
 import { getNewRate, submitEndorsementForm, getEndorsementHistory } from '../../../state/actions/policyActions';
 import {
   getUnderwritingQuestions,
-  getZipcodeSettings,
+  getZipcodeSettings
 } from '../../../state/actions/serviceActions';
 // Component Sections
 import PolicyConnect from '../../../containers/Policy';
@@ -40,29 +40,20 @@ export const getNewPolicyNumber = (state) => {
     : null;
 };
 
+const FORM_NAME = 'Endorsements';
+
 export class Endorsements extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      isCalculated: false,
+      isCalculated: false
     };
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    // need to account for when a user has made a call to getNewRate, and then makes more changes to the coverage.
-    if (state.isCalculated && props.anyTouched) {
-      return {
-        ...state,
-        isCalculated: false
-      }
-    }
-    return null;
   }
 
   componentDidMount() {
     const {
-     policy, getUnderwritingQuestions, getZipcodeSettings, getEndorsementHistory, getUIQuestions
+      policy, getUnderwritingQuestions, getZipcodeSettings, getEndorsementHistory, getUIQuestions
     } = this.props;
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
     if (policy && policy.policyNumber && policy.property && policy.property.physicalAddress) {
@@ -72,16 +63,22 @@ export class Endorsements extends React.Component {
     }
   }
 
-  clearCalculate = () => {
-    const { change, initialValues } = this.props;
-    change('endorsementDate', initialValues.endorsementDate);
-    change('newEndorsementAmount', '');
-    change('newEndorsementPremium', '');
-    change('newAnnualPremium', '');
-    change('windMitFactor', '');
-    change('rating', '');
-    this.setState({ isCalculated: false });
-  };
+  componentDidUpdate(prevProps) {
+    const {
+      anyTouched, initialValues, clearFields, change, submitting
+    } = this.props;
+    const { isCalculated } = this.state;
+    if (isCalculated && anyTouched) {
+      this.setState({
+        isCalculated: false
+      });
+    }
+    if (isCalculated && (prevProps.anyTouched !== anyTouched) && !submitting) {
+      clearFields(false, false, 'newEndorsementAmount', 'newEndorsementPremium', 'newAnnualPremium');
+      change('windMitFactor', initialValues.windMitFactor);
+      change('rating', initialValues.rating);
+    }
+  }
 
   setCalculate = (rate = {}) => {
     const { change, initialize } = this.props;
@@ -93,17 +90,6 @@ export class Endorsements extends React.Component {
     change('rating', rate.rating);
     initialize({}, { keepValues: true });
     this.setState({ isCalculated: true });
-  };
-
-  handleEndorsementFormSubmit = async (data, dispatch, props) => {
-    const { isCalculated } = this.state;
-    if (isCalculated) {
-      await props.submitEndorsementForm(data, props);
-      this.setState({ isCalculated: false }, this.clearCalculate);
-    } else {
-      const rate = await props.getNewRate(data, props);
-      this.setCalculate(rate);
-    }
   };
 
   setPHToggle = () => {
@@ -122,7 +108,7 @@ export class Endorsements extends React.Component {
       change('policyHolders[1].primaryPhoneNumber', initialValues.policyHolders[1].primaryPhoneNumber);
       change('policyHolders[1].secondaryPhoneNumber', initialValues.policyHolders[1].secondaryPhoneNumber);
       change('policyHolders[1].entityType', initialValues.policyHolders[1].entityType);
-      change('policyHolders[1].order', initialValues.policyHolders[1].order)
+      change('policyHolders[1].order', initialValues.policyHolders[1].order);
     } else {
       change('policyHolders[1].emailAddress', '');
       change('policyHolders[1].firstName', '');
@@ -130,9 +116,27 @@ export class Endorsements extends React.Component {
       change('policyHolders[1].primaryPhoneNumber', '');
       change('policyHolders[1].secondaryPhoneNumber', '');
       change('policyHolders[1].entityType', '');
-      change('policyHolders[1].order', '')
+      change('policyHolders[1].order', '');
     }
     return value;
+  };
+
+  handleEndorsementFormSubmit = async (data, dispatch, props) => {
+    const { isCalculated, anyTouched } = this.state;
+    if (isCalculated && !anyTouched) {
+      await props.submitEndorsementForm(data, props);
+      this.setState({ isCalculated: false }, this.clearCalculate);
+    } else {
+      const rate = await props.getNewRate(data, props);
+      this.setCalculate(rate);
+    }
+  };
+
+  clearCalculate = () => {
+    const { reset } = this.props;
+
+    reset();
+    this.setState({ isCalculated: false });
   };
 
   normalizeSinkholeAmount = (value, previousValue, allValues) => {
@@ -212,6 +216,7 @@ export class Endorsements extends React.Component {
   render() {
     const { isCalculated } = this.state;
     const {
+      anyTouched,
       dirty,
       endorsementHistory,
       handleSubmit,
@@ -286,11 +291,11 @@ export class Endorsements extends React.Component {
                     />
 
                     <FormSection name="policyHolderMailingAddress" >
-                      <Address name="addresses" sectionId="addresses" header="Mailing Address" testPrefix='phMail' />
+                      <Address name="addresses" sectionId="addresses" header="Mailing Address" testPrefix="phMail" />
                     </FormSection>
 
                     <FormSection name="property.physicalAddress">
-                      <Address header="Property Address" testPrefix='property' />
+                      <Address header="Property Address" testPrefix="property" />
                     </FormSection>
 
                   </div>
@@ -305,12 +310,17 @@ export class Endorsements extends React.Component {
                     onKeyPress={event => event.charCode === 13 && this.clearCalculate()}
                   >Cancel
                   </button>
+                  {/*
+                    This button has some indirect logic to handle odd states that this form can be in.
+                      For disabled: First scenario is the initial view. Second scenario is after "Review" is submitted, and user makes change to the form. Third scenario is self-explanatory.
+                      For display: We only want to show 'Save' when 'Review' has been called (isCalculated is true) and the user has not made changes since.
+                  */}
                   <button
                     type="submit"
                     tabIndex="0"
                     className="btn btn-primary"
-                    disabled={(!isCalculated && pristine) || submitting}
-                  >{isCalculated ? 'Save' : 'Review'}</button>
+                    disabled={(!isCalculated && pristine) || (isCalculated && !pristine && anyTouched) || submitting}
+                  >{(isCalculated && !anyTouched) ? 'Save' : 'Review'}</button>
                 </ResultsCalculator>
 
               </div>
@@ -358,5 +368,6 @@ export default connect(mapStateToProps, {
   submitEndorsementForm,
   getEndorsementHistory,
   getZipcodeSettings,
-  getUIQuestions
-})(reduxForm({ form: 'Endorsements', enableReinitialize: true })(Endorsements));
+  getUIQuestions,
+  clearFields
+})(reduxForm({ form: FORM_NAME, enableReinitialize: true, touchOnChange: true })(Endorsements));

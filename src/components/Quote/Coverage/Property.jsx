@@ -101,6 +101,7 @@ const Property = ({
           name="yearOfRoof"
           label="Year Roof Built"
           component={Integer}
+          thousandSeparator={false}
           disabled
           dataTest="yearOfRoof"
         />

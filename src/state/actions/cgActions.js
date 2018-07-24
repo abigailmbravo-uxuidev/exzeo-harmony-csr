@@ -58,39 +58,6 @@ const handleError = (dispatch, modelName, workflowId, err) => {
   ]));
 };
 
-
-export const startWorkflowWithData = (modelName, data, dispatchAppState = true) => (dispatch) => {
-  const axiosConfig = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    data: {
-      modelName,
-      data
-    },
-    url: `${process.env.REACT_APP_API_URL}/cg/start`
-  };
-
-  return Promise.resolve(axios(axiosConfig))
-    .then((response) => {
-      const responseData = response.data.data;
-      // check to see if the cg has returned an error as an ok
-      checkCGError(responseData);
-      const instanceId = responseData.modelInstanceId;
-      if (dispatchAppState) {
-        return dispatch(batchActions([start(modelName, responseData),
-          errorActions.clearAppError(),
-          appStateActions.setAppState(modelName, instanceId, {})
-        ]));
-      }
-      dispatch(errorActions.clearAppError());
-      return dispatch(start(modelName, responseData));
-    })
-    .catch(error => handleError(dispatch, error));
-};
-
-
 export const startWorkflow = (modelName, data, dispatchAppState = true) => (dispatch) => {
   const axiosConfig = {
     method: 'POST',

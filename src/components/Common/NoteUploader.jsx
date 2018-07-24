@@ -7,22 +7,14 @@ import Uppy from 'uppy/lib/core';
 import { Dashboard } from 'uppy/lib/react';
 import XHRUpload from 'uppy/lib/plugins/XHRUpload';
 import moment from 'moment';
-import * as serviceActions from '../../state/actions/serviceActions';
-import * as appStateActions from '../../state/actions/appStateActions';
+import Loader from '@exzeo/core-ui/lib/Loader';
+import * as cgActions from '../../state/actions/cgActions';
 import * as newNoteActions from '../../state/actions/newNoteActions';
+import * as serviceActions from '../../state/actions/serviceActions';
 import * as errorActions from '../../state/actions/errorActions';
+import 'uppy/dist/uppy.css';
 
-export const minimzeButtonHandler = (props) => {
-  if (props.appState.data.minimize) {
-    props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, minimize: false });
-  } else {
-    props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, minimize: true });
-  }
-};
-
-export const renderNotes = ({
- input, label, type, meta: { touched, error }
-}) => (
+export const renderNotes = ({ input, label, type, meta: { touched, error } }) => (
   <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
     <textarea {...input} placeholder={label} rows="10" cols="40" />
     { touched && error && <span className="error-message">{ error }</span> }
@@ -35,12 +27,38 @@ export const validate = (values) => {
   return errors;
 };
 
-export class Uploader extends Component {
+export class NoteUploader extends Component {
+  constructor(props) {
+    super(props);
+
+    const idToken = localStorage.getItem('id_token');
+    
+    this.uppy = new Uppy({
+      autoProceed: false,
+      restrictions: {
+        maxFileSize: process.env.REACT_APP_REQUEST_SIZE.slice(0, -2) * 1000000
+      },
+      meta: { documentId: this.props.documentId },
+      onBeforeFileAdded: this.validateFile
+    }).use(XHRUpload, {
+        endpoint: `${process.env.REACT_APP_API_URL}/upload`,
+        fieldName: 'files[]',
+        headers: {
+          accept: 'application/json',
+          authorization: `bearer ${idToken}`
+        }
+    });
+  }
+
+  state = { minimize: false }
+
+  minimzeButtonHandler = () => this.setState({ minimize: !this.state.minimize })
+
   // TODO: Pull this from the list service
   contactTypeOptions = {
     'Quote Note': ['Agent', 'Policyholder', 'Inspector', 'Other'],
     'Policy Note': ['Agent', 'Policyholder', 'Lienholder', 'Internal', 'Inspector', 'Other']
-  };
+  }
 
   docTypeOptions = {
     'Quote Note': [
@@ -104,105 +122,106 @@ export class Uploader extends Component {
       'Wind Exclusion',
       'Wind Mitigation'
     ]
-  };
+  }
 
-  contactTypes = this.props.noteType ? this.contactTypeOptions[this.props.noteType] : [];
-  docTypes = this.props.noteType ? this.docTypeOptions[this.props.noteType] : [];
+  contactTypes = this.props.noteType ? this.contactTypeOptions[this.props.noteType] : []
+  docTypes = this.props.noteType ? this.docTypeOptions[this.props.noteType] : []
 
-  closeButtonHandler = () => this.props.actions.newNoteActions.toggleNote({});
+  closeButtonHandler = () => this.props.actions.newNoteActions.toggleNote({})
+
+  validateFile = (file, currentFiles) => {
+    if (!file.name.includes('.')) {
+      this.uppy.info('Uploads must have a file extension.');
+      return false;
+    }
+    return true;
+  }
 
   submitNote = (data, dispatch, props) => {
     const { actions, user, noteType, documentId, sourceId } = props;
-    const attachments = Object.values(this.uppy.getState().files);
-    if (!user.profile.given_name || !user.profile.family_name) {
+
+    const filelist = Object.values(this.uppy.getState().files);
+    const uploads = filelist.filter(file => file.progress.uploadComplete);
+
+    if (filelist.length > uploads.length) {
+      this.uppy.info('You have files that are not uploaded.', 'error');
+      return false;
+    }
+
+    const noteAttachments = uploads.map(file => ({ ...file.response.body, fileType: data.fileType }));
+    const noteData = {
+      number: documentId,
+      source: sourceId,
+      noteType,
+      noteContent: JSON.stringify(data.noteContent),
+      contactType: data.contactType,
+      createdAt: moment().unix(),
+      noteAttachments,
+      createdBy: JSON.stringify({
+        userId: user.sub,
+        userName: `${user.profile.given_name} ${user.profile.family_name}`
+      })
+    }
+
+    return actions.cgActions.startWorkflow('addNote', noteData, false)
+      .then(result => {
+        if(window.location.pathname.endsWith('/notes')) {
+          const ids = (noteData.noteType === 'Policy Note')
+            ? [noteData.number, noteData.source].toString()
+            : noteData.number;
+          actions.serviceActions.getNotes(ids, noteData.number);
+        }
+
+        this.closeButtonHandler();
+      })
+      .catch(err => {
+        actions.errorActions.setAppError({ message: err });
+        this.closeButtonHandler();
+      })
+  }
+
+  componentDidMount() {
+    const { actions, user } = this.props;
+    if (!user.profile || !user.profile.given_name || !user.profile.family_name) {
       const message = 'There was a problem with your user profile. Please logout of Harmony and try logging in again.';
       this.closeButtonHandler();
       actions.errorActions.setAppError({ message });
       return false;
     }
-    const noteData = {
-      number: documentId,
-      source: sourceId,
-      noteType,
-      noteContent: data.noteContent,
-      contactType: data.contactType,
-      createdAt: moment().unix(),
-      attachmentCount: attachments ? attachments.length : 0,
-      fileType: data.fileType,
-      createdBy: JSON.stringify({
-        userId: user.sub,
-        userName: `${user.profile.given_name} ${user.profile.family_name}`
-      })
-    };
-
-    props.actions.serviceActions.addNote(noteData, attachments);
-    this.closeButtonHandler();
-  };
-
-  validateFile = (file, currentFiles) => !file.name.includes('.')
-      ? Promise.reject('Uploads must have a file extension.')
-      : Promise.resolve()
-
-  componentWillMount() {
-    const idToken = localStorage.getItem('id_token');
-
-    this.uppy = new Uppy({
-      autoProceed: false,
-      restrictions: {
-        maxFileSize: 10000000,
-        maxNumberOfFiles: 10
-      },
-      onBeforeFileAdded: this.validateFile,
-      onBeforeUpload: (files) => {
-        if (files) return Promise.resolve();
-        return this.uppy.addFile({ source: 'uppy', preview: null, name: 'hidden', type: null, data: new Uint8Array() })
-          .then(done => Promise.resolve());
-      }
-    })
-    .use(XHRUpload, {
-      endpoint: `${process.env.REACT_APP_API_URL}/upload`,
-      formData: true,
-      bundle: true,
-      fieldName: 'files[]',
-      headers: {
-        accept: 'application/json',
-        authorization: `bearer ${idToken}`
-      }
-    })
-    .run();
   }
 
   render() {
     return (
-      <div className={this.props.appState.data.minimize === true ? 'new-note-file minimize' : 'new-note-file'} >
+      <div className={this.state.minimize ? 'new-note-file minimize' : 'new-note-file'} >
         <div className="title-bar">
-          <div className="title title-minimze-button" onClick={() => minimzeButtonHandler(this.props)}>Note / File</div>
+          <div className="title title-minimze-button" onClick={() => this.minimzeButtonHandler(this.props)}>Note / File</div>
           <div className="controls note-file-header-button-group">
-            <button className="btn btn-icon minimize-button" onClick={() => minimzeButtonHandler(this.props)}><i className="fa fa-window-minimize" aria-hidden="true" /></button>
+            <button className="btn btn-icon minimize-button" onClick={() => this.minimzeButtonHandler(this.props)}><i className="fa fa-window-minimize" aria-hidden="true" /></button>
             <button className="btn btn-icon header-cancel-button" onClick={this.closeButtonHandler} type="submit"><i className="fa fa-times-circle" aria-hidden="true" /></button>
           </div>
         </div>
         <div className="mainContainer">
-          <Form id="NewNoteFileUploader" onSubmit={this.props.handleSubmit(this.submitNote)} noValidate>
+          {this.props.submitting && <Loader />}
+          <Form id="NoteUploader" onSubmit={this.props.handleSubmit(this.submitNote)} noValidate>
             <div className="content">
-                <label>Contact</label>
-                <Field component="select" name="contactType" disabled={!this.contactTypes.length}>
-                  { this.contactTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
-                </Field>
-                <Field name="noteContent" component={renderNotes} label="Note Content" />
-                <label>File Type</label>
-                <Field component="select" name="fileType" disabled={!this.docTypes.length}>
-                  { this.docTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
-                </Field>
-                <div className="file-uploader">
-                  <Dashboard
-                    uppy={this.uppy}
-                    maxHeight={350}
-                    showProgressDetails
-                    hideUploadButton
-                  />
-                </div>
-              </div>
+              <label>Contact</label>
+              <Field component="select" name="contactType" disabled={!this.contactTypes.length}>
+                { this.contactTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
+              </Field>
+              <Field name="noteContent" component={renderNotes} label="Note Content" />
+              <label>File Type</label>
+              <Field component="select" name="fileType" disabled={!this.docTypes.length}>
+                { this.docTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
+              </Field>
+              <Dashboard 
+                uppy={this.uppy} 
+                maxHeight={350} 
+                proudlyDisplayPoweredByUppy={false} 
+                metaFields={[{ id: 'name', name: 'Name', placeholder: 'file name' }]}
+                showProgressDetails 
+                hideProgressAfterFinish
+              />
+            </div>
             <div className="buttons note-file-footer-button-group">
               <button tabIndex="0" aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={this.closeButtonHandler}>Cancel</button>
               <button tabIndex="0" aria-label="submit-btn form-newNote" className="btn btn-primary submit-button">Save</button>
@@ -214,26 +233,26 @@ export class Uploader extends Component {
   }
 }
 
-Uploader.propTypes = {
-  noteType: PropTypes.string
+NoteUploader.propTypes = {
+  documentId: PropTypes.string.isRequired,
+  noteType: PropTypes.string.isRequired
 };
 
 const mapStateToProps = state => ({
-  appState: state.appState,
   user: state.authState.userProfile
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    serviceActions: bindActionCreators(serviceActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch),
+    cgActions: bindActionCreators(cgActions, dispatch),
     newNoteActions: bindActionCreators(newNoteActions, dispatch),
+    serviceActions: bindActionCreators(serviceActions, dispatch),
     errorActions: bindActionCreators(errorActions, dispatch)
   }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
-  form: 'NewNoteFileUploader',
+  form: 'NoteUploader',
   initialValues: { contactType: 'Agent', fileType: 'Other' },
   validate
-})(Uploader));
+})(NoteUploader));
