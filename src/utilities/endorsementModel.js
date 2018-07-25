@@ -109,6 +109,7 @@ export function generateModel(data, props) {
 export const convertToRateData = (formData, formProps) => {
   const { summaryLedger: { currentPremium }, zipcodeSettings } = formProps;
   const endorsementDate = calculateEndorsementDate(formData.endorsementDate, zipcodeSettings.timezone);
+  formData.coverageLimits.dwelling.amount = Math.round(formData.coverageLimits.dwelling.amount / 1000) * 1000;
 
   return {
     ...formData,
