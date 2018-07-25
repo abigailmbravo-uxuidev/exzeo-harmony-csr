@@ -6,6 +6,7 @@ import { isAlphaNumeric, isValidChar, isNumberDashOnly } from '@exzeo/core-ui/li
 import { getAnswers } from '../../../utilities/forms';
 
 import Pagination from '../components/Pagination';
+import Button from '@exzeo/core-ui/lib/Button/index';
 
 const QuoteSearch = ({
   submitting,
@@ -65,14 +66,14 @@ const QuoteSearch = ({
         />
       </div>
 
-      <button
-        className="btn btn-success multi-input"
-        data-test="search-quote-submit"
+      <Button
+        baseClass="success"
+        customClass="multi-input"
         type="submit"
         disabled={submitting}
-      >
-        <i className="fa fa-search" />Search
-      </button>
+        data-test="submit"
+      ><i className="fa fa-search" />Search
+      </Button>
     </div>
     {!!search.results.length && search.totalPages > 1 &&
       <Pagination

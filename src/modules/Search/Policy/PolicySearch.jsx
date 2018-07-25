@@ -8,6 +8,7 @@ import { getAnswers } from '../../../utilities/forms';
 import { STANDARD_DATE_FORMAT } from '../../../constants/search';
 
 import Pagination from '../components/Pagination';
+import Button from '@exzeo/core-ui/lib/Button/index';
 
 const isValidDate = isValidDateFormat(STANDARD_DATE_FORMAT);
 
@@ -68,22 +69,23 @@ const PolicySearch = ({
         validate={isNumberDashOnly}
         errorHint
       />
-      <button
-        className="btn btn-success multi-input"
-        data-test="search-policy-submit"
+      <Button
+        baseClass="success"
+        customClass="multi-input"
         type="submit"
         disabled={submitting}
-      >
-        <i className="fa fa-search" />Search
-      </button>
-      <button
-        type="button"
-        className="advanced-search-btn btn-sm btn-icon"
-        data-test="search-policy-toggle-advanced"
+        data-test="submit"
+      ><i className="fa fa-search" />Search
+      </Button>
+      <Button
+        baseClass="icon"
+        customClass="advanced-search-btn"
+        size="small"
+        data-test="advanced-search"
         onClick={toggleAdvancedSearch}
       >
         <i className={classNames(advancedSearch ? 'fa fa-chevron-up' : 'fa fa-chevron-down')} />
-      </button>
+      </Button>
     </div>
 
     {advancedSearch &&

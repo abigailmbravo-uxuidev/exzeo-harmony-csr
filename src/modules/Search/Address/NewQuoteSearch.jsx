@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { Input } from '@exzeo/core-ui/lib/Input';
+import Button from '@exzeo/core-ui/lib/Button';
 import { isValidChar, isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
 
 const NewQuoteSearch = ({ submitting }) => (
@@ -13,18 +14,18 @@ const NewQuoteSearch = ({ submitting }) => (
       placeholder="Property Address Search"
       component={Input}
       styleName="property-search"
-      validate={isRequired}
+      validate={[isValidChar, isRequired]}
       errorHint
     />
 
-    <button
-      className="btn btn-success multi-input"
-      data-test="search-new-quote-submit"
+    <Button
+      baseClass="success"
+      customClass="multi-input"
       type="submit"
       disabled={submitting}
-    >
-      <i className="fa fa-search" />Search
-    </button>
+      data-test="submit"
+    ><i className="fa fa-search" />Search
+    </Button>
   </div>
 );
 

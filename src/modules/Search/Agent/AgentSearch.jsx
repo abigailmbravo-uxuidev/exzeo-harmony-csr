@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { Input, Integer } from '@exzeo/core-ui/lib/Input';
 import { isAlphaNumeric, isValidChar } from '@exzeo/core-ui/lib/InputLifecycle';
+import Button from '@exzeo/core-ui/lib/Button/index';
 
 const AgentSearch = ({ submitting }) => {
   return (
@@ -54,14 +55,14 @@ const AgentSearch = ({ submitting }) => {
         styleName="agency-reg-lic-fein-search"
       />
 
-      <button
-        className="btn btn-success multi-input"
-        data-test="search-agent-submit"
+      <Button
+        baseClass="success"
+        customClass="multi-input"
         type="submit"
         disabled={submitting}
-      >
-        <i className="fa fa-search" />Search
-      </button>
+        data-test="submit"
+      ><i className="fa fa-search" />Search
+      </Button>
     </div>
   );
 };
