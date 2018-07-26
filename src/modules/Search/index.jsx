@@ -21,7 +21,7 @@ const SEARCH_FORMS = {
   [SEARCH_TYPES.user]: UserSearch
 };
 
-class SearchPage extends Component {
+export class SearchPage extends Component {
 
   state = {
     advancedSearch: false,
