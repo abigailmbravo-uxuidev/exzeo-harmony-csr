@@ -95,7 +95,6 @@ const PolicySearch = ({
           dataTest="agencyCode"
           label="Agency Name"
           component={SelectTypeAhead}
-
           styleName="agencyCodeSelectField"
           answers={agencyList}
         />
