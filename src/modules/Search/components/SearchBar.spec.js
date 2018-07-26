@@ -5,6 +5,7 @@ import { SearchBar } from './SearchBar';
 describe('Test SearchBar component', () => {
   it('renders SearchBar', () => {
     const props = {
+      agencies: [],
       handleSubmit() {},
       render() {},
       toggleLoading() {},
@@ -14,7 +15,9 @@ describe('Test SearchBar component', () => {
       reset() {},
       clearAppError() {},
       advancedSearch: true,
-      toggleAdvancedSearch() {}
+      toggleAdvancedSearch() {},
+      initialize() {},
+      handleSearchSubmit() {}
     };
 
     const wrapper = shallow(<SearchBar {...props} />);

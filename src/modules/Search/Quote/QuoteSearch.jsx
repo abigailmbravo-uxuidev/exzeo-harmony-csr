@@ -71,7 +71,7 @@ const QuoteSearch = ({
         customClass="multi-input"
         type="submit"
         disabled={submitting}
-        data-test="submit"
+        dataTest="submit"
       ><i className="fa fa-search" />Search
       </Button>
     </div>

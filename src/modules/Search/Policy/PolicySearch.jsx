@@ -74,14 +74,14 @@ const PolicySearch = ({
         customClass="multi-input"
         type="submit"
         disabled={submitting}
-        data-test="submit"
+        dataTest="submit"
       ><i className="fa fa-search" />Search
       </Button>
       <Button
         baseClass="icon"
         customClass="advanced-search-btn"
         size="small"
-        data-test="advanced-search"
+        dataTest="advanced-search"
         onClick={toggleAdvancedSearch}
       >
         <i className={classNames(advancedSearch ? 'fa fa-chevron-up' : 'fa fa-chevron-down')} />
