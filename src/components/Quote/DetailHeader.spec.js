@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { mount, shallow } from 'enzyme';
-import ConnectedApp, { DetailHeader, selectPolicy, handleGetQuote } from './DetailHeader';
+import ConnectedApp, { DetailHeader } from './DetailHeader';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -351,8 +351,9 @@ describe('Testing DetailHeader component', () => {
     };
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
     expect(wrapper.instance().props.quoteData).toEqual(quoteData);
-    selectPolicy(wrapper.instance().props.quoteData, props);
+
   });
+
   it('should test mount', () => {
     const initialState = {
       service: {
@@ -394,21 +395,21 @@ describe('Testing DetailHeader component', () => {
         }
       }
     };
-    const wrapper = mount(<Provider store={store} >
-      <DetailHeader {...props} />
-    </Provider>);
-    expect(wrapper);
+    const wrapper = mount(
+      <Provider store={store}>
+        <DetailHeader {...props} />
+      </Provider>
+    );
 
-    selectPolicy(quoteData, props);
+    expect(wrapper);
 
     const shallowWrapper = shallow(<DetailHeader store={store} {...props} />);
 
     shallowWrapper.instance().componentWillReceiveProps({ quoteState: { update: true, quoteId : '123'}, ...props });
-    const wrapper2 = shallow(<DetailHeader store={store} {...props} />);
+    shallowWrapper.instance().selectPolicy();
 
-    wrapper2.instance().componentWillReceiveProps({ quoteState: {
-      update: true,
-      quoteId: '123'
-    }, ...props})
+    const wrapper2 = shallow(<DetailHeader store={store} {...props} />);
+    wrapper2.instance().componentWillReceiveProps({ quoteState: { update: true, quoteId: '123' }, ...props});
+
   });
 });
