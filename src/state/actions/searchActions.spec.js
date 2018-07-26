@@ -85,7 +85,7 @@ describe('Search Actions', () => {
     it('should call dispatch on handleAddressSearch', async () => {
       const addressSearch = '1234';
       const addresses = [{id: '1234'}, {id: '4321'}];
-      const stubAddressData = { data: { result: { IndexResults: addresses, TotalCount: addresses.length } } };
+      const stubAddressData = { data: { result: { IndexResult: addresses, TotalCount: addresses.length } } };
       const payload = {
         results: addresses,
         totalRecords: 2,
@@ -103,7 +103,7 @@ describe('Search Actions', () => {
 
       httpStub.onCall(0).returns(Promise.resolve(stubAddressData));
 
-      await store.dispatch(searchActions.handleAddressSearch(addressSearch, {}));
+      await store.dispatch(searchActions.handleAddressSearch(addressSearch));
 
       sinon.assert.calledOnce(serviceRunner.callService);
       expect(store.getActions()).toEqual(stateObj);

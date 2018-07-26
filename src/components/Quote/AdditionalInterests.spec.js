@@ -192,6 +192,7 @@ const quoteData = {
   },
   additionalInterests: [
     {
+      _id: 123,
       type: 'Mortgagee',
       name1: 'BB1',
       name2: 'CC1',
@@ -344,7 +345,8 @@ describe('Testing AdditionalInterests component', () => {
       groupedAdditionalInterests,
       sortedAdditionalInterests,
       editingDisabled: false,
-      getUIQuestions() {}
+      getUIQuestions() {},
+      tasks: {}
     };
     const wrapper = shallow(<AdditionalInterests {...props} />);
 
