@@ -451,14 +451,15 @@ export function handleQuoteSearch(data) {
  */
 export function handlePolicySearch(data) {
   return async dispatch => {
+    // TODO: update this once the SelectTypeAhead is fixed. Currently is puts the entire 'answer' object in state rather than just the value.
+    const agencyCode = data.agencyCode ? data.agencyCode.answer : '';
     const taskData = {
       firstName: (encodeURIComponent(data.firstName) !== 'undefined' ? encodeURIComponent(data.firstName) : ''),
       lastName: (encodeURIComponent(data.lastName) !== 'undefined' ? encodeURIComponent(data.lastName) : ''),
       address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(String(data.address).trim()) : ''),
       policyNumber: (encodeURIComponent(data.policyNumber) !== 'undefined' ? encodeURIComponent(data.policyNumber) : ''),
       policyStatus: (encodeURIComponent(data.policyStatus) !== 'undefined' ? encodeURIComponent(data.policyStatus) : ''),
-      // TODO: update this once the SelecTypeAhead is fixex. Currently is puts the entire 'answer' object in state rather than just the value.
-      agencyCode: (encodeURIComponent(data.agencyCode.answer) !== 'undefined' ? encodeURIComponent(data.agencyCode.answer) : ''),
+      agencyCode: (encodeURIComponent(agencyCode) !== 'undefined' ? encodeURIComponent(agencyCode) : ''),
       effectiveDate: (encodeURIComponent(data.effectiveDate) !== 'undefined' ? encodeURIComponent(moment(data.effectiveDate).utc().format(SECONDARY_DATE_FORMAT)) : ''),
       currentPage: setPageNumber(data.currentPage, data.isNext),
       sortBy: data.sortBy,
@@ -549,7 +550,8 @@ export function handleSearchSubmit(data, props) {
         await dispatch(handleAgencySearch(data));
       }
     } catch (error) {
-      dispatch(errorActions.setAppError(error))
+      // 'error' is undefined if we catch here. Making a custom message to handle.
+      dispatch(errorActions.setAppError(error || { message: 'An error has occurred'}))
     }
 
     dispatch(toggleLoading(false));
