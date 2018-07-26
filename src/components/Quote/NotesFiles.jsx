@@ -16,7 +16,7 @@ export class NotesFiles extends Component {
     if (quoteData && quoteData.quoteNumber) {
       actions.appStateActions.setAppState('csrQuote', appState.instanceId, { submitting: true});
       actions.serviceActions.getNotes(quoteData.quoteNumber, quoteData.quoteNumber)
-        .then( result => actions.appStateActions.setAppState('csrQuote', appState.instanceId, { submitting: false}));
+        .then( result => actions.appStateActions.setAppState('csrQuote', appState.instanceId, { submitting: false }));
     }
   }
 
