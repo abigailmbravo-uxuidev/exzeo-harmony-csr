@@ -143,4 +143,4 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   getLatestQuote,
   saveUnderwritingExceptions
-})(reduxForm({ form: 'UnderwritingOverride', enableReinitialize: true })(UnderwritingValidationBar));
+})(reduxForm({ form: 'UnderwritingOverride', enableReinitialize: true, destroyOnUnmount: false })(UnderwritingValidationBar));
