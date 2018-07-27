@@ -32,7 +32,7 @@ export class NoteUploader extends Component {
     super(props);
 
     const idToken = localStorage.getItem('id_token');
-    
+
     this.uppy = new Uppy({
       autoProceed: false,
       restrictions: {
@@ -135,7 +135,7 @@ export class NoteUploader extends Component {
       return false;
     }
     return true;
-  }
+  };
 
   submitNote = (data, dispatch, props) => {
     const { actions, user, noteType, documentId, sourceId } = props;
@@ -161,11 +161,11 @@ export class NoteUploader extends Component {
         userId: user.sub,
         userName: `${user.profile.given_name} ${user.profile.family_name}`
       })
-    }
+    };
 
     return actions.cgActions.startWorkflow('addNote', noteData, false)
       .then(result => {
-        if(window.location.pathname.endsWith('/notes')) {
+        if (window.location.pathname.endsWith('/notes')) {
           const ids = (noteData.noteType === 'Policy Note')
             ? [noteData.number, noteData.source].toString()
             : noteData.number;
@@ -174,10 +174,10 @@ export class NoteUploader extends Component {
 
         this.closeButtonHandler();
       })
-      .catch(err => {
+      .catch((err) => {
         actions.errorActions.setAppError({ message: err });
         this.closeButtonHandler();
-      })
+      });
   }
 
   componentDidMount() {
@@ -213,12 +213,12 @@ export class NoteUploader extends Component {
               <Field component="select" name="fileType" disabled={!this.docTypes.length}>
                 { this.docTypes.map(option => <option aria-label={option} value={option} key={option}>{ option }</option>) }
               </Field>
-              <Dashboard 
-                uppy={this.uppy} 
-                maxHeight={350} 
-                proudlyDisplayPoweredByUppy={false} 
+              <Dashboard
+                uppy={this.uppy}
+                maxHeight={350}
+                proudlyDisplayPoweredByUppy={false}
                 metaFields={[{ id: 'name', name: 'Name', placeholder: 'file name' }]}
-                showProgressDetails 
+                showProgressDetails
                 hideProgressAfterFinish
               />
             </div>

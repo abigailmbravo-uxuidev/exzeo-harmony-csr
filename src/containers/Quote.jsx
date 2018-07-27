@@ -9,19 +9,19 @@ import QuoteDetailHeader from '../components/Quote/DetailHeader';
 import UnderwritingValidationBarConnect from '../components/Quote/UnderwritingValidationBar';
 
 
-export const QuoteBase = props => (
+export const QuoteBase = ({appState, quoteData, children}) => (
   <div className="app-wrapper csr quote">
-    <Helmet><title>{props.quoteData.quoteNumber ? `Q: ${props.quoteData.quoteNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
+    <Helmet><title>{quoteData.quoteNumber ? `Q: ${quoteData.quoteNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
     {/* <NewNoteFileUploader />*/}
     <QuoteHeader />
     <QuoteDetailHeader />
     <main role="document">
-      {props.appState.data.submitting && <Loader />}
+      {(appState.data.submitting || !quoteData._id) && <Loader />}
       <aside className="content-panel-left">
         <QuoteSideNav />
       </aside>
       <div className="content-wrapper">
-        {props.children}
+        {children}
       </div>
       <UnderwritingValidationBarConnect />
     </main>
