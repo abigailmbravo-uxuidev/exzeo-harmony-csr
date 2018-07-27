@@ -10,6 +10,8 @@ module.exports = function (wallaby) {
     path.delimiter +
     path.join(__dirname, 'node_modules/react-scripts/node_modules');
 
+  process.env.REACT_APP_REQUEST_SIZE = '50';
+
   require('module').Module._initPaths();
 
   // Babel needs this

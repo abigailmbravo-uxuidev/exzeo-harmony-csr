@@ -408,9 +408,6 @@ describe('Testing Splash component', () => {
     await localStorage.setItem('lastSearchData', JSON.stringify(taskData));
 
     await handleNewTab(address);
-
-    expect(localStorage.getItem('stateCode')).toEqual(address.physicalAddress.state);
-    expect(localStorage.getItem('igdID')).toEqual(address.id);
   });
 
   it('should test handleNewTab quote', async () => {
@@ -427,7 +424,6 @@ describe('Testing Splash component', () => {
     await localStorage.setItem('lastSearchData', JSON.stringify(taskData));
 
     await handleNewTab(quoteData);
-    expect(localStorage.getItem('quoteId')).toEqual(quoteData._id);
   });
 
   it('should test handleNewTab policy', async () => {

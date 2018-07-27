@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import Loader from '@exzeo/core-ui/lib/Loader';
-import BaseConnect from './Base';
-import Footer from '../components/Common/Footer';
 import * as cgActions from '../state/actions/cgActions';
 import * as appStateActions from '../state/actions/appStateActions';
 import * as questionsActions from '../state/actions/questionsActions';
 import SearchResults from '../components/Search/SearchResults';
 import NoResultsConnect from '../components/Search/NoResults';
+import Footer from '../components/Common/Footer';
+import BaseConnect from './Base';
 
 const workflowModelName = 'csrQuote';
 const workflowData = {
@@ -18,19 +18,15 @@ const workflowData = {
 };
 
 export const handleNewTab = (searchData) => {
-  localStorage.setItem('isNewTab', true);
-
+  // TODO: remove this in Search Refactor branch, as it will require changes in a few places that will conflict with work already done in branch.
   const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData'));
 
   if (lastSearchData.searchType === 'address') {
-    localStorage.setItem('stateCode', searchData.physicalAddress.state);
-    localStorage.setItem('igdID', searchData.id);
-    window.open('/quote/coverage', '_blank');
+    window.open(`/quote/new/${searchData.physicalAddress.state}/${searchData.id}`, '_blank');
   } else if (lastSearchData.searchType === 'quote') {
-    localStorage.setItem('quoteId', searchData._id);
-    window.open('/quote/coverage', '_blank');
+    window.open(`/quote/${searchData._id}`, '_blank');
   } else if (lastSearchData.searchType === 'policy') {
-    window.open(`/policy/coverage/${searchData.policyNumber}`, '_blank');
+    window.open(`/policy/${searchData.policyNumber}/coverage`, '_blank');
   }
 };
 
@@ -39,7 +35,6 @@ export class Splash extends Component {
     this.props.actions.cgActions.startWorkflow(workflowModelName, workflowData);
     this.props.actions.questionsActions.getUIQuestions('searchCSR');
   }
-
 
   handleSelectQuote = (quote, props) => {
     const workflowId = props.appState.instanceId;
@@ -51,7 +46,6 @@ export class Splash extends Component {
     }];
 
     props.actions.appStateActions.setAppState(props.appState.modelName, workflowId, { ...props.appState.data, submitting: true });
-
 
     props.actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
       .then(() => {

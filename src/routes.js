@@ -16,6 +16,7 @@ import SplashPage from './containers/Splash';
 import AgencySplashPage from './containers/AgencySplash';
 import NotFoundPage from './containers/NotFound';
 import QuoteCoverage from './components/Quote/Coverage';
+import QuoteLanding from "./components/Quote/QuoteLanding";
 import QuoteUnderwriting from './components/Quote/Underwriting';
 import AdditionalInterests from './components/Quote/AdditionalInterests';
 import QuoteMailingAddressBilling from './components/Quote/MailingAddressBilling';
@@ -115,19 +116,21 @@ class Routes extends Component {
             <Switch>
               <Route exact path="/" render={props => <SplashPage auth={auth} {...props} />} />
               <Route exact path="/agency" render={props => <AgencySplashPage auth={auth} {...props} />} />
-              <Route exact path="/quote/billing" render={props => <QuoteMailingAddressBilling auth={auth} {...props} />} />
-              <Route exact path="/quote/notes" render={props => <QuoteNotesFiles auth={auth} {...props} />} />
-              <Route exact path="/quote/summary" render={props => <QuoteSummary auth={auth} {...props} />} />
-              <Route exact path="/quote/additionalInterests" render={props => <AdditionalInterests auth={auth} {...props} />} />
-              <Route exact path="/quote/coverage" render={props => <QuoteCoverage auth={auth} {...props} />} />
-              <Route exact path="/quote/underwriting" render={props => <QuoteUnderwriting auth={auth} {...props} />} />
-              <Route exact path="/quote/application" render={props => <QuoteApplication auth={auth} {...props} />} />
-              <Route exact path="/policy/coverage/:policyNumber" render={props => <PolicyCoverage auth={auth} {...props} />} />
-              <Route exact path="/policy/policyholder" render={props => <PolicyPolicyholderAgent auth={auth} {...props} />} />
-              <Route exact path="/policy/billing" render={props => <PolicyMortgageBilling auth={auth} {...props} />} />
-              <Route exact path="/policy/notes" render={props => <PolicyNotesFiles auth={auth} {...props} />} />
-              <Route exact path="/policy/cancel" render={props => <PolicyCancel auth={auth} {...props} />} />
-              <Route exact path="/policy/endorsements" render={props => <PolicyEndorsements auth={auth} {...props} />} />
+              <Route exact path="/quote/new/:stateCode/:propertyId" render={props => <QuoteLanding auth={auth} newQuote {...props} />} />
+              <Route exact path="/quote/:quoteId" render={props => <QuoteLanding auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/billing" render={props => <QuoteMailingAddressBilling auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/notes" render={props => <QuoteNotesFiles auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/summary" render={props => <QuoteSummary auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/additionalInterests" render={props => <AdditionalInterests auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/coverage" render={props => <QuoteCoverage auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/underwriting" render={props => <QuoteUnderwriting auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/application" render={props => <QuoteApplication auth={auth} {...props} />} />
+              <Route exact path="/policy/:policyNumber/coverage" render={props => <PolicyCoverage auth={auth} {...props} />} />
+              <Route exact path="/policy/:policyNumber/policyholder" render={props => <PolicyPolicyholderAgent auth={auth} {...props} />} />
+              <Route exact path="/policy/:policyNumber/billing" render={props => <PolicyMortgageBilling auth={auth} {...props} />} />
+              <Route exact path="/policy/:policyNumber/notes" render={props => <PolicyNotesFiles auth={auth} {...props} />} />
+              <Route exact path="/policy/:policyNumber/cancel" render={props => <PolicyCancel auth={auth} {...props} />} />
+              <Route exact path="/policy/:policyNumber/endorsements" render={props => <PolicyEndorsements auth={auth} {...props} />} />
               <Route exact path="/agency/staff" render={props => <AgencyStaff auth={auth} {...props} />} />
               <Route exact path="/reports" render={props => <Reports auth={auth} {...props} />} />
               <Route exact path="/login" render={props => <LoginPage auth={auth} {...props} />} />
