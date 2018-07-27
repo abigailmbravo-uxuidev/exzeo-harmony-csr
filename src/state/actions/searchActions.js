@@ -534,21 +534,16 @@ export function handleSearchSubmit(data, props) {
     dispatch(toggleLoading(true));
 
     try {
-      if (searchType === SEARCH_TYPES.newQuote) {
-        await dispatch(handleAddressSearch(data));
-      }
-      if (searchType === SEARCH_TYPES.quote) {
-        await dispatch(handleQuoteSearch(data));
-      }
-      if (searchType === SEARCH_TYPES.policy) {
-        await dispatch(handlePolicySearch(data));
-      }
-      if (searchType === SEARCH_TYPES.agent) {
-        await dispatch(handleAgentSearch(data));
-      }
-      if (searchType === SEARCH_TYPES.agency) {
-        await dispatch(handleAgencySearch(data));
-      }
+      if (searchType === SEARCH_TYPES.newQuote) await dispatch(handleAddressSearch(data));
+
+      if (searchType === SEARCH_TYPES.quote) await dispatch(handleQuoteSearch(data));
+
+      if (searchType === SEARCH_TYPES.policy) await dispatch(handlePolicySearch(data));
+
+      if (searchType === SEARCH_TYPES.agent) await dispatch(handleAgentSearch(data));
+
+      if (searchType === SEARCH_TYPES.agency) await dispatch(handleAgencySearch(data));
+
     } catch (error) {
       // 'error' is undefined if we catch here. Making a custom message to handle.
       dispatch(errorActions.setAppError(error || { message: 'An error has occurred'}))

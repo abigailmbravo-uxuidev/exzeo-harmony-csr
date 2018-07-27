@@ -108,5 +108,6 @@ export default connect(mapStateToProps, {
   handleSearchSubmit,
 })(reduxForm({
   // 'initialValues' prop is being passed in from parent component based on route/pathName
-  form: 'SEARCH_BAR'
+  form: 'SEARCH_BAR',
+  enableReinitialize: true
 })(SearchBar));

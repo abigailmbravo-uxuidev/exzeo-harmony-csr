@@ -27,8 +27,13 @@ export class SearchPage extends Component {
     advancedSearch: false,
     hasSearched: false,
     searchType: SEARCH_TYPES.policy,
-    searchConfig: SEARCH_TYPES.policy
+    searchConfig: SEARCH_TYPES.policy,
+    // searchReady: false
   };
+
+  // static getDerivedStateFromProps() {
+  //
+  // }
 
   componentDidMount() {
     this.setSearchConfig();
