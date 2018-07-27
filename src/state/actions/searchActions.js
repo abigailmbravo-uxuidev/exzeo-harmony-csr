@@ -152,7 +152,7 @@ export function searchAgencies(agencySearchData) {
 /**
  * Build query string and call address search service
  * @param {string} address
- * @returns {Promise<Array>}
+ * @returns {Promise<{}>}
  */
 export async function fetchAddresses(address) {
   const config = {
@@ -163,7 +163,7 @@ export async function fetchAddresses(address) {
 
   try {
     const response = await serviceRunner.callService(config);
-    return response && response.data && response.data.result ? response.data.result : [];
+    return response && response.data && response.data.result ? response.data.result : {};
   } catch (error) {
     throw error;
   }
@@ -182,7 +182,7 @@ export async function fetchAddresses(address) {
  * @param {string} pageSize
  * @param {string} sort
  * @param {string} sortDirection
- * @returns {Promise<Array>}
+ * @returns {Promise<{}>}
  */
 export async function fetchQuotes({
   firstName,
@@ -205,7 +205,7 @@ export async function fetchQuotes({
 
   try {
     const response = await serviceRunner.callService(config);
-    return response && response.data && response.data.result ? response.data.result : [];
+    return response && response.data && response.data.result ? response.data.result : {};
   } catch (error) {
     throw error;
   }
@@ -227,7 +227,7 @@ export async function fetchQuotes({
  * @param sortBy
  * @param sortDirection
  * @param state
- * @returns {Promise<Array>}
+ * @returns {Promise<{}>}
  */
 export async function fetchPolicies({
   firstName,
@@ -253,7 +253,7 @@ export async function fetchPolicies({
 
   try {
     const response = await serviceRunner.callService(config);
-    return response ? response.data : [];
+    return response ? response.data : {};
   } catch (error) {
     throw error;
   }
@@ -268,7 +268,7 @@ export async function fetchPolicies({
  * @param {string} agentCode
  * @param {string} address
  * @param {string} licenseNumber
- * @returns {Promise<Array>}
+ * @returns {Promise<{}>}
  */
 export async function fetchAgents({ companyCode, state, firstName, lastName, agentCode, address, licenseNumber }) {
   const config = {
@@ -295,7 +295,7 @@ export async function fetchAgents({ companyCode, state, firstName, lastName, age
  * @param {string} licenseNumber
  * @param {string} fein
  * @param {string} phone
- * @returns {Promise<Array>}
+ * @returns {Promise<{}>}
  */
 export async function fetchAgencies({ companyCode, state, displayName, agencyCode, address, licenseNumber, fein, phone }) {
   const config = {
