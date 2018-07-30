@@ -37,7 +37,6 @@
     "redux": "~3.7.2",
     "redux-batched-actions": "~0.1.6",
     "redux-form": "7.3.x",
-    "redux-persist": "~4.10.2",
     "redux-thunk": "~2.2.0",
     "uppy": "^0.25.6",
     "reselect": "^3.0.1",

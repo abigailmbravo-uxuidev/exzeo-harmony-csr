@@ -7,6 +7,16 @@ import endorsementUtils from '../../utilities/endorsementModel';
 
 
 /**
+ * Reset policyState
+ * @returns {{type: string}}
+ */
+export function resetPolicy() {
+  return {
+    type: types.RESET_POLICY
+  }
+}
+
+/**
  *
  * @param policy
  * @param summaryLedger

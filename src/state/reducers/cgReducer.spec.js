@@ -1,4 +1,3 @@
-import * as persistTypes from 'redux-persist/constants';
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 import cgReducer from './cgReducer';
@@ -44,18 +43,6 @@ describe('CG Reducer', () => {
 
     expect(cgReducer(state, action)).toEqual(inputProps);
   });
-  it('should call cgReducer REHYDRATE', () => {
-    const state = initialState.appState;
-    const inputProps = { data: { submitting: false } };
-    const action = {
-      type: persistTypes.REHYDRATE,
-      payload: {
-        cg: inputProps
-      }
-    };
-
-    expect(cgReducer(state, action)).toEqual(inputProps);
-  });
 
   it('should call cgReducer CG_START - new state', () => {
     const state = initialState.appState;
@@ -93,15 +80,7 @@ describe('CG Reducer', () => {
 
     expect(cgReducer(state, action)).toEqual(inputProps);
   });
-  it('should call cgReducer REHYDRATE - new state', () => {
-    const state = initialState.appState;
-    const inputProps = { data: { submitting: false } };
-    const action = {
-      type: persistTypes.REHYDRATE
-    };
 
-    expect(cgReducer(state, action)).toEqual(inputProps);
-  });
   it('should call cgReducer default', () => {
     const state = initialState.appState;
     const inputProps = { data: { submitting: false } };
