@@ -228,7 +228,7 @@ export class Coverage extends Component {
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
 
     // history.length will be 2 if redirected from the QuoteLanding component. We only want to call 'completeTask' if we are mounting from a redirect from QuoteLanding.
-    if (history.length === 2 && appState.modelName && appState.instanceId) {
+    if (history.action === 'PUSH') {
       // this.props.startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` }).then((result) => {
       const steps = [
         { name: 'hasUserEnteredData', data: { answer: 'No' } },
@@ -241,10 +241,7 @@ export class Coverage extends Component {
         selectedLink: 'customerData'
       });
       batchCompleteTask(appState.modelName, appState.instanceId, steps)
-    } else {
-
     }
-
   }
 
   componentWillReceiveProps(nextProps) {
