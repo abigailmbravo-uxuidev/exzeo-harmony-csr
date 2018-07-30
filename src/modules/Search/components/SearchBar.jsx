@@ -44,16 +44,13 @@ export class SearchBar extends Component {
   };
 
   clearForm = () => {
-    const { advancedSearch, clearAppError, reset, toggleAdvancedSearch } = this.props;
+    const { clearAppError, reset } = this.props;
     const lastSearchData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
     lastSearchData.searchType = '';
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(lastSearchData));
     reset();
     clearAppError();
     toggleLoading(false);
-    if (advancedSearch) {
-      toggleAdvancedSearch();
-    }
   };
 
   render() {

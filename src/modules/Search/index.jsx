@@ -44,7 +44,7 @@ export class SearchPage extends Component {
   }
 
   changeSearchType = (searchType) => {
-    this.setState({ searchType, hasSearched: false });
+    this.setState({ searchType, hasSearched: false, advancedSearch: false });
     this.props.resetSearch();
   };
 
