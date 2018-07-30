@@ -330,9 +330,10 @@ export const getQuote = quoteId => (dispatch) => {
 
   return axios(axiosConfig).then((response) => {
     const data = { quote: response.data ? response.data.result : {} };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
+
+    dispatch(serviceRequest(data));
+
+    return data.quote;
   })
     .catch((error) => {
       const message = handleError(error);

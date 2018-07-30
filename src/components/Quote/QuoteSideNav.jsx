@@ -69,11 +69,11 @@ export const NewNoteFileUploaderPopup = (props) => {
 };
 
 export const UWconditionsPopup = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showUWconditions: true });
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.match.params.workflowId, { ...props.appState.data, showUWconditions: true });
 };
 
 export const closeUWConditions = (props) => {
-  props.actions.appStateActions.setAppState(props.appState.modelName, props.appState.instanceId, { ...props.appState.data, showUWconditions: false });
+  props.actions.appStateActions.setAppState(props.appState.modelName, props.match.params.workflowId, { ...props.appState.data, showUWconditions: false });
 };
 
 export const SideNav = (props) => {

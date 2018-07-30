@@ -17,6 +17,8 @@ import { RadioFieldBilling, SelectFieldBilling } from '../Form/inputs';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
 
+const MODEL_NAME = 'csrQuote';
+
 export const handleInitialize = (state) => {
   const quoteData = state.service.quote || {};
   const values = {};
@@ -118,9 +120,10 @@ export const selectBillTo = (props) => {
 };
 
 export const handleFormSubmit = (data, dispatch, props) => {
-  const { appState, actions, billingOptions, fieldValues } = props;
-  const workflowId = appState.instanceId;
-  actions.appStateActions.setAppState(appState.modelName, workflowId, { ...appState.data, submitting: true });
+  const { appState, actions, billingOptions, fieldValues, match, quoteData } = props;
+  const workflowId = match.params.workflowId;
+
+  actions.appStateActions.setAppState(MODEL_NAME, workflowId, { ...appState.data, submitting: true });
 
   const submitData = fieldValues;
 
@@ -129,29 +132,28 @@ export const handleFormSubmit = (data, dispatch, props) => {
   submitData.billToType = selectedBilling.billToType;
 
   const steps = [
-      { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
-    {
-      name: 'askAdditionalCustomerData',
-      data: submitData
-    },
-    {
-      name: 'moveTo',
-      data: { key: 'mailing' }
-    }
+    { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
+    { name: 'askAdditionalCustomerData', data: submitData },
+    { name: 'moveTo', data: { key: 'mailing' } }
   ];
 
-  actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
+  actions.cgActions.batchCompleteTask(MODEL_NAME, workflowId, steps)
       .then(() => {
-        props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
+        actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
 
-        if (_.isEqual(data.address1, _.get(props.quoteData, 'property.physicalAddress.address1')) &&
-        _.isEqual(data.city, _.get(props.quoteData, 'property.physicalAddress.city')) &&
-       _.isEqual(data.state, _.get(props.quoteData, 'property.physicalAddress.state')) &&
-      _.isEqual(data.zip, _.get(props.quoteData, 'property.physicalAddress.zip'))) {
+        if (_.isEqual(data.address1, _.get(quoteData, 'property.physicalAddress.address1')) &&
+          _.isEqual(data.city, _.get(quoteData, 'property.physicalAddress.city')) &&
+          _.isEqual(data.state, _.get(quoteData, 'property.physicalAddress.state')) &&
+          _.isEqual(data.zip, _.get(quoteData, 'property.physicalAddress.zip'))) {
+
           dispatch(change('MailingAddressBilling', 'sameAsProperty', true));
-        } else dispatch(change('MailingAddressBilling', 'sameAsProperty', false));
-        props.actions.appStateActions.setAppState(props.appState.modelName,
-          workflowId, { ...props.appState.data, submitting: false, selectedLink: 'mailing' });
+
+        } else {
+          dispatch(change('MailingAddressBilling', 'sameAsProperty', false));
+        }
+        actions.appStateActions.setAppState(MODEL_NAME, workflowId,
+          { ...appState.data, submitting: false, selectedLink: 'mailing' }
+          );
       });
 };
 
@@ -187,53 +189,63 @@ const setPropertyToggle = (props) => {
 export class MailingAddressBilling extends Component {
 
   componentDidMount() {
-    if (this.props.appState.instanceId && this.props.quoteData && this.props.quoteData.rating) {
-      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
-        ...this.props.appState.data,
-        submitting: true
-      });
+    const { actions, appState, match } = this.props;
+    const workflowId = match.params.workflowId;
+
+    if (workflowId) {
+      actions.appStateActions.setAppState(MODEL_NAME, workflowId,
+        {
+          ...appState.data,
+          submitting: true
+        }
+      );
+
       const steps = [
-    { name: 'hasUserEnteredData', data: { answer: 'No' } },
-    { name: 'moveTo', data: { key: 'mailing' } }
-      ];
-      const workflowId = this.props.appState.instanceId;
-
-      const paymentOptions = {
-        effectiveDate: this.props.quoteData.effectiveDate,
-        policyHolders: this.props.quoteData.policyHolders,
-        additionalInterests: this.props.quoteData.additionalInterests,
-        netPremium: this.props.quoteData.rating.netPremium,
-        fees: {
-          empTrustFee: this.props.quoteData.rating.worksheet.fees.empTrustFee,
-          mgaPolicyFee: this.props.quoteData.rating.worksheet.fees.mgaPolicyFee
+        {
+          name: 'hasUserEnteredData',
+          data: { answer: 'No' }
         },
-        totalPremium: this.props.quoteData.rating.totalPremium
-      };
-      this.props.actions.serviceActions.getBillingOptions(paymentOptions);
+        {
+          name: 'moveTo',
+          data: { key: 'mailing' }
+        }
+      ];
 
-      this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
-    .then(() => {
-      this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
-      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
-        ...this.props.appState.data,
-        selectedLink: 'mailing'
-      });
-    });
-    } else {
-      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
-        ...this.props.appState.data,
-        selectedLink: 'mailing',
-        activateRedirect: false
-      });
+      actions.serviceActions.getQuote(match.params.quoteId)
+        .then((quoteData) => {
+          if (quoteData && quoteData.rating) {
+            const paymentOptions = {
+              effectiveDate: quoteData.effectiveDate,
+              policyHolders: quoteData.policyHolders,
+              additionalInterests: quoteData.additionalInterests,
+              netPremium: quoteData.rating.netPremium,
+              totalPremium: quoteData.rating.totalPremium,
+              fees: {
+                empTrustFee: quoteData.rating.worksheet.fees.empTrustFee,
+                mgaPolicyFee: quoteData.rating.worksheet.fees.mgaPolicyFee
+              },
+            };
+
+            actions.serviceActions.getBillingOptions(paymentOptions);
+          }
+        });
+
+      actions.cgActions.batchCompleteTask(MODEL_NAME, workflowId, steps);
+      actions.appStateActions.setAppState(MODEL_NAME, workflowId,
+        {
+          ...appState.data,
+          selectedLink: 'mailing'
+        }
+      );
     }
   }
 
   render() {
-    const { handleSubmit, billingOptions, pristine, quoteData, dirty } = this.props;
+    const { handleSubmit, billingOptions, pristine, quoteData, dirty, match } = this.props;
 
     if (!quoteData.rating) {
       return (
-        <QuoteBaseConnect>
+        <QuoteBaseConnect match={match}>
           <div className="route-content">
             <div className="messages">
               <div className="message error">
@@ -245,7 +257,7 @@ export class MailingAddressBilling extends Component {
       );
     }
     return (
-      <QuoteBaseConnect>
+      <QuoteBaseConnect match={match}>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         <div className="route-content">
           <Form id="MailingAddressBilling" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
@@ -337,9 +349,7 @@ export class MailingAddressBilling extends Component {
 MailingAddressBilling.contextTypes = {
   router: PropTypes.object
 };
-// ------------------------------------------------
-// Property type definitions
-// ------------------------------------------------
+
 MailingAddressBilling.propTypes = {
   tasks: PropTypes.shape(),
   appState: PropTypes.shape({
@@ -349,9 +359,6 @@ MailingAddressBilling.propTypes = {
   })
 };
 
-// ------------------------------------------------
-// redux mapping
-// ------------------------------------------------
 const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
