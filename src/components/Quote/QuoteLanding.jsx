@@ -8,6 +8,12 @@ import { setAppError } from '../../state/actions/errorActions';
 import { getQuoteDataFromCgState } from '../../state/selectors/quote.selectors';
 
 export class QuoteLanding extends Component {
+  constructor(props) {
+    super(props);
+
+    this.workflowId = '';
+  }
+
   async componentDidMount() {
     const { match: { params }, startWorkflow, setAppState, appState, batchCompleteTask, newQuote } = this.props;
     const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData'));
@@ -37,6 +43,8 @@ export class QuoteLanding extends Component {
       }
 
       const startResult = result.payload ? result.payload[0].workflowData.csrQuote.data : {};
+      // set property to pass to redirect link
+      this.workflowId = startResult.modelInstanceId;
 
       setAppState('csrQuote', startResult.modelInstanceId, {
         ...appState.data,
@@ -58,7 +66,7 @@ export class QuoteLanding extends Component {
     const { quoteData } = this.props;
     return (
       <React.Fragment>
-        {quoteData && quoteData._id ? <Redirect push to={`/quote/${quoteData._id}/coverage`}/> : <Loader/>}
+        {quoteData && quoteData._id ? <Redirect push to={`/quote/${quoteData._id}/coverage/${this.workflowId}`}/> : <Loader/>}
       </React.Fragment>
     );
   }

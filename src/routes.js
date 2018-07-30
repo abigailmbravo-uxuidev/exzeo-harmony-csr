@@ -118,13 +118,13 @@ class Routes extends Component {
               <Route exact path="/agency" render={props => <AgencySplashPage auth={auth} {...props} />} />
               <Route exact path="/quote/new/:stateCode/:propertyId" render={props => <QuoteLanding auth={auth} newQuote {...props} />} />
               <Route exact path="/quote/:quoteId" render={props => <QuoteLanding auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/billing" render={props => <QuoteMailingAddressBilling auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/notes" render={props => <QuoteNotesFiles auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/summary" render={props => <QuoteSummary auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/additionalInterests" render={props => <AdditionalInterests auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/coverage" render={props => <QuoteCoverage auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/underwriting" render={props => <QuoteUnderwriting auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/application" render={props => <QuoteApplication auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/coverage/:workflowId" render={props => <QuoteCoverage auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/billing/:workflowId" render={props => <QuoteMailingAddressBilling auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/notes/:workflowId" render={props => <QuoteNotesFiles auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/summary/:workflowId" render={props => <QuoteSummary auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/additionalInterests/:workflowId" render={props => <AdditionalInterests auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/underwriting/:workflowId" render={props => <QuoteUnderwriting auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/application/:workflowId" render={props => <QuoteApplication auth={auth} {...props} />} />
               <Route exact path="/policy/:policyNumber/coverage" render={props => <PolicyCoverage auth={auth} {...props} />} />
               <Route exact path="/policy/:policyNumber/policyholder" render={props => <PolicyPolicyholderAgent auth={auth} {...props} />} />
               <Route exact path="/policy/:policyNumber/billing" render={props => <PolicyMortgageBilling auth={auth} {...props} />} />

@@ -19,45 +19,45 @@ import * as cgActions from '../../state/actions/cgActions';
  *  outside
  * }
  */
-const csrLinks = ({quoteId}) => {
+const csrLinks = ({quoteId, workflowId}) => {
   return [{
     key: 'customerData',
-    link: `/quote/${quoteId}/coverage`,
+    link: `/quote/${quoteId}/coverage/${workflowId}`,
     label: 'Coverage / Rating',
     styleName: 'coverage',
     exact: true
   }, {
     key: 'underwriting',
-    link: `/quote/${quoteId}/underwriting`,
+    link: `/quote/${quoteId}/underwriting/${workflowId}`,
     label: 'Underwriting',
     styleName: 'underwriting',
     exact: true
   }, {
     key: 'additionalInterests',
-    link: `/quote/${quoteId}/additionalInterests`,
+    link: `/quote/${quoteId}/additionalInterests/${workflowId}`,
     label: 'Additional Interests',
     styleName: 'additionalInterests',
     exact: true
   }, {
     key: 'mailing',
-    link: `/quote/${quoteId}/billing`,
+    link: `/quote/${quoteId}/billing/${workflowId}`,
     label: 'Mailing / Billing',
     styleName: 'billing',
     exact: true
   }, {
     key: 'notes',
-    link: `/quote/${quoteId}/notes`,
+    link: `/quote/${quoteId}/notes/${workflowId}`,
     label: 'Notes / Files',
     styleName: 'notes',
     exact: true
   }, {
     key: 'summary',
-    link: `/quote/${quoteId}/summary`,
+    link: `/quote/${quoteId}/summary/${workflowId}`,
     label: 'Quote Summary',
     styleName: 'quote-summary'
   }, {
     key: 'application',
-    link: `/quote/${quoteId}/application`,
+    link: `/quote/${quoteId}/application/${workflowId}`,
     label: 'Application',
     styleName: 'application',
     exact: true
@@ -77,7 +77,7 @@ export const closeUWConditions = (props) => {
 };
 
 export const SideNav = (props) => {
-  const { quoteData } = props;
+  const { quoteData, match } = props;
   const redirect = (props.activateRedirect)
     ? (<Redirect to={props.activateRedirectLink} />)
     : null;
@@ -86,7 +86,7 @@ export const SideNav = (props) => {
     <nav className="site-nav">
       { redirect }
       <ul>
-        {csrLinks({quoteId: quoteData._id}).map((link) => (
+        {csrLinks({quoteId: quoteData._id, workflowId: match.params.workflowId }).map((link) => (
           <li key={link.key}>
             <span className={link.styleName}>
               <NavLink to={link.link} activeClassName="active" exact>{link.label}</NavLink>

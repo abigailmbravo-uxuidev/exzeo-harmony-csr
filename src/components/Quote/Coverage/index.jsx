@@ -143,7 +143,7 @@ export const handleInitialize = (quoteData, questions) => {
 const checkSentToDocusign = state => state === 'Application Sent DocuSign';
 
 export const handleFormSubmit = (data, dispatch, props) => {
-  const workflowId = props.appState.instanceId;
+  const workflowId = props.match.params.workflowId;
   const submitData = data;
 
   props.setAppState(props.appState.modelName, workflowId, {
@@ -224,24 +224,21 @@ let setAgents = false;
 
 export class Coverage extends Component {
   componentDidMount() {
-    const { history, getUIQuestions, setAppState, batchCompleteTask, appState  } = this.props;
+    const { getUIQuestions, setAppState, batchCompleteTask, appState, match  } = this.props;
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
 
-    // history.length will be 2 if redirected from the QuoteLanding component. We only want to call 'completeTask' if we are mounting from a redirect from QuoteLanding.
-    if (history.action === 'PUSH') {
-      // this.props.startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` }).then((result) => {
-      const steps = [
-        { name: 'hasUserEnteredData', data: { answer: 'No' } },
-        { name: 'moveTo', data: { key: 'customerData' } }
-      ];
+    // this.props.startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` }).then((result) => {
+    const steps = [
+      { name: 'hasUserEnteredData', data: { answer: 'No' } },
+      { name: 'moveTo', data: { key: 'customerData' } }
+    ];
 
-      setAppState('csrQuote', appState.instanceId, {
-        ...appState.data,
-        submitting: true,
-        selectedLink: 'customerData'
-      });
-      batchCompleteTask(appState.modelName, appState.instanceId, steps)
-    }
+    setAppState('csrQuote', match.params.workflowId, {
+      ...appState.data,
+      submitting: true,
+      selectedLink: 'customerData'
+    });
+    batchCompleteTask(appState.modelName, match.params.workflowId, steps)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -369,6 +366,7 @@ export class Coverage extends Component {
       editingDisabled,
       handleSubmit,
       otherStructures,
+      match,
       personalProperty,
       personalPropertyAmount,
       pristine,
@@ -391,7 +389,7 @@ export class Coverage extends Component {
     }));
 
     return (
-      <QuoteBaseConnect>
+      <QuoteBaseConnect match={match}>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         <div className="route-content">
 
