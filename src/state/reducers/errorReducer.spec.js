@@ -1,4 +1,3 @@
-import * as persistTypes from 'redux-persist/constants';
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 import errorReducer from './errorReducer';
@@ -20,18 +19,6 @@ describe('Error Reducer', () => {
     const action = {
       type: types.APP_ERROR_CLEAR,
       error: {}
-    };
-
-    expect(errorReducer(state, action)).toEqual(inputProps);
-  });
-  it('should call errorReducer REHYDRATE', () => {
-    const state = initialState.appState;
-    const inputProps = { data: { submitting: false } };
-    const action = {
-      type: persistTypes.REHYDRATE,
-      payload: {
-        error: inputProps
-      }
     };
 
     expect(errorReducer(state, action)).toEqual(inputProps);

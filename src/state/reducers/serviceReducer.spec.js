@@ -1,4 +1,3 @@
-import * as persistTypes from 'redux-persist/constants';
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 import serviceReducer from './serviceReducer';
@@ -13,16 +12,5 @@ describe('serviceReducer', () => {
     };
 
     expect(serviceReducer(state, action)).toEqual({...state, ...inputProps});
-  });
-  it('should call serviceReducer REHYDRATE', () => {
-    const state = initialState.service;
-    const inputProps = {};
-    const action = {
-      type: persistTypes.REHYDRATE,
-      payload: {
-        service: inputProps
-      }
-    };
-    expect(serviceReducer(state, action)).toEqual(inputProps);
   });
 });
