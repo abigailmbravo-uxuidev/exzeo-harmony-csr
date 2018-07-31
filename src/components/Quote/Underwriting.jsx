@@ -63,7 +63,7 @@ export const clearForm = (props) => {
 };
 export class Underwriting extends Component {
   componentDidMount() {
-    const { actions, appState, match, quoteData } = this.props;
+    const { actions, appState, match } = this.props;
     const workflowId = match.params.workflowId;
 
     if (workflowId) {

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Prompt } from 'react-router-dom';
 import moment from 'moment';
-import { reduxForm, Form, change } from 'redux-form';
+import { reduxForm, change } from 'redux-form';
 import * as cgActions from '../../state/actions/cgActions';
 import * as appStateActions from '../../state/actions/appStateActions';
 import * as quoteStateActions from '../../state/actions/quoteStateActions';
@@ -260,7 +260,7 @@ export class MailingAddressBilling extends Component {
       <QuoteBaseConnect match={match}>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         <div className="route-content">
-          <Form id="MailingAddressBilling" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+          <form id="MailingAddressBilling" onSubmit={handleSubmit(handleFormSubmit)} >
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
                 <h3>Mailing Address</h3>
@@ -332,7 +332,7 @@ export class MailingAddressBilling extends Component {
                 </section>
               </div>
             </div>
-          </Form>
+          </form>
         </div>
         <div className="basic-footer btn-footer">
           <Footer />

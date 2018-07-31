@@ -786,7 +786,7 @@ describe('Service Actions', () => {
 
     return serviceActions.getQuote('1234')(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
+        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
       });
   });
 
@@ -816,7 +816,7 @@ describe('Service Actions', () => {
 
     return serviceActions.getQuote(null)(store.dispatch)
       .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
   });
 
