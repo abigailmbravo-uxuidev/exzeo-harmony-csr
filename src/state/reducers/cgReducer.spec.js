@@ -1,4 +1,3 @@
-import * as persistTypes from 'redux-persist/constants';
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 import cgReducer from './cgReducer';
@@ -11,6 +10,7 @@ describe('CG Reducer', () => {
       type: types.CG_START,
       workflowData: inputProps
     };
+
     expect(cgReducer(state, action)).toEqual(inputProps);
   });
   it('should call cgReducer CG_ACTIVE_TASK', () => {
@@ -39,18 +39,6 @@ describe('CG Reducer', () => {
     const action = {
       type: types.CG_ERROR,
       workflowData: inputProps
-    };
-
-    expect(cgReducer(state, action)).toEqual(inputProps);
-  });
-  it('should call cgReducer REHYDRATE', () => {
-    const state = initialState.cg;
-    const inputProps = {};
-    const action = {
-      type: persistTypes.REHYDRATE,
-      payload: {
-        cg: inputProps
-      }
     };
 
     expect(cgReducer(state, action)).toEqual(inputProps);
@@ -92,15 +80,7 @@ describe('CG Reducer', () => {
 
     expect(cgReducer(state, action)).toEqual(inputProps);
   });
-  it('should call cgReducer REHYDRATE - new state', () => {
-    const state = initialState.cg;
-    const inputProps = {};
-    const action = {
-      type: persistTypes.REHYDRATE
-    };
 
-    expect(cgReducer(state, action)).toEqual(inputProps);
-  });
   it('should call cgReducer default', () => {
     const state = initialState.cg;
     const inputProps = {};

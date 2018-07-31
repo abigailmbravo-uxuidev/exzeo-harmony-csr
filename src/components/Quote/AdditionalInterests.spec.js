@@ -192,7 +192,7 @@ const quoteData = {
   },
   additionalInterests: [
     {
-      _id: 123,
+      _id: '1234',
       type: 'Mortgagee',
       name1: 'BB1',
       name2: 'CC1',
@@ -211,6 +211,7 @@ const quoteData = {
       }
     },
     {
+      _id: '1235',
       type: 'Additional Insured',
       name1: 'BB2',
       name2: 'CC2',
@@ -229,6 +230,7 @@ const quoteData = {
       }
     },
     {
+      _id: '1236',
       type: 'Bill Payer',
       name1: 'BB2',
       name2: 'CC2',
@@ -247,6 +249,7 @@ const quoteData = {
       }
     },
     {
+      _id: '1237',
       type: 'Premium Finance',
       name1: 'BB3',
       referenceNumber: '1001',
@@ -265,6 +268,7 @@ const quoteData = {
       }
     },
     {
+      _id: '1238',
       type: 'Additional Interest',
       name1: 'BB3',
       referenceNumber: '1001',
@@ -346,7 +350,8 @@ describe('Testing AdditionalInterests component', () => {
       sortedAdditionalInterests,
       editingDisabled: false,
       getUIQuestions() {},
-      tasks: {}
+      tasks: {},
+      match: { params: {} }
     };
     const wrapper = shallow(<AdditionalInterests {...props} />);
 

@@ -18,6 +18,8 @@ import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';
 import AdditionalInterestCard from '../AdditionalInterestCard';
 
+const MODEL_NAME = 'csrQuote';
+
 export class AdditionalInterests extends Component {
   state = {
     addAdditionalInterestType: '',
@@ -27,27 +29,37 @@ export class AdditionalInterests extends Component {
   };
 
   componentDidMount() {
-    this.props.getUIQuestions('additionalInterestsCSR');
+    const {
+      appState,
+      batchCompleteTask,
+      getLatestQuote,
+      getUIQuestions,
+      match,
+      setAppState
+    } = this.props;
+    const workflowId = match.params.workflowId;
 
-    if (this.props.appState.instanceId) {
-      this.props.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
-        ...this.props.appState.data,
+    getUIQuestions('additionalInterestsCSR');
+
+    if (workflowId) {
+      setAppState(MODEL_NAME, workflowId, {
+        ...appState.data,
         submittingAI: true,
         submitting: true,
         selectedLink: 'additionalInterests'
       });
+
       const steps = [
         { name: 'hasUserEnteredData', data: { answer: 'No' } },
         { name: 'moveTo', data: { key: 'additionalInterests' } }
       ];
-      const workflowId = this.props.appState.instanceId;
 
-      this.props.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
+      batchCompleteTask(MODEL_NAME, workflowId, steps)
         .then(() => {
-          this.props.getLatestQuote(true, this.props.quoteData._id);
+          getLatestQuote(true, match.params.quoteId);
 
-          this.props.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
-            ...this.props.appState.data,
+          setAppState(MODEL_NAME, workflowId, {
+            ...appState.data,
             selectedLink: 'additionalInterests'
           });
         });
@@ -86,10 +98,11 @@ export class AdditionalInterests extends Component {
 
   handleAISubmit = async (additionalInterests) => {
     const {
-      appState, quoteData, batchCompleteTask, getLatestQuote, setAppState
+      appState, quoteData, batchCompleteTask, getLatestQuote, setAppState, match
     } = this.props;
+    const workflowId = match.params.workflowId;
+
     const { addAdditionalInterestType } = this.state;
-    const workflowId = appState.instanceId;
 
     const steps = [
       {
@@ -106,12 +119,12 @@ export class AdditionalInterests extends Component {
       }
     ];
 
-    await batchCompleteTask(appState.modelName, workflowId, steps);
+    await batchCompleteTask(MODEL_NAME, workflowId, steps);
     await getLatestQuote(true, quoteData._id);
 
     // now update the workflow details so the recalculated rate shows
     setAppState(
-      appState.modelName,
+      MODEL_NAME,
       workflowId, {
         ...appState.data,
         selectedMortgageeOption: null,
@@ -126,11 +139,11 @@ export class AdditionalInterests extends Component {
   };
 
   addAdditionalInterest = (type) => {
-    const { appState, setAppState, editingDisabled } = this.props;
+    const { appState, setAppState, editingDisabled, match } = this.props;
     if (editingDisabled) return;
     setAppState(
-      appState.modelName,
-      appState.instanceId,
+      MODEL_NAME,
+      match.params.workflowId,
       { ...appState.data }
     );
     // For now, hijacking appState calls with local state where we can.
@@ -142,11 +155,11 @@ export class AdditionalInterests extends Component {
   };
 
   editAdditionalInterest = (ai) => {
-    const { appState, setAppState, editingDisabled } = this.props;
+    const { appState, setAppState, editingDisabled, match } = this.props;
     if (editingDisabled) return;
     setAppState(
-      appState.modelName,
-      appState.instanceId,
+      MODEL_NAME,
+      match.params.workflowId,
       { ...appState.data }
     );
     // For now, hijacking appState calls with local state where we can.
@@ -222,11 +235,11 @@ export class AdditionalInterests extends Component {
 
   deleteAdditionalInterest = async (selectedAdditionalInterest) => {
     const {
-      appState, quoteData, setAppState, batchCompleteTask, getLatestQuote
+      appState, quoteData, setAppState, batchCompleteTask, getLatestQuote, match
     } = this.props;
-    const workflowId = appState.instanceId;
+    const workflowId = match.params.workflowId;
     setAppState(
-      appState.modelName,
+      MODEL_NAME,
       workflowId, {
         ...appState.data,
         deleteAdditionalInterestType: selectedAdditionalInterest.type,
@@ -261,13 +274,13 @@ export class AdditionalInterests extends Component {
     }
     ];
 
-    return batchCompleteTask(appState.modelName, workflowId, steps)
+    return batchCompleteTask(MODEL_NAME, workflowId, steps)
       .then(() => {
         getLatestQuote(true, quoteData._id);
 
         additionalInterests = modifiedAIs;
         setAppState(
-          appState.modelName,
+          MODEL_NAME,
           workflowId, {
             ...appState.data,
             selectedLink: 'additionalInterests',
@@ -295,13 +308,13 @@ export class AdditionalInterests extends Component {
 
   render() {
     const {
-      quoteData, groupedAdditionalInterests, sortedAdditionalInterests, editingDisabled
+      quoteData, groupedAdditionalInterests, sortedAdditionalInterests, editingDisabled, match
     } = this.props;
     const { showAdditionalInterestModal } = this.state;
 
     if (!quoteData.rating) {
       return (
-        <QuoteBaseConnect>
+        <QuoteBaseConnect match={match}>
           <div className="route-content">
             <div className="messages">
               <div className="message error">
@@ -314,7 +327,7 @@ export class AdditionalInterests extends Component {
     }
 
     return (
-      <QuoteBaseConnect>
+      <QuoteBaseConnect match={match}>
         <div className="route-content" id="AddAdditionalInterestPage">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">

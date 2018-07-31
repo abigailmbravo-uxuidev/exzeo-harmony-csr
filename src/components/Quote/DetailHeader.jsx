@@ -7,11 +7,6 @@ import normalizePhone from '../Form/normalizePhone';
 import * as serviceActions from '../../state/actions/serviceActions';
 import * as quoteStateActions from '../../state/actions/quoteStateActions';
 
-export const selectPolicy = (quote) => {
-  if (!quote.quoteNumber) return;
-  window.open(`/policy/coverage/${quote.policyNumber}`, '_blank');
-};
-
 export class DetailHeader extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.quoteState && nextProps.quoteState.update && nextProps.quoteState.quoteId) {
@@ -19,6 +14,13 @@ export class DetailHeader extends Component {
       this.props.actions.quoteStateActions.getLatestQuote(false, nextProps.quoteState.quoteId);
     }
   }
+
+  selectPolicy = () => {
+    const { quoteData } = this.props;
+    if (!quoteData.policyNumber) return;
+    window.open(`/policy/${quoteData.policyNumber}/coverage`, '_blank');
+  };
+
   render() {
     const { quoteData } = this.props;
       if (!quoteData || !quoteData._id) { // eslint-disable-line
@@ -29,13 +31,14 @@ export class DetailHeader extends Component {
     const mapQuery = encodeURIComponent(`${loc.address1} ${loc.address2} ${loc.city}, ${loc.state} ${loc.zip}`);
     const mapUri = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
 
-    return (<div className="detailHeader">
+    return (
+      <div className="detailHeader">
       <section id="quoteDetails" className="quoteDetails">
         <dl>
           <div>
             <dd>{quoteData.product === 'HO3' ? `${quoteData.product} Homeowners` : quoteData.product}</dd>
             <dd>{(quoteData.quoteNumber ? quoteData.quoteNumber : '-')}</dd>
-            <dd className="quote-status">{quoteData.quoteState === 'Policy Issued' ? <button className="btn btn-link" onClick={() => selectPolicy(quoteData)}>{quoteData.quoteState}</button> : quoteData.quoteState}</dd>
+            <dd className="quote-status">{quoteData.quoteState === 'Policy Issued' ? <button className="btn btn-link" onClick={this.selectPolicy}>{quoteData.quoteState}</button> : quoteData.quoteState}</dd>
           </div>
         </dl>
       </section>
@@ -119,7 +122,8 @@ export class DetailHeader extends Component {
           </div>
         </dl>
       </section>
-    </div>);
+    </div>
+    );
   }
 }
 

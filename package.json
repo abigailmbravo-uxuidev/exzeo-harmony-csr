@@ -17,7 +17,7 @@
     "unlink-core": "npm unlink @exzeo/core-ui"
   },
   "dependencies": {
-    "@exzeo/core-ui": "^0.1.17",
+    "@exzeo/core-ui": "0.1.x",
     "@fortawesome/fontawesome": "~1.0.0",
     "@fortawesome/react-fontawesome": "~0.0.14",
     "auth0-js": "~8.10.1",
@@ -51,7 +51,6 @@
     "redux": "~3.7.2",
     "redux-batched-actions": "~0.1.6",
     "redux-form": "7.3.x",
-    "redux-persist": "~4.10.2",
     "redux-thunk": "~2.2.0",
     "uppy": "^0.25.6",
     "reselect": "^3.0.1",

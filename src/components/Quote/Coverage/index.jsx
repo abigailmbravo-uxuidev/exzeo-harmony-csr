@@ -6,15 +6,16 @@ import moment from 'moment';
 import momentTZ from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
 import { batchActions } from 'redux-batched-actions';
-import { reduxForm, Form, formValueSelector } from 'redux-form';
+import { reduxForm, formValueSelector } from 'redux-form';
 import { getAnswers } from '../../../utilities/forms';
 import { setPercentageOfValue } from '../../../utilities/endorsementModel';
 import { getAgencies, getAgentsByAgency } from '../../../state/actions/serviceActions';
 import { batchCompleteTask, startWorkflow } from '../../../state/actions/cgActions';
 import { setAppState } from '../../../state/actions/appStateActions';
+import { setAppError } from '../../../state/actions/errorActions';
 import { getUIQuestions } from '../../../state/actions/questionsActions';
 import { getLatestQuote } from '../../../state/actions/quoteStateActions';
-import { checkQuoteState } from '../../../state/selectors/quote.selectors';
+import { checkQuoteState, getQuoteDataFromCgState } from '../../../state/selectors/quote.selectors';
 import QuoteBaseConnect from '../../../containers/Quote';
 import Footer from '../../Common/Footer';
 import ProducedBy from './ProducedBy';
@@ -22,20 +23,6 @@ import PolicyHolder from './PolicyHolder';
 import Property from './Property';
 import Coverages from './Coverages';
 import WindMitigation from './WindMitigation';
-
-export const handleGetQuoteData = (state) => {
-  const taskData = (state.cg && state.appState && state.cg[state.appState.modelName])
-    ? state.cg[state.appState.modelName].data
-    : null;
-  if (!taskData) { return {}; }
-  const quoteEnd = _.find(taskData.model.variables, { name: 'retrieveQuote' })
-    ? _.find(taskData.model.variables, { name: 'retrieveQuote' }).value.result
-    : {};
-  const quoteData = _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' })
-    ? _.find(taskData.model.variables, { name: 'getQuoteBetweenPageLoop' }).value.result
-    : quoteEnd;
-  return quoteData;
-};
 
 export const handleGetZipCodeSettings = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
@@ -59,10 +46,7 @@ export function calculatePercentage(oldFigure, newFigure) {
   return percentChange;
 }
 
-export const handleInitialize = (state) => {
-  const quoteData = handleGetQuoteData(state);
-
-  const { questions } = state;
+export const handleInitialize = (quoteData, questions) => {
   const values = {};
   values.clearFields = false;
   values.electronicDelivery = _.get(quoteData, 'policyHolders[0].electronicDelivery') || false;
@@ -159,10 +143,10 @@ export const handleInitialize = (state) => {
 const checkSentToDocusign = state => state === 'Application Sent DocuSign';
 
 export const handleFormSubmit = (data, dispatch, props) => {
-  const workflowId = props.appState.instanceId;
+  const workflowId = props.match.params.workflowId;
   const submitData = data;
 
-  props.setAppStateAction(props.appState.modelName, workflowId, {
+  props.setAppState(props.appState.modelName, workflowId, {
     ...props.appState.data,
     submitting: true
   });
@@ -225,11 +209,11 @@ export const handleFormSubmit = (data, dispatch, props) => {
 
   ];
 
-  props.batchCompleteTaskAction(props.appState.modelName, workflowId, steps)
+  props.batchCompleteTask(props.appState.modelName, workflowId, steps)
     .then(() => {
-      props.getLatestQuoteAction(true, props.quoteData._id);
+      props.getLatestQuote(true, props.quoteData._id);
       // now update the workflow details so the recalculated rate shows
-      props.setAppStateAction(
+      props.setAppState(
         props.appState.modelName,
         workflowId, { ...props.appState.data, submitting: false, selectedLink: 'customerData' }
       );
@@ -240,85 +224,32 @@ let setAgents = false;
 
 export class Coverage extends Component {
   componentDidMount() {
-    this.props.getUIQuestionsAction('askToCustomizeDefaultQuoteCSR');
+    const { getUIQuestions, setAppState, batchCompleteTask, appState, match  } = this.props;
+    getUIQuestions('askToCustomizeDefaultQuoteCSR');
 
-    const isNewTab = localStorage.getItem('isNewTab') === 'true';
-    if (isNewTab) {
-      localStorage.setItem('isNewTab', false);
+    // this.props.startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` }).then((result) => {
+    const steps = [
+      { name: 'hasUserEnteredData', data: { answer: 'No' } },
+      { name: 'moveTo', data: { key: 'customerData' } }
+    ];
 
-      this.props.startWorkflowAction('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` }).then((result) => {
-        const steps = [];
-        const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData'));
-
-        steps.push({ name: 'search', data: lastSearchData });
-
-        if (lastSearchData.searchType === 'quote') {
-          const quoteId = localStorage.getItem('quoteId');
-
-          this.props.getLatestQuoteAction(true, quoteId);
-
-          steps.push({
-            name: 'chooseQuote',
-            data: {
-              quoteId
-            }
-          });
-        } else if (lastSearchData.searchType === 'address') {
-          const igdID = localStorage.getItem('igdID');
-          const stateCode = localStorage.getItem('stateCode');
-          steps.push({
-            name: 'chooseAddress',
-            data: {
-              igdId: igdID,
-              stateCode
-            }
-          });
-        }
-
-        steps.push({ name: 'hasUserEnteredData', data: { answer: 'No' } });
-        steps.push({ name: 'moveTo', data: { key: 'customerData' } });
-
-        const startResult = result.payload ? result.payload[0].workflowData.csrQuote.data : {};
-
-        this.props.setAppStateAction('csrQuote', startResult.modelInstanceId, { ...this.props.appState.data, submitting: true });
-        this.props.batchCompleteTaskAction(startResult.modelName, startResult.modelInstanceId, steps).then(() => {
-          this.props.setAppStateAction(
-            this.props.appState.modelName,
-            startResult.modelInstanceId, { ...this.props.appState.data, selectedLink: 'customerData' }
-          );
-        });
-      });
-    } else if (this.props.appState.instanceId) {
-      this.props.setAppStateAction(this.props.appState.modelName, this.props.appState.instanceId, {
-        ...this.props.appState.data,
-        submitting: true
-      });
-      const steps = [
-        { name: 'hasUserEnteredData', data: { answer: 'No' } },
-        { name: 'moveTo', data: { key: 'customerData' } }
-      ];
-
-      const workflowId = this.props.appState.instanceId;
-      this.props.batchCompleteTaskAction(this.props.appState.modelName, workflowId, steps)
-        .then(() => {
-          this.props.getLatestQuoteAction(true, this.props.quoteData._id);
-          this.props.setAppStateAction(this.props.appState.modelName, this.props.appState.instanceId, {
-            ...this.props.appState.data,
-            selectedLink: 'customerData'
-          });
-        });
-    }
+    setAppState('csrQuote', match.params.workflowId, {
+      ...appState.data,
+      submitting: true,
+      selectedLink: 'customerData'
+    });
+    batchCompleteTask(appState.modelName, match.params.workflowId, steps)
   }
 
   componentWillReceiveProps(nextProps) {
-    const { quoteData, getAgenciesAction, getAgentsByAgencyAction } = nextProps;
+    const { quoteData, getAgencies, getAgentsByAgency } = nextProps;
     if (!setAgents && quoteData && quoteData.companyCode && quoteData.state && quoteData.agencyCode) {
-      getAgenciesAction(quoteData.companyCode, quoteData.state);
-      getAgentsByAgencyAction(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
+      getAgencies(quoteData.companyCode, quoteData.state);
+      getAgentsByAgency(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
       setAgents = true;
     }
     if (this.props.quoteData._id !== nextProps.quoteData._id) {
-      this.props.getLatestQuoteAction(true, nextProps.quoteData._id);
+      this.props.getLatestQuote(true, nextProps.quoteData._id);
     }
   }
 
@@ -360,7 +291,6 @@ export class Coverage extends Component {
     if (Number.isNaN(value)) return;
     const { change, initialValues } = this.props;
 
-
     if (value === 0) {
       change('personalPropertyReplacementCostCoverage', false);
     } else {
@@ -384,10 +314,10 @@ export class Coverage extends Component {
   };
 
   handleAgencyChange = (agencyCode) => {
-    const { change } = this.props;
+    const { change, getAgentsByAgency } = this.props;
     const agency = _.find(this.props.agencies, a => String(a.agencyCode) === String(agencyCode));
     if (agency) {
-      this.props.getAgentsByAgencyAction(agency.companyCode, agency.state, agencyCode).then((response) => {
+      getAgentsByAgency(agency.companyCode, agency.state, agencyCode).then((response) => {
         if (response.payload && response.payload[0].data.agents && response.payload[0].data.agents.length === 1) {
           change('agentCode', response.payload[0].data.agents[0].agentCode);
         } else {
@@ -436,6 +366,7 @@ export class Coverage extends Component {
       editingDisabled,
       handleSubmit,
       otherStructures,
+      match,
       personalProperty,
       personalPropertyAmount,
       pristine,
@@ -458,11 +389,11 @@ export class Coverage extends Component {
     }));
 
     return (
-      <QuoteBaseConnect>
+      <QuoteBaseConnect match={match}>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         <div className="route-content">
 
-          <Form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+          <form id="Coverage" onSubmit={handleSubmit(handleFormSubmit)} >
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
                 <ProducedBy
@@ -514,7 +445,7 @@ export class Coverage extends Component {
                 />
               </div>
             </div>
-          </Form>
+          </form>
         </div>
         <div className="basic-footer btn-footer">
           <Footer />
@@ -567,6 +498,8 @@ const mapStateToProps = (state) => {
     'personalPropertyAmount',
     'personalProperty'
   );
+  const quoteData = getQuoteDataFromCgState(state);
+  const questions = state.questions;
 
   return {
     getAgents: state.service.getAgents,
@@ -574,10 +507,10 @@ const mapStateToProps = (state) => {
     appState: state.appState,
     agents: state.service.agents,
     agencies: state.service.agencies,
-    initialValues: handleInitialize(state),
-    quoteData: handleGetQuoteData(state),
+    initialValues: handleInitialize(quoteData, questions),
+    quoteData,
     zipCodeSettings: handleGetZipCodeSettings(state),
-    questions: state.questions,
+    questions,
     editingDisabled: checkQuoteState(state),
     clearFields,
     sinkholePerilCoverage,
@@ -590,13 +523,14 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, {
-  getAgenciesAction: getAgencies,
-  getAgentsByAgencyAction: getAgentsByAgency,
-  batchCompleteTaskAction: batchCompleteTask,
-  startWorkflowAction: startWorkflow,
-  setAppStateAction: setAppState,
-  getUIQuestionsAction: getUIQuestions,
-  getLatestQuoteAction: getLatestQuote
+  getAgencies,
+  getAgentsByAgency,
+  batchCompleteTask,
+  startWorkflow,
+  setAppState,
+  getUIQuestions,
+  getLatestQuote,
+  setAppError
 })(reduxForm({
   form: 'Coverage',
   enableReinitialize: true

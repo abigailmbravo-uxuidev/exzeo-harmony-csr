@@ -1,4 +1,3 @@
-import * as persistTypes from 'redux-persist/constants';
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 import policyStateReducer from './policyReducer';
@@ -12,17 +11,6 @@ describe('Policy State Reducer', () => {
       policyState: inputProps
     };
 
-    expect(policyStateReducer(state, action)).toEqual({ ...initialState.policyState, ...inputProps });
-  });
-  it('should call policyStateReducer REHYDRATE', () => {
-    const state = initialState.policyState;
-    const inputProps = { policyNumber: '123', update: true };
-    const action = {
-      type: persistTypes.REHYDRATE,
-      payload: {
-        policyState: inputProps
-      }
-    };
     expect(policyStateReducer(state, action)).toEqual({ ...initialState.policyState, ...inputProps });
   });
 

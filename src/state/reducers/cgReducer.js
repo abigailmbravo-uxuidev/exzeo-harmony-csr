@@ -1,4 +1,3 @@
-import * as persistTypes from 'redux-persist/constants';
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 
@@ -19,9 +18,6 @@ export default function cgReducer(state = initialState.cg, action) {
       return newState;
     case types.CLEAR_SEARCH_RESULTS:
       newState = (action.workflowData) ? { ...state, ...action.workflowData } : newState;
-      return newState;
-    case persistTypes.REHYDRATE:
-      newState = (action.payload && action.payload.cg) ? action.payload.cg : newState;
       return newState;
     default:
       return state;

@@ -18,9 +18,9 @@ export const getMortgageeOrderAnswersForEdit = (questions, additionalInterests) 
 };
 
 export const applyAdditionalInterestRanking = (additionalInterests, sortActive = false) => {
-  // add rank to sort by a specific way
-  if(!Array.isArray(additionalInterests)) return;
 
+  if(!Array.isArray(additionalInterests)) return;
+  // add rank for sorting
   additionalInterests.forEach((value) => {
     if (sortActive) {
       value.sortInactive = !value.active;
@@ -28,19 +28,19 @@ export const applyAdditionalInterestRanking = (additionalInterests, sortActive =
 
     switch (value.type) {
       case 'Mortgagee':
-        value.rank = 1; // eslint-disable-line
+        value.rank = 1;
         break;
       case 'Additional Insured':
-        value.rank = 2; // eslint-disable-line
+        value.rank = 2;
         break;
       case 'Additional Interest':
-        value.rank = 3; // eslint-disable-line
+        value.rank = 3;
         break;
       case 'Lienholder':
-        value.rank = 4; // eslint-disable-line
+        value.rank = 4;
         break;
       case 'Bill Payer':
-        value.rank = 5; // eslint-disable-line
+        value.rank = 5;
         break;
       default:
         break;

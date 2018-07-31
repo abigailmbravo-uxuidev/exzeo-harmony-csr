@@ -1,4 +1,3 @@
-import * as persistTypes from 'redux-persist/constants';
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 
@@ -22,8 +21,8 @@ export default function policyStateReducer(state = initialState.policyState, act
       return setCancelOptions(state, action);
     case types.SET_PAYMENT_OPTIONS:
       return setPaymentOptions(state, action);
-    case persistTypes.REHYDRATE:
-      return rehydrate(state, action);
+    case types.RESET_POLICY:
+      return resetPolicyState(state, action);
     default:
       return state;
   }
@@ -94,10 +93,9 @@ function setPaymentOptions(state, action) {
   };
 }
 
-function rehydrate(state, action) {
-  const policyState = ((action.payload && action.payload.policyState) ? action.payload.policyState : initialState.policyState);
+function resetPolicyState(state) {
   return {
     ...state,
-    ...policyState
-  };
+    ...initialState.policyState
+  }
 }
