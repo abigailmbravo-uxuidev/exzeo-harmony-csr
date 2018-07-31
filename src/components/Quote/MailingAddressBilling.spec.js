@@ -343,6 +343,7 @@ describe('Testing MailingAddressBilling component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      match: { params: {} },
       handleSubmit() {},
       billingOptions: {
         options: [{
@@ -450,6 +451,7 @@ describe('Testing MailingAddressBilling component', () => {
     const store = mockStore(initialState);
 
     const props = {
+      match: { params: {} },
       fieldValues: {
         billToId: '598b4570efb84c0013f7ed3c'
       },
@@ -537,6 +539,7 @@ describe('Testing MailingAddressBilling component', () => {
     const store = mockStore(initialState);
 
     const props = {
+      match: { params: {} },
       paymentPlanResult: {
         options: [
           {
@@ -617,6 +620,7 @@ describe('Testing MailingAddressBilling component', () => {
     const store = mockStore(initialState);
 
     const props = {
+      match: { params: {} },
       reset() { },
       paymentPlanResult: {
         options: []
@@ -694,6 +698,7 @@ describe('Testing MailingAddressBilling component', () => {
     const store = mockStore(initialState);
 
     const props = {
+      match: { params: {} },
       reset() {},
       fieldValues: {
         sameAsProperty: false
@@ -776,6 +781,7 @@ describe('Testing MailingAddressBilling component', () => {
     const store = mockStore(initialState);
 
     const props = {
+      match: { params: {} },
       fieldValues: {
         sameAsProperty: true
       },

@@ -11,15 +11,21 @@ import Footer from '../Common/Footer';
 export class NotesFiles extends Component {
 
   componentDidMount () {
-    const { quoteData } = this.props;
+    const { quoteData, actions, match } = this.props;
     if (quoteData && quoteData.quoteNumber) {
-      this.props.actions.serviceActions.getNotes(quoteData.quoteNumber, quoteData.quoteNumber);
+      actions.serviceActions.getNotes(quoteData.quoteNumber, quoteData.quoteNumber);
+    } else {
+      actions.serviceActions.getQuote(match.params.quoteId)
+        .then((quoteData) => {
+          actions.serviceActions.getNotes(quoteData.quoteNumber, quoteData.quoteNumber)
+        });
     }
   }
 
   render() {
+    const { match } = this.props;
     return (
-      <QuoteBaseConnect>
+      <QuoteBaseConnect match={match}>
         <div className="route-content">
           <div className="scroll">
             <NoteList {...this.props} />

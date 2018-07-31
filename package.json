@@ -72,7 +72,7 @@
     "watch-css": "node-sass src/sass --output-style 'compressed' -o src/css --watch --recursive",
     "server": "./replace-dotenv.sh && exframe-web",
     "start-js": "react-scripts start",
-    "start": "npm-run-all -p watch-css start-js",
+    "start": "npm-run-all -s build-css start-js",
     "build": "npm run build-css && react-scripts build",
     "cover": "npm test -- --coverage",
     "test": "react-scripts test --env=jsdom --coverage",
