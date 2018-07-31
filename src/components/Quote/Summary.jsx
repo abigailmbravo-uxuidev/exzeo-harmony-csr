@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { reduxForm, Form, reset } from 'redux-form';
+import { reduxForm, reset } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
 import * as cgActions from '../../state/actions/cgActions';
@@ -16,6 +16,8 @@ import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
 import applyRank from '../Common/additionalInterestRank';
 
+const MODEL_NAME = 'csrQuote';
+
 const handlePrimarySecondaryTitles = (type, order) => `${type} ${order + 1}`;
 
 const handleInitialize = () => {
@@ -27,32 +29,22 @@ const handleInitialize = () => {
 };
 
 export const handleFormSubmit = (data, dispatch, props) => {
-  const { appState, actions } = props;
-  const workflowId = appState.instanceId;
-  actions.appStateActions.setAppState(appState.modelName,
-    workflowId, { ...props.appState.data, submitting: true });
+  const { appState, actions, match } = props;
+  const workflowId = match.params.workflowId;
+  actions.appStateActions.setAppState(MODEL_NAME, workflowId, { ...appState.data, submitting: true });
 
-
-  const steps = [{
-    name: 'hasUserEnteredData',
-    data: { answer: 'Yes' }
-  }, {
-    name: 'askEmail',
-    data: { name: data.name, emailAddr: data.emailAddr }
-  },
-  {
-    name: 'moveTo',
-    data: { key: 'summary' }
-  }
+  const steps = [
+    { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
+    { name: 'askEmail', data: { name: data.name, emailAddr: data.emailAddr } },
+    { name: 'moveTo', data: { key: 'summary' } }
   ];
 
-  actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
+  actions.cgActions.batchCompleteTask(MODEL_NAME, workflowId, steps)
     .then(() => {
       dispatch(reset('Summary'));
-      actions.appStateActions.setAppState(appState.modelName,
-    workflowId, { ...props.appState.data,
-      selectedLink: 'summary',
-      submitting: false });
+      actions.appStateActions.setAppState(MODEL_NAME, workflowId,
+        { ...appState.data, selectedLink: 'summary', submitting: false }
+      );
     });
 };
 
@@ -60,30 +52,30 @@ export const handleFormSubmit = (data, dispatch, props) => {
 export class Summary extends Component {
 
   componentDidMount() {
-    if (this.props.appState.instanceId) {
-      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
-        ...this.props.appState.data,
-        submitting: true,
-        overrideAction: false
-      });
-      const steps = [
-    { name: 'hasUserEnteredData', data: { answer: 'No' } },
-    { name: 'moveTo', data: { key: 'summary' } }
-      ];
-      const workflowId = this.props.appState.instanceId;
+    const { actions, appState, match, quoteData } = this.props;
+    const workflowId = match.params.workflowId;
+    if (workflowId) {
+      actions.appStateActions.setAppState(MODEL_NAME, workflowId,
+        { ...appState.data, submitting: true, overrideAction: false }
+      );
 
-      this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
-    .then(() => {
-      this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
-      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
-        ...this.props.appState.data,
-        selectedLink: 'summary'
-      });
-    });
+      const steps = [
+        { name: 'hasUserEnteredData', data: { answer: 'No' } },
+        { name: 'moveTo', data: { key: 'summary' } }
+      ];
+
+      actions.cgActions.batchCompleteTask(MODEL_NAME, workflowId, steps)
+        .then(() => {
+          actions.quoteStateActions.getLatestQuote(true, match.params.quoteId);
+          actions.appStateActions.setAppState(MODEL_NAME, workflowId,
+            { ...appState.data, selectedLink: 'summary' }
+          );
+        });
     }
-    if (this.props.quoteData && this.props.quoteData.companyCode && this.props.quoteData.state) {
-      this.props.actions.serviceActions.getAgents(this.props.quoteData.companyCode, this.props.quoteData.state);
-      this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
+
+    if (quoteData && quoteData.companyCode && quoteData.state) {
+      actions.serviceActions.getAgents('TTIC', 'FL');
+      actions.quoteStateActions.getLatestQuote(true, match.params.quoteId);
     }
   }
 
@@ -96,9 +88,10 @@ export class Summary extends Component {
 
     const {
       quoteData,
-       handleSubmit,
-       agents
-     } = this.props;
+      handleSubmit,
+      agents,
+      match
+    } = this.props;
 
     let selectedAgent = {};
 
@@ -119,7 +112,7 @@ export class Summary extends Component {
 
 
     return (
-      <QuoteBaseConnect>
+      <QuoteBaseConnect match={match}>
         <div className="route-content summary workflow">
 
           <div className="scroll">
@@ -352,7 +345,7 @@ export class Summary extends Component {
           </div>
         </div>
         <div className="share-quote">
-          <Form id="Summary" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+          <form id="Summary" onSubmit={handleSubmit(handleFormSubmit)} >
             <TextField validations={['required']} label={'Email To Name'} styleName={'share-name'} name={'name'} />
             <TextField validations={['required', 'email']} label={'Email Address'} styleName={'share-email'} name={'emailAddr'} />
             <button
@@ -362,7 +355,7 @@ export class Summary extends Component {
               form="Summary"
               className="btn btn-primary" type="submit"
             >Share</button>
-          </Form>
+          </form>
         </div>
         <div className="basic-footer">
           <Footer />

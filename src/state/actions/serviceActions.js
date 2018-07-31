@@ -330,15 +330,14 @@ export const getQuote = quoteId => (dispatch) => {
 
   return axios(axiosConfig).then((response) => {
     const data = { quote: response.data ? response.data.result : {} };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
+
+    dispatch(serviceRequest(data));
+    // TODO: returning quote here for use on routes that currently need quote data to initialize. This is a symptom of a bigger problem that will be addressed in the near future.
+    return data.quote;
   })
     .catch((error) => {
       const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
+      return dispatch(errorActions.setAppError(message));
     });
 };
 

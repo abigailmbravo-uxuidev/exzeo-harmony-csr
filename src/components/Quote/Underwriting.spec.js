@@ -436,6 +436,7 @@ describe('Testing Underwriting component', () => {
     const store = mockStore(initialState);
 
     const props = {
+      match: { params: {} },
       fieldQuestions: [],
       dispatch: store.dispatch,
       actions: {
@@ -509,6 +510,7 @@ describe('Testing Underwriting component', () => {
     const store = mockStore(initialState);
 
     const props = {
+      match: { params: {} },
       reset() {},
       handleSubmit() {},
       questions: underwritingQuestions,
@@ -529,7 +531,7 @@ describe('Testing Underwriting component', () => {
         }
       },
       appState: {
-        instanceId: 1,
+        instanceId: '1',
         data: {
           submitting: false
         }
@@ -540,8 +542,7 @@ describe('Testing Underwriting component', () => {
     clearForm(props);
     expect(underwritingQuestions).toEqual(props.questions);
 
-    const wrapper = shallow(
-      <Underwriting store={store} {...props} />);
+    const wrapper = shallow(<Underwriting store={store} {...props} />);
 
     wrapper.instance().componentDidMount();
   });

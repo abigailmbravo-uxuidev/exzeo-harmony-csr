@@ -22,6 +22,7 @@ const baseProps = {
   handleSubmit() {},
   setAppState() { return Promise.resolve(() => {}); },
   startWorkflow() { return Promise.resolve(() => {}); },
+  match: { params: {} },
   appState: {
     data: {
       submitting: false
