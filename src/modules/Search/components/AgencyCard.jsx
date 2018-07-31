@@ -17,7 +17,9 @@ function AgencyCard({
         </div>
         <div className="contact-details">
           <div className="card-name">
-            <h4 onClick={handleClick} className="agency"><span className="agency-code">{agency.agencyCode}</span> | <span className="agency-display-name">{agency.displayName}</span> | <span className="agency-legal-name">{agency.legalName}</span> | <span className="agency-license">{agency.licenseNumber}</span></h4>
+            <h4 onClick={handleClick} className="agency" data-test={agency.agencyCode}>
+              <span className="agency-code">{agency.agencyCode}</span> | <span className="agency-display-name">{agency.displayName}</span> | <span className="agency-legal-name">{agency.legalName}</span> | <span className="agency-license">{agency.licenseNumber}</span>
+            </h4>
 
             <AgencyContactAddress
               mailingAddress={agency.mailingAddress}

@@ -33,8 +33,8 @@ function QuoteCard({
           <li>
             <a
               id={quote.quoteNumber + quote.property.physicalAddress.address1}
-              className={`${quote.quoteNumber + quote.property.physicalAddress.address1} row`}
-              aria-label={quote.quoteNumber + quote.property.physicalAddress.address1}
+              className="row"
+              data-test={quote.quoteNumber}
               onClick={handleClick}
             >
               <span className="quote-no">{quote.quoteNumber}</span>

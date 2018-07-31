@@ -31,7 +31,8 @@ function PolicyCard({
             <a
               id={policy.PolicyID}
               onClick={handleClick}
-              className={`${policy.policyNumber}${policy.property.physicalAddress.address1} row`}
+              data-test={policy.policyNumber}
+              className='row'
             >
               <span className="quote-no">{policy.policyNumber}</span>
               <span className="property-address">

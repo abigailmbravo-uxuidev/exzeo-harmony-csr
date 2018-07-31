@@ -67,9 +67,9 @@ export const RESULTS_PAGE_SIZE = 25;
 
 const DEFAULT_NO_RESULTS_MESSAGE = 'We\'re sorry we couldn\'t find any results matching your search parameters. Please check your spelling and try a new search. You can also try a less specific search (such as street number and name).';
 export const NO_RESULTS_MESSAGES = {
-  [SEARCH_TYPES.newQuote]: 'There are no quotes found matching that search criteria. Please try to search again, or start a new quote.',
+  [SEARCH_TYPES.newQuote]: DEFAULT_NO_RESULTS_MESSAGE,
   [SEARCH_TYPES.policy]: 'There are no policies found matching that search criteria. Please try to search again.',
-  [SEARCH_TYPES.quote]: DEFAULT_NO_RESULTS_MESSAGE,
+  [SEARCH_TYPES.quote]: 'There are no quotes found matching that search criteria. Please try to search again, or start a new quote.',
   [SEARCH_TYPES.agent]: DEFAULT_NO_RESULTS_MESSAGE,
   [SEARCH_TYPES.agency]: DEFAULT_NO_RESULTS_MESSAGE
 };

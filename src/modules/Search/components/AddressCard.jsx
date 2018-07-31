@@ -7,7 +7,7 @@ function AddressCard({
 }) {
   return (
     <li id={address.id} tabIndex="0" onKeyPress={handleKeyPress}>
-      <a id={address.physicalAddress.address1} aria-label={address.physicalAddress.address1} className={address.physicalAddress.address1} onClick={handleClick} >
+      <a id={address.physicalAddress.address1} data-test={address.physicalAddress.address1} className={address.physicalAddress.address1} onClick={handleClick} >
         <i className="card-icon fa fa-map-marker" />
         <section>
           <h4>{address.physicalAddress.address1}</h4>

@@ -25,7 +25,10 @@ export class QuoteLanding extends Component {
       if (newQuote) {
         steps.push({
           name: 'search',
-          data: { searchType: SEARCH_TYPES.newQuote, address: params.stateCode }
+          data: {
+            searchType: SEARCH_TYPES.newQuote,
+            address: params.stateCode
+          }
         });
         steps.push({
           name: 'chooseAddress',
@@ -37,7 +40,16 @@ export class QuoteLanding extends Component {
       } else {
         steps.push({
           name: 'search',
-          data: { searchType: SEARCH_TYPES.quote }
+          data: {
+            searchType: SEARCH_TYPES.quote,
+            // TODO: properties needed to kick off model. Looking into removing these.
+            address: '',
+            firstName: '',
+            lastName: '',
+            policyNumber: '',
+            quoteNumber: '',
+            quoteState: '',
+          }
         });
         steps.push({
           name: 'chooseQuote',
