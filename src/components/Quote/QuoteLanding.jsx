@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Loader from '@exzeo/core-ui/lib/Loader';
+import { SEARCH_TYPES } from '../../constants/search';
 import { startWorkflow, batchCompleteTask } from '../../state/actions/cgActions';
 import { setAppState } from '../../state/actions/appStateActions';
 import { setAppError } from '../../state/actions/errorActions';
@@ -16,16 +17,16 @@ export class QuoteLanding extends Component {
 
   async componentDidMount() {
     const { match: { params }, startWorkflow, setAppState, appState, batchCompleteTask, newQuote } = this.props;
-    const lastSearchData = JSON.parse(localStorage.getItem('lastSearchData'));
 
     try {
       const result = await startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` });
-      const steps = [{
-        name: 'search',
-        data: lastSearchData
-      }];
+      const steps = [];
 
       if (newQuote) {
+        steps.push({
+          name: 'search',
+          data: { searchType: SEARCH_TYPES.newQuote, address: params.stateCode }
+        });
         steps.push({
           name: 'chooseAddress',
           data: {
@@ -34,6 +35,10 @@ export class QuoteLanding extends Component {
           }
         });
       } else {
+        steps.push({
+          name: 'search',
+          data: { searchType: SEARCH_TYPES.quote }
+        });
         steps.push({
           name: 'chooseQuote',
           data: {

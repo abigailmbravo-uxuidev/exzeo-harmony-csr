@@ -15,6 +15,13 @@ import PolicySideNav from '../components/Policy/PolicySideNav';
 import PolicyHeader from '../components/Policy/PolicyHeader';
 
 export class Policy extends React.Component {
+  componentDidMount() {
+    const { policy, match, getPolicy } = this.props;
+    if (!policy || !policy.policyNumber) {
+      getPolicy(match.params.policyNumber)
+    }
+  }
+
   componentWillReceiveProps() {
     if (!this.props.zipcodeSettings && this.props && this.props.policy && this.props.policy.policyNumber) {
       this.props.getZipcodeSettings(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property.physicalAddress.zip);
@@ -93,20 +100,21 @@ export class Policy extends React.Component {
 
   render() {
     const { policy, appState, children } = this.props;
+    const policyExistsAndIsAvailable = policy && policy.policyNumber;
+
     return (
       <div className="app-wrapper csr policy">
-        {/* TODO: dynamically add policy # to title */}
+        {(appState.data.submitting || !policyExistsAndIsAvailable) && <Loader />}
         <Helmet><title>{policy && policy.policyNumber ? `P: ${policy.policyNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
         {/* <NewNoteFileUploader/> */}
         <PolicyHeader />
         <PolicyDetailHeader />
         <main role="document">
-          {appState.data.submitting && <Loader />}
           <aside className="content-panel-left">
             <PolicySideNav />
           </aside>
           <div className="content-wrapper">
-            {children}
+            {policyExistsAndIsAvailable && children}
           </div>
 
           {appState.data.showReinstatePolicyPopUp &&
