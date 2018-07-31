@@ -85,7 +85,7 @@ describe('<FieldGenerator />', () => {
     const inputProps = {
       label: 'This is a header',
       handleSubmit: onSubmit,
-      question: { answerType: 'heading' }
+      question: { answerType: 'heading', question: 'This is a label' }
     };
 
     const wrapper = shallow(<FieldGenerator {...inputProps} />);

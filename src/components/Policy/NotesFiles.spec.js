@@ -30,6 +30,7 @@ describe('Testing NotesFiles component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      match: { params: {} },
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,
@@ -65,6 +66,7 @@ describe('Testing NotesFiles component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      match: { params: {} },
       handleSubmit() { },
       actions: {
         serviceActions: { getNotes: () => null }
