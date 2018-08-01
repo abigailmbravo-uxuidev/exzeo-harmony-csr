@@ -31,6 +31,7 @@ import PolicyNotesFiles from './components/Policy/NotesFiles';
 import PolicyEndorsements from './components/Policy/Endorsements';
 import AgencyStaff from './components/Agency/Staff';
 import NoteUploader from './components/Common/NoteUploader';
+import CreateDiary from './components/Common/CreateDiary';
 import PolicyCancel from './components/Policy/Cancel';
 
 import * as appStateActions from './state/actions/appStateActions';
