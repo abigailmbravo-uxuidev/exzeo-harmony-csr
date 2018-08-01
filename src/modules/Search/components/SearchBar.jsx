@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import { LOCAL_STORAGE_KEY, DEFAULT_SEARCH_PARAMS } from '../../../constants/search';
+import { DEFAULT_SEARCH_PARAMS } from '../../../constants/search';
 import { getAgencies } from '../../../state/actions/serviceActions';
 import { clearAppError } from '../../../state/actions/errorActions';
 import {

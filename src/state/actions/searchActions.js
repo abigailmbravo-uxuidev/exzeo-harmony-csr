@@ -6,7 +6,6 @@ import {
   DEFAULT_SEARCH_PARAMS,
   RESULTS_PAGE_SIZE,
   SEARCH_TYPES,
-  LOCAL_STORAGE_KEY,
   SECONDARY_DATE_FORMAT
 } from "../../constants/search";
 

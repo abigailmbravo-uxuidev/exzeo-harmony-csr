@@ -1,4 +1,3 @@
-export const LOCAL_STORAGE_KEY = 'lastSearchData';
 export const WORK_FLOW_MODEL_NAME = 'csrQuote';
 export const WORK_FLOW_DATA = {
   dsUrl: `${process.env.REACT_APP_API_URL}/ds`
