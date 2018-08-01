@@ -11,16 +11,14 @@ import Footer from '../Common/Footer';
 export class NotesFiles extends Component {
 
   componentDidMount () {
-    const { actions, policy } = this.props;
-    if (policy && policy.policyNumber) {
-      const ids = [policy.policyNumber, policy.sourceNumber];
-      actions.serviceActions.getNotes(ids.toString(), policy.policyNumber);
-    }
+    const { actions, match: { params: { policyNumber } } } = this.props;
+
+    actions.serviceActions.getNotes(policyNumber, policyNumber);
   }
 
   render() {
     return (
-      <PolicyBaseConnect>
+      <PolicyBaseConnect match={this.props.match}>
         <div className="route-content">
           <div className="scroll">
             <NoteList {...this.props} />

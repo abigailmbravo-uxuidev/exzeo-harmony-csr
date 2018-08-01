@@ -3,10 +3,11 @@ import initialState from './initialState';
 import searchReducer from './searchReducer';
 
 describe('searchReducer Reducer', () => {
-
   it('should call searchReducer SEARCH', () => {
     const state = initialState.search;
-    const inputProps = {};
+    const inputProps = {
+      currentPage: 1, loading: false, noResults: false, pageSize: 0, results: [], sortBy: '', sortDirection: '', totalPages: 0, totalRecords: 0
+    };
     const action = {
       type: types.SEARCH,
       search: {}

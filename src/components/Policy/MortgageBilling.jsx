@@ -277,6 +277,7 @@ export class MortgageBilling extends Component {
       cashDescriptionOptions,
       cashTypeAnswers,
       handleSubmit,
+      match,
       paymentHistory,
       pristine,
       policy,
@@ -292,7 +293,7 @@ export class MortgageBilling extends Component {
     const cashDescriptionAnswers = cashDescriptionOptions[cashTypeValue] || [];
 
     return (
-      <PolicyConnect>
+      <PolicyConnect match={match}>
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">

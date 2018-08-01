@@ -91,6 +91,7 @@ const baseProps = {
       }
     ]
   },
+  questions: {},
   zipcodeSettings: {},
   summaryLedger: {},
   quoteData: {},

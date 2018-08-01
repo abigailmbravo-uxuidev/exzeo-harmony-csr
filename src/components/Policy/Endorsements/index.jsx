@@ -24,7 +24,6 @@ import PolicyHolder from './PolicyHolder';
 import Address from './Address';
 import ResultsCalculator from './ResultsCalculator';
 import GoToMenu from './GoToMenu';
-import UnderwritingValidations from './UnderwritingValidations';
 
 export const getNewPolicyNumber = (state) => {
   const taskData = (state.cg && state.cg.endorsePolicyModelSave)
@@ -227,7 +226,8 @@ export class Endorsements extends React.Component {
       selectedFields = { coverageLimits: { personalProperty: { amount: null } } },
       submitting,
       underwritingQuestions,
-      userProfile
+      userProfile,
+      match
     } = this.props;
 
     const mappedEndorsementHistory = endorsementHistory && endorsementHistory.map((endorsement) => {
@@ -243,7 +243,7 @@ export class Endorsements extends React.Component {
 
     if (!canPremiumEndorse) {
       return (
-        <PolicyConnect>
+        <PolicyConnect match={match}>
           <div className="messages" >
             <div className="message error">
               <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Endorsement page cannot be accessed due to User Permissions.
@@ -253,18 +253,15 @@ export class Endorsements extends React.Component {
     }
 
     return (
-      <PolicyConnect>
+      <PolicyConnect match={match}>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         {this.props.submitting && <Loader />}
-
-        {initialValues.endorsementDate ?
           <form
             id="Endorsements"
             className="content-wrapper"
             onSubmit={handleSubmit(this.handleEndorsementFormSubmit)}
             onKeyPress={e => (e.key === 'Enter' && e.target.type !== 'submit') && e.preventDefault()}
           >
-
             <div className="route-content">
               <div className="endorsements">
                 <GoToMenu />
@@ -324,15 +321,8 @@ export class Endorsements extends React.Component {
                 </ResultsCalculator>
 
               </div>
-
-              <UnderwritingValidations />
-
             </div>
           </form>
-          :
-          <Loader />
-        }
-
         <div className="basic-footer">
           <Footer />
         </div>

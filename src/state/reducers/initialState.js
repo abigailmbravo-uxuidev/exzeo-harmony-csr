@@ -26,7 +26,17 @@ export default {
     paymentOptions: [],
     summaryLedger: {},
   },
-  search: {},
+  search: {
+    loading: false,
+    currentPage: 1,
+    noResults: false,
+    pageSize: 0,
+    results: [],
+    sortBy: '',
+    sortDirection: '',
+    totalPages: 0,
+    totalRecords: 0
+  },
   service: {
     cancelOptions: []
   }

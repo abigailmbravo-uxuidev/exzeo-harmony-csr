@@ -12,8 +12,8 @@ import LoginPage from './containers/Login';
 import AccessDenied from './containers/AccessDenied';
 import LoggedOut from './containers/LoggedOut';
 import Callback from './containers/Callback';
-import SplashPage from './containers/Splash';
-import AgencySplashPage from './containers/AgencySplash';
+import SearchAgency from './containers/SearchAgency';
+import SearchPolicy from './containers/SearchPolicy';
 import NotFoundPage from './containers/NotFound';
 import QuoteCoverage from './components/Quote/Coverage';
 import QuoteLanding from "./components/Quote/QuoteLanding";
@@ -114,8 +114,8 @@ class Routes extends Component {
         >
           <div className="routes">
             <Switch>
-              <Route exact path="/" render={props => <SplashPage auth={auth} {...props} />} />
-              <Route exact path="/agency" render={props => <AgencySplashPage auth={auth} {...props} />} />
+              <Route exact path="/" render={props => <SearchPolicy auth={auth} {...props} />} />
+              <Route exact path="/agency" render={props => <SearchAgency auth={auth} {...props} />} />
               <Route exact path="/quote/new/:stateCode/:propertyId" render={props => <QuoteLanding auth={auth} newQuote {...props} />} />
               <Route exact path="/quote/:quoteId" render={props => <QuoteLanding auth={auth} {...props} />} />
               <Route exact path="/quote/:quoteId/coverage/:workflowId" render={props => <QuoteCoverage auth={auth} {...props} />} />
