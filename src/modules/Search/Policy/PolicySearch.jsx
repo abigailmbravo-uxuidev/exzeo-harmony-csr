@@ -81,7 +81,7 @@ const PolicySearch = ({
         baseClass="icon"
         customClass="advanced-search-btn"
         size="small"
-        dataTest="advanced-search"
+        dataTest="policy-advanced-search"
         onClick={toggleAdvancedSearch}
       >
         <i className={classNames(advancedSearch ? 'fa fa-chevron-up' : 'fa fa-chevron-down')} />

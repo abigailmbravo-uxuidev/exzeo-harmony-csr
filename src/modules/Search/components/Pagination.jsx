@@ -12,9 +12,11 @@ function Pagination({
       <button
         type="button"
         className="btn multi-input"
+        data-test="page-back"
         onClick={changePageBack}
         tabIndex="0"
-        disabled={String(pageNumber) === '1'}><span className="fa fa-chevron-circle-left"/></button>
+        disabled={String(pageNumber) === '1'}
+      ><span className="fa fa-chevron-circle-left"/></button>
       <div className="pagination-count">
         <Input
           input={{name: 'pageNumber', value: pageNumber}}
@@ -34,12 +36,13 @@ function Pagination({
         />
       </div>
       <button
-        onClick={changePageForward}
-        disabled={String(pageNumber) === String(totalPages)}
-        tabIndex="0"
-        className="btn multi-input"
         type="button"
-        form="SearchBar"><span className="fa fa-chevron-circle-right"/></button>
+        className="btn multi-input"
+        data-test="page-forward"
+        onClick={changePageForward}
+        tabIndex="0"
+        disabled={String(pageNumber) === String(totalPages)}
+      ><span className="fa fa-chevron-circle-right"/></button>
     </div>
   );
 }
