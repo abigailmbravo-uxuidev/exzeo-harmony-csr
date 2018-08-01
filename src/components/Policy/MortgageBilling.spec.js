@@ -1,12 +1,7 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
 import { shallow } from 'enzyme';
-import {
-  getMortgageeOrderAnswers,
-  getMortgageeOrderAnswersForEdit,
-  MortgageBilling,
-  handleInitialize
-} from './MortgageBilling';
+import { MortgageBilling, handleInitialize } from './MortgageBilling';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);

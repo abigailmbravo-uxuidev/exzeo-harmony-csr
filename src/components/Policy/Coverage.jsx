@@ -23,13 +23,9 @@ const handleInitialize = state => state.policyState.policy;
 
 export class Coverage extends Component {
   async componentDidMount() {
-    const {
-      getUIQuestions, getPolicy, getCancelOptions, match
-    } = this.props;
-    const { policyNumber } = match.params;
+    const { getUIQuestions, getCancelOptions } = this.props;
 
     getUIQuestions('propertyAppraisalCSR');
-    getPolicy(policyNumber);
     getCancelOptions();
   }
 
@@ -54,6 +50,7 @@ export class Coverage extends Component {
 
   render() {
     const {
+      match,
       summaryLedger,
       questions,
       paymentOptions,
@@ -65,7 +62,7 @@ export class Coverage extends Component {
         property,
         rating,
         underwritingAnswers
-      }
+      },
     } = this.props;
 
     const monthsOccupied = underwritingAnswers ? underwritingAnswers.monthsOccupied.answer : null;
@@ -190,10 +187,10 @@ export class Coverage extends Component {
     ];
 
     const propertyData = property || {};
-    if (!this.props.policy.policyID) return (<PolicyConnect><Loader /> </PolicyConnect>);
+    if (!policy.policyID) return (<PolicyConnect match={match}><Loader /> </PolicyConnect>);
 
     return (
-      <PolicyConnect>
+      <PolicyConnect match={match}>
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">

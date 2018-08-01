@@ -135,6 +135,7 @@ export class CancelPolicy extends React.Component {
       handleSubmit,
       fieldValues,
       cancelOptions,
+      match,
       pristine,
       paymentHistory,
       paymentOptions,
@@ -146,7 +147,7 @@ export class CancelPolicy extends React.Component {
     const cancelGroup = cancelOptions ? cancelOptions.map(option => ({ answer: option.cancelType, label: option.cancelType })) : [];
 
     return (
-      <PolicyConnect>
+      <PolicyConnect match={match}>
         {appState.data.isSubmitting && <Loader />}
         <form id="CancelPolicy" onSubmit={handleSubmit(handleFormSubmit)}>
           <div className="route-content">

@@ -127,22 +127,49 @@ select {
 //combobox
 
 .Select {
+  display: flex;
   margin-bottom: 1rem;
 
   .Select-control {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     border: 1px solid $warm-gray-06;
 
     .Select-multi-value-wrapper {
-      .Select-placeholder {}
+      position: relative;
+      display: flex;
+      align-self: stretch;
+      width: 100%;
+
+      .Select-placeholder {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        width: 100%;
+      }
+
+      span {
+        display: flex;
+
+        .Select-placeholder {
+          display: flex;
+        }
+      }
 
       .Select-input {
+        display: flex !important;
         width: 100%;
 
         input[role="combobox"] {
+          display: flex;
           width: 100%;
-          height: 2.125rem;
-          padding: 0;
-          line-height: 2.125rem;
+          padding: 0 !important;
         }
       }
     }
@@ -161,7 +188,13 @@ select {
   }
 
   .Select-menu-outer {
-    border-color: $input-border-focus;
+    border-color: $warm-gray-06;
+
+    .Select-option {
+        &.is-focused {
+            background-color: rgba($bright-blue, .1);
+        }
+    }
   }
 }
 //
@@ -274,6 +307,27 @@ label {
 
         &:hover {
           cursor: pointer;
+        }
+
+        img {
+          display: flex;
+          flex-basis: 100px;
+          flex-grow: 0;
+          flex-shrink: 0;
+          @include for-phone-only {
+            flex-basis: 50px;
+            height: 70px;
+            @include transition(all 0.2s ease-in-out);
+            -webkit-filter: drop-shadow(0 0 4px rgba($green, 0));
+            filter: drop-shadow(0 0 4px rgba($green, 0));
+          }
+        }
+
+        &.selected {
+          img {
+            -webkit-filter: drop-shadow(0 0 4px rgba($green, 0.8));
+            filter: drop-shadow(0 0 4px rgba($green, 0.8));
+          }
         }
 
         .label-segmented {

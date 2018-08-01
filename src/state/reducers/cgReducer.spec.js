@@ -4,8 +4,8 @@ import cgReducer from './cgReducer';
 
 describe('CG Reducer', () => {
   it('should call cgReducer CG_START', () => {
-    const state = initialState.appState;
-    const inputProps = { data: { submitting: false } };
+    const state = initialState.cg;
+    const inputProps = {};
     const action = {
       type: types.CG_START,
       workflowData: inputProps
@@ -14,8 +14,8 @@ describe('CG Reducer', () => {
     expect(cgReducer(state, action)).toEqual(inputProps);
   });
   it('should call cgReducer CG_ACTIVE_TASK', () => {
-    const state = initialState.appState;
-    const inputProps = { data: { submitting: false } };
+    const state = initialState.cg;
+    const inputProps = {};
     const action = {
       type: types.CG_ACTIVE_TASK,
       workflowData: inputProps
@@ -24,8 +24,8 @@ describe('CG Reducer', () => {
     expect(cgReducer(state, action)).toEqual(inputProps);
   });
   it('should call cgReducer CG_COMPLETE', () => {
-    const state = initialState.appState;
-    const inputProps = { data: { submitting: false } };
+    const state = initialState.cg;
+    const inputProps = {};
     const action = {
       type: types.CG_COMPLETE,
       workflowData: inputProps
@@ -34,8 +34,8 @@ describe('CG Reducer', () => {
     expect(cgReducer(state, action)).toEqual(inputProps);
   });
   it('should call cgReducer CG_ERROR', () => {
-    const state = initialState.appState;
-    const inputProps = { data: { submitting: false } };
+    const state = initialState.cg;
+    const inputProps = {};
     const action = {
       type: types.CG_ERROR,
       workflowData: inputProps
@@ -45,8 +45,8 @@ describe('CG Reducer', () => {
   });
 
   it('should call cgReducer CG_START - new state', () => {
-    const state = initialState.appState;
-    const inputProps = { data: { submitting: false } };
+    const state = initialState.cg;
+    const inputProps = {};
     const action = {
       type: types.CG_START
     };
@@ -54,8 +54,8 @@ describe('CG Reducer', () => {
     expect(cgReducer(state, action)).toEqual(inputProps);
   });
   it('should call cgReducer CG_ACTIVE_TASK - new state', () => {
-    const state = initialState.appState;
-    const inputProps = { data: { submitting: false } };
+    const state = initialState.cg;
+    const inputProps = {};
     const action = {
       type: types.CG_ACTIVE_TASK
     };
@@ -63,8 +63,8 @@ describe('CG Reducer', () => {
     expect(cgReducer(state, action)).toEqual(inputProps);
   });
   it('should call cgReducer CG_COMPLETE - new state', () => {
-    const state = initialState.appState;
-    const inputProps = { data: { submitting: false } };
+    const state = initialState.cg;
+    const inputProps = {};
     const action = {
       type: types.CG_COMPLETE
     };
@@ -72,8 +72,8 @@ describe('CG Reducer', () => {
     expect(cgReducer(state, action)).toEqual(inputProps);
   });
   it('should call cgReducer CG_ERROR - new state', () => {
-    const state = initialState.appState;
-    const inputProps = { data: { submitting: false } };
+    const state = initialState.cg;
+    const inputProps = {};
     const action = {
       type: types.CG_ERROR
     };
@@ -82,8 +82,8 @@ describe('CG Reducer', () => {
   });
 
   it('should call cgReducer default', () => {
-    const state = initialState.appState;
-    const inputProps = { data: { submitting: false } };
+    const state = initialState.cg;
+    const inputProps = {};
     const action = {};
 
     expect(cgReducer(state, action)).toEqual(inputProps);

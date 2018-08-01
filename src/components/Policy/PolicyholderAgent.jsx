@@ -22,11 +22,15 @@ export class PolicyholderAgent extends Component {
 
   render() {
     const {
-      policyHolders,
-      policyHolderMailingAddress
-    } = this.props.policy;
-
-    const { agency, agents, policy } = this.props;
+      agency,
+      agents,
+      match,
+      policy,
+      policy: {
+        policyHolders,
+        policyHolderMailingAddress
+      }
+    } = this.props;
     let selectedAgent;
 
     if (agents && agents.length > 0 && policy && policy.agentCode) {
@@ -34,7 +38,7 @@ export class PolicyholderAgent extends Component {
     }
 
     return (
-      <PolicyConnect>
+      <PolicyConnect match={match}>
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
