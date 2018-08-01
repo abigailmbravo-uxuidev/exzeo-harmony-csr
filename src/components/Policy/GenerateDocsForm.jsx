@@ -5,19 +5,18 @@ import { reduxForm, Field } from 'redux-form';
 import moment from 'moment-timezone';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
+import Button from '@exzeo/core-ui/lib/Button';
 import Loader from '@exzeo/core-ui/lib/Loader';
-import DateField from '../Form/inputs/DateField';
 
 const { Select } = Inputs;
 const { validation } = lifecycle;
 const validate = values => !values.documentType ? { documentType: 'Required' } : null;
+const documentTypeAnswers = [{label: 'Policy Invoice', answer: 'policyInvoice'}];
 
 export class GenerateDocsForm extends Component {
   state = {
     showDate: false
   };
-
-  fieldsWithDate = [];
 
   generateDoc = (data, dispatch, props) => {
     const { errorHandler, policyNumber, updateNotes, startWorkflow } = props;
@@ -44,8 +43,6 @@ export class GenerateDocsForm extends Component {
       .catch((err) => errorHandler({ message: err.message }));
   };
 
-  toggleDate = (_, value) => this.setState({ showDate: value && this.fieldsWithDate.includes(value) })
-
   render() {
     const { handleSubmit, submitting } = this.props;
     return (
@@ -56,19 +53,18 @@ export class GenerateDocsForm extends Component {
             name="documentType"
             label="Document"
             component={Select}
-            answers={[{label: 'Policy Invoice', answer: 'policyInvoice'}]}
-            onChange={this.toggleDate}
+            answers={documentTypeAnswers}
             validate={validation.isRequired}
             dataTest='documentType'
           />
-          {this.state.showDate &&
-            <DateField
-              validations={['date']}
-              label="Effective Date"
-              name="effectiveDate"
-            />
-          }
-          <button type="submit" className="btn btn-sm btn-primary btn-block">Generate Doc</button>
+
+          <Button
+            baseClass="primary"
+            size='small'
+            customClass='btn-block'
+            type="submit"
+            dataTest='doc-submit'
+          >Generate Doc</Button>
         </form>
       </div>
     );
