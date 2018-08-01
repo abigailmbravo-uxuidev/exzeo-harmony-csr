@@ -137,6 +137,20 @@ select {
     justify-content: space-between;
     border: 1px solid $warm-gray-06;
 
+    &:after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.5rem;
+      height: 2.375rem;
+      content: "\f0d7";
+      color: $warm-gray-10;
+      font-family: $font-family-icon;
+    }
+
     .Select-multi-value-wrapper {
       position: relative;
       display: flex;
@@ -169,6 +183,7 @@ select {
         input[role="combobox"] {
           display: flex;
           width: 100%;
+          margin-right: $padding*2;
           padding: 0 !important;
         }
       }
@@ -191,9 +206,9 @@ select {
     border-color: $warm-gray-06;
 
     .Select-option {
-        &.is-focused {
-            background-color: rgba($bright-blue, .1);
-        }
+      &.is-focused {
+        background-color: rgba($bright-blue, .1);
+      }
     }
   }
 }
@@ -372,8 +387,8 @@ label {
 
           &.selected {
             span {
-              background: $bright-blue-darken-04;
               color: $white;
+              background: $bright-blue-darken-04;
             }
           }
 
@@ -474,11 +489,10 @@ label {
             }
 
             &.selected {
-
               span {
-              cursor: not-allowed;
-              color: $white;
-              background: rgba($bright-blue-darken-04, .5);
+                cursor: not-allowed;
+                color: $white;
+                background: rgba($bright-blue-darken-04, .5);
               }
             }
 
@@ -1258,5 +1272,5 @@ input[type="checkbox"] {
 }
 
 .error-message {
-    color: $red;
+  color: $red;
 }
