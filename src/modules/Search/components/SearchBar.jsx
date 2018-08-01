@@ -15,7 +15,6 @@ import { isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
 export class SearchBar extends Component {
   componentDidMount() {
     const { agencies, getAgencies, toggleLoading, initialize, initialValues } = this.props;
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
     toggleLoading(false);
     if (!agencies.length) {
       getAgencies(DEFAULT_SEARCH_PARAMS.companyCode, DEFAULT_SEARCH_PARAMS.state);
@@ -45,9 +44,6 @@ export class SearchBar extends Component {
 
   clearForm = () => {
     const { clearAppError, reset } = this.props;
-    const lastSearchData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
-    lastSearchData.searchType = '';
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(lastSearchData));
     reset();
     clearAppError();
     toggleLoading(false);

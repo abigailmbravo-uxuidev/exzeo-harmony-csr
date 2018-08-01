@@ -411,7 +411,6 @@ export function handleAddressSearch(data) {
       address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(String(data.address).trim()) : ''),
     };
 
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(taskData));
     await dispatch(searchAddresses(taskData.address));
   }
 }
@@ -439,7 +438,6 @@ export function handleQuoteSearch(data) {
       pageSize: RESULTS_PAGE_SIZE
     };
 
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(taskData));
     await dispatch(searchQuotes(taskData));
   }
 }
@@ -470,7 +468,6 @@ export function handlePolicySearch(data) {
       state: DEFAULT_SEARCH_PARAMS.state
     };
 
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(taskData));
     await dispatch(searchPolicies(taskData));
   }
 }
@@ -492,7 +489,6 @@ export function handleAgentSearch(data) {
       state: DEFAULT_SEARCH_PARAMS.state,
     };
 
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(taskData));
     await dispatch(searchAgents(taskData));
   }
 }
@@ -516,7 +512,6 @@ export function handleAgencySearch(data) {
       state: DEFAULT_SEARCH_PARAMS.state
     };
 
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(taskData));
     await dispatch(searchAgencies(taskData));
   }
 }
