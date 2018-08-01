@@ -23,7 +23,7 @@ export class GenerateDocsForm extends Component {
     const { errorHandler, policyNumber, updateNotes, startWorkflow } = props;
     return startWorkflow('policyInvoiceGenerator', { documentNumber: policyNumber }, false)
       .then(result => {
-        if (window.location.pathname === '/policy/notes') updateNotes();
+        if (window.location.pathname.includes('/notes')) updateNotes();
         const fileUrl = result.workflowData.policyInvoiceGenerator.data.previousTask.value.result[0].fileUrl;
         const proxyUrl = `${process.env.REACT_APP_API_URL}/download`;
         const params = { url: fileUrl };
@@ -42,7 +42,7 @@ export class GenerateDocsForm extends Component {
         return true;
       })
       .catch((err) => errorHandler({ message: err.message }));
-  }
+  };
 
   toggleDate = (_, value) => this.setState({ showDate: value && this.fieldsWithDate.includes(value) })
 
@@ -57,8 +57,9 @@ export class GenerateDocsForm extends Component {
             label="Document"
             component={Select}
             answers={[{label: 'Policy Invoice', answer: 'policyInvoice'}]}
-            validate={validation.isRequired}
             onChange={this.toggleDate}
+            validate={validation.isRequired}
+            dataTest='documentType'
           />
           {this.state.showDate &&
             <DateField
