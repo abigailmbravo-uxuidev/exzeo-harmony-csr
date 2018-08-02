@@ -23,13 +23,6 @@ import Notes from '../../components/Policy/NotesFiles';
 import Cancel from '../../components/Policy/Cancel';
 import Endorsements from '../../components/Policy/Endorsements';
 
-const CoverageRender = props => <Coverage {...props} />;
-const PolicyHolderRender = props => <PolicyHolder {...props} />;
-const BillingRender = props => <Billing {...props} />;
-const NotesRender = props => <Notes {...props} />;
-const CancelRender = props => <Cancel {...props} />;
-const EndorsementsRender = props => <Endorsements {...props} />;
-
 export class Policy extends React.Component {
   componentDidMount() {
     const { policy, match, getPolicy } = this.props;
@@ -39,7 +32,7 @@ export class Policy extends React.Component {
   }
 
   componentWillReceiveProps() {
-    if (!this.props.zipcodeSettings && this.props && this.props.policy && this.props.policy.policyNumber) {
+    if (!this.props.zipCodeSettings && this.props && this.props.policy && this.props.policy.policyNumber) {
       this.props.getZipcodeSettings(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property.physicalAddress.zip);
     }
   }
@@ -144,12 +137,12 @@ export class Policy extends React.Component {
 
           {policyExistsAndIsAvailable &&
             <div className="content-wrapper">
-              <Route exact path={`${match.url}/coverage`} render={CoverageRender}/>
-              <Route exact path={`${match.url}/policyholder`} render={PolicyHolderRender}/>
-              <Route exact path={`${match.url}/billing`} render={BillingRender}/>
-              <Route exact path={`${match.url}/notes`} render={NotesRender}/>
-              <Route exact path={`${match.url}/cancel`} render={CancelRender}/>
-              <Route exact path={`${match.url}/endorsements`} render={EndorsementsRender}/>
+              <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} />} />
+              <Route exact path={`${match.url}/policyholder`} render={props => <PolicyHolder {...props} />} />
+              <Route exact path={`${match.url}/billing`} render={props => <Billing {...props} />}/>
+              <Route exact path={`${match.url}/notes`} render={props => <Notes {...props} params={match.params} />} />
+              <Route exact path={`${match.url}/cancel`} render={props => <Cancel {...props} />} />
+              <Route exact path={`${match.url}/endorsements`} render={props => <Endorsements {...props} params={match.params}/>}/>
             </div>
           }
 

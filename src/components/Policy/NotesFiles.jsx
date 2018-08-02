@@ -10,7 +10,7 @@ import Footer from '../Common/Footer';
 export class NotesFiles extends Component {
 
   componentDidMount () {
-    const { actions, match: { params: { policyNumber } } } = this.props;
+    const { actions, params: { policyNumber } } = this.props;
 
     actions.serviceActions.getNotes(policyNumber, policyNumber);
   }
