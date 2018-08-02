@@ -11,9 +11,11 @@ import Footer from '../Common/Footer';
 export class NotesFiles extends Component {
 
   componentDidMount () {
-    const { actions, match: { params: { policyNumber } } } = this.props;
-
-    actions.serviceActions.getNotes(policyNumber, policyNumber);
+    const { actions, policy } = this.props;
+    if (policy && policy.policyNumber) {
+      const ids = [policy.policyNumber, policy.sourceNumber];
+      actions.serviceActions.getNotes(ids.toString(), policy.policyNumber);
+    }
   }
 
   render() {
