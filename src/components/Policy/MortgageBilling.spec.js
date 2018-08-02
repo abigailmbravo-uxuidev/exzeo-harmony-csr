@@ -276,29 +276,5 @@ describe('Testing MortgageBilling component', () => {
     wrapper.instance().handleAISubmit({ type: 'Mortgagee' }, props.dispatch, props);
     wrapper.instance().deleteAdditionalInterest(additionalInterests[1], props);
 
-    wrapper.instance().componentWillReceiveProps({
-      ...props,
-      summaryLedger: {},
-      policy: { policyNumber: '1234', rating: { worksheet: { fees: {} } } },
-      appState: {
-
-      },
-      actions: {
-        questionsActions: {
-          getUIQuestions() {}
-        },
-        appStateActions: {
-          setAppState() {}
-        },
-        serviceActions: {
-          addTransaction() { return Promise.resolve(); },
-          getTransactionHistory() {},
-          getSummaryLedger() {},
-          getBillingOptionsForPolicy() {},
-          getPaymentHistory() {},
-          getPaymentOptionsApplyPayments() {}
-        }
-      }
-    });
   });
 });
