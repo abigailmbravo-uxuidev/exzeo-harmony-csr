@@ -444,7 +444,7 @@ export class MortgageBilling extends Component {
 
 MortgageBilling.propTypes = {
   cashTypeValue: PropTypes.string,
-  billingOptions: PropTypes.array,
+  billingOptions: PropTypes.object,
   initialValues: PropTypes.object,
   summaryLedger: PropTypes.object,
   policyID: PropTypes.string,
