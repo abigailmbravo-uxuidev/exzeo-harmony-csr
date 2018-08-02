@@ -97,6 +97,7 @@ class Routes extends Component {
             <button className="btn-primary" onClick={this.clearError}>close</button>
           </div>
         </Modal>
+        <CreateDiary />
         {this.props.newNote && this.props.newNote.documentId &&
           <NoteUploader
             noteType={this.props.newNote.noteType}
