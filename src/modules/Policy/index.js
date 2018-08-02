@@ -7,7 +7,7 @@ import { Helmet } from 'react-helmet';
 import Loader from '@exzeo/core-ui/lib/Loader';
 
 import { setAppState } from '../../state/actions/appStateActions';
-import { getZipcodeSettings, getAgents, getAgency } from '../../state/actions/serviceActions';
+import { getZipcodeSettings, getAgents, getAgency, getNotes } from '../../state/actions/serviceActions';
 import { createTransaction, getBillingOptionsForPolicy, getPolicy, getPaymentOptionsApplyPayments, getPaymentHistory, getCancelOptions } from '../../state/actions/policyActions';
 import { startWorkflow, batchCompleteTask } from '../../state/actions/cgActions';
 
@@ -27,6 +27,7 @@ export class Policy extends React.Component {
   componentDidMount() {
     const {
       getCancelOptions,
+      getNotes,
       getPolicy,
       getPaymentHistory,
       getPaymentOptionsApplyPayments,
@@ -36,6 +37,7 @@ export class Policy extends React.Component {
     getPolicy(policyNumber);
     getPaymentHistory(policyNumber);
     getPaymentOptionsApplyPayments();
+    getNotes(policyNumber, policyNumber)
 
   }
 
@@ -204,6 +206,7 @@ Policy.propTypes = {
   setAppState: PropTypes.func,
   createTransaction: PropTypes.func,
   getZipCodeSettings: PropTypes.func,
+  getNotes: PropTypes.func,
   getPolicy: PropTypes.func,
   startWorkflow: PropTypes.func,
   batchCompleteTask: PropTypes.func,
@@ -228,6 +231,7 @@ export default connect(mapStateToProps, {
   getAgency,
   getBillingOptionsForPolicy,
   getCancelOptions,
+  getNotes,
   getPaymentHistory,
   getPaymentOptionsApplyPayments,
   getPolicy,
