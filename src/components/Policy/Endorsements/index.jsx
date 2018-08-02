@@ -14,7 +14,6 @@ import {
   getZipcodeSettings
 } from '../../../state/actions/serviceActions';
 // Component Sections
-import PolicyConnect from '../../../containers/Policy';
 import Footer from '../../Common/Footer';
 import Coverage from './Coverage';
 import WindMitigation from './WindMitigation';
@@ -227,7 +226,6 @@ export class Endorsements extends React.Component {
       submitting,
       underwritingQuestions,
       userProfile,
-      match
     } = this.props;
 
     const mappedEndorsementHistory = endorsementHistory && endorsementHistory.map((endorsement) => {
@@ -243,17 +241,16 @@ export class Endorsements extends React.Component {
 
     if (!canPremiumEndorse) {
       return (
-        <PolicyConnect match={match}>
-          <div className="messages" >
-            <div className="message error">
-              <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Endorsement page cannot be accessed due to User Permissions.
-            </div>
+        <div className="messages">
+          <div className="message error">
+            <i className="fa fa-exclamation-circle" aria-hidden="true"/>&nbsp;Endorsement page cannot be accessed due to User Permissions.
           </div>
-        </PolicyConnect>);
+        </div>
+      );
     }
 
     return (
-      <PolicyConnect match={match}>
+      <React.Fragment>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         {this.props.submitting && <Loader />}
           <form
@@ -326,7 +323,7 @@ export class Endorsements extends React.Component {
         <div className="basic-footer">
           <Footer />
         </div>
-      </PolicyConnect>
+      </React.Fragment>
     );
   }
 }

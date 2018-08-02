@@ -24,7 +24,6 @@ import {
 } from '../../state/actions/policyActions';
 import { getUIQuestions } from '../../state/actions/questionsActions';
 
-import PolicyConnect from '../../containers/Policy';
 import BillingModal from '../../components/Common/BillingEditModal';
 import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';
@@ -277,7 +276,6 @@ export class MortgageBilling extends Component {
       cashDescriptionOptions,
       cashTypeAnswers,
       handleSubmit,
-      match,
       paymentHistory,
       pristine,
       policy,
@@ -293,7 +291,7 @@ export class MortgageBilling extends Component {
     const cashDescriptionAnswers = cashDescriptionOptions[cashTypeValue] || [];
 
     return (
-      <PolicyConnect match={match}>
+      <React.Fragment>
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
@@ -454,7 +452,7 @@ export class MortgageBilling extends Component {
         <div className="basic-footer">
           <Footer />
         </div>
-      </PolicyConnect>
+      </React.Fragment>
     );
   }
 }

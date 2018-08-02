@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { reduxForm } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import _get from 'lodash/get';
 import _find from 'lodash/find';
@@ -10,7 +9,6 @@ import Loader from '@exzeo/core-ui/lib/Loader';
 import { getUIQuestions } from '../../state/actions/questionsActions';
 import { getPolicy, getBillingOptionsForPolicy, getPaymentHistory, getCancelOptions, getPaymentOptionsApplyPayments } from '../../state/actions/policyActions';
 import normalizeNumbers from '../Form/normalizeNumbers';
-import PolicyConnect from '../../containers/Policy';
 import Footer from '../Common/Footer';
 
 export const getPropertyAppraisalLink = (county, questions) => {
@@ -18,8 +16,6 @@ export const getPropertyAppraisalLink = (county, questions) => {
   const answers = question.answers || [];
   return _find(answers, { label: county }) || {};
 };
-
-const handleInitialize = state => state.policyState.policy;
 
 export class Coverage extends Component {
   async componentDidMount() {
@@ -50,7 +46,6 @@ export class Coverage extends Component {
 
   render() {
     const {
-      match,
       summaryLedger,
       questions,
       paymentOptions,
@@ -187,10 +182,10 @@ export class Coverage extends Component {
     ];
 
     const propertyData = property || {};
-    if (!policy.policyID) return (<PolicyConnect match={match}><Loader /> </PolicyConnect>);
+    if (!policy.policyID) return (<Loader />);
 
     return (
-      <PolicyConnect match={match}>
+      <React.Fragment>
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
@@ -361,41 +356,21 @@ export class Coverage extends Component {
         <div className="basic-footer">
           <Footer />
         </div>
-      </PolicyConnect>
+      </React.Fragment>
     );
   }
 }
 
-/**
-------------------------------------------------
-Property type definitions
-------------------------------------------------
-*/
 Coverage.propTypes = {
-  tasks: PropTypes.shape(),
-  appState: PropTypes.shape({
-    modelName: PropTypes.string,
-    instanceId: PropTypes.string,
-    data: PropTypes.shape({ submitting: PropTypes.boolean })
-  })
+
 };
 
-/**
-------------------------------------------------
-redux mapping
-------------------------------------------------
-*/
 const mapStateToProps = state => ({
-  appState: state.appState,
-  fieldValues: _get(state.form, 'Coverage.values', {}),
-  initialValues: handleInitialize(state),
   paymentOptions: state.policyState.billingOptions,
   policy: state.policyState.policy,
   policyID: state.policyState.policyID,
   summaryLedger: state.policyState.summaryLedger,
-  questions: state.questions,
-  tasks: state.cg
-
+  questions: state.questions
 });
 
 export default connect(mapStateToProps, {
@@ -405,4 +380,4 @@ export default connect(mapStateToProps, {
   getPolicy,
   getPaymentHistory,
   getPaymentOptionsApplyPayments
-})(reduxForm({ form: 'Coverage' })(Coverage));
+})(Coverage);

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as serviceActions from '../../state/actions/serviceActions';
-import PolicyBaseConnect from '../../containers/Policy';
 import * as errorActions from '../../state/actions/errorActions';
 import NoteList from '../Common/NoteList';
 import Footer from '../Common/Footer';
@@ -18,7 +17,7 @@ export class NotesFiles extends Component {
 
   render() {
     return (
-      <PolicyBaseConnect match={this.props.match}>
+      <React.Fragment>
         <div className="route-content">
           <div className="scroll">
             <NoteList {...this.props} />
@@ -27,7 +26,7 @@ export class NotesFiles extends Component {
         <div className="basic-footer">
           <Footer />
         </div>
-      </PolicyBaseConnect>
+      </React.Fragment>
     );
   }
 }

@@ -8,7 +8,6 @@ import { startWorkflow, batchCompleteTask } from '../../state/actions/cgActions'
 import { setAppState } from '../../state/actions/appStateActions';
 import { getPolicy, getPaymentHistory, getBillingOptionsForPolicy, getCancelOptions, getSummaryLedger } from '../../state/actions/policyActions';
 
-import PolicyConnect from '../../containers/Policy';
 import RadioField from '../Form/inputs/RadioField';
 import DateField from '../Form/inputs/DateField';
 import SelectField from '../Form/inputs/SelectField';
@@ -135,7 +134,6 @@ export class CancelPolicy extends React.Component {
       handleSubmit,
       fieldValues,
       cancelOptions,
-      match,
       pristine,
       paymentHistory,
       paymentOptions,
@@ -147,7 +145,7 @@ export class CancelPolicy extends React.Component {
     const cancelGroup = cancelOptions ? cancelOptions.map(option => ({ answer: option.cancelType, label: option.cancelType })) : [];
 
     return (
-      <PolicyConnect match={match}>
+      <React.Fragment>
         {appState.data.isSubmitting && <Loader />}
         <form id="CancelPolicy" onSubmit={handleSubmit(handleFormSubmit)}>
           <div className="route-content">
@@ -230,7 +228,7 @@ export class CancelPolicy extends React.Component {
             </div>
           </div>
         </form>
-      </PolicyConnect>
+      </React.Fragment>
     );
   }
 }

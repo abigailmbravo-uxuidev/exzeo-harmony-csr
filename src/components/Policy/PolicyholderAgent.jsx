@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import PolicyConnect from '../../containers/Policy';
-import normalizePhone from '../Form/normalizePhone';
 import * as appStateActions from '../../state/actions/appStateActions';
 import * as serviceActions from '../../state/actions/serviceActions';
+import normalizePhone from '../Form/normalizePhone';
 import Footer from '../Common/Footer';
 
 // turn this into class and use the service runner
@@ -24,7 +23,6 @@ export class PolicyholderAgent extends Component {
     const {
       agency,
       agents,
-      match,
       policy,
       policy: {
         policyHolders,
@@ -38,7 +36,7 @@ export class PolicyholderAgent extends Component {
     }
 
     return (
-      <PolicyConnect match={match}>
+      <React.Fragment>
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
@@ -154,7 +152,7 @@ ${policyHolderMailingAddress.city}, ${policyHolderMailingAddress.state} ${policy
         <div className="basic-footer">
           <Footer />
         </div>
-      </PolicyConnect>
+      </React.Fragment>
     );
   }
 }
