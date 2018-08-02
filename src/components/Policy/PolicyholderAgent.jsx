@@ -17,14 +17,12 @@ export class PolicyholderAgent extends Component {
       }
     } = this.props;
 
-    let selectedAgent;
-    if (agents && agents.length > 0) selectedAgent = agents.find(a => a.agentCode === policy.agentCode);
+    if(!(agents && agents.length && agency)) return <Loader />;
+
+    let selectedAgent = agents.find(a => a.agentCode === policy.agentCode);
 
     return (
       <React.Fragment>
-        {!(agents && agency) &&
-          <Loader />
-        }
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
