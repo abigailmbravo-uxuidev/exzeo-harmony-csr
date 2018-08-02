@@ -8,7 +8,7 @@ import Loader from '@exzeo/core-ui/lib/Loader';
 
 import { setAppState } from '../../state/actions/appStateActions';
 import { getZipcodeSettings } from '../../state/actions/serviceActions';
-import { getPolicy, createTransaction } from '../../state/actions/policyActions';
+import { createTransaction, getBillingOptionsForPolicy, getPolicy, getPaymentOptionsApplyPayments, getPaymentHistory, getCancelOptions } from '../../state/actions/policyActions';
 import { startWorkflow, batchCompleteTask } from '../../state/actions/cgActions';
 
 import EditEffectiveDataPopUp from '../../components/Policy/EditEffectiveDatePopup';
@@ -25,17 +25,40 @@ import Endorsements from '../../components/Policy/Endorsements';
 
 export class Policy extends React.Component {
   componentDidMount() {
-    const { policy, match, getPolicy } = this.props;
-    if (!policy || !policy.policyNumber) {
-      getPolicy(match.params.policyNumber)
+    const {
+      getCancelOptions,
+      getPolicy,
+      getPaymentHistory,
+      getPaymentOptionsApplyPayments,
+      match: { params: { policyNumber } },
+    } = this.props;
+    getCancelOptions();
+    getPolicy(policyNumber);
+    getPaymentHistory(policyNumber);
+    getPaymentOptionsApplyPayments();
+
+  }
+
+  componentDidUpdate(prevProps) {
+    const { policy: prevPolicy } = prevProps;
+    const { policy, summaryLedger, getBillingOptionsForPolicy, getZipCodeSettings } = this.props;
+
+    if (prevPolicy !== policy && !!policy) {
+      getZipCodeSettings(policy.companyCode, policy.state, policy.product, policy.property.physicalAddress.zip);
+
+      if (summaryLedger) {
+        const paymentOptions = {
+          effectiveDate: policy.effectiveDate,
+          policyHolders: policy.policyHolders,
+          additionalInterests: policy.additionalInterests,
+          fullyEarnedFees: policy.rating.worksheet.fees.empTrustFee + policy.rating.worksheet.fees.mgaPolicyFee,
+          currentPremium: summaryLedger.currentPremium,
+        };
+        getBillingOptionsForPolicy(paymentOptions);
+      }
     }
   }
 
-  componentWillReceiveProps() {
-    if (!this.props.zipCodeSettings && this.props && this.props.policy && this.props.policy.policyNumber) {
-      this.props.getZipcodeSettings(this.props.policy.companyCode, this.props.policy.state, this.props.policy.product, this.props.policy.property.physicalAddress.zip);
-    }
-  }
 
   hideEffectiveDatePopUp = () => {
     const { appState, setAppState } = this.props;
@@ -121,12 +144,16 @@ export class Policy extends React.Component {
       appState,
       match,
       policy,
+      initialized
     } = this.props;
-    const policyExistsAndIsAvailable = policy && policy.policyNumber;
 
     return (
       <div className="app-wrapper csr policy">
-        {(appState.data.submitting || !policyExistsAndIsAvailable) && <Loader />}
+
+        {(appState.data.submitting || !initialized) &&
+          <Loader />
+        }
+
         <Helmet><title>{policy && policy.policyNumber ? `P: ${policy.policyNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
         <PolicyHeader />
         <PolicyDetailHeader />
@@ -135,7 +162,7 @@ export class Policy extends React.Component {
             <PolicySideNav />
           </aside>
 
-          {policyExistsAndIsAvailable &&
+          {initialized &&
             <div className="content-wrapper">
               <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} />} />
               <Route exact path={`${match.url}/policyholder`} render={props => <PolicyHolder {...props} />} />
@@ -147,17 +174,17 @@ export class Policy extends React.Component {
           }
 
           {appState.data.showReinstatePolicyPopUp &&
-          <ReinstatePolicyPopup
-            reinstatePolicySubmit={this.reinstatePolicySubmit}
-            hideReinstatePolicyModal={this.hideReinstatePolicyPopUp}
-          />
+            <ReinstatePolicyPopup
+              reinstatePolicySubmit={this.reinstatePolicySubmit}
+              hideReinstatePolicyModal={this.hideReinstatePolicyPopUp}
+            />
           }
 
           {appState.data.showEffectiveDateChangePopUp &&
-          <EditEffectiveDataPopUp
-            changeEffectiveDateSubmit={this.changeEffectiveDate}
-            hideEffectiveDateModal={this.hideEffectiveDatePopUp}
-          />
+            <EditEffectiveDataPopUp
+              changeEffectiveDateSubmit={this.changeEffectiveDate}
+              hideEffectiveDateModal={this.hideEffectiveDatePopUp}
+            />
           }
         </main>
       </div>
@@ -166,22 +193,41 @@ export class Policy extends React.Component {
 }
 
 Policy.propTypes = {
-  policy: PropTypes.shape()
+  appState: PropTypes.object,
+  initialized: PropTypes.bool,
+  policy: PropTypes.object,
+  summaryLedger: PropTypes.object,
+  tasks: PropTypes.object,
+  zipCodeSettings: PropTypes.object,
+  setAppState: PropTypes.func,
+  createTransaction: PropTypes.func,
+  getZipCodeSettings: PropTypes.func,
+  getPolicy: PropTypes.func,
+  startWorkflow: PropTypes.func,
+  batchCompleteTask: PropTypes.func,
+  getPaymentOptionsApplyPayments: PropTypes.func,
+  getPaymentHistory: PropTypes.func,
+  getCancelOptions: PropTypes.func
 };
 
-const mapStateToProps = state => ({
-  appState: state.appState,
-  policy: state.policyState.policy,
-  summaryLedger: state.policyState.summaryLedger,
-  tasks: state.cg,
-  zipCodeSettings: state.service.getZipcodeSettings
+const mapStateToProps = ({ appState, cg, policyState, service }) => ({
+  appState: appState,
+  initialized: !!(policyState.policy && policyState.summaryLedger),
+  policy: policyState.policy,
+  summaryLedger: policyState.summaryLedger,
+  tasks: cg,
+  zipCodeSettings: service.getZipcodeSettings
 });
 
 export default connect(mapStateToProps, {
   setAppState,
   createTransaction,
-  getZipcodeSettings,
+  getZipCodeSettings: getZipcodeSettings,
   getPolicy,
   startWorkflow,
-  batchCompleteTask
+  batchCompleteTask,
+  getBillingOptionsForPolicy,
+  getPaymentOptionsApplyPayments,
+  getPaymentHistory,
+  getCancelOptions
 })(Policy);

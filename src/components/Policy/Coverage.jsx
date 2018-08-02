@@ -7,7 +7,6 @@ import _find from 'lodash/find';
 import moment from 'moment';
 import Loader from '@exzeo/core-ui/lib/Loader';
 import { getUIQuestions } from '../../state/actions/questionsActions';
-import { getPolicy, getBillingOptionsForPolicy, getPaymentHistory, getCancelOptions, getPaymentOptionsApplyPayments } from '../../state/actions/policyActions';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
 
@@ -18,30 +17,8 @@ export const getPropertyAppraisalLink = (county, questions) => {
 };
 
 export class Coverage extends Component {
-  async componentDidMount() {
-    const { getUIQuestions, getCancelOptions } = this.props;
-
-    getUIQuestions('propertyAppraisalCSR');
-    getCancelOptions();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { policy } = this.props;
-    const {
-      summaryLedger, getBillingOptionsForPolicy, getPaymentHistory, getPaymentOptionsApplyPayments
-    } = nextProps;
-    if (!policy.policyID && nextProps.policyID && (nextProps.policyID !== policy.policyID) && summaryLedger.currentPremium) {
-      const paymentOptions = {
-        effectiveDate: nextProps.policy.effectiveDate,
-        policyHolders: nextProps.policy.policyHolders,
-        additionalInterests: nextProps.policy.additionalInterests,
-        currentPremium: nextProps.summaryLedger.currentPremium,
-        fullyEarnedFees: nextProps.policy.rating.worksheet.fees.empTrustFee + nextProps.policy.rating.worksheet.fees.mgaPolicyFee
-      };
-      getBillingOptionsForPolicy(paymentOptions);
-      getPaymentHistory(nextProps.policy.policyNumber);
-      getPaymentOptionsApplyPayments();
-    }
+  componentDidMount() {
+    this.props.getUIQuestions('propertyAppraisalCSR');
   }
 
   render() {
@@ -362,22 +339,21 @@ export class Coverage extends Component {
 }
 
 Coverage.propTypes = {
-
+  paymentOptions: PropTypes.object,
+  policy: PropTypes.object,
+  policyID: PropTypes.string,
+  questions: PropTypes.object,
+  summaryLedger: PropTypes.object
 };
 
 const mapStateToProps = state => ({
   paymentOptions: state.policyState.billingOptions,
   policy: state.policyState.policy,
   policyID: state.policyState.policyID,
-  summaryLedger: state.policyState.summaryLedger,
-  questions: state.questions
+  questions: state.questions,
+  summaryLedger: state.policyState.summaryLedger
 });
 
 export default connect(mapStateToProps, {
-  getBillingOptionsForPolicy,
-  getCancelOptions,
   getUIQuestions,
-  getPolicy,
-  getPaymentHistory,
-  getPaymentOptionsApplyPayments
 })(Coverage);
