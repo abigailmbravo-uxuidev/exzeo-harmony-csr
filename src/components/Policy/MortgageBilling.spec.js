@@ -235,7 +235,7 @@ describe('Testing MortgageBilling component', () => {
       getUIQuestions() {},
       updatePolicy() {},
       getPolicy() {},
-      billingOptions: [],
+      billingOptions: {},
       change() {},
       reset() {},
       auth: {
