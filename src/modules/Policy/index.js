@@ -45,12 +45,23 @@ export class Policy extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { policy: prevPolicy } = prevProps;
-    const { policy, summaryLedger, getBillingOptionsForPolicy, getZipCodeSettings, getAgents, getAgency } = this.props;
+    const {
+      getAgents,
+      getAgency,
+      getBillingOptionsForPolicy,
+      getNotes,
+      getZipCodeSettings,
+      policy,
+      summaryLedger
+    } = this.props;
 
     if (prevPolicy !== policy && !!policy) {
       getZipCodeSettings(policy.companyCode, policy.state, policy.product, policy.property.physicalAddress.zip);
       getAgents(policy.companyCode, policy.state);
       getAgency(policy.companyCode, policy.state, policy.agencyCode);
+
+      const ids = [policy.policyNumber, policy.sourceNumber];
+      getNotes(ids.toString(), policy.policyNumber);
 
       if (summaryLedger) {
         const paymentOptions = {
