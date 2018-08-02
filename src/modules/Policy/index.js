@@ -33,11 +33,11 @@ export class Policy extends React.Component {
       getPaymentOptionsApplyPayments,
       match: { params: { policyNumber } },
     } = this.props;
-    getCancelOptions();
     getPolicy(policyNumber);
     getPaymentHistory(policyNumber);
     getPaymentOptionsApplyPayments();
-    getNotes(policyNumber, policyNumber)
+    getNotes(policyNumber, policyNumber);
+    getCancelOptions();
 
   }
 

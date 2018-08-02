@@ -6,7 +6,7 @@ import moment from 'moment-timezone';
 import Loader from '@exzeo/core-ui/lib/Loader';
 import { startWorkflow, batchCompleteTask } from '../../state/actions/cgActions';
 import { setAppState } from '../../state/actions/appStateActions';
-import { getPolicy, getPaymentHistory, getBillingOptionsForPolicy, getCancelOptions, getSummaryLedger } from '../../state/actions/policyActions';
+import { getPolicy } from '../../state/actions/policyActions';
 
 import RadioField from '../Form/inputs/RadioField';
 import DateField from '../Form/inputs/DateField';
@@ -66,33 +66,15 @@ export const handleFormSubmit = (data, dispatch, props) => {
 
 export class CancelPolicy extends React.Component {
   componentDidMount() {
-    const { appState, getCancelOptions, setAppState, getSummaryLedger, policy } = this.props;
+    const { appState, setAppState } = this.props;
     if (appState && appState.instanceId) {
       const workflowId = appState.instanceId;
       setAppState(appState.modelName, workflowId, { ...appState.data, isSubmitting: false });
     }
-    if (policy.policyID) {
-      getSummaryLedger(policy.policyNumber);
-    }
-    getCancelOptions();
   }
 
   componentWillReceiveProps(nextProps) {
     const { policy } = this.props;
-    if (!policy.policyID && nextProps.policy.policyID && (nextProps.policyID !== policy.policyID) && nextProps.summaryLedger.currentPremium) {
-      const { getPaymentHistory, getSummaryLedger, getBillingOptionsForPolicy } = nextProps;
-      const paymentOptions = {
-        effectiveDate: nextProps.policy.effectiveDate,
-        policyHolders: nextProps.policy.policyHolders,
-        additionalInterests: nextProps.policy.additionalInterests,
-        currentPremium: nextProps.summaryLedger.currentPremium,
-        fullyEarnedFees: nextProps.policy.rating.worksheet.fees.empTrustFee + nextProps.policy.rating.worksheet.fees.mgaPolicyFee
-      };
-      getBillingOptionsForPolicy(paymentOptions);
-      getPaymentHistory(nextProps.policy.policyNumber);
-      getSummaryLedger(nextProps.policy.policyNumber);
-    }
-
     if (this.props.fieldValues.cancelType !== nextProps.fieldValues.cancelType) {
       const now = convertDateToTimeZone(moment.utc().startOf('day'), nextProps.zipCodeSettings);
       const effectiveDate = convertDateToTimeZone(moment.utc(nextProps.summaryLedger.effectiveDate).startOf('day'), nextProps.zipCodeSettings);
@@ -146,9 +128,9 @@ export class CancelPolicy extends React.Component {
 
     return (
       <React.Fragment>
-        {appState.data.isSubmitting && <Loader />}
         <form id="CancelPolicy" onSubmit={handleSubmit(handleFormSubmit)}>
           <div className="route-content">
+            {(appState.data.isSubmitting || !cancelOptions.length) && <Loader />}
             <div className="scroll">
               <div className="form-group survey-wrapper cancel-policy" role="group">
 
@@ -221,7 +203,7 @@ export class CancelPolicy extends React.Component {
           </div>
           <div className="basic-footer btn-footer">
             <Footer />
-            {/* TODO: RESET button should reset form / CANCEL POLICY button should be disabled if form is clean/untouched */}
+
             <div className="btn-wrapper">
               <button tabIndex="0" disabled={pristine} aria-label="reset-btn form-cancel" type="button" className="btn btn-secondary" onClick={() => reset()}>Reset</button>
               <button tabIndex="0" disabled={pristine} aria-label="reset-btn form-cancel" type="submit" className="btn btn-primary">Cancel Policy</button>
@@ -254,14 +236,10 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  getCancelOptions,
-  getPaymentHistory,
-  getBillingOptionsForPolicy,
   startWorkflow,
   batchCompleteTask,
   setAppState,
-  getPolicy,
-  getSummaryLedger
+  getPolicy
 })(reduxForm({
   form: 'CancelPolicy',
   enableReinitialize: true
