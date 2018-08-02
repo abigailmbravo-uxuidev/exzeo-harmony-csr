@@ -18,7 +18,7 @@ export const Agency = props => (
     <main role="document">
       { !props.agency && <Loader />}
       <aside className="content-panel-left">
-        <AgencySideNav />
+        <AgencySideNav agencyCode={props.agency ? props.agency.agencyCode : null} />
       </aside>
       <div className="content-wrapper">
         {props.children}

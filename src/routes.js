@@ -16,7 +16,7 @@ import SearchAgency from './containers/SearchAgency';
 import SearchPolicy from './containers/SearchPolicy';
 import NotFoundPage from './containers/NotFound';
 import QuoteCoverage from './components/Quote/Coverage';
-import QuoteLanding from "./components/Quote/QuoteLanding";
+import QuoteLanding from './components/Quote/QuoteLanding';
 import QuoteUnderwriting from './components/Quote/Underwriting';
 import AdditionalInterests from './components/Quote/AdditionalInterests';
 import QuoteMailingAddressBilling from './components/Quote/MailingAddressBilling';
@@ -112,7 +112,7 @@ class Routes extends Component {
             <Switch>
               <Route exact path="/" render={props => <SearchPolicy auth={auth} {...props} />} />
               <Route exact path="/agency" render={props => <SearchAgency auth={auth} {...props} />} />
-              <Route       path="/policy/:policyNumber" render={props => <PolicyModule auth={auth} {...props} />} />
+              <Route path="/policy/:policyNumber" render={props => <PolicyModule auth={auth} {...props} />} />
               <Route exact path="/quote/new/:stateCode/:propertyId" render={props => <QuoteLanding auth={auth} newQuote {...props} />} />
               <Route exact path="/quote/:quoteId" render={props => <QuoteLanding auth={auth} {...props} />} />
               <Route exact path="/quote/:quoteId/coverage/:workflowId" render={props => <QuoteCoverage auth={auth} {...props} />} />
@@ -122,7 +122,7 @@ class Routes extends Component {
               <Route exact path="/quote/:quoteId/additionalInterests/:workflowId" render={props => <AdditionalInterests auth={auth} {...props} />} />
               <Route exact path="/quote/:quoteId/underwriting/:workflowId" render={props => <QuoteUnderwriting auth={auth} {...props} />} />
               <Route exact path="/quote/:quoteId/application/:workflowId" render={props => <QuoteApplication auth={auth} {...props} />} />
-              <Route exact path="/agency/staff" render={props => <AgencyStaff auth={auth} {...props} />} />
+              <Route exact path="/agency/:agencyCode/staff" render={props => <AgencyStaff auth={auth} {...props} />} />
               <Route exact path="/reports" render={props => <Reports auth={auth} {...props} />} />
               <Route exact path="/login" render={props => <LoginPage auth={auth} {...props} />} />
               <Route exact path="/accessDenied" render={props => <AccessDenied auth={auth} {...props} />} />
@@ -138,7 +138,7 @@ class Routes extends Component {
               <Route
                 exact
                 path="/callback"
-                render={props => <Callback />}
+                render={() => <Callback />}
               />
               <Route path="*" render={props => <NotFoundPage auth={auth} {...props} />} />
             </Switch>

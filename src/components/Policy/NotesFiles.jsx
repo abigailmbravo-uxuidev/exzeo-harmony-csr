@@ -8,8 +8,7 @@ import NoteList from '../Common/NoteList';
 import Footer from '../Common/Footer';
 
 export class NotesFiles extends Component {
-
-  componentDidMount () {
+  componentDidMount() {
     const { actions, params: { policyNumber } } = this.props;
 
     actions.serviceActions.getNotes(policyNumber, policyNumber);
