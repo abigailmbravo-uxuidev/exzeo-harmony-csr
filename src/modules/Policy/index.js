@@ -7,7 +7,7 @@ import { Helmet } from 'react-helmet';
 import Loader from '@exzeo/core-ui/lib/Loader';
 
 import { setAppState } from '../../state/actions/appStateActions';
-import { getZipcodeSettings } from '../../state/actions/serviceActions';
+import { getZipcodeSettings, getAgents, getAgency } from '../../state/actions/serviceActions';
 import { createTransaction, getBillingOptionsForPolicy, getPolicy, getPaymentOptionsApplyPayments, getPaymentHistory, getCancelOptions } from '../../state/actions/policyActions';
 import { startWorkflow, batchCompleteTask } from '../../state/actions/cgActions';
 
@@ -41,10 +41,12 @@ export class Policy extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { policy: prevPolicy } = prevProps;
-    const { policy, summaryLedger, getBillingOptionsForPolicy, getZipCodeSettings } = this.props;
+    const { policy, summaryLedger, getBillingOptionsForPolicy, getZipCodeSettings, getAgents, getAgency } = this.props;
 
     if (prevPolicy !== policy && !!policy) {
       getZipCodeSettings(policy.companyCode, policy.state, policy.product, policy.property.physicalAddress.zip);
+      getAgents(policy.companyCode, policy.state);
+      getAgency(policy.companyCode, policy.state, policy.agencyCode);
 
       if (summaryLedger) {
         const paymentOptions = {
@@ -159,7 +161,7 @@ export class Policy extends React.Component {
         <PolicyDetailHeader />
         <main role="document">
           <aside className="content-panel-left">
-            <PolicySideNav />
+            <PolicySideNav match={match}/>
           </aside>
 
           {initialized &&
@@ -220,14 +222,16 @@ const mapStateToProps = ({ appState, cg, policyState, service }) => ({
 });
 
 export default connect(mapStateToProps, {
-  setAppState,
-  createTransaction,
-  getZipCodeSettings: getZipcodeSettings,
-  getPolicy,
-  startWorkflow,
   batchCompleteTask,
+  createTransaction,
+  getAgents,
+  getAgency,
   getBillingOptionsForPolicy,
-  getPaymentOptionsApplyPayments,
+  getCancelOptions,
   getPaymentHistory,
-  getCancelOptions
+  getPaymentOptionsApplyPayments,
+  getPolicy,
+  getZipCodeSettings: getZipcodeSettings,
+  setAppState,
+  startWorkflow,
 })(Policy);
