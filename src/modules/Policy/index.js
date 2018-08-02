@@ -8,7 +8,7 @@ import Loader from '@exzeo/core-ui/lib/Loader';
 
 import { setAppState } from '../../state/actions/appStateActions';
 import { getZipcodeSettings, getAgents, getAgency, getNotes } from '../../state/actions/serviceActions';
-import { createTransaction, getBillingOptionsForPolicy, getPolicy, getPaymentOptionsApplyPayments, getPaymentHistory, getCancelOptions } from '../../state/actions/policyActions';
+import { createTransaction, getBillingOptionsForPolicy, getPolicy, getPaymentOptionsApplyPayments, getPaymentHistory, getCancelOptions, getEndorsementHistory } from '../../state/actions/policyActions';
 import { startWorkflow, batchCompleteTask } from '../../state/actions/cgActions';
 
 import EditEffectiveDataPopUp from '../../components/Policy/EditEffectiveDatePopup';
@@ -24,6 +24,7 @@ import Cancel from '../../components/Policy/Cancel';
 import Endorsements from '../../components/Policy/Endorsements';
 
 export class Policy extends React.Component {
+  // TODO: next step is to make an 'initialize' action that does all of this. Then this component will only need to know about one action.
   componentDidMount() {
     const {
       getCancelOptions,
@@ -38,6 +39,7 @@ export class Policy extends React.Component {
     getPaymentOptionsApplyPayments();
     getNotes(policyNumber, policyNumber);
     getCancelOptions();
+    getEndorsementHistory(policyNumber)
 
   }
 
@@ -203,21 +205,22 @@ Policy.propTypes = {
   summaryLedger: PropTypes.object,
   tasks: PropTypes.object,
   zipCodeSettings: PropTypes.object,
-  setAppState: PropTypes.func,
-  createTransaction: PropTypes.func,
-  getZipCodeSettings: PropTypes.func,
-  getNotes: PropTypes.func,
-  getPolicy: PropTypes.func,
-  startWorkflow: PropTypes.func,
   batchCompleteTask: PropTypes.func,
-  getPaymentOptionsApplyPayments: PropTypes.func,
+  createTransaction: PropTypes.func,
+  getCancelOptions: PropTypes.func,
+  getEndorsementHistory: PropTypes.func,
+  getNotes: PropTypes.func,
   getPaymentHistory: PropTypes.func,
-  getCancelOptions: PropTypes.func
+  getPaymentOptionsApplyPayments: PropTypes.func,
+  getPolicy: PropTypes.func,
+  getZipCodeSettings: PropTypes.func,
+  setAppState: PropTypes.func,
+  startWorkflow: PropTypes.func,
 };
 
 const mapStateToProps = ({ appState, cg, policyState, service }) => ({
   appState: appState,
-  initialized: !!(policyState.policy && policyState.summaryLedger),
+  initialized: !!(policyState.policy.policyID && policyState.summaryLedger._id),
   policy: policyState.policy,
   summaryLedger: policyState.summaryLedger,
   tasks: cg,
@@ -231,6 +234,7 @@ export default connect(mapStateToProps, {
   getAgency,
   getBillingOptionsForPolicy,
   getCancelOptions,
+  getEndorsementHistory,
   getNotes,
   getPaymentHistory,
   getPaymentOptionsApplyPayments,
