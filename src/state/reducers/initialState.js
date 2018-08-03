@@ -7,6 +7,7 @@ export default {
       submitting: false
     }
   },
+  ui: {},
   cg: {},
   error: {},
   newNote: {},

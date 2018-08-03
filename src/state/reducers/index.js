@@ -6,7 +6,7 @@ import authState from './authReducer';
 import appState from './appStateReducer';
 import error from './errorReducer';
 import service from './serviceReducer';
-import newNote from './newNoteReducer';
+import ui from './uiReducer';
 import policyState from './policyReducer';
 import questions from './questionsReducer';
 import quoteState from './quoteReducer';
@@ -16,7 +16,7 @@ const rootReducer = combineReducers({
   form: formReducer,
   policyState,
   service,
-  newNote,
+  ui,
   cg,
   authState,
   appState,

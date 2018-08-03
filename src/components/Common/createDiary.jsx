@@ -6,10 +6,11 @@ import { Field, Form, reduxForm } from 'redux-form';
 import Loader from '@exzeo/core-ui/lib/Loader';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
-import * as cgActions from '../../state/actions/cgActions';
-import * as newNoteActions from '../../state/actions/newNoteActions';
+import * as appStateActions from '../../state/actions/appStateActions';
 import * as serviceActions from '../../state/actions/serviceActions';
+import * as uiActions from '../../state/actions/uiActions';
 import * as errorActions from '../../state/actions/errorActions';
+import * as serviceRunner from '../../utilities/serviceRunner';
 
 const { Date, Select } = Inputs;
 const { validation } = lifecycle;
@@ -28,9 +29,30 @@ export class CreateDiary extends Component {
 
   minimzeButtonHandler = () => this.setState({ minimize: !this.state.minimize })
 
-  submitDiary = (data, dispatch, props) => {
-    // const { actions, user } = props;
-    console.log(data)
+  closeButtonHandler = () => this.props.actions.uiActions.toggleDiary({})
+
+  submitDiary = async (data, dispatch, props) => {
+    const { user, resourceType, resourceId } = props;
+
+    const createRequest = {
+      service: 'diaries',
+      method: 'POST',
+      path: 'create',
+      data: {
+        resource: { type: resourceType, id: resourceId },
+        entry: data,
+        user: { userId: user.userId, userName: user.userName }
+      }
+    };
+
+    try {
+      const response = await serviceRunner.callService(createRequest);
+      console.log(response)
+      this.closeButtonHandler();
+    } catch (error) {
+      console.log(error)
+      this.closeButtonHandler();
+    }
   }
 
   componentDidMount() {
@@ -88,11 +110,11 @@ export class CreateDiary extends Component {
 
   render() {
     return (
-      <div className={this.state.minimize ? 'new-note-file minimize' : 'new-note-file'} >
+      <div className={this.state.minimize ? 'new-note-file minimize' : 'new-note-file new-diary-file'} >
         <div className="title-bar">
-          <div className="title title-minimze-button" onClick={() => this.minimzeButtonHandler(this.props)}>Diary</div>
+          <div className="title title-minimze-button" onClick={() => this.minimzeButtonHandler()}>Diary</div>
           <div className="controls note-file-header-button-group">
-            <button className="btn btn-icon minimize-button" onClick={() => this.minimzeButtonHandler(this.props)}><i className="fa fa-window-minimize" aria-hidden="true" /></button>
+            <button className="btn btn-icon minimize-button" onClick={() => this.minimzeButtonHandler()}><i className="fa fa-window-minimize" aria-hidden="true" /></button>
             <button className="btn btn-icon header-cancel-button" onClick={this.closeButtonHandler} type="submit"><i className="fa fa-times-circle" aria-hidden="true" /></button>
           </div>
         </div>
@@ -101,7 +123,7 @@ export class CreateDiary extends Component {
           <Form id="CreateDiary" onSubmit={this.props.handleSubmit(this.submitDiary)} noValidate>
             <div className="content">
               <Field
-                name="diaryType"
+                name="type"
                 label="Type"
                 component={Select}
                 answers={this.diaryTypes}
@@ -155,9 +177,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    cgActions: bindActionCreators(cgActions, dispatch),
-    newNoteActions: bindActionCreators(newNoteActions, dispatch),
+    appStateActions: bindActionCreators(appStateActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
+    uiActions: bindActionCreators(uiActions, dispatch),
     errorActions: bindActionCreators(errorActions, dispatch)
   }
 });

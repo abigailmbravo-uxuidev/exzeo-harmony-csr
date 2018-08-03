@@ -81,6 +81,7 @@ class Routes extends Component {
   };
 
   render() {
+    const { diary, note } = this.props.ui;
     return (
       <div>
         <Modal
@@ -97,19 +98,23 @@ class Routes extends Component {
             <button className="btn-primary" onClick={this.clearError}>close</button>
           </div>
         </Modal>
-        <CreateDiary />
-        {this.props.newNote && this.props.newNote.documentId &&
+        {diary && diary.resourceType &&
+          <CreateDiary
+            resourceType={diary.resourceType}
+            resourceId={diary.id}
+          />
+        }
+        {note && note.documentId &&
           <NoteUploader
-            noteType={this.props.newNote.noteType}
-            documentId={this.props.newNote.documentId}
-            sourceId={this.props.newNote.sourceNumber}
+            noteType={note.noteType}
+            documentId={note.documentId}
+            sourceId={note.sourceNumber}
           />
         }
         <Router
           getUserConfirmation={(message, callback) => {
             ReactDOM.render(
-(
-  <ConfirmPopup {...this.props} message={message} setBackStep={this.setBackStep} callback={callback} />
+(<ConfirmPopup {...this.props} message={message} setBackStep={this.setBackStep} callback={callback} />
             ), document.getElementById('modal')
 );
           }}
@@ -164,7 +169,7 @@ const mapStateToProps = state => ({
   error: state.error,
   appState: state.appState,
   authState: state.authState,
-  newNote: state.newNote
+  ui: state.ui
 });
 
 const mapDispatchToProps = dispatch => ({

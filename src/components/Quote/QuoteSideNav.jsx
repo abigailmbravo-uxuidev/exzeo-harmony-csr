@@ -6,7 +6,7 @@ import { Redirect } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import * as appStateActions from '../../state/actions/appStateActions';
 import UWconditions from '../Common/UWconditions';
-import * as newNoteActions from '../../state/actions/newNoteActions';
+import * as uiActions from '../../state/actions/uiActions';
 import * as cgActions from '../../state/actions/cgActions';
 
 // Example of a possible schema
@@ -65,7 +65,7 @@ const csrLinks = ({quoteId, workflowId}) => {
 };
 
 export const NewNoteFileUploaderPopup = (props) => {
-  props.actions.newNoteActions.toggleNote({ noteType: 'Quote Note', documentId: props.quoteData.quoteNumber })
+  props.actions.uiActions.toggleNote({ noteType: 'Quote Note', documentId: props.quoteData.quoteNumber })
 };
 
 export const UWconditionsPopup = (props) => {
@@ -135,7 +135,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: {
     cgActions: bindActionCreators(cgActions, dispatch),
-    newNoteActions: bindActionCreators(newNoteActions, dispatch),
+    uiActions: bindActionCreators(uiActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }
 });

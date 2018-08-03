@@ -36,7 +36,7 @@ describe('Testing QuoteSideNav component', () => {
         cgActions: {
           batchCompleteTask() { return Promise.resolve(); }
         },
-        newNoteActions: {
+        appStateActions: {
           toggleNote() {}
         },
         appStateActions: {

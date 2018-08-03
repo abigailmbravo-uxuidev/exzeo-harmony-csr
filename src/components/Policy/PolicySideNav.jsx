@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import * as newNoteActions from '../../state/actions/newNoteActions';
+import * as uiActions from '../../state/actions/uiActions';
 import * as serviceActions from '../../state/actions/serviceActions';
 import * as cgActions from '../../state/actions/cgActions';
 import * as errorActions from '../../state/actions/errorActions';
@@ -63,9 +63,17 @@ export class SideNav extends React.Component {
     showDocsForm: false
   };
 
+  newDiary = () => {
+    const { actions, policy } = this.props;
+    actions.uiActions.toggleDiary({
+      resourceType: 'Policy',
+      id: policy.policyNumber
+    });
+  };
+
   newNote = () => {
     const { actions, policy } = this.props;
-    actions.newNoteActions.toggleNote({
+    actions.uiActions.toggleNote({
       noteType: 'Policy Note',
       documentId: policy.policyNumber,
       sourceNumber: policy.sourceNumber
@@ -98,10 +106,13 @@ export class SideNav extends React.Component {
           ))}
           <hr className="nav-division" />
           <li>
-            <button aria-label="open-btn form-newNote" data-test="newNote" className="btn btn-primary btn-sm btn-block" onClick={() => this.newNote(this.props)}><i className="fa fa-plus" />Note / File</button>
+            <button aria-label="open-btn form-newDiary" data-test="newDiary" className="btn btn-primary btn-sm btn-block" onClick={() => this.newDiary()}><i className="fa fa-plus" />Diary</button>
           </li>
           <li>
-            <button aria-label="open-btn" className="btn btn-primary btn-sm btn-block" onClick={() => this.generateDoc(this.props)}><i className="fa fa-plus" />Document</button>
+            <button aria-label="open-btn form-newNote" data-test="newNote" className="btn btn-primary btn-sm btn-block" onClick={() => this.newNote()}><i className="fa fa-plus" />Note / File</button>
+          </li>
+          <li>
+            <button aria-label="open-btn" className="btn btn-primary btn-sm btn-block" onClick={() => this.generateDoc()}><i className="fa fa-plus" />Document</button>
           </li>
           <li className={this.state.showDocsForm ? 'document-panel show' : 'document-panel hidden'}>
             {this.state.showDocsForm &&
@@ -135,7 +146,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: {
     cgActions: bindActionCreators(cgActions, dispatch),
-    newNoteActions: bindActionCreators(newNoteActions, dispatch),
+    uiActions: bindActionCreators(uiActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     errorActions: bindActionCreators(errorActions, dispatch)
   }
