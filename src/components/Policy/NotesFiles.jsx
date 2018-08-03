@@ -2,26 +2,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as serviceActions from '../../state/actions/serviceActions';
-import PolicyBaseConnect from '../../containers/Policy';
+import Loader from '@exzeo/core-ui/lib/Loader';
 import * as errorActions from '../../state/actions/errorActions';
 import NoteList from '../Common/NoteList';
 import Footer from '../Common/Footer';
 
 export class NotesFiles extends Component {
-
-  componentDidMount () {
-    const { actions, policy } = this.props;
-    if (policy && policy.policyNumber) {
-      const ids = [policy.policyNumber, policy.sourceNumber];
-      actions.serviceActions.getNotes(ids.toString(), policy.policyNumber);
-    }
-  }
-
   render() {
+    const { notes } = this.props;
     return (
-      <PolicyBaseConnect match={this.props.match}>
+      <React.Fragment>
         <div className="route-content">
+
+          {(!notes) && <Loader />}
+
           <div className="scroll">
             <NoteList {...this.props} />
           </div>
@@ -29,24 +23,28 @@ export class NotesFiles extends Component {
         <div className="basic-footer">
           <Footer />
         </div>
-      </PolicyBaseConnect>
+      </React.Fragment>
     );
   }
 }
 
 NotesFiles.propTypes = {
-  quoteData: PropTypes.shape()
+  notes: PropTypes.array,
+  error: PropTypes.object,
+  actions: PropTypes.shape({
+    errorActions: PropTypes.shape({
+      setAppError: PropTypes.func.isRequired
+    })
+  })
 };
 
 const mapStateToProps = state => ({
   notes: state.service.notes,
-  policy: state.policyState.policy || {},
   error: state.error
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    serviceActions: bindActionCreators(serviceActions, dispatch),
     errorActions: bindActionCreators(errorActions, dispatch)
   }
 });
