@@ -66,7 +66,7 @@ describe('Testing NotesFiles component', () => {
     };
     const store = mockStore(initialState);
     const props = {
-      match: { params: {} },
+      params: {},
       handleSubmit() { },
       actions: {
         serviceActions: { getNotes: () => null }

@@ -120,7 +120,9 @@ export const selectBillTo = (props) => {
 };
 
 export const handleFormSubmit = (data, dispatch, props) => {
-  const { appState, actions, billingOptions, fieldValues, match, quoteData } = props;
+  const {
+    appState, actions, billingOptions, fieldValues, match, quoteData
+  } = props;
   const workflowId = match.params.workflowId;
 
   actions.appStateActions.setAppState(MODEL_NAME, workflowId, { ...appState.data, submitting: true });
@@ -138,23 +140,22 @@ export const handleFormSubmit = (data, dispatch, props) => {
   ];
 
   actions.cgActions.batchCompleteTask(MODEL_NAME, workflowId, steps)
-      .then(() => {
-        actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
+    .then(() => {
+      actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
 
-        if (_.isEqual(data.address1, _.get(quoteData, 'property.physicalAddress.address1')) &&
+      if (_.isEqual(data.address1, _.get(quoteData, 'property.physicalAddress.address1')) &&
           _.isEqual(data.city, _.get(quoteData, 'property.physicalAddress.city')) &&
           _.isEqual(data.state, _.get(quoteData, 'property.physicalAddress.state')) &&
           _.isEqual(data.zip, _.get(quoteData, 'property.physicalAddress.zip'))) {
-
-          dispatch(change('MailingAddressBilling', 'sameAsProperty', true));
-
-        } else {
-          dispatch(change('MailingAddressBilling', 'sameAsProperty', false));
-        }
-        actions.appStateActions.setAppState(MODEL_NAME, workflowId,
-          { ...appState.data, submitting: false, selectedLink: 'mailing' }
-          );
-      });
+        dispatch(change('MailingAddressBilling', 'sameAsProperty', true));
+      } else {
+        dispatch(change('MailingAddressBilling', 'sameAsProperty', false));
+      }
+      actions.appStateActions.setAppState(
+        MODEL_NAME, workflowId,
+        { ...appState.data, submitting: false, selectedLink: 'mailing' }
+      );
+    });
 };
 
 export const clearForm = (props) => {
@@ -187,13 +188,12 @@ const setPropertyToggle = (props) => {
 };
 
 export class MailingAddressBilling extends Component {
-
   componentDidMount() {
     const { actions, appState, match } = this.props;
     const workflowId = match.params.workflowId;
-
     if (workflowId) {
-      actions.appStateActions.setAppState(MODEL_NAME, workflowId,
+      actions.appStateActions.setAppState(
+        MODEL_NAME, workflowId,
         {
           ...appState.data,
           submitting: true
@@ -223,25 +223,29 @@ export class MailingAddressBilling extends Component {
               fees: {
                 empTrustFee: quoteData.rating.worksheet.fees.empTrustFee,
                 mgaPolicyFee: quoteData.rating.worksheet.fees.mgaPolicyFee
-              },
+              }
             };
 
             actions.serviceActions.getBillingOptions(paymentOptions);
           }
         });
 
-      actions.cgActions.batchCompleteTask(MODEL_NAME, workflowId, steps);
-      actions.appStateActions.setAppState(MODEL_NAME, workflowId,
-        {
-          ...appState.data,
-          selectedLink: 'mailing'
-        }
-      );
+      actions.cgActions.batchCompleteTask(MODEL_NAME, workflowId, steps).then(() => {
+        actions.appStateActions.setAppState(
+          MODEL_NAME, workflowId,
+          {
+            ...appState.data,
+            selectedLink: 'mailing'
+          }
+        );
+      });
     }
   }
 
   render() {
-    const { handleSubmit, billingOptions, pristine, quoteData, dirty, match } = this.props;
+    const {
+      handleSubmit, billingOptions, pristine, quoteData, dirty, match
+    } = this.props;
 
     if (!quoteData.rating) {
       return (
@@ -250,7 +254,7 @@ export class MailingAddressBilling extends Component {
             <div className="messages">
               <div className="message error">
                 <i className="fa fa-exclamation-circle" aria-hidden="true" /> &nbsp;Mailing / Billing cannot be accessed until Premium calculated.
-            </div>
+              </div>
             </div>
           </div>
         </QuoteBaseConnect>
@@ -266,7 +270,10 @@ export class MailingAddressBilling extends Component {
                 <h3>Mailing Address</h3>
                 <section className="mailing-address-details">
                   <CheckField
-                    styleName={'segmented-switch'} label={'Is the mailing address the same as the property address?'} name={'sameAsProperty'} onChange={() => fillMailForm(this.props)}
+                    styleName="segmented-switch"
+                    label="Is the mailing address the same as the property address?"
+                    name="sameAsProperty"
+                    onChange={() => fillMailForm(this.props)}
                     answers={[
                       {
                         answer: false,
@@ -277,20 +284,24 @@ export class MailingAddressBilling extends Component {
                       }
                     ]}
                   />
-                  <TextField validations={['required']} label={'Address 1'} styleName={'address-1'} name={'address1'} onChange={() => setPropertyToggle(this.props)} />
-                  <TextField label={'Address 2'} styleName={'address-2'} name={'address2'} onChange={() => setPropertyToggle(this.props)} />
+                  <TextField validations={['required']} label="Address 1" styleName="address-1" name="address1" onChange={() => setPropertyToggle(this.props)} />
+                  <TextField label="Address 2" styleName="address-2" name="address2" onChange={() => setPropertyToggle(this.props)} />
                   <div className="flex-parent flex-form">
                     <div className="flex-child city">
-                      <TextField validations={['required']} label={'City'} styleName={''} name={'city'} onChange={() => setPropertyToggle(this.props)} />
+                      <TextField validations={['required']} label="City" styleName="" name="city" onChange={() => setPropertyToggle(this.props)} />
                     </div>
                     <div className="flex-child state">
                       <TextField
                         onChange={() => setPropertyToggle(this.props)}
-                        name="state" component="select" styleName={''} label="State" validations={['required']}
+                        name="state"
+                        component="select"
+                        styleName=""
+                        label="State"
+                        validations={['required']}
                       />
                     </div>
                     <div className="flex-child zip">
-                      <TextField validations={['required']} label={'Zip'} styleName={''} name={'zip'} onChange={() => setPropertyToggle(this.props)} />
+                      <TextField validations={['required']} label="Zip" styleName="" name="zip" onChange={() => setPropertyToggle(this.props)} />
                     </div>
                   </div>
                 </section>
@@ -309,8 +320,8 @@ export class MailingAddressBilling extends Component {
                       <div className="flex-child bill-plan">
                         <RadioFieldBilling
                           validations={['required']}
-                          name={'billPlan'}
-                          label={'Bill Plan'}
+                          name="billPlan"
+                          label="Bill Plan"
                           validate={[value => (value ? undefined : 'Field Required')]}
                           segmented
                           answers={_.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]) ?
@@ -337,14 +348,13 @@ export class MailingAddressBilling extends Component {
         <div className="basic-footer btn-footer">
           <Footer />
           <div className="btn-wrapper">
-            <button tabIndex={'0'} aria-label="reset-btn form-mailingBilling" className="btn btn-secondary" type="button" onClick={() => clearForm(this.props)}>Reset</button>
-            <button tabIndex={'0'} aria-label="submit-btn form-mailingBilling" className="btn btn-primary" type="submit" form="MailingAddressBilling" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData) || !this.props.fieldValues.billToId}>Update</button>
+            <button tabIndex="0" aria-label="reset-btn form-mailingBilling" className="btn btn-secondary" type="button" onClick={() => clearForm(this.props)}>Reset</button>
+            <button tabIndex="0" aria-label="submit-btn form-mailingBilling" className="btn btn-primary" type="submit" form="MailingAddressBilling" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData) || !this.props.fieldValues.billToId}>Update</button>
           </div>
         </div>
       </QuoteBaseConnect>
     );
   }
-
 }
 MailingAddressBilling.contextTypes = {
   router: PropTypes.object

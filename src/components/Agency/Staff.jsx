@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
+import Loader from '@exzeo/core-ui/lib/Loader';
 import * as serviceActions from '../../state/actions/serviceActions';
 import AgencyConnect from '../../containers/Agency';
 import Footer from '../Common/Footer';
@@ -15,19 +16,15 @@ export const handleInitialize = state => ({
 
 export class Staff extends Component {
   componentDidMount() {
-    const isNewTab = localStorage.getItem('isNewTab') === 'true';
-    if (isNewTab) {
-      localStorage.setItem('isNewTab', false);
-      const agencyCode = localStorage.getItem('agencyCode');
-      this.props.actions.serviceActions.getAgency('TTIC', 'FL', agencyCode);
-      this.props.actions.serviceActions.getAgentsByAgency('TTIC', 'FL', agencyCode);
-    }
+    const { match: { params: { agencyCode } } } = this.props;
+    this.props.actions.serviceActions.getAgency('TTIC', 'FL', agencyCode);
+    this.props.actions.serviceActions.getAgentsByAgency('TTIC', 'FL', agencyCode);
   }
 
   render() {
     const { agency, agents } = this.props;
-    if (!agency) {
-      return (<AgencyConnect />);
+    if (!agency || !agency.agencyCode) {
+      return (<Loader />);
     }
     return (<AgencyConnect>
       <div className="route-content">
@@ -138,35 +135,35 @@ export class Staff extends Component {
                       </div>
                       <div className="additional-contacts">
                         <ul>
-                            <li>
-                              <div className="contact-methods">
-                                {
+                          <li>
+                            <div className="contact-methods">
+                              {
                                   agent.primaryPhoneNumber ? <p className="phone">
                                     <i className="fa fa-phone-square" />
                                     <a href={`tel:${agent.primaryPhoneNumber}`}>{normalizePhone(agent.primaryPhoneNumber)}</a>
                                   </p> : null
                                 }
-                                {
+                              {
                                   agent.secondaryPhoneNumber ? <p className="phone">
                                     <small>2<sup>ND</sup><i className="fa fa-phone" /></small>
                                     <a href={`tel:${agent.secondaryPhoneNumber}`}>{normalizePhone(agent.secondaryPhoneNumber)}</a>
                                   </p> : null
                                 }
-                                {
+                              {
                                   agent.faxNumber ? <p className="fax">
                                     <i className="fa fa-fax" />
                                     <a href={`tel:${agent.faxNumber}`}>{normalizePhone(agent.faxNumber)}</a>
                                   </p> : null
                                 }
-                                {
+                              {
                                   agent.emailAddress ? <p>
                                     <i className="fa fa-envelope" />
                                     <a href={`mailto:${agent.emailAddress}`}>{agent.emailAddress}</a>
                                   </p> : null
                                 }
-                              </div>
-                            </li>
-                          </ul>
+                            </div>
+                          </li>
+                        </ul>
                       </div>
                     </div>
                   </div>

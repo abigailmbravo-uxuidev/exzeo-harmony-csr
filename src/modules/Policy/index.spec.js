@@ -2,7 +2,7 @@ import React from 'react';
 import configureStore from 'redux-mock-store';
 import { shallow } from 'enzyme';
 
-import { Policy, changeEffectiveDate, showEffectiveDatePopUp, hideEffectiveDatePopUp, reinstatePolicySubmit } from './Policy';
+import { Policy } from './index';
 
 const middlewares = [];
 const mockStore = configureStore([]);
@@ -16,6 +16,7 @@ describe('Testing Policy component', () => {
       },
       policyState: {
         policy: {
+          rating: { worksheet: { fees: {} } },
           policyNumber: '1234',
           property: {
             physicalAddress: {}
@@ -45,24 +46,33 @@ describe('Testing Policy component', () => {
     };
     const store = mockStore(initialState);
     const props = {
-      getPolicy() {},
-      startWorkflow() { return Promise.resolve({ payload: [{ workflowData: { effectiveDateChangeModel: { data: {} }, endorsePolicyModelCalculate: { data: {} } } }] }); },
+      match: { params: {} },
       batchCompleteTask() { return Promise.resolve(); },
-      setAppState() {},
       createTransaction() { return Promise.resolve(); },
-      getZipcodeSettings() { return Promise.resolve(); },
+      getAgents() {},
+      getAgency() {},
+      getBillingOptionsForPolicy() {},
+      getCancelOptions() {},
+      getEndorsementHistory() {},
+      getNotes() {},
+      getPaymentHistory() {},
+      getPaymentOptionsApplyPayments() {},
+      getPolicy() {},
       getSummaryLedger() { return Promise.resolve(); },
-      dispatch: store.dispatch,
-      zipcodeSettings: initialState.service.getZipcodeSettings,
+      getZipCodeSettings() { return Promise.resolve(); },
+      setAppState() {},
+      startWorkflow() { return Promise.resolve({ payload: [{ workflowData: { effectiveDateChangeModel: { data: {} }, endorsePolicyModelCalculate: { data: {} } } }] }); },
       appState: initialState.appState,
-      policyState: initialState.policyState,
+      dispatch: store.dispatch,
       policy: initialState.policyState.policy,
+      policyState: initialState.policyState,
       summaryLedger: initialState.policyState.summaryLedger,
-      tasks: initialState.cg
+      tasks: initialState.cg,
+      zipCodeSettings: initialState.service.getZipcodeSettings
     };
 
     const wrapper = shallow(<Policy store={store} {...props} />);
     expect(wrapper);
-    wrapper.instance().componentWillReceiveProps();
+    wrapper.instance().componentDidUpdate({ policy: {} });
   });
 });

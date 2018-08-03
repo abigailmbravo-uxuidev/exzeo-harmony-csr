@@ -6,6 +6,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
+import Loader from '@exzeo/core-ui/lib/Loader';
 import { getAnswers } from '../../utilities/forms';
 import { getMortgageeOrderAnswers } from '../../utilities/additionalInterests';
 import {
@@ -17,14 +18,10 @@ import {
 import {
   getPolicy,
   addTransaction,
-  getPaymentHistory,
-  getBillingOptionsForPolicy,
   createTransaction,
-  getPaymentOptionsApplyPayments
 } from '../../state/actions/policyActions';
 import { getUIQuestions } from '../../state/actions/questionsActions';
 
-import PolicyConnect from '../../containers/Policy';
 import BillingModal from '../../components/Common/BillingEditModal';
 import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';
@@ -61,24 +58,6 @@ export class MortgageBilling extends Component {
   componentDidMount() {
     this.props.getUIQuestions('additionalInterestsCSR');
   }
-
-  componentWillReceiveProps = (nextProps) => {
-    // TODO this is probably not needed, but leaving here for now until we solidify the pattern
-    const { policy } = this.props;
-    if (nextProps.policyID && (nextProps.policyID !== policy.policyID)) {
-      const { getPaymentHistory, getPaymentOptionsApplyPayments, getBillingOptionsForPolicy } = nextProps;
-      const paymentOptions = {
-        effectiveDate: nextProps.policy.effectiveDate,
-        policyHolders: nextProps.policy.policyHolders,
-        additionalInterests: nextProps.policy.additionalInterests,
-        currentPremium: nextProps.summaryLedger.currentPremium,
-        fullyEarnedFees: nextProps.policy.rating.worksheet.fees.empTrustFee + nextProps.policy.rating.worksheet.fees.mgaPolicyFee
-      };
-      getBillingOptionsForPolicy(paymentOptions);
-      getPaymentHistory(nextProps.policy.policyNumber);
-      getPaymentOptionsApplyPayments();
-    }
-  };
 
   handleAISubmit = async (additionalInterests, aiData) => {
     const { getPolicy, createTransaction, policy } = this.props;
@@ -277,7 +256,6 @@ export class MortgageBilling extends Component {
       cashDescriptionOptions,
       cashTypeAnswers,
       handleSubmit,
-      match,
       paymentHistory,
       pristine,
       policy,
@@ -293,8 +271,13 @@ export class MortgageBilling extends Component {
     const cashDescriptionAnswers = cashDescriptionOptions[cashTypeValue] || [];
 
     return (
-      <PolicyConnect match={match}>
+      <React.Fragment>
         <div className="route-content">
+
+          {(!(billingOptions && billingOptions.options)) &&
+            <Loader />
+          }
+
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
               {/* TODO: This section needs to be hidden per role */}
@@ -454,19 +437,30 @@ export class MortgageBilling extends Component {
         <div className="basic-footer">
           <Footer />
         </div>
-      </PolicyConnect>
+      </React.Fragment>
     );
   }
 }
 
 MortgageBilling.propTypes = {
-  policy: PropTypes.shape().isRequired
+  cashTypeValue: PropTypes.string,
+  billingOptions: PropTypes.object,
+  initialValues: PropTypes.object,
+  summaryLedger: PropTypes.object,
+  policyID: PropTypes.string,
+  paymentHistory: PropTypes.array,
+  service: PropTypes.object,
+  cashTypeAnswers: PropTypes.array,
+  cashDescriptionAnswers: PropTypes.array,
+  sortedAdditionalInterests: PropTypes.array,
+  questions: PropTypes.object,
+  tasks: PropTypes.object,
+  policy: PropTypes.object.isRequired,
 };
 
 const selector = formValueSelector('MortgageBilling');
 const mapStateToProps = state => ({
   cashTypeValue: selector(state, 'cashType'),
-  auth: state.authState,
   billingOptions: state.policyState.billingOptions,
   initialValues: handleInitialize(state),
   summaryLedger: state.policyState.summaryLedger,
@@ -482,9 +476,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  getPaymentHistory,
-  getPaymentOptionsApplyPayments,
-  getBillingOptionsForPolicy,
   addTransaction,
   createTransaction,
   getUIQuestions,

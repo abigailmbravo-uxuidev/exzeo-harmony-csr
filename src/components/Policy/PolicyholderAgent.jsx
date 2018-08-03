@@ -1,50 +1,34 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import PolicyConnect from '../../containers/Policy';
+import Loader from '@exzeo/core-ui/lib/Loader';
 import normalizePhone from '../Form/normalizePhone';
-import * as appStateActions from '../../state/actions/appStateActions';
-import * as serviceActions from '../../state/actions/serviceActions';
 import Footer from '../Common/Footer';
 
-// turn this into class and use the service runner
 export class PolicyholderAgent extends Component {
-  componentDidMount() {
-    const policy = this.props.policy;
-    const actions = this.props.actions.serviceActions;
-
-    if (policy && policy.companyCode && policy.state && policy.agencyCode) {
-      actions.getAgents(policy.companyCode, policy.state);
-      actions.getAgency(policy.companyCode, policy.state, policy.agencyCode);
-    }
-  }
-
   render() {
     const {
       agency,
       agents,
-      match,
       policy,
       policy: {
         policyHolders,
         policyHolderMailingAddress
       }
     } = this.props;
-    let selectedAgent;
 
-    if (agents && agents.length > 0 && policy && policy.agentCode) {
-      selectedAgent = agents.find(a => a.agentCode === policy.agentCode);
-    }
+    if(!(agents && agents.length && agency)) return <Loader />;
+
+    let selectedAgent = agents.find(a => a.agentCode === policy.agentCode);
 
     return (
-      <PolicyConnect match={match}>
+      <React.Fragment>
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
               <section className="policyholder-cards">
                 <h3>Policyholder</h3>
-                { policyHolders && policyHolders.map((policyHolder, index) => (<div key={`ph${index}`} className="primary-policyholder contact card">
+                { policyHolders && policyHolders.map((policyHolder, index) => (<div key={index} className="primary-policyholder contact card">
                   <div className="contact-title"><i className="fa fa-address-card-o" /><label>Policyholder {index + 1}</label></div>
                   <div className="contact-details">
                     <h4>{`${policyHolder.firstName} ${policyHolder.lastName}`}</h4>
@@ -64,7 +48,7 @@ ${policyHolderMailingAddress.city}, ${policyHolderMailingAddress.state} ${policy
                             </p> }
                             <p className="email">
                               <i className="fa fa-envelope" />
-                              <a href={`mailto: ${policyHolder.emailAddress}?subject=${this.props.policy.policyNumber}%20${policyHolders[0].firstName}%20${policyHolders[0].lastName}`}>{policyHolder.emailAddress}</a>
+                              <a href={`mailto: ${policyHolder.emailAddress}?subject=${policy.policyNumber}%20${policyHolders[0].firstName}%20${policyHolders[0].lastName}`}>{policyHolder.emailAddress}</a>
                             </p>
                           </div>
                         </li>
@@ -107,12 +91,12 @@ ${policyHolderMailingAddress.city}, ${policyHolderMailingAddress.state} ${policy
                             { agency.contactEmailAddress ?
                               <p>
                                 <i className="fa fa-envelope" />
-                                <a href={`mailto:${agency.contactEmailAddress}?subject=${this.props.policy.policyNumber}%20${policyHolders[0].firstName}%20${policyHolders[0].lastName}`}>{agency.contactEmailAddress}</a>
+                                <a href={`mailto:${agency.contactEmailAddress}?subject=${policy.policyNumber}%20${policyHolders[0].firstName}%20${policyHolders[0].lastName}`}>{agency.contactEmailAddress}</a>
                               </p> : null }
                             { agency.customerServiceEmailAddress && <p className="phone csr-phone">
                               <span className="contact-divider">|</span>
                               <small>CSR <i className="fa fa-envelope" /></small>
-                              <a href={`mailto:${agency.customerServiceEmailAddress}?subject=${this.props.policy.policyNumber}%20${policyHolders[0].firstName}%20${policyHolders[0].lastName}`}>{agency.customerServiceEmailAddress}</a>
+                              <a href={`mailto:${agency.customerServiceEmailAddress}?subject=${policy.policyNumber}%20${policyHolders[0].firstName}%20${policyHolders[0].lastName}`}>{agency.customerServiceEmailAddress}</a>
                             </p> }
                           </div>
                         </li>
@@ -139,7 +123,7 @@ ${policyHolderMailingAddress.city}, ${policyHolderMailingAddress.state} ${policy
                               </p> }
                             { selectedAgent.emailAddress && <p className="email">
                               <i className="fa fa-envelope" />
-                              <a href={`mailto:${selectedAgent.emailAddress}?subject=${this.props.policy.policyNumber}%20${policyHolders[0].firstName}%20${policyHolders[0].lastName}`}>{selectedAgent.emailAddress}</a>
+                              <a href={`mailto:${selectedAgent.emailAddress}?subject=${policy.policyNumber}%20${policyHolders[0].firstName}%20${policyHolders[0].lastName}`}>{selectedAgent.emailAddress}</a>
                               </p> }
                           </div>
                         </li>
@@ -154,27 +138,25 @@ ${policyHolderMailingAddress.city}, ${policyHolderMailingAddress.state} ${policy
         <div className="basic-footer">
           <Footer />
         </div>
-      </PolicyConnect>
+      </React.Fragment>
     );
   }
 }
 
 PolicyholderAgent.propTypes = {
-  policy: PropTypes.shape()
+  policy: PropTypes.object,
+  agents: PropTypes.array,
+  agency: PropTypes.object
+};
+
+PolicyholderAgent.defaultProps = {
+  policy: {}
 };
 
 const mapStateToProps = state => ({
   agents: state.service.agents,
   agency: state.service.agency,
-  policy: state.policyState.policy || {}
+  policy: state.policyState.policy
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    appStateActions: bindActionCreators(appStateActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch)
-  }
-});
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(PolicyholderAgent);
+export default connect(mapStateToProps)(PolicyholderAgent);
