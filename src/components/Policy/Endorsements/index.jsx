@@ -11,6 +11,7 @@ import endorsementUtils from '../../../utilities/endorsementModel';
 import { getUIQuestions } from '../../../state/actions/questionsActions';
 import { getNewRate, submitEndorsementForm } from '../../../state/actions/policyActions';
 import { getUnderwritingQuestions } from '../../../state/actions/serviceActions';
+import { setAppError } from '../../../state/actions/errorActions';
 // Component Sections
 import Footer from '../../Common/Footer';
 import Coverage from './Coverage';
@@ -112,14 +113,19 @@ export class Endorsements extends React.Component {
   };
 
   handleEndorsementFormSubmit = async (data, dispatch, props) => {
-    const { isCalculated, anyTouched } = this.state;
-    if (isCalculated && !anyTouched) {
-      await props.submitEndorsementForm(data, props);
-      this.setState({ isCalculated: false }, this.clearCalculate);
-    } else {
-      const rate = await props.getNewRate(data, props);
-      this.setCalculate(rate);
+    const { isCalculated, anyTouched, setAppError } = this.state;
+    try {
+      if (isCalculated && !anyTouched) {
+        await props.submitEndorsementForm(data, props);
+        this.setState({ isCalculated: false }, this.clearCalculate);
+      } else {
+        const rate = await props.getNewRate(data, props);
+        this.setCalculate(rate);
+      }
+    } catch (error) {
+      setAppError(error);
     }
+
   };
 
   clearCalculate = () => {
@@ -333,6 +339,7 @@ Endorsements.propTypes = {
   getNewRate: PropTypes.func,
   getUIQuestions: PropTypes.func,
   getUnderwritingQuestions: PropTypes.func,
+  setAppError: PropTypes.func,
   submitEndorsementForm: PropTypes.func,
 };
 
@@ -349,6 +356,7 @@ const mapStateToProps = state => ({
   summaryLedger: state.policyState.summaryLedger,
   underwritingQuestions: state.service.underwritingQuestions,
   userProfile: state.authState.userProfile || defaultObj,
+  zipcodeSettings: state.service.getZipcodeSettings
 });
 
 export default connect(mapStateToProps, {
@@ -356,6 +364,7 @@ export default connect(mapStateToProps, {
   getNewRate,
   getUIQuestions,
   getUnderwritingQuestions,
+  setAppError,
   submitEndorsementForm,
 })(reduxForm({
   form: FORM_NAME,
