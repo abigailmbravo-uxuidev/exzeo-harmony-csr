@@ -34,6 +34,8 @@ export class CreateDiary extends Component {
   submitDiary = async (data, dispatch, props) => {
     const { user, resourceType, resourceId } = props;
 
+    data.assignee = { iserId: data.assignee, userName: 'tticcsr' }
+
     const createRequest = {
       service: 'diaries',
       method: 'POST',
@@ -45,12 +47,12 @@ export class CreateDiary extends Component {
       }
     };
 
+    console.log(createRequest.data)
+
     try {
       const response = await serviceRunner.callService(createRequest);
-      console.log(response)
       this.closeButtonHandler();
     } catch (error) {
-      console.log(error)
       this.closeButtonHandler();
     }
   }
