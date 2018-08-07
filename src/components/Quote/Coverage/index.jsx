@@ -5,7 +5,6 @@ import _ from 'lodash';
 import moment from 'moment';
 import momentTZ from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
-import { batchActions } from 'redux-batched-actions';
 import { reduxForm, formValueSelector } from 'redux-form';
 import { getAnswers } from '../../../utilities/forms';
 import { setPercentageOfValue } from '../../../utilities/endorsementModel';
@@ -224,7 +223,9 @@ let setAgents = false;
 
 export class Coverage extends Component {
   componentDidMount() {
-    const { getUIQuestions, setAppState, batchCompleteTask, appState, match  } = this.props;
+    const {
+ getUIQuestions, setAppState, batchCompleteTask, appState, match 
+} = this.props;
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
 
     // this.props.startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` }).then((result) => {
