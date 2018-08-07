@@ -238,7 +238,7 @@ export class Coverage extends Component {
       submitting: true,
       selectedLink: 'customerData'
     });
-    batchCompleteTask(appState.modelName, match.params.workflowId, steps)
+    batchCompleteTask(appState.modelName, match.params.workflowId, steps);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -329,31 +329,29 @@ export class Coverage extends Component {
   };
 
   clearSecondaryPolicyholder = (value) => {
-    const { dispatch, quoteData, change } = this.props;
+    const { quoteData, change } = this.props;
     if (!value) {
       const pH2email = _.get(quoteData, 'policyHolders[1].emailAddress');
       const pH2FirstName = _.get(quoteData, 'policyHolders[1].firstName');
       const pH2LastName = _.get(quoteData, 'policyHolders[1].lastName');
       const pH2phone = _.get(quoteData, 'policyHolders[1].primaryPhoneNumber') || '';
       const pH2phone2 = _.get(quoteData, 'policyHolders[1].secondaryPhoneNumber') || '';
-      dispatch(batchActions([
-        change('Coverage', 'pH2email', pH2email),
-        change('Coverage', 'pH2FirstName', pH2FirstName),
-        change('Coverage', 'pH2LastName', pH2LastName),
-        change('Coverage', 'pH2phone', pH2phone),
-        change('Coverage', 'pH2phone2', pH2phone2),
-        change('Coverage', 'clearFields', false)
-      ]));
+
+      change('pH2email', pH2email);
+      change('pH2FirstName', pH2FirstName);
+      change('pH2LastName', pH2LastName);
+      change('pH2phone', pH2phone);
+      change('pH2phone2', pH2phone2);
+      change('clearFields', false);
     } else {
-      dispatch(batchActions([
-        change('Coverage', 'pH2email', ''),
-        change('Coverage', 'pH2FirstName', ''),
-        change('Coverage', 'pH2LastName', ''),
-        change('Coverage', 'pH2phone', ''),
-        change('Coverage', 'pH2phone2', ''),
-        change('Coverage', 'clearFields', true)
-      ]));
+      change('pH2email', '');
+      change('pH2FirstName', '');
+      change('pH2LastName', '');
+      change('pH2phone', '');
+      change('pH2phone2', '');
+      change('clearFields', true);
     }
+    return value;
   };
 
   render() {
