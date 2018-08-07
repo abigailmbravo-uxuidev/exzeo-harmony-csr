@@ -16,7 +16,7 @@ const baseProps = {
   change() {},
   dispatch() {},
   getAgencies() {},
-  getAgentsByAgency() {},
+  getAgentsByAgency() { return Promise.resolve({ data: { agents: [{ agentCode: 123 }] } }); },
   getLatestQuote() {},
   getUIQuestions() { return Promise.resolve(() => {}); },
   handleSubmit() {},
@@ -27,7 +27,7 @@ const baseProps = {
     data: {
       submitting: false
     }
-  },
+  }
 };
 const quoteData = {
   _id: '5866c036a46eb72908f3f547',
@@ -391,7 +391,7 @@ describe('Testing Coverage component', () => {
       },
       service: {
         quote: quoteData
-      },
+      }
     };
 
     expect(initialState.service.quote).toEqual(quoteData);
@@ -428,7 +428,7 @@ describe('Testing Coverage component', () => {
         }
       },
       questions: {},
-      service: {},
+      service: {}
     };
     const store = mockStore(initialState);
     const props = {
@@ -469,11 +469,12 @@ describe('Testing Coverage component', () => {
       dwellingAmount: '',
       agencyCode: 20000
     },
+    agencies: [{ agencyCode: 20000 }],
     agency: {
       agencyCode: 20000
     },
     quoteData,
-    dispatch: store.dispatch,
+    dispatch: store.dispatch
   };
 
   it('should test instance functions', () => {
@@ -491,7 +492,7 @@ describe('Testing Coverage component', () => {
     handleGetZipCodeSettings(initialState);
     wrapper.instance().clearSecondaryPolicyholder(false, props);
     wrapper.instance().clearSecondaryPolicyholder(true, props);
-    wrapper.instance().handleAgencyChange(props, 100011, false);
+    wrapper.instance().handleAgencyChange(20000);
     wrapper.instance().normalizePersonalPropertyPercentage('50000', '40000', {}, 'property');
     wrapper.instance().normalizeDwellingDependencies('50000', '40000', {}, 'property');
     wrapper.instance().normalizeSinkholeAmount(true, false, {});
