@@ -6,7 +6,7 @@ ARG NPM_TOKEN
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
+COPY . ./
 
 ARG NPM_TOKEN
 
