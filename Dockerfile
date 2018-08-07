@@ -13,7 +13,7 @@ ARG NPM_TOKEN
 RUN echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
 
 # Install app
-RUN apk update && apk --no-cache add bash libc6-compat && \
+RUN apk update && apk --no-cache add bash libc6-compat g++ make python && \
  npm ci && \
  mv .default.env .env && \
  npm run build && \
