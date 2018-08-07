@@ -1,11 +1,10 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
 import { shallow } from 'enzyme';
-
 import { Policy } from './index';
 
 const middlewares = [];
-const mockStore = configureStore([]);
+const mockStore = configureStore(middlewares);
 
 describe('Testing Policy component', () => {
   it('should test connected app', () => {
