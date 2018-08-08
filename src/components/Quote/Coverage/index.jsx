@@ -113,11 +113,13 @@ export const handleInitialize = (quoteData, questions) => {
   values.personalPropertyReplacementCostCoverage = _.get(quoteData, 'coverageOptions.personalPropertyReplacementCost.answer');
 
   values.sinkholePerilCoverage = String(_.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer'));
+  values.sinkhole = String(values.sinkholePerilCoverage) === 'true' ? 10 : 0;
+
   values.allOtherPerils = _.get(quoteData, 'deductibles.allOtherPerils.amount');
   values.hurricane = hurricane;
 
   values.calculatedHurricane = _.get(quoteData, 'deductibles.hurricane.calculatedAmount');
-  values.calculatedSinkhole = _.get(quoteData, 'deductibles.sinkhole.calculatedAmount');
+  values.calculatedSinkhole = _.get(quoteData, 'deductibles.sinkhole.calculatedAmount') || 0;
 
   values.floridaBuildingCodeWindSpeed = _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeed');
   values.floridaBuildingCodeWindSpeedDesign = _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign');

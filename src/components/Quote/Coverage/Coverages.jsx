@@ -106,7 +106,7 @@ const Coverages = ({
           name="personalLiability"
           styleName="flex-child"
           label={getQuestionName('personalLiability', questions)}
-          component={Select}
+          component={SelectInteger}
           answers={getAnswers('personalLiability', questions)}
           validate={validation.isRequired}
         />
@@ -215,6 +215,7 @@ const Coverages = ({
           styleName="flex-child"
           component={Select}
           answers={sinkholePerilCoverageAnswers(questions)}
+          normalize={normalizeSinkholeAmount}
         />
       </div>
       { String(sinkholePerilCoverageValue) === 'true' && <div className="flex-parent">
