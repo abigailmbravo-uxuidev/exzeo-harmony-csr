@@ -32,15 +32,15 @@ export class Policy extends React.Component {
       getPolicy,
       getPaymentHistory,
       getPaymentOptionsApplyPayments,
-      match: { params: { policyNumber } },
+      getEndorsementHistory,
+      match: { params: { policyNumber } }
     } = this.props;
     getPolicy(policyNumber);
     getPaymentHistory(policyNumber);
     getPaymentOptionsApplyPayments();
     getNotes(policyNumber, policyNumber);
     getCancelOptions();
-    getEndorsementHistory(policyNumber)
-
+    getEndorsementHistory(policyNumber);
   }
 
   componentDidUpdate(prevProps) {
@@ -69,7 +69,7 @@ export class Policy extends React.Component {
           policyHolders: policy.policyHolders,
           additionalInterests: policy.additionalInterests,
           fullyEarnedFees: policy.rating.worksheet.fees.empTrustFee + policy.rating.worksheet.fees.mgaPolicyFee,
-          currentPremium: summaryLedger.currentPremium,
+          currentPremium: summaryLedger.currentPremium
         };
         getBillingOptionsForPolicy(paymentOptions);
       }
@@ -176,17 +176,17 @@ export class Policy extends React.Component {
         <PolicyDetailHeader />
         <main role="document">
           <aside className="content-panel-left">
-            <PolicySideNav match={match}/>
+            <PolicySideNav match={match} />
           </aside>
 
           {initialized &&
             <div className="content-wrapper">
               <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} />} />
               <Route exact path={`${match.url}/policyholder`} render={props => <PolicyHolder {...props} />} />
-              <Route exact path={`${match.url}/billing`} render={props => <Billing {...props} />}/>
+              <Route exact path={`${match.url}/billing`} render={props => <Billing {...props} />} />
               <Route exact path={`${match.url}/notes`} render={props => <Notes {...props} params={match.params} />} />
               <Route exact path={`${match.url}/cancel`} render={props => <Cancel {...props} />} />
-              <Route exact path={`${match.url}/endorsements`} render={props => <Endorsements {...props} params={match.params}/>}/>
+              <Route exact path={`${match.url}/endorsements`} render={props => <Endorsements {...props} params={match.params} />} />
             </div>
           }
 
@@ -226,11 +226,13 @@ Policy.propTypes = {
   getPolicy: PropTypes.func,
   getZipCodeSettings: PropTypes.func,
   setAppState: PropTypes.func,
-  startWorkflow: PropTypes.func,
+  startWorkflow: PropTypes.func
 };
 
-const mapStateToProps = ({ appState, cg, policyState, service }) => ({
-  appState: appState,
+const mapStateToProps = ({
+  appState, cg, policyState, service
+}) => ({
+  appState,
   initialized: !!(policyState.policy.policyID && policyState.summaryLedger._id),
   policy: policyState.policy,
   summaryLedger: policyState.summaryLedger,
@@ -252,5 +254,5 @@ export default connect(mapStateToProps, {
   getPolicy,
   getZipCodeSettings: getZipcodeSettings,
   setAppState,
-  startWorkflow,
+  startWorkflow
 })(Policy);
