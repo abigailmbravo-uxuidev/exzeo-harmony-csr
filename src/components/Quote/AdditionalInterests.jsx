@@ -139,7 +139,9 @@ export class AdditionalInterests extends Component {
   };
 
   addAdditionalInterest = (type) => {
-    const { appState, setAppState, editingDisabled, match } = this.props;
+    const {
+ appState, setAppState, editingDisabled, match 
+} = this.props;
     if (editingDisabled) return;
     setAppState(
       MODEL_NAME,
@@ -155,7 +157,9 @@ export class AdditionalInterests extends Component {
   };
 
   editAdditionalInterest = (ai) => {
-    const { appState, setAppState, editingDisabled, match } = this.props;
+    const {
+ appState, setAppState, editingDisabled, match 
+} = this.props;
     if (editingDisabled) return;
     setAppState(
       MODEL_NAME,
@@ -336,7 +340,7 @@ export class AdditionalInterests extends Component {
                 <button
                   className="btn btn-sm btn-secondary"
                   onClick={() => this.addAdditionalInterest('Mortgagee')}
-                  disabled={groupedAdditionalInterests[ADDITIONAL_INTERESTS.mortgagee].length > 3 || editingDisabled}
+                  disabled={groupedAdditionalInterests[ADDITIONAL_INTERESTS.mortgagee].length > 2 || editingDisabled}
                   type="button"
                 > <div><i className="fa fa-plus" /><span>Mortgagee</span></div>
                 </button>
