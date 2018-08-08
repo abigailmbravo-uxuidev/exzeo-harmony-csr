@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Select, Currency, Radio } from '@exzeo/core-ui/lib/Input';
+import { Select, SelectInteger, Currency, Radio } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers, getQuestionName } from '../../../utilities/forms';
 
@@ -131,7 +131,7 @@ const Coverages = ({
           styleName="flex-child"
           name="moldProperty"
           label="Mold Property"
-          component={Select}
+          component={SelectInteger}
           answers={getAnswers('moldProperty', questions)}
           validate={validation.isRequired}
         />
@@ -142,7 +142,7 @@ const Coverages = ({
           styleName="flex-child"
           name="moldLiability"
           label="Mold Liability Limit"
-          component={Select}
+          component={SelectInteger}
           answers={getAnswers('moldLiability', questions)}
           validate={validation.isRequired}
         />

@@ -108,7 +108,7 @@ export const handleInitialize = (quoteData, questions) => {
   values.otherStructuresAmount = otherStructures;
   values.otherStructures = String(calculatePercentage(otherStructures, dwelling));
   values.personalLiability = _.get(quoteData, 'coverageLimits.personalLiability.amount');
-  values.personalPropertyAmount = String(_.get(quoteData, 'coverageLimits.personalProperty.amount'));
+  values.personalPropertyAmount = _.get(quoteData, 'coverageLimits.personalProperty.amount');
   values.personalProperty = _.map(getAnswers('personalPropertyAmount', questions), 'answer').includes(calculatePercentage(personalProperty, dwelling)) ? String(calculatePercentage(personalProperty, dwelling)) : undefined;
   values.personalPropertyReplacementCostCoverage = _.get(quoteData, 'coverageOptions.personalPropertyReplacementCost.answer');
 
@@ -224,7 +224,9 @@ let setAgents = false;
 
 export class Coverage extends Component {
   componentDidMount() {
-    const { getUIQuestions, setAppState, batchCompleteTask, appState, match  } = this.props;
+    const {
+      getUIQuestions, setAppState, batchCompleteTask, appState, match
+    } = this.props;
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
 
     // this.props.startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` }).then((result) => {
@@ -238,7 +240,7 @@ export class Coverage extends Component {
       submitting: true,
       selectedLink: 'customerData'
     });
-    batchCompleteTask(appState.modelName, match.params.workflowId, steps)
+    batchCompleteTask(appState.modelName, match.params.workflowId, steps);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -271,9 +273,9 @@ export class Coverage extends Component {
     if (allValues.personalProperty !== 'other') {
       change('personalPropertyAmount', setPercentageOfValue(roundedDwellingAmount, allValues.personalProperty));
     }
-    change('calculatedHurricane', String(setPercentageOfValue(roundedDwellingAmount, allValues.hurricane)));
+    change('calculatedHurricane', setPercentageOfValue(roundedDwellingAmount, allValues.hurricane));
     change('lossOfUse', setPercentageOfValue(roundedDwellingAmount, 10));
-    change('calculatedSinkhole', String(setPercentageOfValue(roundedDwellingAmount, 10)));
+    change('calculatedSinkhole', setPercentageOfValue(roundedDwellingAmount, 10));
 
     return value;
   };

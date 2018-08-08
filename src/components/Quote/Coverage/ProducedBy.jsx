@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Select, Date } from '@exzeo/core-ui/lib/Input';
+import { SelectInteger, Date } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
 
 const ProducedBy = ({
@@ -23,7 +23,7 @@ const ProducedBy = ({
         <Field
           name="agencyCode"
           label="Agency"
-          component={Select}
+          component={SelectInteger}
           answers={agencies}
           normalize={value => handleAgencyChange(value)}
           validate={validation.isRequired}
@@ -34,7 +34,7 @@ const ProducedBy = ({
         <Field
           name="agentCode"
           label="Agent"
-          component={Select}
+          component={SelectInteger}
           answers={agents}
           validate={validation.isRequired}
           dataTest="agentCode"
