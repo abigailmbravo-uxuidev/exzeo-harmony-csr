@@ -5,19 +5,47 @@ import { connect } from 'react-redux';
 import * as serviceActions from '../../state/actions/serviceActions';
 import QuoteBaseConnect from '../../containers/Quote';
 import * as errorActions from '../../state/actions/errorActions';
+import * as appStateActions from '../../state/actions/appStateActions';
 import NoteList from '../Common/NoteList';
 import Footer from '../Common/Footer';
 
-export class NotesFiles extends Component {
+const MODEL_NAME = 'csrQuote';
 
-  componentDidMount () {
-    const { quoteData, actions, match } = this.props;
+export class NotesFiles extends Component {
+  componentDidMount() {
+    const {
+      quoteData, actions, match, appState
+    } = this.props;
+    const workflowId = match.params.workflowId;
+
+    actions.appStateActions.setAppState(
+      MODEL_NAME, workflowId,
+      {
+        ...appState.data,
+        submitting: true
+      }
+    );
     if (quoteData && quoteData.quoteNumber) {
-      actions.serviceActions.getNotes(quoteData.quoteNumber, quoteData.quoteNumber);
+      actions.serviceActions.getNotes(quoteData.quoteNumber, quoteData.quoteNumber).then(() => {
+        actions.appStateActions.setAppState(
+          MODEL_NAME, workflowId,
+          {
+            ...appState.data,
+            submitting: false
+          }
+        );
+      });
     } else {
       actions.serviceActions.getQuote(match.params.quoteId)
         .then((quoteData) => {
-          actions.serviceActions.getNotes(quoteData.quoteNumber, quoteData.quoteNumber)
+          actions.serviceActions.getNotes(quoteData.quoteNumber, quoteData.quoteNumber);
+          actions.appStateActions.setAppState(
+            MODEL_NAME, workflowId,
+            {
+              ...appState.data,
+              submitting: false
+            }
+          );
         });
     }
   }
@@ -46,13 +74,15 @@ NotesFiles.propTypes = {
 const mapStateToProps = state => ({
   notes: state.service.notes,
   quoteData: state.service.quote || {},
-  error: state.error
+  error: state.error,
+  appState: state.appState
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
     serviceActions: bindActionCreators(serviceActions, dispatch),
-    errorActions: bindActionCreators(errorActions, dispatch)
+    errorActions: bindActionCreators(errorActions, dispatch),
+    appStateActions: bindActionCreators(appStateActions, dispatch)
   }
 });
 

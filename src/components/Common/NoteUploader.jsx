@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, Form, reduxForm } from 'redux-form';
-import Uppy from 'uppy/lib/core';
-import { Dashboard } from 'uppy/lib/react';
-import XHRUpload from 'uppy/lib/plugins/XHRUpload';
+import Uppy from '@uppy/core';
+import Dashboard from '@uppy/react/lib/Dashboard';
+import XHRUpload from '@uppy/xhr-upload';
 import moment from 'moment';
 import Loader from '@exzeo/core-ui/lib/Loader';
 import * as cgActions from '../../state/actions/cgActions';
 import * as uiActions from '../../state/actions/uiActions';
 import * as serviceActions from '../../state/actions/serviceActions';
 import * as errorActions from '../../state/actions/errorActions';
-import 'uppy/dist/uppy.css';
+import '@uppy/core/dist/style.min.css';
 
 export const renderNotes = ({ input, label, type, meta: { touched, error } }) => (
   <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
@@ -165,7 +165,7 @@ export class NoteUploader extends Component {
 
     return actions.cgActions.startWorkflow('addNote', noteData, false)
       .then(result => {
-        if (window.location.pathname.endsWith('/notes')) {
+        if (window.location.pathname.includes('/notes')) {
           const ids = (noteData.noteType === 'Policy Note')
             ? [noteData.number, noteData.source].toString()
             : noteData.number;

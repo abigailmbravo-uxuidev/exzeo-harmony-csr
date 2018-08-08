@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { reduxForm } from 'redux-form';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import _get from 'lodash/get';
 import _find from 'lodash/find';
 import moment from 'moment';
 import Loader from '@exzeo/core-ui/lib/Loader';
 import { getUIQuestions } from '../../state/actions/questionsActions';
-import { getPolicy, getBillingOptionsForPolicy, getPaymentHistory, getCancelOptions, getPaymentOptionsApplyPayments } from '../../state/actions/policyActions';
 import normalizeNumbers from '../Form/normalizeNumbers';
-import PolicyConnect from '../../containers/Policy';
 import Footer from '../Common/Footer';
 
 export const getPropertyAppraisalLink = (county, questions) => {
@@ -19,37 +16,9 @@ export const getPropertyAppraisalLink = (county, questions) => {
   return _find(answers, { label: county }) || {};
 };
 
-const handleInitialize = state => state.policyState.policy;
-
 export class Coverage extends Component {
-  async componentDidMount() {
-    const {
-      getUIQuestions, getPolicy, getCancelOptions, match
-    } = this.props;
-    const { policyNumber } = match.params;
-
-    getUIQuestions('propertyAppraisalCSR');
-    getPolicy(policyNumber);
-    getCancelOptions();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { policy } = this.props;
-    const {
-      summaryLedger, getBillingOptionsForPolicy, getPaymentHistory, getPaymentOptionsApplyPayments
-    } = nextProps;
-    if (!policy.policyID && nextProps.policyID && (nextProps.policyID !== policy.policyID) && summaryLedger.currentPremium) {
-      const paymentOptions = {
-        effectiveDate: nextProps.policy.effectiveDate,
-        policyHolders: nextProps.policy.policyHolders,
-        additionalInterests: nextProps.policy.additionalInterests,
-        currentPremium: nextProps.summaryLedger.currentPremium,
-        fullyEarnedFees: nextProps.policy.rating.worksheet.fees.empTrustFee + nextProps.policy.rating.worksheet.fees.mgaPolicyFee
-      };
-      getBillingOptionsForPolicy(paymentOptions);
-      getPaymentHistory(nextProps.policy.policyNumber);
-      getPaymentOptionsApplyPayments();
-    }
+  componentDidMount() {
+    this.props.getUIQuestions('propertyAppraisalCSR');
   }
 
   render() {
@@ -65,7 +34,7 @@ export class Coverage extends Component {
         property,
         rating,
         underwritingAnswers
-      }
+      },
     } = this.props;
 
     const monthsOccupied = underwritingAnswers ? underwritingAnswers.monthsOccupied.answer : null;
@@ -190,10 +159,10 @@ export class Coverage extends Component {
     ];
 
     const propertyData = property || {};
-    if (!this.props.policy.policyID) return (<PolicyConnect><Loader /> </PolicyConnect>);
+    if (!policy.policyID) return (<Loader />);
 
     return (
-      <PolicyConnect>
+      <React.Fragment>
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
@@ -364,48 +333,27 @@ export class Coverage extends Component {
         <div className="basic-footer">
           <Footer />
         </div>
-      </PolicyConnect>
+      </React.Fragment>
     );
   }
 }
 
-/**
-------------------------------------------------
-Property type definitions
-------------------------------------------------
-*/
 Coverage.propTypes = {
-  tasks: PropTypes.shape(),
-  appState: PropTypes.shape({
-    modelName: PropTypes.string,
-    instanceId: PropTypes.string,
-    data: PropTypes.shape({ submitting: PropTypes.boolean })
-  })
+  paymentOptions: PropTypes.object,
+  policy: PropTypes.object,
+  policyID: PropTypes.string,
+  questions: PropTypes.object,
+  summaryLedger: PropTypes.object
 };
 
-/**
-------------------------------------------------
-redux mapping
-------------------------------------------------
-*/
 const mapStateToProps = state => ({
-  appState: state.appState,
-  fieldValues: _get(state.form, 'Coverage.values', {}),
-  initialValues: handleInitialize(state),
   paymentOptions: state.policyState.billingOptions,
   policy: state.policyState.policy,
   policyID: state.policyState.policyID,
-  summaryLedger: state.policyState.summaryLedger,
   questions: state.questions,
-  tasks: state.cg
-
+  summaryLedger: state.policyState.summaryLedger
 });
 
 export default connect(mapStateToProps, {
-  getBillingOptionsForPolicy,
-  getCancelOptions,
   getUIQuestions,
-  getPolicy,
-  getPaymentHistory,
-  getPaymentOptionsApplyPayments
-})(reduxForm({ form: 'Coverage' })(Coverage));
+})(Coverage);

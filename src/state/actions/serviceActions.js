@@ -110,27 +110,6 @@ export const getAgents = (companyCode, state) => (dispatch) => {
     });
 };
 
-export const searchAgents = (companyCode, state, firstName, lastName, agentCode, address, licNumber) => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'agency',
-    method: 'GET',
-    path: `v1/agents/${companyCode}/${state}?firstName=${firstName}&lastName=${lastName}&agentCode=${agentCode}&mailingAddress=${address}&licenseNumber=${licNumber}`
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const data = { agents: response.data.result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
-};
-
 export const clearAgent = () => (dispatch) => {
   const data = { agents: [] };
   return dispatch(serviceRequest(data));
@@ -145,15 +124,11 @@ export const getAgency = (companyCode, state, agencyCode) => (dispatch) => {
 
   return axios(axiosConfig).then((response) => {
     const data = { agency: response.data.result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
+    return dispatch(serviceRequest(data));
   })
     .catch((error) => {
       const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
+      return dispatch(errorActions.setAppError(message));
     });
 };
 
@@ -166,41 +141,12 @@ export const getAgentsByAgency = (companyCode, state, agencyCode) => (dispatch) 
 
   return axios(axiosConfig).then((response) => {
     const data = { agents: response.data.result };
-    return dispatch(batchActions([
-      serviceRequest(data)
-    ]));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(batchActions([
-        errorActions.setAppError(message)
-      ]));
-    });
-};
-
-export const searchAgencies = (companyCode, state, displayName, agencyCode, address, licNumber, fein, phone) => (dispatch) => {
-  const axiosConfig = runnerSetup({
-    service: 'agency',
-    method: 'GET',
-    path: `v1/agencies/${companyCode}/${state}?displayName=${displayName}&agencyCode=${agencyCode}&mailingAddress=${address}&licenseNumber=${licNumber}&taxIdNumber=${fein}&primaryPhoneNumber=${phone}`
-  });
-
-  return axios(axiosConfig).then((response) => {
-    const result = response.data && response.data.result ? response.data.result : [];
-    const data = { agencies: result };
     return dispatch(serviceRequest(data));
   })
     .catch((error) => {
       const message = handleError(error);
       return dispatch(errorActions.setAppError(message));
     });
-};
-
-export const clearAgencies = () => (dispatch) => {
-  const data = { agencies: [] };
-  return dispatch(batchActions([
-    serviceRequest(data)
-  ]));
 };
 
 export const addTransaction = submitData => (dispatch) => {
@@ -406,36 +352,4 @@ export const getAgencies = (companyCode, state) => (dispatch) => {
       const message = handleError(error);
       return dispatch(errorActions.setAppError(message));
     });
-};
-
-export const searchPolicy = (taskData, sort) => (dispatch) => {
-  const formattedAddress = taskData.address ? taskData.address.replace(' ', '&#32;') : '';
-  const sortDirection = sort === 'policyNumber' ? 'desc' : 'asc';
-  const axiosConfig = runnerSetup({
-    service: 'policy-data',
-    method: 'GET',
-    path: `/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=${taskData.policyNumber}&firstName=${taskData.firstName}&lastName=${taskData.lastName}&propertyAddress=${formattedAddress.replace(' ', '&#32;')}&page=${taskData.pageNumber}&pageSize=${taskData.pageSize}&resultStart=${taskData.resultStart}&sort=${sort}&sortDirection=${sortDirection}&effectiveDate=${taskData.effectiveDate}&agencyCode=${taskData.agencyCode}&status=${taskData.policyStatus}`
-  });
-
-  return Promise.resolve(axios(axiosConfig)).then((response) => {
-    const data = { policyResults: response.data };
-    return dispatch(serviceRequest(data));
-  })
-    .catch((error) => {
-      const message = handleError(error);
-      return dispatch(errorActions.setAppError(message));
-    });
-};
-
-export const clearPolicyResults = () => (dispatch) => {
-  const data = {
-    policyResults: {
-      totalNumberOfRecords: 1,
-      pageSize: 1,
-      currentPage: 1
-    }
-  };
-  return dispatch(batchActions([
-    serviceRequest(data)
-  ]));
 };

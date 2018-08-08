@@ -1,5 +1,4 @@
 import configureStore from 'redux-mock-store';
-import sinon from 'sinon';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import * as types from './actionTypes';
@@ -189,95 +188,6 @@ describe('Service Actions', () => {
     return serviceActions.getAgents('4534', 'FL')(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
-      });
-  });
-
-  it('should call start searchAgents', () => {
-    const mockAdapter = new MockAdapter(axios);
-
-    const axiosOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'agency',
-        method: 'GET',
-        path: 'v1/agents/TTIC/FL?firstName=Test&lastName=Test&agentCode=003&mailingAddress=123Main&licenseNumber=licNumber'
-      }
-    };
-
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
-    });
-
-    const initialState = {};
-    const store = mockStore(initialState);
-
-    return serviceActions.searchAgents('TTIC', 'FL', 'Test', 'Test', '003', '123Main', 'licNumber')(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].payload[0].type).toEqual(types.SERVICE_REQUEST);
-      });
-  });
-
-  it('should call start searchAgencies', () => {
-    const mockAdapter = new MockAdapter(axios);
-
-    const axiosOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'agency',
-        method: 'GET',
-        path: 'v1/agencies/TTIC/FL?displayName=&agencyCode=&mailingAddress=&licenseNumber=&taxIdNumber=&primaryPhoneNumber='
-      }
-    };
-
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
-    });
-
-    const initialState = {};
-    const store = mockStore(initialState);
-    serviceActions.searchAgencies(store.dispatch);
-
-    return serviceActions.searchAgencies('TTIC', 'FL', '', '', '', '', '', '')(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
-      });
-  });
-
-  it('should fail start searchAgencies', () => {
-    const mockAdapter = new MockAdapter(axios);
-
-    const axiosOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'agency',
-        method: 'GET',
-        path: 'v1/agencies/TTIC/FL'
-      }
-    };
-
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
-    });
-
-    const initialState = {};
-    const store = mockStore(initialState);
-    serviceActions.searchAgencies(store.dispatch);
-
-    return serviceActions.searchAgencies('454545', 'FL')(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
   });
 
@@ -939,83 +849,6 @@ describe('Service Actions', () => {
       });
   });
 
-  it('should call searchPolicy', () => {
-    const mockAdapter = new MockAdapter(axios);
-
-    const axiosOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'policy-data',
-        method: 'GET',
-        path: '/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=123&firstName=gfdgfd&lastName=fhnhyn&propertyAddress=123&page=1&pageSize=25&resultStart=1&sort=policyNumber&sortDirection=desc&effectiveDate=2017-01-02&agencyCode=2000&status=0'
-      }
-    };
-
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
-    });
-
-    const initialState = {};
-    const store = mockStore(initialState);
-
-    const taskData = {
-      policyNumber: '123',
-      address: '123',
-      firstName: 'gfdgfd',
-      lastName: 'fhnhyn',
-      propertyAddress: '123',
-      pageNumber: '1',
-      pageSize: '25',
-      resultStart: '1',
-      effectiveDate: '2017-01-02',
-      policyStatus: 0,
-      agencyCode: 2000
-    };
-
-    return serviceActions.searchPolicy(taskData, 'policyNumber')(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
-      });
-  });
-
-  it('should fail searchPolicy', () => {
-    const mockAdapter = new MockAdapter(axios);
-
-    const axiosOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      url: `${process.env.REACT_APP_API_URL}/svc`,
-      data: {
-        service: 'policy-data',
-        method: 'GET',
-        path: '/transactions?companyCode=TTIC&state=FL&product=HO3&policyNumber=123&firstName=gfdgfd&lastName=fhnhyn&propertyAddress=123&page=1&pageSize=25&resultStart=1&sort=policyNumber&sortDirection=desc'
-      }
-    };
-
-    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
-      data: []
-    });
-
-    const initialState = {};
-    const store = mockStore(initialState);
-    serviceActions.getAgencies(store.dispatch);
-
-    const taskData = {
-      policyNumber: '123'
-    };
-
-    return serviceActions.searchPolicy(taskData, 'policyNumber')(store.dispatch)
-      .then(() => {
-        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
-      });
-  });
-
   it('should fail saveBillingInfo', () => {
     const mockAdapter = new MockAdapter(axios);
 
@@ -1048,6 +881,120 @@ describe('Service Actions', () => {
     return serviceActions.saveBillingInfo(null)(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].payload[0].type).toEqual(types.APP_ERROR);
+      });
+  });
+
+  it('should call start getAgency', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'agency',
+        method: 'GET',
+        path: 'v1/agency/TTIC/FL/HO3'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    return serviceActions.getAgency('TTIC', 'FL', 'HO3')(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
+      });
+  });
+
+  it('should fail start getAgency', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'agency',
+        method: 'GET',
+        path: 'v1/agency/TTIC/FL/HO3'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+    return serviceActions.getAgency(null)(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
+      });
+  });
+
+  it('should call start getAgentsByAgency', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'agency',
+        method: 'GET',
+        path: 'v1/agents/TTIC/FL?agencyCode=2'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    return serviceActions.getAgentsByAgency('TTIC', 'FL', 2)(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
+      });
+  });
+
+  it('should fail start getAgentsByAgency', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'agency',
+        method: 'GET',
+        path: 'v1/agents/TTIC/FL?agencyCode=2'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    const initialState = {};
+    const store = mockStore(initialState);
+    return serviceActions.getAgentsByAgency(null)(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
       });
   });
 });

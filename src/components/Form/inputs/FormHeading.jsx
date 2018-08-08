@@ -11,9 +11,6 @@ const Heading = ({
 );
 
 Heading.propTypes = {
-  /**
-   * Heading
-   */
   label: PropTypes.string.isRequired
 };
 
