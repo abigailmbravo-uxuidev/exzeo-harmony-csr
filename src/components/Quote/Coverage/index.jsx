@@ -112,8 +112,7 @@ export const handleInitialize = (quoteData, questions) => {
   values.personalProperty = _.map(getAnswers('personalPropertyAmount', questions), 'answer').includes(calculatePercentage(personalProperty, dwelling)) ? String(calculatePercentage(personalProperty, dwelling)) : undefined;
   values.personalPropertyReplacementCostCoverage = _.get(quoteData, 'coverageOptions.personalPropertyReplacementCost.answer');
 
-  values.sinkholePerilCoverage = _.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer');
-
+  values.sinkholePerilCoverage = String(_.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer'));
   values.allOtherPerils = _.get(quoteData, 'deductibles.allOtherPerils.amount');
   values.hurricane = hurricane;
 

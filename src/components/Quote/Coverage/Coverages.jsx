@@ -165,7 +165,7 @@ const Coverages = ({
           styleName="flex-child"
           name="ordinanceOrLaw"
           label="Ordinance or Law Coverage Limit"
-          component={Select}
+          component={SelectInteger}
           answers={getAnswers('ordinanceOrLaw', questions)}
           validate={validation.isRequired}
         />
@@ -179,7 +179,7 @@ const Coverages = ({
           styleName="flex-child"
           name="allOtherPerils"
           label="All Other Perils"
-          component={Select}
+          component={SelectInteger}
           answers={getAnswers('allOtherPerils', questions)}
           validate={validation.isRequired}
         />
@@ -190,7 +190,7 @@ const Coverages = ({
           name="hurricane"
           label="Hurricane Deductible"
           styleName="flex-child"
-          component={Select}
+          component={SelectInteger}
           answers={getAnswers('hurricane', questions)}
           validate={validation.isRequired}
           normalize={(v, pv, av) => normalizeDwellingDependencies(v, pv, av, 'calculatedHurricane')}
@@ -215,7 +215,6 @@ const Coverages = ({
           styleName="flex-child"
           component={Select}
           answers={sinkholePerilCoverageAnswers(questions)}
-          normalize={normalizeSinkholeAmount}
         />
       </div>
       { String(sinkholePerilCoverageValue) === 'true' && <div className="flex-parent">
