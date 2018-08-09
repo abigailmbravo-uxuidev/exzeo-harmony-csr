@@ -50,12 +50,12 @@ export const getGroupedExceptions = (quoteData = {}) => {
     if (exception.action === 'Missing Info') {
       return {
         ...data,
-        warnings: [...data.warnings, exception],
+        warnings: [...data.warnings, exception]
       };
     }
     return exception.canOverride ?
-      ({ ...data, overridableExceptions: [ ...data.overridableExceptions, exception ] }) :
-      ({ ...data, nonOverridableExceptions: [ ...data.nonOverridableExceptions, exception ]});
+      ({ ...data, overridableExceptions: [...data.overridableExceptions, exception] }) :
+      ({ ...data, nonOverridableExceptions: [...data.nonOverridableExceptions, exception] });
   }, { warnings: [], overridableExceptions: [], nonOverridableExceptions: [] });
 };
 
@@ -68,11 +68,11 @@ export class UnderwritingValidationBar extends React.Component {
       pristine
     } = this.props;
 
-  const { warnings, overridableExceptions, nonOverridableExceptions } = exceptions;
-  const sortedOverridableExceptions = orderBy(overridableExceptions, ['overridden'], ['asc']);
+    const { warnings, overridableExceptions, nonOverridableExceptions } = exceptions;
+    const sortedOverridableExceptions = orderBy(overridableExceptions, ['overridden'], ['asc']);
 
   if (!quoteData) { // eslint-disable-line
-      return <div />
+      return <div />;
     }
 
     return (
@@ -84,13 +84,15 @@ export class UnderwritingValidationBar extends React.Component {
             {warnings.length > 0 &&
               <UnderwritingExceptions
                 exceptionLevel="warning"
-                exceptions={warnings} />
+                exceptions={warnings}
+              />
             }
 
             {nonOverridableExceptions.length > 0 &&
               <UnderwritingExceptions
                 exceptionLevel="nonOverridable"
-                exceptions={nonOverridableExceptions} />
+                exceptions={nonOverridableExceptions}
+              />
             }
 
             {overridableExceptions.length > 0 &&
@@ -104,8 +106,8 @@ export class UnderwritingValidationBar extends React.Component {
                   name={exception._id}
                   id={exception._id}
                 />
-              )} >
-              </UnderwritingExceptions>
+              )}
+            />
             }
 
           </div>
@@ -123,7 +125,7 @@ UnderwritingValidationBar.propTypes = {
     modelName: PropTypes.string,
     data: PropTypes.shape({
       quote: PropTypes.object,
-      updateUnderwriting: PropTypes.bool,
+      updateUnderwriting: PropTypes.bool
     })
   })
 };
@@ -137,10 +139,10 @@ const mapStateToProps = state => ({
   quoteData: state.service.quote || defaultObject,
   initialValues: handleInitialize(state),
   fieldValues: getFormValues('UnderwritingOverride')(state) || defaultObject,
-  exceptions: getGroupedExceptions(state.service.quote || defaultObject),
+  exceptions: getGroupedExceptions(state.service.quote || defaultObject)
 });
 
 export default connect(mapStateToProps, {
   getLatestQuote,
   saveUnderwritingExceptions
-})(reduxForm({ form: 'UnderwritingOverride', enableReinitialize: true })(UnderwritingValidationBar));
+})(reduxForm({ form: 'UnderwritingOverride', enableReinitialize: true, destroyOnUnmount: false })(UnderwritingValidationBar));
