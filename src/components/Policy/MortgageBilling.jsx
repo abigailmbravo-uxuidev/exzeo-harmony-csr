@@ -19,14 +19,15 @@ import {
   getPolicy,
   addTransaction,
   createTransaction,
+  updateBillPlan
 } from '../../state/actions/policyActions';
 import { getUIQuestions } from '../../state/actions/questionsActions';
 
 import BillingModal from '../../components/Common/BillingEditModal';
 import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';
-import AdditionalInterestCard from "../AdditionalInterestCard";
-import PaymentHistoryTable from "../PaymentHistoryTable";
+import AdditionalInterestCard from '../AdditionalInterestCard';
+import PaymentHistoryTable from '../PaymentHistoryTable';
 
 const { validation } = lifecycle;
 const { Input, Select, Currency } = Inputs;
@@ -49,7 +50,6 @@ export class MortgageBilling extends Component {
   state = {
     addAdditionalInterestType: '',
     isEditingAI: false,
-    paymentDescription: [],
     selectedAI: {},
     showAdditionalInterestModal: false,
     showBillingEditModal: false
@@ -58,6 +58,21 @@ export class MortgageBilling extends Component {
   componentDidMount() {
     this.props.getUIQuestions('additionalInterestsCSR');
   }
+
+  handleBillingFormSubmit = async (data) => {
+    const { updateBillPlan, policy } = this.props;
+    const updateData = {
+      policyNumber: policy.policyNumber,
+      policyID: policy.policyID,
+      transactionType: 'Bill Plan Update',
+      billingStatus: 2,
+      billToId: data.billToId,
+      billPlan: data.billPlan,
+      billToType: data.billToType
+    };
+    await updateBillPlan(updateData);
+    this.hideBillingModal();
+  };
 
   handleAISubmit = async (additionalInterests, aiData) => {
     const { getPolicy, createTransaction, policy } = this.props;
@@ -431,6 +446,7 @@ export class MortgageBilling extends Component {
         {this.state.showBillingEditModal &&
           <BillingModal
             billingOptions={billingOptions.options}
+            handleBillingSubmit={this.handleBillingFormSubmit}
             hideBillingModal={this.hideBillingModal}
           />
         }
@@ -479,7 +495,8 @@ export default connect(mapStateToProps, {
   addTransaction,
   createTransaction,
   getUIQuestions,
-  getPolicy
+  getPolicy,
+  updateBillPlan
 })(reduxForm({
   form: 'MortgageBilling',
   enableReinitialize: true
