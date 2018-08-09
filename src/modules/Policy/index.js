@@ -22,8 +22,12 @@ import Billing from '../../components/Policy/MortgageBilling';
 import Notes from '../../components/Policy/NotesFiles';
 import Cancel from '../../components/Policy/Cancel';
 import Endorsements from '../../components/Policy/Endorsements';
+import { OpenDiariesBar } from '../Diaries/OpenDiariesBar';
 
 export class Policy extends React.Component {
+  state = {
+    showDiaries: false
+  }
   // TODO: next step is to make an 'initialize' action that does all of this. Then this component will only need to know about one action.
   componentDidMount() {
     const {
@@ -74,6 +78,10 @@ export class Policy extends React.Component {
         getBillingOptionsForPolicy(paymentOptions);
       }
     }
+  }
+
+  toggleDiariesHandler = () => {
+    this.setState({ showDiaries: !this.state.showDiaries });
   }
 
 
@@ -164,6 +172,8 @@ export class Policy extends React.Component {
       initialized
     } = this.props;
 
+    const { showDiaries } = this.state;
+
     return (
       <div className="app-wrapper csr policy">
 
@@ -172,7 +182,7 @@ export class Policy extends React.Component {
         }
 
         <Helmet><title>{policy && policy.policyNumber ? `P: ${policy.policyNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
-        <PolicyHeader />
+        <PolicyHeader toggleDiaries={this.toggleDiariesHandler} showDiaries={showDiaries} />
         <PolicyDetailHeader />
         <main role="document">
           <aside className="content-panel-left">
@@ -203,6 +213,7 @@ export class Policy extends React.Component {
               hideEffectiveDateModal={this.hideEffectiveDatePopUp}
             />
           }
+          {showDiaries && <OpenDiariesBar />}
         </main>
       </div>
     );
