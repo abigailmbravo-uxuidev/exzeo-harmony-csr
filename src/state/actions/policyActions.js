@@ -235,8 +235,8 @@ export function addTransaction(submitData) {
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
+    dispatch(getPolicy(submitData.policy.policyNumber));
     dispatch(getPaymentHistory(submitData.policy.policyNumber));
-    dispatch(getSummaryLedger(submitData.policy.policyNumber));
   };
 }
 
