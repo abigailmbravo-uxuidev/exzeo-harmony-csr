@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
+import { Select } from '@exzeo/core-ui/lib/Input';
+import { isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
 import { DEFAULT_SEARCH_PARAMS } from '../../../constants/search';
 import { getAgencies } from '../../../state/actions/serviceActions';
 import { clearAppError } from '../../../state/actions/errorActions';
@@ -9,9 +11,6 @@ import {
   toggleLoading
 } from '../../../state/actions/searchActions';
 
-import { Select } from '@exzeo/core-ui/lib/Input';
-import { isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
-
 export class SearchBar extends Component {
   componentDidMount() {
     const { agencies, getAgencies, toggleLoading, initialize, initialValues } = this.props;
@@ -19,7 +18,7 @@ export class SearchBar extends Component {
     if (!agencies.length) {
       getAgencies(DEFAULT_SEARCH_PARAMS.companyCode, DEFAULT_SEARCH_PARAMS.state);
     }
-    initialize(initialValues)
+    initialize(initialValues);
   }
 
   handleSearchFormSubmit = async (data, dispatch, props) => {
@@ -98,9 +97,8 @@ export default connect(mapStateToProps, {
   clearAppError,
   getAgencies,
   toggleLoading,
-  handleSearchSubmit,
+  handleSearchSubmit
 })(reduxForm({
   // 'initialValues' prop is being passed in from parent component based on route/pathName
-  form: 'SEARCH_BAR',
-  enableReinitialize: true
+  form: 'SEARCH_BAR'
 })(SearchBar));

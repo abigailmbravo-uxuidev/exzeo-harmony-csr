@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { SEARCH_CONFIG, SEARCH_TYPES } from '../../constants/search';
-import { resetSearch } from "../../state/actions/searchActions";
+import { resetSearch } from '../../state/actions/searchActions';
 
 import SearchBar from './components/SearchBar';
 import SearchResults from './components/SearchResults';
@@ -22,12 +22,12 @@ const SEARCH_FORMS = {
 };
 
 export class SearchPage extends Component {
-
   state = {
     advancedSearch: false,
     hasSearched: false,
     searchType: SEARCH_TYPES.policy,
     searchConfig: SEARCH_TYPES.policy,
+    searchReady: false
   };
 
   componentDidMount() {
@@ -38,11 +38,6 @@ export class SearchPage extends Component {
     this.props.resetSearch();
   }
 
-  changeSearchType = (searchType) => {
-    this.setState({ searchType, hasSearched: false, advancedSearch: false });
-    this.props.resetSearch();
-  };
-
   setHasSearched = (hasSearched) => {
     this.setState({ hasSearched });
   };
@@ -51,20 +46,39 @@ export class SearchPage extends Component {
     const { pathName } = this.props;
     // determine which page we are on and setup correct search properties
     if (pathName === '/') {
-      this.setState({ searchType: SEARCH_TYPES.policy, searchConfig: SEARCH_TYPES.policy });
+      this.setState({
+        searchType: SEARCH_TYPES.policy,
+        searchConfig: SEARCH_TYPES.policy,
+        searchReady: true
+      });
     }
     if (pathName === '/agency') {
-      this.setState({ searchType: SEARCH_TYPES.agency, searchConfig: SEARCH_TYPES.agency });
+      this.setState({
+        searchType: SEARCH_TYPES.agency,
+        searchConfig: SEARCH_TYPES.agency,
+        searchReady: true
+      });
     }
+  };
+
+  changeSearchType = (searchType) => {
+    this.setState({ searchType, hasSearched: false, advancedSearch: false });
+    this.props.resetSearch();
   };
 
   toggleAdvancedSearch = () => {
     const { advancedSearch } = this.state;
-    this.setState({ advancedSearch: !advancedSearch })
+    this.setState({ advancedSearch: !advancedSearch });
   };
 
   render() {
-    const { advancedSearch, hasSearched, searchType, searchConfig } = this.state;
+    const {
+      advancedSearch,
+      hasSearched,
+      searchConfig,
+      searchReady,
+      searchType
+    } = this.state;
 
     const SearchForm = SEARCH_FORMS[searchType];
 
@@ -79,13 +93,17 @@ export class SearchPage extends Component {
             searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
             searchType={searchType}
             render={({ submitting, handlePagination }) => (
-              <SearchForm
-                advancedSearch={advancedSearch}
-                handlePagination={handlePagination}
-                hasSearched={hasSearched}
-                submitting={submitting}
-                toggleAdvancedSearch={this.toggleAdvancedSearch}
-              />
+              <React.Fragment>
+                {searchReady &&
+                  <SearchForm
+                    advancedSearch={advancedSearch}
+                    handlePagination={handlePagination}
+                    hasSearched={hasSearched}
+                    submitting={submitting}
+                    toggleAdvancedSearch={this.toggleAdvancedSearch}
+                  />
+                }
+              </React.Fragment>
             )}
           />
         </div>
