@@ -7,7 +7,7 @@ import Diaries from './Diaries';
 export class OpenDiariesBar extends React.Component {
   render() {
     const {
-      dueSoonDiaries, upComingDiaries, pastDueDiaries
+      dueSoonDiaries, upComingDiaries, pastDueDiaries, openHandler
     } = this.props;
 
 
@@ -21,6 +21,7 @@ export class OpenDiariesBar extends React.Component {
               <Diaries
                 diaryLevel="dueSoon"
                 diaries={dueSoonDiaries}
+                openHandler={openHandler}
               />
             }
 
@@ -28,6 +29,7 @@ export class OpenDiariesBar extends React.Component {
               <Diaries
                 diaryLevel="pastDue"
                 diaries={pastDueDiaries}
+                openHandler={openHandler}
               />
             }
 
@@ -35,6 +37,7 @@ export class OpenDiariesBar extends React.Component {
               <Diaries
                 diaryLevel="upComing"
                 diaries={upComingDiaries}
+                openHandler={openHandler}
               />
             }
           </div>
@@ -46,13 +49,13 @@ export class OpenDiariesBar extends React.Component {
 
 OpenDiariesBar.defaultProps = {
   dueSoonDiaries: [{
-    updatedAt: '09/12/2018', type: 'Billing /Payment', followUp: 'Receipt Needed', updatedBy: 'jsutphin'
+    dueDate: '2018-08-24', type: 'Billing /Payment', reason: 'Receipt Needed', assignee: 'jsutphin', message: ''
   }],
   pastDueDiaries: [{
-    updatedAt: '06/10/2018', type: 'Additional Interest', followUp: 'Action Required: need load #, 2nd request', updatedBy: 'jsutphin'
+    dueDate: '2018-08-04', type: 'Additional Interest', reason: 'Action Required', assignee: 'jsutphin', message: ''
   }],
   upComingDiaries: [{
-    updatedAt: '08/25/2018', type: 'Billing /Payment', followUp: 'Action Required', updatedBy: 'jsutphin'
+    dueDate: '2018-09-24', type: 'Billing /Payment', reason: 'Action Required', assignee: 'jsutphin', message: ''
   }]
 };
 

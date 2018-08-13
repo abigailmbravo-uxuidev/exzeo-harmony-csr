@@ -26,7 +26,7 @@ const DIARY_LEVELS = {
 
 class Diaries extends React.Component {
   render() {
-    const { diaryLevel, diaries } = this.props;
+    const { diaryLevel, diaries, openHandler } = this.props;
     const severity = DIARY_LEVELS[diaryLevel];
 
     return (
@@ -40,12 +40,12 @@ class Diaries extends React.Component {
               <li key={diary._id}>
                 <i className={severity.listIconClass} aria-hidden="true" />
                 <h5>
-                  <span>{diary.updatedAt} </span><a><i className="fa fa-arrow-up" /> Open</a>
+                  <span>{diary.dueDate} </span><a onClick={() => openHandler(diary)}><i className="fa fa-arrow-up" /> Open</a>
                 </h5>
                 <h5>{diary.type}</h5>
-                <span>Follow-up: {diary.followUp}</span>
+                <span>Follow-up: {diary.reason}</span>
                 <h5>
-                  {diary.updatedBy}
+                  {diary.assignee}
                 </h5>
               </li>
             ))}

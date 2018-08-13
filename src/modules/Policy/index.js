@@ -23,10 +23,13 @@ import Notes from '../../components/Policy/NotesFiles';
 import Cancel from '../../components/Policy/Cancel';
 import Endorsements from '../../components/Policy/Endorsements';
 import { OpenDiariesBar } from '../Diaries/OpenDiariesBar';
+import DiaryModal from '../../components/Common/DiaryModal';
 
 export class Policy extends React.Component {
   state = {
-    showDiaries: false
+    showDiaries: false,
+    showDiaryModal: false,
+    selectedDiary: null
   }
   // TODO: next step is to make an 'initialize' action that does all of this. Then this component will only need to know about one action.
   componentDidMount() {
@@ -82,6 +85,14 @@ export class Policy extends React.Component {
 
   toggleDiariesHandler = () => {
     this.setState({ showDiaries: !this.state.showDiaries });
+  }
+
+  openDiaryModalHandler = (diary) => {
+    this.setState({ showDiaryModal: true, selectedDiary: diary });
+  }
+
+  closeDiaryModalHandler = () => {
+    this.setState({ showDiaryModal: false, selectedDiary: null });
   }
 
 
@@ -172,7 +183,7 @@ export class Policy extends React.Component {
       initialized
     } = this.props;
 
-    const { showDiaries } = this.state;
+    const { showDiaries, showDiaryModal, selectedDiary } = this.state;
 
     return (
       <div className="app-wrapper csr policy">
@@ -213,7 +224,8 @@ export class Policy extends React.Component {
               hideEffectiveDateModal={this.hideEffectiveDatePopUp}
             />
           }
-          {showDiaries && <OpenDiariesBar />}
+          {showDiaries && <OpenDiariesBar showDiaryModalHandler={this.showDiaryModalHandler} openHandler={this.openDiaryModalHandler} />}
+          {showDiaryModal && <DiaryModal closeHandler={this.closeDiaryModalHandler} initialValues={selectedDiary} />}
         </main>
       </div>
     );
