@@ -1,4 +1,4 @@
-import React , { Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { reduxForm, Field } from 'redux-form';
@@ -10,25 +10,23 @@ import Loader from '@exzeo/core-ui/lib/Loader';
 
 const { Select } = Inputs;
 const { validation } = lifecycle;
-const validate = values => !values.documentType ? { documentType: 'Required' } : null;
-const documentTypeAnswers = [{label: 'Policy Invoice', answer: 'policyInvoice'}];
+const validate = values => (!values.documentType ? { documentType: 'Required' } : null);
+const documentTypeAnswers = [{ label: 'Policy Invoice', answer: 'policyInvoice' }];
 
 export class GenerateDocsForm extends Component {
-  state = {
-    showDate: false
-  };
-
   generateDoc = (data, dispatch, props) => {
-    const { errorHandler, policyNumber, updateNotes, startWorkflow } = props;
+    const {
+      errorHandler, policyNumber, updateNotes, startWorkflow
+    } = props;
     return startWorkflow('policyInvoiceGenerator', { documentNumber: policyNumber }, false)
-      .then(result => {
+      .then((result) => {
         if (window.location.pathname.includes('/notes')) updateNotes();
         const fileUrl = result.workflowData.policyInvoiceGenerator.data.previousTask.value.result[0].fileUrl;
         const proxyUrl = `${process.env.REACT_APP_API_URL}/download`;
         const params = { url: fileUrl };
         return axios.get(proxyUrl, { responseType: 'blob', params });
       })
-      .then(res => {
+      .then((res) => {
         const contentDisposition = res.headers['content-disposition'];
         const filename = contentDisposition.match(/filename="(.+)"/)[1] || policyNumber;
         const blobUrl = window.URL.createObjectURL(res.data);
@@ -40,7 +38,7 @@ export class GenerateDocsForm extends Component {
         document.body.removeChild(link);
         return true;
       })
-      .catch((err) => errorHandler({ message: err.message }));
+      .catch(err => errorHandler({ message: err.message }));
   };
 
   render() {
@@ -55,21 +53,21 @@ export class GenerateDocsForm extends Component {
             component={Select}
             answers={documentTypeAnswers}
             validate={validation.isRequired}
-            dataTest='documentType'
+            dataTest="documentType"
           />
 
           <Button
             baseClass="primary"
-            size='small'
-            customClass='btn-block'
+            size="small"
+            customClass="btn-block"
             type="submit"
-            dataTest='doc-submit'
+            dataTest="doc-submit"
           >Generate Doc</Button>
         </form>
       </div>
     );
   }
-};
+}
 
 GenerateDocsForm.propTypes = {
   policyNumber: PropTypes.string.isRequired,
@@ -83,7 +81,7 @@ export default reduxForm({
   initialValues: {
     effectiveDate: moment.utc().format('YYYY-MM-DD')
   },
-  validate: validate,
+  validate,
   enableReinitialize: true,
   keepDirtyOnReinitialize: true
-})(GenerateDocsForm)
+})(GenerateDocsForm);
