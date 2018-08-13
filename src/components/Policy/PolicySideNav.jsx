@@ -85,11 +85,11 @@ export class SideNav extends React.Component {
   };
 
   render() {
-    const { actions, policy } = this.props;
+    const { actions, policy, openDiaryModalHandler } = this.props;
     return (
       <nav className="site-nav">
         <ul>
-          {csrLinks({ policyNumber: policy.policyNumber }).map((link) => (
+          {csrLinks({ policyNumber: policy.policyNumber }).map(link => (
             <li key={link.key}>
               <span className={link.styleName}>
                 <NavLink to={link.link} activeClassName="active" exact>{link.label}</NavLink>
@@ -113,7 +113,11 @@ export class SideNav extends React.Component {
               />
             }
           </li>
+          <li>
+            <button aria-label="open-btn form-newDiary" data-test="newDiary" className="btn btn-primary btn-sm btn-block" onClick={() => openDiaryModalHandler({})}><i className="fa fa-plus" />New Diary</button>
+          </li>
         </ul>
+
       </nav>
     );
   }

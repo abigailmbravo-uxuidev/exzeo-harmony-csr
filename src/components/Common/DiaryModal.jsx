@@ -6,7 +6,7 @@ import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 
 const { Input, Select, Date } = Inputs;
-const { validation, normalize } = lifecycle;
+const { validation } = lifecycle;
 
 const typeAnswers = [
   { answer: 'Additional Interest', label: 'Additional Interest' },

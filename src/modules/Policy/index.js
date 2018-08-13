@@ -197,7 +197,7 @@ export class Policy extends React.Component {
         <PolicyDetailHeader />
         <main role="document">
           <aside className="content-panel-left">
-            <PolicySideNav match={match} />
+            <PolicySideNav match={match} openDiaryModalHandler={this.openDiaryModalHandler} />
           </aside>
 
           {initialized &&
@@ -224,7 +224,7 @@ export class Policy extends React.Component {
               hideEffectiveDateModal={this.hideEffectiveDatePopUp}
             />
           }
-          {showDiaries && <OpenDiariesBar showDiaryModalHandler={this.showDiaryModalHandler} openHandler={this.openDiaryModalHandler} />}
+          {showDiaries && <OpenDiariesBar openHandler={this.openDiaryModalHandler} />}
           {showDiaryModal && <DiaryModal closeHandler={this.closeDiaryModalHandler} initialValues={selectedDiary} />}
         </main>
       </div>
