@@ -33,6 +33,10 @@ export class DiaryModal extends Component {
     this.props.closeHandler();
   }
 
+  closeDiary = () => {
+    this.props.closeHandler();
+  }
+
   render() {
     const { closeHandler, handleSubmit } = this.props;
     return (
@@ -88,8 +92,9 @@ export class DiaryModal extends Component {
               />
             </div>
             <div className="buttons note-file-footer-button-group">
-              <button type="button" tabIndex="0" aria-label="cancel-btn form-newNote" className="btn btn-secondary cancel-button" onClick={closeHandler}>Cancel</button>
-              <button type="submit" tabIndex="0" aria-label="submit-btn form-newNote" className="btn btn-primary submit-button">Save</button>
+              <button type="button" tabIndex="0" aria-label="submit-btn form-closeDiary" className="btn btn-primary close-button" onClick={this.closeDiary}>Close Diary</button>
+              <button type="button" tabIndex="0" aria-label="cancel-btn form-cancelDiary" className="btn btn-secondary cancel-button" onClick={closeHandler}>Cancel</button>
+              <button type="submit" tabIndex="0" aria-label="submit-btn form-newDiary" className="btn btn-primary submit-button">Save</button>
             </div>
           </form>
         </div>
