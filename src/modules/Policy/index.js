@@ -31,6 +31,7 @@ export class Policy extends React.Component {
       getPolicy,
       getPaymentHistory,
       getPaymentOptionsApplyPayments,
+      getEndorsementHistory,
       match: { params: { policyNumber } }
     } = this.props;
     getPolicy(policyNumber);
