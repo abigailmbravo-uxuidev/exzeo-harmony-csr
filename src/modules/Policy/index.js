@@ -28,7 +28,6 @@ export class Policy extends React.Component {
   componentDidMount() {
     const {
       getCancelOptions,
-      getNotes,
       getPolicy,
       getPaymentHistory,
       getPaymentOptionsApplyPayments,
@@ -38,7 +37,6 @@ export class Policy extends React.Component {
     getPolicy(policyNumber);
     getPaymentHistory(policyNumber);
     getPaymentOptionsApplyPayments();
-    getNotes(policyNumber, policyNumber);
     getCancelOptions();
     getEndorsementHistory(policyNumber);
   }
