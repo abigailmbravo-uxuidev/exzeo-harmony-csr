@@ -7,6 +7,7 @@ import { setAppState } from '../../state/actions/appStateActions';
 import { getEffectiveDateChangeReasons } from '../../state/actions/policyActions';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
+import { POLICY_EXPIRATION_STATUS, BILLING_EXPIRATION_STATUS, REINSTATEMENT_STATUS } from '../../constants/policyStatus';
 
 export const showEffectiveDatePopUp = (props) => {
   props.setAppState(
@@ -48,8 +49,9 @@ export class DetailHeader extends Component {
     const loc = policy.property.physicalAddress;
     const mapQuery = encodeURIComponent(`${loc.address1} ${loc.address2} ${loc.city}, ${loc.state} ${loc.zip}`);
     const mapUri = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
-    const showReinstatement = policy.status === 'Cancelled' && [12, 13, 14, 15].includes(billingStatusCode);
-    const displayExpirationDate = ['In Force', 'Policy Issued', 'Not In Force'].includes(policy.status) && [0, 1, 2, 3, 6, 99].includes(billingStatusCode);
+    const showReinstatement = policy.status === 'Cancelled' && REINSTATEMENT_STATUS.includes(billingStatusCode);
+    const displayExpirationDate = POLICY_EXPIRATION_STATUS.includes(policy.status) &&
+     BILLING_EXPIRATION_STATUS.includes(billingStatusCode) ? 'Expiration Date' : 'Cancellation Date';
 
     return (<div className="detailHeader">
       <section id="policyDetails" className="policyDetails">
@@ -139,7 +141,7 @@ export class DetailHeader extends Component {
             <dl>
               <div>
                 <dt>
-                  <span id="cancellationDateLabel">{displayExpirationDate ? 'Expiration' : 'Cancellation'} Date</span>
+                  <span id="cancellationDateLabel">{displayExpirationDate}</span>
                   {policy && showReinstatement &&
                     <button id="show-reinstate" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showReinstatePolicyPopUp(this.props)}><i className="fa fa-thumbs-up" />Reinstate</button>
                   }
