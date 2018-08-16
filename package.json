@@ -3,18 +3,14 @@
   "version": "0.9.1",
   "private": true,
   "scripts": {
-    "build-css": "node-sass src/sass --output-style 'compressed' -o src/css",
-    "watch-css": "node-sass src/sass --output-style 'compressed' -o src/css --watch --recursive",
+    "css:build": "node-sass src/sass --output-style 'compressed' -o src/css",
+    "css:watch": "node-sass src/sass --output-style 'compressed' -o src/css --watch --recursive",
     "server": "./replace-dotenv.sh && exframe-web",
-    "start-js": "react-scripts start",
-    "start": "npm-run-all -s build-css start-js",
+    "start": "react-scripts start",
+    "start:dev": "npm build-css && npm start",
     "build": "npm run build-css && react-scripts build",
-    "cover": "npm test -- --coverage",
     "test": "react-scripts test --env=jsdom --coverage",
-    "test:watch": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "link-core": "npm link @exzeo/core-ui",
-    "unlink-core": "npm unlink @exzeo/core-ui"
+    "test:watch": "react-scripts test --env=jsdom"
   },
   "dependencies": {
     "@exzeo/core-ui": "^0.1.19",
