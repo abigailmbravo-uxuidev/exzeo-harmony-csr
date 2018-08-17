@@ -80,8 +80,7 @@ const mapDispatchToProps = dispatch => ({
   actions: {
     appStateActions: bindActionCreators(appStateActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
-    errorActions: bindActionCreators(errorActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
+    errorActions: bindActionCreators(errorActions, dispatch)
   }
 });
 
