@@ -47,8 +47,6 @@ export class CreateDiary extends Component {
       }
     };
 
-    console.log(createRequest.data)
-
     try {
       const response = await serviceRunner.callService(createRequest);
       this.closeButtonHandler();

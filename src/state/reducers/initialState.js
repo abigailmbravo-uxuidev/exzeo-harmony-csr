@@ -10,6 +10,7 @@ export default {
   ui: {},
   cg: {},
   error: {},
+  diaries: [],
   newNote: {},
   questions: {},
   quoteState: {
