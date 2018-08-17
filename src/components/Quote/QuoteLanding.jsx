@@ -16,9 +16,7 @@ export class QuoteLanding extends Component {
   }
 
   async componentDidMount() {
-    const {
- match: { params }, startWorkflow, setAppState, appState, batchCompleteTask, newQuote 
-} = this.props;
+    const { match: { params }, startWorkflow, setAppState, appState, batchCompleteTask, newQuote } = this.props;
 
     try {
       const result = await startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` });
