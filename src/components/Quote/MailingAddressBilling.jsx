@@ -189,17 +189,9 @@ const setPropertyToggle = (props) => {
 
 export class MailingAddressBilling extends Component {
   componentDidMount() {
-    const { actions, appState, match } = this.props;
-    const workflowId = match.params.workflowId;
+    const { actions, match: { params: { workflowId, quoteId } } } = this.props;
     if (workflowId) {
-      actions.appStateActions.setAppState(
-        MODEL_NAME, workflowId,
-        {
-          ...appState.data,
-          submitting: true
-        }
-      );
-
+      this.setPageLoader(true);
       const steps = [
         {
           name: 'hasUserEnteredData',
@@ -211,7 +203,7 @@ export class MailingAddressBilling extends Component {
         }
       ];
 
-      actions.serviceActions.getQuote(match.params.quoteId)
+      actions.serviceActions.getQuote(quoteId)
         .then((quoteData) => {
           if (quoteData && quoteData.rating) {
             const paymentOptions = {
@@ -227,19 +219,26 @@ export class MailingAddressBilling extends Component {
             };
 
             actions.serviceActions.getBillingOptions(paymentOptions);
+            actions.cgActions.batchCompleteTask(MODEL_NAME, workflowId, steps).then(() => {
+              this.setPageLoader(false);
+            });
+          } else {
+            this.setPageLoader(false);
           }
         });
-
-      actions.cgActions.batchCompleteTask(MODEL_NAME, workflowId, steps).then(() => {
-        actions.appStateActions.setAppState(
-          MODEL_NAME, workflowId,
-          {
-            ...appState.data,
-            selectedLink: 'mailing'
-          }
-        );
-      });
     }
+  }
+
+  setPageLoader = (isSubmitting) => {
+    const { actions, appState, match: { params: { workflowId } } } = this.props;
+    actions.appStateActions.setAppState(
+      MODEL_NAME, workflowId,
+      {
+        ...appState.data,
+        selectedLink: 'mailing',
+        submitting: isSubmitting
+      }
+    );
   }
 
   render() {
