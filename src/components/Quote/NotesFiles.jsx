@@ -73,8 +73,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   notes: state.service.notes,
   quoteData: state.service.quote || {},
-  error: state.error,
-  appState: state.appState
+  error: state.error
 });
 
 const mapDispatchToProps = dispatch => ({
