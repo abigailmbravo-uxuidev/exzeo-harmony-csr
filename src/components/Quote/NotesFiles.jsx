@@ -6,7 +6,6 @@ import QuoteBaseConnect from '../../containers/Quote';
 import * as appStateActions from '../../state/actions/appStateActions';
 import * as serviceActions from '../../state/actions/serviceActions';
 import * as errorActions from '../../state/actions/errorActions';
-import * as appStateActions from '../../state/actions/appStateActions';
 import NoteList from '../Common/NoteList';
 import Footer from '../Common/Footer';
 
