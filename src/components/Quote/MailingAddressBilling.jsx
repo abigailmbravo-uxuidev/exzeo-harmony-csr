@@ -121,16 +121,12 @@ export const selectBillTo = (props) => {
 
 export const handleFormSubmit = (data, dispatch, props) => {
   const {
-    appState, actions, billingOptions, fieldValues, match, quoteData
+    appState, actions, billingOptions, fieldValues, match: { params: { workflowId } }, quoteData
   } = props;
-  const workflowId = match.params.workflowId;
-
   actions.appStateActions.setAppState(MODEL_NAME, workflowId, { ...appState.data, submitting: true });
 
   const submitData = fieldValues;
-
   const selectedBilling = _.find(billingOptions.options, ['billToId', submitData.billToId]);
-
   submitData.billToType = selectedBilling.billToType;
 
   const steps = [
@@ -348,7 +344,14 @@ export class MailingAddressBilling extends Component {
           <Footer />
           <div className="btn-wrapper">
             <button tabIndex="0" aria-label="reset-btn form-mailingBilling" className="btn btn-secondary" type="button" onClick={() => clearForm(this.props)}>Reset</button>
-            <button tabIndex="0" aria-label="submit-btn form-mailingBilling" className="btn btn-primary" type="submit" form="MailingAddressBilling" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData) || !this.props.fieldValues.billToId}>Update</button>
+            <button
+              tabIndex="0"
+              aria-label="submit-btn form-mailingBilling"
+              className="btn btn-primary"
+              type="submit"
+              form="MailingAddressBilling"
+              disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData) || !this.props.fieldValues.billToId}
+            >Update</button>
           </div>
         </div>
       </QuoteBaseConnect>
@@ -360,16 +363,14 @@ MailingAddressBilling.contextTypes = {
 };
 
 MailingAddressBilling.propTypes = {
-  tasks: PropTypes.shape(),
   appState: PropTypes.shape({
     modelName: PropTypes.string,
     instanceId: PropTypes.string,
-    data: PropTypes.shape({ submitting: PropTypes.boolean })
+    data: PropTypes.shape({ submitting: PropTypes.bool })
   })
 };
 
 const mapStateToProps = state => ({
-  tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'MailingAddressBilling.values', {}),
   initialValues: handleInitialize(state),
