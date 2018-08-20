@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Loader } from '@exzeo/core-ui/lib/Loader';
+import { Loader } from '@exzeo/core-ui';
 import { getNotes } from '../../state/actions/serviceActions';
 import * as errorActions from '../../state/actions/errorActions';
 import NoteList from '../Common/NoteList';
