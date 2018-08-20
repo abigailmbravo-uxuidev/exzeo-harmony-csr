@@ -97,9 +97,7 @@ export class AdditionalInterests extends Component {
   }
 
   handleAISubmit = async (additionalInterests) => {
-    const {
-      appState, quoteData, batchCompleteTask, getLatestQuote, setAppState, match
-    } = this.props;
+    const { appState, quoteData, batchCompleteTask, getLatestQuote, setAppState, match } = this.props;
     const workflowId = match.params.workflowId;
 
     const { addAdditionalInterestType } = this.state;
