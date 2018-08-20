@@ -17,7 +17,7 @@
     "unlink-core": "npm unlink @exzeo/core-ui"
   },
   "dependencies": {
-    "@exzeo/core-ui": "0.1.x",
+    "@exzeo/core-ui": "^0.1.19",
     "@fortawesome/fontawesome": "~1.0.0",
     "@fortawesome/react-fontawesome": "~0.0.14",
     "@uppy/core": "^0.26.0",
@@ -37,10 +37,10 @@
     "node-sass": "~4.7.2",
     "npm-run-all": "~4.1.2",
     "prop-types": "~15.6.0",
-    "react": "~16.4.x",
+    "react": "^16.4.2",
     "react-bootstrap-table": "~4.3.1",
     "react-cookie": "~2.1.2",
-    "react-dom": "~16.4.x",
+    "react-dom": "^16.4.2",
     "react-dropzone": "~4.2.3",
     "react-helmet": "~5.2.0",
     "react-modal": "~3.1.7",
