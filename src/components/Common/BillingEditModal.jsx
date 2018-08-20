@@ -2,8 +2,8 @@ import React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm, Field, formValueSelector } from 'redux-form';
-import { Radio, Select } from '@exzeo/core-ui/lib/Input';
-import { isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
+import { Radio, Select, validation } from '@exzeo/core-ui';
+
 import { updateBillPlan } from '../../state/actions/policyActions';
 
 const FORM_NAME = 'BillingEditModal';
@@ -83,7 +83,7 @@ export class BillingEditModal extends React.Component {
                 label="Bill To"
                 component={Select}
                 normalize={this.normalizeBilling}
-                validate={isRequired}
+                validate={validation.isRequired}
                 answers={this.billToOptions}
                 dataTest="billToId"
               />
@@ -91,7 +91,7 @@ export class BillingEditModal extends React.Component {
                 name="billPlan"
                 label="Bill Plan"
                 component={Radio}
-                validate={isRequired}
+                validate={validation.isRequired}
                 answers={this.getBillingOptions()}
                 dataTest="billPlan"
                 segmented

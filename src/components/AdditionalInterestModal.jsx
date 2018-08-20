@@ -4,9 +4,8 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import cloneDeep from 'lodash/cloneDeep';
 import { reduxForm, Field, reset } from 'redux-form';
-import { Input, Select, Phone, SelectTypeAhead, SelectInteger } from '@exzeo/core-ui/lib/Input';
-import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
-import Loader from '@exzeo/core-ui/lib/Loader';
+import { Input, Select, Phone, SelectTypeAhead, SelectInteger, Loader, validation } from '@exzeo/core-ui';
+
 import {
   getMortgageeOrderAnswers,
   getMortgageeOrderAnswersForEdit

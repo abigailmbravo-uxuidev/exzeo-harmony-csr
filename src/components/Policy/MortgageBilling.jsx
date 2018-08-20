@@ -4,9 +4,8 @@ import { connect } from 'react-redux';
 import { reduxForm, Field, formValueSelector } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
-import Inputs from '@exzeo/core-ui/lib/Input';
-import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
-import Loader from '@exzeo/core-ui/lib/Loader';
+import { Input, Select, Currency, Loader, validation } from '@exzeo/core-ui';
+
 import { getAnswers } from '../../utilities/forms';
 import { getMortgageeOrderAnswers } from '../../utilities/additionalInterests';
 import {
@@ -18,18 +17,14 @@ import {
 import {
   getPolicy,
   addTransaction,
-  createTransaction,
+  createTransaction
 } from '../../state/actions/policyActions';
 import { getUIQuestions } from '../../state/actions/questionsActions';
-
 import BillingModal from '../../components/Common/BillingEditModal';
 import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';
-import AdditionalInterestCard from "../AdditionalInterestCard";
-import PaymentHistoryTable from "../PaymentHistoryTable";
-
-const { validation } = lifecycle;
-const { Input, Select, Currency } = Inputs;
+import AdditionalInterestCard from '../AdditionalInterestCard';
+import PaymentHistoryTable from '../PaymentHistoryTable';
 
 const validateBatchNumber = validation.isDateMatchMin10('cashDate', 'YYYYMMDD');
 const validateAmount = validation.isRange(-1000000, 1000000);

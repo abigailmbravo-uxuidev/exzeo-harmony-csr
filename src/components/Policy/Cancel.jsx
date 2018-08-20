@@ -3,18 +3,19 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm, change, getFormValues } from 'redux-form';
 import moment from 'moment-timezone';
-import Loader from '@exzeo/core-ui/lib/Loader';
+import { Loader } from '@exzeo/core-ui';
+
 import { startWorkflow, batchCompleteTask } from '../../state/actions/cgActions';
 import { setAppState } from '../../state/actions/appStateActions';
 import { getPolicy } from '../../state/actions/policyActions';
-
 import RadioField from '../Form/inputs/RadioField';
 import DateField from '../Form/inputs/DateField';
 import SelectField from '../Form/inputs/SelectField';
 import TextField from '../Form/inputs/TextField';
+import Footer from '../Common/Footer';
+
 import Payments from './Payments';
 import Claims from './Claims';
-import Footer from '../Common/Footer';
 
 const convertDateToTimeZone = (date, zipCodeSettings) => {
   const formattedDateString = date.format('YYYY-MM-DD');

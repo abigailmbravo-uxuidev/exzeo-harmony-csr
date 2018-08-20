@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import { reduxForm, Field } from 'redux-form';
 import moment from 'moment-timezone';
-import Inputs from '@exzeo/core-ui/lib/Input';
-import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
-import Loader from '@exzeo/core-ui/lib/Loader';
+import { Select, Loader, validation } from '@exzeo/core-ui';
+
 import DateField from '../Form/inputs/DateField';
 
-const { Select } = Inputs;
-const { validation } = lifecycle;
+
 const validate = values => !values.documentType ? { documentType: 'Required' } : null;
 
 export class GenerateDocsForm extends Component {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import Loader from '@exzeo/core-ui/lib/Loader';
+import { Loader } from '@exzeo/core-ui';
 import { WORK_FLOW_DATA, WORK_FLOW_MODEL_NAME } from "../constants/search";
 import { startWorkflow } from '../state/actions/cgActions';
 import { getUIQuestions } from '../state/actions/questionsActions';
