@@ -5,7 +5,6 @@ import _ from 'lodash';
 import moment from 'moment';
 import momentTZ from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
-import { batchActions } from 'redux-batched-actions';
 import { reduxForm, formValueSelector } from 'redux-form';
 import { getAnswers } from '../../../utilities/forms';
 import { setPercentageOfValue } from '../../../utilities/endorsementModel';
@@ -224,7 +223,9 @@ let setAgents = false;
 
 export class Coverage extends Component {
   componentDidMount() {
-    const { getUIQuestions, setAppState, batchCompleteTask, appState, match  } = this.props;
+    const {
+      getUIQuestions, setAppState, batchCompleteTask, appState, match
+    } = this.props;
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
 
     // this.props.startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` }).then((result) => {
@@ -238,7 +239,7 @@ export class Coverage extends Component {
       submitting: true,
       selectedLink: 'customerData'
     });
-    batchCompleteTask(appState.modelName, match.params.workflowId, steps)
+    batchCompleteTask(appState.modelName, match.params.workflowId, steps);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -318,8 +319,8 @@ export class Coverage extends Component {
     const agency = _.find(this.props.agencies, a => String(a.agencyCode) === String(agencyCode));
     if (agency) {
       getAgentsByAgency(agency.companyCode, agency.state, agencyCode).then((response) => {
-        if (response.payload && response.payload[0].data.agents && response.payload[0].data.agents.length === 1) {
-          change('agentCode', response.payload[0].data.agents[0].agentCode);
+        if (response.data && response.data.agents && response.data.agents.length === 1) {
+          change('agentCode', response.data.agents[0].agentCode);
         } else {
           change('agentCode', '');
         }
@@ -329,31 +330,29 @@ export class Coverage extends Component {
   };
 
   clearSecondaryPolicyholder = (value) => {
-    const { dispatch, quoteData, change } = this.props;
+    const { quoteData, change } = this.props;
     if (!value) {
       const pH2email = _.get(quoteData, 'policyHolders[1].emailAddress');
       const pH2FirstName = _.get(quoteData, 'policyHolders[1].firstName');
       const pH2LastName = _.get(quoteData, 'policyHolders[1].lastName');
       const pH2phone = _.get(quoteData, 'policyHolders[1].primaryPhoneNumber') || '';
       const pH2phone2 = _.get(quoteData, 'policyHolders[1].secondaryPhoneNumber') || '';
-      dispatch(batchActions([
-        change('Coverage', 'pH2email', pH2email),
-        change('Coverage', 'pH2FirstName', pH2FirstName),
-        change('Coverage', 'pH2LastName', pH2LastName),
-        change('Coverage', 'pH2phone', pH2phone),
-        change('Coverage', 'pH2phone2', pH2phone2),
-        change('Coverage', 'clearFields', false)
-      ]));
+
+      change('pH2email', pH2email);
+      change('pH2FirstName', pH2FirstName);
+      change('pH2LastName', pH2LastName);
+      change('pH2phone', pH2phone);
+      change('pH2phone2', pH2phone2);
+      change('clearFields', false);
     } else {
-      dispatch(batchActions([
-        change('Coverage', 'pH2email', ''),
-        change('Coverage', 'pH2FirstName', ''),
-        change('Coverage', 'pH2LastName', ''),
-        change('Coverage', 'pH2phone', ''),
-        change('Coverage', 'pH2phone2', ''),
-        change('Coverage', 'clearFields', true)
-      ]));
+      change('pH2email', '');
+      change('pH2FirstName', '');
+      change('pH2LastName', '');
+      change('pH2phone', '');
+      change('pH2phone2', '');
+      change('clearFields', true);
     }
+    return value;
   };
 
   render() {
