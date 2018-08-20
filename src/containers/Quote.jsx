@@ -9,24 +9,53 @@ import QuoteDetailHeader from '../components/Quote/DetailHeader';
 import UnderwritingValidationBarConnect from '../components/Quote/UnderwritingValidationBar';
 
 
-export const QuoteBase = ({appState, quoteData, match, children}) => (
-  <div className="app-wrapper csr quote">
-    <Helmet><title>{quoteData.quoteNumber ? `Q: ${quoteData.quoteNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
-    {/* <NewNoteFileUploader />*/}
-    <QuoteHeader />
-    <QuoteDetailHeader />
-    <main role="document">
-      {(appState.data.submitting || !quoteData._id) && <Loader />}
-      <aside className="content-panel-left">
-        <QuoteSideNav match={match} />
-      </aside>
-      <div className="content-wrapper">
-        {children}
+import { OpenDiariesBar } from '../modules/Diaries/OpenDiariesBar';
+import DiaryModal from '../components/Common/DiaryModal';
+
+export class QuoteBase extends React.Component {
+  state = {
+    showDiaries: false,
+    showDiaryModal: false,
+    selectedDiary: null
+  }
+
+  toggleDiariesHandler = () => {
+    this.setState({ showDiaries: !this.state.showDiaries });
+  }
+
+  openDiaryModalHandler = (diary) => {
+    this.setState({ showDiaryModal: true, selectedDiary: diary });
+  }
+
+  closeDiaryModalHandler = () => {
+    this.setState({ showDiaryModal: false, selectedDiary: null });
+  }
+
+  render() {
+    const { appState, quoteData, match, children } = this.props;
+    const { showDiaries, showDiaryModal, selectedDiary } = this.state;
+    return (
+      <div className="app-wrapper csr quote">
+        <Helmet><title>{quoteData.quoteNumber ? `Q: ${quoteData.quoteNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
+        {/* <NewNoteFileUploader /> */}
+        <QuoteHeader toggleDiaries={this.toggleDiariesHandler} showDiaries={showDiaries} />
+        <QuoteDetailHeader />
+        <main role="document">
+          {(appState.data.submitting || !quoteData._id) && <Loader />}
+          <aside className="content-panel-left">
+            <QuoteSideNav match={match} openDiaryModalHandler={this.openDiaryModalHandler} />
+          </aside>
+          <div className="content-wrapper">
+            {children}
+          </div>
+          <UnderwritingValidationBarConnect />
+          {showDiaries && <OpenDiariesBar openHandler={this.openDiaryModalHandler} />}
+          {showDiaryModal && <DiaryModal closeHandler={this.closeDiaryModalHandler} initialValues={selectedDiary} />}
+        </main>
       </div>
-      <UnderwritingValidationBarConnect />
-    </main>
-  </div>
-);
+    );
+  }
+}
 
 QuoteBase.propTypes = {
   children: PropTypes.oneOfType([
