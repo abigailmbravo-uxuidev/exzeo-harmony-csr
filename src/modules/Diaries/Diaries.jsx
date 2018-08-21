@@ -24,7 +24,7 @@ const DIARY_LEVELS = {
   }
 };
 
-class Diaries extends React.Component {
+export class Diaries extends React.Component {
   render() {
     const { diaryLevel, diaries, openHandler } = this.props;
     const severity = DIARY_LEVELS[diaryLevel];

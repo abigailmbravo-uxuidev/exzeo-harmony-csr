@@ -2,9 +2,8 @@ import React from 'react';
 import configureStore from 'redux-mock-store';
 import { shallow } from 'enzyme';
 
-import { Policy } from './index';
+import Policy from './index';
 
-const middlewares = [];
 const mockStore = configureStore([]);
 
 describe('Testing Policy component', () => {
@@ -73,6 +72,7 @@ describe('Testing Policy component', () => {
 
     const wrapper = shallow(<Policy store={store} {...props} />);
     expect(wrapper);
-    wrapper.instance().componentDidUpdate({ policy: {} });
+    const instance = wrapper.instance();
+    instance.componentDidMount();
   });
 });

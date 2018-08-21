@@ -3,7 +3,7 @@ import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp from './PolicyHeader';
+import PolicyHeader from './PolicyHeader';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -37,7 +37,7 @@ describe('Testing PolicyHeader component', () => {
       },
       ...propTypes
     };
-    const wrapper = shallow(<ConnectedApp store={store} {...props} />);
+    const wrapper = shallow(<PolicyHeader store={store} {...props} />);
     expect(wrapper);
   });
 });

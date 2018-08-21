@@ -21,24 +21,21 @@ export class OpenDiariesBar extends React.Component {
               <Diaries
                 diaryLevel="dueSoon"
                 diaries={dueSoonDiaries}
-                openHandler={openHandler}
-              />
+                openHandler={openHandler}/>
             }
 
             {pastDueDiaries.length > 0 &&
               <Diaries
                 diaryLevel="pastDue"
                 diaries={pastDueDiaries}
-                openHandler={openHandler}
-              />
+                openHandler={openHandler}/>
             }
 
             {upComingDiaries.length > 0 &&
               <Diaries
                 diaryLevel="upComing"
                 diaries={upComingDiaries}
-                openHandler={openHandler}
-              />
+                openHandler={openHandler}/>
             }
           </div>
         </aside>
