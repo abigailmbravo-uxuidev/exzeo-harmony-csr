@@ -5,7 +5,7 @@ import { shallow } from 'enzyme';
 import ConnectedApp, {
   NewNoteFileUploaderPopup,
   SideNav,
-  UWconditionsPopup,
+  UWconditionsPopup
 } from './QuoteSideNav';
 
 const middlewares = [];
@@ -33,10 +33,13 @@ describe('Testing QuoteSideNav component', () => {
     const props = {
       match: { params: {} },
       actions: {
+        uiActions: {
+          toggleNote() {}
+        },
         cgActions: {
           batchCompleteTask() { return Promise.resolve(); }
         },
-        newNoteActions: {
+        appStateActions: {
           toggleNote() {}
         },
         appStateActions: {

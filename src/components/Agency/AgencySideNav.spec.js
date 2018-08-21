@@ -53,7 +53,5 @@ describe('Testing AgencySideNav component', () => {
     };
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
     expect(wrapper);
-
-    SideNav(props);
   });
 });

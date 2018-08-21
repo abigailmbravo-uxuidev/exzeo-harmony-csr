@@ -27,11 +27,12 @@ import Reports from './containers/Reports';
 import PolicyModule from './modules/Policy';
 import AgencyStaff from './components/Agency/Staff';
 import NoteUploader from './components/Common/NoteUploader';
-
+import CreateDiary from './components/Common/CreateDiary';
 
 import * as appStateActions from './state/actions/appStateActions';
 import * as errorActions from './state/actions/errorActions';
 import * as authActions from './state/actions/authActions';
+import * as diaryActions from './state/actions/diaryActions';
 
 const auth = new Auth();
 
@@ -44,8 +45,8 @@ class Routes extends Component {
   componentWillMount() {
     const { isAuthenticated } = auth;
     if (isAuthenticated() && checkPublicPath(window.location.pathname)) {
-      const idToken = localStorage.getItem('id_token');
-      axios.defaults.headers.common['authorization'] = `bearer ${idToken}`; // eslint-disable-line
+      this.idToken = localStorage.getItem('id_token');
+      axios.defaults.headers.common['authorization'] = `bearer ${this.idToken}`;
 
       if (!this.props.authState.userProfile) {
         const profile = JSON.parse(localStorage.getItem('user_profile'));
@@ -58,6 +59,17 @@ class Routes extends Component {
       auth.handleAuthentication();
     }
   }
+
+  componentDidMount() {
+    const pollDiaries = () => {
+      if (this.idToken) this.props.actions.diaryActions.fetchDiaries(this.idToken);
+      console.log('this.idToken: ', this.idToken)
+      //setTimeout(() => pollDiaries(), 10000);
+    }
+
+    pollDiaries();
+  }
+    
 
   setBackStep = (goToNext, callback) => {
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
@@ -76,6 +88,7 @@ class Routes extends Component {
   };
 
   render() {
+    const { diary, note } = this.props.ui;
     return (
       <div>
         <Modal
@@ -92,18 +105,23 @@ class Routes extends Component {
             <button className="btn-primary" onClick={this.clearError}>close</button>
           </div>
         </Modal>
-        {this.props.newNote && this.props.newNote.documentId &&
+        {diary && diary.resourceType &&
+          <CreateDiary
+            resourceType={diary.resourceType}
+            resourceId={diary.id}
+          />
+        }
+        {note && note.documentId &&
           <NoteUploader
-            noteType={this.props.newNote.noteType}
-            documentId={this.props.newNote.documentId}
-            sourceId={this.props.newNote.sourceNumber}
+            noteType={note.noteType}
+            documentId={note.documentId}
+            sourceId={note.sourceNumber}
           />
         }
         <Router
           getUserConfirmation={(message, callback) => {
             ReactDOM.render(
-(
-  <ConfirmPopup {...this.props} message={message} setBackStep={this.setBackStep} callback={callback} />
+(<ConfirmPopup {...this.props} message={message} setBackStep={this.setBackStep} callback={callback} />
             ), document.getElementById('modal')
 );
           }}
@@ -153,14 +171,15 @@ const mapStateToProps = state => ({
   error: state.error,
   appState: state.appState,
   authState: state.authState,
-  newNote: state.newNote
+  ui: state.ui
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
     appStateActions: bindActionCreators(appStateActions, dispatch),
     errorActions: bindActionCreators(errorActions, dispatch),
-    authActions: bindActionCreators(authActions, dispatch)
+    authActions: bindActionCreators(authActions, dispatch),
+    diaryActions: bindActionCreators(diaryActions, dispatch)
   }
 });
 

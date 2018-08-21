@@ -10,30 +10,19 @@ import UnderwritingValidationBarConnect from '../components/Quote/UnderwritingVa
 
 
 import { OpenDiariesBar } from '../modules/Diaries/OpenDiariesBar';
-import DiaryModal from '../components/Common/DiaryModal';
 
 export class QuoteBase extends React.Component {
   state = {
-    showDiaries: false,
-    showDiaryModal: false,
-    selectedDiary: null
+    showDiaries: false
   }
 
   toggleDiariesHandler = () => {
     this.setState({ showDiaries: !this.state.showDiaries });
   }
 
-  openDiaryModalHandler = (diary) => {
-    this.setState({ showDiaryModal: true, selectedDiary: diary });
-  }
-
-  closeDiaryModalHandler = () => {
-    this.setState({ showDiaryModal: false, selectedDiary: null });
-  }
-
   render() {
     const { appState, quoteData, match, children } = this.props;
-    const { showDiaries, showDiaryModal, selectedDiary } = this.state;
+    const { showDiaries } = this.state;
     return (
       <div className="app-wrapper csr quote">
         <Helmet><title>{quoteData.quoteNumber ? `Q: ${quoteData.quoteNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
@@ -43,14 +32,13 @@ export class QuoteBase extends React.Component {
         <main role="document">
           {(appState.data.submitting || !quoteData._id) && <Loader />}
           <aside className="content-panel-left">
-            <QuoteSideNav match={match} openDiaryModalHandler={this.openDiaryModalHandler} />
+            <QuoteSideNav match={match} />
           </aside>
           <div className="content-wrapper">
             {children}
           </div>
           <UnderwritingValidationBarConnect />
-          {showDiaries && <OpenDiariesBar openHandler={this.openDiaryModalHandler} />}
-          {showDiaryModal && <DiaryModal closeHandler={this.closeDiaryModalHandler} initialValues={selectedDiary} />}
+          {showDiaries && <OpenDiariesBar />}
         </main>
       </div>
     );

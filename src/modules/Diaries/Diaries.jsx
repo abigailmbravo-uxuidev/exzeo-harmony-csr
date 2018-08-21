@@ -1,5 +1,7 @@
 import React from 'react';
 import propTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { toggleDiary } from '../../state/actions/uiActions';
 
 const DIARY_LEVELS = {
   upComing: {
@@ -25,8 +27,17 @@ const DIARY_LEVELS = {
 };
 
 export class Diaries extends React.Component {
+  openHandler(diary) {
+    const { toggleDiaryAction, policy: { policyNumber } } = this.props;
+    toggleDiaryAction({
+      resourceType: 'Policy',
+      id: policyNumber,
+      diary
+    });
+  }
+
   render() {
-    const { diaryLevel, diaries, openHandler } = this.props;
+    const { diaryLevel, diaries } = this.props;
     const severity = DIARY_LEVELS[diaryLevel];
 
     return (
@@ -40,7 +51,7 @@ export class Diaries extends React.Component {
               <li key={diary._id}>
                 <i className={severity.listIconClass} aria-hidden="true" />
                 <h5>
-                  <span>{diary.dueDate} </span><a onClick={() => openHandler(diary)}><i className="fa fa-arrow-up" /> Open</a>
+                  <span>{diary.dueDate} </span><a onClick={() => this.openHandler(diary)}><i className="fa fa-arrow-up" /> Open</a>
                 </h5>
                 <h5>{diary.type}</h5>
                 <span>Follow-up: {diary.reason}</span>
@@ -64,8 +75,8 @@ Diaries.propTypes = {
   }))
 };
 
-Diaries.defaultProps = {
-  render: () => {}
-};
+const mapStateToProps = state => ({
+  policy: state.policyState.policy || {}
+});
 
-export default Diaries;
+export default connect(mapStateToProps, { toggleDiaryAction: toggleDiary })(Diaries);

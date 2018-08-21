@@ -11,30 +11,19 @@ import * as appStateActions from '../state/actions/appStateActions';
 import * as serviceActions from '../state/actions/serviceActions';
 
 import { OpenDiariesBar } from '../modules/Diaries/OpenDiariesBar';
-import DiaryModal from '../components/Common/DiaryModal';
 
 export class Agency extends React.Component {
   state = {
-    showDiaries: false,
-    showDiaryModal: false,
-    selectedDiary: null
+    showDiaries: false
   }
 
   toggleDiariesHandler = () => {
     this.setState({ showDiaries: !this.state.showDiaries });
   }
 
-  openDiaryModalHandler = (diary) => {
-    this.setState({ showDiaryModal: true, selectedDiary: diary });
-  }
-
-  closeDiaryModalHandler = () => {
-    this.setState({ showDiaryModal: false, selectedDiary: null });
-  }
-
   render() {
     const { agency, children } = this.props;
-    const { showDiaries, showDiaryModal, selectedDiary } = this.state;
+    const { showDiaries } = this.state;
 
     return (<div className="app-wrapper csr agency">
       <Helmet><title>{agency && agency.agencyCode ? `A: ${agency.agencyCode}` : 'Harmony - CSR Portal'}</title></Helmet>
@@ -43,13 +32,12 @@ export class Agency extends React.Component {
       <main role="document">
         { !agency && <Loader />}
         <aside className="content-panel-left">
-          <AgencySideNav agencyCode={agency ? agency.agencyCode : null} openDiaryModalHandler={this.openDiaryModalHandler} />
+          <AgencySideNav agencyCode={agency ? agency.agencyCode : null} />
         </aside>
         <div className="content-wrapper">
           {children}
         </div>
-        {showDiaries && <OpenDiariesBar openHandler={this.openDiaryModalHandler} />}
-        {showDiaryModal && <DiaryModal closeHandler={this.closeDiaryModalHandler} initialValues={selectedDiary} />}
+        {showDiaries && <OpenDiariesBar />}
       </main>
     </div>
     );

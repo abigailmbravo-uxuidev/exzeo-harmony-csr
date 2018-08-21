@@ -3,6 +3,8 @@ export const AUTH = 'AUTH';
 /* APP STATE ACTIONS */
 export const APPSTATE_SET = 'APPSTATE_SET';
 export const APPSTATE_ERROR = 'APPSTATE_ERROR';
+export const TOGGLE_NOTE = 'TOGGLE_NOTE';
+export const TOGGLE_DIARY = 'TOGGLE_DIARY';
 /* ERROR */
 export const APP_ERROR = 'APP_ERROR';
 export const APP_ERROR_CLEAR = 'APP_ERROR_CLEAR';
@@ -12,8 +14,6 @@ export const CG_ACTIVE_TASK = 'CG_ACTIVE_TASK';
 export const CG_COMPLETE = 'CG_COMPLETE';
 export const CG_ERROR = 'CG_ERROR';
 export const CLEAR_SEARCH_RESULTS = 'CLEAR_SEARCH_RESULTS';
-/* NOTES */
-export const TOGGLE_NOTE = 'TOGGLE_NOTE';
 /* QUESTIONS (Enums)  */
 export const SET_QUESTIONS = 'SET_QUESTIONS';
 /* QUOTE */
@@ -34,5 +34,7 @@ export const SEARCH = 'SEARCH';
 export const RESET_SEARCH = 'RESET_SEARCH';
 export const SET_SEARCH_RESULTS = 'SET_SEARCH_RESULTS';
 export const TOGGLE_LOADING = 'TOGGLE_LOADING';
+/* DIARIES ACTIONS */
+export const SET_DIARIES = 'SET_POLICY';
 /* TODO: DEPRECATED - SERVICE */
 export const SERVICE_REQUEST = 'SERVICE_REQUEST';

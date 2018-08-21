@@ -9,7 +9,7 @@ import XHRUpload from '@uppy/xhr-upload';
 import moment from 'moment';
 import Loader from '@exzeo/core-ui/lib/Loader';
 import * as cgActions from '../../state/actions/cgActions';
-import * as newNoteActions from '../../state/actions/newNoteActions';
+import * as uiActions from '../../state/actions/uiActions';
 import * as serviceActions from '../../state/actions/serviceActions';
 import * as errorActions from '../../state/actions/errorActions';
 import '@uppy/core/dist/style.min.css';
@@ -127,7 +127,7 @@ export class NoteUploader extends Component {
   contactTypes = this.props.noteType ? this.contactTypeOptions[this.props.noteType] : []
   docTypes = this.props.noteType ? this.docTypeOptions[this.props.noteType] : []
 
-  closeButtonHandler = () => this.props.actions.newNoteActions.toggleNote({})
+  closeButtonHandler = () => this.props.actions.uiActions.toggleNote({})
 
   validateFile = (file, currentFiles) => {
     if (!file.name.includes('.')) {
@@ -245,7 +245,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: {
     cgActions: bindActionCreators(cgActions, dispatch),
-    newNoteActions: bindActionCreators(newNoteActions, dispatch),
+    uiActions: bindActionCreators(uiActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     errorActions: bindActionCreators(errorActions, dispatch)
   }

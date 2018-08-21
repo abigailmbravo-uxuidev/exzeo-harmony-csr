@@ -7,8 +7,10 @@ export default {
       submitting: false
     }
   },
+  ui: {},
   cg: {},
   error: {},
+  diaries: [],
   newNote: {},
   questions: {},
   quoteState: {

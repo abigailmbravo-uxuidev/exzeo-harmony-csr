@@ -23,13 +23,10 @@ import Notes from '../../components/Policy/NotesFiles';
 import Cancel from '../../components/Policy/Cancel';
 import Endorsements from '../../components/Policy/Endorsements';
 import { OpenDiariesBar } from '../Diaries/OpenDiariesBar';
-import DiaryModal from '../../components/Common/DiaryModal';
 
 export class Policy extends React.Component {
   state = {
-    showDiaries: false,
-    showDiaryModal: false,
-    selectedDiary: null
+    showDiaries: false
   }
   // TODO: next step is to make an 'initialize' action that does all of this. Then this component will only need to know about one action.
   componentDidMount() {
@@ -84,15 +81,6 @@ export class Policy extends React.Component {
   toggleDiariesHandler = () => {
     this.setState({ showDiaries: !this.state.showDiaries });
   }
-
-  openDiaryModalHandler = (diary) => {
-    this.setState({ showDiaryModal: true, selectedDiary: diary });
-  }
-
-  closeDiaryModalHandler = () => {
-    this.setState({ showDiaryModal: false, selectedDiary: null });
-  }
-
 
   hideEffectiveDatePopUp = () => {
     const { appState, setAppState } = this.props;
@@ -181,7 +169,7 @@ export class Policy extends React.Component {
       initialized
     } = this.props;
 
-    const { showDiaries, showDiaryModal, selectedDiary } = this.state;
+    const { showDiaries } = this.state;
 
     return (
       <div className="app-wrapper csr policy">
@@ -195,7 +183,7 @@ export class Policy extends React.Component {
         <PolicyDetailHeader />
         <main role="document">
           <aside className="content-panel-left">
-            <PolicySideNav match={match} openDiaryModalHandler={this.openDiaryModalHandler} />
+            <PolicySideNav match={match} />
           </aside>
 
           {initialized &&
@@ -212,18 +200,15 @@ export class Policy extends React.Component {
           {appState.data.showReinstatePolicyPopUp &&
             <ReinstatePolicyPopup
               reinstatePolicySubmit={this.reinstatePolicySubmit}
-              hideReinstatePolicyModal={this.hideReinstatePolicyPopUp}
-            />
+              hideReinstatePolicyModal={this.hideReinstatePolicyPopUp} />
           }
 
           {appState.data.showEffectiveDateChangePopUp &&
             <EditEffectiveDataPopUp
               changeEffectiveDateSubmit={this.changeEffectiveDate}
-              hideEffectiveDateModal={this.hideEffectiveDatePopUp}
-            />
+              hideEffectiveDateModal={this.hideEffectiveDatePopUp} />
           }
-          {showDiaries && <OpenDiariesBar openHandler={this.openDiaryModalHandler} />}
-          {showDiaryModal && <DiaryModal closeHandler={this.closeDiaryModalHandler} initialValues={selectedDiary} />}
+          {showDiaries && <OpenDiariesBar />}
         </main>
       </div>
     );
