@@ -33,7 +33,7 @@ const csrLinks = agencyCode => [{
 }];
 
 
-export const SideNav = ({ agencyCode }) => (
+export const SideNav = ({ agencyCode, openDiaryModalHandler }) => (
   <nav className="site-nav">
     <ul>
       {csrLinks(agencyCode).map((agentLink, index) => (
@@ -50,6 +50,9 @@ export const SideNav = ({ agencyCode }) => (
             </span>
           </li>
       ))}
+      <li>
+        <button aria-label="open-btn form-newDiary" data-test="newDiary" className="btn btn-primary btn-sm btn-block" onClick={() => openDiaryModalHandler({})}><i className="fa fa-plus" />New Diary</button>
+      </li>
     </ul>
   </nav>);
 

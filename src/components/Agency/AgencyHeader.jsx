@@ -1,7 +1,8 @@
 import React from 'react';
 import logo from '../../img/Harmony.svg';
+import DiaryButton from '../Common/DiaryButton';
 
-export const AgencyHeader = () => (
+export const AgencyHeader = ({ toggleDiaries, showDiaries }) => (
   <header>
     <div role="banner">
       <div className="tab-tag">
@@ -10,6 +11,7 @@ export const AgencyHeader = () => (
       <a href="/" id="logo" className="logo">
         <img src={logo} alt="Harmony" />
       </a>
+      <DiaryButton toggleDiaries={toggleDiaries} showDiaries={showDiaries} />
     </div>
   </header>
 );
