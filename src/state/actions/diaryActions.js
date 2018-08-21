@@ -26,7 +26,7 @@ export function fetchDiaries(assignee) {
     path: '/diaries',
     data: { assignee }
   };
-console.log('diariesssss')
+
   return async (dispatch) => {
     try {
       const response = await serviceRunner.callService(config);
