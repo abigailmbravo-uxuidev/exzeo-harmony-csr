@@ -7,7 +7,7 @@ import _find from 'lodash/find';
 import moment from 'moment';
 import { Loader } from '@exzeo/core-ui';
 
-import { getUIQuestions } from '../../state/actions/questionsActions';
+import { getUIQuestions } from '../../state/actions/questions.actions';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
 

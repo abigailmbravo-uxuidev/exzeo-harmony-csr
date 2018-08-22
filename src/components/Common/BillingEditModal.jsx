@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { reduxForm, Field, formValueSelector } from 'redux-form';
 import { Radio, Select, validation } from '@exzeo/core-ui';
 
-import { updateBillPlan } from '../../state/actions/policyActions';
+import { updateBillPlan } from '../../state/actions/policy.actions';
 
 const FORM_NAME = 'BillingEditModal';
 

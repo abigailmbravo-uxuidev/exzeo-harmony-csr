@@ -9,10 +9,10 @@ import XHRUpload from '@uppy/xhr-upload';
 import moment from 'moment';
 import { Loader } from '@exzeo/core-ui';
 
-import * as cgActions from '../../state/actions/cgActions';
-import * as newNoteActions from '../../state/actions/newNoteActions';
-import * as serviceActions from '../../state/actions/serviceActions';
-import * as errorActions from '../../state/actions/errorActions';
+import * as cgActions from '../../state/actions/cg.actions';
+import * as newNoteActions from '../../state/actions/newNote.actions';
+import * as serviceActions from '../../state/actions/service.actions';
+import * as errorActions from '../../state/actions/error.actions';
 
 import '@uppy/core/dist/style.min.css';
 

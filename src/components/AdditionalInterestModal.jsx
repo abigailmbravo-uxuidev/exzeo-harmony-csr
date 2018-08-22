@@ -12,7 +12,7 @@ import {
 } from '../utilities/additionalInterests';
 import { getTopAnswers } from '../state/selectors/questions.selectors';
 import { ADDITIONAL_INTERESTS } from '../constants/additionalInterests';
-import { setAppState } from '../state/actions/appStateActions';
+import { setAppState } from '../state/actions/appState.actions';
 import { getGroupedAdditionalInterests, getSortedAdditionalInterests } from '../state/selectors/quote.selectors';
 
 export const checkAdditionalInterestForName = aiType => aiType === 'Additional Insured' || aiType === 'Additional Interest' || aiType === 'Bill Payer';

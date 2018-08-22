@@ -5,9 +5,9 @@ import { reduxForm, change, getFormValues } from 'redux-form';
 import moment from 'moment-timezone';
 import { Loader } from '@exzeo/core-ui';
 
-import { startWorkflow, batchCompleteTask } from '../../state/actions/cgActions';
-import { setAppState } from '../../state/actions/appStateActions';
-import { getPolicy } from '../../state/actions/policyActions';
+import { startWorkflow, batchCompleteTask } from '../../state/actions/cg.actions';
+import { setAppState } from '../../state/actions/appState.actions';
+import { getPolicy } from '../../state/actions/policy.actions';
 import RadioField from '../Form/inputs/RadioField';
 import DateField from '../Form/inputs/DateField';
 import SelectField from '../Form/inputs/SelectField';

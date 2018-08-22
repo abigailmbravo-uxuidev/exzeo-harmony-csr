@@ -18,8 +18,8 @@ import {
   getPolicy,
   addTransaction,
   createTransaction
-} from '../../state/actions/policyActions';
-import { getUIQuestions } from '../../state/actions/questionsActions';
+} from '../../state/actions/policy.actions';
+import { getUIQuestions } from '../../state/actions/questions.actions';
 import BillingModal from '../../components/Common/BillingEditModal';
 import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';

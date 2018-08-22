@@ -3,8 +3,8 @@ import axios from 'axios';
 import { batchActions } from 'redux-batched-actions';
 import _ from 'lodash';
 import * as types from './actionTypes';
-import * as errorActions from './errorActions';
-import * as appStateActions from './appStateActions';
+import * as errorActions from './error.actions';
+import * as appStateActions from './appState.actions';
 
 export const start = (modelName, workflowData) => {
   const newWorkflowData = {};

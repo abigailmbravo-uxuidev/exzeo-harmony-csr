@@ -4,12 +4,12 @@ import { reduxForm, Field } from 'redux-form';
 import { Select, validation } from '@exzeo/core-ui';
 
 import { DEFAULT_SEARCH_PARAMS } from '../../../constants/search';
-import { getAgencies } from '../../../state/actions/serviceActions';
-import { clearAppError } from '../../../state/actions/errorActions';
+import { getAgencies } from '../../../state/actions/service.actions';
+import { clearAppError } from '../../../state/actions/error.actions';
 import {
   handleSearchSubmit,
   toggleLoading
-} from '../../../state/actions/searchActions';
+} from '../../../state/actions/search.actions';
 
 export class SearchBar extends Component {
   componentDidMount() {

@@ -4,9 +4,9 @@ import { Redirect } from 'react-router-dom';
 import { Loader } from '@exzeo/core-ui';
 
 import { SEARCH_TYPES } from '../../constants/search';
-import { startWorkflow, batchCompleteTask } from '../../state/actions/cgActions';
-import { setAppState } from '../../state/actions/appStateActions';
-import { setAppError } from '../../state/actions/errorActions';
+import { startWorkflow, batchCompleteTask } from '../../state/actions/cg.actions';
+import { setAppState } from '../../state/actions/appState.actions';
+import { setAppError } from '../../state/actions/error.actions';
 import { getQuoteDataFromCgState } from '../../state/selectors/quote.selectors';
 
 export class QuoteLanding extends Component {
