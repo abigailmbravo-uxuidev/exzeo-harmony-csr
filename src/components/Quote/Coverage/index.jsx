@@ -224,8 +224,8 @@ let setAgents = false;
 export class Coverage extends Component {
   componentDidMount() {
     const {
- getUIQuestions, setAppState, batchCompleteTask, appState, match 
-} = this.props;
+      getUIQuestions, setAppState, batchCompleteTask, appState, match
+    } = this.props;
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
 
     // this.props.startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` }).then((result) => {
@@ -319,8 +319,8 @@ export class Coverage extends Component {
     const agency = _.find(this.props.agencies, a => String(a.agencyCode) === String(agencyCode));
     if (agency) {
       getAgentsByAgency(agency.companyCode, agency.state, agencyCode).then((response) => {
-        if (response.payload && response.payload[0].data.agents && response.payload[0].data.agents.length === 1) {
-          change('agentCode', response.payload[0].data.agents[0].agentCode);
+        if (response.data && response.data.agents && response.data.agents.length === 1) {
+          change('agentCode', response.data.agents[0].agentCode);
         } else {
           change('agentCode', '');
         }
