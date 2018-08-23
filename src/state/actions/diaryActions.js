@@ -16,7 +16,7 @@ export function setDiaries(diaries) {
 
 /**
  * Fetch Diaries
- * @param {array} diaries
+ * @param {array} assignee
  * @returns {{type: string, loading: array}}
  */
 export function fetchDiaries(filter) {
@@ -31,7 +31,7 @@ export function fetchDiaries(filter) {
     try {
       const response = await serviceRunner.callService(config);
       console.log(response);
-      return dispatch(setDiaries(response.data));
+      dispatch(setDiaries(response.data));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
