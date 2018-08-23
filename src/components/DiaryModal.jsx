@@ -6,16 +6,16 @@ import { Field, Form, reduxForm } from 'redux-form';
 import Loader from '@exzeo/core-ui/lib/Loader';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
-import * as appStateActions from '../../state/actions/appStateActions';
-import * as serviceActions from '../../state/actions/serviceActions';
-import * as uiActions from '../../state/actions/uiActions';
-import * as errorActions from '../../state/actions/errorActions';
-import * as serviceRunner from '../../utilities/serviceRunner';
+import * as appStateActions from '../state/actions/appStateActions';
+import * as serviceActions from '../state/actions/serviceActions';
+import * as uiActions from '../state/actions/uiActions';
+import * as errorActions from '../state/actions/errorActions';
+import * as serviceRunner from '../utilities/serviceRunner';
 
 const { Date, Select } = Inputs;
 const { validation } = lifecycle;
 
-const validate = values => !values.message ? { message: 'Message Required' } : false;
+const validate = values => (!values.message ? { message: 'Message Required' } : false);
 
 export const renderMessage = ({ input, label, type, meta: { touched, error } }) => (
   <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
@@ -24,7 +24,7 @@ export const renderMessage = ({ input, label, type, meta: { touched, error } }) 
   </div>
 );
 
-export class CreateDiary extends Component {
+export class DiaryModal extends Component {
   state = { minimize: false }
 
   minimzeButtonHandler = () => this.setState({ minimize: !this.state.minimize })
@@ -34,7 +34,7 @@ export class CreateDiary extends Component {
   submitDiary = async (data, dispatch, props) => {
     const { user, resourceType, resourceId } = props;
 
-    data.assignee = { iserId: data.assignee, userName: 'tticcsr' }
+    data.assignee = { iserId: data.assignee, userName: 'tticcsr' };
 
     const createRequest = {
       service: 'diaries',
@@ -120,7 +120,7 @@ export class CreateDiary extends Component {
         </div>
         <div className="mainContainer">
           {this.props.submitting && <Loader />}
-          <Form id="CreateDiary" onSubmit={this.props.handleSubmit(this.submitDiary)} noValidate>
+          <Form id="DiaryModal" onSubmit={this.props.handleSubmit(this.submitDiary)} noValidate>
             <div className="content">
               <Field
                 name="type"
@@ -128,31 +128,27 @@ export class CreateDiary extends Component {
                 component={Select}
                 answers={this.diaryTypes}
                 validate={validation.isRequired}
-                dataTest="diaryType"
-              />
+                dataTest="diaryType" />
               <Field
                 name="assignee"
                 label="Assignee"
                 component={Select}
                 answers={this.users}
                 validate={validation.isRequired}
-                dataTest="assignee"
-              />
+                dataTest="assignee" />
               <Field
                 name="due"
                 label="Due Date"
                 component={Date}
                 validate={[validation.isRequired, validation.isDate]}
-                dataTest="due"
-              />
+                dataTest="due" />
               <Field
                 name="reason"
                 label="Reason"
                 component={Select}
                 answers={this.diaryReasons}
                 validate={validation.isRequired}
-                dataTest="reason"
-              />
+                dataTest="reason" />
               <label>Message</label>
               <Field name="message" component={renderMessage} label="Message" />
             </div>
@@ -167,7 +163,7 @@ export class CreateDiary extends Component {
   }
 }
 
-CreateDiary.propTypes = {
+DiaryModal.propTypes = {
   documentId: PropTypes.string
 };
 
@@ -185,6 +181,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
-  form: 'CreateDiary',
+  form: 'DiaryModal',
   validate
-})(CreateDiary));
+})(DiaryModal));

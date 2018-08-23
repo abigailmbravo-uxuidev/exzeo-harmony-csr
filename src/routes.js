@@ -27,7 +27,7 @@ import Reports from './containers/Reports';
 import PolicyModule from './modules/Policy';
 import AgencyStaff from './components/Agency/Staff';
 import NoteUploader from './components/Common/NoteUploader';
-import CreateDiary from './components/Common/CreateDiary';
+import DiaryModal from './components/DiaryModal';
 
 import * as appStateActions from './state/actions/appStateActions';
 import * as errorActions from './state/actions/errorActions';
@@ -46,7 +46,7 @@ class Routes extends Component {
     const { isAuthenticated } = auth;
     if (isAuthenticated() && checkPublicPath(window.location.pathname)) {
       this.idToken = localStorage.getItem('id_token');
-      axios.defaults.headers.common['authorization'] = `bearer ${this.idToken}`;
+      axios.defaults.headers.common.authorization = `bearer ${this.idToken}`;
 
       if (!this.props.authState.userProfile) {
         const profile = JSON.parse(localStorage.getItem('user_profile'));
@@ -63,13 +63,13 @@ class Routes extends Component {
   componentDidMount() {
     const pollDiaries = () => {
       if (this.idToken) this.props.actions.diaryActions.fetchDiaries(this.idToken);
-      console.log('this.idToken: ', this.idToken)
-      //setTimeout(() => pollDiaries(), 10000);
-    }
+      console.log('this.idToken: ', this.idToken);
+      // setTimeout(() => pollDiaries(), 10000);
+    };
 
     pollDiaries();
   }
-    
+
 
   setBackStep = (goToNext, callback) => {
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
@@ -96,8 +96,7 @@ class Routes extends Component {
           contentLabel="Error Modal"
           style={this.modalStyles}
           className="card"
-          appElement={document.getElementById('root')}
-        >
+          appElement={document.getElementById('root')}>
           <div className="card-header"><h4><i className="fa fa-exclamation-circle" />&nbsp;Error</h4></div>
           <div className="card-block"><p>{ this.props.error.message }</p></div>
           <div className="card-footer">
@@ -106,17 +105,15 @@ class Routes extends Component {
           </div>
         </Modal>
         {diary && diary.resourceType &&
-          <CreateDiary
+          <DiaryModal
             resourceType={diary.resourceType}
-            resourceId={diary.id}
-          />
+            resourceId={diary.id} />
         }
         {note && note.documentId &&
           <NoteUploader
             noteType={note.noteType}
             documentId={note.documentId}
-            sourceId={note.sourceNumber}
-          />
+            sourceId={note.sourceNumber} />
         }
         <Router
           getUserConfirmation={(message, callback) => {
@@ -124,8 +121,7 @@ class Routes extends Component {
 (<ConfirmPopup {...this.props} message={message} setBackStep={this.setBackStep} callback={callback} />
             ), document.getElementById('modal')
 );
-          }}
-        >
+          }}>
           <div className="routes">
             <Switch>
               <Route exact path="/" render={props => <SearchPolicy auth={auth} {...props} />} />
@@ -151,13 +147,11 @@ class Routes extends Component {
                 render={() => {
                   auth.logout();
                   return <Callback />;
-                }}
-              />
+                }} />
               <Route
                 exact
                 path="/callback"
-                render={() => <Callback />}
-              />
+                render={() => <Callback />} />
               <Route path="*" render={props => <NotFoundPage auth={auth} {...props} />} />
             </Switch>
           </div>

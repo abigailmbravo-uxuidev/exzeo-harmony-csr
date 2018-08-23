@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from '../../img/Harmony.svg';
-import DiaryButton from '../Common/DiaryButton';
+import DiaryButton from '../DiaryButton';
 
 const PolicyHeader = ({ toggleDiaries, showDiaries }) => (
   <header>

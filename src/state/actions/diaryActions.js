@@ -11,8 +11,8 @@ export function setDiaries(diaries) {
   return {
     type: types.SET_DIARIES,
     diaries
-  }
-};
+  };
+}
 
 /**
  * Fetch Diaries
@@ -23,17 +23,17 @@ export function fetchDiaries(assignee) {
   const config = {
     service: 'diaries',
     method: 'POST',
-    path: '/diaries',
+    path: '/read',
     data: { assignee }
   };
 
   return async (dispatch) => {
     try {
       const response = await serviceRunner.callService(config);
-      console.log(response)
+      console.log(response);
       return dispatch(setDiaries(response.data));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
   };
-};
+}
