@@ -19,12 +19,12 @@ export function setDiaries(diaries) {
  * @param {array} diaries
  * @returns {{type: string, loading: array}}
  */
-export function fetchDiaries(assignee) {
+export function fetchDiaries(filter) {
   const config = {
     service: 'diaries',
     method: 'POST',
     path: '/read',
-    data: { assignee }
+    data: { ...filter }
   };
 
   return async (dispatch) => {

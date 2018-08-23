@@ -62,7 +62,7 @@ class Routes extends Component {
 
   componentDidMount() {
     const pollDiaries = () => {
-      if (this.idToken) this.props.actions.diaryActions.fetchDiaries(this.idToken);
+      if (this.idToken) this.props.actions.diaryActions.fetchDiaries({ assignee: 'tticcsr', resourceType: 'Policy' });
       console.log('this.idToken: ', this.idToken);
       // setTimeout(() => pollDiaries(), 10000);
     };
@@ -98,9 +98,9 @@ class Routes extends Component {
           className="card"
           appElement={document.getElementById('root')}>
           <div className="card-header"><h4><i className="fa fa-exclamation-circle" />&nbsp;Error</h4></div>
-          <div className="card-block"><p>{ this.props.error.message }</p></div>
+          <div className="card-block"><p>{this.props.error.message}</p></div>
           <div className="card-footer">
-            {this.props.error.requestId && <div className="footer-message"><p>Request ID: { this.props.error.requestId }</p></div>}
+            {this.props.error.requestId && <div className="footer-message"><p>Request ID: {this.props.error.requestId}</p></div>}
             <button className="btn-primary" onClick={this.clearError}>close</button>
           </div>
         </Modal>
