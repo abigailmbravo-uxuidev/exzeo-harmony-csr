@@ -10,7 +10,7 @@ import AgencyDetailHeader from '../components/Agency/DetailHeader';
 import * as appStateActions from '../state/actions/appStateActions';
 import * as serviceActions from '../state/actions/serviceActions';
 
-import { OpenDiariesBar } from '../modules/Diaries/OpenDiariesBar';
+import { OpenDiariesBar } from '../components/OpenDiariesBar';
 
 export class Agency extends React.Component {
   state = {
@@ -30,7 +30,7 @@ export class Agency extends React.Component {
       <AgencyHeader toggleDiaries={this.toggleDiariesHandler} showDiaries={showDiaries} />
       <AgencyDetailHeader />
       <main role="document">
-        { !agency && <Loader />}
+        {!agency && <Loader />}
         <aside className="content-panel-left">
           <AgencySideNav agencyCode={agency ? agency.agencyCode : null} />
         </aside>

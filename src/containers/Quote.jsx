@@ -9,7 +9,7 @@ import QuoteDetailHeader from '../components/Quote/DetailHeader';
 import UnderwritingValidationBarConnect from '../components/Quote/UnderwritingValidationBar';
 
 
-import { OpenDiariesBar } from '../modules/Diaries/OpenDiariesBar';
+import { OpenDiariesBar } from '../components//OpenDiariesBar';
 
 export class QuoteBase extends React.Component {
   state = {
@@ -21,7 +21,9 @@ export class QuoteBase extends React.Component {
   }
 
   render() {
-    const { appState, quoteData, match, children } = this.props;
+    const {
+ appState, quoteData, match, children 
+} = this.props;
     const { showDiaries } = this.state;
     return (
       <div className="app-wrapper csr quote">
