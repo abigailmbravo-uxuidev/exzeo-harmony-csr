@@ -6,6 +6,7 @@ import { Field, Form, reduxForm } from 'redux-form';
 import Loader from '@exzeo/core-ui/lib/Loader';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
+
 import * as appStateActions from '../state/actions/appStateActions';
 import * as serviceActions from '../state/actions/serviceActions';
 import * as uiActions from '../state/actions/uiActions';
@@ -17,10 +18,12 @@ const { validation } = lifecycle;
 
 const validate = values => (!values.message ? { message: 'Message Required' } : false);
 
-export const renderMessage = ({ input, label, type, meta: { touched, error } }) => (
+export const renderMessage = ({
+  input, label, type, meta: { touched, error }
+}) => (
   <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
     <textarea {...input} placeholder={label} rows="10" cols="40" />
-    { touched && error && <span className="error-message">{ error }</span> }
+    {touched && error && <span className="error-message">{error}</span>}
   </div>
 );
 

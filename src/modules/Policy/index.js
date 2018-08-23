@@ -22,7 +22,7 @@ import Billing from '../../components/Policy/MortgageBilling';
 import Notes from '../../components/Policy/NotesFiles';
 import Cancel from '../../components/Policy/Cancel';
 import Endorsements from '../../components/Policy/Endorsements';
-import { OpenDiariesBar } from '../Diaries/OpenDiariesBar';
+import { OpenDiariesBar } from '../../components/OpenDiariesBar';
 
 export class Policy extends React.Component {
   state = {

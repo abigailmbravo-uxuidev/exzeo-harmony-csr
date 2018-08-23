@@ -1,7 +1,8 @@
 import React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { toggleDiary } from '../../state/actions/uiActions';
+
+import { toggleDiary } from '../state/actions/uiActions';
 
 const DIARY_LEVELS = {
   upComing: {
