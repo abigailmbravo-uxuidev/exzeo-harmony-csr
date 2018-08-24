@@ -17,7 +17,6 @@
     "unlink-core": "npm unlink @exzeo/core-ui"
   },
   "dependencies": {
-    "@exzeo/core-ui": "^0.1.19",
     "@fortawesome/fontawesome": "~1.0.0",
     "@fortawesome/react-fontawesome": "~0.0.14",
     "@uppy/core": "^0.26.0",

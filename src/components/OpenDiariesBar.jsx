@@ -2,41 +2,37 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import Diaries from './Diaries';
+import { getOpenDiaries } from '../state/selectors/diary.selectors';
 
+import Diaries from './Diaries';
 
 export class OpenDiariesBar extends React.Component {
   render() {
-    const {
-      dueSoonDiaries, upComingDiaries, pastDueDiaries, openHandler
-    } = this.props;
+    const { diaries } = this.props;
 
-
+    const { dueSoon, pastDue, upComing } = diaries;
     return (
       <div>
         <aside className="underwriting-validation">
           <h4 className="uw-validation-header">Open Diaries</h4>
           <div>
 
-            {dueSoonDiaries.length > 0 &&
+            {dueSoon && dueSoon.length > 0 &&
               <Diaries
                 diaryLevel="dueSoon"
-                diaries={dueSoonDiaries}
-                openHandler={openHandler} />
+                diaries={dueSoon} />
             }
 
-            {pastDueDiaries.length > 0 &&
+            {pastDue && pastDue.length > 0 &&
               <Diaries
                 diaryLevel="pastDue"
-                diaries={pastDueDiaries}
-                openHandler={openHandler} />
+                diaries={pastDue} />
             }
 
-            {upComingDiaries.length > 0 &&
+            {upComing && upComing.length > 0 &&
               <Diaries
                 diaryLevel="upComing"
-                diaries={upComingDiaries}
-                openHandler={openHandler} />
+                diaries={upComing} />
             }
           </div>
         </aside>
@@ -46,15 +42,7 @@ export class OpenDiariesBar extends React.Component {
 }
 
 OpenDiariesBar.defaultProps = {
-  dueSoonDiaries: [{
-    dueDate: '2018-08-24', type: 'Billing /Payment', reason: 'Receipt Needed', assignee: 'jsutphin', message: ''
-  }],
-  pastDueDiaries: [{
-    dueDate: '2018-08-04', type: 'Additional Interest', reason: 'Action Required', assignee: 'jsutphin', message: ''
-  }],
-  upComingDiaries: [{
-    dueDate: '2018-09-24', type: 'Billing /Payment', reason: 'Action Required', assignee: 'jsutphin', message: ''
-  }]
+  diaries: {}
 };
 
 OpenDiariesBar.propTypes = {
@@ -71,10 +59,7 @@ OpenDiariesBar.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  dueSoonDiaries: [],
-  pastDueDiaries: [],
-  upComingDiaries: []
-
+  diaries: getOpenDiaries(state)
 });
 
-export default connect(mapStateToProps, null)(OpenDiariesBar);
+export default connect(mapStateToProps)(OpenDiariesBar);

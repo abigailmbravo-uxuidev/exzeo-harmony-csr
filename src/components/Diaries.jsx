@@ -52,12 +52,12 @@ export class Diaries extends React.Component {
               <li key={diary._id}>
                 <i className={severity.listIconClass} aria-hidden="true" />
                 <h5>
-                  <span>{diary.dueDate} </span><a onClick={() => this.openHandler(diary)}><i className="fa fa-arrow-up" /> Open</a>
+                  <span>{diary.due} </span><a onClick={() => this.openHandler(diary)}><i className="fa fa-arrow-up" /> Open</a>
                 </h5>
                 <h5>{diary.type}</h5>
                 <span>Follow-up: {diary.reason}</span>
                 <h5>
-                  {diary.assignee}
+                  {diary.assignee.userName}
                 </h5>
               </li>
             ))}

@@ -11,7 +11,7 @@ import policyState from './policyReducer';
 import questions from './questionsReducer';
 import quoteState from './quoteReducer';
 import search from './searchReducer';
-import diary from './diaryReducer';
+import diaries from './diaryReducer';
 
 const rootReducer = combineReducers({
   form: formReducer,
@@ -25,7 +25,7 @@ const rootReducer = combineReducers({
   error,
   quoteState,
   search,
-  diary
+  diaries
 });
 
 export default rootReducer;
