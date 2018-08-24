@@ -1,36 +1,56 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Input } from '@exzeo/core-ui/lib/Input';
+import { Input, Select } from '@exzeo/core-ui/lib/Input';
 import Button from '@exzeo/core-ui/lib/Button';
 import { isValidChar, isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
 
-const NewQuoteSearch = ({ submitting }) => (
-  <div className="search-inputs fade-in">
-    <Field
-      name="address"
-      dataTest="address"
-      label="Property Address"
-      placeholder="Property Address Search"
-      component={Input}
-      styleName="property-search"
-      validate={[isValidChar, isRequired]}
-      errorHint
-    />
+const NewQuoteSearch = ({
+  submitting,
+  changeSearchType,
+  searchTypeOptions
+}) => (
+  <React.Fragment>
+    <div className="form-group search-context">
+      <Field
+        name="searchType"
+        dataTest="searchType"
+        label="Search Context"
+        component={Select}
+        id="searchType"
+        validate={isRequired}
+        onChange={changeSearchType}
+        answers={searchTypeOptions}
+        showPlaceholder={false}
+        errorHint />
+    </div>
 
-    <Button
-      baseClass="success"
-      customClass="multi-input"
-      type="submit"
-      disabled={submitting}
-      dataTest="submit"
-    ><i className="fa fa-search" />Search
-    </Button>
-  </div>
+    <div className="search-inputs fade-in">
+      <Field
+        name="address"
+        dataTest="address"
+        label="Property Address"
+        placeholder="Property Address Search"
+        component={Input}
+        styleName="property-search"
+        validate={[isValidChar, isRequired]}
+        errorHint />
+
+      <Button
+        baseClass="success"
+        customClass="multi-input"
+        type="submit"
+        disabled={submitting}
+        dataTest="submit" ><i className="fa fa-search" />Search
+      </Button>
+    </div>
+  </React.Fragment>
 );
 
 NewQuoteSearch.propTypes = {
-  submitting: PropTypes.bool
+  submitting: PropTypes.bool.isRequired,
+  changeSearchType: PropTypes.func,
+  searchTypeOptions: PropTypes.array
 };
 
 NewQuoteSearch.defaultProps = {};

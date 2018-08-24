@@ -2,11 +2,12 @@ import React from 'react';
 
 import SearchBase from './SearchBase';
 
-const SearchPolicy = ({ auth, location, match }) => (
+const SearchDiaries = ({ auth, location, match }) => (
   <SearchBase
     auth={auth}
     location={location}
     match={match} />
 );
 
-export default SearchPolicy;
+export default SearchDiaries;
+

@@ -8,7 +8,8 @@ export const SEARCH_TYPES = {
   quote: 'quote',
   policy: 'policy',
   agent: 'agent',
-  agency: 'agency'
+  agency: 'agency',
+  diaries: 'diaries'
 };
 
 export const POLICY_INITIAL_VALUES = {
@@ -18,6 +19,10 @@ export const POLICY_INITIAL_VALUES = {
 
 export const AGENCY_INITIAL_VALUES = {
   searchType: SEARCH_TYPES.agency
+};
+
+export const DIARY_INITIAL_VALUES = {
+  status: 'open'
 };
 
 export const POLICY_SEARCH_OPTIONS = [
@@ -46,6 +51,17 @@ export const AGENCY_SEARCH_OPTIONS = [
   }
 ];
 
+export const DIARY_SEARCH_OPTIONS = [
+  {
+    answer: true,
+    label: 'Open'
+  },
+  {
+    answer: false,
+    label: 'Closed'
+  }
+];
+
 export const SEARCH_CONFIG = {
   [SEARCH_TYPES.policy]: {
     initialValues: POLICY_INITIAL_VALUES,
@@ -54,6 +70,10 @@ export const SEARCH_CONFIG = {
   [SEARCH_TYPES.agency]: {
     initialValues: AGENCY_INITIAL_VALUES,
     searchOptions: AGENCY_SEARCH_OPTIONS
+  },
+  [SEARCH_TYPES.diaries]: {
+    initialValues: DIARY_INITIAL_VALUES,
+    searchOptions: DIARY_SEARCH_OPTIONS
   }
 };
 

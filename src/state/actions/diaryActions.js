@@ -16,7 +16,7 @@ export function setDiaries(diaries) {
 
 /**
  * Fetch Diaries
- * @param {array} assignee
+ * @param {array} filter
  * @returns {{type: string, loading: array}}
  */
 export function fetchDiaries(filter) {

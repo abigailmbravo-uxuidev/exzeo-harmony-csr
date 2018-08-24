@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import Modal from 'react-modal';
+
 import ConfirmPopup from './components/Common/ConfirmPopup';
 import history from './history';
 import Auth from './Auth';
@@ -14,6 +15,7 @@ import LoggedOut from './containers/LoggedOut';
 import Callback from './containers/Callback';
 import SearchAgency from './containers/SearchAgency';
 import SearchPolicy from './containers/SearchPolicy';
+import SearchDiaries from './containers/SearchDiaries';
 import NotFoundPage from './containers/NotFound';
 import QuoteCoverage from './components/Quote/Coverage';
 import QuoteLanding from './components/Quote/QuoteLanding';
@@ -28,7 +30,6 @@ import PolicyModule from './modules/Policy';
 import AgencyStaff from './components/Agency/Staff';
 import NoteUploader from './components/Common/NoteUploader';
 import DiaryModal from './components/DiaryModal';
-
 import * as appStateActions from './state/actions/appStateActions';
 import * as errorActions from './state/actions/errorActions';
 import * as authActions from './state/actions/authActions';
@@ -52,6 +53,13 @@ class Routes extends Component {
         const profile = JSON.parse(localStorage.getItem('user_profile'));
         this.props.actions.authActions.setUserProfile(profile);
       }
+
+      const pollDiaries = () => {
+        if (this.idToken) this.props.actions.diaryActions.fetchDiaries({ userName: 'tticcsr', resourceType: 'Policy' });
+        // setTimeout(() => pollDiaries(), 10000);
+      };
+
+      pollDiaries();
     } else if (!isAuthenticated() && checkPublicPath(window.location.pathname)) {
       history.push('/login');
       axios.defaults.headers.common['authorization'] = undefined; // eslint-disable-line
@@ -59,17 +67,6 @@ class Routes extends Component {
       auth.handleAuthentication();
     }
   }
-
-  componentDidMount() {
-    const pollDiaries = () => {
-      if (this.idToken) this.props.actions.diaryActions.fetchDiaries({ assignee: 'tticcsr', resourceType: 'Policy', resourceId: '12-1009994-01' });
-      console.log('this.idToken: ', this.idToken);
-      // setTimeout(() => pollDiaries(), 10000);
-    };
-
-    pollDiaries();
-  }
-
 
   setBackStep = (goToNext, callback) => {
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
@@ -79,7 +76,7 @@ class Routes extends Component {
     callback(goToNext);
   };
 
-  clearError = () => this.props.actions.errorActions.clearAppError();
+  handleClearError = () => this.props.actions.errorActions.clearAppError();
   modalStyles = {
     content: {
       top: '20%',
@@ -87,6 +84,7 @@ class Routes extends Component {
     }
   };
 
+  /* eslint-disable max-len */
   render() {
     const { diary, note } = this.props.ui;
     return (
@@ -100,8 +98,10 @@ class Routes extends Component {
           <div className="card-header"><h4><i className="fa fa-exclamation-circle" />&nbsp;Error</h4></div>
           <div className="card-block"><p>{this.props.error.message}</p></div>
           <div className="card-footer">
-            {this.props.error.requestId && <div className="footer-message"><p>Request ID: {this.props.error.requestId}</p></div>}
-            <button className="btn-primary" onClick={this.clearError}>close</button>
+            {this.props.error.requestId &&
+              <div className="footer-message"><p>Request ID: {this.props.error.requestId}</p></div>
+            }
+            <button className="btn-primary" onClick={this.handleClearError}>close</button>
           </div>
         </Modal>
         {diary && diary.resourceType &&
@@ -109,6 +109,7 @@ class Routes extends Component {
             resourceType={diary.resourceType}
             resourceId={diary.id} />
         }
+
         {note && note.documentId &&
           <NoteUploader
             noteType={note.noteType}
@@ -118,14 +119,19 @@ class Routes extends Component {
         <Router
           getUserConfirmation={(message, callback) => {
             ReactDOM.render(
-(<ConfirmPopup {...this.props} message={message} setBackStep={this.setBackStep} callback={callback} />
-            ), document.getElementById('modal')
-);
+              <ConfirmPopup
+                {...this.props}
+                message={message}
+                setBackStep={this.setBackStep}
+                callback={callback} />,
+              document.getElementById('modal')
+            );
           }}>
           <div className="routes">
             <Switch>
               <Route exact path="/" render={props => <SearchPolicy auth={auth} {...props} />} />
               <Route exact path="/agency" render={props => <SearchAgency auth={auth} {...props} />} />
+              <Route exact path="/diaries" render={props => <SearchDiaries auth={auth} {...props} />} />
               <Route path="/policy/:policyNumber" render={props => <PolicyModule auth={auth} {...props} />} />
               <Route exact path="/quote/new/:stateCode/:propertyId" render={props => <QuoteLanding auth={auth} newQuote {...props} />} />
               <Route exact path="/quote/:quoteId" render={props => <QuoteLanding auth={auth} {...props} />} />

@@ -3,7 +3,14 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Field } from 'redux-form';
 import { Input, Select, SelectTypeAhead } from '@exzeo/core-ui/lib/Input';
-import { normalizeDate, isAlphaNumeric, isValidChar, isNumberDashOnly, isValidDateFormat } from '@exzeo/core-ui/lib/InputLifecycle';
+import {
+  normalizeDate,
+  isAlphaNumeric,
+  isValidChar,
+  isNumberDashOnly,
+  isValidDateFormat,
+  isRequired
+} from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers } from '../../../utilities/forms';
 import { STANDARD_DATE_FORMAT } from '../../../constants/search';
 
@@ -25,9 +32,24 @@ const PolicySearch = ({
   questions,
   toggleAdvancedSearch,
   handlePagination,
-  search
+  search,
+  changeSearchType,
+  searchTypeOptions
 }) => (
   <React.Fragment>
+    <div className="form-group search-context">
+      <Field
+        name="searchType"
+        dataTest="searchType"
+        label="Search Context"
+        component={Select}
+        id="searchType"
+        validate={isRequired}
+        onChange={changeSearchType}
+        answers={searchTypeOptions}
+        showPlaceholder={false}
+        errorHint />
+    </div>
     <div className="search-inputs fade-in p">
       <Field
         name="firstName"
@@ -37,8 +59,7 @@ const PolicySearch = ({
         component={Input}
         styleName="first-name-search"
         validate={isAlphaNumeric}
-        errorHint
-      />
+        errorHint />
       <Field
         name="lastName"
         dataTest="lastName"
@@ -47,8 +68,7 @@ const PolicySearch = ({
         component={Input}
         styleName="last-name-search"
         validate={isAlphaNumeric}
-        errorHint
-      />
+        errorHint />
       <Field
         name="address"
         dataTest="address"
@@ -57,8 +77,7 @@ const PolicySearch = ({
         component={Input}
         styleName="property-search"
         validate={isValidChar}
-        errorHint
-      />
+        errorHint />
       <Field
         name="policyNumber"
         dataTest="policyNumber"
@@ -67,23 +86,20 @@ const PolicySearch = ({
         component={Input}
         styleName="policy-no-search"
         validate={isNumberDashOnly}
-        errorHint
-      />
+        errorHint />
       <Button
         baseClass="success"
         customClass="multi-input"
         type="submit"
         disabled={submitting}
-        dataTest="submit"
-      ><i className="fa fa-search" />Search
+        dataTest="submit"><i className="fa fa-search" />Search
       </Button>
       <Button
         baseClass="icon"
         customClass="advanced-search-btn"
         size="small"
         dataTest="policy-advanced-search"
-        onClick={toggleAdvancedSearch}
-      >
+        onClick={toggleAdvancedSearch}>
         <i className={classNames(advancedSearch ? 'fa fa-chevron-up' : 'fa fa-chevron-down')} />
       </Button>
     </div>
@@ -96,8 +112,7 @@ const PolicySearch = ({
           label="Agency Name"
           component={SelectTypeAhead}
           styleName="agencyCodeSelectField"
-          answers={agencyList}
-        />
+          answers={agencyList} />
         <div className="form-group effectiveDate">
           <Field
             name="effectiveDate"
@@ -107,8 +122,7 @@ const PolicySearch = ({
             placeholder={STANDARD_DATE_FORMAT}
             normalize={normalizeDate}
             validate={isValidDate}
-            errorHint
-          />
+            errorHint />
         </div>
         <div className="form-group policy-status">
           <Field
@@ -116,8 +130,7 @@ const PolicySearch = ({
             dataTest="policyStatus"
             label="Policy Status"
             component={Select}
-            answers={getAnswers('policyStatus', questions)}
-          />
+            answers={getAnswers('policyStatus', questions)} />
         </div>
         <Field
           name="sortBy"
@@ -125,8 +138,7 @@ const PolicySearch = ({
           label="Sort By"
           component={Select}
           answers={sortByOptions}
-          showPlaceholder={false}
-        />
+          showPlaceholder={false} />
       </div>
     }
     {!!search.results.length && search.totalPages > 1 &&
@@ -134,8 +146,7 @@ const PolicySearch = ({
         changePageForward={handlePagination(true)}
         changePageBack={handlePagination(false)}
         pageNumber={search.currentPage}
-        totalPages={search.totalPages}
-      />
+        totalPages={search.totalPages} />
     }
   </React.Fragment>
 );
@@ -151,7 +162,9 @@ PolicySearch.propTypes = {
     results: PropTypes.array,
     totalPages: PropTypes.number,
     currentPage: PropTypes.number
-  }).isRequired
+  }).isRequired,
+  changeSearchType: PropTypes.func,
+  searchTypeOptions: PropTypes.array
 };
 
 PolicySearch.defaultProps = {
