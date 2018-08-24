@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import Modal from 'react-modal';
+
 import ConfirmPopup from './components/Common/ConfirmPopup';
 import history from './history';
 import Auth from './Auth';
@@ -28,7 +29,6 @@ import PolicyModule from './modules/Policy';
 import AgencyStaff from './components/Agency/Staff';
 import NoteUploader from './components/Common/NoteUploader';
 import DiaryModal from './components/DiaryModal';
-
 import * as appStateActions from './state/actions/appStateActions';
 import * as errorActions from './state/actions/errorActions';
 import * as authActions from './state/actions/authActions';
@@ -63,7 +63,6 @@ class Routes extends Component {
   componentDidMount() {
     const pollDiaries = () => {
       if (this.idToken) this.props.actions.diaryActions.fetchDiaries({ assignee: 'tticcsr', resourceType: 'Policy' });
-      console.log('this.idToken: ', this.idToken);
       // setTimeout(() => pollDiaries(), 10000);
     };
 
@@ -79,7 +78,7 @@ class Routes extends Component {
     callback(goToNext);
   };
 
-  clearError = () => this.props.actions.errorActions.clearAppError();
+  handleClearError = () => this.props.actions.errorActions.clearAppError();
   modalStyles = {
     content: {
       top: '20%',
@@ -87,6 +86,7 @@ class Routes extends Component {
     }
   };
 
+  /* eslint-disable max-len */
   render() {
     const { diary, note } = this.props.ui;
     return (
@@ -100,8 +100,10 @@ class Routes extends Component {
           <div className="card-header"><h4><i className="fa fa-exclamation-circle" />&nbsp;Error</h4></div>
           <div className="card-block"><p>{this.props.error.message}</p></div>
           <div className="card-footer">
-            {this.props.error.requestId && <div className="footer-message"><p>Request ID: {this.props.error.requestId}</p></div>}
-            <button className="btn-primary" onClick={this.clearError}>close</button>
+            {this.props.error.requestId &&
+              <div className="footer-message"><p>Request ID: {this.props.error.requestId}</p></div>
+            }
+            <button className="btn-primary" onClick={this.handleClearError}>close</button>
           </div>
         </Modal>
         {diary && diary.resourceType &&
@@ -109,6 +111,7 @@ class Routes extends Component {
             resourceType={diary.resourceType}
             resourceId={diary.id} />
         }
+
         {note && note.documentId &&
           <NoteUploader
             noteType={note.noteType}
@@ -118,9 +121,13 @@ class Routes extends Component {
         <Router
           getUserConfirmation={(message, callback) => {
             ReactDOM.render(
-(<ConfirmPopup {...this.props} message={message} setBackStep={this.setBackStep} callback={callback} />
-            ), document.getElementById('modal')
-);
+              <ConfirmPopup
+                {...this.props}
+                message={message}
+                setBackStep={this.setBackStep}
+                callback={callback} />,
+              document.getElementById('modal')
+            );
           }}>
           <div className="routes">
             <Switch>
