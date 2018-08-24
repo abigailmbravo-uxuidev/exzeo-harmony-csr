@@ -1,11 +1,3 @@
-import React, { Component } from 'react';
+import DiariesSearch from './DiariesSearch';
 
-class index extends Component {
-  render() {
-    return (
-      <div>DIARIES SEARCH!!!</div>
-    );
-  }
-}
-
-export default index;
+export default DiariesSearch;

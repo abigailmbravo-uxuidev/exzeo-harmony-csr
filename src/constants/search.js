@@ -53,11 +53,11 @@ export const AGENCY_SEARCH_OPTIONS = [
 
 export const DIARY_SEARCH_OPTIONS = [
   {
-    answer: 'open',
+    answer: true,
     label: 'Open'
   },
   {
-    answer: 'closed',
+    answer: false,
     label: 'Closed'
   }
 ];
