@@ -131,7 +131,7 @@ class Routes extends Component {
             <Switch>
               <Route exact path="/" render={props => <SearchPolicy auth={auth} {...props} />} />
               <Route exact path="/agency" render={props => <SearchAgency auth={auth} {...props} />} />
-              <Route exact path="/diaries" render={props => <SearchDiaries /> } />
+              <Route exact path="/diaries" render={props => <SearchDiaries auth={auth} {...props} />} />
               <Route path="/policy/:policyNumber" render={props => <PolicyModule auth={auth} {...props} />} />
               <Route exact path="/quote/new/:stateCode/:propertyId" render={props => <QuoteLanding auth={auth} newQuote {...props} />} />
               <Route exact path="/quote/:quoteId" render={props => <QuoteLanding auth={auth} {...props} />} />
