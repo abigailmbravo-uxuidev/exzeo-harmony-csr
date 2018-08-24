@@ -19,7 +19,7 @@ const { validation } = lifecycle;
 
 const validate = values => (!values.message ? { message: 'Message Required' } : false);
 
-export const renderMessage = ({
+export const TextArea = ({
   input, label, type, meta: { touched, error }
 }) => (
   <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
@@ -62,9 +62,9 @@ export class DiaryModal extends Component {
 
     try {
       const response = await serviceRunner.callService(createRequest);
-      this.closeButtonHandler();
+      this.handleClose();
     } catch (error) {
-      this.closeButtonHandler();
+      this.handleClose();
     }
   }
 
@@ -120,7 +120,10 @@ export class DiaryModal extends Component {
                 validate={validation.isRequired}
                 dataTest="reason" />
               <label>Message</label>
-              <Field name="message" component={renderMessage} label="Message" />
+              <Field
+                name="message"
+                component={TextArea}
+                label="Message" />
             </div>
             <div className="buttons note-file-footer-button-group">
               <button
