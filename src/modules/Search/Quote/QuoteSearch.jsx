@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { Input, Select } from '@exzeo/core-ui/lib/Input';
-import { isAlphaNumeric, isValidChar, isNumberDashOnly } from '@exzeo/core-ui/lib/InputLifecycle';
+import { isAlphaNumeric, isValidChar, isNumberDashOnly, isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers } from '../../../utilities/forms';
 
 import Pagination from '../components/Pagination';
@@ -12,9 +12,24 @@ const QuoteSearch = ({
   submitting,
   questions,
   handlePagination,
-  search
+  search,
+ changeSearchType,
+ searchTypeOptions
 }) => (
   <React.Fragment>
+    <div className="form-group search-context">
+      <Field
+        name="searchType"
+        dataTest="searchType"
+        label="Search Context"
+        component={Select}
+        id="searchType"
+        validate={isRequired}
+        onChange={changeSearchType}
+        answers={searchTypeOptions}
+        showPlaceholder={false}
+        errorHint />
+    </div>
     <div className="search-inputs fade-in">
       <Field
         name="firstName"
@@ -94,7 +109,9 @@ QuoteSearch.propTypes = {
     results: PropTypes.array,
     totalPages: PropTypes.number,
     currentPage: PropTypes.number
-  })
+  }),
+  changeSearchType: PropTypes.func,
+  searchTypeOptions: PropTypes.array
 };
 
 QuoteSearch.defaultProps = {

@@ -52,7 +52,6 @@ export class SearchBar extends Component {
   render() {
     const {
       handleSubmit,
-      searchTypeOptions,
       submitting
     } = this.props;
 
@@ -61,24 +60,10 @@ export class SearchBar extends Component {
         <form onSubmit={handleSubmit(this.handleSearchFormSubmit)}>
           <div className="search-input-wrapper">
 
-            <div className="form-group search-context">
-              <Field
-                name="searchType"
-                dataTest="searchType"
-                label="Search Context"
-                component={Select}
-                id="searchType"
-                validate={isRequired}
-                onChange={this.changeSearchType}
-                answers={searchTypeOptions}
-                showPlaceholder={false}
-                errorHint
-              />
-            </div>
-
-            { // render the correct search form based on searchType (declared in Search/index.js)
+            {// render the correct search form based on searchType (declared in Search/index.js)
               this.props.render({
               submitting,
+              changeSearchType: this.changeSearchType,
               handlePagination: this.handlePagination
             })}
 
