@@ -13,8 +13,8 @@ const QuoteSearch = ({
   questions,
   handlePagination,
   search,
- changeSearchType,
- searchTypeOptions
+  changeSearchType,
+  searchTypeOptions
 }) => (
   <React.Fragment>
     <div className="form-group search-context">
@@ -39,8 +39,7 @@ const QuoteSearch = ({
         component={Input}
         styleName="first-name-search"
         validate={isAlphaNumeric}
-        errorHint
-      />
+        errorHint />
       <Field
         name="lastName"
         dataTest="lastName"
@@ -49,8 +48,7 @@ const QuoteSearch = ({
         component={Input}
         styleName="last-name-search"
         validate={isAlphaNumeric}
-        errorHint
-      />
+        errorHint />
       <Field
         name="address"
         dataTest="address"
@@ -59,8 +57,7 @@ const QuoteSearch = ({
         component={Input}
         styleName="property-search"
         validate={isValidChar}
-        errorHint
-      />
+        errorHint />
       <Field
         name="quoteNumber"
         dataTest="quoteNumber"
@@ -69,16 +66,14 @@ const QuoteSearch = ({
         component={Input}
         styleName="quote-no-search"
         validate={isNumberDashOnly}
-        errorHint
-      />
+        errorHint />
       <div className="form-group quote-state">
         <Field
           name="quoteState"
           dataTest="quoteState"
           label="Quote Status"
           component={Select}
-          answers={getAnswers('quoteState', questions)}
-        />
+          answers={getAnswers('quoteState', questions)} />
       </div>
 
       <Button
@@ -86,8 +81,7 @@ const QuoteSearch = ({
         customClass="multi-input"
         type="submit"
         disabled={submitting}
-        dataTest="submit"
-      ><i className="fa fa-search" />Search
+        dataTest="submit"><i className="fa fa-search" />Search
       </Button>
     </div>
     {!!search.results.length && search.totalPages > 1 &&
@@ -95,8 +89,7 @@ const QuoteSearch = ({
         changePageForward={handlePagination(true)}
         changePageBack={handlePagination(false)}
         pageNumber={search.currentPage}
-        totalPages={search.totalPages}
-      />
+        totalPages={search.totalPages} />
     }
   </React.Fragment>
 );
