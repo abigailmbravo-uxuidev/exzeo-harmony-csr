@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavLink, Link } from 'react-router-dom';
+
 import logo from '../../img/Harmony.svg';
 
 const handleLogout = (auth) => {
@@ -18,10 +19,12 @@ const Header = props => (
         <NavLink to="/reports" activeClassName="active" exact>Reports</NavLink>
         <NavLink to="/agency" activeClassName="active" exact>Agency</NavLink>
         <NavLink to="/" activeClassName="active" exact>Policy</NavLink>
-        { /* <a href="">User Management</a> */ }
-        <div className="user-name">{ props.authState && props.authState.userProfile ? props.authState.userProfile.userName : ''}</div>
-        <button tabIndex={'0'} className="btn btn-action"><i className="fa fa-gear" /></button>
-        <button tabIndex={'0'} className="btn logout btn-action" type="button" onClick={() => handleLogout(props.auth)}><i className="fa fa-sign-out" /></button>
+        {/* <a href="">User Management</a> */}
+        <div className="user-name">
+          {props.authState && props.authState.userProfile ? props.authState.userProfile.userName : ''}
+        </div>
+        <button tabIndex="0" className="btn btn-action"><i className="fa fa-gear" /></button>
+        <button tabIndex="0" className="btn logout btn-action" type="button" onClick={() => handleLogout(props.auth)}><i className="fa fa-sign-out" /></button>
       </nav>
     </div>
   </header>
