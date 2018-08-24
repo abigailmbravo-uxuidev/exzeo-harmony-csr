@@ -55,7 +55,7 @@ class Routes extends Component {
       }
 
       const pollDiaries = () => {
-        if (this.idToken) this.props.actions.diaryActions.fetchDiaries({ assignee: 'tticcsr', resourceType: 'Policy' });
+        if (this.idToken) this.props.actions.diaryActions.fetchDiaries({ userName: 'tticcsr', resourceType: 'Policy' });
         // setTimeout(() => pollDiaries(), 10000);
       };
 
