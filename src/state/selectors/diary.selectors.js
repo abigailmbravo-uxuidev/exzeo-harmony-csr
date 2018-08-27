@@ -32,7 +32,7 @@ export const getFormattedDiaries = createSelector(
 export const getOpenDiaries = createSelector(
   [getFormattedDiaries],
   (diaries) => {
-    if (!diaries) {
+    if (!diaries || diaries.length === 0) {
       return {
         upComing: [],
         pastDue: [],

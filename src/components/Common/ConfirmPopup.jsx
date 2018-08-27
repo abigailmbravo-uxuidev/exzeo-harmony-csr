@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 export class ConfirmPopup extends Component {
   constructor(props) {
     super(props);
-    this.yes = this.yes.bind(this);
-    this.no = this.no.bind(this);
+    this.handleConfirm = this.handleConfirm.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
 
     this.state = {
       hidden: false
