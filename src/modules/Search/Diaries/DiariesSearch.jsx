@@ -6,6 +6,7 @@ import { isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
 import Button from '@exzeo/core-ui/lib/Button';
 
 import { REASONS, USERS } from '../../../constants/diaries';
+import DateRange from '../components/DateRange';
 
 const DiariesSearch = ({
   submitting,
@@ -33,15 +34,22 @@ const DiariesSearch = ({
           dataTest="assignee"
           component={SelectTypeAhead}
           label="Assigned To"
-          answers={USERS} />
+          answers={USERS}
+          errorHint />
         <Field
           name="reason"
           dataTest="reason"
           component={Select}
           answers={REASONS}
           placeholder="Please choose"
-          label="Reason" />
-
+          label="Reason"
+          errorHint />
+        <Field
+          name="dateRange"
+          dataTest="date-range"
+          component={DateRange}
+          label="Date Range"
+          errorHint />
         <Button
           baseClass="success"
           customClass="multi-input"
