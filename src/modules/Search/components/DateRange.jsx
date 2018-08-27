@@ -38,24 +38,25 @@ class DateRange extends Component {
         meta={meta}
         styleName={styleName}
         errorHint={errorHint}>
-        <input
-          type="date"
-          name={minDateId}
-          id={minDateId}
-          onChange={this.handleChange}
-          onBlur={this.handleBlur}
-          onFocus={this.handleFocus} />{' - '}
-        <input
-          type="date"
-          name={maxDateId}
-          id={maxDateId}
-          onChange={this.handleChange}
-          onBlur={this.handleBlur}
-          onFocus={this.handleFocus} />
+        <div className="date-range-inputs">
+          <input
+            type="date"
+            name={minDateId}
+            id={minDateId}
+            onChange={this.handleChange}
+            onBlur={this.handleBlur}
+            onFocus={this.handleFocus} />{' - '}
+          <input
+            type="date"
+            name={maxDateId}
+            id={maxDateId}
+            onChange={this.handleChange}
+            onBlur={this.handleBlur}
+            onFocus={this.handleFocus} />
+          </div>
       </InputWrapper>
     );
   }
 }
 
 export default DateRange;
-

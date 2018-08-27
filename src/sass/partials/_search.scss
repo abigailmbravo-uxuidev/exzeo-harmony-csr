@@ -437,3 +437,13 @@ main[role="document"] {
     }
   }
 }
+.dateRange {
+
+    .date-range-inputs {
+
+        display: flex;
+         input {
+             width: 11rem;
+         }
+    }
+}
