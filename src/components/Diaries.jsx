@@ -1,6 +1,7 @@
 import React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
+import moment from 'moment-timezone';
 
 import { toggleDiary } from '../state/actions/uiActions';
 
@@ -52,7 +53,7 @@ export class Diaries extends React.Component {
               <li key={diary._id}>
                 <i className={severity.listIconClass} aria-hidden="true" />
                 <h5>
-                  <span>{diary.due} </span><a onClick={() => this.openHandler(diary)}><i className="fa fa-arrow-up" /> Open</a>
+                  <span>{moment.utc(diary.due).format('MM/DD/YYYY')} </span><a onClick={() => this.openHandler(diary)}><i className="fa fa-arrow-up" /> Open</a>
                 </h5>
                 <h5>{diary.type}</h5>
                 <span>Follow-up: {diary.reason}</span>
