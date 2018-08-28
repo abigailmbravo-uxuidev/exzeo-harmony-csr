@@ -100,15 +100,14 @@ export const SideNav = (props) => {
         ))}
         <hr className="nav-division" />
         <li>
-          <button aria-label="open-btn form-newDiary" data-test="newDiary" className="btn btn-primary btn-sm btn-block" onClick={() => NewDiary(props)}><i className="fa fa-plus" />Diary</button>
-        </li>
-        <li>
-          <button tabIndex="0" className="btn btn-primary btn-sm btn-block" onClick={() => NewNoteFileUploaderPopup(props)}><i className="fa fa-plus" /> Note / File</button>
-        </li>
-        <li>
           <button tabIndex="0" aria-label="open-btn form-newNote" className="btn btn-secondary btn-xs btn-block" onClick={() => UWconditionsPopup(props)}>Underwriting Conditions</button>
         </li>
       </ul>
+      <div className="plus-button-group">
+        <div className="btn btn-round btn-primary btn-lg new-btn"><i className="fa fa-plus" /></div>
+        <button aria-label="open-btn form-newDiary" data-test="newDiary" className="btn btn-primary btn-round btn-lg new-diary-btn" onClick={() => this.newDiary()}><i className="fa fa-bookmark" /><span>NEW DIARY</span></button>
+        <button aria-label="open-btn form-newNote" data-test="newNote" className="btn btn-primary btn-round btn-lg new-note-btn" onClick={() => this.newNote()}><i className="fa fa-pencil" /><span>NEW NOTE</span></button>
+      </div>
       {props.appState.data.showUWconditions === true &&
         <UWconditions closeButtonHandler={() => closeUWConditions(props)} />
       }

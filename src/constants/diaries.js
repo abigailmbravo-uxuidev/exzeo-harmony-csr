@@ -1,5 +1,5 @@
 export const USERS = [
-  { userId: '59419e3a43e76f16f68c3349', userName: 'tticcsr' }
+  { userId: 'auth0|59419e3a43e76f16f68c3349', userName: 'tticcsr' }
 ].map(user => ({ answer: user.userId, label: user.userName }));
 
 export const TYPES = [

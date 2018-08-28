@@ -54,12 +54,12 @@ class Routes extends Component {
         this.props.actions.authActions.setUserProfile(profile);
       }
 
-      const pollDiaries = () => {
-        if (this.idToken) this.props.actions.diaryActions.fetchDiaries({ userName: 'tticcsr', resourceType: 'Policy' });
-        // setTimeout(() => pollDiaries(), 10000);
-      };
+      // const pollDiaries = () => {
+      //   if (this.idToken) this.props.actions.diaryActions.fetchDiaries({ userName: 'tticcsr', resourceType: 'Policy' resourceId:  });
+      //   // setTimeout(() => pollDiaries(), 10000);
+      // };
 
-      pollDiaries();
+      // pollDiaries();
     } else if (!isAuthenticated() && checkPublicPath(window.location.pathname)) {
       history.push('/login');
       axios.defaults.headers.common['authorization'] = undefined; // eslint-disable-line
@@ -106,6 +106,7 @@ class Routes extends Component {
         </Modal>
         {diary && diary.resourceType &&
           <DiaryModal
+            initialValues={diary.selectedDiary}
             resourceType={diary.resourceType}
             resourceId={diary.id} />
         }

@@ -29,12 +29,12 @@ const DIARY_LEVELS = {
 };
 
 export class Diaries extends React.Component {
-  openHandler(diary) {
+  openHandler(selectedDiary) {
     const { toggleDiaryAction, policy: { policyNumber } } = this.props;
     toggleDiaryAction({
       resourceType: 'Policy',
       id: policyNumber,
-      diary
+      selectedDiary
     });
   }
 
@@ -57,6 +57,7 @@ export class Diaries extends React.Component {
                 </h5>
                 <h5>{diary.type}</h5>
                 <span>Follow-up: {diary.reason}</span>
+                <p>{diary.message}</p>
                 <h5>
                   {diary.assignee.userName}
                 </h5>
