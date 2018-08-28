@@ -47,7 +47,7 @@ export class Policy extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { policy: prevPolicy, fetchDiariesAction } = prevProps;
+    const { policy: prevPolicy } = prevProps;
     const {
       getAgents,
       getAgency,
@@ -56,7 +56,8 @@ export class Policy extends React.Component {
       getZipCodeSettings,
       policy,
       summaryLedger,
-      authState: { userProfile: { userName } }
+      authState: { userProfile: { userName } },
+      fetchDiariesAction
     } = this.props;
 
     if (prevPolicy !== policy && !!policy) {
@@ -82,6 +83,8 @@ export class Policy extends React.Component {
   }
 
   toggleDiariesHandler = () => {
+    const { fetchDiariesAction, authState: { userProfile: { userName } }, policy: { policyNumber } } = this.props;
+    fetchDiariesAction({ userName, resourceType: 'Policy', resourceId: policyNumber });
     this.setState({ showDiaries: !this.state.showDiaries });
   }
 
@@ -221,6 +224,7 @@ export class Policy extends React.Component {
 Policy.propTypes = {
   appState: PropTypes.object,
   authState: PropTypes.object,
+  fetchDiariesAction: PropTypes.func,
   initialized: PropTypes.bool,
   policy: PropTypes.object,
   summaryLedger: PropTypes.object,
