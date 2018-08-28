@@ -56,11 +56,11 @@ export class DiaryModal extends Component {
     // TODO: Move this logic into diary actions / utils
     let createRequest = {};
 
-    if (initialValues && initialValues._id) {
+    if (initialValues && initialValues.diaryId) {
       createRequest = {
         service: 'diaries',
         method: 'POST',
-        path: `update/${initialValues._id}`,
+        path: `update/${initialValues.diaryId}`,
         data: {
           resource: { type: resourceType, id: resourceId },
           entry: data,
