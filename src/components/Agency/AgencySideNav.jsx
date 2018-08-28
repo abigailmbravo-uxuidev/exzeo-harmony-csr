@@ -60,10 +60,11 @@ export class SideNav extends Component {
             </span>
           </li>
       ))}
-        <li>
-          <button aria-label="open-btn form-newDiary" data-test="newDiary" className="btn btn-primary btn-sm btn-block" onClick={() => this.newDiary()}><i className="fa fa-plus" />Diary</button>
-        </li>
       </ul>
+      <div className="plus-button-group">
+        <div className="btn btn-round btn-primary btn-lg new-btn"><i className="fa fa-plus" /></div>
+        <button aria-label="open-btn form-newDiary" data-test="newDiary" className="btn btn-primary btn-round btn-lg new-diary-btn" onClick={() => this.newDiary()}><i className="fa fa-bookmark" /><span>NEW DIARY</span></button>
+      </div>
     </nav>);
   }
 }
