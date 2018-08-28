@@ -28,7 +28,7 @@ import OpenDiariesBar from '../../components/OpenDiariesBar';
 export class Policy extends React.Component {
   state = {
     showDiaries: false
-  }
+  };
   // TODO: next step is to make an 'initialize' action that does all of this. Then this component will only need to know about one action.
   componentDidMount() {
     const {
@@ -56,8 +56,6 @@ export class Policy extends React.Component {
       getZipCodeSettings,
       policy,
       summaryLedger,
-      authState: { userProfile: { userName } },
-      fetchDiariesAction
     } = this.props;
 
     if (prevPolicy !== policy && !!policy) {
@@ -67,7 +65,6 @@ export class Policy extends React.Component {
 
       const ids = [policy.policyNumber, policy.sourceNumber];
       getNotes(ids.toString(), policy.policyNumber);
-      fetchDiariesAction({ userName, resourceType: 'Policy', resourceId: policy.policyNumber });
 
       if (summaryLedger) {
         const paymentOptions = {

@@ -29,11 +29,11 @@ import Reports from './containers/Reports';
 import PolicyModule from './modules/Policy';
 import AgencyStaff from './components/Agency/Staff';
 import NoteUploader from './components/Common/NoteUploader';
+import DiaryPolling from './components/DiaryPolling';
 import DiaryModal from './components/DiaryModal';
 import * as appStateActions from './state/actions/appStateActions';
 import * as errorActions from './state/actions/errorActions';
 import * as authActions from './state/actions/authActions';
-import * as diaryActions from './state/actions/diaryActions';
 
 const auth = new Auth();
 
@@ -53,13 +53,6 @@ class Routes extends Component {
         const profile = JSON.parse(localStorage.getItem('user_profile'));
         this.props.actions.authActions.setUserProfile(profile);
       }
-
-      // const pollDiaries = () => {
-      //   if (this.idToken) this.props.actions.diaryActions.fetchDiaries({ userName: 'tticcsr', resourceType: 'Policy' resourceId:  });
-      //   // setTimeout(() => pollDiaries(), 10000);
-      // };
-
-      // pollDiaries();
     } else if (!isAuthenticated() && checkPublicPath(window.location.pathname)) {
       history.push('/login');
       axios.defaults.headers.common['authorization'] = undefined; // eslint-disable-line
@@ -86,9 +79,12 @@ class Routes extends Component {
 
   /* eslint-disable max-len */
   render() {
-    const { diary, note } = this.props.ui;
+    const { ui: { diary, note }, authState: { userProfile } } = this.props;
     return (
       <div>
+        {(userProfile && userProfile.userId) &&
+          <DiaryPolling userId={userProfile.userId} />
+        }
         <Modal
           isOpen={this.props.error.message !== undefined}
           contentLabel="Error Modal"
@@ -104,6 +100,7 @@ class Routes extends Component {
             <button className="btn-primary" onClick={this.handleClearError}>close</button>
           </div>
         </Modal>
+
         {diary && diary.resourceType &&
           <DiaryModal
             initialValues={diary.selectedDiary}
@@ -180,7 +177,6 @@ const mapDispatchToProps = dispatch => ({
     appStateActions: bindActionCreators(appStateActions, dispatch),
     errorActions: bindActionCreators(errorActions, dispatch),
     authActions: bindActionCreators(authActions, dispatch),
-    diaryActions: bindActionCreators(diaryActions, dispatch)
   }
 });
 
