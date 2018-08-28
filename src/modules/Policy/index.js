@@ -28,7 +28,7 @@ import OpenDiariesBar from '../../components/OpenDiariesBar';
 export class Policy extends React.Component {
   state = {
     showDiaries: false
-  }
+  };
   // TODO: next step is to make an 'initialize' action that does all of this. Then this component will only need to know about one action.
   componentDidMount() {
     const {
@@ -47,7 +47,7 @@ export class Policy extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { policy: prevPolicy, fetchDiariesAction } = prevProps;
+    const { policy: prevPolicy } = prevProps;
     const {
       getAgents,
       getAgency,
@@ -56,7 +56,6 @@ export class Policy extends React.Component {
       getZipCodeSettings,
       policy,
       summaryLedger,
-      authState: { userProfile: { userName } }
     } = this.props;
 
     if (prevPolicy !== policy && !!policy) {
@@ -66,7 +65,6 @@ export class Policy extends React.Component {
 
       const ids = [policy.policyNumber, policy.sourceNumber];
       getNotes(ids.toString(), policy.policyNumber);
-      fetchDiariesAction({ userName, resourceType: 'Policy', resourceId: policy.policyNumber });
 
       if (summaryLedger) {
         const paymentOptions = {
@@ -82,6 +80,8 @@ export class Policy extends React.Component {
   }
 
   toggleDiariesHandler = () => {
+    const { fetchDiariesAction, authState: { userProfile: { userName } }, policy: { policyNumber } } = this.props;
+    fetchDiariesAction({ userName, resourceType: 'Policy', resourceId: policyNumber });
     this.setState({ showDiaries: !this.state.showDiaries });
   }
 
@@ -221,6 +221,7 @@ export class Policy extends React.Component {
 Policy.propTypes = {
   appState: PropTypes.object,
   authState: PropTypes.object,
+  fetchDiariesAction: PropTypes.func,
   initialized: PropTypes.bool,
   policy: PropTypes.object,
   summaryLedger: PropTypes.object,

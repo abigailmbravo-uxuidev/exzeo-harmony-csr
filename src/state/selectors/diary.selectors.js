@@ -21,7 +21,7 @@ export const getFormattedDiaries = createSelector(
   [getDiaries],
   (diaries) => {
     return diaries.map(d => ({
-      id: d._id,
+      diaryId: d._id,
       resourceType: d.resource.type,
       resourceId: d.resource.id,
       ...d.entries[0],
