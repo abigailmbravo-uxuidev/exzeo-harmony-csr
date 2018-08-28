@@ -30,8 +30,8 @@ const DiariesSearch = ({
       </div>
       <div className="search-inputs fade-in">
         <Field
-          name="assignee"
-          dataTest="assignee"
+          name="assignees"
+          dataTest="assignees"
           component={SelectTypeAhead}
           label="Assigned To"
           answers={USERS}
