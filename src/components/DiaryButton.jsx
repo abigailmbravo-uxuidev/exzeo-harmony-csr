@@ -3,15 +3,29 @@ import Button from '@exzeo/core-ui/lib/Button/index';
 import PropTypes from 'prop-types';
 
 const DiaryButton = ({ toggleDiaries, showDiaries }) => (
-  <div className="tab-tag">
-    <span>Open Diaries</span>
+  <div className="header-toggle-wrapper">
     <Button
       onClick={toggleDiaries}
-      baseClass="primary"
+      baseClass="link"
+      customClass=""
       type="button"
       dataTest="diaryButton">
-      { showDiaries && <span><i className="fa fa-arrow-circle-right" />Hide</span>}
-      { !showDiaries && <span><i className="fa fa-arrow-circle-left" />Show</span>}
+      {showDiaries && (
+        <div className="diary-btn-wrapper panel-open">
+          <i className="fa fa-bookmark"><span>1</span></i>
+          <span>
+            <i className="fa fa-chevron-circle-right" />Hide
+          </span>
+        </div>
+      )}
+      {!showDiaries && (
+        <div className="diary-btn-wrapper panel-closed">
+          <i className="fa fa-bookmark"><span>1</span></i>
+          <span>
+            <i className="fa fa-chevron-circle-left" />Show
+          </span>
+        </div>
+      )}
     </Button>
   </div>
 );
