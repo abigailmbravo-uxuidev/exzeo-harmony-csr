@@ -22,7 +22,11 @@ export const AGENCY_INITIAL_VALUES = {
 };
 
 export const DIARY_INITIAL_VALUES = {
-  status: 'open'
+  status: 'open',
+  dateRange: {
+    min: '',
+    max: ''
+  }
 };
 
 export const POLICY_SEARCH_OPTIONS = [

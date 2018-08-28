@@ -7,6 +7,7 @@ import Loader from '@exzeo/core-ui/lib/Loader';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 
+import { fetchDiaries } from '../state/actions/diaryActions';
 import * as appStateActions from '../state/actions/appStateActions';
 import * as serviceActions from '../state/actions/serviceActions';
 import * as uiActions from '../state/actions/uiActions';
@@ -45,23 +46,43 @@ export class DiaryModal extends Component {
   handleClose = () => this.props.actions.uiActions.toggleDiary({});
 
   submitDiary = async (data, dispatch, props) => {
-    const { user, resourceType, resourceId } = props;
+    const {
+      user, resourceType, resourceId, initialValues, fetchDiariesAction
+    } = props;
 
-    data.assignee = { userId: data.assignee, userName: 'tticcsr' };
+    // TODO: Get Users from collection and select based on userId
+    data.assignee.userName = 'tticcsr';
 
-    const createRequest = {
-      service: 'diaries',
-      method: 'POST',
-      path: 'create',
-      data: {
-        resource: { type: resourceType, id: resourceId },
-        entry: data,
-        user: { userId: user.userId, userName: user.userName }
-      }
-    };
+    // TODO: Move this logic into diary actions / utils
+    let createRequest = {};
+
+    if (initialValues && initialValues._id) {
+      createRequest = {
+        service: 'diaries',
+        method: 'POST',
+        path: `update/${initialValues._id}`,
+        data: {
+          resource: { type: resourceType, id: resourceId },
+          entry: data,
+          user: { userId: user.userId, userName: user.userName }
+        }
+      };
+    } else {
+      createRequest = {
+        service: 'diaries',
+        method: 'POST',
+        path: 'create',
+        data: {
+          resource: { type: resourceType, id: resourceId },
+          entry: data,
+          user: { userId: user.userId, userName: user.userName }
+        }
+      };
+    }
 
     try {
-      const response = await serviceRunner.callService(createRequest);
+      await serviceRunner.callService(createRequest);
+      await fetchDiariesAction({ userName: user.userName, resourceType, resourceId });
       this.handleClose();
     } catch (error) {
       this.handleClose();
@@ -100,7 +121,7 @@ export class DiaryModal extends Component {
                 validate={validation.isRequired}
                 dataTest="diaryType" />
               <Field
-                name="assignee"
+                name="assignee.userId"
                 label="Assignee"
                 component={Select}
                 answers={USERS}
@@ -156,6 +177,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  fetchDiariesAction: fetchDiaries,
   actions: {
     appStateActions: bindActionCreators(appStateActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
