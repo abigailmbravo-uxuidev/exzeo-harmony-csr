@@ -50,6 +50,7 @@ const DiariesSearch = ({
           component={DateRange}
           label="Date Range"
           errorHint />
+
         <Button
           baseClass="success"
           customClass="multi-input"
@@ -60,6 +61,16 @@ const DiariesSearch = ({
       </div>
     </React.Fragment>
   );
+};
+
+DiariesSearch.propTypes = {
+  changeSearchType: PropTypes.func.isRequired,
+  searchTypeOptions: PropTypes.array.isRequired,
+  submitting: PropTypes.bool
+};
+
+DiariesSearch.defaultProps = {
+  submitting: false
 };
 
 export default DiariesSearch;
