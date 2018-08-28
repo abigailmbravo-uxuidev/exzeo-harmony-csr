@@ -472,7 +472,7 @@ export function handlePolicySearch(data) {
       policyNumber: formatForURI(data.policyNumber),
       policyStatus: formatForURI(data.policyStatus),
       agencyCode: formatForURI(agencyCode),
-      effectiveDate: formatForURI(moment(data.effectiveDate || '').utc().format(SECONDARY_DATE_FORMAT)),
+      effectiveDate: formatForURI(data.effectiveDate && moment(data.effectiveDate).utc().format(SECONDARY_DATE_FORMAT)),
       currentPage: setPageNumber(data.currentPage, data.isNext),
       sortBy: data.sortBy,
       sortDirection: data.sortBy === 'policyNumber' ? 'desc' : 'asc',

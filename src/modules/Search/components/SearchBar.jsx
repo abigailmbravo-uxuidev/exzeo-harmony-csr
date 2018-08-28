@@ -9,9 +9,6 @@ import {
   toggleLoading
 } from '../../../state/actions/searchActions';
 
-import { Select } from '@exzeo/core-ui/lib/Input';
-import { isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
-
 export class SearchBar extends Component {
   componentDidMount() {
     const {
