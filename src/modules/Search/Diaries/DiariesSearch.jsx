@@ -6,6 +6,7 @@ import { isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
 import Button from '@exzeo/core-ui/lib/Button';
 
 import { REASONS, USERS } from '../../../constants/diaries';
+import DateRange from '../components/DateRange';
 
 const DiariesSearch = ({
   submitting,
@@ -29,18 +30,26 @@ const DiariesSearch = ({
       </div>
       <div className="search-inputs fade-in">
         <Field
-          name="assignee"
-          dataTest="assignee"
+          name="assignees"
+          dataTest="assignees"
           component={SelectTypeAhead}
           label="Assigned To"
-          answers={USERS} />
+          answers={USERS}
+          errorHint />
         <Field
           name="reason"
           dataTest="reason"
           component={Select}
           answers={REASONS}
           placeholder="Please choose"
-          label="Reason" />
+          label="Reason"
+          errorHint />
+        <Field
+          name="dateRange"
+          dataTest="date-range"
+          component={DateRange}
+          label="Date Range"
+          errorHint />
 
         <Button
           baseClass="success"
@@ -52,6 +61,16 @@ const DiariesSearch = ({
       </div>
     </React.Fragment>
   );
+};
+
+DiariesSearch.propTypes = {
+  changeSearchType: PropTypes.func.isRequired,
+  searchTypeOptions: PropTypes.array.isRequired,
+  submitting: PropTypes.bool
+};
+
+DiariesSearch.defaultProps = {
+  submitting: false
 };
 
 export default DiariesSearch;
