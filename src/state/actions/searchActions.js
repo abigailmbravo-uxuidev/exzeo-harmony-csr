@@ -404,6 +404,17 @@ export function setPageNumber(currentPage, isNext) {
 }
 
 /**
+ * Format value to put in URI for request.
+ * @param value
+ * @param sub
+ * @returns {string}
+ */
+export function formatForURI(value, sub = '') {
+  const encodedVal = encodeURIComponent(value);
+  return encodedVal !== 'undefined' ? encodedVal : sub;
+}
+
+/**
  * Entry point for AddressSearch form
  * @param {object} data - form data
  * @returns {Function}
@@ -411,7 +422,7 @@ export function setPageNumber(currentPage, isNext) {
 export function handleAddressSearch(data) {
   return async (dispatch) => {
     const taskData = {
-      address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(String(data.address).trim()) : '')
+      address: formatForURI(String(data.address).trim())
     };
 
     await dispatch(searchAddresses(taskData.address));
@@ -426,13 +437,13 @@ export function handleAddressSearch(data) {
 export function handleQuoteSearch(data) {
   return async (dispatch) => {
     const taskData = {
-      firstName: (encodeURIComponent(data.firstName) !== 'undefined' ? encodeURIComponent(data.firstName) : ''),
-      lastName: (encodeURIComponent(data.lastName) !== 'undefined' ? encodeURIComponent(data.lastName) : ''),
-      address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(String(data.address).trim()) : ''),
-      zip: (encodeURIComponent(data.zip) !== 'undefined' ? encodeURIComponent(data.zip) : ''),
-      quoteNumber: (encodeURIComponent(data.quoteNumber) !== 'undefined' ? encodeURIComponent(data.quoteNumber) : ''),
-      policyNumber: (encodeURIComponent(data.policyNumber) !== 'undefined' ? encodeURIComponent(data.policyNumber) : ''),
-      quoteState: (encodeURIComponent(data.quoteState) !== 'undefined' ? encodeURIComponent(data.quoteState) : ''),
+      firstName: formatForURI(data.firstName),
+      lastName: formatForURI(data.lastName),
+      address: formatForURI(String(data.address).trim()),
+      zip: formatForURI(data.zip),
+      quoteNumber: formatForURI(data.quoteNumber),
+      policyNumber: formatForURI(data.policyNumber),
+      quoteState: formatForURI(data.quoteState),
       currentPage: setPageNumber(data.currentPage, data.isNext),
       companyCode: DEFAULT_SEARCH_PARAMS.companyCode,
       state: DEFAULT_SEARCH_PARAMS.state,
@@ -455,13 +466,13 @@ export function handlePolicySearch(data) {
     // TODO: update this once the SelectTypeAhead is fixed. Currently is puts the entire 'answer' object in state rather than just the value.
     const agencyCode = data.agencyCode ? data.agencyCode.answer : '';
     const taskData = {
-      firstName: (encodeURIComponent(data.firstName) !== 'undefined' ? encodeURIComponent(data.firstName) : ''),
-      lastName: (encodeURIComponent(data.lastName) !== 'undefined' ? encodeURIComponent(data.lastName) : ''),
-      address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(String(data.address).trim()) : ''),
-      policyNumber: (encodeURIComponent(data.policyNumber) !== 'undefined' ? encodeURIComponent(data.policyNumber) : ''),
-      policyStatus: (encodeURIComponent(data.policyStatus) !== 'undefined' ? encodeURIComponent(data.policyStatus) : ''),
-      agencyCode: (encodeURIComponent(agencyCode) !== 'undefined' ? encodeURIComponent(agencyCode) : ''),
-      effectiveDate: (encodeURIComponent(data.effectiveDate) !== 'undefined' ? encodeURIComponent(moment(data.effectiveDate).utc().format(SECONDARY_DATE_FORMAT)) : ''),
+      firstName: formatForURI(data.firstName),
+      lastName: formatForURI(data.lastName),
+      address: formatForURI(String(data.address).trim()),
+      policyNumber: formatForURI(data.policyNumber),
+      policyStatus: formatForURI(data.policyStatus),
+      agencyCode: formatForURI(agencyCode),
+      effectiveDate: formatForURI(moment(data.effectiveDate || '').utc().format(SECONDARY_DATE_FORMAT)),
       currentPage: setPageNumber(data.currentPage, data.isNext),
       sortBy: data.sortBy,
       sortDirection: data.sortBy === 'policyNumber' ? 'desc' : 'asc',
@@ -483,11 +494,11 @@ export function handlePolicySearch(data) {
 export function handleAgentSearch(data) {
   return async (dispatch) => {
     const taskData = {
-      agentCode: (encodeURIComponent(data.agentCode) !== 'undefined' ? encodeURIComponent(data.agentCode) : ''),
-      firstName: (encodeURIComponent(data.firstName) !== 'undefined' ? encodeURIComponent(data.firstName) : ''),
-      lastName: (encodeURIComponent(data.lastName) !== 'undefined' ? encodeURIComponent(data.lastName) : ''),
-      address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(String(data.address).trim()) : ''),
-      licenseNumber: (encodeURIComponent(data.licenseNumber) !== 'undefined' ? encodeURIComponent(data.licenseNumber) : ''),
+      agentCode: formatForURI(data.agentCode),
+      firstName: formatForURI(data.firstName),
+      lastName: formatForURI(data.lastName),
+      address: formatForURI(String(data.address).trim()),
+      licenseNumber: formatForURI(data.licenseNumber),
       companyCode: DEFAULT_SEARCH_PARAMS.companyCode,
       state: DEFAULT_SEARCH_PARAMS.state
     };
@@ -504,12 +515,12 @@ export function handleAgentSearch(data) {
 export function handleAgencySearch(data) {
   return async (dispatch) => {
     const taskData = {
-      agencyCode: (encodeURIComponent(data.agencyCode) !== 'undefined' ? encodeURIComponent(data.agencyCode) : ''),
-      displayName: (encodeURIComponent(data.displayName) !== 'undefined' ? encodeURIComponent(data.displayName) : ''),
-      address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(String(data.address).trim()) : ''),
-      licenseNumber: (encodeURIComponent(data.licenseNumber) !== 'undefined' ? encodeURIComponent(data.licenseNumber) : ''),
-      fein: (encodeURIComponent(data.fein) !== 'undefined' ? encodeURIComponent(data.fein) : ''),
-      phone: (encodeURIComponent(data.phone) !== 'undefined' ? encodeURIComponent(data.phone) : ''),
+      agencyCode: formatForURI(data.agencyCode),
+      displayName: formatForURI(data.displayName),
+      address: formatForURI(String(data.address).trim()),
+      licenseNumber: formatForURI(data.licenseNumber),
+      fein: formatForURI(data.fein),
+      phone: formatForURI(data.phone),
       companyCode: DEFAULT_SEARCH_PARAMS.companyCode,
       state: DEFAULT_SEARCH_PARAMS.state
     };
