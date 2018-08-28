@@ -6,6 +6,7 @@ import moment from 'moment-timezone';
 import { Helmet } from 'react-helmet';
 import Loader from '@exzeo/core-ui/lib/Loader';
 
+import { fetchDiaries } from '../../state/actions/diaryActions';
 import { setAppState } from '../../state/actions/appStateActions';
 import { getZipcodeSettings, getAgents, getAgency, getNotes } from '../../state/actions/serviceActions';
 import { createTransaction, getBillingOptionsForPolicy, getPolicy, getPaymentOptionsApplyPayments, getPaymentHistory, getCancelOptions, getEndorsementHistory } from '../../state/actions/policyActions';
@@ -46,7 +47,7 @@ export class Policy extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { policy: prevPolicy } = prevProps;
+    const { policy: prevPolicy, fetchDiariesAction } = prevProps;
     const {
       getAgents,
       getAgency,
@@ -54,7 +55,8 @@ export class Policy extends React.Component {
       getNotes,
       getZipCodeSettings,
       policy,
-      summaryLedger
+      summaryLedger,
+      authState: { userProfile: { userName } }
     } = this.props;
 
     if (prevPolicy !== policy && !!policy) {
@@ -64,6 +66,7 @@ export class Policy extends React.Component {
 
       const ids = [policy.policyNumber, policy.sourceNumber];
       getNotes(ids.toString(), policy.policyNumber);
+      fetchDiariesAction({ userName, resourceType: 'Policy', resourceId: policy.policyNumber });
 
       if (summaryLedger) {
         const paymentOptions = {
@@ -217,6 +220,7 @@ export class Policy extends React.Component {
 
 Policy.propTypes = {
   appState: PropTypes.object,
+  authState: PropTypes.object,
   initialized: PropTypes.bool,
   policy: PropTypes.object,
   summaryLedger: PropTypes.object,
@@ -236,9 +240,10 @@ Policy.propTypes = {
 };
 
 const mapStateToProps = ({
-  appState, cg, policyState, service
+  appState, cg, policyState, service, authState
 }) => ({
   appState,
+  authState,
   initialized: !!(policyState.policy.policyID && policyState.summaryLedger._id),
   policy: policyState.policy,
   summaryLedger: policyState.summaryLedger,
@@ -249,6 +254,7 @@ const mapStateToProps = ({
 export default connect(mapStateToProps, {
   batchCompleteTask,
   createTransaction,
+  fetchDiariesAction: fetchDiaries,
   getAgents,
   getAgency,
   getBillingOptionsForPolicy,

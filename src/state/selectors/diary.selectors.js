@@ -24,7 +24,8 @@ export const getFormattedDiaries = createSelector(
       id: d._id,
       resourceType: d.resource.type,
       resourceId: d.resource.id,
-      ...d.entries[0]
+      ...d.entries[0],
+      due: moment.utc(d.entries[0].due).format('YYYY-MM-DD')
     }));
   }
 );
