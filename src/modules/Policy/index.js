@@ -6,12 +6,11 @@ import moment from 'moment-timezone';
 import { Helmet } from 'react-helmet';
 import Loader from '@exzeo/core-ui/lib/Loader';
 
-import { fetchDiaries } from '../../state/actions/diaryActions';
 import { setAppState } from '../../state/actions/appStateActions';
 import { getZipcodeSettings, getAgents, getAgency, getNotes } from '../../state/actions/serviceActions';
 import { createTransaction, getBillingOptionsForPolicy, getPolicy, getPaymentOptionsApplyPayments, getPaymentHistory, getCancelOptions, getEndorsementHistory } from '../../state/actions/policyActions';
 import { startWorkflow, batchCompleteTask } from '../../state/actions/cgActions';
-
+import { getFilteredOpenDiaries } from '../../state/selectors/diary.selectors';
 import EditEffectiveDataPopUp from '../../components/Policy/EditEffectiveDatePopup';
 import ReinstatePolicyPopup from '../../components/Policy/ReinstatePolicyPopup';
 import PolicyDetailHeader from '../../components/Policy/DetailHeader';
@@ -55,7 +54,7 @@ export class Policy extends React.Component {
       getNotes,
       getZipCodeSettings,
       policy,
-      summaryLedger,
+      summaryLedger
     } = this.props;
 
     if (prevPolicy !== policy && !!policy) {
@@ -80,8 +79,6 @@ export class Policy extends React.Component {
   }
 
   toggleDiariesHandler = () => {
-    const { fetchDiariesAction, authState: { userProfile: { userName } }, policy: { policyNumber } } = this.props;
-    fetchDiariesAction({ userName, resourceType: 'Policy', resourceId: policyNumber });
     this.setState({ showDiaries: !this.state.showDiaries });
   }
 
@@ -169,7 +166,8 @@ export class Policy extends React.Component {
       appState,
       match,
       policy,
-      initialized
+      initialized,
+      openDiaryCount
     } = this.props;
 
     const { showDiaries } = this.state;
@@ -182,7 +180,7 @@ export class Policy extends React.Component {
         }
 
         <Helmet><title>{policy && policy.policyNumber ? `P: ${policy.policyNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
-        <PolicyHeader toggleDiaries={this.toggleDiariesHandler} showDiaries={showDiaries} />
+        <PolicyHeader toggleDiaries={this.toggleDiariesHandler} showDiaries={showDiaries} openDiaryCount={openDiaryCount} />
         <PolicyDetailHeader />
         <main role="document">
           <aside className="content-panel-left">
@@ -240,22 +238,23 @@ Policy.propTypes = {
   startWorkflow: PropTypes.func
 };
 
-const mapStateToProps = ({
-  appState, cg, policyState, service, authState
-}) => ({
-  appState,
-  authState,
-  initialized: !!(policyState.policy.policyID && policyState.summaryLedger._id),
-  policy: policyState.policy,
-  summaryLedger: policyState.summaryLedger,
-  tasks: cg,
-  zipCodeSettings: service.getZipcodeSettings
-});
+const mapStateToProps = (state, ownProps) => {
+  const resource = ownProps.match.path.split('/')[1];
+  return {
+    appState: state.appState,
+    authState: state.authState,
+    initialized: !!(state.policyState.policy.policyID && state.policyState.summaryLedger._id),
+    policy: state.policyState.policy,
+    summaryLedger: state.policyState.summaryLedger,
+    tasks: state.cg,
+    zipCodeSettings: state.service.getZipcodeSettings,
+    openDiaryCount: getFilteredOpenDiaries(state, resource).count
+  };
+};
 
 export default connect(mapStateToProps, {
   batchCompleteTask,
   createTransaction,
-  fetchDiariesAction: fetchDiaries,
   getAgents,
   getAgency,
   getBillingOptionsForPolicy,
