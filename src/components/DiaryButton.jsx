@@ -2,10 +2,10 @@ import React from 'react';
 import Button from '@exzeo/core-ui/lib/Button/index';
 import PropTypes from 'prop-types';
 
-const DiaryButton = ({ toggleDiaries, showDiaries, openDiaryCount }) => (
+const DiaryButton = ({ onToggleDiaries, showDiaries, openDiaryCount }) => (
   <div className="header-toggle-wrapper">
     <Button
-      onClick={toggleDiaries}
+      onClick={onToggleDiaries}
       baseClass="link"
       customClass=""
       type="button"
