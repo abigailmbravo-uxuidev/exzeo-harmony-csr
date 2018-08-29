@@ -77,7 +77,6 @@ const mapStateToProps = state => ({
   search: state.search,
   agencies: state.service.agencies || []
 });
-
 export default connect(mapStateToProps, {
   clearAppError,
   getAgencies,

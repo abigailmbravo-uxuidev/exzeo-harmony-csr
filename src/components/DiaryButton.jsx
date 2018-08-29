@@ -2,17 +2,17 @@ import React from 'react';
 import Button from '@exzeo/core-ui/lib/Button/index';
 import PropTypes from 'prop-types';
 
-const DiaryButton = ({ toggleDiaries, showDiaries }) => (
+const DiaryButton = ({ onToggleDiaries, showDiaries, openDiaryCount }) => (
   <div className="header-toggle-wrapper">
     <Button
-      onClick={toggleDiaries}
+      onClick={onToggleDiaries}
       baseClass="link"
       customClass=""
       type="button"
       dataTest="diaryButton">
       {showDiaries && (
         <div className="diary-btn-wrapper panel-open">
-          <i className="fa fa-bookmark"><span>1</span></i>
+          <i className="fa fa-bookmark"><span>{openDiaryCount}</span></i>
           <span>
             <i className="fa fa-chevron-circle-right" />Hide
           </span>
@@ -20,7 +20,7 @@ const DiaryButton = ({ toggleDiaries, showDiaries }) => (
       )}
       {!showDiaries && (
         <div className="diary-btn-wrapper panel-closed">
-          <i className="fa fa-bookmark"><span>1</span></i>
+          <i className="fa fa-bookmark"><span>{openDiaryCount}</span></i>
           <span>
             <i className="fa fa-chevron-circle-left" />Show
           </span>

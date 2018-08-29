@@ -3,20 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import moment from 'moment-timezone';
-import { Helmet } from 'react-helmet';
 import Loader from '@exzeo/core-ui/lib/Loader';
 
-import { fetchDiaries } from '../../state/actions/diaryActions';
 import { setAppState } from '../../state/actions/appStateActions';
 import { getZipcodeSettings, getAgents, getAgency, getNotes } from '../../state/actions/serviceActions';
 import { createTransaction, getBillingOptionsForPolicy, getPolicy, getPaymentOptionsApplyPayments, getPaymentHistory, getCancelOptions, getEndorsementHistory } from '../../state/actions/policyActions';
 import { startWorkflow, batchCompleteTask } from '../../state/actions/cgActions';
-
 import EditEffectiveDataPopUp from '../../components/Policy/EditEffectiveDatePopup';
 import ReinstatePolicyPopup from '../../components/Policy/ReinstatePolicyPopup';
-import PolicyDetailHeader from '../../components/Policy/DetailHeader';
-import PolicySideNav from '../../components/Policy/PolicySideNav';
-import PolicyHeader from '../../components/Policy/PolicyHeader';
 import Coverage from '../../components/Policy/Coverage';
 import PolicyHolder from '../../components/Policy/PolicyholderAgent';
 import Billing from '../../components/Policy/MortgageBilling';
@@ -24,6 +18,7 @@ import Notes from '../../components/Policy/NotesFiles';
 import Cancel from '../../components/Policy/Cancel';
 import Endorsements from '../../components/Policy/Endorsements';
 import OpenDiariesBar from '../../components/OpenDiariesBar';
+import App from '../../components/App';
 
 export class Policy extends React.Component {
   state = {
@@ -55,7 +50,7 @@ export class Policy extends React.Component {
       getNotes,
       getZipCodeSettings,
       policy,
-      summaryLedger,
+      summaryLedger
     } = this.props;
 
     if (prevPolicy !== policy && !!policy) {
@@ -79,9 +74,7 @@ export class Policy extends React.Component {
     }
   }
 
-  toggleDiariesHandler = () => {
-    const { fetchDiariesAction, authState: { userProfile: { userName } }, policy: { policyNumber } } = this.props;
-    fetchDiariesAction({ userName, resourceType: 'Policy', resourceId: policyNumber });
+  handleToggleDiaries = () => {
     this.setState({ showDiaries: !this.state.showDiaries });
   }
 
@@ -180,39 +173,39 @@ export class Policy extends React.Component {
         {(appState.data.submitting || !initialized) &&
           <Loader />
         }
-
-        <Helmet><title>{policy && policy.policyNumber ? `P: ${policy.policyNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
-        <PolicyHeader toggleDiaries={this.toggleDiariesHandler} showDiaries={showDiaries} />
-        <PolicyDetailHeader />
-        <main role="document" className={showDiaries ? 'diary-open' : 'diary-closed'}>
-          <aside className="content-panel-left">
-            <PolicySideNav match={match} />
-          </aside>
-
-          {initialized &&
-            <div className="content-wrapper">
-              <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} />} />
-              <Route exact path={`${match.url}/policyholder`} render={props => <PolicyHolder {...props} />} />
-              <Route exact path={`${match.url}/billing`} render={props => <Billing {...props} />} />
-              <Route exact path={`${match.url}/notes`} render={props => <Notes {...props} params={match.params} />} />
-              <Route exact path={`${match.url}/cancel`} render={props => <Cancel {...props} />} />
-              <Route exact path={`${match.url}/endorsements`} render={props => <Endorsements {...props} params={match.params} />} />
-            </div>
+        <App
+          pageTitle={`P: ${policy.policyNumber}`}
+          match={match}
+          onToggleDiaries={this.handleToggleDiaries}
+          showDiaries={showDiaries}
+          render={() => (
+            <React.Fragment>
+              {initialized &&
+              <div className="content-wrapper">
+                <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} />} />
+                <Route exact path={`${match.url}/policyholder`} render={props => <PolicyHolder {...props} />} />
+                <Route exact path={`${match.url}/billing`} render={props => <Billing {...props} />} />
+                <Route exact path={`${match.url}/notes`} render={props => <Notes {...props} params={match.params} />} />
+                <Route exact path={`${match.url}/cancel`} render={props => <Cancel {...props} />} />
+                <Route exact path={`${match.url}/endorsements`} render={props => <Endorsements {...props} params={match.params} />} />
+              </div>
           }
 
-          {appState.data.showReinstatePolicyPopUp &&
-            <ReinstatePolicyPopup
-              reinstatePolicySubmit={this.reinstatePolicySubmit}
-              hideReinstatePolicyModal={this.hideReinstatePolicyPopUp} />
+              {appState.data.showReinstatePolicyPopUp &&
+              <ReinstatePolicyPopup
+                reinstatePolicySubmit={this.reinstatePolicySubmit}
+                hideReinstatePolicyModal={this.hideReinstatePolicyPopUp} />
           }
 
-          {appState.data.showEffectiveDateChangePopUp &&
-            <EditEffectiveDataPopUp
-              changeEffectiveDateSubmit={this.changeEffectiveDate}
-              hideEffectiveDateModal={this.hideEffectiveDatePopUp} />
+              {appState.data.showEffectiveDateChangePopUp &&
+              <EditEffectiveDataPopUp
+                changeEffectiveDateSubmit={this.changeEffectiveDate}
+                hideEffectiveDateModal={this.hideEffectiveDatePopUp} />
           }
-          {showDiaries && <OpenDiariesBar />}
-        </main>
+              {showDiaries && <OpenDiariesBar />}
+            </React.Fragment>
+        )} />
+
       </div>
     );
   }
@@ -240,22 +233,21 @@ Policy.propTypes = {
   startWorkflow: PropTypes.func
 };
 
-const mapStateToProps = ({
-  appState, cg, policyState, service, authState
-}) => ({
-  appState,
-  authState,
-  initialized: !!(policyState.policy.policyID && policyState.summaryLedger._id),
-  policy: policyState.policy,
-  summaryLedger: policyState.summaryLedger,
-  tasks: cg,
-  zipCodeSettings: service.getZipcodeSettings
-});
+const mapStateToProps = (state) => {
+  return {
+    appState: state.appState,
+    authState: state.authState,
+    initialized: !!(state.policyState.policy.policyID && state.policyState.summaryLedger._id),
+    policy: state.policyState.policy,
+    summaryLedger: state.policyState.summaryLedger,
+    tasks: state.cg,
+    zipCodeSettings: state.service.getZipcodeSettings
+  };
+};
 
 export default connect(mapStateToProps, {
   batchCompleteTask,
   createTransaction,
-  fetchDiariesAction: fetchDiaries,
   getAgents,
   getAgency,
   getBillingOptionsForPolicy,
