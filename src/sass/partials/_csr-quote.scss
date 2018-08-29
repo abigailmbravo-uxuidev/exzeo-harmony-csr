@@ -65,6 +65,8 @@
   }
   //content wrapper
   main[role="document"] {
+    position: relative;
+
     .content-wrapper {
       flex-wrap: nowrap;
 
@@ -165,9 +167,9 @@
           .producer {
             .flex-parent {
               .flex-child:first-child {
-                  flex-grow: 0;
-                  flex-shrink: 0;
-                  flex-basis: auto;
+                flex-basis: auto;
+                flex-grow: 0;
+                flex-shrink: 0;
               }
             }
           }
@@ -468,6 +470,42 @@
         }
       }
     }
+
+    //diaries
+    .open-diaries {
+      position: absolute;
+      right: 0;
+      display: flex;
+      align-self: stretch;
+      flex-direction: column;
+      flex-grow: 0;
+      flex-shrink: 0;
+      width: 0;
+      height: calc(100vh - 8.125rem);
+      min-height: calc(100vh - 8.125rem);
+      padding: 0 0 ($padding*2) ($padding*2);
+      border-left: dotted 1px $warm-gray-04;
+      background: $white;
+      @include transition(all 1s ease-in-out);
+
+      .uw-validation-header {
+        margin: ($padding*1.5) 0;
+      }
+    }
+
+    &.diary-open {
+        .open-diaries {
+            width: 240px;
+            @include transition(all 1s ease-in-out);
+        }
+      #UnderwritingOverride {
+        .underwriting-validation {
+          margin-right: 3rem;
+        }
+      }
+    }
+    //end diaries
+    //-----------------------------------------
   }
   //footer
   .btn-footer {
@@ -631,14 +669,14 @@
 }
 
 .csr.quote {
-    .email-address {
-      flex-grow: 1;
-      flex-shrink: 1;
-    }
+  .email-address {
+    flex-grow: 1;
+    flex-shrink: 1;
+  }
 
-    .electronicDelivery {
-      flex-grow: 0;
-      flex-shrink: 0;
-      width: 32%;
-    }
+  .electronicDelivery {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 32%;
+  }
 }

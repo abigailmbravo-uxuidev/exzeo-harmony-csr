@@ -253,7 +253,7 @@ export class Endorsements extends React.Component {
         {(this.props.submitting || !endorsementHistory) && <Loader />}
           <form
             id="Endorsements"
-            className="content-wrapper"
+            className="content-wrapper endorsement-content-wrapper"
             onSubmit={handleSubmit(this.handleEndorsementFormSubmit)}
             onKeyPress={e => (e.key === 'Enter' && e.target.type !== 'submit') && e.preventDefault()}
           >

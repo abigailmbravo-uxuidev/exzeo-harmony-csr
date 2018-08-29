@@ -22,7 +22,7 @@ export class QuoteBase extends React.Component {
 
   render() {
     const {
- appState, quoteData, match, children 
+ appState, quoteData, match, children
 } = this.props;
     const { showDiaries } = this.state;
     return (
@@ -31,7 +31,7 @@ export class QuoteBase extends React.Component {
         {/* <NewNoteFileUploader /> */}
         <QuoteHeader toggleDiaries={this.toggleDiariesHandler} showDiaries={showDiaries} />
         <QuoteDetailHeader />
-        <main role="document">
+        <main role="document" className={showDiaries ? 'diary-open' : 'diary-closed'}>
           {(appState.data.submitting || !quoteData._id) && <Loader />}
           <aside className="content-panel-left">
             <QuoteSideNav match={match} />

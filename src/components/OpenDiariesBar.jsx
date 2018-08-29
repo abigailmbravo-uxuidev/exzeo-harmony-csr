@@ -12,8 +12,7 @@ export class OpenDiariesBar extends React.Component {
 
     const { dueSoon, pastDue, upComing } = diaries;
     return (
-      <div>
-        <aside className="underwriting-validation">
+      <aside className="open-diaries">
           <h4 className="uw-validation-header">Open Diaries</h4>
           <div>
 
@@ -36,7 +35,6 @@ export class OpenDiariesBar extends React.Component {
             }
           </div>
         </aside>
-      </div>
     );
   }
 }

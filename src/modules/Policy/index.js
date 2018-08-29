@@ -184,7 +184,7 @@ export class Policy extends React.Component {
         <Helmet><title>{policy && policy.policyNumber ? `P: ${policy.policyNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
         <PolicyHeader toggleDiaries={this.toggleDiariesHandler} showDiaries={showDiaries} />
         <PolicyDetailHeader />
-        <main role="document">
+        <main role="document" className={showDiaries ? 'diary-open' : 'diary-closed'}>
           <aside className="content-panel-left">
             <PolicySideNav match={match} />
           </aside>
