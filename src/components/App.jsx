@@ -4,22 +4,19 @@ import { Helmet } from 'react-helmet';
 
 import Header from './Header';
 import DiaryButton from './DiaryButton';
-import PolicyDetailHeader from '../components/Policy/DetailHeader';
-import QuoteDetailHeader from '../components/Quote/DetailHeader';
 
 import PolicySideNav from '../components/Policy/PolicySideNav';
 import QuoteSideNav from '../components/Quote/QuoteSideNav';
 import { getFilteredOpenDiaries } from '../state/selectors/diary.selectors';
+import DetailHeader from './DetailHeader';
 
 const CONFIG = {
   policy: {
     title: 'POLICY',
-    detailComponent: PolicyDetailHeader,
     sideNavComponent: PolicySideNav
   },
   quote: {
     title: 'QUOTE',
-    detailComponent: QuoteDetailHeader,
     sideNavComponent: QuoteSideNav
   }
 };
@@ -29,16 +26,16 @@ export class App extends Component {
     const {
       pageTitle, match, match: { path }, onToggleDiaries, showDiaries, openDiaryCount
     } = this.props;
-    const context = CONFIG[path.split('/')[1]];
-    const DetailHeader = context.detailComponent;
-    const SideNav = context.sideNavComponent;
+    const context = path.split('/')[1];
+    const selectedConfig = CONFIG[context];
+    const SideNav = selectedConfig.sideNavComponent;
     return (
       <React.Fragment>
         <Helmet><title>{pageTitle}</title></Helmet>
-        <Header title={context.title}>
+        <Header title={selectedConfig.title}>
           <DiaryButton onToggleDiaries={onToggleDiaries} showDiaries={showDiaries} openDiaryCount={openDiaryCount} />
         </Header>
-        <DetailHeader />
+        <DetailHeader context={context} />
         <main role="document" className={showDiaries ? 'diary-open' : 'diary-closed'}>
           <aside className="content-panel-left">
             <SideNav match={match} />

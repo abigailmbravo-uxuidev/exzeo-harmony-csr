@@ -3,10 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _get from 'lodash/get';
 import moment from 'moment';
+
 import { setAppState } from '../../state/actions/appStateActions';
 import { getEffectiveDateChangeReasons } from '../../state/actions/policyActions';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
+import { getPolicyDetails } from '../../state/selectors/detailHeader.selectors';
+import EntityDetails from '../../components/EntityDetails';
+import EntityPolicyHolder from '../../components/EntityPolicyHolder';
 
 export const showEffectiveDatePopUp = (props) => {
   props.setAppState(
@@ -28,7 +32,8 @@ export class DetailHeader extends Component {
   }
 
   render() {
-    const { policy, summaryLedger } = this.props;
+    const { policy, summaryLedger, entityDetails } = this.props;
+    const { details, policyHolder } = entityDetails;
 
     if (!policy || !policy.policyID) return (<div className="detailHeader" />);
 
@@ -46,40 +51,25 @@ export class DetailHeader extends Component {
     }
 
     const loc = policy.property.physicalAddress;
-    const mapQuery = encodeURIComponent(`${loc.address1} ${loc.address2} ${loc.city}, ${loc.state} ${loc.zip}`)
+    const mapQuery = encodeURIComponent(`${loc.address1} ${loc.address2} ${loc.city}, ${loc.state} ${loc.zip}`);
     const mapUri = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
     const showReinstatement = policy.status === 'Cancelled' && [12, 13, 14, 15].includes(billingStatusCode);
-    
-    return (<div className="detailHeader">
-      <section id="policyDetails" className="policyDetails">
-        <dl>
-          <div>
-            <dd>{_get(policy, 'product') === 'HO3' ? `${_get(policy, 'product')} Homeowners` : _get(policy, 'product')}</dd>
-            <dd>{_get(policy, 'policyNumber')}</dd>
-            <dd className="policy-status">{`${_get(policy, 'status')} / ${_get(summaryLedger, 'status.displayText')}`}</dd>
-          </div>
-        </dl>
-      </section>
-      <section id="policyHolder" className="policyHolder">
-        <dl>
-          <div>
-            <dt>Policyholder</dt>
-            <dd>{`${_get(policy, 'policyHolders[0].firstName')} ${_get(policy, 'policyHolders[0].lastName')}`}</dd>
-            <dd>{normalizePhone(_get(policy, 'policyHolders[0].primaryPhoneNumber'))}</dd>
-          </div>
-        </dl>
-      </section>
-      <section id="policyHolderMailingAddress" className="policyHolderMailingAddress">
-        <dl>
-          <div>
-            <dt>Mailing Address</dt>
-            <dd>{_get(policy, 'policyHolderMailingAddress.address1')}</dd>
-            <dd>{_get(policy, 'policyHolderMailingAddress.address2')}</dd>
-            <dd>{`${_get(policy, 'policyHolderMailingAddress.city')}, ${_get(policy, 'policyHolderMailingAddress.state')} ${_get(policy, 'policyHolderMailingAddress.zip')}`}</dd>
-          </div>
-        </dl>
-      </section>
-      <section id="propertyAddress" className="propertyAddress">
+
+    return (
+      <div className="detailHeader">
+        <EntityDetails details={details} className="policyDetails" />
+        <EntityPolicyHolder policyHolder={policyHolder}className="policyHolder" />
+        <section id="policyHolderMailingAddress" className="policyHolderMailingAddress">
+          <dl>
+            <div>
+              <dt>Mailing Address</dt>
+              <dd>{_get(policy, 'policyHolderMailingAddress.address1')}</dd>
+              <dd>{_get(policy, 'policyHolderMailingAddress.address2')}</dd>
+              <dd>{`${_get(policy, 'policyHolderMailingAddress.city')}, ${_get(policy, 'policyHolderMailingAddress.state')} ${_get(policy, 'policyHolderMailingAddress.zip')}`}</dd>
+            </div>
+          </dl>
+        </section>
+        <section id="propertyAddress" className="propertyAddress">
           <dl>
             <div>
               <dt>Property Address <a className="btn btn-link btn-xs btn-alt-light no-padding" target="_blank" href={mapUri}><i className="fa fa-map-marker" />Map</a></dt>
@@ -89,75 +79,75 @@ export class DetailHeader extends Component {
             </div>
           </dl>
         </section>
-      <div className="detailHeader-wrapping-sections">
-        <div className="wrapping-section">
-          <section id="propertyCounty" className="propertyCounty">
-            <dl>
-              <div>
-                <dt>Property County</dt>
-                <dd>{_get(policy, 'property.physicalAddress.county')}</dd>
-              </div>
-            </dl>
-          </section>
-          <section id="territory" className="territory">
-            <dl>
-              <div>
-                <dt>Territory</dt>
-                <dd>{_get(policy, 'property.territory')}</dd>
-              </div>
-            </dl>
-          </section>
-          <section id="constructionType" className="constructionType">
-            <dl>
-              <div>
-                <dt>Construction Type</dt>
-                <dd>{_get(policy, 'property.constructionType')}</dd>
-              </div>
-            </dl>
-          </section>
-        </div>
-        <div className="wrapping-section">
-          <section id="sourceNumber" className="sourceNumber">
-            <dl>
-              <div>
-                <dt>Source Number</dt>
-                <dd>{_get(policy, 'sourceNumber')}</dd>
-              </div>
-            </dl>
-          </section>
-          <section id="policyEffectiveDate" className="policyEffectiveDate">
-            <dl>
-              <div>
-                <dt>Effective Date <button id="effective-date" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showEffectiveDatePopUp(this.props)}><i className="fa fa-pencil-square" />Edit</button></dt>
-                <dd>{moment.utc(_get(policy, 'effectiveDate')).format('MM/DD/YYYY')}</dd>
-              </div>
-            </dl>
-          </section>
-          {policy &&
-          <section id="cancellationDate" className="cancellationDate">
-            <dl>
-            <div>
-              <dt>
+        <div className="detailHeader-wrapping-sections">
+          <div className="wrapping-section">
+            <section id="propertyCounty" className="propertyCounty">
+              <dl>
+                <div>
+                  <dt>Property County</dt>
+                  <dd>{_get(policy, 'property.physicalAddress.county')}</dd>
+                </div>
+              </dl>
+            </section>
+            <section id="territory" className="territory">
+              <dl>
+                <div>
+                  <dt>Territory</dt>
+                  <dd>{_get(policy, 'property.territory')}</dd>
+                </div>
+              </dl>
+            </section>
+            <section id="constructionType" className="constructionType">
+              <dl>
+                <div>
+                  <dt>Construction Type</dt>
+                  <dd>{_get(policy, 'property.constructionType')}</dd>
+                </div>
+              </dl>
+            </section>
+          </div>
+          <div className="wrapping-section">
+            <section id="sourceNumber" className="sourceNumber">
+              <dl>
+                <div>
+                  <dt>Source Number</dt>
+                  <dd>{_get(policy, 'sourceNumber')}</dd>
+                </div>
+              </dl>
+            </section>
+            <section id="policyEffectiveDate" className="policyEffectiveDate">
+              <dl>
+                <div>
+                  <dt>Effective Date <button id="effective-date" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showEffectiveDatePopUp(this.props)}><i className="fa fa-pencil-square" />Edit</button></dt>
+                  <dd>{moment.utc(_get(policy, 'effectiveDate')).format('MM/DD/YYYY')}</dd>
+                </div>
+              </dl>
+            </section>
+            {policy &&
+            <section id="cancellationDate" className="cancellationDate">
+              <dl>
+                <div>
+                  <dt>
                 Cancellation Date
-                {policy && showReinstatement &&
-                <button id="show-reinstate" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showReinstatePolicyPopUp(this.props)}><i className="fa fa-thumbs-up" />Reinstate</button>
+                    {policy && showReinstatement &&
+                    <button id="show-reinstate" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showReinstatePolicyPopUp(this.props)}><i className="fa fa-thumbs-up" />Reinstate</button>
                 }
-              </dt>
-              <dd>{cancellationDate}</dd>
+                  </dt>
+                  <dd>{cancellationDate}</dd>
+                </div>
+              </dl>
+            </section>}
+          </div>
+        </div>
+        <section id="premium" className="premium">
+          <dl>
+            <div>
+              <dt>Current Premium</dt>
+              <dd>$ {summaryLedger ? normalizeNumbers(summaryLedger.currentPremium) : '-'}</dd>
             </div>
           </dl>
-          </section>}
-        </div>
-      </div>
-      <section id="premium" className="premium">
-        <dl>
-          <div>
-            <dt>Current Premium</dt>
-            <dd>$ {summaryLedger ? normalizeNumbers(summaryLedger.currentPremium) : '-'}</dd>
-          </div>
-        </dl>
-      </section>
-    </div>);
+        </section>
+      </div>);
   }
 }
 
@@ -168,7 +158,8 @@ DetailHeader.propTypes = {
 const mapStateToProps = state => ({
   appState: state.appState,
   policy: state.policyState.policy,
-  summaryLedger: state.policyState.summaryLedger
+  summaryLedger: state.policyState.summaryLedger,
+  entityDetails: getPolicyDetails(state)
 });
 
 
