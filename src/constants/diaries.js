@@ -1,6 +1,9 @@
 export const USERS = [
-  { userId: 'auth0|59419e3a43e76f16f68c3349', userName: 'tticcsr' }
-].map(user => ({ answer: user.userId, label: user.userName }));
+  { answer: '1', label: 'TTICCSR', type: 'user' },
+  { answer: '2', label: 'Jordan Rhodes', type: 'user' },
+  { answer: '3', label: 'Mark Eads', type: 'user' },
+  { answer: '10', label: 'A-Team', type: 'tag' }
+];
 
 export const TYPES = [
   { answer: 'additional_interest', label: 'Additional Interest' },

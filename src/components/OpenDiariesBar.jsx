@@ -57,7 +57,8 @@ OpenDiariesBar.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  diaries: getOpenDiaries(state)
+  diaries: getOpenDiaries(state),
+  policy: state.policyState.policy || {}
 });
 
 export default connect(mapStateToProps)(OpenDiariesBar);

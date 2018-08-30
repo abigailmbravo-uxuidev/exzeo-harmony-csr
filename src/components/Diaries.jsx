@@ -71,7 +71,7 @@ export class Diaries extends React.Component {
 }
 
 Diaries.propTypes = {
-  exceptionLevel: propTypes.oneOf(['upComing', 'pastDue', 'dueSoon']).isRequired,
+  diaryLevel: propTypes.oneOf(['upComing', 'pastDue', 'dueSoon']).isRequired,
   diaries: propTypes.arrayOf(propTypes.shape({
     _id: propTypes.string,
     internalMessage: propTypes.string
