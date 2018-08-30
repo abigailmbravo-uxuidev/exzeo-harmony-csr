@@ -133,7 +133,6 @@ const mapStateToProps = state => ({
   appState: state.appState,
   completedTasks: state.completedTasks,
   quoteData: state.service.quote || defaultObject,
-  initialValues: handleInitialize(state),
   fieldValues: getFormValues('UnderwritingOverride')(state) || defaultObject,
   exceptions: getGroupedExceptions(state.service.quote || defaultObject)
 });
