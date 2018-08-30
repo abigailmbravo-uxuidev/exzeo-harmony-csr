@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { normalize } from '@exzeo/core-ui/lib/InputLifecycle/index';
-
+import moment from 'moment-timezone';
 
 const getPolicy = state => state.policyState.policy;
 const getSummaryLedger = state => state.policyState.summaryLedger;
@@ -18,11 +18,29 @@ export const getPolicyDetails = createSelector(
   (policy, summaryLedger) => {
     if (!policy || !policy.policyNumber) return defaultObj;
     const {
-      product, policyNumber, status, policyHolders, policyHolderMailingAddress, property
+      product, policyNumber, status, policyHolders, policyHolderMailingAddress, property,
+      sourceNumber, effectiveDate, endDate, cancelDate
     } = policy;
-    const { status: { displayText } } = summaryLedger;
+    const { nonPaymentNoticeDueDate, currentPremium, status: { displayText, code } } = summaryLedger;
     const primaryPolicyHolder = policyHolders[0];
-    const { physicalAddress, territory } = property;
+    const {
+      physicalAddress, territory, constructionType
+    } = property;
+
+    let cancellationDate = '';
+
+    const billingStatusCode = code || null;
+
+    if (policy && status && (status.includes('Pending') || status.includes('Cancel') || billingStatusCode > 8) && summaryLedger) {
+      cancellationDate = cancelDate
+        ? moment.utc(cancelDate).format('MM/DD/YYYY')
+        : moment.utc(nonPaymentNoticeDueDate).format('MM/DD/YYYY');
+    }
+    if (policy && endDate && billingStatusCode === 99) {
+      cancellationDate = moment.utc(endDate).format('MM/DD/YYYY');
+    }
+    const showReinstatement = status === 'Cancelled' && [12, 13, 14, 15].includes(billingStatusCode);
+
     return {
       details: {
         product: product === 'HO3' ? `${product} Homeowners` : product,
@@ -41,9 +59,15 @@ export const getPolicyDetails = createSelector(
         ...physicalAddress
       },
       property: {
-        territory
+        territory,
+        constructionType,
+        sourceNumber
       },
-      premium: {}
+      premium: {},
+      effectiveDate: moment.utc(effectiveDate).format('MM/DD/YYYY'),
+      cancellationDate,
+      showReinstatement,
+      currentPremium
     };
   }
 );

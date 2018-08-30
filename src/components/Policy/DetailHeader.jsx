@@ -13,6 +13,11 @@ import EntityPolicyHolder from '../../components/EntityPolicyHolder';
 import EntityAddress from '../../components/EntityAddress';
 import EntityPropertyCounty from '../EntityPropertyCounty';
 import EntityPropertyTerritory from '../EntityPropertyTerritory';
+import EntityPropertyConstructionType from '../EntityPropertyConstructionType';
+import EntityPropertySourceNumber from '../EntityPropertySourceNumber';
+import EntityCancellationDate from '../EntityCancellationDate';
+import EntityEffectiveDate from '../EntityEffectiveDate';
+import EntityPremium from '../EntityPremium';
 
 export const showEffectiveDatePopUp = (props) => {
   props.setAppState(
@@ -38,88 +43,32 @@ export class DetailHeader extends Component {
     if (!policy || !policy.policyID) return (<div className="detailHeader" />);
 
     const {
-      details, policyHolder, mailingAddress, propertyAddress, property
+      details, policyHolder, mailingAddress, propertyAddress, property, effectiveDate, cancellationDate, showReinstatement, currentPremium
     } = entityDetails;
-    const { territory } = property;
+    const { territory, constructionType, sourceNumber } = property;
 
-    const billingStatusCode = summaryLedger && summaryLedger.status ? summaryLedger.status.code : null;
-
-    let cancellationDate = '';
-
-    if (policy && policy.status && (policy.status.includes('Pending') || policy.status.includes('Cancel') || billingStatusCode > 8) && summaryLedger) {
-      cancellationDate = policy.cancelDate
-        ? moment.utc(policy.cancelDate).format('MM/DD/YYYY')
-        : moment.utc(summaryLedger.nonPaymentNoticeDueDate).format('MM/DD/YYYY');
-    }
-    if (policy && policy.endDate && billingStatusCode === 99) {
-      cancellationDate = moment.utc(policy.endDate).format('MM/DD/YYYY');
-    }
-
-    const loc = policy.property.physicalAddress;
-    const mapQuery = encodeURIComponent(`${loc.address1} ${loc.address2} ${loc.city}, ${loc.state} ${loc.zip}`);
+    const mapQuery = encodeURIComponent(`${propertyAddress.address1} ${propertyAddress.address2} ${propertyAddress.city}, ${propertyAddress.state} ${propertyAddress.zip}`);
     const mapUri = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
-    const showReinstatement = policy.status === 'Cancelled' && [12, 13, 14, 15].includes(billingStatusCode);
 
     return (
       <div className="detailHeader">
         <EntityDetails details={details} className="policyDetails" />
-        <EntityPolicyHolder policyHolder={policyHolder}className="policyHolder" />
-        <EntityAddress type="Mailing" address={mailingAddress}className="policyHolderMailingAddress" />
-        <EntityAddress type="Property" address={propertyAddress}className="propertyAddress" mapUri={mapUri} />
+        <EntityPolicyHolder policyHolder={policyHolder} className="policyHolder" />
+        <EntityAddress type="Mailing" address={mailingAddress} className="policyHolderMailingAddress" />
+        <EntityAddress type="Property" address={propertyAddress} className="propertyAddress" mapUri={mapUri} />
         <div className="detailHeader-wrapping-sections">
           <div className="wrapping-section">
-            <EntityPropertyCounty county={propertyAddress.county}className="propertyCounty" />
-            <EntityPropertyTerritory territory={territory}className="territory" />
-            <section id="constructionType" className="constructionType">
-              <dl>
-                <div>
-                  <dt>Construction Type</dt>
-                  <dd>{_get(policy, 'property.constructionType')}</dd>
-                </div>
-              </dl>
-            </section>
+            <EntityPropertyCounty county={propertyAddress.county} className="propertyCounty" />
+            <EntityPropertyTerritory territory={territory} className="territory" />
+            <EntityPropertyConstructionType constructionType={constructionType} className="constructionType" />
           </div>
           <div className="wrapping-section">
-            <section id="sourceNumber" className="sourceNumber">
-              <dl>
-                <div>
-                  <dt>Source Number</dt>
-                  <dd>{_get(policy, 'sourceNumber')}</dd>
-                </div>
-              </dl>
-            </section>
-            <section id="policyEffectiveDate" className="policyEffectiveDate">
-              <dl>
-                <div>
-                  <dt>Effective Date <button id="effective-date" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showEffectiveDatePopUp(this.props)}><i className="fa fa-pencil-square" />Edit</button></dt>
-                  <dd>{moment.utc(_get(policy, 'effectiveDate')).format('MM/DD/YYYY')}</dd>
-                </div>
-              </dl>
-            </section>
-            {policy &&
-            <section id="cancellationDate" className="cancellationDate">
-              <dl>
-                <div>
-                  <dt>
-                Cancellation Date
-                    {policy && showReinstatement &&
-                    <button id="show-reinstate" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showReinstatePolicyPopUp(this.props)}><i className="fa fa-thumbs-up" />Reinstate</button>
-                }
-                  </dt>
-                  <dd>{cancellationDate}</dd>
-                </div>
-              </dl>
-            </section>}
+            <EntityPropertySourceNumber sourceNumber={sourceNumber} className="sourceNumber" />
+            <EntityEffectiveDate effectiveDate={effectiveDate} showEffectiveDatePopUp={() => showEffectiveDatePopUp(this.props)} className="effectiveDate" />
+            <EntityCancellationDate showReinstatement={showReinstatement} cancellationDate={cancellationDate} showReinstatePolicyPopUp={() => showReinstatePolicyPopUp(this.props)} className="cancellationDate" />
           </div>
         </div>
-        <section id="premium" className="premium">
-          <dl>
-            <div>
-              <dt>Current Premium</dt>
-              <dd>$ {summaryLedger ? normalizeNumbers(summaryLedger.currentPremium) : '-'}</dd>
-            </div>
-          </dl>
-        </section>
+        <EntityPremium currentPremium={currentPremium} className="premium" />
       </div>);
   }
 }
