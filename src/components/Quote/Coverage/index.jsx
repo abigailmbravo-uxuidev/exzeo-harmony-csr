@@ -292,11 +292,8 @@ export class Coverage extends Component {
     if (Number.isNaN(value)) return;
     const { change, initialValues } = this.props;
 
-    if (value === 0) {
-      change('personalPropertyReplacementCostCoverage', false);
-    } else {
-      change('personalPropertyReplacementCostCoverage', initialValues.personalPropertyReplacementCostCoverage || false);
-    }
+    if (value === 0) change('personalPropertyReplacementCostCoverage', false);
+
     const fieldValue = setPercentageOfValue(allValues.dwellingAmount, value);
     change(field, Number.isNaN(fieldValue) ? '' : fieldValue);
     return value;
