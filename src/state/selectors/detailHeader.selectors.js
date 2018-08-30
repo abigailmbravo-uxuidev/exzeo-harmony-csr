@@ -16,12 +16,13 @@ const defaultObj = {
 export const getPolicyDetails = createSelector(
   [getPolicy, getSummaryLedger],
   (policy, summaryLedger) => {
-    if (!policy.policyNumber) return defaultObj;
+    if (!policy || !policy.policyNumber) return defaultObj;
     const {
-      product, policyNumber, status, policyHolders
+      product, policyNumber, status, policyHolders, policyHolderMailingAddress, property
     } = policy;
     const { status: { displayText } } = summaryLedger;
     const primaryPolicyHolder = policyHolders[0];
+    const { physicalAddress, territory } = property;
     return {
       details: {
         product: product === 'HO3' ? `${product} Homeowners` : product,
@@ -33,9 +34,15 @@ export const getPolicyDetails = createSelector(
         lastName: primaryPolicyHolder.lastName,
         primaryPhoneNumber: normalize.phone(primaryPolicyHolder.primaryPhoneNumber)
       },
-      mailingAddress: {},
-      propertyAddress: {},
-      property: {},
+      mailingAddress: {
+        ...policyHolderMailingAddress
+      },
+      propertyAddress: {
+        ...physicalAddress
+      },
+      property: {
+        territory
+      },
       premium: {}
     };
   }

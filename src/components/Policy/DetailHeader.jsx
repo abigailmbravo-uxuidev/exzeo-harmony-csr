@@ -6,11 +6,13 @@ import moment from 'moment';
 
 import { setAppState } from '../../state/actions/appStateActions';
 import { getEffectiveDateChangeReasons } from '../../state/actions/policyActions';
-import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import { getPolicyDetails } from '../../state/selectors/detailHeader.selectors';
 import EntityDetails from '../../components/EntityDetails';
 import EntityPolicyHolder from '../../components/EntityPolicyHolder';
+import EntityAddress from '../../components/EntityAddress';
+import EntityPropertyCounty from '../EntityPropertyCounty';
+import EntityPropertyTerritory from '../EntityPropertyTerritory';
 
 export const showEffectiveDatePopUp = (props) => {
   props.setAppState(
@@ -33,9 +35,12 @@ export class DetailHeader extends Component {
 
   render() {
     const { policy, summaryLedger, entityDetails } = this.props;
-    const { details, policyHolder } = entityDetails;
-
     if (!policy || !policy.policyID) return (<div className="detailHeader" />);
+
+    const {
+      details, policyHolder, mailingAddress, propertyAddress, property
+    } = entityDetails;
+    const { territory } = property;
 
     const billingStatusCode = summaryLedger && summaryLedger.status ? summaryLedger.status.code : null;
 
@@ -59,44 +64,12 @@ export class DetailHeader extends Component {
       <div className="detailHeader">
         <EntityDetails details={details} className="policyDetails" />
         <EntityPolicyHolder policyHolder={policyHolder}className="policyHolder" />
-        <section id="policyHolderMailingAddress" className="policyHolderMailingAddress">
-          <dl>
-            <div>
-              <dt>Mailing Address</dt>
-              <dd>{_get(policy, 'policyHolderMailingAddress.address1')}</dd>
-              <dd>{_get(policy, 'policyHolderMailingAddress.address2')}</dd>
-              <dd>{`${_get(policy, 'policyHolderMailingAddress.city')}, ${_get(policy, 'policyHolderMailingAddress.state')} ${_get(policy, 'policyHolderMailingAddress.zip')}`}</dd>
-            </div>
-          </dl>
-        </section>
-        <section id="propertyAddress" className="propertyAddress">
-          <dl>
-            <div>
-              <dt>Property Address <a className="btn btn-link btn-xs btn-alt-light no-padding" target="_blank" href={mapUri}><i className="fa fa-map-marker" />Map</a></dt>
-              <dd>{_get(policy, 'property.physicalAddress.address1')}</dd>
-              <dd>{_get(policy, 'property.physicalAddress.address2')}</dd>
-              <dd>{`${_get(policy, 'property.physicalAddress.city')}, ${_get(policy, 'property.physicalAddress.state')} ${_get(policy, 'property.physicalAddress.zip')}`}</dd>
-            </div>
-          </dl>
-        </section>
+        <EntityAddress type="Mailing" address={mailingAddress}className="policyHolderMailingAddress" />
+        <EntityAddress type="Property" address={propertyAddress}className="propertyAddress" mapUri={mapUri} />
         <div className="detailHeader-wrapping-sections">
           <div className="wrapping-section">
-            <section id="propertyCounty" className="propertyCounty">
-              <dl>
-                <div>
-                  <dt>Property County</dt>
-                  <dd>{_get(policy, 'property.physicalAddress.county')}</dd>
-                </div>
-              </dl>
-            </section>
-            <section id="territory" className="territory">
-              <dl>
-                <div>
-                  <dt>Territory</dt>
-                  <dd>{_get(policy, 'property.territory')}</dd>
-                </div>
-              </dl>
-            </section>
+            <EntityPropertyCounty county={propertyAddress.county}className="propertyCounty" />
+            <EntityPropertyTerritory territory={territory}className="territory" />
             <section id="constructionType" className="constructionType">
               <dl>
                 <div>
