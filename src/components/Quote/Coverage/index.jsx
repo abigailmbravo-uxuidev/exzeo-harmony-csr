@@ -290,13 +290,10 @@ export class Coverage extends Component {
 
   normalizePersonalPropertyPercentage = (value, previousValue, allValues, field) => {
     if (Number.isNaN(value)) return;
-    const { change, initialValues } = this.props;
+    const { change } = this.props;
 
-    if (value === 0) {
-      change('personalPropertyReplacementCostCoverage', false);
-    } else {
-      change('personalPropertyReplacementCostCoverage', initialValues.personalPropertyReplacementCostCoverage || false);
-    }
+    if (value === 0) change('personalPropertyReplacementCostCoverage', false);
+
     const fieldValue = setPercentageOfValue(allValues.dwellingAmount, value);
     change(field, Number.isNaN(fieldValue) ? '' : fieldValue);
     return value;
