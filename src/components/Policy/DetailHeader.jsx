@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import _get from 'lodash/get';
-import moment from 'moment';
 
 import { setAppState } from '../../state/actions/appStateActions';
 import { getEffectiveDateChangeReasons } from '../../state/actions/policyActions';
-import normalizeNumbers from '../Form/normalizeNumbers';
 import { getPolicyDetails } from '../../state/selectors/detailHeader.selectors';
 import EntityDetails from '../../components/EntityDetails';
 import EntityPolicyHolder from '../../components/EntityPolicyHolder';
@@ -39,7 +36,7 @@ export class DetailHeader extends Component {
   }
 
   render() {
-    const { policy, summaryLedger, entityDetails } = this.props;
+    const { policy, entityDetails } = this.props;
     if (!policy || !policy.policyID) return (<div className="detailHeader" />);
 
     const {
