@@ -58,6 +58,7 @@ const Diaries = ({ diaryLevel, diaries, onToggleDiary }) => {
 
 Diaries.propTypes = {
   diaryLevel: PropTypes.oneOf(['upComing', 'pastDue', 'dueSoon']).isRequired,
+  onToggleDiary: PropTypes.func.isRequired,
   diaries: PropTypes.arrayOf(PropTypes.shape({
     _id: PropTypes.string,
     internalMessage: PropTypes.string
