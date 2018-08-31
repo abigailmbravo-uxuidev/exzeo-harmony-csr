@@ -8,7 +8,7 @@ export const EntityAddress = ({
     address1, address2, city, state, zip
   }
 }) => (
-  <section dataTest={`entity${type}Address`} className={className}>
+  <section data-test={`entity${type}Address`} className={className}>
     <dl>
       <div>
         <dt>{type} Address {mapUri && <a className="btn btn-link btn-xs btn-alt-light no-padding" target="_blank" href={mapUri}><i className="fa fa-map-marker" />Map</a>}</dt>

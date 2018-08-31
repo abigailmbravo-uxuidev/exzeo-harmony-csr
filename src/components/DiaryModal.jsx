@@ -89,7 +89,7 @@ export class DiaryModal extends Component {
                 validate={validation.isRequired}
                 dataTest="diaryType" />
               <Field
-                name="assignee"
+                name="assignee.id"
                 label="Assignee"
                 component={Select}
                 answers={USERS}

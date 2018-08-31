@@ -4,7 +4,7 @@ export const EntityPolicyHolder = ({
   className,
   policyHolder: { firstName, lastName, primaryPhoneNumber }
 }) => (
-  <section dataTest="entityPolicyHolder" className={className}>
+  <section data-test="entityPolicyHolder" className={className}>
     <dl>
       <div>
         <dt>Policyholder</dt>
