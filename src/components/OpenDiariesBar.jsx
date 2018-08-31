@@ -11,7 +11,7 @@ export class OpenDiariesBar extends React.Component {
   handleOpenDiaries(selectedDiary) {
     const { toggleDiary, resourceId, resourceType } = this.props;
     toggleDiary({
-      resourceType,
+      type: resourceType,
       id: resourceId,
       selectedDiary
     });

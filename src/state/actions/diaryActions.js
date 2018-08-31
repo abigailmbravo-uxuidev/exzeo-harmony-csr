@@ -2,6 +2,7 @@ import * as types from './actionTypes';
 import * as serviceRunner from '../../utilities/serviceRunner';
 
 import * as errorActions from './errorActions';
+import { setAppError } from './errorActions';
 
 /**
  * Set Diaries
@@ -16,9 +17,9 @@ export function setDiaries(diaries) {
 }
 
 /**
- * Fetch Diaries
- * @param {array} filter
- * @returns {{type: string, loading: array}}
+ *
+ * @param filter
+ * @returns {Function}
  */
 export function fetchDiaries(filter) {
   const config = {
@@ -36,5 +37,46 @@ export function fetchDiaries(filter) {
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
+  };
+}
+
+export function submitDiary(data, dispatch, props) {
+  return async (dispatch) => {
+    const {
+      user,
+      resourceType,
+      resourceId,
+      initialValues
+    } = props;
+
+    const assignee = data.assignee.value;
+
+    // TODO: Get Users from collection and select based on userId
+    data.assignee.userName = 'tticcsr';
+
+    let config = {
+      service: 'diaries',
+      method: 'POST',
+      data: {
+        entry: data,
+        resource: { type: resourceType, id: resourceId },
+        user: { userId: user.userId, userName: user.userName }
+      }
+    };
+
+    if (initialValues && initialValues.diaryId) {
+      config.path = `update/${initialValues.diaryId}`
+    } else {
+      config.path = 'create'
+    }
+
+    try {
+      await serviceRunner.callService(config);
+      dispatch(fetchDiaries({ userName: user.userName, resourceType, resourceId }));
+    } catch (error) {
+      dispatch(setAppError(error));
+      return false;
+    }
+    return true;
   };
 }

@@ -7,21 +7,16 @@ import Loader from '@exzeo/core-ui/lib/Loader';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 
-import { fetchDiaries } from '../state/actions/diaryActions';
-import * as appStateActions from '../state/actions/appStateActions';
-import * as serviceActions from '../state/actions/serviceActions';
-import * as uiActions from '../state/actions/uiActions';
-import * as errorActions from '../state/actions/errorActions';
-import * as serviceRunner from '../utilities/serviceRunner';
+import { submitDiary } from '../state/actions/diaryActions';
+import { toggleDiary } from '../state/actions/uiActions';
+import { setAppError } from '../state/actions/errorActions';
 import { REASONS, TYPES, USERS } from '../constants/diaries';
 
 const { Date, Select } = Inputs;
 const { validation } = lifecycle;
 
-const validate = values => (!values.message ? { message: 'Message Required' } : false);
-
 export const TextArea = ({
-  input, label, type, meta: { touched, error }
+  input, label, meta: { touched, error }
 }) => (
   <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
     <textarea {...input} placeholder={label} rows="10" cols="40" />
@@ -33,65 +28,36 @@ export class DiaryModal extends Component {
   state = { minimize: false };
 
   componentDidMount() {
-    const { actions, user } = this.props;
+    // TODO: not sure this logic should be here. Seems like it should be much further up the tree
+    const { setAppErrorAction, user } = this.props;
     if (!user.profile || !user.profile.given_name || !user.profile.family_name) {
       const message = 'There was a problem with your user profile. Please logout of Harmony and try logging in again.';
-      this.closeButtonHandler();
-      actions.errorActions.setAppError({ message });
+      setAppErrorAction({ message });
+      this.handleClose();
     }
   }
 
-  handleMinimize = () => this.setState({ minimize: !this.state.minimize });
+  handleMinimize = () => {
+    this.setState({ minimize: !this.state.minimize });
+  };
 
-  handleClose = () => this.props.actions.uiActions.toggleDiary({});
+  handleClose = () => {
+    this.props.toggleDiaryAction();
+  };
 
   submitDiary = async (data, dispatch, props) => {
-    const {
-      user, resourceType, resourceId, initialValues, fetchDiariesAction
-    } = props;
-
-    const assignee = data.assignee.value;
-
-    // TODO: Get Users from collection and select based on userId
-    data.assignee.userName = 'tticcsr';
-
-    // TODO: Move this logic into diary actions / utils
-    let createRequest = {};
-
-    if (initialValues && initialValues.diaryId) {
-      createRequest = {
-        service: 'diaries',
-        method: 'POST',
-        path: `update/${initialValues.diaryId}`,
-        data: {
-          resource: { type: resourceType, id: resourceId },
-          entry: data,
-          user: { userId: user.userId, userName: user.userName }
-        }
-      };
-    } else {
-      createRequest = {
-        service: 'diaries',
-        method: 'POST',
-        path: 'create',
-        data: {
-          resource: { type: resourceType, id: resourceId },
-          entry: data,
-          user: { userId: user.userId, userName: user.userName }
-        }
-      };
-    }
-
     try {
-      await serviceRunner.callService(createRequest);
-      await fetchDiariesAction({ userName: user.userName, resourceType, resourceId });
-      this.handleClose();
+      await props.submitDiaryAction(data, props);
     } catch (error) {
+      props.setAppError({ message: error });
+    } finally {
       this.handleClose();
     }
-  }
+  };
 
   render() {
+    const { submitting, handleSubmit } = this.props;
+
     return (
       <div className={this.state.minimize ? 'new-note-file minimize' : 'new-note-file new-diary-file'} >
         <div className="title-bar">
@@ -105,15 +71,15 @@ export class DiaryModal extends Component {
             </button>
             <button
               className="btn btn-icon header-cancel-button"
-              type="submit"
-              onClick={this.handleMinimize} >
+              type="button"
+              onClick={this.handleClose} >
               <i className="fa fa-times-circle" aria-hidden="true" />
             </button>
           </div>
         </div>
         <div className="mainContainer">
-          {this.props.submitting && <Loader />}
-          <form id="DiaryModal" onSubmit={this.props.handleSubmit(this.submitDiary)} >
+          {submitting && <Loader />}
+          <form id="DiaryModal" onSubmit={handleSubmit(this.submitDiary)} >
             <div className="content">
               <Field
                 name="type"
@@ -145,20 +111,23 @@ export class DiaryModal extends Component {
               <label>Message</label>
               <Field
                 name="message"
+                label="Message"
                 component={TextArea}
-                label="Message" />
+                validation={validation.isRequired} />
             </div>
             <div className="buttons note-file-footer-button-group">
               <button
                 tabIndex="0"
-                aria-label="cancel-btn form-newNote"
+                type="button"
+                data-test="note-cancel"
                 className="btn btn-secondary cancel-button"
                 onClick={this.handleClose}>
                 Cancel
               </button>
               <button
                 tabIndex="0"
-                aria-label="submit-btn form-newNote"
+                type="submit"
+                data-test="note-submit"
                 className="btn btn-primary submit-button">
                 Save
               </button>
@@ -171,24 +140,17 @@ export class DiaryModal extends Component {
 }
 
 DiaryModal.propTypes = {
-  documentId: PropTypes.string
+
 };
 
 const mapStateToProps = state => ({
   user: state.authState.userProfile
 });
 
-const mapDispatchToProps = dispatch => ({
-  fetchDiariesAction: fetchDiaries,
-  actions: {
-    appStateActions: bindActionCreators(appStateActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch),
-    uiActions: bindActionCreators(uiActions, dispatch),
-    errorActions: bindActionCreators(errorActions, dispatch)
-  }
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
-  form: 'DiaryModal',
-  validate
+export default connect(mapStateToProps, {
+  setAppErrorAction: setAppError,
+  submitDiaryAction: submitDiary,
+  toggleDiaryAction: toggleDiary
+})(reduxForm({
+  form: 'DiaryModal'
 })(DiaryModal));
