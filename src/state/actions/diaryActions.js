@@ -2,7 +2,6 @@ import * as types from './actionTypes';
 import * as serviceRunner from '../../utilities/serviceRunner';
 
 import * as errorActions from './errorActions';
-import { setAppError } from './errorActions';
 
 /**
  * Set Diaries
@@ -40,7 +39,7 @@ export function fetchDiaries(filter) {
   };
 }
 
-export function submitDiary(data, dispatch, props) {
+export function submitDiary(data, props) {
   return async (dispatch) => {
     const {
       user,
@@ -49,12 +48,14 @@ export function submitDiary(data, dispatch, props) {
       initialValues
     } = props;
 
-    const assignee = data.assignee.value;
+    const {
+      // remove unneeded vars from entry object
+      diaryId, resourceType: rt, resourceId: rid, _id, createdAt, updatedAt,
+      // this has what we want if we are updating.
+      ...entry
+    } = data;
 
-    // TODO: Get Users from collection and select based on userId
-    data.assignee.userName = 'tticcsr';
-
-    let config = {
+    const config = {
       service: 'diaries',
       method: 'POST',
       data: {
@@ -65,16 +66,17 @@ export function submitDiary(data, dispatch, props) {
     };
 
     if (initialValues && initialValues.diaryId) {
-      config.path = `update/${initialValues.diaryId}`
+      config.path = `update/${initialValues.diaryId}`;
+      config.data.entry = entry;
     } else {
-      config.path = 'create'
+      config.path = 'create';
     }
 
     try {
       await serviceRunner.callService(config);
-      dispatch(fetchDiaries({ userName: user.userName, resourceType, resourceId }));
+      dispatch(fetchDiaries({ userId: user.userId }));
     } catch (error) {
-      dispatch(setAppError(error));
+      dispatch(errorActions.setAppError(error));
       return false;
     }
     return true;

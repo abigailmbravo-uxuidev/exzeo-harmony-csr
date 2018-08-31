@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import Loader from '@exzeo/core-ui/lib/Loader';
@@ -49,7 +48,7 @@ export class DiaryModal extends Component {
     try {
       await props.submitDiaryAction(data, props);
     } catch (error) {
-      props.setAppError({ message: error });
+      props.setAppErrorAction({ message: error });
     } finally {
       this.handleClose();
     }
@@ -143,11 +142,8 @@ DiaryModal.propTypes = {
 
 };
 
-const mapStateToProps = state => ({
-  user: state.authState.userProfile
-});
 
-export default connect(mapStateToProps, {
+export default connect(null, {
   setAppErrorAction: setAppError,
   submitDiaryAction: submitDiary,
   toggleDiaryAction: toggleDiary

@@ -8,14 +8,14 @@ import { getOpenDiaries } from '../state/selectors/diary.selectors';
 import Diaries from './Diaries';
 
 export class OpenDiariesBar extends React.Component {
-  handleOpenDiaries(selectedDiary) {
+  handleOpenDiaries = (selectedDiary) => {
     const { toggleDiary, resourceId, resourceType } = this.props;
     toggleDiary({
-      type: resourceType,
-      id: resourceId,
+      resourceType,
+      resourceId,
       selectedDiary
     });
-  }
+  };
 
   render() {
     const { diaries } = this.props;
@@ -26,21 +26,21 @@ export class OpenDiariesBar extends React.Component {
         <h4 className="uw-validation-header">Open Diaries</h4>
         <div>
 
-          {dueSoon && dueSoon.length > 0 &&
+          {dueSoon.length > 0 &&
           <Diaries
             diaryLevel="dueSoon"
             diaries={dueSoon}
             onToggleDiary={this.handleOpenDiaries} />
             }
 
-          {pastDue && pastDue.length > 0 &&
+          {pastDue.length > 0 &&
           <Diaries
             diaryLevel="pastDue"
             diaries={pastDue}
             onToggleDiary={this.handleOpenDiaries} />
             }
 
-          {upComing && upComing.length > 0 &&
+          {upComing.length > 0 &&
           <Diaries
             diaryLevel="upComing"
             diaries={upComing}

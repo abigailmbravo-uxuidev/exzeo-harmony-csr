@@ -103,9 +103,10 @@ class Routes extends Component {
 
         {diary && diary.resourceType &&
           <DiaryModal
+            user={userProfile}
             initialValues={diary.selectedDiary}
             resourceType={diary.resourceType}
-            resourceId={diary.id} />
+            resourceId={diary.resourceId} />
         }
 
         {note && note.documentId &&

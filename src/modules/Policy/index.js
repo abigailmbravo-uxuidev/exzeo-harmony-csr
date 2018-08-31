@@ -205,7 +205,7 @@ export class Policy extends React.Component {
               {showDiaries &&
                 <OpenDiariesBar
                   resourceId={policy.policyNumber}
-                  resourceType='Policy' />
+                  resourceType="Policy" />
               }
             </React.Fragment>
         )} />
