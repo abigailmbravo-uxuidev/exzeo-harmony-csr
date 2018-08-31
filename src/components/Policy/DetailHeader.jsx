@@ -40,7 +40,7 @@ export class DetailHeader extends Component {
     if (!policy || !policy.policyID) return (<div className="detailHeader" />);
 
     const {
-      details, policyHolder, mailingAddress, propertyAddress, property, effectiveDate, cancellationDate, showReinstatement, currentPremium
+      details, policyHolder, mailingAddress, propertyAddress, property, effectiveDate, premium: { currentPremium }, cancellation: { cancellationDate, showReinstatement }
     } = entityDetails;
     const { territory, constructionType, sourceNumber } = property;
 
@@ -65,7 +65,7 @@ export class DetailHeader extends Component {
             <EntityCancellationDate showReinstatement={showReinstatement} cancellationDate={cancellationDate} showReinstatePolicyPopUp={() => showReinstatePolicyPopUp(this.props)} className="cancellationDate" />
           </div>
         </div>
-        <EntityPremium currentPremium={currentPremium} className="premium" />
+        <EntityPremium currentPremium={currentPremium} className="premium" label="Crrent Premium" />
       </div>);
   }
 }
