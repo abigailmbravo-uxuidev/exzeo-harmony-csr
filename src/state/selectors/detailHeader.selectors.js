@@ -70,7 +70,7 @@ export const getPolicyDetails = createSelector(
         sourceNumber
       },
       premium: {
-        currentPremium
+        currentPremium: normalize.numbers(currentPremium)
       },
       cancellation: {
         cancellationDate,
@@ -93,7 +93,7 @@ export const getQuoteDetails = createSelector(
       physicalAddress, territory, constructionType
     } = property;
     const currentPremium = (rating && rating.totalPremium) ?
-      rating.totalPremium.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '--';
+      normalize.numbers(rating.totalPremium) : '--';
 
     return {
       details: {
