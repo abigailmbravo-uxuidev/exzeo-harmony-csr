@@ -50,6 +50,8 @@ export class DiaryModal extends Component {
       user, resourceType, resourceId, initialValues, fetchDiariesAction
     } = props;
 
+    const assignee = data.assignee.value;
+
     // TODO: Get Users from collection and select based on userId
     data.assignee.userName = 'tticcsr';
 
@@ -121,7 +123,7 @@ export class DiaryModal extends Component {
                 validate={validation.isRequired}
                 dataTest="diaryType" />
               <Field
-                name="assignee.userId"
+                name="assignee"
                 label="Assignee"
                 component={Select}
                 answers={USERS}

@@ -37,7 +37,7 @@ export class Agency extends React.Component {
         <div className="content-wrapper">
           {children}
         </div>
-        {showDiaries && <OpenDiariesBar />}
+        {showDiaries && <OpenDiariesBar resourceType="Agency" resourceId={agency.agencyCode} />}
       </main>
     </div>
     );

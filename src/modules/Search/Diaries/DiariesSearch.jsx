@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Select, SelectTypeAhead } from '@exzeo/core-ui/lib/Input';
+import { Select, AutoCompleteChips } from '@exzeo/core-ui/lib/Input';
 import { isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
 import Button from '@exzeo/core-ui/lib/Button';
 
@@ -17,8 +17,8 @@ const DiariesSearch = ({
     <React.Fragment>
       <div className="form-group search-context">
         <Field
-          name="open"
-          dataTest="open"
+          name="status"
+          dataTest="status"
           label="Diary Status"
           component={Select}
           id="status"
@@ -32,7 +32,7 @@ const DiariesSearch = ({
         <Field
           name="assignees"
           dataTest="assignees"
-          component={SelectTypeAhead}
+          component={Select}
           label="Assigned To"
           answers={USERS}
           errorHint />
