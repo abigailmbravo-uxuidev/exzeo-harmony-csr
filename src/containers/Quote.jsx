@@ -25,7 +25,7 @@ export class QuoteBase extends React.Component {
       <div className="app-wrapper csr quote">
         {(appState.data.submitting || !quoteData._id) && <Loader />}
         <App
-          pageTitle={`Q: ${quoteData.quoteNumber}`}
+          pageTitle={`Q: ${quoteData.quoteNumber || ''}`}
           match={match}
           onToggleDiaries={this.handleToggleDiaries}
           showDiaries={showDiaries}
@@ -35,7 +35,9 @@ export class QuoteBase extends React.Component {
                 {children}
               </div>
               <UnderwritingValidationBarConnect />
-              {showDiaries && <OpenDiariesBar />}
+              {showDiaries && <OpenDiariesBar
+                resourceId={quoteData.quoteNumber}
+                resourceType="Quote" />}
             </React.Fragment>
         )} />
       </div>

@@ -2,21 +2,27 @@ import { createSelector } from 'reselect';
 import { normalize } from '@exzeo/core-ui/lib/InputLifecycle/index';
 import moment from 'moment-timezone';
 
+const defaultObject = {};
+
 const getPolicy = state => state.policyState.policy;
 const getSummaryLedger = state => state.policyState.summaryLedger;
+const getQuote = state => state.service.quote || defaultObject;
 
-const defaultObj = {
+const getProductName = product => (product === 'HO3' ? `${product} Homeowners` : product);
+
+const defaultEntity = {
   details: {},
   policyHolder: {},
   mailingAddress: {},
   propertyAddress: {},
   property: {},
-  premium: {}
+  premium: {},
+  cancellation: {}
 };
 export const getPolicyDetails = createSelector(
   [getPolicy, getSummaryLedger],
   (policy, summaryLedger) => {
-    if (!policy || !policy.policyNumber) return defaultObj;
+    if (!policy || !policy.policyNumber) return defaultEntity;
     const {
       product, policyNumber, status, policyHolders, policyHolderMailingAddress, property,
       sourceNumber, effectiveDate, endDate, cancelDate
@@ -43,7 +49,7 @@ export const getPolicyDetails = createSelector(
 
     return {
       details: {
-        product: product === 'HO3' ? `${product} Homeowners` : product,
+        product: getProductName(product),
         entityNumber: policyNumber,
         status: `${status} / ${displayText}`
       },
@@ -63,14 +69,59 @@ export const getPolicyDetails = createSelector(
         constructionType,
         sourceNumber
       },
-      premium: {},
-      effectiveDate: moment.utc(effectiveDate).format('MM/DD/YYYY'),
-      cancellationDate,
-      showReinstatement,
-      currentPremium
+      premium: {
+        currentPremium: normalize.numbers(currentPremium)
+      },
+      cancellation: {
+        cancellationDate,
+        showReinstatement
+      },
+      effectiveDate: moment.utc(effectiveDate).format('MM/DD/YYYY')
     };
   }
 );
 
+export const getQuoteDetails = createSelector(
+  [getQuote],
+  (quote) => {
+    if (!quote || !quote.quoteNumber) return defaultEntity;
+    const {
+      product, quoteNumber, quoteState, policyHolders, policyHolderMailingAddress, property, effectiveDate, rating
+    } = quote;
+    const primaryPolicyHolder = policyHolders[0];
+    const {
+      physicalAddress, territory, constructionType
+    } = property;
+    const currentPremium = (rating && rating.totalPremium) ?
+      normalize.numbers(rating.totalPremium) : '--';
+
+    return {
+      details: {
+        product: getProductName(product),
+        entityNumber: quoteNumber,
+        status: quoteState
+      },
+      policyHolder: {
+        firstName: primaryPolicyHolder.firstName,
+        lastName: primaryPolicyHolder.lastName,
+        primaryPhoneNumber: normalize.phone(primaryPolicyHolder.primaryPhoneNumber)
+      },
+      mailingAddress: {
+        ...policyHolderMailingAddress
+      },
+      propertyAddress: {
+        ...physicalAddress
+      },
+      property: {
+        territory,
+        constructionType
+      },
+      premium: {
+        currentPremium
+      },
+      effectiveDate: moment.utc(effectiveDate).format('MM/DD/YYYY')
+    };
+  }
+);
 export default { getPolicyDetails };
 

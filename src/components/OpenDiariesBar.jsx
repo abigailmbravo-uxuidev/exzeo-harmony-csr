@@ -57,7 +57,7 @@ OpenDiariesBar.defaultProps = {
 };
 
 OpenDiariesBar.propTypes = {
-  resourceType: PropTypes.onOf(['Policy', 'Quote', 'Agency']).isRequired,
+  resourceType: PropTypes.oneOf(['Policy', 'Quote', 'Agency']).isRequired,
   resourceId: PropTypes.string,
   diaries: PropTypes.object,
   toggleDiary: PropTypes.func
