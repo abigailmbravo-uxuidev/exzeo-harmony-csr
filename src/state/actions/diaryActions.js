@@ -48,28 +48,40 @@ export function submitDiary(data, props) {
       initialValues
     } = props;
 
-    const {
-      // remove unneeded vars from entry object
-      diaryId, resourceType: rt, resourceId: rid, _id, createdAt, updatedAt,
-      // this has what we want if we are updating.
-      ...entry
-    } = data;
-
+    const userObj = {
+      userId: user.userId,
+      userName: user.userName
+    };
     const config = {
       service: 'diaries',
       method: 'POST',
       data: {
-        entry: data,
         resource: { type: resourceType, id: resourceId },
-        user: { userId: user.userId, userName: user.userName }
+        user: userObj
       }
     };
 
+    // Editing a diary
     if (initialValues && initialValues.diaryId) {
+      const {
+        _id,
+        createdAt,
+        diaryId,
+        resourceId,  // eslint-disable-line
+        resourceType,  // eslint-disable-line
+        updatedAt,
+        // this has what we want if we are updating.
+        ...entry
+      } = data;
+
       config.path = `update/${initialValues.diaryId}`;
-      config.data.entry = entry;
+      config.data.entry = { ...entry };
+
+    // Creating a diary
     } else {
       config.path = 'create';
+      // TODO won't need to add 'created by' once endpoint is updated
+      config.data.entry = { ...data, createdBy: userObj };
     }
 
     try {
