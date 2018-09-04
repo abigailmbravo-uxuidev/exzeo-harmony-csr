@@ -77,11 +77,11 @@ export const getPolicyDetails = createSelector(
       status: `${status} / ${displayText}`,
       details: {
         product: getProductName(product),
-        entityNumber: policyNumber
+        policyNumber
       },
       policyHolder: {
         displayName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
-        primaryPhoneNumber: normalize.phone(primaryPolicyHolder.primaryPhoneNumber)
+        phone: normalize.phone(primaryPolicyHolder.primaryPhoneNumber)
       },
       mailingAddress: {
         address1: pHMA.address1,
@@ -115,6 +115,7 @@ export const getQuoteDetails = createSelector(
       effectiveDate,
       rating
     } = quote;
+
     const primaryPolicyHolder = policyHolders[0];
 
     const {
@@ -129,14 +130,20 @@ export const getQuoteDetails = createSelector(
     const mapQuery = encodeURIComponent(`${physicalAddress.address1} ${physicalAddress.address2} ${physicalAddress.city}, ${physicalAddress.state} ${physicalAddress.zip}`);
 
     return {
+      constructionType,
+      currentPremium,
+      territory,
+      county: physicalAddress.county,
+      effectiveDate: moment.utc(effectiveDate).format('MM/DD/YYYY'),
+      mapURI: `${baseMapUri}${mapQuery}`,
+      status: quoteState,
       details: {
         product: getProductName(product),
-        entityNumber: quoteNumber
+        quoteNumber
       },
-      status: quoteState,
       policyHolder: {
         displayName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
-        primaryPhoneNumber: normalize.phone(primaryPolicyHolder.primaryPhoneNumber)
+        phone: normalize.phone(primaryPolicyHolder.primaryPhoneNumber)
       },
       mailingAddress: {
         address1: pHMA.address1,
@@ -147,17 +154,7 @@ export const getQuoteDetails = createSelector(
         address1: physicalAddress.address1,
         address2: physicalAddress.address2,
         csz: `${physicalAddress.city}, ${physicalAddress.state} ${physicalAddress.zip}`,
-        mapURI: `${baseMapUri}${mapQuery}`
-      },
-      county: physicalAddress.county,
-      property: {
-        territory,
-        constructionType
-      },
-      premium: {
-        currentPremium
-      },
-      effectiveDate: moment.utc(effectiveDate).format('MM/DD/YYYY')
+      }
     };
   }
 );

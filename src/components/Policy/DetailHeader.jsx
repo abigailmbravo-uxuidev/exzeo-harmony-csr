@@ -7,6 +7,7 @@ import { getPolicyDetails } from '../../state/selectors/detailHeader.selectors';
 import Details from '../DetailMain';
 import Section from '../DetailSection';
 import SectionSingle from '../DetailSectionSingle';
+import MapLink from '../MapLink';
 
 export class DetailHeader extends Component {
   componentDidMount() {
@@ -75,11 +76,7 @@ export class DetailHeader extends Component {
           data={propertyAddress}
           type="Property"
           className="propertyAddress"
-          render={() => (mapURI &&
-            <a className="btn btn-link btn-xs btn-alt-light no-padding" target="_blank" href={mapURI}>
-              <i className="fa fa-map-marker" />Map
-            </a>
-          )} />
+          render={() => <MapLink mapURI={mapURI} />} />
 
         <div className="detailHeader-wrapping-sections">
           <div className="wrapping-section">

@@ -1,24 +1,14 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import moment from 'moment';
 
-import normalizePhone from '../Form/normalizePhone';
 import * as serviceActions from '../../state/actions/serviceActions';
 import * as quoteStateActions from '../../state/actions/quoteStateActions';
 import { getQuoteDetails } from '../../state/selectors/detailHeader.selectors';
-
-import EntityDetails from '../../components/EntityDetails';
-import EntityPolicyHolder from '../../components/EntityPolicyHolder';
-import EntityAddress from '../../components/EntityAddress';
-import EntityPropertyCounty from '../EntityPropertyCounty';
-import EntityPropertyTerritory from '../EntityPropertyTerritory';
-import EntityPropertyConstructionType from '../EntityPropertyConstructionType';
-import EntityPropertySourceNumber from '../EntityPropertySourceNumber';
-import EntityCancellationDate from '../EntityCancellationDate';
-import EntityEffectiveDate from '../EntityEffectiveDate';
-import EntityPremium from '../EntityPremium';
+import Details from '../DetailMain';
+import Section from '../DetailSection';
+import SectionSingle from '../DetailSectionSingle';
+import MapLink from '../MapLink';
 
 export class DetailHeader extends Component {
   componentWillReceiveProps(nextProps) {
@@ -35,30 +25,31 @@ export class DetailHeader extends Component {
   };
 
   render() {
-    const { quoteData, entityDetails } = this.props;
+    const { quoteData, quoteDetails } = this.props;
       if (!quoteData || !quoteData._id) { // eslint-disable-line
       return <div className="detailHeader" />;
     }
 
     const {
+      constructionType,
+      county,
+      currentPremium,
       details,
-      status,
-      policyHolder,
-      mailingAddress,
-      propertyAddress,
-      property,
       effectiveDate,
-      premium: { currentPremium }
-    } = entityDetails;
-
-      const { territory, constructionType } = property;
-
-    const mapQuery = encodeURIComponent(`${propertyAddress.address1} ${propertyAddress.address2} ${propertyAddress.city}, ${propertyAddress.state} ${propertyAddress.zip}`);
-    const mapUri = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
+      mailingAddress,
+      mapURI,
+      policyHolder,
+      propertyAddress,
+      status,
+      territory
+    } = quoteDetails;
 
     return (
       <div className="detailHeader">
-        <EntityDetails details={details} className="quoteDetails">
+        <Details
+          data={details}
+          dataTest="quoteDetails"
+          className="quoteDetails">
           <dd>
             {status === 'Policy Issued' ?
               <button className="btn btn-link" data-test="selectPolicy" onClick={this.handleSelectPolicy}>
@@ -68,17 +59,58 @@ export class DetailHeader extends Component {
               status
             }
           </dd>
-        </EntityDetails>
-        <EntityPolicyHolder policyHolder={policyHolder} label="Policyholder" className="policyHolder" />
+        </Details>
+
+        <Section
+          data={policyHolder}
+          label="Policyholder"
+          dataTest="policyholderDetail"
+          className="policyHolder" />
+
         {Object.keys(mailingAddress).length > 0 &&
-        <EntityAddress type="Mailing" address={mailingAddress} className="policyHolderMailingAddress" />
+        <Section
+          label="Mailing Address"
+          data={mailingAddress}
+          dataTest="mailingAddressDetail"
+          className="policyHolderMailingAddress" />
         }
-        <EntityAddress type="Property" address={propertyAddress} className="propertyAddress" mapUri={mapUri} />
-        <EntityPropertyCounty county={propertyAddress.county} className="propertyCounty" />
-        <EntityPropertyTerritory territory={territory} className="territory" />
-        <EntityPropertyConstructionType constructionType={constructionType} className="constructionType" />
-        <EntityEffectiveDate effectiveDate={effectiveDate} className="quoteEffectiveDate" />
-        <EntityPremium currentPremium={currentPremium} className="premium" label="Premium" />
+
+        <Section
+          label="Property Address"
+          data={propertyAddress}
+          dataTest="propertyAddressDetail"
+          className="propertyAddress"
+          render={() => <MapLink mapURI={mapURI} />} />
+
+        <SectionSingle
+          label="Property County"
+          value={county}
+          dataTest="propertyCountyDetail"
+          className="propertyCounty" />
+
+        <SectionSingle
+          label="Territory"
+          value={territory}
+          dataTest="territoryDetail"
+          className="territory" />
+
+        <SectionSingle
+          label="Construction Type"
+          value={constructionType}
+          dataTest="constructionTypeDetail"
+          className="constructionType" />
+
+        <SectionSingle
+          label="Effective Date"
+          value={effectiveDate}
+          dataTest="effectiveDateDetail"
+          className="quoteEffectiveDate" />
+
+        <SectionSingle
+          label="Premium"
+          value={currentPremium}
+          dataTest="premiumDetail"
+          className="premium" />
       </div>
     );
   }
@@ -89,7 +121,7 @@ const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   quoteData: state.service.quote,
-  entityDetails: getQuoteDetails(state)
+  quoteDetails: getQuoteDetails(state)
 });
 
 const mapDispatchToProps = dispatch => ({
