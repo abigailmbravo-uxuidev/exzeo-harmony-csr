@@ -53,7 +53,11 @@ export class OpenDiariesBar extends React.Component {
 }
 
 OpenDiariesBar.defaultProps = {
-  diaries: {}
+  diaries: {
+    dueSoon: [],
+    pastDue: [],
+    upComing: []
+  }
 };
 
 OpenDiariesBar.propTypes = {
