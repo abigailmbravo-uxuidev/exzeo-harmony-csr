@@ -1,21 +1,22 @@
 import React from 'react';
 
-export const EntityDetails = ({
-  children,
+const DetailSection = ({
   className,
   data,
-  dataTest
+  dataTest,
+  label,
+  render
 }) => (
   <section data-test={dataTest} className={className}>
     <dl>
       <div>
+        <dt>{label} {render && render()}</dt>
         {Object.keys(data).map(key => (
-          <dd>{data[key]}</dd>
+          <dd key={key}>{data[key]}</dd>
         ))}
-        {children}
       </div>
     </dl>
   </section>
 );
 
-export default EntityDetails;
+export default DetailSection;

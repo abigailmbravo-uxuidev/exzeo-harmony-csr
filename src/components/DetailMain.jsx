@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const EntityDetails = ({
+const DetailMain = ({
   children,
   className,
   data,
@@ -10,7 +10,7 @@ export const EntityDetails = ({
     <dl>
       <div>
         {Object.keys(data).map(key => (
-          <dd>{data[key]}</dd>
+          <dd key={key}>{data[key]}</dd>
         ))}
         {children}
       </div>
@@ -18,4 +18,4 @@ export const EntityDetails = ({
   </section>
 );
 
-export default EntityDetails;
+export default DetailMain;

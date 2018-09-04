@@ -1,9 +1,9 @@
 import React from 'react';
 
 export const EntityAddress = ({
+  className,
   data,
   dataTest,
-  className,
   label,
   render
 }) => (

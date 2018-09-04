@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const EntityPropertyCounty = ({
+const DetailSectionSingle = ({
   className,
   dataTest,
   label,
@@ -17,4 +17,4 @@ export const EntityPropertyCounty = ({
   </section>
 );
 
-export default EntityPropertyCounty;
+export default DetailSectionSingle;

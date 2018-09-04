@@ -20,6 +20,7 @@ const defaultEntity = {
   premium: {},
   cancellation: {}
 };
+
 export const getPolicyDetails = createSelector(
   [getPolicy, getSummaryLedger],
   (policy, summaryLedger) => {
@@ -69,6 +70,7 @@ export const getPolicyDetails = createSelector(
       constructionType,
       sourceNumber,
       territory,
+      county: physicalAddress.county,
       currentPremium: `$ ${normalize.numbers(currentPremium)}`,
       effectiveDate: moment.utc(effectiveDate).format('MM/DD/YYYY'),
       mapURI: `${baseMapUri}${mapQuery}`,
