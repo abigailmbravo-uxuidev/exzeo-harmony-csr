@@ -48,8 +48,30 @@ export const getFormattedDiaries = createSelector(
   }
 );
 
-export const getFilterDiariesByResource = createSelector(
+export const getFormattedAllDiaries = createSelector(
+  [getDiaries],
+  (diaries) => {
+    return diaries.map(d => ({
+      diaryId: d._id,
+      resourceType: d.resource.type,
+      resourceId: d.resource.id,
+      ...d.entries[0],
+      diaryHistory: d.entries.slice(1),
+      due: moment.utc(d.entries[0].due).format('YYYY-MM-DD')
+    }));
+  }
+);
+
+export const getFilterOpenDiariesByResource = createSelector(
   [getResource, getFormattedDiaries],
+  (resource, formattedDairies) => {
+    if (!Array.isArray(formattedDairies)) return [];
+    return formattedDairies.filter(d => d.open === true && (d.resourceType.toLowerCase() === resource.toLowerCase()));
+  }
+);
+
+export const getFilteredAllDiaries = createSelector(
+  [getResource, getFormattedAllDiaries],
   (resource, formattedDairies) => {
     if (!Array.isArray(formattedDairies)) return [];
     return formattedDairies.filter(d => d.resourceType.toLowerCase() === resource.toLowerCase());
@@ -58,4 +80,5 @@ export const getFilterDiariesByResource = createSelector(
 
 export const getOpenDiaries = createSelector([getFormattedDiaries], diaries => groupDiaries(diaries));
 
-export const getFilteredOpenDiaries = createSelector([getFilterDiariesByResource], diaries => groupDiaries(diaries));
+export const getFilteredOpenDiaries = createSelector([getFilterOpenDiariesByResource], diaries => groupDiaries(diaries));
+
