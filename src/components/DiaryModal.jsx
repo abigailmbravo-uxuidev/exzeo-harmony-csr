@@ -148,5 +148,6 @@ export default connect(null, {
   submitDiaryAction: submitDiary,
   toggleDiaryAction: toggleDiary
 })(reduxForm({
-  form: 'DiaryModal'
+  form: 'DiaryModal',
+  enableReinitialize: true
 })(DiaryModal));
