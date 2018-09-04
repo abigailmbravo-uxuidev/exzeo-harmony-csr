@@ -1,20 +1,22 @@
 import React from 'react';
 
 export const EntityAddress = ({
+  data,
+  dataTest,
   className,
-  mapUri,
-  type,
-  address: {
-    address1, address2, city, state, zip
-  }
+  label,
+  render,
+  type
 }) => (
-  <section data-test={`entity${type}Address`} className={className}>
+  <section data-test={dataTest} className={className}>
     <dl>
       <div>
-        <dt>{type} Address {mapUri && <a className="btn btn-link btn-xs btn-alt-light no-padding" target="_blank" href={mapUri}><i className="fa fa-map-marker" />Map</a>}</dt>
-        <dd>{address1}</dd>
-        <dd>{address2}</dd>
-        <dd>{`${city}, ${state} ${zip}`}</dd>
+        <dt>
+          {label} {render && render()}
+        </dt>
+        {Object.keys(data).map(key => (
+          <dd key={key}>{data[key]}</dd>
+        ))}
       </div>
     </dl>
   </section>

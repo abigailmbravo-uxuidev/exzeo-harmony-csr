@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import { normalize } from '@exzeo/core-ui/lib/InputLifecycle/index';
 import moment from 'moment-timezone';
 
+const baseMapUri = 'https://www.google.com/maps/search/?api=1&query=';
 const defaultObject = {};
 
 const getPolicy = state => state.policyState.policy;
@@ -24,14 +25,32 @@ export const getPolicyDetails = createSelector(
   (policy, summaryLedger) => {
     if (!policy || !policy.policyNumber) return defaultEntity;
     const {
-      product, policyNumber, status, policyHolders, policyHolderMailingAddress, property,
-      sourceNumber, effectiveDate, endDate, cancelDate
+      cancelDate,
+      effectiveDate,
+      endDate,
+      policyHolders,
+      policyHolderMailingAddress: pHMA,
+      policyNumber,
+      product,
+      property,
+      sourceNumber,
+      status
     } = policy;
-    const { nonPaymentNoticeDueDate, currentPremium, status: { displayText, code } } = summaryLedger;
-    const primaryPolicyHolder = policyHolders[0];
     const {
-      physicalAddress, territory, constructionType
+      nonPaymentNoticeDueDate,
+      currentPremium,
+      status: { displayText, code }
+    } = summaryLedger;
+
+    const primaryPolicyHolder = policyHolders[0];
+
+    const {
+      constructionType,
+      physicalAddress,
+      territory
     } = property;
+
+    const mapQuery = encodeURIComponent(`${physicalAddress.address1} ${physicalAddress.address2} ${physicalAddress.city}, ${physicalAddress.state} ${physicalAddress.zip}`);
 
     let cancellationDate = '';
 
@@ -54,16 +73,20 @@ export const getPolicyDetails = createSelector(
         status: `${status} / ${displayText}`
       },
       policyHolder: {
-        firstName: primaryPolicyHolder.firstName,
-        lastName: primaryPolicyHolder.lastName,
+        displayName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
         primaryPhoneNumber: normalize.phone(primaryPolicyHolder.primaryPhoneNumber)
       },
       mailingAddress: {
-        ...policyHolderMailingAddress
+        address1: pHMA.address1,
+        address2: pHMA.address2,
+        csz: `${pHMA.city}, ${pHMA.state} ${pHMA.zip}`
       },
       propertyAddress: {
-        ...physicalAddress
+        address1: physicalAddress.address1,
+        address2: physicalAddress.address2,
+        csz: `${physicalAddress.city}, ${physicalAddress.state} ${physicalAddress.zip}`,
       },
+      mapURI: `${baseMapUri}${mapQuery}`,
       property: {
         territory,
         constructionType,
@@ -86,14 +109,27 @@ export const getQuoteDetails = createSelector(
   (quote) => {
     if (!quote || !quote.quoteNumber) return defaultEntity;
     const {
-      product, quoteNumber, quoteState, policyHolders, policyHolderMailingAddress, property, effectiveDate, rating
+      product,
+      quoteNumber,
+      quoteState,
+      policyHolders,
+      policyHolderMailingAddress: pHMA,
+      property,
+      effectiveDate,
+      rating
     } = quote;
     const primaryPolicyHolder = policyHolders[0];
+
     const {
-      physicalAddress, territory, constructionType
+      constructionType,
+      physicalAddress,
+      territory
     } = property;
+
     const currentPremium = (rating && rating.totalPremium) ?
       normalize.numbers(rating.totalPremium) : '--';
+
+    const mapQuery = encodeURIComponent(`${physicalAddress.address1} ${physicalAddress.address2} ${physicalAddress.city}, ${physicalAddress.state} ${physicalAddress.zip}`);
 
     return {
       details: {
@@ -102,16 +138,21 @@ export const getQuoteDetails = createSelector(
         status: quoteState
       },
       policyHolder: {
-        firstName: primaryPolicyHolder.firstName,
-        lastName: primaryPolicyHolder.lastName,
+        displayName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
         primaryPhoneNumber: normalize.phone(primaryPolicyHolder.primaryPhoneNumber)
       },
       mailingAddress: {
-        ...policyHolderMailingAddress
+        address1: pHMA.address1,
+        address2: pHMA.address2,
+        csz: `${pHMA.city}, ${pHMA.state} ${pHMA.zip}`
       },
       propertyAddress: {
-        ...physicalAddress
+        address1: physicalAddress.address1,
+        address2: physicalAddress.address2,
+        csz: `${physicalAddress.city}, ${physicalAddress.state} ${physicalAddress.zip}`,
+        mapURI: `${baseMapUri}${mapQuery}`
       },
+      county: physicalAddress.county,
       property: {
         territory,
         constructionType

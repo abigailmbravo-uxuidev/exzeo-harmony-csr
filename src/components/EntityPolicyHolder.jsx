@@ -2,13 +2,14 @@ import React from 'react';
 
 export const EntityPolicyHolder = ({
   className,
-  policyHolder: { firstName, lastName, primaryPhoneNumber }
+  label,
+  policyHolder: { displayName, primaryPhoneNumber }
 }) => (
-  <section data-test="entityPolicyHolder" className={className}>
+  <section data-test="policyHolderDetails" className={className}>
     <dl>
       <div>
-        <dt>Policyholder</dt>
-        <dd>{`${firstName} ${lastName}`}</dd>
+        <dt>{label}</dt>
+        <dd>{displayName}</dd>
         <dd>{primaryPhoneNumber}</dd>
       </div>
     </dl>

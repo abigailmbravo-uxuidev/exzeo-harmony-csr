@@ -28,7 +28,7 @@ export class DetailHeader extends Component {
     }
   }
 
-  selectPolicy = () => {
+  handleSelectPolicy = () => {
     const { quoteData } = this.props;
     if (!quoteData.policyNumber) return;
     window.open(`/policy/${quoteData.policyNumber}/coverage`, '_blank');
@@ -50,8 +50,18 @@ export class DetailHeader extends Component {
 
     return (
       <div className="detailHeader">
-        <EntityDetails details={details} className="quoteDetails" showButton={details.status === 'Policy Issued'} handleStatusClick={this.selectPolicy} />
-        <EntityPolicyHolder policyHolder={policyHolder} className="policyHolder" />
+        <EntityDetails details={details} className="quoteDetails">
+          <dd>
+            {details.status === 'Policy Issued' ?
+              <button className="btn btn-link" data-test="selectPolicy" onClick={this.handleSelectPolicy}>
+                {details.status}
+              </button>
+              :
+              details.status
+            }
+          </dd>
+        </EntityDetails>
+        <EntityPolicyHolder policyHolder={policyHolder} label="Policyholder" className="policyHolder" />
         {Object.keys(mailingAddress).length > 0 &&
         <EntityAddress type="Mailing" address={mailingAddress} className="policyHolderMailingAddress" />
         }

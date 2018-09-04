@@ -5,16 +5,16 @@ import { connect } from 'react-redux';
 import { setAppState } from '../../state/actions/appStateActions';
 import { getEffectiveDateChangeReasons } from '../../state/actions/policyActions';
 import { getPolicyDetails } from '../../state/selectors/detailHeader.selectors';
-import EntityDetails from '../../components/EntityDetails';
-import EntityPolicyHolder from '../../components/EntityPolicyHolder';
-import EntityAddress from '../../components/EntityAddress';
-import EntityPropertyCounty from '../EntityPropertyCounty';
-import EntityPropertyTerritory from '../EntityPropertyTerritory';
-import EntityPropertyConstructionType from '../EntityPropertyConstructionType';
-import EntityPropertySourceNumber from '../EntityPropertySourceNumber';
-import EntityCancellationDate from '../EntityCancellationDate';
-import EntityEffectiveDate from '../EntityEffectiveDate';
-import EntityPremium from '../EntityPremium';
+import Details from '../../components/EntityDetails';
+import PolicyHolder from '../../components/EntityPolicyHolder';
+import Address from '../../components/EntityAddress';
+import PropertyCounty from '../EntityPropertyCounty';
+import PropertyTerritory from '../EntityPropertyTerritory';
+import PropertyConstructionType from '../EntityPropertyConstructionType';
+import PropertySourceNumber from '../EntityPropertySourceNumber';
+import CancellationDate from '../EntityCancellationDate';
+import EffectiveDate from '../EntityEffectiveDate';
+import Premium from '../EntityPremium';
 
 export const showEffectiveDatePopUp = (props) => {
   props.setAppState(
@@ -40,33 +40,90 @@ export class DetailHeader extends Component {
     if (!policy || !policy.policyID) return (<div className="detailHeader" />);
 
     const {
-      details, policyHolder, mailingAddress, propertyAddress, property, effectiveDate, premium: { currentPremium }, cancellation: { cancellationDate, showReinstatement }
+      cancellation: { cancellationDate, showReinstatement },
+      county,
+      details,
+      effectiveDate,
+      mailingAddress,
+      mapURI,
+      policyHolder,
+      premium: { currentPremium },
+      property,
+      propertyAddress
     } = entityDetails;
     const { territory, constructionType, sourceNumber } = property;
 
-    const mapQuery = encodeURIComponent(`${propertyAddress.address1} ${propertyAddress.address2} ${propertyAddress.city}, ${propertyAddress.state} ${propertyAddress.zip}`);
-    const mapUri = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
-
     return (
       <div className="detailHeader">
-        <EntityDetails details={details} className="policyDetails" />
-        <EntityPolicyHolder policyHolder={policyHolder} className="policyHolder" />
-        <EntityAddress type="Mailing" address={mailingAddress} className="policyHolderMailingAddress" />
-        <EntityAddress type="Property" address={propertyAddress} className="propertyAddress" mapUri={mapUri} />
+        <Details details={details} className="policyDetails">
+          <dd>{details.status}</dd>
+        </Details>
+        <PolicyHolder
+          policyHolder={policyHolder}
+          label="Policyholder"
+          className="policyHolder" />
+
+        <Address
+          label="Mailing Address"
+          type="Mailing"
+          address={mailingAddress}
+          className="policyHolderMailingAddress" />
+
+        <Address
+          label="Property Address"
+          data={propertyAddress}
+          type="Property"
+          render={() => (mapURI &&
+            <a className="btn btn-link btn-xs btn-alt-light no-padding" target="_blank" href={mapURI}>
+              <i className="fa fa-map-marker" />Map
+            </a>
+          )}
+          className="propertyAddress" />
+
         <div className="detailHeader-wrapping-sections">
           <div className="wrapping-section">
-            <EntityPropertyCounty county={propertyAddress.county} className="propertyCounty" />
-            <EntityPropertyTerritory territory={territory} className="territory" />
-            <EntityPropertyConstructionType constructionType={constructionType} className="constructionType" />
+            <PropertyCounty
+              label="Property County"
+              county={county}
+              className="propertyCounty" />
+
+            <PropertyTerritory
+              label="Territory"
+              territory={territory}
+              className="territory" />
+
+            <PropertyConstructionType
+              label="Construction Type"
+              constructionType={constructionType}
+              className="constructionType" />
           </div>
+
           <div className="wrapping-section">
-            <EntityPropertySourceNumber sourceNumber={sourceNumber} className="sourceNumber" />
-            <EntityEffectiveDate effectiveDate={effectiveDate} showEffectiveDatePopUp={() => showEffectiveDatePopUp(this.props)} className="effectiveDate" />
-            <EntityCancellationDate showReinstatement={showReinstatement} cancellationDate={cancellationDate} showReinstatePolicyPopUp={() => showReinstatePolicyPopUp(this.props)} className="cancellationDate" />
+            <PropertySourceNumber
+              label="Source Number"
+              sourceNumber={sourceNumber}
+              className="sourceNumber" />
+
+            <EffectiveDate
+              labe="Effective Date"
+              effectiveDate={effectiveDate}
+              showEffectiveDatePopUp={() => showEffectiveDatePopUp(this.props)}
+              className="effectiveDate" />
+
+            <CancellationDate
+              label="Cancellation Date"
+              showReinstatement={showReinstatement}
+              cancellationDate={cancellationDate}
+              showReinstatePolicyPopUp={() => showReinstatePolicyPopUp(this.props)}
+              className="cancellationDate" />
           </div>
         </div>
-        <EntityPremium currentPremium={currentPremium} className="premium" label="Crrent Premium" />
-      </div>);
+        <Premium
+          currentPremium={currentPremium}
+          className="premium"
+          label="Current Premium" />
+      </div>
+    );
   }
 }
 
