@@ -5,7 +5,7 @@ import Loader from '@exzeo/core-ui/lib/Loader';
 
 import UnderwritingValidationBarConnect from '../components/Quote/UnderwritingValidationBar';
 import App from '../components/App';
-import { OpenDiariesBar } from '../components//OpenDiariesBar';
+import OpenDiariesBar from '../components//OpenDiariesBar';
 
 export class QuoteBase extends React.Component {
   state = {

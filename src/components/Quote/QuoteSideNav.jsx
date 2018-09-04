@@ -62,14 +62,14 @@ const csrLinks = ({ quoteId, workflowId }) => [{
   exact: true
 }];
 
-export const NewDiary = (props) => {
+export const newDiary = (props) => {
   const { quoteData: { _id } } = props;
   props.actions.uiActions.toggleDiary({
     resourceType: 'Quote',
-    id: _id
+    resourceId: _id
   });
 };
-export const NewNoteFileUploaderPopup = (props) => {
+export const newNote = (props) => {
   props.actions.uiActions.toggleNote({ noteType: 'Quote Note', documentId: props.quoteData.quoteNumber });
 };
 
@@ -89,7 +89,7 @@ export const SideNav = (props) => {
 
   return (
     <nav className="site-nav">
-      { redirect }
+      {redirect}
       <ul>
         {csrLinks({ quoteId: quoteData._id, workflowId: match.params.workflowId }).map(link => (
           <li key={link.key}>
@@ -105,8 +105,8 @@ export const SideNav = (props) => {
       </ul>
       <div className="plus-button-group">
         <div className="btn btn-round btn-primary btn-lg new-btn"><i className="fa fa-plus" /></div>
-        <button aria-label="open-btn form-newDiary" data-test="newDiary" className="btn btn-primary btn-round btn-lg new-diary-btn" onClick={() => this.newDiary()}><i className="fa fa-bookmark" /><span>NEW DIARY</span></button>
-        <button aria-label="open-btn form-newNote" data-test="newNote" className="btn btn-primary btn-round btn-lg new-note-btn" onClick={() => this.newNote()}><i className="fa fa-pencil" /><span>NEW NOTE</span></button>
+        <button aria-label="open-btn form-newDiary" data-test="newDiary" className="btn btn-primary btn-round btn-lg new-diary-btn" onClick={() => newDiary(props)}><i className="fa fa-bookmark" /><span>NEW DIARY</span></button>
+        <button aria-label="open-btn form-newNote" data-test="newNote" className="btn btn-primary btn-round btn-lg new-note-btn" onClick={() => newNote(props)}><i className="fa fa-pencil" /><span>NEW NOTE</span></button>
       </div>
       {props.appState.data.showUWconditions === true &&
         <UWconditions closeButtonHandler={() => closeUWConditions(props)} />
