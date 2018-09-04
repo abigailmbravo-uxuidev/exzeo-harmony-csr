@@ -10,8 +10,7 @@ export const EntityEffectiveDate = ({
     <dl>
       <div>
         <dt>
-          {label}
-          {showEffectiveDatePopUp &&
+          {label} {showEffectiveDatePopUp &&
             <button
               id="effective-date"
               className="btn btn-link btn-xs btn-alt-light no-padding"

@@ -2,14 +2,16 @@ import React from 'react';
 
 export const EntityDetails = ({
   className,
-  details: { product, entityNumber },
+  dataTest,
+  data,
   children
 }) => (
-  <section data-test="entityDetails" className={className}>
+  <section data-test={dataTest} className={className}>
     <dl>
       <div>
-        <dd>{product}</dd>
-        <dd>{entityNumber}</dd>
+        {Object.keys(data).map(key => (
+          <dd>{data[key]}</dd>
+        ))}
         {children}
       </div>
     </dl>

@@ -1,15 +1,17 @@
 import React from 'react';
 
 export const EntityPropertyCounty = ({
+  dataTest,
   className,
   label,
-  county
+  render,
+  value
 }) => (
-  <section data-test="propertyCounty" className={className}>
+  <section data-test={dataTest} className={className}>
     <dl>
       <div>
-        <dt>{label}</dt>
-        <dd>{county}</dd>
+        <dt>{label} {render && render()}</dt>
+        <dd>{value}</dd>
       </div>
     </dl>
   </section>

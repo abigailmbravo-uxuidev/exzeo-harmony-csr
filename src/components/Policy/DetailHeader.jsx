@@ -35,6 +35,20 @@ export class DetailHeader extends Component {
     this.props.getEffectiveDateChangeReasons();
   }
 
+  handleEditEffectiveDate = (props) => {
+    props.setAppState(
+      props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data, showEffectiveDateChangePopUp: true }
+    );
+  };
+
+  handleReinstatePolicy = (props) => {
+    props.setAppState(
+      props.appState.modelName, props.appState.instanceId,
+      { ...props.appState.data, showReinstatePolicyPopUp: true }
+    );
+  };
+
   render() {
     const { policy, entityDetails } = this.props;
     if (!policy || !policy.policyID) return (<div className="detailHeader" />);
@@ -47,81 +61,105 @@ export class DetailHeader extends Component {
       mailingAddress,
       mapURI,
       policyHolder,
-      premium: { currentPremium },
-      property,
-      propertyAddress
+      currentPremium,
+      propertyAddress,
+      status,
+      territory, constructionType, sourceNumber
     } = entityDetails;
-    const { territory, constructionType, sourceNumber } = property;
 
     return (
       <div className="detailHeader">
-        <Details details={details} className="policyDetails">
-          <dd>{details.status}</dd>
+        <Details
+          data={details}
+          dataTest="policyDetails"
+          className="policyDetails">
+          <dd>{status}</dd>
         </Details>
-        <PolicyHolder
-          policyHolder={policyHolder}
+
+        <Address
           label="Policyholder"
+          data={policyHolder}
+          dataTest="policyHolderDetail"
           className="policyHolder" />
 
         <Address
           label="Mailing Address"
-          type="Mailing"
-          address={mailingAddress}
+          data={mailingAddress}
+          dataTest="mailingAddressDetail"
           className="policyHolderMailingAddress" />
 
         <Address
           label="Property Address"
           data={propertyAddress}
           type="Property"
+          className="propertyAddress"
           render={() => (mapURI &&
             <a className="btn btn-link btn-xs btn-alt-light no-padding" target="_blank" href={mapURI}>
               <i className="fa fa-map-marker" />Map
             </a>
-          )}
-          className="propertyAddress" />
+          )} />
 
         <div className="detailHeader-wrapping-sections">
           <div className="wrapping-section">
             <PropertyCounty
               label="Property County"
-              county={county}
+              value={county}
+              dataTest="countyDetail"
               className="propertyCounty" />
 
-            <PropertyTerritory
+            <PropertyCounty
               label="Territory"
-              territory={territory}
+              value={territory}
+              dataTest="territoryDetail"
               className="territory" />
 
-            <PropertyConstructionType
+            <PropertyCounty
               label="Construction Type"
-              constructionType={constructionType}
+              dataTest="constructionTypeDetail"
+              value={constructionType}
               className="constructionType" />
           </div>
-
           <div className="wrapping-section">
-            <PropertySourceNumber
+            <PropertyCounty
               label="Source Number"
-              sourceNumber={sourceNumber}
+              value={sourceNumber}
+              dataTest="sourceNumberDetail"
               className="sourceNumber" />
 
-            <EffectiveDate
-              labe="Effective Date"
-              effectiveDate={effectiveDate}
-              showEffectiveDatePopUp={() => showEffectiveDatePopUp(this.props)}
-              className="effectiveDate" />
+            <PropertyCounty
+              label="Effective Date"
+              value={effectiveDate}
+              dataTest="effectiveDateDetail"
+              className="effectiveDate"
+              render={() => (
+                <button
+                  id="effective-date"
+                  className="btn btn-link btn-xs btn-alt-light no-padding"
+                  onClick={this.handleEditEffectiveDate}>
+                  <i className="fa fa-pencil-square" />Edit
+                </button>
+              )} />
 
-            <CancellationDate
+            <PropertyCounty
               label="Cancellation Date"
-              showReinstatement={showReinstatement}
-              cancellationDate={cancellationDate}
-              showReinstatePolicyPopUp={() => showReinstatePolicyPopUp(this.props)}
-              className="cancellationDate" />
+              value={cancellationDate}
+              dataTest="cancellationDateDetail"
+              className="cancellationDate"
+              render={() => (showReinstatement &&
+                <button
+                  id="show-reinstate"
+                  className="btn btn-link btn-xs btn-alt-light no-padding"
+                  onClick={this.handleReinstatePolicy}>
+                  <i className="fa fa-thumbs-up" />Reinstate
+                </button>
+              )} />
           </div>
         </div>
-        <Premium
-          currentPremium={currentPremium}
-          className="premium"
-          label="Current Premium" />
+        <PropertyCounty
+          label="Current Premium"
+          value={currentPremium}
+          dataTest="premiumDetail"
+          className="premium" />
       </div>
     );
   }

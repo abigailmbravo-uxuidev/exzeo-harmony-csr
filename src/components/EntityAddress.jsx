@@ -5,15 +5,12 @@ export const EntityAddress = ({
   dataTest,
   className,
   label,
-  render,
-  type
+  render
 }) => (
   <section data-test={dataTest} className={className}>
     <dl>
       <div>
-        <dt>
-          {label} {render && render()}
-        </dt>
+        <dt>{label} {render && render()}</dt>
         {Object.keys(data).map(key => (
           <dd key={key}>{data[key]}</dd>
         ))}
@@ -21,4 +18,5 @@ export const EntityAddress = ({
     </dl>
   </section>
 );
+
 export default EntityAddress;

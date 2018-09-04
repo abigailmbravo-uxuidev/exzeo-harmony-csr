@@ -23,7 +23,7 @@ const defaultEntity = {
 export const getPolicyDetails = createSelector(
   [getPolicy, getSummaryLedger],
   (policy, summaryLedger) => {
-    if (!policy || !policy.policyNumber) return defaultEntity;
+    if (!policy || !policy.policyNumber || !summaryLedger) return defaultEntity;
     const {
       cancelDate,
       effectiveDate,
@@ -42,8 +42,6 @@ export const getPolicyDetails = createSelector(
       status: { displayText, code }
     } = summaryLedger;
 
-    const primaryPolicyHolder = policyHolders[0];
-
     const {
       constructionType,
       physicalAddress,
@@ -53,10 +51,8 @@ export const getPolicyDetails = createSelector(
     const mapQuery = encodeURIComponent(`${physicalAddress.address1} ${physicalAddress.address2} ${physicalAddress.city}, ${physicalAddress.state} ${physicalAddress.zip}`);
 
     let cancellationDate = '';
-
     const billingStatusCode = code || null;
-
-    if (policy && status && (status.includes('Pending') || status.includes('Cancel') || billingStatusCode > 8) && summaryLedger) {
+    if (status && (status.includes('Pending') || status.includes('Cancel') || billingStatusCode > 8)) {
       cancellationDate = cancelDate
         ? moment.utc(cancelDate).format('MM/DD/YYYY')
         : moment.utc(nonPaymentNoticeDueDate).format('MM/DD/YYYY');
@@ -64,13 +60,22 @@ export const getPolicyDetails = createSelector(
     if (policy && endDate && billingStatusCode === 99) {
       cancellationDate = moment.utc(endDate).format('MM/DD/YYYY');
     }
+
     const showReinstatement = status === 'Cancelled' && [12, 13, 14, 15].includes(billingStatusCode);
 
+    const primaryPolicyHolder = policyHolders[0];
+
     return {
+      constructionType,
+      sourceNumber,
+      territory,
+      currentPremium: `$ ${normalize.numbers(currentPremium)}`,
+      effectiveDate: moment.utc(effectiveDate).format('MM/DD/YYYY'),
+      mapURI: `${baseMapUri}${mapQuery}`,
+      status: `${status} / ${displayText}`,
       details: {
         product: getProductName(product),
-        entityNumber: policyNumber,
-        status: `${status} / ${displayText}`
+        entityNumber: policyNumber
       },
       policyHolder: {
         displayName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
@@ -84,22 +89,12 @@ export const getPolicyDetails = createSelector(
       propertyAddress: {
         address1: physicalAddress.address1,
         address2: physicalAddress.address2,
-        csz: `${physicalAddress.city}, ${physicalAddress.state} ${physicalAddress.zip}`,
-      },
-      mapURI: `${baseMapUri}${mapQuery}`,
-      property: {
-        territory,
-        constructionType,
-        sourceNumber
-      },
-      premium: {
-        currentPremium: normalize.numbers(currentPremium)
+        csz: `${physicalAddress.city}, ${physicalAddress.state} ${physicalAddress.zip}`
       },
       cancellation: {
         cancellationDate,
         showReinstatement
-      },
-      effectiveDate: moment.utc(effectiveDate).format('MM/DD/YYYY')
+      }
     };
   }
 );
@@ -134,9 +129,9 @@ export const getQuoteDetails = createSelector(
     return {
       details: {
         product: getProductName(product),
-        entityNumber: quoteNumber,
-        status: quoteState
+        entityNumber: quoteNumber
       },
+      status: quoteState,
       policyHolder: {
         displayName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
         primaryPhoneNumber: normalize.phone(primaryPolicyHolder.primaryPhoneNumber)
@@ -164,5 +159,3 @@ export const getQuoteDetails = createSelector(
     };
   }
 );
-export default { getPolicyDetails };
-

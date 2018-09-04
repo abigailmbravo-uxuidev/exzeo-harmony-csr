@@ -41,9 +41,17 @@ export class DetailHeader extends Component {
     }
 
     const {
-      details, policyHolder, mailingAddress, propertyAddress, property, effectiveDate, premium: { currentPremium }
+      details,
+      status,
+      policyHolder,
+      mailingAddress,
+      propertyAddress,
+      property,
+      effectiveDate,
+      premium: { currentPremium }
     } = entityDetails;
-    const { territory, constructionType } = property;
+
+      const { territory, constructionType } = property;
 
     const mapQuery = encodeURIComponent(`${propertyAddress.address1} ${propertyAddress.address2} ${propertyAddress.city}, ${propertyAddress.state} ${propertyAddress.zip}`);
     const mapUri = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
@@ -52,12 +60,12 @@ export class DetailHeader extends Component {
       <div className="detailHeader">
         <EntityDetails details={details} className="quoteDetails">
           <dd>
-            {details.status === 'Policy Issued' ?
+            {status === 'Policy Issued' ?
               <button className="btn btn-link" data-test="selectPolicy" onClick={this.handleSelectPolicy}>
-                {details.status}
+                {status}
               </button>
               :
-              details.status
+              status
             }
           </dd>
         </EntityDetails>
