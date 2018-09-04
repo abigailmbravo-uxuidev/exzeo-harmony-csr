@@ -9,8 +9,7 @@ export const SearchPanel = props => (
   </div>
 );
 
-// TODO: Core UI
-const toLocaleDate = dataString => `${moment.tz(dataString, 'America/New_York').format('MM/DD/YYYY h:mm A zz')}`;
+const toLocaleDate = dataString => moment.utc(dataString).format('MM/DD/YYYY');
 
 const toNameFormatter = val => val.userName;
 
@@ -18,7 +17,6 @@ const DiaryExpandColumns = ({ diaries }) => {
   return (
     <BootstrapTable data={diaries}>
       <TableHeaderColumn dataField="_id" isKey hidden>ID</TableHeaderColumn>
-      <TableHeaderColumn dataField="open">Status</TableHeaderColumn>
       <TableHeaderColumn dataField="due" dataFormat={toLocaleDate}>Due</TableHeaderColumn>
       <TableHeaderColumn dataField="assignee" dataFormat={toNameFormatter}>Assignee</TableHeaderColumn>
       <TableHeaderColumn dataField="reason">Reason</TableHeaderColumn>
@@ -61,7 +59,7 @@ export class DiaryTable extends Component {
           expandColumnComponent: this.expandColumnComponent
         }}>
         <TableHeaderColumn dataField="diaryId" isKey hidden>ID</TableHeaderColumn>
-        <TableHeaderColumn dataField="open">Status</TableHeaderColumn>
+        <TableHeaderColumn dataField="dueStatus">Status</TableHeaderColumn>
         <TableHeaderColumn dataField="due" dataFormat={toLocaleDate}>Due</TableHeaderColumn>
         <TableHeaderColumn dataField="assignee" dataFormat={toNameFormatter}>Assignee</TableHeaderColumn>
         <TableHeaderColumn dataField="reason">Reason</TableHeaderColumn>
