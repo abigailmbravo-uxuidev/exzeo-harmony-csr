@@ -18,7 +18,7 @@ import Notes from '../../components/Policy/NotesFiles';
 import Cancel from '../../components/Policy/Cancel';
 import Endorsements from '../../components/Policy/Endorsements';
 import OpenDiariesBar from '../../components/OpenDiariesBar';
-import App from '../../components/App';
+import App from '../../components/AppWrapper';
 
 export class Policy extends React.Component {
   state = {

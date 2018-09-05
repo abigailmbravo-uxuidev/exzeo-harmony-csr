@@ -8,5 +8,5 @@ const CONFIG = {
   quote: <QuoteDetailHeader />
 };
 
-export const DetailHeader = ({ context }) => (CONFIG[context]);
+const DetailHeader = ({ context }) => (CONFIG[context]);
 export default DetailHeader;

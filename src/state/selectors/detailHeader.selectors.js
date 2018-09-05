@@ -2,15 +2,11 @@ import { createSelector } from 'reselect';
 import { normalize } from '@exzeo/core-ui/lib/InputLifecycle/index';
 import moment from 'moment-timezone';
 
+import * as detailUtils from '../../utilities/entityDetails';
+import { STANDARD_DATE_FORMAT } from '../../constants/dates';
+
 const baseMapUri = 'https://www.google.com/maps/search/?api=1&query=';
 const defaultObject = {};
-
-const getPolicy = state => state.policyState.policy;
-const getSummaryLedger = state => state.policyState.summaryLedger;
-const getQuote = state => state.service.quote || defaultObject;
-
-const getProductName = product => (product === 'HO3' ? `${product} Homeowners` : product);
-
 const defaultEntity = {
   details: {},
   policyHolder: {},
@@ -21,10 +17,15 @@ const defaultEntity = {
   cancellation: {}
 };
 
+const getPolicy = state => state.policyState.policy;
+const getSummaryLedger = state => state.policyState.summaryLedger;
+const getQuote = state => state.service.quote || defaultObject;
+
 export const getPolicyDetails = createSelector(
   [getPolicy, getSummaryLedger],
   (policy, summaryLedger) => {
     if (!policy || !policy.policyNumber || !summaryLedger) return defaultEntity;
+
     const {
       cancelDate,
       effectiveDate,
@@ -37,8 +38,8 @@ export const getPolicyDetails = createSelector(
       sourceNumber,
       status
     } = policy;
+
     const {
-      nonPaymentNoticeDueDate,
       currentPremium,
       status: { displayText, code }
     } = summaryLedger;
@@ -49,20 +50,9 @@ export const getPolicyDetails = createSelector(
       territory
     } = property;
 
-    const mapQuery = encodeURIComponent(`${physicalAddress.address1} ${physicalAddress.address2} ${physicalAddress.city}, ${physicalAddress.state} ${physicalAddress.zip}`);
-
-    let cancellationDate = '';
-    const billingStatusCode = code || null;
-    if (status && (status.includes('Pending') || status.includes('Cancel') || billingStatusCode > 8)) {
-      cancellationDate = cancelDate
-        ? moment.utc(cancelDate).format('MM/DD/YYYY')
-        : moment.utc(nonPaymentNoticeDueDate).format('MM/DD/YYYY');
-    }
-    if (policy && endDate && billingStatusCode === 99) {
-      cancellationDate = moment.utc(endDate).format('MM/DD/YYYY');
-    }
-
-    const showReinstatement = status === 'Cancelled' && [12, 13, 14, 15].includes(billingStatusCode);
+    const mapQuery = detailUtils.getMapQuery(physicalAddress);
+    const cancellationDate = detailUtils.getCancellationDate(summaryLedger, endDate, cancelDate);
+    const showReinstatement = detailUtils.shouldShowReinstatement(status, code);
 
     const primaryPolicyHolder = policyHolders[0];
 
@@ -72,11 +62,11 @@ export const getPolicyDetails = createSelector(
       territory,
       county: physicalAddress.county,
       currentPremium: `$ ${normalize.numbers(currentPremium)}`,
-      effectiveDate: moment.utc(effectiveDate).format('MM/DD/YYYY'),
+      effectiveDate: moment.utc(effectiveDate).format(STANDARD_DATE_FORMAT),
       mapURI: `${baseMapUri}${mapQuery}`,
       status: `${status} / ${displayText}`,
       details: {
-        product: getProductName(product),
+        product: detailUtils.getProductName(product),
         policyNumber
       },
       policyHolder: {
@@ -86,12 +76,12 @@ export const getPolicyDetails = createSelector(
       mailingAddress: {
         address1: pHMA.address1,
         address2: pHMA.address2,
-        csz: `${pHMA.city}, ${pHMA.state} ${pHMA.zip}`
+        csz: detailUtils.getCityStateZip(pHMA)
       },
       propertyAddress: {
         address1: physicalAddress.address1,
         address2: physicalAddress.address2,
-        csz: `${physicalAddress.city}, ${physicalAddress.state} ${physicalAddress.zip}`
+        csz: detailUtils.getCityStateZip(physicalAddress)
       },
       cancellation: {
         cancellationDate,
@@ -105,6 +95,7 @@ export const getQuoteDetails = createSelector(
   [getQuote],
   (quote) => {
     if (!quote || !quote.quoteNumber) return defaultEntity;
+
     const {
       product,
       quoteNumber,
@@ -124,21 +115,22 @@ export const getQuoteDetails = createSelector(
       territory
     } = property;
 
-    const currentPremium = (rating && rating.totalPremium) ?
-      normalize.numbers(rating.totalPremium) : '--';
+    const currentPremium = (rating && rating.totalPremium)
+      ? normalize.numbers(rating.totalPremium)
+      : '--';
 
-    const mapQuery = encodeURIComponent(`${physicalAddress.address1} ${physicalAddress.address2} ${physicalAddress.city}, ${physicalAddress.state} ${physicalAddress.zip}`);
+    const mapQuery = detailUtils.getMapQuery(physicalAddress);
 
     return {
       constructionType,
       currentPremium,
       territory,
       county: physicalAddress.county,
-      effectiveDate: moment.utc(effectiveDate).format('MM/DD/YYYY'),
+      effectiveDate: moment.utc(effectiveDate).format(STANDARD_DATE_FORMAT),
       mapURI: `${baseMapUri}${mapQuery}`,
       status: quoteState,
       details: {
-        product: getProductName(product),
+        product: detailUtils.getProductName(product),
         quoteNumber
       },
       policyHolder: {
@@ -148,12 +140,12 @@ export const getQuoteDetails = createSelector(
       mailingAddress: {
         address1: pHMA.address1,
         address2: pHMA.address2,
-        csz: `${pHMA.city}, ${pHMA.state} ${pHMA.zip}`
+        csz: detailUtils.getCityStateZip(pHMA)
       },
       propertyAddress: {
         address1: physicalAddress.address1,
         address2: physicalAddress.address2,
-        csz: `${physicalAddress.city}, ${physicalAddress.state} ${physicalAddress.zip}`,
+        csz: detailUtils.getCityStateZip(physicalAddress)
       }
     };
   }

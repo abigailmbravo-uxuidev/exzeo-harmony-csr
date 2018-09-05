@@ -12,7 +12,7 @@ import {
   isRequired
 } from '@exzeo/core-ui/lib/InputLifecycle';
 import { getAnswers } from '../../../utilities/forms';
-import { STANDARD_DATE_FORMAT } from '../../../constants/search';
+import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 
 import Pagination from '../components/Pagination';
 import Button from '@exzeo/core-ui/lib/Button/index';
