@@ -1,6 +1,6 @@
 import configureStore from 'redux-mock-store';
 import * as types from './actionTypes';
-import * as quoteStateActions from './quoteStateActions';
+import * as quoteStateActions from './quoteState.actions';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);

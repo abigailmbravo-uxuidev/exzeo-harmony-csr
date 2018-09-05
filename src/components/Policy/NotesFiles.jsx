@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Loader from '@exzeo/core-ui/lib/Loader';
-import { getNotes } from '../../state/actions/serviceActions';
-import * as errorActions from '../../state/actions/errorActions';
+import { Loader } from '@exzeo/core-ui';
+import { getNotes } from '../../state/actions/service.actions';
+import * as errorActions from '../../state/actions/error.actions';
 import NoteList from '../Common/NoteList';
 import Footer from '../Common/Footer';
 

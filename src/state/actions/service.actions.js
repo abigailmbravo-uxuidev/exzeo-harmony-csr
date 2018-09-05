@@ -3,7 +3,7 @@ import moment from 'moment';
 import { batchActions } from 'redux-batched-actions';
 import * as serviceRunner from '../../utilities/serviceRunner';
 import * as types from './actionTypes';
-import * as errorActions from './errorActions';
+import * as errorActions from './error.actions';
 
 export const handleError = (err) => {
   let error = err.response && err.response.data ? err.response.data : err;

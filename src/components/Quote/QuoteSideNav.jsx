@@ -4,10 +4,10 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { NavLink } from 'react-router-dom';
-import * as appStateActions from '../../state/actions/appStateActions';
+import * as appStateActions from '../../state/actions/appState.actions';
 import UWconditions from '../Common/UWconditions';
-import * as newNoteActions from '../../state/actions/newNoteActions';
-import * as cgActions from '../../state/actions/cgActions';
+import * as newNoteActions from '../../state/actions/newNote.actions';
+import * as cgActions from '../../state/actions/cg.actions';
 
 // Example of a possible schema
 /**

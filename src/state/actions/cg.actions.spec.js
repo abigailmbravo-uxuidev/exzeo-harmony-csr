@@ -3,7 +3,7 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 
 import * as types from './actionTypes';
-import * as cgActions from './cgActions';
+import * as cgActions from './cg.actions';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
