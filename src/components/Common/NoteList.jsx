@@ -83,7 +83,6 @@ export class NoteList extends Component {
 
   render() {
     const { historyTab } = this.state;
-    const { diaries } = this.props;
     return (
       <div>
         <form id="NotesFiles" onSubmit={() => null} noValidate>
@@ -99,7 +98,7 @@ export class NoteList extends Component {
                       <button type="button" className={`btn btn-tab ${historyTab === 'diaries' ? 'selected' : ''}`} onClick={() => this.setHistoryTab('diaries')}>Diaries</button>
                     </div>
                     {NOTE_TABS.includes(this.state.historyTab) && <Notes {...this.props} attachmentStatus={this.state.historyTab === 'files'} setNoteStatus={this.setNoteStatus} />}
-                    {this.state.historyTab === DIARY_TAB && <DiaryTable diaries={diaries} />}
+                    {this.state.historyTab === DIARY_TAB && <DiaryTable {...this.props} />}
                   </div>
                 </div>
               </section>
@@ -112,7 +111,6 @@ export class NoteList extends Component {
 }
 
 NoteList.propTypes = {
-  diaries: PropTypes.shape(),
   notes: PropTypes.array,
   actions: PropTypes.shape({
     errorActions: PropTypes.shape({

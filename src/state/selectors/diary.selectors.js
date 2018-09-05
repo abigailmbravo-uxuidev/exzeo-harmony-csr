@@ -65,7 +65,14 @@ export const getFormattedAllDiaries = createSelector(
       ...d.entries[0],
       diaryHistory: d.entries.slice(1),
       due: moment.utc(d.entries[0].due).format('YYYY-MM-DD'),
-      dueStatus: getDueStatus(d.entries[0].due)
+      dueStatus: getDueStatus(d.entries[0].due),
+      action: {
+        diaryId: d._id,
+        resourceType: d.resource.type,
+        resourceId: d.resource.id,
+        ...d.entries[0],
+        due: moment.utc(d.entries[0].due).format('YYYY-MM-DD')
+      }
     }));
   }
 );
