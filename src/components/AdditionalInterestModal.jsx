@@ -105,7 +105,6 @@ export class AdditionalInterestModal extends React.Component {
     const {
       additionalInterests,
       addAdditionalInterestType,
-      deleteAdditionalInterest,
       handleSubmit,
       hideModal,
       isDeleting,

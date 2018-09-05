@@ -99,7 +99,7 @@ export class MortgageBilling extends Component {
     });
   };
 
-  editAdditionalInterest = (ai) => {
+  editAI = (ai) => {
     this.setState({
       showAdditionalInterestModal: true,
       isEditingAI: true,
@@ -168,46 +168,15 @@ export class MortgageBilling extends Component {
     });
   };
 
-  deleteAdditionalInterest = (selectedAdditionalInterest) => {
-    this.setState({
-      isDeleting: true
-    });
-
-    const additionalInterests = this.props.policy.additionalInterests || [];
-    // remove any existing items before submission
-    const modifiedAIs = _.cloneDeep(additionalInterests);
-    // remove any existing items before submission
-    _.remove(modifiedAIs, ai => ai._id === selectedAdditionalInterest._id); // eslint-disable-line
-
-    if (_.filter(modifiedAIs, ai => ai.type === selectedAdditionalInterest.type).length === 1) {
-      const index = _.findIndex(modifiedAIs, { type: selectedAdditionalInterest.type });
-      const ai = modifiedAIs[index];
-      ai.order = 0;
-      modifiedAIs.splice(index, 1, ai);
-    }
-    const offset = new Date(this.props.policy.effectiveDate).getTimezoneOffset() / 60;
-
+  toggleAIState = (ai) => {
+    const { createTransaction, getPolicy, policy: { policyNumber } } = this.props;
     const submitData = {
-      additionalInterestId: selectedAdditionalInterest._id,
-      ...this.props.policy,
-      endorsementDate: moment(this.props.policy.effectiveDate).utcOffset(offset),
-      transactionType: 'AI Removal'
+      additionalInterestId: ai._id,
+      policyNumber: policyNumber,
+      transactionType: ai.active ? 'AI Removal' : 'AI Reinstatement'
     };
 
-    this.props.createTransaction(submitData).then(() => {
-      this.props.getPolicy(this.props.policy.policyNumber);
-      this.setState({
-        showAdditionalInterestModal: false,
-        isEditingAI: false,
-        isDeleting: false
-      });
-    });
-  };
-
-  editAIOnEnter = (event, ai) => {
-    if (event.key === 'Enter') {
-      this.editAdditionalInterest(ai);
-    }
+    createTransaction(submitData).then(() => getPolicy(policyNumber));
   };
 
   setBatch = (value) => {
@@ -408,8 +377,9 @@ export class MortgageBilling extends Component {
                       <AdditionalInterestCard
                         key={ai._id}
                         ai={ai}
-                        handleOnEnter={this.editAIOnEnter}
-                        handleClick={this.editAdditionalInterest} />
+                        editAI={this.editAI}
+                        toggleAIState={this.toggleAIState}
+                      />
                     ))}
                   </ul>
                 </div>
@@ -421,10 +391,8 @@ export class MortgageBilling extends Component {
               additionalInterests={additionalInterests}
               addAdditionalInterestType={this.state.addAdditionalInterestType}
               completeSubmit={this.handleAISubmit}
-              deleteAdditionalInterest={this.deleteAdditionalInterest}
               hideModal={this.hideAdditionalInterestModal}
               initialValues={this.initAdditionalInterestModal()}
-              isDeleting={this.state.isDeleting}
               isEditing={this.state.isEditingAI}
               selectedAI={this.state.selectedAI}
               validAdditionalInterestTypes={validAdditionalInterestTypes}
