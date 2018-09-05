@@ -18,6 +18,13 @@ const getDiaries = state => state.diaries;
 
 const getResource = (state, resource) => resource;
 
+const getDueStatus = (due) => {
+  if (isWithinOneWeekAway(due)) return 'Due Soon';
+  else if (isPastDue(due)) return 'Past Due';
+  else if (isGreaterThanOneWeekAway(due)) return 'Upcoming';
+  return 'Unknown';
+};
+
 const groupDiaries = (diaries) => {
   if (!diaries || diaries.length === 0) {
     return {
@@ -57,7 +64,15 @@ export const getFormattedAllDiaries = createSelector(
       resourceId: d.resource.id,
       ...d.entries[0],
       diaryHistory: d.entries.slice(1),
-      due: moment.utc(d.entries[0].due).format('YYYY-MM-DD')
+      due: moment.utc(d.entries[0].due).format('YYYY-MM-DD'),
+      dueStatus: getDueStatus(d.entries[0].due),
+      action: {
+        diaryId: d._id,
+        resourceType: d.resource.type,
+        resourceId: d.resource.id,
+        ...d.entries[0],
+        due: moment.utc(d.entries[0].due).format('YYYY-MM-DD')
+      }
     }));
   }
 );
