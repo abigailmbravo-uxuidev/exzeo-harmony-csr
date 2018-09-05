@@ -289,17 +289,15 @@ export class Coverage extends Component {
   };
 
   normalizePersonalPropertyPercentage = (value, previousValue, allValues, field) => {
-    if (Number.isNaN(value)) return;
-    const { change, initialValues } = this.props;
+    const numberValue = Number(value);
 
-    if (value === 0) {
-      change('personalPropertyReplacementCostCoverage', false);
-    } else {
-      change('personalPropertyReplacementCostCoverage', initialValues.personalPropertyReplacementCostCoverage || false);
-    }
-    const fieldValue = setPercentageOfValue(allValues.dwellingAmount, value);
+    const { change } = this.props;
+
+    if (numberValue === 0) change('personalPropertyReplacementCostCoverage', false);
+
+    const fieldValue = setPercentageOfValue(allValues.dwellingAmount, numberValue);
     change(field, Number.isNaN(fieldValue) ? '' : fieldValue);
-    return value;
+    return numberValue;
   };
 
   normalizeSinkholeAmount = (value, previousValue, allValues) => {
