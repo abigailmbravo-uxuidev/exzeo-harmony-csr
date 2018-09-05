@@ -3,13 +3,9 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import { reduxForm, Field } from 'redux-form';
 import moment from 'moment-timezone';
-import Inputs from '@exzeo/core-ui/lib/Input';
-import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
-import Button from '@exzeo/core-ui/lib/Button';
-import Loader from '@exzeo/core-ui/lib/Loader';
+import { Select, Loader, Button, validation } from '@exzeo/core-ui';
 
-const { Select } = Inputs;
-const { validation } = lifecycle;
+
 const validate = values => (!values.documentType ? { documentType: 'Required' } : null);
 const documentTypeAnswers = [{ label: 'Policy Invoice', answer: 'policyInvoice' }];
 

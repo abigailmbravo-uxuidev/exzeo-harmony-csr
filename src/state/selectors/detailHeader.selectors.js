@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { normalize } from '@exzeo/core-ui/lib/InputLifecycle/index';
+import { normalize } from '@exzeo/core-ui';
 import moment from 'moment-timezone';
 
 import * as detailUtils from '../../utilities/entityDetails';

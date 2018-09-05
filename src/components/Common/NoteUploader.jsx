@@ -7,11 +7,13 @@ import Uppy from '@uppy/core';
 import Dashboard from '@uppy/react/lib/Dashboard';
 import XHRUpload from '@uppy/xhr-upload';
 import moment from 'moment';
-import Loader from '@exzeo/core-ui/lib/Loader';
-import * as cgActions from '../../state/actions/cgActions';
-import * as uiActions from '../../state/actions/uiActions';
-import * as serviceActions from '../../state/actions/serviceActions';
-import * as errorActions from '../../state/actions/errorActions';
+import { Loader } from '@exzeo/core-ui';
+
+import * as cgActions from '../../state/actions/cg.actions';
+import * as uiActions from '../../state/actions/ui.actions';
+import * as serviceActions from '../../state/actions/service.actions';
+import * as errorActions from '../../state/actions/error.actions';
+
 import '@uppy/core/dist/style.min.css';
 
 export const renderNotes = ({ input, label, type, meta: { touched, error } }) => (

@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import * as uiActions from '../../state/actions/uiActions';
-import * as serviceActions from '../../state/actions/serviceActions';
-import * as cgActions from '../../state/actions/cgActions';
-import * as errorActions from '../../state/actions/errorActions';
+
+import * as uiActions from '../../state/actions/ui.actions';
+import * as serviceActions from '../../state/actions/service.actions';
+import * as cgActions from '../../state/actions/cg.actions';
+import * as errorActions from '../../state/actions/error.actions';
+
 import GenerateDocsForm from './GenerateDocsForm';
 
 // Example of a possible schema

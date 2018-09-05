@@ -3,7 +3,6 @@ import configureStore from 'redux-mock-store';
 import { shallow } from 'enzyme';
 
 import ConnectedApp, {
-  NewNoteFileUploaderPopup,
   SideNav,
   UWconditionsPopup
 } from './QuoteSideNav';
@@ -40,9 +39,6 @@ describe('Testing QuoteSideNav component', () => {
           batchCompleteTask() { return Promise.resolve(); }
         },
         appStateActions: {
-          toggleNote() {}
-        },
-        appStateActions: {
           setAppState() {}
         }
       },
@@ -62,7 +58,6 @@ describe('Testing QuoteSideNav component', () => {
 
     const sideNav = SideNav(props);
 
-    NewNoteFileUploaderPopup(props);
     UWconditionsPopup(props);
   });
 });

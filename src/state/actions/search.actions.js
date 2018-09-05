@@ -1,13 +1,15 @@
-import * as types from './actionTypes';
-import * as serviceRunner from '../../utilities/serviceRunner';
-import * as errorActions from './errorActions';
 import moment from 'moment/moment';
+
+import * as serviceRunner from '../../utilities/serviceRunner';
 import { SECONDARY_DATE_FORMAT } from '../../constants/dates';
 import {
   DEFAULT_SEARCH_PARAMS,
   RESULTS_PAGE_SIZE,
   SEARCH_TYPES
 } from '../../constants/search';
+
+import * as types from './actionTypes';
+import * as errorActions from './error.actions';
 
 
 /**

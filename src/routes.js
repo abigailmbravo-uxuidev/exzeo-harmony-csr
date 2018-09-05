@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import Modal from 'react-modal';
 
-import ConfirmPopup from './components/Common/ConfirmPopup';
 import history from './history';
 import Auth from './Auth';
 import LoginPage from './containers/Login';
@@ -17,6 +16,8 @@ import SearchAgency from './containers/SearchAgency';
 import SearchPolicy from './containers/SearchPolicy';
 import SearchDiaries from './containers/SearchDiaries';
 import NotFoundPage from './containers/NotFound';
+import Reports from './containers/Reports';
+import PolicyModule from './modules/Policy';
 import QuoteCoverage from './components/Quote/Coverage';
 import QuoteLanding from './components/Quote/QuoteLanding';
 import QuoteUnderwriting from './components/Quote/Underwriting';
@@ -25,15 +26,14 @@ import QuoteMailingAddressBilling from './components/Quote/MailingAddressBilling
 import QuoteNotesFiles from './components/Quote/NotesFiles';
 import QuoteSummary from './components/Quote/Summary';
 import QuoteApplication from './components/Quote/Application';
-import Reports from './containers/Reports';
-import PolicyModule from './modules/Policy';
 import AgencyStaff from './components/Agency/Staff';
 import NoteUploader from './components/Common/NoteUploader';
+import ConfirmPopup from './components/Common/ConfirmPopup';
 import DiaryPolling from './components/DiaryPolling';
 import DiaryModal from './components/DiaryModal';
-import * as appStateActions from './state/actions/appStateActions';
-import * as errorActions from './state/actions/errorActions';
-import * as authActions from './state/actions/authActions';
+import * as appStateActions from './state/actions/appState.actions';
+import * as errorActions from './state/actions/error.actions';
+import * as authActions from './state/actions/auth.actions';
 
 const auth = new Auth();
 
@@ -177,7 +177,7 @@ const mapDispatchToProps = dispatch => ({
   actions: {
     appStateActions: bindActionCreators(appStateActions, dispatch),
     errorActions: bindActionCreators(errorActions, dispatch),
-    authActions: bindActionCreators(authActions, dispatch),
+    authActions: bindActionCreators(authActions, dispatch)
   }
 });
 

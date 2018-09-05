@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Input, Select } from '@exzeo/core-ui/lib/Input';
-import { isAlphaNumeric, isValidChar, isNumberDashOnly, isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
-import { getAnswers } from '../../../utilities/forms';
+import { Input, Select, Button, validation } from '@exzeo/core-ui';
 
+import { getAnswers } from '../../../utilities/forms';
 import Pagination from '../components/Pagination';
-import Button from '@exzeo/core-ui/lib/Button/index';
+
+const { isAlphaNumeric, isValidChar, isRequired, isNumberDashOnly } = validation;
 
 const QuoteSearch = ({
   submitting,

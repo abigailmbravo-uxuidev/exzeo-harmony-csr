@@ -6,9 +6,9 @@ import Loader from '@exzeo/core-ui/lib/Loader';
 import Inputs from '@exzeo/core-ui/lib/Input';
 import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
 
-import { submitDiary } from '../state/actions/diaryActions';
-import { toggleDiary } from '../state/actions/uiActions';
-import { setAppError } from '../state/actions/errorActions';
+import { submitDiary } from '../state/actions/diary.actions';
+import { toggleDiary } from '../state/actions/ui.actions';
+import { setAppError } from '../state/actions/error.actions';
 import { REASONS, TYPES, USERS } from '../constants/diaries';
 
 const { Date, Select } = Inputs;

@@ -4,16 +4,17 @@ import { connect } from 'react-redux';
 import _find from 'lodash/find';
 import { Prompt } from 'react-router-dom';
 import { reduxForm, formValueSelector, FormSection, clearFields } from 'redux-form';
-import Loader from '@exzeo/core-ui/lib/Loader';
-import { validation } from '@exzeo/core-ui/lib/InputLifecycle/index';
-import { premiumEndorsementList } from './constants/endorsementTypes';
+import { Loader, validation } from '@exzeo/core-ui';
+
 import endorsementUtils from '../../../utilities/endorsementModel';
-import { getUIQuestions } from '../../../state/actions/questionsActions';
-import { getNewRate, submitEndorsementForm } from '../../../state/actions/policyActions';
-import { getUnderwritingQuestions } from '../../../state/actions/serviceActions';
-import { setAppError } from '../../../state/actions/errorActions';
+import { getUIQuestions } from '../../../state/actions/questions.actions';
+import { getNewRate, submitEndorsementForm } from '../../../state/actions/policy.actions';
+import { getUnderwritingQuestions } from '../../../state/actions/service.actions';
+import { setAppError } from '../../../state/actions/error.actions';
 // Component Sections
 import Footer from '../../Common/Footer';
+
+import { premiumEndorsementList } from './constants/endorsementTypes';
 import Coverage from './Coverage';
 import WindMitigation from './WindMitigation';
 import HomeLocation from './HomeLocation';

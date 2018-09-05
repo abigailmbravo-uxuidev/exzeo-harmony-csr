@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Input, Integer, Phone, Select } from '@exzeo/core-ui/lib/Input';
-import { isRequired, isValidChar } from '@exzeo/core-ui/lib/InputLifecycle';
-import Button from '@exzeo/core-ui/lib/Button';
+import { Input, Integer, Phone, Select, Button, validation } from '@exzeo/core-ui';
+
+const { isValidChar, isRequired } = validation;
 
 const AgencySearch = ({
   submitting,

@@ -3,7 +3,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import moment from 'moment-timezone';
 import { connect } from 'react-redux';
 
-import { toggleDiary } from '../state/actions/uiActions';
+import { toggleDiary } from '../state/actions/ui.actions';
 import { getFilteredAllDiaries } from '../state/selectors/diary.selectors';
 
 // TODO: Move to component

@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import QuoteBaseConnect from '../../containers/Quote';
-import * as appStateActions from '../../state/actions/appStateActions';
-import * as serviceActions from '../../state/actions/serviceActions';
-import * as errorActions from '../../state/actions/errorActions';
+import * as appStateActions from '../../state/actions/appState.actions';
+import * as serviceActions from '../../state/actions/service.actions';
+import * as errorActions from '../../state/actions/error.actions';
 import NoteList from '../Common/NoteList';
 import Footer from '../Common/Footer';
 

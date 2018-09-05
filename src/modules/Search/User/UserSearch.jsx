@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Input } from '@exzeo/core-ui/lib/Input';
+import { Input } from '@exzeo/core-ui';
 
 const UserSearch = ({ submitting }) => (
   <div className="search-tools">

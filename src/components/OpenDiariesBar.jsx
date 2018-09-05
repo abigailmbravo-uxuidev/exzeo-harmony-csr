@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { toggleDiary } from '../state/actions/uiActions';
+import { toggleDiary } from '../state/actions/ui.actions';
 import { getOpenDiaries } from '../state/selectors/diary.selectors';
 
 import Diaries from './Diaries';

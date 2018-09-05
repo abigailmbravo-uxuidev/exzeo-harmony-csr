@@ -45,6 +45,7 @@ describe('Test diary selectors', () => {
       expect(result).toEqual([
         {
           _id: '5b8051c91ed51f00d4d21d67',
+          diaryId: '5b8051c91ed51f00d4d21d66',
           assignee: {
             userName: 'tticcsr'
           },
@@ -53,8 +54,7 @@ describe('Test diary selectors', () => {
             userId: 'auth0|59419e3a43e76f16f68c3349',
             userName: 'tticcsr'
           },
-          due: '2018-08-24T00:00:00.000Z',
-          id: '5b8051c91ed51f00d4d21d66',
+          due: '2018-08-24',
           message: 'rrr',
           open: true,
           reason: 'Estate',
@@ -73,7 +73,8 @@ describe('Test diary selectors', () => {
       expect(result).toEqual({
         upComing: [],
         pastDue: [],
-        dueSoon: []
+        dueSoon: [],
+        count: 0
       });
     });
 

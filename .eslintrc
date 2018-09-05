@@ -1,11 +1,11 @@
 {
   "parser": "babel-eslint",
-  "extends": ["airbnb"],
+  "extends": ["airbnb", "react-app"],
   "rules": {
     "arrow-body-style": 0,
     "comma-dangle":  [2, "never"],
     "linebreak-style": [2, "unix"],
-    "max-len": [2, { "code": 120, "ignoreComments": true, "ignoreUrls": true, "ignoreTemplateLiterals": true }],
+    "max-len": [2, { "code": 120, "ignoreComments": true, "ignoreUrls": true }],
     "no-nested-ternary": 0,
     "no-param-reassign": [2, { "props": false }],
     "no-shadow": 1,
@@ -17,15 +17,15 @@
     "import/no-named-as-default": 0,
     "import/order": [2, { "newlines-between": "always" }],
     "jsx-a11y/anchor-is-valid": [0, { "aspects": ["noHref", "invalidHref"] }],
+    "jsx-a11y/click-events-have-key-events": 0,
     "jsx-a11y/label-has-for": 0,
     "jsx-a11y/href-no-hash": 0,
     "jsx-a11y/no-static-element-interactions": 0,
-    "jsx-a11y/click-events-have-key-events": 0,
     "react/default-props-match-prop-types": 0,
     "react/forbid-prop-types": 1,
     "react/no-array-index-key": 2,
     "react/no-unused-prop-types": 0,
-    "react/prefer-stateless-function": 0,
+    "react/prefer-stateless-function": 1,
     "react/prop-types": [2, { "skipUndeclared": true }],
     "react/require-default-props": 1,
     "react/sort-prop-types": [2, { "requiredFirst": true, "callbacksLast": true }],
@@ -38,8 +38,10 @@
     "react/jsx-max-props-per-line": [2, { "when": "multiline" }]
   },
   "globals": {
-    "expect": false,
-    "sinon": false
+    "expect": true,
+    "sinon": true,
+    "describe": true,
+    "it": true
   },
   "env": {
     "browser": true,

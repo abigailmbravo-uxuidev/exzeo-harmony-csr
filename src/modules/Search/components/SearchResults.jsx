@@ -92,7 +92,7 @@ export class SearchResults extends Component {
           </div>
         }
 
-        {hasSearched && searchType === SEARCH_TYPES.agency && !!results.length &&
+        {hasSearched && searchType === SEARCH_TYPES.diaries && !!results.length &&
         <ul id="search-results" className="results result-cards">
           {results.map(diary => (
             <DiaryCard

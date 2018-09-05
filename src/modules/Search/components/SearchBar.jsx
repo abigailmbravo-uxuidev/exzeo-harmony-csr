@@ -1,19 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
+
 import { DEFAULT_SEARCH_PARAMS } from '../../../constants/search';
-import { getAgencies } from '../../../state/actions/serviceActions';
-import { clearAppError } from '../../../state/actions/errorActions';
+import { getAgencies } from '../../../state/actions/service.actions';
+import { clearAppError } from '../../../state/actions/error.actions';
 import {
   handleSearchSubmit,
   toggleLoading
-} from '../../../state/actions/searchActions';
+} from '../../../state/actions/search.actions';
 
 export class SearchBar extends Component {
   componentDidMount() {
     const {
-      agencies, getAgencies, toggleLoading, initialize, initialValues
+      agencies,
+      getAgencies,
+      toggleLoading,
+      initialize,
+      initialValues
     } = this.props;
+
     toggleLoading(false);
     if (!agencies.length) {
       getAgencies(DEFAULT_SEARCH_PARAMS.companyCode, DEFAULT_SEARCH_PARAMS.state);
@@ -77,6 +83,7 @@ const mapStateToProps = state => ({
   search: state.search,
   agencies: state.service.agencies || []
 });
+
 export default connect(mapStateToProps, {
   clearAppError,
   getAgencies,

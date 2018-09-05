@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import * as serviceActions from '../../state/actions/serviceActions';
-import * as quoteStateActions from '../../state/actions/quoteStateActions';
+import * as serviceActions from '../../state/actions/service.actions';
+import * as quoteStateActions from '../../state/actions/quoteState.actions';
 import { getQuoteDetails } from '../../state/selectors/detailHeader.selectors';
 import Details from '../DetailMain';
 import Section from '../DetailSection';

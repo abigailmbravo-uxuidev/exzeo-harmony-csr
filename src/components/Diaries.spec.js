@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Diaries } from './Diaries';
+
+import Diaries from './Diaries';
 
 describe('Test the Diaries Component', () => {
   it('Should Render Diaries', () => {
@@ -9,7 +10,7 @@ describe('Test the Diaries Component', () => {
       openHandler={x => x}
       diaryLevel="dueSoon"
       diaries={[{
-        dueDate: '2018-08-24', type: 'Billing /Payment', reason: 'Receipt Needed', assignee: 'jsutphin', message: ''
+        _id: 1, dueDate: '2018-08-24', type: 'Billing /Payment', reason: 'Receipt Needed', assignee: 'jsutphin', message: ''
       }]} />);
     expect(wrapper.exists()).toBeTruthy();
   });

@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { reduxForm, propTypes } from 'redux-form';
-import { toggleDiary } from '../../state/actions/uiActions';
 
+import { toggleDiary } from '../../state/actions/ui.actions';
 // import NewNoteFileUploader from '../Common/NewNoteFileUploader';
 
 // Example of a possible schema

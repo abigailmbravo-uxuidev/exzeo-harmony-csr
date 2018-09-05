@@ -1,9 +1,6 @@
 import React from 'react';
 import { Field } from 'redux-form';
-import Inputs from '@exzeo/core-ui/lib/Input';
-import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
-
-const { Currency, Date } = Inputs;
+import { Currency, Date, validation } from '@exzeo/core-ui';
 
 const ResultsCalculator = props => (
   <div className="endo-results-calc">

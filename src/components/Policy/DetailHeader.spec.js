@@ -1,8 +1,8 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
-import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 import thunk from 'redux-thunk';
+
 import ConnectedApp, { DetailHeader, showEffectiveDatePopUp, showReinstatePolicyPopUp } from './DetailHeader';
 
 describe('Testing DetailHeader component', () => {
@@ -34,7 +34,7 @@ describe('Testing DetailHeader component', () => {
         submitting: false
       }
     },
-    ...propTypes
+    policyDetails: { cancellation: {} }
   };
 
   it('should test app', () => {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { SEARCH_CONFIG, SEARCH_TYPES } from '../../constants/search';
-import { resetSearch } from '../../state/actions/searchActions';
+import { resetSearch } from '../../state/actions/search.actions';
 
 import SearchBar from './components/SearchBar';
 import SearchResults from './components/SearchResults';
@@ -70,7 +70,10 @@ export class SearchPage extends Component {
 
   render() {
     const {
-      advancedSearch, hasSearched, searchType, searchConfig
+      advancedSearch,
+      hasSearched,
+      searchType,
+      searchConfig
     } = this.state;
 
     const SearchForm = SEARCH_FORMS[searchType];

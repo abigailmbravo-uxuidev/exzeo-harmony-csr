@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { setAppState } from '../../state/actions/appStateActions';
-import { getEffectiveDateChangeReasons } from '../../state/actions/policyActions';
+import { setAppState } from '../../state/actions/appState.actions';
+import { getEffectiveDateChangeReasons } from '../../state/actions/policy.actions';
 import { getPolicyDetails } from '../../state/selectors/detailHeader.selectors';
 import Details from '../DetailMain';
 import Section from '../DetailSection';

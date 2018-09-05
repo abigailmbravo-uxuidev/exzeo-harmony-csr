@@ -2,7 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { fetchDiaries } from '../state/actions/diaryActions';
+import { fetchDiaries } from '../state/actions/diary.actions';
 
 class DiaryPolling extends Component {
   componentDidMount() {

@@ -13,4 +13,3 @@ export function toggleDiary(diaryMeta = {}) {
     diaryMeta
   };
 }
-
