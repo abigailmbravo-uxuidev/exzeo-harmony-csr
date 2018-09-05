@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 
-import Header from './Header';
-import DiaryButton from './DiaryButton';
-
+import { getFilteredOpenDiaries } from '../state/selectors/diary.selectors';
 import PolicySideNav from '../components/Policy/PolicySideNav';
 import QuoteSideNav from '../components/Quote/QuoteSideNav';
-import { getFilteredOpenDiaries } from '../state/selectors/diary.selectors';
+
+import Header from './Header';
+import DiaryButton from './DiaryButton';
 import DetailHeader from './DetailHeader';
 
 const CONFIG = {

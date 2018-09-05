@@ -1,84 +1,155 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { setAppState } from '../../state/actions/appStateActions';
 import { getEffectiveDateChangeReasons } from '../../state/actions/policyActions';
 import { getPolicyDetails } from '../../state/selectors/detailHeader.selectors';
-import EntityDetails from '../../components/EntityDetails';
-import EntityPolicyHolder from '../../components/EntityPolicyHolder';
-import EntityAddress from '../../components/EntityAddress';
-import EntityPropertyCounty from '../EntityPropertyCounty';
-import EntityPropertyTerritory from '../EntityPropertyTerritory';
-import EntityPropertyConstructionType from '../EntityPropertyConstructionType';
-import EntityPropertySourceNumber from '../EntityPropertySourceNumber';
-import EntityCancellationDate from '../EntityCancellationDate';
-import EntityEffectiveDate from '../EntityEffectiveDate';
-import EntityPremium from '../EntityPremium';
-
-export const showEffectiveDatePopUp = (props) => {
-  props.setAppState(
-    props.appState.modelName, props.appState.instanceId,
-    { ...props.appState.data, showEffectiveDateChangePopUp: true }
-  );
-};
-
-export const showReinstatePolicyPopUp = (props) => {
-  props.setAppState(
-    props.appState.modelName, props.appState.instanceId,
-    { ...props.appState.data, showReinstatePolicyPopUp: true }
-  );
-};
+import Details from '../DetailMain';
+import Section from '../DetailSection';
+import SectionSingle from '../DetailSectionSingle';
+import MapLink from '../MapLink';
 
 export class DetailHeader extends Component {
   componentDidMount() {
     this.props.getEffectiveDateChangeReasons();
   }
 
+  handleEditEffectiveDate = () => {
+    const { setAppState, appState } = this.props;
+    setAppState(
+      appState.modelName, appState.instanceId,
+      { ...appState.data, showEffectiveDateChangePopUp: true }
+    );
+  };
+
+  handleReinstatePolicy = () => {
+    const { setAppState, appState } = this.props;
+    setAppState(
+      appState.modelName, appState.instanceId,
+      { ...appState.data, showReinstatePolicyPopUp: true }
+    );
+  };
+
   render() {
-    const { policy, entityDetails } = this.props;
+    const { policy, policyDetails } = this.props;
     if (!policy || !policy.policyID) return (<div className="detailHeader" />);
 
     const {
-      details, policyHolder, mailingAddress, propertyAddress, property, effectiveDate, premium: { currentPremium }, cancellation: { cancellationDate, showReinstatement }
-    } = entityDetails;
-    const { territory, constructionType, sourceNumber } = property;
-
-    const mapQuery = encodeURIComponent(`${propertyAddress.address1} ${propertyAddress.address2} ${propertyAddress.city}, ${propertyAddress.state} ${propertyAddress.zip}`);
-    const mapUri = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
+      cancellation: { cancellationDate, showReinstatement },
+      constructionType,
+      county,
+      details,
+      effectiveDate,
+      mailingAddress,
+      mapURI,
+      policyHolder,
+      currentPremium,
+      propertyAddress,
+      sourceNumber,
+      status,
+      territory
+    } = policyDetails;
 
     return (
       <div className="detailHeader">
-        <EntityDetails details={details} className="policyDetails" />
-        <EntityPolicyHolder policyHolder={policyHolder} className="policyHolder" />
-        <EntityAddress type="Mailing" address={mailingAddress} className="policyHolderMailingAddress" />
-        <EntityAddress type="Property" address={propertyAddress} className="propertyAddress" mapUri={mapUri} />
+        <Details
+          data={details}
+          dataTest="policyDetails"
+          className="policyDetails">
+          <dd>{status}</dd>
+        </Details>
+
+        <Section
+          label="Policyholder"
+          data={policyHolder}
+          dataTest="policyHolderDetail"
+          className="policyHolder" />
+
+        <Section
+          label="Mailing Address"
+          data={mailingAddress}
+          dataTest="mailingAddressDetail"
+          className="policyHolderMailingAddress" />
+
+        <Section
+          label="Property Address"
+          data={propertyAddress}
+          type="Property"
+          className="propertyAddress"
+          render={() => <MapLink mapURI={mapURI} />} />
+
         <div className="detailHeader-wrapping-sections">
           <div className="wrapping-section">
-            <EntityPropertyCounty county={propertyAddress.county} className="propertyCounty" />
-            <EntityPropertyTerritory territory={territory} className="territory" />
-            <EntityPropertyConstructionType constructionType={constructionType} className="constructionType" />
+            <SectionSingle
+              label="Property County"
+              value={county}
+              dataTest="countyDetail"
+              className="propertyCounty" />
+
+            <SectionSingle
+              label="Territory"
+              value={territory}
+              dataTest="territoryDetail"
+              className="territory" />
+
+            <SectionSingle
+              label="Construction Type"
+              dataTest="constructionTypeDetail"
+              value={constructionType}
+              className="constructionType" />
           </div>
           <div className="wrapping-section">
-            <EntityPropertySourceNumber sourceNumber={sourceNumber} className="sourceNumber" />
-            <EntityEffectiveDate effectiveDate={effectiveDate} showEffectiveDatePopUp={() => showEffectiveDatePopUp(this.props)} className="effectiveDate" />
-            <EntityCancellationDate showReinstatement={showReinstatement} cancellationDate={cancellationDate} showReinstatePolicyPopUp={() => showReinstatePolicyPopUp(this.props)} className="cancellationDate" />
+            <SectionSingle
+              label="Source Number"
+              value={sourceNumber}
+              dataTest="sourceNumberDetail"
+              className="sourceNumber" />
+
+            <SectionSingle
+              label="Effective Date"
+              value={effectiveDate}
+              dataTest="effectiveDateDetail"
+              className="effectiveDate"
+              render={() => (
+                <button
+                  id="effective-date"
+                  className="btn btn-link btn-xs btn-alt-light no-padding"
+                  onClick={this.handleEditEffectiveDate}>
+                  <i className="fa fa-pencil-square" />Edit
+                </button>
+              )} />
+
+            <SectionSingle
+              label="Cancellation Date"
+              value={cancellationDate}
+              dataTest="cancellationDateDetail"
+              className="cancellationDate"
+              render={() => (showReinstatement &&
+                <button
+                  id="show-reinstate"
+                  className="btn btn-link btn-xs btn-alt-light no-padding"
+                  onClick={this.handleReinstatePolicy}>
+                  <i className="fa fa-thumbs-up" />Reinstate
+                </button>
+              )} />
           </div>
         </div>
-        <EntityPremium currentPremium={currentPremium} className="premium" label="Crrent Premium" />
-      </div>);
+
+        <SectionSingle
+          label="Current Premium"
+          value={currentPremium}
+          dataTest="premiumDetail"
+          className="premium" />
+
+      </div>
+    );
   }
 }
-
-DetailHeader.propTypes = {
-  policy: PropTypes.shape()
-};
 
 const mapStateToProps = state => ({
   appState: state.appState,
   policy: state.policyState.policy,
-  summaryLedger: state.policyState.summaryLedger,
-  entityDetails: getPolicyDetails(state)
+  policyDetails: getPolicyDetails(state)
 });
 
 
