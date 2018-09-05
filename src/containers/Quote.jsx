@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Loader from '@exzeo/core-ui/lib/Loader';
 
 import UnderwritingValidationBarConnect from '../components/Quote/UnderwritingValidationBar';
-import App from '../components/App';
+import App from '../components/AppWrapper';
 import OpenDiariesBar from '../components//OpenDiariesBar';
 
 export class QuoteBase extends React.Component {

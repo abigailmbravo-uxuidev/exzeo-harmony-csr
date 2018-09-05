@@ -21,7 +21,7 @@ const CONFIG = {
   }
 };
 
-export class App extends Component {
+export class AppWrapper extends Component {
   render() {
     const {
       pageTitle, match, match: { path }, onToggleDiaries, showDiaries, openDiaryCount
@@ -47,7 +47,7 @@ export class App extends Component {
   }
 }
 
-App.defaultProps = {
+AppWrapper.defaultProps = {
   pageTitle: 'Harmony - CSR Portal'
 };
 
@@ -59,4 +59,4 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(AppWrapper);

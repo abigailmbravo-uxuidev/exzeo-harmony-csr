@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { STANDARD_DATE_FORMAT } from '../../../constants/search';
+import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 
 function QuoteCard({
   handleKeyPress,
