@@ -2,26 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import Loader from '@exzeo/core-ui/lib/Loader';
+import { Loader } from '@exzeo/core-ui';
+
 import QuoteHeader from '../components/Quote/QuoteHeader';
 import QuoteSideNav from '../components/Quote/QuoteSideNav';
 import QuoteDetailHeader from '../components/Quote/DetailHeader';
 import UnderwritingValidationBarConnect from '../components/Quote/UnderwritingValidationBar';
 
 
-export const QuoteBase = props => (
+export const QuoteBase = ({appState, quoteData, match, children}) => (
   <div className="app-wrapper csr quote">
-    <Helmet><title>{props.quoteData.quoteNumber ? `Q: ${props.quoteData.quoteNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
+    <Helmet><title>{quoteData.quoteNumber ? `Q: ${quoteData.quoteNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
     {/* <NewNoteFileUploader />*/}
     <QuoteHeader />
     <QuoteDetailHeader />
     <main role="document">
-      {props.appState.data.submitting && <Loader />}
+      {(appState.data.submitting || !quoteData._id) && <Loader />}
       <aside className="content-panel-left">
-        <QuoteSideNav />
+        <QuoteSideNav match={match} />
       </aside>
       <div className="content-wrapper">
-        {props.children}
+        {children}
       </div>
       <UnderwritingValidationBarConnect />
     </main>

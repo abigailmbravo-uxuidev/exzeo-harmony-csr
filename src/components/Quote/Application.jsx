@@ -1,66 +1,48 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { reduxForm, Form } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import * as cgActions from '../../state/actions/cgActions';
-import * as appStateActions from '../../state/actions/appStateActions';
-import * as quoteStateActions from '../../state/actions/quoteStateActions';
+import * as cgActions from '../../state/actions/cg.actions';
+import * as appStateActions from '../../state/actions/appState.actions';
+import * as quoteStateActions from '../../state/actions/quoteState.actions';
 import QuoteBaseConnect from '../../containers/Quote';
 import QuoteSummaryModal from '../../components/Common/QuoteSummaryModal';
 import Footer from '../Common/Footer';
 
-const handleInitialize = (state) => {
-  const formValues = {
+const MODEL_NAME = 'csrQuote';
 
-  };
-  return formValues;
+const handleInitialize = (state) => {
+  return {};
 };
 
 export const handleGetUnderwritingExceptions = state => (state.service.quote && state.service.quote.underwritingExceptions ? state.service.quote.underwritingExceptions : []);
 
 export const handleFormSubmit = (data, dispatch, props) => {
-  const { appState, actions } = props;
+  const { appState, actions, match } = props;
+  const workflowId = match.params.workflowId;
 
-
-  const workflowId = appState.instanceId;
-
-  props.actions.appStateActions.setAppState(
-    appState.modelName,
-    props.appState.instanceId,
-    {
-      ...props.appState.data,
-      applicationSubmitting: true,
-      applicationSent: true
-    }
+  actions.appStateActions.setAppState(MODEL_NAME, workflowId,
+    { ...appState.data, applicationSubmitting: true, applicationSent: true }
   );
 
   const steps = [
     { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
-    {
-      name: 'moveTo',
-      data: { key: 'application' }
-    }
+    { name: 'moveTo', data: { key: 'application' } }
   ];
-  actions.cgActions.batchCompleteTask(props.appState.modelName, workflowId, steps)
+  actions.cgActions.batchCompleteTask(MODEL_NAME, workflowId, steps)
     .then(() => {
-      props.actions.appStateActions.setAppState(
-        appState.modelName,
-        props.appState.instanceId,
-        {
-          applicationSent: true
-        }
+      actions.appStateActions.setAppState(MODEL_NAME, workflowId,
+        { applicationSent: true }
       );
-      props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
+      actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
     });
 };
 
 export const quoteSummaryModal = (props) => {
   const showQuoteSummaryModal = props.appState.data.showQuoteSummaryModal;
-  props.actions.appStateActions.setAppState(
-    props.appState.modelName,
-    props.appState.instanceId,
+  props.actions.appStateActions.setAppState(MODEL_NAME, props.match.params.workflowId,
     { ...props.appState.data, showQuoteSummaryModal: !showQuoteSummaryModal }
   );
 };
@@ -69,37 +51,40 @@ const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Receive
 
 export class QuoteApplication extends Component {
   componentDidMount() {
-    if (this.props.appState.instanceId) {
-      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
-        ...this.props.appState.data,
-        submitting: true
-      });
+    const { appState, actions, match } = this.props;
+    const workflowId = match.params.workflowId;
+    if (workflowId) {
+      actions.appStateActions.setAppState(MODEL_NAME, workflowId,
+        { ...appState.data, submitting: true}
+      );
       const steps = [
         { name: 'hasUserEnteredData', data: { answer: 'No' } },
         { name: 'moveTo', data: { key: 'application' } }
       ];
-      const workflowId = this.props.appState.instanceId;
 
-      this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
+      actions.cgActions.batchCompleteTask(MODEL_NAME, workflowId, steps)
         .then(() => {
-          this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
-          this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
-            ...this.props.appState.data,
-            selectedLink: 'application'
-          });
+          actions.quoteStateActions.getLatestQuote(true, match.params.quoteId);
+          actions.appStateActions.setAppState(MODEL_NAME, workflowId,
+            { ...appState.data, selectedLink: 'application' }
+          );
         });
     }
   }
 
   render() {
     const {
-      appState, handleSubmit, underwritingExceptions, quoteData
+      appState,
+      handleSubmit,
+      match,
+      quoteData,
+      underwritingExceptions
     } = this.props;
 
     return (
-      <QuoteBaseConnect>
+      <QuoteBaseConnect match={match}>
         <div className="route-content verify workflow">
-          <Form id="Application" onSubmit={handleSubmit(() => quoteSummaryModal(this.props))} noValidate>
+          <form id="Application" onSubmit={handleSubmit(() => quoteSummaryModal(this.props))}>
             <div className="scroll">
               <div className="detail-wrapper">
                 {underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0 &&
@@ -111,7 +96,7 @@ export class QuoteApplication extends Component {
                 }
               </div>
             </div>
-          </Form>
+          </form>
           { appState.data.showQuoteSummaryModal && <QuoteSummaryModal {...this.props} verify={handleFormSubmit} showQuoteSummaryModal={() => quoteSummaryModal(this.props)} /> }
         </div>
         <div className="basic-footer btn-footer">
@@ -137,9 +122,6 @@ QuoteApplication.contextTypes = {
   router: PropTypes.object
 };
 
-// ------------------------------------------------
-// Property type definitions
-// ------------------------------------------------
 QuoteApplication.propTypes = {
   tasks: PropTypes.shape(),
   appState: PropTypes.shape({
@@ -148,9 +130,7 @@ QuoteApplication.propTypes = {
     data: PropTypes.shape({ submitting: PropTypes.boolean })
   })
 };
-// ------------------------------------------------
-// redux mapping
-// ------------------------------------------------
+
 const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,

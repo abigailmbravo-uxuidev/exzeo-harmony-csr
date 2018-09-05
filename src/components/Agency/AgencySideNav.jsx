@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { reduxForm, propTypes } from 'redux-form';
-import * as appStateActions from '../../state/actions/appStateActions';
-import * as cgActions from '../../state/actions/cgActions';
+import * as appStateActions from '../../state/actions/appState.actions';
+import * as cgActions from '../../state/actions/cg.actions';
 // import NewNoteFileUploader from '../Common/NewNoteFileUploader';
 
 // Example of a possible schema
@@ -18,9 +18,9 @@ import * as cgActions from '../../state/actions/cgActions';
  *  outside
  * }
  */
-const csrLinks = [{
+const csrLinks = agencyCode => [{
   key: 'staff',
-  link: '/agency/staff',
+  link: `/agency/${agencyCode}/staff`,
   label: 'Staff',
   styleName: 'staff',
   exact: true
@@ -33,13 +33,13 @@ const csrLinks = [{
 }];
 
 
-export const SideNav = props => (
+export const SideNav = ({ agencyCode }) => (
   <nav className="site-nav">
     <ul>
-      {csrLinks && csrLinks.length > 0 && csrLinks.map((agentLink, index) => (
+      {csrLinks(agencyCode).map((agentLink, index) => (
         agentLink.outside ?
           <li key={index}>
-            {/* <a className={agentLink.styleName} href={agentLink.link}>*/}
+            {/* <a className={agentLink.styleName} href={agentLink.link}> */}
             <a className="csr-dashboard" href="/">
               <span>{agentLink.label}</span>
             </a>

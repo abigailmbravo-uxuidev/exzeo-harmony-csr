@@ -32,10 +32,11 @@ describe('Testing Staff component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      match: { params: { agencyCode: 1234 } },
       initialValues: {},
       agents: [{
- name: 'test', status: true, agentOfRecord: true, appointed: true, mailingAddress: {}
-}],
+        name: 'test', status: true, agentOfRecord: true, appointed: true, mailingAddress: {}
+      }],
       agency: {
         name: 'Test Agency',
         contactFirstName: 'Test',

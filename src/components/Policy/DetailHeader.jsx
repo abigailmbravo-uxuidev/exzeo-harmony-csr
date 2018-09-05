@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _get from 'lodash/get';
 import moment from 'moment';
-import { setAppState } from '../../state/actions/appStateActions';
-import { getEffectiveDateChangeReasons } from '../../state/actions/policyActions';
+import { setAppState } from '../../state/actions/appState.actions';
+import { getEffectiveDateChangeReasons } from '../../state/actions/policy.actions';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 
@@ -49,7 +49,7 @@ export class DetailHeader extends Component {
     const mapQuery = encodeURIComponent(`${loc.address1} ${loc.address2} ${loc.city}, ${loc.state} ${loc.zip}`)
     const mapUri = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
     const showReinstatement = policy.status === 'Cancelled' && [12, 13, 14, 15].includes(billingStatusCode);
-    
+
     return (<div className="detailHeader">
       <section id="policyDetails" className="policyDetails">
         <dl>

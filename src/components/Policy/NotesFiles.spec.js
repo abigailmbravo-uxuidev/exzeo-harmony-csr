@@ -10,7 +10,7 @@ const mockStore = configureStore(middlewares);
 describe('Testing NotesFiles component', () => {
   it('should test connected app', () => {
     const initialState = {
-      policyState: {},
+      policyState: { policy: {} },
       service: {
         notes: []
       },
@@ -30,6 +30,7 @@ describe('Testing NotesFiles component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      match: { params: {} },
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,
@@ -65,9 +66,11 @@ describe('Testing NotesFiles component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      policy: {},
+      params: {},
       handleSubmit() { },
       actions: {
-        serviceActions: { getNotes: () => null }
+        getNotes: () => null
       },
       fieldValues: {},
       quoteData: {},

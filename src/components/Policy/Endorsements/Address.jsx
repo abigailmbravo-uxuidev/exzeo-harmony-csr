@@ -1,7 +1,6 @@
 import React from 'react';
 import { Field } from 'redux-form';
-import { Input } from '@exzeo/core-ui/lib/Input';
-import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
+import { Input, validation } from '@exzeo/core-ui';
 
 const PropertyAddress = ({ name, sectionId, header, testPrefix }) => (
   <section name={name} id={sectionId}>

@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import cloneDeep from 'lodash/cloneDeep';
 import { AdditionalInterests } from './AdditionalInterests';
 import { getGroupedAdditionalInterests, getSortedAdditionalInterests, checkQuoteState } from '../../state/selectors/quote.selectors';
-import { getUIQuestions } from '../../state/actions/questionsActions';
+import { getUIQuestions } from '../../state/actions/questions.actions';
 
 
 const quoteData = {
@@ -192,6 +192,7 @@ const quoteData = {
   },
   additionalInterests: [
     {
+      _id: '1234',
       type: 'Mortgagee',
       name1: 'BB1',
       name2: 'CC1',
@@ -210,6 +211,7 @@ const quoteData = {
       }
     },
     {
+      _id: '1235',
       type: 'Additional Insured',
       name1: 'BB2',
       name2: 'CC2',
@@ -228,6 +230,7 @@ const quoteData = {
       }
     },
     {
+      _id: '1236',
       type: 'Bill Payer',
       name1: 'BB2',
       name2: 'CC2',
@@ -246,6 +249,7 @@ const quoteData = {
       }
     },
     {
+      _id: '1237',
       type: 'Premium Finance',
       name1: 'BB3',
       referenceNumber: '1001',
@@ -264,6 +268,7 @@ const quoteData = {
       }
     },
     {
+      _id: '1238',
       type: 'Additional Interest',
       name1: 'BB3',
       referenceNumber: '1001',
@@ -344,7 +349,9 @@ describe('Testing AdditionalInterests component', () => {
       groupedAdditionalInterests,
       sortedAdditionalInterests,
       editingDisabled: false,
-      getUIQuestions() {}
+      getUIQuestions() {},
+      tasks: {},
+      match: { params: {} }
     };
     const wrapper = shallow(<AdditionalInterests {...props} />);
 

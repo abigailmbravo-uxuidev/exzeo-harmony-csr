@@ -2,24 +2,57 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as serviceActions from '../../state/actions/serviceActions';
+
 import QuoteBaseConnect from '../../containers/Quote';
-import * as errorActions from '../../state/actions/errorActions';
+import * as appStateActions from '../../state/actions/appState.actions';
+import * as serviceActions from '../../state/actions/service.actions';
+import * as errorActions from '../../state/actions/error.actions';
 import NoteList from '../Common/NoteList';
 import Footer from '../Common/Footer';
 
-export class NotesFiles extends Component {
+const MODEL_NAME = 'csrQuote';
 
-  componentDidMount () {
-    const { quoteData } = this.props;
+export class NotesFiles extends Component {
+  componentDidMount() {
+    const { quoteData, actions, match, appState } = this.props;
+    const workflowId = match.params.workflowId;
+
+    actions.appStateActions.setAppState(
+      MODEL_NAME, workflowId,
+      {
+        ...appState.data,
+        submitting: true
+      }
+    );
     if (quoteData && quoteData.quoteNumber) {
-      this.props.actions.serviceActions.getNotes(quoteData.quoteNumber);
+      actions.serviceActions.getNotes(quoteData.quoteNumber).then(() => {
+        actions.appStateActions.setAppState(
+          MODEL_NAME, workflowId,
+          {
+            ...appState.data,
+            submitting: false
+          }
+        );
+      });
+    } else {
+      actions.serviceActions.getQuote(match.params.quoteId)
+        .then((quoteData) => {
+          actions.serviceActions.getNotes(quoteData.quoteNumber);
+          actions.appStateActions.setAppState(
+            MODEL_NAME, workflowId,
+            {
+              ...appState.data,
+              submitting: false
+            }
+          );
+        });
     }
   }
 
   render() {
+    const { match } = this.props;
     return (
-      <QuoteBaseConnect>
+      <QuoteBaseConnect match={match}>
         <div className="route-content">
           <div className="scroll">
             <NoteList {...this.props} />
@@ -38,6 +71,7 @@ NotesFiles.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  appState: state.appState,
   notes: state.service.notes,
   quoteData: state.service.quote || {},
   error: state.error
@@ -45,6 +79,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    appStateActions: bindActionCreators(appStateActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     errorActions: bindActionCreators(errorActions, dispatch)
   }

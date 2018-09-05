@@ -1,14 +1,11 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
-import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
 import ConnectedApp, {
   NewNoteFileUploaderPopup,
-  closeNewNoteFileUploader,
   SideNav,
   UWconditionsPopup,
-  closeUWConditions
 } from './QuoteSideNav';
 
 const middlewares = [];
@@ -34,6 +31,7 @@ describe('Testing QuoteSideNav component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      match: { params: {} },
       actions: {
         cgActions: {
           batchCompleteTask() { return Promise.resolve(); }

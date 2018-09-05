@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import Inputs from '@exzeo/core-ui/lib/Input';
-import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
-
-const { Input, Phone } = Inputs;
-const { validation, normalize } = lifecycle;
+import { Input, Phone, validation, normalize } from '@exzeo/core-ui';
 
 const firstNameDepends = validation.dependsOn(['policyHolders[1].lastName', 'policyHolders[1].emailAddress', 'policyHolders[1].primaryPhoneNumber']);
 const lastNameDepends = validation.dependsOn(['policyHolders[1].firstName', 'policyHolders[1].emailAddress', 'policyHolders[1].primaryPhoneNumber']);
