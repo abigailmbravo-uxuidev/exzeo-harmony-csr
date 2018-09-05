@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { reduxForm, Form, getFormValues } from 'redux-form';
 import orderBy from 'lodash/orderBy';
 import moment from 'moment';
-import { saveUnderwritingExceptions } from '../../state/actions/serviceActions';
-import { getLatestQuote } from '../../state/actions/quoteStateActions';
+import { saveUnderwritingExceptions } from '../../state/actions/service.actions';
+import { getLatestQuote } from '../../state/actions/quoteState.actions';
 import CheckField from '../Form/inputs/CheckField';
 import UnderwritingExceptions from './UnderwritingExceptions';
 

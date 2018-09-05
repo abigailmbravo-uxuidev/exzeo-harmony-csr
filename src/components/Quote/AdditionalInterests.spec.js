@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import cloneDeep from 'lodash/cloneDeep';
 import { AdditionalInterests } from './AdditionalInterests';
 import { getGroupedAdditionalInterests, getSortedAdditionalInterests, checkQuoteState } from '../../state/selectors/quote.selectors';
-import { getUIQuestions } from '../../state/actions/questionsActions';
+import { getUIQuestions } from '../../state/actions/questions.actions';
 
 
 const quoteData = {

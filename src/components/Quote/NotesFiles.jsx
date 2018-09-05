@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+
 import QuoteBaseConnect from '../../containers/Quote';
-import * as appStateActions from '../../state/actions/appStateActions';
-import * as serviceActions from '../../state/actions/serviceActions';
-import * as errorActions from '../../state/actions/errorActions';
+import * as appStateActions from '../../state/actions/appState.actions';
+import * as serviceActions from '../../state/actions/service.actions';
+import * as errorActions from '../../state/actions/error.actions';
 import NoteList from '../Common/NoteList';
 import Footer from '../Common/Footer';
 
@@ -24,7 +25,7 @@ export class NotesFiles extends Component {
       }
     );
     if (quoteData && quoteData.quoteNumber) {
-      actions.serviceActions.getNotes(quoteData.quoteNumber, quoteData.quoteNumber).then(() => {
+      actions.serviceActions.getNotes(quoteData.quoteNumber).then(() => {
         actions.appStateActions.setAppState(
           MODEL_NAME, workflowId,
           {
@@ -36,7 +37,7 @@ export class NotesFiles extends Component {
     } else {
       actions.serviceActions.getQuote(match.params.quoteId)
         .then((quoteData) => {
-          actions.serviceActions.getNotes(quoteData.quoteNumber, quoteData.quoteNumber);
+          actions.serviceActions.getNotes(quoteData.quoteNumber);
           actions.appStateActions.setAppState(
             MODEL_NAME, workflowId,
             {

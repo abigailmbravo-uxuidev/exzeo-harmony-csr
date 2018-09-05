@@ -1,5 +1,5 @@
 import * as types from '../actions/actionTypes';
-import quoteStateReducer from './quoteReducer';
+import quoteStateReducer from './quote.reducer';
 
 describe('Quote State Reducer', () => {
   it('should call quoteStateReducer GET_QUOTE', () => {

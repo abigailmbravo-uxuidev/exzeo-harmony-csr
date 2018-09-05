@@ -6,10 +6,10 @@ import moment from 'moment-timezone';
 import { Helmet } from 'react-helmet';
 import Loader from '@exzeo/core-ui/lib/Loader';
 
-import { setAppState } from '../../state/actions/appStateActions';
-import { getZipcodeSettings, getAgents, getAgency, getNotes } from '../../state/actions/serviceActions';
-import { createTransaction, getBillingOptionsForPolicy, getPolicy, getPaymentOptionsApplyPayments, getPaymentHistory, getCancelOptions, getEndorsementHistory } from '../../state/actions/policyActions';
-import { startWorkflow, batchCompleteTask } from '../../state/actions/cgActions';
+import { setAppState } from '../../state/actions/appState.actions';
+import { getZipcodeSettings, getAgents, getAgency, getNotes } from '../../state/actions/service.actions';
+import { createTransaction, getBillingOptionsForPolicy, getPolicy, getPaymentOptionsApplyPayments, getPaymentHistory, getCancelOptions, getEndorsementHistory } from '../../state/actions/policy.actions';
+import { startWorkflow, batchCompleteTask } from '../../state/actions/cg.actions';
 
 import EditEffectiveDataPopUp from '../../components/Policy/EditEffectiveDatePopup';
 import ReinstatePolicyPopup from '../../components/Policy/ReinstatePolicyPopup';

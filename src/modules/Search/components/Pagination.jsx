@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input } from '@exzeo/core-ui/lib/Input'
+import { Input } from '@exzeo/core-ui'
 
 function Pagination({
   changePageBack,
