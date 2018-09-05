@@ -3,8 +3,8 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import moment from 'moment-timezone';
 import { connect } from 'react-redux';
 
-import { toggleDiary } from '../../state/actions/uiActions';
-import { getFilteredAllDiaries } from '../../state/selectors/diary.selectors';
+import { toggleDiary } from '../state/actions/uiActions';
+import { getFilteredAllDiaries } from '../state/selectors/diary.selectors';
 
 // TODO: Move to component
 export const SearchPanel = props => (
@@ -32,8 +32,22 @@ const DiaryExpandColumns = ({ diaries }) => {
   );
 };
 
+const DIARY_STATUS = {
+  pastDue: 'OPEN | Past Due',
+  dueSoon: 'OPEN | Due Soon',
+  upComing: 'OPEN | Upcoming',
+  closed: 'CLOSED'
+};
+
+const DIARY_STATUS_COLOR = {
+  pastDue: 'red',
+  dueSoon: 'yellow',
+  upComing: 'green',
+  closed: 'gray'
+};
+
 export class DiaryTable extends Component {
-  isExpandableRow= (row) => {
+  isExpandableRow = (row) => {
     if (row.diaryHistory.length > 0) return true;
     return false;
   }
@@ -44,13 +58,12 @@ export class DiaryTable extends Component {
     );
   }
 
-  expandColumnComponent = ({ isExpanded }) => {
-    if (isExpanded) {
-      return (
-        <span><i className="fa fa-caret-square-o-up" /></span>);
-    }
+  expandColumnComponent = ({ isExpandableRow, isExpanded }) => {
+    if (!isExpandableRow) return null;
     return (
-      <span><i className="fa fa-caret-square-o-down" /></span>);
+      isExpanded ? <span><i className="fa fa-caret-square-o-up" /></span> :
+      <span><i className="fa fa-caret-square-o-down" /></span>
+    );
   }
 
   openDiaryModal = (cell) => {
@@ -69,6 +82,9 @@ export class DiaryTable extends Component {
     return <button type="button" onClick={() => this.openDiaryModal(cell)}><i className="fa fa-arrow-circle-up" /></button>;
   }
 
+  statusFormatter = (value) => {
+    return (<div><span>{DIARY_STATUS_COLOR[value]}</span> | <span>{DIARY_STATUS[value]}</span></div>);
+  }
 
   render() {
     const options = { expandBy: 'column', searchPanel: props => (<SearchPanel {...props} />) };
@@ -88,7 +104,7 @@ export class DiaryTable extends Component {
           expandColumnComponent: this.expandColumnComponent
         }}>
         <TableHeaderColumn dataField="diaryId" isKey hidden>ID</TableHeaderColumn>
-        <TableHeaderColumn width="12%" dataField="dueStatus">Status</TableHeaderColumn>
+        <TableHeaderColumn width="12%" dataField="dueStatus" dataFormat={this.statusFormatter}>Status</TableHeaderColumn>
         <TableHeaderColumn width="12%" dataField="due" dataFormat={toLocaleDate}>Due</TableHeaderColumn>
         <TableHeaderColumn width="12%" dataField="assignee" dataFormat={val => val.userName}>Assignee</TableHeaderColumn>
         <TableHeaderColumn width="12%" dataField="reason">Reason</TableHeaderColumn>

@@ -32,7 +32,7 @@ export class DiaryModal extends Component {
     if (!user.profile || !user.profile.given_name || !user.profile.family_name) {
       const message = 'There was a problem with your user profile. Please logout of Harmony and try logging in again.';
       setAppErrorAction({ message });
-      this.handleClose();
+      this.handleCancel();
     }
   }
 
@@ -40,9 +40,13 @@ export class DiaryModal extends Component {
     this.setState({ minimize: !this.state.minimize });
   };
 
-  handleClose = () => {
+  handleCancel = () => {
     this.props.toggleDiaryAction();
   };
+
+  handleCloseDiary = () => {
+    this.handleCancel();
+  }
 
   submitDiary = async (data, dispatch, props) => {
     try {
@@ -50,7 +54,7 @@ export class DiaryModal extends Component {
     } catch (error) {
       props.setAppErrorAction({ message: error });
     } finally {
-      this.handleClose();
+      this.handleCancel();
     }
   };
 
@@ -71,7 +75,7 @@ export class DiaryModal extends Component {
             <button
               className="btn btn-icon header-cancel-button"
               type="button"
-              onClick={this.handleClose} >
+              onClick={this.handleCancel} >
               <i className="fa fa-times-circle" aria-hidden="true" />
             </button>
           </div>
@@ -118,9 +122,17 @@ export class DiaryModal extends Component {
               <button
                 tabIndex="0"
                 type="button"
+                data-test="note-close-diary"
+                className="btn btn-primary close-diary-button"
+                onClick={this.handleCloseDiary}>
+                Close Diary
+              </button>
+              <button
+                tabIndex="0"
+                type="button"
                 data-test="note-cancel"
                 className="btn btn-secondary cancel-button"
-                onClick={this.handleClose}>
+                onClick={this.handleCancel}>
                 Cancel
               </button>
               <button

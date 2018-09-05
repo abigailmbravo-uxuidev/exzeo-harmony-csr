@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment-timezone';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+
+import DiaryTable from '../../components/DiaryTable';
+
 import Downloader from './Downloader';
-import DiaryTable from './DiaryTable';
 
 const NOTE_TABS = ['notes', 'files'];
 const DIARY_TAB = 'diaries';

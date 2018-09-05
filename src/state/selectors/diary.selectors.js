@@ -18,11 +18,12 @@ const getDiaries = state => state.diaries;
 
 const getResource = (state, resource) => resource;
 
-const getDueStatus = (due) => {
-  if (isWithinOneWeekAway(due)) return 'Due Soon';
-  else if (isPastDue(due)) return 'Past Due';
-  else if (isGreaterThanOneWeekAway(due)) return 'Upcoming';
-  return 'Unknown';
+const getDueStatus = (due, open) => {
+  if (!open) return 'closed';
+  else if (isWithinOneWeekAway(due)) return 'dueSoon';
+  else if (isPastDue(due)) return 'pastDue';
+  else if (isGreaterThanOneWeekAway(due)) return 'upComing';
+  return 'unknown';
 };
 
 const groupDiaries = (diaries) => {
@@ -65,7 +66,7 @@ export const getFormattedAllDiaries = createSelector(
       ...d.entries[0],
       diaryHistory: d.entries.slice(1),
       due: moment.utc(d.entries[0].due).format('YYYY-MM-DD'),
-      dueStatus: getDueStatus(d.entries[0].due),
+      dueStatus: getDueStatus(d.entries[0].due, d.entries[0].open),
       action: {
         diaryId: d._id,
         resourceType: d.resource.type,
