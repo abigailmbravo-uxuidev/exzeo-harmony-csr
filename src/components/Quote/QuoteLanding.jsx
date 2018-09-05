@@ -49,7 +49,7 @@ export class QuoteLanding extends Component {
             lastName: '',
             policyNumber: '',
             quoteNumber: '',
-            quoteState: '',
+            quoteState: ''
           }
         });
         steps.push({
@@ -74,7 +74,6 @@ export class QuoteLanding extends Component {
         ...appState.data,
         selectedLink: 'customerData'
       });
-
     } catch (error) {
       setAppError(error);
     }
@@ -84,7 +83,7 @@ export class QuoteLanding extends Component {
     const { quoteData } = this.props;
     return (
       <React.Fragment>
-        {quoteData && quoteData._id ? <Redirect push to={`/quote/${quoteData._id}/coverage/${this.workflowId}`}/> : <Loader/>}
+        {quoteData && quoteData._id ? <Redirect replace to={`/quote/${quoteData._id}/coverage/${this.workflowId}`} /> : <Loader />}
       </React.Fragment>
     );
   }
