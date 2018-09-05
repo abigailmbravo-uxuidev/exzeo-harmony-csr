@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm, Field, formValueSelector } from 'redux-form';
-import _ from 'lodash';
 import moment from 'moment';
 import { Input, Select, Currency, Loader, validation } from '@exzeo/core-ui';
 
@@ -202,11 +201,11 @@ export class MortgageBilling extends Component {
 
   checkValidTypes = (additionalInterests, selectedAI) => {
     const ais = [];
-    if (selectedAI.type === 'Mortgagee' || _.filter(additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length <= 1) ais.push({ answer: 'Mortgagee' });
-    if (selectedAI.type === 'Additional Insured' || _.filter(additionalInterests, ai => ai.type === 'Additional Insured' && ai.active).length <= 1) ais.push({ answer: 'Additional Insured' });
-    if (selectedAI.type === 'Additional Interest' || _.filter(additionalInterests, ai => ai.type === 'Additional Interest' && ai.active).length <= 1) ais.push({ answer: 'Additional Interest' });
-    if (selectedAI.type === 'Premium Finance' || _.filter(additionalInterests, ai => ai.type === 'Premium Finance' && ai.active).length <= 1) ais.push({ answer: 'Premium Finance' });
-    if (selectedAI.type === 'Bill Payer' || _.filter(additionalInterests, ai => ai.type === 'Bill Payer' && ai.active).length === 0) ais.push({ answer: 'Bill Payer' });
+    if (selectedAI.type === 'Mortgagee' || additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length <= 1) ais.push({ answer: 'Mortgagee' });
+    if (selectedAI.type === 'Additional Insured' || additionalInterests.filter(ai => ai.type === 'Additional Insured' && ai.active).length <= 1) ais.push({ answer: 'Additional Insured' });
+    if (selectedAI.type === 'Additional Interest' || additionalInterests.filter(ai => ai.type === 'Additional Interest' && ai.active).length <= 1) ais.push({ answer: 'Additional Interest' });
+    if (selectedAI.type === 'Premium Finance' || additionalInterests.filter(ai => ai.type === 'Premium Finance' && ai.active).length <= 1) ais.push({ answer: 'Premium Finance' });
+    if (selectedAI.type === 'Bill Payer' || additionalInterests.filter(ai => ai.type === 'Bill Payer' && ai.active).length === 0) ais.push({ answer: 'Bill Payer' });
     return ais;
   };
 
@@ -248,6 +247,10 @@ export class MortgageBilling extends Component {
 
     const validAdditionalInterestTypes = this.checkValidTypes(additionalInterests, this.state.selectedAI || {});
     const cashDescriptionAnswers = cashDescriptionOptions[cashTypeValue] || [];
+
+    const billingOptionsValues = billingOptions.options || [];
+    const selectedBillintOptions = billingOptionsValues.find(opt => opt.billToId === this.props.policy.billToId);
+    const billToText = selectedBillintOptions ? selectedBillintOptions.displayText : null;
 
     return (
       <React.Fragment>
@@ -337,7 +340,7 @@ export class MortgageBilling extends Component {
                   <dl>
                     <div>
                       <dt>Bill To</dt>
-                      <dd>{_.get(_.find(_.get(billingOptions, 'options'), option => option.billToId === _.get(this.props.policy, 'billToId')), 'displayText')}
+                      <dd>{billToText}
                       </dd>
                     </div>
                   </dl>
@@ -366,11 +369,11 @@ export class MortgageBilling extends Component {
                 <h3>Additional Interests</h3>
                 <div className="results-wrapper">
                   <div className="button-group">
-                    <button tabIndex="0" disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Mortgagee' && ai.active).length > 2)} onClick={() => this.addAdditionalInterest('Mortgagee')} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
-                    <button tabIndex="0" disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Additional Insured' && ai.active).length > 1)} onClick={() => this.addAdditionalInterest('Additional Insured')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
-                    <button tabIndex="0" disabled={(policy && _.filter(policy.additionalInterests, ai => ai.type === 'Additional Interest' && ai.active).length > 1)} onClick={() => this.addAdditionalInterest('Additional Interest')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
-                    <button tabIndex="0" disabled={(policy && (_.filter(policy.additionalInterests, ai => ai.type === 'Premium Finance' && ai.active).length > 0 || _.filter(policy.additionalInterests, ai => ai.type === 'Bill Payer' && ai.active).length > 0))} onClick={() => this.addAdditionalInterest('Premium Finance')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Premium Finance</span></div></button>
-                    <button tabIndex="0" disabled={(policy && (_.filter(policy.additionalInterests, ai => ai.type === 'Bill Payer' && ai.active).length > 0 || _.filter(policy.additionalInterests, ai => ai.type === 'Premium Finance' && ai.active).length > 0))} onClick={() => this.addAdditionalInterest('Bill Payer')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Bill Payer</span></div></button>
+                    <button tabIndex="0" disabled={(policy && policy.additionalInterests.filter(ai => ai.type === 'Mortgagee' && ai.active).length > 2)} onClick={() => this.addAdditionalInterest('Mortgagee')} className="btn btn-sm btn-secondary" type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div></button>
+                    <button tabIndex="0" disabled={(policy && policy.additionalInterests.filter(ai => ai.type === 'Additional Insured' && ai.active).length > 1)} onClick={() => this.addAdditionalInterest('Additional Insured')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div></button>
+                    <button tabIndex="0" disabled={(policy && policy.additionalInterests.filter(ai => ai.type === 'Additional Interest' && ai.active).length > 1)} onClick={() => this.addAdditionalInterest('Additional Interest')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div></button>
+                    <button tabIndex="0" disabled={(policy && (policy.additionalInterests.filter(ai => ai.type === 'Premium Finance' && ai.active).length > 0 || policy.additionalInterests.filter(ai => ai.type === 'Bill Payer' && ai.active).length > 0))} onClick={() => this.addAdditionalInterest('Premium Finance')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Premium Finance</span></div></button>
+                    <button tabIndex="0" disabled={(policy && (policy.additionalInterests.filter(ai => ai.type === 'Bill Payer' && ai.active).length > 0 || policy.additionalInterests.filter(ai => ai.type === 'Premium Finance' && ai.active).length > 0))} onClick={() => this.addAdditionalInterest('Bill Payer')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Bill Payer</span></div></button>
                   </div>
                   <ul className="results result-cards">
                     {sortedAdditionalInterests.map(ai => (
