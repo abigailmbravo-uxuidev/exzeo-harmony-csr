@@ -12,8 +12,9 @@ export class NotesFiles extends Component {
   componentDidMount() {
     const { policy, actions: { getNotes } } = this.props;
 
-    const ids = [policy.policyNumber, policy.sourceNumber];
-    getNotes(ids.toString(), policy.policyNumber);
+    if (policy && policy.policyNumber) {
+      getNotes(policy.policyNumber, policy.sourceNumber);
+    }
   }
 
   render() {
@@ -37,13 +38,17 @@ export class NotesFiles extends Component {
 }
 
 NotesFiles.propTypes = {
-  notes: PropTypes.array,
-  error: PropTypes.object,
   actions: PropTypes.shape({
     getNotes: PropTypes.func,
     errorActions: PropTypes.shape({
       setAppError: PropTypes.func.isRequired
     })
+  }),
+  error: PropTypes.object,
+  notes: PropTypes.array,
+  policy: PropTypes.shape({
+    policyNumber: PropTypes.string,
+    sourceNumber: PropTypes.string
   })
 };
 
