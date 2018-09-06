@@ -30,6 +30,7 @@ export class QuoteBase extends React.Component {
       <div className="app-wrapper csr quote">
         {(appState.data.submitting || !quoteData._id) && <Loader />}
         <App
+          resourceType="quote"
           pageTitle={`Q: ${quoteData.quoteNumber || ''}`}
           match={match}
           onToggleDiaries={this.handleToggleDiaries}

@@ -121,7 +121,9 @@ export class DiaryModal extends Component {
                 type="button"
                 data-test="note-close-diary"
                 className="btn btn-primary close-diary-button"
-                onClick={this.handleCloseDiary}>
+                onClick={handleSubmit((values, dispatch, props) => {
+                  this.submitDiary({ ...values, open: false }, dispatch, props);
+                })}>
                 Close Diary
               </button>
               <button

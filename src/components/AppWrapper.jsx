@@ -52,7 +52,7 @@ AppWrapper.defaultProps = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const resource = ownProps.match.path.split('/')[1];
+  const resource = ownProps.resourceType;
   return {
     openDiaryCount: getFilteredOpenDiaries(state, resource).count
   };

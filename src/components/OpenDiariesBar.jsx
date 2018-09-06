@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { toggleDiary } from '../state/actions/ui.actions';
-import { getOpenDiaries } from '../state/selectors/diary.selectors';
+import { getFilteredOpenDiaries } from '../state/selectors/diary.selectors';
 
 import Diaries from './Diaries';
 
@@ -67,8 +67,11 @@ OpenDiariesBar.propTypes = {
   toggleDiary: PropTypes.func
 };
 
-const mapStateToProps = state => ({
-  diaries: getOpenDiaries(state)
-});
+const mapStateToProps = (state, ownProps) => {
+  const resource = ownProps.resourceType;
+  return {
+    diaries: getFilteredOpenDiaries(state, resource) || []
+  };
+};
 
 export default connect(mapStateToProps, { toggleDiary })(OpenDiariesBar);
