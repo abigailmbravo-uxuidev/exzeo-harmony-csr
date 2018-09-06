@@ -3,16 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import Loader from '@exzeo/core-ui/lib/Loader';
-import Inputs from '@exzeo/core-ui/lib/Input';
-import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
+import { Date, Select, validation } from '@exzeo/core-ui';
 
 import { submitDiary } from '../state/actions/diary.actions';
 import { toggleDiary } from '../state/actions/ui.actions';
 import { setAppError } from '../state/actions/error.actions';
 import { REASONS, TYPES, USERS } from '../constants/diaries';
 
-const { Date, Select } = Inputs;
-const { validation } = lifecycle;
 
 export const TextArea = ({
   input, label, meta: { touched, error }
