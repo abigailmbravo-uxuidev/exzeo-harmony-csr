@@ -127,14 +127,17 @@ export const selectBillTo = (props) => {
 
 export const handleFormSubmit = async (data, dispatch, props) => {
   const {
-    quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState, getLatestQuoteAction
+    quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState, getLatestQuoteAction, billingOptions
   } = props;
+
+  const billToType = (billingOptions.options.find(o => o.billToId === data.billToId) || {}).billToType || '';
 
   try {
     setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: true });
     await startWorkflowAction(MODEL_NAME, {
       quoteId: quoteData._id,
-      ...data
+      ...data,
+      billToType
     });
 
     getLatestQuoteAction(true, quoteData._id);
