@@ -97,7 +97,9 @@ export class AdditionalInterests extends Component {
   }
 
   handleAISubmit = async (additionalInterests) => {
-    const { appState, quoteData, batchCompleteTask, getLatestQuote, setAppState, match } = this.props;
+    const {
+ appState, quoteData, batchCompleteTask, getLatestQuote, setAppState, match 
+} = this.props;
     const workflowId = match.params.workflowId;
 
     const { addAdditionalInterestType } = this.state;
@@ -137,7 +139,9 @@ export class AdditionalInterests extends Component {
   };
 
   addAdditionalInterest = (type) => {
-    const { appState, setAppState, editingDisabled, match } = this.props;
+    const {
+ appState, setAppState, editingDisabled, match 
+} = this.props;
     if (editingDisabled) return;
     setAppState(
       MODEL_NAME,
@@ -153,7 +157,9 @@ export class AdditionalInterests extends Component {
   };
 
   editAdditionalInterest = (ai) => {
-    const { appState, setAppState, editingDisabled, match } = this.props;
+    const {
+ appState, setAppState, editingDisabled, match 
+} = this.props;
     if (editingDisabled) return;
     setAppState(
       MODEL_NAME,
@@ -335,36 +341,31 @@ export class AdditionalInterests extends Component {
                   className="btn btn-sm btn-secondary"
                   onClick={() => this.addAdditionalInterest('Mortgagee')}
                   disabled={groupedAdditionalInterests[ADDITIONAL_INTERESTS.mortgagee].length > 3 || editingDisabled}
-                  type="button"
-                > <div><i className="fa fa-plus" /><span>Mortgagee</span></div>
+                  type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div>
                 </button>
                 <button
                   className="btn btn-sm btn-secondary"
                   onClick={() => this.addAdditionalInterest('Additional Insured')}
                   disabled={(groupedAdditionalInterests[ADDITIONAL_INTERESTS.additionalInsured].length > 1) || editingDisabled}
-                  type="button"
-                ><div><i className="fa fa-plus" /><span>Additional Insured</span></div>
+                  type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div>
                 </button>
                 <button
                   className="btn btn-sm btn-secondary"
                   onClick={() => this.addAdditionalInterest('Additional Interest')}
                   disabled={(groupedAdditionalInterests[ADDITIONAL_INTERESTS.additionalInterest].length > 1) || editingDisabled}
-                  type="button"
-                ><div><i className="fa fa-plus" /><span>Additional Interest</span></div>
+                  type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div>
                 </button>
                 <button
                   onClick={() => this.addAdditionalInterest('Premium Finance')}
                   disabled={(groupedAdditionalInterests[ADDITIONAL_INTERESTS.premiumFinance].length > 0 || groupedAdditionalInterests[ADDITIONAL_INTERESTS.billPayer].length > 0) || editingDisabled}
                   className="btn btn-sm btn-secondary"
-                  type="button"
-                ><div><i className="fa fa-plus" /><span>Premium Finance</span></div>
+                  type="button"><div><i className="fa fa-plus" /><span>Premium Finance</span></div>
                 </button>
                 <button
                   className="btn btn-sm btn-secondary"
                   onClick={() => this.addAdditionalInterest('Bill Payer')}
                   disabled={(groupedAdditionalInterests[ADDITIONAL_INTERESTS.billPayer].length > 0 || groupedAdditionalInterests[ADDITIONAL_INTERESTS.premiumFinance].length > 0) || editingDisabled}
-                  type="button"
-                ><div><i className="fa fa-plus" /><span>Bill Payer</span></div>
+                  type="button"><div><i className="fa fa-plus" /><span>Bill Payer</span></div>
                 </button>
               </div>
               <div className="results-wrapper">
@@ -374,8 +375,7 @@ export class AdditionalInterests extends Component {
                       key={ai._id}
                       ai={ai}
                       handleOnEnter={this.editAIOnEnter}
-                      handleClick={this.editAdditionalInterest}
-                    />
+                      handleClick={this.editAdditionalInterest}/>
                   ))}
                 </ul>
               </div>
@@ -392,8 +392,7 @@ export class AdditionalInterests extends Component {
               initialValues={this.initAdditionalInterestModal()}
               isDeleting={this.state.isDeleting}
               isEditing={this.state.isEditingAI}
-              selectedAI={this.state.selectedAI}
-            />
+              selectedAI={this.state.selectedAI}/>
           }
         </div>
         <div className="basic-footer">
