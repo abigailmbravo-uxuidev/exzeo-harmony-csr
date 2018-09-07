@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Select, AutoCompleteChips } from '@exzeo/core-ui/lib/Input';
-import { isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
-import Button from '@exzeo/core-ui/lib/Button';
+import { Select, Button, validation } from '@exzeo/core-ui';
 
 import { REASONS, USERS } from '../../../constants/diaries';
 import DateRange from '../components/DateRange';
@@ -22,7 +20,7 @@ const DiariesSearch = ({
           label="Diary Status"
           component={Select}
           id="status"
-          validate={isRequired}
+          validate={validation.isRequired}
           onChange={changeSearchType}
           answers={searchTypeOptions}
           showPlaceholder={false}

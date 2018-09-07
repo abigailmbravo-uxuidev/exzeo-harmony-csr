@@ -5,7 +5,7 @@
     "arrow-body-style": 0,
     "comma-dangle":  [2, "never"],
     "linebreak-style": [2, "unix"],
-    "max-len": [2, { "code": 120, "ignoreComments": true, "ignoreUrls": true }],
+    "max-len": [2, { "code": 120, "ignoreComments": true, "ignoreUrls": true, "ignoreTemplateLiterals": true }],
     "no-nested-ternary": 0,
     "no-param-reassign": [2, { "props": false }],
     "no-shadow": 1,

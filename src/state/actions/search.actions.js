@@ -596,6 +596,13 @@ export async function fetchDiaries({
       reason
     }
   };
+
+  try {
+    const response = await serviceRunner.callService(config);
+    return response && response.data ? response.data : [];
+  } catch (error) {
+    throw error;
+  }
 }
 
 /**
@@ -603,7 +610,11 @@ export async function fetchDiaries({
  * @param results
  */
 function formatDiaryResults(results) {
-  console.log(results);
+  return {
+    results,
+    totalRecords: results.length,
+    noResults: !results.length
+  };
 }
 
 // THISPR - **** finish ****
