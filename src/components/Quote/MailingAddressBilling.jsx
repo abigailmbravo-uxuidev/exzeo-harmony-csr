@@ -23,11 +23,11 @@ const MODEL_NAME = 'mailingAddressBillingCSR';
 export const handleInitialize = (state) => {
   const quoteData = state.service.quote || {};
   const values = {};
-  values.address1 = _.get(quoteData, 'policyHolderMailingAddress.address1');
-  values.address2 = _.get(quoteData, 'policyHolderMailingAddress.address2');
-  values.city = _.get(quoteData, 'policyHolderMailingAddress.city');
-  values.state = _.get(quoteData, 'policyHolderMailingAddress.state');
-  values.zip = _.get(quoteData, 'policyHolderMailingAddress.zip');
+  values.address1 = _.get(quoteData, 'policyHolderMailingAddress.address1', '');
+  values.address2 = _.get(quoteData, 'policyHolderMailingAddress.address2', '');
+  values.city = _.get(quoteData, 'policyHolderMailingAddress.city', '');
+  values.state = _.get(quoteData, 'policyHolderMailingAddress.state', '');
+  values.zip = _.get(quoteData, 'policyHolderMailingAddress.zip', '');
 
   values.sameAsProperty = false;
 
@@ -127,14 +127,16 @@ export const selectBillTo = (props) => {
 
 export const handleFormSubmit = async (data, dispatch, props) => {
   const {
-    quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState, getLatestQuoteAction
+    quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState, getLatestQuoteAction, billingOptions
   } = props;
 
+  const billToType = ((billingOptions || {}).options.find(o => o.billToId === data.billToId) || {}).billToType || '';
   try {
     setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: true });
     await startWorkflowAction(MODEL_NAME, {
       quoteId: quoteData._id,
-      ...data
+      ...data,
+      billToType
     });
 
     getLatestQuoteAction(true, quoteData._id);
