@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Prompt } from 'react-router-dom';
 import moment from 'moment';
 import { reduxForm, change } from 'redux-form';
-import * as cgActions from '../../state/actions/cg.actions';
-import * as appStateActions from '../../state/actions/appState.actions';
-import * as quoteStateActions from '../../state/actions/quoteState.actions';
-import * as serviceActions from '../../state/actions/service.actions';
+
+import { startWorkflow } from '../../state/actions/cg.actions';
+import { setAppState } from '../../state/actions/appState.actions';
+import { setAppError } from '../../state/actions/error.actions';
+import { getBillingOptions, getQuote } from '../../state/actions/service.actions';
+import { getLatestQuote } from '../../state/actions/quoteState.actions';
 import QuoteBaseConnect from '../../containers/Quote';
 import CheckField from '../Form/inputs/CheckField';
 import TextField from '../Form/inputs/TextField';
@@ -17,7 +18,7 @@ import { RadioFieldBilling, SelectFieldBilling } from '../Form/inputs';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
 
-const MODEL_NAME = 'csrQuote';
+const MODEL_NAME = 'mailingAddressBillingCSR';
 
 export const handleInitialize = (state) => {
   const quoteData = state.service.quote || {};
@@ -76,7 +77,8 @@ export const InstallmentTerm = ({ paymentPlans, payPlans }) => (<div className="
             <dt><span>Annual</span> Installment Plan</dt>
             <dd>
             $ {normalizeNumbers(paymentPlan.amount)} : {moment.utc(paymentPlan.dueDate).format('MM/DD/YYYY')}
-            </dd></div>}
+            </dd>
+                                                </div>}
           {paymentPlan && paymentPlan.s1 && paymentPlan.s2 && <div>
             <dt><span>Semi-Annual</span> Installment Plan</dt>
             <dd>
@@ -85,7 +87,7 @@ export const InstallmentTerm = ({ paymentPlans, payPlans }) => (<div className="
             <dd>
               $ {normalizeNumbers(paymentPlan.s2.amount)} : {moment.utc(paymentPlan.s2.dueDate).format('MM/DD/YYYY')}
             </dd>
-          </div>}
+                                                              </div>}
           {paymentPlan && paymentPlan.q1 && paymentPlan.q2 && paymentPlan.q3 && paymentPlan.q4 && <div>
             <dt><span>Quarterly</span> Installment Plan</dt>
             <dd>
@@ -100,12 +102,12 @@ export const InstallmentTerm = ({ paymentPlans, payPlans }) => (<div className="
             <dd>
               $ {normalizeNumbers(paymentPlan.q4.amount)} : {moment.utc(paymentPlan.q4.dueDate).format('MM/DD/YYYY')}
             </dd>
-          </div> }
+                                                                                                  </div>}
         </div>
       </dl>
     );
   })}
-</div>);
+                                                                </div>);
 
 InstallmentTerm.propTypes = {
   payPlans: PropTypes.any, // eslint-disable-line
@@ -119,43 +121,24 @@ export const selectBillTo = (props) => {
   dispatch(change('MailingAddressBilling', 'billPlan', 'Annual'));
 };
 
-export const handleFormSubmit = (data, dispatch, props) => {
+export const handleFormSubmit = async (data, dispatch, props) => {
   const {
-    appState, actions, billingOptions, fieldValues, match, quoteData
+    quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState, getLatestQuoteAction
   } = props;
-  const workflowId = match.params.workflowId;
 
-  actions.appStateActions.setAppState(MODEL_NAME, workflowId, { ...appState.data, submitting: true });
-
-  const submitData = fieldValues;
-
-  const selectedBilling = _.find(billingOptions.options, ['billToId', submitData.billToId]);
-
-  submitData.billToType = selectedBilling.billToType;
-
-  const steps = [
-    { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
-    { name: 'askAdditionalCustomerData', data: submitData },
-    { name: 'moveTo', data: { key: 'mailing' } }
-  ];
-
-  actions.cgActions.batchCompleteTask(MODEL_NAME, workflowId, steps)
-    .then(() => {
-      actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
-
-      if (_.isEqual(data.address1, _.get(quoteData, 'property.physicalAddress.address1')) &&
-          _.isEqual(data.city, _.get(quoteData, 'property.physicalAddress.city')) &&
-          _.isEqual(data.state, _.get(quoteData, 'property.physicalAddress.state')) &&
-          _.isEqual(data.zip, _.get(quoteData, 'property.physicalAddress.zip'))) {
-        dispatch(change('MailingAddressBilling', 'sameAsProperty', true));
-      } else {
-        dispatch(change('MailingAddressBilling', 'sameAsProperty', false));
-      }
-      actions.appStateActions.setAppState(
-        MODEL_NAME, workflowId,
-        { ...appState.data, submitting: false, selectedLink: 'mailing' }
-      );
+  try {
+    setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: true });
+    await startWorkflowAction(MODEL_NAME, {
+      quoteId: quoteData._id,
+      ...data
     });
+
+    getLatestQuoteAction(true, quoteData._id);
+  } catch (error) {
+    setAppErrorAction(error);
+  } finally {
+    setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: false });
+  }
 };
 
 export const clearForm = (props) => {
@@ -189,10 +172,12 @@ const setPropertyToggle = (props) => {
 
 export class MailingAddressBilling extends Component {
   componentDidMount() {
-    const { actions, appState, match } = this.props;
-    const workflowId = match.params.workflowId;
+    const {
+      setAppStateAction, getQuoteAction, getBillingOptionsAction,
+      appState, match: { params: { workflowId, quoteId } }
+    } = this.props;
     if (workflowId) {
-      actions.appStateActions.setAppState(
+      setAppStateAction(
         MODEL_NAME, workflowId,
         {
           ...appState.data,
@@ -200,18 +185,7 @@ export class MailingAddressBilling extends Component {
         }
       );
 
-      const steps = [
-        {
-          name: 'hasUserEnteredData',
-          data: { answer: 'No' }
-        },
-        {
-          name: 'moveTo',
-          data: { key: 'mailing' }
-        }
-      ];
-
-      actions.serviceActions.getQuote(match.params.quoteId)
+      getQuoteAction(quoteId)
         .then((quoteData) => {
           if (quoteData && quoteData.rating) {
             const paymentOptions = {
@@ -226,19 +200,17 @@ export class MailingAddressBilling extends Component {
               }
             };
 
-            actions.serviceActions.getBillingOptions(paymentOptions);
+            getBillingOptionsAction(paymentOptions);
+
+            setAppStateAction(
+              MODEL_NAME, workflowId,
+              {
+                ...appState.data,
+                submitting: false
+              }
+            );
           }
         });
-
-      actions.cgActions.batchCompleteTask(MODEL_NAME, workflowId, steps).then(() => {
-        actions.appStateActions.setAppState(
-          MODEL_NAME, workflowId,
-          {
-            ...appState.data,
-            selectedLink: 'mailing'
-          }
-        );
-      });
     }
   }
 
@@ -282,8 +254,7 @@ export class MailingAddressBilling extends Component {
                         answer: true,
                         label: 'Yes'
                       }
-                    ]}
-                  />
+                    ]} />
                   <TextField validations={['required']} label="Address 1" styleName="address-1" name="address1" onChange={() => setPropertyToggle(this.props)} />
                   <TextField label="Address 2" styleName="address-2" name="address2" onChange={() => setPropertyToggle(this.props)} />
                   <div className="flex-parent flex-form">
@@ -297,8 +268,7 @@ export class MailingAddressBilling extends Component {
                         component="select"
                         styleName=""
                         label="State"
-                        validations={['required']}
-                      />
+                        validations={['required']} />
                     </div>
                     <div className="flex-child zip">
                       <TextField validations={['required']} label="Zip" styleName="" name="zip" onChange={() => setPropertyToggle(this.props)} />
@@ -315,8 +285,7 @@ export class MailingAddressBilling extends Component {
                         label="Bill To"
                         onChange={() => selectBillTo(this.props)}
                         validations={['required']}
-                        answers={billingOptions.options}
-                      />
+                        answers={billingOptions.options} />
                       <div className="flex-child bill-plan">
                         <RadioFieldBilling
                           validations={['required']}
@@ -326,8 +295,7 @@ export class MailingAddressBilling extends Component {
                           segmented
                           answers={_.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]) ?
                          _.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]).payPlans : []}
-                          paymentPlans={billingOptions.paymentPlans}
-                        />
+                          paymentPlans={billingOptions.paymentPlans} />
                       </div>
                     </div>
                   </div>
@@ -336,8 +304,7 @@ export class MailingAddressBilling extends Component {
                       <InstallmentTerm
                         payPlans={_.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]) ?
                                    _.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]).payPlans : []}
-                        paymentPlans={billingOptions.paymentPlans}
-                      />
+                        paymentPlans={billingOptions.paymentPlans} />
                     </div>
                   </div>
                 </section>
@@ -378,16 +345,11 @@ const mapStateToProps = state => ({
   billingOptions: state.service.billingOptions || {}
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch),
-    cgActions: bindActionCreators(cgActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
-  }
-});
-
-// ------------------------------------------------
-// wire up redux form with the redux connect
-// ------------------------------------------------
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'MailingAddressBilling', enableReinitialize: true })(MailingAddressBilling));
+export default connect(mapStateToProps, {
+  startWorkflowAction: startWorkflow,
+  setAppStateAction: setAppState,
+  setAppErrorAction: setAppError,
+  getBillingOptionsAction: getBillingOptions,
+  getQuoteAction: getQuote,
+  getLatestQuoteAction: getLatestQuote
+})(reduxForm({ form: 'MailingAddressBilling', enableReinitialize: true })(MailingAddressBilling));
