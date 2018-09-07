@@ -23,26 +23,31 @@ const handlePrimarySecondaryTitles = (type, order) => `${type} ${order + 1}`;
 
 const handleInitialize = () => {
   const values = {};
-  values.emailAddr = '';
-  values.name = '';
+  values.emailAddress = '';
+  values.toName = '';
 
   return values;
 };
 
 export const handleFormSubmit = async (data, dispatch, props) => {
   const {
-    quoteData, startWorkflowAction, batchCompleteTaskAction, setAppErrorAction
+    quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState
   } = props;
 
   try {
-    const result = await startWorkflowAction(MODEL_NAME, { quoteId: quoteData._id, state: quoteData.state, zip: quoteData.property.physicalAddress.zip });
-    const steps = [{ name: 'askEmail', data: { name: data.name, emailAddr: data.emailAddr } }];
-    const startResult = result.payload ? result.payload[0].workflowData.emailQuoteSummaryCSR.data : {};
-    const wfId = startResult.modelInstanceId;
-    await batchCompleteTaskAction(MODEL_NAME, wfId, steps);
+    setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: true });
+    await startWorkflowAction(MODEL_NAME, {
+      quoteId: quoteData._id,
+      state: quoteData.state,
+      zip: quoteData.property.physicalAddress.zip,
+      emailAddress: data.emailAddress,
+      toName: data.toName
+    });
     dispatch(reset('Summary'));
   } catch (error) {
     setAppErrorAction(error);
+  } finally {
+    setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: false });
   }
 };
 
@@ -54,7 +59,7 @@ export class Summary extends Component {
     } = this.props;
     getAgentsAction('TTIC', 'FL');
     getLatestQuoteAction(true, quoteId);
-    setAppStateAction(MODEL_NAME, null, { ...appState.data, submitting: false });
+    setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: false });
   }
 
   render() {
@@ -326,8 +331,8 @@ export class Summary extends Component {
         </div>
         <div className="share-quote">
           <form id="Summary" onSubmit={handleSubmit(handleFormSubmit)} >
-            <TextField validations={['required']} label="Email To Name" styleName="share-name" name="name" />
-            <TextField validations={['required', 'email']} label="Email Address" styleName="share-email" name="emailAddr" />
+            <TextField validations={['required']} label="Email To Name" styleName="share-name" name="toName" />
+            <TextField validations={['required', 'email']} label="Email Address" styleName="share-email" name="emailAddress" />
             <button
               tabIndex="0"
               aria-label="submit-btn form-share"
