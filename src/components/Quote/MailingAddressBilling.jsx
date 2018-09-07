@@ -67,19 +67,22 @@ export const getSelectedPlan = (answer) => {
   return selection;
 };
 
-export const InstallmentTerm = ({ paymentPlans, payPlans }) => (<div className="installment-term">
-  {payPlans && payPlans.map((payPlan, index) => {
+export const InstallmentTerm = ({ paymentPlans, payPlans }) => (
+  <div className="installment-term">
+    {payPlans && payPlans.map((payPlan, index) => {
     const paymentPlan = paymentPlans[getSelectedPlan(payPlan)];
     return (
       <dl className="column-3" key={index}>
         <div>
-          {paymentPlan && paymentPlan.amount && <div>
+          {paymentPlan && paymentPlan.amount &&
+          <div>
             <dt><span>Annual</span> Installment Plan</dt>
             <dd>
             $ {normalizeNumbers(paymentPlan.amount)} : {moment.utc(paymentPlan.dueDate).format('MM/DD/YYYY')}
             </dd>
-                                                </div>}
-          {paymentPlan && paymentPlan.s1 && paymentPlan.s2 && <div>
+          </div>}
+          {paymentPlan && paymentPlan.s1 && paymentPlan.s2 &&
+          <div>
             <dt><span>Semi-Annual</span> Installment Plan</dt>
             <dd>
               $ {normalizeNumbers(paymentPlan.s1.amount)} : {moment.utc(paymentPlan.s1.dueDate).format('MM/DD/YYYY')}
@@ -87,8 +90,9 @@ export const InstallmentTerm = ({ paymentPlans, payPlans }) => (<div className="
             <dd>
               $ {normalizeNumbers(paymentPlan.s2.amount)} : {moment.utc(paymentPlan.s2.dueDate).format('MM/DD/YYYY')}
             </dd>
-                                                              </div>}
-          {paymentPlan && paymentPlan.q1 && paymentPlan.q2 && paymentPlan.q3 && paymentPlan.q4 && <div>
+          </div>}
+          {paymentPlan && paymentPlan.q1 && paymentPlan.q2 && paymentPlan.q3 && paymentPlan.q4 &&
+          <div>
             <dt><span>Quarterly</span> Installment Plan</dt>
             <dd>
               $ {normalizeNumbers(paymentPlan.q1.amount)} : {moment.utc(paymentPlan.q1.dueDate).format('MM/DD/YYYY')}
@@ -102,12 +106,12 @@ export const InstallmentTerm = ({ paymentPlans, payPlans }) => (<div className="
             <dd>
               $ {normalizeNumbers(paymentPlan.q4.amount)} : {moment.utc(paymentPlan.q4.dueDate).format('MM/DD/YYYY')}
             </dd>
-                                                                                                  </div>}
+          </div>}
         </div>
       </dl>
     );
   })}
-                                                                </div>);
+  </div>);
 
 InstallmentTerm.propTypes = {
   payPlans: PropTypes.any, // eslint-disable-line
