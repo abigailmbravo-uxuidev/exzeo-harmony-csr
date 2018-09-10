@@ -7,7 +7,7 @@ import { SEARCH_TYPES } from '../../constants/search';
 import { startWorkflow, batchCompleteTask } from '../../state/actions/cg.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
-import { getQuoteDataFromCgState } from '../../state/selectors/quote.selectors';
+import { TEMP_GetQuoteforCreate } from '../../state/selectors/quote.selectors';
 
 export class QuoteLanding extends Component {
   constructor(props) {
@@ -17,28 +17,18 @@ export class QuoteLanding extends Component {
   }
 
   async componentDidMount() {
-    const { match: { params }, startWorkflow, setAppState, appState, batchCompleteTask, newQuote } = this.props;
+    const {
+      match: { params }, startWorkflow, setAppState, appState, batchCompleteTask, newQuote
+    } = this.props;
 
     try {
-      const result = await startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` });
-      const steps = [];
-
       if (newQuote) {
-        steps.push({
-          name: 'search',
-          data: {
-            searchType: SEARCH_TYPES.newQuote,
-            address: params.stateCode
-          }
-        });
-        steps.push({
-          name: 'chooseAddress',
-          data: {
-            igdId: params.propertyId,
-            stateCode: params.stateCode
-          }
-        });
+        const { stateCode, propertyId } = params;
+        await startWorkflow('csrCreateQuote', { stateCode, igdId: propertyId });
       } else {
+        // still old stuff
+        const result = await startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` });
+        const steps = [];
         steps.push({
           name: 'search',
           data: {
@@ -58,22 +48,23 @@ export class QuoteLanding extends Component {
             quoteId: params.quoteId
           }
         });
+
+
+        const startResult = result.payload ? result.payload[0].workflowData.csrQuote.data : {};
+        // set property to pass to redirect link
+        this.workflowId = startResult.modelInstanceId;
+
+        setAppState('csrQuote', startResult.modelInstanceId, {
+          ...appState.data,
+          submitting: true
+        });
+
+        await batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps);
+        setAppState(appState.modelName, startResult.modelInstanceId, {
+          ...appState.data,
+          selectedLink: 'customerData'
+        });
       }
-
-      const startResult = result.payload ? result.payload[0].workflowData.csrQuote.data : {};
-      // set property to pass to redirect link
-      this.workflowId = startResult.modelInstanceId;
-
-      setAppState('csrQuote', startResult.modelInstanceId, {
-        ...appState.data,
-        submitting: true
-      });
-
-      await batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps);
-      setAppState(appState.modelName, startResult.modelInstanceId, {
-        ...appState.data,
-        selectedLink: 'customerData'
-      });
     } catch (error) {
       setAppError(error);
     }
@@ -92,7 +83,7 @@ export class QuoteLanding extends Component {
 const mapStateToProps = state => ({
   appState: state.appState,
   cgState: state.cg,
-  quoteData: getQuoteDataFromCgState(state)
+  quoteData: TEMP_GetQuoteforCreate(state)
 });
 
 export default connect(mapStateToProps, {

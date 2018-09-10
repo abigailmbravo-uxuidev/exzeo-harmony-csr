@@ -70,3 +70,24 @@ export const getQuoteDataFromCgState = createSelector(
     return {};
   }
 );
+
+export const TEMP_GetQuoteforCreate = createSelector(
+  [getAppState, getCGState],
+  (appState, cgState) => {
+    const taskData = cgState[appState.modelName] && cgState[appState.modelName].data;
+
+    if (!taskData || !taskData.model || !taskData.model.variables) return {};
+
+    const preferredResult = taskData.model.variables.find(variable => variable.name === 'createQuote');
+    if (preferredResult && preferredResult.value && preferredResult.value.result) {
+      return preferredResult.value.result;
+    }
+
+    const backupResult = taskData.model.variables.find(variable => variable.name === 'retrieveQuote');
+    if (backupResult && backupResult.value && backupResult.value.result) {
+      return backupResult.value.result;
+    }
+
+    return {};
+  }
+);

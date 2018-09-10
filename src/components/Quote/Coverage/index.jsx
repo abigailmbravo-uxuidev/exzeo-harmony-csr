@@ -228,18 +228,22 @@ export class Coverage extends Component {
     } = this.props;
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
 
+    if (!match.params.workflowId) {
+      this.props.getLatestQuote(true, match.params.quoteId);
+    } else {
     // this.props.startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` }).then((result) => {
-    const steps = [
-      { name: 'hasUserEnteredData', data: { answer: 'No' } },
-      { name: 'moveTo', data: { key: 'customerData' } }
-    ];
+      const steps = [
+        { name: 'hasUserEnteredData', data: { answer: 'No' } },
+        { name: 'moveTo', data: { key: 'customerData' } }
+      ];
 
-    setAppState('csrQuote', match.params.workflowId, {
-      ...appState.data,
-      submitting: true,
-      selectedLink: 'customerData'
-    });
-    batchCompleteTask(appState.modelName, match.params.workflowId, steps);
+      setAppState('csrQuote', match.params.workflowId, {
+        ...appState.data,
+        submitting: true,
+        selectedLink: 'customerData'
+      });
+      batchCompleteTask(appState.modelName, match.params.workflowId, steps);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -400,8 +404,7 @@ export class Coverage extends Component {
                   sectionClass="producer produced-by"
                   handleAgencyChange={this.handleAgencyChange}
                   agents={mappedAgents}
-                  agencies={mappedAgencies}
-                />
+                  agencies={mappedAgencies} />
                 <PolicyHolder
                   name="policyHolders"
                   sectionId="policyHolders"
@@ -410,14 +413,12 @@ export class Coverage extends Component {
                   sectionClass="demographics flex-parent col2"
                   clearSecondaryPolicyholder={this.clearSecondaryPolicyholder}
                   setPHToggle={this.setPHToggle}
-                  canSendToDocusign={checkSentToDocusign(quoteData.quoteState) || !(quoteData && quoteData.policyHolders && quoteData.policyHolders[1])}
-                />
+                  canSendToDocusign={checkSentToDocusign(quoteData.quoteState) || !(quoteData && quoteData.policyHolders && quoteData.policyHolders[1])} />
                 <Property
                   sectionId="property-location"
                   sectionClass="property flex-parent property-location"
                   header="Home and Location"
-                  questions={questions}
-                />
+                  questions={questions} />
                 <Coverages
                   sectionId="coverage-deductibles-discounts"
                   sectionClass="coverage-options flex-parent coverage-deductibles-discounts"
@@ -432,14 +433,12 @@ export class Coverage extends Component {
                   normalizeDwellingDependencies={this.normalizeDwellingDependencies}
                   normalizePersonalPropertyPercentage={this.normalizePersonalPropertyPercentage}
                   normalizeIncidentalOccupancies={this.normalizeIncidentalOccupancies}
-                  normalizeSinkholeAmount={this.normalizeSinkholeAmount}
-                />
+                  normalizeSinkholeAmount={this.normalizeSinkholeAmount} />
                 <WindMitigation
                   header="Wind Mitigation"
                   sectionClass="wind flex-parent"
                   sectionId="wind-mitigation"
-                  questions={questions}
-                />
+                  questions={questions} />
               </div>
             </div>
           </form>
