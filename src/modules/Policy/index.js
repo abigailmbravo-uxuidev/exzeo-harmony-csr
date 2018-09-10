@@ -57,9 +57,7 @@ export class Policy extends React.Component {
       getZipCodeSettings(policy.companyCode, policy.state, policy.product, policy.property.physicalAddress.zip);
       getAgents(policy.companyCode, policy.state);
       getAgency(policy.companyCode, policy.state, policy.agencyCode);
-
-      const ids = [policy.policyNumber, policy.sourceNumber];
-      getNotes(ids.toString(), policy.policyNumber);
+      getNotes(policy.policyNumber, policy.sourceNumber);
 
       if (summaryLedger) {
         const paymentOptions = {
