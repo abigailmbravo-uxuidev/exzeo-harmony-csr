@@ -11,7 +11,7 @@ import QuoteBaseConnect from '../../containers/Quote';
 import QuoteSummaryModal from '../../components/Common/QuoteSummaryModal';
 import Footer from '../Common/Footer';
 
-const MODEL_NAME = 'csrQuote';
+const MODEL_NAME = 'csrSubmitApplication';
 
 const handleInitialize = (state) => {
   return {};
