@@ -168,10 +168,7 @@ export class NoteUploader extends Component {
     return actions.cgActions.startWorkflow('addNote', noteData, false)
       .then(result => {
         if (window.location.pathname.includes('/notes')) {
-          const ids = (noteData.noteType === 'Policy Note')
-            ? [noteData.number, noteData.source].toString()
-            : noteData.number;
-          actions.serviceActions.getNotes(ids, noteData.number);
+          actions.serviceActions.getNotes(noteData.number, noteData.source);
         }
 
         this.closeButtonHandler();
