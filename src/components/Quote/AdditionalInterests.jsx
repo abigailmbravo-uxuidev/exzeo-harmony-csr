@@ -19,7 +19,7 @@ import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';
 import AdditionalInterestCard from '../AdditionalInterestCard';
 
-const MODEL_NAME = 'additionalInterestsCSR';
+const MODEL_NAME = 'csrAdditionalInterest';
 
 export class AdditionalInterests extends Component {
   state = {

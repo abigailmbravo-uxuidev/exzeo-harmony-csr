@@ -17,7 +17,7 @@ import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
 import applyRank from '../Common/additionalInterestRank';
 
-const MODEL_NAME = 'emailQuoteSummaryCSR';
+const MODEL_NAME = 'csrEmailQuoteSummary';
 
 const handlePrimarySecondaryTitles = (type, order) => `${type} ${order + 1}`;
 

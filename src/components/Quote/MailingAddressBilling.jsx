@@ -18,7 +18,7 @@ import { RadioFieldBilling, SelectFieldBilling } from '../Form/inputs';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
 
-const MODEL_NAME = 'mailingAddressBillingCSR';
+const MODEL_NAME = 'csrMailingAddressBilling';
 
 export const handleInitialize = (state) => {
   const quoteData = state.service.quote || {};
