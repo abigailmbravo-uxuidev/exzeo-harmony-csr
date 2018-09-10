@@ -52,24 +52,10 @@ const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Receive
 export class QuoteApplication extends Component {
   componentDidMount() {
     const { appState, actions, match } = this.props;
-    const workflowId = match.params.workflowId;
-    if (workflowId) {
-      actions.appStateActions.setAppState(MODEL_NAME, workflowId,
-        { ...appState.data, submitting: true}
-      );
-      const steps = [
-        { name: 'hasUserEnteredData', data: { answer: 'No' } },
-        { name: 'moveTo', data: { key: 'application' } }
-      ];
-
-      actions.cgActions.batchCompleteTask(MODEL_NAME, workflowId, steps)
-        .then(() => {
-          actions.quoteStateActions.getLatestQuote(true, match.params.quoteId);
-          actions.appStateActions.setAppState(MODEL_NAME, workflowId,
-            { ...appState.data, selectedLink: 'application' }
-          );
-        });
-    }
+    actions.quoteStateActions.getLatestQuote(true, match.params.quoteId);
+    actions.appStateActions.setAppState(MODEL_NAME, appState.data.instanceId,
+      { ...appState.data, submitting: false}
+    );
   }
 
   render() {
