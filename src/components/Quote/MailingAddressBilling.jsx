@@ -23,8 +23,8 @@ const MODEL_NAME = 'mailingAddressBillingCSR';
 export const handleInitialize = (state) => {
   const quoteData = state.service.quote || {};
   const values = {};
-  values.address1 = _.get(quoteData, 'policyHolderMailingAddress.address1');
-  values.address2 = _.get(quoteData, 'policyHolderMailingAddress.address2');
+  values.address1 = _.get(quoteData, 'policyHolderMailingAddress.address1') || '';
+  values.address2 = _.get(quoteData, 'policyHolderMailingAddress.address2') || '';
   values.city = _.get(quoteData, 'policyHolderMailingAddress.city');
   values.state = _.get(quoteData, 'policyHolderMailingAddress.state');
   values.zip = _.get(quoteData, 'policyHolderMailingAddress.zip');
