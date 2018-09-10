@@ -237,14 +237,16 @@ export class Summary extends Component {
                         <dd>$ {normalizeNumbers(deductibles.hurricane.calculatedAmount)}</dd>
                       </div>
                     </dl>
-                    {deductibles.sinkhole && <dl>
-                      <div>
-                        <dt>Sinkhole Deductible</dt>
-                        <dd>{deductibles.sinkhole.amount}%</dd>
-                      </div>
-                    </dl>
+                    {deductibles.sinkhole &&
+                      <dl>
+                        <div>
+                          <dt>Sinkhole Deductible</dt>
+                          <dd>{deductibles.sinkhole.amount}%</dd>
+                        </div>
+                      </dl>
                 }
-                    {deductibles.sinkhole && <dl>
+                    {deductibles.sinkhole &&
+                    <dl>
                       <div>
                         <dt>Calculated Sinkhole Deductible</dt>
                         <dd>$ {normalizeNumbers(deductibles.sinkhole.calculatedAmount)}</dd>
@@ -336,7 +338,7 @@ export class Summary extends Component {
             <button
               tabIndex="0"
               aria-label="submit-btn form-share"
-              disabled={submitting}
+              disabled={submitting || (quoteData && quoteData.underwritingExceptions && filteredExceptions.length === 0)}
               form="Summary"
               className="btn btn-primary"
               type="submit">Share
