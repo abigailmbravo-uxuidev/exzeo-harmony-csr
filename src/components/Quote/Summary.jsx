@@ -94,13 +94,18 @@ export class Summary extends Component {
 
     const filteredExceptions = _.filter(quoteData.underwritingExceptions, uw => !uw.overridden);
 
+    if (!quoteData || !quoteData.underwritingExceptions) {
+      return <QuoteBaseConnect match={match} />;
+    }
+
+    const disablePage = filteredExceptions.length > 0;
 
     return (
       <QuoteBaseConnect match={match}>
         <div className="route-content summary workflow">
 
           <div className="scroll">
-            {quoteData && quoteData.underwritingExceptions && filteredExceptions.length > 0 &&
+            {disablePage &&
             <div className="detail-wrapper">
               <div className="messages">
                 <div className="message error">
@@ -109,7 +114,7 @@ export class Summary extends Component {
               </div>
             </div>
             }
-            {quoteData && quoteData.underwritingExceptions && filteredExceptions.length === 0 &&
+            {!disablePage &&
               <div className="detail-wrapper">
                 <h3>Quote Details</h3>
                 <div className="detail-group property-details">
@@ -338,7 +343,7 @@ export class Summary extends Component {
             <button
               tabIndex="0"
               aria-label="submit-btn form-share"
-              disabled={submitting || (quoteData && quoteData.underwritingExceptions && filteredExceptions.length === 0)}
+              disabled={submitting || disablePage}
               form="Summary"
               className="btn btn-primary"
               type="submit">Share
