@@ -40,7 +40,7 @@ export class AdditionalInterests extends Component {
 
     getUIQuestionsAction('additionalInterestsCSR');
     getLatestQuoteAction(true, quoteId);
-    setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: false });
+    setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: false });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -81,7 +81,7 @@ export class AdditionalInterests extends Component {
     const { addAdditionalInterestType } = this.state;
 
     try {
-      setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: true });
+      setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: true });
       await startWorkflowAction(MODEL_NAME, {
         quoteId: quoteData._id,
         additionalInterests
@@ -91,10 +91,10 @@ export class AdditionalInterests extends Component {
       setAppErrorAction(error);
     } finally {
       this.hideAdditionalInterestModal();
-      setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: false });
+      setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: false });
       setAppStateAction(
         MODEL_NAME,
-        appState.data.instanceId, {
+        '', {
           ...appState.data,
           selectedMortgageeOption: null,
           addAdditionalInterestType,
@@ -114,7 +114,7 @@ export class AdditionalInterests extends Component {
     if (editingDisabled) return;
     setAppStateAction(
       MODEL_NAME,
-      appState.data.instanceId,
+      '',
       { ...appState.data, submitting: false }
     );
     // For now, hijacking appState calls with local state where we can.
@@ -212,7 +212,7 @@ export class AdditionalInterests extends Component {
     } = this.props;
     setAppStateAction(
       MODEL_NAME,
-      appState.data.instanceId, {
+      '', {
         ...appState.data,
         deleteAdditionalInterestType: selectedAdditionalInterest.type,
         showAdditionalInterestModal: appState.data.showAdditionalInterestModal

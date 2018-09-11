@@ -148,7 +148,7 @@ const checkSentToDocusign = state => state === 'Application Sent DocuSign';
 export const handleFormSubmit = async (data, dispatch, props) => {
   const submitData = data;
 
-  props.setAppState(MODEL_NAME, props.appState.instanceId, {
+  props.setAppState(MODEL_NAME, '', {
     ...props.appState.data,
     submitting: true
   });
@@ -193,7 +193,7 @@ export const handleFormSubmit = async (data, dispatch, props) => {
     : submitData.pH2phone2;
 
   try {
-    props.setAppState(MODEL_NAME, props.appState.instanceId, { ...props.appState.data, submitting: true });
+    props.setAppState(MODEL_NAME, '', { ...props.appState.data, submitting: true });
     await props.startWorkflow(MODEL_NAME, {
       quoteId: props.quoteData._id,
       ...submitData
@@ -203,7 +203,7 @@ export const handleFormSubmit = async (data, dispatch, props) => {
   } catch (error) {
     props.setAppError(error);
   } finally {
-    props.setAppState(MODEL_NAME, props.appState.instanceId, { ...props.appState.data, submitting: false });
+    props.setAppState(MODEL_NAME, '', { ...props.appState.data, submitting: false });
   }
 };
 

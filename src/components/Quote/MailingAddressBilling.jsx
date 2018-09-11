@@ -180,44 +180,42 @@ export class MailingAddressBilling extends Component {
   componentDidMount() {
     const {
       setAppStateAction, getQuoteAction, getBillingOptionsAction,
-      appState, match: { params: { workflowId, quoteId } }
+      appState, match: { params: { quoteId } }
     } = this.props;
-    if (workflowId) {
-      setAppStateAction(
-        MODEL_NAME, workflowId,
-        {
-          ...appState.data,
-          submitting: true
+    setAppStateAction(
+      MODEL_NAME, appState.instanceId,
+      {
+        ...appState.data,
+        submitting: true
+      }
+    );
+
+    getQuoteAction(quoteId)
+      .then((quoteData) => {
+        if (quoteData && quoteData.rating) {
+          const paymentOptions = {
+            effectiveDate: quoteData.effectiveDate,
+            policyHolders: quoteData.policyHolders,
+            additionalInterests: quoteData.additionalInterests,
+            netPremium: quoteData.rating.netPremium,
+            totalPremium: quoteData.rating.totalPremium,
+            fees: {
+              empTrustFee: quoteData.rating.worksheet.fees.empTrustFee,
+              mgaPolicyFee: quoteData.rating.worksheet.fees.mgaPolicyFee
+            }
+          };
+
+          getBillingOptionsAction(paymentOptions);
+
+          setAppStateAction(
+            MODEL_NAME, appState.instanceId,
+            {
+              ...appState.data,
+              submitting: false
+            }
+          );
         }
-      );
-
-      getQuoteAction(quoteId)
-        .then((quoteData) => {
-          if (quoteData && quoteData.rating) {
-            const paymentOptions = {
-              effectiveDate: quoteData.effectiveDate,
-              policyHolders: quoteData.policyHolders,
-              additionalInterests: quoteData.additionalInterests,
-              netPremium: quoteData.rating.netPremium,
-              totalPremium: quoteData.rating.totalPremium,
-              fees: {
-                empTrustFee: quoteData.rating.worksheet.fees.empTrustFee,
-                mgaPolicyFee: quoteData.rating.worksheet.fees.mgaPolicyFee
-              }
-            };
-
-            getBillingOptionsAction(paymentOptions);
-
-            setAppStateAction(
-              MODEL_NAME, workflowId,
-              {
-                ...appState.data,
-                submitting: false
-              }
-            );
-          }
-        });
-    }
+      });
   }
 
   render() {

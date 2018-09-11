@@ -14,11 +14,13 @@ const MODEL_NAME = 'csrQuote';
 
 export class NotesFiles extends Component {
   componentDidMount() {
-    const { quoteData, actions, match, appState } = this.props;
+    const {
+      quoteData, actions, match, appState
+    } = this.props;
     const workflowId = match.params.workflowId;
 
     actions.appStateActions.setAppState(
-      MODEL_NAME, workflowId,
+      MODEL_NAME, '',
       {
         ...appState.data,
         submitting: true
@@ -27,7 +29,7 @@ export class NotesFiles extends Component {
     if (quoteData && quoteData.quoteNumber) {
       actions.serviceActions.getNotes(quoteData.quoteNumber).then(() => {
         actions.appStateActions.setAppState(
-          MODEL_NAME, workflowId,
+          MODEL_NAME, '',
           {
             ...appState.data,
             submitting: false

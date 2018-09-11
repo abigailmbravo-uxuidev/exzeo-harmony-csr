@@ -21,9 +21,9 @@ export const handleGetUnderwritingExceptions = state => (state.service.quote && 
 
 export const handleFormSubmit = (data, dispatch, props) => {
   const { appState, actions, match } = props;
-  const workflowId = match.params.workflowId;
 
-  actions.appStateActions.setAppState(MODEL_NAME, workflowId,
+  actions.appStateActions.setAppState(
+    MODEL_NAME, '',
     { ...appState.data, applicationSubmitting: true, applicationSent: true }
   );
 
@@ -31,9 +31,10 @@ export const handleFormSubmit = (data, dispatch, props) => {
     { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
     { name: 'moveTo', data: { key: 'application' } }
   ];
-  actions.cgActions.batchCompleteTask(MODEL_NAME, workflowId, steps)
+  actions.cgActions.batchCompleteTask(MODEL_NAME, '', steps)
     .then(() => {
-      actions.appStateActions.setAppState(MODEL_NAME, workflowId,
+      actions.appStateActions.setAppState(
+        MODEL_NAME, '',
         { applicationSent: true }
       );
       actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
@@ -42,7 +43,8 @@ export const handleFormSubmit = (data, dispatch, props) => {
 
 export const quoteSummaryModal = (props) => {
   const showQuoteSummaryModal = props.appState.data.showQuoteSummaryModal;
-  props.actions.appStateActions.setAppState(MODEL_NAME, props.match.params.workflowId,
+  props.actions.appStateActions.setAppState(
+    MODEL_NAME, '',
     { ...props.appState.data, showQuoteSummaryModal: !showQuoteSummaryModal }
   );
 };
@@ -53,8 +55,9 @@ export class QuoteApplication extends Component {
   componentDidMount() {
     const { appState, actions, match } = this.props;
     actions.quoteStateActions.getLatestQuote(true, match.params.quoteId);
-    actions.appStateActions.setAppState(MODEL_NAME, appState.data.instanceId,
-      { ...appState.data, submitting: false}
+    actions.appStateActions.setAppState(
+      MODEL_NAME, appState.data.instanceId,
+      { ...appState.data, submitting: false }
     );
   }
 
@@ -83,7 +86,7 @@ export class QuoteApplication extends Component {
               </div>
             </div>
           </form>
-          { appState.data.showQuoteSummaryModal && <QuoteSummaryModal {...this.props} verify={handleFormSubmit} showQuoteSummaryModal={() => quoteSummaryModal(this.props)} /> }
+          {appState.data.showQuoteSummaryModal && <QuoteSummaryModal {...this.props} verify={handleFormSubmit} showQuoteSummaryModal={() => quoteSummaryModal(this.props)} />}
         </div>
         <div className="basic-footer btn-footer">
           <Footer />
@@ -94,8 +97,7 @@ export class QuoteApplication extends Component {
               form="Application"
               className="btn btn-primary"
               type="submit"
-              disabled={(underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0) || checkQuoteState(quoteData) || appState.data.applicationSent}
-            >Send to DocuSign
+              disabled={(underwritingExceptions && _.filter(underwritingExceptions, uw => !uw.overridden).length > 0) || checkQuoteState(quoteData) || appState.data.applicationSent}>Send to DocuSign
             </button>
           </div>
         </div>

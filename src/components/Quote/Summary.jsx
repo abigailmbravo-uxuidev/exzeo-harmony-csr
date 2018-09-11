@@ -35,7 +35,7 @@ export const handleFormSubmit = async (data, dispatch, props) => {
   } = props;
 
   try {
-    setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: true });
+    setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: true });
     await startWorkflowAction(MODEL_NAME, {
       quoteId: quoteData._id,
       state: quoteData.state,
@@ -47,7 +47,7 @@ export const handleFormSubmit = async (data, dispatch, props) => {
   } catch (error) {
     setAppErrorAction(error);
   } finally {
-    setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: false });
+    setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: false });
   }
 };
 
@@ -55,11 +55,11 @@ export const handleFormSubmit = async (data, dispatch, props) => {
 export class Summary extends Component {
   componentDidMount() {
     const {
-      appState, match: { params: { workflowId, quoteId } }, setAppStateAction, getLatestQuoteAction, getAgentsAction
+      appState, match: { params: { quoteId } }, setAppStateAction, getLatestQuoteAction, getAgentsAction
     } = this.props;
     getAgentsAction('TTIC', 'FL');
     getLatestQuoteAction(true, quoteId);
-    setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: false });
+    setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: false });
   }
 
   render() {
