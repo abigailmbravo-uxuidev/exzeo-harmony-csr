@@ -14,7 +14,7 @@ import QuoteBaseConnect from '../../containers/Quote';
 import FieldGenerator from '../Form/FieldGenerator';
 import Footer from '../Common/Footer';
 
-const MODEL_NAME = 'csrUnderwritingCSR';
+const MODEL_NAME = 'csrUnderwriting';
 
 export const handleInitialize = (state) => {
   const questions = state.service.underwritingQuestions ? state.service.underwritingQuestions : [];
