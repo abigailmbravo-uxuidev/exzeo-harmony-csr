@@ -6,9 +6,10 @@ import moment from 'moment';
 import momentTZ from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
 import { reduxForm, formValueSelector } from 'redux-form';
+
 import { getAnswers } from '../../../utilities/forms';
 import { setPercentageOfValue } from '../../../utilities/endorsementModel';
-import { getAgencies, getAgentsByAgency } from '../../../state/actions/service.actions';
+import { getAgencies, getAgentsByAgency, getQuote, getZipcodeSettings } from '../../../state/actions/service.actions';
 import { batchCompleteTask, startWorkflow } from '../../../state/actions/cg.actions';
 import { setAppState } from '../../../state/actions/appState.actions';
 import { setAppError } from '../../../state/actions/error.actions';
@@ -17,11 +18,14 @@ import { getLatestQuote } from '../../../state/actions/quoteState.actions';
 import { checkQuoteState, getQuoteDataFromCgState } from '../../../state/selectors/quote.selectors';
 import QuoteBaseConnect from '../../../containers/Quote';
 import Footer from '../../Common/Footer';
+
 import ProducedBy from './ProducedBy';
 import PolicyHolder from './PolicyHolder';
 import Property from './Property';
 import Coverages from './Coverages';
 import WindMitigation from './WindMitigation';
+
+const MODEL_NAME = 'csrCoverage';
 
 export const handleGetZipCodeSettings = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
@@ -141,11 +145,10 @@ export const handleInitialize = (quoteData, questions) => {
 
 const checkSentToDocusign = state => state === 'Application Sent DocuSign';
 
-export const handleFormSubmit = (data, dispatch, props) => {
-  const workflowId = props.match.params.workflowId;
+export const handleFormSubmit = async (data, dispatch, props) => {
   const submitData = data;
 
-  props.setAppState(props.appState.modelName, workflowId, {
+  props.setAppState(MODEL_NAME, props.appState.instanceId, {
     ...props.appState.data,
     submitting: true
   });
@@ -173,6 +176,8 @@ export const handleFormSubmit = (data, dispatch, props) => {
 
   if (submitData.sinkholePerilCoverage) {
     submitData.sinkhole = 10;
+  } else {
+    submitData.sinkhole = 0;
   }
 
   submitData.pH1phone = submitData.pH1phone.replace(/[^\d]/g, '');
@@ -187,75 +192,34 @@ export const handleFormSubmit = (data, dispatch, props) => {
     ? submitData.pH2phone2.replace(/[^\d]/g, '')
     : submitData.pH2phone2;
 
-  const steps = [
-    {
-      name: 'hasUserEnteredData',
-      data: {
-        answer: 'Yes'
-      }
-    }, {
-      name: 'askCustomerData',
-      data: submitData
-    }, {
-      name: 'askToCustomizeDefaultQuote',
-      data: {
-        shouldCustomizeQuote: 'Yes'
-      }
-    }, {
-      name: 'customizeDefaultQuote',
-      data: submitData
-    }
-
-  ];
-
-  props.batchCompleteTask(props.appState.modelName, workflowId, steps)
-    .then(() => {
-      props.getLatestQuote(true, props.quoteData._id);
-      // now update the workflow details so the recalculated rate shows
-      props.setAppState(
-        props.appState.modelName,
-        workflowId, { ...props.appState.data, submitting: false, selectedLink: 'customerData' }
-      );
+  try {
+    props.setAppState(MODEL_NAME, props.appState.instanceId, { ...props.appState.data, submitting: true });
+    await props.startWorkflow(MODEL_NAME, {
+      quoteId: props.quoteData._id,
+      ...submitData
     });
+
+    props.getLatestQuote(true, props.quoteData._id);
+  } catch (error) {
+    props.setAppError(error);
+  } finally {
+    props.setAppState(MODEL_NAME, props.appState.instanceId, { ...props.appState.data, submitting: false });
+  }
 };
 
-let setAgents = false;
+const setAgents = false;
 
 export class Coverage extends Component {
   componentDidMount() {
     const {
-      getUIQuestions, setAppState, batchCompleteTask, appState, match
+      getUIQuestions, match
     } = this.props;
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
-
-    if (!match.params.workflowId) {
-      this.props.getLatestQuote(true, match.params.quoteId);
-    } else {
-    // this.props.startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` }).then((result) => {
-      const steps = [
-        { name: 'hasUserEnteredData', data: { answer: 'No' } },
-        { name: 'moveTo', data: { key: 'customerData' } }
-      ];
-
-      setAppState('csrQuote', match.params.workflowId, {
-        ...appState.data,
-        submitting: true,
-        selectedLink: 'customerData'
-      });
-      batchCompleteTask(appState.modelName, match.params.workflowId, steps);
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { quoteData, getAgencies, getAgentsByAgency } = nextProps;
-    if (!setAgents && quoteData && quoteData.companyCode && quoteData.state && quoteData.agencyCode) {
-      getAgencies(quoteData.companyCode, quoteData.state);
-      getAgentsByAgency(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
-      setAgents = true;
-    }
-    if (this.props.quoteData._id !== nextProps.quoteData._id) {
-      this.props.getLatestQuote(true, nextProps.quoteData._id);
-    }
+    this.props.getQuote(match.params.quoteId).then((quoteData) => {
+      this.props.getAgencies(quoteData.companyCode, quoteData.state);
+      this.props.getAgentsByAgency(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
+      this.props.getZipcodeSettings(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property.physicalAddress.zip);
+    });
   }
 
   setPHToggle = () => {
@@ -494,7 +458,7 @@ const mapStateToProps = (state) => {
     'personalPropertyAmount',
     'personalProperty'
   );
-  const quoteData = getQuoteDataFromCgState(state);
+  const quoteData = state.service.quote || {};
   const questions = state.questions;
 
   return {
@@ -505,7 +469,7 @@ const mapStateToProps = (state) => {
     agencies: state.service.agencies,
     initialValues: handleInitialize(quoteData, questions),
     quoteData,
-    zipCodeSettings: handleGetZipCodeSettings(state),
+    zipCodeSettings: state.service.getZipcodeSettings,
     questions,
     editingDisabled: checkQuoteState(state),
     clearFields,
@@ -526,7 +490,9 @@ export default connect(mapStateToProps, {
   setAppState,
   getUIQuestions,
   getLatestQuote,
-  setAppError
+  getQuote,
+  setAppError,
+  getZipcodeSettings
 })(reduxForm({
   form: 'Coverage',
   enableReinitialize: true
