@@ -15,6 +15,7 @@ export const TextArea = ({
   input, label, meta: { touched, error }
 }) => (
   <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
+    <label>{label} </label>
     <textarea {...input} placeholder={label} rows="10" cols="40" />
     {touched && error && <span className="error-message">{error}</span>}
   </div>
@@ -59,7 +60,7 @@ export class DiaryModal extends Component {
     const { submitting, handleSubmit } = this.props;
 
     return (
-      <div className={this.state.minimize ? 'new-note-file minimize' : 'new-note-file new-diary-file'} >
+      <div className={this.state.minimize ? 'new-diary-file minimize' : 'new-diary-file'} >
         <div className="title-bar">
           <div className="title title-minimize-button" onClick={this.handleMinimize}>Diary</div>
           <div className="controls note-file-header-button-group">
@@ -68,12 +69,6 @@ export class DiaryModal extends Component {
               type="button"
               onClick={this.handleMinimize}>
               <i className="fa fa-window-minimize" aria-hidden="true" />
-            </button>
-            <button
-              className="btn btn-icon header-cancel-button"
-              type="button"
-              onClick={this.handleCancel} >
-              <i className="fa fa-times-circle" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -89,7 +84,7 @@ export class DiaryModal extends Component {
                 validate={validation.isRequired}
                 dataTest="diaryType" />
               <Field
-                name="assignee.id"
+                name="assignee-id"
                 label="Assignee"
                 component={Select}
                 answers={USERS}
@@ -108,7 +103,6 @@ export class DiaryModal extends Component {
                 answers={REASONS}
                 validate={validation.isRequired}
                 dataTest="reason" />
-              <label>Message</label>
               <Field
                 name="message"
                 label="Message"
