@@ -59,20 +59,20 @@ export const handleInitialize = (quoteData, questions) => {
 
   values.effectiveDate = moment(_.get(quoteData, 'effectiveDate')).utc().format('YYYY-MM-DD');
 
-  values.pH1email = _.get(quoteData, 'policyHolders[0].emailAddress');
-  values.pH1FirstName = _.get(quoteData, 'policyHolders[0].firstName');
-  values.pH1LastName = _.get(quoteData, 'policyHolders[0].lastName');
-  values.pH1phone = _.get(quoteData, 'policyHolders[0].primaryPhoneNumber') || '';
-  values.pH1phone2 = _.get(quoteData, 'policyHolders[0].secondaryPhoneNumber') || '';
+  values.pH1email = _.get(quoteData, 'policyHolders[0].emailAddress', '');
+  values.pH1FirstName = _.get(quoteData, 'policyHolders[0].firstName', '');
+  values.pH1LastName = _.get(quoteData, 'policyHolders[0].lastName', '');
+  values.pH1phone = _.get(quoteData, 'policyHolders[0].primaryPhoneNumber', '');
+  values.pH1phone2 = _.get(quoteData, 'policyHolders[0].secondaryPhoneNumber', '');
 
-  values.pH2email = _.get(quoteData, 'policyHolders[1].emailAddress');
-  values.pH2FirstName = _.get(quoteData, 'policyHolders[1].firstName');
-  values.pH2LastName = _.get(quoteData, 'policyHolders[1].lastName');
-  values.pH2phone = _.get(quoteData, 'policyHolders[1].primaryPhoneNumber') || '';
-  values.pH2phone2 = _.get(quoteData, 'policyHolders[1].secondaryPhoneNumber') || '';
+  values.pH2email = _.get(quoteData, 'policyHolders[1].emailAddress', '');
+  values.pH2FirstName = _.get(quoteData, 'policyHolders[1].firstName', '');
+  values.pH2LastName = _.get(quoteData, 'policyHolders[1].lastName', '');
+  values.pH2phone = _.get(quoteData, 'policyHolders[1].primaryPhoneNumber', '');
+  values.pH2phone2 = _.get(quoteData, 'policyHolders[1].secondaryPhoneNumber', '');
 
   values.address1 = _.get(quoteData, 'property.physicalAddress.address1');
-  values.address2 = _.get(quoteData, 'property.physicalAddress.address2');
+  values.address2 = _.get(quoteData, 'property.physicalAddress.address2', '');
   values.city = _.get(quoteData, 'property.physicalAddress.city');
   values.state = _.get(quoteData, 'property.physicalAddress.state');
   values.zip = _.get(quoteData, 'property.physicalAddress.zip');
