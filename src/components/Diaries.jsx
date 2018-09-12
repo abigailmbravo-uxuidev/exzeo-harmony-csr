@@ -4,20 +4,20 @@ import moment from 'moment-timezone';
 
 const DIARY_LEVELS = {
   upComing: {
-    sectionClass: 'msg-info',
+    sectionClass: 'diaries-upcoming',
     iconClass: 'fa fa-calendar-o',
     label: 'Upcoming',
     listIconClass: 'fa-li fa fa-calendar-o'
   },
   pastDue: {
-    sectionClass: 'msg-error',
+    sectionClass: 'diaries-pastDue',
     iconClass: 'fa fa-bell-o',
     label: 'Past Due',
     listIconClass: 'fa-li fa fa-bell-o'
   },
   dueSoon: {
     canShowButton: true,
-    sectionClass: 'msg-caution',
+    sectionClass: 'diaries-dueSoon',
     iconClass: 'fa fa-clock-o',
     label: 'Due Soon',
     listClass: 'overridden',
@@ -37,17 +37,20 @@ const Diaries = ({ diaryLevel, diaries, onToggleDiary }) => {
         <ul className="fa-ul">
           {diaries.map(diary => (
             <li key={diary._id}>
-              <i className={severity.listIconClass} aria-hidden="true" />
-              <h5>
-                <span>{moment.utc(diary.due).format('MM/DD/YYYY')} </span>
-                <a onClick={() => onToggleDiary(diary)}><i className="fa fa-arrow-up" /> Open</a>
-              </h5>
-              <h5>{diary.type}</h5>
-              <span>Follow-up: {diary.reason}</span>
-              <p>{diary.message}</p>
-              <h5>
+              <div className="diary-header">
+                <i className={severity.listIconClass} aria-hidden="true" />
+                <span className="diary-due-datge">{moment.utc(diary.due).format('MM/DD/YYYY')} </span>
+                <a className="btn btn-link btn-sm" onClick={() => onToggleDiary(diary)}>
+                  <i className="fa fa-chevron-circle-up" />Open
+                </a>
+              </div>
+              <div className="diary-type">{diary.type}</div>
+              <div className="diary-reason">Follow-up | {diary.reason}
+                <p>{diary.message}</p>
+              </div>
+              <div className="diary-assignee">
                 {diary.assignee.userName}
-              </h5>
+              </div>
             </li>
           ))}
         </ul>

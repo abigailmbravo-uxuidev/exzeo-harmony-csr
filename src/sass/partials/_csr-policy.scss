@@ -1,3 +1,5 @@
+@import "_diaries-aside";
+
 .app-wrapper.csr.policy {
   //main header
   header {
@@ -924,9 +926,7 @@
     .open-diaries {
       position: absolute;
       right: 0;
-      display: flex;
       align-self: stretch;
-      flex-direction: column;
       flex-grow: 0;
       flex-shrink: 0;
       width: 0;
@@ -937,7 +937,7 @@
       background: $white;
       @include transition(all 0.2s ease-in-out);
 
-      .uw-validation-header {
+      .open-diaries-header {
         margin: ($padding*1.5) 0;
       }
     }

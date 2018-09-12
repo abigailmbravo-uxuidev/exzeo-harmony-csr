@@ -23,15 +23,8 @@ export class OpenDiariesBar extends React.Component {
 
     return (
       <aside className="open-diaries">
-        <h4 className="uw-validation-header">Open Diaries</h4>
+        <h4 className="open-diaries-header">Open Diaries</h4>
         <div>
-
-          {dueSoon.length > 0 &&
-          <Diaries
-            diaryLevel="dueSoon"
-            diaries={dueSoon}
-            onToggleDiary={this.handleOpenDiaries} />
-            }
 
           {pastDue.length > 0 &&
           <Diaries
@@ -39,6 +32,12 @@ export class OpenDiariesBar extends React.Component {
             diaries={pastDue}
             onToggleDiary={this.handleOpenDiaries} />
             }
+          {dueSoon.length > 0 &&
+          <Diaries
+            diaryLevel="dueSoon"
+            diaries={dueSoon}
+            onToggleDiary={this.handleOpenDiaries} />
+            }  
 
           {upComing.length > 0 &&
           <Diaries

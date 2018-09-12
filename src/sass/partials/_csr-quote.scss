@@ -1,3 +1,5 @@
+@import "_diaries-aside";
+
 .app-wrapper.csr.quote {
   //header
   header {
@@ -475,9 +477,7 @@
     .open-diaries {
       position: absolute;
       right: 0;
-      display: flex;
       align-self: stretch;
-      flex-direction: column;
       flex-grow: 0;
       flex-shrink: 0;
       width: 0;
@@ -488,8 +488,22 @@
       background: $white;
       @include transition(all 1s ease-in-out);
 
-      .uw-validation-header {
+      .open-diaries-header {
         margin: ($padding*1.5) 0;
+      }
+
+      section {
+        h5 {
+          color: $warm-gray-08;
+          background: $warm-gray-02;
+          font-size: 14px;
+
+          i.fa {
+            margin: 0 ($padding*2) 0 0;
+            padding: ($padding*2);
+            color: $white;
+          }
+        }
       }
     }
 
