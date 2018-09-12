@@ -206,15 +206,14 @@ export class MailingAddressBilling extends Component {
           };
 
           getBillingOptionsAction(paymentOptions);
-
-          setAppStateAction(
-            MODEL_NAME, appState.instanceId,
-            {
-              ...appState.data,
-              submitting: false
-            }
-          );
         }
+        setAppStateAction(
+          MODEL_NAME, appState.instanceId,
+          {
+            ...appState.data,
+            submitting: false
+          }
+        );
       });
   }
 
