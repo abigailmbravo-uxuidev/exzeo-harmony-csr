@@ -75,7 +75,7 @@ NotesFiles.propTypes = {
 const mapStateToProps = state => ({
   appState: state.appState,
   notes: state.service.notes,
-  quoteData: state.service.quote || {},
+  quoteData: state.quoteState.quote || {},
   error: state.error
 });
 

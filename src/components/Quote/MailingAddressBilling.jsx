@@ -21,7 +21,7 @@ import Footer from '../Common/Footer';
 const MODEL_NAME = 'csrMailingAddressBilling';
 
 export const handleInitialize = (state) => {
-  const quoteData = state.service.quote || {};
+  const quoteData = state.quoteState.quote || {};
   const values = {};
   values.address1 = _.get(quoteData, 'policyHolderMailingAddress.address1', '');
   values.address2 = _.get(quoteData, 'policyHolderMailingAddress.address2', '');
@@ -346,7 +346,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   fieldValues: _.get(state.form, 'MailingAddressBilling.values', {}),
   initialValues: handleInitialize(state),
-  quoteData: state.service.quote || {},
+  quoteData: state.quoteState.quote || {},
   billingOptions: state.service.billingOptions || {}
 });
 

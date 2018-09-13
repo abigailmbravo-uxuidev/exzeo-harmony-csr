@@ -380,7 +380,7 @@ const mapStateToProps = state => ({
   initialValues: handleInitialize(state),
   showScheduleDateModal: state.appState.data ? state.appState.data.showScheduleDateModal : false,
   showShareConfirmationModal: state.appState.data ? state.appState.data.showShareConfirmationModal : false,
-  quoteData: state.service.quote || {}
+  quoteData: state.quoteState.quote || {}
 });
 
 

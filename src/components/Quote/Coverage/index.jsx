@@ -14,7 +14,6 @@ import { batchCompleteTask, startWorkflow } from '../../../state/actions/cg.acti
 import { setAppState } from '../../../state/actions/appState.actions';
 import { setAppError } from '../../../state/actions/error.actions';
 import { getUIQuestions } from '../../../state/actions/questions.actions';
-import { getLatestQuote } from '../../../state/actions/quoteState.actions';
 import { getQuote } from '../../../state/actions/quote.actions';
 import { checkQuoteState } from '../../../state/selectors/quote.selectors';
 import QuoteBaseConnect from '../../../containers/Quote';
@@ -200,7 +199,7 @@ export const handleFormSubmit = async (data, dispatch, props) => {
       ...submitData
     });
 
-    props.getLatestQuote(true, props.quoteData._id);
+    props.getQuote(props.quoteData._id, 'coverage');
   } catch (error) {
     props.setAppError(error);
   } finally {
@@ -495,7 +494,6 @@ export default connect(mapStateToProps, {
   startWorkflow,
   setAppState,
   getUIQuestions,
-  getLatestQuote,
   getQuote,
   setAppError,
   getZipcodeSettings

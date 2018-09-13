@@ -358,7 +358,7 @@ const mapStateToProps = state => ({
   editingDisabled: checkQuoteState(state),
   fieldValues: getFormValues('AdditionalInterests')(state) || defaultObj,
   questions: state.questions,
-  quoteData: state.service.quote || defaultObj,
+  quoteData: state.quoteState.quote || defaultObj,
   sortedAdditionalInterests: getSortedAdditionalInterests(state),
   groupedAdditionalInterests: getGroupedAdditionalInterests(state),
   tasks: state.cg

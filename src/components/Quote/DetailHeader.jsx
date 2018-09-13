@@ -59,7 +59,7 @@ export class DetailHeader extends Component {
               </dd>
             </div>
           </dl>
-                                                 </section>}
+        </section>}
         <section id="propertyAddress" className="propertyAddress">
           <dl>
             <div>

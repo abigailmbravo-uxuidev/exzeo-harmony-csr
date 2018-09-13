@@ -18,7 +18,7 @@ const MODEL_NAME = 'csrUnderwriting';
 
 export const handleInitialize = (state) => {
   const questions = state.service.underwritingQuestions ? state.service.underwritingQuestions : [];
-  const data = state.service.quote;
+  const data = state.quoteState.quote;
   const values = {};
 
   questions.forEach((question) => {
@@ -168,7 +168,7 @@ const mapStateToProps = state => ({
   appState: state.appState,
   initialValues: handleInitialize(state),
   fieldValues: _.get(state.form, 'Underwriting.values', {}),
-  quoteData: state.service.quote || {},
+  quoteData: state.quoteState.quote || {},
   activateRedirect: state.appState.data.activateRedirect,
   underwritingQuestions: state.service.underwritingQuestions
 });

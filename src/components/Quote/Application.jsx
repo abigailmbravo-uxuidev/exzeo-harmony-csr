@@ -18,7 +18,7 @@ const handleInitialize = (state) => {
   return {};
 };
 
-export const handleGetUnderwritingExceptions = state => (state.service.quote && state.service.quote.underwritingExceptions ? state.service.quote.underwritingExceptions : []);
+export const handleGetUnderwritingExceptions = state => (state.quoteState.quote && state.quoteState.quote.underwritingExceptions ? state.quoteState.quote.underwritingExceptions : []);
 
 export const handleFormSubmit = async (data, dispatch, props) => {
   const {
@@ -125,7 +125,7 @@ const mapStateToProps = state => ({
   fieldValues: _.get(state.form, 'Application.values', {}),
   underwritingExceptions: handleGetUnderwritingExceptions(state),
   initialValues: handleInitialize(state),
-  quoteData: state.service.quote || {}
+  quoteData: state.quoteState.quote || {}
 });
 
 // ------------------------------------------------

@@ -129,7 +129,7 @@ const mapStateToProps = state => ({
   activateRedirectLink: state.appState.data.activateRedirectLink,
   activateRedirect: state.appState.data.activateRedirect,
   cg: state.cg,
-  quoteData: state.service.quote || {}
+  quoteData: state.quoteState.quote || {}
 });
 
 const mapDispatchToProps = dispatch => ({
