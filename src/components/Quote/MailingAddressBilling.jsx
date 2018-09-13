@@ -9,8 +9,8 @@ import { reduxForm, change } from 'redux-form';
 import { startWorkflow } from '../../state/actions/cg.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
-import { getBillingOptions, getQuote } from '../../state/actions/service.actions';
-import { getLatestQuote } from '../../state/actions/quoteState.actions';
+import { getBillingOptions } from '../../state/actions/service.actions';
+import { getQuote } from '../../state/actions/quote.actions';
 import QuoteBaseConnect from '../../containers/Quote';
 import CheckField from '../Form/inputs/CheckField';
 import TextField from '../Form/inputs/TextField';
@@ -127,7 +127,7 @@ export const selectBillTo = (props) => {
 
 export const handleFormSubmit = async (data, dispatch, props) => {
   const {
-    quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState, getLatestQuoteAction, billingOptions
+    quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState, getQuoteAction, billingOptions
   } = props;
 
   const billToType = ((billingOptions || {}).options.find(o => o.billToId === data.billToId) || {}).billToType || '';
@@ -139,7 +139,7 @@ export const handleFormSubmit = async (data, dispatch, props) => {
       billToType
     });
 
-    getLatestQuoteAction(true, quoteData._id);
+    getQuoteAction(quoteData._id, 'mailing');
   } catch (error) {
     setAppErrorAction(error);
   } finally {
@@ -190,7 +190,7 @@ export class MailingAddressBilling extends Component {
       }
     );
 
-    getQuoteAction(quoteId)
+    getQuoteAction(quoteId, 'mailing')
       .then((quoteData) => {
         if (quoteData && quoteData.rating) {
           const paymentOptions = {
@@ -355,6 +355,5 @@ export default connect(mapStateToProps, {
   setAppStateAction: setAppState,
   setAppErrorAction: setAppError,
   getBillingOptionsAction: getBillingOptions,
-  getQuoteAction: getQuote,
-  getLatestQuoteAction: getLatestQuote
+  getQuoteAction: getQuote
 })(reduxForm({ form: 'MailingAddressBilling', enableReinitialize: true })(MailingAddressBilling));
