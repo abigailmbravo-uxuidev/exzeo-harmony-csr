@@ -9,13 +9,14 @@ import { reduxForm, formValueSelector } from 'redux-form';
 
 import { getAnswers } from '../../../utilities/forms';
 import { setPercentageOfValue } from '../../../utilities/endorsementModel';
-import { getAgencies, getAgentsByAgency, getQuote, getZipcodeSettings } from '../../../state/actions/service.actions';
+import { getAgencies, getAgentsByAgency, getZipcodeSettings } from '../../../state/actions/service.actions';
 import { batchCompleteTask, startWorkflow } from '../../../state/actions/cg.actions';
 import { setAppState } from '../../../state/actions/appState.actions';
 import { setAppError } from '../../../state/actions/error.actions';
 import { getUIQuestions } from '../../../state/actions/questions.actions';
 import { getLatestQuote } from '../../../state/actions/quoteState.actions';
-import { checkQuoteState, getQuoteDataFromCgState } from '../../../state/selectors/quote.selectors';
+import { getQuote } from '../../../state/actions/quote.actions';
+import { checkQuoteState } from '../../../state/selectors/quote.selectors';
 import QuoteBaseConnect from '../../../containers/Quote';
 import Footer from '../../Common/Footer';
 
@@ -216,15 +217,14 @@ export class Coverage extends Component {
     } = this.props;
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
 
-    this.props.startWorkflow('csrGetQuoteWithUnderwriting', {
-      quoteId: match.params.quoteId,
-      currentPage: 'coverage'
-    }).then((result) => {
-      this.props.getQuote(match.params.quoteId).then((quoteData) => {
+    this.props.setAppState(MODEL_NAME, '', { ...this.props.appState.data, submitting: false });
+
+    this.props.getQuote(match.params.quoteId, 'coverage').then((quoteData) => {
+      if (quoteData) {
         this.props.getAgencies(quoteData.companyCode, quoteData.state);
         this.props.getAgentsByAgency(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
         this.props.getZipcodeSettings(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property.physicalAddress.zip);
-      });
+      }
     });
   }
 
@@ -464,7 +464,7 @@ const mapStateToProps = (state) => {
     'personalPropertyAmount',
     'personalProperty'
   );
-  const quoteData = state.service.quote || {};
+  const quoteData = state.quoteState.quote || {};
   const questions = state.questions;
 
   return {
