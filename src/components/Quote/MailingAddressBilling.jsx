@@ -222,7 +222,9 @@ export class MailingAddressBilling extends Component {
       handleSubmit, billingOptions, pristine, quoteData, dirty, match
     } = this.props;
 
-    if (!quoteData.rating) {
+    const { options } = billingOptions;
+
+    if (!quoteData.rating || (!options || options.length === 0)) {
       return (
         <QuoteBaseConnect match={match}>
           <div className="route-content">

@@ -215,10 +215,16 @@ export class Coverage extends Component {
       getUIQuestions, match
     } = this.props;
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
-    this.props.getQuote(match.params.quoteId).then((quoteData) => {
-      this.props.getAgencies(quoteData.companyCode, quoteData.state);
-      this.props.getAgentsByAgency(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
-      this.props.getZipcodeSettings(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property.physicalAddress.zip);
+
+    this.props.startWorkflow('csrGetQuoteWithUnderwriting', {
+      quoteId: match.params.quoteId,
+      currentPage: 'coverage'
+    }).then((result) => {
+      this.props.getQuote(match.params.quoteId).then((quoteData) => {
+        this.props.getAgencies(quoteData.companyCode, quoteData.state);
+        this.props.getAgentsByAgency(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
+        this.props.getZipcodeSettings(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property.physicalAddress.zip);
+      });
     });
   }
 
