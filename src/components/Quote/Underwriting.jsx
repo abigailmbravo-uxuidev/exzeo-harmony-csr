@@ -8,8 +8,8 @@ import { reduxForm } from 'redux-form';
 import { startWorkflow } from '../../state/actions/cg.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
-import { getQuote, getUnderwritingQuestions } from '../../state/actions/service.actions';
-import { getLatestQuote } from '../../state/actions/quoteState.actions';
+import { getUnderwritingQuestions } from '../../state/actions/service.actions';
+import { getQuote } from '../../state/actions/quote.actions';
 import QuoteBaseConnect from '../../containers/Quote';
 import FieldGenerator from '../Form/FieldGenerator';
 import Footer from '../Common/Footer';
@@ -41,7 +41,7 @@ const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Receive
 
 export const handleFormSubmit = async (data, dispatch, props) => {
   const {
-    quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState, getLatestQuoteAction
+    quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState, getQuoteAction
   } = props;
 
   const { floodCoverage, noPriorInsuranceSurcharge } = quoteData.underwritingAnswers;
@@ -55,7 +55,7 @@ export const handleFormSubmit = async (data, dispatch, props) => {
       noPriorInsuranceSurcharge
     });
 
-    getLatestQuoteAction(true, quoteData._id);
+    getQuoteAction(quoteData._id, 'underwriting');
   } catch (error) {
     setAppErrorAction(error);
   } finally {
@@ -81,7 +81,7 @@ export class Underwriting extends Component {
       }
     );
 
-    getQuoteAction(quoteId)
+    getQuoteAction(quoteId, 'underwriting')
       .then((quoteData) => {
         getUnderwritingQuestionsAction(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property);
         setAppStateAction(
@@ -180,7 +180,6 @@ export default connect(
     setAppStateAction: setAppState,
     setAppErrorAction: setAppError,
     getQuoteAction: getQuote,
-    getLatestQuoteAction: getLatestQuote,
     getUnderwritingQuestionsAction: getUnderwritingQuestions
   }
 )(reduxForm({ form: 'Underwriting', enableReinitialize: true })(Underwriting));
