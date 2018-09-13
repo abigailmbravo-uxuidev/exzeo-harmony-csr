@@ -11,7 +11,7 @@ import { startWorkflow } from '../../state/actions/cg.actions';
 import { getUIQuestions } from '../../state/actions/questions.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
-import { getLatestQuote } from '../../state/actions/quoteState.actions';
+import { getQuote } from '../../state/actions/quote.actions';
 import { getBillingOptions, saveBillingInfo } from '../../state/actions/service.actions';
 import { getGroupedAdditionalInterests, getSortedAdditionalInterests, checkQuoteState } from '../../state/selectors/quote.selectors';
 import QuoteBaseConnect from '../../containers/Quote';
@@ -33,13 +33,13 @@ export class AdditionalInterests extends Component {
     const {
       appState,
       setAppStateAction,
-      getLatestQuoteAction,
+      getQuoteAction,
       getUIQuestionsAction,
       match: { params: { quoteId } }
     } = this.props;
 
     getUIQuestionsAction('additionalInterestsCSR');
-    getLatestQuoteAction(true, quoteId);
+    getQuoteAction(quoteId, 'additionalInterests');
     setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: false });
   }
 
@@ -75,7 +75,7 @@ export class AdditionalInterests extends Component {
 
   handleAISubmit = async (additionalInterests) => {
     const {
-      quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState, getLatestQuoteAction
+      quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState, getQuoteAction
     } = this.props;
 
     const { addAdditionalInterestType } = this.state;
@@ -86,7 +86,7 @@ export class AdditionalInterests extends Component {
         quoteId: quoteData._id,
         additionalInterests
       });
-      getLatestQuoteAction(true, quoteData._id);
+      getQuoteAction(quoteData._id, 'additionalInterests');
     } catch (error) {
       setAppErrorAction(error);
     } finally {
@@ -370,7 +370,7 @@ export default connect(mapStateToProps, {
   setAppStateAction: setAppState,
   getBillingOptionsAction: getBillingOptions,
   saveBillingInfoAction: saveBillingInfo,
-  getLatestQuoteAction: getLatestQuote,
+  getQuoteAction: getQuote,
   setAppErrorAction: setAppError
 })(reduxForm({
   form: 'AdditionalInterests',
