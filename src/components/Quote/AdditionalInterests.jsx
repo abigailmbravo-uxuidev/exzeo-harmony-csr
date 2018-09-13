@@ -279,7 +279,7 @@ export class AdditionalInterests extends Component {
                 <button
                   className="btn btn-sm btn-secondary"
                   onClick={() => this.addAdditionalInterest('Mortgagee')}
-                  disabled={groupedAdditionalInterests[ADDITIONAL_INTERESTS.mortgagee].length > 3 || editingDisabled}
+                  disabled={groupedAdditionalInterests[ADDITIONAL_INTERESTS.mortgagee].length > 2 || editingDisabled}
                   type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div>
                 </button>
                 <button
