@@ -6,7 +6,7 @@ import { ADDITIONAL_INTERESTS, DEFAULT_ADDITIONAL_INTERESTS_MAP, DISABLED_AI_STA
 
 const defaultObject = {};
 const defaultArr = [];
-const getQuote = state => state.service.quote || defaultObject;
+const getQuote = state => state.quoteState.quote || defaultObject;
 const getAppState = state => state.appState || defaultObject;
 const getCGState = state => state.cg || defaultObject;
 

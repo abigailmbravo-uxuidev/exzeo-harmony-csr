@@ -7,7 +7,7 @@ import _ from 'lodash';
 import { startWorkflow } from '../../state/actions/cg.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
-import { getLatestQuote } from '../../state/actions/quoteState.actions';
+import { getQuote } from '../../state/actions/quote.actions';
 import QuoteBaseConnect from '../../containers/Quote';
 import QuoteSummaryModal from '../../components/Common/QuoteSummaryModal';
 import Footer from '../Common/Footer';
@@ -22,13 +22,13 @@ export const handleGetUnderwritingExceptions = state => (state.quoteState.quote 
 
 export const handleFormSubmit = async (data, dispatch, props) => {
   const {
-    appState, setAppStateAction, startWorkflowAction, setAppErrorAction, getLatestQuoteAction, quoteData
+    appState, setAppStateAction, startWorkflowAction, setAppErrorAction, getQuoteAction, quoteData
   } = props;
 
   try {
     setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: true, applicationSent: true });
     await startWorkflowAction(MODEL_NAME, { dsUrl: `${process.env.REACT_APP_API_URL}/ds`, quoteId: quoteData._id });
-    await getLatestQuoteAction(true, quoteData._id);
+    await getQuoteAction(quoteData._id, 'application');
   } catch (error) {
     setAppErrorAction(error);
   } finally {
@@ -51,9 +51,9 @@ const checkQuoteState = quoteData => _.some(['Policy Issued', 'Documents Receive
 export class QuoteApplication extends Component {
   componentDidMount() {
     const {
-      appState, match, getLatestQuoteAction, setAppStateAction
+      appState, match, getQuoteAction, setAppStateAction
     } = this.props;
-    getLatestQuoteAction(true, match.params.quoteId);
+    getQuoteAction(match.params.quoteId, 'application');
     setAppStateAction(
       MODEL_NAME, '',
       { ...appState.data, submitting: false }
@@ -135,5 +135,5 @@ export default connect(mapStateToProps, {
   startWorkflowAction: startWorkflow,
   setAppStateAction: setAppState,
   setAppErrorAction: setAppError,
-  getLatestQuoteAction: getLatestQuote
+  getQuoteAction: getQuote
 })(reduxForm({ form: 'Application', enableReinitialize: true })(QuoteApplication));
