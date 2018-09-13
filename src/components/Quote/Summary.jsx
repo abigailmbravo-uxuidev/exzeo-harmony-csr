@@ -10,7 +10,7 @@ import { startWorkflow, batchCompleteTask } from '../../state/actions/cg.actions
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { getAgents } from '../../state/actions/service.actions';
-import { getLatestQuote } from '../../state/actions/quoteState.actions';
+import { getQuote } from '../../state/actions/quote.actions';
 import QuoteBaseConnect from '../../containers/Quote';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
@@ -55,10 +55,10 @@ export const handleFormSubmit = async (data, dispatch, props) => {
 export class Summary extends Component {
   componentDidMount() {
     const {
-      appState, match: { params: { quoteId } }, setAppStateAction, getLatestQuoteAction, getAgentsAction
+      appState, match: { params: { quoteId } }, setAppStateAction, getQuoteAction, getAgentsAction
     } = this.props;
     getAgentsAction('TTIC', 'FL');
-    getLatestQuoteAction(true, quoteId);
+    getQuoteAction(quoteId, 'summary');
     setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: false });
   }
 
@@ -390,5 +390,5 @@ export default connect(mapStateToProps, {
   setAppStateAction: setAppState,
   setAppErrorAction: setAppError,
   getAgentsAction: getAgents,
-  getLatestQuoteAction: getLatestQuote
+  getQuoteAction: getQuote
 })(reduxForm({ form: 'Summary', enableReinitialize: true })(Summary));

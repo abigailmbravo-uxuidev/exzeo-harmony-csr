@@ -216,9 +216,10 @@ export class Coverage extends Component {
     } = this.props;
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
 
-    this.props.setAppState(MODEL_NAME, '', { ...this.props.appState.data, submitting: false });
 
     this.props.getQuote(match.params.quoteId, 'coverage').then((quoteData) => {
+      this.props.setAppState(MODEL_NAME, '', { ...this.props.appState.data, submitting: false });
+
       if (quoteData) {
         this.props.getAgencies(quoteData.companyCode, quoteData.state);
         this.props.getAgentsByAgency(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
