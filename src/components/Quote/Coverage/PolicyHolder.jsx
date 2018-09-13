@@ -18,7 +18,7 @@ const PolicyHolder = ({
         <div className="flex-child policy-holder-a-first-name">
           <Field
             component={Input}
-            validate={validation.isRequired}
+            validate={[validation.isAlphaNumeric, validation.isRequired]}
             label="First Name"
             name="pH1FirstName"
             dataTest="pH1FirstName"
@@ -27,7 +27,7 @@ const PolicyHolder = ({
         <div className="flex-child policy-holder-a-last-name">
           <Field
             component={Input}
-            validate={validation.isRequired}
+            validate={[validation.isAlphaNumeric, validation.isRequired]}
             label="Last Name"
             name="pH1LastName"
             dataTest="pH1LastName"
@@ -98,7 +98,7 @@ const PolicyHolder = ({
             name="pH2FirstName"
             label="First Name"
             component={Input}
-            validate={firstNameDepends}
+            validate={[firstNameDepends, validation.isAlphaNumeric, validation.isRequired]}
             onChange={setPHToggle}
             dataTest="pH2FirstName"
           />
@@ -108,7 +108,7 @@ const PolicyHolder = ({
             name="pH2LastName"
             label="Last Name"
             component={Input}
-            validate={lastNameDepends}
+            validate={[lastNameDepends, validation.isAlphaNumeric, validation.isRequired]}
             onChange={setPHToggle}
             dataTest="pH2LastName"
           />
