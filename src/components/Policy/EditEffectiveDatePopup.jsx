@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import moment from 'moment-timezone';
+
 import DateField from '../Form/inputs/DateField';
 import SelectField from '../Form/inputs/SelectField';
 
@@ -31,29 +32,27 @@ export const EditEffectiveDatePopup = ({
           <DateField
             label="Effective Date"
             name="effectiveDate"
-            validations={['required']}
-          />
+            validations={['required']}/>
           <SelectField
             name="effectiveDateChangeReason"
             component="select"
             label="Reason For Change"
             styleName=""
             validations={['required']}
-            answers={reasonAnswers(effectiveDateReasons)}
-          />
+            answers={reasonAnswers(effectiveDateReasons)}/>
         </div>
         <div className="card-footer">
           <div className="btn-footer">
             <button
               className="btn btn-secondary"
               type="button"
-              onClick={hideEffectiveDateModal}
-            >Cancel</button>
+              onClick={hideEffectiveDateModal}>Cancel
+            </button>
             <button
               disabled={submitting || pristine}
               className="btn btn-primary"
-              type="submit"
-            >Update</button>
+              type="submit">Update
+            </button>
           </div>
         </div>
       </form>

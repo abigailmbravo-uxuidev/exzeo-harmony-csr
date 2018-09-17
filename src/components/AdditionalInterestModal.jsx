@@ -4,16 +4,15 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import cloneDeep from 'lodash/cloneDeep';
 import { reduxForm, Field, reset } from 'redux-form';
-import { Input, Select, Phone, SelectTypeAhead, SelectInteger } from '@exzeo/core-ui/lib/Input';
-import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
-import Loader from '@exzeo/core-ui/lib/Loader';
+import { Input, Select, Phone, SelectTypeAhead, SelectInteger, Loader, validation } from '@exzeo/core-ui';
+
 import {
   getMortgageeOrderAnswers,
   getMortgageeOrderAnswersForEdit
 } from '../utilities/additionalInterests';
-import { getTopMortgageeAnswers } from '../state/selectors/questions.selectors';
+import { getTopAnswers } from '../state/selectors/questions.selectors';
 import { ADDITIONAL_INTERESTS } from '../constants/additionalInterests';
-import { setAppState } from '../state/actions/appStateActions';
+import { setAppState } from '../state/actions/appState.actions';
 import { getGroupedAdditionalInterests, getSortedAdditionalInterests } from '../state/selectors/quote.selectors';
 
 export const checkAdditionalInterestForName = aiType => aiType === 'Additional Insured' || aiType === 'Additional Interest' || aiType === 'Bill Payer';
@@ -25,7 +24,7 @@ export class AdditionalInterestModal extends React.Component {
     this.modalStyle = { flexDirection: 'row' };
   }
 
-  setMortgageeValues = (value) => {
+  setTopValues = (value) => {
     const { change } = this.props;
     if (value) {
       change('name1', value.AIName1);
@@ -116,7 +115,8 @@ export class AdditionalInterestModal extends React.Component {
       questions,
       selectedAI,
       submitting,
-      validAdditionalInterestTypes
+      validAdditionalInterestTypes,
+      premiumFinanceAnswers
     } = this.props;
 
     return (
@@ -141,7 +141,19 @@ export class AdditionalInterestModal extends React.Component {
                 valueKey="displayText"
                 labelKey="displayText"
                 answers={mortgageeAnswers}
-                normalize={this.setMortgageeValues}
+                normalize={this.setTopValues}
+              />
+              }
+              {(addAdditionalInterestType || selectedAI.type) === 'Premium Finance' &&
+              <Field
+                label="Top Premium Finance"
+                name="premiumFinance"
+                dataTest="premiumFinance"
+                component={SelectTypeAhead}
+                valueKey="displayText"
+                labelKey="displayText"
+                answers={premiumFinanceAnswers}
+                normalize={this.setTopValues}
               />
               }
               <Field
@@ -268,20 +280,23 @@ export class AdditionalInterestModal extends React.Component {
 }
 
 AdditionalInterestModal.propTypes = {
-  completeSubmit: PropTypes.func.isRequired,
+  completeSubmit: PropTypes.func.isRequired
 };
 
 AdditionalInterestModal.defaultProps = {
   isPolicy: false
 };
+const getMortgageeAnswers = getTopAnswers('mortgagee');
+const getTopPremiumFinanceAnswers = getTopAnswers('premiumFinance');
 
 const mapStateToProps = state => ({
   appState: state.appState,
   questions: state.questions,
   tasks: state.cg,
-  mortgageeAnswers: getTopMortgageeAnswers(state),
+  mortgageeAnswers: getMortgageeAnswers(state),
   sortedAdditionalInterests: getSortedAdditionalInterests(state),
-  groupedAdditionalInterests: getGroupedAdditionalInterests(state)
+  groupedAdditionalInterests: getGroupedAdditionalInterests(state),
+  premiumFinanceAnswers: getTopPremiumFinanceAnswers(state)
 });
 
 export default connect(mapStateToProps, {

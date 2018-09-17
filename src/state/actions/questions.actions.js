@@ -1,6 +1,6 @@
 import * as serviceRunner from '../../utilities/serviceRunner';
 import * as types from './actionTypes';
-import * as errorActions from './errorActions';
+import * as errorActions from './error.actions';
 
 export function setQuestions(questions) {
   return {

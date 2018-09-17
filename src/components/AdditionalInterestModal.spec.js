@@ -179,8 +179,8 @@ describe('Testing AdditionalInterestModal component', () => {
     const wrapper = shallow(<AdditionalInterestModal store={store} {...props} />);
     const wi = wrapper.instance();
 
-    wi.setMortgageeValues(true);
-    wi.setMortgageeValues(false);
+    wi.setTopValues(true);
+    wi.setTopValues(false);
     wi.handleFormSubmit({}, () => {}, props);
   });
 

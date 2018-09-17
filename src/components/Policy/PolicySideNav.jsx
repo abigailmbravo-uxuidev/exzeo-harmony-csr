@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import * as newNoteActions from '../../state/actions/newNoteActions';
-import * as serviceActions from '../../state/actions/serviceActions';
-import * as cgActions from '../../state/actions/cgActions';
-import * as errorActions from '../../state/actions/errorActions';
+import * as newNoteActions from '../../state/actions/newNote.actions';
+import * as serviceActions from '../../state/actions/service.actions';
+import * as cgActions from '../../state/actions/cg.actions';
+import * as errorActions from '../../state/actions/error.actions';
 import GenerateDocsForm from './GenerateDocsForm';
 
 // Example of a possible schema
@@ -78,9 +78,8 @@ export class SideNav extends React.Component {
 
   updateNotes = () => {
     const { actions, policy } = this.props;
-    const ids = [policy.policyNumber, policy.sourceNumber];
     return () => {
-      actions.serviceActions.getNotes(ids.toString(), policy.policyNumber);
+      actions.serviceActions.getNotes(policy.policyNumber, policy.sourceNumber);
     };
   };
 

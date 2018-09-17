@@ -2,7 +2,7 @@ import configureStore from 'redux-mock-store';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import * as types from './actionTypes';
-import * as serviceActions from './serviceActions';
+import * as serviceActions from './service.actions';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);

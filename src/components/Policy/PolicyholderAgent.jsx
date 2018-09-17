@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Loader from '@exzeo/core-ui/lib/Loader';
+import { Loader } from '@exzeo/core-ui';
+
 import normalizePhone from '../Form/normalizePhone';
 import Footer from '../Common/Footer';
 

@@ -1,6 +1,6 @@
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
-import errorReducer from './errorReducer';
+import errorReducer from './error.reducer';
 
 describe('Error Reducer', () => {
   it('should call errorReducer APP_ERROR', () => {

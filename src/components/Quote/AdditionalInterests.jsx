@@ -6,11 +6,11 @@ import { reduxForm, getFormValues } from 'redux-form';
 import { ADDITIONAL_INTERESTS } from '../../constants/additionalInterests';
 import { getAnswers } from '../../utilities/forms';
 import { getMortgageeOrderAnswers } from '../../utilities/additionalInterests';
-import { batchCompleteTask } from '../../state/actions/cgActions';
-import { getUIQuestions } from '../../state/actions/questionsActions';
-import { setAppState } from '../../state/actions/appStateActions';
-import { getLatestQuote } from '../../state/actions/quoteStateActions';
-import { getBillingOptions, saveBillingInfo } from '../../state/actions/serviceActions';
+import { batchCompleteTask } from '../../state/actions/cg.actions';
+import { getUIQuestions } from '../../state/actions/questions.actions';
+import { setAppState } from '../../state/actions/appState.actions';
+import { getLatestQuote } from '../../state/actions/quoteState.actions';
+import { getBillingOptions, saveBillingInfo } from '../../state/actions/service.actions';
 import { getGroupedAdditionalInterests, getSortedAdditionalInterests, checkQuoteState } from '../../state/selectors/quote.selectors';
 
 import QuoteBaseConnect from '../../containers/Quote';
@@ -97,9 +97,7 @@ export class AdditionalInterests extends Component {
   }
 
   handleAISubmit = async (additionalInterests) => {
-    const {
-      appState, quoteData, batchCompleteTask, getLatestQuote, setAppState, match
-    } = this.props;
+    const { appState, quoteData, batchCompleteTask, getLatestQuote, setAppState, match } = this.props;
     const workflowId = match.params.workflowId;
 
     const { addAdditionalInterestType } = this.state;
