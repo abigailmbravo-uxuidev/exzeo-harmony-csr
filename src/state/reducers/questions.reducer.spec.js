@@ -1,6 +1,6 @@
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
-import questionsReducer from './questionsReducer';
+import questionsReducer from './questions.reducer';
 
 describe('Questions State Reducer', () => {
   it('should call questionsReducer GET_QUESTIONS', () => {

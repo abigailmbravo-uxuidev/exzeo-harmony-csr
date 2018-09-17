@@ -1,6 +1,6 @@
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
-import newNoteReducer from './newNoteReducer';
+import newNoteReducer from './newNote.reducer';
 
 describe('Error Reducer', () => {
   it('should toggle note on', () => {

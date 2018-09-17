@@ -6,10 +6,10 @@ import moment from 'moment-timezone';
 import { Helmet } from 'react-helmet';
 import Loader from '@exzeo/core-ui/lib/Loader';
 
-import { setAppState } from '../../state/actions/appStateActions';
-import { getZipcodeSettings, getAgents, getAgency, getNotes } from '../../state/actions/serviceActions';
-import { createTransaction, getBillingOptionsForPolicy, getPolicy, getPaymentOptionsApplyPayments, getPaymentHistory, getCancelOptions, getEndorsementHistory } from '../../state/actions/policyActions';
-import { startWorkflow, batchCompleteTask } from '../../state/actions/cgActions';
+import { setAppState } from '../../state/actions/appState.actions';
+import { getZipcodeSettings, getAgents, getAgency, getNotes } from '../../state/actions/service.actions';
+import { createTransaction, getBillingOptionsForPolicy, getPolicy, getPaymentOptionsApplyPayments, getPaymentHistory, getCancelOptions, getEndorsementHistory } from '../../state/actions/policy.actions';
+import { startWorkflow, batchCompleteTask } from '../../state/actions/cg.actions';
 
 import EditEffectiveDataPopUp from '../../components/Policy/EditEffectiveDatePopup';
 import ReinstatePolicyPopup from '../../components/Policy/ReinstatePolicyPopup';
@@ -57,9 +57,7 @@ export class Policy extends React.Component {
       getZipCodeSettings(policy.companyCode, policy.state, policy.product, policy.property.physicalAddress.zip);
       getAgents(policy.companyCode, policy.state);
       getAgency(policy.companyCode, policy.state, policy.agencyCode);
-
-      const ids = [policy.policyNumber, policy.sourceNumber];
-      getNotes(ids.toString(), policy.policyNumber);
+      getNotes(policy.policyNumber, policy.sourceNumber);
 
       if (summaryLedger) {
         const paymentOptions = {

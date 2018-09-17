@@ -1,5 +1,6 @@
 import React from 'react';
-import { normalizePhone } from '@exzeo/core-ui/lib/InputLifecycle';
+import { normalize } from '@exzeo/core-ui';
+
 import AgencyContactAddress from "../../../components/AgencyContactAddress";
 
 function AgentCard({
@@ -38,21 +39,21 @@ function AgentCard({
                   {agent.primaryPhoneNumber &&
                   <p className="phone">
                     <i className="fa fa-phone-square"/>
-                    <a href={`tel:${agent.primaryPhoneNumber}`}>{normalizePhone(agent.primaryPhoneNumber)}</a>
+                    <a href={`tel:${agent.primaryPhoneNumber}`}>{normalize.phone(agent.primaryPhoneNumber)}</a>
                   </p>
                   }
 
                   {agent.secondaryPhoneNumber &&
                   <p className="phone">
                     <small>2<sup>ND</sup><i className="fa fa-phone"/></small>
-                    <a href={`tel:${agent.secondaryPhoneNumber}`}>{normalizePhone(agent.secondaryPhoneNumber)}</a>
+                    <a href={`tel:${agent.secondaryPhoneNumber}`}>{normalize.phone(agent.secondaryPhoneNumber)}</a>
                   </p>
                   }
 
                   {agent.faxNumber &&
                   <p className="fax">
                     <i className="fa fa-fax"/>
-                    <a href={`tel:${agent.faxNumber}`}>{normalizePhone(agent.faxNumber)}</a>
+                    <a href={`tel:${agent.faxNumber}`}>{normalize.phone(agent.faxNumber)}</a>
                   </p>
                   }
 

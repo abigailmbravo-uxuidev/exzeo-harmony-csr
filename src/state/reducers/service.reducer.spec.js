@@ -1,6 +1,6 @@
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
-import serviceReducer from './serviceReducer';
+import serviceReducer from './service.reducer';
 
 describe('serviceReducer', () => {
   it('should call serviceReducer SERVICE_REQUEST', () => {

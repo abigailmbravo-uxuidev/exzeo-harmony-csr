@@ -1,5 +1,5 @@
 import React from 'react';
-import Loader from '@exzeo/core-ui/lib/Loader';
+import { Loader } from '@exzeo/core-ui';
 
 const Callback = () => (
   <div className="app-wrapper">

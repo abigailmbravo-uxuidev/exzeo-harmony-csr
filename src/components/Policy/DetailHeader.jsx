@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _get from 'lodash/get';
 import moment from 'moment';
-import { setAppState } from '../../state/actions/appStateActions';
-import { getEffectiveDateChangeReasons } from '../../state/actions/policyActions';
+import { setAppState } from '../../state/actions/appState.actions';
+import { getEffectiveDateChangeReasons } from '../../state/actions/policy.actions';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import { POLICY_EXPIRATION_STATUS, BILLING_EXPIRATION_STATUS, REINSTATEMENT_STATUS } from '../../constants/policyStatus';
@@ -160,7 +160,7 @@ export class DetailHeader extends Component {
           </div>
         </dl>
       </section>
-    </div>);
+            </div>);
   }
 }
 
