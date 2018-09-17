@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Loader from '@exzeo/core-ui/lib/Loader';
+import { Loader } from '@exzeo/core-ui';
 
 import history from '../history';
 

@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import * as types from './actionTypes';
 import * as serviceRunner from '../../utilities/serviceRunner';
 import * as endorsementUtil from '../../utilities/endorsementModel';
-import * as policyStateActions from './policyActions';
+import * as policyStateActions from './policy.actions';
 
 describe('Policy State Actions', () => {
   const mockStore = configureStore([]);

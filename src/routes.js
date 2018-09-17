@@ -28,10 +28,9 @@ import PolicyModule from './modules/Policy';
 import AgencyStaff from './components/Agency/Staff';
 import NoteUploader from './components/Common/NoteUploader';
 
-
-import * as appStateActions from './state/actions/appStateActions';
-import * as errorActions from './state/actions/errorActions';
-import * as authActions from './state/actions/authActions';
+import * as appStateActions from './state/actions/appState.actions';
+import * as errorActions from './state/actions/error.actions';
+import * as authActions from './state/actions/auth.actions';
 
 const auth = new Auth();
 

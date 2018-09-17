@@ -4,10 +4,11 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Form, propTypes } from 'redux-form';
 import moment from 'moment';
-import Loader from '@exzeo/core-ui/lib/Loader';
-import * as cgActions from '../../state/actions/cgActions';
-import * as appStateActions from '../../state/actions/appStateActions';
-import * as quoteStateActions from '../../state/actions/quoteStateActions';
+import { Loader } from '@exzeo/core-ui';
+
+import * as cgActions from '../../state/actions/cg.actions';
+import * as appStateActions from '../../state/actions/appState.actions';
+import * as quoteStateActions from '../../state/actions/quoteState.actions';
 
 const QuoteSummary = ({
   appState, handleSubmit, verify, showQuoteSummaryModal, quoteData

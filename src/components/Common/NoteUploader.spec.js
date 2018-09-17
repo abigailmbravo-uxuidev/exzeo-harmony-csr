@@ -5,14 +5,14 @@ import thunk from 'redux-thunk';
 import MockAdapter from 'axios-mock-adapter';
 import { propTypes } from 'redux-form';
 import { mount, shallow } from 'enzyme';
-import * as serviceActions from '../../state/actions/serviceActions';
+import * as serviceActions from '../../state/actions/service.actions';
 import NoteUploader, { validate, renderNotes } from './NoteUploader';
 
-describe('Testing NoteUploader component', () => { 
+describe('Testing NoteUploader component', () => {
   const middlewares = [thunk];
   const mockStore = configureStore(middlewares);
 
-  describe('Testing NoteUploader instance', () => { 
+  describe('Testing NoteUploader instance', () => {
     let initialState;
     let props;
     let formData;
@@ -68,7 +68,7 @@ describe('Testing NoteUploader component', () => {
         writable: true,
         value: '/notes'
       });
-      
+
       instance.props.actions.cgActions.startWorkflow = jest.fn().mockImplementation(() =>
         Promise.resolve({result: true}));
 
@@ -77,7 +77,7 @@ describe('Testing NoteUploader component', () => {
     });
   });
 
-  describe('component should close if profile is missing', () => { 
+  describe('component should close if profile is missing', () => {
     it('note should be valid', () => {
       const initialState = {
         authState: {
@@ -97,7 +97,7 @@ describe('Testing NoteUploader component', () => {
       };
 
       const store = mockStore(initialState);
-      const wrapper = shallow(<NoteUploader store={store} {...props} />); 
+      const wrapper = shallow(<NoteUploader store={store} {...props} />);
       const instance = wrapper.dive().dive().dive().dive().instance();
       const spy = jest.spyOn(instance, 'closeButtonHandler');
 
@@ -107,7 +107,7 @@ describe('Testing NoteUploader component', () => {
     });
   });
 
-  describe('Testing NoteUploader functions', () => { 
+  describe('Testing NoteUploader functions', () => {
     it('note should be valid', () => {
       const valid = validate({ noteContent: 'Test Content' });
       expect(valid).toEqual({});

@@ -3,7 +3,7 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import thunk from 'redux-thunk';
 import * as types from './actionTypes';
-import * as questionsActions from './questionsActions';
+import * as questionsActions from './questions.actions';
 
 
 const middlewares = [thunk];

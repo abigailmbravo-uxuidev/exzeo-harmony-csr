@@ -2,9 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm, Field, formValueSelector } from 'redux-form';
-import { Radio, Select } from '@exzeo/core-ui/lib/Input';
-import { isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
 import Loader from '@exzeo/core-ui/lib/Loader';
+import { Radio, Select, validation } from '@exzeo/core-ui';
 
 const FORM_NAME = 'BillingEditModal';
 
@@ -74,19 +73,17 @@ export class BillingEditModal extends React.Component {
                 label="Bill To"
                 component={Select}
                 normalize={this.normalizeBilling}
-                validate={isRequired}
+                validate={validation.isRequired}
                 answers={this.billToOptions}
-                dataTest="billToId"
-              />
+                dataTest="billToId" />
               <Field
                 name="billPlan"
                 label="Bill Plan"
                 component={Radio}
-                validate={isRequired}
+                validate={validation.isRequired}
                 answers={this.getBillingOptions()}
                 dataTest="billPlan"
-                segmented
-              />
+                segmented />
             </div>
             <div className="card-footer">
               <div className="btn-group">
@@ -95,16 +92,14 @@ export class BillingEditModal extends React.Component {
                   aria-label="reset-btn form-editBilling"
                   className="btn btn-secondary"
                   type="button"
-                  onClick={hideBillingModal}
-                >Cancel
+                  onClick={hideBillingModal}>Cancel
                 </button>
                 <button
                   tabIndex="0"
                   aria-label="submit-btn form-editBilling"
                   className="btn btn-primary"
                   type="submit"
-                  disabled={submitting || pristine}
-                >Update
+                  disabled={submitting || pristine}>Update
                 </button>
               </div>
             </div>

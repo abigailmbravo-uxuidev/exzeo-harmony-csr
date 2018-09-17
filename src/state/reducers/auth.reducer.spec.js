@@ -1,5 +1,5 @@
 import * as types from '../actions/actionTypes';
-import authReducer from './authReducer';
+import authReducer from './auth.reducer';
 
 describe('auth Reducer', () => {
   it('should call quoteStateReducer AUTH', () => {

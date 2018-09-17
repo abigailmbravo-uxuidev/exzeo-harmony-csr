@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import Loader from '@exzeo/core-ui/lib/Loader';
+import { Loader } from '@exzeo/core-ui';
+
 import { SEARCH_TYPES } from '../../constants/search';
-import { startWorkflow, batchCompleteTask } from '../../state/actions/cgActions';
-import { setAppState } from '../../state/actions/appStateActions';
-import { setAppError } from '../../state/actions/errorActions';
+import { startWorkflow, batchCompleteTask } from '../../state/actions/cg.actions';
+import { setAppState } from '../../state/actions/appState.actions';
+import { setAppError } from '../../state/actions/error.actions';
 import { getQuoteDataFromCgState } from '../../state/selectors/quote.selectors';
 
 export class QuoteLanding extends Component {
@@ -48,7 +49,7 @@ export class QuoteLanding extends Component {
             lastName: '',
             policyNumber: '',
             quoteNumber: '',
-            quoteState: '',
+            quoteState: ''
           }
         });
         steps.push({
@@ -73,7 +74,6 @@ export class QuoteLanding extends Component {
         ...appState.data,
         selectedLink: 'customerData'
       });
-
     } catch (error) {
       setAppError(error);
     }
@@ -83,7 +83,7 @@ export class QuoteLanding extends Component {
     const { quoteData } = this.props;
     return (
       <React.Fragment>
-        {quoteData && quoteData._id ? <Redirect push to={`/quote/${quoteData._id}/coverage/${this.workflowId}`}/> : <Loader/>}
+        {quoteData && quoteData._id ? <Redirect replace to={`/quote/${quoteData._id}/coverage/${this.workflowId}`} /> : <Loader />}
       </React.Fragment>
     );
   }
