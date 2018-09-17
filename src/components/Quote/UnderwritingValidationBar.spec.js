@@ -311,7 +311,7 @@ const quoteData = {
 describe('Testing UnderwritingValidationBar component', () => {
   it('should test connected app', () => {
     const initialState = {
-      service: {
+      quoteState: {
         quote: quoteData
       },
       cg: {

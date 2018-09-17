@@ -339,7 +339,7 @@ describe('Testing AdditionalInterests component', () => {
       setAppStateAction() {},
       setAppErrorAction() {},
       batchCompleteTaskAction() { return Promise.resolve(() => {}); },
-      getLatestQuoteAction() {},
+      getQuoteAction() {},
       appState: {
         instanceId: '1245',
         data: {

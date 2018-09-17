@@ -308,6 +308,7 @@ const quoteData = {
 describe('Testing MailingAddressBilling component', () => {
   it('should test connected app', () => {
     const initialState = {
+      quoteState: { quote: quoteData },
       quoteData: {
         billToId: '598b4570efb84c0013f7ed3c'
       },
@@ -355,6 +356,8 @@ describe('Testing MailingAddressBilling component', () => {
       quoteData: {
         rating: { worksheet: { fees: {} } }
       },
+      getQuoteAction() { return Promise.resolve(() => {}); },
+      setAppErrorAction() {},
       setAppStateAction() {},
       getLatestQuoteAction() {},
       startWorkflowAction() { return Promise.resolve(() => {}); },
@@ -462,6 +465,7 @@ describe('Testing MailingAddressBilling component', () => {
       },
       fieldQuestions: [],
       dispatch: store.dispatch,
+      setAppErrorAction() {},
       setAppStateAction() {},
       getLatestQuoteAction() {},
       startWorkflowAction() { return Promise.resolve(() => {}); },

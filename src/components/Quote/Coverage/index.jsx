@@ -220,7 +220,7 @@ export class Coverage extends Component {
     this.props.getQuote(match.params.quoteId, 'coverage').then((quoteData) => {
       this.props.setAppState(MODEL_NAME, '', { ...this.props.appState.data, submitting: false });
 
-      if (quoteData) {
+      if (quoteData && quoteData.property) {
         this.props.getAgencies(quoteData.companyCode, quoteData.state);
         this.props.getAgentsByAgency(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
         this.props.getZipcodeSettings(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property.physicalAddress.zip);

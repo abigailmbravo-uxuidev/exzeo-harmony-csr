@@ -7,12 +7,12 @@ import { SEARCH_TYPES } from '../../constants/search';
 import { startWorkflow, batchCompleteTask } from '../../state/actions/cg.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
-import { TEMP_GetQuoteforCreate } from '../../state/selectors/quote.selectors';
+import { getQuoteforCreate } from '../../state/selectors/quote.selectors';
 
 export class QuoteLanding extends Component {
   async componentDidMount() {
     const {
-      match: { params }, startWorkflow, setAppState, appState, batchCompleteTask, newQuote
+      match: { params }, startWorkflow
     } = this.props;
 
     try {
@@ -36,7 +36,7 @@ export class QuoteLanding extends Component {
 const mapStateToProps = state => ({
   appState: state.appState,
   cgState: state.cg,
-  quoteData: TEMP_GetQuoteforCreate(state)
+  quoteData: getQuoteforCreate(state)
 });
 
 export default connect(mapStateToProps, {

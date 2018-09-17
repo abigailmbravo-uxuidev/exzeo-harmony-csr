@@ -309,6 +309,9 @@ describe('Testing Summary component', () => {
   it('should test connected app', () => {
     const initialState = {
       service: {},
+      quoteState: {
+        quote: quoteData
+      },
       actions: { serviceActions: {} },
       cg: {
         bb: {
@@ -378,6 +381,7 @@ describe('Testing Summary component', () => {
       match: { params: {} },
       fieldQuestions: [],
       dispatch: store.dispatch,
+      getQuoteAction() {},
       getAgentsAction() {},
       getLatestQuoteAction() {},
       setAppErrorAction() {},

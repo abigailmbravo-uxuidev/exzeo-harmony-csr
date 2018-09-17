@@ -6,7 +6,7 @@ import { ADDITIONAL_INTERESTS, DEFAULT_ADDITIONAL_INTERESTS_MAP, DISABLED_AI_STA
 
 const defaultObject = {};
 const defaultArr = [];
-const getQuote = state => state.quoteState.quote || defaultObject;
+const getQuote = state => (state.quoteState && state.quoteState.quote ? state.quoteState.quote : defaultObject);
 const getAppState = state => state.appState || defaultObject;
 const getCGState = state => state.cg || defaultObject;
 
@@ -46,7 +46,7 @@ export const getGroupedAdditionalInterests = createSelector(
 export const checkQuoteState = createSelector(
   [getQuote],
   (quoteData) => {
-    return DISABLED_AI_STATES.some(state => state === quoteData.quoteState);
+    return DISABLED_AI_STATES.some(state => state === quoteData.status);
   }
 );
 
@@ -71,7 +71,7 @@ export const getQuoteDataFromCgState = createSelector(
   }
 );
 
-export const TEMP_GetQuoteforCreate = createSelector(
+export const getQuoteforCreate = createSelector(
   [getAppState, getCGState],
   (appState, cgState) => {
     const taskData = cgState[appState.modelName] && cgState[appState.modelName].data;
