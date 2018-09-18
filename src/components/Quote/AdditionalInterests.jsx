@@ -109,7 +109,7 @@ export class AdditionalInterests extends Component {
 
   addAdditionalInterest = (type) => {
     const {
-      appState, setAppStateAction, editingDisabled, match
+      appState, setAppStateAction, editingDisabled
     } = this.props;
     if (editingDisabled) return;
     setAppStateAction(
@@ -208,7 +208,7 @@ export class AdditionalInterests extends Component {
 
   deleteAdditionalInterest = async (selectedAdditionalInterest) => {
     const {
-      appState, quoteData, setAppStateAction, match
+      appState, quoteData, setAppStateAction
     } = this.props;
     setAppStateAction(
       MODEL_NAME,

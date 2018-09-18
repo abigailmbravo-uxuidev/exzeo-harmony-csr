@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { Loader } from '@exzeo/core-ui';
 
-import { SEARCH_TYPES } from '../../constants/search';
 import { startWorkflow, batchCompleteTask } from '../../state/actions/cg.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';

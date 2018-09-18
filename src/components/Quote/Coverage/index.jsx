@@ -207,8 +207,6 @@ export const handleFormSubmit = async (data, dispatch, props) => {
   }
 };
 
-const setAgents = false;
-
 export class Coverage extends Component {
   componentDidMount() {
     const {
