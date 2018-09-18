@@ -92,7 +92,7 @@ export class Summary extends Component {
       applyRank(quoteData.additionalInterests);
     }
 
-    const filteredExceptions = _.filter(quoteData.underwritingExceptions, uw => !uw.overridden);
+    const filteredExceptions = _.filter(quoteData.underwritingExceptions, uw => !uw.overridden && uw.code !== '003');
 
     if (!quoteData || !quoteData.underwritingExceptions) {
       return <QuoteBaseConnect match={match} />;
