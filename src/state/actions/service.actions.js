@@ -37,7 +37,7 @@ export function getNotes(noteId, sourceId) {
         fetchDocuments(query)
       ]);
 
-      const fileList = notes.reduce((list, note) => [...list, ...note.attachments], []).map(n => n.fileName);
+      const fileList = notes.reduce((list, note) => [...list, ...note.attachments], []).map(n => n.fileName) || [];
       
       docsResult.forEach((doc) => {
         if (!fileList.includes(doc.fileName)) {
