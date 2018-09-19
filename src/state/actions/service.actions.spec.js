@@ -84,17 +84,6 @@ describe('Service Actions', () => {
         attachments: [],
         createdBy: {},
         updatedBy: {}
-      },
-      {
-        noteType: 'test2',
-        noteContent: 'test2',
-        contactType: 'Agent',
-        createdAt: new Date().getTime(),
-        attachments: [
-          { fileName: 'test.pdf', fileUrl: 'http://test/test.pdf' }
-        ],
-        createdBy: {},
-        updatedBy: {}
       }
     ];
     const axiosNotesOptions = {
