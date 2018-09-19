@@ -37,21 +37,25 @@ export function getNotes(noteId, sourceId) {
         fetchDocuments(query)
       ]);
 
+      const fileList = notes.reduce((list, note) => [...list, ...note.attachments], []).map(n => n.fileName);
+      
       docsResult.forEach((doc) => {
-        const newNote = {
-          _id: doc.envelopeId ? doc.envelopeId : doc.fileUrl,
-          contactType: 'system',
-          createdBy: {userName: 'System', userId: doc.createdBy},
-          createdDate: moment.unix(doc.createdDate),
-          attachments: [
-            {
-              fileType: 'System',
-              fileName: doc.fileName,
-              fileUrl: doc.fileUrl
-            }
-          ]
-        };
-        notes.push(newNote);
+        if (!fileList.includes(doc.fileName)) {
+          const newNote = {
+            _id: doc.envelopeId ? doc.envelopeId : doc.fileUrl,
+            contactType: 'system',
+            createdBy: {userName: 'System', userId: doc.createdBy},
+            createdDate: moment.unix(doc.createdDate),
+            attachments: [
+              {
+                fileType: 'System',
+                fileName: doc.fileName,
+                fileUrl: doc.fileUrl
+              }
+            ]
+          };
+          notes.push(newNote);
+        }
       });
 
       return dispatch(serviceRequest({notes}));
