@@ -17,7 +17,6 @@ export const filterNotesByType = (notes, type) => {
 };
 
 export const Notes = (props) => {
-  console.log(props.notes)
   const { notes, attachmentStatus, setNoteStatus } = props;
 
   const options = { searchPanel: props => (<SearchPanel {...props} />) };
