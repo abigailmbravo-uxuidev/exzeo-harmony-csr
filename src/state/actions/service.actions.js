@@ -37,10 +37,10 @@ export function getNotes(noteId, sourceId) {
         fetchDocuments(query)
       ]);
 
-      const fileList = notes.reduce((list, note) => [...list, ...note.attachments], []).map(n => n.fileName);
+      const fileList = notes.reduce((list, note) => [...list, ...note.attachments], []).map(n => n.fileUrl);
 
       docsResult.forEach((doc) => {
-        if (!fileList.includes(doc.fileName)) {
+        if (!fileList.includes(doc.fileUrl)) {
           const newNote = {
             _id: doc.envelopeId ? doc.envelopeId : doc.fileUrl,
             contactType: 'system',
