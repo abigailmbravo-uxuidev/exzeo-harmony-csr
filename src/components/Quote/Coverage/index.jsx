@@ -261,10 +261,13 @@ export class Coverage extends Component {
     }
   };
 
+  roundDwellingCoverageAmount = (value) => {
+    return Math.round(value / 1000) * 1000;
+  };
+
   normalizeDwellingAmount = (value, previousValue, allValues) => {
     const { change } = this.props;
-
-    const roundedDwellingAmount = Math.round(value / 1000) * 1000;
+    const roundedDwellingAmount = this.roundDwellingCoverageAmount(value);
 
     if (allValues.otherStructures !== 'other') {
       change('otherStructuresAmount', setPercentageOfValue(roundedDwellingAmount, allValues.otherStructures));
@@ -282,29 +285,32 @@ export class Coverage extends Component {
   normalizeDwellingDependencies = (value, previousValue, allValues, field) => {
     if (Number.isNaN(value)) return;
     const { change } = this.props;
-    const fieldValue = setPercentageOfValue(allValues.dwellingAmount, value);
+    const roundedDwellingAmount = this.roundDwellingCoverageAmount(allValues.dwellingAmount);
+    const fieldValue = setPercentageOfValue(roundedDwellingAmount, value);
 
     change(field, Number.isNaN(fieldValue) ? '' : fieldValue);
     return value;
   };
 
   normalizePersonalPropertyPercentage = (value, previousValue, allValues, field) => {
-    const numberValue = Number(value);
-
     const { change } = this.props;
+    const numberValue = Number(value);
+    const roundedDwellingAmount = this.roundDwellingCoverageAmount(allValues.dwellingAmount);
 
     if (numberValue === 0) change('personalPropertyReplacementCostCoverage', false);
 
-    const fieldValue = setPercentageOfValue(allValues.dwellingAmount, numberValue);
+    const fieldValue = setPercentageOfValue(roundedDwellingAmount, numberValue);
     change(field, Number.isNaN(fieldValue) ? '' : fieldValue);
     return numberValue;
   };
 
   normalizeSinkholeAmount = (value, previousValue, allValues) => {
     const { change } = this.props;
+    const roundedDwellingAmount = this.roundDwellingCoverageAmount(allValues.dwellingAmount);
+
     if (String(value) === 'true') {
       change('sinkhole', 10);
-      change('calculatedSinkhole', setPercentageOfValue(allValues.dwellingAmount, 10));
+      change('calculatedSinkhole', setPercentageOfValue(roundedDwellingAmount, 10));
     } else {
       change('sinkhole', 0);
       change('calculatedSinkhole', 0);
