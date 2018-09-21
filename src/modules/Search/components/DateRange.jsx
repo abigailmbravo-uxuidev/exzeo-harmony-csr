@@ -63,7 +63,7 @@ class DateRange extends Component {
             disabled={disabled}
             onChange={this.handleChange}
             onBlur={this.handleBlur}
-            onFocus={this.handleFocus} />{' - '}
+            onFocus={this.handleFocus} /><span>—</span>
           <input
             type="date"
             data-test={`${dataTest}-${maxDateProp}`}
