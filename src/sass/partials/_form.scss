@@ -114,20 +114,6 @@ textarea {
   }
 }
 
-.react-select__control--is-focused  {
-    ~ div {
-    display: block;
-    height: 300px;
-    background: $red;
-    }
-}
-
-div {
-    menu {
-        background: $red;
-    }
-}
-
 input,
 textarea {
   width: 100%;
@@ -156,6 +142,27 @@ select {
   }
 }
 //combobox
+select {
+    .react-select__control {
+        width: 100%;
+        div {
+            width: 100%;
+        }
+
+        &.react-select__control--is-focused {}
+    }
+
+    > div {
+        .react-select__menu {
+            .react-select__menu-list {
+                .react-select__option {
+                    &.react-select__option--is-focused {}
+                }
+            }
+        }
+    }
+}
+
 
 .Select {
   position: relative;
