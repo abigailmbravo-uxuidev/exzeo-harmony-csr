@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Field } from 'redux-form';
-import { Input, Select, SelectTypeAhead, Button, normalize, validation } from '@exzeo/core-ui';
+import { Input, Select, NewSelectTypeAhead, Button, normalize, validation } from '@exzeo/core-ui';
 
 import { getAnswers } from '../../../utilities/forms';
 import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
@@ -102,7 +102,7 @@ const PolicySearch = ({
           name="agencyCode"
           dataTest="agencyCode"
           label="Agency Name"
-          component={SelectTypeAhead}
+          component={NewSelectTypeAhead}
           styleName="agencyCodeSelectField"
           answers={agencyList} />
         <div className="form-group effectiveDate">
