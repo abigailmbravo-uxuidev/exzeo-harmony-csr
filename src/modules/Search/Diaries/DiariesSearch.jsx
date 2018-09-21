@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Select, Button, validation } from '@exzeo/core-ui';
+import { Select, NewSelectTypeAhead, Button, validation } from '@exzeo/core-ui';
 
 import { REASONS, USERS } from '../../../constants/diaries';
 import DateRange from '../components/DateRange';
@@ -30,7 +30,7 @@ const DiariesSearch = ({
         <Field
           name="assignees"
           dataTest="assignees"
-          component={Select}
+          component={NewSelectTypeAhead}
           label="Assigned To"
           answers={USERS}
           errorHint />
