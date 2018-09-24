@@ -42,7 +42,7 @@ const PolicySearch = ({
         showPlaceholder={false}
         errorHint />
     </div>
-    <div className="search-inputs fade-in p">
+    <div className="search-inputs  p">
       <Field
         name="firstName"
         dataTest="firstName"
@@ -97,7 +97,7 @@ const PolicySearch = ({
     </div>
 
     {advancedSearch &&
-      <div className="advanced-search fade-in">
+      <div className="advanced-search">
         <Field
           name="agencyCode"
           dataTest="agencyCode"

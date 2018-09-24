@@ -147,6 +147,10 @@ select {
         width: 100%;
         div {
             width: 100%;
+
+            &.react-select__multi-value {
+                width: auto;
+            }
         }
 
         &.react-select__control--is-focused {}

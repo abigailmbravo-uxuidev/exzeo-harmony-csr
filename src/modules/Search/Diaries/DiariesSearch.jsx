@@ -31,6 +31,7 @@ const DiariesSearch = ({
           name="assignees"
           dataTest="assignees"
           component={NewSelectTypeAhead}
+          isMulti
           label="Assigned To"
           answers={USERS}
           errorHint />
