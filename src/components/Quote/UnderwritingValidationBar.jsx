@@ -5,7 +5,7 @@ import { reduxForm, Form, getFormValues } from 'redux-form';
 import orderBy from 'lodash/orderBy';
 import moment from 'moment';
 import { saveUnderwritingExceptions } from '../../state/actions/service.actions';
-import { getLatestQuote } from '../../state/actions/quoteState.actions';
+import { getQuote } from '../../state/actions/quote.actions';
 import CheckField from '../Form/inputs/CheckField';
 import UnderwritingExceptions from './UnderwritingExceptions';
 
@@ -25,7 +25,7 @@ export const handleFormSubmit = async (data, dispatch, props) => {
     }
   }
   await props.saveUnderwritingExceptions(props.quoteData._id, uwExceptions);
-  await props.getLatestQuote(true, props.quoteData._id);
+  await props.getQuote(props.quoteData._id, 'underwritingValidation');
 };
 
 export const handleInitialize = (state) => {
@@ -139,6 +139,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  getLatestQuote,
+  getQuote,
   saveUnderwritingExceptions
 })(reduxForm({ form: 'UnderwritingOverride', enableReinitialize: true, destroyOnUnmount: false })(UnderwritingValidationBar));
