@@ -13,42 +13,44 @@ const DiariesSearch = ({
 }) => {
   return (
     <React.Fragment>
-      <div className="form-group search-context">
-        <Field
-          name="status"
-          dataTest="status"
-          label="Diary Status"
-          component={Select}
-          id="status"
-          validate={validation.isRequired}
-          onChange={changeSearchType}
-          answers={searchTypeOptions}
-          showPlaceholder={false}
-          errorHint />
-      </div>
       <div className="search-inputs fade-in">
-        <Field
-          name="assignees"
-          dataTest="assignees"
-          component={NewSelectTypeAhead}
-          isMulti
-          label="Assigned To"
-          answers={USERS}
-          errorHint />
-        <Field
-          name="reason"
-          dataTest="reason"
-          component={Select}
-          answers={REASONS}
-          placeholder="Please choose"
-          label="Reason"
-          errorHint />
-        <Field
-          name="dateRange"
-          dataTest="date-range"
-          component={DateRange}
-          label="Date Range"
-          errorHint />
+        <div className="input-wrapper">
+          <div className="form-group search-context">
+            <Field
+              name="status"
+              dataTest="status"
+              label="Diary Status"
+              component={Select}
+              id="status"
+              validate={validation.isRequired}
+              onChange={changeSearchType}
+              answers={searchTypeOptions}
+              showPlaceholder={false}
+              errorHint />
+          </div>
+          <Field
+            name="reason"
+            dataTest="reason"
+            component={Select}
+            answers={REASONS}
+            placeholder="Please choose"
+            label="Reason"
+            errorHint />
+          <Field
+            name="dateRange"
+            dataTest="date-range"
+            component={DateRange}
+            label="Date Range"
+            errorHint />
+          <Field
+            name="assignees"
+            dataTest="assignees"
+            component={NewSelectTypeAhead}
+            isMulti
+            label="Assigned To"
+            answers={USERS}
+            errorHint />
+        </div>
 
         <Button
           baseClass="success"
