@@ -7,6 +7,7 @@ import { setAppState } from '../../state/actions/appState.actions';
 import { getEffectiveDateChangeReasons } from '../../state/actions/policy.actions';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
+import { POLICY_EXPIRATION_STATUS, BILLING_EXPIRATION_STATUS, REINSTATEMENT_STATUS } from '../../constants/policyStatus';
 
 export const showEffectiveDatePopUp = (props) => {
   props.setAppState(
@@ -46,9 +47,11 @@ export class DetailHeader extends Component {
     }
 
     const loc = policy.property.physicalAddress;
-    const mapQuery = encodeURIComponent(`${loc.address1} ${loc.address2} ${loc.city}, ${loc.state} ${loc.zip}`)
+    const mapQuery = encodeURIComponent(`${loc.address1} ${loc.address2} ${loc.city}, ${loc.state} ${loc.zip}`);
     const mapUri = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
-    const showReinstatement = policy.status === 'Cancelled' && [12, 13, 14, 15].includes(billingStatusCode);
+    const showReinstatement = policy.status === 'Cancelled' && REINSTATEMENT_STATUS.includes(billingStatusCode);
+    const displayExpirationDate = POLICY_EXPIRATION_STATUS.includes(policy.status) &&
+     BILLING_EXPIRATION_STATUS.includes(billingStatusCode) ? 'Expiration Date' : 'Cancellation Date';
 
     return (<div className="detailHeader">
       <section id="policyDetails" className="policyDetails">
@@ -80,15 +83,15 @@ export class DetailHeader extends Component {
         </dl>
       </section>
       <section id="propertyAddress" className="propertyAddress">
-          <dl>
-            <div>
-              <dt>Property Address <a className="btn btn-link btn-xs btn-alt-light no-padding" target="_blank" href={mapUri}><i className="fa fa-map-marker" />Map</a></dt>
-              <dd>{_get(policy, 'property.physicalAddress.address1')}</dd>
-              <dd>{_get(policy, 'property.physicalAddress.address2')}</dd>
-              <dd>{`${_get(policy, 'property.physicalAddress.city')}, ${_get(policy, 'property.physicalAddress.state')} ${_get(policy, 'property.physicalAddress.zip')}`}</dd>
-            </div>
-          </dl>
-        </section>
+        <dl>
+          <div>
+            <dt>Property Address <a className="btn btn-link btn-xs btn-alt-light no-padding" target="_blank" href={mapUri}><i className="fa fa-map-marker" />Map</a></dt>
+            <dd>{_get(policy, 'property.physicalAddress.address1')}</dd>
+            <dd>{_get(policy, 'property.physicalAddress.address2')}</dd>
+            <dd>{`${_get(policy, 'property.physicalAddress.city')}, ${_get(policy, 'property.physicalAddress.state')} ${_get(policy, 'property.physicalAddress.zip')}`}</dd>
+          </div>
+        </dl>
+      </section>
       <div className="detailHeader-wrapping-sections">
         <div className="wrapping-section">
           <section id="propertyCounty" className="propertyCounty">
@@ -136,16 +139,16 @@ export class DetailHeader extends Component {
           {policy &&
           <section id="cancellationDate" className="cancellationDate">
             <dl>
-            <div>
-              <dt>
-                Cancellation Date
-                {policy && showReinstatement &&
-                <button id="show-reinstate" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showReinstatePolicyPopUp(this.props)}><i className="fa fa-thumbs-up" />Reinstate</button>
-                }
-              </dt>
-              <dd>{cancellationDate}</dd>
-            </div>
-          </dl>
+              <div>
+                <dt>
+                  <span id="cancellationDateLabel">{displayExpirationDate}</span>
+                  {policy && showReinstatement &&
+                    <button id="show-reinstate" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showReinstatePolicyPopUp(this.props)}><i className="fa fa-thumbs-up" />Reinstate</button>
+                  }
+                </dt>
+                <dd>{cancellationDate}</dd>
+              </div>
+            </dl>
           </section>}
         </div>
       </div>
@@ -157,7 +160,7 @@ export class DetailHeader extends Component {
           </div>
         </dl>
       </section>
-    </div>);
+            </div>);
   }
 }
 
