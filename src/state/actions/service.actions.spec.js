@@ -119,7 +119,7 @@ describe('Service Actions', () => {
     const initialState = {};
     const store = mockStore(initialState);
 
-    return serviceActions.getNotes('12-1010636-01', '12-1010536-01')(store.dispatch)
+    return serviceActions.getNotes('test-01', 'test-01')(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
       });
