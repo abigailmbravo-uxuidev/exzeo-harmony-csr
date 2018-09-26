@@ -9,6 +9,7 @@ import Diaries from './Diaries';
 
 export class OpenDiariesBar extends React.Component {
   handleOpenDiaries = (selectedDiary) => {
+    console.log(selectedDiary);
     const { toggleDiary, resourceId, resourceType } = this.props;
     toggleDiary({
       resourceType,
@@ -37,7 +38,7 @@ export class OpenDiariesBar extends React.Component {
             diaryLevel="dueSoon"
             diaries={dueSoon}
             onToggleDiary={this.handleOpenDiaries} />
-            }  
+            }
 
           {upComing.length > 0 &&
           <Diaries
