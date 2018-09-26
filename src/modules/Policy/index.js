@@ -189,15 +189,13 @@ export class Policy extends React.Component {
           {appState.data.showReinstatePolicyPopUp &&
             <ReinstatePolicyPopup
               reinstatePolicySubmit={this.reinstatePolicySubmit}
-              hideReinstatePolicyModal={this.hideReinstatePolicyPopUp}
-            />
+              hideReinstatePolicyModal={this.hideReinstatePolicyPopUp} />
           }
 
           {appState.data.showEffectiveDateChangePopUp &&
             <EditEffectiveDataPopUp
               changeEffectiveDateSubmit={this.changeEffectiveDate}
-              hideEffectiveDateModal={this.hideEffectiveDatePopUp}
-            />
+              hideEffectiveDateModal={this.hideEffectiveDatePopUp} />
           }
         </main>
       </div>

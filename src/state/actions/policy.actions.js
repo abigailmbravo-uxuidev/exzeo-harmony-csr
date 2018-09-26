@@ -235,8 +235,8 @@ export function addTransaction(submitData) {
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
+    dispatch(getPolicy(submitData.policy.policyNumber));
     dispatch(getPaymentHistory(submitData.policy.policyNumber));
-    dispatch(getSummaryLedger(submitData.policy.policyNumber));
   };
 }
 
@@ -314,6 +314,8 @@ export function updateBillPlan(paymentPlan) {
   return async (dispatch) => {
     try {
       const policy = await postUpdatedBillPlan(paymentPlan);
+      // TODO: Implement some type of pub/sub for message queue
+      await new Promise(resolve => setTimeout(resolve, 2000));
       if (policy && policy.policyNumber) {
         dispatch(getPolicy(policy.policyNumber));
       } else {

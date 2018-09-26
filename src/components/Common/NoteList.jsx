@@ -26,9 +26,13 @@ export const Notes = (props) => {
   const formatCreatedDate = createdDate => `${moment.tz(moment.utc(createdDate), 'America/New_York').format('MM/DD/YYYY h:mm A')} EST`;
   const formatNote = note => note ? note.replace(/\r|\n/g, '<br>') : '';
   const attachmentFilter = cell => cell.length > 0 ? cell[0].fileName : null;
-  const sortAuthor = (a, b, order) => order === 'desc' 
-    ? a.createdBy.userName > b.createdBy.userName ? 1 : -1
-    : a.createdBy.userName < b.createdBy.userName ? 1 : -1;
+  const sortAuthor = (a, b, order) => {
+    if (!a.createdBy) return order === 'desc' ? -1 : 1;
+    if (!b.createdBy) return order === 'desc' ? 1 : -1;
+    return order === 'desc' 
+      ? a.createdBy.userName > b.createdBy.userName ? 1 : -1
+      : a.createdBy.userName < b.createdBy.userName ? 1 : -1;
+    }
   
   const sortFiles = (a, b, order) => {
     const fileA = (a.attachments.length > 0) ? a.attachments[0].fileName : '';
