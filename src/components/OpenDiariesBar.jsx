@@ -9,7 +9,6 @@ import Diaries from './Diaries';
 
 export class OpenDiariesBar extends React.Component {
   handleOpenDiaries = (selectedDiary) => {
-    console.log(selectedDiary);
     const { toggleDiary, resourceId, resourceType } = this.props;
     toggleDiary({
       resourceType,

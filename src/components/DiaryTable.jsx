@@ -23,7 +23,7 @@ const DiaryExpandColumns = ({ diaries }) => {
     <BootstrapTable data={diaries}>
       <TableHeaderColumn dataField="_id" isKey hidden>ID</TableHeaderColumn>
       <TableHeaderColumn width="15%" dataField="due" dataFormat={toLocaleDate}>Due</TableHeaderColumn>
-      <TableHeaderColumn width="15%" dataField="assignee" dataFormat={val => val.userName}>Assignee</TableHeaderColumn>
+      <TableHeaderColumn width="15%" dataField="assignee" dataFormat={val => val.displayName}>Assignee</TableHeaderColumn>
       <TableHeaderColumn width="15%" dataField="reason">Reason</TableHeaderColumn>
       <TableHeaderColumn width="15%" dataField="message">Message</TableHeaderColumn>
       <TableHeaderColumn width="15%" dataField="updatedAt" dataFormat={toLocaleDate}>Updated</TableHeaderColumn>
@@ -106,7 +106,7 @@ export class DiaryTable extends Component {
         <TableHeaderColumn dataField="diaryId" isKey hidden>ID</TableHeaderColumn>
         <TableHeaderColumn width="12%" dataField="dueStatus" dataFormat={this.statusFormatter}>Status</TableHeaderColumn>
         <TableHeaderColumn width="12%" dataField="due" dataFormat={toLocaleDate}>Due</TableHeaderColumn>
-        <TableHeaderColumn width="12%" dataField="assignee" dataFormat={val => val.userName}>Assignee</TableHeaderColumn>
+        <TableHeaderColumn width="12%" dataField="assignee" dataFormat={val => val.displayName}>Assignee</TableHeaderColumn>
         <TableHeaderColumn width="12%" dataField="reason">Reason</TableHeaderColumn>
         <TableHeaderColumn width="12%" dataField="message">Message</TableHeaderColumn>
         <TableHeaderColumn width="12%" dataField="updatedAt" dataFormat={toLocaleDate}>Updated</TableHeaderColumn>

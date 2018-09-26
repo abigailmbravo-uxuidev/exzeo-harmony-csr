@@ -47,13 +47,11 @@ export class DiaryModal extends Component {
 
   submitDiary = async (data, dispatch, props) => {
     try {
-      console.log(data);
       const { assignee: { id }, ...submitData } = data;
       const selectedAssignee = USERS.filter(u => String(u.answer) === String(id))[0];
       const assignee = { id: selectedAssignee.answer, displayName: selectedAssignee.label, type: selectedAssignee.type };
       await props.submitDiaryAction({ ...submitData, assignee }, props);
     } catch (error) {
-      console.log(error);
       props.setAppErrorAction({ message: error });
     } finally {
       this.handleCancel();
