@@ -18,8 +18,8 @@ class DiaryPolling extends Component {
       this.visibilityChange = 'webkitvisibilitychange';
     }
 
-    // this.fetchDiaries();
-    // this.attemptFetchDiaries();
+    this.fetchDiaries();
+    this.attemptFetchDiaries();
   }
 
   componentWillUnmount() {

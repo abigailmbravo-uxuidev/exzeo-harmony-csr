@@ -32,7 +32,7 @@ export function fetchDiaries(filter) {
     try {
       const response = await serviceRunner.callService(config);
       console.log(response);
-      dispatch(setDiaries(response.data));
+      dispatch(setDiaries(response.data.result));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
