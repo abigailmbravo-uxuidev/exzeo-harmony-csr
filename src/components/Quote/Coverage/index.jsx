@@ -193,13 +193,12 @@ export const handleFormSubmit = async (data, dispatch, props) => {
     : submitData.pH2phone2;
 
   try {
-    props.setAppState(MODEL_NAME, '', { ...props.appState.data, submitting: true });
     await props.startWorkflow(MODEL_NAME, {
       quoteId: props.quoteData._id,
       ...submitData
     });
 
-    props.getQuote(props.quoteData._id, 'coverage');
+    await props.getQuote(props.quoteData._id, 'coverage');
   } catch (error) {
     props.setAppError(error);
   } finally {
@@ -341,7 +340,8 @@ export class Coverage extends Component {
       pristine,
       questions,
       quoteData,
-      sinkholePerilCoverage
+      sinkholePerilCoverage,
+      submitting
     } = this.props;
 
     if (!quoteData) {
@@ -417,7 +417,7 @@ export class Coverage extends Component {
             <button data-test="coverage-reset" tabIndex="0" aria-label="reset-btn form-coverage" className="btn btn-secondary" type="button" form="Coverage" onClick={() => this.props.reset('Coverage')}>
               Reset
             </button>
-            <button data-test="coverage-submit" tabIndex="0" aria-label="submit-btn form-coverage" className="btn btn-primary" type="submit" form="Coverage" disabled={pristine || editingDisabled}>
+            <button data-test="coverage-submit" tabIndex="0" aria-label="submit-btn form-coverage" className="btn btn-primary" type="submit" form="Coverage" disabled={pristine || editingDisabled || submitting}>
               Update
             </button>
           </div>
