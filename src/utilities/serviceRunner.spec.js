@@ -1,5 +1,7 @@
-import * as serviceRunner from './serviceRunner';
 import sinon from 'sinon';
+
+import handleError from './handleError';
+import { callService } from './serviceRunner';
 
 describe('Service runner tests', () => {
 
@@ -7,35 +9,35 @@ describe('Service runner tests', () => {
     it('should handle being improperly called (without an error)', () => {
       const error = null;
 
-      const result = serviceRunner.handleError(error);
+      const result = handleError(error);
       expect(result).toHaveProperty('message', 'An error occurred that was not handled properly.')
     });
 
     it('should return an error object with a message property', () => {
       const error = 'Whoops';
 
-      const result = serviceRunner.handleError(error);
+      const result = handleError(error);
       expect(result).toHaveProperty('message', 'Whoops');
     });
 
     it('should return response data if passed a response as error', () => {
       const error = { response: { data: 'Whoops'} };
 
-      const result = serviceRunner.handleError(error);
+      const result = handleError(error);
       expect(result).toEqual({ message: error.response.data });
     });
 
     it('should return error intact if not passed a response object', () => {
       const error = 'Whoops';
 
-      const result = serviceRunner.handleError(error);
+      const result = handleError(error);
       expect(result).toEqual({ message: error });
     });
 
     it('Should append a message to the error object if there was not one already', () => {
       const error = { foo: 'Whoops' };
 
-      const result = serviceRunner.handleError(error);
+      const result = handleError(error);
       expect(result).toHaveProperty('message', 'There was an error.')
     });
   });
@@ -62,7 +64,7 @@ describe('Service runner tests', () => {
       server.respondWith([200, { 'Content-Type': 'application/json' }, '[{"message": "This is a test."}]']);
       setTimeout(() => server.respond(), 0);
 
-      const response = await serviceRunner.callService(config);
+      const response = await callService(config);
 
       expect(response.data).toEqual(responseObj);
     });
@@ -74,7 +76,7 @@ describe('Service runner tests', () => {
 
       expect.assertions(1);
       try {
-        await serviceRunner.callService(config);
+        await callService(config);
       } catch (e) {
         expect(e).toEqual({"message": "Whoops"});
       }

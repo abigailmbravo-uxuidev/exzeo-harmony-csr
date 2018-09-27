@@ -308,6 +308,7 @@ const quoteData = {
 describe('Testing MailingAddressBilling component', () => {
   it('should test connected app', () => {
     const initialState = {
+      quoteState: { quote: quoteData },
       quoteData: {
         billToId: '598b4570efb84c0013f7ed3c'
       },
@@ -355,20 +356,12 @@ describe('Testing MailingAddressBilling component', () => {
       quoteData: {
         rating: { worksheet: { fees: {} } }
       },
-      actions: {
-        appStateActions: {
-          setAppState() {}
-        },
-        quoteStateActions: {
-          getLatestQuote() {}
-        },
-        cgActions: {
-          batchCompleteTask() { return Promise.resolve(() => {}); }
-        },
-        serviceActions: {
-          getBillingOptions() { return Promise.resolve(() => {}); }
-        }
-      },
+      getQuoteAction() { return Promise.resolve(() => {}); },
+      setAppErrorAction() {},
+      setAppStateAction() {},
+      getLatestQuoteAction() {},
+      startWorkflowAction() { return Promise.resolve(() => {}); },
+      getBillingOptionsAction() { return Promise.resolve(() => {}); },
       fieldValues: {},
       dispatch: store.dispatch,
       appState: {
@@ -398,13 +391,17 @@ describe('Testing MailingAddressBilling component', () => {
             modelInstanceId: '123',
             model: {
               variables: [
-                { name: 'retrieveQuote',
+                {
+                  name: 'retrieveQuote',
                   value: {
                     result: quoteData
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: quoteData
-                    } }]
+                  }
+                }, {
+                  name: 'getQuoteBeforePageLoop',
+                  value: {
+                    result: quoteData
+                  }
+                }]
             },
             uiQuestions: []
           }
@@ -429,13 +426,17 @@ describe('Testing MailingAddressBilling component', () => {
             modelInstanceId: '123',
             model: {
               variables: [
-                { name: 'retrieveQuote',
+                {
+                  name: 'retrieveQuote',
                   value: {
                     result: quoteData
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: quoteData
-                    } }]
+                  }
+                }, {
+                  name: 'getQuoteBeforePageLoop',
+                  value: {
+                    result: quoteData
+                  }
+                }]
             },
             uiQuestions: []
           }
@@ -464,17 +465,11 @@ describe('Testing MailingAddressBilling component', () => {
       },
       fieldQuestions: [],
       dispatch: store.dispatch,
-      actions: {
-        quoteStateActions: {
-          getLatestQuote() {}
-        },
-        appStateActions: {
-          setAppState() { }
-        },
-        cgActions: {
-          batchCompleteTask() { return Promise.resolve(() => {}); }
-        }
-      },
+      setAppErrorAction() {},
+      setAppStateAction() {},
+      getLatestQuoteAction() {},
+      startWorkflowAction() { return Promise.resolve(() => {}); },
+      getBillingOptionsAction() { return Promise.resolve(() => {}); },
       appState: {
         data: {
           submitting: false
@@ -517,13 +512,17 @@ describe('Testing MailingAddressBilling component', () => {
             modelInstanceId: '123',
             model: {
               variables: [
-                { name: 'retrieveQuote',
+                {
+                  name: 'retrieveQuote',
                   value: {
                     result: quoteData
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: quoteData
-                    } }]
+                  }
+                }, {
+                  name: 'getQuoteBeforePageLoop',
+                  value: {
+                    result: quoteData
+                  }
+                }]
             },
             uiQuestions: []
           }
@@ -598,13 +597,17 @@ describe('Testing MailingAddressBilling component', () => {
             modelInstanceId: '123',
             model: {
               variables: [
-                { name: 'retrieveQuote',
+                {
+                  name: 'retrieveQuote',
                   value: {
                     result: quoteData
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: quoteData
-                    } }]
+                  }
+                }, {
+                  name: 'getQuoteBeforePageLoop',
+                  value: {
+                    result: quoteData
+                  }
+                }]
             },
             uiQuestions: []
           }
@@ -676,13 +679,17 @@ describe('Testing MailingAddressBilling component', () => {
             modelInstanceId: '123',
             model: {
               variables: [
-                { name: 'retrieveQuote',
+                {
+                  name: 'retrieveQuote',
                   value: {
                     result: quoteData
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: quoteData
-                    } }]
+                  }
+                }, {
+                  name: 'getQuoteBeforePageLoop',
+                  value: {
+                    result: quoteData
+                  }
+                }]
             },
             uiQuestions: []
           }
@@ -759,13 +766,17 @@ describe('Testing MailingAddressBilling component', () => {
             modelInstanceId: '123',
             model: {
               variables: [
-                { name: 'retrieveQuote',
+                {
+                  name: 'retrieveQuote',
                   value: {
                     result: quoteData
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: quoteData
-                    } }]
+                  }
+                }, {
+                  name: 'getQuoteBeforePageLoop',
+                  value: {
+                    result: quoteData
+                  }
+                }]
             },
             uiQuestions: []
           }
