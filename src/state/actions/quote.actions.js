@@ -1,5 +1,5 @@
 import * as types from './actionTypes';
-import { startWorflow } from '../../utilities/choreographer';
+import { startWorkflow } from '../../utilities/choreographer';
 import * as errorActions from './error.actions';
 
 export function setQuote(quote) {
@@ -12,7 +12,7 @@ export function setQuote(quote) {
 export function getQuote(quoteId, currentPage) {
   return async (dispatch) => {
     try {
-      const quoteData = await startWorflow('csrGetQuoteWithUnderwriting', { quoteId, currentPage });
+      const quoteData = await startWorkflow('csrGetQuoteWithUnderwriting', { quoteId, currentPage });
       dispatch(setQuote(quoteData));
       return quoteData;
     } catch (error) {

@@ -139,7 +139,7 @@ export const handleFormSubmit = async (data, dispatch, props) => {
       billToType
     });
 
-    getQuoteAction(quoteData._id, 'mailing');
+    await getQuoteAction(quoteData._id, 'mailing');
   } catch (error) {
     setAppErrorAction(error);
   } finally {
