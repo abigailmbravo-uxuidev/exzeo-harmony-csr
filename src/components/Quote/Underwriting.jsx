@@ -55,7 +55,7 @@ export const handleFormSubmit = async (data, dispatch, props) => {
       noPriorInsuranceSurcharge
     });
 
-    getQuoteAction(quoteData._id, 'underwriting');
+    await getQuoteAction(quoteData._id, 'underwriting');
   } catch (error) {
     setAppErrorAction(error);
   } finally {

@@ -86,7 +86,7 @@ export class AdditionalInterests extends Component {
         quoteId: quoteData._id,
         additionalInterests
       });
-      getQuoteAction(quoteData._id, 'additionalInterests');
+      await getQuoteAction(quoteData._id, 'additionalInterests');
     } catch (error) {
       setAppErrorAction(error);
     } finally {
