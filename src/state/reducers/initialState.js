@@ -15,7 +15,8 @@ export default {
   questions: {},
   quoteState: {
     quoteId: null,
-    update: false
+    update: false,
+    quote: {}
   },
   policyState: {
     policyID: '',
@@ -26,7 +27,7 @@ export default {
     endorsementHistory: [],
     paymentHistory: [],
     paymentOptions: [],
-    summaryLedger: {},
+    summaryLedger: {}
   },
   search: {
     loading: false,

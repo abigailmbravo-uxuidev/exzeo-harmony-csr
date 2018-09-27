@@ -29,8 +29,10 @@ describe('Testing QuoteBase component', () => {
 
   it('should test connected app', () => {
     const initialState = {
-      service: {
+      quoteState: {
         quote: {}
+      },
+      service: {
       },
       cg: {
         bb: {

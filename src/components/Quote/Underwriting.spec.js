@@ -439,6 +439,9 @@ describe('Testing Underwriting component', () => {
       match: { params: {} },
       fieldQuestions: [],
       dispatch: store.dispatch,
+      getUnderwritingQuestionsAction() {},
+      setAppStateAction() {},
+      setAppErrorAction() {},
       actions: {
         quoteStateActions: {
           getLatestQuote() {}
@@ -455,8 +458,7 @@ describe('Testing Underwriting component', () => {
           submitting: false
         }
       },
-      quoteData: {
-      }
+      quoteData
     };
 
     handleFormSubmit({
@@ -516,6 +518,9 @@ describe('Testing Underwriting component', () => {
       questions: underwritingQuestions,
       fieldQuestions: [],
       dispatch: store.dispatch,
+      getUnderwritingQuestionsAction() {},
+      setAppStateAction() { },
+      getQuoteAction() { return Promise.resolve(() => {}); },
       actions: {
         quoteStateActions: {
           getLatestQuote() {}
@@ -586,9 +591,9 @@ describe('Testing Underwriting component', () => {
   it('should test handleGetQuoteData', () => {
     const initialState = {
       service: {
-        quote: quoteData,
         underwritingQuestions
       },
+      quoteState: { quote: quoteData },
       cg: {
         bb: {
           data: {

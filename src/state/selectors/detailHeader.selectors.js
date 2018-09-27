@@ -19,7 +19,7 @@ const defaultEntity = {
 
 const getPolicy = state => state.policyState.policy;
 const getSummaryLedger = state => state.policyState.summaryLedger;
-const getQuote = state => state.service.quote || defaultObject;
+const getQuote = state => state.quoteState.quote || defaultObject;
 
 export const getPolicyDetails = createSelector(
   [getPolicy, getSummaryLedger],

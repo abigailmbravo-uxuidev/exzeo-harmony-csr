@@ -3,22 +3,23 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { reduxForm, getFormValues } from 'redux-form';
+
 import { ADDITIONAL_INTERESTS } from '../../constants/additionalInterests';
 import { getAnswers } from '../../utilities/forms';
 import { getMortgageeOrderAnswers } from '../../utilities/additionalInterests';
-import { batchCompleteTask } from '../../state/actions/cg.actions';
+import { startWorkflow } from '../../state/actions/cg.actions';
 import { getUIQuestions } from '../../state/actions/questions.actions';
 import { setAppState } from '../../state/actions/appState.actions';
-import { getLatestQuote } from '../../state/actions/quoteState.actions';
+import { setAppError } from '../../state/actions/error.actions';
+import { getQuote } from '../../state/actions/quote.actions';
 import { getBillingOptions, saveBillingInfo } from '../../state/actions/service.actions';
 import { getGroupedAdditionalInterests, getSortedAdditionalInterests, checkQuoteState } from '../../state/selectors/quote.selectors';
-
 import QuoteBaseConnect from '../../containers/Quote';
 import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';
 import AdditionalInterestCard from '../AdditionalInterestCard';
 
-const MODEL_NAME = 'csrQuote';
+const MODEL_NAME = 'csrAdditionalInterest';
 
 export class AdditionalInterests extends Component {
   state = {
@@ -31,39 +32,15 @@ export class AdditionalInterests extends Component {
   componentDidMount() {
     const {
       appState,
-      batchCompleteTask,
-      getLatestQuote,
-      getUIQuestions,
-      match,
-      setAppState
+      setAppStateAction,
+      getQuoteAction,
+      getUIQuestionsAction,
+      match: { params: { quoteId } }
     } = this.props;
-    const workflowId = match.params.workflowId;
 
-    getUIQuestions('additionalInterestsCSR');
-
-    if (workflowId) {
-      setAppState(MODEL_NAME, workflowId, {
-        ...appState.data,
-        submittingAI: true,
-        submitting: true,
-        selectedLink: 'additionalInterests'
-      });
-
-      const steps = [
-        { name: 'hasUserEnteredData', data: { answer: 'No' } },
-        { name: 'moveTo', data: { key: 'additionalInterests' } }
-      ];
-
-      batchCompleteTask(MODEL_NAME, workflowId, steps)
-        .then(() => {
-          getLatestQuote(true, match.params.quoteId);
-
-          setAppState(MODEL_NAME, workflowId, {
-            ...appState.data,
-            selectedLink: 'additionalInterests'
-          });
-        });
-    }
+    getUIQuestionsAction('additionalInterestsCSR');
+    getQuoteAction(quoteId, 'additionalInterests');
+    setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: false });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -79,70 +56,66 @@ export class AdditionalInterests extends Component {
         },
         totalPremium: nextProps.quoteData.rating.totalPremium
       };
-      nextProps.getBillingOptions(paymentOptions);
+      nextProps.getBillingOptionsAction(paymentOptions);
     }
 
     if (nextProps.billingOptions && !_.isEqual(this.props.billingOptions, nextProps.billingOptions) &&
     (nextProps.appState.data.addAdditionalInterestType === 'Bill Payer' || nextProps.appState.data.addAdditionalInterestType === 'Premium Finance')) {
       const billPayer = nextProps.billingOptions.options[0];
-      nextProps.saveBillingInfo(nextProps.quoteData._id, billPayer.billToType, billPayer.billToId, 'Annual');
+      nextProps.saveBillingInfoAction(nextProps.quoteData._id, billPayer.billToType, billPayer.billToId, 'Annual');
 
       // update billToType to BP
     } else if (nextProps.billingOptions && !_.isEqual(this.props.billingOptions, nextProps.billingOptions) &&
     (nextProps.appState.data.deleteAdditionalInterestType === 'Bill Payer' || nextProps.appState.data.deleteAdditionalInterestType === 'Premium Finance')) {
       // update billToType to PH
       const policyHolder = _.find(nextProps.billingOptions.options, bo => bo.billToType === 'Policyholder');
-      nextProps.saveBillingInfo(nextProps.quoteData._id, policyHolder.billToType, policyHolder.billToId, 'Annual');
+      nextProps.saveBillingInfoAction(nextProps.quoteData._id, policyHolder.billToType, policyHolder.billToId, 'Annual');
     }
   }
 
   handleAISubmit = async (additionalInterests) => {
-    const { appState, quoteData, batchCompleteTask, getLatestQuote, setAppState, match } = this.props;
-    const workflowId = match.params.workflowId;
+    const {
+      quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState, getQuoteAction
+    } = this.props;
 
     const { addAdditionalInterestType } = this.state;
 
-    const steps = [
-      {
-        name: 'hasUserEnteredData',
-        data: { answer: 'Yes' }
-      },
-      {
-        name: 'askadditionalInterests',
-        data: { additionalInterests }
-      },
-      {
-        name: 'moveTo',
-        data: { key: 'additionalInterests' }
-      }
-    ];
-
-    await batchCompleteTask(MODEL_NAME, workflowId, steps);
-    await getLatestQuote(true, quoteData._id);
-
-    // now update the workflow details so the recalculated rate shows
-    setAppState(
-      MODEL_NAME,
-      workflowId, {
-        ...appState.data,
-        selectedMortgageeOption: null,
-        addAdditionalInterestType,
-        deleteAdditionalInterestType: '',
-        submittingAI: false,
-        selectedLink: 'additionalInterests'
-      }
-    );
-
-    this.hideAdditionalInterestModal();
+    try {
+      setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: true });
+      await startWorkflowAction(MODEL_NAME, {
+        quoteId: quoteData._id,
+        additionalInterests
+      });
+      getQuoteAction(quoteData._id, 'additionalInterests');
+    } catch (error) {
+      setAppErrorAction(error);
+    } finally {
+      this.hideAdditionalInterestModal();
+      setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: false });
+      setAppStateAction(
+        MODEL_NAME,
+        '', {
+          ...appState.data,
+          selectedMortgageeOption: null,
+          addAdditionalInterestType,
+          deleteAdditionalInterestType: '',
+          submittingAI: false,
+          selectedLink: 'additionalInterests'
+        }
+      );
+    }
   };
 
+
   addAdditionalInterest = (type) => {
-    const { appState, setAppState, editingDisabled, match } = this.props;
+    const {
+      appState, setAppStateAction, editingDisabled
+    } = this.props;
     if (editingDisabled) return;
-    setAppState(
+    setAppStateAction(
       MODEL_NAME,
-      match.params.workflowId,
-      { ...appState.data }
+      '',
+      { ...appState.data, submitting: false }
     );
     // For now, hijacking appState calls with local state where we can.
     this.setState({
@@ -153,9 +126,11 @@ export class AdditionalInterests extends Component {
   };
 
   editAdditionalInterest = (ai) => {
-    const { appState, setAppState, editingDisabled, match } = this.props;
+    const {
+      appState, setAppStateAction, editingDisabled, match
+    } = this.props;
     if (editingDisabled) return;
-    setAppState(
+    setAppStateAction(
       MODEL_NAME,
       match.params.workflowId,
       { ...appState.data }
@@ -233,12 +208,11 @@ export class AdditionalInterests extends Component {
 
   deleteAdditionalInterest = async (selectedAdditionalInterest) => {
     const {
-      appState, quoteData, setAppState, batchCompleteTask, getLatestQuote, match
+      appState, quoteData, setAppStateAction
     } = this.props;
-    const workflowId = match.params.workflowId;
-    setAppState(
+    setAppStateAction(
       MODEL_NAME,
-      workflowId, {
+      '', {
         ...appState.data,
         deleteAdditionalInterestType: selectedAdditionalInterest.type,
         showAdditionalInterestModal: appState.data.showAdditionalInterestModal
@@ -247,7 +221,7 @@ export class AdditionalInterests extends Component {
     // For now, hijacking appState calls with local state where we can.
     this.setState({ isDeleting: true });
 
-    let additionalInterests = quoteData.additionalInterests || [];
+    const additionalInterests = quoteData.additionalInterests || [];
 
     // remove any existing items before submission
     const modifiedAIs = _.cloneDeep(additionalInterests);
@@ -258,44 +232,15 @@ export class AdditionalInterests extends Component {
       ai.order = index;
     });
 
-    const steps = [{
-      name: 'hasUserEnteredData',
-      data: { answer: 'Yes' }
-    },
-    {
-      name: 'askadditionalInterests',
-      data: { additionalInterests: modifiedAIs }
-    },
-    {
-      name: 'moveTo',
-      data: { key: 'additionalInterests' }
-    }
-    ];
+    await this.handleAISubmit(modifiedAIs);
 
-    return batchCompleteTask(MODEL_NAME, workflowId, steps)
-      .then(() => {
-        getLatestQuote(true, quoteData._id);
-
-        additionalInterests = modifiedAIs;
-        setAppState(
-          MODEL_NAME,
-          workflowId, {
-            ...appState.data,
-            selectedLink: 'additionalInterests',
-            deleteAdditionalInterestType: selectedAdditionalInterest.type,
-            selectedMortgageeOption: null
-          }
-        );
-
-        // For now, hijacking appState calls with local state where we can.
-        this.setState({
-          isDeleting: false,
-          showAdditionalInterestModal: false,
-          addAdditionalInterestType: '',
-          isEditingAI: false,
-          selectedAI: {}
-        });
-      });
+    this.setState({
+      isDeleting: false,
+      showAdditionalInterestModal: false,
+      addAdditionalInterestType: '',
+      isEditingAI: false,
+      selectedAI: {}
+    });
   };
 
   editAIOnEnter = (event, ai) => {
@@ -334,37 +279,32 @@ export class AdditionalInterests extends Component {
                 <button
                   className="btn btn-sm btn-secondary"
                   onClick={() => this.addAdditionalInterest('Mortgagee')}
-                  disabled={groupedAdditionalInterests[ADDITIONAL_INTERESTS.mortgagee].length > 3 || editingDisabled}
-                  type="button"
-                > <div><i className="fa fa-plus" /><span>Mortgagee</span></div>
+                  disabled={groupedAdditionalInterests[ADDITIONAL_INTERESTS.mortgagee].length > 2 || editingDisabled}
+                  type="button"> <div><i className="fa fa-plus" /><span>Mortgagee</span></div>
                 </button>
                 <button
                   className="btn btn-sm btn-secondary"
                   onClick={() => this.addAdditionalInterest('Additional Insured')}
                   disabled={(groupedAdditionalInterests[ADDITIONAL_INTERESTS.additionalInsured].length > 1) || editingDisabled}
-                  type="button"
-                ><div><i className="fa fa-plus" /><span>Additional Insured</span></div>
+                  type="button"><div><i className="fa fa-plus" /><span>Additional Insured</span></div>
                 </button>
                 <button
                   className="btn btn-sm btn-secondary"
                   onClick={() => this.addAdditionalInterest('Additional Interest')}
                   disabled={(groupedAdditionalInterests[ADDITIONAL_INTERESTS.additionalInterest].length > 1) || editingDisabled}
-                  type="button"
-                ><div><i className="fa fa-plus" /><span>Additional Interest</span></div>
+                  type="button"><div><i className="fa fa-plus" /><span>Additional Interest</span></div>
                 </button>
                 <button
                   onClick={() => this.addAdditionalInterest('Premium Finance')}
                   disabled={(groupedAdditionalInterests[ADDITIONAL_INTERESTS.premiumFinance].length > 0 || groupedAdditionalInterests[ADDITIONAL_INTERESTS.billPayer].length > 0) || editingDisabled}
                   className="btn btn-sm btn-secondary"
-                  type="button"
-                ><div><i className="fa fa-plus" /><span>Premium Finance</span></div>
+                  type="button"><div><i className="fa fa-plus" /><span>Premium Finance</span></div>
                 </button>
                 <button
                   className="btn btn-sm btn-secondary"
                   onClick={() => this.addAdditionalInterest('Bill Payer')}
                   disabled={(groupedAdditionalInterests[ADDITIONAL_INTERESTS.billPayer].length > 0 || groupedAdditionalInterests[ADDITIONAL_INTERESTS.premiumFinance].length > 0) || editingDisabled}
-                  type="button"
-                ><div><i className="fa fa-plus" /><span>Bill Payer</span></div>
+                  type="button"><div><i className="fa fa-plus" /><span>Bill Payer</span></div>
                 </button>
               </div>
               <div className="results-wrapper">
@@ -374,8 +314,7 @@ export class AdditionalInterests extends Component {
                       key={ai._id}
                       ai={ai}
                       handleOnEnter={this.editAIOnEnter}
-                      handleClick={this.editAdditionalInterest}
-                    />
+                      handleClick={this.editAdditionalInterest} />
                   ))}
                 </ul>
               </div>
@@ -392,8 +331,7 @@ export class AdditionalInterests extends Component {
               initialValues={this.initAdditionalInterestModal()}
               isDeleting={this.state.isDeleting}
               isEditing={this.state.isEditingAI}
-              selectedAI={this.state.selectedAI}
-            />
+              selectedAI={this.state.selectedAI} />
           }
         </div>
         <div className="basic-footer">
@@ -420,19 +358,20 @@ const mapStateToProps = state => ({
   editingDisabled: checkQuoteState(state),
   fieldValues: getFormValues('AdditionalInterests')(state) || defaultObj,
   questions: state.questions,
-  quoteData: state.service.quote || defaultObj,
+  quoteData: state.quoteState.quote || defaultObj,
   sortedAdditionalInterests: getSortedAdditionalInterests(state),
   groupedAdditionalInterests: getGroupedAdditionalInterests(state),
   tasks: state.cg
 });
 
 export default connect(mapStateToProps, {
-  batchCompleteTask,
-  getUIQuestions,
-  setAppState,
-  getBillingOptions,
-  saveBillingInfo,
-  getLatestQuote
+  startWorkflowAction: startWorkflow,
+  getUIQuestionsAction: getUIQuestions,
+  setAppStateAction: setAppState,
+  getBillingOptionsAction: getBillingOptions,
+  saveBillingInfoAction: saveBillingInfo,
+  getQuoteAction: getQuote,
+  setAppErrorAction: setAppError
 })(reduxForm({
   form: 'AdditionalInterests',
   enableReinitialize: true

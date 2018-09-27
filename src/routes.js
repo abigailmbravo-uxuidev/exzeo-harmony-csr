@@ -132,15 +132,14 @@ class Routes extends Component {
               <Route exact path="/agency" render={props => <SearchAgency auth={auth} {...props} />} />
               <Route exact path="/diaries" render={props => <SearchDiaries auth={auth} {...props} />} />
               <Route path="/policy/:policyNumber" render={props => <PolicyModule auth={auth} {...props} />} />
-              <Route exact path="/quote/new/:stateCode/:propertyId" render={props => <QuoteLanding auth={auth} newQuote {...props} />} />
-              <Route exact path="/quote/:quoteId" render={props => <QuoteLanding auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/coverage/:workflowId" render={props => <QuoteCoverage auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/billing/:workflowId" render={props => <QuoteMailingAddressBilling auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/notes/:workflowId" render={props => <QuoteNotesFiles auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/summary/:workflowId" render={props => <QuoteSummary auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/additionalInterests/:workflowId" render={props => <AdditionalInterests auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/underwriting/:workflowId" render={props => <QuoteUnderwriting auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/application/:workflowId" render={props => <QuoteApplication auth={auth} {...props} />} />
+              <Route exact path="/quote/new/:stateCode/:propertyId" render={props => <QuoteLanding auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/coverage" render={props => <QuoteCoverage auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/billing" render={props => <QuoteMailingAddressBilling auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/notes" render={props => <QuoteNotesFiles auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/summary" render={props => <QuoteSummary auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/additionalInterests" render={props => <AdditionalInterests auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/underwriting" render={props => <QuoteUnderwriting auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/application" render={props => <QuoteApplication auth={auth} {...props} />} />
               <Route exact path="/agency/:agencyCode/staff" render={props => <AgencyStaff auth={auth} {...props} />} />
               <Route exact path="/reports" render={props => <Reports auth={auth} {...props} />} />
               <Route exact path="/login" render={props => <LoginPage auth={auth} {...props} />} />

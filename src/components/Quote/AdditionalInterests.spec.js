@@ -334,11 +334,12 @@ describe('Testing AdditionalInterests component', () => {
     const sortedAdditionalInterests = getSortedAdditionalInterests(state);
     const props = {
       billingOptions: {},
-      saveBillingInfo() {},
-      getBillingOptions() {},
-      setAppState() {},
-      batchCompleteTask() { return Promise.resolve(() => {}); },
-      getLatestQuote() {},
+      saveBillingInfoAction() {},
+      getBillingOptionsAction() {},
+      setAppStateAction() {},
+      setAppErrorAction() {},
+      batchCompleteTaskAction() { return Promise.resolve(() => {}); },
+      getQuoteAction() {},
       appState: {
         instanceId: '1245',
         data: {
@@ -349,7 +350,7 @@ describe('Testing AdditionalInterests component', () => {
       groupedAdditionalInterests,
       sortedAdditionalInterests,
       editingDisabled: false,
-      getUIQuestions() {},
+      getUIQuestionsAction() {},
       tasks: {},
       match: { params: {} }
     };

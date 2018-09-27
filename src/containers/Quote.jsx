@@ -61,7 +61,7 @@ QuoteBase.propTypes = {
 const mapStateToProps = state => (
   {
     appState: state.appState,
-    quoteData: state.service.quote || {}
+    quoteData: state.quoteState.quote || {}
   }
 );
 

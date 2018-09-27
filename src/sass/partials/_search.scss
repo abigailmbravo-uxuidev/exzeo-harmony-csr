@@ -444,6 +444,55 @@
               flex-grow: 1;
               flex-shrink: 1;
               margin-right: $padding;
+
+              .Select {
+                width: 100%;
+                height: 2.375rem;
+                margin-bottom: 0;
+
+                .Select-control {
+                  width: 100%;
+                  height: 2.375rem;
+                  background-color: $white;
+
+                  .Select-arrow-zone {
+                    &:after {
+                      height: 2.375rem;
+                    }
+                  }
+
+                  .Select-clear-zone {
+                    height: 2.375rem;
+
+                    .Select-clear {
+                      height: 2.375rem;
+                    }
+                  }
+
+                  .Select-multi-value-wrapper {
+                    .Select-value {
+                      height: 2.375rem;
+
+                      .Select-value-label {
+                        height: 2.375rem;
+                        line-height: 2.375rem;
+                      }
+                    }
+
+                    .Select-input {
+                      height: 2.25rem;
+                    }
+                  }
+                }
+
+                .Select-menu-outer {
+                  top: 2.375rem;
+                }
+              }
+
+              .Select-value-label {
+                line-height: 2.375rem;
+              }
             }
 
             &.effectiveDate {

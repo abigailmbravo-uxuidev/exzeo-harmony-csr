@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+
 import QuoteBaseConnect from '../../containers/Quote';
 import * as appStateActions from '../../state/actions/appState.actions';
 import * as serviceActions from '../../state/actions/service.actions';
@@ -13,20 +14,22 @@ const MODEL_NAME = 'csrQuote';
 
 export class NotesFiles extends Component {
   componentDidMount() {
-    const { quoteData, actions, match, appState } = this.props;
+    const {
+      quoteData, actions, match, appState
+    } = this.props;
     const workflowId = match.params.workflowId;
 
     actions.appStateActions.setAppState(
-      MODEL_NAME, workflowId,
+      MODEL_NAME, '',
       {
         ...appState.data,
         submitting: true
       }
     );
     if (quoteData && quoteData.quoteNumber) {
-      actions.serviceActions.getNotes(quoteData.quoteNumber, quoteData.quoteNumber).then(() => {
+      actions.serviceActions.getNotes(quoteData.quoteNumber).then(() => {
         actions.appStateActions.setAppState(
-          MODEL_NAME, workflowId,
+          MODEL_NAME, '',
           {
             ...appState.data,
             submitting: false
@@ -36,7 +39,7 @@ export class NotesFiles extends Component {
     } else {
       actions.serviceActions.getQuote(match.params.quoteId)
         .then((quoteData) => {
-          actions.serviceActions.getNotes(quoteData.quoteNumber, quoteData.quoteNumber);
+          actions.serviceActions.getNotes(quoteData.quoteNumber);
           actions.appStateActions.setAppState(
             MODEL_NAME, workflowId,
             {
@@ -72,7 +75,7 @@ NotesFiles.propTypes = {
 const mapStateToProps = state => ({
   appState: state.appState,
   notes: state.service.notes,
-  quoteData: state.service.quote || {},
+  quoteData: state.quoteState.quote || {},
   error: state.error
 });
 

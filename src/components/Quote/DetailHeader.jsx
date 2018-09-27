@@ -11,13 +11,6 @@ import SectionSingle from '../DetailSectionSingle';
 import MapLink from '../MapLink';
 
 export class DetailHeader extends Component {
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.quoteState && nextProps.quoteState.update && nextProps.quoteState.quoteId) {
-      this.props.actions.serviceActions.getQuote(nextProps.quoteState.quoteId);
-      this.props.actions.quoteStateActions.getLatestQuote(false, nextProps.quoteState.quoteId);
-    }
-  }
-
   handleSelectPolicy = () => {
     const { quoteData } = this.props;
     if (!quoteData.policyNumber) return;
@@ -120,8 +113,8 @@ const mapStateToProps = state => ({
   quoteState: state.quoteState,
   tasks: state.cg,
   appState: state.appState,
-  quoteData: state.service.quote,
-  quoteDetails: getQuoteDetails(state)
+  quoteDetails: getQuoteDetails(state),
+  quoteData: state.quoteState.quote
 });
 
 const mapDispatchToProps = dispatch => ({

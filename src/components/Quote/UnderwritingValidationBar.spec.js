@@ -68,9 +68,11 @@ const quoteData = {
     _id: '5866c036a46eb72908f3f548'
   },
   underwritingExceptions: [
-    { _id: 'name1', canOverride: true, fields: [{name: 'rating.netPremium', value: 'null'}] },
-    { _id: 'name2', canOverride: false, fields: [{name: 'rating.netPremium', value: 'null'}] },
-    { _id: 'name3', canOverride: false, fields: [{name: 'rating.netPremium', value: 'null'}], action: 'Missing Info', }
+    { _id: 'name1', canOverride: true, fields: [{ name: 'rating.netPremium', value: 'null' }] },
+    { _id: 'name2', canOverride: false, fields: [{ name: 'rating.netPremium', value: 'null' }] },
+    {
+      _id: 'name3', canOverride: false, fields: [{ name: 'rating.netPremium', value: 'null' }], action: 'Missing Info'
+    }
   ],
   underwritingAnswers: {
     noPriorInsuranceSurcharge: {
@@ -311,7 +313,7 @@ const quoteData = {
 describe('Testing UnderwritingValidationBar component', () => {
   it('should test connected app', () => {
     const initialState = {
-      service: {
+      quoteState: {
         quote: quoteData
       },
       cg: {
@@ -346,12 +348,12 @@ describe('Testing UnderwritingValidationBar component', () => {
     const store = mockStore(initialState);
     const props = {
       exceptions: {
-        overridableExceptions: [ quoteData.underwritingExceptions[0] ],
-        nonOverridableExceptions: [ quoteData.underwritingExceptions[1] ],
-        warnings: [ quoteData.underwritingExceptions[2] ],
+        overridableExceptions: [quoteData.underwritingExceptions[0]],
+        nonOverridableExceptions: [quoteData.underwritingExceptions[1]],
+        warnings: [quoteData.underwritingExceptions[2]]
       },
       saveUnderwritingExceptions() { return Promise.resolve(() => {}); },
-      getLatestQuote() {},
+      getQuote() {},
       handleSubmit: fn => fn,
       quoteData: {
         underwritingExceptions: [{ _id: 'name', canOverride: true, fields: [{ name: 'rating.netPremium', value: 'null' }] }],
@@ -387,10 +389,10 @@ describe('Testing getGroupedExceptions', () => {
     const exceptions = getGroupedExceptions(localQuoteData);
 
     expect(exceptions.warnings.length).toEqual(1);
-    expect(exceptions.warnings[0]._id).toEqual('name3')
+    expect(exceptions.warnings[0]._id).toEqual('name3');
     expect(exceptions.overridableExceptions.length).toEqual(1);
-    expect(exceptions.overridableExceptions[0]._id).toEqual('name1')
+    expect(exceptions.overridableExceptions[0]._id).toEqual('name1');
     expect(exceptions.nonOverridableExceptions.length).toEqual(1);
-    expect(exceptions.nonOverridableExceptions[0]._id).toEqual('name2')
-  })
+    expect(exceptions.nonOverridableExceptions[0]._id).toEqual('name2');
+  });
 });

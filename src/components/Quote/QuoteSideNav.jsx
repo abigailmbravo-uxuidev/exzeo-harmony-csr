@@ -20,48 +20,6 @@ import UWconditions from '../Common/UWconditions';
  *  outside
  * }
  */
-const csrLinks = ({ quoteId, workflowId }) => [{
-  key: 'customerData',
-  link: `/quote/${quoteId}/coverage/${workflowId}`,
-  label: 'Coverage / Rating',
-  styleName: 'coverage',
-  exact: true
-}, {
-  key: 'underwriting',
-  link: `/quote/${quoteId}/underwriting/${workflowId}`,
-  label: 'Underwriting',
-  styleName: 'underwriting',
-  exact: true
-}, {
-  key: 'additionalInterests',
-  link: `/quote/${quoteId}/additionalInterests/${workflowId}`,
-  label: 'Additional Interests',
-  styleName: 'additionalInterests',
-  exact: true
-}, {
-  key: 'mailing',
-  link: `/quote/${quoteId}/billing/${workflowId}`,
-  label: 'Mailing / Billing',
-  styleName: 'billing',
-  exact: true
-}, {
-  key: 'notes',
-  link: `/quote/${quoteId}/notes/${workflowId}`,
-  label: 'Notes / Files',
-  styleName: 'notes',
-  exact: true
-}, {
-  key: 'summary',
-  link: `/quote/${quoteId}/summary/${workflowId}`,
-  label: 'Quote Summary',
-  styleName: 'quote-summary'
-}, {
-  key: 'application',
-  link: `/quote/${quoteId}/application/${workflowId}`,
-  label: 'Application',
-  styleName: 'application',
-  exact: true
-}];
 
 export const newDiary = (props) => {
   const { quoteData: { _id } } = props;
@@ -72,6 +30,55 @@ export const newDiary = (props) => {
 };
 export const newNote = (props) => {
   props.actions.uiActions.toggleNote({ noteType: 'Quote Note', documentId: props.quoteData.quoteNumber });
+};
+
+const csrLinks = ({ quoteId }) => {
+  return [{
+    key: 'customerData',
+    link: `/quote/${quoteId}/coverage`,
+    label: 'Coverage / Rating',
+    styleName: 'coverage',
+    exact: true
+  }, {
+    key: 'underwriting',
+    link: `/quote/${quoteId}/underwriting`,
+    label: 'Underwriting',
+    styleName: 'underwriting',
+    exact: true
+  }, {
+    key: 'additionalInterests',
+    link: `/quote/${quoteId}/additionalInterests`,
+    label: 'Additional Interests',
+    styleName: 'additionalInterests',
+    exact: true
+  }, {
+    key: 'mailing',
+    link: `/quote/${quoteId}/billing`,
+    label: 'Mailing / Billing',
+    styleName: 'billing',
+    exact: true
+  }, {
+    key: 'notes',
+    link: `/quote/${quoteId}/notes`,
+    label: 'Notes / Files',
+    styleName: 'notes',
+    exact: true
+  }, {
+    key: 'summary',
+    link: `/quote/${quoteId}/summary`,
+    label: 'Quote Summary',
+    styleName: 'quote-summary'
+  }, {
+    key: 'application',
+    link: `/quote/${quoteId}/application`,
+    label: 'Application',
+    styleName: 'application',
+    exact: true
+  }];
+};
+
+export const NewNoteFileUploaderPopup = (props) => {
+  props.actions.newNoteActions.toggleNote({ noteType: 'Quote Note', documentId: props.quoteData.quoteNumber });
 };
 
 export const UWconditionsPopup = (props) => {
@@ -137,7 +144,7 @@ const mapStateToProps = state => ({
   activateRedirectLink: state.appState.data.activateRedirectLink,
   activateRedirect: state.appState.data.activateRedirect,
   cg: state.cg,
-  quoteData: state.service.quote || {}
+  quoteData: state.quoteState.quote || {}
 });
 
 const mapDispatchToProps = dispatch => ({

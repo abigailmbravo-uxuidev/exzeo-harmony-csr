@@ -10,6 +10,9 @@ const mockStore = configureStore(middlewares);
 describe('Testing NotesFiles component', () => {
   it('should test connected app', () => {
     const initialState = {
+      quoteState: {
+        quote: {}
+      },
       service: {
         notes: []
       },

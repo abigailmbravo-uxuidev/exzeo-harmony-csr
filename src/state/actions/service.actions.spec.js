@@ -75,15 +75,17 @@ describe('Service Actions', () => {
 
   it('should call start getNotes', () => {
     const mockAdapter = new MockAdapter(axios);
-    const note = {
-      noteType: 'test',
-      noteContent: 'test',
-      contactType: 'Agent',
-      createdAt: new Date().getTime(),
-      noteAttachments: [],
-      createdBy: {},
-      updatedBy: {}
-    };
+    const notes = [
+      {
+        noteType: 'test',
+        noteContent: 'test',
+        contactType: 'Agent',
+        createdAt: new Date().getTime(),
+        attachments: [],
+        createdBy: {},
+        updatedBy: {}
+      }
+    ];
     const axiosNotesOptions = {
       method: 'POST',
       headers: {
@@ -111,13 +113,13 @@ describe('Service Actions', () => {
     };
 
     mockAdapter
-      .onPost(axiosNotesOptions.url).reply(200, { result: [note] })
-      .onPost(axiosDocsOptions.url).reply(200, { result: [note] });
+      .onPost(axiosNotesOptions.url).reply(200, { result: notes })
+      .onPost(axiosDocsOptions.url).reply(200, { result: notes });
 
     const initialState = {};
     const store = mockStore(initialState);
 
-    return serviceActions.getNotes('test')(store.dispatch)
+    return serviceActions.getNotes('test-01', 'test-01')(store.dispatch)
       .then(() => {
         expect(store.getActions()[0].type).toEqual(types.SERVICE_REQUEST);
       });
