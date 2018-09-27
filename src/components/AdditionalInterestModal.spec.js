@@ -11,7 +11,7 @@ const mockStore = configureStore(middlewares);
 describe('Testing AdditionalInterestModal component', () => {
   it('should test connected app', () => {
     const initialState = {
-      service: {
+      quoteState: {
         quote: {}
       },
       cg: {
@@ -186,7 +186,7 @@ describe('Testing AdditionalInterestModal component', () => {
 
   it('should test setMortgageeValues', () => {
     const initialState = {
-      service: { quote: {} },
+      quoteState: { quote: {} },
       cg: {
         bb: {
           data: {

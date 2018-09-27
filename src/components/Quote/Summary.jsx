@@ -1,82 +1,65 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, reset } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
-import * as cgActions from '../../state/actions/cg.actions';
+
 import TextField from '../Form/inputs/TextField';
-import * as appStateActions from '../../state/actions/appState.actions';
-import * as serviceActions from '../../state/actions/service.actions';
-import * as quoteStateActions from '../../state/actions/quoteState.actions';
+import { startWorkflow, batchCompleteTask } from '../../state/actions/cg.actions';
+import { setAppState } from '../../state/actions/appState.actions';
+import { setAppError } from '../../state/actions/error.actions';
+import { getAgents } from '../../state/actions/service.actions';
+import { getQuote } from '../../state/actions/quote.actions';
 import QuoteBaseConnect from '../../containers/Quote';
 import normalizePhone from '../Form/normalizePhone';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
 import applyRank from '../Common/additionalInterestRank';
 
-const MODEL_NAME = 'csrQuote';
+const MODEL_NAME = 'csrEmailQuoteSummary';
 
 const handlePrimarySecondaryTitles = (type, order) => `${type} ${order + 1}`;
 
 const handleInitialize = () => {
   const values = {};
-  values.emailAddr = '';
-  values.name = '';
+  values.emailAddress = '';
+  values.toName = '';
 
   return values;
 };
 
-export const handleFormSubmit = (data, dispatch, props) => {
-  const { appState, actions, match } = props;
-  const workflowId = match.params.workflowId;
-  actions.appStateActions.setAppState(MODEL_NAME, workflowId, { ...appState.data, submitting: true });
+export const handleFormSubmit = async (data, dispatch, props) => {
+  const {
+    quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState
+  } = props;
 
-  const steps = [
-    { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
-    { name: 'askEmail', data: { name: data.name, emailAddr: data.emailAddr } },
-    { name: 'moveTo', data: { key: 'summary' } }
-  ];
-
-  actions.cgActions.batchCompleteTask(MODEL_NAME, workflowId, steps)
-    .then(() => {
-      dispatch(reset('Summary'));
-      actions.appStateActions.setAppState(MODEL_NAME, workflowId,
-        { ...appState.data, selectedLink: 'summary', submitting: false }
-      );
+  try {
+    setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: true });
+    await startWorkflowAction(MODEL_NAME, {
+      quoteId: quoteData._id,
+      state: quoteData.state,
+      zip: quoteData.property.physicalAddress.zip,
+      emailAddress: data.emailAddress,
+      toName: data.toName
     });
+    dispatch(reset('Summary'));
+  } catch (error) {
+    setAppErrorAction(error);
+  } finally {
+    setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: false });
+  }
 };
 
 
 export class Summary extends Component {
-
   componentDidMount() {
-    const { actions, appState, match, quoteData } = this.props;
-    const workflowId = match.params.workflowId;
-    if (workflowId) {
-      actions.appStateActions.setAppState(MODEL_NAME, workflowId,
-        { ...appState.data, submitting: true, overrideAction: false }
-      );
-
-      const steps = [
-        { name: 'hasUserEnteredData', data: { answer: 'No' } },
-        { name: 'moveTo', data: { key: 'summary' } }
-      ];
-
-      actions.cgActions.batchCompleteTask(MODEL_NAME, workflowId, steps)
-        .then(() => {
-          actions.quoteStateActions.getLatestQuote(true, match.params.quoteId);
-          actions.appStateActions.setAppState(MODEL_NAME, workflowId,
-            { ...appState.data, selectedLink: 'summary' }
-          );
-        });
-    }
-
-    if (quoteData && quoteData.companyCode && quoteData.state) {
-      actions.serviceActions.getAgents('TTIC', 'FL');
-      actions.quoteStateActions.getLatestQuote(true, match.params.quoteId);
-    }
+    const {
+      appState, match: { params: { quoteId } }, setAppStateAction, getQuoteAction, getAgentsAction
+    } = this.props;
+    getAgentsAction('TTIC', 'FL');
+    getQuoteAction(quoteId, 'summary');
+    setAppStateAction(MODEL_NAME, '', { ...appState.data, submitting: false });
   }
 
   render() {
@@ -90,7 +73,8 @@ export class Summary extends Component {
       quoteData,
       handleSubmit,
       agents,
-      match
+      match,
+      submitting
     } = this.props;
 
     let selectedAgent = {};
@@ -108,15 +92,20 @@ export class Summary extends Component {
       applyRank(quoteData.additionalInterests);
     }
 
-    const filteredExceptions = _.filter(quoteData.underwritingExceptions, uw => !uw.overridden);
+    const filteredExceptions = _.filter(quoteData.underwritingExceptions, uw => !uw.overridden && uw.code !== '003');
 
+    if (!quoteData || !quoteData.underwritingExceptions) {
+      return <QuoteBaseConnect match={match} />;
+    }
+
+    const disablePage = filteredExceptions.length > 0;
 
     return (
       <QuoteBaseConnect match={match}>
         <div className="route-content summary workflow">
 
           <div className="scroll">
-            {quoteData && quoteData.underwritingExceptions && filteredExceptions.length > 0 &&
+            {disablePage &&
             <div className="detail-wrapper">
               <div className="messages">
                 <div className="message error">
@@ -125,7 +114,7 @@ export class Summary extends Component {
               </div>
             </div>
             }
-            {quoteData && quoteData.underwritingExceptions && filteredExceptions.length === 0 &&
+            {!disablePage &&
               <div className="detail-wrapper">
                 <h3>Quote Details</h3>
                 <div className="detail-group property-details">
@@ -142,7 +131,8 @@ export class Summary extends Component {
                         <dd>{property.physicalAddress.address1}</dd>
                         <dd>{property.physicalAddress.address2}</dd>
                         <dd>{`${property.physicalAddress.city}, ${property.physicalAddress.state} ${
-                        property.physicalAddress.zip}`}</dd>
+                        property.physicalAddress.zip}`}
+                        </dd>
                       </div>
                     </dl>
                     <dl className="property-information">
@@ -160,7 +150,7 @@ export class Summary extends Component {
                     <dl className="agent">
                       <div>
                         <dt>Agent</dt>
-                        <dd>{`${selectedAgent.firstName} ${selectedAgent.lastName}` }</dd>
+                        <dd>{`${selectedAgent.firstName} ${selectedAgent.lastName}`}</dd>
                       </div>
                     </dl>
                   </section>
@@ -252,14 +242,16 @@ export class Summary extends Component {
                         <dd>$ {normalizeNumbers(deductibles.hurricane.calculatedAmount)}</dd>
                       </div>
                     </dl>
-                    {deductibles.sinkhole && <dl>
-                      <div>
-                        <dt>Sinkhole Deductible</dt>
-                        <dd>{deductibles.sinkhole.amount}%</dd>
-                      </div>
-                    </dl>
+                    {deductibles.sinkhole &&
+                      <dl>
+                        <div>
+                          <dt>Sinkhole Deductible</dt>
+                          <dd>{deductibles.sinkhole.amount}%</dd>
+                        </div>
+                      </dl>
                 }
-                    {deductibles.sinkhole && <dl>
+                    {deductibles.sinkhole &&
+                    <dl>
                       <div>
                         <dt>Calculated Sinkhole Deductible</dt>
                         <dd>$ {normalizeNumbers(deductibles.sinkhole.calculatedAmount)}</dd>
@@ -346,15 +338,16 @@ export class Summary extends Component {
         </div>
         <div className="share-quote">
           <form id="Summary" onSubmit={handleSubmit(handleFormSubmit)} >
-            <TextField validations={['required']} label={'Email To Name'} styleName={'share-name'} name={'name'} />
-            <TextField validations={['required', 'email']} label={'Email Address'} styleName={'share-email'} name={'emailAddr'} />
+            <TextField validations={['required']} label="Email To Name" styleName="share-name" name="toName" />
+            <TextField validations={['required', 'email']} label="Email Address" styleName="share-email" name="emailAddress" />
             <button
-              tabIndex={'0'}
+              tabIndex="0"
               aria-label="submit-btn form-share"
-              disabled={this.props.appState.data.submitting}
+              disabled={submitting || disablePage}
               form="Summary"
-              className="btn btn-primary" type="submit"
-            >Share</button>
+              className="btn btn-primary"
+              type="submit">Share
+            </button>
           </form>
         </div>
         <div className="basic-footer">
@@ -370,6 +363,7 @@ Summary.contextTypes = {
 };
 
 Summary.propTypes = {
+  match: PropTypes.shape().isRequired,
   handleSubmit: PropTypes.func,
   appState: PropTypes.shape({
     modelName: PropTypes.string,
@@ -386,19 +380,15 @@ const mapStateToProps = state => ({
   initialValues: handleInitialize(state),
   showScheduleDateModal: state.appState.data ? state.appState.data.showScheduleDateModal : false,
   showShareConfirmationModal: state.appState.data ? state.appState.data.showShareConfirmationModal : false,
-  quoteData: state.service.quote || {}
+  quoteData: state.quoteState.quote || {}
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch),
-    cgActions: bindActionCreators(cgActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
-  }
-});
 
-// ------------------------------------------------
-// wire up redux form with the redux connect
-// ------------------------------------------------
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'Summary', enableReinitialize: true })(Summary));
+export default connect(mapStateToProps, {
+  batchCompleteTaskAction: batchCompleteTask,
+  startWorkflowAction: startWorkflow,
+  setAppStateAction: setAppState,
+  setAppErrorAction: setAppError,
+  getAgentsAction: getAgents,
+  getQuoteAction: getQuote
+})(reduxForm({ form: 'Summary', enableReinitialize: true })(Summary));

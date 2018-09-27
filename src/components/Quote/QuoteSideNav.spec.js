@@ -15,6 +15,7 @@ describe('Testing QuoteSideNav component', () => {
   it('should test connected app', () => {
     const initialState = {
       service: {},
+      quoteState: {},
       cg: {
         bb: {
           data: {
