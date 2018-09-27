@@ -76,11 +76,9 @@ export const startWorkflow = (modelName, data, dispatchAppState = true) => (disp
       const responseData = response.data.data;
       // check to see if the cg has returned an error as an ok
       checkCGError(responseData);
-      const instanceId = responseData.modelInstanceId;
       if (dispatchAppState) {
         return dispatch(batchActions([start(modelName, responseData),
-          errorActions.clearAppError(),
-          appStateActions.setAppState(modelName, instanceId, { isSubmitting: true })
+          errorActions.clearAppError()
         ]));
       }
       dispatch(errorActions.clearAppError());
