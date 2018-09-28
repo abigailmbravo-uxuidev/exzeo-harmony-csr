@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import QuoteBaseConnect from '../../containers/Quote';
 import * as appStateActions from '../../state/actions/appState.actions';
 import * as serviceActions from '../../state/actions/service.actions';
+import * as quoteActions from '../../state/actions/quote.actions';
 import * as errorActions from '../../state/actions/error.actions';
 import NoteList from '../Common/NoteList';
 import Footer from '../Common/Footer';
@@ -26,29 +27,12 @@ export class NotesFiles extends Component {
         submitting: true
       }
     );
-    if (quoteData && quoteData.quoteNumber) {
-      actions.serviceActions.getNotes(quoteData.quoteNumber).then(() => {
-        actions.appStateActions.setAppState(
-          MODEL_NAME, '',
-          {
-            ...appState.data,
-            submitting: false
-          }
-        );
-      });
-    } else {
-      actions.serviceActions.getQuote(match.params.quoteId)
-        .then((quoteData) => {
-          actions.serviceActions.getNotes(quoteData.quoteNumber);
-          actions.appStateActions.setAppState(
-            MODEL_NAME, workflowId,
-            {
-              ...appState.data,
-              submitting: false
-            }
-          );
-        });
-    }
+
+    actions.quoteActions.getQuote(match.params.quoteId, 'notes')
+      .then((quoteData) => actions.serviceActions.getNotes(quoteData.quoteNumber))
+      .then(() => actions.appStateActions.setAppState(
+        MODEL_NAME, '', { ...appState.data, submitting: false }
+      ));
   }
 
   render() {
@@ -83,6 +67,7 @@ const mapDispatchToProps = dispatch => ({
   actions: {
     appStateActions: bindActionCreators(appStateActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
+    quoteActions: bindActionCreators(quoteActions, dispatch),
     errorActions: bindActionCreators(errorActions, dispatch)
   }
 });
