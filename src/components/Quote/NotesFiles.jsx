@@ -16,9 +16,8 @@ const MODEL_NAME = 'csrQuote';
 export class NotesFiles extends Component {
   componentDidMount() {
     const {
-      quoteData, actions, match, appState
+      actions, match, appState
     } = this.props;
-    const workflowId = match.params.workflowId;
 
     actions.appStateActions.setAppState(
       MODEL_NAME, '',
