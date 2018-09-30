@@ -94,7 +94,7 @@ QuoteSummary.propTypes = {
 const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
-  quoteData: state.service.quote || {}
+  quoteData: state.quoteState.quote || {}
 });
 
 const mapDispatchToProps = dispatch => ({
