@@ -73,7 +73,9 @@ describe('Testing NotesFiles component', () => {
           getLatestQuote() {}
         },
         serviceActions: {
-          getNotes() {},
+          getNotes() {}
+        },
+        quoteActions: {
           getQuote() { return Promise.resolve(() => {}); }
         },
         appStateActions: {
