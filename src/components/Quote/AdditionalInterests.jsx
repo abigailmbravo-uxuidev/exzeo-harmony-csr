@@ -168,7 +168,7 @@ export class AdditionalInterests extends Component {
         const mortgageeOrderAnswers = getMortgageeOrderAnswers(questions, quoteData.additionalInterests);
         return {
           ...initialValues,
-          order: mortgageeOrderAnswers[0].answer
+          order: (Array.isArray(mortgageeOrderAnswers) && mortgageeOrderAnswers.length > 0) ? mortgageeOrderAnswers[0].answer : ''
         };
       }
       return {
