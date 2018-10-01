@@ -23,13 +23,13 @@ header {
 
     > .logo {
       display: block;
-      width: auto;
-      flex-shrink: 0;
       flex-grow: 0;
+      flex-shrink: 0;
+      width: auto;
 
       img {
-          width: auto;
-          height: 62px;
+        width: auto;
+        height: 62px;
       }
     }
 
@@ -61,7 +61,7 @@ header {
         color: $bright-blue;
         font-size: $font-size-h6;
         font-weight: $font-weight-bold;
-        @include transition(all .2s ease-in-out);
+        @include transition(all 0.2s ease-in-out);
 
         &:hover {
           text-decoration: none;
@@ -107,7 +107,7 @@ header {
         i {
           margin: 0;
           color: $white;
-          @include transition(all .2s ease-in-out);
+          @include transition(all 0.2s ease-in-out);
         }
 
         span {
