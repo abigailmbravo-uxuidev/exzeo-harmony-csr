@@ -508,6 +508,8 @@
     }
 
     &.diary-open {
+        @include transition(all 0.2s ease-in-out);
+
         .open-diaries {
             width: 240px;
             @include transition(all 1s ease-in-out);

@@ -943,11 +943,14 @@
     }
 
     &.diary-open {
+        @include transition(all 0.2s ease-in-out);
         .open-diaries {
             width: 240px;
         }
       .content-wrapper {
+
         margin-right: 240px;
+        @include transition(all 0.2s ease-in-out);
 
         &.endorsement-content-wrapper {
           margin-right: 3rem;
