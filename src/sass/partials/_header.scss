@@ -23,9 +23,14 @@ header {
 
     > .logo {
       display: block;
-      flex-basis: 10rem;
+      width: auto;
       flex-shrink: 0;
-      width: 10rem;
+      flex-grow: 0;
+
+      img {
+          width: auto;
+          height: 62px;
+      }
     }
 
     > nav {
