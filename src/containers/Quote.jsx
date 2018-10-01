@@ -31,6 +31,7 @@ export class QuoteBase extends React.Component {
         {(appState.data.submitting || !quoteData._id) && <Loader />}
         <App
           resourceType="quote"
+          resourceId={quoteData.quoteNumber}
           pageTitle={`Q: ${quoteData.quoteNumber || ''}`}
           match={match}
           onToggleDiaries={this.handleToggleDiaries}

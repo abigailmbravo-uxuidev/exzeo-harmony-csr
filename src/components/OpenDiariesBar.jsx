@@ -68,8 +68,9 @@ OpenDiariesBar.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
   const resource = ownProps.resourceType;
+  const { resourceId } = ownProps;
   return {
-    diaries: getFilteredOpenDiaries(state, resource) || []
+    diaries: getFilteredOpenDiaries(state, resource, resourceId) || []
   };
 };
 

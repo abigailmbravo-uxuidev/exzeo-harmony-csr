@@ -174,6 +174,7 @@ export class Policy extends React.Component {
         }
         <App
           resourceType="policy"
+          resourceId={policy.policyNumber}
           pageTitle={`P: ${policy.policyNumber || ''}`}
           match={match}
           onToggleDiaries={this.handleToggleDiaries}

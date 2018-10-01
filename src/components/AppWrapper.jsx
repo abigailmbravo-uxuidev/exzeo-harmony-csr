@@ -53,8 +53,9 @@ AppWrapper.defaultProps = {
 
 const mapStateToProps = (state, ownProps) => {
   const resource = ownProps.resourceType;
+  const { resourceId } = ownProps;
   return {
-    openDiaryCount: getFilteredOpenDiaries(state, resource).count
+    openDiaryCount: getFilteredOpenDiaries(state, resource, resourceId).count
   };
 };
 

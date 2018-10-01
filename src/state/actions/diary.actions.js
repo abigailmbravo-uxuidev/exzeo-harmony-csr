@@ -31,7 +31,6 @@ export function fetchDiaries(filter) {
   return async (dispatch) => {
     try {
       const response = await serviceRunner.callService(config);
-      console.log(response);
       dispatch(setDiaries(response.data.result));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
