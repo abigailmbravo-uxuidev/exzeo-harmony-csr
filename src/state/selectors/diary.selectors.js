@@ -16,9 +16,6 @@ const isWithinOneWeekAway = (dateString) => {
 
 const getDiaries = state => state.diaries;
 
-const getResource = (state, resource, resourceId) => { return { resource, resourceId }; };
-
-
 const getDueStatus = (due, open) => {
   if (!open) return 'closed';
   else if (isWithinOneWeekAway(due)) return 'dueSoon';
@@ -80,22 +77,19 @@ export const getFormattedAllDiaries = createSelector(
 );
 
 export const getFilterOpenDiariesByResource = createSelector(
-  [getResource, getFormattedDiaries],
-  (resourceObject, formattedDairies) => {
-    const { resource, resourceId } = resourceObject;
+  [getFormattedDiaries],
+  (formattedDairies) => {
     if (!Array.isArray(formattedDairies)) return [];
-    return formattedDairies.filter(d => d.open === true && (d.resourceType.toLowerCase() === resource.toLowerCase())
-    && d.resourceId === resourceId);
+    return formattedDairies.filter(d => d.open === true);
   }
 );
 
 export const getFilteredAllDiaries = createSelector(
-  [getResource, getFormattedAllDiaries],
-  (resourceObject, formattedDairies) => {
-    const { resource, resourceId } = resourceObject;
+  [getFormattedAllDiaries],
+  (formattedDairies) => {
     if (!Array.isArray(formattedDairies)) return [];
-    return formattedDairies.filter(d => (d.resourceType.toLowerCase() === resource.toLowerCase())
-    && d.resourceId === resourceId);
+
+    return formattedDairies;
   }
 );
 
