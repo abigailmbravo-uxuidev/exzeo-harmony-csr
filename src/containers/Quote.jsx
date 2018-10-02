@@ -6,6 +6,7 @@ import { Loader } from '@exzeo/core-ui';
 import UnderwritingValidationBarConnect from '../components/Quote/UnderwritingValidationBar';
 import App from '../components/AppWrapper';
 import OpenDiariesBar from '../components//OpenDiariesBar';
+import DiaryPolling from '../components/DiaryPolling';
 
 export class QuoteBase extends React.Component {
   state = {
@@ -30,8 +31,8 @@ export class QuoteBase extends React.Component {
       <div className="app-wrapper csr quote">
         {(appState.data.submitting || !quoteData._id) && <Loader />}
         <App
-          resourceType="quote"
-          resourceId={quoteData.quoteNumber}
+          resourceType="Quote"
+          resourceId={quoteData._id}
           pageTitle={`Q: ${quoteData.quoteNumber || ''}`}
           match={match}
           onToggleDiaries={this.handleToggleDiaries}
@@ -43,8 +44,9 @@ export class QuoteBase extends React.Component {
               </div>
               <UnderwritingValidationBarConnect />
               {showDiaries && <OpenDiariesBar
-                resourceId={quoteData.quoteNumber}
+                resourceId={quoteData._id}
                 resourceType="Quote" />}
+              {quoteData && quoteData._id && <DiaryPolling resourceId={quoteData._id} resourceType="Quote" />}
             </React.Fragment>
         )} />
       </div>

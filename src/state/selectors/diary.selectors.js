@@ -84,7 +84,8 @@ export const getFilterOpenDiariesByResource = createSelector(
   (resourceObject, formattedDairies) => {
     const { resource, resourceId } = resourceObject;
     if (!Array.isArray(formattedDairies)) return [];
-    return formattedDairies.filter(d => d.open === true && (d.resourceType.toLowerCase() === resource.toLowerCase()) && d.resourceId === resourceId);
+    return formattedDairies.filter(d => d.open === true && (d.resourceType.toLowerCase() === resource.toLowerCase())
+    && d.resourceId === resourceId);
   }
 );
 
@@ -93,7 +94,8 @@ export const getFilteredAllDiaries = createSelector(
   (resourceObject, formattedDairies) => {
     const { resource, resourceId } = resourceObject;
     if (!Array.isArray(formattedDairies)) return [];
-    return formattedDairies.filter(d => (d.resourceType.toLowerCase() === resource.toLowerCase()) && d.resourceId === resourceId);
+    return formattedDairies.filter(d => (d.resourceType.toLowerCase() === resource.toLowerCase())
+    && d.resourceId === resourceId);
   }
 );
 

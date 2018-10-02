@@ -20,6 +20,7 @@ import Cancel from '../../components/Policy/Cancel';
 import Endorsements from '../../components/Policy/Endorsements';
 import OpenDiariesBar from '../../components/OpenDiariesBar';
 import App from '../../components/AppWrapper';
+import DiaryPolling from '../../components/DiaryPolling';
 
 export class Policy extends React.Component {
   state = {
@@ -173,7 +174,7 @@ export class Policy extends React.Component {
           <Loader />
         }
         <App
-          resourceType="policy"
+          resourceType="Policy"
           resourceId={policy.policyNumber}
           pageTitle={`P: ${policy.policyNumber || ''}`}
           match={match}
@@ -191,6 +192,8 @@ export class Policy extends React.Component {
                 <Route exact path={`${match.url}/endorsements`} render={props => <Endorsements {...props} params={match.params} />} />
               </div>
           }
+
+              {policy && policy.policyNumber && <DiaryPolling resourceId={policy.policyNumber} resourceType="Policy" />}
 
               {appState.data.showReinstatePolicyPopUp &&
               <ReinstatePolicyPopup

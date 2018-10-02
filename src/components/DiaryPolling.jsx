@@ -36,8 +36,8 @@ class DiaryPolling extends Component {
   };
 
   fetchDiaries = () => {
-    const { fetchDiaries, userId } = this.props;
-    fetchDiaries({ userId });
+    const { fetchDiaries, resourceId, resourceType } = this.props;
+    fetchDiaries({ resourceId, resourceType });
   };
 
   delegate = () => {};
@@ -49,7 +49,8 @@ class DiaryPolling extends Component {
 
 DiaryPolling.propTypes = {
   fetchDiaries: PropTypes.func.isRequired,
-  userId: PropTypes.string.isRequired
+  resourceId: PropTypes.string.isRequired,
+  resourceType: PropTypes.string.isRequired
 };
 
 export default connect(null, { fetchDiaries })(DiaryPolling);
