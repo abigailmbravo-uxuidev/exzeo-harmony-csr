@@ -183,33 +183,33 @@ export class Policy extends React.Component {
           render={() => (
             <React.Fragment>
               {initialized &&
-              <div className="content-wrapper">
-                <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} />} />
-                <Route exact path={`${match.url}/policyholder`} render={props => <PolicyHolder {...props} />} />
-                <Route exact path={`${match.url}/billing`} render={props => <Billing {...props} />} />
-                <Route exact path={`${match.url}/notes`} render={props => <Notes {...props} params={match.params} />} />
-                <Route exact path={`${match.url}/cancel`} render={props => <Cancel {...props} />} />
-                <Route exact path={`${match.url}/endorsements`} render={props => <Endorsements {...props} params={match.params} />} />
-              </div>
-          }
+                <div className="content-wrapper">
+                  <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} />} />
+                  <Route exact path={`${match.url}/policyholder`} render={props => <PolicyHolder {...props} />} />
+                  <Route exact path={`${match.url}/billing`} render={props => <Billing {...props} />} />
+                  <Route exact path={`${match.url}/notes`} render={props => <Notes {...props} params={match.params} />} />
+                  <Route exact path={`${match.url}/cancel`} render={props => <Cancel {...props} />} />
+                  <Route exact path={`${match.url}/endorsements`} render={props => <Endorsements {...props} params={match.params} />} />
+                </div>
+              }
 
-              {policy && policy.policyNumber && <DiaryPolling resourceId={policy.policyNumber} resourceType="Policy" />}
+              {initialized &&
+                <DiaryPolling filter={{ resourceId: policy.policyNumber, resourceType: 'Policy' }} />
+              }
 
               {appState.data.showReinstatePolicyPopUp &&
-              <ReinstatePolicyPopup
-                reinstatePolicySubmit={this.reinstatePolicySubmit}
-                hideReinstatePolicyModal={this.hideReinstatePolicyPopUp} />
-          }
+                <ReinstatePolicyPopup
+                  reinstatePolicySubmit={this.reinstatePolicySubmit}
+                  hideReinstatePolicyModal={this.hideReinstatePolicyPopUp} />
+              }
 
               {appState.data.showEffectiveDateChangePopUp &&
-              <EditEffectiveDataPopUp
-                changeEffectiveDateSubmit={this.changeEffectiveDate}
-                hideEffectiveDateModal={this.hideEffectiveDatePopUp} />
-          }
+                <EditEffectiveDataPopUp
+                  changeEffectiveDateSubmit={this.changeEffectiveDate}
+                  hideEffectiveDateModal={this.hideEffectiveDatePopUp} />
+              }
               {showDiaries &&
-                <OpenDiariesBar
-                  resourceId={policy.policyNumber}
-                  resourceType="Policy" />
+                <OpenDiariesBar resourceId={policy.policyNumber} resourceType="Policy" />
               }
             </React.Fragment>
         )} />

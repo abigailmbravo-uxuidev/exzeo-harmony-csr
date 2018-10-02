@@ -42,13 +42,21 @@ export class QuoteBase extends React.Component {
               <div className="content-wrapper">
                 {children}
               </div>
+
               <UnderwritingValidationBarConnect />
-              {showDiaries && <OpenDiariesBar
-                resourceId={quoteData._id}
-                resourceType="Quote" />}
-              {quoteData && quoteData._id && <DiaryPolling resourceId={quoteData._id} resourceType="Quote" />}
+
+              {showDiaries &&
+                <OpenDiariesBar
+                  resourceId={quoteData._id}
+                  resourceType="Quote" />
+              }
+
+              {(quoteData && quoteData._id) &&
+                <DiaryPolling filter={{ resourceId: quoteData._id, resourceType: 'Quote' }} />
+              }
+
             </React.Fragment>
-        )} />
+          )} />
       </div>
     );
   }
