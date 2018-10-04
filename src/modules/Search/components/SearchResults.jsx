@@ -103,7 +103,7 @@ export class SearchResults extends Component {
               clickable
               handleClick={() => handleNewTab(diary, searchType)}
               diary={diary} />
-          ))}
+          ))} */}
         </ul>
         }
       </div>
