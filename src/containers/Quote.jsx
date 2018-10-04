@@ -42,9 +42,9 @@ export class QuoteBase extends React.Component {
                 {children}
               </div>
               <UnderwritingValidationBarConnect />
-              {showDiaries && <OpenDiariesBar
+              <OpenDiariesBar
                 resourceId={quoteData.quoteNumber}
-                resourceType="Quote" />}
+                resourceType="Quote" />
             </React.Fragment>
         )} />
       </div>
