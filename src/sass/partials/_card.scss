@@ -30,11 +30,11 @@
     border-bottom: $card-border-width solid $card-border-color;
     background-color: $card-cap-bg;
 
-    > h2,
+    > h1,
      > h3,
      > h4,
      > h5,
-    > h1 {
+    > h2 {
       margin: 0;
     }
 
@@ -180,8 +180,6 @@
     font-size: $font-size-sm;
     font-weight: $font-weight-normal;
   }
-
-  span {}
 }
 
 .edit-btn {
@@ -191,5 +189,81 @@
 .gradient-bg {
   .card {
     box-shadow: 0 0 40px 4px rgba($warm-gray-15, .9);
+  }
+}
+
+ul {
+  &.results {
+      padding: $padding*2;
+      width: 100%;
+
+    &.diary-list {
+      .card {
+          flex-direction: row;
+          margin: 0 0 $padding 0;
+          width: 100%;
+          flex-grow: 1;
+          flex-shrink: 1;
+
+        header {
+          &.card-header {
+              background: $white;
+              width: auto;
+              flex-grow: 0;
+              flex-shrink: 0;
+              border-width: 0;
+              padding: $padding/2;
+              display: flex;
+
+              .card-status-indicator {
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  width: 4px;
+                  background: $warm-gray-04;
+              }
+
+              .icon-wrapper {
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  justify-content: center;
+                  padding: $padding ($padding*2);
+
+                  i {
+                      font-size: $font-size-h2;
+
+                      &.icon-status-indicator {
+                          font-size: $font-size-xs;
+                      }
+                  }
+
+                  > div {
+                      font-size: $font-size-xs;
+                  }
+              }
+
+          }
+        }
+
+        > div {
+          &.card-body {
+              background: $white;
+              width: auto;
+              flex-grow: 1;
+              flex-shrink: 1;
+          }
+        }
+
+        footer {
+          &.card-footer {
+              background: $white;
+              width: auto;
+              flex-grow: 0;
+              flex-shrink: 0;
+              border-width: 0;
+          }
+        }
+      }
+    }
   }
 }

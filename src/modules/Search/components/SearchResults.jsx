@@ -96,7 +96,7 @@ export class SearchResults extends Component {
         }
 
         {hasSearched && searchType === SEARCH_TYPES.diaries && !!results.length &&
-        <ul id="search-results" className="results result-cards">
+        <ul id="results" className="results diary-list">
           {results.map(diary => (
             <DiaryCard
               key={diary._id}
