@@ -375,7 +375,7 @@ export class MortgageBilling extends Component {
                     <button tabIndex="0" disabled={(policy && (policy.additionalInterests.filter(ai => ai.type === 'Premium Finance' && ai.active).length > 0 || policy.additionalInterests.filter(ai => ai.type === 'Bill Payer' && ai.active).length > 0))} onClick={() => this.addAdditionalInterest('Premium Finance')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Premium Finance</span></div></button>
                     <button tabIndex="0" disabled={(policy && (policy.additionalInterests.filter(ai => ai.type === 'Bill Payer' && ai.active).length > 0 || policy.additionalInterests.filter(ai => ai.type === 'Premium Finance' && ai.active).length > 0))} onClick={() => this.addAdditionalInterest('Bill Payer')} className="btn btn-sm btn-secondary" type="button"><div><i className="fa fa-plus" /><span>Bill Payer</span></div></button>
                   </div>
-                  <ul className="results result-cards">
+                  <ul className="results result-cards additional-interests-list">
                     {sortedAdditionalInterests.map(ai => (
                       <AdditionalInterestCard
                         key={ai._id}

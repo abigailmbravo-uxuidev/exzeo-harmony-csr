@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const AdditionalInterestCard = ({ ai, editAI, toggleAIState }) => {
   const { active } = ai;
   return (
-    <li key={ai._id}>
+    <li key={ai._id} className={`${active ? 'card' : 'card inactive'}`}>
       {/* add className based on type - i.e. mortgagee could have class of mortgagee */}
       <div className="card-icon"><i className={`fa fa-circle ${ai.type}`} /><label>{ai.type} {active ? (ai.order + 1) : 'Inactive'}</label></div>
 
@@ -21,18 +21,18 @@ const AdditionalInterestCard = ({ ai, editAI, toggleAIState }) => {
         <span>{` ${ai.referenceNumber || ' - '}`}</span>
       </div>
       {!active &&
-        <span className="edit-btn" onClick={() => toggleAIState(ai)}>
-          <i className="fa fa-pencil-square" />
+        <span className="reactivate-btn btn btn-link btn-sm" onClick={() => toggleAIState(ai)}>
+          <i className="fa fa-plus-square" />
           <span>Reactivate</span>
         </span>
       }
       {active &&
-        <span className="edit-btn" onClick={() => toggleAIState(ai)}>
-          <i className="fa fa-pencil-square" />
+        <span className="Delete-btn  btn btn-link btn-sm" onClick={() => toggleAIState(ai)}>
+          <i className="fa fa-times-rectangle" />
           <span>Delete</span>
         </span>
       }
-      <span className="edit-btn" onClick={active ? () => editAI(ai) : null}>
+      <span className={`${active ? 'edit-btn  btn btn-link btn-sm' : 'edit-btn  btn btn-link btn-sm disabled'}`} onClick={active ? () => editAI(ai) : null}>
         <i className="fa fa-pencil-square" />
         <span>Edit</span>
       </span>
@@ -43,7 +43,7 @@ const AdditionalInterestCard = ({ ai, editAI, toggleAIState }) => {
 AdditionalInterestCard.propTypes = {
   ai: PropTypes.object.isRequired,
   editAI: PropTypes.func.isRequired,
-  toggleAIState: PropTypes.func.isRequired,
+  toggleAIState: PropTypes.func.isRequired
 };
 
 AdditionalInterestCard.defaultProps = {};
