@@ -370,7 +370,7 @@ describe('Testing AdditionalInterests component', () => {
     evenNextProps.appState.data.deleteAdditionalInterestType = 'Bill Payer';
     wi.componentWillReceiveProps(evenNextProps);
 
-    wi.handleAISubmit(quoteData.additionalInterests);
+    wi.onHandleAISubmit(quoteData.additionalInterests);
     wi.addAdditionalInterest('Bill Payer');
     wi.editAdditionalInterest(quoteData.additionalInterests[0]);
     wi.deleteAdditionalInterest(quoteData.additionalInterests[0]);
