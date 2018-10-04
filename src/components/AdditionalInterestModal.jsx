@@ -4,7 +4,19 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import cloneDeep from 'lodash/cloneDeep';
 import { reduxForm, Field, reset } from 'redux-form';
-import { Input, Select, Phone, NewSelectTypeAhead, SelectInteger, Loader, Button, validation, noop } from '@exzeo/core-ui';
+import {
+  Input,
+  Select,
+  Phone,
+  NewSelectTypeAhead,
+  SelectInteger,
+  Loader,
+  Button,
+  validation,
+  noop,
+  emptyArray,
+  emptyObject
+} from '@exzeo/core-ui';
 
 import {
   getMortgageeOrderAnswers,
@@ -300,24 +312,29 @@ AdditionalInterestModal.propTypes = {
   hideModal: PropTypes.func.isRequired,
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
+  validAdditionalInterestTypes: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   addAdditionalInterestType: PropTypes.string,
   additionalInterests: PropTypes.array,
   deleteAdditionalInterest: PropTypes.func,
   isDeleting: PropTypes.bool,
   isEditing: PropTypes.bool,
   isPolicy: PropTypes.bool,
-  mortgageeAnswers: PropTypes.array,
-  premiumFinanceAnswers: PropTypes.array,
+  mortgageeAnswers: PropTypes.arrayOf(PropTypes.shape()),
+  premiumFinanceAnswers: PropTypes.arrayOf(PropTypes.shape()),
   questions: PropTypes.shape(),
-  selectedAI: PropTypes.shape(),
-  validAdditionalInterestTypes: PropTypes.array
+  selectedAI: PropTypes.shape()
 };
 
 AdditionalInterestModal.defaultProps = {
+  additionalInterests: emptyArray,
   isPolicy: false,
   isEditing: false,
   isDeleting: false,
   deleteAdditionalInterest: noop,
+  mortgageeAnswers: emptyArray,
+  premiumFinanceAnswers: emptyArray,
+  questions: emptyObject,
+  selectedAI: emptyObject
 };
 
 const getMortgageeAnswers = getTopAnswers('mortgagee');
