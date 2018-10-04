@@ -465,15 +465,13 @@ export function handleQuoteSearch(data) {
  */
 export function handlePolicySearch(data) {
   return async (dispatch) => {
-    // TODO: update this once the SelectTypeAhead is fixed. Currently is puts the entire 'answer' object in state rather than just the value.
-    const agencyCode = data.agencyCode ? data.agencyCode.answer : '';
     const taskData = {
       firstName: formatForURI(data.firstName),
       lastName: formatForURI(data.lastName),
-      address: formatForURI(String(data.address).trim()),
+      address: formatForURI(data.address.trim()),
       policyNumber: formatForURI(data.policyNumber),
       policyStatus: formatForURI(data.policyStatus),
-      agencyCode: formatForURI(agencyCode),
+      agencyCode: formatForURI(data.agencyCode),
       effectiveDate: formatForURI(data.effectiveDate && moment(data.effectiveDate).utc().format(SECONDARY_DATE_FORMAT)),
       currentPage: setPageNumber(data.currentPage, data.isNext),
       sortBy: data.sortBy,
