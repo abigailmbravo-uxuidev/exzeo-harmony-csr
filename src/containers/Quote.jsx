@@ -45,11 +45,9 @@ export class QuoteBase extends React.Component {
 
               <UnderwritingValidationBarConnect />
 
-              {showDiaries &&
-                <OpenDiariesBar
+              <OpenDiariesBar
                   resourceId={quoteData._id}
                   resourceType="Quote" />
-              }
 
               {(quoteData && quoteData._id) &&
                 <DiaryPolling filter={{ resourceId: quoteData._id, resourceType: 'Quote' }} />

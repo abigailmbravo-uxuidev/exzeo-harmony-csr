@@ -204,13 +204,13 @@ export class Policy extends React.Component {
               }
 
               {appState.data.showEffectiveDateChangePopUp &&
-                <EditEffectiveDataPopUp
-                  changeEffectiveDateSubmit={this.changeEffectiveDate}
-                  hideEffectiveDateModal={this.hideEffectiveDatePopUp} />
-              }
-              {showDiaries &&
-                <OpenDiariesBar resourceId={policy.policyNumber} resourceType="Policy" />
-              }
+              <EditEffectiveDataPopUp
+                changeEffectiveDateSubmit={this.changeEffectiveDate}
+                hideEffectiveDateModal={this.hideEffectiveDatePopUp} />
+          }
+              <OpenDiariesBar
+                resourceId={policy.policyNumber}
+                resourceType="Policy" />
             </React.Fragment>
         )} />
 

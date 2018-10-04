@@ -1,7 +1,7 @@
 header {
   display: flex;
-  flex-shrink: 0;
   flex-grow: 0;
+  flex-shrink: 0;
   justify-content: center;
   width: 100%;
   height: auto;
@@ -45,94 +45,96 @@ header {
         flex-direction: column;
         width: 3.5rem;
         height: 2.75rem;
-        margin-left: $padding;
         margin-top: -($padding*2);
+        margin-left: $padding;
         padding: 0;
         border-width: 0;
         @include transition(all 0.2s ease-in-out);
 
         .diary-btn-wrapper {
-            display: flex;
-            flex-direction: column;
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            justify-content: center;
-            align-items: center;
-            border-radius: 0 0 $btn-border-radius $btn-border-radius;
-            border-right: 1px solid $white;
-            border-bottom: 1px solid $white;
-            border-left: 1px solid $white;
-            @include transition(all 0.2s ease-in-out);
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: center;
+          border-right: 1px solid $white;
+          border-bottom: 1px solid $white;
+          border-left: 1px solid $white;
+          border-radius: 0 0 $btn-border-radius $btn-border-radius;
+          @include transition(all 0.2s ease-in-out);
 
-            &.panel-closed {
-                background-color: $bright-blue-darken-04;
-
-                > i {
-                    color: $white !important;
-
-                    > span {
-                        color: $bright-blue-darken-04;
-                    }
-                }
-            }
-            &.panel-open {
-                background-color: $white;
-
-                > i {
-                    color: $bright-blue-darken-04 !important;
-
-                    > span {
-                        color: $white;
-                    }
-                }
-            }
+          &.panel-closed {
+            background-color: $bright-blue-darken-04;
 
             > i {
-                font-size: 1.5rem;
-                margin-right: 0;
-                position: relative;
-                width: 2rem;
-                height: 1.5rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+              color: $white !important;
 
-                > span {
-                    position: absolute;
-                    top: .25rem;
-                }
+              > span {
+                color: $bright-blue-darken-04;
+                font-family: $font-family-base;
+              }
             }
+          }
 
-            span {
-                font-size: $font-size-xs;
+          &.panel-open {
+            background-color: $white;
 
-                i {
-                    margin-right: $padding/4;
-                }
+            > i {
+              color: $bright-blue-darken-04 !important;
+
+              > span {
+                color: $white;
+                font-family: $font-family-base;
+              }
             }
+          }
+
+          > i {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 1.5rem;
+            margin-right: 0;
+            font-size: 1.5rem;
+
+            > span {
+              position: absolute;
+              top: 0.25rem;
+            }
+          }
+
+          span {
+            font-size: $font-size-xs;
+
+            i {
+              margin-right: $padding/4;
+            }
+          }
         }
 
-        &:hover, &:focus {
-            color: $bright-blue;
-            .dairy-btn-wrapper {
+        &:focus,
+        &:hover {
+          color: $bright-blue;
 
-                &.panel-closed {
-
-                    > i {
-                        color: $white !important;
-                    }
-                }
-                &.panel-open {
-
-                    > i {
-                        color: $bright-blue-darken-04 !important;
-                    }
-                }
-
+          .dairy-btn-wrapper {
+            &.panel-closed {
+              > i {
+                color: $white !important;
+              }
             }
+
+            &.panel-open {
+              > i {
+                color: $bright-blue-darken-04 !important;
+              }
+            }
+          }
         }
       }
     }

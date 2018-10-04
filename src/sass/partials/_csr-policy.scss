@@ -849,6 +849,8 @@
                 .discountSurcharge {
                   width: 60%;
                   padding: $padding ($padding*1.5);
+                  white-space: normal;
+                  hyphens: auto;
                 }
 
                 .value {
@@ -935,22 +937,34 @@
       padding: 0 0 ($padding*2) ($padding*2);
       border-left: dotted 1px $warm-gray-04;
       background: $white;
-      @include transition(all 0.2s ease-in-out);
+      @include transition(all 0.1s ease-in-out);
 
       .open-diaries-header {
         margin: ($padding*1.5) 0;
       }
     }
 
-    &.diary-open {
-        @include transition(all 0.2s ease-in-out);
-        .open-diaries {
-            width: 240px;
-        }
-      .content-wrapper {
+    &.diary-closed {
+      @include transition(all 0.1s ease-in-out);
 
+      .open-diaries {
+        overflow: hidden;
+        width: 0;
+      }
+    }
+
+    &.diary-open {
+      @include transition(all 0.1s ease-in-out);
+
+      .open-diaries {
+        overflow: hidden;
+        width: 240px;
+        @include transition(all 0.1s ease-in-out);
+      }
+
+      .content-wrapper {
         margin-right: 240px;
-        @include transition(all 0.2s ease-in-out);
+        @include transition(all 0.1s ease-in-out);
 
         &.endorsement-content-wrapper {
           margin-right: 3rem;
