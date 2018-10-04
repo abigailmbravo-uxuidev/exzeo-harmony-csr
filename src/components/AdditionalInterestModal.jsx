@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import cloneDeep from 'lodash/cloneDeep';
 import { reduxForm, Field, reset } from 'redux-form';
-import { Input, Select, Phone, SelectTypeAhead, SelectInteger, Loader, validation } from '@exzeo/core-ui';
+import { Input, Select, Phone, NewSelectTypeAhead, SelectInteger, Loader, validation } from '@exzeo/core-ui';
 
 import {
   getMortgageeOrderAnswers,
@@ -24,15 +24,16 @@ export class AdditionalInterestModal extends React.Component {
     this.modalStyle = { flexDirection: 'row' };
   }
 
-  setTopValues = (value) => {
+  setTopValues = (value, answers) => {
     const { change } = this.props;
+    const option = answers.find(o => o.id === value);
     if (value) {
-      change('name1', value.AIName1);
-      change('name2', value.AIName2);
-      change('address1', value.AIAddress1);
-      change('city', value.AICity);
-      change('state', value.AIState);
-      change('zip', value.AIZip);
+      change('name1', option.AIName1);
+      change('name2', option.AIName2);
+      change('address1', option.AIAddress1);
+      change('city', option.AICity);
+      change('state', option.AIState);
+      change('zip', option.AIZip);
     } else {
       change('name1', '');
       change('name2', '');
@@ -42,6 +43,16 @@ export class AdditionalInterestModal extends React.Component {
       change('zip', '');
     }
     return value;
+  };
+
+  setTopValuesM = (value) => {
+    const { mortgageeAnswers } = this.props;
+    return this.setTopValues(value, mortgageeAnswers);
+  };
+
+  setTopValuesPF = (value) => {
+    const { premiumFinanceAnswers } = this.props;
+    return this.setTopValues(value, premiumFinanceAnswers);
   };
 
   handleFormSubmit = async (data, dispatch, formProps) => {
@@ -137,22 +148,24 @@ export class AdditionalInterestModal extends React.Component {
                 label="Top Mortgagees"
                 name="mortgagee"
                 dataTest="mortgage"
-                component={SelectTypeAhead}
+                component={NewSelectTypeAhead}
                 valueKey="displayText"
                 labelKey="displayText"
                 answers={mortgageeAnswers}
-                normalize={this.setTopValues}/>
+                normalize={this.setTopValuesM}
+                optionValue="id" />
               }
               {(addAdditionalInterestType || selectedAI.type) === 'Premium Finance' &&
               <Field
                 label="Top Premium Finance"
                 name="premiumFinance"
                 dataTest="premiumFinance"
-                component={SelectTypeAhead}
+                component={NewSelectTypeAhead}
                 valueKey="displayText"
                 labelKey="displayText"
                 answers={premiumFinanceAnswers}
-                normalize={this.setTopValues}/>
+                normalize={this.setTopValuesPF}
+                optionValue="id" />
               }
               <Field
                 name="name1"

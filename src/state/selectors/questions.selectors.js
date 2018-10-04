@@ -13,9 +13,9 @@ export const getTopAnswers = name => createSelector(
       return topAnswers.map(answer => ({
         ...answer,
         // api gives us the zip as a number, but requires zip to be a string when we post.
-        AIZip: String(answer.AIZip),
+        id: String(answer.ID),
         // needed for the TypeAhead
-        displayText: `${answer.AIName1}, ${answer.AIAddress1}, ${answer.AICity} ${answer.AIState}, ${answer.AIZip}`
+        label: `${answer.AIName1}, ${answer.AIAddress1}, ${answer.AICity} ${answer.AIState}, ${answer.AIZip}`
       }));
     }
     return [];
