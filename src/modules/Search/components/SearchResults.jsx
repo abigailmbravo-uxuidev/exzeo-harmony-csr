@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import DiaryCard from '@exzeo/core-ui/lib/Card/DiaryCard';
+
 import handleNewTab from '../../../utilities/handleNewTab';
 import { SEARCH_TYPES } from '../../../constants/search';
 
@@ -11,7 +13,6 @@ import AddressTip from './AddressTip';
 import AgencyCard from './AgencyCard';
 import AgentCard from './AgentCard';
 import QuoteCard from './QuoteCard';
-import DiaryCard from './DiaryCard';
 
 export function onKeyPressSubmit(event, data, props) {
   if (event.charCode === 13) {
@@ -24,6 +25,8 @@ export class SearchResults extends Component {
     const {
       hasSearched, searchType, search: { results, noResults }, error
     } = this.props;
+
+    console.log(this.props);
     return (
       <div className="results-wrapper">
 
@@ -97,6 +100,8 @@ export class SearchResults extends Component {
           {results.map(diary => (
             <DiaryCard
               key={diary._id}
+              clickable
+              handleClick={() => handleNewTab(diary, searchType)}
               diary={diary} />
           ))}
         </ul>

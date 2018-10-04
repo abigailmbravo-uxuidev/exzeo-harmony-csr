@@ -85,7 +85,10 @@ export function submitDiary(data, props) {
 
     try {
       await serviceRunner.callService(config);
-      dispatch(fetchDiaries({ userId: user.userId }));
+      dispatch(fetchDiaries({
+        resourceType,
+        resourceId
+      }));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
       return false;

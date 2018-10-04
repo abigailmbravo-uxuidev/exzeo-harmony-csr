@@ -117,9 +117,8 @@ export class DiaryTable extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const resource = ownProps.match.path.split('/')[1];
   return {
-    diaries: getFilteredAllDiaries(state, resource) || []
+    diaries: getFilteredAllDiaries(state) || []
   };
 };
 

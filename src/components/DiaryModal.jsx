@@ -110,7 +110,7 @@ export class DiaryModal extends Component {
                 name="message"
                 label="Message"
                 component={TextArea}
-                validation={validation.isRequired} />
+                validate={validation.isRequired} />
             </div>
             <div className="buttons note-file-footer-button-group">
               <button

@@ -13,6 +13,7 @@ import AgencySearch from './Agency';
 import AgentSearch from './Agent';
 import UserSearch from './User';
 import DiariesSearch from './Diaries';
+import DiaryPolling from '../../components/DiaryPolling';
 
 const SEARCH_FORMS = {
   [SEARCH_TYPES.newQuote]: AddressSearch,
@@ -76,10 +77,16 @@ export class SearchPage extends Component {
       searchConfig
     } = this.state;
 
+    const {
+      userProfile
+    } = this.props;
     const SearchForm = SEARCH_FORMS[searchType];
 
     return (
       <React.Fragment>
+
+        {userProfile.userId && <DiaryPolling filter={{ userId: userProfile.userId }} />}
+
         <div className={advancedSearch ? 'policy-advanced search' : 'search'}>
           <SearchBar
             advancedSearch={advancedSearch}
@@ -121,5 +128,9 @@ export class SearchPage extends Component {
     );
   }
 }
+
+SearchPage.defaultProps = {
+  userProfile: {}
+};
 
 export default connect(null, { resetSearch })(SearchPage);

@@ -20,6 +20,7 @@ import Cancel from '../../components/Policy/Cancel';
 import Endorsements from '../../components/Policy/Endorsements';
 import OpenDiariesBar from '../../components/OpenDiariesBar';
 import App from '../../components/AppWrapper';
+import DiaryPolling from '../../components/DiaryPolling';
 
 export class Policy extends React.Component {
   state = {
@@ -173,7 +174,7 @@ export class Policy extends React.Component {
           <Loader />
         }
         <App
-          resourceType="policy"
+          resourceType="Policy"
           resourceId={policy.policyNumber}
           pageTitle={`P: ${policy.policyNumber || ''}`}
           match={match}
@@ -182,21 +183,25 @@ export class Policy extends React.Component {
           render={() => (
             <React.Fragment>
               {initialized &&
-              <div className="content-wrapper">
-                <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} />} />
-                <Route exact path={`${match.url}/policyholder`} render={props => <PolicyHolder {...props} />} />
-                <Route exact path={`${match.url}/billing`} render={props => <Billing {...props} />} />
-                <Route exact path={`${match.url}/notes`} render={props => <Notes {...props} params={match.params} />} />
-                <Route exact path={`${match.url}/cancel`} render={props => <Cancel {...props} />} />
-                <Route exact path={`${match.url}/endorsements`} render={props => <Endorsements {...props} params={match.params} />} />
-              </div>
-          }
+                <div className="content-wrapper">
+                  <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} />} />
+                  <Route exact path={`${match.url}/policyholder`} render={props => <PolicyHolder {...props} />} />
+                  <Route exact path={`${match.url}/billing`} render={props => <Billing {...props} />} />
+                  <Route exact path={`${match.url}/notes`} render={props => <Notes {...props} params={match.params} />} />
+                  <Route exact path={`${match.url}/cancel`} render={props => <Cancel {...props} />} />
+                  <Route exact path={`${match.url}/endorsements`} render={props => <Endorsements {...props} params={match.params} />} />
+                </div>
+              }
+
+              {initialized &&
+                <DiaryPolling filter={{ resourceId: policy.policyNumber, resourceType: 'Policy' }} />
+              }
 
               {appState.data.showReinstatePolicyPopUp &&
-              <ReinstatePolicyPopup
-                reinstatePolicySubmit={this.reinstatePolicySubmit}
-                hideReinstatePolicyModal={this.hideReinstatePolicyPopUp} />
-          }
+                <ReinstatePolicyPopup
+                  reinstatePolicySubmit={this.reinstatePolicySubmit}
+                  hideReinstatePolicyModal={this.hideReinstatePolicyPopUp} />
+              }
 
               {appState.data.showEffectiveDateChangePopUp &&
               <EditEffectiveDataPopUp
@@ -208,7 +213,7 @@ export class Policy extends React.Component {
                 resourceType="Policy" />
             </React.Fragment>
         )} />
-        
+
       </div>
     );
   }

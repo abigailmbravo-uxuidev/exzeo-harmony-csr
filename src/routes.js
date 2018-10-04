@@ -29,7 +29,6 @@ import QuoteApplication from './components/Quote/Application';
 import AgencyStaff from './components/Agency/Staff';
 import NoteUploader from './components/Common/NoteUploader';
 import ConfirmPopup from './components/Common/ConfirmPopup';
-import DiaryPolling from './components/DiaryPolling';
 import DiaryModal from './components/DiaryModal';
 import * as appStateActions from './state/actions/appState.actions';
 import * as errorActions from './state/actions/error.actions';
@@ -82,9 +81,6 @@ class Routes extends Component {
     const { ui: { diary, note }, authState: { userProfile } } = this.props;
     return (
       <div>
-        {(userProfile && userProfile.userId) &&
-          <DiaryPolling userId={userProfile.userId} />
-        }
         <Modal
           isOpen={this.props.error.message !== undefined}
           contentLabel="Error Modal"
