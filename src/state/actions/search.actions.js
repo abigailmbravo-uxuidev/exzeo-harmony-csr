@@ -611,9 +611,9 @@ export async function fetchDiaries({
  */
 function formatDiaryResults(results) {
   return {
-    results,
-    totalRecords: results.length,
-    noResults: !results.length
+    results: results.result,
+    totalRecords: results.result.length,
+    noResults: !results.result.length
   };
 }
 
