@@ -468,7 +468,7 @@ export function handlePolicySearch(data) {
     const taskData = {
       firstName: formatForURI(data.firstName),
       lastName: formatForURI(data.lastName),
-      address: formatForURI(data.address.trim()),
+      address: formatForURI(String(data.address).trim()),
       policyNumber: formatForURI(data.policyNumber),
       policyStatus: formatForURI(data.policyStatus),
       agencyCode: formatForURI(data.agencyCode),
