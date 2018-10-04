@@ -1,16 +1,16 @@
-export function handleNewTab(searchData, searchType) {
+export function handleNewTab(resource, type) {
   // new quote
-  if (searchType === 'address') {
-    window.open(`/quote/new/${searchData.physicalAddress.state}/${searchData.id}`, '_blank');
+  if (type === 'address') {
+    window.open(`/quote/new/${resource.physicalAddress.state}/${resource.id}`, '_blank');
     // quote
-  } else if (searchType === 'quote') {
-    window.open(`/quote/${searchData._id}/coverage`, '_blank');
+  } else if (type === 'quote') {
+    window.open(`/quote/${resource._id}/coverage`, '_blank');
     // policy
-  } else if (searchType === 'policy') {
-    window.open(`/policy/${searchData.policyNumber}/coverage`, '_blank');
+  } else if (type === 'policy') {
+    window.open(`/policy/${resource.policyNumber}/coverage`, '_blank');
     // agency
-  } else if (searchType === 'agency' || searchType === 'agent') {
-    window.open(`/agency/${searchData.agencyCode}/staff`, '_blank');
+  } else if (type === 'agency' || type === 'agent') {
+    window.open(`/agency/${resource.agencyCode}/staff`, '_blank');
   }
 }
 
