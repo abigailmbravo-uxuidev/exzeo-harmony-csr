@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import DiaryCard from '@exzeo/core-ui/lib/Card/DiaryCard';
+import DiaryList from '@exzeo/core-ui/lib/List/DiaryList';
 
 import handleNewTab from '../../../utilities/handleNewTab';
 import { SEARCH_TYPES } from '../../../constants/search';
@@ -96,15 +96,10 @@ export class SearchResults extends Component {
         }
 
         {hasSearched && searchType === SEARCH_TYPES.diaries && !!results.length &&
-        <ul id="results" className="results diary-list">
-          {results.map(diary => (
-            <DiaryCard
-              key={diary._id}
-              clickable
-              handleClick={() => handleNewTab(diary, searchType)}
-              diary={diary} />
-          ))} */}
-        </ul>
+        <DiaryList
+          handleItemClick={() => (resourceType) => {}}
+          clickable
+          diaries={results} />
         }
       </div>
     );
