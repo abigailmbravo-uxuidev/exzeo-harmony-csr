@@ -22,6 +22,7 @@ export const AGENCY_INITIAL_VALUES = {
 };
 
 export const DIARY_INITIAL_VALUES = {
+  assignees: [],
   status: 'open',
   dateRange: {
     min: '',

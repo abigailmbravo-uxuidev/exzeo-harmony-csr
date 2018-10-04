@@ -537,10 +537,9 @@ export function handleAgencySearch(data) {
  */
 export function handleDiariesSearch(data) {
   return async (dispatch) => {
-    // TODO need to format assignees from array to comma-delimited string
     const taskData = {
       open: data.open,
-      assignees: data.assignees,
+      assignees: data.assignees.map(a => a.answer),
       reason: data.reason,
       dueDateMin: data.dateRange.min,
       dueDateMax: data.dateRange.max
