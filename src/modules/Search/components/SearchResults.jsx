@@ -97,13 +97,17 @@ export class SearchResults extends Component {
 
         {hasSearched && searchType === SEARCH_TYPES.diaries && !!results.length &&
         <ul id="search-results" className="results result-cards">
-          {results.map(diary => (
+          <DiaryList
+            diary={results}
+            handleClick={handleNewTab} />
+
+          {/* {results.map(diary => (
             <DiaryCard
               key={diary._id}
               clickable
               handleClick={() => handleNewTab(diary, searchType)}
               diary={diary} />
-          ))}
+          ))} */}
         </ul>
         }
       </div>
