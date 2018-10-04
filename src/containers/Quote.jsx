@@ -2,17 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import Loader from '@exzeo/core-ui/lib/Loader';
+import { Loader } from '@exzeo/core-ui';
+
 import QuoteHeader from '../components/Quote/QuoteHeader';
 import QuoteSideNav from '../components/Quote/QuoteSideNav';
 import QuoteDetailHeader from '../components/Quote/DetailHeader';
 import UnderwritingValidationBarConnect from '../components/Quote/UnderwritingValidationBar';
 
 
-export const QuoteBase = ({appState, quoteData, match, children}) => (
+export const QuoteBase = ({
+  appState, quoteData, match, children
+}) => (
   <div className="app-wrapper csr quote">
     <Helmet><title>{quoteData.quoteNumber ? `Q: ${quoteData.quoteNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
-    {/* <NewNoteFileUploader />*/}
+    {/* <NewNoteFileUploader /> */}
     <QuoteHeader />
     <QuoteDetailHeader />
     <main role="document">
@@ -38,7 +41,7 @@ QuoteBase.propTypes = {
 const mapStateToProps = state => (
   {
     appState: state.appState,
-    quoteData: state.service.quote || {}
+    quoteData: state.quoteState.quote || {}
   }
 );
 

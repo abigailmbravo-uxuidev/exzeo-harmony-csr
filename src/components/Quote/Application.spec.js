@@ -33,6 +33,8 @@ describe('Testing Coverage component', () => {
     const store = mockStore(initialState);
     const props = {
       match: { params: {} },
+      setAppStateAction() {},
+      getQuoteAction() {},
       actions: {
         quoteStateActions: {
           getLatestQuote(){}
@@ -62,9 +64,11 @@ describe('Testing Coverage component', () => {
   });
   it('should test handleFormSubmit', () => {
     const initialState = {
-      service: {
-        transactions: {},
+      quoteState: {
         quote: { underwritingExceptions: [] }
+      },
+      service: {
+        transactions: {}
       },
       cg: {
         bb: {
@@ -97,6 +101,9 @@ describe('Testing Coverage component', () => {
       match: { params: {} },
       fieldQuestions: [],
       dispatch: store.dispatch,
+      setAppStateAction() {},
+      getQuoteAction() {},
+      setAppErrorAction() {},
       actions: {
         quoteStateActions: {
           getLatestQuote(){}

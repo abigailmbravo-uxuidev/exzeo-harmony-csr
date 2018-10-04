@@ -1,5 +1,7 @@
 import * as types from '../actions/actionTypes';
+
 import initialState from './initialState';
+
 const { search: SEARCH } = initialState;
 const PAGE_SIZE = 25;
 
@@ -21,7 +23,7 @@ function setResults(state, action) {
     ...state,
     currentPage: action.currentPage,
     pageSize: action.pageSize,
-    totalPages: Math.round(action.totalRecords / PAGE_SIZE) || 0,
+    totalPages: Math.ceil(action.totalRecords / PAGE_SIZE) || 0,
     sortBy: action.sortBy,
     sortDirection: action.sortDirection,
     results: action.results,
@@ -35,5 +37,5 @@ function toggleLoading(state, action) {
   return {
     ...state,
     loading: action.loading
-  }
+  };
 }

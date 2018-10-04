@@ -1,6 +1,6 @@
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
-import appStateReducer from './appStateReducer';
+import appStateReducer from './appState.reducer';
 
 describe('App State Reducer', () => {
   it('should call appStateReducer APPSTATE_SET', () => {

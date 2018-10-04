@@ -1,6 +1,6 @@
 import configureStore from 'redux-mock-store';
 import * as types from './actionTypes';
-import * as authActions from './authActions';
+import * as authActions from './auth.actions';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);

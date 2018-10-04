@@ -28,10 +28,9 @@ import PolicyModule from './modules/Policy';
 import AgencyStaff from './components/Agency/Staff';
 import NoteUploader from './components/Common/NoteUploader';
 
-
-import * as appStateActions from './state/actions/appStateActions';
-import * as errorActions from './state/actions/errorActions';
-import * as authActions from './state/actions/authActions';
+import * as appStateActions from './state/actions/appState.actions';
+import * as errorActions from './state/actions/error.actions';
+import * as authActions from './state/actions/auth.actions';
 
 const auth = new Auth();
 
@@ -83,12 +82,11 @@ class Routes extends Component {
           contentLabel="Error Modal"
           style={this.modalStyles}
           className="card"
-          appElement={document.getElementById('root')}
-        >
+          appElement={document.getElementById('root')}>
           <div className="card-header"><h4><i className="fa fa-exclamation-circle" />&nbsp;Error</h4></div>
-          <div className="card-block"><p>{ this.props.error.message }</p></div>
+          <div className="card-block"><p>{this.props.error.message}</p></div>
           <div className="card-footer">
-            {this.props.error.requestId && <div className="footer-message"><p>Request ID: { this.props.error.requestId }</p></div>}
+            {this.props.error.requestId && <div className="footer-message"><p>Request ID: {this.props.error.requestId}</p></div>}
             <button className="btn-primary" onClick={this.clearError}>close</button>
           </div>
         </Modal>
@@ -96,8 +94,7 @@ class Routes extends Component {
           <NoteUploader
             noteType={this.props.newNote.noteType}
             documentId={this.props.newNote.documentId}
-            sourceId={this.props.newNote.sourceNumber}
-          />
+            sourceId={this.props.newNote.sourceNumber} />
         }
         <Router
           getUserConfirmation={(message, callback) => {
@@ -106,22 +103,20 @@ class Routes extends Component {
   <ConfirmPopup {...this.props} message={message} setBackStep={this.setBackStep} callback={callback} />
             ), document.getElementById('modal')
 );
-          }}
-        >
+          }}>
           <div className="routes">
             <Switch>
               <Route exact path="/" render={props => <SearchPolicy auth={auth} {...props} />} />
               <Route exact path="/agency" render={props => <SearchAgency auth={auth} {...props} />} />
               <Route path="/policy/:policyNumber" render={props => <PolicyModule auth={auth} {...props} />} />
-              <Route exact path="/quote/new/:stateCode/:propertyId" render={props => <QuoteLanding auth={auth} newQuote {...props} />} />
-              <Route exact path="/quote/:quoteId" render={props => <QuoteLanding auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/coverage/:workflowId" render={props => <QuoteCoverage auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/billing/:workflowId" render={props => <QuoteMailingAddressBilling auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/notes/:workflowId" render={props => <QuoteNotesFiles auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/summary/:workflowId" render={props => <QuoteSummary auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/additionalInterests/:workflowId" render={props => <AdditionalInterests auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/underwriting/:workflowId" render={props => <QuoteUnderwriting auth={auth} {...props} />} />
-              <Route exact path="/quote/:quoteId/application/:workflowId" render={props => <QuoteApplication auth={auth} {...props} />} />
+              <Route exact path="/quote/new/:stateCode/:propertyId" render={props => <QuoteLanding auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/coverage" render={props => <QuoteCoverage auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/billing" render={props => <QuoteMailingAddressBilling auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/notes" render={props => <QuoteNotesFiles auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/summary" render={props => <QuoteSummary auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/additionalInterests" render={props => <AdditionalInterests auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/underwriting" render={props => <QuoteUnderwriting auth={auth} {...props} />} />
+              <Route exact path="/quote/:quoteId/application" render={props => <QuoteApplication auth={auth} {...props} />} />
               <Route exact path="/agency/:agencyCode/staff" render={props => <AgencyStaff auth={auth} {...props} />} />
               <Route exact path="/reports" render={props => <Reports auth={auth} {...props} />} />
               <Route exact path="/login" render={props => <LoginPage auth={auth} {...props} />} />
@@ -133,13 +128,11 @@ class Routes extends Component {
                 render={() => {
                   auth.logout();
                   return <Callback />;
-                }}
-              />
+                }} />
               <Route
                 exact
                 path="/callback"
-                render={() => <Callback />}
-              />
+                render={() => <Callback />} />
               <Route path="*" render={props => <NotFoundPage auth={auth} {...props} />} />
             </Switch>
           </div>
