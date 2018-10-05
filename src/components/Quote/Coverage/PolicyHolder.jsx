@@ -98,7 +98,7 @@ const PolicyHolder = ({
             name="pH2FirstName"
             label="First Name"
             component={Input}
-            validate={[firstNameDepends, validation.isAlphaNumeric, validation.isRequired]}
+            validate={[firstNameDepends, validation.isAlphaNumeric]}
             onChange={setPHToggle}
             dataTest="pH2FirstName"
           />
@@ -108,7 +108,7 @@ const PolicyHolder = ({
             name="pH2LastName"
             label="Last Name"
             component={Input}
-            validate={[lastNameDepends, validation.isAlphaNumeric, validation.isRequired]}
+            validate={[lastNameDepends, validation.isAlphaNumeric]}
             onChange={setPHToggle}
             dataTest="pH2LastName"
           />
