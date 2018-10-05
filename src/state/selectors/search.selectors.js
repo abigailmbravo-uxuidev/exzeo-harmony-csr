@@ -11,8 +11,7 @@ export const getAgenciesForTypeAhead = createSelector(
 
     return agencies.map(agency => ({
       label: agency.displayName,
-      answer: agency.agencyCode,
-      value: agency.agencyCode
+      answer: agency.agencyCode
     }));
   }
 );

@@ -12,6 +12,7 @@
     "no-underscore-dangle": [2, { "allow": [ "_id" ] }],
     "no-unused-expressions": 1,
     "prefer-const": 1,
+    "import/prefer-default-export": 0,
     "import/no-extraneous-dependencies": 2,
     "import/no-deprecated": 1,
     "import/no-named-as-default": 0,
@@ -35,7 +36,7 @@
     "react/jsx-filename-extension": 0,
     "react/jsx-handler-names": [2, { "eventHandlerPrefix": "handle", "eventHandlerPropPrefix": "on"}],
     "react/jsx-indent": [2, 2],
-    "react/jsx-max-props-per-line": [2, { "when": "multiline" }]
+    "react/jsx-max-props-per-line": [1, { "when": "multiline" }]
   },
   "globals": {
     "expect": true,
