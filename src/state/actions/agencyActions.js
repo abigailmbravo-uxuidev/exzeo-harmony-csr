@@ -1,6 +1,6 @@
-import cloneDeep from 'lodash/cloneDeep'
+import cloneDeep from 'lodash/cloneDeep';
 import * as types from './actionTypes';
-import * as errorActions from './errorActions';
+import * as errorActions from './error.actions';
 import * as serviceRunner from '../../utilities/serviceRunner';
 
 /**
@@ -367,7 +367,7 @@ export function applyLicenseToAgency(data, agency) {
  * @returns {Function}
  */
 export function addAgentToAgency(formData, currentAgency) {
-  return async dispatch => {
+  return async (dispatch) => {
     const agency = cloneDeep(currentAgency);
 
     formData.agencyLicense.forEach((l) => {
@@ -390,5 +390,5 @@ export function addAgentToAgency(formData, currentAgency) {
     // noinspection JSUnusedLocalSymbols
     const { createdAt, createdBy, ...selectedAgency } = agency;
     await dispatch(updateAgency(selectedAgency));
-  }
+  };
 }

@@ -1,8 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import {Input, Integer, Radio, Select} from "@exzeo/core-ui/lib/Input/index";
-import {validation} from "@exzeo/core-ui/lib/InputLifecycle/index";
+import { Input, Integer, Radio, Select, validation } from '@exzeo/core-ui';
 
 const statusAnswers = [
   { answer: 'Active', label: 'Active' },
@@ -24,24 +22,21 @@ const Details = (agencyCodeDisabled) => {
         dataTest="agencyCode"
         component={Input}
         validate={validation.isRequired}
-        disabled={agencyCodeDisabled}
-      />
+        disabled={agencyCodeDisabled} />
       <Field
         label="Agency Name"
         styleName="agencyName"
         name="displayName"
         dataTest="displayName"
         component={Input}
-        validate={validation.isRequired}
-      />
+        validate={validation.isRequired} />
       <Field
         label="Entity Name"
         styleName="entityName"
         name="legalName"
         dataTest="legalName"
         component={Input}
-        validate={validation.isRequired}
-      />
+        validate={validation.isRequired} />
       <Field
         id="status"
         name="status"
@@ -50,16 +45,14 @@ const Details = (agencyCodeDisabled) => {
         label="Status"
         component={Select}
         validate={validation.isRequired}
-        answers={statusAnswers}
-      />
+        answers={statusAnswers} />
       <Field
         label="TPAID"
         styleName="tpaid"
         name="tpaid"
         dataTest="tpaid"
         component={Integer}
-        validate={[validation.isRequired, validation.isNumbersOnly]}
-      />
+        validate={[validation.isRequired, validation.isNumbersOnly]} />
       <Field
         name="okToPay"
         dataTest="okToPay"
@@ -67,23 +60,20 @@ const Details = (agencyCodeDisabled) => {
         label="Ok to Pay"
         component={Radio}
         segmented
-        answers={okToPayAnswers}
-      />
+        answers={okToPayAnswers} />
       <Field
         label="Tier"
         styleName="tier"
         name="tier"
         dataTest="tier"
         component={Input}
-        validate={[validation.isRequired, validation.isNumbersOnly]}
-      />
+        validate={[validation.isRequired, validation.isNumbersOnly]} />
       <Field
         label="Web Address"
         styleName="webAddress"
         name="websiteUrl"
         dataTest="websiteUrl"
-        component={Input}
-      />
+        component={Input} />
     </React.Fragment>
   );
 };

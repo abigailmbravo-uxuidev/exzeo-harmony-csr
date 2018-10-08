@@ -16,10 +16,10 @@ const Header = props => (
       <button className="btn-icon btn-ellipsis-v"><i className="fa fa-ellipsis-v" /></button>
       <nav className="fade-in">
         <NavLink to="/reports" activeClassName="active" exact>Reports</NavLink>
-        <NavLink to="/agencySearch" activeClassName="active" exact>Agency</NavLink>
+        <NavLink to="/agency" activeClassName="active" exact>Agency</NavLink>
         <NavLink to="/" activeClassName="active" exact>Policy</NavLink>
-        { /* <a href="">User Management</a> */ }
-        <div className="user-name">{ props.authState && props.authState.userProfile ? props.authState.userProfile.userName : ''}</div>
+        {/* <a href="">User Management</a> */}
+        <div className="user-name">{props.authState && props.authState.userProfile ? props.authState.userProfile.userName : ''}</div>
         <button tabIndex="0" className="btn btn-action"><i className="fa fa-gear" /></button>
         <button tabIndex="0" className="btn logout btn-action" type="button" onClick={() => handleLogout(props.auth)}><i className="fa fa-sign-out" /></button>
       </nav>

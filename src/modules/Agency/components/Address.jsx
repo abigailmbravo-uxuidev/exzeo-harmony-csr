@@ -1,7 +1,6 @@
-import React, {Component} from 'react';
-import {Field} from 'redux-form';
-import {Input} from '@exzeo/core-ui/lib/Input';
-import {validation} from '@exzeo/core-ui/lib/InputLifecycle';
+import React, { Component } from 'react';
+import { Field } from 'redux-form';
+import { Input, validation } from '@exzeo/core-ui';
 
 class Address extends Component {
   normalizeSameAsMailing = (value) => {
@@ -23,8 +22,7 @@ class Address extends Component {
           dataTest="address1"
           validate={validation.isRequired}
           normalize={this.normalizeSameAsMailing}
-          disabled={sectionDisabled}
-        />
+          disabled={sectionDisabled} />
         <Field
           name="address2"
           label="Address 2"
@@ -32,8 +30,7 @@ class Address extends Component {
           styleName="address2"
           dataTest="address2"
           normalize={this.normalizeSameAsMailing}
-          disabled={sectionDisabled}
-        />
+          disabled={sectionDisabled} />
         <Field
           name="city"
           label="City"
@@ -42,8 +39,7 @@ class Address extends Component {
           dataTest="city"
           validate={validation.isRequired}
           normalize={this.normalizeSameAsMailing}
-          disabled={sectionDisabled}
-        />
+          disabled={sectionDisabled} />
         <Field
           name="state"
           label="State"
@@ -52,8 +48,7 @@ class Address extends Component {
           dataTest="state"
           validate={validation.isRequired}
           normalize={this.normalizeSameAsMailing}
-          disabled={sectionDisabled}
-        />
+          disabled={sectionDisabled} />
         <Field
           name="zip"
           label="Zip Code"
@@ -62,8 +57,7 @@ class Address extends Component {
           dataTest="zip"
           validate={validation.isRequired}
           normalize={this.normalizeSameAsMailing}
-          disabled={sectionDisabled}
-        />
+          disabled={sectionDisabled} />
         {showCounty &&
         <Field
           name="county"
@@ -73,8 +67,7 @@ class Address extends Component {
           dataTest="county"
           validate={validation.isRequired}
           normalize={this.normalizeSameAsMailing}
-          disabled={sectionDisabled}
-        />
+          disabled={sectionDisabled} />
         }
       </React.Fragment>
     );

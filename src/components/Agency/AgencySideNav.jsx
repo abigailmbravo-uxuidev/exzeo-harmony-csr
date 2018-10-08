@@ -19,10 +19,10 @@ import * as cgActions from '../../state/actions/cg.actions';
  * }
  */
 const csrLinks = agencyCode => [{
-  key: 'staff',
-  link: `/agency/${agencyCode}/staff`,
-  label: 'Staff',
-  styleName: 'staff',
+  key: 'overview',
+  link: `/agency/${agencyCode}/overview`,
+  label: 'Overview',
+  styleName: 'overview',
   exact: true
 }, {
   key: 'notes',

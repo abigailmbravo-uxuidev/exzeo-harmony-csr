@@ -10,7 +10,7 @@ export function handleNewTab(searchData, searchType) {
     window.open(`/policy/${searchData.policyNumber}/coverage`, '_blank');
     // agency
   } else if (searchType === 'agency' || searchType === 'agent') {
-    window.open(`/agency/${searchData.agencyCode}/staff`, '_blank');
+    window.open(`/agency/${searchData.agencyCode}/overview`, '_blank');
   }
 }
 

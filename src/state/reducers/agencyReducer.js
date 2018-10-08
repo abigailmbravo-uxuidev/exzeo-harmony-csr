@@ -1,4 +1,3 @@
-import * as persistTypes from 'redux-persist/constants';
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 
@@ -12,8 +11,6 @@ export default function agencyReducer(state = initialState.agencyState, action) 
       return setAgents(state, action);
     case types.SET_AGENTS_LIST:
       return setAgentList(state, action);
-    case persistTypes.REHYDRATE:
-      return action.payload && action.payload.agencyState ? { ...initialState.agencyState, ...action.payload.agencyState } : state;
     default:
       return state;
   }

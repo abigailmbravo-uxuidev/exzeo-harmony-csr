@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field, formValueSelector, FormSection } from 'redux-form';
-import { Select, Input } from '@exzeo/core-ui/lib/Input';
-import Button from '@exzeo/core-ui/lib/Button'
-import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
+import { validation, Button, Select, Input } from '@exzeo/core-ui';
+
 import { getAgency, updateAgency } from '../../../state/actions/agencyActions';
 import { getEditModalInitialValues } from '../../../state/selectors/agency.selector';
+
 import Address from '../components/Address';
 import Contact from './Contact';
 import Details from './Details';
@@ -68,8 +68,7 @@ export class AgencyModal extends Component {
               <Address
                 sameAsMailingValue={sameAsMailingValue}
                 changeField={change}
-                mailingAddress
-              />
+                mailingAddress />
             </FormSection>
 
             <Field
@@ -78,8 +77,7 @@ export class AgencyModal extends Component {
               name="taxIdNumber"
               dataTest="taxIdNumber"
               component={Input}
-              validate={validation.isRequired}
-            />
+              validate={validation.isRequired} />
             <Field
               id="taxClassification"
               name="taxClassification"
@@ -88,8 +86,7 @@ export class AgencyModal extends Component {
               label="Tax Classification"
               component={Select}
               validate={validation.isRequired}
-              answers={taxClassificationAnswers}
-            />
+              answers={taxClassificationAnswers} />
           </div>
           <div className="agency-physical-address">
             <h4>Physical Address
@@ -99,15 +96,13 @@ export class AgencyModal extends Component {
                 id="sameAsMailing"
                 type="checkbox"
                 data-test="sameAsMailing"
-                normalize={this.handleSameAsMailing}
-              />
+                normalize={this.handleSameAsMailing} />
               <label htmlFor="sameAsMailing">Same as Mailing Address</label>
             </h4>
             <FormSection name="physicalAddress">
               <Address
                 sectionDisabled={sameAsMailingValue}
-                showCounty
-              />
+                showCounty />
             </FormSection>
           </div>
         </section>
