@@ -18,8 +18,8 @@ export class Agency extends Component {
   componentDidMount() {
     const { match: { params: { agencyCode } } } = this.props;
     this.props.getAgency(agencyCode);
-    this.props.getAgentsByAgencyCode(agencyCode);
-    this.props.getAgentList('TTIC', 'FL');
+    // this.props.getAgentsByAgencyCode(agencyCode);
+    // this.props.getAgentList('TTIC', 'FL');
   }
 
   render() {
@@ -39,7 +39,7 @@ export class Agency extends Component {
           <Route exact path={`${url}/agents`} render={AgentsRender} />
         </div>
       </main>
-    </div>
+            </div>
     );
   }
 }
