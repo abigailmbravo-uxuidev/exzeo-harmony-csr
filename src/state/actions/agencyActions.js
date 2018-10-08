@@ -216,7 +216,7 @@ export async function fetchAgentsByAgencyCode(agencyCode) {
     const config = {
       service: 'agency',
       method: 'GET',
-      path: `agencies/${agencyCode}/agents`
+      path: `agencies/${agencyCode}/agents/`
     };
     const response = await serviceRunner.callService(config);
     return response.data && response.data.result ? response.data.result : [];

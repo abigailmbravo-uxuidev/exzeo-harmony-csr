@@ -11,6 +11,7 @@ import Address from '../components/Address';
 import Contact from './Contact';
 import Details from './Details';
 import Principal from './Principal';
+import AgentOfRecord from './AgentOfRecord';
 
 export class AgencyModal extends Component {
   saveAgency = async (data, dispatch, props) => {
@@ -54,7 +55,7 @@ export class AgencyModal extends Component {
       <form onSubmit={handleSubmit(this.saveAgency)}>
         <h4>Details</h4>
         <section className="agency-details">
-          <Details agencyCodeDisabled={!!initialValues.agencyCode} />
+          <Details />
           {/* web address validaiton */}
         </section>
         <section className="agency-address">
@@ -85,13 +86,17 @@ export class AgencyModal extends Component {
             </FormSection>
           </div>
         </section>
+        <section className="agency-principal">
+          <h4>Officer</h4>
+          <Principal />
+        </section>
         <section className="agency-contact">
           <h4>Contact</h4>
           <Contact />
         </section>
-        <section className="agency-principal">
-          <h4>Principal</h4>
-          <Principal />
+        <section className="agency-aor">
+          <h4>Agent Of Record</h4>
+          <AgentOfRecord />
         </section>
         <div className="basic-footer btn-footer">
           <Button baseClass="secondary" onClick={this.resetForm}>Cancel</Button>

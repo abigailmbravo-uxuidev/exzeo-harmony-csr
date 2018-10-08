@@ -26,8 +26,7 @@ const Details = (agencyCodeDisabled) => {
         name="agencyCode"
         dataTest="agencyCode"
         component={Input}
-        validate={validation.isRequired}
-        disabled={agencyCodeDisabled} />
+        validate={validation.isRequired} />
       <Field
         label="Agency Name"
         styleName="agencyName"

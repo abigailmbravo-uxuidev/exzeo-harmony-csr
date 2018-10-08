@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { Loader } from '@exzeo/core-ui';
-import { WORK_FLOW_DATA, WORK_FLOW_MODEL_NAME } from "../constants/search";
-import { startWorkflow } from '../state/actions/cg.actions';
 import { getUIQuestions } from '../state/actions/questions.actions';
 import Header from '../components/Common/Header';
 import Footer from '../components/Common/Footer';
@@ -12,8 +10,7 @@ import Search from '../modules/Search';
 
 export class SearchBase extends Component {
   componentDidMount() {
-    const { startWorkflow, getUIQuestions } = this.props;
-    startWorkflow(WORK_FLOW_MODEL_NAME, WORK_FLOW_DATA);
+    const { getUIQuestions } = this.props;
     getUIQuestions('searchCSR');
   }
 
@@ -40,7 +37,6 @@ export class SearchBase extends Component {
 
 SearchBase.propTypes = {
   getUIQuestions: PropTypes.func,
-  startWorkflow: PropTypes.func,
   auth: PropTypes.object,
   loading: PropTypes.bool
 };
@@ -49,7 +45,4 @@ const mapStateToProps = state => ({
   loading: state.search.loading
 });
 
-export default connect(mapStateToProps, {
-  getUIQuestions,
-  startWorkflow
-})(SearchBase);
+export default connect(mapStateToProps, { getUIQuestions })(SearchBase);

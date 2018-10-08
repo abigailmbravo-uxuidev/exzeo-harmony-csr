@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+
+
 import handleNewTab from '../../../utilities/handleNewTab';
 import { SEARCH_TYPES } from '../../../constants/search';
 
@@ -20,7 +23,9 @@ export function onKeyPressSubmit(event, data, props) {
 
 export class SearchResults extends Component {
   render() {
-    const { hasSearched, searchType, search: { results, noResults }, error } = this.props;
+    const {
+      hasSearched, searchType, search: { results, noResults }, error
+    } = this.props;
     return (
       <div className="results-wrapper">
 
@@ -30,13 +35,12 @@ export class SearchResults extends Component {
 
         {hasSearched && searchType === SEARCH_TYPES.newQuote && !!results.length &&
           <ul id="property-search-results" className="results result-cards property-search-results">
-            {!!results.length && results.map((address) => (
+            {!!results.length && results.map(address => (
               <AddressCard
                 key={address.id}
                 address={address}
-                handleKeyPress={(e) => onKeyPressSubmit(e, address, searchType)}
-                handleClick={() => handleNewTab(address, searchType)}
-              />
+                handleKeyPress={e => onKeyPressSubmit(e, address, searchType)}
+                handleClick={() => handleNewTab(address, searchType)} />
             ))}
             <AddressTip />
           </ul>
@@ -44,56 +48,54 @@ export class SearchResults extends Component {
 
         {hasSearched && searchType === SEARCH_TYPES.quote && !!results.length &&
           <div className="quote-list">
-            {results.map((quote) => (
+            {results.map(quote => (
               <QuoteCard
                 key={quote._id}
                 quote={quote}
-                handleKeyPress={(e) => onKeyPressSubmit(e, quote, searchType)}
-                handleClick={() => handleNewTab(quote, searchType)}
-              />
+                handleKeyPress={e => onKeyPressSubmit(e, quote, searchType)}
+                handleClick={() => handleNewTab(quote, searchType)} />
             ))}
           </div>
         }
 
         {hasSearched && searchType === SEARCH_TYPES.policy && !!results.length &&
           <div className="policy-list">
-            {results.map((policy) => (
+            {results.map(policy => (
               <PolicyCard
                 key={policy.policyID}
                 policy={policy}
-                handleKeyPress={(e) => onKeyPressSubmit(e, policy, searchType)}
-                handleClick={() => handleNewTab(policy, searchType)}
-              />
+                handleKeyPress={e => onKeyPressSubmit(e, policy, searchType)}
+                handleClick={() => handleNewTab(policy, searchType)} />
             ))}
           </div>
         }
 
         {hasSearched && searchType === SEARCH_TYPES.agent && !!results.length &&
           <div className="user-list agent-list">
-            {results.map((agent) => (
+            {results.map(agent => (
               <AgentCard
                 key={agent._id}
                 agent={agent}
-                handleKeyPress={(e) => onKeyPressSubmit(e, agent, searchType)}
-                handleClick={() => handleNewTab(agent, searchType)}
-              />
+                handleKeyPress={e => onKeyPressSubmit(e, agent, searchType)}
+                handleClick={() => handleNewTab(agent, searchType)} />
             ))}
           </div>
         }
 
         {hasSearched && searchType === SEARCH_TYPES.agency && !!results.length &&
           <div className="user-list agency-list">
-            {results.map((agency) => (
+            {results.map(agency => (
               <AgencyCard
                 key={agency.agencyCode}
                 agency={agency}
-                handleKeyPress={(e) => onKeyPressSubmit(e, agency, searchType)}
-                handleClick={() => handleNewTab(agency, searchType)}
-              />
+                handleKeyPress={e => onKeyPressSubmit(e, agency, searchType)}
+                handleClick={() => handleNewTab(agency, searchType)} />
             ))}
           </div>
         }
-
+        {!hasSearched && searchType === SEARCH_TYPES.agency &&
+          <NavLink className="btn btn-primary" to="/agency/new" activeClassName="active" exact>+ Agency</NavLink>
+        }
       </div>
     );
   }
