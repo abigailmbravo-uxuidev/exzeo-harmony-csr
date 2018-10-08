@@ -64,6 +64,7 @@ const Details = (agencyCodeDisabled) => {
         label="Ok to Pay"
         component={Radio}
         segmented
+        validate={validation.isRequired}
         answers={okToPayAnswers} />
       <Field
         label="Web Address"

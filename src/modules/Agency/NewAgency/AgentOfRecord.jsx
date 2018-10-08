@@ -42,7 +42,7 @@ export const AgentOFRecord = () => (
       name="phone1"
       dataTest="phone1"
       component={Phone}
-      validate={validation.isPhone} />
+      validate={[validation.isRequired, validation.isPhone]} />
     <Field
       label="Phone 2"
       styleName="phone2"

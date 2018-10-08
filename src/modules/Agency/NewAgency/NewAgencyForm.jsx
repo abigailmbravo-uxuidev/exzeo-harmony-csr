@@ -1,22 +1,30 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, Field, formValueSelector, FormSection } from 'redux-form';
+import { reduxForm, Field, FieldArray, formValueSelector, FormSection } from 'redux-form';
 import { validation, Button, Select, Input } from '@exzeo/core-ui';
 
 import { getAgency, updateAgency } from '../../../state/actions/agencyActions';
 import { getEditModalInitialValues } from '../../../state/selectors/agency.selector';
-
+import ExistingAgentModal from '../components/ExistingAgentModal';
 import Address from '../components/Address';
 
 import Contact from './Contact';
 import Details from './Details';
 import Principal from './Principal';
 import AgentOfRecord from './AgentOfRecord';
+import License from '../components/License';
 
-export class AgencyModal extends Component {
+export class NewAgencyForm extends Component {
+  state = {
+    showAddExistingAgentModal: false
+  }
   saveAgency = async (data, dispatch, props) => {
     await props.updateAgency(data);
   };
+
+  toggleExistingAgentModal = () => {
+    this.setState({ showAddExistingAgentModal: !this.state.showAddExistingAgentModal });
+  }
 
   handleSameAsMailing = (value, previousValue, allValues) => {
     const { change } = this.props;
@@ -44,7 +52,7 @@ export class AgencyModal extends Component {
   render() {
     const {
       handleSubmit,
-      initialValues,
+      licenseValue,
       sameAsMailingValue,
       submitting,
       pristine,
@@ -95,27 +103,39 @@ export class AgencyModal extends Component {
           <Contact />
         </section>
         <section className="agency-aor">
-          <h4>Agent Of Record</h4>
+          <h4>Agent Of Record <a onClick={this.toggleExistingAgentModal} className="btn btn-link btn-xs btn-alt-light no-padding"><i className="fa fa-user" />Use Existing Agent</a></h4>
           <AgentOfRecord />
+        </section>
+        <section className="agency=license">
+          <FieldArray
+            name="license"
+            component={License}
+            licenseValue={licenseValue} />
         </section>
         <div className="basic-footer btn-footer">
           <Button baseClass="secondary" onClick={this.resetForm}>Cancel</Button>
           <Button baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
         </div>
+        {this.state.showAddExistingAgentModal &&
+          <ExistingAgentModal
+            listOfAgents={[]}
+            toggleModal={this.toggleExistingAgentModal}
+            handleSaveAgent={x => x} />
+        }
       </form>
     );
   }
 }
-
-const selector = formValueSelector('AgencyModal');
+const selector = formValueSelector('NewAgencyForm');
 const mapStateToProps = state => ({
   initialValues: getEditModalInitialValues(state),
-  sameAsMailingValue: selector(state, 'sameAsMailing')
+  sameAsMailingValue: selector(state, 'sameAsMailing'),
+  licenseValue: selector(state, 'license') || []
 });
 
 export default connect(mapStateToProps, {
   getAgency, updateAgency
 })(reduxForm({
-  form: 'AgencyModal',
+  form: 'NewAgencyForm',
   enableReinitialize: true
-})(AgencyModal));
+})(NewAgencyForm));

@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import AgencyDetails from './AgencyDetails';
+import NewAgencyForm from './NewAgencyForm';
 
-export class Overview extends Component {
+export class NewAgency extends Component {
   render() {
     return (
       <div className="route-content-wrapper">
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
-              <AgencyDetails agency={{}} />
+              <NewAgencyForm agency={{}} />
             </div>
           </div>
         </div>
@@ -17,4 +17,4 @@ export class Overview extends Component {
   }
 }
 
-export default Overview;
+export default NewAgency;
