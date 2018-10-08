@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getAgency, getAgentList, getAgentsByAgencyCode } from '../../state/actions/agencyActions';
+import { getAgency, getAgentList, getAgentsByAgencyCode, getListOfOrphanedAgents } from '../../state/actions/agencyActions';
 import AgencyHeader from './AgencyHeader';
 import AgencySideNav from './AgencySideNav';
 import AgencyDetailHeader from './DetailHeader';
@@ -21,6 +21,8 @@ export class Agency extends Component {
       this.props.getAgency(agencyCode);
       this.props.getAgentsByAgencyCode(agencyCode);
     }
+    this.props.getListOfOrphanedAgents();
+
     // this.props.getAgentList('TTIC', 'FL');
   }
 
@@ -52,5 +54,7 @@ const mapStateToProps = state => ({
   agency: state.agencyState.agency
 });
 
-export default connect(mapStateToProps, { getAgency, getAgentList, getAgentsByAgencyCode })(Agency);
+export default connect(mapStateToProps, {
+  getAgency, getAgentList, getAgentsByAgencyCode, getListOfOrphanedAgents
+})(Agency);
 

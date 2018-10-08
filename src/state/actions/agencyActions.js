@@ -392,3 +392,62 @@ export function addAgentToAgency(formData, currentAgency) {
     await dispatch(updateAgency(selectedAgency));
   };
 }
+
+
+export async function fetchOrphanedAgents() {
+  try {
+    const config = {
+      service: 'agency',
+      method: 'GET',
+      path: 'agents?type=orphaned'
+    };
+    const response = await serviceRunner.callService(config);
+    return response.data && response.data.result ? response.data.result : [];
+  } catch (error) {
+    throw error;
+  }
+}
+
+export function getListOfOrphanedAgents() {
+  return async (dispatch) => {
+    try {
+      const agency = await fetchOrphanedAgents();
+      dispatch(setAgency(agency));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
+
+/**
+ *
+ * @param agencyData
+ * @returns {Promise<{}>}
+ */
+export async function saveNewAgency(agencyData) {
+  try {
+    const config = {
+      service: 'agency',
+      method: 'POST',
+      path: 'agencies',
+      data: agencyData
+    };
+    const response = await serviceRunner.callService(config);
+    return response.data && response.data.result ? response.data.result : {};
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+export function createAgency(agencyData) {
+  return async (dispatch) => {
+    try {
+      const agency = await saveNewAgency(agencyData);
+      dispatch(setAgency(agency));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}

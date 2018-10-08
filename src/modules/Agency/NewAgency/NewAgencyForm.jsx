@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field, FieldArray, formValueSelector, FormSection } from 'redux-form';
 import { validation, Button, Select, Input } from '@exzeo/core-ui';
+import { Redirect } from 'react-router-dom';
 
-import { getAgency, updateAgency } from '../../../state/actions/agencyActions';
+import { getAgency, updateAgency, createAgency } from '../../../state/actions/agencyActions';
 import { getEditModalInitialValues } from '../../../state/selectors/agency.selector';
 import ExistingAgentModal from '../components/ExistingAgentModal';
 import Address from '../components/Address';
@@ -18,8 +19,8 @@ export class NewAgencyForm extends Component {
   state = {
     showAddExistingAgentModal: false
   }
-  saveAgency = async (data, dispatch, props) => {
-    await props.updateAgency(data);
+  createAgency = async (data, dispatch, props) => {
+    await props.createAgency(data);
   };
 
   toggleExistingAgentModal = () => {
@@ -56,11 +57,13 @@ export class NewAgencyForm extends Component {
       sameAsMailingValue,
       submitting,
       pristine,
-      change
+      change,
+      agency
     } = this.props;
 
     return (
-      <form onSubmit={handleSubmit(this.saveAgency)}>
+      <form onSubmit={handleSubmit(this.createAgency)}>
+        {agency && agency.agencyCode && <Redirect replace to={`/agency/${agency.agencyCode}/overview`} />}
         <h4>Details</h4>
         <section className="agency-details">
           <Details />
@@ -73,6 +76,7 @@ export class NewAgencyForm extends Component {
               <Address
                 sameAsMailingValue={sameAsMailingValue}
                 changeField={change}
+                showCounty
                 mailingAddress />
             </FormSection>
           </div>
@@ -89,8 +93,8 @@ export class NewAgencyForm extends Component {
             </h4>
             <FormSection name="physicalAddress">
               <Address
-                sectionDisabled={sameAsMailingValue}
-                showCounty />
+                showTerritoryManager
+                sectionDisabled={sameAsMailingValue} />
             </FormSection>
           </div>
         </section>
@@ -134,7 +138,7 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  getAgency, updateAgency
+  getAgency, updateAgency, createAgency
 })(reduxForm({
   form: 'NewAgencyForm',
   enableReinitialize: true

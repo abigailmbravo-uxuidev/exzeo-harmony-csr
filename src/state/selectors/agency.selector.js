@@ -70,4 +70,3 @@ export const getAgencyLicenseArray = createSelector(
     return agency.license.map(al => al.licenseNumber);
   }
 );
-
