@@ -291,11 +291,6 @@ main[role="document"] {
   background: $white;
   @include transition(all 0.2s ease-in-out);
 
-  &.policy-advanced {
-    height: calc(100vh - 12.375rem);
-    min-height: calc(100vh - 12.375rem);
-  }
-
   .content-wrapper {
     display: flex;
     overflow: hidden;
@@ -689,7 +684,7 @@ ul.list-cards {
             flex-shrink: 0;
           }
 
-          .effctive-date {
+          .effective-date {
             flex-basis: 5.75rem;
             flex-grow: 0;
             flex-shrink: 0;

@@ -1,6 +1,5 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
-import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
 import ConnectedApp, { Summary, handleFormSubmit } from './Summary';
@@ -310,6 +309,9 @@ describe('Testing Summary component', () => {
   it('should test connected app', () => {
     const initialState = {
       service: {},
+      quoteState: {
+        quote: quoteData
+      },
       actions: { serviceActions: {} },
       cg: {
         bb: {
@@ -327,6 +329,7 @@ describe('Testing Summary component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      match: { params: {} },
       agents: [{ agentCode: '60000', firstName: 'Ted' }],
       fieldQuestions: [],
       dispatch: store.dispatch,
@@ -335,8 +338,7 @@ describe('Testing Summary component', () => {
           submitting: false
         }
       },
-      quoteData,
-      ...propTypes
+      quoteData
     };
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
     expect(wrapper);
@@ -350,13 +352,17 @@ describe('Testing Summary component', () => {
             modelInstanceId: '123',
             model: {
               variables: [
-                { name: 'retrieveQuote',
+                {
+                  name: 'retrieveQuote',
                   value: {
                     result: quoteData
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: quoteData
-                    } }]
+                  }
+                }, {
+                  name: 'getQuoteBeforePageLoop',
+                  value: {
+                    result: quoteData
+                  }
+                }]
             },
             uiQuestions: []
           }
@@ -372,16 +378,15 @@ describe('Testing Summary component', () => {
     const store = mockStore(initialState);
 
     const props = {
+      match: { params: {} },
       fieldQuestions: [],
       dispatch: store.dispatch,
-      actions: {
-        appStateActions: {
-          setAppState() { }
-        },
-        cgActions: {
-          batchCompleteTask() { return Promise.resolve(() => {}); }
-        }
-      },
+      getQuoteAction() {},
+      getAgentsAction() {},
+      getLatestQuoteAction() {},
+      setAppErrorAction() {},
+      setAppStateAction() { },
+      startWorkflowAction() { return Promise.resolve(() => {}); },
       appState: {
         data: {
           submitting: false

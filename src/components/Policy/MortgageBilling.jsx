@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { reduxForm, Field, formValueSelector } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
-import Inputs from '@exzeo/core-ui/lib/Input';
-import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
+import { Input, Select, Currency, Loader, validation } from '@exzeo/core-ui';
+
 import { getAnswers } from '../../utilities/forms';
 import { getMortgageeOrderAnswers } from '../../utilities/additionalInterests';
 import {
@@ -17,22 +17,15 @@ import {
 import {
   getPolicy,
   addTransaction,
-  getPaymentHistory,
-  getBillingOptionsForPolicy,
   createTransaction,
-  getPaymentOptionsApplyPayments
-} from '../../state/actions/policyActions';
-import { getUIQuestions } from '../../state/actions/questionsActions';
-
-import PolicyConnect from '../../containers/Policy';
+  updateBillPlan
+} from '../../state/actions/policy.actions';
+import { getUIQuestions } from '../../state/actions/questions.actions';
 import BillingModal from '../../components/Common/BillingEditModal';
 import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';
-import AdditionalInterestCard from "../AdditionalInterestCard";
-import PaymentHistoryTable from "../PaymentHistoryTable";
-
-const { validation } = lifecycle;
-const { Input, Select, Currency } = Inputs;
+import AdditionalInterestCard from '../AdditionalInterestCard';
+import PaymentHistoryTable from '../PaymentHistoryTable';
 
 const validateBatchNumber = validation.isDateMatchMin10('cashDate', 'YYYYMMDD');
 const validateAmount = validation.isRange(-1000000, 1000000);
@@ -52,7 +45,6 @@ export class MortgageBilling extends Component {
   state = {
     addAdditionalInterestType: '',
     isEditingAI: false,
-    paymentDescription: [],
     selectedAI: {},
     showAdditionalInterestModal: false,
     showBillingEditModal: false
@@ -62,22 +54,19 @@ export class MortgageBilling extends Component {
     this.props.getUIQuestions('additionalInterestsCSR');
   }
 
-  componentWillReceiveProps = (nextProps) => {
-    // TODO this is probably not needed, but leaving here for now until we solidify the pattern
-    const { policy } = this.props;
-    if (nextProps.policyID && (nextProps.policyID !== policy.policyID)) {
-      const { getPaymentHistory, getPaymentOptionsApplyPayments, getBillingOptionsForPolicy } = nextProps;
-      const paymentOptions = {
-        effectiveDate: nextProps.policy.effectiveDate,
-        policyHolders: nextProps.policy.policyHolders,
-        additionalInterests: nextProps.policy.additionalInterests,
-        currentPremium: nextProps.summaryLedger.currentPremium,
-        fullyEarnedFees: nextProps.policy.rating.worksheet.fees.empTrustFee + nextProps.policy.rating.worksheet.fees.mgaPolicyFee
-      };
-      getBillingOptionsForPolicy(paymentOptions);
-      getPaymentHistory(nextProps.policy.policyNumber);
-      getPaymentOptionsApplyPayments();
-    }
+  handleBillingFormSubmit = async (data) => {
+    const { updateBillPlan, policy } = this.props;
+    const updateData = {
+      policyNumber: policy.policyNumber,
+      policyID: policy.policyID,
+      transactionType: 'Bill Plan Update',
+      billingStatus: 2,
+      billToId: data.billToId,
+      billPlan: data.billPlan,
+      billToType: data.billToType
+    };
+    await updateBillPlan(updateData);
+    this.hideBillingModal();
   };
 
   handleAISubmit = async (additionalInterests, aiData) => {
@@ -148,7 +137,7 @@ export class MortgageBilling extends Component {
       return {
         ...initialValues,
         order: policy.additionalInterests.filter(ai => ai.active && ai.type === addAdditionalInterestType).length
-      }
+      };
     }
 
     const mortgageeAnswers = getAnswers('mortgagee', questions);
@@ -292,8 +281,13 @@ export class MortgageBilling extends Component {
     const cashDescriptionAnswers = cashDescriptionOptions[cashTypeValue] || [];
 
     return (
-      <PolicyConnect>
+      <React.Fragment>
         <div className="route-content">
+
+          {(!(billingOptions && billingOptions.options)) &&
+            <Loader />
+          }
+
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
               {/* TODO: This section needs to be hidden per role */}
@@ -310,8 +304,7 @@ export class MortgageBilling extends Component {
                           component={Input}
                           type="date"
                           validate={validation.isRequired}
-                          normalize={this.setBatch}
-                        />
+                          normalize={this.setBatch} />
                       </div>
                     </div>
                     <div className="flex-child">
@@ -321,8 +314,7 @@ export class MortgageBilling extends Component {
                           dataTest="batchNumber"
                           label="Batch Number"
                           component={Input}
-                          validate={validateBatchNumber}
-                        />
+                          validate={validateBatchNumber} />
                       </div>
                     </div>
                   </div>
@@ -336,8 +328,7 @@ export class MortgageBilling extends Component {
                           normalize={this.normalizeCashType}
                           component={Select}
                           validate={validation.isRequired}
-                          answers={cashTypeAnswers}
-                        />
+                          answers={cashTypeAnswers} />
                       </div>
                     </div>
                     <div className="flex-child">
@@ -348,8 +339,7 @@ export class MortgageBilling extends Component {
                           label="Description"
                           component={Select}
                           validate={validation.isRequired}
-                          answers={cashDescriptionAnswers}
-                        />
+                          answers={cashDescriptionAnswers} />
                       </div>
                     </div>
                     <div className="flex-child">
@@ -362,8 +352,7 @@ export class MortgageBilling extends Component {
                           validate={validateAmount}
                           noDecimal={false}
                           min={-1000000}
-                          max={1000000}
-                        />
+                          max={1000000} />
                       </div>
                     </div>
                   </div>
@@ -420,8 +409,7 @@ export class MortgageBilling extends Component {
                         key={ai._id}
                         ai={ai}
                         handleOnEnter={this.editAIOnEnter}
-                        handleClick={this.editAdditionalInterest}
-                      />
+                        handleClick={this.editAdditionalInterest} />
                     ))}
                   </ul>
                 </div>
@@ -440,32 +428,42 @@ export class MortgageBilling extends Component {
               isEditing={this.state.isEditingAI}
               selectedAI={this.state.selectedAI}
               validAdditionalInterestTypes={validAdditionalInterestTypes}
-              isPolicy
-            />
+              isPolicy />
           }
         </div>
         {this.state.showBillingEditModal &&
           <BillingModal
             billingOptions={billingOptions.options}
-            hideBillingModal={this.hideBillingModal}
-          />
+            handleBillingSubmit={this.handleBillingFormSubmit}
+            hideBillingModal={this.hideBillingModal} />
         }
         <div className="basic-footer">
           <Footer />
         </div>
-      </PolicyConnect>
+      </React.Fragment>
     );
   }
 }
 
 MortgageBilling.propTypes = {
-  policy: PropTypes.shape().isRequired
+  cashTypeValue: PropTypes.string,
+  billingOptions: PropTypes.object,
+  initialValues: PropTypes.object,
+  summaryLedger: PropTypes.object,
+  policyID: PropTypes.string,
+  paymentHistory: PropTypes.array,
+  service: PropTypes.object,
+  cashTypeAnswers: PropTypes.array,
+  cashDescriptionAnswers: PropTypes.array,
+  sortedAdditionalInterests: PropTypes.array,
+  questions: PropTypes.object,
+  tasks: PropTypes.object,
+  policy: PropTypes.object.isRequired
 };
 
 const selector = formValueSelector('MortgageBilling');
 const mapStateToProps = state => ({
   cashTypeValue: selector(state, 'cashType'),
-  auth: state.authState,
   billingOptions: state.policyState.billingOptions,
   initialValues: handleInitialize(state),
   summaryLedger: state.policyState.summaryLedger,
@@ -481,13 +479,11 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  getPaymentHistory,
-  getPaymentOptionsApplyPayments,
-  getBillingOptionsForPolicy,
   addTransaction,
   createTransaction,
   getUIQuestions,
-  getPolicy
+  getPolicy,
+  updateBillPlan
 })(reduxForm({
   form: 'MortgageBilling',
   enableReinitialize: true

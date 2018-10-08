@@ -1,9 +1,8 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
-import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
 
-import ConnectedApp, { QuoteApplication, handleFormSubmit, quoteSummaryModal, handleGetUnderwritingExceptions } from './Application';
+import { QuoteApplication, handleFormSubmit, quoteSummaryModal, handleGetUnderwritingExceptions } from './Application';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -33,6 +32,9 @@ describe('Testing Coverage component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      match: { params: {} },
+      setAppStateAction() {},
+      getQuoteAction() {},
       actions: {
         quoteStateActions: {
           getLatestQuote(){}
@@ -62,9 +64,11 @@ describe('Testing Coverage component', () => {
   });
   it('should test handleFormSubmit', () => {
     const initialState = {
-      service: {
-        transactions: {},
+      quoteState: {
         quote: { underwritingExceptions: [] }
+      },
+      service: {
+        transactions: {}
       },
       cg: {
         bb: {
@@ -94,8 +98,12 @@ describe('Testing Coverage component', () => {
     const store = mockStore(initialState);
 
     const props = {
+      match: { params: {} },
       fieldQuestions: [],
       dispatch: store.dispatch,
+      setAppStateAction() {},
+      getQuoteAction() {},
+      setAppErrorAction() {},
       actions: {
         quoteStateActions: {
           getLatestQuote(){}
@@ -133,7 +141,6 @@ describe('Testing Coverage component', () => {
           active: true
         }]
       },
-      ...propTypes
     };
 
     handleFormSubmit({}, store.dispatch, props);

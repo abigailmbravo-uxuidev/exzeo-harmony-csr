@@ -91,6 +91,15 @@ export function generateModel(data, props) {
   data.property.yearOfRoof = String(data.property.yearOfRoof).length > 0 ? data.property.yearOfRoof : null;
 
   data.deductibles.hurricane.calculatedAmount = String(data.deductibles.hurricane.calculatedAmount);
+
+  // ensure that the second policyholder is removed if there is no data entered
+  if (data.policyHolders.length > 1 &&
+     (!data.policyHolders[1].firstName ||
+      !data.policyHolders[1].lastName ||
+      !data.policyHolders[1].emailAddress ||
+      !data.policyHolders[1].primaryPhoneNumber)) {
+    data.policyHolders.pop();
+  }
   // ensure that we have order and entityType properties set for secondary policyHolder if there is one.
   if (data.policyHolders.length > 1) {
     const order = data.policyHolders[1].order;
@@ -109,6 +118,7 @@ export function generateModel(data, props) {
 export const convertToRateData = (formData, formProps) => {
   const { summaryLedger: { currentPremium }, zipcodeSettings } = formProps;
   const endorsementDate = calculateEndorsementDate(formData.endorsementDate, zipcodeSettings.timezone);
+  formData.coverageLimits.dwelling.amount = Math.round(formData.coverageLimits.dwelling.amount / 1000) * 1000;
 
   return {
     ...formData,

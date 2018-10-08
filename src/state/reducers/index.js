@@ -1,16 +1,17 @@
 /* eslint no-param-reassign:0 */
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
-import cg from './cgReducer';
-import authState from './authReducer';
-import appState from './appStateReducer';
-import error from './errorReducer';
-import service from './serviceReducer';
-import newNote from './newNoteReducer';
-import policyState from './policyReducer';
-import questions from './questionsReducer';
-import quoteState from './quoteReducer';
-import search from './searchReducer';
+
+import cg from './cg.reducer';
+import authState from './auth.reducer';
+import appState from './appState.reducer';
+import error from './error.reducer';
+import service from './service.reducer';
+import newNote from './newNote.reducer';
+import policyState from './policy.reducer';
+import questions from './questions.reducer';
+import quoteState from './quote.reducer';
+import search from './search.reducer';
 import agencyState from './agencyReducer';
 
 const rootReducer = combineReducers({

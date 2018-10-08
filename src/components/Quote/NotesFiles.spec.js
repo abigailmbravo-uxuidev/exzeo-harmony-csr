@@ -2,7 +2,6 @@ import React from 'react';
 import configureStore from 'redux-mock-store';
 import { propTypes } from 'redux-form';
 import { shallow } from 'enzyme';
-import _ from 'lodash';
 import ConnectedApp, { NotesFiles } from './NotesFiles';
 
 const middlewares = [];
@@ -11,6 +10,9 @@ const mockStore = configureStore(middlewares);
 describe('Testing NotesFiles component', () => {
   it('should test connected app', () => {
     const initialState = {
+      quoteState: {
+        quote: {}
+      },
       service: {
         notes: []
       },
@@ -29,6 +31,7 @@ describe('Testing NotesFiles component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      match: { params: {} },
       fieldQuestions: [],
       quoteData: {},
       dispatch: store.dispatch,
@@ -63,6 +66,7 @@ describe('Testing NotesFiles component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      match: { params: {} },
       notes: [],
       actions: {
         quoteStateActions: {
@@ -70,6 +74,9 @@ describe('Testing NotesFiles component', () => {
         },
         serviceActions: {
           getNotes() {}
+        },
+        quoteActions: {
+          getQuote() { return Promise.resolve(() => {}); }
         },
         appStateActions: {
           setAppState() { }

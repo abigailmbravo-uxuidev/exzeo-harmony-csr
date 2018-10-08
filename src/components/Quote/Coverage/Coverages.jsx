@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Select, Currency, Radio } from '@exzeo/core-ui/lib/Input';
-import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
+import { Select, Currency, Radio, validation } from '@exzeo/core-ui';
+
 import { getAnswers, getQuestionName } from '../../../utilities/forms';
 
 const baseYesNoAnswers = [

@@ -1,21 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _find from 'lodash/find';
 import { Prompt } from 'react-router-dom';
 import { reduxForm, formValueSelector, FormSection, clearFields } from 'redux-form';
-import Loader from '@exzeo/core-ui/lib/Loader';
-import { validation } from '@exzeo/core-ui/lib/InputLifecycle/index';
-import { premiumEndorsementList } from './constants/endorsementTypes';
+import { Loader, validation } from '@exzeo/core-ui';
+
 import endorsementUtils from '../../../utilities/endorsementModel';
-import { getUIQuestions } from '../../../state/actions/questionsActions';
-import { getNewRate, submitEndorsementForm, getEndorsementHistory } from '../../../state/actions/policyActions';
-import {
-  getUnderwritingQuestions,
-  getZipcodeSettings
-} from '../../../state/actions/serviceActions';
+import { getUIQuestions } from '../../../state/actions/questions.actions';
+import { getNewRate, submitEndorsementForm } from '../../../state/actions/policy.actions';
+import { getUnderwritingQuestions } from '../../../state/actions/service.actions';
+import { setAppError } from '../../../state/actions/error.actions';
 // Component Sections
-import PolicyConnect from '../../../containers/Policy';
 import Footer from '../../Common/Footer';
+
+import { premiumEndorsementList } from './constants/endorsementTypes';
 import Coverage from './Coverage';
 import WindMitigation from './WindMitigation';
 import HomeLocation from './HomeLocation';
@@ -24,7 +23,6 @@ import PolicyHolder from './PolicyHolder';
 import Address from './Address';
 import ResultsCalculator from './ResultsCalculator';
 import GoToMenu from './GoToMenu';
-import UnderwritingValidations from './UnderwritingValidations';
 
 export const getNewPolicyNumber = (state) => {
   const taskData = (state.cg && state.cg.endorsePolicyModelSave)
@@ -52,15 +50,9 @@ export class Endorsements extends React.Component {
   }
 
   componentDidMount() {
-    const {
-      policy, getUnderwritingQuestions, getZipcodeSettings, getEndorsementHistory, getUIQuestions
-    } = this.props;
+    const { policy, getUnderwritingQuestions, getUIQuestions } = this.props;
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
-    if (policy && policy.policyNumber && policy.property && policy.property.physicalAddress) {
-      getUnderwritingQuestions(policy.companyCode, policy.state, policy.product, policy.property);
-      getEndorsementHistory(policy.policyNumber);
-      getZipcodeSettings(policy.companyCode, policy.state, policy.product, policy.property.physicalAddress.zip);
-    }
+    getUnderwritingQuestions(policy.companyCode, policy.state, policy.product, policy.property);
   }
 
   componentDidUpdate(prevProps) {
@@ -122,14 +114,19 @@ export class Endorsements extends React.Component {
   };
 
   handleEndorsementFormSubmit = async (data, dispatch, props) => {
-    const { isCalculated, anyTouched } = this.state;
-    if (isCalculated && !anyTouched) {
-      await props.submitEndorsementForm(data, props);
-      this.setState({ isCalculated: false }, this.clearCalculate);
-    } else {
-      const rate = await props.getNewRate(data, props);
-      this.setCalculate(rate);
+    const { isCalculated, anyTouched, setAppError } = this.state;
+    try {
+      if (isCalculated && !anyTouched) {
+        await props.submitEndorsementForm(data, props);
+        this.setState({ isCalculated: false }, this.clearCalculate);
+      } else {
+        const rate = await props.getNewRate(data, props);
+        this.setCalculate(rate);
+      }
+    } catch (error) {
+      setAppError(error);
     }
+
   };
 
   clearCalculate = () => {
@@ -227,7 +224,7 @@ export class Endorsements extends React.Component {
       selectedFields = { coverageLimits: { personalProperty: { amount: null } } },
       submitting,
       underwritingQuestions,
-      userProfile
+      userProfile,
     } = this.props;
 
     const mappedEndorsementHistory = endorsementHistory && endorsementHistory.map((endorsement) => {
@@ -243,28 +240,24 @@ export class Endorsements extends React.Component {
 
     if (!canPremiumEndorse) {
       return (
-        <PolicyConnect>
-          <div className="messages" >
-            <div className="message error">
-              <i className="fa fa-exclamation-circle" aria-hidden="true" />&nbsp;Endorsement page cannot be accessed due to User Permissions.
-            </div>
+        <div className="messages">
+          <div className="message error">
+            <i className="fa fa-exclamation-circle" aria-hidden="true"/>&nbsp;Endorsement page cannot be accessed due to User Permissions.
           </div>
-        </PolicyConnect>);
+        </div>
+      );
     }
 
     return (
-      <PolicyConnect>
+      <React.Fragment>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
-        {this.props.submitting && <Loader />}
-
-        {initialValues.endorsementDate ?
+        {(this.props.submitting || !endorsementHistory) && <Loader />}
           <form
             id="Endorsements"
             className="content-wrapper"
             onSubmit={handleSubmit(this.handleEndorsementFormSubmit)}
             onKeyPress={e => (e.key === 'Enter' && e.target.type !== 'submit') && e.preventDefault()}
           >
-
             <div className="route-content">
               <div className="endorsements">
                 <GoToMenu />
@@ -324,27 +317,32 @@ export class Endorsements extends React.Component {
                 </ResultsCalculator>
 
               </div>
-
-              <UnderwritingValidations />
-
             </div>
           </form>
-          :
-          <Loader />
-        }
-
         <div className="basic-footer">
           <Footer />
         </div>
-      </PolicyConnect>
+      </React.Fragment>
     );
   }
 }
 
-// Endorsements.propTypes = {
-//   ...propTypes
-//   // TODO flesh these out in subsequent PR
-// };
+Endorsements.propTypes = {
+  endorsementHistory: PropTypes.array,
+  initialValues: PropTypes.object,
+  newPolicyNumber: PropTypes.string,
+  policy: PropTypes.object,
+  questions: PropTypes.object,
+  selectedValues: PropTypes.object,
+  summaryLedger: PropTypes.object,
+  userProfile: PropTypes.object,
+  clearFields: PropTypes.func,
+  getNewRate: PropTypes.func,
+  getUIQuestions: PropTypes.func,
+  getUnderwritingQuestions: PropTypes.func,
+  setAppError: PropTypes.func,
+  submitEndorsementForm: PropTypes.func,
+};
 
 const defaultObj = {};
 const defaultArr = [];
@@ -353,21 +351,24 @@ const mapStateToProps = state => ({
   endorsementHistory: state.policyState.endorsementHistory || defaultArr,
   initialValues: endorsementUtils.initializeEndorsementForm(state.policyState.policy),
   newPolicyNumber: getNewPolicyNumber(state),
-  policy: state.policyState.policy || defaultObj,
-  summaryLedger: state.policyState.summaryLedger || defaultObj,
+  policy: state.policyState.policy,
   questions: state.questions,
   selectedValues: selector(state, 'coverageLimits.personalProperty.amount', 'clearFields'),
+  summaryLedger: state.policyState.summaryLedger,
   underwritingQuestions: state.service.underwritingQuestions,
   userProfile: state.authState.userProfile || defaultObj,
   zipcodeSettings: state.service.getZipcodeSettings
 });
 
 export default connect(mapStateToProps, {
+  clearFields,
   getNewRate,
-  getUnderwritingQuestions,
-  submitEndorsementForm,
-  getEndorsementHistory,
-  getZipcodeSettings,
   getUIQuestions,
-  clearFields
-})(reduxForm({ form: FORM_NAME, enableReinitialize: true, touchOnChange: true })(Endorsements));
+  getUnderwritingQuestions,
+  setAppError,
+  submitEndorsementForm,
+})(reduxForm({
+  form: FORM_NAME,
+  enableReinitialize: true,
+  touchOnChange: true
+})(Endorsements));

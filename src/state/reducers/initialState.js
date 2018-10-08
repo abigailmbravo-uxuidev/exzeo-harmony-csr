@@ -13,7 +13,8 @@ export default {
   questions: {},
   quoteState: {
     quoteId: null,
-    update: false
+    update: false,
+    quote: {}
   },
   policyState: {
     policyID: '',
@@ -31,7 +32,17 @@ export default {
     agency: {},
     agents: []
   },
-  search: {},
+  search: {
+    loading: false,
+    currentPage: 1,
+    noResults: false,
+    pageSize: 0,
+    results: [],
+    sortBy: '',
+    sortDirection: '',
+    totalPages: 0,
+    totalRecords: 0
+  },
   service: {
     cancelOptions: []
   }

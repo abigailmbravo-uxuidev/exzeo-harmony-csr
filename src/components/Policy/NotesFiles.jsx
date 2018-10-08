@@ -2,26 +2,29 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as serviceActions from '../../state/actions/serviceActions';
-import PolicyBaseConnect from '../../containers/Policy';
-import * as errorActions from '../../state/actions/errorActions';
+import { Loader } from '@exzeo/core-ui';
+import { getNotes } from '../../state/actions/service.actions';
+import * as errorActions from '../../state/actions/error.actions';
 import NoteList from '../Common/NoteList';
 import Footer from '../Common/Footer';
 
 export class NotesFiles extends Component {
+  componentDidMount() {
+    const { policy, actions: { getNotes } } = this.props;
 
-  componentDidMount () {
-    const { actions, policy } = this.props;
     if (policy && policy.policyNumber) {
-      const ids = [policy.policyNumber, policy.sourceNumber];
-      actions.serviceActions.getNotes(ids.toString(), policy.policyNumber);
+      getNotes(policy.policyNumber, policy.sourceNumber);
     }
   }
 
   render() {
+    const { notes } = this.props;
     return (
-      <PolicyBaseConnect>
+      <React.Fragment>
         <div className="route-content">
+
+          {(!notes) && <Loader />}
+
           <div className="scroll">
             <NoteList {...this.props} />
           </div>
@@ -29,24 +32,35 @@ export class NotesFiles extends Component {
         <div className="basic-footer">
           <Footer />
         </div>
-      </PolicyBaseConnect>
+      </React.Fragment>
     );
   }
 }
 
 NotesFiles.propTypes = {
-  quoteData: PropTypes.shape()
+  actions: PropTypes.shape({
+    getNotes: PropTypes.func,
+    errorActions: PropTypes.shape({
+      setAppError: PropTypes.func.isRequired
+    })
+  }),
+  error: PropTypes.object,
+  notes: PropTypes.array,
+  policy: PropTypes.shape({
+    policyNumber: PropTypes.string,
+    sourceNumber: PropTypes.string
+  })
 };
 
 const mapStateToProps = state => ({
   notes: state.service.notes,
-  policy: state.policyState.policy || {},
+  policy: state.policyState.policy,
   error: state.error
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    serviceActions: bindActionCreators(serviceActions, dispatch),
+    getNotes: bindActionCreators(getNotes, dispatch),
     errorActions: bindActionCreators(errorActions, dispatch)
   }
 });

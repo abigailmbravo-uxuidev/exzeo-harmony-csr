@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Prompt } from 'react-router-dom';
 import moment from 'moment';
-import { reduxForm, Form, change } from 'redux-form';
-import * as cgActions from '../../state/actions/cgActions';
-import * as appStateActions from '../../state/actions/appStateActions';
-import * as quoteStateActions from '../../state/actions/quoteStateActions';
-import * as serviceActions from '../../state/actions/serviceActions';
+import { reduxForm, change } from 'redux-form';
+
+import { startWorkflow } from '../../state/actions/cg.actions';
+import { setAppState } from '../../state/actions/appState.actions';
+import { setAppError } from '../../state/actions/error.actions';
+import { getBillingOptions } from '../../state/actions/service.actions';
+import { getQuote } from '../../state/actions/quote.actions';
 import QuoteBaseConnect from '../../containers/Quote';
 import CheckField from '../Form/inputs/CheckField';
 import TextField from '../Form/inputs/TextField';
@@ -17,14 +18,16 @@ import { RadioFieldBilling, SelectFieldBilling } from '../Form/inputs';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
 
+const MODEL_NAME = 'csrMailingAddressBilling';
+
 export const handleInitialize = (state) => {
-  const quoteData = state.service.quote || {};
+  const quoteData = state.quoteState.quote || {};
   const values = {};
-  values.address1 = _.get(quoteData, 'policyHolderMailingAddress.address1');
-  values.address2 = _.get(quoteData, 'policyHolderMailingAddress.address2');
-  values.city = _.get(quoteData, 'policyHolderMailingAddress.city');
-  values.state = _.get(quoteData, 'policyHolderMailingAddress.state');
-  values.zip = _.get(quoteData, 'policyHolderMailingAddress.zip');
+  values.address1 = _.get(quoteData, 'policyHolderMailingAddress.address1', '');
+  values.address2 = _.get(quoteData, 'policyHolderMailingAddress.address2', '');
+  values.city = _.get(quoteData, 'policyHolderMailingAddress.city', '');
+  values.state = _.get(quoteData, 'policyHolderMailingAddress.state', '');
+  values.zip = _.get(quoteData, 'policyHolderMailingAddress.zip', '');
 
   values.sameAsProperty = false;
 
@@ -64,18 +67,22 @@ export const getSelectedPlan = (answer) => {
   return selection;
 };
 
-export const InstallmentTerm = ({ paymentPlans, payPlans }) => (<div className="installment-term">
-  {payPlans && payPlans.map((payPlan, index) => {
+export const InstallmentTerm = ({ paymentPlans, payPlans }) => (
+  <div className="installment-term">
+    {payPlans && payPlans.map((payPlan, index) => {
     const paymentPlan = paymentPlans[getSelectedPlan(payPlan)];
     return (
       <dl className="column-3" key={index}>
         <div>
-          {paymentPlan && paymentPlan.amount && <div>
+          {paymentPlan && paymentPlan.amount &&
+          <div>
             <dt><span>Annual</span> Installment Plan</dt>
             <dd>
             $ {normalizeNumbers(paymentPlan.amount)} : {moment.utc(paymentPlan.dueDate).format('MM/DD/YYYY')}
-            </dd></div>}
-          {paymentPlan && paymentPlan.s1 && paymentPlan.s2 && <div>
+            </dd>
+          </div>}
+          {paymentPlan && paymentPlan.s1 && paymentPlan.s2 &&
+          <div>
             <dt><span>Semi-Annual</span> Installment Plan</dt>
             <dd>
               $ {normalizeNumbers(paymentPlan.s1.amount)} : {moment.utc(paymentPlan.s1.dueDate).format('MM/DD/YYYY')}
@@ -84,7 +91,8 @@ export const InstallmentTerm = ({ paymentPlans, payPlans }) => (<div className="
               $ {normalizeNumbers(paymentPlan.s2.amount)} : {moment.utc(paymentPlan.s2.dueDate).format('MM/DD/YYYY')}
             </dd>
           </div>}
-          {paymentPlan && paymentPlan.q1 && paymentPlan.q2 && paymentPlan.q3 && paymentPlan.q4 && <div>
+          {paymentPlan && paymentPlan.q1 && paymentPlan.q2 && paymentPlan.q3 && paymentPlan.q4 &&
+          <div>
             <dt><span>Quarterly</span> Installment Plan</dt>
             <dd>
               $ {normalizeNumbers(paymentPlan.q1.amount)} : {moment.utc(paymentPlan.q1.dueDate).format('MM/DD/YYYY')}
@@ -98,12 +106,12 @@ export const InstallmentTerm = ({ paymentPlans, payPlans }) => (<div className="
             <dd>
               $ {normalizeNumbers(paymentPlan.q4.amount)} : {moment.utc(paymentPlan.q4.dueDate).format('MM/DD/YYYY')}
             </dd>
-          </div> }
+          </div>}
         </div>
       </dl>
     );
   })}
-</div>);
+  </div>);
 
 InstallmentTerm.propTypes = {
   payPlans: PropTypes.any, // eslint-disable-line
@@ -117,42 +125,26 @@ export const selectBillTo = (props) => {
   dispatch(change('MailingAddressBilling', 'billPlan', 'Annual'));
 };
 
-export const handleFormSubmit = (data, dispatch, props) => {
-  const { appState, actions, billingOptions, fieldValues } = props;
-  const workflowId = appState.instanceId;
-  actions.appStateActions.setAppState(appState.modelName, workflowId, { ...appState.data, submitting: true });
+export const handleFormSubmit = async (data, dispatch, props) => {
+  const {
+    quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState, getQuoteAction, billingOptions
+  } = props;
 
-  const submitData = fieldValues;
+  const billToType = ((billingOptions || {}).options.find(o => o.billToId === data.billToId) || {}).billToType || '';
+  try {
+    setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: true });
+    await startWorkflowAction(MODEL_NAME, {
+      quoteId: quoteData._id,
+      ...data,
+      billToType
+    });
 
-  const selectedBilling = _.find(billingOptions.options, ['billToId', submitData.billToId]);
-
-  submitData.billToType = selectedBilling.billToType;
-
-  const steps = [
-      { name: 'hasUserEnteredData', data: { answer: 'Yes' } },
-    {
-      name: 'askAdditionalCustomerData',
-      data: submitData
-    },
-    {
-      name: 'moveTo',
-      data: { key: 'mailing' }
-    }
-  ];
-
-  actions.cgActions.batchCompleteTask(appState.modelName, workflowId, steps)
-      .then(() => {
-        props.actions.quoteStateActions.getLatestQuote(true, props.quoteData._id);
-
-        if (_.isEqual(data.address1, _.get(props.quoteData, 'property.physicalAddress.address1')) &&
-        _.isEqual(data.city, _.get(props.quoteData, 'property.physicalAddress.city')) &&
-       _.isEqual(data.state, _.get(props.quoteData, 'property.physicalAddress.state')) &&
-      _.isEqual(data.zip, _.get(props.quoteData, 'property.physicalAddress.zip'))) {
-          dispatch(change('MailingAddressBilling', 'sameAsProperty', true));
-        } else dispatch(change('MailingAddressBilling', 'sameAsProperty', false));
-        props.actions.appStateActions.setAppState(props.appState.modelName,
-          workflowId, { ...props.appState.data, submitting: false, selectedLink: 'mailing' });
-      });
+    await getQuoteAction(quoteData._id, 'mailing');
+  } catch (error) {
+    setAppErrorAction(error);
+  } finally {
+    setAppStateAction(MODEL_NAME, appState.data.instanceId, { ...appState.data, submitting: false });
+  }
 };
 
 export const clearForm = (props) => {
@@ -185,76 +177,80 @@ const setPropertyToggle = (props) => {
 };
 
 export class MailingAddressBilling extends Component {
-
   componentDidMount() {
-    if (this.props.appState.instanceId && this.props.quoteData && this.props.quoteData.rating) {
-      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
-        ...this.props.appState.data,
+    const {
+      setAppStateAction, getQuoteAction, getBillingOptionsAction,
+      appState, match: { params: { quoteId } }
+    } = this.props;
+    setAppStateAction(
+      MODEL_NAME, appState.instanceId,
+      {
+        ...appState.data,
         submitting: true
-      });
-      const steps = [
-    { name: 'hasUserEnteredData', data: { answer: 'No' } },
-    { name: 'moveTo', data: { key: 'mailing' } }
-      ];
-      const workflowId = this.props.appState.instanceId;
+      }
+    );
 
-      const paymentOptions = {
-        effectiveDate: this.props.quoteData.effectiveDate,
-        policyHolders: this.props.quoteData.policyHolders,
-        additionalInterests: this.props.quoteData.additionalInterests,
-        netPremium: this.props.quoteData.rating.netPremium,
-        fees: {
-          empTrustFee: this.props.quoteData.rating.worksheet.fees.empTrustFee,
-          mgaPolicyFee: this.props.quoteData.rating.worksheet.fees.mgaPolicyFee
-        },
-        totalPremium: this.props.quoteData.rating.totalPremium
-      };
-      this.props.actions.serviceActions.getBillingOptions(paymentOptions);
+    getQuoteAction(quoteId, 'mailing')
+      .then((quoteData) => {
+        if (quoteData && quoteData.rating) {
+          const paymentOptions = {
+            effectiveDate: quoteData.effectiveDate,
+            policyHolders: quoteData.policyHolders,
+            additionalInterests: quoteData.additionalInterests,
+            netPremium: quoteData.rating.netPremium,
+            totalPremium: quoteData.rating.totalPremium,
+            fees: {
+              empTrustFee: quoteData.rating.worksheet.fees.empTrustFee,
+              mgaPolicyFee: quoteData.rating.worksheet.fees.mgaPolicyFee
+            }
+          };
 
-      this.props.actions.cgActions.batchCompleteTask(this.props.appState.modelName, workflowId, steps)
-    .then(() => {
-      this.props.actions.quoteStateActions.getLatestQuote(true, this.props.quoteData._id);
-      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
-        ...this.props.appState.data,
-        selectedLink: 'mailing'
+          getBillingOptionsAction(paymentOptions);
+        }
+        setAppStateAction(
+          MODEL_NAME, appState.instanceId,
+          {
+            ...appState.data,
+            submitting: false
+          }
+        );
       });
-    });
-    } else {
-      this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
-        ...this.props.appState.data,
-        selectedLink: 'mailing',
-        activateRedirect: false
-      });
-    }
   }
 
   render() {
-    const { handleSubmit, billingOptions, pristine, quoteData, dirty } = this.props;
+    const {
+      handleSubmit, billingOptions, pristine, quoteData, dirty, match
+    } = this.props;
 
-    if (!quoteData.rating) {
+    const { options } = billingOptions;
+
+    if (!quoteData.rating || (!options || options.length === 0)) {
       return (
-        <QuoteBaseConnect>
+        <QuoteBaseConnect match={match}>
           <div className="route-content">
             <div className="messages">
               <div className="message error">
                 <i className="fa fa-exclamation-circle" aria-hidden="true" /> &nbsp;Mailing / Billing cannot be accessed until Premium calculated.
-            </div>
+              </div>
             </div>
           </div>
         </QuoteBaseConnect>
       );
     }
     return (
-      <QuoteBaseConnect>
+      <QuoteBaseConnect match={match}>
         <Prompt when={dirty} message="Are you sure you want to leave with unsaved changes?" />
         <div className="route-content">
-          <Form id="MailingAddressBilling" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+          <form id="MailingAddressBilling" onSubmit={handleSubmit(handleFormSubmit)} >
             <div className="scroll">
               <div className="form-group survey-wrapper" role="group">
                 <h3>Mailing Address</h3>
                 <section className="mailing-address-details">
                   <CheckField
-                    styleName={'segmented-switch'} label={'Is the mailing address the same as the property address?'} name={'sameAsProperty'} onChange={() => fillMailForm(this.props)}
+                    styleName="segmented-switch"
+                    label="Is the mailing address the same as the property address?"
+                    name="sameAsProperty"
+                    onChange={() => fillMailForm(this.props)}
                     answers={[
                       {
                         answer: false,
@@ -263,22 +259,24 @@ export class MailingAddressBilling extends Component {
                         answer: true,
                         label: 'Yes'
                       }
-                    ]}
-                  />
-                  <TextField validations={['required']} label={'Address 1'} styleName={'address-1'} name={'address1'} onChange={() => setPropertyToggle(this.props)} />
-                  <TextField label={'Address 2'} styleName={'address-2'} name={'address2'} onChange={() => setPropertyToggle(this.props)} />
+                    ]} />
+                  <TextField validations={['required']} label="Address 1" styleName="address-1" name="address1" onChange={() => setPropertyToggle(this.props)} />
+                  <TextField label="Address 2" styleName="address-2" name="address2" onChange={() => setPropertyToggle(this.props)} />
                   <div className="flex-parent flex-form">
                     <div className="flex-child city">
-                      <TextField validations={['required']} label={'City'} styleName={''} name={'city'} onChange={() => setPropertyToggle(this.props)} />
+                      <TextField validations={['required']} label="City" styleName="" name="city" onChange={() => setPropertyToggle(this.props)} />
                     </div>
                     <div className="flex-child state">
                       <TextField
                         onChange={() => setPropertyToggle(this.props)}
-                        name="state" component="select" styleName={''} label="State" validations={['required']}
-                      />
+                        name="state"
+                        component="select"
+                        styleName=""
+                        label="State"
+                        validations={['required']} />
                     </div>
                     <div className="flex-child zip">
-                      <TextField validations={['required']} label={'Zip'} styleName={''} name={'zip'} onChange={() => setPropertyToggle(this.props)} />
+                      <TextField validations={['required']} label="Zip" styleName="" name="zip" onChange={() => setPropertyToggle(this.props)} />
                     </div>
                   </div>
                 </section>
@@ -292,19 +290,17 @@ export class MailingAddressBilling extends Component {
                         label="Bill To"
                         onChange={() => selectBillTo(this.props)}
                         validations={['required']}
-                        answers={billingOptions.options}
-                      />
+                        answers={billingOptions.options} />
                       <div className="flex-child bill-plan">
                         <RadioFieldBilling
                           validations={['required']}
-                          name={'billPlan'}
-                          label={'Bill Plan'}
+                          name="billPlan"
+                          label="Bill Plan"
                           validate={[value => (value ? undefined : 'Field Required')]}
                           segmented
                           answers={_.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]) ?
                          _.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]).payPlans : []}
-                          paymentPlans={billingOptions.paymentPlans}
-                        />
+                          paymentPlans={billingOptions.paymentPlans} />
                       </div>
                     </div>
                   </div>
@@ -313,33 +309,29 @@ export class MailingAddressBilling extends Component {
                       <InstallmentTerm
                         payPlans={_.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]) ?
                                    _.find(billingOptions.options, ['billToId', this.props.fieldValues.billToId]).payPlans : []}
-                        paymentPlans={billingOptions.paymentPlans}
-                      />
+                        paymentPlans={billingOptions.paymentPlans} />
                     </div>
                   </div>
                 </section>
               </div>
             </div>
-          </Form>
+          </form>
         </div>
         <div className="basic-footer btn-footer">
           <Footer />
           <div className="btn-wrapper">
-            <button tabIndex={'0'} aria-label="reset-btn form-mailingBilling" className="btn btn-secondary" type="button" onClick={() => clearForm(this.props)}>Reset</button>
-            <button tabIndex={'0'} aria-label="submit-btn form-mailingBilling" className="btn btn-primary" type="submit" form="MailingAddressBilling" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData) || !this.props.fieldValues.billToId}>Update</button>
+            <button tabIndex="0" aria-label="reset-btn form-mailingBilling" className="btn btn-secondary" type="button" onClick={() => clearForm(this.props)}>Reset</button>
+            <button tabIndex="0" aria-label="submit-btn form-mailingBilling" className="btn btn-primary" type="submit" form="MailingAddressBilling" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData) || !this.props.fieldValues.billToId}>Update</button>
           </div>
         </div>
       </QuoteBaseConnect>
     );
   }
-
 }
 MailingAddressBilling.contextTypes = {
   router: PropTypes.object
 };
-// ------------------------------------------------
-// Property type definitions
-// ------------------------------------------------
+
 MailingAddressBilling.propTypes = {
   tasks: PropTypes.shape(),
   appState: PropTypes.shape({
@@ -349,28 +341,19 @@ MailingAddressBilling.propTypes = {
   })
 };
 
-// ------------------------------------------------
-// redux mapping
-// ------------------------------------------------
 const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'MailingAddressBilling.values', {}),
   initialValues: handleInitialize(state),
-  quoteData: state.service.quote || {},
+  quoteData: state.quoteState.quote || {},
   billingOptions: state.service.billingOptions || {}
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
-    serviceActions: bindActionCreators(serviceActions, dispatch),
-    cgActions: bindActionCreators(cgActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
-  }
-});
-
-// ------------------------------------------------
-// wire up redux form with the redux connect
-// ------------------------------------------------
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'MailingAddressBilling', enableReinitialize: true })(MailingAddressBilling));
+export default connect(mapStateToProps, {
+  startWorkflowAction: startWorkflow,
+  setAppStateAction: setAppState,
+  setAppErrorAction: setAppError,
+  getBillingOptionsAction: getBillingOptions,
+  getQuoteAction: getQuote
+})(reduxForm({ form: 'MailingAddressBilling', enableReinitialize: true })(MailingAddressBilling));
