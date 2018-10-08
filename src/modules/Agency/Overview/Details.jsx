@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field } from 'redux-form';
-import { Input, Integer, Radio, Select, validation } from '@exzeo/core-ui';
+import { Input, Integer, Radio, Select, validation, Date } from '@exzeo/core-ui';
 
 const statusAnswers = [
   { answer: 'Active', label: 'Active' },
@@ -10,6 +10,11 @@ const statusAnswers = [
 const okToPayAnswers = [
   { answer: false, label: 'No' },
   { answer: true, label: 'Yes' }
+];
+
+const taxClassificationAnswers = [
+  { answer: 'LLC', label: 'LLC' },
+  { answer: 'Corporation', label: 'Corporation' }
 ];
 
 const Details = (agencyCodeDisabled) => {
@@ -62,17 +67,37 @@ const Details = (agencyCodeDisabled) => {
         segmented
         answers={okToPayAnswers} />
       <Field
-        label="Tier"
-        styleName="tier"
-        name="tier"
-        dataTest="tier"
-        component={Input}
-        validate={[validation.isRequired, validation.isNumbersOnly]} />
-      <Field
         label="Web Address"
         styleName="webAddress"
         name="websiteUrl"
         dataTest="websiteUrl"
+        component={Input} />
+      <Field
+        label="Tax ID"
+        styleName="taxId"
+        name="taxIdNumber"
+        dataTest="taxIdNumber"
+        component={Input}
+        validate={validation.isRequired} />
+      <Field
+        id="taxClassification"
+        name="taxClassification"
+        dataTest="taxClassification"
+        styleName="taxClassification"
+        label="Tax Classification"
+        component={Select}
+        validate={validation.isRequired}
+        answers={taxClassificationAnswers} />
+      <Field
+        label="EO Expiration Date"
+        name="eoExpirationDate"
+        dataTest="eoExpirationDate"
+        component={Date}
+        validate={validation.isRequired} />
+      <Field
+        label="Branch Name"
+        name="branchName"
+        dataTest="branchName"
         component={Input} />
     </React.Fragment>
   );

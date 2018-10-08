@@ -7,14 +7,10 @@ import { getAgency, updateAgency } from '../../../state/actions/agencyActions';
 import { getEditModalInitialValues } from '../../../state/selectors/agency.selector';
 
 import Address from '../components/Address';
+
 import Contact from './Contact';
 import Details from './Details';
 import Principal from './Principal';
-
-const taxClassificationAnswers = [
-  { answer: 'LLC', label: 'LLC' },
-  { answer: 'Corporation', label: 'Corporation' }
-];
 
 export class AgencyModal extends Component {
   saveAgency = async (data, dispatch, props) => {
@@ -70,23 +66,6 @@ export class AgencyModal extends Component {
                 changeField={change}
                 mailingAddress />
             </FormSection>
-
-            <Field
-              label="Tax ID"
-              styleName="taxId"
-              name="taxIdNumber"
-              dataTest="taxIdNumber"
-              component={Input}
-              validate={validation.isRequired} />
-            <Field
-              id="taxClassification"
-              name="taxClassification"
-              dataTest="taxClassification"
-              styleName="taxClassification"
-              label="Tax Classification"
-              component={Select}
-              validate={validation.isRequired}
-              answers={taxClassificationAnswers} />
           </div>
           <div className="agency-physical-address">
             <h4>Physical Address
