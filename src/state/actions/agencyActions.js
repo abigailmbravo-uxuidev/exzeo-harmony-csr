@@ -176,10 +176,10 @@ export async function fetchAgency(agencyCode) {
     const config = {
       service: 'agency',
       method: 'GET',
-      path: `v1/agencies?agencyCode=${agencyCode}`
+      path: `agencies/${agencyCode}`
     };
     const response = await serviceRunner.callService(config);
-    return response.data && response.data.result ? response.data.result[0] : {};
+    return response.data && response.data.result ? response.data.result : {};
   } catch (error) {
     throw error;
   }
@@ -216,7 +216,7 @@ export async function fetchAgentsByAgencyCode(agencyCode) {
     const config = {
       service: 'agency',
       method: 'GET',
-      path: `v1/agents?agencyCode=${agencyCode}`
+      path: `agents/${agencyCode}`
     };
     const response = await serviceRunner.callService(config);
     return response.data && response.data.result ? response.data.result : [];
