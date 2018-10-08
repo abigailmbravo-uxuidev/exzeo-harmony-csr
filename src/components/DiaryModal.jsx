@@ -7,7 +7,7 @@ import { Date, Select, validation, Loader } from '@exzeo/core-ui';
 import { submitDiary } from '../state/actions/diary.actions';
 import { toggleDiary } from '../state/actions/ui.actions';
 import { setAppError } from '../state/actions/error.actions';
-import { REASONS, TYPES, USERS } from '../constants/diaries';
+import { ASSIGNEE_ANSWERS, REASONS, TYPES } from '../constants/diaries';
 
 
 export const TextArea = ({
@@ -23,6 +23,8 @@ export const TextArea = ({
 export class DiaryModal extends Component {
   state = { minimize: false };
 
+  assigneeAnswers = ASSIGNEE_ANSWERS();
+
   componentDidMount() {
     // TODO: not sure this logic should be here. Seems like it should be much further up the tree
     const { setAppErrorAction, user } = this.props;
@@ -37,24 +39,20 @@ export class DiaryModal extends Component {
     this.setState({ minimize: !this.state.minimize });
   };
 
-  handleCancel = () => {
+  handleCloseDiary = () => {
     this.props.toggleDiaryAction();
   };
 
-  handleCloseDiary = () => {
-    this.handleCancel();
-  }
-
   submitDiary = async (data, dispatch, props) => {
     try {
-      const { assignee: { id }, ...submitData } = data;
-      const selectedAssignee = USERS.filter(u => String(u.answer) === String(id))[0];
-      const assignee = { id: selectedAssignee.answer, displayName: selectedAssignee.label, type: selectedAssignee.type };
+      const { assigneeId, ...submitData } = data;
+      const assigneeObj = this.assigneeAnswers.find(u => String(u.answer) === String(assigneeId));
+      const assignee = { id: assigneeObj.answer, displayName: assigneeObj.label, type: assigneeObj.type };
       await props.submitDiaryAction({ ...submitData, assignee }, props);
     } catch (error) {
       props.setAppErrorAction({ message: error });
     } finally {
-      this.handleCancel();
+      this.handleCloseDiary();
     }
   };
 
@@ -86,11 +84,11 @@ export class DiaryModal extends Component {
                 validate={validation.isRequired}
                 dataTest="diaryType" />
               <Field
-                name="assignee.id"
+                name="assigneeId"
                 styleName="assignee"
                 label="Assignee"
                 component={Select}
-                answers={USERS}
+                answers={this.assigneeAnswers}
                 validate={validation.isRequired}
                 dataTest="assignee" />
               <Field
@@ -128,7 +126,7 @@ export class DiaryModal extends Component {
                 type="button"
                 data-test="note-cancel"
                 className="btn btn-secondary cancel-button"
-                onClick={this.handleCancel}>
+                onClick={this.handleCloseDiary}>
                 Cancel
               </button>
               <button
@@ -147,7 +145,15 @@ export class DiaryModal extends Component {
 }
 
 DiaryModal.propTypes = {
-
+  handleSubmit: PropTypes.func.isRequired,
+  setAppErrorAction: PropTypes.func.isRequired,
+  submitDiary: PropTypes.func.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  toggleDiaryAction: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    givenName: PropTypes.string,
+    familyName: PropTypes.string
+  }).isRequired
 };
 
 

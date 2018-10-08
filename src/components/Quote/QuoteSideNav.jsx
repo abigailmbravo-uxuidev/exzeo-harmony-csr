@@ -9,6 +9,7 @@ import * as appStateActions from '../../state/actions/appState.actions';
 import * as uiActions from '../../state/actions/ui.actions';
 import * as cgActions from '../../state/actions/cg.actions';
 import UWconditions from '../Common/UWconditions';
+import { QUOTE_RESOURCE_TYPE } from '../../constants/diaries';
 
 // Example of a possible schema
 /**
@@ -24,7 +25,7 @@ import UWconditions from '../Common/UWconditions';
 export const newDiary = (props) => {
   const { quoteData: { _id } } = props;
   props.actions.uiActions.toggleDiary({
-    resourceType: 'Quote',
+    resourceType: QUOTE_RESOURCE_TYPE,
     resourceId: _id
   });
 };

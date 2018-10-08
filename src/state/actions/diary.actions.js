@@ -1,4 +1,5 @@
 import * as serviceRunner from '../../utilities/serviceRunner';
+import { POLICY_RESOURCE_TYPE, QUOTE_RESOURCE_TYPE } from '../../constants/diaries';
 
 import * as types from './actionTypes';
 import * as errorActions from './error.actions';
@@ -38,6 +39,12 @@ export function fetchDiaries(filter) {
   };
 }
 
+/**
+ *
+ * @param data
+ * @param props
+ * @returns {Function}
+ */
 export function submitDiary(data, props) {
   return async (dispatch) => {
     const {
@@ -51,11 +58,29 @@ export function submitDiary(data, props) {
       userId: user.userId,
       userName: user.userName
     };
+
+    // TODO: remove this when CSP is ready
+    let resource = {};
+    if (resourceType === POLICY_RESOURCE_TYPE || resourceType === QUOTE_RESOURCE_TYPE) {
+      resource = {
+        type: resourceType,
+        id: resourceId,
+        companyCode: 'TTIC',
+        state: 'FL',
+        product: 'HO3'
+      };
+    } else {
+      resource = { type: resourceType, id: resourceId };
+    }
+    // ------------------------------------->
+
     const config = {
       service: 'diaries',
       method: 'POST',
       data: {
-        resource: { type: resourceType, id: resourceId },
+        // TODO: leaving this longhand so we explicitly know where to fix this once we have a better idea for CSP
+        // eslint-disable-next-line object-shorthand
+        resource: resource,
         user: userObj
       }
     };
@@ -80,7 +105,7 @@ export function submitDiary(data, props) {
     } else {
       config.path = 'create';
       // TODO won't need to add 'created by' once endpoint is updated
-      config.data.entry = { ...data, createdBy: userObj };
+      config.data.entry = { ...data };
     }
 
     try {

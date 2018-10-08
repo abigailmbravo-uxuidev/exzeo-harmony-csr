@@ -60,6 +60,10 @@ class Routes extends Component {
     }
   }
 
+  // componentDidUpdate() {
+  //
+  // }
+
   setBackStep = (goToNext, callback) => {
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
       ...this.props.appState.data,
