@@ -45,8 +45,8 @@ export class DiaryModal extends Component {
 
   submitDiary = async (data, dispatch, props) => {
     try {
-      const { assigneeId, ...submitData } = data;
-      const assigneeObj = this.assigneeAnswers.find(u => String(u.answer) === String(assigneeId));
+      const { assignee: { id }, ...submitData } = data;
+      const assigneeObj = this.assigneeAnswers.find(u => String(u.answer) === String(id));
       const assignee = { id: assigneeObj.answer, displayName: assigneeObj.label, type: assigneeObj.type };
       await props.submitDiaryAction({ ...submitData, assignee }, props);
     } catch (error) {
@@ -84,7 +84,7 @@ export class DiaryModal extends Component {
                 validate={validation.isRequired}
                 dataTest="diaryType" />
               <Field
-                name="assigneeId"
+                name="assignee.id"
                 styleName="assignee"
                 label="Assignee"
                 component={Select}
@@ -147,7 +147,6 @@ export class DiaryModal extends Component {
 DiaryModal.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   setAppErrorAction: PropTypes.func.isRequired,
-  submitDiary: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
   toggleDiaryAction: PropTypes.func.isRequired,
   user: PropTypes.shape({

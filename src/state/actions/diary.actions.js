@@ -89,11 +89,9 @@ export function submitDiary(data, props) {
     if (initialValues && initialValues.diaryId) {
       const {
         _id,
-        createdAt,
         diaryId,
         resourceId,  // eslint-disable-line
         resourceType,  // eslint-disable-line
-        updatedAt,
         // this has what we want if we are updating.
         ...entry
       } = data;
@@ -104,7 +102,6 @@ export function submitDiary(data, props) {
     // Creating a diary
     } else {
       config.path = 'create';
-      // TODO won't need to add 'created by' once endpoint is updated
       config.data.entry = { ...data };
     }
 
