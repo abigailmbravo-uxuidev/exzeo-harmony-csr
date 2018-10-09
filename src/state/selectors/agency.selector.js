@@ -8,6 +8,8 @@ const getAgents = state => state.agencyState.agentList;
 
 const getAgencyAgents = state => state.agencyState.agencyAgents;
 
+const getOrphanedAgents = state => state.agencyState.orphans;
+
 export const getEditModalInitialValues = createSelector(
   [getAgency],
   (agency) => {
@@ -70,3 +72,15 @@ export const getAgencyLicenseArray = createSelector(
     return agency.license.map(al => al.licenseNumber);
   }
 );
+
+export const getOrphanedAgentsList = createSelector(
+  [getOrphanedAgents],
+  (orphans) => {
+    if (!orphans || !Array.isArray(orphans)) return [];
+    return orphans.map(o => ({
+      displayText: `${o.firstName} ${o.lastName}`,
+      ...o
+    }));
+  }
+);
+

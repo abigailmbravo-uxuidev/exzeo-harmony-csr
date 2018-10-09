@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
-import { validation, Button, Select, AutoCompleteChips, Radio } from '@exzeo/core-ui';
+import { validation, Button, SelectTypeAhead } from '@exzeo/core-ui';
 
 const radioDefaultAnswers = [
   { answer: 'true', label: 'Yes' },
@@ -8,22 +8,19 @@ const radioDefaultAnswers = [
 ];
 
 export class ExistingAgentModal extends Component {
-  handleSave = async (data) => {
-    await this.props.handleSaveAgent(data);
-  };
-
   render() {
     const {
+      handleSelection,
       handleSubmit,
       listOfAgents,
       submitting,
-      toggleModal
+      onToggleModal
     } = this.props;
 
     return (
       <div className="modal existing-agent-modal">
         <div className="card">
-          <form onSubmit={handleSubmit(this.handleSave)}>
+          <form onSubmit={handleSubmit(handleSelection)}>
             <div className="card-header">
               <h4> <i className="fa fa-address-book" /> Existing Agent</h4>
             </div>
@@ -35,7 +32,9 @@ export class ExistingAgentModal extends Component {
                     styleName="selectedAgent"
                     name="selectedAgent"
                     dataTest="selectedAgent"
-                    component={Select}
+                    valueKey="_id"
+                    labelKey="displayText"
+                    component={SelectTypeAhead}
                     validate={validation.isRequired}
                     answers={listOfAgents} />
                 </div>
@@ -46,13 +45,13 @@ export class ExistingAgentModal extends Component {
                 <Button
                   baseClass="secondary"
                   dataTest="modal-cancel"
-                  onClick={toggleModal}>Cancel
+                  onClick={onToggleModal}>Cancel
                 </Button>
                 <Button
                   baseClass="primary"
                   type="submit"
                   dataTest="modal-submit"
-                  disabled={submitting}>Save
+                  disabled={submitting}>Select
                 </Button>
               </div>
             </div>

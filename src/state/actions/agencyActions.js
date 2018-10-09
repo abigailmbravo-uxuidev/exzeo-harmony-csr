@@ -53,6 +53,18 @@ export function setAgentList(agentList) {
 
 /**
  *
+ * @param orphans
+ * @returns {{type: string, orphans: *}}
+ */
+export function setOrphanedAgents(orphans) {
+  return {
+    type: types.SET_ORPHANED_AGENTS,
+    orphans
+  };
+}
+
+/**
+ *
  * @param agencyCode
  * @returns {Function}
  */
@@ -411,8 +423,8 @@ export async function fetchOrphanedAgents() {
 export function getListOfOrphanedAgents() {
   return async (dispatch) => {
     try {
-      const agency = await fetchOrphanedAgents();
-      dispatch(setAgency(agency));
+      const orphans = await fetchOrphanedAgents();
+      dispatch(setOrphanedAgents(orphans));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }

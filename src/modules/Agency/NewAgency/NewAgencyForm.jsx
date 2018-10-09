@@ -4,8 +4,8 @@ import { reduxForm, Field, FieldArray, formValueSelector, FormSection } from 're
 import { validation, Button, SelectTypeAhead, Input } from '@exzeo/core-ui';
 import { Redirect } from 'react-router-dom';
 
-import { getAgency, updateAgency, createAgency } from '../../../state/actions/agencyActions';
-import { getEditModalInitialValues } from '../../../state/selectors/agency.selector';
+import { getAgency, updateAgency, createAgency, getListOfOrphanedAgents } from '../../../state/actions/agencyActions';
+import { getEditModalInitialValues, getOrphanedAgentsList } from '../../../state/selectors/agency.selector';
 import ExistingAgentModal from '../components/ExistingAgentModal';
 import Address from '../components/Address';
 import territoryManagers from '../components/territoryManagers';
@@ -58,6 +58,20 @@ export class NewAgencyForm extends Component {
     this.props.reset();
   };
 
+  applyOrphanedAgent = (data) => {
+    const { change } = this.props;
+    const { selectedAgent } = data;
+    change('agentOfRecord.firstName', selectedAgent.firstName);
+    change('agentOfRecord.lastName', selectedAgent.lastName);
+    change('agentOfRecord.primaryPhoneNumber', selectedAgent.primaryPhoneNumber);
+    change('agentOfRecord.secondaryPhoneNumber', selectedAgent.secondaryPhoneNumber);
+    change('agentOfRecord.faxNumber', selectedAgent.faxNumber);
+    change('agentOfRecord.emailAddress', selectedAgent.emailAddress);
+    change('agentOfRecord.agentCode', selectedAgent.agentCode);
+
+    this.handleToggleExistingAgentModal();
+  }
+
   render() {
     const {
       handleSubmit,
@@ -66,7 +80,8 @@ export class NewAgencyForm extends Component {
       submitting,
       pristine,
       change,
-      agency
+      agency,
+      orphans
     } = this.props;
 
     return (
@@ -137,9 +152,9 @@ export class NewAgencyForm extends Component {
         </div>
         {this.state.showAddExistingAgentModal &&
           <ExistingAgentModal
-            listOfAgents={[]}
-            toggleModal={this.handleToggleExistingAgentModal}
-            handleSaveAgent={x => x} />
+            listOfAgents={orphans}
+            onToggleModal={this.handleToggleExistingAgentModal}
+            handleSelection={this.applyOrphanedAgent} />
         }
       </form>
     );
@@ -147,6 +162,7 @@ export class NewAgencyForm extends Component {
 }
 const selector = formValueSelector('NewAgencyForm');
 const mapStateToProps = state => ({
+  orphans: getOrphanedAgentsList(state),
   agency: state.agencyState.agency,
   initialValues: getEditModalInitialValues(state),
   sameAsMailingValue: selector(state, 'sameAsMailing'),
