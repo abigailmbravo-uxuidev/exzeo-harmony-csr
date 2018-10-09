@@ -142,7 +142,7 @@ export class NewAgencyForm extends Component {
         </section>
         <section className="agency=license">
           <FieldArray
-            name="license"
+            name="licenses"
             component={License}
             licenseValue={licenseValue} />
         </section>
@@ -164,9 +164,13 @@ const selector = formValueSelector('NewAgencyForm');
 const mapStateToProps = state => ({
   orphans: getOrphanedAgentsList(state),
   agency: state.agencyState.agency,
-  initialValues: getEditModalInitialValues(state),
+  initialValues: {
+    licenses: [{
+      state: '', license: '', licenseType: '', licenseEffectiveDate: ''
+    }]
+  },
   sameAsMailingValue: selector(state, 'sameAsMailing'),
-  licenseValue: selector(state, 'license') || []
+  licenseValue: selector(state, 'licenses')
 });
 
 export default connect(mapStateToProps, {

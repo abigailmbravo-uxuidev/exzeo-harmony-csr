@@ -1,11 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Input, Select, validation } from '@exzeo/core-ui';
+import { Input, Select, Date, validation } from '@exzeo/core-ui';
 
 const stateAnswers = [
   { answer: 'FL', label: 'FL' },
   { answer: 'TX', label: 'TX' }
+];
+
+const typeAnswers = [
+  { answer: 'Resident', label: 'Resident' }
 ];
 
 const License = ({ licenseValue, fields }) => {
@@ -31,6 +35,22 @@ const License = ({ licenseValue, fields }) => {
             label="License"
             styleName="licenseNumber"
             dataTest={`${license}.licenseNumber`}
+            validate={validation.isRequired} />
+          <Field
+            name={`${license}.licenseType`}
+            component={Select}
+            styleName="licenseType"
+            label="Type"
+            answers={typeAnswers}
+            dataTest={`${license}.licenseType`}
+            validate={validation.isRequired} />
+          <Field
+            name={`${license}.licenseEffectiveDate`}
+            component={Date}
+            styleName="licenseEffectiveDate"
+            label="Effective Date"
+            answers={typeAnswers}
+            dataTest={`${license}.licenseEffectiveDate`}
             validate={validation.isRequired} />
           <button type="button" className="btn btn-link btn-sm" onClick={() => fields.remove(index)}><i className="fa fa-times-circle" />REMOVE</button>
         </div>
