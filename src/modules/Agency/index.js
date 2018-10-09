@@ -10,10 +10,12 @@ import AgencyDetailHeader from './DetailHeader';
 import NewAgency from './NewAgency';
 import Contracts from './Contracts';
 import Agents from './Agents';
+import Overview from './Overview';
 
 const NewAgencyRender = props => <NewAgency auth={props.auth} {...props} />;
 const ContractsRender = props => <Contracts auth={props.auth} {...props} />;
 const AgentsRender = props => <Agents auth={props.auth} {...props} />;
+const OverviewRender = props => <Overview auth={props.auth} {...props} />;
 
 export class Agency extends Component {
   componentDidMount() {
@@ -42,7 +44,7 @@ export class Agency extends Component {
           </aside>
           <div className="content-wrapper">
             <Route exact path="/agency/new" render={NewAgencyRender} />
-            <Route exact path={`${url}/overview`} render={null} />
+            <Route exact path={`${url}/overview`} render={OverviewRender} />
             <Route exact path={`${url}/contracts`} render={ContractsRender} />
             <Route exact path={`${url}/agents`} render={AgentsRender} />
           </div>
