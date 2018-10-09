@@ -30,11 +30,11 @@
     border-bottom: $card-border-width solid $card-border-color;
     background-color: $card-cap-bg;
 
-    > h1,
+    > h2,
      > h3,
      > h4,
      > h5,
-    > h2 {
+    > h1 {
       margin: 0;
     }
 
@@ -194,73 +194,152 @@
 
 ul {
   &.results {
-      padding: $padding*2;
-      width: 100%;
+    width: 100%;
+    padding: $padding*2;
 
     &.diary-list {
       .card {
-          flex-direction: row;
-          margin: 0 0 $padding 0;
-          width: 100%;
-          flex-grow: 1;
-          flex-shrink: 1;
+        flex-direction: row;
+        flex-grow: 1;
+        flex-shrink: 1;
+        width: 100%;
+        margin: 0 0 $padding;
+
+        &.upComing {
+            .card-header {
+                .card-status-indicator {
+                    background-color: $green-darken-02;
+                }
+            }
+        }
 
         header {
           &.card-header {
-              background: $white;
-              width: auto;
+            display: flex;
+            flex-grow: 0;
+            flex-shrink: 0;
+            width: auto;
+            padding: $padding/2;
+            border-width: 0;
+            background: $white;
+
+            .card-status-indicator {
               flex-grow: 0;
               flex-shrink: 0;
-              border-width: 0;
-              padding: $padding/2;
+              width: 4px;
+              background: $warm-gray-04;
+            }
+
+            .icon-wrapper {
               display: flex;
+              align-items: center;
+              flex-direction: column;
+              justify-content: center;
+              padding: $padding ($padding*2);
 
-              .card-status-indicator {
-                  flex-grow: 0;
-                  flex-shrink: 0;
-                  width: 4px;
-                  background: $warm-gray-04;
+              i {
+                font-size: $font-size-h2;
+
+                &.icon-status-indicator {
+                  font-size: $font-size-xs;
+                }
               }
 
-              .icon-wrapper {
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  justify-content: center;
-                  padding: $padding ($padding*2);
-
-                  i {
-                      font-size: $font-size-h2;
-
-                      &.icon-status-indicator {
-                          font-size: $font-size-xs;
-                      }
-                  }
-
-                  > div {
-                      font-size: $font-size-xs;
-                  }
+              > div {
+                font-size: $font-size-xs;
               }
-
+            }
           }
         }
 
         > div {
           &.card-body {
-              background: $white;
-              width: auto;
-              flex-grow: 1;
-              flex-shrink: 1;
+            flex-grow: 1;
+            flex-shrink: 1;
+            width: auto;
+            padding: $padding 0;
+            background: $white;
+
+            h4 {
+              span {
+                font-weight: $font-weight-normal;
+              }
+            }
+
+            ul {
+              margin: 0;
+              padding: 0;
+              list-style: none;
+
+              &.diary-entry-list {
+                li {
+                  display: flex;
+                  color: $warm-gray-08;
+                  font-size: $font-size-sm;
+
+                  &.header {
+                    padding: ($padding/4) 0;
+                    background: $warm-gray-02;
+                    font-weight: $font-weight-bold;
+                  }
+
+                  span {
+                    padding-left: $padding;
+
+                    &.due-date {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 5rem;
+                    }
+
+                    &.assignee {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 8rem;
+                    }
+
+                    &.reason {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 8rem;
+                    }
+
+                    &.message {
+                      flex-grow: 1;
+                      flex-shrink: 1;
+                    }
+
+                    &.updated {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 5rem;
+                    }
+
+                    &.updated-by {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 8rem;
+                    }
+
+                    &.action {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 2rem;
+                    }
+                  }
+                }
+              }
+            }
           }
         }
 
         footer {
           &.card-footer {
-              background: $white;
-              width: auto;
-              flex-grow: 0;
-              flex-shrink: 0;
-              border-width: 0;
+            flex-grow: 0;
+            flex-shrink: 0;
+            width: auto;
+            border-width: 0;
+            background: $white;
           }
         }
       }
