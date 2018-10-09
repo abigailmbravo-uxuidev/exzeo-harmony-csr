@@ -205,10 +205,56 @@ ul {
         width: 100%;
         margin: 0 0 $padding;
 
+        &.pastDue {
+            .card-header {
+                .card-status-indicator {
+                    background-color: $red-darken-01;
+                }
+
+                .icon-wrapper {
+                    i {
+                        &.icon-status-indicator {
+                            &:before {
+                                content: '\f0f3';
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &.dueSoon {
+            .card-header {
+                .card-status-indicator {
+                    background-color: $orange-lighten-01;
+                }
+
+                .icon-wrapper {
+                    i {
+                        &.icon-status-indicator {
+                            &:before {
+                                content: '\f017';
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         &.upComing {
             .card-header {
                 .card-status-indicator {
                     background-color: $green-darken-02;
+                }
+
+                .icon-wrapper {
+                    i {
+                        &.icon-status-indicator {
+                            &:before {
+                                content: '\f133';
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -219,15 +265,16 @@ ul {
             flex-grow: 0;
             flex-shrink: 0;
             width: auto;
-            padding: $padding/2;
+            padding: ($padding/2) ($padding/2) ($padding/2) $padding;
             border-width: 0;
             background: $white;
 
             .card-status-indicator {
               flex-grow: 0;
               flex-shrink: 0;
-              width: 4px;
+              width: 8px;
               background: $warm-gray-04;
+              border-radius: 2px;
             }
 
             .icon-wrapper {
@@ -235,18 +282,25 @@ ul {
               align-items: center;
               flex-direction: column;
               justify-content: center;
-              padding: $padding ($padding*2);
+              padding: $padding ($padding*3);
 
               i {
                 font-size: $font-size-h2;
+                color: $bright-blue-darken-04;
 
                 &.icon-status-indicator {
                   font-size: $font-size-xs;
+                }
+
+                &.fa-bookmark-o {
+                    margin-bottom: $padding/2;
                 }
               }
 
               > div {
                 font-size: $font-size-xs;
+                color: $bright-blue-darken-04;
+                font-weight: $font-weight-bold;
               }
             }
           }
@@ -273,12 +327,13 @@ ul {
 
               &.diary-entry-list {
                 li {
+                  padding: ($padding/4) 0;
                   display: flex;
                   color: $warm-gray-08;
                   font-size: $font-size-sm;
 
                   &.header {
-                    padding: ($padding/4) 0;
+
                     background: $warm-gray-02;
                     font-weight: $font-weight-bold;
                   }
