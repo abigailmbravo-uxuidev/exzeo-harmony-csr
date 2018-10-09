@@ -11,7 +11,9 @@ class Address extends Component {
   };
 
   render() {
-    const { showCounty, sectionDisabled, showTerritoryManager } = this.props;
+    const {
+      showCounty, sectionDisabled
+    } = this.props;
     return (
       <React.Fragment>
         <Field
@@ -65,15 +67,6 @@ class Address extends Component {
           component={Input}
           styleName="county"
           dataTest="county"
-          validate={validation.isRequired} />
-        }
-        {showTerritoryManager &&
-        <Field
-          name="territoryManager"
-          label="Territory Manager"
-          component={Input}
-          styleName="territoryManager"
-          dataTest="territoryManager"
           validate={validation.isRequired} />
         }
       </React.Fragment>

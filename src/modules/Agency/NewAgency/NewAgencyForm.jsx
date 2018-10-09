@@ -1,29 +1,37 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field, FieldArray, formValueSelector, FormSection } from 'redux-form';
-import { validation, Button, Select, Input } from '@exzeo/core-ui';
+import { validation, Button, SelectTypeAhead, Input } from '@exzeo/core-ui';
 import { Redirect } from 'react-router-dom';
 
 import { getAgency, updateAgency, createAgency } from '../../../state/actions/agencyActions';
 import { getEditModalInitialValues } from '../../../state/selectors/agency.selector';
 import ExistingAgentModal from '../components/ExistingAgentModal';
 import Address from '../components/Address';
+import territoryManagers from '../components/territoryManagers';
+import License from '../components/License';
 
 import Contact from './Contact';
 import Details from './Details';
 import Principal from './Principal';
 import AgentOfRecord from './AgentOfRecord';
-import License from '../components/License';
 
 export class NewAgencyForm extends Component {
   state = {
     showAddExistingAgentModal: false
   }
   createAgency = async (data, dispatch, props) => {
+    data.agentOfRecord.status = 'Active';
+    data.mailingAddress.country = {
+      code: 'USA',
+      displayText: 'United States of America'
+    };
+    data.physicalAddress.country = data.mailingAddress.country;
+    data.physicalAddress.county = data.mailingAddress.county;
     await props.createAgency(data);
   };
 
-  toggleExistingAgentModal = () => {
+  handleToggleExistingAgentModal = () => {
     this.setState({ showAddExistingAgentModal: !this.state.showAddExistingAgentModal });
   }
 
@@ -46,7 +54,7 @@ export class NewAgencyForm extends Component {
     return value;
   };
 
-  resetForm = () => {
+  handleResetForm = () => {
     this.props.reset();
   };
 
@@ -92,10 +100,17 @@ export class NewAgencyForm extends Component {
               <label htmlFor="sameAsMailing">Same as Mailing Address</label>
             </h4>
             <FormSection name="physicalAddress">
-              <Address
-                showTerritoryManager
-                sectionDisabled={sameAsMailingValue} />
+              <Address sectionDisabled={sameAsMailingValue} />
             </FormSection>
+            <Field
+              label="Terretory Managers"
+              name="territoryManagerId"
+              dataTest="territoryManagerId"
+              component={SelectTypeAhead}
+              valueKey="_id"
+              labelKey="name"
+              answers={territoryManagers}
+              validate={validation.isRequired} />
           </div>
         </section>
         <section className="agency-principal">
@@ -107,7 +122,7 @@ export class NewAgencyForm extends Component {
           <Contact />
         </section>
         <section className="agency-aor">
-          <h4>Agent Of Record <a onClick={this.toggleExistingAgentModal} className="btn btn-link btn-xs btn-alt-light no-padding"><i className="fa fa-user" />Use Existing Agent</a></h4>
+          <h4>Agent Of Record <a onClick={this.handleToggleExistingAgentModal} className="btn btn-link btn-xs btn-alt-light no-padding"><i className="fa fa-user" />Use Existing Agent</a></h4>
           <AgentOfRecord />
         </section>
         <section className="agency=license">
@@ -117,13 +132,13 @@ export class NewAgencyForm extends Component {
             licenseValue={licenseValue} />
         </section>
         <div className="basic-footer btn-footer">
-          <Button baseClass="secondary" onClick={this.resetForm}>Cancel</Button>
-          <Button baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
+          <Button dataTest="resetButton" baseClass="secondary" onClick={this.handleResetForm}>Cancel</Button>
+          <Button dataTest="submitButton" baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
         </div>
         {this.state.showAddExistingAgentModal &&
           <ExistingAgentModal
             listOfAgents={[]}
-            toggleModal={this.toggleExistingAgentModal}
+            toggleModal={this.handleToggleExistingAgentModal}
             handleSaveAgent={x => x} />
         }
       </form>
@@ -132,6 +147,7 @@ export class NewAgencyForm extends Component {
 }
 const selector = formValueSelector('NewAgencyForm');
 const mapStateToProps = state => ({
+  agency: state.agencyState.agency,
   initialValues: getEditModalInitialValues(state),
   sameAsMailingValue: selector(state, 'sameAsMailing'),
   licenseValue: selector(state, 'license') || []

@@ -45,5 +45,6 @@ export default {
   },
   service: {
     cancelOptions: []
-  }
+  },
+  territoryManagers: []
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field } from 'redux-form';
-import { Input, Integer, Radio, Select, validation, Date, Integer } from '@exzeo/core-ui';
+import { Input, Integer, Radio, Select, validation, Date } from '@exzeo/core-ui';
 
 const statusAnswers = [
   { answer: 'Active', label: 'Active' },
