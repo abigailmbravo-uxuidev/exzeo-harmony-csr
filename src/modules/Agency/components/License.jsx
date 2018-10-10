@@ -15,10 +15,6 @@ const typeAnswers = [
 const License = ({ licenseValue, fields }) => {
   return (
     <React.Fragment>
-      <div className="label-wrapper">
-        <label className="state">State</label>
-        <label className="licenseNumber">License</label>
-      </div>
       {fields.map((license, index) => (
         <div className="license-wrapper" key={license}>
           <Field

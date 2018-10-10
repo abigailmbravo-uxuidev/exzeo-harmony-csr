@@ -87,12 +87,13 @@ export class NewAgencyForm extends Component {
     return (
       <form onSubmit={handleSubmit(this.createAgency)}>
         {agency && agency.agencyCode && <Redirect replace to={`/agency/${agency.agencyCode}/overview`} />}
-        <h4>Details</h4>
+        <h3>Details</h3>
         <section className="agency-details">
           <Details />
           {/* web address validaiton */}
         </section>
         <section className="agency-address">
+          <h3>Address</h3>
           <div className="agency-mailing-address">
             <h4>Mailing Address</h4>
             <FormSection name="mailingAddress">
@@ -128,23 +129,25 @@ export class NewAgencyForm extends Component {
               validate={validation.isRequired} />
           </div>
         </section>
+        <h3>Officer</h3>
         <section className="agency-principal">
-          <h4>Officer</h4>
           <Principal />
         </section>
+        <h3>Contact</h3>
         <section className="agency-contact">
-          <h4>Contact</h4>
           <Contact />
         </section>
         <section className="agency-aor">
-          <h4>Agent Of Record <a onClick={this.handleToggleExistingAgentModal} className="btn btn-link btn-xs btn-alt-light no-padding"><i className="fa fa-user" />Use Existing Agent</a></h4>
-          <AgentOfRecord />
-        </section>
-        <section className="agency=license">
-          <FieldArray
-            name="licenses"
-            component={License}
-            licenseValue={licenseValue} />
+          <h3>Agent Of Record <a onClick={this.handleToggleExistingAgentModal} className="btn btn-link btn-xs btn-alt-light no-padding"><i className="fa fa-user" />Use Existing Agent</a></h3>
+          <div className="agency-detail">   
+            <AgentOfRecord />
+          </div>
+          <div className="agency-license">
+            <FieldArray
+              name="licenses"
+              component={License}
+              licenseValue={licenseValue} />
+          </div>
         </section>
         <div className="basic-footer btn-footer">
           <Button dataTest="resetButton" baseClass="secondary" onClick={this.handleResetForm}>Cancel</Button>

@@ -38,7 +38,7 @@ export const AgentOFRecord = () => (
       validate={validation.isRequired} />
     <Field
       label="Phone 1"
-      styleName="phone1"
+      styleName="primaryPhoneNumber"
       name="agentOfRecord.primaryPhoneNumber"
       dataTest="primaryPhoneNumber"
       component={Phone}

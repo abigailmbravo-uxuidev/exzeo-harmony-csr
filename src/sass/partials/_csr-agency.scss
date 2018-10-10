@@ -84,12 +84,12 @@
           flex-shrink: 1;
 
           .tax-details {
-              display: flex;
-              margin-bottom: $padding*2;
+            display: flex;
+            margin-bottom: $padding*2;
 
-              > div {
-                  margin-right: $padding*2;
-              }
+            > div {
+              margin-right: $padding*2;
+            }
           }
         }
 
@@ -142,32 +142,74 @@
                 }
 
                 .tpaid {
-                  grid-column: span 1;
+                  grid-column: span 2;
                 }
 
                 .okToPay-wrapper {
                   grid-column: span 2;
                 }
 
-                .tier {
-                  grid-column: span 1;
-                }
-
                 .webAddress {
                   grid-column: span 6;
+                }
+
+                .taxId {
+                  grid-column: span 3;
+                }
+
+                .taxClassification {
+                  grid-column: span 2;
+                }
+
+                .eoExpirationDate {
+                  grid-column: span 2;
+                }
+
+                .branchName {
+                  grid-column: span 5;
+                }
+
+                hr {
+                  width: 100%;
+                  border-top: 1px dashed mix($bright-blue-darken-02, $green, 80%);
+                  border-bottom-width: 0;
+                  background: $white;
+                  grid-column: span 12;
+                }
+
+                .primaryPhoneNumber {
+                  grid-column: span 4;
+                }
+
+                .secondaryPhoneNumber {
+                  grid-column: span 4;
+                }
+
+                .faxNumber {
+                  grid-column: span 4;
+                }
+
+                .customerServiceEmailAddress {
+                  grid-column: span 12;
                 }
               }
 
               .agency-address {
                 display: flex;
+                flex-wrap: wrap;
                 width: 100%;
                 padding-bottom: $padding*2;
+
+                > h4 {
+                  width: 100%;
+                }
 
                 .agency-mailing-address,
                 .agency-physical-address {
                   display: grid;
-                  flex-grow: 1;
-                  flex-shrink: 1;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  width: calc(50% - .5rem);
                   margin-bottom: $padding*2;
                   grid-template-columns: repeat(12, [col-start] 1fr);
                   grid-gap: $padding*2;
@@ -179,9 +221,15 @@
                   .address1,
                   .address2,
                   .county,
+                  .territoryManagerId,
+                  h3,
+                  h4 {
+                    grid-column: span 12;
+                  }
+
                   h4 {
                     margin: 0;
-                    grid-column: span 12;
+                    font-weight: $font-weight-normal;
 
                     input[type="checkbox"] {
                       margin-right: $padding;
@@ -210,8 +258,12 @@
                   }
                 }
 
+                .agency-mailing-address {
+                  margin-right: $padding;
+                }
+
                 .agency-physical-address {
-                  margin-left: $padding*2;
+                  margin-left: $padding;
                 }
               }
 
@@ -230,9 +282,13 @@
                   grid-column: span 12;
                 }
 
+                .title {
+                  grid-column: span 2;
+                }
+
                 .contactFirstName,
                 .contactLastName {
-                  grid-column: span 6;
+                  grid-column: span 5;
                 }
 
                 .faxNumber,
@@ -241,9 +297,12 @@
                   grid-column: span 4;
                 }
 
-                .contactEmailAddress,
                 .customerServiceEmailAddress {
                   grid-column: span 6;
+                }
+
+                .contactEmailAddress {
+                  grid-column: span 12;
                 }
               }
 
@@ -262,11 +321,75 @@
                   grid-column: span 12;
                 }
 
-                .principalEmailAddress,
                 .principalFirstName,
                 .principalLastName {
                   grid-column: span 6;
                 }
+
+                .principalEmailAddress {
+                  grid-column: span 12;
+                }
+              }
+
+              .agency-aor {
+                  display: flex;
+                  flex-wrap: wrap;
+                  width: 100%;
+
+                  > h3 {
+                      width: 100%;
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                  }
+
+                  .agency-detail {
+                      display: grid;
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: calc(65% - .5rem);
+                      margin-bottom: $padding*2;
+                      grid-template-columns: repeat(12, [col-start] 1fr);
+                      grid-gap: $padding*2;
+                  }
+                  .agency-license {
+                      display: grid;
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: calc(35% - .5rem);
+                      margin-bottom: $padding*2;
+                      grid-template-columns: repeat(12, [col-start] 1fr);
+                      grid-gap: $padding*2;
+                  }
+
+                  .agency-detail {
+                      margin-right: $padding;
+
+                      .agentFirstName {
+                          grid-column: span 6;
+                      }
+
+                      .agentLastName {
+                          grid-column: span 6;
+                      }
+
+                      .agentCode {
+                          grid-column: span 2;
+                      }
+
+                      .emailAddress {
+                          grid-column: span 10;
+                      }
+
+                      .primaryPhoneNumber,
+                      .secondaryPhoneNumber,
+                      .faxNumber {
+                          grid-column: span 4;
+                      }
+                  }
+
+                  .agency-license {
+                      margin-left: $padding;
+                  }
               }
             }
 
@@ -543,8 +666,6 @@
                   }
                 }
 
-                .contract-actions {}
-
                 .contract-info {
                   display: flex;
                   margin-bottom: $padding;
@@ -565,14 +686,16 @@
 
                     &.license {
                       .license-date-wrapper {
-                          display: flex;
-                          align-items: flex-end;
+                        display: flex;
+                        align-items: flex-end;
+
                         > div {
                           margin-right: $padding;
                         }
 
                         .license-effective-date {
-                            display: flex;
+                          display: flex;
+
                           label {
                             margin-right: $padding/2;
                             font-weight: $font-weight-normal;
@@ -696,7 +819,12 @@
                 margin-bottom: $padding*2;
                 border-bottom: 1px dashed mix($bright-blue-darken-02, $green, 80%);
 
-                &.agency-principal {
+                h3 {
+                  width: 100%;
+                  grid-column: span 12;
+                }
+
+                &.agency-license {
                   margin-bottom: 0;
                   border-bottom-width: 0;
                 }
@@ -797,8 +925,7 @@
   }
 
   &.contract-crud {
-
-    .card{
+    .card {
       display: flex;
       overflow: hidden;
       align-items: center;
@@ -955,8 +1082,7 @@
   &.existing-agent-modal {}
 
   &.agent-crud {
-
-    .card  {
+    .card {
       display: flex;
       overflow: hidden;
       align-items: center;
@@ -1015,9 +1141,9 @@
             }
 
             .DBA,
-            .emailAddress,
             .address1,
-            .address2 {
+            .address2,
+            .emailAddress {
               grid-column: span 6;
             }
 
@@ -1028,7 +1154,7 @@
             }
 
             .agencyLicense {
-                z-index: 10;
+              z-index: 10;
             }
 
             .city {
@@ -1059,28 +1185,28 @@
             flex-shrink: 0;
             width: 17rem;
 
-            .license-wrapper, .label-wrapper {
+            .label-wrapper,
+            .license-wrapper {
               display: flex;
               margin-bottom: $padding*2;
 
               .state {
-                width: 4rem;
-                margin-right: $padding*2;
                 flex-grow: 0;
                 flex-shrink: 0;
+                width: 4rem;
+                margin-right: $padding*2;
                 margin-bottom: 0;
               }
+
               .licenseNumber {
-                  margin-right: $padding*2;
-                  margin-bottom: 0;
-                  flex-grow: 1;
-                  flex-shrink: 1;
+                flex-grow: 1;
+                flex-shrink: 1;
+                margin-right: $padding*2;
+                margin-bottom: 0;
               }
             }
 
-            .add-license {
-
-            }
+            .add-license {}
           }
         }
       }

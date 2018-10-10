@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field } from 'redux-form';
-import { Input, Integer, Radio, Select, validation, Date } from '@exzeo/core-ui';
+import { Input, Integer, Radio, Select, Phone, validation, Date } from '@exzeo/core-ui';
 
 const statusAnswers = [
   { answer: 'Active', label: 'Active' },
@@ -100,6 +100,35 @@ const Details = (agencyCodeDisabled) => {
         name="branchName"
         dataTest="branchName"
         component={Input} />
+      <hr />
+      <Field
+        label="Phone 1"
+        styleName="primaryPhoneNumber"
+        name="primaryPhoneNumber"
+        dataTest="primaryPhoneNumber"
+        component={Phone}
+        validate={[validation.isRequired, validation.isPhone]} />
+      <Field
+        label="Phone 2"
+        styleName="secondaryPhoneNumber"
+        name="secondaryPhoneNumber"
+        dataTest="secondaryPhoneNumber"
+        component={Phone}
+        validate={[validation.isRequired, validation.isPhone]} />
+      <Field
+        label="Fax"
+        styleName="faxNumber"
+        name="faxNumber"
+        dataTest="faxNumber"
+        component={Phone}
+        validate={[validation.isRequired, validation.isPhone]} />
+      <Field
+        label="CSR Contact Email Address"
+        styleName="customerServiceEmailAddress"
+        name="customerServiceEmailAddress"
+        dataTest="customerServiceEmailAddress"
+        component={Input}
+        validate={validation.isRequired} />
     </React.Fragment>
   );
 };
