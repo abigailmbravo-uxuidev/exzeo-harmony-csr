@@ -1,5 +1,5 @@
 import React from 'react';
-import { normalize } from '@exzeo/core-ui/lib/InputLifecycle';
+import { normalize } from '@exzeo/core-ui';
 import Button from '@exzeo/core-ui/lib/Button';
 
 export const AgentsCard = ({
@@ -22,7 +22,7 @@ export const AgentsCard = ({
           <h4><span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span> | <span className="agent-license">{agent.licenseNumber}</span></h4>
           <div className="contact-address">
             {agent.mailingAddress.address1},&nbsp;
-            {agent.mailingAddress.address2}{agent.mailingAddress.address2 ? ', ' : ' ' }
+            {agent.mailingAddress.address2}{agent.mailingAddress.address2 ? ', ' : ' '}
             {agent.mailingAddress.city},&nbsp;
             {agent.mailingAddress.state}&nbsp;
             {agent.mailingAddress.zip}
@@ -61,13 +61,13 @@ export const AgentsCard = ({
           <Button
             baseClass="link"
             size="small"
-            onClick={() => handleRemoveAgent(agentIndex)}
-          ><i className="fa fa-times-circle" />Remove</Button>
+            onClick={() => handleRemoveAgent(agentIndex)}><i className="fa fa-times-circle" />Remove
+          </Button>
           <Button
             baseClass="link"
             size="small"
-            onClick={() => handleEditAgent(agentIndex)}
-          ><i className="fa fa-pencil-square" />Edit</Button>
+            onClick={() => handleEditAgent(agentIndex)}><i className="fa fa-pencil-square" />Edit
+          </Button>
         </div>
 
       </div>
@@ -76,8 +76,8 @@ export const AgentsCard = ({
         <div className="footer-actions">
           <Button
             baseClass="link"
-            size="small"
-          ><i className="fa fa-download" />Agent Book</Button>
+            size="small"><i className="fa fa-download" />Agent Book
+          </Button>
         </div>
       </footer>
     </div>

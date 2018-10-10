@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cloneDeep from 'lodash/cloneDeep';
-import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
-import Button from '@exzeo/core-ui/lib/Button'
+import { validation } from '@exzeo/core-ui';
+import Button from '@exzeo/core-ui/lib/Button';
 import AgentsCard from './AgentsCard';
 import AgentDetailModal from './AgentModal';
 import AddExistingAgentModal from './ExistingAgentModal';
@@ -16,14 +16,14 @@ export class Agents extends Component {
     isEditing: null,
     showAddExistingAgentModal: false,
     showAgentDetailModal: false,
-    showRemoveAgentModal: false,
+    showRemoveAgentModal: false
   };
 
   toggleRemoveAgentModal = (activeIndex) => {
     this.setState({
       showRemoveAgentModal: !!activeIndex,
       activeIndex: activeIndex || null
-    })
+    });
   };
 
   toggleExistingAgentModal = () => {
@@ -50,7 +50,7 @@ export class Agents extends Component {
       this.setState({
         showAgentDetailModal: true,
         isEditing: false,
-        agentDetailInitialValues: { agencyLicense:[], agentLicense: [{ state: '', licenseNumber: '' }]}
+        agentDetailInitialValues: { agencyLicense: [], agentLicense: [{ state: '', licenseNumber: '' }] }
       });
 
       return;
@@ -72,13 +72,15 @@ export class Agents extends Component {
   handleAddExistingAgent = async (data) => {
     const { addAgentToAgency, agency } = this.props;
     await addAgentToAgency(data, agency);
-    this.toggleExistingAgentModal()
+    this.toggleExistingAgentModal();
   };
 
   handleSaveAgent = async (data) => {
     // noinspection JSUnusedLocalSymbols
     const { createdBy, createdAt, ...agent } = data;
-    const {agency, addAgent, applyLicenseToAgency, updateAgent, updateAgency} = this.props;
+    const {
+      agency, addAgent, applyLicenseToAgency, updateAgent, updateAgency
+    } = this.props;
 
     if (this.state.isEditing) {
       await updateAgent(agent, agency);
@@ -121,7 +123,7 @@ export class Agents extends Component {
       agency,
       agencyLicenseArray,
       agents,
-      listOfAgents,
+      listOfAgents
     } = this.props;
 
     return (
@@ -135,25 +137,24 @@ export class Agents extends Component {
                 agent={agent}
                 agentIndex={index}
                 handleEditAgent={this.toggleAgentDetailModal}
-                handleRemoveAgent={this.toggleRemoveAgentModal}
-              />
+                handleRemoveAgent={this.toggleRemoveAgentModal} />
             ))}
             <div className="agent-actions">
-              <hr/>
+              <hr />
               <Button
                 baseClass="primary"
                 size="small"
                 customClass="margin right"
                 dataTest="add-existing-agent"
-                onClick={this.toggleExistingAgentModal}
-              ><i className="fa fa-plus"/>Existing Agent</Button>
+                onClick={this.toggleExistingAgentModal}><i className="fa fa-plus" />Existing Agent
+              </Button>
               <Button
                 baseClass="primary"
                 size="small"
                 dataTest="add-new-agent"
-                onClick={() => this.toggleAgentDetailModal()}
-              ><i className="fa fa-plus"/>New Agent</Button>
-              <hr/>
+                onClick={() => this.toggleAgentDetailModal()}><i className="fa fa-plus" />New Agent
+              </Button>
+              <hr />
             </div>
           </div>
         </div>
@@ -165,8 +166,7 @@ export class Agents extends Component {
           isEditing={this.state.isEditing}
           isInAgencyLicenseArray={this.isInAgencyLicenseArray()}
           handleSaveAgent={this.handleSaveAgent}
-          toggleModal={this.toggleAgentDetailModal}
-        />
+          toggleModal={this.toggleAgentDetailModal} />
         }
         {this.state.showAddExistingAgentModal &&
           <AddExistingAgentModal
@@ -174,16 +174,14 @@ export class Agents extends Component {
             existsInAgencyLicense={this.isInAgencyLicenseArray()}
             listOfAgents={listOfAgents}
             toggleModal={this.toggleExistingAgentModal}
-            handleSaveAgent={this.handleAddExistingAgent}
-          />
+            handleSaveAgent={this.handleAddExistingAgent} />
         }
         {this.state.showRemoveAgentModal &&
           <RemoveAgentModal
             agencyName={agency.displayName}
             initialValues={agents[this.state.activeIndex]}
             handleCancel={this.toggleRemoveAgentModal}
-            handleConfirm={this.handleRemoveAgent}
-          />
+            handleConfirm={this.handleRemoveAgent} />
         }
 
       </div>
