@@ -78,7 +78,7 @@ class DiariesSearch extends Component {
 DiariesSearch.propTypes = {
   changeSearchType: PropTypes.func.isRequired,
   initialize: PropTypes.func.isRequired,
-  searchTypeOptions: PropTypes.arrayOf().isRequired,
+  searchTypeOptions: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   userProfile: PropTypes.shape().isRequired,
   initialValues: PropTypes.shape(),
   submitting: PropTypes.bool

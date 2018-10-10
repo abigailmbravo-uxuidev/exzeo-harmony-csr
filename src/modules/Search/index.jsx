@@ -95,10 +95,9 @@ export class SearchPage extends Component {
             onSubmitSuccess={() => this.setHasSearched(true)}
             searchType={searchType}
             render={({
-             changeSearchType,
-             handlePagination,
-             initialize,
-             submitting
+              changeSearchType,
+              handlePagination,
+              formProps
             }) => (
               <SearchForm
                 advancedSearch={advancedSearch}
@@ -106,9 +105,8 @@ export class SearchPage extends Component {
                 searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
                 handlePagination={handlePagination}
                 hasSearched={hasSearched}
-                initialize={initialize}
-                submitting={submitting}
-                toggleAdvancedSearch={this.toggleAdvancedSearch} />
+                toggleAdvancedSearch={this.toggleAdvancedSearch}
+                {...formProps} />
             )} />
         </div>
         <main role="document" className={advancedSearch ? 'policy-advanced' : ''}>
