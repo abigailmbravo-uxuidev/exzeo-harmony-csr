@@ -316,3 +316,29 @@ input[type="submit"] {
     margin-left: $padding;
   }
 }
+
+.list-btn {
+    width: 10rem;
+    margin: $padding auto;
+    position: relative;
+
+    &:before {
+        content: '';
+        position: absolute;
+        top: 1rem;
+        width: calc(50vw - 6rem);
+        height: 1px;
+        background: $warm-gray-03;
+        right: 10.5rem;
+    }
+
+    &:after {
+        content: '';
+        position: absolute;
+        top: 1rem;
+        width: calc(50vw - 6rem);
+        height: 1px;
+        background: $warm-gray-03;
+        left: 10.5rem;
+    }
+}
