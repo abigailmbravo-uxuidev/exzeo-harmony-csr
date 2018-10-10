@@ -57,6 +57,7 @@ export class SearchBar extends Component {
   render() {
     const {
       handleSubmit,
+      initialize,
       submitting
     } = this.props;
 
@@ -67,9 +68,10 @@ export class SearchBar extends Component {
 
             {// render the correct search form based on searchType (declared in Search/index.js)
               this.props.render({
-              submitting,
-              changeSearchType: this.changeSearchType,
-              handlePagination: this.handlePagination
+                initialize,
+                submitting,
+                changeSearchType: this.changeSearchType,
+                handlePagination: this.handlePagination
             })}
 
           </div>

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import { SEARCH_CONFIG, SEARCH_TYPES } from '../../constants/search';
 import { resetSearch } from '../../state/actions/search.actions';
+import DiaryPolling from '../../components/DiaryPolling';
 
 import SearchBar from './components/SearchBar';
 import SearchResults from './components/SearchResults';
@@ -13,7 +14,6 @@ import AgencySearch from './Agency';
 import AgentSearch from './Agent';
 import UserSearch from './User';
 import DiariesSearch from './Diaries';
-import DiaryPolling from '../../components/DiaryPolling';
 
 const SEARCH_FORMS = {
   [SEARCH_TYPES.newQuote]: AddressSearch,
@@ -94,13 +94,19 @@ export class SearchPage extends Component {
             initialValues={SEARCH_CONFIG[searchConfig].initialValues}
             onSubmitSuccess={() => this.setHasSearched(true)}
             searchType={searchType}
-            render={({ submitting, changeSearchType, handlePagination }) => (
+            render={({
+             changeSearchType,
+             handlePagination,
+             initialize,
+             submitting
+            }) => (
               <SearchForm
                 advancedSearch={advancedSearch}
                 changeSearchType={changeSearchType}
                 searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
                 handlePagination={handlePagination}
                 hasSearched={hasSearched}
+                initialize={initialize}
                 submitting={submitting}
                 toggleAdvancedSearch={this.toggleAdvancedSearch} />
             )} />

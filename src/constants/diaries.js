@@ -5,7 +5,8 @@ export const USERS = [
   { answer: '1', label: 'TTICCSR', type: 'user' },
   { answer: '2', label: 'Jordan Rhodes', type: 'user' },
   { answer: '3', label: 'Mark Eads', type: 'user' },
-  { answer: '10', label: 'A-Team', type: 'user' }
+  { answer: '10', label: 'A-Team', type: 'user' },
+  { answer: 'auth0|CSR1234567890', label: 'TESTUSER', type: 'user' }
 ];
 
 export const TAGS = [
