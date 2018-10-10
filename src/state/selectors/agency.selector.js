@@ -14,28 +14,15 @@ export const getEditModalInitialValues = createSelector(
   [getAgency],
   (agency) => {
     if (!agency || !agency.agencyCode) return {};
-    // noinspection JSUnusedLocalSymbols
-    // delete agency.createdBy; // need to delete this for some reason because the endpoint fails
-    // agency.eoExpirationDate = moment(agency.eoExpirationDate).format('YYYY-MM-DD');
-    // agency.licenseEffectiveDate = moment(agency.licenseEffectiveDate).format('YYYY-MM-DD');
-
-    // agency.agentList = [];
-    // agency.license.map((lic) => {
-    //   lic.eoExpirationDate = moment(lic.eoExpirationDate).format('YYYY-MM-DD');
-    //   lic.licenseEffectiveDate = moment(lic.licenseEffectiveDate).format('YYYY-MM-DD');
-    //   const agentCodes = lic.agent.map(a => String(a.agentCode));
-
-    //   agentCodes.forEach((ac) => {
-    //     if (!agency.agentList.includes(ac)) { agency.agentList.push(ac); }
-    //   });
-    //   return lic;
-    // });
     const {
-      latitude, longitude, county, ...physicalAddress
+      latitude, longitude, county, country, ...physicalAddress
     } = agency.physicalAddress;
+    const {
+      latitude: lat, longitude: lon, county: c, country: co, careOf, ...mailingAddress
+    } = agency.mailingAddress;
     return {
       ...agency,
-      sameAsMailing: isEqual(physicalAddress, agency.mailingAddress)
+      sameAsMailing: isEqual(physicalAddress, mailingAddress)
     };
   }
 );
