@@ -58,7 +58,7 @@ class DiariesSearch extends Component {
               dataTest="assignees"
               component={MultiSelectTypeAhead}
               label="Assigned To"
-              answers={USERS}
+              answers={ASSIGNEE_ANSWERS()}
               errorHint />
           </div>
 
