@@ -61,8 +61,8 @@ export class AgencyModal extends Component {
           <div className="card">
             <div className="card-header">
               <h4>
-                <i className="fa fa-address-book" /> {isEdit ? 'Edit ' : 'New '}
-                Agency
+                <i className="fa fa-address-book" />
+                Edit Agency
               </h4>
             </div>
             <div className="card-block">

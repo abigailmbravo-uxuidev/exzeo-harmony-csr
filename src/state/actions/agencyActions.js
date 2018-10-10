@@ -139,7 +139,6 @@ export function updateAgency(agencyData) {
     try {
       await saveAgency(agencyData);
       dispatch(getAgency(agencyData.agencyCode));
-      dispatch(getAgentsByAgencyCode(agencyData.agencyCode));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
@@ -267,7 +266,7 @@ export async function saveAgency(agencyData) {
     const config = {
       service: 'agency',
       method: 'PUT',
-      path: `v1/agency/${agencyData.agencyCode}`,
+      path: `agencies/${agencyData.agencyCode}`,
       data: agencyData
     };
     const response = await serviceRunner.callService(config);
