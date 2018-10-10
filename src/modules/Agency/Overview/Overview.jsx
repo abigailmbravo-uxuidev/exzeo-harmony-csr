@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const Overview = ({ agency, editAgency }) => {
+export const Overview = ({ agency, editAgency, territoryManagers }) => {
   if (!agency || !agency.physicalAddress) return <span />;
 
   return (
@@ -70,6 +70,34 @@ export const Overview = ({ agency, editAgency }) => {
         </div>
       </section>
       <section>
+        <div className="form-group flex-parent billing">
+          <div className="flex-child">
+            <label>Phone 1</label>
+            <div>
+              {agency.primaryPhoneNumber}
+            </div>
+          </div>
+          <div className="flex-child">
+            <label>Phone 2</label>
+            <div>
+              {agency.secondaryPhoneNumber}
+            </div>
+          </div>
+          <div className="flex-child">
+            <label>Fax</label>
+            <div>
+              {agency.faxNumber}
+            </div>
+          </div>
+          <div className="flex-child">
+            <label>CSR Email</label>
+            <div>
+              {agency.customerServiceEmailAddress}
+            </div>
+          </div>
+        </div>
+      </section>
+      <section>
         <h3>
       Address
           <button
@@ -80,51 +108,50 @@ export const Overview = ({ agency, editAgency }) => {
         </h3>
         <div className="form-group flex-parent billing">
           <div className="flex-child">
-            <label>Physical Address</label>
+            <h4>Physical Address</h4>
+            <label>Address</label>
             <div>
               {agency.physicalAddress.address1}
               {agency.physicalAddress.address2}
             </div>
+            <label>City</label>
             <div>
-              {agency.physicalAddress.city},
+              {agency.physicalAddress.city}
+            </div>
+            <label>State</label>
+            <div>
               {agency.physicalAddress.state}
+            </div>
+            <label>Zip Code</label>
+            <div>
               {agency.physicalAddress.zip}
+            </div>
+            <label>County</label>
+            <div>
+              {agency.physicalAddress.county}
             </div>
           </div>
           <div className="flex-child">
-            <label>Mailing Address</label>
+            <h4>Mailing Address</h4>
+            <label>Address</label>
             <div>
               {agency.mailingAddress.address1}
               {agency.mailingAddress.address2}
             </div>
+            <label>City</label>
             <div>
-              {agency.mailingAddress.city},
-              {agency.mailingAddress.state} {agency.mailingAddress.zip}
+              {agency.mailingAddress.city}
             </div>
-          </div>
-          <div className="flex-child">
-            <label>Status</label>
-            <div>{agency.status}</div>
-          </div>
-          <div className="flex-child">
-            <label>TPAID</label>
-            <div>{agency.tpaid}</div>
-          </div>
-          <div className="flex-child">
-            <label>OK to Pay</label>
-            <div>{agency.okToPay ? 'Yes' : 'No'}</div>
-          </div>
-          <div className="flex-child">
-            <label>Tier</label>
-            <div>{agency.tier}</div>
-          </div>
-          <div className="flex-child">
-            <label>Web Address</label>
+            <label>State</label>
             <div>
-              <a href={agency.websiteUrl} target="_blank">
-                {agency.websiteUrl}
-              </a>
+              {agency.mailingAddress.state}
             </div>
+            <label>Zip Code</label>
+            <div>
+              {agency.mailingAddress.zip}
+            </div>
+            <label>Territory Manager</label>
+            <div>{territoryManagers.filter(t => t._id === agency.territoryManagerId)[0].name}</div>
           </div>
         </div>
       </section>
