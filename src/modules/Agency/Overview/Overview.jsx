@@ -47,154 +47,146 @@ export class Overview extends React.Component {
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
-              <section >
-                <h3>
-      Details
-                  <button
-                    className="btn btn-link btn-sm"
-                    onClick={this.onHandleToggleEditDetailsModal}>
-                    <i className="fa fa-pencil-square" />Edit
-                  </button>
-                </h3>
-                <div className="form-group flex-parent billing">
-                  <div className="flex-child">
-                    <label>Agency ID</label>
-                    <div>
-                      {agency.agencyCode}
-                    </div>
+              <h3>Details
+                <button
+                  className="btn btn-link btn-sm"
+                  onClick={this.onHandleToggleEditDetailsModal}>
+                  <i className="fa fa-pencil-square" />Edit
+                </button>
+              </h3>
+              <section className="agency-details">
+                <div className="form-group">
+                  <label>Agency ID</label>
+                  <div>
+                    {agency.agencyCode}
                   </div>
-                  <div className="flex-child">
-                    <label>Agency Name</label>
-                    <div>
-                      {agency.displayName}
-                    </div>
+                </div>
+                <div className="form-group">
+                  <label>Agency Name</label>
+                  <div>
+                    {agency.displayName}
                   </div>
-                  <div className="flex-child">
-                    <label>Entity Name</label>
-                    <div>{agency.legalName}</div>
+                </div>
+                <div className="form-group">
+                  <label>Entity Name</label>
+                  <div>{agency.legalName}</div>
+                </div>
+                <div className="form-group">
+                  <label>Status</label>
+                  <div>{agency.status}</div>
+                </div>
+                <div className="form-group">
+                  <label>TPAID</label>
+                  <div>{agency.tpaid}</div>
+                </div>
+                <div className="form-group">
+                  <label>OK to Pay</label>
+                  <div>{agency.okToPay ? 'Yes' : 'No'}</div>
+                </div>
+                <div className="form-group">
+                  <label>Web Address</label>
+                  <div>
+                    <a href={agency.websiteUrl} target="_blank">
+                      {agency.websiteUrl}
+                    </a>
                   </div>
-                  <div className="flex-child">
-                    <label>Status</label>
-                    <div>{agency.status}</div>
+                </div>
+                <div className="form-group">
+                  <label>Tax ID</label>
+                  <div>{agency.taxIdNumber}</div>
+                </div>
+                <div className="form-group">
+                  <label>Tax Classification</label>
+                  <div>{agency.taxClassification}</div>
+                </div>
+                <div className="form-group">
+                  <label>EO Expiration Date</label>
+                  <div>{agency.eoExpirationDate}</div>
+                </div>
+                <div className="form-group">
+                  <label>Branch Name</label>
+                  <div>{agency.branchName}</div>
+                </div>
+              </section>
+              <section className="agency-contact">
+                <div className="form-group">
+                  <label>Phone 1</label>
+                  <div>
+                    {agency.primaryPhoneNumber}
                   </div>
-                  <div className="flex-child">
-                    <label>TPAID</label>
-                    <div>{agency.tpaid}</div>
+                </div>
+                <div className="form-group">
+                  <label>Phone 2</label>
+                  <div>
+                    {agency.secondaryPhoneNumber}
                   </div>
-                  <div className="flex-child">
-                    <label>OK to Pay</label>
-                    <div>{agency.okToPay ? 'Yes' : 'No'}</div>
+                </div>
+                <div className="form-group">
+                  <label>Fax</label>
+                  <div>
+                    {agency.faxNumber}
                   </div>
-                  <div className="flex-child">
-                    <label>Web Address</label>
-                    <div>
-                      <a href={agency.websiteUrl} target="_blank">
-                        {agency.websiteUrl}
-                      </a>
-                    </div>
-                  </div>
-                  <div className="flex-child">
-                    <label>Tax ID</label>
-                    <div>{agency.taxIdNumber}</div>
-                  </div>
-                  <div className="flex-child">
-                    <label>Tax Classification</label>
-                    <div>{agency.taxClassification}</div>
-                  </div>
-                  <div className="flex-child">
-                    <label>EO Expiration Date</label>
-                    <div>{agency.eoExpirationDate}</div>
-                  </div>
-                  <div className="flex-child">
-                    <label>Branch Name</label>
-                    <div>{agency.branchName}</div>
+                </div>
+                <div className="form-group">
+                  <label>CSR Email</label>
+                  <div>
+                    {agency.customerServiceEmailAddress}
                   </div>
                 </div>
               </section>
-              <section>
-                <div className="form-group flex-parent billing">
-                  <div className="flex-child">
-                    <label>Phone 1</label>
-                    <div>
-                      {agency.primaryPhoneNumber}
-                    </div>
+              <h3>Address
+                <button
+                  className="btn btn-link btn-sm"
+                  onClick={this.onHandleToggleEditAddressModal}>
+                  <i className="fa fa-pencil-square" />Edit
+                </button>
+              </h3>
+              <section className="agency-address">
+                <div className="form-group">
+                  <h4>Physical Address</h4>
+                  <label>Address</label>
+                  <div>
+                    {agency.physicalAddress.address1}
+                    {agency.physicalAddress.address2}
                   </div>
-                  <div className="flex-child">
-                    <label>Phone 2</label>
-                    <div>
-                      {agency.secondaryPhoneNumber}
-                    </div>
+                  <label>City</label>
+                  <div>
+                    {agency.physicalAddress.city}
                   </div>
-                  <div className="flex-child">
-                    <label>Fax</label>
-                    <div>
-                      {agency.faxNumber}
-                    </div>
+                  <label>State</label>
+                  <div>
+                    {agency.physicalAddress.state}
                   </div>
-                  <div className="flex-child">
-                    <label>CSR Email</label>
-                    <div>
-                      {agency.customerServiceEmailAddress}
-                    </div>
+                  <label>Zip Code</label>
+                  <div>
+                    {agency.physicalAddress.zip}
+                  </div>
+                  <label>County</label>
+                  <div>
+                    {agency.physicalAddress.county}
                   </div>
                 </div>
-              </section>
-              <section>
-                <h3>
-      Address
-                  <button
-                    className="btn btn-link btn-sm"
-                    onClick={this.onHandleToggleEditAddressModal}>
-                    <i className="fa fa-pencil-square" />Edit
-                  </button>
-                </h3>
-                <div className="form-group flex-parent billing">
-                  <div className="flex-child">
-                    <h4>Physical Address</h4>
-                    <label>Address</label>
-                    <div>
-                      {agency.physicalAddress.address1}
-                      {agency.physicalAddress.address2}
-                    </div>
-                    <label>City</label>
-                    <div>
-                      {agency.physicalAddress.city}
-                    </div>
-                    <label>State</label>
-                    <div>
-                      {agency.physicalAddress.state}
-                    </div>
-                    <label>Zip Code</label>
-                    <div>
-                      {agency.physicalAddress.zip}
-                    </div>
-                    <label>County</label>
-                    <div>
-                      {agency.physicalAddress.county}
-                    </div>
+                <div className="form-group">
+                  <h4>Mailing Address</h4>
+                  <label>Address</label>
+                  <div>
+                    {agency.mailingAddress.address1}
+                    {agency.mailingAddress.address2}
                   </div>
-                  <div className="flex-child">
-                    <h4>Mailing Address</h4>
-                    <label>Address</label>
-                    <div>
-                      {agency.mailingAddress.address1}
-                      {agency.mailingAddress.address2}
-                    </div>
-                    <label>City</label>
-                    <div>
-                      {agency.mailingAddress.city}
-                    </div>
-                    <label>State</label>
-                    <div>
-                      {agency.mailingAddress.state}
-                    </div>
-                    <label>Zip Code</label>
-                    <div>
-                      {agency.mailingAddress.zip}
-                    </div>
-                    <label>Territory Manager</label>
-                    <div>{territoryManagers.filter(t => t._id === agency.territoryManagerId)[0].name}</div>
+                  <label>City</label>
+                  <div>
+                    {agency.mailingAddress.city}
                   </div>
+                  <label>State</label>
+                  <div>
+                    {agency.mailingAddress.state}
+                  </div>
+                  <label>Zip Code</label>
+                  <div>
+                    {agency.mailingAddress.zip}
+                  </div>
+                  <label>Territory Manager</label>
+                  <div>{territoryManagers.filter(t => t._id === agency.territoryManagerId)[0].name}</div>
                 </div>
               </section>
               <section>
@@ -209,7 +201,6 @@ export class Overview extends React.Component {
                 <h4>Agent Of Record</h4>
                 {agentOfRecord && agentOfRecord.agentCode && <AgentOfRecordCard agent={agentOfRecord} handleSecondaryClick={x => x} handlePrimaryClick={x => x} />}
               </section>
-
             </div>
           </div>
         </div>
