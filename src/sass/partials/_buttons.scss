@@ -316,29 +316,65 @@ input[type="submit"] {
     margin-left: $padding;
   }
 }
-
-.list-btn {
-    width: 10rem;
-    margin: $padding auto;
+.btn-divider-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $padding;
     position: relative;
-
     &:before {
         content: '';
-        position: absolute;
-        top: 1rem;
-        width: calc(50vw - 6rem);
-        height: 1px;
+        flex-grow: 1;
+        flex-shrink: 1;
         background: $warm-gray-03;
-        right: 10.5rem;
+        height: 1px;
+        margin-right: $padding;
     }
-
     &:after {
         content: '';
-        position: absolute;
-        top: 1rem;
-        width: calc(50vw - 6rem);
-        height: 1px;
+        flex-grow: 1;
+        flex-shrink: 1;
         background: $warm-gray-03;
-        left: 10.5rem;
+        height: 1px;
+        margin-left: $padding;
+    }
+
+    &.align-right {
+        &:after {
+            width: $padding;
+            flex-grow: 0;
+            flex-shrink: 0;
+        }
+    }
+
+    &.in-grid-layout {
+        grid-column: span 12;
+    }
+}
+
+.btn-remove-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+
+    &.align-right {
+        position: absolute;
+        right: $padding*2;
+    }
+
+    &.align-bottom {
+        position: absolute;
+        bottom: -$padding*1.25;
+        > .btn {
+            background: $white;
+        }
+    }
+
+
+    &.in-grid-layout {
+        grid-column: span 12;
     }
 }
