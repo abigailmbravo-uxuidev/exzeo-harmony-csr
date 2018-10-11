@@ -193,7 +193,7 @@ export class Overview extends React.Component {
               </section>
               <section>
                 <h4>Agent Of Record</h4>
-                <AgentOfRecordCard agentOfRecord={agentOfRecord} handleClick={x => x} />
+                {agentOfRecord && agentOfRecord.agentCode && <AgentOfRecordCard agent={agentOfRecord} handleSecondaryClick={x => x} handlePrimaryClick={x => x} />}
               </section>
               {showEditDetailsModal && <AgencyModal initialValues={agency} closeModal={this.onHandleToggleEditDetailsModal} />}
               {showEditAddressModal && <AgencyAddressModal initialValues={agency} closeModal={this.onHandleToggleEditAddressModal} />}
