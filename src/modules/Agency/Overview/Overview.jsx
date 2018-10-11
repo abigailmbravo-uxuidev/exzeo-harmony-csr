@@ -1,15 +1,19 @@
 import React from 'react';
+import { FormSection } from 'redux-form';
 
 import AgencyModal from '../AgencyModal';
 import AgencyAddressModal from '../AgencyAddressModal';
 import PrincipalCard from '../components/PrincipalCard';
 import ContactCard from '../components/ContactCard';
 import AgentOfRecordCard from '../components/AgentOfRecordCard';
+import AgencyContactModal from '../AgencyContactModal';
 
 export class Overview extends React.Component {
   state = {
     showEditDetailsModal: false,
-    showEditAddressModal: false
+    showEditAddressModal: false,
+    showEditContactModal: false,
+    showEditPrincipalModal: false
   }
 
   onHandleToggleEditDetailsModal = () => {
@@ -20,11 +24,21 @@ export class Overview extends React.Component {
     this.setState({ showEditAddressModal: !this.state.showEditAddressModal });
   }
 
+  onHandleToggleEditContactModal = () => {
+    this.setState({ showEditContactModal: !this.state.showEditContactModal });
+  }
+
+  onHandleToggleEditPrincipalModal = () => {
+    this.setState({ showEditPrincipalModal: !this.state.showEditPrincipalModal });
+  }
+
   render() {
     const {
       agency, territoryManagers, agentOfRecord
     } = this.props;
-    const { showEditDetailsModal, showEditAddressModal } = this.state;
+    const {
+      showEditDetailsModal, showEditAddressModal, showEditContactModal, showEditPrincipalModal
+    } = this.state;
 
     if (!agency || !agency.physicalAddress) return <span />;
 
@@ -185,21 +199,28 @@ export class Overview extends React.Component {
               </section>
               <section>
                 <h4>Officer</h4>
-                <PrincipalCard principal={agency.principal} handleClick={x => x} />
+                <PrincipalCard principal={agency.principal} handleClick={this.onHandleToggleEditPrincipalModal} />
               </section>
               <section>
                 <h4>Contact</h4>
-                <ContactCard contact={agency.contact} handleClick={x => x} />
+                <ContactCard contact={agency.contact} handleClick={this.onHandleToggleEditContactModal} />
               </section>
               <section>
                 <h4>Agent Of Record</h4>
                 {agentOfRecord && agentOfRecord.agentCode && <AgentOfRecordCard agent={agentOfRecord} handleSecondaryClick={x => x} handlePrimaryClick={x => x} />}
               </section>
-              {showEditDetailsModal && <AgencyModal initialValues={agency} closeModal={this.onHandleToggleEditDetailsModal} />}
-              {showEditAddressModal && <AgencyAddressModal initialValues={agency} closeModal={this.onHandleToggleEditAddressModal} />}
+
             </div>
           </div>
         </div>
+        {showEditDetailsModal && <AgencyModal initialValues={agency} closeModal={this.onHandleToggleEditDetailsModal} />}
+        {showEditAddressModal && <AgencyAddressModal initialValues={agency} closeModal={this.onHandleToggleEditAddressModal} />}
+        {showEditContactModal &&
+          <AgencyContactModal header="Edit Contact" section="contact" initialValues={agency.contact} closeModal={this.onHandleToggleEditContactModal} />
+        }
+        {showEditPrincipalModal &&
+          <AgencyContactModal header="Edit Officer" section="principal" initialValues={agency.principal} closeModal={this.onHandleToggleEditPrincipalModal} />
+        }
       </div>
     );
   }
