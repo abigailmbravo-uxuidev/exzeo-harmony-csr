@@ -39,8 +39,11 @@ export const getOrphanedAgentsList = createSelector(
 export const getAgentOfRecord = createSelector(
   [getAgency, getAgents],
   (agency, agents) => {
-    if (!getAgency || !getAgency.agencyCode || !getAgents || !Array.isArray(getAgents)) return {};
-    const agentOfRecord = getAgents.filter(a => a.agencyCode === getAgency.agencyCode);
+    if (!agency || !agency.agencyCode || !agents || !Array.isArray(agents)) return {};
+    const agentOfRecord = agents.filter((a) => {
+      if (a.agencies.filter(ag => ag.agencyCode === agency.agencyCode).length > 0) { return a; }
+      return null;
+    });
     return Array.isArray(agentOfRecord) && agentOfRecord.length > 0 ? agentOfRecord[0] : {};
   }
 );
