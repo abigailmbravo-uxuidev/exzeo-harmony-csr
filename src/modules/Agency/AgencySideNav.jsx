@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import AddBranchModal from './AddBranchModal';
 
 const csrLinks = agencyCode => [{
   key: 'overview',
@@ -36,17 +37,41 @@ const csrLinks = agencyCode => [{
   exact: true
 }];
 
-export const SideNav = ({ agencyCode }) => (
-  <nav className="site-nav">
-    <ul>
-      {csrLinks(agencyCode).map((agentLink, index) => (
-        <li key={index}>
-          <span className={agentLink.styleName}>
-            <NavLink to={agentLink.link} activeClassName="active" exact>{agentLink.label}</NavLink>
-          </span>
-        </li>))
-      }
-    </ul>
-  </nav>);
+export const onHandleNewBranch = ({ agencyCode }) => {
 
+};
+export class SideNav extends React.Component {
+  state = {
+    showBranchModal: false
+  }
+
+  handleShowBranchModal = () => {
+    this.setState({ showBranchModal: !this.state.showBranchModal });
+  }
+  render() {
+    const { agencyCode } = this.props;
+    return (
+      <nav className="site-nav">
+        <ul>
+          <li key="branch" >
+            <button
+              tabIndex="0"
+              className="btn btn-primary"
+              onClick={this.handleShowBranchModal}
+              type="button">
+                + Branch
+            </button>
+          </li>
+          {csrLinks(agencyCode).map((agentLink, index) => (
+            <li key={index}>
+              <span className={agentLink.styleName}>
+                <NavLink to={agentLink.link} activeClassName="active" exact>{agentLink.label}</NavLink>
+              </span>
+            </li>))
+      }
+        </ul>
+        {this.state.showBranchModal && <AddBranchModal closeModal={this.handleShowBranchModal} />}
+      </nav>);
+  }
+}
 export default SideNav;
