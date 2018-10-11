@@ -7,12 +7,12 @@ import { getTerritoryManagers } from '../../state/actions/territoryManagers.acti
 import AgencyHeader from './AgencyHeader';
 import AgencySideNav from './AgencySideNav';
 import AgencyDetailHeader from './DetailHeader';
-import NewAgency from './NewAgency';
+import Create from './Create';
 import Contracts from './Contracts';
 import Agents from './Agents';
 import Overview from './Overview';
 
-const NewAgencyRender = props => <NewAgency auth={props.auth} {...props} />;
+const CreateRender = props => <Create auth={props.auth} {...props} />;
 const ContractsRender = props => <Contracts auth={props.auth} {...props} />;
 const AgentsRender = props => <Agents auth={props.auth} {...props} />;
 const OverviewRender = props => <Overview auth={props.auth} {...props} />;
@@ -43,7 +43,7 @@ export class Agency extends Component {
             <AgencySideNav agencyCode={agencyCode} location={location} />
           </aside>
           <div className="content-wrapper">
-            <Route exact path="/agency/new" render={NewAgencyRender} />
+            <Route exact path="/agency/new" render={CreateRender} />
             <Route exact path={`${url}/overview`} render={OverviewRender} />
             <Route exact path={`${url}/contracts`} render={ContractsRender} />
             <Route exact path={`${url}/agents`} render={AgentsRender} />
