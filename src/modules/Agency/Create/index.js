@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
-import NewAgency from './NewAgency';
+import Create from './Create';
 
 const mapStateToProps = state => ({
   agency: state.agencyState.agency
 });
 
-export default connect(mapStateToProps)(NewAgency);
+export default connect(mapStateToProps)(Create);
