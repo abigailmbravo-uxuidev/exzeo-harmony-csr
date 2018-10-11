@@ -4,7 +4,7 @@ export const ContactCard = ({ contact, handleClick }) => (
   <div className="csr contact card">
     <div className="contact-title">
       <i className="fa fa-phone-square" />
-      <label>Officer</label>
+      <label />
       <div className="contact-details">
         <h4><strong>{`${contact.firstName} ${contact.lastName}`} | Officer</strong></h4>
         <div className="additional-contacts">
