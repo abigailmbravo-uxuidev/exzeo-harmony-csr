@@ -7,8 +7,8 @@ import { getListOfAgents, getAgencyLicenseArray } from '../../../state/selectors
 const mapStateToProps = state => ({
   agency: state.agencyState.agency,
   agents: state.agencyState.agents,
-  listOfAgents: getListOfAgents(state),
-  agencyLicenseArray: getAgencyLicenseArray(state)
+  listOfAgents: [],
+  agencyLicenseArray: []
 });
 
 export default connect(mapStateToProps, {

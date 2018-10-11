@@ -4,9 +4,7 @@ import moment from 'moment';
 
 const getAgency = state => state.agencyState.agency;
 
-const getAgents = state => state.agencyState.agentList;
-
-const getAgencyAgents = state => state.agencyState.agencyAgents;
+const getAgents = state => state.agencyState.agents;
 
 const getOrphanedAgents = state => state.agencyState.orphans;
 
@@ -27,39 +25,6 @@ export const getEditModalInitialValues = createSelector(
   }
 );
 
-export const getListOfAgents = createSelector(
-  [getAgents],
-  (agent) => {
-    if (!agent || !Array.isArray(agent)) return [];
-    return agent.map(a => ({
-      value: {
-        agentCode: a.agentCode,
-        agentInfo: a.agentInfo || { license: [{ licenseNumber: a.licenseNumber, state: a.state }], ...a },
-        agentOfRecord: a.agentOfRecord,
-        appointed: a.appointed
-      },
-      answer: a.agentCode,
-      label: `${a.firstName} ${a.lastName}`
-    }));
-  }
-);
-
-export const getListOfAgencyAgents = createSelector(
-  [getAgencyAgents],
-  (agent) => {
-    if (!agent || !Array.isArray(agent)) return [];
-    return agent.map(a => String(a.agentCode));
-  }
-);
-
-export const getAgencyLicenseArray = createSelector(
-  [getAgency],
-  (agency) => {
-    if (!agency || !agency.license || !Array.isArray(agency.license)) return [];
-    return agency.license.map(al => al.licenseNumber);
-  }
-);
-
 export const getOrphanedAgentsList = createSelector(
   [getOrphanedAgents],
   (orphans) => {
@@ -68,6 +33,18 @@ export const getOrphanedAgentsList = createSelector(
       displayText: `${o.firstName} ${o.lastName}`,
       ...o
     }));
+  }
+);
+
+export const getAgentOfRecord = createSelector(
+  [getAgency, getAgents],
+  (agency, agents) => {
+    if (!agency || !agency.agencyCode || !agents || !Array.isArray(agents)) return {};
+    const agentOfRecord = agents.filter((a) => {
+      if (a.agencies.filter(ag => ag.agencyCode === agency.agencyCode).length > 0) { return a; }
+      return null;
+    });
+    return Array.isArray(agentOfRecord) && agentOfRecord.length > 0 ? agentOfRecord[0] : {};
   }
 );
 
