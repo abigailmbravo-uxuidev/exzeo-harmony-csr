@@ -3,7 +3,7 @@ import { normalize } from '@exzeo/core-ui';
 
 import AgencyContactAddress from '../../../components/AgencyContactAddress';
 
-export const AgentOfRecordCard = ({ agent, handleSecondaryClick, handlePrimaryClick }) => (
+export const AgentCard = ({ agent, handleSecondaryClick, handlePrimaryClick }) => (
   <div className="agency agent contact card" tabIndex="0">
     <div className="contact-title">
       <i className="fa fa-address-card margin bottom" />
@@ -79,4 +79,4 @@ export const AgentOfRecordCard = ({ agent, handleSecondaryClick, handlePrimaryCl
   </div>
 );
 
-export default AgentOfRecordCard;
+export default AgentCard;

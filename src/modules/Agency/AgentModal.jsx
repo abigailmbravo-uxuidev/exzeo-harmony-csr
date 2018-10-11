@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, FormSection } from 'redux-form';
+import { reduxForm } from 'redux-form';
 
 import { updateAgency } from '../../state/actions/agencyActions';
 import { getEditModalInitialValues } from '../../state/selectors/agency.selector';
 
-import Contact from './components/FormGroup/Contact';
+import Agent from './components/FormGroup/Agent';
 
-export class AgencyContactModal extends Component {
-  saveAgency = async (data, dispatch, props) => {
-    await props.updateAgency(data);
+export class AgentModal extends Component {
+  saveAgent = async (data, dispatch, props) => {
+    await props.updateAgent(data);
     props.closeModal();
   };
 
@@ -17,25 +17,21 @@ export class AgencyContactModal extends Component {
     const {
       closeModal,
       handleSubmit,
-      submitting,
-      section,
-      header
+      submitting
     } = this.props;
 
     return (
       <div className="modal agency-crud" style={{ overflow: 'scroll', display: 'block' }}>
-        <form onSubmit={handleSubmit(this.saveAgency)}>
+        <form onSubmit={handleSubmit(this.saveAgent)}>
           <div className="card">
             <div className="card-header">
               <h4>
-                <i className="fa fa-address-book" /> {header}
+                <i className="fa fa-address-book" /> Edit Agent
               </h4>
             </div>
             <div className="card-block">
               <section className="agency-details">
-                <FormSection name={section} >
-                  <Contact testPrefix={section} />
-                </FormSection>
+                <Agent />
               </section>
             </div>
             <div className="card-footer">
@@ -64,12 +60,12 @@ export class AgencyContactModal extends Component {
 }
 
 const mapStateToProps = state => ({
-  initialValues: getEditModalInitialValues(state)
+
 });
 
 export default connect(mapStateToProps, {
   updateAgency
 })(reduxForm({
-  form: 'AgencyContactModal',
+  form: 'AgentModal',
   enableReinitialize: true
-})(AgencyContactModal));
+})(AgentModal));

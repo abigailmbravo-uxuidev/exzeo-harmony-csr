@@ -1,16 +1,16 @@
 import React from 'react';
 import { Field } from 'redux-form';
-import { Input, Phone, Select, validation } from '@exzeo/core-ui';
+import { Input, Select, validation } from '@exzeo/core-ui';
 
 const titleAnswers = [
   { answer: 'officer', label: 'Officer' }
 ];
 
-export const ContactFields = () => (
+export const Contact = ({ testPrefix }) => (
   <React.Fragment>
     <Field
       name="title"
-      dataTest="title"
+      dataTest={`${testPrefix}.title`}
       styleName="title"
       label="Title"
       component={Select}
@@ -18,26 +18,26 @@ export const ContactFields = () => (
       answers={titleAnswers} />
     <Field
       label="First Name"
-      styleName="contactFirstName flex-item"
-      name="contactFirstName"
-      dataTest="contactFirstName"
+      styleName="firstName"
+      name="firstName"
+      dataTest={`${testPrefix}.firstName`}
       component={Input}
       validate={validation.isRequired} />
     <Field
       label="Last Name"
-      styleName="contactLastName flex-item"
-      name="contactLastName"
-      dataTest="contactLastName"
+      styleName="lastName"
+      name="lastName"
+      dataTest={`${testPrefix}.lastName`}
       component={Input}
       validate={validation.isRequired} />
     <Field
-      label="Contact Email Address"
-      styleName="contactEmailAddress"
-      name="contactEmailAddress"
-      dataTest="contactEmailAddress"
+      label="Email Address"
+      styleName="emailAddress"
+      name="emailAddress"
+      dataTest={`${testPrefix}.emailAddress`}
       component={Input}
       validate={validation.isRequired} />
   </React.Fragment>
 );
 
-export default ContactFields;
+export default Contact;

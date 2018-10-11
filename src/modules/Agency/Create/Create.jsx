@@ -10,11 +10,10 @@ import ExistingAgentModal from '../components/ExistingAgentModal';
 import Address from '../components/Address';
 import territoryManagers from '../components/territoryManagers';
 import License from '../components/License';
+import Agent from '../components/FormGroup/Agent';
+import Contact from '../components/FormGroup/Contact';
 
-import Contact from './Contact';
 import Details from './Details';
-import Principal from './Principal';
-import AgentOfRecord from './AgentOfRecord';
 
 export class Create extends Component {
   state = {
@@ -135,16 +134,22 @@ export class Create extends Component {
                 </section>
                 <h3>Officer</h3>
                 <section className="agency-principal">
-                  <Principal />
+                  <FormSection name="principal" >
+                    <Contact testPrefix="principal" />
+                  </FormSection>
                 </section>
                 <h3>Contact</h3>
                 <section className="agency-contact">
-                  <Contact />
+                  <FormSection name="contact" >
+                    <Contact testPrefix="contact" />
+                  </FormSection>
                 </section>
                 <section className="agency-aor">
                   <h3>Agent Of Record <a onClick={this.handleToggleExistingAgentModal} className="btn btn-link btn-xs btn-alt-light no-padding"><i className="fa fa-user" />Use Existing Agent</a></h3>
                   <div className="agency-detail">
-                    <AgentOfRecord />
+                    <FormSection name="agentOfRecord" >
+                      <Agent />
+                    </FormSection>
                   </div>
                   <div className="agency-license">
                     <FieldArray
