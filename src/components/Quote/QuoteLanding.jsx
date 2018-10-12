@@ -6,7 +6,7 @@ import { Loader } from '@exzeo/core-ui';
 import { startWorkflow, batchCompleteTask } from '../../state/actions/cg.actions';
 import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
-import { getQuoteforCreate } from '../../state/selectors/quote.selectors';
+import { getQuoteForCreate } from '../../state/selectors/quote.selectors';
 
 export class QuoteLanding extends Component {
   async componentDidMount() {
@@ -35,7 +35,7 @@ export class QuoteLanding extends Component {
 const mapStateToProps = state => ({
   appState: state.appState,
   cgState: state.cg,
-  quoteData: getQuoteforCreate(state)
+  quoteData: getQuoteForCreate(state)
 });
 
 export default connect(mapStateToProps, {
