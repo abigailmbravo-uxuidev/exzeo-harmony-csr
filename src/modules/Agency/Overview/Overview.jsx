@@ -54,39 +54,39 @@ export class Overview extends React.Component {
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
-              <section>
-                <h3> Details
-                  <button
-                    className="btn btn-link btn-sm"
-                    onClick={this.onHandleToggleEditDetailsModal}>
-                    <i className="fa fa-pencil-square" />Edit
-                  </button>
-                </h3>
+              <h3>Details
+                <button
+                  className="btn btn-link btn-sm"
+                  onClick={this.onHandleToggleEditDetailsModal}>
+                  <i className="fa fa-pencil-square" />Edit
+                </button>
+              </h3>
+              <section className="agency-details">
                 <DetailView agency={agency} />
               </section>
               <section>
                 <ContactView agency={agency} emailType="CSR" />
               </section>
-              <section>
-                <h3> Address
-                  <button
-                    className="btn btn-link btn-sm"
-                    onClick={this.onHandleToggleEditAddressModal}>
-                    <i className="fa fa-pencil-square" />Edit
-                  </button>
-                </h3>
+              <h3>Address
+                <button
+                  className="btn btn-link btn-sm"
+                  onClick={this.onHandleToggleEditAddressModal}>
+                  <i className="fa fa-pencil-square" />Edit
+                </button>
+              </h3>
+              <section className="agency-address">
                 <AddressView agency={agency} territoryManagers={territoryManagers} />
               </section>
-              <section>
-                <h4>Officer</h4>
+              <h4>Officer</h4>
+              <section className="agency-principal">
                 <ContactCard contact={agency.principal} handleClick={this.onHandleToggleEditPrincipalModal} />
               </section>
-              <section>
-                <h4>Contact</h4>
+              <h4>Contact</h4>
+              <section className="agency-contact">
                 <ContactCard contact={agency.contact} handleClick={this.onHandleToggleEditContactModal} />
               </section>
-              <section>
-                <h4>Agent Of Record</h4>
+              <h4>Agent Of Record</h4>
+              <section name="agentOfRecord">
                 {agentOfRecord && agentOfRecord.agentCode && <AgentCard agent={agentOfRecord} handleSecondaryClick={x => x} handlePrimaryClick={this.onHandleToggleEditAgentModal} />}
               </section>
             </div>
