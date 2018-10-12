@@ -294,8 +294,8 @@
                   .address,
                   .address1,
                   .address2,
-                  .county,
-                  .territoryManagerId,
+                  .city-state-zip,
+                  .county-territory-manager,
                   h3,
                   h4 {
                     grid-column: span 12;
@@ -331,7 +331,8 @@
                     grid-column: span 3;
                   }
 
-                  .city-state-zip {
+                  .city-state-zip,
+                  .county-territory-manager {
                     display: flex;
 
                     > div {
@@ -341,10 +342,19 @@
                         min-width: 4rem;
                       }
 
+                      &.territoryManagerId {
+                        min-width: 9rem;
+                      }
+
                       &:last-child {
-                        padding-right: 0;
+                        margin-right: 0;
                       }
                     }
+                  }
+
+                  .county,
+                  .territoryManagerId {
+                    grid-column: span 6;
                   }
                 }
 
@@ -1254,8 +1264,6 @@
 
             .address1,
             .address2,
-            .county,
-            .territoryManagerId,
             h3,
             h4 {
               grid-column: span 12;
@@ -1291,7 +1299,8 @@
               grid-column: span 3;
             }
 
-            .city-state-zip {
+            .city-state-zip,
+            .county-territory-manager {
               display: flex;
 
               > div {
@@ -1305,6 +1314,11 @@
                   padding-right: 0;
                 }
               }
+            }
+
+            .county,
+            .territoryManagerId {
+              grid-column: span 6;
             }
           }
 

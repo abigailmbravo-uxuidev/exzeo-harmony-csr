@@ -24,10 +24,6 @@ const AddressView = ({ agency, territoryManagers }) => {
             {agency.physicalAddress.zip}
           </div>
         </div>
-        <div className="county flex-col">
-          <label>County</label>
-          {agency.physicalAddress.county}
-        </div>
       </div>
       <div className="mailing-address">
         <h4>Mailing Address</h4>
@@ -50,9 +46,15 @@ const AddressView = ({ agency, territoryManagers }) => {
             {agency.mailingAddress.zip}
           </div>
         </div>
-        <div className="territoryManagerId flex-col">
-          <label>Territory Manager</label>
-          <div>{territoryManagers.filter(t => t._id === agency.territoryManagerId)[0].name}</div>
+        <div className="county-territory-manager">
+          <div className="county flex-col">
+            <label>County</label>
+            {agency.physicalAddress.county}
+          </div>
+          <div className="territoryManagerId flex-col">
+            <label>Territory Manager</label>
+            <div>{territoryManagers.filter(t => t._id === agency.territoryManagerId)[0].name}</div>
+          </div>
         </div>
       </div>
     </React.Fragment>

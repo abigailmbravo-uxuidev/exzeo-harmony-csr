@@ -103,7 +103,6 @@ export class Create extends Component {
                       <Address
                         sameAsMailingValue={sameAsMailingValue}
                         changeField={change}
-                        showCounty
                         mailingAddress />
                     </FormSection>
                   </div>
@@ -119,7 +118,7 @@ export class Create extends Component {
                       <label htmlFor="sameAsMailing">Same as Mailing Address</label>
                     </h4>
                     <FormSection name="physicalAddress">
-                      <Address sectionDisabled={sameAsMailingValue} />
+                      <Address showCounty sectionDisabled={sameAsMailingValue} />
                     </FormSection>
                     <Field
                       label="Terretory Managers"
