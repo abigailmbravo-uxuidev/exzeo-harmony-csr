@@ -179,16 +179,11 @@ const setPropertyToggle = (props) => {
 export class MailingAddressBilling extends Component {
   componentDidMount() {
     const {
-      setAppStateAction, getQuoteAction, getBillingOptionsAction,
-      appState, match: { params: { quoteId } }
+      getQuoteAction, getBillingOptionsAction,
+      match: { params: { quoteId } }
     } = this.props;
-    setAppStateAction(
-      MODEL_NAME, appState.instanceId,
-      {
-        ...appState.data,
-        submitting: true
-      }
-    );
+    this.setPageLoader(true);
+
 
     getQuoteAction(quoteId, 'mailing')
       .then((quoteData) => {
@@ -207,20 +202,14 @@ export class MailingAddressBilling extends Component {
 
           getBillingOptionsAction(paymentOptions);
         }
-        setAppStateAction(
-          MODEL_NAME, appState.instanceId,
-          {
-            ...appState.data,
-            submitting: false
-          }
-        );
+        this.setPageLoader(false);
       });
   }
 
   setPageLoader = (isSubmitting) => {
-    const { actions, appState, match: { params: { workflowId } } } = this.props;
-    actions.appStateActions.setAppState(
-      MODEL_NAME, workflowId,
+    const { setAppStateAction, appState } = this.props;
+    setAppStateAction(
+      MODEL_NAME, '',
       {
         ...appState.data,
         selectedLink: 'mailing',
