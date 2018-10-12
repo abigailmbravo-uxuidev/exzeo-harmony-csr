@@ -166,11 +166,11 @@ export function addAgent(agentData) {
  * @param agentData
  * @returns {Function}
  */
-export function updateAgent(agentData, agency) {
+export function updateAgent(agentData, agencyCode) {
   return async (dispatch) => {
     try {
       await saveAgent(agentData);
-      dispatch(getAgentsByAgencyCode(agency.agencyCode));
+      dispatch(getAgentsByAgencyCode(agencyCode));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }

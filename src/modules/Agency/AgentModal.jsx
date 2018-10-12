@@ -8,7 +8,7 @@ import Agent from './components/FormGroup/Agent';
 
 export class AgentModal extends Component {
   saveAgent = async (data, dispatch, props) => {
-    await props.updateAgent(data);
+    await props.updateAgent(data, props.agencyCode);
     props.closeModal();
   };
 

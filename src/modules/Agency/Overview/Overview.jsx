@@ -101,7 +101,7 @@ export class Overview extends React.Component {
           <AgencyContactModal header="Edit Officer" section="principal" initialValues={agency.principal} closeModal={this.onHandleToggleEditPrincipalModal} />
         }
         {showEditAgentModal &&
-        <AgentModal initialValues={agentOfRecord} closeModal={this.onHandleToggleEditAgentModal} />
+        <AgentModal agencyCode={agency.agencyCode} initialValues={agentOfRecord} closeModal={this.onHandleToggleEditAgentModal} />
         }
       </div>
     );
