@@ -56,13 +56,12 @@ export class AgencyModal extends Component {
     } = this.props;
 
     return (
-      <div className="modal agency-crud" style={{ overflow: 'scroll', display: 'block' }}>
+      <div className="modal agency-crud">
         <form onSubmit={handleSubmit(this.saveAgency)}>
           <div className="card">
             <div className="card-header">
               <h4>
-                <i className="fa fa-address-book" />
-                Edit Agency
+                <i className="fa fa-address-book" /> Edit Agency
               </h4>
             </div>
             <div className="card-block">
@@ -71,7 +70,7 @@ export class AgencyModal extends Component {
                   <h4>Mailing Address</h4>
                   <Field
                     label="Address 1"
-                    styleName="mailingAddress1"
+                    styleName="address1"
                     name="mailingAddress.address1"
                     dataTest="mailingAddress.address1"
                     component={Input}
@@ -79,55 +78,50 @@ export class AgencyModal extends Component {
                     normalize={this.resetSameAsMailing} />
                   <Field
                     label="Address 2"
-                    styleName="mailingAddress2"
+                    styleName="address2"
                     name="mailingAddress.address2"
                     dataTest="mailingAddress.address2"
                     component={Input}
                     normalize={this.resetSameAsMailing} />
-                  <div className="flex-form">
-                    <Field
-                      label="City"
-                      styleName="mailingCity"
-                      name="mailingAddress.city"
-                      dataTest="mailingAddress.city"
-                      component={Input}
-                      validate={validation.isRequired}
-                      normalize={this.resetSameAsMailing} />
-                    <Field
-                      label="State"
-                      styleName="mailingState"
-                      name="mailingAddress.state"
-                      dataTest="mailingAddress.state"
-                      component={Input}
-                      validate={validation.isRequired}
-                      normalize={this.resetSameAsMailing} />
-                    <Field
-                      label="Zip Code"
-                      styleName="mailingZip"
-                      name="mailingAddress.zip"
-                      dataTest="mailingAddress.zip"
-                      component={Input}
-                      validate={[validation.isRequired, validation.isZipCode]}
-                      normalize={this.resetSameAsMailing} />
-                  </div>
+                  <Field
+                    label="City"
+                    styleName="city"
+                    name="mailingAddress.city"
+                    dataTest="mailingAddress.city"
+                    component={Input}
+                    validate={validation.isRequired}
+                    normalize={this.resetSameAsMailing} />
+                  <Field
+                    label="State"
+                    styleName="state"
+                    name="mailingAddress.state"
+                    dataTest="mailingAddress.state"
+                    component={Input}
+                    validate={validation.isRequired}
+                    normalize={this.resetSameAsMailing} />
+                  <Field
+                    label="Zip Code"
+                    styleName="zip"
+                    name="mailingAddress.zip"
+                    dataTest="mailingAddress.zip"
+                    component={Input}
+                    validate={[validation.isRequired, validation.isZipCode]}
+                    normalize={this.resetSameAsMailing} />
                 </div>
                 <div className="agency-physical-address">
-                  <div className="flex-form">
-                    <h4>
-                  Physical Address
-                      <Field
-                        normalize={this.handleSameAsMailing}
-                        name="sameAsMailing"
-                        dataTest="sameAsMailing"
-                        id="sameAsMailing"
-                        component="input"
-                        type="checkbox" />
-                      <label htmlFor="sameAsMailing">Same as Mailing Address</label>
-                    </h4>
-                  </div>
+                  <h4>Physical Address
+                    <Field
+                      normalize={this.handleSameAsMailing}
+                      name="sameAsMailing"
+                      dataTest="sameAsMailing"
+                      id="sameAsMailing"
+                      component="input"
+                      type="checkbox" />
+                    <label htmlFor="sameAsMailing">Same as Mailing Address</label>
+                  </h4>
                   <Field
                     label="Address 1"
-                    styleName="physicalAddress1"
+                    styleName="address1"
                     name="physicalAddress.address1"
                     dataTest="physicalAddress.address1"
                     component={Input}
@@ -135,37 +129,35 @@ export class AgencyModal extends Component {
                     disabled={sameAsMailingValue} />
                   <Field
                     label="Address 2"
-                    styleName="physicalAddress2"
+                    styleName="address2"
                     name="physicalAddress.address2"
                     dataTest="physicalAddress.address2"
                     component={Input}
                     disabled={sameAsMailingValue} />
-                  <div className="flex-form">
-                    <Field
-                      label="City"
-                      styleName="physicalCity"
-                      name="physicalAddress.city"
-                      dataTest="physicalAddress.city"
-                      component={Input}
-                      validate={validation.isRequired}
-                      disabled={sameAsMailingValue} />
-                    <Field
-                      label="State"
-                      styleName="physicalState"
-                      name="physicalAddress.state"
-                      dataTest="physicalAddress.state"
-                      component={Input}
-                      validate={validation.isRequired}
-                      disabled={sameAsMailingValue} />
-                    <Field
-                      label="Zip Code"
-                      styleName="physicalZip"
-                      name="physicalAddress.zip"
-                      dataTest="physicalAddress.zip"
-                      component={Input}
-                      validate={validation.isRequired}
-                      disabled={sameAsMailingValue} />
-                  </div>
+                  <Field
+                    label="City"
+                    styleName="city"
+                    name="physicalAddress.city"
+                    dataTest="physicalAddress.city"
+                    component={Input}
+                    validate={validation.isRequired}
+                    disabled={sameAsMailingValue} />
+                  <Field
+                    label="State"
+                    styleName="state"
+                    name="physicalAddress.state"
+                    dataTest="physicalAddress.state"
+                    component={Input}
+                    validate={validation.isRequired}
+                    disabled={sameAsMailingValue} />
+                  <Field
+                    label="Zip Code"
+                    styleName="zip"
+                    name="physicalAddress.zip"
+                    dataTest="physicalAddress.zip"
+                    component={Input}
+                    validate={validation.isRequired}
+                    disabled={sameAsMailingValue} />
                   <Field
                     label="County"
                     styleName="county"

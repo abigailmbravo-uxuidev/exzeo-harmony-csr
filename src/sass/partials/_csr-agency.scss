@@ -275,7 +275,9 @@
                 }
 
                 .agency-mailing-address,
-                .agency-physical-address {
+                .agency-physical-address,
+                .mailing-address,
+                .physical-address {
                   display: grid;
                   flex-grow: 0;
                   flex-shrink: 0;
@@ -289,6 +291,7 @@
                     margin: 0;
                   }
 
+                  .address,
                   .address1,
                   .address2,
                   .county,
@@ -326,6 +329,22 @@
 
                   .zip {
                     grid-column: span 3;
+                  }
+
+                  .city-state-zip {
+                    display: flex;
+
+                    > div {
+                      margin-right: $padding*2;
+
+                      &.zip {
+                        min-width: 4rem;
+                      }
+
+                      &:last-child {
+                        padding-right: 0;
+                      }
+                    }
                   }
                 }
 
@@ -1152,58 +1171,151 @@
   }
 
   &.agency-crud {
-    .card {
-      width: 80%;
+    form {
+      width: 100%;
 
-      .agency-details {
-        display: grid;
-        margin-bottom: $padding*2;
-        padding-bottom: $padding*4;
-        grid-template-columns: repeat(12, [col-start] 1fr);
-        grid-gap: $padding*2;
+      .card {
+        width: 80%;
 
-        .agencyCode {
-          grid-column: span 2;
+        .agency-details {
+          display: grid;
+          margin-bottom: $padding*2;
+          padding-bottom: $padding*4;
+          grid-template-columns: repeat(12, [col-start] 1fr);
+          grid-gap: $padding*2;
+
+          .agencyCode {
+            grid-column: span 2;
+          }
+
+          .agencyName {
+            grid-column: span 5;
+          }
+
+          .entityName {
+            grid-column: span 5;
+          }
+
+          .status {
+            grid-column: span 2;
+          }
+
+          .tpaid {
+            grid-column: span 2;
+          }
+
+          .okToPay-wrapper {
+            grid-column: span 2;
+          }
+
+          .webAddress {
+            grid-column: span 6;
+          }
+
+          .taxId {
+            grid-column: span 2;
+          }
+
+          .taxClassification {
+            grid-column: span 2;
+          }
+
+          .eoExpirationDate {
+            grid-column: span 2;
+          }
+
+          .branchName {
+            grid-column: span 6;
+          }
         }
 
-        .agencyName {
-          grid-column: span 5;
-        }
+        .agency-address {
+          display: flex;
+          flex-wrap: wrap;
+          width: 100%;
 
-        .entityName {
-          grid-column: span 5;
-        }
+          > h4 {
+            width: 100%;
+          }
 
-        .status {
-          grid-column: span 2;
-        }
+          .agency-mailing-address,
+          .agency-physical-address {
+            display: grid;
+            flex-grow: 0;
+            flex-shrink: 0;
+            width: calc(50% - .5rem);
+            grid-template-columns: repeat(12, [col-start] 1fr);
+            grid-gap: $padding*2;
+            grid-auto-rows: min-content;
 
-        .tpaid {
-          grid-column: span 2;
-        }
+            .form-group {
+              margin: 0;
+            }
 
-        .okToPay-wrapper {
-          grid-column: span 2;
-        }
+            .address,
+            .address1,
+            .address2,
+            .county,
+            .territoryManagerId,
+            h3,
+            h4 {
+              grid-column: span 12;
+            }
 
-        .webAddress {
-          grid-column: span 6;
-        }
+            h4 {
+              margin: 0;
+              font-weight: $font-weight-normal;
 
-        .taxId {
-          grid-column: span 2;
-        }
+              input[type="checkbox"] {
+                margin-right: $padding;
+              }
 
-        .taxClassification {
-          grid-column: span 2;
-        }
+              label {
+                margin-bottom: 0;
+              }
+            }
 
-        .eoExpirationDate {
-          grid-column: span 2;
-        }
+            .taxClassification,
+            .taxId {
+              grid-column: span 6;
+            }
 
-        .branchName {
-          grid-column: span 6;
+            .city {
+              grid-column: span 7;
+            }
+
+            .state {
+              grid-column: span 2;
+            }
+
+            .zip {
+              grid-column: span 3;
+            }
+
+            .city-state-zip {
+              display: flex;
+
+              > div {
+                margin-right: $padding*2;
+
+                &.zip {
+                  min-width: 4rem;
+                }
+
+                &:last-child {
+                  padding-right: 0;
+                }
+              }
+            }
+          }
+
+          .agency-mailing-address {
+            margin-right: $padding;
+          }
+
+          .agency-physical-address {
+            margin-left: $padding;
+          }
         }
       }
     }
