@@ -59,7 +59,7 @@ export class SideNav extends React.Component {
               className="btn btn-primary btn-block btn-small"
               onClick={this.handleShowBranchModal}
               type="button">
-                <i className="fa fa-plus" />Branch
+              <i className="fa fa-plus" />Branch
             </button>
           </li>
           {csrLinks(agencyCode).map((agentLink, index) => (
@@ -70,7 +70,7 @@ export class SideNav extends React.Component {
             </li>))
       }
         </ul>
-        {this.state.showBranchModal && <AddBranchModal closeModal={this.handleShowBranchModal} />}
+        {this.state.showBranchModal && <AddBranchModal agencyCode={agencyCode} closeModal={this.handleShowBranchModal} />}
       </nav>);
   }
 }

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { Select, Radio, Input, validation } from '@exzeo/core-ui';
 
-import { updateAgency } from '../../state/actions/agencyActions';
+import { createBranch } from '../../state/actions/agencyActions';
 import { getEditModalInitialValues } from '../../state/selectors/agency.selector';
 
 const statusAnswers = [
@@ -19,6 +19,7 @@ const mailAnswers = [
 
 export class AddBranch extends Component {
   addBranch = async (data, dispatch, props) => {
+    await props.createBranch(data, props.agencyCode);
     props.closeModal();
   };
 
@@ -70,18 +71,18 @@ export class AddBranch extends Component {
                 </div>
                 <div className="agemcny-mail">
                   <Field
-                    name="mailChecks"
-                    dataTest="mailChecks"
-                    styleName="mailChecks flex-item"
+                    name="mailCommissionChecksToBranch"
+                    dataTest="mailCommissionChecksToBranch"
+                    styleName="mailCommissionChecksToBranch flex-item"
                     label="Mail Commision Checks to this Branch"
                     component={Radio}
                     validate={validation.isRequired}
                     segmented
                     answers={mailAnswers} />
                   <Field
-                    name="mailDocs"
-                    dataTest="mailDocs"
-                    styleName="mailDocs flex-item"
+                    name="mailPolicyDocsToBranch"
+                    dataTest="mailPolicyDocsToBranch"
+                    styleName="mailPolicyDocsToBranch flex-item"
                     label="Mail Policy Docs to this Branch"
                     component={Radio}
                     validate={validation.isRequired}
@@ -120,7 +121,7 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  updateAgency
+  createBranch
 })(reduxForm({
   form: 'AddBranch',
   enableReinitialize: true
