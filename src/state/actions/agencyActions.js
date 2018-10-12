@@ -286,7 +286,7 @@ export async function saveAgent(agentData) {
     const config = {
       service: 'agency',
       method: 'PUT',
-      path: `v1/agent/${agentData.agentCode}`,
+      path: `agents/${agentData.agentCode}`,
       data: agentData
     };
     const response = await serviceRunner.callService(config);

@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 
-import { updateAgency } from '../../state/actions/agencyActions';
-import { getEditModalInitialValues } from '../../state/selectors/agency.selector';
+import { updateAgent } from '../../state/actions/agencyActions';
 
 import Agent from './components/FormGroup/Agent';
 
@@ -64,7 +63,7 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  updateAgency
+  updateAgent
 })(reduxForm({
   form: 'AgentModal',
   enableReinitialize: true
