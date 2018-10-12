@@ -158,10 +158,7 @@ export class Create extends Component {
                       licenseValue={licenseValue} />
                   </div>
                 </section>
-                <div className="basic-footer btn-footer">
-                  <Button dataTest="resetButton" baseClass="secondary" onClick={this.handleResetForm}>Cancel</Button>
-                  <Button dataTest="submitButton" baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
-                </div>
+
                 {this.state.showAddExistingAgentModal &&
                 <ExistingAgentModal
                   listOfAgents={orphans}
@@ -172,7 +169,12 @@ export class Create extends Component {
             </div>
           </div>
         </div>
+        <div className="basic-footer btn-footer">
+          <Button dataTest="resetButton" baseClass="secondary" onClick={this.handleResetForm}>Cancel</Button>
+          <Button dataTest="submitButton" baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
+        </div>
       </div>
+
     );
   }
 }
