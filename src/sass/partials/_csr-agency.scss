@@ -1151,6 +1151,64 @@
     }
   }
 
+  &.agency-crud {
+    .card {
+      width: 80%;
+
+      .agency-details {
+        display: grid;
+        margin-bottom: $padding*2;
+        padding-bottom: $padding*4;
+        grid-template-columns: repeat(12, [col-start] 1fr);
+        grid-gap: $padding*2;
+
+        .agencyCode {
+          grid-column: span 2;
+        }
+
+        .agencyName {
+          grid-column: span 5;
+        }
+
+        .entityName {
+          grid-column: span 5;
+        }
+
+        .status {
+          grid-column: span 2;
+        }
+
+        .tpaid {
+          grid-column: span 2;
+        }
+
+        .okToPay-wrapper {
+          grid-column: span 2;
+        }
+
+        .webAddress {
+          grid-column: span 6;
+        }
+
+        .taxId {
+          grid-column: span 2;
+        }
+
+        .taxClassification {
+          grid-column: span 2;
+        }
+
+        .eoExpirationDate {
+          grid-column: span 2;
+        }
+
+        .branchName {
+          grid-column: span 6;
+        }
+      }
+    }
+  }
+
   &.agent-crud {
     .card {
       display: flex;
