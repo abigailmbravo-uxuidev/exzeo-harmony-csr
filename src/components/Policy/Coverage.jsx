@@ -5,8 +5,9 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import _get from 'lodash/get';
 import _find from 'lodash/find';
 import moment from 'moment';
-import Loader from '@exzeo/core-ui/lib/Loader';
-import { getUIQuestions } from '../../state/actions/questionsActions';
+import { Loader } from '@exzeo/core-ui';
+
+import { getUIQuestions } from '../../state/actions/questions.actions';
 import normalizeNumbers from '../Form/normalizeNumbers';
 import Footer from '../Common/Footer';
 

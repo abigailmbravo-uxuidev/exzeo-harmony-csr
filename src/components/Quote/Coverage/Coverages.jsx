@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Select, SelectInteger, Currency, Radio } from '@exzeo/core-ui/lib/Input';
-import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
+import { Select, SelectInteger, Currency, Radio, validation } from '@exzeo/core-ui';
+
 import { getAnswers, getQuestionName } from '../../../utilities/forms';
 
 const baseYesNoAnswers = [
@@ -44,8 +44,7 @@ const Coverages = ({
           label={`${getQuestionName('dwellingAmount', questions)} ($ ${String(dwellingMinValue).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} - $ ${String(dwellingMaxValue).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')})`}
           component={Currency}
           validate={[validation.isRequired, validation.isDwellingRange]}
-          normalize={normalizeDwellingAmount}
-        />
+          normalize={normalizeDwellingAmount} />
       </div>
       <div className="flex-parent coverages-row-2">
         <Field
@@ -55,8 +54,7 @@ const Coverages = ({
           component={Currency}
           styleName="flex-child"
           validate={validation.isRequired}
-          disabled={otherStructuresValue !== 'other'}
-        />
+          disabled={otherStructuresValue !== 'other'} />
         <Field
           dataTest="otherStructures"
           name="otherStructures"
@@ -65,8 +63,7 @@ const Coverages = ({
           styleName="flex-child"
           answers={getAnswers('otherStructuresAmount', questions)}
           validate={validation.isRequired}
-          normalize={(v, pv, av) => normalizeDwellingDependencies(v, pv, av, 'otherStructuresAmount')}
-        />
+          normalize={(v, pv, av) => normalizeDwellingDependencies(v, pv, av, 'otherStructuresAmount')} />
       </div>
       <div className="flex-parent coverages-row-3">
         <Field
@@ -76,8 +73,7 @@ const Coverages = ({
           label={getQuestionName('personalPropertyAmount', questions)}
           component={Currency}
           validate={validation.isRequired}
-          disabled={personalPropertyValue !== 'other'}
-        />
+          disabled={personalPropertyValue !== 'other'} />
         <Field
           dataTest="personalProperty"
           styleName="flex-child"
@@ -86,8 +82,7 @@ const Coverages = ({
           component={Select}
           answers={getAnswers('personalPropertyAmount', questions)}
           validate={validation.isRequired}
-          normalize={(v, pv, av) => normalizePersonalPropertyPercentage(v, pv, av, 'personalPropertyAmount')}
-        />
+          normalize={(v, pv, av) => normalizePersonalPropertyPercentage(v, pv, av, 'personalPropertyAmount')} />
       </div>
       <div className="flex-parent coverages-row-4">
         <Field
@@ -97,8 +92,7 @@ const Coverages = ({
           styleName="flex-child"
           component={Currency}
           validate={validation.isRequired}
-          disabled
-        />
+          disabled />
       </div>
       <div className="flex-parent coverages-row-5">
         <Field
@@ -108,8 +102,7 @@ const Coverages = ({
           label={getQuestionName('personalLiability', questions)}
           component={SelectInteger}
           answers={getAnswers('personalLiability', questions)}
-          validate={validation.isRequired}
-        />
+          validate={validation.isRequired} />
       </div>
       <div className="flex-parent coverages-row-6">
         <Field
@@ -119,8 +112,7 @@ const Coverages = ({
           styleName="flex-child"
           component={Currency}
           validate={validation.isRequired}
-          disabled
-        />
+          disabled />
       </div>
     </div>
     <div className="other-coverages flex-child">
@@ -133,8 +125,7 @@ const Coverages = ({
           label="Mold Property"
           component={SelectInteger}
           answers={getAnswers('moldProperty', questions)}
-          validate={validation.isRequired}
-        />
+          validate={validation.isRequired} />
       </div>
       <div className="flex-parent other-coverages-row-2">
         <Field
@@ -144,8 +135,7 @@ const Coverages = ({
           label="Mold Liability Limit"
           component={SelectInteger}
           answers={getAnswers('moldLiability', questions)}
-          validate={validation.isRequired}
-        />
+          validate={validation.isRequired} />
       </div>
       <div className="flex-parent other-coverages-row-3">
         <Field
@@ -156,8 +146,7 @@ const Coverages = ({
           component={Radio}
           answers={baseYesNoAnswers}
           segmented
-          disabled={parseInt(personalPropertyAmountValue, 10) === 0}
-        />
+          disabled={parseInt(personalPropertyAmountValue, 10) === 0} />
       </div>
       <div className="flex-parent other-coverages-row-4">
         <Field
@@ -167,8 +156,7 @@ const Coverages = ({
           label="Ordinance or Law Coverage Limit"
           component={SelectInteger}
           answers={getAnswers('ordinanceOrLaw', questions)}
-          validate={validation.isRequired}
-        />
+          validate={validation.isRequired} />
       </div>
     </div>
     <div className="deductibles flex-child">
@@ -181,8 +169,7 @@ const Coverages = ({
           label="All Other Perils"
           component={SelectInteger}
           answers={getAnswers('allOtherPerils', questions)}
-          validate={validation.isRequired}
-        />
+          validate={validation.isRequired} />
       </div>
       <div className="flex-parent deductibles-row-1">
         <Field
@@ -194,8 +181,7 @@ const Coverages = ({
           answers={getAnswers('hurricane', questions)}
           validate={validation.isRequired}
           normalize={(v, pv, av) => normalizeDwellingDependencies(v, pv, av, 'calculatedHurricane')}
-          showInitial
-        />
+          showInitial />
       </div>
       <div className="flex-parent deductibles-row-2">
         <Field
@@ -204,8 +190,7 @@ const Coverages = ({
           label="Calculated Hurricane"
           component={Currency}
           styleName="flex-child"
-          disabled
-        />
+          disabled />
       </div>
       <div className="flex-parent deductibles-row-4">
         <Field
@@ -215,19 +200,17 @@ const Coverages = ({
           styleName="flex-child"
           component={Select}
           answers={sinkholePerilCoverageAnswers(questions)}
-          normalize={normalizeSinkholeAmount}
-        />
+          normalize={normalizeSinkholeAmount} />
       </div>
-      { String(sinkholePerilCoverageValue) === 'true' && <div className="flex-parent">
+      {String(sinkholePerilCoverageValue) === 'true' && <div className="flex-parent">
         <Field
           dataTest="calculatedSinkhole"
           name="calculatedSinkhole"
           label="Calculated Sinkhole"
           component={Currency}
           styleName="flex-child"
-          disabled
-        />
-        </div>
+          disabled />
+                                                        </div>
       }
     </div>
     <div className="discounts flex-child">
@@ -240,8 +223,7 @@ const Coverages = ({
           label="Burglar Alarm"
           component={Radio}
           answers={baseYesNoAnswers}
-          segmented
-        />
+          segmented />
       </div>
       <div className="flex-parent discounts-row-2">
         <Field
@@ -251,8 +233,7 @@ const Coverages = ({
           label="Fire Alarm"
           component={Radio}
           answers={baseYesNoAnswers}
-          segmented
-        />
+          segmented />
       </div>
       <div className="flex-parent discounts-row-3">
         <Field
@@ -262,8 +243,7 @@ const Coverages = ({
           label="Sprinkler"
           component={Radio}
           segmented
-          answers={getAnswers('sprinkler', questions)}
-        />
+          answers={getAnswers('sprinkler', questions)} />
       </div>
     </div>
   </section>

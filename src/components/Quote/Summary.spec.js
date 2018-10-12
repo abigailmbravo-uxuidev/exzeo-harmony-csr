@@ -309,6 +309,9 @@ describe('Testing Summary component', () => {
   it('should test connected app', () => {
     const initialState = {
       service: {},
+      quoteState: {
+        quote: quoteData
+      },
       actions: { serviceActions: {} },
       cg: {
         bb: {
@@ -349,13 +352,17 @@ describe('Testing Summary component', () => {
             modelInstanceId: '123',
             model: {
               variables: [
-                { name: 'retrieveQuote',
+                {
+                  name: 'retrieveQuote',
                   value: {
                     result: quoteData
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: quoteData
-                    } }]
+                  }
+                }, {
+                  name: 'getQuoteBeforePageLoop',
+                  value: {
+                    result: quoteData
+                  }
+                }]
             },
             uiQuestions: []
           }
@@ -374,14 +381,12 @@ describe('Testing Summary component', () => {
       match: { params: {} },
       fieldQuestions: [],
       dispatch: store.dispatch,
-      actions: {
-        appStateActions: {
-          setAppState() { }
-        },
-        cgActions: {
-          batchCompleteTask() { return Promise.resolve(() => {}); }
-        }
-      },
+      getQuoteAction() {},
+      getAgentsAction() {},
+      getLatestQuoteAction() {},
+      setAppErrorAction() {},
+      setAppStateAction() { },
+      startWorkflowAction() { return Promise.resolve(() => {}); },
       appState: {
         data: {
           submitting: false

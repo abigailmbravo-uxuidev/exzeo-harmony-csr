@@ -1,81 +1,27 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import Loader from '@exzeo/core-ui/lib/Loader';
-import { SEARCH_TYPES } from '../../constants/search';
-import { startWorkflow, batchCompleteTask } from '../../state/actions/cgActions';
-import { setAppState } from '../../state/actions/appStateActions';
-import { setAppError } from '../../state/actions/errorActions';
-import { getQuoteDataFromCgState } from '../../state/selectors/quote.selectors';
+import { Loader } from '@exzeo/core-ui';
+
+import { startWorkflow, batchCompleteTask } from '../../state/actions/cg.actions';
+import { setAppState } from '../../state/actions/appState.actions';
+import { setAppError } from '../../state/actions/error.actions';
+import { getQuoteforCreate } from '../../state/selectors/quote.selectors';
 
 export class QuoteLanding extends Component {
-  constructor(props) {
-    super(props);
-
-    this.workflowId = '';
-  }
-
   async componentDidMount() {
-    const { match: { params }, startWorkflow, setAppState, appState, batchCompleteTask, newQuote } = this.props;
+    const {
+      match: { params }, startWorkflow, appState, setAppState
+    } = this.props;
 
     try {
-      const result = await startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` });
-      const steps = [];
+      const { stateCode, propertyId } = params;
 
-      if (newQuote) {
-        steps.push({
-          name: 'search',
-          data: {
-            searchType: SEARCH_TYPES.newQuote,
-            address: params.stateCode
-          }
-        });
-        steps.push({
-          name: 'chooseAddress',
-          data: {
-            igdId: params.propertyId,
-            stateCode: params.stateCode
-          }
-        });
-      } else {
-        steps.push({
-          name: 'search',
-          data: {
-            searchType: SEARCH_TYPES.quote,
-            // TODO: properties needed to kick off model. Looking into removing these.
-            address: '',
-            firstName: '',
-            lastName: '',
-            policyNumber: '',
-            quoteNumber: '',
-            quoteState: '',
-          }
-        });
-        steps.push({
-          name: 'chooseQuote',
-          data: {
-            quoteId: params.quoteId
-          }
-        });
-      }
-
-      const startResult = result.payload ? result.payload[0].workflowData.csrQuote.data : {};
-      // set property to pass to redirect link
-      this.workflowId = startResult.modelInstanceId;
-
-      setAppState('csrQuote', startResult.modelInstanceId, {
-        ...appState.data,
-        submitting: true
-      });
-
-      await batchCompleteTask(startResult.modelName, startResult.modelInstanceId, steps);
-      setAppState(appState.modelName, startResult.modelInstanceId, {
-        ...appState.data,
-        selectedLink: 'customerData'
-      });
-
+      await startWorkflow('csrCreateQuote', { stateCode, igdId: propertyId });
     } catch (error) {
       setAppError(error);
+    } finally {
+      setAppState('csrCreateQuote', '', { ...appState.data, submitting: false });
     }
   }
 
@@ -83,7 +29,7 @@ export class QuoteLanding extends Component {
     const { quoteData } = this.props;
     return (
       <React.Fragment>
-        {quoteData && quoteData._id ? <Redirect push to={`/quote/${quoteData._id}/coverage/${this.workflowId}`}/> : <Loader/>}
+        {quoteData && quoteData._id ? <Redirect replace to={`/quote/${quoteData._id}/coverage`} /> : <Loader />}
       </React.Fragment>
     );
   }
@@ -92,7 +38,7 @@ export class QuoteLanding extends Component {
 const mapStateToProps = state => ({
   appState: state.appState,
   cgState: state.cg,
-  quoteData: getQuoteDataFromCgState(state)
+  quoteData: getQuoteforCreate(state)
 });
 
 export default connect(mapStateToProps, {

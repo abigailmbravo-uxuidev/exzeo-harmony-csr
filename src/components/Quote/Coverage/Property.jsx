@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Integer, Select, SelectInteger, Numbers } from '@exzeo/core-ui/lib/Input';
-import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
-import PropertyAddress from './PropertyAddress';
+import { Integer, Select, SelectInteger, Numbers, validation } from '@exzeo/core-ui';
+
 import { getAnswers, getQuestionName } from '../../../utilities/forms';
+import PropertyAddress from './PropertyAddress';
 
 const Property = ({
   sectionId, sectionClass, header, questions
 }) => (
   <section id={sectionId} className={sectionClass}>
     <PropertyAddress
-      name="propertyAdress"
+      name="propertyAddress"
       sectionId="property-risk"
       header="Property Address"
       className="property-address flex-child property-risk"

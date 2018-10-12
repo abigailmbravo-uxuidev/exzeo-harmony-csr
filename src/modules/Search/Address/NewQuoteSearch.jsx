@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Input } from '@exzeo/core-ui/lib/Input';
-import Button from '@exzeo/core-ui/lib/Button';
-import { isValidChar, isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
+import { Input, Button, validation } from '@exzeo/core-ui';
+
+const { isValidChar, isRequired } = validation;
 
 const NewQuoteSearch = ({ submitting }) => (
   <div className="search-inputs fade-in">

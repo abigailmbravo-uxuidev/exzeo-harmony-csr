@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Field } from 'redux-form';
-import { Input, Select, SelectTypeAhead } from '@exzeo/core-ui/lib/Input';
-import { normalizeDate, isAlphaNumeric, isValidChar, isNumberDashOnly, isValidDateFormat } from '@exzeo/core-ui/lib/InputLifecycle';
+import { Input, Select, SelectTypeAhead, Button, normalize, validation } from '@exzeo/core-ui';
+
 import { getAnswers } from '../../../utilities/forms';
 import { STANDARD_DATE_FORMAT } from '../../../constants/search';
-
 import Pagination from '../components/Pagination';
-import Button from '@exzeo/core-ui/lib/Button/index';
+
+const { isAlphaNumeric, isValidChar, isNumberDashOnly, isValidDateFormat } = validation;
 
 const isValidDate = isValidDateFormat(STANDARD_DATE_FORMAT);
 
@@ -52,8 +52,8 @@ const PolicySearch = ({
       <Field
         name="address"
         dataTest="address"
-        label="Property Address"
-        placeholder="Property Address Search"
+        label="Property Street Address"
+        placeholder="Property Street Address Search"
         component={Input}
         styleName="property-search"
         validate={isValidChar}
@@ -105,7 +105,7 @@ const PolicySearch = ({
             label="Effective Date"
             component={Input}
             placeholder={STANDARD_DATE_FORMAT}
-            normalize={normalizeDate}
+            normalize={normalize.date}
             validate={isValidDate}
             errorHint
           />

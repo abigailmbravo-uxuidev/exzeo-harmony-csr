@@ -5,24 +5,27 @@ import _ from 'lodash';
 import moment from 'moment';
 import momentTZ from 'moment-timezone';
 import { Prompt } from 'react-router-dom';
-import { batchActions } from 'redux-batched-actions';
 import { reduxForm, formValueSelector } from 'redux-form';
+
 import { getAnswers } from '../../../utilities/forms';
 import { setPercentageOfValue } from '../../../utilities/endorsementModel';
-import { getAgencies, getAgentsByAgency } from '../../../state/actions/serviceActions';
-import { batchCompleteTask, startWorkflow } from '../../../state/actions/cgActions';
-import { setAppState } from '../../../state/actions/appStateActions';
-import { setAppError } from '../../../state/actions/errorActions';
-import { getUIQuestions } from '../../../state/actions/questionsActions';
-import { getLatestQuote } from '../../../state/actions/quoteStateActions';
-import { checkQuoteState, getQuoteDataFromCgState } from '../../../state/selectors/quote.selectors';
+import { getAgencies, getAgentsByAgency, getZipcodeSettings } from '../../../state/actions/service.actions';
+import { batchCompleteTask, startWorkflow } from '../../../state/actions/cg.actions';
+import { setAppState } from '../../../state/actions/appState.actions';
+import { setAppError } from '../../../state/actions/error.actions';
+import { getUIQuestions } from '../../../state/actions/questions.actions';
+import { getQuote } from '../../../state/actions/quote.actions';
+import { checkQuoteState } from '../../../state/selectors/quote.selectors';
 import QuoteBaseConnect from '../../../containers/Quote';
 import Footer from '../../Common/Footer';
+
 import ProducedBy from './ProducedBy';
 import PolicyHolder from './PolicyHolder';
 import Property from './Property';
 import Coverages from './Coverages';
 import WindMitigation from './WindMitigation';
+
+const MODEL_NAME = 'csrCoverage';
 
 export const handleGetZipCodeSettings = (state) => {
   const taskData = (state.cg && state.appState && state.cg[state.appState.modelName]) ? state.cg[state.appState.modelName].data : null;
@@ -56,20 +59,20 @@ export const handleInitialize = (quoteData, questions) => {
 
   values.effectiveDate = moment(_.get(quoteData, 'effectiveDate')).utc().format('YYYY-MM-DD');
 
-  values.pH1email = _.get(quoteData, 'policyHolders[0].emailAddress');
-  values.pH1FirstName = _.get(quoteData, 'policyHolders[0].firstName');
-  values.pH1LastName = _.get(quoteData, 'policyHolders[0].lastName');
-  values.pH1phone = _.get(quoteData, 'policyHolders[0].primaryPhoneNumber') || '';
-  values.pH1phone2 = _.get(quoteData, 'policyHolders[0].secondaryPhoneNumber') || '';
+  values.pH1email = _.get(quoteData, 'policyHolders[0].emailAddress', '');
+  values.pH1FirstName = _.get(quoteData, 'policyHolders[0].firstName', '');
+  values.pH1LastName = _.get(quoteData, 'policyHolders[0].lastName', '');
+  values.pH1phone = _.get(quoteData, 'policyHolders[0].primaryPhoneNumber', '');
+  values.pH1phone2 = _.get(quoteData, 'policyHolders[0].secondaryPhoneNumber', '');
 
-  values.pH2email = _.get(quoteData, 'policyHolders[1].emailAddress');
-  values.pH2FirstName = _.get(quoteData, 'policyHolders[1].firstName');
-  values.pH2LastName = _.get(quoteData, 'policyHolders[1].lastName');
-  values.pH2phone = _.get(quoteData, 'policyHolders[1].primaryPhoneNumber') || '';
-  values.pH2phone2 = _.get(quoteData, 'policyHolders[1].secondaryPhoneNumber') || '';
+  values.pH2email = _.get(quoteData, 'policyHolders[1].emailAddress', '');
+  values.pH2FirstName = _.get(quoteData, 'policyHolders[1].firstName', '');
+  values.pH2LastName = _.get(quoteData, 'policyHolders[1].lastName', '');
+  values.pH2phone = _.get(quoteData, 'policyHolders[1].primaryPhoneNumber', '');
+  values.pH2phone2 = _.get(quoteData, 'policyHolders[1].secondaryPhoneNumber', '');
 
   values.address1 = _.get(quoteData, 'property.physicalAddress.address1');
-  values.address2 = _.get(quoteData, 'property.physicalAddress.address2');
+  values.address2 = _.get(quoteData, 'property.physicalAddress.address2', '');
   values.city = _.get(quoteData, 'property.physicalAddress.city');
   values.state = _.get(quoteData, 'property.physicalAddress.state');
   values.zip = _.get(quoteData, 'property.physicalAddress.zip');
@@ -143,11 +146,10 @@ export const handleInitialize = (quoteData, questions) => {
 
 const checkSentToDocusign = state => state === 'Application Sent DocuSign';
 
-export const handleFormSubmit = (data, dispatch, props) => {
-  const workflowId = props.match.params.workflowId;
+export const handleFormSubmit = async (data, dispatch, props) => {
   const submitData = data;
 
-  props.setAppState(props.appState.modelName, workflowId, {
+  props.setAppState(MODEL_NAME, '', {
     ...props.appState.data,
     submitting: true
   });
@@ -175,6 +177,8 @@ export const handleFormSubmit = (data, dispatch, props) => {
 
   if (submitData.sinkholePerilCoverage) {
     submitData.sinkhole = 10;
+  } else {
+    submitData.sinkhole = 0;
   }
 
   submitData.pH1phone = submitData.pH1phone.replace(/[^\d]/g, '');
@@ -189,71 +193,37 @@ export const handleFormSubmit = (data, dispatch, props) => {
     ? submitData.pH2phone2.replace(/[^\d]/g, '')
     : submitData.pH2phone2;
 
-  const steps = [
-    {
-      name: 'hasUserEnteredData',
-      data: {
-        answer: 'Yes'
-      }
-    }, {
-      name: 'askCustomerData',
-      data: submitData
-    }, {
-      name: 'askToCustomizeDefaultQuote',
-      data: {
-        shouldCustomizeQuote: 'Yes'
-      }
-    }, {
-      name: 'customizeDefaultQuote',
-      data: submitData
-    }
-
-  ];
-
-  props.batchCompleteTask(props.appState.modelName, workflowId, steps)
-    .then(() => {
-      props.getLatestQuote(true, props.quoteData._id);
-      // now update the workflow details so the recalculated rate shows
-      props.setAppState(
-        props.appState.modelName,
-        workflowId, { ...props.appState.data, submitting: false, selectedLink: 'customerData' }
-      );
+  try {
+    await props.startWorkflow(MODEL_NAME, {
+      quoteId: props.quoteData._id,
+      ...submitData
     });
-};
 
-let setAgents = false;
+    await props.getQuote(props.quoteData._id, 'coverage');
+  } catch (error) {
+    props.setAppError(error);
+  } finally {
+    props.setAppState(MODEL_NAME, '', { ...props.appState.data, submitting: false });
+  }
+};
 
 export class Coverage extends Component {
   componentDidMount() {
     const {
-      getUIQuestions, setAppState, batchCompleteTask, appState, match
+      getUIQuestions, match
     } = this.props;
     getUIQuestions('askToCustomizeDefaultQuoteCSR');
 
-    // this.props.startWorkflow('csrQuote', { dsUrl: `${process.env.REACT_APP_API_URL}/ds` }).then((result) => {
-    const steps = [
-      { name: 'hasUserEnteredData', data: { answer: 'No' } },
-      { name: 'moveTo', data: { key: 'customerData' } }
-    ];
 
-    setAppState('csrQuote', match.params.workflowId, {
-      ...appState.data,
-      submitting: true,
-      selectedLink: 'customerData'
+    this.props.getQuote(match.params.quoteId, 'coverage').then((quoteData) => {
+      this.props.setAppState(MODEL_NAME, '', { ...this.props.appState.data, submitting: false });
+
+      if (quoteData && quoteData.property) {
+        this.props.getAgencies(quoteData.companyCode, quoteData.state);
+        this.props.getAgentsByAgency(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
+        this.props.getZipcodeSettings(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property.physicalAddress.zip);
+      }
     });
-    batchCompleteTask(appState.modelName, match.params.workflowId, steps);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { quoteData, getAgencies, getAgentsByAgency } = nextProps;
-    if (!setAgents && quoteData && quoteData.companyCode && quoteData.state && quoteData.agencyCode) {
-      getAgencies(quoteData.companyCode, quoteData.state);
-      getAgentsByAgency(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
-      setAgents = true;
-    }
-    if (this.props.quoteData._id !== nextProps.quoteData._id) {
-      this.props.getLatestQuote(true, nextProps.quoteData._id);
-    }
   }
 
   setPHToggle = () => {
@@ -291,17 +261,15 @@ export class Coverage extends Component {
   };
 
   normalizePersonalPropertyPercentage = (value, previousValue, allValues, field) => {
-    if (Number.isNaN(value)) return;
-    const { change, initialValues } = this.props;
+    const numberValue = Number(value);
 
-    if (value === 0) {
-      change('personalPropertyReplacementCostCoverage', false);
-    } else {
-      change('personalPropertyReplacementCostCoverage', initialValues.personalPropertyReplacementCostCoverage || false);
-    }
-    const fieldValue = setPercentageOfValue(allValues.dwellingAmount, value);
+    const { change } = this.props;
+
+    if (numberValue === 0) change('personalPropertyReplacementCostCoverage', false);
+
+    const fieldValue = setPercentageOfValue(allValues.dwellingAmount, numberValue);
     change(field, Number.isNaN(fieldValue) ? '' : fieldValue);
-    return value;
+    return numberValue;
   };
 
   normalizeSinkholeAmount = (value, previousValue, allValues) => {
@@ -321,8 +289,8 @@ export class Coverage extends Component {
     const agency = _.find(this.props.agencies, a => String(a.agencyCode) === String(agencyCode));
     if (agency) {
       getAgentsByAgency(agency.companyCode, agency.state, agencyCode).then((response) => {
-        if (response.payload && response.payload[0].data.agents && response.payload[0].data.agents.length === 1) {
-          change('agentCode', response.payload[0].data.agents[0].agentCode);
+        if (response.data && response.data.agents && response.data.agents.length === 1) {
+          change('agentCode', response.data.agents[0].agentCode);
         } else {
           change('agentCode', '');
         }
@@ -332,31 +300,29 @@ export class Coverage extends Component {
   };
 
   clearSecondaryPolicyholder = (value) => {
-    const { dispatch, quoteData, change } = this.props;
+    const { quoteData, change } = this.props;
     if (!value) {
       const pH2email = _.get(quoteData, 'policyHolders[1].emailAddress');
       const pH2FirstName = _.get(quoteData, 'policyHolders[1].firstName');
       const pH2LastName = _.get(quoteData, 'policyHolders[1].lastName');
       const pH2phone = _.get(quoteData, 'policyHolders[1].primaryPhoneNumber') || '';
       const pH2phone2 = _.get(quoteData, 'policyHolders[1].secondaryPhoneNumber') || '';
-      dispatch(batchActions([
-        change('Coverage', 'pH2email', pH2email),
-        change('Coverage', 'pH2FirstName', pH2FirstName),
-        change('Coverage', 'pH2LastName', pH2LastName),
-        change('Coverage', 'pH2phone', pH2phone),
-        change('Coverage', 'pH2phone2', pH2phone2),
-        change('Coverage', 'clearFields', false)
-      ]));
+
+      change('pH2email', pH2email);
+      change('pH2FirstName', pH2FirstName);
+      change('pH2LastName', pH2LastName);
+      change('pH2phone', pH2phone);
+      change('pH2phone2', pH2phone2);
+      change('clearFields', false);
     } else {
-      dispatch(batchActions([
-        change('Coverage', 'pH2email', ''),
-        change('Coverage', 'pH2FirstName', ''),
-        change('Coverage', 'pH2LastName', ''),
-        change('Coverage', 'pH2phone', ''),
-        change('Coverage', 'pH2phone2', ''),
-        change('Coverage', 'clearFields', true)
-      ]));
+      change('pH2email', '');
+      change('pH2FirstName', '');
+      change('pH2LastName', '');
+      change('pH2phone', '');
+      change('pH2phone2', '');
+      change('clearFields', true);
     }
+    return value;
   };
 
   render() {
@@ -375,7 +341,8 @@ export class Coverage extends Component {
       pristine,
       questions,
       quoteData,
-      sinkholePerilCoverage
+      sinkholePerilCoverage,
+      submitting
     } = this.props;
 
     if (!quoteData) {
@@ -406,8 +373,7 @@ export class Coverage extends Component {
                   sectionClass="producer produced-by"
                   handleAgencyChange={this.handleAgencyChange}
                   agents={mappedAgents}
-                  agencies={mappedAgencies}
-                />
+                  agencies={mappedAgencies} />
                 <PolicyHolder
                   name="policyHolders"
                   sectionId="policyHolders"
@@ -416,14 +382,12 @@ export class Coverage extends Component {
                   sectionClass="demographics flex-parent col2"
                   clearSecondaryPolicyholder={this.clearSecondaryPolicyholder}
                   setPHToggle={this.setPHToggle}
-                  canSendToDocusign={checkSentToDocusign(quoteData.quoteState) || !(quoteData && quoteData.policyHolders && quoteData.policyHolders[1])}
-                />
+                  canSendToDocusign={checkSentToDocusign(quoteData.quoteState) || !(quoteData && quoteData.policyHolders && quoteData.policyHolders[1])} />
                 <Property
                   sectionId="property-location"
                   sectionClass="property flex-parent property-location"
                   header="Home and Location"
-                  questions={questions}
-                />
+                  questions={questions} />
                 <Coverages
                   sectionId="coverage-deductibles-discounts"
                   sectionClass="coverage-options flex-parent coverage-deductibles-discounts"
@@ -438,14 +402,12 @@ export class Coverage extends Component {
                   normalizeDwellingDependencies={this.normalizeDwellingDependencies}
                   normalizePersonalPropertyPercentage={this.normalizePersonalPropertyPercentage}
                   normalizeIncidentalOccupancies={this.normalizeIncidentalOccupancies}
-                  normalizeSinkholeAmount={this.normalizeSinkholeAmount}
-                />
+                  normalizeSinkholeAmount={this.normalizeSinkholeAmount} />
                 <WindMitigation
                   header="Wind Mitigation"
                   sectionClass="wind flex-parent"
                   sectionId="wind-mitigation"
-                  questions={questions}
-                />
+                  questions={questions} />
               </div>
             </div>
           </form>
@@ -456,7 +418,7 @@ export class Coverage extends Component {
             <button data-test="coverage-reset" tabIndex="0" aria-label="reset-btn form-coverage" className="btn btn-secondary" type="button" form="Coverage" onClick={() => this.props.reset('Coverage')}>
               Reset
             </button>
-            <button data-test="coverage-submit" tabIndex="0" aria-label="submit-btn form-coverage" className="btn btn-primary" type="submit" form="Coverage" disabled={pristine || editingDisabled}>
+            <button data-test="coverage-submit" tabIndex="0" aria-label="submit-btn form-coverage" className="btn btn-primary" type="submit" form="Coverage" disabled={pristine || editingDisabled || submitting}>
               Update
             </button>
           </div>
@@ -501,7 +463,7 @@ const mapStateToProps = (state) => {
     'personalPropertyAmount',
     'personalProperty'
   );
-  const quoteData = getQuoteDataFromCgState(state);
+  const quoteData = state.quoteState.quote || {};
   const questions = state.questions;
 
   return {
@@ -512,7 +474,7 @@ const mapStateToProps = (state) => {
     agencies: state.service.agencies,
     initialValues: handleInitialize(quoteData, questions),
     quoteData,
-    zipCodeSettings: handleGetZipCodeSettings(state),
+    zipCodeSettings: state.service.getZipcodeSettings,
     questions,
     editingDisabled: checkQuoteState(state),
     clearFields,
@@ -532,8 +494,9 @@ export default connect(mapStateToProps, {
   startWorkflow,
   setAppState,
   getUIQuestions,
-  getLatestQuote,
-  setAppError
+  getQuote,
+  setAppError,
+  getZipcodeSettings
 })(reduxForm({
   form: 'Coverage',
   enableReinitialize: true

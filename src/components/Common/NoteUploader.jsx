@@ -7,11 +7,13 @@ import Uppy from '@uppy/core';
 import Dashboard from '@uppy/react/lib/Dashboard';
 import XHRUpload from '@uppy/xhr-upload';
 import moment from 'moment';
-import Loader from '@exzeo/core-ui/lib/Loader';
-import * as cgActions from '../../state/actions/cgActions';
-import * as newNoteActions from '../../state/actions/newNoteActions';
-import * as serviceActions from '../../state/actions/serviceActions';
-import * as errorActions from '../../state/actions/errorActions';
+import { Loader } from '@exzeo/core-ui';
+
+import * as cgActions from '../../state/actions/cg.actions';
+import * as newNoteActions from '../../state/actions/newNote.actions';
+import * as serviceActions from '../../state/actions/service.actions';
+import * as errorActions from '../../state/actions/error.actions';
+
 import '@uppy/core/dist/style.min.css';
 
 export const renderNotes = ({ input, label, type, meta: { touched, error } }) => (
@@ -166,10 +168,7 @@ export class NoteUploader extends Component {
     return actions.cgActions.startWorkflow('addNote', noteData, false)
       .then(result => {
         if (window.location.pathname.includes('/notes')) {
-          const ids = (noteData.noteType === 'Policy Note')
-            ? [noteData.number, noteData.source].toString()
-            : noteData.number;
-          actions.serviceActions.getNotes(ids, noteData.number);
+          actions.serviceActions.getNotes(noteData.number, noteData.source);
         }
 
         this.closeButtonHandler();

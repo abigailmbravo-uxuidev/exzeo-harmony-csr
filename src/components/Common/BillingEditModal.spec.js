@@ -50,7 +50,7 @@ describe('Testing BillingEditModal component', () => {
     const props = {
       handleSubmit: fn => fn,
       handleBillingFormSubmit: fn => fn,
-      billingOptions: initialState.service.billingOptions,
+      billingOptions: initialState.service.billingOptions.options,
       billToId: '23432432432432430',
       quoteData: {},
       dispatch: store.dispatch,
