@@ -166,11 +166,11 @@ export function addAgent(agentData) {
  * @param agentData
  * @returns {Function}
  */
-export function updateAgent(agentData, agency) {
+export function updateAgent(agentData, agencyCode) {
   return async (dispatch) => {
     try {
       await saveAgent(agentData);
-      dispatch(getAgentsByAgencyCode(agency.agencyCode));
+      dispatch(getAgentsByAgencyCode(agencyCode));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
@@ -462,3 +462,36 @@ export function createAgency(agencyData) {
     }
   };
 }
+
+/**
+ *
+ * @param agencyData
+ * @returns {Promise<{}>}
+ */
+export async function saveNewBranch(branchData, agencyCode) {
+  try {
+    const config = {
+      service: 'agency',
+      method: 'POST',
+      path: `agencies/${agencyCode}/branches`,
+      data: branchData
+    };
+    const response = await serviceRunner.callService(config);
+    return response.data && response.data.result ? response.data.result : {};
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+export function createBranch(branchData, agencyCode) {
+  return async (dispatch) => {
+    try {
+      const agency = await saveNewBranch(branchData, agencyCode);
+      dispatch(setAgency(agency));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
