@@ -19,8 +19,8 @@ export class ExistingAgentModal extends Component {
 
     return (
       <div className="modal existing-agent-modal">
-        <div className="card">
-          <form onSubmit={handleSubmit(handleSelection)}>
+        <form onSubmit={handleSubmit(handleSelection)}>
+          <div className="card">
             <div className="card-header">
               <h4> <i className="fa fa-address-book" /> Existing Agent</h4>
             </div>
@@ -55,8 +55,8 @@ export class ExistingAgentModal extends Component {
                 </Button>
               </div>
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     );
   }

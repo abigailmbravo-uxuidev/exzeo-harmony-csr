@@ -144,7 +144,7 @@ export class Create extends Component {
                     <Contact testPrefix="contact" />
                   </FormSection>
                 </section>
-                <h3>Agent Of Record <a onClick={this.handleToggleExistingAgentModal} className="btn btn-link btn-xs btn-alt-light no-padding"><i className="fa fa-user" />Use Existing Agent</a></h3>
+                <h3>Agent Of Record <button onClick={this.handleToggleExistingAgentModal} className="btn btn-link btn-sm"><i className="fa fa-user" />Use Existing Agent</button></h3>
                 <section className="agency-aor">
                   <div className="agency-detail">
                     <FormSection name="agentOfRecord">
@@ -158,13 +158,6 @@ export class Create extends Component {
                       licenseValue={licenseValue} />
                   </div>
                 </section>
-
-                {this.state.showAddExistingAgentModal &&
-                <ExistingAgentModal
-                  listOfAgents={orphans}
-                  onToggleModal={this.handleToggleExistingAgentModal}
-                  handleSelection={this.applyOrphanedAgent} />
-              }
               </form>
             </div>
           </div>
@@ -173,8 +166,13 @@ export class Create extends Component {
           <Button dataTest="resetButton" baseClass="secondary" onClick={this.handleResetForm}>Cancel</Button>
           <Button dataTest="submitButton" baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
         </div>
+        {this.state.showAddExistingAgentModal &&
+        <ExistingAgentModal
+          listOfAgents={orphans}
+          onToggleModal={this.handleToggleExistingAgentModal}
+          handleSelection={this.applyOrphanedAgent} />
+      }
       </div>
-
     );
   }
 }

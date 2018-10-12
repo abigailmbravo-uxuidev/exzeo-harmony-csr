@@ -509,6 +509,12 @@ label {
             }
           }
         }
+
+        ~ span {
+          color: $red;
+          font-size: $font-size-sm;
+          line-height: 1.4;
+        }
       }
     }
 
