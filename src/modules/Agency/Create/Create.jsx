@@ -95,8 +95,8 @@ export class Create extends Component {
                   <Details />
                   {/* web address validaiton */}
                 </section>
+                <h3>Address</h3>
                 <section className="agency-address">
-                  <h3>Address</h3>
                   <div className="agency-mailing-address">
                     <h4>Mailing Address</h4>
                     <FormSection name="mailingAddress">
@@ -144,10 +144,10 @@ export class Create extends Component {
                     <Contact testPrefix="contact" />
                   </FormSection>
                 </section>
+                <h3>Agent Of Record <a onClick={this.handleToggleExistingAgentModal} className="btn btn-link btn-xs btn-alt-light no-padding"><i className="fa fa-user" />Use Existing Agent</a></h3>
                 <section className="agency-aor">
-                  <h3>Agent Of Record <a onClick={this.handleToggleExistingAgentModal} className="btn btn-link btn-xs btn-alt-light no-padding"><i className="fa fa-user" />Use Existing Agent</a></h3>
                   <div className="agency-detail">
-                    <FormSection name="agentOfRecord" >
+                    <FormSection name="agentOfRecord">
                       <Agent />
                     </FormSection>
                   </div>
@@ -167,7 +167,7 @@ export class Create extends Component {
                   listOfAgents={orphans}
                   onToggleModal={this.handleToggleExistingAgentModal}
                   handleSelection={this.applyOrphanedAgent} />
-        }
+              }
               </form>
             </div>
           </div>
