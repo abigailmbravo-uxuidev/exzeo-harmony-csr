@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as serviceActions from '../../state/actions/serviceActions';
+
 import QuoteBaseConnect from '../../containers/Quote';
-import * as errorActions from '../../state/actions/errorActions';
-import * as appStateActions from '../../state/actions/appStateActions';
+import * as appStateActions from '../../state/actions/appState.actions';
+import * as serviceActions from '../../state/actions/service.actions';
+import * as quoteActions from '../../state/actions/quote.actions';
+import * as errorActions from '../../state/actions/error.actions';
 import NoteList from '../Common/NoteList';
 import Footer from '../Common/Footer';
 
@@ -14,40 +16,22 @@ const MODEL_NAME = 'csrQuote';
 export class NotesFiles extends Component {
   componentDidMount() {
     const {
-      quoteData, actions, match, appState
+      actions, match, appState
     } = this.props;
-    const workflowId = match.params.workflowId;
 
     actions.appStateActions.setAppState(
-      MODEL_NAME, workflowId,
+      MODEL_NAME, '',
       {
         ...appState.data,
         submitting: true
       }
     );
-    if (quoteData && quoteData.quoteNumber) {
-      actions.serviceActions.getNotes(quoteData.quoteNumber, quoteData.quoteNumber).then(() => {
-        actions.appStateActions.setAppState(
-          MODEL_NAME, workflowId,
-          {
-            ...appState.data,
-            submitting: false
-          }
-        );
-      });
-    } else {
-      actions.serviceActions.getQuote(match.params.quoteId)
-        .then((quoteData) => {
-          actions.serviceActions.getNotes(quoteData.quoteNumber, quoteData.quoteNumber);
-          actions.appStateActions.setAppState(
-            MODEL_NAME, workflowId,
-            {
-              ...appState.data,
-              submitting: false
-            }
-          );
-        });
-    }
+
+    actions.quoteActions.getQuote(match.params.quoteId, 'notes')
+      .then((quoteData) => actions.serviceActions.getNotes(quoteData.quoteNumber))
+      .then(() => actions.appStateActions.setAppState(
+        MODEL_NAME, '', { ...appState.data, submitting: false }
+      ));
   }
 
   render() {
@@ -72,17 +56,18 @@ NotesFiles.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  appState: state.appState,
   notes: state.service.notes,
-  quoteData: state.service.quote || {},
-  error: state.error,
-  appState: state.appState
+  quoteData: state.quoteState.quote || {},
+  error: state.error
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
+    appStateActions: bindActionCreators(appStateActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
-    errorActions: bindActionCreators(errorActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
+    quoteActions: bindActionCreators(quoteActions, dispatch),
+    errorActions: bindActionCreators(errorActions, dispatch)
   }
 });
 

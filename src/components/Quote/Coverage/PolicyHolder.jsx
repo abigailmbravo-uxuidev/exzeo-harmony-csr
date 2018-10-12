@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Input, Phone, Radio } from '@exzeo/core-ui/lib/Input';
-import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
+import { Input, Phone, Radio, validation } from '@exzeo/core-ui';
 
 const firstNameDepends = validation.dependsOn(['pH2LastName', 'pH2email', 'pH2phone']);
 const lastNameDepends = validation.dependsOn(['pH2FirstName', 'pH2email', 'pH2phone']);
@@ -19,7 +18,7 @@ const PolicyHolder = ({
         <div className="flex-child policy-holder-a-first-name">
           <Field
             component={Input}
-            validate={validation.isRequired}
+            validate={[validation.isAlphaNumeric, validation.isRequired]}
             label="First Name"
             name="pH1FirstName"
             dataTest="pH1FirstName"
@@ -28,7 +27,7 @@ const PolicyHolder = ({
         <div className="flex-child policy-holder-a-last-name">
           <Field
             component={Input}
-            validate={validation.isRequired}
+            validate={[validation.isAlphaNumeric, validation.isRequired]}
             label="Last Name"
             name="pH1LastName"
             dataTest="pH1LastName"
@@ -99,7 +98,7 @@ const PolicyHolder = ({
             name="pH2FirstName"
             label="First Name"
             component={Input}
-            validate={firstNameDepends}
+            validate={[firstNameDepends, validation.isAlphaNumeric]}
             onChange={setPHToggle}
             dataTest="pH2FirstName"
           />
@@ -109,7 +108,7 @@ const PolicyHolder = ({
             name="pH2LastName"
             label="Last Name"
             component={Input}
-            validate={lastNameDepends}
+            validate={[lastNameDepends, validation.isAlphaNumeric]}
             onChange={setPHToggle}
             dataTest="pH2LastName"
           />

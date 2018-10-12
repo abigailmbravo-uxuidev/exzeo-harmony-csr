@@ -1,14 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import GroupedInputs from '@exzeo/core-ui/lib/InputGrouped';
-import lifecycle from '@exzeo/core-ui/lib/InputLifecycle';
+import { validation, IntegerGroup, SelectGroup, SelectIntegerGroup, NumbersGroup } from '@exzeo/core-ui';
 import { getAnswers } from '../../../utilities/forms';
-
-const {
-  Integer, Select, SelectInteger, Numbers
-} = GroupedInputs;
-const { validation } = lifecycle;
 
 const HomeLocation = ({ questions }) => (
   <section name="home" id="home">
@@ -22,7 +16,7 @@ const HomeLocation = ({ questions }) => (
         <Field
           name="property.yearBuilt"
           label="Year Home Built"
-          component={Integer}
+          component={IntegerGroup}
           thousandSeparator={false}
           validate={validation.isNumbersOnly}
           dataTest="yearBuilt"
@@ -30,7 +24,7 @@ const HomeLocation = ({ questions }) => (
         <Field
           name="property.constructionType"
           label="Construction"
-          component={Select}
+          component={SelectGroup}
           answers={getAnswers('constructionType', questions)}
           dataTest="constructionType"
 
@@ -38,28 +32,28 @@ const HomeLocation = ({ questions }) => (
         <Field
           name="property.protectionClass"
           label="Protection Class"
-          component={SelectInteger}
+          component={SelectIntegerGroup}
           answers={getAnswers('protectionClass', questions)}
           dataTest="protectionClass"
         />
         <Field
           name="property.buildingCodeEffectivenessGrading"
           label="BCEG"
-          component={SelectInteger}
+          component={SelectIntegerGroup}
           answers={getAnswers('buildingCodeEffectivenessGrading', questions)}
           dataTest="buildingCodeEffectivenessGrading"
         />
         <Field
           name="property.familyUnits"
           label="Family Units"
-          component={Select}
+          component={SelectGroup}
           answers={getAnswers('familyUnits', questions)}
           dataTest="familyUnits"
         />
         <Field
           name="property.floodZone"
           label="Flood Zone"
-          component={Select}
+          component={SelectGroup}
           answers={getAnswers('floodZone', questions)}
           dataTest="floodZone"
         />
@@ -72,42 +66,42 @@ const HomeLocation = ({ questions }) => (
         <Field
           name="property.distanceToTidalWater"
           label="Tidal Waters Dist."
-          component={Numbers}
+          component={NumbersGroup}
           decimalScale={2}
           dataTest="distanceToTidalWater"
         />
         <Field
           name="property.distanceToFireHydrant"
           label="Fire Hydrant Dist."
-          component={Numbers}
+          component={NumbersGroup}
           decimalScale={2}
           dataTest="distanceToFireHydrant"
         />
         <Field
           name="property.distanceToFireStation"
           label="Fire Station Dist."
-          component={Numbers}
+          component={NumbersGroup}
           decimalScale={2}
           dataTest="distanceToFireStation"
         />
         <Field
           name="property.residenceType"
           label="Residence Type"
-          component={Select}
+          component={SelectGroup}
           answers={getAnswers('residenceType', questions)}
           dataTest="residenceType"
         />
         <Field
           name="property.squareFeet"
           label="Sq. Ft. of Home"
-          component={Integer}
+          component={IntegerGroup}
           validate={validation.isRequired}
           dataTest="squareFeet"
         />
         <Field
           name="property.yearOfRoof"
           label="Year Roof Built"
-          component={Integer}
+          component={IntegerGroup}
           dataTest="yearOfRoof"
           thousandSeparator={false}
           allowNegative={false}

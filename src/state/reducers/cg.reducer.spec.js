@@ -1,6 +1,6 @@
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
-import cgReducer from './cgReducer';
+import cgReducer from './cg.reducer';
 
 describe('CG Reducer', () => {
   it('should call cgReducer CG_START', () => {

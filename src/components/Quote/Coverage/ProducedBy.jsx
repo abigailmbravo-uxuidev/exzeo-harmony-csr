@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Select, Date } from '@exzeo/core-ui/lib/Input';
-import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
+import { Select, Date, validation } from '@exzeo/core-ui';
 
 const ProducedBy = ({
   name, sectionId, sectionClass, header, agencies, agents, handleAgencyChange

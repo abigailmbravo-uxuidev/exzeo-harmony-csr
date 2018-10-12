@@ -4,16 +4,15 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import cloneDeep from 'lodash/cloneDeep';
 import { reduxForm, Field, reset } from 'redux-form';
-import { Input, Select, Phone, SelectTypeAhead, SelectInteger } from '@exzeo/core-ui/lib/Input';
-import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
-import Loader from '@exzeo/core-ui/lib/Loader';
+import { Input, Select, Phone, SelectTypeAhead, SelectInteger, Loader, validation } from '@exzeo/core-ui';
+
 import {
   getMortgageeOrderAnswers,
   getMortgageeOrderAnswersForEdit
 } from '../utilities/additionalInterests';
 import { getTopAnswers } from '../state/selectors/questions.selectors';
 import { ADDITIONAL_INTERESTS } from '../constants/additionalInterests';
-import { setAppState } from '../state/actions/appStateActions';
+import { setAppState } from '../state/actions/appState.actions';
 import { getGroupedAdditionalInterests, getSortedAdditionalInterests } from '../state/selectors/quote.selectors';
 
 export const checkAdditionalInterestForName = aiType => aiType === 'Additional Insured' || aiType === 'Additional Interest' || aiType === 'Bill Payer';
@@ -117,7 +116,8 @@ export class AdditionalInterestModal extends React.Component {
       selectedAI,
       submitting,
       validAdditionalInterestTypes,
-      premiumFinanceAnswers
+      premiumFinanceAnswers,
+      pristine
     } = this.props;
 
     return (
@@ -126,8 +126,7 @@ export class AdditionalInterestModal extends React.Component {
         <form
           id={isEditing ? 'AdditionalInterestEditModal' : 'AdditionalInterestModal'}
           className={classNames('AdditionalInterestModal', { [selectedAI.type]: isEditing, [addAdditionalInterestType]: !isEditing })}
-          onSubmit={handleSubmit(this.handleFormSubmit)}
-        >
+          onSubmit={handleSubmit(this.handleFormSubmit)}>
           <div className="card">
             <div className="card-header">
               <h4><i className={`fa fa-circle ${addAdditionalInterestType}`} /> {addAdditionalInterestType}</h4>
@@ -142,8 +141,7 @@ export class AdditionalInterestModal extends React.Component {
                 valueKey="displayText"
                 labelKey="displayText"
                 answers={mortgageeAnswers}
-                normalize={this.setTopValues}
-              />
+                normalize={this.setTopValues}/>
               }
               {(addAdditionalInterestType || selectedAI.type) === 'Premium Finance' &&
               <Field
@@ -154,8 +152,7 @@ export class AdditionalInterestModal extends React.Component {
                 valueKey="displayText"
                 labelKey="displayText"
                 answers={premiumFinanceAnswers}
-                normalize={this.setTopValues}
-              />
+                normalize={this.setTopValues}/>
               }
               <Field
                 name="name1"
@@ -163,30 +160,26 @@ export class AdditionalInterestModal extends React.Component {
                 label={checkAdditionalInterestForName(addAdditionalInterestType) ? 'First Name' : 'Name 1'}
                 component={Input}
                 styleName="name-1"
-                validate={validation.isRequired}
-              />
+                validate={validation.isRequired}/>
               <Field
                 name="name2"
                 dataTest="name2"
                 label={checkAdditionalInterestForName(addAdditionalInterestType) ? 'Last Name' : 'Name 2'}
                 component={Input}
-                styleName="name-2"
-              />
+                styleName="name-2"/>
               <Field
                 name="address1"
                 dataTest="address1"
                 label="Address 1"
                 component={Input}
                 styleName="address-1"
-                validate={validation.isRequired}
-              />
+                validate={validation.isRequired}/>
               <Field
                 name="address2"
                 dataTest="address2"
                 label="Address 2"
                 component={Input}
-                styleName="address-2"
-              />
+                styleName="address-2"/>
               <div className="flex-form">
                 <Field
                   name="city"
@@ -194,24 +187,21 @@ export class AdditionalInterestModal extends React.Component {
                   label="City"
                   component={Input}
                   styleName="city"
-                  validate={validation.isRequired}
-                />
+                  validate={validation.isRequired}/>
                 <Field
                   name="state"
                   dataTest="state"
                   label="State"
                   component={Input}
                   styleName="state"
-                  validate={validation.isRequired}
-                />
+                  validate={validation.isRequired}/>
                 <Field
                   name="zip"
                   dataTest="zip"
                   label="Zip Code"
                   component={Input}
                   styleName="zip"
-                  validate={[validation.isRequired, validation.isZipCode]}
-                />
+                  validate={[validation.isRequired, validation.isZipCode]}/>
               </div>
               <div className="flex-form">
                 <Field
@@ -221,15 +211,13 @@ export class AdditionalInterestModal extends React.Component {
                   component={Phone}
                   styleName="phone"
                   validate={validation.isPhone}
-                  placeholder="555-555-5555"
-                />
+                  placeholder="555-555-5555"/>
                 <Field
                   name="referenceNumber"
                   dataTest="referenceNumber"
                   label="Reference Number"
                   component={Input}
-                  styleName="reference-number"
-                />
+                  styleName="reference-number"/>
 
                 {isEditing && selectedAI.type === 'Mortgagee' &&
                 <Field
@@ -238,8 +226,7 @@ export class AdditionalInterestModal extends React.Component {
                   component={SelectInteger}
                   label="Order"
                   validate={validation.isRequired}
-                  answers={getMortgageeOrderAnswersForEdit(questions, additionalInterests)}
-                />
+                  answers={getMortgageeOrderAnswersForEdit(questions, additionalInterests)}/>
                 }
 
                 {!isEditing && addAdditionalInterestType === 'Mortgagee' &&
@@ -249,8 +236,7 @@ export class AdditionalInterestModal extends React.Component {
                   component={SelectInteger}
                   label="Order"
                   validate={validation.isRequired}
-                  answers={getMortgageeOrderAnswers(questions, additionalInterests)}
-                />
+                  answers={getMortgageeOrderAnswers(questions, additionalInterests)}/>
                 }
               </div>
               {isPolicy &&
@@ -261,16 +247,15 @@ export class AdditionalInterestModal extends React.Component {
                   label="Type"
                   component={Select}
                   answers={validAdditionalInterestTypes}
-                  validate={validation.isRequired}
-                />
+                  validate={validation.isRequired}/>
               </div>
               }
             </div>
             <div className="card-footer">
               <div className="btn-group">
                 <button tabIndex="0" className="btn btn-secondary" type="button" onClick={hideModal}>Cancel</button>
-                {isEditing && <button tabIndex="0" className="btn btn-secondary" type="button" disabled={submitting || isDeleting} onClick={() => deleteAdditionalInterest(selectedAI, this.props)}>Delete</button> }
-                <button tabIndex="0" className="btn btn-primary" type="submit" disabled={submitting || isDeleting}>Save</button>
+                {isEditing && <button tabIndex="0" className="btn btn-secondary" type="button" disabled={submitting || isDeleting} onClick={() => deleteAdditionalInterest(selectedAI, this.props)}>Delete</button>}
+                <button tabIndex="0" className="btn btn-primary" type="submit" disabled={pristine || submitting || isDeleting}>Save</button>
               </div>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
-import policyStateReducer from './policyReducer';
+import policyStateReducer from './policy.reducer';
 
 describe('Policy State Reducer', () => {
   it('should call policyStateReducer GET_POLICY', () => {
