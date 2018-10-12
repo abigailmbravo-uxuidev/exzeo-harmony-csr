@@ -1,6 +1,12 @@
 import axios from 'axios';
+
 import handleError from './handleError';
 
+/**
+ *
+ * @param data
+ * @returns {Promise<void>}
+ */
 export async function callService(data) {
   const axiosConfig = {
     method: 'POST',
@@ -17,6 +23,11 @@ export async function callService(data) {
   }
 }
 
+/**
+ *
+ * @param data
+ * @returns {Promise<void>}
+ */
 export async function callQuestions(data) {
   const axiosConfig = {
     method: 'POST',

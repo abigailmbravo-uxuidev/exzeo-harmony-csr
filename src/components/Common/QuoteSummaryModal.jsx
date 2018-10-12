@@ -8,7 +8,6 @@ import { Loader } from '@exzeo/core-ui';
 
 import * as cgActions from '../../state/actions/cg.actions';
 import * as appStateActions from '../../state/actions/appState.actions';
-import * as quoteStateActions from '../../state/actions/quoteState.actions';
 
 const QuoteSummary = ({
   appState, handleSubmit, verify, showQuoteSummaryModal, quoteData, submitting
@@ -99,7 +98,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
     cgActions: bindActionCreators(cgActions, dispatch),
     appStateActions: bindActionCreators(appStateActions, dispatch)
   }

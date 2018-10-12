@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as serviceActions from '../../state/actions/service.actions';
-import * as quoteStateActions from '../../state/actions/quoteState.actions';
 import { getQuoteDetails } from '../../state/selectors/detailHeader.selectors';
 import Details from '../DetailMain';
 import Section from '../DetailSection';
@@ -119,7 +118,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    quoteStateActions: bindActionCreators(quoteStateActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch)
   }
 });

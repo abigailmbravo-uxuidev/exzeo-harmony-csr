@@ -5,8 +5,9 @@ import moment from 'moment-timezone';
 import * as detailUtils from '../../utilities/entityDetails';
 import { STANDARD_DATE_FORMAT } from '../../constants/dates';
 
+import { getPolicy, getSummaryLedger, getQuote } from './entity.selectors';
+
 const baseMapUri = 'https://www.google.com/maps/search/?api=1&query=';
-const defaultObject = {};
 const defaultEntity = {
   details: {},
   policyHolder: {},
@@ -16,10 +17,6 @@ const defaultEntity = {
   premium: {},
   cancellation: {}
 };
-
-const getPolicy = state => state.policyState.policy;
-const getSummaryLedger = state => state.policyState.summaryLedger;
-const getQuote = state => state.quoteState.quote || defaultObject;
 
 export const getPolicyDetails = createSelector(
   [getPolicy, getSummaryLedger],

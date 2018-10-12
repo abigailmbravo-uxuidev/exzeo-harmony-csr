@@ -1,45 +1,10 @@
 import { createSelector } from 'reselect';
 import moment from 'moment-timezone';
-// import date from '@exzeo/core-ui/lib/Utilities';
+import { date } from '@exzeo/core-ui';
 
-const getTodayFormatted = () => moment().utc().format('YYYY-MM-DD');
+import { getDueStatus, groupDiaries } from '../../utilities/diaries';
 
-const isGreaterThanOneWeekAway = (dateString) => {
-  return moment.utc(getTodayFormatted()).add(7, 'd').isBefore(moment.utc(dateString));
-};
-
-const isPastDue = dateString => moment(getTodayFormatted()).isAfter(moment.utc(dateString)); // today or past
-
-const isWithinOneWeekAway = (dateString) => {
-  return moment.utc(dateString).isBetween(getTodayFormatted(), moment.utc().add(7, 'd').format('YYYY-MM-DD'));
-};
-
-const getDiaries = state => state.diaries;
-
-const getDueStatus = (due, open) => {
-  if (!open) return 'closed';
-  else if (isWithinOneWeekAway(due)) return 'dueSoon';
-  else if (isPastDue(due)) return 'pastDue';
-  else if (isGreaterThanOneWeekAway(due)) return 'upComing';
-  return 'unknown';
-};
-
-const groupDiaries = (diaries) => {
-  if (!diaries || diaries.length === 0) {
-    return {
-      upComing: [],
-      pastDue: [],
-      dueSoon: [],
-      count: 0
-    };
-  }
-  return {
-    dueSoon: diaries.filter(e => isWithinOneWeekAway(e.due)),
-    pastDue: diaries.filter(e => isPastDue(e.due)),
-    upComing: diaries.filter(e => isGreaterThanOneWeekAway(e.due)),
-    count: diaries.length
-  };
-};
+import { getDiaries } from './entity.selectors';
 
 export const getFormattedDiaries = createSelector(
   [getDiaries],
@@ -49,7 +14,7 @@ export const getFormattedDiaries = createSelector(
       resourceType: d.resource.type,
       resourceId: d.resource.id,
       ...d.entries[0],
-      due: moment.utc(d.entries[0].due).format('YYYY-MM-DD')
+      due: moment.utc(d.entries[0].due).format(date.FORMATS.SECONDARY)
     }));
   }
 );
@@ -63,14 +28,14 @@ export const getFormattedAllDiaries = createSelector(
       resourceId: d.resource.id,
       ...d.entries[0],
       diaryHistory: d.entries.slice(1),
-      due: moment.utc(d.entries[0].due).format('YYYY-MM-DD'),
+      due: moment.utc(d.entries[0].due).format(date.FORMATS.SECONDARY),
       dueStatus: getDueStatus(d.entries[0].due, d.entries[0].open),
       action: {
         diaryId: d._id,
         resourceType: d.resource.type,
         resourceId: d.resource.id,
         ...d.entries[0],
-        due: moment.utc(d.entries[0].due).format('YYYY-MM-DD')
+        due: moment.utc(d.entries[0].due).format(date.FORMATS.SECONDARY)
       }
     }));
   }
@@ -93,7 +58,13 @@ export const getFilteredAllDiaries = createSelector(
   }
 );
 
-export const getOpenDiaries = createSelector([getFormattedDiaries], diaries => groupDiaries(diaries));
+export const getOpenDiaries = createSelector(
+  [getFormattedDiaries],
+  diaries => groupDiaries(diaries)
+);
 
-export const getFilteredOpenDiaries = createSelector([getFilterOpenDiariesByResource], diaries => groupDiaries(diaries));
+export const getFilteredOpenDiaries = createSelector(
+  [getFilterOpenDiariesByResource],
+  diaries => groupDiaries(diaries)
+);
 

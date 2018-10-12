@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-const getAgencies = state => state.service.agencies;
+import { getAgencies } from './entity.selectors';
 
 export const getAgenciesForTypeAhead = createSelector(
   [getAgencies],
