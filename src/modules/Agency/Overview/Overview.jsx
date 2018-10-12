@@ -63,8 +63,7 @@ export class Overview extends React.Component {
               </h3>
               <section className="agency-details">
                 <DetailView agency={agency} />
-              </section>
-              <section>
+                <hr />
                 <ContactView agency={agency} emailType="CSR" />
               </section>
               <h3>Address

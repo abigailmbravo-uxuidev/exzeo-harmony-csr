@@ -35,99 +35,92 @@ export class AgencyModal extends Component {
     } = this.props;
 
     return (
-      <div className="modal agency-crud" style={{ overflow: 'scroll', display: 'block' }}>
+      <div className="modal agency-crud">
         <form onSubmit={handleSubmit(this.saveAgency)}>
           <div className="card">
             <div className="card-header">
               <h4>
-                <i className="fa fa-address-book" />
-                Edit Agency
+                <i className="fa fa-address-book" /> Edit Agency
               </h4>
             </div>
             <div className="card-block">
               <section className="agency-details">
-                <div className="agency-id">
-                  <Field
-                    label="Agency ID"
-                    styleName="agencyCode"
-                    name="agencyCode"
-                    dataTest="agencyCode"
-                    component={Input}
-                    validate={validation.isRequired}
-                    disabled={!!initialValues.agencyCode} />
-                  <Field
-                    label="Agency Name"
-                    styleName="agencyName"
-                    name="displayName"
-                    dataTest="displayName"
-                    component={Input}
-                    validate={validation.isRequired} />
-                  <Field
-                    label="Entity Name"
-                    styleName="entityName"
-                    name="legalName"
-                    dataTest="legalName"
-                    component={Input}
-                    validate={validation.isRequired} />
-                </div>
-                <div className="agency-description">
-                  <Field
-                    id="status"
-                    name="status"
-                    dataTest="status"
-                    styleName="status"
-                    label="Status"
-                    component={Select}
-                    validate={validation.isRequired}
-                    answers={statusAnswers} />
-                  <Field
-                    label="TPAID"
-                    styleName="tpaid"
-                    name="tpaid"
-                    dataTest="tpaid"
-                    component={Integer}
-                    validate={[validation.isRequired, validation.isNumbersOnly]} />
-                  <Field
-                    name="okToPay"
-                    dataTest="okToPay"
-                    styleName="okToPay"
-                    label="Ok to Pay"
-                    component={Radio}
-                    segmented
-                    answers={okToPayAnswers} />
-                  <Field
-                    label="Tier"
-                    styleName="tier"
-                    name="tier"
-                    dataTest="tier"
-                    component={Input}
-                    validate={[validation.isRequired, validation.isNumbersOnly]} />
-                  <Field
-                    label="Web Address"
-                    styleName="webAddress"
-                    name="websiteUrl"
-                    dataTest="websiteUrl"
-                    component={Input} />
-                  {/* web address validaiton */}
-                </div>
-                <div className="tax-detail">
-                  <Field
-                    label="Tax ID"
-                    styleName="taxId"
-                    name="taxIdNumber"
-                    dataTest="taxIdNumber"
-                    component={Input}
-                    validate={validation.isRequired} />
-                  <Field
-                    id="taxClassification"
-                    name="taxClassification"
-                    dataTest="taxClassification"
-                    styleName="taxClassification"
-                    label="Tax Classification"
-                    component={Select}
-                    validate={validation.isRequired}
-                    answers={taxClassificationAnswers} />
-                </div>
+                <Field
+                  label="Agency ID"
+                  styleName="agencyCode"
+                  name="agencyCode"
+                  dataTest="agencyCode"
+                  component={Input}
+                  validate={validation.isRequired}
+                  disabled={!!initialValues.agencyCode} />
+                <Field
+                  label="Agency Name"
+                  styleName="agencyName"
+                  name="displayName"
+                  dataTest="displayName"
+                  component={Input}
+                  validate={validation.isRequired} />
+                <Field
+                  label="Entity Name"
+                  styleName="entityName"
+                  name="legalName"
+                  dataTest="legalName"
+                  component={Input}
+                  validate={validation.isRequired} />
+                <Field
+                  id="status"
+                  name="status"
+                  dataTest="status"
+                  styleName="status"
+                  label="Status"
+                  component={Select}
+                  validate={validation.isRequired}
+                  answers={statusAnswers} />
+                <Field
+                  label="TPAID"
+                  styleName="tpaid"
+                  name="tpaid"
+                  dataTest="tpaid"
+                  component={Integer}
+                  validate={[validation.isRequired, validation.isNumbersOnly]} />
+                <Field
+                  name="okToPay"
+                  dataTest="okToPay"
+                  styleName="okToPay"
+                  label="Ok to Pay"
+                  component={Radio}
+                  segmented
+                  answers={okToPayAnswers} />
+                <Field
+                  label="Tier"
+                  styleName="tier"
+                  name="tier"
+                  dataTest="tier"
+                  component={Input}
+                  validate={[validation.isRequired, validation.isNumbersOnly]} />
+                <Field
+                  label="Web Address"
+                  styleName="webAddress"
+                  name="websiteUrl"
+                  dataTest="websiteUrl"
+                  component={Input} />
+                {/* web address validaiton */}
+                <Field
+                  label="Tax ID"
+                  styleName="taxId"
+                  name="taxIdNumber"
+                  dataTest="taxIdNumber"
+                  component={Input}
+                  validate={validation.isRequired} />
+                <Field
+                  id="taxClassification"
+                  name="taxClassification"
+                  dataTest="taxClassification"
+                  styleName="taxClassification"
+                  label="Tax Classification"
+                  component={Select}
+                  validate={validation.isRequired}
+                  answers={taxClassificationAnswers} />
               </section>
             </div>
             <div className="card-footer">
