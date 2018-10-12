@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Input, Select } from '@exzeo/core-ui/lib/Input';
-import { isAlphaNumeric, isValidChar, isNumberDashOnly } from '@exzeo/core-ui/lib/InputLifecycle';
-import { getAnswers } from '../../../utilities/forms';
+import { Input, Select, Button, validation } from '@exzeo/core-ui';
 
+import { getAnswers } from '../../../utilities/forms';
 import Pagination from '../components/Pagination';
-import Button from '@exzeo/core-ui/lib/Button/index';
+
+const { isAlphaNumeric, isValidChar, isNumberDashOnly } = validation;
 
 const QuoteSearch = ({
   submitting,
@@ -39,8 +39,8 @@ const QuoteSearch = ({
       <Field
         name="address"
         dataTest="address"
-        label="Property Address"
-        placeholder="Property Address Search"
+        label="Property Street Address"
+        placeholder="Property Street Address Search"
         component={Input}
         styleName="property-search"
         validate={isValidChar}

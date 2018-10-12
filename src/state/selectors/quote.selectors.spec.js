@@ -5,8 +5,8 @@ describe('Test quote selectors', () => {
   describe('Test checkQuoteState', () => {
     it('Should return true if quoteState matches a disabled enum', () => {
       const state = {
-        service: {
-          quote: { quoteState: 'Policy Issued' }
+        quoteState: {
+          quote: { status: 'Policy Issued' }
         }
       };
 
@@ -16,6 +16,9 @@ describe('Test quote selectors', () => {
 
     it('Should return false if quoteState does not match a disabled enum', () => {
       const state = {
+        quoteState: {
+          quote: {}
+        },
         service: {
           quote: { quoteState: 'Testing' }
         }

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import { SEARCH_CONFIG, SEARCH_TYPES } from '../../constants/search';
-import { resetSearch } from '../../state/actions/searchActions';
+import { resetSearch } from '../../state/actions/search.actions';
 
 import SearchBar from './components/SearchBar';
 import SearchResults from './components/SearchResults';
@@ -100,12 +101,10 @@ export class SearchPage extends Component {
                     handlePagination={handlePagination}
                     hasSearched={hasSearched}
                     submitting={submitting}
-                    toggleAdvancedSearch={this.toggleAdvancedSearch}
-                  />
+                    toggleAdvancedSearch={this.toggleAdvancedSearch} />
                 }
               </React.Fragment>
-            )}
-          />
+            )} />
         </div>
         <main role="document" className={advancedSearch ? 'policy-advanced' : ''}>
           <div className="content-wrapper">
@@ -116,8 +115,7 @@ export class SearchPage extends Component {
 
                     <SearchResults
                       hasSearched={hasSearched}
-                      searchType={searchType}
-                    />
+                      searchType={searchType} />
 
                     {this.props.children}
 

@@ -3,7 +3,7 @@ import moment from 'moment';
 import { batchActions } from 'redux-batched-actions';
 import * as serviceRunner from '../../utilities/serviceRunner';
 import * as types from './actionTypes';
-import * as errorActions from './errorActions';
+import * as errorActions from './error.actions';
 
 export const handleError = (err) => {
   let error = err.response && err.response.data ? err.response.data : err;
@@ -26,29 +26,36 @@ export const serviceRequest = data => ({
   data
 });
 
-export function getNotes(noteId, sysNoteId) {
+export function getNotes(noteId, sourceId) {
+  const reduceId = id => id.replace(/(\d{2}-\d{7})-\d{2}/g, (_, group) => group);
+  const query = sourceId ? reduceId(`${noteId},${sourceId}`) : reduceId(noteId);
+
   return async (dispatch) => {
     try {
       const [notes, docsResult] = await Promise.all([
-        fetchNotes(noteId),
-        fetchDocuments(sysNoteId)
+        fetchNotes(query),
+        fetchDocuments(query)
       ]);
 
+      const fileList = notes.reduce((list, note) => [...list, ...note.attachments], []).map(n => n.fileUrl);
+
       docsResult.forEach((doc) => {
-        const newNote = {
-          _id: doc.envelopeId ? doc.envelopeId : doc.fileUrl,
-          contactType: 'system',
-          createdBy: {userName: 'System', userId: doc.createdBy},
-          createdDate: moment.unix(doc.createdDate),
-          attachments: [
-            {
-              fileType: 'System',
-              fileName: doc.fileName,
-              fileUrl: doc.fileUrl
-            }
-          ]
-        };
-        notes.push(newNote);
+        if (!fileList.includes(doc.fileUrl)) {
+          const newNote = {
+            _id: doc.envelopeId ? doc.envelopeId : doc.fileUrl,
+            contactType: 'system',
+            createdBy: {userName: 'System', userId: doc.createdBy},
+            createdDate: moment.unix(doc.createdDate),
+            attachments: [
+              {
+                fileType: 'System',
+                fileName: doc.fileName,
+                fileUrl: doc.fileUrl
+              }
+            ]
+          };
+          notes.push(newNote);
+        }
       });
 
       return dispatch(serviceRequest({notes}));

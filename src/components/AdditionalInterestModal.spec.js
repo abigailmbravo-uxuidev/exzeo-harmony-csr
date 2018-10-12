@@ -11,7 +11,7 @@ const mockStore = configureStore(middlewares);
 describe('Testing AdditionalInterestModal component', () => {
   it('should test connected app', () => {
     const initialState = {
-      service: {
+      quoteState: {
         quote: {}
       },
       cg: {
@@ -179,14 +179,14 @@ describe('Testing AdditionalInterestModal component', () => {
     const wrapper = shallow(<AdditionalInterestModal store={store} {...props} />);
     const wi = wrapper.instance();
 
-    wi.setMortgageeValues(true);
-    wi.setMortgageeValues(false);
+    wi.setTopValues(true);
+    wi.setTopValues(false);
     wi.handleFormSubmit({}, () => {}, props);
   });
 
   it('should test setMortgageeValues', () => {
     const initialState = {
-      service: { quote: {} },
+      quoteState: { quote: {} },
       cg: {
         bb: {
           data: {

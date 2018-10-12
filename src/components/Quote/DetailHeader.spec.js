@@ -311,6 +311,9 @@ describe('Testing DetailHeader component', () => {
       service: {
         quote: quoteData
       },
+      quoteState: {
+        quote: quoteData
+      },
       cg: {
         bb: {
           data: {
@@ -405,11 +408,10 @@ describe('Testing DetailHeader component', () => {
 
     const shallowWrapper = shallow(<DetailHeader store={store} {...props} />);
 
-    shallowWrapper.instance().componentWillReceiveProps({ quoteState: { update: true, quoteId : '123'}, ...props });
     shallowWrapper.instance().selectPolicy();
 
     const wrapper2 = shallow(<DetailHeader store={store} {...props} />);
-    wrapper2.instance().componentWillReceiveProps({ quoteState: { update: true, quoteId: '123' }, ...props});
+    expect(wrapper2).toBeTruthy();
 
   });
 });

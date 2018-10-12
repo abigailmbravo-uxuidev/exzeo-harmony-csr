@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, formValueSelector } from 'redux-form';
-import Loader from '@exzeo/core-ui/lib/Loader';
+import { Loader } from '@exzeo/core-ui';
+
 import CheckField from '../Form/inputs/CheckField';
 
 export const handleInitialize = () => {

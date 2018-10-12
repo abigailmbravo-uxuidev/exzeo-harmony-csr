@@ -1,6 +1,6 @@
 import configureStore from 'redux-mock-store';
 import * as types from './actionTypes';
-import * as errorActions from './errorActions';
+import * as errorActions from './error.actions';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);

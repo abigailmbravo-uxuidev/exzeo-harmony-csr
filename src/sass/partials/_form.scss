@@ -253,6 +253,12 @@ select {
         box-shadow: none;
       }
     }
+
+    &.is-open {
+      .Select-control {
+        border-radius: $border-radius $border-radius 0 0;
+      }
+    }
   }
 
   .Select-menu-outer {
@@ -261,15 +267,18 @@ select {
     right: 0;
     left: 0;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: scroll;
     width: auto;
-    max-height: 25rem;
-    padding: $padding;
-    border: 1px solid $warm-gray-06;
-    border-radius: $border-radius;
+    max-height: 13.5rem;
+    padding: 0;
+    border: 1px solid $warm-gray-10;
+    border-radius: 0 0 $border-radius $border-radius;
     background: $white;
 
     .Select-option {
+      padding: $padding;
+      color: $warm-gray-10;
+
       &.is-focused {
         background-color: rgba($bright-blue, .1);
       }

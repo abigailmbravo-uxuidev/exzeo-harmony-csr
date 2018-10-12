@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
-import Loader from '@exzeo/core-ui/lib/Loader';
-import * as serviceActions from '../../state/actions/serviceActions';
+import { Loader } from '@exzeo/core-ui';
+
+import * as serviceActions from '../../state/actions/service.actions';
 import AgencyConnect from '../../containers/Agency';
 import Footer from '../Common/Footer';
 import normalizePhone from '../Form/normalizePhone';

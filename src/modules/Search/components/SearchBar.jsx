@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import { Select } from '@exzeo/core-ui/lib/Input';
-import { isRequired } from '@exzeo/core-ui/lib/InputLifecycle';
+import { Select, validation } from '@exzeo/core-ui';
+
 import { DEFAULT_SEARCH_PARAMS } from '../../../constants/search';
-import { getAgencies } from '../../../state/actions/serviceActions';
-import { clearAppError } from '../../../state/actions/errorActions';
+import { getAgencies } from '../../../state/actions/service.actions';
+import { clearAppError } from '../../../state/actions/error.actions';
 import {
   handleSearchSubmit,
   toggleLoading
-} from '../../../state/actions/searchActions';
+} from '../../../state/actions/search.actions';
 
 export class SearchBar extends Component {
   componentDidMount() {
-    const { agencies, getAgencies, toggleLoading, initialize, initialValues } = this.props;
+    const {
+      agencies, getAgencies, toggleLoading, initialize, initialValues
+    } = this.props;
     toggleLoading(false);
     if (!agencies.length) {
       getAgencies(DEFAULT_SEARCH_PARAMS.companyCode, DEFAULT_SEARCH_PARAMS.state);
@@ -67,16 +69,15 @@ export class SearchBar extends Component {
                 label="Search Context"
                 component={Select}
                 id="searchType"
-                validate={isRequired}
+                validate={validation.isRequired}
                 onChange={this.changeSearchType}
                 answers={searchTypeOptions}
                 showPlaceholder={false}
-                errorHint
-              />
+                errorHint />
             </div>
 
-            { // render the correct search form based on searchType (declared in Search/index.js)
-              this.props.render({
+            {// render the correct search form based on searchType (declared in Search/index.js)
+this.props.render({
               submitting,
               handlePagination: this.handlePagination
             })}

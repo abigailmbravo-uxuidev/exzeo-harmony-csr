@@ -2,33 +2,12 @@ import React from 'react';
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
 import { shallow } from 'enzyme';
+
 import { Coverage, handleFormSubmit, handleInitialize, handleGetZipCodeSettings } from './index';
 
 const middlewares = [thunk]; // add your middlewares like `redux-thunk`
 const mockStore = configureStore(middlewares);
-const baseProps = {
-  history: { action: 'PUSH' },
-  zipCodeSettings: { timezone: 'America/New_York' },
-  fieldQuestions: [],
-  questions: {},
-  quoteData: {},
-  batchCompleteTask() { return Promise.resolve(() => {}); },
-  change() {},
-  dispatch() {},
-  getAgencies() {},
-  getAgentsByAgency() {},
-  getLatestQuote() {},
-  getUIQuestions() { return Promise.resolve(() => {}); },
-  handleSubmit() {},
-  setAppState() { return Promise.resolve(() => {}); },
-  startWorkflow() { return Promise.resolve(() => {}); },
-  match: { params: {} },
-  appState: {
-    data: {
-      submitting: false
-    }
-  },
-};
+
 const quoteData = {
   _id: '5866c036a46eb72908f3f547',
   companyCode: 'TTIC',
@@ -325,10 +304,36 @@ const quoteData = {
   ],
   __v: 0
 };
-
+const baseProps = {
+  history: { action: 'PUSH' },
+  zipCodeSettings: { timezone: 'America/New_York' },
+  fieldQuestions: [],
+  questions: {},
+  quoteData,
+  setAppError() {},
+  batchCompleteTask() { return Promise.resolve(() => {}); },
+  change() {},
+  dispatch() {},
+  getAgencies() {},
+  getAgentsByAgency() { return Promise.resolve({ data: { agents: [{ agentCode: 123 }] } }); },
+  getQuote() { return Promise.resolve(() => {}); },
+  getUIQuestions() { return Promise.resolve(() => {}); },
+  handleSubmit() {},
+  setAppState() { return Promise.resolve(() => {}); },
+  startWorkflow() { return Promise.resolve(() => {}); },
+  match: { params: {} },
+  appState: {
+    data: {
+      submitting: false
+    }
+  }
+};
 describe('Testing Coverage component', () => {
   it('should test connected app', () => {
     const initialState = {
+      quoteState: {
+        quote: quoteData
+      },
       appState: {
         data: {},
         modelName: 'bb'
@@ -348,8 +353,7 @@ describe('Testing Coverage component', () => {
     const store = mockStore(initialState);
     const props = {
       ...baseProps,
-      dispatch: store.dispatch,
-      quoteData
+      dispatch: store.dispatch
     };
 
     localStorage.setItem('isNewTab', JSON.stringify(true));
@@ -361,6 +365,9 @@ describe('Testing Coverage component', () => {
 
   it('should test handleGetQuoteData', () => {
     const initialState = {
+      quoteState: {
+        quote: quoteData
+      },
       appState: {
         data: {
           showAdditionalInterestModal: false
@@ -388,17 +395,17 @@ describe('Testing Coverage component', () => {
             uiQuestions: []
           }
         }
-      },
-      service: {
-        quote: quoteData
-      },
+      }
     };
 
-    expect(initialState.service.quote).toEqual(quoteData);
+    expect(initialState.quoteState.quote).toEqual(quoteData);
   });
 
   it('should test handleFormSubmit', () => {
     const initialState = {
+      quoteState: {
+        quote: quoteData
+      },
       appState: {
         data: {
           showAdditionalInterestModal: false
@@ -428,33 +435,12 @@ describe('Testing Coverage component', () => {
         }
       },
       questions: {},
-      service: {},
+      service: {}
     };
     const store = mockStore(initialState);
     const props = {
       ...baseProps,
-      dispatch: store.dispatch,
-      quoteData: {
-        AdditionalInterests: [{
-          id: '049a50b23c21c2ae3',
-          type: 'Mortgagee',
-          order: 1,
-          name1: 'BB&T Home Mortgage',
-          referenceNumber: '1234567',
-          mailingAddress: {
-            address1: '5115 Garden Vale Ave',
-            city: 'Tampa',
-            state: 'FL',
-            county: 'Hillsborough',
-            zip: '33624',
-            country: {
-              code: 'USA',
-              displayText: 'United States of America'
-            }
-          },
-          active: true
-        }]
-      }
+      dispatch: store.dispatch
     };
 
     handleFormSubmit({ pH1phone: '4345435343' }, store.dispatch, props);
@@ -469,11 +455,11 @@ describe('Testing Coverage component', () => {
       dwellingAmount: '',
       agencyCode: 20000
     },
+    agencies: [{ agencyCode: 20000 }],
     agency: {
       agencyCode: 20000
     },
-    quoteData,
-    dispatch: store.dispatch,
+    dispatch: store.dispatch
   };
 
   it('should test instance functions', () => {
@@ -484,14 +470,12 @@ describe('Testing Coverage component', () => {
 
     wrapper.instance().componentDidMount();
     wrapper.instance().normalizeDwellingDependencies('5000', '6000', {});
-    wrapper.instance().componentWillReceiveProps(props);
     expect(wrapper.instance().props.fieldValues.dwellingAmount).toEqual('');
-
     handleInitialize(initialState);
     handleGetZipCodeSettings(initialState);
     wrapper.instance().clearSecondaryPolicyholder(false, props);
     wrapper.instance().clearSecondaryPolicyholder(true, props);
-    wrapper.instance().handleAgencyChange(props, 100011, false);
+    wrapper.instance().handleAgencyChange(20000);
     wrapper.instance().normalizePersonalPropertyPercentage('50000', '40000', {}, 'property');
     wrapper.instance().normalizeDwellingDependencies('50000', '40000', {}, 'property');
     wrapper.instance().normalizeSinkholeAmount(true, false, {});

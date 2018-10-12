@@ -4,13 +4,14 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, Form, propTypes } from 'redux-form';
 import moment from 'moment';
-import Loader from '@exzeo/core-ui/lib/Loader';
-import * as cgActions from '../../state/actions/cgActions';
-import * as appStateActions from '../../state/actions/appStateActions';
-import * as quoteStateActions from '../../state/actions/quoteStateActions';
+import { Loader } from '@exzeo/core-ui';
+
+import * as cgActions from '../../state/actions/cg.actions';
+import * as appStateActions from '../../state/actions/appState.actions';
+import * as quoteStateActions from '../../state/actions/quoteState.actions';
 
 const QuoteSummary = ({
-  appState, handleSubmit, verify, showQuoteSummaryModal, quoteData
+  appState, handleSubmit, verify, showQuoteSummaryModal, quoteData, submitting
 }) => (
   <div className="modal quote-summary">
     <Form noValidate onSubmit={handleSubmit(verify)}>
@@ -28,14 +29,14 @@ const QuoteSummary = ({
                 <li className="script margin bottom">Are there any slides or diving boards?</li>
               </ul>
             </li>
-            { quoteData.property && (quoteData.property.floodZone === 'A' || quoteData.property.floodZone === 'V') &&
+            {quoteData.property && (quoteData.property.floodZone === 'A' || quoteData.property.floodZone === 'V') &&
             <li className="script">Do you maintain a separate flood policy?</li>
             }
-            { quoteData.property && (quoteData.property.floodZone === 'A' || quoteData.property.floodZone === 'V') &&
+            {quoteData.property && (quoteData.property.floodZone === 'A' || quoteData.property.floodZone === 'V') &&
             <li className="scriptInfo margin bottom">Home is in flood zone: {quoteData.property.floodZone}</li>
             }
             <li className="script margin bottom">Does the property have any existing unrepaired damage?</li>
-            { quoteData.property && quoteData.property.yearBuilt && quoteData.property.yearBuilt < (Number(moment.utc(quoteData.effectiveDate).format('YYYY')) - 20) &&
+            {quoteData.property && quoteData.property.yearBuilt && quoteData.property.yearBuilt < (Number(moment.utc(quoteData.effectiveDate).format('YYYY')) - 20) &&
               <li className="script">What is the roof covering on the home?
                 <ul>
                   <li className="scriptInfo">Asphalt, Fiberglass, Composition/Wood Shake Shingles, Built-up Tar and Gravel</li>
@@ -56,8 +57,8 @@ const QuoteSummary = ({
           <p className="scriptInfo">If no adverse information</p>
           <p className="script margin bottom">We will generate the Homeowners Application and e-mail it to:</p>
           <ul>
-            { quoteData.policyHolders && quoteData.policyHolders[0] && <li className="script"><strong>{`${quoteData.policyHolders[0].firstName} ${quoteData.policyHolders[0].lastName}  (${quoteData.policyHolders[0].emailAddress})`}</strong></li>}
-            { quoteData.policyHolders && quoteData.policyHolders[1] && <li className="script"><strong>{`${quoteData.policyHolders[1].firstName} ${quoteData.policyHolders[1].lastName} (${quoteData.policyHolders[1].emailAddress})`}</strong></li>}
+            {quoteData.policyHolders && quoteData.policyHolders[0] && <li className="script"><strong>{`${quoteData.policyHolders[0].firstName} ${quoteData.policyHolders[0].lastName}  (${quoteData.policyHolders[0].emailAddress})`}</strong></li>}
+            {quoteData.policyHolders && quoteData.policyHolders[1] && <li className="script"><strong>{`${quoteData.policyHolders[1].firstName} ${quoteData.policyHolders[1].lastName} (${quoteData.policyHolders[1].emailAddress})`}</strong></li>}
           </ul>
           <p className="script margin bottom">
             {quoteData.policyHolders && quoteData.policyHolders.length === 1 && 'Is this the correct email address?'}
@@ -70,7 +71,7 @@ const QuoteSummary = ({
         </div>
         <div className="card-footer">
           <button tabIndex="0" className="btn btn-secondary" type="button" onClick={() => showQuoteSummaryModal(false)}>Cancel</button>
-          <button tabIndex="0" className="btn btn-primary" type="submit" disabled={appState.data.submitting}>Send</button>
+          <button tabIndex="0" className="btn btn-primary" type="submit" disabled={submitting}>Send</button>
         </div>
       </div>
     </Form>
@@ -93,7 +94,7 @@ QuoteSummary.propTypes = {
 const mapStateToProps = state => ({
   tasks: state.cg,
   appState: state.appState,
-  quoteData: state.service.quote || {}
+  quoteData: state.quoteState.quote || {}
 });
 
 const mapDispatchToProps = dispatch => ({

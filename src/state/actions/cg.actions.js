@@ -3,8 +3,8 @@ import axios from 'axios';
 import { batchActions } from 'redux-batched-actions';
 import _ from 'lodash';
 import * as types from './actionTypes';
-import * as errorActions from './errorActions';
-import * as appStateActions from './appStateActions';
+import * as errorActions from './error.actions';
+import * as appStateActions from './appState.actions';
 
 export const start = (modelName, workflowData) => {
   const newWorkflowData = {};
@@ -76,11 +76,9 @@ export const startWorkflow = (modelName, data, dispatchAppState = true) => (disp
       const responseData = response.data.data;
       // check to see if the cg has returned an error as an ok
       checkCGError(responseData);
-      const instanceId = responseData.modelInstanceId;
       if (dispatchAppState) {
         return dispatch(batchActions([start(modelName, responseData),
-          errorActions.clearAppError(),
-          appStateActions.setAppState(modelName, instanceId, { isSubmitting: true })
+          errorActions.clearAppError()
         ]));
       }
       dispatch(errorActions.clearAppError());

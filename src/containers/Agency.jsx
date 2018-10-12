@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Helmet } from 'react-helmet';
-import Loader from '@exzeo/core-ui/lib/Loader';
+import { Loader } from '@exzeo/core-ui';
 import AgencyHeader from '../components/Agency/AgencyHeader';
 import AgencySideNav from '../components/Agency/AgencySideNav';
 import AgencyDetailHeader from '../components/Agency/DetailHeader';
-import * as appStateActions from '../state/actions/appStateActions';
-import * as serviceActions from '../state/actions/serviceActions';
+import * as appStateActions from '../state/actions/appState.actions';
+import * as serviceActions from '../state/actions/service.actions';
 
 export const Agency = props => (
   <div className="app-wrapper csr agency">
