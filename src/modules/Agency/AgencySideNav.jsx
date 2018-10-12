@@ -56,10 +56,10 @@ export class SideNav extends React.Component {
           <li key="branch" >
             <button
               tabIndex="0"
-              className="btn btn-primary"
+              className="btn btn-primary btn-block btn-small"
               onClick={this.handleShowBranchModal}
               type="button">
-                + Branch
+                <i className="fa fa-plus" />Branch
             </button>
           </li>
           {csrLinks(agencyCode).map((agentLink, index) => (
