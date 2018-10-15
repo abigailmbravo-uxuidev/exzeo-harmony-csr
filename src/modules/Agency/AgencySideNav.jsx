@@ -1,5 +1,8 @@
 import React from 'react';
-import { NavLink, Redirect } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { reduxForm, Field } from 'redux-form';
+import { Select } from '@exzeo/core-ui';
+import { connect } from 'react-redux';
 
 import history from '../../history';
 
@@ -57,29 +60,49 @@ export class SideNav extends React.Component {
     history.push(`/agency/${agencyCode}/branch/${value}`);
   }
   render() {
-    const { agencyCode, isBranch, branchCode } = this.props;
+    const { agencyCode } = this.props;
     return (
-      <nav className="site-nav">
-        <ul>
-          <li key="branch" >
-            <button
-              tabIndex="0"
-              className="btn btn-primary btn-block btn-small"
-              onClick={this.handleShowBranchModal}
-              type="button">
-              <i className="fa fa-plus" />Branch
-            </button>
-          </li>
-          {csrLinks(agencyCode).map((agentLink, index) => (
-            <li key={agentLink.key}>
-              <span className={agentLink.styleName}>
-                <NavLink to={agentLink.link} activeClassName="active" exact>{agentLink.label}</NavLink>
-              </span>
-            </li>))
+      <form>
+        <nav className="site-nav">
+          <ul>
+            <li key="branch">
+              <Field
+                dataTest="selectBranch"
+                name="selectBranch"
+                label="Branch"
+                component={Select}
+                styleName="flex-child"
+                answers={[]}
+                normalize={(v, pv, av) => this.handleBranchSelection(v)} />
+            </li>
+            <li key="newBranch" >
+              <button
+                tabIndex="0"
+                className="btn btn-primary btn-block btn-small"
+                onClick={this.handleShowBranchModal}
+                type="button">
+                <i className="fa fa-plus" />Branch
+              </button>
+            </li>
+            {csrLinks(agencyCode).map((agentLink, index) => (
+              <li key={agentLink.key}>
+                <span className={agentLink.styleName}>
+                  <NavLink to={agentLink.link} activeClassName="active" exact>{agentLink.label}</NavLink>
+                </span>
+              </li>))
       }
-        </ul>
-        {this.state.showBranchModal && <AddBranchModal agencyCode={agencyCode} closeModal={this.handleShowBranchModal} />}
-      </nav>);
+          </ul>
+          {this.state.showBranchModal && <AddBranchModal agencyCode={agencyCode} closeModal={this.handleShowBranchModal} />}
+        </nav>
+      </form>);
   }
 }
-export default SideNav;
+
+const mapStateToProps = state => ({
+  agency: state.agencyState.agency
+});
+
+export default connect(mapStateToProps, null)(reduxForm({
+  form: 'SideNav',
+  enableReinitialize: true
+})(SideNav));
