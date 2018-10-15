@@ -1,5 +1,8 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
+
+import history from '../../history';
+
 import AddBranchModal from './AddBranchModal';
 
 const csrLinks = agencyCode => [{
@@ -48,8 +51,13 @@ export class SideNav extends React.Component {
   handleShowBranchModal = () => {
     this.setState({ showBranchModal: !this.state.showBranchModal });
   }
-  render() {
+
+  handleBranchSelection =(value) => {
     const { agencyCode } = this.props;
+    history.push(`/agency/${agencyCode}/branch/${value}`);
+  }
+  render() {
+    const { agencyCode, isBranch, branchCode } = this.props;
     return (
       <nav className="site-nav">
         <ul>
@@ -63,7 +71,7 @@ export class SideNav extends React.Component {
             </button>
           </li>
           {csrLinks(agencyCode).map((agentLink, index) => (
-            <li key={index}>
+            <li key={agentLink.key}>
               <span className={agentLink.styleName}>
                 <NavLink to={agentLink.link} activeClassName="active" exact>{agentLink.label}</NavLink>
               </span>

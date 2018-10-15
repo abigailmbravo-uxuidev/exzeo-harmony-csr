@@ -5,6 +5,7 @@ import { Select, Radio, Input, validation } from '@exzeo/core-ui';
 
 import { createBranch } from '../../state/actions/agencyActions';
 import { getEditModalInitialValues } from '../../state/selectors/agency.selector';
+import history from '../../history';
 
 const statusAnswers = [
   { answer: 'Active', label: 'Active' },
@@ -19,7 +20,8 @@ const mailAnswers = [
 
 export class AddBranch extends Component {
   addBranch = async (data, dispatch, props) => {
-    await props.createBranch(data, props.agencyCode);
+    const branch = await props.createBranch(data, props.agencyCode);
+    history.push(`/agency/${props.agencyCode}/branch/${branch.branchCode}`);
     props.closeModal();
   };
 

@@ -11,11 +11,13 @@ import Create from './Create';
 import Contracts from './Contracts';
 import Agents from './Agents';
 import Overview from './Overview';
+import Branch from './Branch';
 
 const CreateRender = props => <Create auth={props.auth} {...props} />;
 const ContractsRender = props => <Contracts auth={props.auth} {...props} />;
 const AgentsRender = props => <Agents auth={props.auth} {...props} />;
 const OverviewRender = props => <Overview auth={props.auth} {...props} />;
+const BranchRender = props => <Branch auth={props.auth} {...props} />;
 
 export class Agency extends Component {
   componentDidMount() {
@@ -31,7 +33,9 @@ export class Agency extends Component {
   }
 
   render() {
-    const { agency, location, match: { params: { agencyCode }, url } } = this.props;
+    const {
+      agency, location, match: { params: { agencyCode, branchCode }, url }
+    } = this.props;
 
     return (
       <div className="app-wrapper csr agency">
@@ -47,6 +51,7 @@ export class Agency extends Component {
             <Route exact path={`${url}/overview`} render={OverviewRender} />
             <Route exact path={`${url}/contracts`} render={ContractsRender} />
             <Route exact path={`${url}/agents`} render={AgentsRender} />
+            <Route exact path={`agency/${agencyCode}/branch/${branchCode}`} render={BranchRender} />
           </div>
         </main>
       </div>

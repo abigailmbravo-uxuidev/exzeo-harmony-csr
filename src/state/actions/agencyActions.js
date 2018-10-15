@@ -487,10 +487,11 @@ export async function saveNewBranch(branchData, agencyCode) {
 export function createBranch(branchData, agencyCode) {
   return async (dispatch) => {
     try {
-      const agency = await saveNewBranch(branchData, agencyCode);
-      dispatch(setAgency(agency));
+      const branch = await saveNewBranch(branchData, agencyCode);
+      return branch;
     } catch (error) {
       dispatch(errorActions.setAppError(error));
+      return null;
     }
   };
 }
