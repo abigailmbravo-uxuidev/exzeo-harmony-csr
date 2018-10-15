@@ -45,9 +45,9 @@ export class AddBranch extends Component {
               <section className="agency-details">
                 <div className="agency-contact">
                   <Field
-                    name="branchName"
-                    dataTest="branchName"
-                    styleName="branchName flex-item"
+                    name="displayName"
+                    dataTest="displayName"
+                    styleName="displayName"
                     label="Branch Name"
                     validate={validation.isRequired}
                     component={Input} />
@@ -55,7 +55,7 @@ export class AddBranch extends Component {
                     id="status"
                     name="status"
                     dataTest="status"
-                    styleName="status flex-item"
+                    styleName="status"
                     label="Status"
                     component={Select}
                     validate={validation.isRequired}
@@ -65,17 +65,17 @@ export class AddBranch extends Component {
                 <div className="agency-web-address">
                   <Field
                     label="Web Address"
-                    styleName="webAddress flex-item"
-                    name="webAddress"
-                    dataTest="webAddress"
+                    styleName="websiteUrl"
+                    name="websiteUrl"
+                    dataTest="websiteUrl"
                     component={Input}
-                    validate={validation.isRequired} />
+                    validate={[validation.isRequired, validation.isWebAddress]} />
                 </div>
                 <div className="agemcny-mail">
                   <Field
                     name="mailCommissionChecksToBranch"
                     dataTest="mailCommissionChecksToBranch"
-                    styleName="mailCommissionChecksToBranch flex-item"
+                    styleName="mailCommissionChecksToBranch"
                     label="Mail Commision Checks to this Branch"
                     component={Radio}
                     validate={validation.isRequired}
@@ -84,7 +84,7 @@ export class AddBranch extends Component {
                   <Field
                     name="mailPolicyDocsToBranch"
                     dataTest="mailPolicyDocsToBranch"
-                    styleName="mailPolicyDocsToBranch flex-item"
+                    styleName="mailPolicyDocsToBranch"
                     label="Mail Policy Docs to this Branch"
                     component={Radio}
                     validate={validation.isRequired}

@@ -9,6 +9,7 @@ import DetailView from '../DetailView';
 import ContactView from '../ContactView';
 import AddressView from '../AddressView';
 import AgentModal from '../AgentModal';
+import { getEditModalInitialValues } from '../../../state/selectors/agency.selector';
 
 export class Overview extends React.Component {
   state = {
@@ -41,7 +42,7 @@ export class Overview extends React.Component {
 
   render() {
     const {
-      agency, territoryManagers, agentOfRecord
+      agency, territoryManagers, agentOfRecord, addressInitialValues
     } = this.props;
     const {
       showEditDetailsModal, showEditAddressModal, showEditContactModal, showEditPrincipalModal, showEditAgentModal
@@ -92,7 +93,7 @@ export class Overview extends React.Component {
           </div>
         </div>
         {showEditDetailsModal && <AgencyModal initialValues={agency} closeModal={this.onHandleToggleEditDetailsModal} />}
-        {showEditAddressModal && <AgencyAddressModal initialValues={agency} closeModal={this.onHandleToggleEditAddressModal} />}
+        {showEditAddressModal && <AgencyAddressModal initialValues={addressInitialValues} closeModal={this.onHandleToggleEditAddressModal} />}
         {showEditContactModal &&
           <AgencyContactModal header="Edit Contact" section="contact" initialValues={agency.contact} closeModal={this.onHandleToggleEditContactModal} />
         }

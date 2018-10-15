@@ -64,7 +64,11 @@ export class Branch extends React.Component {
                 </button>
               </h3>
               <section className="agency-details">
-                <DetailView agency={agency} />
+                <DetailView
+                  agency={agency}
+                  branchName={selectedBranch.displayName}
+                  mailCommissionChecksToBranch={selectedBranch.mailCommissionChecksToBranch}
+                  mailPolicyDocsToBranch={selectedBranch.mailPolicyDocsToBranch} />
                 <hr />
                 <ContactView agency={agency} emailType="CSR" />
               </section>
@@ -94,7 +98,7 @@ export class Branch extends React.Component {
           </div>
         </div>
         {showEditDetailsModal && <AgencyModal initialValues={agency} closeModal={this.onHandleToggleEditDetailsModal} />}
-        {showEditAddressModal && <AgencyAddressModal initialValues={agency.branches[branchCode - 1]} closeModal={this.onHandleToggleEditAddressModal} />}
+        {showEditAddressModal && <AgencyAddressModal initialValues={selectedBranch} branchCode={branchCode} closeModal={this.onHandleToggleEditAddressModal} />}
         {showEditContactModal &&
           <AgencyContactModal header="Edit Contact" section="contact" agency={agency} branchCode={branchCode} initialValues={selectedBranch} closeModal={this.onHandleToggleEditContactModal} />
         }

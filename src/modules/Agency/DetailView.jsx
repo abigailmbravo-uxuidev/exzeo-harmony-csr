@@ -1,6 +1,9 @@
 import React from 'react';
+import moment from 'moment';
 
-const DetailView = ({ agency }) => {
+const DetailView = ({
+  agency, branchName, mailCommissionChecksToBranch, mailPolicyDocsToBranch
+}) => {
   return (
     <React.Fragment>
       <div className="agencyCode">
@@ -49,12 +52,26 @@ const DetailView = ({ agency }) => {
       </div>
       <div className="eoExpirationDate">
         <label>EO Expiration Date</label>
-        <div>{agency.eoExpirationDate}</div>
+        <div>{moment(agency.eoExpirationDate).format('MM/DD/YYYY')}</div>
       </div>
+      {branchName &&
       <div className="branchName">
         <label>Branch Name</label>
-        <div>{agency.branchName}</div>
+        <div>{branchName}</div>
       </div>
+      }
+      {branchName &&
+      <div className="mailCommisionChecksToBranch">
+        <label>Mail Commision Checks to this Branch</label>
+        <div>{mailCommissionChecksToBranch ? 'Yes' : 'No'}</div>
+      </div>
+      }
+      {branchName &&
+      <div className="mailPolicyDocsToBranch">
+        <label>Mail Policy Docs to this Branch</label>
+        <div>{mailPolicyDocsToBranch ? 'Yes' : 'No'}</div>
+      </div>
+      }
     </React.Fragment>
   );
 };
