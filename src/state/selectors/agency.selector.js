@@ -52,9 +52,12 @@ export const getBranchesList = createSelector(
   [getAgency],
   (agency) => {
     if (!agency || !agency.branches || !Array.isArray(agency.branches)) return [];
-    return agency.branches.map(b => ({
+    const branches = agency.branches.map(b => ({
       answer: b.branchCode,
-      label: b.displayName
+      label: `${b.branchCode}: ${b.displayName}`
     }));
+
+    branches.unshift({ answer: '0', label: '0: Main' });
+    return branches;
   }
 );

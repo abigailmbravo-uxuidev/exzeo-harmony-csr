@@ -41,13 +41,15 @@ export class Branch extends React.Component {
 
   render() {
     const {
-      agency, territoryManagers, agentOfRecord
+      agency, territoryManagers, agentOfRecord, branchCode
     } = this.props;
     const {
       showEditDetailsModal, showEditAddressModal, showEditContactModal, showEditPrincipalModal, showEditAgentModal
     } = this.state;
 
     if (!agency || !agency.physicalAddress) return <span />;
+
+    const selectedBranch = agency.branches[branchCode - 1];
 
     return (
       <div className="route-content-wrapper">
@@ -82,7 +84,7 @@ export class Branch extends React.Component {
               </section>
               <h4>Contact</h4>
               <section className="agency-contact">
-                <ContactCard contact={agency.contact} handleClick={this.onHandleToggleEditContactModal} />
+                <ContactCard contact={selectedBranch.contact} handleClick={this.onHandleToggleEditContactModal} />
               </section>
               <h4>Agent Of Record</h4>
               <section name="agentOfRecord">
@@ -92,9 +94,9 @@ export class Branch extends React.Component {
           </div>
         </div>
         {showEditDetailsModal && <AgencyModal initialValues={agency} closeModal={this.onHandleToggleEditDetailsModal} />}
-        {showEditAddressModal && <AgencyAddressModal initialValues={agency} closeModal={this.onHandleToggleEditAddressModal} />}
+        {showEditAddressModal && <AgencyAddressModal initialValues={agency.branches[branchCode - 1]} closeModal={this.onHandleToggleEditAddressModal} />}
         {showEditContactModal &&
-          <AgencyContactModal header="Edit Contact" section="contact" initialValues={agency.contact} closeModal={this.onHandleToggleEditContactModal} />
+          <AgencyContactModal header="Edit Contact" section="contact" agency={agency} branchCode={branchCode} initialValues={selectedBranch} closeModal={this.onHandleToggleEditContactModal} />
         }
         {showEditPrincipalModal &&
           <AgencyContactModal header="Edit Officer" section="principal" initialValues={agency.principal} closeModal={this.onHandleToggleEditPrincipalModal} />

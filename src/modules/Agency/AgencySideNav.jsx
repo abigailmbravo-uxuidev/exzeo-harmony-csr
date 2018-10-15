@@ -58,10 +58,14 @@ export class SideNav extends React.Component {
 
   handleBranchSelection =(value) => {
     const { agencyCode } = this.props;
-    history.push(`/agency/${agencyCode}/branch/${value}`);
+    if (Number(value) > 0) {
+      history.push(`/agency/${agencyCode}/branch/${value}`);
+    } else {
+      history.push(`/agency/${agencyCode}/overview`);
+    }
   }
   render() {
-    const { agencyCode, branchesList } = this.props;
+    const { agencyCode, branchCode, branchesList } = this.props;
 
     return (
       <form>
@@ -75,8 +79,10 @@ export class SideNav extends React.Component {
                 component={Select}
                 styleName="flex-child"
                 answers={branchesList}
+                showPlaceholder={false}
                 normalize={(v, pv, av) => this.handleBranchSelection(v)} />
             </li>
+            {!branchCode &&
             <li key="newBranch" >
               <button
                 tabIndex="0"
@@ -86,6 +92,7 @@ export class SideNav extends React.Component {
                 <i className="fa fa-plus" />Branch
               </button>
             </li>
+            }
             {csrLinks(agencyCode).map((agentLink, index) => (
               <li key={agentLink.key}>
                 <span className={agentLink.styleName}>
@@ -102,7 +109,6 @@ export class SideNav extends React.Component {
 
 const mapStateToProps = (state, props) => {
   const { branchCode } = props;
-  console.log(props);
   return {
     agency: state.agencyState.agency,
     branchesList: getBranchesList(state),

@@ -9,7 +9,13 @@ import Contact from './components/FormGroup/Contact';
 
 export class AgencyContactModal extends Component {
   saveAgency = async (data, dispatch, props) => {
-    await props.updateAgency(data);
+    const { agency, branchCode } = props;
+    if (branchCode) {
+      agency.branches[branchCode - 1].contact = data.contact;
+      props.updateAgency(agency);
+    } else {
+      await props.updateAgency(data);
+    }
     props.closeModal();
   };
 
@@ -63,13 +69,12 @@ export class AgencyContactModal extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  initialValues: getEditModalInitialValues(state)
-});
+const mapStateToProps = state => state;
 
 export default connect(mapStateToProps, {
   updateAgency
 })(reduxForm({
   form: 'AgencyContactModal',
-  enableReinitialize: true
+  enableReinitialize: true,
+  destroyOnUnmount: false
 })(AgencyContactModal));

@@ -17,7 +17,6 @@ const CreateRender = props => <Create auth={props.auth} {...props} />;
 const ContractsRender = props => <Contracts auth={props.auth} {...props} />;
 const AgentsRender = props => <Agents auth={props.auth} {...props} />;
 const OverviewRender = props => <Overview auth={props.auth} {...props} />;
-const BranchRender = props => <Branch auth={props.auth} {...props} />;
 
 export class Agency extends Component {
   componentDidMount() {
@@ -51,7 +50,7 @@ export class Agency extends Component {
             <Route exact path={`${url}/overview`} render={OverviewRender} />
             <Route exact path={`${url}/contracts`} render={ContractsRender} />
             <Route exact path={`${url}/agents`} render={AgentsRender} />
-            <Route exact path={`agency/${agencyCode}/branch/${branchCode}`} render={BranchRender} />
+            <Route exact path={`/agency/${agencyCode}/branch/${branchCode}`} render={props => <Branch auth={props.auth} {...props} branchCode={branchCode} />} />
           </div>
         </main>
       </div>
