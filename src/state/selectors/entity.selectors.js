@@ -1,16 +1,18 @@
 import { emptyObject } from '@exzeo/core-ui';
 
+// POLICY
 export const getPolicy = state => state.policyState.policy;
 export const getSummaryLedger = state => state.policyState.summaryLedger;
 export const getPaymentOptions = state => state.policyState.paymentOptions;
 export const getPaymentHistory = state => state.policyState.paymentHistory;
-
+// QUOTE
 export const getQuote = state => state.quoteState.quote || emptyObject;
-
+// DIARY
 export const getDiaries = state => state.diaries;
-
+// AGENCY
 export const getAgencies = state => state.service.agencies;
 
+// APP-STATE [DEPRECATED]
 export const getAppState = state => state.appState || emptyObject;
-
+// CG-STATE [DEPRECATED]
 export const getCGState = state => state.cg || emptyObject;
