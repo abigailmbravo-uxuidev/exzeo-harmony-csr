@@ -5,6 +5,7 @@ import { Select } from '@exzeo/core-ui';
 import { connect } from 'react-redux';
 
 import history from '../../history';
+import { getBranchesList } from '../../state/selectors/agency.selector';
 
 import AddBranchModal from './AddBranchModal';
 
@@ -60,19 +61,20 @@ export class SideNav extends React.Component {
     history.push(`/agency/${agencyCode}/branch/${value}`);
   }
   render() {
-    const { agencyCode } = this.props;
+    const { agencyCode, branchesList } = this.props;
+
     return (
       <form>
         <nav className="site-nav">
           <ul>
             <li key="branch">
               <Field
-                dataTest="selectBranch"
-                name="selectBranch"
+                dataTest="selectedBranch"
+                name="selectedBranch"
                 label="Branch"
                 component={Select}
                 styleName="flex-child"
-                answers={[]}
+                answers={branchesList}
                 normalize={(v, pv, av) => this.handleBranchSelection(v)} />
             </li>
             <li key="newBranch" >
@@ -98,9 +100,15 @@ export class SideNav extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  agency: state.agencyState.agency
-});
+const mapStateToProps = (state, props) => {
+  const { branchCode } = props;
+  console.log(props);
+  return {
+    agency: state.agencyState.agency,
+    branchesList: getBranchesList(state),
+    initialValues: { selectedBranch: branchCode }
+  };
+};
 
 export default connect(mapStateToProps, null)(reduxForm({
   form: 'SideNav',

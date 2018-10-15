@@ -44,7 +44,7 @@ export class Agency extends Component {
         <AgencyDetailHeader agency={agency} />
         <main role="document">
           <aside className="content-panel-left">
-            <AgencySideNav agencyCode={agencyCode} location={location} />
+            <AgencySideNav agencyCode={agencyCode} location={location} branchCode={branchCode} />
           </aside>
           <div className="content-wrapper">
             <Route exact path="/agency/new" render={CreateRender} />

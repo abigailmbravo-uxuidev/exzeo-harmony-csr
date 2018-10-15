@@ -48,3 +48,13 @@ export const getAgentOfRecord = createSelector(
   }
 );
 
+export const getBranchesList = createSelector(
+  [getAgency],
+  (agency) => {
+    if (!agency || !agency.branches || !Array.isArray(agency.branches)) return [];
+    return agency.branches.map(b => ({
+      answer: b.branchCode,
+      label: b.displayName
+    }));
+  }
+);
