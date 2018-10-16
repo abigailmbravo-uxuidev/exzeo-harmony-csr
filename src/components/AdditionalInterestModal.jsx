@@ -105,7 +105,6 @@ export class AdditionalInterestModal extends React.Component {
     const {
       additionalInterests,
       addAdditionalInterestType,
-      deleteAdditionalInterest,
       handleSubmit,
       hideModal,
       isDeleting,
@@ -116,8 +115,7 @@ export class AdditionalInterestModal extends React.Component {
       selectedAI,
       submitting,
       validAdditionalInterestTypes,
-      premiumFinanceAnswers,
-      pristine
+      premiumFinanceAnswers
     } = this.props;
 
     return (
@@ -254,8 +252,7 @@ export class AdditionalInterestModal extends React.Component {
             <div className="card-footer">
               <div className="btn-group">
                 <button tabIndex="0" className="btn btn-secondary" type="button" onClick={hideModal}>Cancel</button>
-                {isEditing && <button tabIndex="0" className="btn btn-secondary" type="button" disabled={submitting || isDeleting} onClick={() => deleteAdditionalInterest(selectedAI, this.props)}>Delete</button>}
-                <button tabIndex="0" className="btn btn-primary" type="submit" disabled={pristine || submitting || isDeleting}>Save</button>
+                <button tabIndex="0" className="btn btn-primary" type="submit" disabled={submitting || isDeleting}>Save</button>
               </div>
             </div>
           </div>
