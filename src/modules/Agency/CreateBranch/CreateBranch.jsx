@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { reduxForm, Field, FieldArray, formValueSelector, FormSection } from 'redux-form';
-import { validation, Button, SelectTypeAhead, Input } from '@exzeo/core-ui';
+import { Field, FieldArray, FormSection } from 'redux-form';
+import { validation, Button, SelectTypeAhead } from '@exzeo/core-ui';
 import { Redirect } from 'react-router-dom';
 
-import { getAgency, updateAgency, createBranch, getListOfOrphanedAgents } from '../../../state/actions/agencyActions';
-import { getEditModalInitialValues, getOrphanedAgentsList } from '../../../state/selectors/agency.selector';
 import ExistingAgentModal from '../components/ExistingAgentModal';
 import Address from '../components/Address';
 import territoryManagers from '../components/territoryManagers';
@@ -17,17 +14,18 @@ import BranchDetails from './BranchDetails';
 
 export class CreateBranch extends Component {
   state = {
-    showAddExistingAgentModal: false
+    showAddExistingAgentModal: false,
+    branchCode: null
   }
   createBranch = async (data, dispatch, props) => {
-    data.agentOfRecord.status = 'Active';
     data.mailingAddress.country = {
       code: 'USA',
       displayText: 'United States of America'
     };
-    data.physicalAddress.country = data.mailingAddress.country;
-    data.physicalAddress.county = data.mailingAddress.county;
-    await props.createBranch(data);
+    data.territoryManagerId = data.territoryManager._id;
+    data.agentOfRecord = this.props.agency.agentOfRecord;
+    const branch = await props.createBranch(data, this.props.agency.agencyCode);
+    this.setState({ branchCode: branch.branchCode });
   };
 
   handleToggleExistingAgentModal = () => {
@@ -90,7 +88,7 @@ export class CreateBranch extends Component {
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
               <form onSubmit={handleSubmit(this.createBranch)}>
-                {branchCode && <Redirect replace to={`/agency/${agency.agencyCode}/branch/${branchCode}`} />}
+                {this.state.branchCode && <Redirect replace to={`/agency/${agency.agencyCode}/branch/${branchCode}`} />}
                 <h3>Details</h3>
                 <section className="agency-details">
                   <BranchDetails />
@@ -123,8 +121,8 @@ export class CreateBranch extends Component {
                     </FormSection>
                     <Field
                       label="Terretory Managers"
-                      name="territoryManagerId"
-                      dataTest="territoryManagerId"
+                      name="territoryManager"
+                      dataTest="territoryManager"
                       component={SelectTypeAhead}
                       valueKey="_id"
                       labelKey="name"
@@ -132,66 +130,29 @@ export class CreateBranch extends Component {
                       validate={validation.isRequired} />
                   </div>
                 </section>
-                <h3>Officer</h3>
-                <section className="agency-principal">
-                  <FormSection name="principal" >
-                    <Contact testPrefix="principal" />
-                  </FormSection>
-                </section>
                 <h3>Contact</h3>
                 <section className="agency-contact">
                   <FormSection name="contact" >
                     <Contact testPrefix="contact" />
                   </FormSection>
                 </section>
-                <h3>Agent Of Record <button onClick={this.handleToggleExistingAgentModal} className="btn btn-link btn-sm"><i className="fa fa-user" />Use Existing Agent</button></h3>
-                <section className="agency-aor">
-                  <div className="agency-detail">
-                    <FormSection name="agentOfRecord">
-                      <Agent />
-                    </FormSection>
-                  </div>
-                  <div className="agency-license">
-                    <FieldArray
-                      name="licenses"
-                      component={License}
-                      licenseValue={licenseValue} />
-                  </div>
-                </section>
+                <div className="basic-footer btn-footer">
+                  <Button dataTest="resetButton" baseClass="secondary" onClick={this.handleResetForm}>Cancel</Button>
+                  <Button dataTest="submitButton" baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
+                </div>
               </form>
             </div>
           </div>
         </div>
-        <div className="basic-footer btn-footer">
-          <Button dataTest="resetButton" baseClass="secondary" onClick={this.handleResetForm}>Cancel</Button>
-          <Button dataTest="submitButton" baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
-        </div>
-        {this.state.showAddExistingAgentModal &&
+        {/* {this.state.showAddExistingAgentModal &&
         <ExistingAgentModal
           listOfAgents={orphans}
           onToggleModal={this.handleToggleExistingAgentModal}
           handleSelection={this.applyOrphanedAgent} />
-      }
+      } */}
       </div>
     );
   }
 }
-const selector = formValueSelector('CreateBranch');
-const mapStateToProps = state => ({
-  orphans: getOrphanedAgentsList(state),
-  agency: state.agencyState.agency,
-  initialValues: {
-    licenses: [{
-      state: '', license: '', licenseType: '', licenseEffectiveDate: ''
-    }]
-  },
-  sameAsMailingValue: selector(state, 'sameAsMailing'),
-  licenseValue: selector(state, 'licenses')
-});
 
-export default connect(mapStateToProps, {
-  getAgency, updateAgency, createBranch
-})(reduxForm({
-  form: 'CreateBranch',
-  enableReinitialize: true
-})(CreateBranch));
+export default CreateBranch;
