@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 
 const DetailView = ({
-  agency, branchName, mailCommissionChecksToBranch, mailPolicyDocsToBranch
+  agency, branchName, mailCommissionChecksToBranch, mailPolicyDocsToBranch, branchURL
 }) => {
   return (
     <React.Fragment>
@@ -37,8 +37,8 @@ const DetailView = ({
       <div className="webAddress">
         <label>Web Address</label>
         <div>
-          <a href={agency.websiteUrl} target="_blank">
-            {agency.websiteUrl}
+          <a href={branchURL || agency.websiteUrl} target="_blank">
+            {branchURL || agency.websiteUrl}
           </a>
         </div>
       </div>

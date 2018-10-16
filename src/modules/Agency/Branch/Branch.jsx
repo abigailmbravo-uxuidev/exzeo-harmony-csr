@@ -40,7 +40,7 @@ export class Branch extends React.Component {
   }
 
   onHandleNewBranch = async (data, dispatch, props) => {
-    const { agency, branchCode, updateAgencyAction } = props;
+    const { agency, branchCode } = props;
     const branch = agency.branches[branchCode - 1];
 
     branch.websiteUrl = data.websiteUrl;
@@ -48,8 +48,7 @@ export class Branch extends React.Component {
     branch.mailCommissionChecksToBranch = data.mailCommissionChecksToBranch;
     branch.mailPolicyDocsToBranch = data.mailPolicyDocsToBranch;
     branch.status = data.status;
-    console.log(agency);
-    await updateAgencyAction(agency);
+    await this.props.updateAgencyAction(agency);
     this.onHandleToggleEditDetailsModal();
   }
 
@@ -80,6 +79,7 @@ export class Branch extends React.Component {
               <section className="agency-details">
                 <DetailView
                   agency={agency}
+                  branchURL={selectedBranch.websiteUrl}
                   branchName={selectedBranch.displayName}
                   mailCommissionChecksToBranch={selectedBranch.mailCommissionChecksToBranch}
                   mailPolicyDocsToBranch={selectedBranch.mailPolicyDocsToBranch} />

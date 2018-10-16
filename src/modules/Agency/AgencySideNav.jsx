@@ -45,17 +45,12 @@ const csrLinks = agencyCode => [{
   exact: true
 }];
 
-export const onHandleNewBranch = ({ agencyCode }) => {
-
-};
 export class SideNav extends React.Component {
-  state = {
-    showBranchModal: false
-  }
-
-  handleShowBranchModal = () => {
-    this.setState({ showBranchModal: !this.state.showBranchModal });
-  }
+  // onHandleNewBranch = async (data, dispatch, props) => {
+  //   const branch = await this.props.createBranch(data, this.props.agencyCode);
+  //   history.push(`/agency/${props.agencyCode}/branch/${branch.branchCode}`);
+  //   this.handleShowBranchModal();
+  // };
 
   handleBranchSelection =(value) => {
     const { agencyCode } = this.props;
@@ -66,21 +61,16 @@ export class SideNav extends React.Component {
     }
   }
 
-  onHandleNewBranch = async (data, dispatch, props) => {
-    const branch = await this.props.createBranch(data, this.props.agencyCode);
-    history.push(`/agency/${props.agencyCode}/branch/${branch.branchCode}`);
-    this.handleShowBranchModal();
-  };
-
   render() {
     const {
-      agencyCode, branchCode, branchesList, branchInitialValues
+      agencyCode, branchCode, branchesList
     } = this.props;
 
     return (
       <form>
         <nav className="site-nav">
           <ul>
+            {agencyCode !== 'new' &&
             <li key="branch">
               <Field
                 dataTest="selectedBranch"
@@ -92,15 +82,16 @@ export class SideNav extends React.Component {
                 showPlaceholder={false}
                 normalize={(v, pv, av) => this.handleBranchSelection(v)} />
             </li>
-            {!branchCode &&
+            }
+            {!branchCode && agencyCode !== 'new' &&
             <li key="newBranch" >
-              <button
+              <NavLink
+                to={`/agency/${agencyCode}/newBranch`}
                 tabIndex="0"
                 className="btn btn-primary btn-block btn-small"
-                onClick={this.handleShowBranchModal}
                 type="button">
                 <i className="fa fa-plus" />Branch
-              </button>
+              </NavLink>
             </li>
             }
             {csrLinks(agencyCode).map((agentLink, index) => (
@@ -111,7 +102,6 @@ export class SideNav extends React.Component {
               </li>))
       }
           </ul>
-          {this.state.showBranchModal && <BranchModal initialValues={branchInitialValues} agencyCode={agencyCode} closeModal={this.handleShowBranchModal} handleBranchSubmit={this.onHandleNewBranch} />}
         </nav>
       </form>);
   }
