@@ -179,16 +179,11 @@ const setPropertyToggle = (props) => {
 export class MailingAddressBilling extends Component {
   componentDidMount() {
     const {
-      setAppStateAction, getQuoteAction, getBillingOptionsAction,
-      appState, match: { params: { quoteId } }
+      getQuoteAction, getBillingOptionsAction,
+      match: { params: { quoteId } }
     } = this.props;
-    setAppStateAction(
-      MODEL_NAME, appState.instanceId,
-      {
-        ...appState.data,
-        submitting: true
-      }
-    );
+    this.setPageLoader(true);
+
 
     getQuoteAction(quoteId, 'mailing')
       .then((quoteData) => {
@@ -207,14 +202,20 @@ export class MailingAddressBilling extends Component {
 
           getBillingOptionsAction(paymentOptions);
         }
-        setAppStateAction(
-          MODEL_NAME, appState.instanceId,
-          {
-            ...appState.data,
-            submitting: false
-          }
-        );
+        this.setPageLoader(false);
       });
+  }
+
+  setPageLoader = (isSubmitting) => {
+    const { setAppStateAction, appState } = this.props;
+    setAppStateAction(
+      MODEL_NAME, '',
+      {
+        ...appState.data,
+        selectedLink: 'mailing',
+        submitting: isSubmitting
+      }
+    );
   }
 
   render() {
@@ -321,7 +322,14 @@ export class MailingAddressBilling extends Component {
           <Footer />
           <div className="btn-wrapper">
             <button tabIndex="0" aria-label="reset-btn form-mailingBilling" className="btn btn-secondary" type="button" onClick={() => clearForm(this.props)}>Reset</button>
-            <button tabIndex="0" aria-label="submit-btn form-mailingBilling" className="btn btn-primary" type="submit" form="MailingAddressBilling" disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData) || !this.props.fieldValues.billToId}>Update</button>
+            <button
+              tabIndex="0"
+              aria-label="submit-btn form-mailingBilling"
+              className="btn btn-primary"
+              type="submit"
+              form="MailingAddressBilling"
+              disabled={this.props.appState.data.submitting || pristine || checkQuoteState(quoteData) || !this.props.fieldValues.billToId}>Update
+            </button>
           </div>
         </div>
       </QuoteBaseConnect>
@@ -333,16 +341,14 @@ MailingAddressBilling.contextTypes = {
 };
 
 MailingAddressBilling.propTypes = {
-  tasks: PropTypes.shape(),
   appState: PropTypes.shape({
     modelName: PropTypes.string,
     instanceId: PropTypes.string,
-    data: PropTypes.shape({ submitting: PropTypes.boolean })
+    data: PropTypes.shape({ submitting: PropTypes.bool })
   })
 };
 
 const mapStateToProps = state => ({
-  tasks: state.cg,
   appState: state.appState,
   fieldValues: _.get(state.form, 'MailingAddressBilling.values', {}),
   initialValues: handleInitialize(state),
