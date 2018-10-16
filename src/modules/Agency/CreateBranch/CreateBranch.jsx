@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import { Field, FieldArray, FormSection } from 'redux-form';
+import { Field, FormSection } from 'redux-form';
 import { validation, Button, SelectTypeAhead } from '@exzeo/core-ui';
 import { Redirect } from 'react-router-dom';
 
-import ExistingAgentModal from '../components/ExistingAgentModal';
 import Address from '../components/Address';
 import territoryManagers from '../components/territoryManagers';
-import License from '../components/License';
-import Agent from '../components/FormGroup/Agent';
 import Contact from '../components/FormGroup/Contact';
+import history from '../../../history';
 
 import BranchDetails from './BranchDetails';
 
@@ -53,6 +51,7 @@ export class CreateBranch extends Component {
 
   handleResetForm = () => {
     this.props.reset();
+    history.push(`/agency/${this.props.agency.agencyCode}/overview`);
   };
 
   applyOrphanedAgent = (data) => {
@@ -88,7 +87,7 @@ export class CreateBranch extends Component {
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
               <form onSubmit={handleSubmit(this.createBranch)}>
-                {this.state.branchCode && <Redirect replace to={`/agency/${agency.agencyCode}/branch/${branchCode}`} />}
+                {this.state.branchCode && <Redirect replace to={`/agency/${agency.agencyCode}/branch/${this.state.branchCode}`} />}
                 <h3>Details</h3>
                 <section className="agency-details">
                   <BranchDetails />
