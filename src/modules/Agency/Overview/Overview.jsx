@@ -77,15 +77,15 @@ export class Overview extends React.Component {
               <section className="agency-address">
                 <AddressView agency={agency} territoryManagers={territoryManagers} />
               </section>
-              <h4>Officer</h4>
+              <h3>Officer</h3>
               <section className="agency-principal">
                 <ContactCard contact={agency.principal} handleClick={this.onHandleToggleEditPrincipalModal} />
               </section>
-              <h4>Contact</h4>
+              <h3>Contact</h3>
               <section className="agency-contact">
                 <ContactCard contact={agency.contact} handleClick={this.onHandleToggleEditContactModal} />
               </section>
-              <h4>Agent Of Record</h4>
+              <h3>Agent Of Record</h3>
               <section name="agentOfRecord">
                 {agentOfRecord && agentOfRecord.agentCode && <AgentCard agent={agentOfRecord} handleSecondaryClick={x => x} handlePrimaryClick={this.onHandleToggleEditAgentModal} />}
               </section>
