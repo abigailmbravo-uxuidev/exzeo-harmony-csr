@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { Field, FormSection } from 'redux-form';
+import { Field, FieldArray, FormSection } from 'redux-form';
 import { validation, Button, SelectTypeAhead } from '@exzeo/core-ui';
 import { Redirect } from 'react-router-dom';
 
-import Address from '../components/Address';
-import territoryManagers from '../components/territoryManagers';
+import ExistingAgentModal from '../components/ExistingAgentModal';
+import Agent from '../components/FormGroup/Agent';
 import Contact from '../components/FormGroup/Contact';
+import Address from '../components/Address';
+import License from '../components/License';
+import territoryManagers from '../components/territoryManagers';
 import history from '../../../history';
 
 import BranchDetails from './BranchDetails';
@@ -135,6 +138,20 @@ export class CreateBranch extends Component {
                     <Contact testPrefix="contact" />
                   </FormSection>
                 </section>
+                <h3>Agent Of Record <button onClick={this.handleToggleExistingAgentModal} className="btn btn-link btn-sm"><i className="fa fa-user" />Use Existing Agent</button></h3>
+                <section className="agency-aor">
+                  <div className="agency-detail">
+                    <FormSection name="agentOfRecord">
+                      <Agent />
+                    </FormSection>
+                  </div>
+                  <div className="agency-license">
+                    <FieldArray
+                      name="licenses"
+                      component={License}
+                      licenseValue={licenseValue} />
+                  </div>
+                </section>
                 <div className="basic-footer btn-footer">
                   <Button dataTest="resetButton" baseClass="secondary" onClick={this.handleResetForm}>Cancel</Button>
                   <Button dataTest="submitButton" baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
@@ -143,12 +160,12 @@ export class CreateBranch extends Component {
             </div>
           </div>
         </div>
-        {/* {this.state.showAddExistingAgentModal &&
+        {this.state.showAddExistingAgentModal &&
         <ExistingAgentModal
           listOfAgents={orphans}
           onToggleModal={this.handleToggleExistingAgentModal}
           handleSelection={this.applyOrphanedAgent} />
-      } */}
+      }
       </div>
     );
   }
