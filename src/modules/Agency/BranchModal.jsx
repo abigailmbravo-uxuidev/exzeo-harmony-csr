@@ -3,10 +3,6 @@ import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { Select, Radio, Input, validation } from '@exzeo/core-ui';
 
-import { createBranch } from '../../state/actions/agencyActions';
-import { getEditModalInitialValues } from '../../state/selectors/agency.selector';
-import history from '../../history';
-
 const statusAnswers = [
   { answer: 'Active', label: 'Active' },
   { answer: 'InActive', label: 'InActive' }
@@ -18,23 +14,18 @@ const mailAnswers = [
 ];
 
 
-export class AddBranch extends Component {
-  addBranch = async (data, dispatch, props) => {
-    const branch = await props.createBranch(data, props.agencyCode);
-    history.push(`/agency/${props.agencyCode}/branch/${branch.branchCode}`);
-    props.closeModal();
-  };
-
+export class BranchModal extends Component {
   render() {
     const {
       closeModal,
       handleSubmit,
-      submitting
+      submitting,
+      handleBranchSubmit
     } = this.props;
 
     return (
       <div className="modal agency-crud" style={{ overflow: 'scroll', display: 'block' }}>
-        <form onSubmit={handleSubmit(this.addBranch)}>
+        <form onSubmit={handleSubmit(handleBranchSubmit)}>
           <div className="card">
             <div className="card-header">
               <h4>
@@ -78,7 +69,6 @@ export class AddBranch extends Component {
                     styleName="mailCommissionChecksToBranch"
                     label="Mail Commision Checks to this Branch"
                     component={Radio}
-                    validate={validation.isRequired}
                     segmented
                     answers={mailAnswers} />
                   <Field
@@ -87,9 +77,9 @@ export class AddBranch extends Component {
                     styleName="mailPolicyDocsToBranch"
                     label="Mail Policy Docs to this Branch"
                     component={Radio}
-                    validate={validation.isRequired}
                     segmented
                     answers={mailAnswers} />
+
                 </div>
               </section>
             </div>
@@ -118,13 +108,10 @@ export class AddBranch extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  initialValues: getEditModalInitialValues(state)
-});
+const mapStateToProps = state => state;
 
-export default connect(mapStateToProps, {
-  createBranch
-})(reduxForm({
-  form: 'AddBranch',
-  enableReinitialize: true
-})(AddBranch));
+export default connect(mapStateToProps, null)(reduxForm({
+  form: 'BranchModal',
+  enableReinitialize: true,
+  destroyOnUnmount: false
+})(BranchModal));
