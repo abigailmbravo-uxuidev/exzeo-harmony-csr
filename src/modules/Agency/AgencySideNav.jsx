@@ -4,10 +4,11 @@ import { reduxForm, Field } from 'redux-form';
 import { Select } from '@exzeo/core-ui';
 import { connect } from 'react-redux';
 
+import { createBranch } from '../../state/actions/agencyActions';
+import { getBranchesList, getBranchInitialValues } from '../../state/selectors/agency.selector';
 import history from '../../history';
-import { getBranchesList } from '../../state/selectors/agency.selector';
 
-import AddBranchModal from './AddBranchModal';
+import BranchModal from './BranchModal';
 
 const csrLinks = agencyCode => [{
   key: 'overview',
@@ -64,8 +65,17 @@ export class SideNav extends React.Component {
       history.push(`/agency/${agencyCode}/overview`);
     }
   }
+
+  onHandleNewBranch = async (data, dispatch, props) => {
+    const branch = await this.props.createBranch(data, this.props.agencyCode);
+    history.push(`/agency/${props.agencyCode}/branch/${branch.branchCode}`);
+    this.handleShowBranchModal();
+  };
+
   render() {
-    const { agencyCode, branchCode, branchesList } = this.props;
+    const {
+      agencyCode, branchCode, branchesList, branchInitialValues
+    } = this.props;
 
     return (
       <form>
@@ -101,7 +111,7 @@ export class SideNav extends React.Component {
               </li>))
       }
           </ul>
-          {this.state.showBranchModal && <AddBranchModal agencyCode={agencyCode} closeModal={this.handleShowBranchModal} />}
+          {this.state.showBranchModal && <BranchModal initialValues={branchInitialValues} agencyCode={agencyCode} closeModal={this.handleShowBranchModal} handleBranchSubmit={this.onHandleNewBranch} />}
         </nav>
       </form>);
   }
@@ -112,11 +122,12 @@ const mapStateToProps = (state, props) => {
   return {
     agency: state.agencyState.agency,
     branchesList: getBranchesList(state),
-    initialValues: { selectedBranch: branchCode }
+    initialValues: { selectedBranch: branchCode },
+    branchInitialValues: getBranchInitialValues(state)
   };
 };
 
-export default connect(mapStateToProps, null)(reduxForm({
+export default connect(mapStateToProps, { createBranch })(reduxForm({
   form: 'SideNav',
   enableReinitialize: true
 })(SideNav));

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import AgencyModal from '../AgencyModal';
+import BranchModal from '../BranchModal';
 import AgencyAddressModal from '../AgencyAddressModal';
 import ContactCard from '../components/ContactCard';
 import AgentCard from '../components/AgentCard';
@@ -37,6 +37,20 @@ export class Branch extends React.Component {
 
   onHandleToggleEditAgentModal = () => {
     this.setState({ showEditAgentModal: !this.state.showEditAgentModal });
+  }
+
+  onHandleNewBranch = async (data, dispatch, props) => {
+    const { agency, branchCode, updateAgencyAction } = props;
+    const branch = agency.branches[branchCode - 1];
+
+    branch.websiteUrl = data.websiteUrl;
+    branch.displayName = data.displayName;
+    branch.mailCommissionChecksToBranch = data.mailCommissionChecksToBranch;
+    branch.mailPolicyDocsToBranch = data.mailPolicyDocsToBranch;
+    branch.status = data.status;
+    console.log(agency);
+    await updateAgencyAction(agency);
+    this.onHandleToggleEditDetailsModal();
   }
 
   render() {
@@ -97,7 +111,7 @@ export class Branch extends React.Component {
             </div>
           </div>
         </div>
-        {showEditDetailsModal && <AgencyModal initialValues={agency} closeModal={this.onHandleToggleEditDetailsModal} />}
+        {showEditDetailsModal && <BranchModal {...this.props} initialValues={selectedBranch} agencyCode={agency.agencyCode} closeModal={this.onHandleToggleEditDetailsModal} handleBranchSubmit={this.onHandleNewBranch} />}
         {showEditAddressModal && <AgencyAddressModal initialValues={selectedBranch} branchCode={branchCode} closeModal={this.onHandleToggleEditAddressModal} />}
         {showEditContactModal &&
           <AgencyContactModal header="Edit Contact" section="contact" agency={agency} branchCode={branchCode} initialValues={selectedBranch} closeModal={this.onHandleToggleEditContactModal} />

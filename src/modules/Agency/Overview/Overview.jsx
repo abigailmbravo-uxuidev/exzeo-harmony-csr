@@ -9,7 +9,6 @@ import DetailView from '../DetailView';
 import ContactView from '../ContactView';
 import AddressView from '../AddressView';
 import AgentModal from '../AgentModal';
-import { getEditModalInitialValues } from '../../../state/selectors/agency.selector';
 
 export class Overview extends React.Component {
   state = {

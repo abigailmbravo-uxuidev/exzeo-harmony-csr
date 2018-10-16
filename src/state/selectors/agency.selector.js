@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect';
 import isEqual from 'lodash/isEqual';
-import moment from 'moment';
 
 const getAgency = state => state.agencyState.agency;
 
@@ -59,5 +58,20 @@ export const getBranchesList = createSelector(
 
     branches.unshift({ answer: '0', label: '0: Main' });
     return branches;
+  }
+);
+
+export const getBranchInitialValues = createSelector(
+  [getAgency],
+  (agency) => {
+    if (!agency || !agency.agencyCode) return {};
+
+    const {
+      physicalAddress, mailingAddress, territoryManagerId, contact
+    } = agency;
+
+    return {
+      physicalAddress, mailingAddress, territoryManagerId, contact
+    };
   }
 );
