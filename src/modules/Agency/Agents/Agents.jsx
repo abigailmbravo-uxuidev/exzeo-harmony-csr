@@ -95,23 +95,9 @@ export class Agents extends Component {
   };
 
   handleRemoveAgent = async (data) => {
-    const { agency, updateAgency } = this.props;
-    const updatedAgency = cloneDeep(agency);
-
-    updatedAgency.license.forEach((l) => {
-      const licenseIndex = agency.license.findIndex(li => li.licenseNumber === l.licenseNumber);
-      const agentIndex = l.agent.findIndex(a => Number(a.agentCode) === Number(data.agentCode));
-
-      if (agentIndex !== -1) {
-        l.agent.splice(agentIndex, 1);
-      }
-      if (licenseIndex !== -1) {
-        agency.license.splice(licenseIndex, 1, l);
-      }
-    });
-    // noinspection JSUnusedLocalSymbols
-    const { createdAt, createdBy, ...selectedAgency } = updatedAgency;
-    await updateAgency(selectedAgency);
+    const { agency: { agencyCode }, updateAgent } = this.props;
+    data.agencies = data.agencies.filter(a => a.agencyCode !== agencyCode);
+    await updateAgent(data, agencyCode);
     this.toggleRemoveAgentModal();
   };
 
@@ -126,8 +112,6 @@ export class Agents extends Component {
       agents,
       orphans
     } = this.props;
-
-    console.log(orphans);
 
     return (
       <div className="route-content">
