@@ -8,7 +8,7 @@ export const AgentsCard = ({
   agentIndex,
   handleEditAgent,
   handleRemoveAgent,
-  isPrimaryAgent
+  handleSwitchAOR
 }) => (
   <div className="agency agent contact card">
     <div className="contact-title">
@@ -58,6 +58,12 @@ export const AgentsCard = ({
           </div>
         </div>
         <div className="card-actions">
+          {String(agency.agentOfRecord) === String(agent.agentCode) &&
+          <Button
+            baseClass="link"
+            size="small"
+            onClick={() => handleSwitchAOR(agentIndex)}><i className="fa fa-times-circle" />Switch AOR
+          </Button>}
           <Button
             baseClass="link"
             size="small"

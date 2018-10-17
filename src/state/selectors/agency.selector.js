@@ -35,14 +35,23 @@ export const getOrphanedAgentsList = createSelector(
   }
 );
 
+export const getAgentsList = createSelector(
+  [getAgents],
+  (agents) => {
+    if (!agents || !Array.isArray(agents)) return [];
+    return agents.map(o => ({
+      displayText: `${o.firstName} ${o.lastName}`,
+      ...o
+    }));
+  }
+);
+
+
 export const getAgentOfRecord = createSelector(
   [getAgency, getAgents],
   (agency, agents) => {
     if (!agency || !agency.agencyCode || !agents || !Array.isArray(agents)) return {};
-    const agentOfRecord = agents.filter((a) => {
-      if (a.agencies.filter(ag => ag.agencyCode === agency.agencyCode).length > 0) { return a; }
-      return null;
-    });
+    const agentOfRecord = agents.filter(a => String(a.agentCode) === String(agency.agentOfRecord));
     return Array.isArray(agentOfRecord) && agentOfRecord.length > 0 ? agentOfRecord[0] : {};
   }
 );

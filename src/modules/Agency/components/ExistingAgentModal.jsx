@@ -14,7 +14,8 @@ export class ExistingAgentModal extends Component {
       handleSubmit,
       listOfAgents,
       submitting,
-      onToggleModal
+      onToggleModal,
+      header
     } = this.props;
 
     return (
@@ -22,7 +23,7 @@ export class ExistingAgentModal extends Component {
         <form onSubmit={handleSubmit(handleSelection)}>
           <div className="card">
             <div className="card-header">
-              <h4> <i className="fa fa-address-book" /> Existing Agent</h4>
+              <h4> <i className="fa fa-address-book" /> {header}</h4>
             </div>
             <div className="card-block">
               <section className="existing-agent-details">

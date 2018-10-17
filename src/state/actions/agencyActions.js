@@ -150,11 +150,11 @@ export function updateAgency(agencyData) {
  * @param agentData
  * @returns {Function}
  */
-export function addAgent(agentData) {
+export function addAgent(agentData, agencyCode) {
   return async (dispatch) => {
     try {
       await addNewAgent(agentData);
-      dispatch(getAgentsByAgencyCode(agentData.agencyCode));
+      dispatch(getAgentsByAgencyCode(agencyCode));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
@@ -307,7 +307,7 @@ export async function addNewAgent(agentData) {
     const config = {
       service: 'agency',
       method: 'POST',
-      path: 'v1/agent',
+      path: 'agents',
       data: agentData
     };
     const response = await serviceRunner.callService(config);
