@@ -169,7 +169,7 @@ export function addAgent(agentData) {
 export function updateAgent(agentData, agencyCode) {
   return async (dispatch) => {
     try {
-      await saveAgent(agentData);
+      await saveAgent(agentData, agencyCode);
       dispatch(getAgentsByAgencyCode(agencyCode));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
@@ -227,7 +227,7 @@ export async function fetchAgentsByAgencyCode(agencyCode) {
     const config = {
       service: 'agency',
       method: 'GET',
-      path: `agencies/${agencyCode}/agents/`
+      path: `agencies/${agencyCode}/agents`
     };
     const response = await serviceRunner.callService(config);
     return response.data && response.data.result ? response.data.result : [];

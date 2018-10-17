@@ -5,7 +5,7 @@ import { validation } from '@exzeo/core-ui';
 import Button from '@exzeo/core-ui/lib/Button';
 import AgentsCard from './AgentsCard';
 import AgentDetailModal from './AgentModal';
-import AddExistingAgentModal from './ExistingAgentModal';
+import AddExistingAgentModal from '../components/ExistingAgentModal';
 import RemoveAgentModal from './RemoveAgentModal';
 
 
@@ -70,8 +70,9 @@ export class Agents extends Component {
   };
 
   handleAddExistingAgent = async (data) => {
-    const { addAgentToAgency, agency } = this.props;
-    await addAgentToAgency(data, agency);
+    const { updateAgent, agency, branchCode } = this.props;
+    data.selectedAgent.agencies.push({ agencyCode: agency.agencyCode, branchCode });
+    await updateAgent(data.selectedAgent, agency.agencyCode);
     this.toggleExistingAgentModal();
   };
 
@@ -123,8 +124,10 @@ export class Agents extends Component {
       agency,
       agencyLicenseArray,
       agents,
-      listOfAgents
+      orphans
     } = this.props;
+
+    console.log(orphans);
 
     return (
       <div className="route-content">
@@ -172,9 +175,9 @@ export class Agents extends Component {
           <AddExistingAgentModal
             agencyLicenseArray={agencyLicenseArray}
             existsInAgencyLicense={this.isInAgencyLicenseArray()}
-            listOfAgents={listOfAgents}
-            toggleModal={this.toggleExistingAgentModal}
-            handleSaveAgent={this.handleAddExistingAgent} />
+            listOfAgents={orphans}
+            onToggleModal={this.toggleExistingAgentModal}
+            handleSelection={this.handleAddExistingAgent} />
         }
         {this.state.showRemoveAgentModal &&
           <RemoveAgentModal
