@@ -6,7 +6,7 @@ export const ContactCard = ({ contact, handleClick }) => (
       <i className="fa fa-address-card" />
     </div>
     <div className="contact-details">
-      <h4><strong>{`${contact.firstName} ${contact.lastName}`} | Officer</strong></h4>
+      <h4><strong>{`${contact.firstName} ${contact.lastName}`}</strong> | Officer</h4>
       <div className="additional-contacts">
         <ul>
           <li>
