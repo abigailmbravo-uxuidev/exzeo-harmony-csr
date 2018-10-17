@@ -124,6 +124,7 @@ export class CreateBranch extends Component {
                     <Field
                       label="Terretory Managers"
                       name="territoryManager"
+                      styleName="territoryManagerId"
                       dataTest="territoryManager"
                       component={SelectTypeAhead}
                       valueKey="_id"

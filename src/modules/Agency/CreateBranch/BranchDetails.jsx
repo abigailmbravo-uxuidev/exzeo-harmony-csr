@@ -16,53 +16,45 @@ const mailAnswers = [
 const BranchDetails = (agencyCodeDisabled) => {
   return (
     <React.Fragment>
-      <div className="agency-contact">
-        <Field
-          name="displayName"
-          dataTest="displayName"
-          styleName="displayName"
-          label="Branch Name"
-          validate={validation.isRequired}
-          component={Input} />
-        <Field
-          id="status"
-          name="status"
-          dataTest="status"
-          styleName="status"
-          label="Status"
-          component={Select}
-          validate={validation.isRequired}
-          answers={statusAnswers} />
-
-      </div>
-      <div className="agency-web-address">
-        <Field
-          label="Web Address"
-          styleName="websiteUrl"
-          name="websiteUrl"
-          dataTest="websiteUrl"
-          component={Input}
-          validate={[validation.isRequired, validation.isWebAddress]} />
-      </div>
-      <div className="agemcny-mail">
-        <Field
-          name="mailCommissionChecksToBranch"
-          dataTest="mailCommissionChecksToBranch"
-          styleName="mailCommissionChecksToBranch"
-          label="Mail Commision Checks to this Branch"
-          component={Radio}
-          segmented
-          answers={mailAnswers} />
-        <Field
-          name="mailPolicyDocsToBranch"
-          dataTest="mailPolicyDocsToBranch"
-          styleName="mailPolicyDocsToBranch"
-          label="Mail Policy Docs to this Branch"
-          component={Radio}
-          segmented
-          answers={mailAnswers} />
-
-      </div>
+      <Field
+        name="displayName"
+        dataTest="displayName"
+        styleName="branchName"
+        label="Branch Name"
+        validate={validation.isRequired}
+        component={Input} />
+      <Field
+        label="Web Address"
+        styleName="webAddress"
+        name="websiteUrl"
+        dataTest="websiteUrl"
+        component={Input}
+        validate={[validation.isRequired, validation.isWebAddress]} />
+      <Field
+        id="status"
+        name="status"
+        dataTest="status"
+        styleName="status"
+        label="Status"
+        component={Select}
+        validate={validation.isRequired}
+        answers={statusAnswers} />
+      <Field
+        name="mailCommissionChecksToBranch"
+        dataTest="mailCommissionChecksToBranch"
+        styleName="mailCommissionChecksToBranch"
+        label="Mail Commision Checks to this Branch"
+        component={Radio}
+        segmented
+        answers={mailAnswers} />
+      <Field
+        name="mailPolicyDocsToBranch"
+        dataTest="mailPolicyDocsToBranch"
+        styleName="mailPolicyDocsToBranch"
+        label="Mail Policy Docs to this Branch"
+        component={Radio}
+        segmented
+        answers={mailAnswers} />
       <hr />
       <Field
         label="Phone 1"

@@ -223,6 +223,11 @@
                   grid-column: span 6;
                 }
 
+                .mailCommissionChecksToBranch,
+                .mailPolicyDocsToBranch {
+                    grid-column: span 5;
+                }
+
                 hr {
                   width: 100%;
                   border-top: 1px dashed mix($bright-blue-darken-02, $green, 80%);
