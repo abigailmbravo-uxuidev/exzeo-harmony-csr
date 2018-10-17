@@ -12,9 +12,8 @@ import RemoveAgentModal from './RemoveAgentModal';
 export class Agents extends Component {
   state = {
     activeIndex: null,
-    agentDetailInitialValues: {},
-    isEditing: null,
-    showAddExistingAgentModal: false,
+    agentDetailInitialValues: null,
+    showAgentDetailEditModal: false,
     showAgentDetailModal: false,
     showRemoveAgentModal: false
   };
@@ -32,42 +31,28 @@ export class Agents extends Component {
     });
   };
 
-  toggleAgentDetailModal = (activeIndex) => {
-    // close modal
-    if (!activeIndex && this.state.showAgentDetailModal) {
-      this.setState({
-        showAgentDetailModal: false,
-        activeIndex: null,
-        isEditing: false,
-        agentDetailInitialValues: {}
-      });
-
-      return;
-    }
-
-    // open to create new agent
-    if (!activeIndex) {
-      this.setState({
-        showAgentDetailModal: true,
-        isEditing: false,
-        agentDetailInitialValues: { agencyLicense: [], agentLicense: [{ state: '', licenseNumber: '' }] }
-      });
-
-      return;
-    }
-
+  openAgentDetailEditModal = (activeIndex) => {
     // open to edit an existing agent
     const agent = this.props.agents[activeIndex];
     this.setState({
-      showAgentDetailModal: true,
-      isEditing: true,
+      showAgentDetailEditModal: true,
       activeIndex,
       agentDetailInitialValues: {
-        ...agent,
-        agencyLicense: []
+        ...agent
       }
     });
   };
+
+  closeAgentDetailEditModal = () => {
+    this.setState({
+      showAgentDetailEditModal: false,
+      agentDetailInitialValues: null
+    });
+  };
+
+  closeAgentDetailSaveModal = () => {
+
+  }
 
   handleAddExistingAgent = async (data) => {
     const { updateAgent, agency, branchCode } = this.props;
@@ -76,22 +61,20 @@ export class Agents extends Component {
     this.toggleExistingAgentModal();
   };
 
-  handleSaveAgent = async (data) => {
-    // noinspection JSUnusedLocalSymbols
-    const { createdBy, createdAt, ...agent } = data;
+  onHandleEditAgent = async (data) => {
     const {
-      agency, addAgent, applyLicenseToAgency, updateAgent, updateAgency
+      agency, updateAgent
     } = this.props;
+    await updateAgent(data, agency.agencyCode);
+    this.closeAgentDetailEditModal();
+  };
 
-    if (this.state.isEditing) {
-      await updateAgent(agent, agency);
-    } else {
-      await addAgent(agent, agency);
-    }
-
-    const agencyData = applyLicenseToAgency(data, agency);
-    await updateAgency(agencyData);
-    this.toggleAgentDetailModal();
+  handleSaveAgent = async (data) => {
+    const {
+      agency, addAgent
+    } = this.props;
+    await addAgent(data, agency.agencyCode);
+    this.closeAgentDetailSaveModal();
   };
 
   handleRemoveAgent = async (data) => {
@@ -123,7 +106,7 @@ export class Agents extends Component {
                 agency={agency}
                 agent={agent}
                 agentIndex={index}
-                handleEditAgent={this.toggleAgentDetailModal}
+                handleEditAgent={this.openAgentDetailEditModal}
                 handleRemoveAgent={this.toggleRemoveAgentModal} />
             ))}
             <div className="agent-actions">
@@ -139,26 +122,23 @@ export class Agents extends Component {
                 baseClass="primary"
                 size="small"
                 dataTest="add-new-agent"
-                onClick={() => this.toggleAgentDetailModal()}><i className="fa fa-plus" />New Agent
+                onClick={null}><i className="fa fa-plus" />New Agent
               </Button>
               <hr />
             </div>
           </div>
         </div>
 
-        {this.state.showAgentDetailModal &&
+        {this.state.showAgentDetailEditModal && this.state.agentDetailInitialValues &&
         <AgentDetailModal
-          agencyLicenseArray={agencyLicenseArray}
           initialValues={this.state.agentDetailInitialValues}
-          isEditing={this.state.isEditing}
-          isInAgencyLicenseArray={this.isInAgencyLicenseArray()}
-          handleSaveAgent={this.handleSaveAgent}
-          toggleModal={this.toggleAgentDetailModal} />
+          isEditing
+          handleSaveAgent={this.onHandleEditAgent}
+          closeModal={this.closeAgentDetailEditModal} />
         }
         {this.state.showAddExistingAgentModal &&
           <AddExistingAgentModal
             agencyLicenseArray={agencyLicenseArray}
-            existsInAgencyLicense={this.isInAgencyLicenseArray()}
             listOfAgents={orphans}
             onToggleModal={this.toggleExistingAgentModal}
             handleSelection={this.handleAddExistingAgent} />

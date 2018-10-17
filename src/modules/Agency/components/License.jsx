@@ -12,7 +12,7 @@ const typeAnswers = [
   { answer: 'Resident', label: 'Resident' }
 ];
 
-const License = ({ licenseValue, fields }) => {
+const License = ({ licenseValue, fields, isAgency }) => {
   return (
     <React.Fragment>
       {fields.map((license, index) => (
@@ -40,14 +40,14 @@ const License = ({ licenseValue, fields }) => {
             answers={typeAnswers}
             dataTest={`${license}.licenseType`}
             validate={validation.isRequired} />
-          <Field
+          {isAgency && <Field
             name={`${license}.licenseEffectiveDate`}
             component={Date}
             styleName="licenseEffectiveDate"
             label="Effective Date"
             answers={typeAnswers}
             dataTest={`${license}.licenseEffectiveDate`}
-            validate={validation.isRequired} />
+            validate={validation.isRequired} />}
           <div className="appointed-wrapper">
             <label htmlFor={`${license}.appointed`}>Appointed</label>
             <Field
@@ -59,11 +59,11 @@ const License = ({ licenseValue, fields }) => {
               checked="true"
               dataTest={`${license}.appointed`} />
           </div>
-          {fields.length > 1  && <div className="btn-remove-wrapper align-right align-bottom in-grid-layout">
+          {fields.length > 1 && <div className="btn-remove-wrapper align-right align-bottom in-grid-layout">
             <button type="button" className="btn btn-link btn-sm" onClick={() => fields.remove(index)}>
               <i className="fa fa-times-circle" />REMOVE
             </button>
-          </div>}
+                                </div>}
         </div>
           ))}
       <div className="btn-divider-wrapper">

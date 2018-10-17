@@ -154,7 +154,8 @@ export class Create extends Component {
                     <FieldArray
                       name="licenses"
                       component={License}
-                      licenseValue={licenseValue} />
+                      licenseValue={licenseValue}
+                      isAgency />
                   </div>
                 </section>
               </form>

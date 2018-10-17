@@ -1,10 +1,11 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {reduxForm, Field, FieldArray, FormSection, getFormValues} from 'redux-form';
-import Button from '@exzeo/core-ui/lib/Button';
-import Address from "../components/Address";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { reduxForm, Field, FieldArray, getFormValues } from 'redux-form';
+import { Button } from '@exzeo/core-ui';
+
+import License from '../components/License';
+
 import Details from './Details';
-import License from "./License";
 
 const FORM_NAME = 'AgentDetails';
 
@@ -20,75 +21,59 @@ const FORM_NAME = 'AgentDetails';
 
 export class AgentModal extends Component {
   handleSave = async (data) => {
-    await this.props.handleSaveAgent(data)
+    await this.props.handleSaveAgent(data);
   };
 
   render() {
     const {
-      toggleModal,
+      closeModal,
       handleSubmit,
       isEditing,
       submitting,
-      agencyLicenseArray,
-      isInAgencyLicenseArray,
       licenseValue
     } = this.props;
 
     return (
-      <div className="modal agent-crud">
-        <div className="card">
-          <form onSubmit={handleSubmit(this.handleSave)}>
+      <div className="modal agency-crud" style={{ display: 'block', overflow: 'scroll' }}>
+        <form onSubmit={handleSubmit(this.handleSave)}>
+          <div className="card">
             <div className="card-header">
               <h4>
-                <i className="fa fa-address-book"/>{isEditing ? ' Edit ' : ' New '} Agent
+                <i className="fa fa-address-book" /> {isEditing ? 'Edit' : 'Save'} Agency
               </h4>
             </div>
             <div className="card-block">
               <section className="agent-details">
-                <Details
-                  agencyLicenseArray={agencyLicenseArray}
-                  isInAgencyLicenseArray={isInAgencyLicenseArray}
-                />
-                <h4>Mailing Address
-                  <Field
-                    name="sameAsMailing"
-                    component="input"
-                    id="sameAsMailing"
-                    type="checkbox"
-                    normalize={this.handleSameAsMailing}
-                    data-test="sameAsMailing"
-                  />
-                  <label htmlFor="sameAsMailing">Same as Agency Mailing Address</label>
-                </h4>
-
-                <FormSection name="mailingAddress">
-                  <Address mailingAddress />
-                </FormSection>
-
+                <Details isEditing />
               </section>
               <section className="agent-license">
                 <FieldArray
-                  name='license'
+                  name="licenses"
                   component={License}
                   licenseValue={licenseValue}
-                />
+                  isAgency={false} />
               </section>
             </div>
             <div className="card-footer">
               <div className="btn-footer">
                 <Button
-                  baseClass="secondary"
-                  onClick={toggleModal()}
-                >Cancel</Button>
+                  tabIndex="0"
+                  className="btn btn-secondary"
+                  type="button"
+                  onClick={closeModal}>
+                Cancel
+                </Button>
                 <Button
-                  baseClass="primary"
+                  tabIndex="0"
+                  className="btn btn-primary"
                   type="submit"
-                  disabled={submitting}
-                >Save</Button>
+                  disabled={submitting}>
+                Save
+                </Button>
               </div>
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     );
   }

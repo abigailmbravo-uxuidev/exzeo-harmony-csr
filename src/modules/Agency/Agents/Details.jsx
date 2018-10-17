@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { AutoCompleteChips, Input, Integer, Phone, Radio, validation } from '@exzeo/core-ui';
+import { Input, Integer, Phone, Radio, validation } from '@exzeo/core-ui';
 
 const radioStatusAnswers = [
   {
@@ -13,7 +13,7 @@ const radioStatusAnswers = [
   }
 ];
 
-const Details = ({ editType, agencyLicenseArray, isInAgencyLicenseArray }) => {
+const Details = ({ isEditing }) => {
   return (
     <React.Fragment>
       <Field
@@ -23,7 +23,7 @@ const Details = ({ editType, agencyLicenseArray, isInAgencyLicenseArray }) => {
         dataTest="agentCode"
         styleName="agentCode"
         validate={[validation.isRequired, validation.isNumbersOnly]}
-        disabled={editType === 'Edit'}
+        disabled={isEditing}
         thousandSeparator={false} />
       <Field
         name="firstName"
@@ -74,22 +74,6 @@ const Details = ({ editType, agencyLicenseArray, isInAgencyLicenseArray }) => {
         dataTest="emailAddress"
         styleName="emailAddress"
         validate={[validation.isRequired, validation.isEmail]} />
-      <Field
-        name="DBA"
-        label="Doing Business As Agency"
-        component={Input}
-        dataTest="DBA"
-        styleName="DBA" />
-      <Field
-        name="agencyLicense"
-        label="Agency License"
-        component={AutoCompleteChips}
-        dataTest="agencyLicense"
-        styleName="agencyLicense"
-        validate={[validation.isRequiredArray, isInAgencyLicenseArray]}
-        placeholder="Add license"
-        noMatchText="No More Licenses Available"
-        autoSuggest={agencyLicenseArray} />
     </React.Fragment>
   );
 };
