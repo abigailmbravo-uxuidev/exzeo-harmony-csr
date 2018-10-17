@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
-import { validation, Button, NewSelectTypeAhead } from '@exzeo/core-ui';
+import { validation, Button, SelectTypeAhead } from '@exzeo/core-ui';
 
 const radioDefaultAnswers = [
   { answer: 'true', label: 'Yes' },
@@ -32,9 +32,9 @@ export class ExistingAgentModal extends Component {
                     styleName="selectedAgent"
                     name="selectedAgent"
                     dataTest="selectedAgent"
-                    optionValue="_id"
-                    labelValue="displayText"
-                    component={NewSelectTypeAhead}
+                    valueKey="_id"
+                    labelKey="displayText"
+                    component={SelectTypeAhead}
                     validate={validation.isRequired}
                     answers={listOfAgents} />
                 </div>

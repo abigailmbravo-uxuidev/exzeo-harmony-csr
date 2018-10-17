@@ -149,7 +149,8 @@ export class CreateBranch extends Component {
                     <FieldArray
                       name="licenses"
                       component={License}
-                      licenseValue={licenseValue} />
+                      licenseValue={licenseValue}
+                      isAgency />
                   </div>
                 </section>
                 <div className="basic-footer btn-footer">
