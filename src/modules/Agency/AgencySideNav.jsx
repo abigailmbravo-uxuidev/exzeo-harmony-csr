@@ -88,8 +88,7 @@ export class SideNav extends React.Component {
               <NavLink
                 to={`/agency/${agencyCode}/newBranch`}
                 tabIndex="0"
-                className="btn btn-primary btn-block btn-small"
-                type="button">
+                className="btn btn-primary btn-block btn-small">
                 <i className="fa fa-plus" />Branch
               </NavLink>
             </li>

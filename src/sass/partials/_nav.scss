@@ -106,6 +106,12 @@
           border-bottom: 1px dotted $warm-gray-04;
         }
       }
+
+      .selectedBranch {
+          select {
+              margin-right: $padding*2;
+          }
+      }
     }
   }
 }
