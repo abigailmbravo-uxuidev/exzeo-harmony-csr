@@ -168,10 +168,11 @@ export class MortgageBilling extends Component {
   };
 
   toggleAIState = (ai) => {
-    const { createTransaction, getPolicy, policy: { policyNumber } } = this.props;
+    const { createTransaction, getPolicy, policy: { policyID, policyNumber } } = this.props;
     const submitData = {
+      policyID,
+      policyNumber,
       additionalInterestId: ai._id,
-      policyNumber: policyNumber,
       transactionType: ai.active ? 'AI Removal' : 'AI Reinstatement'
     };
 
