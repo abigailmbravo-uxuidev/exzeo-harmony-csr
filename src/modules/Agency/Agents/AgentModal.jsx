@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, Field, FieldArray, getFormValues } from 'redux-form';
+import { reduxForm, FormSection, FieldArray, getFormValues } from 'redux-form';
 import { Button } from '@exzeo/core-ui';
 
 import License from '../components/License';
+import Address from '../components/Address';
 
 import Details from './Details';
 
@@ -44,9 +45,19 @@ export class AgentModal extends Component {
             </div>
             <div className="card-block">
               <section className="agent-details">
-                <Details isEditing />
+                <h3>Details</h3>
+
+                <Details isEditing={isEditing} />
               </section>
               <section className="agent-license">
+                <h3>Mailing Address</h3>
+                <FormSection
+                  name="mailingAddress">
+                  <Address />
+                </FormSection>
+              </section>
+              <section className="agent-license">
+                <h3>Licenses</h3>
                 <FieldArray
                   name="licenses"
                   component={License}
