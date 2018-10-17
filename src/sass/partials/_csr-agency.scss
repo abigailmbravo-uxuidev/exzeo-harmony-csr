@@ -400,6 +400,11 @@
                 .emailAddress {
                   grid-column: span 12;
                 }
+
+                .card {
+                    grid-column: span 12;
+                    margin-bottom: 0;
+                }
               }
 
               &.agency-principal {
@@ -424,6 +429,11 @@
 
                 .emailAddress {
                   grid-column: span 12;
+                }
+
+                .card {
+                    grid-column: span 12;
+                    margin-bottom: 0;
                 }
               }
 
@@ -536,6 +546,10 @@
                   padding-left: $padding*2;
                   border-left: 1px dashed $warm-gray-03;
                 }
+              }
+
+              &:last-child {
+                  border-bottom-width: 0;
               }
             }
 
