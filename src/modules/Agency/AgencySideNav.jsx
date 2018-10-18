@@ -53,12 +53,13 @@ export class SideNav extends React.Component {
   // };
 
   handleBranchSelection =(value) => {
-    const { agencyCode, branchCode } = this.props;
+    const { agencyCode } = this.props;
     if (Number(value) > 0) {
-      history.push(`/agency/${agencyCode}/${branchCode}/overview`);
+      history.push(`/agency/${agencyCode}/${value}/overview`);
     } else {
       history.push(`/agency/${agencyCode}/0/overview`);
     }
+    return value;
   }
 
   render() {
@@ -83,7 +84,7 @@ export class SideNav extends React.Component {
                 normalize={(v, pv, av) => this.handleBranchSelection(v)} />
             </li>
             }
-            {!branchCode && agencyCode !== 'new' &&
+            {branchCode === 0 && agencyCode !== 'new' &&
             <li key="newBranch" >
               <NavLink
                 to={`/agency/${agencyCode}/${branchCode}/newBranch`}
@@ -93,7 +94,7 @@ export class SideNav extends React.Component {
               </NavLink>
             </li>
             }
-            {csrLinks(agencyCode).map((agentLink, index) => (
+            {csrLinks(agencyCode, branchCode).map((agentLink, index) => (
               <li key={agentLink.key}>
                 <span className={agentLink.styleName}>
                   <NavLink to={agentLink.link} activeClassName="active" exact>{agentLink.label}</NavLink>

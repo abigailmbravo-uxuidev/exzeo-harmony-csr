@@ -49,11 +49,11 @@ export class Agency extends Component {
           </aside>
           <div className="content-wrapper">
             <Route exact path="/agency/new" render={CreateRender} />
-            <Route exact path={`/agency/${agencyCode}/0/overview`} render={OverviewRender} />
-            <Route exact path={`/agency/${agencyCode}/${branchCode}contracts`} render={ContractsRender} />
+            <Route exact path={`/agency/${agencyCode}/${branchCode}/overview`} render={OverviewRender} />
+            <Route exact path={`/agency/${agencyCode}/${branchCode}/contracts`} render={ContractsRender} />
             <Route exact path={`/agency/${agencyCode}/${branchCode}/agents`} render={AgentsRender} />
             <Route exact path={`/agency/${agencyCode}/0/newBranch`} render={CreateBranchRender} />
-            <Route exact path={`/agency/${agencyCode}/${branchCode}/overview`} render={props => <Branch auth={props.auth} {...props} branchCode={branchCode} />} />
+            {/* <Route exact path={`/agency/${agencyCode}/${branchCode}/overview`} render={props => <Branch auth={props.auth} {...props} branchCode={branchCode} />} /> */}
           </div>
         </main>
       </div>

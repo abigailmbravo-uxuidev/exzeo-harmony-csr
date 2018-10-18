@@ -91,7 +91,7 @@ export class CreateBranch extends Component {
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
               <form onSubmit={handleSubmit(this.createBranch)}>
-                {this.state.branchCode && <Redirect replace to={`/agency/${agency.agencyCode}/branch/${this.state.branchCode}`} />}
+                {this.state.branchCode > 0 && <Redirect replace to={`/agency/${agency.agencyCode}/${this.state.branchCode}/overview`} />}
                 <h3>Details</h3>
                 <section className="agency-details">
                   <BranchDetails />

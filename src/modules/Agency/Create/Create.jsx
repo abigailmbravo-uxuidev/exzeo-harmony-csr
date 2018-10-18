@@ -89,7 +89,7 @@ export class Create extends Component {
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
               <form onSubmit={handleSubmit(this.createAgency)}>
-                {agency && agency.agencyCode && <Redirect replace to={`/agency/${agency.agencyCode}/overview`} />}
+                {agency && agency.agencyCode && <Redirect replace to={`/agency/${agency.agencyCode}/0/overview`} />}
                 <h3>Details</h3>
                 <section className="agency-details">
                   <Details />
