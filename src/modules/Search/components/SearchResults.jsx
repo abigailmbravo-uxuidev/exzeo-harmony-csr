@@ -95,7 +95,7 @@ export class SearchResults extends Component {
         }
         {!hasSearched && searchType === SEARCH_TYPES.agency &&
           <div className="btn-divider-wrapper">
-            <NavLink className="btn btn-primary" to="/agency/new" activeClassName="active" target="_blank" exact>+ Agency</NavLink>
+            <NavLink className="btn btn-primary" to="/agency/new/0" activeClassName="active" target="_blank" exact>+ Agency</NavLink>
           </div>
         }
       </div>

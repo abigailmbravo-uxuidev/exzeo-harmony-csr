@@ -130,7 +130,6 @@ export class Agents extends Component {
       agents,
       orphans
     } = this.props;
-
     return (
       <div className="route-content">
         <div className="scroll">

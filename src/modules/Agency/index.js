@@ -16,7 +16,6 @@ import CreateBranch from './CreateBranch';
 
 const CreateRender = props => <Create auth={props.auth} {...props} />;
 const ContractsRender = props => <Contracts auth={props.auth} {...props} />;
-const AgentsRender = props => <Agents auth={props.auth} {...props} />;
 const OverviewRender = props => <Overview auth={props.auth} {...props} />;
 const CreateBranchRender = props => <CreateBranch auth={props.auth} {...props} />;
 
@@ -48,10 +47,10 @@ export class Agency extends Component {
             <AgencySideNav agencyCode={agencyCode} location={location} branchCode={branchCode} match={match} />
           </aside>
           <div className="content-wrapper">
-            <Route exact path="/agency/new" render={CreateRender} />
+            <Route exact path="/agency/new/0" render={CreateRender} />
             <Route exact path={`/agency/${agencyCode}/${branchCode}/overview`} render={OverviewRender} />
             <Route exact path={`/agency/${agencyCode}/${branchCode}/contracts`} render={ContractsRender} />
-            <Route exact path={`/agency/${agencyCode}/${branchCode}/agents`} render={AgentsRender} />
+            <Route exact path={`/agency/${agencyCode}/${branchCode}/agents`} render={props => <Agents branchCode={branchCode} auth={props.auth} {...props} />} />
             <Route exact path={`/agency/${agencyCode}/0/newBranch`} render={CreateBranchRender} />
             {/* <Route exact path={`/agency/${agencyCode}/${branchCode}/overview`} render={props => <Branch auth={props.auth} {...props} branchCode={branchCode} />} /> */}
           </div>
