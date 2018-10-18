@@ -225,7 +225,7 @@
 
                 .mailCommissionChecksToBranch,
                 .mailPolicyDocsToBranch {
-                    grid-column: span 5;
+                  grid-column: span 5;
                 }
 
                 hr {
@@ -407,8 +407,8 @@
                 }
 
                 .card {
-                    grid-column: span 12;
-                    margin-bottom: 0;
+                  margin-bottom: 0;
+                  grid-column: span 12;
                 }
               }
 
@@ -437,8 +437,8 @@
                 }
 
                 .card {
-                    grid-column: span 12;
-                    margin-bottom: 0;
+                  margin-bottom: 0;
+                  grid-column: span 12;
                 }
               }
 
@@ -455,18 +455,33 @@
                   width: 100%;
                 }
 
-                .agency-detail {
-                  display: grid;
+                .agent-of-record {
+                  display: flex;
+                  flex-direction: column;
                   flex-grow: 0;
                   flex-shrink: 0;
                   width: calc(60% - .5rem);
                   margin-bottom: $padding*2;
-                  grid-template-columns: repeat(12, [col-start] 1fr);
-                  grid-gap: $padding*2;
-                  grid-auto-rows: min-content;
 
-                  .form-group {
-                    margin-bottom: 0;
+                  .agent-id,
+                  .agent-phone {
+                    display: flex;
+
+                    > div {
+                      flex-grow: 1;
+                      flex-shrink: 1;
+                      margin-right: $padding;
+
+                      &.agentCode {
+                        flex-grow: 0;
+                        flex-shrink: 0;
+                        width: 8rem;
+                      }
+
+                      &:last-child {
+                        margin-right: 0;
+                      }
+                    }
                   }
                 }
 
@@ -554,7 +569,7 @@
               }
 
               &:last-child {
-                  border-bottom-width: 0;
+                border-bottom-width: 0;
               }
             }
 
@@ -794,8 +809,8 @@
                     flex-wrap: wrap;
 
                     h4 {
-                        margin-bottom: 0;
-                        width: 100%;
+                      width: 100%;
+                      margin-bottom: 0;
                     }
 
                     .card-name-content {
@@ -990,6 +1005,77 @@
                 margin-bottom: 0;
                 padding-bottom: 0;
                 border-width: 0;
+              }
+            }
+          }
+        }
+
+        .modal {
+          &.edit-agent,
+          &.edit-contact {
+            form {
+              width: 100%;
+
+              .card {
+                width: 60%;
+
+                .card-block {
+                  .agency-details {
+                    display: flex;
+                    flex-direction: column;
+
+                    .contact-name {
+                      display: flex;
+
+                      > div {
+                        margin-right: $padding;
+
+                        &:last-child {
+                          margin-right: 0;
+                        }
+                      }
+
+                      .title {
+                        flex-grow: 0;
+                        flex-shrink: 0;
+                        width: 8rem;
+                      }
+
+                      .firstName,
+                      .lastName {
+                        flex-grow: 1;
+                        flex-shrink: 1;
+                      }
+                    }
+
+                    .emailAddress {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 100%;
+                    }
+                  }
+
+                  .agent-details {
+                    .agent-id,
+                    .agent-phone {
+                      display: flex;
+
+                      > div {
+                        margin-right: $padding;
+
+                        &:last-child {
+                          margin-right: 0;
+                        }
+
+                        &.agentCode {
+                          flex-grow: 0;
+                          flex-shrink: 0;
+                          width: 8rem;
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           }

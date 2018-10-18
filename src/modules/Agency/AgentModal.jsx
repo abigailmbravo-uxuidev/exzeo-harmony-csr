@@ -20,16 +20,16 @@ export class AgentModal extends Component {
     } = this.props;
 
     return (
-      <div className="modal agency-crud" style={{ overflow: 'scroll', display: 'block' }}>
+      <div className="modal edit-agent">
         <form onSubmit={handleSubmit(this.saveAgent)}>
           <div className="card">
             <div className="card-header">
               <h4>
-                <i className="fa fa-address-book" /> Edit Agent
+                <i className="fa fa-address-card" /> Edit Agent
               </h4>
             </div>
             <div className="card-block">
-              <section className="agency-details">
+              <section className="agent-details">
                 <Agent />
               </section>
             </div>
