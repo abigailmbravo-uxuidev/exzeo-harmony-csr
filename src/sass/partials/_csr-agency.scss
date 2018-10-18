@@ -414,10 +414,11 @@
                 .agent-of-record {
                   display: flex;
                   flex-direction: column;
-                  flex-grow: 0;
-                  flex-shrink: 0;
-                  width: calc(60% - .5rem);
+                  flex-grow: 1;
+                  flex-shrink: 1;
+                  max-width: 60%;
                   margin-bottom: $padding*2;
+                  margin-right: $padding;
 
                   .agent-id,
                   .agent-phone {
@@ -442,9 +443,9 @@
                 }
 
                 .agency-license {
-                  flex-grow: 0;
-                  flex-shrink: 0;
-                  width: calc(40% - .5rem);
+                  flex-grow: 1;
+                  flex-shrink: 1;
+                  max-width: 40%;
                   margin-bottom: $padding*2;
 
                   .license-wrapper {
@@ -520,7 +521,7 @@
                 .agency-license {
                   margin-left: $padding;
                   padding-left: $padding*2;
-                  border-left: 1px dashed $warm-gray-03;
+                  border-left: 1px dotted $warm-gray-03;
                 }
               }
 
@@ -1278,12 +1279,16 @@
         max-height: 80vh;
 
         .card-block {
-          section {
-            display: flex;
-            flex-direction: column;
+          display: flex;
+          flex-wrap: wrap;
 
+          section {
             &.agent-details {
-              .agent-name, .agent-phone {
+              width: 100%;
+
+              .agent-name,
+              .agent-phone,
+              .agent-status-email {
                 display: flex;
 
                 > div {
@@ -1297,9 +1302,74 @@
                     width: 8rem;
                   }
 
+                  &.status {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    width: 12rem;
+                  }
+
                   &:last-child {
                     margin-right: 0;
                   }
+                }
+              }
+            }
+
+            &.agent-mailing {
+             max-width: 60%;
+              flex-grow: 1;
+              flex-shrink: 1;
+              margin-right: $padding;
+            }
+
+            &.agent-license {
+                flex-grow: 1;
+                flex-shrink: 1;
+              max-width: 40%;
+              margin-left: $padding;
+              padding-left: $padding*2;
+              border-left: 1px dotted $warm-gray-03;
+
+              .license-wrapper {
+                position: relative;
+                display: grid;
+                margin-bottom: $padding*2;
+                padding: $padding ($padding*2) ($padding*2);
+                border: 1px solid $warm-gray-03;
+                border-radius: $btn-border-radius;
+                grid-template-columns: repeat(12, [col-start] 1fr);
+                grid-auto-rows: min-content;
+                grid-gap: $padding*2;
+
+                .state {
+                  grid-column: span 4;
+                }
+
+                .licenseNumber {
+                  grid-column: span 8;
+                }
+
+                .licenseType {
+                  grid-column: span 4;
+                }
+
+                .licenseEffectiveDate {
+                  grid-column: span 5;
+                }
+
+                .appointed-wrapper {
+                  display: flex;
+                  align-items: center;
+                  flex-direction: column;
+                  grid-column: span 3;
+
+                  input {
+                    margin: 0;
+                  }
+                }
+
+                .form-group {
+                  margin-bottom: 0;
                 }
               }
             }

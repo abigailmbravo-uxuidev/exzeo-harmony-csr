@@ -33,42 +33,44 @@ class Address extends Component {
           dataTest="address2"
           normalize={this.normalizeSameAsMailing}
           disabled={sectionDisabled} />
-        <Field
-          name="city"
-          label="City"
-          component={Input}
-          styleName="city"
-          dataTest="city"
-          validate={validation.isRequired}
-          normalize={this.normalizeSameAsMailing}
-          disabled={sectionDisabled} />
-        <Field
-          name="state"
-          label="State"
-          component={Input}
-          styleName="state"
-          dataTest="state"
-          validate={validation.isRequired}
-          normalize={this.normalizeSameAsMailing}
-          disabled={sectionDisabled} />
-        <Field
-          name="zip"
-          label="Zip Code"
-          component={Input}
-          styleName="zip"
-          dataTest="zip"
-          validate={validation.isRequired}
-          normalize={this.normalizeSameAsMailing}
-          disabled={sectionDisabled} />
+        <div className="city-state-zip">
+          <Field
+            name="city"
+            label="City"
+            component={Input}
+            styleName="city"
+            dataTest="city"
+            validate={validation.isRequired}
+            normalize={this.normalizeSameAsMailing}
+            disabled={sectionDisabled} />
+          <Field
+            name="state"
+            label="State"
+            component={Input}
+            styleName="state"
+            dataTest="state"
+            validate={validation.isRequired}
+            normalize={this.normalizeSameAsMailing}
+            disabled={sectionDisabled} />
+          <Field
+            name="zip"
+            label="Zip Code"
+            component={Input}
+            styleName="zip"
+            dataTest="zip"
+            validate={validation.isRequired}
+            normalize={this.normalizeSameAsMailing}
+            disabled={sectionDisabled} />
+        </div>
         {showCounty &&
-        <Field
-          name="county"
-          label="County"
-          component={Input}
-          styleName="county"
-          dataTest="county"
-          validate={validation.isRequired} />
-        }
+          <Field
+            name="county"
+            label="County"
+            component={Input}
+            styleName="county"
+            dataTest="county"
+            validate={validation.isRequired} />
+          }
       </React.Fragment>
     );
   }
