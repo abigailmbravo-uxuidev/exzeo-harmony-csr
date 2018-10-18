@@ -88,7 +88,7 @@ export class Create extends Component {
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
-              <form onSubmit={handleSubmit(this.createAgency)}>
+              <form id="createAgency" onSubmit={handleSubmit(this.createAgency)}>
                 {agency && agency.agencyCode && agency.agencyCode !== 'new' && <Redirect replace to={`/agency/${agency.agencyCode}/0/overview`} />}
                 <h3>Details</h3>
                 <section className="agency-details">
@@ -158,15 +158,14 @@ export class Create extends Component {
                       isAgency />
                   </div>
                 </section>
-                <div className="basic-footer btn-footer">
-                  <Button dataTest="resetButton" baseClass="secondary" onClick={this.handleResetForm}>Cancel</Button>
-                  <Button dataTest="submitButton" baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
-                </div>
               </form>
             </div>
           </div>
         </div>
-
+        <div className="basic-footer btn-footer">
+          <Button dataTest="resetButton" baseClass="secondary" onClick={this.handleResetForm}>Cancel</Button>
+          <Button form="createAgency" dataTest="submitButton" baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
+        </div>
         {this.state.showAddExistingAgentModal &&
         <ExistingAgentModal
           listOfAgents={orphans}
