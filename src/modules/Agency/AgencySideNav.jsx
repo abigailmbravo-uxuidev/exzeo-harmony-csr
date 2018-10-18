@@ -10,23 +10,23 @@ import history from '../../history';
 
 import BranchModal from './BranchModal';
 
-const csrLinks = agencyCode => [{
+const csrLinks = (agencyCode, branchCode) => [{
   key: 'overview',
-  link: `/agency/${agencyCode}/overview`,
+  link: `/agency/${agencyCode}/${branchCode}/overview`,
   label: 'Overview',
   styleName: 'overview',
   exact: true
 },
 {
   key: 'agents',
-  link: `/agency/${agencyCode}/agents`,
+  link: `/agency/${agencyCode}/${branchCode}/agents`,
   label: 'Agents',
   styleName: 'agents',
   exact: true
 },
 {
   key: 'contracts',
-  link: `/agency/${agencyCode}/contracts`,
+  link: `/agency/${agencyCode}/${branchCode}/contracts`,
   label: 'Contracts',
   styleName: 'contracts',
   exact: true
@@ -53,11 +53,11 @@ export class SideNav extends React.Component {
   // };
 
   handleBranchSelection =(value) => {
-    const { agencyCode } = this.props;
+    const { agencyCode, branchCode } = this.props;
     if (Number(value) > 0) {
-      history.push(`/agency/${agencyCode}/branch/${value}`);
+      history.push(`/agency/${agencyCode}/${branchCode}/overview`);
     } else {
-      history.push(`/agency/${agencyCode}/overview`);
+      history.push(`/agency/${agencyCode}/0/overview`);
     }
   }
 
@@ -86,7 +86,7 @@ export class SideNav extends React.Component {
             {!branchCode && agencyCode !== 'new' &&
             <li key="newBranch" >
               <NavLink
-                to={`/agency/${agencyCode}/newBranch`}
+                to={`/agency/${agencyCode}/${branchCode}/newBranch`}
                 tabIndex="0"
                 className="btn btn-primary btn-block btn-small">
                 <i className="fa fa-plus" />Branch
