@@ -20,7 +20,9 @@ export function setAgencies(agencies) {
  * @param agency
  * @returns {{type: string, agency: *}}
  */
-export function setAgency(agency) {
+export function setAgency(agencyData) {
+  // TODO: Transforming Agent Data to be in the Branches array
+  const agency = transormAgencyToBranch(agencyData);
   return {
     type: types.SET_AGENCY,
     agency
@@ -497,3 +499,34 @@ export function createBranch(branchData, agencyCode) {
   };
 }
 
+export function transormAgencyToBranch(agencyData) {
+  const {
+    mailingAddress,
+    physicalAddress,
+    contact,
+    agentOfRecord,
+    faxNumber,
+    primaryPhoneNumber,
+    secondaryPhoneNumber,
+    status,
+    territoryManagerId,
+    displayName,
+    websiteUrl
+  } = agencyData;
+  if (!Array.isArray(agencyData.branches)) agencyData.branches = [];
+  agencyData.branches.push({
+    branchCode: 0,
+    mailingAddress,
+    physicalAddress,
+    agentOfRecord,
+    contact,
+    displayName,
+    faxNumber,
+    primaryPhoneNumber,
+    secondaryPhoneNumber,
+    status,
+    websiteUrl,
+    territoryManagerId
+  });
+  return agencyData;
+}
