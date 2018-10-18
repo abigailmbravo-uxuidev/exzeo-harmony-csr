@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 
 import territoryManagers from '../components/territoryManagers';
-import { getAgentOfRecord, getEditModalInitialValues, getAgencyBranchData } from '../../../state/selectors/agency.selector';
+import { getAgentOfRecord, getEditModalInitialValues, getAgencyBranchData, getAgentsList } from '../../../state/selectors/agency.selector';
+import { updateAgency } from '../../../state/actions/agencyActions';
 
 import Overview from './Overview';
 
@@ -11,8 +12,9 @@ const mapStateToProps = (state, props) => {
     agency: state.agencyState.agency,
     territoryManagers,
     agentOfRecord: getAgentOfRecord(state),
-    addressInitialValues: getEditModalInitialValues(state, props.branchCode)
+    addressInitialValues: getEditModalInitialValues(state, props.branchCode),
+    agentsList: getAgentsList(state)
   };
 };
 
-export default connect(mapStateToProps)(Overview);
+export default connect(mapStateToProps, { updateAgency })(Overview);

@@ -532,7 +532,10 @@ export function transormAgencyToBranch(agencyData) {
     secondaryPhoneNumber,
     status,
     websiteUrl,
-    territoryManagerId
+    territoryManagerId,
+    mailPolicyDocsToBranch: true,
+    mailCommissionChecksToBranch: true
+
   });
   return agencyData;
 }

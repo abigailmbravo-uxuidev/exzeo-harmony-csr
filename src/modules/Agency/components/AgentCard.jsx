@@ -67,8 +67,8 @@ export const AgentCard = ({ agent, handleSecondaryClick, handlePrimaryClick }) =
     <div className="contact-actions">
       <button
         className="btn btn-link btn-sm"
-        onClick={handleSecondaryClick}>
-        <i className="fa fa-pencil-square" />Switch
+        onClick={handleSecondaryClick(agent)}>
+        <i className="fa fa-pencil-switch" />Switch AOR
       </button>
       <button
         className="btn btn-link btn-sm"
