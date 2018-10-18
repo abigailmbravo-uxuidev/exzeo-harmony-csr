@@ -47,8 +47,6 @@ export const getBranchesList = createSelector(
       answer: b.branchCode,
       label: `${b.branchCode}: ${b.displayName}`
     }));
-
-    branches.unshift({ answer: '0', label: '0: Main' });
     return branches;
   }
 );

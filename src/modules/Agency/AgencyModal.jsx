@@ -22,6 +22,7 @@ const taxClassificationAnswers = [
 
 export class AgencyModal extends Component {
   saveAgency = async (data, dispatch, props) => {
+    data.branches = data.branches.filter(b => String(b.branchCode) !== '0');
     await props.updateAgency(data);
     props.closeModal();
   };
@@ -148,15 +149,12 @@ export class AgencyModal extends Component {
   }
 }
 
-const selector = formValueSelector('AgencyModal');
-const mapStateToProps = state => ({
-  initialValues: getEditModalInitialValues(state),
-  sameAsMailingValue: selector(state, 'sameAsMailing')
-});
+const mapStateToProps = state => state;
 
 export default connect(mapStateToProps, {
   updateAgency
 })(reduxForm({
   form: 'AgencyModal',
-  enableReinitialize: true
+  enableReinitialize: true,
+  destroyOnUnmount: false
 })(AgencyModal));

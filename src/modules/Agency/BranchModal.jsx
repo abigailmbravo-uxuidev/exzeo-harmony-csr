@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { Select, Radio, Input, validation } from '@exzeo/core-ui';
 
+import { updateAgency } from '../../state/actions/agencyActions';
+
 const statusAnswers = [
   { answer: 'Active', label: 'Active' },
   { answer: 'InActive', label: 'InActive' }
@@ -15,6 +17,11 @@ const mailAnswers = [
 
 
 export class BranchModal extends Component {
+  handleBranchSubmit = async (data, dispatch, props) => {
+    await props.updateAgency(data);
+    props.closeModal();
+  };
+
   render() {
     const {
       closeModal,
@@ -110,7 +117,7 @@ export class BranchModal extends Component {
 
 const mapStateToProps = state => state;
 
-export default connect(mapStateToProps, null)(reduxForm({
+export default connect(mapStateToProps, { updateAgency })(reduxForm({
   form: 'BranchModal',
   enableReinitialize: true,
   destroyOnUnmount: false

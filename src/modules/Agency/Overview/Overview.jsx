@@ -9,6 +9,7 @@ import DetailView from '../DetailView';
 import ContactView from '../ContactView';
 import AddressView from '../AddressView';
 import AgentModal from '../AgentModal';
+import BranchModal from '../BranchModal';
 
 export class Overview extends React.Component {
   state = {
@@ -41,7 +42,7 @@ export class Overview extends React.Component {
 
   render() {
     const {
-      agency, territoryManagers, agentOfRecord, addressInitialValues, agencyBranchData
+      agency, territoryManagers, agentOfRecord, addressInitialValues, agencyBranchData, branchCode
     } = this.props;
     const {
       showEditDetailsModal, showEditAddressModal, showEditContactModal, showEditPrincipalModal, showEditAgentModal
@@ -91,7 +92,8 @@ export class Overview extends React.Component {
             </div>
           </div>
         </div>
-        {showEditDetailsModal && <AgencyModal initialValues={agency} closeModal={this.onHandleToggleEditDetailsModal} />}
+        {showEditDetailsModal && Number(branchCode) === 0 && <AgencyModal initialValues={agency} closeModal={this.onHandleToggleEditDetailsModal} />}
+        {showEditDetailsModal && Number(branchCode) > 0 && <BranchModal initialValues={agencyBranchData} closeModal={this.onHandleToggleEditDetailsModal} />}
         {showEditAddressModal && <AgencyAddressModal agency={agency} initialValues={addressInitialValues} closeModal={this.onHandleToggleEditAddressModal} />}
         {showEditContactModal &&
           <AgencyContactModal agency={agency} header="Edit Contact" section="contact" initialValues={agencyBranchData} closeModal={this.onHandleToggleEditContactModal} />
