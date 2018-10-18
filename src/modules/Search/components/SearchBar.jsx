@@ -13,7 +13,9 @@ import {
 
 export class SearchBar extends Component {
   componentDidMount() {
-    const { agencies, getAgencies, toggleLoading, initialize, initialValues } = this.props;
+    const {
+      agencies, getAgencies, toggleLoading, initialize, initialValues
+    } = this.props;
     toggleLoading(false);
     if (!agencies.length) {
       getAgencies(DEFAULT_SEARCH_PARAMS.companyCode, DEFAULT_SEARCH_PARAMS.state);
@@ -71,12 +73,11 @@ export class SearchBar extends Component {
                 onChange={this.changeSearchType}
                 answers={searchTypeOptions}
                 showPlaceholder={false}
-                errorHint
-              />
+                errorHint />
             </div>
 
-            { // render the correct search form based on searchType (declared in Search/index.js)
-              this.props.render({
+            {// render the correct search form based on searchType (declared in Search/index.js)
+this.props.render({
               submitting,
               handlePagination: this.handlePagination
             })}
@@ -100,6 +101,5 @@ export default connect(mapStateToProps, {
   handleSearchSubmit
 })(reduxForm({
   // 'initialValues' prop is being passed in from parent component based on route/pathName
-  form: 'SEARCH_BAR',
-  enableReinitialize: true
+  form: 'SEARCH_BAR'
 })(SearchBar));
