@@ -26,7 +26,6 @@ export class Create extends Component {
       displayText: 'United States of America'
     };
     data.physicalAddress.country = data.mailingAddress.country;
-    data.physicalAddress.county = data.mailingAddress.county;
     await props.createAgency(data);
   };
 
@@ -37,6 +36,7 @@ export class Create extends Component {
   handleSameAsMailing = (value, previousValue, allValues) => {
     const { change } = this.props;
     const { mailingAddress } = allValues;
+    if (!mailingAddress) return value;
     if (value) {
       change('physicalAddress.address1', mailingAddress.address1);
       change('physicalAddress.address2', mailingAddress.address2);
@@ -158,14 +158,15 @@ export class Create extends Component {
                       isAgency />
                   </div>
                 </section>
+                <div className="basic-footer btn-footer">
+                  <Button dataTest="resetButton" baseClass="secondary" onClick={this.handleResetForm}>Cancel</Button>
+                  <Button dataTest="submitButton" baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
+                </div>
               </form>
             </div>
           </div>
         </div>
-        <div className="basic-footer btn-footer">
-          <Button dataTest="resetButton" baseClass="secondary" onClick={this.handleResetForm}>Cancel</Button>
-          <Button dataTest="submitButton" baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
-        </div>
+
         {this.state.showAddExistingAgentModal &&
         <ExistingAgentModal
           listOfAgents={orphans}
@@ -181,6 +182,8 @@ const mapStateToProps = state => ({
   orphans: getOrphanedAgentsList(state),
   agency: state.agencyState.agency,
   initialValues: {
+    mailingAddress: {},
+    physicalAddress: {},
     licenses: [{
       state: '', license: '', licenseType: '', licenseEffectiveDate: ''
     }]
