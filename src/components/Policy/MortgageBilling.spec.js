@@ -263,9 +263,8 @@ describe('Testing MortgageBilling component', () => {
 
     handleInitialize(initialState);
     wrapper.instance().addAdditionalInterest('Mortgagee');
-    wrapper.instance().editAdditionalInterest(additionalInterests[0]);
+    wrapper.instance().editAI(additionalInterests[0]);
     wrapper.instance().hideAdditionalInterestModal(props);
-    wrapper.instance().editAIOnEnter({ key: 'Enter' }, additionalInterests[0]);
 
     wrapper.instance().handleFormSubmit({ body });
     wrapper.instance().handleBillingEdit();
@@ -274,7 +273,6 @@ describe('Testing MortgageBilling component', () => {
     wrapper.instance().amountFormatter(100);
     wrapper.instance().dateFormatter('123');
     wrapper.instance().handleAISubmit({ type: 'Mortgagee' }, props.dispatch, props);
-    wrapper.instance().deleteAdditionalInterest(additionalInterests[1], props);
-
+    wrapper.instance().toggleAIState(additionalInterests[1], props);
   });
 });

@@ -8,7 +8,7 @@ import {
   Input,
   Select,
   Phone,
-  NewSelectTypeAhead,
+  SelectTypeAhead,
   SelectInteger,
   Loader,
   Button,
@@ -156,7 +156,7 @@ export class AdditionalInterestModal extends React.Component {
                 label="Top Mortgagees"
                 name="mortgagee"
                 dataTest="mortgage"
-                component={NewSelectTypeAhead}
+                component={SelectTypeAhead}
                 valueKey="displayText"
                 labelKey="displayText"
                 answers={mortgageeAnswers}
@@ -168,7 +168,7 @@ export class AdditionalInterestModal extends React.Component {
                 label="Top Premium Finance"
                 name="premiumFinance"
                 dataTest="premiumFinance"
-                component={NewSelectTypeAhead}
+                component={SelectTypeAhead}
                 valueKey="displayText"
                 labelKey="displayText"
                 answers={premiumFinanceAnswers}

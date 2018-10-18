@@ -1,10 +1,8 @@
-
-
 import axios from 'axios';
 
 import handleError from './handleError';
 
-export const startWorflow = async (modelName, data) => {
+export const startWorkflow = async (modelName, data) => {
   const axiosConfig = {
     method: 'POST',
     headers: {
@@ -25,4 +23,4 @@ export const startWorflow = async (modelName, data) => {
   }
 };
 
-export default { startWorflow };
+export default { startWorkflow };

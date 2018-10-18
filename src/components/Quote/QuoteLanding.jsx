@@ -10,14 +10,17 @@ import { getQuoteForCreate } from '../../state/selectors/quote.selectors';
 export class QuoteLanding extends Component {
   async componentDidMount() {
     const {
-      match: { params }, startWorkflow
+      match: { params }, startWorkflow, appState, setAppState
     } = this.props;
 
     try {
       const { stateCode, propertyId } = params;
+
       await startWorkflow('csrCreateQuote', { stateCode, igdId: propertyId });
     } catch (error) {
       setAppError(error);
+    } finally {
+      setAppState('csrCreateQuote', '', { ...appState.data, submitting: false });
     }
   }
 

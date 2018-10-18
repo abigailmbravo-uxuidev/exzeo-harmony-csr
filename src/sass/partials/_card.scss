@@ -30,11 +30,11 @@
     border-bottom: $card-border-width solid $card-border-color;
     background-color: $card-cap-bg;
 
+    > h1,
     > h2,
-     > h3,
-     > h4,
-     > h5,
-    > h1 {
+    > h3,
+    > h4,
+    > h5 {
       margin: 0;
     }
 
@@ -192,6 +192,84 @@
   }
 }
 
+.app-wrapper.csr.policy main .content-wrapper .route-content .form-group section {
+  ul {
+    &.additional-interests-list {
+      li {
+        &.card {
+          align-items: center;
+          margin: $padding 0;
+
+          .card-icon {
+            flex-grow: 0;
+            flex-shrink: 0;
+            padding: $padding;
+
+            i {
+              color: $bright-blue-darken-04;
+              font-size: $font-size-h2;
+            }
+          }
+
+          section {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            flex-shrink: 1;
+            justify-content: center;
+            margin: 0;
+            padding: $padding 0;
+            border-bottom: none;
+
+            h4 {
+              margin-bottom: 0;
+              color: $warm-gray-10;
+            }
+          }
+
+          span {
+            &.edit-btn {
+              margin-right: $padding;
+            }
+
+            &.delete-btn {}
+
+            &.reactivate-btn {}
+          }
+
+          &.inactive {
+            color: $btn-link-disabled-color;
+            border-color: $warm-gray-03;
+            background: $warm-gray-00;
+
+            .card-icon {
+              i,
+              label {
+                color: $btn-link-disabled-color;
+              }
+            }
+
+            section {
+              h4 {
+                color: $btn-link-disabled-color;
+              }
+            }
+
+            .ref-number {
+              color: $btn-link-disabled-color;
+
+              label {
+                color: $btn-link-disabled-color;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// ADDED FROM DIARIES / REUSABLE CARDS
 ul {
   &.results {
     width: 100%;
@@ -206,57 +284,57 @@ ul {
         margin: 0 0 $padding;
 
         &.pastDue {
-            .card-header {
-                .card-status-indicator {
-                    background-color: $red-darken-01;
-                }
-
-                .icon-wrapper {
-                    i {
-                        &.icon-status-indicator {
-                            &:before {
-                                content: '\f0f3';
-                            }
-                        }
-                    }
-                }
+          .card-header {
+            .card-status-indicator {
+              background-color: $red-darken-01;
             }
+
+            .icon-wrapper {
+              i {
+                &.icon-status-indicator {
+                  &:before {
+                    content: '\f0f3';
+                  }
+                }
+              }
+            }
+          }
         }
 
         &.dueSoon {
-            .card-header {
-                .card-status-indicator {
-                    background-color: $orange-lighten-01;
-                }
-
-                .icon-wrapper {
-                    i {
-                        &.icon-status-indicator {
-                            &:before {
-                                content: '\f017';
-                            }
-                        }
-                    }
-                }
+          .card-header {
+            .card-status-indicator {
+              background-color: $orange-lighten-01;
             }
+
+            .icon-wrapper {
+              i {
+                &.icon-status-indicator {
+                  &:before {
+                    content: '\f017';
+                  }
+                }
+              }
+            }
+          }
         }
 
         &.upComing {
-            .card-header {
-                .card-status-indicator {
-                    background-color: $green-darken-02;
-                }
-
-                .icon-wrapper {
-                    i {
-                        &.icon-status-indicator {
-                            &:before {
-                                content: '\f133';
-                            }
-                        }
-                    }
-                }
+          .card-header {
+            .card-status-indicator {
+              background-color: $green-darken-02;
             }
+
+            .icon-wrapper {
+              i {
+                &.icon-status-indicator {
+                  &:before {
+                    content: '\f133';
+                  }
+                }
+              }
+            }
+          }
         }
 
         header {
@@ -293,7 +371,7 @@ ul {
                 }
 
                 &.fa-bookmark-o {
-                    margin-bottom: $padding/2;
+                  margin-bottom: $padding/2;
                 }
               }
 

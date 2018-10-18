@@ -26,9 +26,14 @@ header {
 
     > .logo {
       display: block;
-      flex-basis: 10rem;
+      flex-grow: 0;
       flex-shrink: 0;
-      width: 10rem;
+      width: auto;
+
+      img {
+        width: auto;
+        height: 62px;
+      }
     }
 
     .header-toggle-wrapper {

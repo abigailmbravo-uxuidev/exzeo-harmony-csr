@@ -29,7 +29,8 @@ export class SearchPage extends Component {
     advancedSearch: false,
     hasSearched: false,
     searchType: SEARCH_TYPES.policy,
-    searchConfig: SEARCH_TYPES.policy
+    searchConfig: SEARCH_TYPES.policy,
+    searchReady: false
   };
 
   componentDidMount() {
@@ -48,13 +49,23 @@ export class SearchPage extends Component {
     const { pathName } = this.props;
     // determine which page we are on and setup correct search properties
     if (pathName === '/') {
-      this.setState({ searchType: SEARCH_TYPES.policy, searchConfig: SEARCH_TYPES.policy });
-    }
-    if (pathName === '/agency') {
-      this.setState({ searchType: SEARCH_TYPES.agency, searchConfig: SEARCH_TYPES.agency });
-    }
-    if (pathName === '/diaries') {
-      this.setState({ searchType: SEARCH_TYPES.diaries, searchConfig: SEARCH_TYPES.diaries });
+      this.setState({
+        searchType: SEARCH_TYPES.policy,
+        searchConfig: SEARCH_TYPES.policy,
+        searchReady: true
+      });
+    } else if (pathName === '/agency') {
+      this.setState({
+        searchType: SEARCH_TYPES.agency,
+        searchConfig: SEARCH_TYPES.agency,
+        searchReady: true
+      });
+    } else if (pathName === '/diaries') {
+      this.setState({
+        searchType: SEARCH_TYPES.diaries,
+        searchConfig: SEARCH_TYPES.diaries,
+        searchReady: true
+      });
     }
   };
 
@@ -72,8 +83,9 @@ export class SearchPage extends Component {
     const {
       advancedSearch,
       hasSearched,
-      searchType,
-      searchConfig
+      searchConfig,
+      searchReady,
+      searchType
     } = this.state;
 
     const SearchForm = SEARCH_FORMS[searchType];
@@ -93,14 +105,18 @@ export class SearchPage extends Component {
               handlePagination,
               formProps
             }) => (
-              <SearchForm
-                advancedSearch={advancedSearch}
-                changeSearchType={changeSearchType}
-                searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
-                handlePagination={handlePagination}
-                hasSearched={hasSearched}
-                toggleAdvancedSearch={this.toggleAdvancedSearch}
-                {...formProps} />
+              <React.Fragment>
+                {searchReady &&
+                <SearchForm
+                  advancedSearch={advancedSearch}
+                  changeSearchType={changeSearchType}
+                  searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
+                  handlePagination={handlePagination}
+                  hasSearched={hasSearched}
+                  toggleAdvancedSearch={this.toggleAdvancedSearch}
+                  {...formProps} />
+                }
+              </React.Fragment>
             )} />
         </div>
         <main role="document" className={advancedSearch ? 'policy-advanced' : ''}>

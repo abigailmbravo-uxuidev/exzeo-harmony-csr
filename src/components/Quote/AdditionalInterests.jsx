@@ -73,7 +73,7 @@ export class AdditionalInterests extends Component {
     }
   }
 
-  handleAISubmit = async (additionalInterests) => {
+  onHandleAISubmit = async (additionalInterests) => {
     const {
       quoteData, startWorkflowAction, setAppErrorAction, setAppStateAction, appState, getQuoteAction
     } = this.props;
@@ -86,7 +86,7 @@ export class AdditionalInterests extends Component {
         quoteId: quoteData._id,
         additionalInterests
       });
-      getQuoteAction(quoteData._id, 'additionalInterests');
+      await getQuoteAction(quoteData._id, 'additionalInterests');
     } catch (error) {
       setAppErrorAction(error);
     } finally {
@@ -127,12 +127,12 @@ export class AdditionalInterests extends Component {
 
   editAdditionalInterest = (ai) => {
     const {
-      appState, setAppStateAction, editingDisabled, match
+      appState, setAppStateAction, editingDisabled
     } = this.props;
     if (editingDisabled) return;
     setAppStateAction(
       MODEL_NAME,
-      match.params.workflowId,
+      '',
       { ...appState.data }
     );
     // For now, hijacking appState calls with local state where we can.
@@ -168,7 +168,7 @@ export class AdditionalInterests extends Component {
         const mortgageeOrderAnswers = getMortgageeOrderAnswers(questions, quoteData.additionalInterests);
         return {
           ...initialValues,
-          order: mortgageeOrderAnswers[0].answer
+          order: (Array.isArray(mortgageeOrderAnswers) && mortgageeOrderAnswers.length > 0) ? mortgageeOrderAnswers[0].answer : ''
         };
       }
       return {
@@ -232,7 +232,7 @@ export class AdditionalInterests extends Component {
       ai.order = index;
     });
 
-    await this.handleAISubmit(modifiedAIs);
+    await this.onHandleAISubmit(modifiedAIs);
 
     this.setState({
       isDeleting: false,
@@ -325,7 +325,7 @@ export class AdditionalInterests extends Component {
             <AIModal
               additionalInterests={quoteData.additionalInterests}
               addAdditionalInterestType={this.state.addAdditionalInterestType}
-              completeSubmit={this.handleAISubmit}
+              completeSubmit={this.onHandleAISubmit}
               deleteAdditionalInterest={this.deleteAdditionalInterest}
               hideModal={this.hideAdditionalInterestModal}
               initialValues={this.initAdditionalInterestModal()}

@@ -111,17 +111,18 @@ export const handleInitialize = (quoteData, questions) => {
   values.otherStructuresAmount = otherStructures;
   values.otherStructures = String(calculatePercentage(otherStructures, dwelling));
   values.personalLiability = _.get(quoteData, 'coverageLimits.personalLiability.amount');
-  values.personalPropertyAmount = String(_.get(quoteData, 'coverageLimits.personalProperty.amount'));
+  values.personalPropertyAmount = _.get(quoteData, 'coverageLimits.personalProperty.amount');
   values.personalProperty = _.map(getAnswers('personalPropertyAmount', questions), 'answer').includes(calculatePercentage(personalProperty, dwelling)) ? String(calculatePercentage(personalProperty, dwelling)) : undefined;
   values.personalPropertyReplacementCostCoverage = _.get(quoteData, 'coverageOptions.personalPropertyReplacementCost.answer');
 
-  values.sinkholePerilCoverage = _.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer');
+  values.sinkholePerilCoverage = String(_.get(quoteData, 'coverageOptions.sinkholePerilCoverage.answer'));
+  values.sinkhole = String(values.sinkholePerilCoverage) === 'true' ? 10 : 0;
 
   values.allOtherPerils = _.get(quoteData, 'deductibles.allOtherPerils.amount');
   values.hurricane = hurricane;
 
   values.calculatedHurricane = _.get(quoteData, 'deductibles.hurricane.calculatedAmount');
-  values.calculatedSinkhole = _.get(quoteData, 'deductibles.sinkhole.calculatedAmount');
+  values.calculatedSinkhole = _.get(quoteData, 'deductibles.sinkhole.calculatedAmount') || 0;
 
   values.floridaBuildingCodeWindSpeed = _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeed');
   values.floridaBuildingCodeWindSpeedDesign = _.get(quoteData, 'property.windMitigation.floridaBuildingCodeWindSpeedDesign');
@@ -193,13 +194,12 @@ export const handleFormSubmit = async (data, dispatch, props) => {
     : submitData.pH2phone2;
 
   try {
-    props.setAppState(MODEL_NAME, '', { ...props.appState.data, submitting: true });
     await props.startWorkflow(MODEL_NAME, {
       quoteId: props.quoteData._id,
       ...submitData
     });
 
-    props.getQuote(props.quoteData._id, 'coverage');
+    await props.getQuote(props.quoteData._id, 'coverage');
   } catch (error) {
     props.setAppError(error);
   } finally {
@@ -244,9 +244,9 @@ export class Coverage extends Component {
     if (allValues.personalProperty !== 'other') {
       change('personalPropertyAmount', setPercentageOfValue(roundedDwellingAmount, allValues.personalProperty));
     }
-    change('calculatedHurricane', String(setPercentageOfValue(roundedDwellingAmount, allValues.hurricane)));
+    change('calculatedHurricane', setPercentageOfValue(roundedDwellingAmount, allValues.hurricane));
     change('lossOfUse', setPercentageOfValue(roundedDwellingAmount, 10));
-    change('calculatedSinkhole', String(setPercentageOfValue(roundedDwellingAmount, 10)));
+    change('calculatedSinkhole', setPercentageOfValue(roundedDwellingAmount, 10));
 
     return value;
   };
@@ -341,7 +341,8 @@ export class Coverage extends Component {
       pristine,
       questions,
       quoteData,
-      sinkholePerilCoverage
+      sinkholePerilCoverage,
+      submitting
     } = this.props;
 
     if (!quoteData) {
@@ -417,7 +418,7 @@ export class Coverage extends Component {
             <button data-test="coverage-reset" tabIndex="0" aria-label="reset-btn form-coverage" className="btn btn-secondary" type="button" form="Coverage" onClick={() => this.props.reset('Coverage')}>
               Reset
             </button>
-            <button data-test="coverage-submit" tabIndex="0" aria-label="submit-btn form-coverage" className="btn btn-primary" type="submit" form="Coverage" disabled={pristine || editingDisabled}>
+            <button data-test="coverage-submit" tabIndex="0" aria-label="submit-btn form-coverage" className="btn btn-primary" type="submit" form="Coverage" disabled={pristine || editingDisabled || submitting}>
               Update
             </button>
           </div>

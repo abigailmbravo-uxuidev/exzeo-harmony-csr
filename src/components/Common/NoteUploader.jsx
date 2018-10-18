@@ -43,7 +43,8 @@ export class NoteUploader extends Component {
         maxFileSize: process.env.REACT_APP_REQUEST_SIZE.slice(0, -2) * 1000000
       },
       meta: { documentId: this.props.documentId },
-      onBeforeFileAdded: this.validateFile
+      onBeforeFileAdded: this.validateFile,
+      onBeforeUpload: this.validateUpload
     }).use(XHRUpload, {
       endpoint: `${process.env.REACT_APP_API_URL}/upload`,
       fieldName: 'files[]',
@@ -144,12 +145,24 @@ export class NoteUploader extends Component {
   handleClose = () => this.props.actions.uiActions.toggleNote({});
 
   validateFile = (file, currentFiles) => {
+    if (file.data.size === 0) {
+      this.uppy.info('The file is empty.');
+      return false;
+    }
+
     if (!file.name.includes('.')) {
       this.uppy.info('Uploads must have a file extension.');
       return false;
     }
     return true;
-  };
+  }
+
+  validateUpload = (files => {
+    if(Object.keys(files).some(id => (!files[id].meta.name.includes('.')))) {
+      this.uppy.info('The file name must have a file extension.');
+      return false;
+    }
+  })
 
   submitNote = (data, dispatch, props) => {
     const {

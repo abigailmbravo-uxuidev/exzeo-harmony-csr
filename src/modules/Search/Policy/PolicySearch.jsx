@@ -64,8 +64,8 @@ const PolicySearch = ({
       <Field
         name="address"
         dataTest="address"
-        label="Property Address"
-        placeholder="Property Address Search"
+        label="Property Street Address"
+        placeholder="Property Street Address Search"
         component={Input}
         styleName="property-search"
         validate={isValidChar}
