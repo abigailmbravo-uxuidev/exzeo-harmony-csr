@@ -538,7 +538,7 @@ export function handleAgencySearch(data) {
 export function handleDiariesSearch(data) {
   return async (dispatch) => {
     const taskData = {
-      open: data.open,
+      open: data.open === 'true',
       assignees: data.assignees.map(a => a.answer),
       reason: data.reason,
       dueDateMin: data.dateRange.min,

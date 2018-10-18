@@ -1,8 +1,3 @@
-export const WORK_FLOW_MODEL_NAME = 'csrQuote';
-export const WORK_FLOW_DATA = {
-  dsUrl: `${process.env.REACT_APP_API_URL}/ds`
-};
-
 export const SEARCH_TYPES = {
   newQuote: 'address',
   quote: 'quote',
@@ -23,7 +18,7 @@ export const AGENCY_INITIAL_VALUES = {
 
 export const DIARY_INITIAL_VALUES = {
   assignees: [],
-  status: 'open',
+  open: 'true',
   dateRange: {
     min: '',
     max: ''

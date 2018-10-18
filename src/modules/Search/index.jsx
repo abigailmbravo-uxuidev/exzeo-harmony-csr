@@ -94,19 +94,18 @@ export class SearchPage extends Component {
       <React.Fragment>
 
         <div className={advancedSearch ? 'policy-advanced search' : 'search'}>
-          <SearchBar
-            advancedSearch={advancedSearch}
-            changeSearchType={this.changeSearchType}
-            initialValues={SEARCH_CONFIG[searchConfig].initialValues}
-            onSubmitSuccess={() => this.setHasSearched(true)}
-            searchType={searchType}
-            render={({
-              changeSearchType,
-              handlePagination,
-              formProps
-            }) => (
-              <React.Fragment>
-                {searchReady &&
+          {searchReady &&
+            <SearchBar
+              advancedSearch={advancedSearch}
+              changeSearchType={this.changeSearchType}
+              initialValues={SEARCH_CONFIG[searchConfig].initialValues}
+              onSubmitSuccess={() => this.setHasSearched(true)}
+              searchType={searchType}
+              render={({
+                changeSearchType,
+                handlePagination,
+                formProps
+              }) => (
                 <SearchForm
                   advancedSearch={advancedSearch}
                   changeSearchType={changeSearchType}
@@ -115,9 +114,8 @@ export class SearchPage extends Component {
                   hasSearched={hasSearched}
                   toggleAdvancedSearch={this.toggleAdvancedSearch}
                   {...formProps} />
-                }
-              </React.Fragment>
-            )} />
+              )} />
+          }
         </div>
         <main role="document" className={advancedSearch ? 'policy-advanced' : ''}>
           <div className="content-wrapper">

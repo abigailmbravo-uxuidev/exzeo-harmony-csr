@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { Select, MultiSelectTypeAhead, Button, validation } from '@exzeo/core-ui';
 
-import { REASONS } from '../../../constants/diaries';
+import { REASONS, STATUS_ANSWERS } from '../../../constants/diaries';
 import DateRange from '../components/DateRange';
 
 class DiariesSearch extends Component {
@@ -11,7 +11,7 @@ class DiariesSearch extends Component {
     const { assigneeAnswers, initialValues, initialize, userProfile } = this.props;
     const currentUser = assigneeAnswers.find(a => a.answer === userProfile.userId);
 
-    initialize({ ...initialValues, assignees: [currentUser] });
+    initialize({ ...initialValues, assignees: currentUser ? [currentUser] : [] });
     // fetch diaries with current userId
   }
 
@@ -29,14 +29,13 @@ class DiariesSearch extends Component {
           <div className="input-wrapper">
             <div className="form-group search-context">
               <Field
-                name="status"
+                name="open"
                 dataTest="status"
                 label="Diary Status"
                 component={Select}
                 id="status"
                 validate={validation.isRequired}
-                onChange={changeSearchType}
-                answers={searchTypeOptions}
+                answers={STATUS_ANSWERS}
                 showPlaceholder={false}
                 errorHint />
             </div>

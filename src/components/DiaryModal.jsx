@@ -161,7 +161,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(null, {
+export default connect(mapStateToProps, {
   setAppErrorAction: setAppError,
   submitDiaryAction: submitDiary,
   toggleDiaryAction: toggleDiary

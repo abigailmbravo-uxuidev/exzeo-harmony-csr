@@ -47,3 +47,8 @@ export const REASONS = [
   { answer: 'underwriting_letter', label: 'Underwriting Condition Letter' },
   { answer: 'vacant', label: 'Vacant' }
 ];
+
+export const STATUS_ANSWERS = [
+  { answer: 'true', label: 'Open' },
+  { answer: 'false', label: 'Closed'}
+];

@@ -23,7 +23,7 @@ export class SearchBar extends Component {
     if (!agencies.length) {
       getAgencies(DEFAULT_SEARCH_PARAMS.companyCode, DEFAULT_SEARCH_PARAMS.state);
     }
-    initialize(initialValues);
+    // initialize(initialValues);
   }
 
   handleSearchFormSubmit = async (data, dispatch, props) => {
