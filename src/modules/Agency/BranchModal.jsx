@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import { Select, Radio, Input, validation } from '@exzeo/core-ui';
+import { Select, Radio, Input, validation, Phone } from '@exzeo/core-ui';
 
 import { updateAgency } from '../../state/actions/agencyActions';
 
@@ -18,7 +18,20 @@ const mailAnswers = [
 
 export class BranchModal extends Component {
   handleBranchSubmit = async (data, dispatch, props) => {
-    await props.updateAgency(data);
+    const { agency, branchCode } = this.props;
+
+    const selectedBranch = agency.branches.filter(b => String(b.branchCode) === String(branchCode))[0];
+    selectedBranch.displayName = data.displayName;
+    selectedBranch.status = data.status;
+    selectedBranch.primaryPhoneNumber = data.primaryPhoneNumber;
+    selectedBranch.secondaryPhoneNumber = data.secondaryPhoneNumber;
+    selectedBranch.faxNumber = data.faxNumber;
+    selectedBranch.websiteUrl = data.websiteUrl;
+    selectedBranch.mailCommissionChecksToBranch = data.mailCommissionChecksToBranch;
+    selectedBranch.mailPolicyDocsToBranch = data.mailPolicyDocsToBranch;
+
+    agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
+    await props.updateAgency(agency);
     props.closeModal();
   };
 
@@ -32,7 +45,7 @@ export class BranchModal extends Component {
 
     return (
       <div className="modal agency-crud" style={{ overflow: 'scroll', display: 'block' }}>
-        <form onSubmit={handleSubmit(handleBranchSubmit)}>
+        <form onSubmit={handleSubmit(this.handleBranchSubmit)}>
           <div className="card">
             <div className="card-header">
               <h4>
@@ -59,6 +72,25 @@ export class BranchModal extends Component {
                     validate={validation.isRequired}
                     answers={statusAnswers} />
 
+                  <Field
+                    name="primaryPhoneNumber"
+                    label="Primary Phone"
+                    component={Phone}
+                    dataTest="primaryPhoneNumber"
+                    styleName="primaryPhoneNumber"
+                    validate={validation.isRequired} />
+                  <Field
+                    name="secondaryPhoneNumber"
+                    label="Secondary Phone"
+                    component={Phone}
+                    dataTest="secondaryPhoneNumber"
+                    styleName="secondaryPhoneNumber" />
+                  <Field
+                    name="faxNumber"
+                    label="Fax Number"
+                    component={Phone}
+                    dataTest="faxNumber"
+                    styleName="faxNumber" />
                 </div>
                 <div className="agency-web-address">
                   <Field

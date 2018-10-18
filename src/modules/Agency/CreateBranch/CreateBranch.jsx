@@ -55,7 +55,7 @@ export class CreateBranch extends Component {
 
   handleResetForm = () => {
     this.props.reset();
-    history.push(`/agency/${this.props.agency.agencyCode}/overview`);
+    history.push(`/agency/${this.props.agency.agencyCode}/${this.props.branchCode}/overview`);
   };
 
   applyOrphanedAgent = (data) => {

@@ -15,7 +15,6 @@ import CreateBranch from './CreateBranch';
 
 const CreateRender = props => <Create auth={props.auth} {...props} />;
 const ContractsRender = props => <Contracts auth={props.auth} {...props} />;
-const CreateBranchRender = props => <CreateBranch auth={props.auth} {...props} />;
 
 export class Agency extends Component {
   componentDidMount() {
@@ -49,7 +48,7 @@ export class Agency extends Component {
             <Route exact path={`/agency/${agencyCode}/${branchCode}/overview`} render={props => <Overview branchCode={branchCode} auth={props.auth} {...props} />} />
             <Route exact path={`/agency/${agencyCode}/${branchCode}/contracts`} render={ContractsRender} />
             <Route exact path={`/agency/${agencyCode}/${branchCode}/agents`} render={props => <Agents branchCode={branchCode} auth={props.auth} {...props} />} />
-            <Route exact path={`/agency/${agencyCode}/0/newBranch`} render={CreateBranchRender} />
+            <Route exact path={`/agency/${agencyCode}/0/newBranch`} render={props => <CreateBranch branchCode={branchCode} auth={props.auth} {...props} />} />
           </div>
         </main>
       </div>
