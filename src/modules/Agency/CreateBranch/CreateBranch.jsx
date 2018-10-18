@@ -36,6 +36,7 @@ export class CreateBranch extends Component {
   handleSameAsMailing = (value, previousValue, allValues) => {
     const { change } = this.props;
     const { mailingAddress } = allValues;
+    if (!mailingAddress) return value;
     if (value) {
       change('physicalAddress.address1', mailingAddress.address1);
       change('physicalAddress.address2', mailingAddress.address2);
