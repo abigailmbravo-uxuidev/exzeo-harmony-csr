@@ -35,7 +35,7 @@ export class Agency extends Component {
 
   render() {
     const {
-      agency, location, match: { params: { agencyCode, branchCode }, url }
+      agency, location, match: { params: { agencyCode, branchCode }, url }, match
     } = this.props;
 
     return (
@@ -45,7 +45,7 @@ export class Agency extends Component {
         <AgencyDetailHeader agency={agency} />
         <main role="document">
           <aside className="content-panel-left">
-            <AgencySideNav agencyCode={agencyCode} location={location} branchCode={branchCode} />
+            <AgencySideNav agencyCode={agencyCode} location={location} branchCode={branchCode} match={match} />
           </aside>
           <div className="content-wrapper">
             <Route exact path="/agency/new" render={CreateRender} />

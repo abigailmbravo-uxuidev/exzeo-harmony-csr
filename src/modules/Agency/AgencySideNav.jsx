@@ -84,7 +84,7 @@ export class SideNav extends React.Component {
                 normalize={(v, pv, av) => this.handleBranchSelection(v)} />
             </li>
             }
-            {branchCode === 0 && agencyCode !== 'new' &&
+            {String(branchCode) === '0' && agencyCode !== 'new' &&
             <li key="newBranch" >
               <NavLink
                 to={`/agency/${agencyCode}/${branchCode}/newBranch`}
