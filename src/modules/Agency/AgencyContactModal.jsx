@@ -29,12 +29,12 @@ export class AgencyContactModal extends Component {
     } = this.props;
 
     return (
-      <div className="modal agency-crud" style={{ overflow: 'scroll', display: 'block' }}>
+      <div className="modal edit-contact">
         <form onSubmit={handleSubmit(this.saveAgency)}>
           <div className="card">
             <div className="card-header">
               <h4>
-                <i className="fa fa-address-book" /> {header}
+                <i className="fa fa-address-card" /> {header}
               </h4>
             </div>
             <div className="card-block">

@@ -145,7 +145,7 @@ export class Create extends Component {
                 </section>
                 <h3>Agent Of Record <button onClick={this.handleToggleExistingAgentModal} className="btn btn-link btn-sm"><i className="fa fa-user" />Use Existing Agent</button></h3>
                 <section className="agency-aor">
-                  <div className="agency-detail">
+                  <div className="agent-of-record">
                     <FormSection name="agentOfRecord">
                       <Agent />
                     </FormSection>
