@@ -35,29 +35,28 @@ export class AgentModal extends Component {
     } = this.props;
 
     return (
-      <div className="modal agency-crud" style={{ display: 'block', overflow: 'scroll' }}>
+      <div className="modal agent-crud">
         <form onSubmit={handleSubmit(this.handleSave)}>
           <div className="card">
             <div className="card-header">
               <h4>
-                <i className="fa fa-address-book" /> {isEditing ? 'Edit' : 'Save'} Agency
+                <i className="fa fa-address-book" /> {isEditing ? 'Edit' : 'Save'} Agent
               </h4>
             </div>
             <div className="card-block">
+              <h3>Details</h3>
               <section className="agent-details">
-                <h3>Details</h3>
-
                 <Details isEditing={isEditing} />
               </section>
-              <section className="agent-license">
-                <h3>Mailing Address</h3>
+              <h3>Mailing Address</h3>
+              <section className="agent-mailing">
                 <FormSection
                   name="mailingAddress">
                   <Address />
                 </FormSection>
               </section>
+              <h3>Licenses</h3>
               <section className="agent-license">
-                <h3>Licenses</h3>
                 <FieldArray
                   name="licenses"
                   component={License}

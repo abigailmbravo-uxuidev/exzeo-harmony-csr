@@ -1097,140 +1097,6 @@
         flex-grow: 1;
         flex-shrink: 1;
         width: 100%;
-        /*.card-block {
-          display: flex;
-
-          .contract-details {
-            display: flex;
-            flex-wrap: wrap;
-            width: 40%;
-            margin-right: $padding*2;
-            padding-right: $padding*2;
-            border-right: 1px dotted $warm-gray-01;
-
-            .flex-form {
-              width: 100%;
-
-              .companyCode {
-                flex-grow: 1;
-                flex-shrink: 1;
-              }
-
-              .state {
-                flex-grow: 0;
-                flex-shrink: 0;
-                width: 6rem;
-              }
-
-              .licenseNumber {
-                flex-grow: 1;
-                flex-shrink: 1;
-              }
-
-              .licenseExpirationDate {
-                flex-grow: 1;
-                flex-shrink: 1;
-              }
-            }
-
-            .eoExpirationDate {
-              flex-grow: 0;
-              flex-shrink: 0;
-              width: 10rem;
-            }
-          }
-
-          .product-details {
-            display: flex;
-            flex-direction: column;
-            width: 15%;
-            margin-right: $padding*2;
-            padding-right: $padding*2;
-            border-right: 1px dotted $warm-gray-01;
-
-            .product-wrapper > div > div {
-              display: flex;
-              align-items: flex-start;
-              flex-direction: column;
-              margin-bottom: $padding;
-
-              label {
-                margin-bottom: 0;
-              }
-
-              input[type="checkbox"] {
-                margin-right: $padding;
-                margin-left: 0;
-              }
-            }
-          }
-
-          .agent-details {
-            display: flex;
-            flex-direction: column;
-            width: 45%;
-
-            ul {
-              &.contract-agent-list {
-                margin: 0;
-                padding: 0;
-                list-style: none;
-
-                li {
-                  display: flex;
-                  align-items: flex-start;
-                  padding: ($padding/2) ($padding*.75);
-                  font-size: $font-size-sm;
-
-                  &:nth-of-type(odd) {
-                    background: $warm-gray-01;
-                  }
-
-                  &.header {
-                    color: $warm-gray-08;
-                    background: $warm-gray-02;
-                  }
-
-                  span {
-                    flex-grow: 0;
-                    flex-shrink: 0;
-                    color: $warm-gray-08;
-
-                    &.label {
-                      font-weight: $font-weight-bold;
-                    }
-
-                    &.display {
-                      min-height: 1.3125rem;
-                    }
-
-                    &.aor,
-                    &.appointed {
-                      display: flex;
-                      align-items: center;
-                      justify-content: center;
-                      width: 4.5rem;
-                      text-align: center;
-
-                      input {
-                        margin: 0;
-                      }
-                    }
-
-                    &.agent-name {
-                      flex-grow: 1;
-                      flex-shrink: 1;
-                    }
-
-                    &.actions {
-                      width: 5rem;
-                    }
-                  }
-                }
-              }
-            }
-          }
-      }*/
       }
     }
   }
@@ -1250,16 +1116,18 @@
   &.agency-crud {
     form {
       width: 100%;
+      max-height: 90%;
 
       .card {
         width: 80%;
+        max-height: 90%;
 
         .agency-details {
           display: grid;
-          margin-bottom: $padding*2;
-          padding-bottom: $padding*4;
+          margin-bottom: 0;
+          padding-bottom: 0;
           grid-template-columns: repeat(12, [col-start] 1fr);
-          grid-gap: $padding*2;
+          grid-gap: 0 ($padding*2);
 
           .agencyCode {
             grid-column: span 2;
@@ -1402,137 +1270,44 @@
   }
 
   &.agent-crud {
-    .card {
-      display: flex;
-      overflow: hidden;
-      align-items: center;
-      flex-grow: 1;
-      flex-shrink: 1;
-      justify-content: center;
-      max-height: 90%;
-      /*form {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-        flex-shrink: 1;
-        width: 100%;
+    form {
+      width: 100%;
+
+      .card {
+        width: 80%;
+        max-height: 80vh;
 
         .card-block {
-          display: flex;
-          overflow-x: hidden;
-
-          h4 {
-            input[type="checkbox"] {
-              margin-right: $padding;
-              padding-bottom: 0;
-            }
-          }
-
-          .agent-details {
-            display: grid;
-            flex-grow: 1;
-            flex-shrink: 1;
-            height: 100%;
-            margin-right: $padding*2;
-            padding-right: $padding*2;
-            border-right: 1px dotted $warm-gray-02;
-            grid-template-columns: repeat(12, [col-start] 1fr);
-            grid-gap: $padding*2;
-
-            .form-group {
-              margin: 0;
-            }
-
-            .agentCode {
-              grid-column: span 2;
-            }
-
-            .firstName,
-            .lastName {
-              grid-column: span 5;
-            }
-
-            .faxNumber,
-            .primaryPhoneNumber,
-            .secondaryPhoneNumber,
-            .status {
-              grid-column: span 3;
-            }
-
-            .DBA,
-            .address1,
-            .address2,
-            .emailAddress {
-              grid-column: span 6;
-            }
-
-            .agencyLicense,
-            h4 {
-              margin-bottom: 0;
-              grid-column: span 12;
-            }
-
-            .agencyLicense {
-              z-index: 10;
-            }
-
-            .city {
-              grid-column: span 7;
-            }
-
-            .state {
-              grid-column: span 2;
-            }
-
-            .zip {
-              grid-column: span 3;
-            }
-          }
-
-          .existing-agent-details {
+          section {
             display: flex;
             flex-direction: column;
-            flex-grow: 1;
-            flex-shrink: 1;
-            height: 100%;
-          }
 
-          .agent-license {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 0;
-            flex-shrink: 0;
-            width: 17rem;
+            &.agent-details {
+              .agent-name, .agent-phone {
+                display: flex;
 
-            .label-wrapper,
-            .license-wrapper {
-              display: flex;
-              margin-bottom: $padding*2;
+                > div {
+                  flex-grow: 1;
+                  flex-shrink: 1;
+                  margin-right: $padding;
 
-              .state {
-                flex-grow: 0;
-                flex-shrink: 0;
-                width: 4rem;
-                margin-right: $padding*2;
-                margin-bottom: 0;
-              }
+                  &.agentCode {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                    width: 8rem;
+                  }
 
-              .licenseNumber {
-                flex-grow: 1;
-                flex-shrink: 1;
-                margin-right: $padding*2;
-                margin-bottom: 0;
+                  &:last-child {
+                    margin-right: 0;
+                  }
+                }
               }
             }
-
-            .add-license {}
           }
         }
-    }*/
+      }
     }
   }
-
-  &.agent-remove {}
 }
 
 #root {
