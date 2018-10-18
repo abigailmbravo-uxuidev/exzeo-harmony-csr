@@ -47,7 +47,7 @@ export class Agency extends Component {
             <AgencySideNav agencyCode={agencyCode} location={location} branchCode={branchCode} match={match} />
           </aside>
           <div className="content-wrapper">
-            <Route exact path="/agency/new" render={CreateRender} />
+            <Route exact path="/agency/new/0" render={CreateRender} />
             <Route exact path={`/agency/${agencyCode}/${branchCode}/overview`} render={OverviewRender} />
             <Route exact path={`/agency/${agencyCode}/${branchCode}/contracts`} render={ContractsRender} />
             <Route exact path={`/agency/${agencyCode}/${branchCode}/agents`} render={props => <Agents branchCode={branchCode} auth={props.auth} {...props} />} />
