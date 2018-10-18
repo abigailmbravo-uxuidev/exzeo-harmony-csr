@@ -22,9 +22,22 @@ const taxClassificationAnswers = [
   { answer: 'Corporation', label: 'Corporation' }
 ];
 
-export class AgencyModal extends Component {
+export class AgencyAddressModal extends Component {
   saveAgency = async (data, dispatch, props) => {
-    await props.updateAgency(data);
+    const { agency, branchCode } = this.props;
+    if (branchCode > 0) {
+      const selectedBranch = agency.branches.filter(b => String(b.branchCode === String(branchCode)));
+      selectedBranch.physicalAddress = data.physicalAddress;
+      selectedBranch.mailingAddress = data.mailingAddress;
+      selectedBranch.territoryManagerId = data.territoryManagerId;
+      props.updateAgency(agency);
+    } else {
+      agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
+      agency.physicalAddress = data.physicalAddress;
+      agency.mailingAddress = data.mailingAddress;
+      agency.territoryManagerId = data.territoryManagerId;
+      await props.updateAgency(agency);
+    }
     props.closeModal();
   };
 
@@ -142,15 +155,14 @@ export class AgencyModal extends Component {
   }
 }
 
-const selector = formValueSelector('AgencyModal');
+const selector = formValueSelector('AgencyAddressModal');
 const mapStateToProps = state => ({
-  initialValues: getEditModalInitialValues(state),
   sameAsMailingValue: selector(state, 'sameAsMailing')
 });
 
 export default connect(mapStateToProps, {
   updateAgency
 })(reduxForm({
-  form: 'AgencyModal',
+  form: 'AgencyAddressModal',
   enableReinitialize: true
-})(AgencyModal));
+})(AgencyAddressModal));

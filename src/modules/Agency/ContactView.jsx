@@ -1,24 +1,24 @@
 import React from 'react';
 
-const ContactView = ({ agency, emailType }) => {
+const ContactView = ({ agency, agencyBranchData, emailType }) => {
   return (
     <React.Fragment>
       <div className="primaryPhoneNumber read">
         <label>Phone 1</label>
         <div>
-          {agency.primaryPhoneNumber}
+          {agencyBranchData.primaryPhoneNumber}
         </div>
       </div>
       <div className="secondaryPhoneNumber read">
         <label>Phone 2</label>
         <div>
-          {agency.secondaryPhoneNumber}
+          {agencyBranchData.secondaryPhoneNumber}
         </div>
       </div>
       <div className="faxNumber read">
         <label>Fax</label>
         <div>
-          {agency.faxNumber}
+          {agencyBranchData.faxNumber}
         </div>
       </div>
       <div className="customerServiceEmailAddress read">

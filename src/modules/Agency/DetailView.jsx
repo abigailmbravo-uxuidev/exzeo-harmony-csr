@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 
 const DetailView = ({
-  agency, branchName, mailCommissionChecksToBranch, mailPolicyDocsToBranch, branchURL
+  agency, agencyBranchData
 }) => {
   return (
     <React.Fragment>
@@ -15,7 +15,7 @@ const DetailView = ({
       <div className="agencyName">
         <label>Agency Name</label>
         <div>
-          {agency.displayName}
+          {agencyBranchData.displayName}
         </div>
       </div>
       <div className="entityName">
@@ -24,7 +24,7 @@ const DetailView = ({
       </div>
       <div className="status">
         <label>Status</label>
-        <div>{agency.status}</div>
+        <div>{agencyBranchData.status}</div>
       </div>
       <div className="tpaid">
         <label>TPAID</label>
@@ -37,8 +37,8 @@ const DetailView = ({
       <div className="webAddress">
         <label>Web Address</label>
         <div>
-          <a href={branchURL || agency.websiteUrl} target="_blank">
-            {branchURL || agency.websiteUrl}
+          <a href={agencyBranchData.websiteUrl} target="_blank">
+            {agencyBranchData.websiteUrl}
           </a>
         </div>
       </div>
@@ -54,22 +54,22 @@ const DetailView = ({
         <label>EO Expiration Date</label>
         <div>{moment(agency.eoExpirationDate).format('MM/DD/YYYY')}</div>
       </div>
-      {branchName &&
+      {String(agencyBranchData.branchCode) !== '0' &&
       <div className="branchName">
         <label>Branch Name</label>
-        <div>{branchName}</div>
+        <div>{agencyBranchData.displayName}</div>
       </div>
       }
-      {branchName &&
+      {String(agencyBranchData.branchCode) !== '0' &&
       <div className="mailCommisionChecksToBranch">
         <label>Mail Commision Checks to this Branch</label>
-        <div>{mailCommissionChecksToBranch ? 'Yes' : 'No'}</div>
+        <div>{agencyBranchData.mailCommissionChecksToBranch ? 'Yes' : 'No'}</div>
       </div>
       }
-      {branchName &&
+      {String(agencyBranchData.branchCode) !== '0' &&
       <div className="mailPolicyDocsToBranch">
         <label>Mail Policy Docs to this Branch</label>
-        <div>{mailPolicyDocsToBranch ? 'Yes' : 'No'}</div>
+        <div>{agencyBranchData.mailPolicyDocsToBranch ? 'Yes' : 'No'}</div>
       </div>
       }
     </React.Fragment>

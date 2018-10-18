@@ -504,6 +504,7 @@ export function transormAgencyToBranch(agencyData) {
     mailingAddress,
     physicalAddress,
     contact,
+    principal,
     agentOfRecord,
     faxNumber,
     primaryPhoneNumber,
@@ -514,12 +515,17 @@ export function transormAgencyToBranch(agencyData) {
     websiteUrl
   } = agencyData;
   if (!Array.isArray(agencyData.branches)) agencyData.branches = [];
+
+  // main branch already exists
+  if (agencyData.branches.filter(b => String(b.branchCode) === '0').length > 0) return agencyData;
+
   agencyData.branches.push({
     branchCode: 0,
     mailingAddress,
     physicalAddress,
     agentOfRecord,
     contact,
+    principal,
     displayName,
     faxNumber,
     primaryPhoneNumber,

@@ -9,12 +9,15 @@ import Contact from './components/FormGroup/Contact';
 
 export class AgencyContactModal extends Component {
   saveAgency = async (data, dispatch, props) => {
-    const { agency, branchCode } = props;
-    if (branchCode) {
-      agency.branches[branchCode - 1].contact = data.contact;
+    const { agency, branchCode, section } = this.props;
+    if (branchCode > 0) {
+      const selectedBranch = agency.branches.filter(b => String(b.branchCode === String(branchCode)));
+      selectedBranch[0][section] = data[section];
       props.updateAgency(agency);
     } else {
-      await props.updateAgency(data);
+      agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
+      agency[section] = data[section];
+      await props.updateAgency(agency);
     }
     props.closeModal();
   };

@@ -9,6 +9,7 @@ import DetailView from '../DetailView';
 import ContactView from '../ContactView';
 import AddressView from '../AddressView';
 import AgentModal from '../AgentModal';
+import BranchModal from '../BranchModal';
 
 export class Overview extends React.Component {
   state = {
@@ -41,13 +42,13 @@ export class Overview extends React.Component {
 
   render() {
     const {
-      agency, territoryManagers, agentOfRecord, addressInitialValues
+      agency, territoryManagers, agentOfRecord, addressInitialValues, agencyBranchData, branchCode
     } = this.props;
     const {
       showEditDetailsModal, showEditAddressModal, showEditContactModal, showEditPrincipalModal, showEditAgentModal
     } = this.state;
 
-    if (!agency || !agency.physicalAddress) return <span />;
+    if (!agencyBranchData || !agencyBranchData.physicalAddress) return <span />;
 
     return (
       <div className="route-content-wrapper">
@@ -62,9 +63,9 @@ export class Overview extends React.Component {
                 </button>
               </h3>
               <section className="agency-details">
-                <DetailView agency={agency} />
+                <DetailView agency={agency} agencyBranchData={agencyBranchData} />
                 <hr />
-                <ContactView agency={agency} emailType="CSR" />
+                <ContactView agency={agency} agencyBranchData={agencyBranchData} emailType="CSR" />
               </section>
               <h3>Address
                 <button
@@ -74,15 +75,15 @@ export class Overview extends React.Component {
                 </button>
               </h3>
               <section className="agency-address">
-                <AddressView agency={agency} territoryManagers={territoryManagers} />
+                <AddressView agencyBranchData={agencyBranchData} territoryManagers={territoryManagers} />
               </section>
               <h3>Officer</h3>
               <section className="agency-principal">
-                <ContactCard contact={agency.principal} handleClick={this.onHandleToggleEditPrincipalModal} />
+                <ContactCard contact={agencyBranchData.principal} handleClick={this.onHandleToggleEditPrincipalModal} />
               </section>
               <h3>Contact</h3>
               <section className="agency-contact">
-                <ContactCard contact={agency.contact} handleClick={this.onHandleToggleEditContactModal} />
+                <ContactCard contact={agencyBranchData.contact} handleClick={this.onHandleToggleEditContactModal} />
               </section>
               <h3>Agent Of Record</h3>
               <section name="agentOfRecord">
@@ -91,13 +92,14 @@ export class Overview extends React.Component {
             </div>
           </div>
         </div>
-        {showEditDetailsModal && <AgencyModal initialValues={agency} closeModal={this.onHandleToggleEditDetailsModal} />}
-        {showEditAddressModal && <AgencyAddressModal initialValues={addressInitialValues} closeModal={this.onHandleToggleEditAddressModal} />}
+        {showEditDetailsModal && Number(branchCode) === 0 && <AgencyModal initialValues={agency} closeModal={this.onHandleToggleEditDetailsModal} />}
+        {showEditDetailsModal && Number(branchCode) > 0 && <BranchModal initialValues={agencyBranchData} closeModal={this.onHandleToggleEditDetailsModal} />}
+        {showEditAddressModal && <AgencyAddressModal agency={agency} initialValues={addressInitialValues} closeModal={this.onHandleToggleEditAddressModal} />}
         {showEditContactModal &&
-          <AgencyContactModal header="Edit Contact" section="contact" initialValues={agency.contact} closeModal={this.onHandleToggleEditContactModal} />
+          <AgencyContactModal agency={agency} header="Edit Contact" section="contact" initialValues={agencyBranchData} closeModal={this.onHandleToggleEditContactModal} />
         }
         {showEditPrincipalModal &&
-          <AgencyContactModal header="Edit Officer" section="principal" initialValues={agency.principal} closeModal={this.onHandleToggleEditPrincipalModal} />
+          <AgencyContactModal agency={agency} header="Edit Officer" section="principal" initialValues={agencyBranchData} closeModal={this.onHandleToggleEditPrincipalModal} />
         }
         {showEditAgentModal &&
         <AgentModal agencyCode={agency.agencyCode} initialValues={agentOfRecord} closeModal={this.onHandleToggleEditAgentModal} />
