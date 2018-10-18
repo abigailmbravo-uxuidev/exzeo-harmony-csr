@@ -158,10 +158,6 @@ export class Create extends Component {
                       isAgency />
                   </div>
                 </section>
-                <div className="basic-footer btn-footer">
-                  <Button dataTest="resetButton" baseClass="secondary" onClick={this.handleResetForm}>Cancel</Button>
-                  <Button dataTest="submitButton" baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
-                </div>
               </form>
             </div>
           </div>
@@ -173,6 +169,10 @@ export class Create extends Component {
           onToggleModal={this.handleToggleExistingAgentModal}
           handleSelection={this.applyOrphanedAgent} />
       }
+        <div className="basic-footer btn-footer">
+          <Button dataTest="resetButton" baseClass="secondary" onClick={this.handleResetForm}>Cancel</Button>
+          <Button dataTest="submitButton" baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
+        </div>
       </div>
     );
   }
