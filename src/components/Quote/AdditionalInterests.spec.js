@@ -372,8 +372,7 @@ describe('Testing AdditionalInterests component', () => {
 
     wi.onHandleAISubmit(quoteData.additionalInterests);
     wi.addAdditionalInterest('Bill Payer');
-    wi.editAdditionalInterest(quoteData.additionalInterests[0]);
+    wi.editAI(quoteData.additionalInterests[0]);
     wi.deleteAdditionalInterest(quoteData.additionalInterests[0]);
-    wi.editAIOnEnter({ key: 'Enter' }, quoteData.additionalInterests[0]);
   });
 });
