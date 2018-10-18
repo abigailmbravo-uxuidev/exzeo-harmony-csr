@@ -3,23 +3,24 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { Select, MultiSelectTypeAhead, Button, validation } from '@exzeo/core-ui';
 
-import { REASONS, USERS, ASSIGNEE_ANSWERS } from '../../../constants/diaries';
+import { REASONS } from '../../../constants/diaries';
 import DateRange from '../components/DateRange';
 
 class DiariesSearch extends Component {
   componentDidMount() {
-    const { initialValues, initialize, userProfile } = this.props;
-    const answers = ASSIGNEE_ANSWERS();
-    const currentUser = answers.find(a => a.answer === userProfile.userId);
+    const { assigneeAnswers, initialValues, initialize, userProfile } = this.props;
+    const currentUser = assigneeAnswers.find(a => a.answer === userProfile.userId);
 
     initialize({ ...initialValues, assignees: [currentUser] });
+    // fetch diaries with current userId
   }
 
   render() {
     const {
-      submitting,
+      assigneeAnswers,
       changeSearchType,
-      searchTypeOptions
+      searchTypeOptions,
+      submitting
     } = this.props;
 
     return (
@@ -58,7 +59,7 @@ class DiariesSearch extends Component {
               dataTest="assignees"
               component={MultiSelectTypeAhead}
               label="Assigned To"
-              answers={ASSIGNEE_ANSWERS()}
+              answers={assigneeAnswers}
               errorHint />
           </div>
 
@@ -76,6 +77,7 @@ class DiariesSearch extends Component {
 }
 
 DiariesSearch.propTypes = {
+  assigneeAnswers: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   changeSearchType: PropTypes.func.isRequired,
   initialize: PropTypes.func.isRequired,
   searchTypeOptions: PropTypes.arrayOf(PropTypes.shape()).isRequired,

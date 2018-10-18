@@ -1,14 +1,6 @@
 export const POLICY_RESOURCE_TYPE = 'Policy';
 export const QUOTE_RESOURCE_TYPE = 'Quote';
 
-export const USERS = [
-  { answer: '1', label: 'TTICCSR', type: 'user' },
-  { answer: '2', label: 'Jordan Rhodes', type: 'user' },
-  { answer: '3', label: 'Mark Eads', type: 'user' },
-  { answer: '10', label: 'A-Team', type: 'user' },
-  { answer: 'auth0|CSR1234567890', label: 'TESTUSER', type: 'user' }
-];
-
 export const TAGS = [
   { answer: 'new_policy', label: 'New Policy', type: 'tag' },
   { answer: 'occupancy', label: 'Occupancy', type: 'tag' },
@@ -16,13 +8,6 @@ export const TAGS = [
   { answer: 'renewal_processing', label: 'Renewal Processing', type: 'tag' },
   { answer: 'underwriting', label: 'Underwriting', type: 'tag' }
 ];
-
-export const ASSIGNEE_ANSWERS = () => {
-  let assignees = [];
-  USERS.forEach(user => assignees.push(user));
-  TAGS.forEach(tag => assignees.push(tag));
-  return assignees;
-};
 
 export const TYPES = [
   { answer: 'additional_interest', label: 'Additional Interest' },

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 
 import { SEARCH_CONFIG, SEARCH_TYPES } from '../../constants/search';
 import { resetSearch } from '../../state/actions/search.actions';
-import DiaryPolling from '../../components/DiaryPolling';
 
 import SearchBar from './components/SearchBar';
 import SearchResults from './components/SearchResults';
@@ -77,15 +76,10 @@ export class SearchPage extends Component {
       searchConfig
     } = this.state;
 
-    const {
-      userProfile
-    } = this.props;
     const SearchForm = SEARCH_FORMS[searchType];
 
     return (
       <React.Fragment>
-
-        {userProfile.userId && <DiaryPolling filter={{ userId: userProfile.userId }} />}
 
         <div className={advancedSearch ? 'policy-advanced search' : 'search'}>
           <SearchBar
@@ -132,9 +126,5 @@ export class SearchPage extends Component {
     );
   }
 }
-
-SearchPage.defaultProps = {
-  userProfile: {}
-};
 
 export default connect(null, { resetSearch })(SearchPage);

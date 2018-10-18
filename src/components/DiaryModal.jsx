@@ -2,28 +2,27 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { Date, Select, validation, Loader } from '@exzeo/core-ui';
+import { Date, Select, validation, Loader, TextArea } from '@exzeo/core-ui';
 
 import { submitDiary } from '../state/actions/diary.actions';
 import { toggleDiary } from '../state/actions/ui.actions';
 import { setAppError } from '../state/actions/error.actions';
-import { ASSIGNEE_ANSWERS, REASONS, TYPES } from '../constants/diaries';
+import { getDiaryAssigneeAnswers } from '../state/selectors/questions.selectors';
+import { REASONS, TYPES } from '../constants/diaries';
 
 
-export const TextArea = ({
-  input, label, meta: { touched, error }
-}) => (
-  <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
-    <label>{label} </label>
-    <textarea {...input} placeholder={label} rows="10" cols="40" />
-    {touched && error && <span className="error-message">{error}</span>}
-  </div>
-);
+// export const TextArea = ({
+//   input, label, meta: { touched, error }
+// }) => (
+//   <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
+//     <label>{label} </label>
+//     <textarea {...input} placeholder={label} rows="10" cols="40" />
+//     {touched && error && <span className="error-message">{error}</span>}
+//   </div>
+// );
 
 export class DiaryModal extends Component {
   state = { minimize: false };
-
-  assigneeAnswers = ASSIGNEE_ANSWERS();
 
   componentDidMount() {
     // TODO: not sure this logic should be here. Seems like it should be much further up the tree
@@ -46,7 +45,7 @@ export class DiaryModal extends Component {
   submitDiary = async (data, dispatch, props) => {
     try {
       const { assignee: { id }, ...submitData } = data;
-      const assigneeObj = this.assigneeAnswers.find(u => String(u.answer) === String(id));
+      const assigneeObj = props.assigneeAnswers.find(u => String(u.answer) === String(id));
       const assignee = { id: assigneeObj.answer, displayName: assigneeObj.label, type: assigneeObj.type };
       await props.submitDiaryAction({ ...submitData, assignee }, props);
     } catch (error) {
@@ -57,7 +56,7 @@ export class DiaryModal extends Component {
   };
 
   render() {
-    const { submitting, handleSubmit } = this.props;
+    const { assigneeAnswers, handleSubmit, submitting, } = this.props;
 
     return (
       <div className={this.state.minimize ? 'new-diary-file minimize' : 'new-diary-file'} >
@@ -88,7 +87,7 @@ export class DiaryModal extends Component {
                 styleName="assignee"
                 label="Assignee"
                 component={Select}
-                answers={this.assigneeAnswers}
+                answers={assigneeAnswers}
                 validate={validation.isRequired}
                 dataTest="assignee" />
               <Field
@@ -145,6 +144,7 @@ export class DiaryModal extends Component {
 }
 
 DiaryModal.propTypes = {
+  assigneeAnswers: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   handleSubmit: PropTypes.func.isRequired,
   setAppErrorAction: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -155,6 +155,11 @@ DiaryModal.propTypes = {
   }).isRequired
 };
 
+const mapStateToProps = (state) => {
+  return {
+    assigneeAnswers: getDiaryAssigneeAnswers(state)
+  };
+};
 
 export default connect(null, {
   setAppErrorAction: setAppError,

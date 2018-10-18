@@ -1,5 +1,7 @@
 import { createSelector } from 'reselect';
 
+import { TAGS } from '../../constants/diaries';
+
 export const getQuestions = state => state.questions;
 
 export const getTopAnswers = name => createSelector(
@@ -19,5 +21,14 @@ export const getTopAnswers = name => createSelector(
       }));
     }
     return [];
+  }
+);
+
+export const getDiaryAssigneeAnswers = createSelector(
+  [getQuestions],
+  (questions) => {
+    if (!questions || !Array.isArray(questions.diaryAssignees)) return [];
+
+    return [...questions.diaryAssignees, ...TAGS];
   }
 );

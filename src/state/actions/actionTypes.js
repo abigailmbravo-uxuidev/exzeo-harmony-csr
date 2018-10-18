@@ -16,6 +16,7 @@ export const CG_ERROR = 'CG_ERROR';
 export const CLEAR_SEARCH_RESULTS = 'CLEAR_SEARCH_RESULTS';
 /* QUESTIONS (Enums)  */
 export const SET_QUESTIONS = 'SET_QUESTIONS';
+export const SET_ASSIGNEE_OPTIONS = 'SET_ASSIGNEE_OPTIONS';
 /* QUOTE */
 export const GET_QUOTE = 'GET_QUOTE';
 /* POLICY */

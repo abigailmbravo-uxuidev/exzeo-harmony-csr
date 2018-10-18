@@ -3,11 +3,8 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import Modal from 'react-modal';
 
-import history from './history';
-import Auth from './Auth';
 import LoginPage from './containers/Login';
 import AccessDenied from './containers/AccessDenied';
 import LoggedOut from './containers/LoggedOut';
@@ -30,40 +27,12 @@ import AgencyStaff from './components/Agency/Staff';
 import NoteUploader from './components/Common/NoteUploader';
 import ConfirmPopup from './components/Common/ConfirmPopup';
 import DiaryModal from './components/DiaryModal';
+import Bootstrap from './components/Bootstrap';
 import * as appStateActions from './state/actions/appState.actions';
 import * as errorActions from './state/actions/error.actions';
 import * as authActions from './state/actions/auth.actions';
 
-const auth = new Auth();
-
-const checkPublicPath = (path) => {
-  const publicPaths = ['/login', '/logout', '/accessDenied', '/loggedOut', '/callback'];
-  return (publicPaths.indexOf(path) === -1);
-};
-
 class Routes extends Component {
-  componentWillMount() {
-    const { isAuthenticated } = auth;
-    if (isAuthenticated() && checkPublicPath(window.location.pathname)) {
-      this.idToken = localStorage.getItem('id_token');
-      axios.defaults.headers.common.authorization = `bearer ${this.idToken}`;
-
-      if (!this.props.authState.userProfile) {
-        const profile = JSON.parse(localStorage.getItem('user_profile'));
-        this.props.actions.authActions.setUserProfile(profile);
-      }
-    } else if (!isAuthenticated() && checkPublicPath(window.location.pathname)) {
-      history.push('/login');
-      axios.defaults.headers.common['authorization'] = undefined; // eslint-disable-line
-    } else if (/access_token|id_token|error/.test(window.location.hash)) {
-      auth.handleAuthentication();
-    }
-  }
-
-  // componentDidUpdate() {
-  //
-  // }
-
   setBackStep = (goToNext, callback) => {
     this.props.actions.appStateActions.setAppState(this.props.appState.modelName, this.props.appState.instanceId, {
       ...this.props.appState.data,
@@ -82,7 +51,7 @@ class Routes extends Component {
 
   /* eslint-disable max-len */
   render() {
-    const { ui: { diary, note }, authState: { userProfile } } = this.props;
+    const { ui: { diary, note }, auth, authState: { userProfile } } = this.props;
     return (
       <div>
         <Modal
@@ -126,7 +95,9 @@ class Routes extends Component {
               document.getElementById('modal')
             );
           }}>
+
           <div className="routes">
+            <Bootstrap userProfile={userProfile} />
             <Switch>
               <Route exact path="/" render={props => <SearchPolicy auth={auth} {...props} />} />
               <Route exact path="/agency" render={props => <SearchAgency auth={auth} {...props} />} />

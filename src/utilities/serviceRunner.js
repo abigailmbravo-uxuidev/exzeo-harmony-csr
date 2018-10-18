@@ -10,8 +10,8 @@ import handleError from './handleError';
 export async function callService(data) {
   const axiosConfig = {
     method: 'POST',
-    url: `${process.env.REACT_APP_API_URL}/svc`,
     headers: { 'Content-Type': 'application/json' },
+    url: `${process.env.REACT_APP_API_URL}/svc`,
     data
   };
 
