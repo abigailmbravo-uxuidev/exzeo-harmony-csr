@@ -7,23 +7,6 @@ const getAgents = state => state.agencyState.agents;
 
 const getOrphanedAgents = state => state.agencyState.orphans;
 
-export const getEditModalInitialValues = createSelector(
-  [getAgency],
-  (agency) => {
-    if (!agency || !agency.agencyCode) return {};
-    const {
-      latitude, longitude, county, country, ...physicalAddress
-    } = agency.physicalAddress;
-    const {
-      latitude: lat, longitude: lon, county: c, country: co, careOf, ...mailingAddress
-    } = agency.mailingAddress;
-    return {
-      ...agency,
-      sameAsMailing: isEqual(physicalAddress, mailingAddress)
-    };
-  }
-);
-
 export const getOrphanedAgentsList = createSelector(
   [getOrphanedAgents],
   (orphans) => {
@@ -81,6 +64,34 @@ export const getBranchInitialValues = createSelector(
 
     return {
       physicalAddress, mailingAddress, territoryManagerId, contact
+    };
+  }
+);
+
+const getBranchCode = (state, branchCode) => { return branchCode; };
+
+export const getAgencyBranchData = createSelector(
+  [getBranchCode, getAgency],
+  (branchCode, agency) => {
+    if (!agency || !agency.branches || !Array.isArray(agency.branches)) return {};
+    const branch = agency.branches.filter(b => String(b.branchCode) === String(branchCode));
+    return Array.isArray(branch) && branch.length > 0 ? branch[0] : {};
+  }
+);
+
+export const getEditModalInitialValues = createSelector(
+  [getAgencyBranchData],
+  (branch) => {
+    if (!branch || !branch.physicalAddress) return {};
+    const {
+      latitude, longitude, county, country, ...physicalAddress
+    } = branch.physicalAddress;
+    const {
+      latitude: lat, longitude: lon, county: c, country: co, careOf, ...mailingAddress
+    } = branch.mailingAddress;
+    return {
+      ...branch,
+      sameAsMailing: isEqual(physicalAddress, mailingAddress)
     };
   }
 );
