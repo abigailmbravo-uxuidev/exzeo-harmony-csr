@@ -71,6 +71,7 @@ export const handleInitialize = (quoteData, questions) => {
   values.pH2phone = _.get(quoteData, 'policyHolders[1].primaryPhoneNumber', '');
   values.pH2phone2 = _.get(quoteData, 'policyHolders[1].secondaryPhoneNumber', '');
 
+  values.igdId = _.get(quoteData, 'property.id');
   values.address1 = _.get(quoteData, 'property.physicalAddress.address1');
   values.address2 = _.get(quoteData, 'property.physicalAddress.address2', '');
   values.city = _.get(quoteData, 'property.physicalAddress.city');
