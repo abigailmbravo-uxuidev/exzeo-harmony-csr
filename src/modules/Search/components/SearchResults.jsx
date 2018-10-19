@@ -83,15 +83,20 @@ export class SearchResults extends Component {
         }
 
         {hasSearched && searchType === SEARCH_TYPES.agency && !!results.length &&
-          <div className="user-list agency-list">
-            {results.map(agency => (
-              <AgencyCard
-                key={agency.agencyCode}
-                agency={agency}
-                handleKeyPress={e => onKeyPressSubmit(e, agency, searchType)}
-                handleClick={() => handleNewTab(agency, searchType)} />
-            ))}
-          </div>
+          <React.Fragment>
+            <div className="user-list agency-list">
+              {results.map(agency => (
+                <AgencyCard
+                  key={agency.agencyCode}
+                  agency={agency}
+                  handleKeyPress={e => onKeyPressSubmit(e, agency, searchType)}
+                  handleClick={() => handleNewTab(agency, searchType)} />
+              ))}
+            </div>
+            <div className="btn-divider-wrapper">
+              <NavLink className="btn btn-primary" to="/agency/new/0" activeClassName="active" target="_blank" exact>+ Agency</NavLink>
+            </div>
+          </React.Fragment>
         }
         {!hasSearched && searchType === SEARCH_TYPES.agency &&
           <div className="btn-divider-wrapper">
