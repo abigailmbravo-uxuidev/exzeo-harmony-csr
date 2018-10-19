@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { submit } from 'redux-form';
 
 import { getDiaryAssigneeAnswers } from '../../../state/selectors/questions.selectors';
 
@@ -11,4 +12,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(DiariesSearch);
+export default connect(mapStateToProps, {
+  submitSearch: submit
+})(DiariesSearch);

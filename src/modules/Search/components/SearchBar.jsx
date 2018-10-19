@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 
-import { DEFAULT_SEARCH_PARAMS } from '../../../constants/search';
+import { DEFAULT_SEARCH_PARAMS, SEARCH_FORM } from '../../../constants/search';
 import { getAgencies } from '../../../state/actions/service.actions';
 import { clearAppError } from '../../../state/actions/error.actions';
 import {
@@ -16,7 +16,7 @@ export class SearchBar extends Component {
       agencies,
       getAgencies,
       toggleLoading,
-      formProps: { initialize, initialValues }
+      // formProps: { initialize, initialValues }
     } = this.props;
 
     toggleLoading(false);
@@ -89,7 +89,7 @@ export default connect(mapStateToProps, {
   handleSearchSubmit
 })(reduxForm({
   // 'initialValues' prop is being passed in from parent component based on route/pathName
-  form: 'SEARCH_BAR',
+  form: SEARCH_FORM,
   enableReinitialize: true,
   propNamespace: 'formProps'
 })(SearchBar));

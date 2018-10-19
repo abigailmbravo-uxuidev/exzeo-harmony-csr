@@ -7,13 +7,27 @@ export const SEARCH_TYPES = {
   diaries: 'diaries'
 };
 
+export const SEARCH_FORM = 'SEARCH_BAR';
+
+export const ADDRESS_INITIAL_VALUES = {
+  searchType: SEARCH_TYPES.newQuote
+};
+
 export const POLICY_INITIAL_VALUES = {
   searchType: SEARCH_TYPES.policy,
   sortBy: 'policyNumber'
 };
 
+export const QUOTE_INITIAL_VALUES = {
+  searchType: SEARCH_TYPES.quote
+};
+
 export const AGENCY_INITIAL_VALUES = {
   searchType: SEARCH_TYPES.agency
+};
+
+export const AGENT_INITIAL_VALUES = {
+  searchType: SEARCH_TYPES.agent
 };
 
 export const DIARY_INITIAL_VALUES = {
@@ -24,6 +38,7 @@ export const DIARY_INITIAL_VALUES = {
     max: ''
   }
 };
+
 
 export const POLICY_SEARCH_OPTIONS = [
   {
@@ -63,12 +78,24 @@ export const DIARY_SEARCH_OPTIONS = [
 ];
 
 export const SEARCH_CONFIG = {
+  [SEARCH_TYPES.newQuote]: {
+    initialValues: ADDRESS_INITIAL_VALUES,
+    searchOptions: POLICY_SEARCH_OPTIONS
+  },
   [SEARCH_TYPES.policy]: {
     initialValues: POLICY_INITIAL_VALUES,
     searchOptions: POLICY_SEARCH_OPTIONS
   },
+  [SEARCH_TYPES.quote]: {
+    initialValues: QUOTE_INITIAL_VALUES,
+    searchOptions: POLICY_SEARCH_OPTIONS
+  },
   [SEARCH_TYPES.agency]: {
     initialValues: AGENCY_INITIAL_VALUES,
+    searchOptions: AGENCY_SEARCH_OPTIONS
+  },
+  [SEARCH_TYPES.agent]: {
+    initialValues: AGENT_INITIAL_VALUES,
     searchOptions: AGENCY_SEARCH_OPTIONS
   },
   [SEARCH_TYPES.diaries]: {

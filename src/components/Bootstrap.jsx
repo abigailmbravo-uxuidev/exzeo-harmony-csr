@@ -1,15 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { getDiaryAssigneeOptions } from '../state/actions/questions.actions';
 
 
-class Bootstrap extends Component {
+class Bootstrap extends React.Component {
   componentDidMount() {
     const { getAssignees, userProfile } = this.props;
-    console.log(this.props);
-
     getAssignees({ userProfile });
   }
 
