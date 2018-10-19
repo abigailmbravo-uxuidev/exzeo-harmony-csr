@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field, FieldArray, formValueSelector, FormSection } from 'redux-form';
-import { validation, Button, SelectTypeAhead, Input } from '@exzeo/core-ui';
+import { validation, Button, SelectTypeAhead } from '@exzeo/core-ui';
 import { Redirect } from 'react-router-dom';
 
-import { getAgency, updateAgency, createAgency, getListOfOrphanedAgents } from '../../../state/actions/agencyActions';
-import { getEditModalInitialValues, getOrphanedAgentsList } from '../../../state/selectors/agency.selector';
+import { getAgency, updateAgency, createAgency } from '../../../state/actions/agencyActions';
+import { getOrphanedAgentsList } from '../../../state/selectors/agency.selector';
 import ExistingAgentModal from '../components/ExistingAgentModal';
 import Address from '../components/Address';
 import territoryManagers from '../components/territoryManagers';
 import License from '../components/License';
 import Agent from '../components/FormGroup/Agent';
 import Contact from '../components/FormGroup/Contact';
-
-import Details from './Details';
+import AgencyDetails from '../components/FormGroup/AgencyDetails';
 
 export class Create extends Component {
   state = {
@@ -92,7 +91,7 @@ export class Create extends Component {
                 {agency && agency.agencyCode && agency.agencyCode !== 'new' && <Redirect replace to={`/agency/${agency.agencyCode}/0/overview`} />}
                 <h3>Details</h3>
                 <section className="agency-details">
-                  <Details />
+                  <AgencyDetails />
                   {/* web address validaiton */}
                 </section>
                 <h3>Address</h3>

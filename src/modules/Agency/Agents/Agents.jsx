@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import cloneDeep from 'lodash/cloneDeep';
 import { validation } from '@exzeo/core-ui';
 import Button from '@exzeo/core-ui/lib/Button';
-import AgentsCard from './AgentsCard';
-import AgentDetailModal from './AgentModal';
+
+import AgentModal from '../components/AgentModal';
 import AddExistingAgentModal from '../components/ExistingAgentModal';
+
+import AgentsCard from './AgentsCard';
 import RemoveAgentModal from './RemoveAgentModal';
 
 
@@ -165,14 +165,14 @@ export class Agents extends Component {
         </div>
 
         {this.state.showAgentDetailEditModal && this.state.agentDetailInitialValues &&
-        <AgentDetailModal
+        <AgentModal
           initialValues={this.state.agentDetailInitialValues}
           isEditing
           handleSaveAgent={this.onHandleEditAgent}
           closeModal={this.closeAgentDetailModal} />
         }
         {this.state.showAgentDetailNewModal && this.state.agentDetailInitialValues &&
-        <AgentDetailModal
+        <AgentModal
           initialValues={this.state.agentDetailInitialValues}
           handleSaveAgent={this.onHandleSaveAgent}
           closeModal={this.closeAgentDetailModal} />

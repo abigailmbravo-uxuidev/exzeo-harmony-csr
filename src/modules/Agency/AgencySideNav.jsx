@@ -1,14 +1,12 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 import { reduxForm, Field } from 'redux-form';
 import { Select } from '@exzeo/core-ui';
 import { connect } from 'react-redux';
 
 import { createBranch } from '../../state/actions/agencyActions';
 import { getBranchesList, getBranchInitialValues } from '../../state/selectors/agency.selector';
-import history from '../../history';
 
-import BranchModal from './BranchModal';
 
 const csrLinks = (agencyCode, branchCode) => [{
   key: 'overview',
@@ -52,12 +50,17 @@ export class SideNav extends React.Component {
   //   this.handleShowBranchModal();
   // };
 
-  handleBranchSelection =(value) => {
+  state = {
+    branchSelectionRoute: null
+  }
+
+  handleBranchSelection =(event) => {
+    const { target: { value } } = event;
     const { agencyCode } = this.props;
     if (Number(value) > 0) {
-      history.push(`/agency/${agencyCode}/${value}/overview`);
+      this.setState({ branchSelectionRoute: `/agency/${agencyCode}/${value}/overview` });
     } else {
-      history.push(`/agency/${agencyCode}/0/overview`);
+      this.setState({ branchSelectionRoute: `/agency/${agencyCode}/0/overview` });
     }
     return value;
   }
@@ -67,8 +70,11 @@ export class SideNav extends React.Component {
       agencyCode, branchCode, branchesList
     } = this.props;
 
+    const { branchSelectionRoute } = this.state;
+
     return (
       <form>
+        {branchSelectionRoute && <Redirect replace to={branchSelectionRoute} />}
         <nav className="site-nav">
           <ul>
             {agencyCode !== 'new' &&
@@ -81,7 +87,7 @@ export class SideNav extends React.Component {
                 styleName="flex-child"
                 answers={branchesList}
                 showPlaceholder={false}
-                normalize={(v, pv, av) => this.handleBranchSelection(v)} />
+                onChange={event => this.handleBranchSelection(event)} />
             </li>
             }
             {String(branchCode) === '0' && agencyCode !== 'new' &&
