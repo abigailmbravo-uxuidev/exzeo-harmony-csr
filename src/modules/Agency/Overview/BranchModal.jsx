@@ -89,6 +89,7 @@ export class BranchModal extends Component {
                     label="Fax Number"
                     component={Phone}
                     dataTest="faxNumber"
+                    validate={[validation.isPhone]}
                     styleName="faxNumber" />
                 </div>
                 <div className="agency-web-address">
