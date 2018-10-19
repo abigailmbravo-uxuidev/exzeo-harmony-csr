@@ -125,7 +125,7 @@ export class Create extends Component {
                       <Address showCounty sectionDisabled={sameAsMailingValue} />
                     </FormSection>
                     <Field
-                      label="Terretory Managers"
+                      label="Territory Managers"
                       name="territoryManagerId"
                       dataTest="territoryManagerId"
                       component={SelectTypeAhead}
