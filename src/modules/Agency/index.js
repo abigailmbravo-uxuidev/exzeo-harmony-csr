@@ -48,7 +48,7 @@ export class Agency extends Component {
             <Route exact path={`/agency/${agencyCode}/${branchCode}/overview`} render={props => <Overview branchCode={branchCode} auth={props.auth} {...props} />} />
             <Route exact path={`/agency/${agencyCode}/${branchCode}/contracts`} render={ContractsRender} />
             <Route exact path={`/agency/${agencyCode}/${branchCode}/agents`} render={props => <Agents branchCode={branchCode} auth={props.auth} {...props} />} />
-            <Route exact path={`/agency/${agencyCode}/0/newBranch`} render={props => <CreateBranch branchCode={branchCode} auth={props.auth} {...props} />} />
+            <Route exact path={`/agency/${agencyCode}/0/new`} render={props => <CreateBranch branchCode={branchCode} auth={props.auth} {...props} />} />
           </div>
         </main>
       </div>
