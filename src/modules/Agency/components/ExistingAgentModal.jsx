@@ -33,8 +33,8 @@ export class ExistingAgentModal extends Component {
                     styleName="selectedAgent"
                     name="selectedAgent"
                     dataTest="selectedAgent"
-                    valueKey="_id"
-                    labelKey="displayText"
+                    optionValue="_id"
+                    optionLabel="displayText"
                     component={SelectTypeAhead}
                     validate={validation.isRequired}
                     answers={listOfAgents} />
