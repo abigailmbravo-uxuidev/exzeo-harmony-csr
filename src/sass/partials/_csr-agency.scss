@@ -283,31 +283,12 @@
                 .agency-physical-address,
                 .mailing-address,
                 .physical-address {
-                  display: grid;
                   flex-grow: 0;
                   flex-shrink: 0;
                   width: calc(50% - .5rem);
                   margin-bottom: $padding*2;
-                  grid-template-columns: repeat(12, [col-start] 1fr);
-                  grid-gap: $padding*2;
-                  grid-auto-rows: min-content;
-
-                  .form-group {
-                    margin: 0;
-                  }
-
-                  .address,
-                  .address1,
-                  .address2,
-                  .city-state-zip,
-                  .county-territory-manager,
-                  h3,
-                  h4 {
-                    grid-column: span 12;
-                  }
 
                   h4 {
-                    margin: 0;
                     font-weight: $font-weight-normal;
 
                     input[type="checkbox"] {
@@ -319,29 +300,12 @@
                     }
                   }
 
-                  .taxClassification,
-                  .taxId {
-                    grid-column: span 6;
-                  }
-
-                  .city {
-                    grid-column: span 7;
-                  }
-
-                  .state {
-                    grid-column: span 2;
-                  }
-
-                  .zip {
-                    grid-column: span 3;
-                  }
-
                   .city-state-zip,
                   .county-territory-manager {
                     display: flex;
 
                     > div {
-                      margin-right: 3rem;
+                      margin-right: $padding;
 
                       &.zip {
                         min-width: 4rem;
@@ -1238,6 +1202,7 @@
             .city-state-zip,
             .county-territory-manager {
               display: flex;
+              grid-column: span 12;
 
               > div {
                 margin-right: $padding*2;
