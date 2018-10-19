@@ -322,10 +322,6 @@
                         width: 6rem;
                       }
 
-                      &.zip {
-                        min-width: 4rem;
-                      }
-
                       &.territoryManagerId {
                         min-width: 9rem;
                       }
@@ -1154,22 +1150,21 @@
           }
 
           .agency-contact-details {
-              grid-column: span 12;
-              display: flex;
+            display: flex;
+            grid-column: span 12;
 
-              > div {
-                flex-grow: 0;
-                flex-shrink: 0;
-                margin-right: $padding*2;
-                width: 9rem;
+            > div {
+              flex-grow: 0;
+              flex-shrink: 0;
+              width: 9rem;
+              margin-right: $padding*2;
 
-
-                &:last-child {
-                  margin-right: 0;
-                  flex-grow: 1;
-                  flex-shrink: 1;
-                }
+              &:last-child {
+                flex-grow: 1;
+                flex-shrink: 1;
+                margin-right: 0;
               }
+            }
           }
         }
 
@@ -1297,6 +1292,31 @@
               flex-shrink: 1;
               max-width: 60%;
               margin-right: $padding;
+
+              .city-state-zip {
+                display: flex;
+
+                > div {
+                  margin-right: $padding;
+
+                  &.city {
+                    flex-grow: 1;
+                    flex-shrink: 1;
+                  }
+
+                  &.state {
+                    width: 4rem;
+                  }
+
+                  &.zip {
+                    width: 6rem;
+                  }
+
+                  &:last-child {
+                    margin-right: 0;
+                  }
+                }
+              }
             }
 
             &.agent-license {
