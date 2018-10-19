@@ -305,7 +305,22 @@
                     display: flex;
 
                     > div {
+                      flex-grow: 0;
+                      flex-shrink: 0;
                       margin-right: $padding;
+
+                      &.city {
+                        flex-grow: 1;
+                        flex-shrink: 1;
+                      }
+
+                      &.state {
+                        width: 4rem;
+                      }
+
+                      &.zip {
+                        width: 6rem;
+                      }
 
                       &.zip {
                         min-width: 4rem;
@@ -381,8 +396,8 @@
                   flex-grow: 1;
                   flex-shrink: 1;
                   max-width: 60%;
-                  margin-bottom: $padding*2;
                   margin-right: $padding;
+                  margin-bottom: $padding*2;
 
                   .agent-id,
                   .agent-phone {
@@ -1141,7 +1156,6 @@
 
         .agency-address {
           display: flex;
-          flex-wrap: wrap;
           width: 100%;
 
           > h4 {
@@ -1150,76 +1164,55 @@
 
           .agency-mailing-address,
           .agency-physical-address {
-            display: grid;
             flex-grow: 0;
             flex-shrink: 0;
             width: calc(50% - .5rem);
-            grid-template-columns: repeat(12, [col-start] 1fr);
-            grid-gap: $padding*2;
-            grid-auto-rows: min-content;
-
-            .form-group {
-              margin: 0;
-            }
 
             .address1,
             .address2,
             h3,
             h4 {
-              grid-column: span 12;
+              width: 100%;
             }
 
             h4 {
-              margin: 0;
               font-weight: $font-weight-normal;
 
               input[type="checkbox"] {
                 margin-right: $padding;
               }
-
-              label {
-                margin-bottom: 0;
-              }
-            }
-
-            .taxClassification,
-            .taxId {
-              grid-column: span 6;
-            }
-
-            .city {
-              grid-column: span 7;
-            }
-
-            .state {
-              grid-column: span 2;
-            }
-
-            .zip {
-              grid-column: span 3;
             }
 
             .city-state-zip,
             .county-territory-manager {
               display: flex;
-              grid-column: span 12;
 
               > div {
+                flex-grow: 0;
+                flex-shrink: 0;
                 margin-right: $padding*2;
+
+                &.city {
+                  flex-grow: 1;
+                  flex-shrink: 1;
+                }
+
+                &.state {
+                  width: 4rem;
+                }
+
+                &.zip {
+                  width: 6rem;
+                }
 
                 &.zip {
                   min-width: 4rem;
                 }
 
                 &:last-child {
-                  padding-right: 0;
+                  margin-right: 0;
                 }
               }
-            }
-
-            .county,
-            .territoryManagerId {
-              grid-column: span 6;
             }
           }
 
@@ -1281,15 +1274,15 @@
             }
 
             &.agent-mailing {
-             max-width: 60%;
               flex-grow: 1;
               flex-shrink: 1;
+              max-width: 60%;
               margin-right: $padding;
             }
 
             &.agent-license {
-                flex-grow: 1;
-                flex-shrink: 1;
+              flex-grow: 1;
+              flex-shrink: 1;
               max-width: 40%;
               margin-left: $padding;
               padding-left: $padding*2;
