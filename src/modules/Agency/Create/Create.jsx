@@ -4,6 +4,7 @@ import { reduxForm, Field, FieldArray, formValueSelector, FormSection } from 're
 import { validation, Button, SelectTypeAhead } from '@exzeo/core-ui';
 import { Redirect } from 'react-router-dom';
 
+import history from '../../../history';
 import { getAgency, updateAgency, createAgency } from '../../../state/actions/agencyActions';
 import { getOrphanedAgentsList } from '../../../state/selectors/agency.selector';
 import ExistingAgentModal from '../components/ExistingAgentModal';
@@ -55,6 +56,7 @@ export class Create extends Component {
 
   handleResetForm = () => {
     this.props.reset();
+    history.push('/agency');
   };
 
   // TODO : Move to utilities
