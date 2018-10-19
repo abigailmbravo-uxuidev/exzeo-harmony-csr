@@ -96,8 +96,8 @@ export class AgencyAddressModal extends Component {
                     name="territoryManagerId"
                     dataTest="territoryManagerId"
                     component={SelectTypeAhead}
-                    valueKey="_id"
-                    labelKey="name"
+                    optionValue="_id"
+                    optionLabel="name"
                     answers={territoryManagers}
                     validate={validation.isRequired} />
                 </div>

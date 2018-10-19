@@ -23,7 +23,6 @@ export class CreateBranch extends Component {
       code: 'USA',
       displayText: 'United States of America'
     };
-    data.territoryManagerId = data.territoryManager._id;
     data.agentOfRecord = this.props.agency.agentOfRecord;
     const branch = await props.createBranch(data, this.props.agency.agencyCode);
     this.setState({ branchCode: branch.branchCode });
@@ -124,12 +123,12 @@ export class CreateBranch extends Component {
                     </FormSection>
                     <Field
                       label="Terretory Managers"
-                      name="territoryManager"
+                      name="territoryManagerId"
                       styleName="territoryManagerId"
                       dataTest="territoryManager"
                       component={SelectTypeAhead}
-                      valueKey="_id"
-                      labelKey="name"
+                      optionValue="_id"
+                      optionLabel="name"
                       answers={territoryManagers}
                       validate={validation.isRequired} />
                   </div>
