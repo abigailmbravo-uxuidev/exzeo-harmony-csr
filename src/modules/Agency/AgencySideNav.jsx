@@ -8,25 +8,41 @@ import { createBranch } from '../../state/actions/agencyActions';
 import { getBranchesList, getBranchInitialValues } from '../../state/selectors/agency.selector';
 
 
+const setLink = (key, agencyCode, branchCode) => {
+  if (agencyCode === 'new') return '#';
+  switch (key) {
+    case 'overview':
+      return `/agency/${agencyCode}/${branchCode}/overview`;
+    case 'agents':
+      return `/agency/${agencyCode}/${branchCode}/agents`;
+    case 'contracts':
+      return `/agency/${agencyCode}/${branchCode}/contracts`;
+    default:
+      return '#';
+  }
+};
+
+const setDisabled = agencyCode => (agencyCode === 'new' ? 'disabled' : '');
+
 const csrLinks = (agencyCode, branchCode) => [{
   key: 'overview',
-  link: `/agency/${agencyCode}/${branchCode}/overview`,
+  link: setLink('overview', agencyCode, branchCode),
   label: 'Overview',
-  styleName: 'overview',
+  styleName: `overview ${setDisabled(agencyCode)}`,
   exact: true
 },
 {
   key: 'agents',
-  link: `/agency/${agencyCode}/${branchCode}/agents`,
+  link: setLink('agents', agencyCode, branchCode),
   label: 'Agents',
-  styleName: 'agents',
+  styleName: `agents ${setDisabled(agencyCode)}`,
   exact: true
 },
 {
   key: 'contracts',
-  link: `/agency/${agencyCode}/${branchCode}/contracts`,
+  link: setLink('contracts', agencyCode, branchCode),
   label: 'Contracts',
-  styleName: 'contracts',
+  styleName: `contracts ${setDisabled(agencyCode)}`,
   exact: true
 },
 {
