@@ -129,7 +129,7 @@ export class Overview extends React.Component {
           header="Agent Of Record"
           initialValues={{ selectedAgent: this.state.selectedAgent._id }}
           listOfAgents={agentsList}
-          onToggleModal={this.onHandleToggleSwitchAgentOfRecordModal}
+          onToggleModal={this.onHandleToggleSwitchAgentOfRecordModal(null)}
           handleSelection={this.handleSwitchAOR} />
         }
       </div>
