@@ -122,32 +122,34 @@ export class AgencyModal extends Component {
                   component={Select}
                   validate={validation.isRequired}
                   answers={taxClassificationAnswers} />
-                <Field
-                  name="primaryPhoneNumber"
-                  label="Primary Phone"
-                  component={Phone}
-                  dataTest="primaryPhoneNumber"
-                  styleName="primaryPhoneNumber"
-                  validate={validation.isRequired} />
-                <Field
-                  name="secondaryPhoneNumber"
-                  label="Secondary Phone"
-                  component={Phone}
-                  dataTest="secondaryPhoneNumber"
-                  styleName="secondaryPhoneNumber" />
-                <Field
-                  name="faxNumber"
-                  label="Fax Number"
-                  component={Phone}
-                  dataTest="faxNumber"
-                  styleName="faxNumber" />
-                <Field
-                  name="customerServiceEmailAddress"
-                  label="CSR Email"
-                  component={Input}
-                  dataTest="customerServiceEmailAddress"
-                  styleName="customerServiceEmailAddress"
-                  validate={[validation.isRequired, validation.isEmail]} />
+                <div className="agency-contact-details">
+                  <Field
+                    name="primaryPhoneNumber"
+                    label="Primary Phone"
+                    component={Phone}
+                    dataTest="primaryPhoneNumber"
+                    styleName="primaryPhoneNumber"
+                    validate={validation.isRequired} />
+                  <Field
+                    name="secondaryPhoneNumber"
+                    label="Secondary Phone"
+                    component={Phone}
+                    dataTest="secondaryPhoneNumber"
+                    styleName="secondaryPhoneNumber" />
+                  <Field
+                    name="faxNumber"
+                    label="Fax Number"
+                    component={Phone}
+                    dataTest="faxNumber"
+                    styleName="faxNumber" />
+                  <Field
+                    name="customerServiceEmailAddress"
+                    label="CSR Email"
+                    component={Input}
+                    dataTest="customerServiceEmailAddress"
+                    styleName="customerServiceEmailAddress"
+                    validate={[validation.isRequired, validation.isEmail]} />
+                </div>
               </section>
             </div>
             <div className="card-footer">
