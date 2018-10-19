@@ -29,7 +29,7 @@ export class BranchModal extends Component {
     selectedBranch.websiteUrl = data.websiteUrl;
     selectedBranch.mailCommissionChecksToBranch = data.mailCommissionChecksToBranch;
     selectedBranch.mailPolicyDocsToBranch = data.mailPolicyDocsToBranch;
-
+    agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
     await props.updateAgency(agency);
     props.closeModal();
   };
@@ -48,7 +48,7 @@ export class BranchModal extends Component {
           <div className="card">
             <div className="card-header">
               <h4>
-                <i className="fa fa-address-book" /> Add Branch
+                <i className="fa fa-address-book" /> Update Branch
               </h4>
             </div>
             <div className="card-block">

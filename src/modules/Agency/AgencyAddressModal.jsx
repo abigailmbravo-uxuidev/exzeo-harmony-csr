@@ -30,11 +30,13 @@ export class AgencyAddressModal extends Component {
       selectedBranch.physicalAddress = data.physicalAddress;
       selectedBranch.mailingAddress = data.mailingAddress;
       selectedBranch.territoryManagerId = data.territoryManagerId;
+      agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
       props.updateAgency(agency);
     } else {
       agency.physicalAddress = data.physicalAddress;
       agency.mailingAddress = data.mailingAddress;
       agency.territoryManagerId = data.territoryManagerId;
+      agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
       await props.updateAgency(agency);
     }
     props.closeModal();
