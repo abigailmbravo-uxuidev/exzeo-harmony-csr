@@ -1,8 +1,7 @@
 import React from 'react';
 
-import DetailView from '../DetailView';
-import ContactView from '../ContactView';
-import BranchModal from '../BranchModal';
+import DetailView from '../components/DetailView';
+import ContactView from '../components/ContactView';
 import AddExistingAgentModal from '../components/ExistingAgentModal';
 import AddressView from '../components/AddressView';
 import ContactCard from '../components/ContactCard';
@@ -12,6 +11,7 @@ import AgentModal from '../components/AgentModal';
 import AgencyAddressModal from './AgencyAddressModal';
 import AgencyContactModal from './AgencyContactModal';
 import AgencyModal from './AgencyModal';
+import BranchModal from './BranchModal';
 
 
 export class Overview extends React.Component {
