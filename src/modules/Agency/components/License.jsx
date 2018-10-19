@@ -56,14 +56,14 @@ const License = ({ licenseValue, fields, isAgency }) => {
               type="checkbox"
               styleName="appointed"
               label="Appointed"
-              checked="true"
               dataTest={`${license}.appointed`} />
           </div>
-          {fields.length > 1 && <div className="btn-remove-wrapper align-right align-bottom in-grid-layout">
+          {fields.length > 1 &&
+          <div className="btn-remove-wrapper align-right align-bottom in-grid-layout">
             <button type="button" className="btn btn-link btn-sm" onClick={() => fields.remove(index)}>
               <i className="fa fa-times-circle" />REMOVE
             </button>
-                                </div>}
+          </div>}
         </div>
           ))}
       <div className="btn-divider-wrapper">

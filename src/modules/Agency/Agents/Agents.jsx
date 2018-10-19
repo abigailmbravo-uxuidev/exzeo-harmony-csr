@@ -34,7 +34,6 @@ export class Agents extends Component {
       agency, addAgent, branchCode
     } = this.props;
     data.agencies.push({ agencyCode: agency.agencyCode, branchCode });
-    data.licenses = [];
     await addAgent(data, agency.agencyCode);
     this.closeAgentDetailModal();
   };
@@ -101,7 +100,7 @@ export class Agents extends Component {
           }
         },
         licenses: [{
-          state: '', license: '', licenseType: '', licenseEffectiveDate: ''
+          state: '', license: '', licenseType: '', licenseEffectiveDate: '', appointed: true
         }]
       }
     });
