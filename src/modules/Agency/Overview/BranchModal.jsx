@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { Select, Radio, Input, validation, Phone } from '@exzeo/core-ui';
 
-import { updateAgency } from '../../state/actions/agencyActions';
+import { updateAgency } from '../../../state/actions/agencyActions';
 
 const statusAnswers = [
   { answer: 'Active', label: 'Active' },
@@ -89,6 +89,7 @@ export class BranchModal extends Component {
                     label="Fax Number"
                     component={Phone}
                     dataTest="faxNumber"
+                    validate={[validation.isPhone]}
                     styleName="faxNumber" />
                 </div>
                 <div className="agency-web-address">

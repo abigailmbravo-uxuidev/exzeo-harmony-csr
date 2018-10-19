@@ -44,12 +44,6 @@ const csrLinks = (agencyCode, branchCode) => [{
 }];
 
 export class SideNav extends React.Component {
-  // onHandleNewBranch = async (data, dispatch, props) => {
-  //   const branch = await this.props.createBranch(data, this.props.agencyCode);
-  //   history.push(`/agency/${props.agencyCode}/branch/${branch.branchCode}`);
-  //   this.handleShowBranchModal();
-  // };
-
   state = {
     branchSelectionRoute: null
   }
@@ -67,14 +61,13 @@ export class SideNav extends React.Component {
 
   render() {
     const {
-      agencyCode, branchCode, branchesList
+      agencyCode, branchCode, branchesList, match: { url }
     } = this.props;
 
     const { branchSelectionRoute } = this.state;
-
     return (
       <form>
-        {branchSelectionRoute && <Redirect replace to={branchSelectionRoute} />}
+        {branchSelectionRoute && !branchSelectionRoute.includes(url) && <Redirect replace to={branchSelectionRoute} />}
         <nav className="site-nav">
           <ul>
             {agencyCode !== 'new' &&
@@ -93,7 +86,7 @@ export class SideNav extends React.Component {
             {String(branchCode) === '0' && agencyCode !== 'new' &&
             <li key="newBranch" >
               <NavLink
-                to={`/agency/${agencyCode}/${branchCode}/newBranch`}
+                to={`/agency/${agencyCode}/${branchCode}/new`}
                 tabIndex="0"
                 className="btn btn-primary btn-block btn-small">
                 <i className="fa fa-plus" />Branch
