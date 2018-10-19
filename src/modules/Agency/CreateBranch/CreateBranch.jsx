@@ -119,7 +119,7 @@ export class CreateBranch extends Component {
                       <Address showCounty sectionDisabled={sameAsMailingValue} />
                     </FormSection>
                     <Field
-                      label="Terretory Managers"
+                      label="Territory Managers"
                       name="territoryManagerId"
                       styleName="territoryManagerId"
                       dataTest="territoryManager"
