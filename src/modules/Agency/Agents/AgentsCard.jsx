@@ -62,13 +62,14 @@ export const AgentsCard = ({
           <Button
             baseClass="link"
             size="small"
-            onClick={() => handleSwitchAOR(agentIndex)}><i className="fa fa-times-circle" />Switch AOR
+            onClick={() => handleSwitchAOR(agent.agentCode)}><i className="fa fa-times-circle" />Switch AOR
           </Button>}
+          {String(agency.agentOfRecord) !== String(agent.agentCode) &&
           <Button
             baseClass="link"
             size="small"
             onClick={() => handleRemoveAgent(agentIndex)}><i className="fa fa-times-circle" />Remove
-          </Button>
+          </Button>}
           <Button
             baseClass="link"
             size="small"

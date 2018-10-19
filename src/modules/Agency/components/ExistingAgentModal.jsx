@@ -30,10 +30,10 @@ export class ExistingAgentModal extends Component {
                 <div className="flex-form">
                   <Field
                     label="Agents"
-                    styleName="selectedAgent"
-                    name="selectedAgent"
-                    dataTest="selectedAgent"
-                    optionValue="_id"
+                    styleName="selectedAgentCode"
+                    name="selectedAgentCode"
+                    dataTest="selectedAgentCode"
+                    optionValue="agentCode"
                     optionLabel="displayText"
                     component={SelectTypeAhead}
                     validate={validation.isRequired}

@@ -491,6 +491,7 @@ export function createBranch(branchData, agencyCode) {
   return async (dispatch) => {
     try {
       const branch = await saveNewBranch(branchData, agencyCode);
+      dispatch(getAgency(agencyCode));
       return branch;
     } catch (error) {
       dispatch(errorActions.setAppError(error));

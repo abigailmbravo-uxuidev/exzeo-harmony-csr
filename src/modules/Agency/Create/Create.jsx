@@ -32,6 +32,7 @@ export class Create extends Component {
     this.setState({ showAddExistingAgentModal: !this.state.showAddExistingAgentModal });
   }
 
+  // TODO : Move to utilities
   handleSameAsMailing = (value, previousValue, allValues) => {
     const { change } = this.props;
     const { mailingAddress } = allValues;
@@ -56,9 +57,11 @@ export class Create extends Component {
     this.props.reset();
   };
 
+  // TODO : Move to utilities
   applyOrphanedAgent = (data) => {
-    const { change } = this.props;
-    const { selectedAgent } = data;
+    const { change, orphans } = this.props;
+    const { selectedAgentId } = data;
+    const selectedAgent = orphans.filter(a => a._id === selectedAgentId)[0];
     change('agentOfRecord.firstName', selectedAgent.firstName);
     change('agentOfRecord.lastName', selectedAgent.lastName);
     change('agentOfRecord.primaryPhoneNumber', selectedAgent.primaryPhoneNumber);

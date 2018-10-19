@@ -25,7 +25,7 @@ export class CreateBranch extends Component {
     };
     data.agentOfRecord = this.props.agency.agentOfRecord;
     const branch = await props.createBranch(data, this.props.agency.agencyCode);
-    this.setState({ branchCode: branch.branchCode });
+    history.push(`/agency/${this.props.agency.agencyCode}/${branch.branchCode}/overview`);
   };
 
   handleToggleExistingAgentModal = () => {
@@ -58,8 +58,9 @@ export class CreateBranch extends Component {
   };
 
   applyOrphanedAgent = (data) => {
-    const { change } = this.props;
-    const { selectedAgent } = data;
+    const { change, orphans } = this.props;
+    const { selectedAgentId } = data;
+    const selectedAgent = orphans.filter(a => a._id === selectedAgentId)[0];
     change('agentOfRecord.firstName', selectedAgent.firstName);
     change('agentOfRecord.lastName', selectedAgent.lastName);
     change('agentOfRecord.primaryPhoneNumber', selectedAgent.primaryPhoneNumber);
@@ -79,9 +80,7 @@ export class CreateBranch extends Component {
       submitting,
       pristine,
       change,
-      agency,
-      orphans,
-      branchCode
+      orphans
     } = this.props;
 
     return (
@@ -90,7 +89,6 @@ export class CreateBranch extends Component {
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
               <form id="createBranch" onSubmit={handleSubmit(this.createBranch)}>
-                {this.state.branchCode > 0 && <Redirect replace to={`/agency/${agency.agencyCode}/${this.state.branchCode}/overview`} />}
                 <h3>Details</h3>
                 <section className="agency-details">
                   <BranchDetails />
