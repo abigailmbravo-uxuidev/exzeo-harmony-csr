@@ -1,26 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field, formValueSelector, FormSection } from 'redux-form';
-import { Input, validation, SelectTypeAhead } from '@exzeo/core-ui';
-import { updateAgency } from '../../state/actions/agencyActions';
-import { getEditModalInitialValues } from '../../state/selectors/agency.selector';
-import Address from './components/Address';
-import territoryManagers from './components/territoryManagers';
+import { validation, SelectTypeAhead } from '@exzeo/core-ui';
 
-const statusAnswers = [
-  { answer: 'Active', label: 'Active' },
-  { answer: 'InActive', label: 'InActive' }
-];
-
-const okToPayAnswers = [
-  { answer: false, label: 'No' },
-  { answer: true, label: 'Yes' }
-];
-
-const taxClassificationAnswers = [
-  { answer: 'LLC', label: 'LLC' },
-  { answer: 'Corporation', label: 'Corporation' }
-];
+import { updateAgency } from '../../../state/actions/agencyActions';
+import Address from '../components/Address';
+import territoryManagers from '../components/territoryManagers';
 
 export class AgencyAddressModal extends Component {
   saveAgency = async (data, dispatch, props) => {
@@ -42,7 +27,7 @@ export class AgencyAddressModal extends Component {
     props.closeModal();
   };
 
-  handleSameAsMailing = (value, previousValue, allValues) => {
+  onHandleSameAsMailing = (value, previousValue, allValues) => {
     const { change } = this.props;
     const { mailingAddress } = allValues;
     if (value) {
@@ -95,7 +80,7 @@ export class AgencyAddressModal extends Component {
                 <div className="agency-physical-address">
                   <h4>Physical Address
                     <Field
-                      normalize={this.handleSameAsMailing}
+                      normalize={this.onHandleSameAsMailing}
                       name="sameAsMailing"
                       dataTest="sameAsMailing"
                       id="sameAsMailing"
@@ -117,19 +102,6 @@ export class AgencyAddressModal extends Component {
                     validate={validation.isRequired} />
                 </div>
               </section>
-              {/* <section className="agency-csr">
-                <h4>CSR Contact Information</h4>
-                <CSRFields />
-              </section>
-              <section className="agency-contact">
-                <h4>Contact</h4>
-                <ContactFields />
-              </section>
-              <section className="agency-principal">
-                <h4>Principal</h4>
-                <PrincipalFields />
-              </section>
-              */}
             </div>
             <div className="card-footer">
               <div className="btn-footer">

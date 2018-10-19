@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import territoryManagers from '../components/territoryManagers';
 import { getAgentOfRecord, getEditModalInitialValues, getAgencyBranchData, getAgentsList } from '../../../state/selectors/agency.selector';
-import { updateAgency } from '../../../state/actions/agencyActions';
+import { updateAgency, updateAgent } from '../../../state/actions/agencyActions';
 
 import Overview from './Overview';
 
@@ -17,4 +17,4 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-export default connect(mapStateToProps, { updateAgency })(Overview);
+export default connect(mapStateToProps, { updateAgency, updateAgent })(Overview);
