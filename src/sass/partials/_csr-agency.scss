@@ -1152,6 +1152,25 @@
           .branchName {
             grid-column: span 6;
           }
+
+          .agency-contact-details {
+              grid-column: span 12;
+              display: flex;
+
+              > div {
+                flex-grow: 0;
+                flex-shrink: 0;
+                margin-right: $padding*2;
+                width: 9rem;
+
+
+                &:last-child {
+                  margin-right: 0;
+                  flex-grow: 1;
+                  flex-shrink: 1;
+                }
+              }
+          }
         }
 
         .agency-address {
