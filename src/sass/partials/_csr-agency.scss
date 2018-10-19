@@ -237,35 +237,19 @@
                 }
 
                 .primaryPhoneNumber {
-                  grid-column: span 4;
-
-                  &.read {
-                    grid-column: span 2;
-                  }
+                  grid-column: span 2;
                 }
 
                 .secondaryPhoneNumber {
-                  grid-column: span 4;
-
-                  &.read {
-                    grid-column: span 2;
-                  }
+                  grid-column: span 2;
                 }
 
                 .faxNumber {
-                  grid-column: span 4;
-
-                  &.read {
-                    grid-column: span 2;
-                  }
+                  grid-column: span 2;
                 }
 
                 .customerServiceEmailAddress {
-                  grid-column: span 12;
-
-                  &.read {
-                    grid-column: span 6;
-                  }
+                  grid-column: span 6;
                 }
               }
 
@@ -1146,6 +1130,30 @@
           }
 
           .branchName {
+            grid-column: span 6;
+          }
+
+          hr {
+            width: 100%;
+            border-top: 1px dashed mix($bright-blue-darken-02, $green, 80%);
+            border-bottom-width: 0;
+            background: $white;
+            grid-column: span 12;
+          }
+
+          .primaryPhoneNumber {
+            grid-column: span 2;
+          }
+
+          .secondaryPhoneNumber {
+            grid-column: span 2;
+          }
+
+          .faxNumber {
+            grid-column: span 2;
+          }
+
+          .customerServiceEmailAddress {
             grid-column: span 6;
           }
 
