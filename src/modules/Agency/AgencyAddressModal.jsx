@@ -32,7 +32,6 @@ export class AgencyAddressModal extends Component {
       selectedBranch.territoryManagerId = data.territoryManagerId;
       props.updateAgency(agency);
     } else {
-      agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
       agency.physicalAddress = data.physicalAddress;
       agency.mailingAddress = data.mailingAddress;
       agency.territoryManagerId = data.territoryManagerId;

@@ -14,10 +14,8 @@ export class AgencyContactModal extends Component {
     if (Number(branchCode) > 0) {
       const selectedBranch = agency.branches.filter(b => String(b.branchCode) === String(branchCode));
       selectedBranch[0][section] = data[section];
-      agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
       props.updateAgency(agency);
     } else {
-      agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
       agency[section] = data[section];
       await props.updateAgency(agency);
     }
