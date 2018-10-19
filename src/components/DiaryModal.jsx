@@ -27,7 +27,7 @@ export class DiaryModal extends Component {
   componentDidMount() {
     // TODO: not sure this logic should be here. Seems like it should be much further up the tree
     const { setAppErrorAction, user } = this.props;
-    if (!user || !user.givenName || !user.familyName) {
+    if (!user.profile || !user.profile.given_name || !user.profile.family_name) {
       const message = 'There was a problem with your user profile. Please logout of Harmony and try logging in again.';
       setAppErrorAction({ message });
       this.handleClose();

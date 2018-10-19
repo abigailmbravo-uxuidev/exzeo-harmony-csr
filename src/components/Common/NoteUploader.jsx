@@ -7,7 +7,7 @@ import Uppy from '@uppy/core';
 import Dashboard from '@uppy/react/lib/Dashboard';
 import XHRUpload from '@uppy/xhr-upload';
 import moment from 'moment';
-import { Loader } from '@exzeo/core-ui';
+import { Loader, TextArea } from '@exzeo/core-ui';
 
 import * as cgActions from '../../state/actions/cg.actions';
 import * as uiActions from '../../state/actions/ui.actions';
@@ -58,8 +58,9 @@ export class NoteUploader extends Component {
   state = { minimize: false };
 
   componentDidMount() {
+    // TODO: not sure this logic should be here. Seems like it should be much further up the tree
     const { actions, user } = this.props;
-    if (!user.profile || !user.profile.givenName || !user.profile.familyName) {
+    if (!user.profile || !user.profile.given_name || !user.profile.family_name) {
       const message = 'There was a problem with your user profile. Please logout of Harmony and try logging in again.';
       this.handleClose();
       actions.errorActions.setAppError({ message });
