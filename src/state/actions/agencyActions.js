@@ -173,6 +173,7 @@ export function updateAgent(agentData, agencyCode) {
     try {
       await saveAgent(agentData, agencyCode);
       dispatch(getAgentsByAgencyCode(agencyCode));
+      dispatch(getListOfOrphanedAgents());
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
