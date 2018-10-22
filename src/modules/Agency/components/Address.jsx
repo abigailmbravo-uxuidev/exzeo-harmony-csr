@@ -14,6 +14,25 @@ class Address extends Component {
     return value;
   };
 
+  filterTerritoryManager = (state, county) => {
+    const { territoryManagers } = this.props;
+    const selectedTerritoryManager = territoryManagers
+      .find((tm) => {
+        const { states } = tm;
+        if (states && states.some((s) => {
+          const { counties } = s;
+          return s.state.includes(state) &&
+          counties && counties.some((c) => {
+            return c.county.includes(county);
+          });
+        })) {
+          return tm;
+        }
+      });
+
+    return selectedTerritoryManager;
+  }
+
   normalizeZipCode = async (value, pv, av) => {
     const { section } = this.props;
     const zipCodes = await this.props.searchSettingsByCSPAndZipAction(value, av[section].state);
@@ -22,6 +41,10 @@ class Address extends Component {
       this.props.changeField(`${section}.county`, selectedZip.county);
       this.props.changeField(`${section}.zip`, selectedZip.zip);
       this.props.changeField(`${section}.state`, selectedZip.state);
+      const tm = this.filterTerritoryManager(selectedZip.state, selectedZip.county);
+      if (tm) {
+        this.props.changeField('territoryManagerId', tm._id);
+      }
     } else {
       this.props.changeField(`${section}.county`, '');
     }

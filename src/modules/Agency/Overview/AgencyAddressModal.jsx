@@ -72,6 +72,7 @@ export class AgencyAddressModal extends Component {
                   <h4>Mailing Address</h4>
                   <FormSection name="mailingAddress">
                     <Address
+                      territoryManagers={territoryManagers}
                       sameAsMailingValue={sameAsMailingValue}
                       changeField={change}
                       section="mailingAddress" />
@@ -90,6 +91,7 @@ export class AgencyAddressModal extends Component {
                   </h4>
                   <FormSection name="physicalAddress">
                     <Address
+                      territoryManagers={territoryManagers}
                       section="physicalAddress"
                       showCounty
                       changeField={change}
