@@ -18,12 +18,13 @@ export function setZipCodeSettings(zipCodeSettings) {
 /**
  *
  * @param zipCodePartial
+ * @param state
  * @returns {Function}
  */
-export function searchSettingsByCSPAndZip(zipCodePartial) {
+export function searchSettingsByCSPAndZip(zipCodePartial, state) {
   return async (dispatch) => {
     try {
-      const zipCodes = await fetchZipCodeSettings(zipCodePartial);
+      const zipCodes = await fetchZipCodeSettings(zipCodePartial, state);
       dispatch(setZipCodeSettings(zipCodes));
       return zipCodes;
     } catch (error) {
@@ -33,9 +34,9 @@ export function searchSettingsByCSPAndZip(zipCodePartial) {
   };
 }
 
-function generateSearchSettingsByCSPAndZipQuery(zipCodePartial) {
+function generateSearchSettingsByCSPAndZipQuery(zipCodePartial, state) {
   const query = `{
-        searchSettingsByCSPAndZip(companyCode: "TTIC", state: "FL", product: "HO3", zipCodePartial: "${zipCodePartial || ''}") {
+        searchSettingsByCSPAndZip(companyCode: "TTIC", state: "${state || ''}", product: "HO3", zipCodePartial: "${zipCodePartial || ''}") {
             county
             state
             companyCode
@@ -49,14 +50,15 @@ function generateSearchSettingsByCSPAndZipQuery(zipCodePartial) {
 /**
  *
  * @param zipCodePartial
+ * @param state
  * @returns {Promise<{}>}
  */
-export async function fetchZipCodeSettings(zipCodePartial) {
+export async function fetchZipCodeSettings(zipCodePartial, state) {
   try {
     const config = {
       service: 'zipcodesettings',
       method: 'GET',
-      path: `graphql?query=${generateSearchSettingsByCSPAndZipQuery(zipCodePartial)}`
+      path: `graphql?query=${generateSearchSettingsByCSPAndZipQuery(zipCodePartial, state)}`
     };
     const response = await serviceRunner.callService(config);
     const result = response.data && response.data.data && response.data.data.searchSettingsByCSPAndZip ? response.data.data.searchSettingsByCSPAndZip : [];

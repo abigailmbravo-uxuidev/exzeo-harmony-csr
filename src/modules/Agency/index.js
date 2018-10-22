@@ -27,7 +27,7 @@ export class Agency extends Component {
       this.props.getAgentsByAgencyCode(agencyCode);
     }
     this.props.getListOfOrphanedAgents();
-    this.props.searchSettingsByCSPAndZip('');
+    this.props.searchSettingsByCSPAndZip('', 'FL');
     // this.props.getTerritoryManagers('FL');
 
     // this.props.getAgentList('TTIC', 'FL');
