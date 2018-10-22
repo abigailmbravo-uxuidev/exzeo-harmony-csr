@@ -30,7 +30,6 @@ export class AgencyAddressModal extends Component {
   onHandleSameAsMailing = (value, previousValue, allValues) => {
     const { change } = this.props;
     const { mailingAddress } = allValues;
-    console.log(mailingAddress);
     if (value) {
       change('physicalAddress.address1', mailingAddress.address1);
       change('physicalAddress.address2', mailingAddress.address2);
