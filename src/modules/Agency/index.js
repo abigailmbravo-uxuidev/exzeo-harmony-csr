@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
+
 import { getAgency, getAgentList, getAgentsByAgencyCode, getListOfOrphanedAgents } from '../../state/actions/agencyActions';
+import { searchSettingsByCSPAndZip } from '../../state/actions/zipCodeSettings.actions';
 import { getTerritoryManagers } from '../../state/actions/territoryManagers.actions';
+
 import AgencyHeader from './AgencyHeader';
 import AgencySideNav from './AgencySideNav';
 import AgencyDetailHeader from './DetailHeader';
@@ -24,6 +27,7 @@ export class Agency extends Component {
       this.props.getAgentsByAgencyCode(agencyCode);
     }
     this.props.getListOfOrphanedAgents();
+    this.props.searchSettingsByCSPAndZip('33626');
     // this.props.getTerritoryManagers('FL');
 
     // this.props.getAgentList('TTIC', 'FL');
@@ -61,6 +65,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  getAgency, getAgentList, getAgentsByAgencyCode, getListOfOrphanedAgents, getTerritoryManagers
+  getAgency, getAgentList, getAgentsByAgencyCode, getListOfOrphanedAgents, getTerritoryManagers, searchSettingsByCSPAndZip
 })(Agency);
 

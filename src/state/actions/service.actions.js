@@ -44,7 +44,7 @@ export function getNotes(noteId, sourceId) {
           const newNote = {
             _id: doc.envelopeId ? doc.envelopeId : doc.fileUrl,
             contactType: 'system',
-            createdBy: {userName: 'System', userId: doc.createdBy},
+            createdBy: { userName: 'System', userId: doc.createdBy },
             createdDate: moment.unix(doc.createdDate),
             attachments: [
               {
@@ -58,12 +58,11 @@ export function getNotes(noteId, sourceId) {
         }
       });
 
-      return dispatch(serviceRequest({notes}));
-
+      return dispatch(serviceRequest({ notes }));
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
-  }
+  };
 }
 
 async function fetchNotes(noteId) {
@@ -92,7 +91,7 @@ async function fetchDocuments(sysNoteId) {
     const response = await serviceRunner.callService(docsRequest);
     return response.data && response.data.result ? response.data.result : [];
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 

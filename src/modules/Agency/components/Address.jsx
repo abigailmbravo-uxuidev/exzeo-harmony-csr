@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Field } from 'redux-form';
-import { Input, validation } from '@exzeo/core-ui';
+import { Input, validation, SelectTypeAhead } from '@exzeo/core-ui';
+
+import { searchSettingsByCSPAndZip } from '../../../state/actions/zipCodeSettings.actions';
+import { getListOfZipCodes } from '../../../state/selectors/zipCodeSettings.selectors';
 
 class Address extends Component {
   normalizeSameAsMailing = (value) => {
@@ -10,9 +14,22 @@ class Address extends Component {
     return value;
   };
 
+  normalizeZipCode = async (value) => {
+    const zipCodes = await this.props.searchSettingsByCSPAndZipAction(value || '');
+    console.log(zipCodes);
+    if (zipCodes.length === 1) {
+      // const selectedZip = zipCodes[0];
+    //  this.props.changeField('county', selectedZip.county);
+    } else {
+      // this.props.changeField('county', '');
+    }
+    this.normalizeSameAsMailing(value);
+    return value;
+  }
+
   render() {
     const {
-      showCounty, sectionDisabled
+      showCounty, sectionDisabled, listOfZipCodes
     } = this.props;
     return (
       <React.Fragment>
@@ -55,11 +72,14 @@ class Address extends Component {
           <Field
             name="zip"
             label="Zip Code"
-            component={Input}
+            component={SelectTypeAhead}
             styleName="zip"
             dataTest="zip"
+            optionValue="answer"
+            optionLabel="label"
             validate={validation.isRequired}
-            normalize={this.normalizeSameAsMailing}
+            normalize={this.normalizeZipCode}
+            answers={listOfZipCodes}
             disabled={sectionDisabled} />
         </div>
         {showCounty &&
@@ -78,7 +98,14 @@ class Address extends Component {
 
 Address.defaultProps = {
   showCounty: false,
-  sectionDisabled: false
+  sectionDisabled: false,
+  listOfZipCodes: []
 };
 
-export default Address;
+
+const mapStateToProps = state => ({
+  listOfZipCodes: getListOfZipCodes(state)
+});
+
+export default connect(mapStateToProps, { searchSettingsByCSPAndZipAction: searchSettingsByCSPAndZip })(Address);
+
