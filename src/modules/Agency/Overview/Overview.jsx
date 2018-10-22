@@ -116,7 +116,7 @@ export class Overview extends React.Component {
                 <ContactCard contact={agencyBranchData.contact} handleClick={this.onHandleToggleEditContactModal} />
               </section>
               <h3>Agent Of Record</h3>
-              <section name="agentOfRecord">
+              <section name="agentOfRecord" className="agency-aor">
                 {agentOfRecord && agentOfRecord.agentCode && <AgentCard agent={agentOfRecord} handleSecondaryClick={this.onHandleToggleSwitchAgentOfRecordModal} handlePrimaryClick={this.onHandleToggleEditAgentModal} />}
               </section>
             </div>

@@ -482,6 +482,16 @@
                   padding-left: $padding*2;
                   border-left: 1px dotted $warm-gray-03;
                 }
+
+                .card {
+                  width: 100%;
+
+                  .contact-details {
+                    .card-name {
+                      flex-direction: column;
+                    }
+                  }
+                }
               }
 
               &:last-child {
