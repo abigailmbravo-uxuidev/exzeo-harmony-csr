@@ -18,10 +18,11 @@ class Address extends Component {
     const zipCodes = await this.props.searchSettingsByCSPAndZipAction(value || '');
     console.log(zipCodes);
     if (zipCodes.length === 1) {
-      // const selectedZip = zipCodes[0];
-    //  this.props.changeField('county', selectedZip.county);
+      const selectedZip = zipCodes[0];
+      this.props.changeField('physicalAddress.county', selectedZip.county);
+      this.props.changeField('physicalAddress.zip', selectedZip.zip);
     } else {
-      // this.props.changeField('county', '');
+      this.props.changeField('physicalAddress.county', '');
     }
     this.normalizeSameAsMailing(value);
     return value;
