@@ -16,7 +16,6 @@ class Address extends Component {
 
   normalizeZipCode = async (value) => {
     const zipCodes = await this.props.searchSettingsByCSPAndZipAction(value || '');
-    console.log(zipCodes);
     if (zipCodes.length === 1) {
       const selectedZip = zipCodes[0];
       this.props.changeField('physicalAddress.county', selectedZip.county);
