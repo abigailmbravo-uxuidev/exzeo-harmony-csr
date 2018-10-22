@@ -8,21 +8,22 @@ import { getListOfZipCodes } from '../../../state/selectors/zipCodeSettings.sele
 
 class Address extends Component {
   normalizeSameAsMailing = (value) => {
-    const { changeField, mailingAddress, sameAsMailingValue } = this.props;
-    if (!mailingAddress || !sameAsMailingValue) return value;
+    const { changeField, section, sameAsMailingValue } = this.props;
+    if (section === 'physicalAddress' || !sameAsMailingValue) return value;
     changeField('sameAsMailing', false);
     return value;
   };
 
   normalizeZipCode = async (value) => {
+    const { section } = this.props;
     const zipCodes = await this.props.searchSettingsByCSPAndZipAction(value || '');
     if (zipCodes.length === 1) {
       const selectedZip = zipCodes[0];
-      this.props.changeField('physicalAddress.county', selectedZip.county);
-      this.props.changeField('physicalAddress.zip', selectedZip.zip);
-      this.props.changeField('mailingAddress.zip', selectedZip.zip);
+      this.props.changeField(`${section}.county`, selectedZip.county);
+      this.props.changeField(`${section}.zip`, selectedZip.zip);
+      this.props.changeField(`${section}.state`, selectedZip.state);
     } else {
-      this.props.changeField('physicalAddress.county', '');
+      this.props.changeField(`${section}.county`, '');
     }
     this.normalizeSameAsMailing(value);
     return value;
