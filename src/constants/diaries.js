@@ -6,7 +6,10 @@ export const TAGS = [
   { answer: 'occupancy', label: 'Occupancy', type: 'tag' },
   { answer: 'processing', label: 'Processing', type: 'tag' },
   { answer: 'renewal_processing', label: 'Renewal Processing', type: 'tag' },
-  { answer: 'underwriting', label: 'Underwriting', type: 'tag' }
+  { answer: 'underwriting', label: 'Underwriting', type: 'tag' },
+  // TODO: PLEASE REMOVE THIS BEFORE MERGING. TESTING PURPOSES ONLY
+  { answer: 'auth0|CSR1234567890', label: 'TEST USER', type: 'user' }
+
 ];
 
 export const TYPES = [
