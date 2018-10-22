@@ -20,14 +20,14 @@ const toLocaleDate = dataString => moment.utc(dataString).format('MM/DD/YYYY');
 // TODO: Move to component
 const DiaryExpandColumns = ({ diaries }) => {
   return (
-    <BootstrapTable data={diaries}>
+    <BootstrapTable className="sub-table" data={diaries}>
       <TableHeaderColumn dataField="_id" isKey hidden>ID</TableHeaderColumn>
-      <TableHeaderColumn width="15%" dataField="due" dataFormat={toLocaleDate}>Due</TableHeaderColumn>
-      <TableHeaderColumn width="15%" dataField="assignee" dataFormat={val => val.displayName}>Assignee</TableHeaderColumn>
-      <TableHeaderColumn width="15%" dataField="reason">Reason</TableHeaderColumn>
-      <TableHeaderColumn width="15%" dataField="message">Message</TableHeaderColumn>
-      <TableHeaderColumn width="15%" dataField="updatedAt" dataFormat={toLocaleDate}>Updated</TableHeaderColumn>
-      <TableHeaderColumn width="15%" dataField="createdBy" dataFormat={val => val.userName}>UpdatedBy</TableHeaderColumn>
+      <TableHeaderColumn className="due" columnClassName="due"  dataField="due" dataField="due" dataFormat={toLocaleDate}>Due</TableHeaderColumn>
+      <TableHeaderColumn className="assignee" columnClassName="assignee"  dataField="assignee" dataFormat={val => val.displayName}>Assignee</TableHeaderColumn>
+      <TableHeaderColumn className="reason" columnClassName="reason"  dataField="reason">Reason</TableHeaderColumn>
+      <TableHeaderColumn className="message" columnClassName="message"  dataField="message">Message</TableHeaderColumn>
+      <TableHeaderColumn className="updated-at" columnClassName="updated-at"  dataField="updatedAt" dataFormat={toLocaleDate}>Updated</TableHeaderColumn>
+      <TableHeaderColumn className="created-by" columnClassName="created-by"  dataField="createdBy" dataFormat={val => val.userName}>UpdatedBy</TableHeaderColumn>
     </BootstrapTable>
   );
 };
@@ -79,11 +79,11 @@ export class DiaryTable extends Component {
 
   // TODO: Use button from core-ui
   buttonFormatter = (cell) => {
-    return cell.open ? <button type="button" onClick={() => this.openDiaryModal(cell)}><i className="fa fa-arrow-circle-up" /></button> : null;
+    return cell.open ? <button type="button" className="btn btn-link btn-grid-row" onClick={() => this.openDiaryModal(cell)}><i className="fa fa-arrow-circle-up" /></button> : null;
   }
 
   statusFormatter = (value) => {
-    return (<div><span>{DIARY_STATUS_COLOR[value]}</span> | <span>{DIARY_STATUS[value]}</span></div>);
+    return (<div><span class={DIARY_STATUS_COLOR[value]} />{DIARY_STATUS[value]}</div>);
   }
 
   render() {
@@ -104,14 +104,14 @@ export class DiaryTable extends Component {
           expandColumnComponent: this.expandColumnComponent
         }}>
         <TableHeaderColumn dataField="diaryId" isKey hidden>ID</TableHeaderColumn>
-        <TableHeaderColumn width="12%" dataField="dueStatus" dataFormat={this.statusFormatter}>Status</TableHeaderColumn>
-        <TableHeaderColumn width="12%" dataField="due" dataFormat={toLocaleDate}>Due</TableHeaderColumn>
-        <TableHeaderColumn width="12%" dataField="assignee" dataFormat={val => val.displayName}>Assignee</TableHeaderColumn>
-        <TableHeaderColumn width="12%" dataField="reason">Reason</TableHeaderColumn>
-        <TableHeaderColumn width="12%" dataField="message">Message</TableHeaderColumn>
-        <TableHeaderColumn width="12%" dataField="updatedAt" dataFormat={toLocaleDate}>Updated</TableHeaderColumn>
-        <TableHeaderColumn width="12%" dataField="createdBy" dataFormat={val => val.userName}>UpdatedBy</TableHeaderColumn>
-        <TableHeaderColumn width="12%" dataField="action" dataFormat={this.buttonFormatter} expandable={false}>Actions</TableHeaderColumn>
+        <TableHeaderColumn className="due-status" columnClassName="due-status" dataField="dueStatus" dataFormat={this.statusFormatter}>Status</TableHeaderColumn>
+        <TableHeaderColumn className="due" columnClassName="due"  dataField="due" dataFormat={toLocaleDate}>Due</TableHeaderColumn>
+        <TableHeaderColumn className="assignee" columnClassName="assignee"  dataField="assignee" dataFormat={val => val.displayName}>Assignee</TableHeaderColumn>
+        <TableHeaderColumn className="reason" columnClassName="reason"  dataField="reason">Reason</TableHeaderColumn>
+        <TableHeaderColumn className="message" columnClassName="message"  dataField="message">Message</TableHeaderColumn>
+        <TableHeaderColumn className="updated-at" columnClassName="updated-at"  dataField="updatedAt" dataFormat={toLocaleDate}>Updated</TableHeaderColumn>
+        <TableHeaderColumn className="created-by" columnClassName="created-by"  dataField="createdBy" dataFormat={val => val.userName}>UpdatedBy</TableHeaderColumn>
+        <TableHeaderColumn className="action" columnClassName="action"  dataField="action" dataFormat={this.buttonFormatter} expandable={false}>Actions</TableHeaderColumn>
       </BootstrapTable>);
   }
 }

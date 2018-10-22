@@ -156,38 +156,42 @@
   .mainContainer {
     form {
       .content {
-          flex-direction: row;
-          flex-wrap: wrap;
-          align-content: flex-start;
-          overflow-y: auto;
+        overflow-y: auto;
+        align-content: flex-start;
+        flex-direction: row;
+        flex-wrap: wrap;
 
-          .type, .due {
-              margin-right: $padding*2;
-          }
+        .due,
+        .type {
+          margin-right: $padding*2;
+        }
 
-          .type, .assignee {
-              width: calc(50% - .5rem);
-              flex-grow: 0;
-              flex-shrink: 0;
-          }
+        .assignee,
+        .type {
+          flex-grow: 0;
+          flex-shrink: 0;
+          width: calc(50% - .5rem);
+        }
 
-          .due {
-              width: 10rem;
-              flex-grow: 0;
-              flex-shrink: 0;
-              margin-bottom: 0;
-          }
-          .reason {
-              width: calc(100% - 11rem);
-              flex-grow: 0;
-              flex-shrink: 0;
-              margin-bottom: 0;
-          }
-          .text-area-wrapper {
-              min-height: 10rem;
-              height: calc(100vh - 30.75rem);
-              margin-bottom: 0;
-          }
+        .due {
+          flex-grow: 0;
+          flex-shrink: 0;
+          width: 10rem;
+          margin-bottom: 0;
+        }
+
+        .reason {
+          flex-grow: 0;
+          flex-shrink: 0;
+          width: calc(100% - 11rem);
+          margin-bottom: 0;
+        }
+
+        .text-area-wrapper {
+          height: calc(100vh - 30.75rem);
+          min-height: 10rem;
+          margin-bottom: 0;
+        }
       }
     }
   }
@@ -291,6 +295,138 @@
 
             &:hover {
               color: $bright-blue-darken-02;
+            }
+          }
+        }
+      }
+    }
+
+    .diaries {
+      >.react-bs-table {
+
+          > .react-bs-container-body {
+              > .table-striped {
+                  > tbody {
+                      tr:not(hidden), tr:nth-of-type(even) {
+                          background: $white !important;
+                          border-bottom: 1px dotted $warm-gray-03;
+
+                          &:hover {
+                              background: $white !important;
+                          }
+
+                          > td {
+                              background: $white !important;
+
+                              &:hover {
+                                  background: $white !important;
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+
+
+        > .react-bs-container-header,
+        > .react-bs-container-body {
+          tbody,
+          thead {
+            tr {
+              display: flex;
+
+              td,
+              th {
+                display: flex;
+                align-items: center;
+                flex-grow: 1;
+                flex-shrink: 1;
+
+                &.due-status {
+                  width: 8rem;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                }
+
+                &.due {
+                  width: 5rem;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                }
+
+                &.assignee {
+                  width: 8rem;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                }
+
+                &.reason {
+                  width: 10rem;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                }
+
+                &.updated-at {
+                  width: 5rem;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                }
+
+                &.created-by {
+                  width: 8rem;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                }
+
+                &.action {
+                  overflow: visible;
+                  width: 2rem;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                }
+
+                &.react-bs-table-expand-cell {
+                  order: 1;
+                  width: 2rem;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+
+                  span {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: $font-size-base;
+                    @include transition(all 0.1s ease-in-out);
+
+                    i {
+                      color: $bright-blue;
+                      font-size: $font-size-base;
+                      @include transition(all 0.1s ease-in-out);
+                    }
+
+                    &:hover {
+                      cursor: pointer;
+                      color: $bright-blue-darken-04;
+
+                      i {
+                        color: $bright-blue-darken-04;
+                      }
+                    }
+                  }
+                }
+
+                .sub-table {
+                    width: 100%;
+                    margin: ($padding*-.5) (4rem + ($padding*-.75)) ($padding*-.5) (8rem + ($padding*-.75));
+
+                    .table-header-wrapper {
+                        display: none;
+                    }
+                    tr:last-child, tr:nth-of-type(even):last-child {
+                        border-bottom-width: 0;
+                    }
+                }
+              }
             }
           }
         }

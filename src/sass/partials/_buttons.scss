@@ -157,6 +157,11 @@ input[type="submit"] {
       color: $bright-blue-lighten-01;
     }
   }
+
+  &.btn-grid-row {
+    margin: 0;
+    padding: 0;
+  }
 }
 // Remove all backgrounds
 
