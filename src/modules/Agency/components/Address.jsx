@@ -20,6 +20,7 @@ class Address extends Component {
       const selectedZip = zipCodes[0];
       this.props.changeField('physicalAddress.county', selectedZip.county);
       this.props.changeField('physicalAddress.zip', selectedZip.zip);
+      this.props.changeField('mailingAddress.zip', selectedZip.zip);
     } else {
       this.props.changeField('physicalAddress.county', '');
     }
