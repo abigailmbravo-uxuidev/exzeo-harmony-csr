@@ -42,6 +42,7 @@ class Routes extends Component {
   };
 
   handleClearError = () => this.props.actions.errorActions.clearAppError();
+
   modalStyles = {
     content: {
       top: '20%',

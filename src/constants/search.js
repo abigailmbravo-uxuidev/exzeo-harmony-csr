@@ -66,17 +66,6 @@ export const AGENCY_SEARCH_OPTIONS = [
   }
 ];
 
-export const DIARY_SEARCH_OPTIONS = [
-  {
-    answer: true,
-    label: 'Open'
-  },
-  {
-    answer: false,
-    label: 'Closed'
-  }
-];
-
 export const SEARCH_CONFIG = {
   [SEARCH_TYPES.newQuote]: {
     initialValues: ADDRESS_INITIAL_VALUES,
@@ -100,7 +89,7 @@ export const SEARCH_CONFIG = {
   },
   [SEARCH_TYPES.diaries]: {
     initialValues: DIARY_INITIAL_VALUES,
-    searchOptions: DIARY_SEARCH_OPTIONS
+    searchOptions: []
   }
 };
 
@@ -117,5 +106,6 @@ export const NO_RESULTS_MESSAGES = {
   [SEARCH_TYPES.policy]: 'There are no policies found matching that search criteria. Please try to search again.',
   [SEARCH_TYPES.quote]: 'There are no quotes found matching that search criteria. Please try to search again, or start a new quote.',
   [SEARCH_TYPES.agent]: DEFAULT_NO_RESULTS_MESSAGE,
-  [SEARCH_TYPES.agency]: DEFAULT_NO_RESULTS_MESSAGE
+  [SEARCH_TYPES.agency]: DEFAULT_NO_RESULTS_MESSAGE,
+  [SEARCH_TYPES.diaries]: DEFAULT_NO_RESULTS_MESSAGE
 };

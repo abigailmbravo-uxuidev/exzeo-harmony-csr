@@ -12,7 +12,9 @@ export default {
   error: {},
   diaries: [],
   newNote: {},
-  questions: {},
+  questions: {
+    diaryAssignees: []
+  },
   quoteState: {
     quoteId: null,
     update: false,

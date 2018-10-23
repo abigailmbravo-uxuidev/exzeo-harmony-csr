@@ -15,7 +15,7 @@ export default function questionsReducer(state = initialState.questions, action)
 
 function setQuestions(state, action) {
   // TODO: 'questions' state will become something like 'enums' or 'list' state. When that happens, we need to namespace the question map so things like 'diaryAssignees' and other lists can more easily be left alone.
-  const currentState = { diaryAssignees: state.diaryAssignees || {} };
+  const currentState = { diaryAssignees: state.diaryAssignees || initialState.questions.diaryAssignees };
 
   if (!action.questions || !Array.isArray(action.questions)) {
     return {

@@ -8,9 +8,15 @@ describe('Test the Diaries Component', () => {
     const wrapper = shallow(<Diaries
       handleSubmit={x => x}
       openHandler={x => x}
+      onToggleDiary={x => x}
       diaryLevel="dueSoon"
       diaries={[{
-        _id: 1, dueDate: '2018-08-24', type: 'Billing /Payment', reason: 'Receipt Needed', assignee: 'jsutphin', message: ''
+        _id: '1',
+        dueDate: '2018-08-24',
+        type: 'Billing /Payment',
+        reason: 'Receipt Needed',
+        assignee: 'jsutphin',
+        message: ''
       }]} />);
     expect(wrapper.exists()).toBeTruthy();
   });

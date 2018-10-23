@@ -15,15 +15,13 @@ export class SearchBar extends Component {
     const {
       agencies,
       getAgencies,
-      toggleLoading,
-      // formProps: { initialize, initialValues }
+      toggleLoading
     } = this.props;
 
     toggleLoading(false);
     if (!agencies.length) {
       getAgencies(DEFAULT_SEARCH_PARAMS.companyCode, DEFAULT_SEARCH_PARAMS.state);
     }
-    // initialize(initialValues);
   }
 
   handleSearchFormSubmit = async (data, dispatch, props) => {

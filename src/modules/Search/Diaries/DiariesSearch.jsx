@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Select, MultiSelectTypeAhead, Button, validation } from '@exzeo/core-ui';
+import { Select, MultiSelectTypeAhead, Button, validation, emptyObject, emptyArray } from '@exzeo/core-ui';
 
-import { SEARCH_FORM } from '../../../constants/search';
 import { REASONS, STATUS_ANSWERS } from '../../../constants/diaries';
 import DateRange from '../components/DateRange';
 
@@ -79,17 +78,16 @@ class DiariesSearch extends Component {
 }
 
 DiariesSearch.propTypes = {
-  assigneeAnswers: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-  changeSearchType: PropTypes.func.isRequired,
   initialize: PropTypes.func.isRequired,
-  searchTypeOptions: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   userProfile: PropTypes.shape().isRequired,
+  assigneeAnswers: PropTypes.arrayOf(PropTypes.shape()),
   initialValues: PropTypes.shape(),
   submitting: PropTypes.bool
 };
 
 DiariesSearch.defaultProps = {
-  initialValues: {},
+  assigneeAnswers: emptyArray,
+  initialValues: emptyObject,
   submitting: false
 };
 

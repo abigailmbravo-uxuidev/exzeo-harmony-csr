@@ -9,12 +9,18 @@ import history from '../history';
 
 const auth = new Auth();
 
+// TODO: this is the first pass at abstracting out Authentication into a reusable component. Will return
 class Authentication extends Component {
   componentDidMount() {
-    const { isAuthenticated } = auth;
     const {
-      config, setAppErrorAction, setUserProfileAction, userProfile
+      config,
+      setAppErrorAction,
+      setUserProfileAction,
+      userProfile
     } = this.props;
+
+    const { isAuthenticated } = auth;
+
     if (isAuthenticated() && this.checkPublicPath(window.location.pathname)) {
       this.idToken = localStorage.getItem(config.tokenLocation);
       axios.defaults.headers.common.authorization = `bearer ${this.idToken}`;
@@ -41,14 +47,14 @@ class Authentication extends Component {
   };
 
   render() {
-    const { userProfile, children } = this.props;
+    const { userProfile } = this.props;
     if (auth.isAuthenticated() && !userProfile) {
       return null;
     }
 
     return (
       <React.Fragment>
-        {React.cloneElement(React.Children.only(children), { auth })}
+        {this.props.render({ auth })}
       </React.Fragment>
     );
   }

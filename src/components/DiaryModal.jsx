@@ -10,17 +10,6 @@ import { setAppError } from '../state/actions/error.actions';
 import { getDiaryAssigneeAnswers } from '../state/selectors/questions.selectors';
 import { REASONS, TYPES } from '../constants/diaries';
 
-
-// export const TextArea = ({
-//   input, label, meta: { touched, error }
-// }) => (
-//   <div className={`${touched && error ? 'error' : ''} text-area-wrapper`}>
-//     <label>{label} </label>
-//     <textarea {...input} placeholder={label} rows="10" cols="40" />
-//     {touched && error && <span className="error-message">{error}</span>}
-//   </div>
-// );
-
 export class DiaryModal extends Component {
   state = { minimize: false };
 

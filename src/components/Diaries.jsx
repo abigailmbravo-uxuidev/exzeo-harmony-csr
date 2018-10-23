@@ -39,7 +39,7 @@ const Diaries = ({ diaryLevel, diaries, onToggleDiary }) => {
             <li key={diary._id}>
               <div className="diary-header">
                 <i className={severity.listIconClass} aria-hidden="true" />
-                <span className="diary-due-datge">{moment.utc(diary.due).format('MM/DD/YYYY')} </span>
+                <span className="diary-due-date">{moment.utc(diary.due).format('MM/DD/YYYY')} </span>
                 <a className="btn btn-link btn-sm" onClick={() => onToggleDiary(diary)}>
                   <i className="fa fa-chevron-circle-up" />Open
                 </a>

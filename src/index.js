@@ -24,9 +24,7 @@ const c = document.createComment(`Version: ${JSON.stringify(process.env.REACT_AP
 document.body.appendChild(c);
 render(
   <Provider store={store}>
-    <Authentication config={AUTH_CONFIG}>
-      <Routes />
-    </Authentication>
+    <Authentication config={AUTH_CONFIG} render={({ auth }) => (<Routes auth={auth} />)} />
   </Provider>,
   holder
 );

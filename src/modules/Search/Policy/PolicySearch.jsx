@@ -2,13 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Field } from 'redux-form';
-import { Input, Select, NewSelectTypeAhead, Button, normalize, validation } from '@exzeo/core-ui';
+import {
+  Input,
+  Select,
+  SelectTypeAhead,
+  Button,
+  normalize,
+  validation,
+  noop,
+  emptyObject,
+  emptyArray
+} from '@exzeo/core-ui';
 
 import { getAnswers } from '../../../utilities/forms';
 import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 import Pagination from '../components/Pagination';
 
-const { isAlphaNumeric, isValidChar, isNumberDashOnly, isValidDateFormat, isRequired } = validation;
+const {
+  isAlphaNumeric,
+  isValidChar,
+  isNumberDashOnly,
+  isValidDateFormat,
+  isRequired
+} = validation;
+
 const isValidDate = isValidDateFormat(STANDARD_DATE_FORMAT);
 
 const sortByOptions = [
@@ -102,7 +119,7 @@ const PolicySearch = ({
           name="agencyCode"
           dataTest="agencyCode"
           label="Agency Name"
-          component={NewSelectTypeAhead}
+          component={SelectTypeAhead}
           styleName="agencyCodeSelectField"
           answers={agencyList} />
         <div className="form-group effectiveDate">
@@ -144,24 +161,25 @@ const PolicySearch = ({
 );
 
 PolicySearch.propTypes = {
-  agencyList: PropTypes.array,
-  submitting: PropTypes.bool,
   advancedSearch: PropTypes.bool.isRequired,
-  questions: PropTypes.object,
-  toggleAdvancedSearch: PropTypes.func.isRequired,
   handlePagination: PropTypes.func.isRequired,
+  toggleAdvancedSearch: PropTypes.func.isRequired,
+  agencyList: PropTypes.array,
+  changeSearchType: PropTypes.func,
+  questions: PropTypes.object,
   search: PropTypes.shape({
     results: PropTypes.array,
     totalPages: PropTypes.number,
     currentPage: PropTypes.number
   }).isRequired,
-  changeSearchType: PropTypes.func,
-  searchTypeOptions: PropTypes.array
+  searchTypeOptions: PropTypes.array,
+  submitting: PropTypes.bool,
 };
 
 PolicySearch.defaultProps = {
-  agencyList: [],
-  questions: {}
+  agencyList: emptyArray,
+  questions: emptyObject,
+  changeSearchType: noop
 };
 
 export default PolicySearch;
