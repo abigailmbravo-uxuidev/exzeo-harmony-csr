@@ -17,6 +17,6 @@ describe('Testing RemoveAgentModal component', () => {
     };
     const wrapper = shallow(<RemoveAgentModal {...props} />);
     expect(wrapper.exists()).toBeTruthy();
-    wrapper.instance().props.handleConfirm(mockAgency.license[0].agent[0], x => x, props);
+    wrapper.instance().props.handleConfirm(mockAgency, x => x, props);
   });
 });
