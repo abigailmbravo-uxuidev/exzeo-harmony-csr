@@ -1105,79 +1105,83 @@
         width: 100%;
 
         .card-block {
-            width: 100%;
-            display: flex;
+          display: flex;
+          width: 100%;
 
-            .contract-details {
-                flex-grow: 1;
-                flex-shrink: 1;
-                margin-right: $padding;
-                padding-right: $padding*2;
-                border-right: 1px dotted $warm-gray-03;
-            }
-            .contract-csp {
-                flex-grow: 0;
-                flex-shrink: 0;
-                width: 20rem;
-                margin-left: $padding;
-                .csp-list {
-                    .contract-agent-list {
-                        margin: 0;
-                        padding: 0;
-                        list-style: none;
-                        li {
-                            display: flex;
-                            align-items: center;
+          .contract-details {
+            flex-grow: 1;
+            flex-shrink: 1;
+            margin-right: $padding;
+            padding-right: $padding*2;
+            border-right: 1px dotted $warm-gray-03;
+          }
 
-                            > div {
-                                margin-right: $padding;
-                                flex-grow: 1;
-                                flex-shrink: 1;
+          .contract-csp {
+            flex-grow: 0;
+            flex-shrink: 0;
+            width: 20rem;
+            margin-left: $padding;
 
-                                &.state {
-                                    flex-grow: 0;
-                                    flex-shrink: 0;
-                                    width: 6rem;
-                                }
-                            }
+            .csp-list {
+              .contract-agent-list {
+                margin: 0;
+                padding: 0;
+                list-style: none;
 
-                            i {
-                                    margin-top: .75rem;
-                                    color: $bright-blue;
-                                    @include transition(all .2s ease-in-out);
+                li {
+                  display: flex;
+                  align-items: center;
 
-                                    &:hover {
-                                        color: $bright-blue-darken-04;
-                                        cursor: pointer;
-                                    }
+                  > div {
+                    flex-grow: 1;
+                    flex-shrink: 1;
+                    margin-right: $padding;
 
-                                    &.fa-times-circle {
-                                        color: $red;
-
-                                        &:hover {
-                                            color: $red-darken-02;
-                                        }
-                                    }
-                            }
-                        }
+                    &.state {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 6rem;
                     }
-                    .add-product {
-                        display: flex;
-                        align-items: center;
+                  }
 
-                        hr {
-                            flex-grow: 1;
-                            flex-shrink: 1;
-                            border-width: 0;
-                            border-top: 1px solid $warm-gray-04;
-                        }
+                  i {
+                    margin-top: 0.75rem;
+                    color: $bright-blue;
+                    @include transition(all 0.2s ease-in-out);
 
-                        .btn {
-                            margin: 0 $padding;
-                        }
+                    &:hover {
+                      cursor: pointer;
+                      color: $bright-blue-darken-04;
                     }
+
+                    &.fa-times-circle {
+                      color: $red;
+
+                      &:hover {
+                        color: $red-darken-02;
+                      }
+                    }
+                  }
                 }
+              }
+
+              .add-product {
+                display: flex;
+                align-items: center;
+
+                hr {
+                  flex-grow: 1;
+                  flex-shrink: 1;
+                  border-width: 0;
+                  border-top: 1px solid $warm-gray-04;
+                }
+
+                .btn {
+                  margin: 0 $padding;
+                }
+              }
             }
+          }
         }
       }
     }
