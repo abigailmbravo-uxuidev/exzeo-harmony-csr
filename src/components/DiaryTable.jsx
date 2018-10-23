@@ -83,7 +83,7 @@ export class DiaryTable extends Component {
   }
 
   statusFormatter = (value) => {
-    return (<div><span class={DIARY_STATUS_COLOR[value]} />{DIARY_STATUS[value]}</div>);
+    return (<div className="status-indicator"><span class={DIARY_STATUS_COLOR[value]} /><span className="status-display">{DIARY_STATUS[value]}</span></div>);
   }
 
   render() {

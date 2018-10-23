@@ -159,6 +159,7 @@ input[type="submit"] {
   }
 
   &.btn-grid-row {
+    display: flex;
     margin: 0;
     padding: 0;
   }

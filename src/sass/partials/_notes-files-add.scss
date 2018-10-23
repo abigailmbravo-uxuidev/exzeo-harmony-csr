@@ -303,7 +303,10 @@
 
     .diaries {
       >.react-bs-table {
-
+          table {
+              display: flex;
+              flex-direction: column;
+          }
           > .react-bs-container-body {
               > .table-striped {
                   > tbody {
@@ -338,14 +341,47 @@
               td,
               th {
                 display: flex;
-                align-items: center;
                 flex-grow: 1;
                 flex-shrink: 1;
+                line-height: 1.5;
 
                 &.due-status {
                   width: 8rem;
                   flex-grow: 0;
                   flex-shrink: 0;
+
+                  .status-indicator {
+                      display: flex;
+
+                      span {
+                          min-width: 4px;
+                          min-height: 1rem;
+                          flex-shrink: 0;
+                          flex-grow: 0;
+                          margin-right: $padding/2;
+                          margin-left: -$padding/2;
+                          display: flex;
+                          &.gray {
+                              background: $warm-gray-06;
+                              border-radius: 2px;
+                          }
+                          &.red {
+                              background: $red;
+                              border-radius: 2px;
+                          }
+                          &.yellow {
+                              background: $orange-lighten-01;
+                              border-radius: 2px;
+                          }
+                          &.green {
+                              background: $green-darken-02;
+                              border-radius: 2px;
+                          }
+                          &.status-display {
+                              margin-left: 0;
+                          }
+                      }
+                  }
                 }
 
                 &.due {
@@ -361,9 +397,13 @@
                 }
 
                 &.reason {
-                  width: 10rem;
+                  width: 8rem;
                   flex-grow: 0;
                   flex-shrink: 0;
+                }
+
+                &.message {
+                    white-space: normal;
                 }
 
                 &.updated-at {
@@ -383,6 +423,8 @@
                   width: 2rem;
                   flex-grow: 0;
                   flex-shrink: 0;
+                  display: flex;
+                  align-items: flex-start;
                 }
 
                 &.react-bs-table-expand-cell {
@@ -390,6 +432,8 @@
                   width: 2rem;
                   flex-grow: 0;
                   flex-shrink: 0;
+                  display: flex;
+                  align-items: flex-start;
 
                   span {
                     display: flex;
