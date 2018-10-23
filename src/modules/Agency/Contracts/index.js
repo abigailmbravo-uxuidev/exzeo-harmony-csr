@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import ContractsComponent from './Contracts';
+import Contracts from './Contracts';
 import { updateAgency } from '../../../state/actions/agencyActions';
 import { getEditModalInitialValues } from '../../../state/selectors/agency.selector';
 
@@ -9,4 +9,4 @@ const mapStateToProps = state => ({
   listOfAgents: [] // available agents to add to a license
 });
 
-export default connect(mapStateToProps, { updateAgency })(ContractsComponent);
+export default connect(mapStateToProps, { updateAgency })(Contracts);
