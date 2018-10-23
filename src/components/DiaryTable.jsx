@@ -104,13 +104,13 @@ export class DiaryTable extends Component {
           expandColumnComponent: this.expandColumnComponent
         }}>
         <TableHeaderColumn dataField="diaryId" isKey hidden>ID</TableHeaderColumn>
-        <TableHeaderColumn className="due-status" columnClassName="due-status" dataField="dueStatus" dataFormat={this.statusFormatter}>Status</TableHeaderColumn>
-        <TableHeaderColumn className="due" columnClassName="due"  dataField="due" dataFormat={toLocaleDate}>Due</TableHeaderColumn>
-        <TableHeaderColumn className="assignee" columnClassName="assignee"  dataField="assignee" dataFormat={val => val.displayName}>Assignee</TableHeaderColumn>
-        <TableHeaderColumn className="reason" columnClassName="reason"  dataField="reason">Reason</TableHeaderColumn>
+        <TableHeaderColumn className="due-status" columnClassName="due-status" dataField="dueStatus" dataFormat={this.statusFormatter} dataSort={ true }>Status</TableHeaderColumn>
+        <TableHeaderColumn className="due" columnClassName="due"  dataField="due" dataFormat={toLocaleDate} dataSort={ true }>Due</TableHeaderColumn>
+        <TableHeaderColumn className="assignee" columnClassName="assignee"  dataField="assignee" dataFormat={val => val.displayName} dataSort={ true }>Assignee</TableHeaderColumn>
+        <TableHeaderColumn className="reason" columnClassName="reason"  dataField="reason" dataSort={ true }>Reason</TableHeaderColumn>
         <TableHeaderColumn className="message" columnClassName="message"  dataField="message">Message</TableHeaderColumn>
-        <TableHeaderColumn className="updated-at" columnClassName="updated-at"  dataField="updatedAt" dataFormat={toLocaleDate}>Updated</TableHeaderColumn>
-        <TableHeaderColumn className="created-by" columnClassName="created-by"  dataField="createdBy" dataFormat={val => val.userName}>UpdatedBy</TableHeaderColumn>
+        <TableHeaderColumn className="updated-at" columnClassName="updated-at"  dataField="updatedAt" dataFormat={toLocaleDate} dataSort={ true }>Updated</TableHeaderColumn>
+        <TableHeaderColumn className="created-by" columnClassName="created-by"  dataField="createdBy" dataFormat={val => val.userName} dataSort={ true }>UpdatedBy</TableHeaderColumn>
         <TableHeaderColumn className="action" columnClassName="action"  dataField="action" dataFormat={this.buttonFormatter} expandable={false}>Actions</TableHeaderColumn>
       </BootstrapTable>);
   }
