@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { getDiaryAssigneeOptions } from '../state/actions/questions.actions';
 
 
-class Bootstrap extends React.Component {
+export class Bootstrap extends React.Component {
   componentDidMount() {
     const { getAssignees, userProfile } = this.props;
     getAssignees({ userProfile });

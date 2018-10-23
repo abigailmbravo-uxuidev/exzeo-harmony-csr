@@ -7,7 +7,7 @@ import Uppy from '@uppy/core';
 import Dashboard from '@uppy/react/lib/Dashboard';
 import XHRUpload from '@uppy/xhr-upload';
 import moment from 'moment';
-import { Loader, TextArea } from '@exzeo/core-ui';
+import { Loader } from '@exzeo/core-ui';
 
 import * as cgActions from '../../state/actions/cg.actions';
 import * as uiActions from '../../state/actions/ui.actions';

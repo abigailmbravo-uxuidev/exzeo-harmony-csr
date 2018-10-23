@@ -84,6 +84,7 @@
       "src/**/*.{js,jsx}",
       "!src/index.js",
       "!src/routes.js",
+      "!src/components/Authentication.jsx",
       "!src/setupTests.js",
       "!src/Auth.js"
     ],

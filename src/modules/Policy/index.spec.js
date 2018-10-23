@@ -1,10 +1,13 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
-import { shallow } from 'enzyme';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { shallow, mount } from 'enzyme';
 
-import Policy from './index';
+import { Policy } from './index';
 
-const mockStore = configureStore([]);
+const mockStore = configureStore([thunk]);
 
 describe('Testing Policy component', () => {
   it('should test connected app', () => {
@@ -15,6 +18,7 @@ describe('Testing Policy component', () => {
       },
       policyState: {
         policy: {
+          policyID: '1234',
           rating: { worksheet: { fees: {} } },
           policyNumber: '1234',
           property: {
@@ -22,6 +26,7 @@ describe('Testing Policy component', () => {
           }
         },
         summaryLedger: {
+          _id: '1234',
           status: {
             code: 13
           }
@@ -41,11 +46,15 @@ describe('Testing Policy component', () => {
         data: {
           submitting: false
         }
+      },
+      diaries: [],
+      quoteState: {
+        quote: {}
       }
     };
     const store = mockStore(initialState);
     const props = {
-      match: { params: {} },
+      match: { params: {}, path: '/quote', url: '/test' },
       batchCompleteTask() { return Promise.resolve(); },
       createTransaction() { return Promise.resolve(); },
       getAgents() {},
@@ -67,12 +76,22 @@ describe('Testing Policy component', () => {
       policyState: initialState.policyState,
       summaryLedger: initialState.policyState.summaryLedger,
       tasks: initialState.cg,
-      zipCodeSettings: initialState.service.getZipcodeSettings
+      zipCodeSettings: initialState.service.getZipcodeSettings,
+      initialized: true
     };
 
-    const wrapper = shallow(<Policy store={store} {...props} />);
+    const wrapper = shallow(<Policy store={{ dispatch: x => x }} {...props} />);
     expect(wrapper);
     const instance = wrapper.instance();
     instance.componentDidMount();
+    instance.componentDidUpdate(props);
+
+     const wrapper2 = mount(
+       <Provider store={store}>
+         <Router>
+           <Policy {...props} />
+         </Router>
+       </Provider>);
+    expect(wrapper2);
   });
 });

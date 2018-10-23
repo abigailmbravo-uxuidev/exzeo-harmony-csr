@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { fetchDiaries } from '../state/actions/diary.actions';
 
-class DiaryPolling extends Component {
+export class DiaryPolling extends Component {
   componentDidMount() {
     // Set the name of the hidden property and the change event for visibility
     if (typeof document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support

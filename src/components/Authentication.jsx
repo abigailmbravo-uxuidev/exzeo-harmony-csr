@@ -10,7 +10,7 @@ import history from '../history';
 const auth = new Auth();
 
 // TODO: this is the first pass at abstracting out Authentication into a reusable component. Will return
-class Authentication extends Component {
+export class Authentication extends Component {
   componentDidMount() {
     const {
       config,

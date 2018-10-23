@@ -95,6 +95,7 @@ export class DiaryModal extends Component {
               <Field
                 name="message"
                 label="Message"
+                dataTest="message"
                 component={TextArea}
                 validate={validation.isRequired} />
             </div>
@@ -139,8 +140,10 @@ DiaryModal.propTypes = {
   submitting: PropTypes.bool.isRequired,
   toggleDiaryAction: PropTypes.func.isRequired,
   user: PropTypes.shape({
-    givenName: PropTypes.string,
-    familyName: PropTypes.string
+    profile: PropTypes.shape({
+      given_name: PropTypes.string,
+      family_name: PropTypes.string
+    })
   }).isRequired
 };
 

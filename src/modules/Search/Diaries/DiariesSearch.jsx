@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Select, MultiSelectTypeAhead, Button, validation, emptyObject, emptyArray } from '@exzeo/core-ui';
+import { Select, MultiSelectTypeAhead, DateRange, Button, validation, emptyObject, emptyArray } from '@exzeo/core-ui';
 
 import { REASONS, STATUS_ANSWERS } from '../../../constants/diaries';
-import DateRange from '../components/DateRange';
 
 class DiariesSearch extends Component {
   componentDidMount() {
