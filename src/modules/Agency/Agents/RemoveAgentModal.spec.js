@@ -1,20 +1,22 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { RemoveAgentModal } from './RemoveAgentModal';
+
 import mockAgency from '../mockAgency';
+
+import { RemoveAgentModal } from './RemoveAgentModal';
 
 describe('Testing RemoveAgentModal component', () => {
   it('should render', () => {
     const props = {
       agency: mockAgency,
       handleSubmit() {},
-      updateAgency() {},
+      handleConfirm() {},
       listOfAgents: [],
       initialValues: {},
       toggleModal: () => x => x
     };
     const wrapper = shallow(<RemoveAgentModal {...props} />);
     expect(wrapper.exists()).toBeTruthy();
-    wrapper.instance().removeAgent(mockAgency.license[0].agent[0], x => x, props);
+    wrapper.instance().props.handleConfirm(mockAgency.license[0].agent[0], x => x, props);
   });
 });

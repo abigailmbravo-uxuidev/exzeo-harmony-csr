@@ -35,7 +35,7 @@ export class Agency extends Component {
 
   render() {
     const {
-      agency, location, match: { params: { agencyCode, branchCode }, url }, match
+      agency, location, match: { params: { agencyCode, branchCode } }, match
     } = this.props;
 
     return (

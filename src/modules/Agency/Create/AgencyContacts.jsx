@@ -1,5 +1,6 @@
 import React from 'react';
-import ContactCard from './ContactCard';
+
+import ContactCard from '../components/ContactCard';
 
 export const AgencyContacts = ({ agency, editContact }) => (
   <section>

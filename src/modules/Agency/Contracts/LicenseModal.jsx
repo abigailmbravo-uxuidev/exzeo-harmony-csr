@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reduxForm, Field, FieldArray, formValueSelector } from 'redux-form';
-import { Input, Date, SelectTypeAhead } from '@exzeo/core-ui/lib/Input';
-import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
-import Button from '@exzeo/core-ui/lib/Button';
+import { Input, Date, SelectTypeAhead, Button, validation } from '@exzeo/core-ui';
+
 import CheckBoxGroup from '../CheckBoxGroup';
+
 import Agents from './Agents';
 
 const FORM_NAME = 'LicenseModal';
@@ -50,16 +50,14 @@ render() {
                   name="companyCode"
                   dataTest="companyCode"
                   component={Input}
-                  validate={validation.isRequired}
-                />
+                  validate={validation.isRequired}/>
                 <Field
                   label="State"
                   styleName="state"
                   name="stateLicense"
                   dataTest="stateLicense"
                   component={Input}
-                  validate={validation.isRequired}
-                />
+                  validate={validation.isRequired}/>
               </div>
               <div className="flex-form">
                 <Field
@@ -68,16 +66,14 @@ render() {
                   name="licenseNumber"
                   dataTest="licenseNumber"
                   component={Input}
-                  validate={validation.isRequired}
-                />
+                  validate={validation.isRequired}/>
                 <Field
                   label="License Effective Date"
                   styleName="licenseEffectiveDate"
                   name="licenseEffectiveDate"
                   dataTest="licenseEffectiveDate"
                   component={Date}
-                  validate={[validation.isRequired, validation.isDate]}
-                />
+                  validate={[validation.isRequired, validation.isDate]}/>
               </div>
               <Field
                 label="Contract"
@@ -85,23 +81,20 @@ render() {
                 name="contract"
                 dataTest="contract"
                 component={Input}
-                validate={validation.isRequired}
-              />
+                validate={validation.isRequired}/>
               <Field
                 label="Addendum"
                 styleName="addendum"
                 name="addendum"
                 dataTest="addendum"
-                component={Input}
-              />
+                component={Input}/>
               <Field
                 label="EO Expiration Date"
                 styleName="eoExpirationDate"
                 name="eoExpirationDate"
                 dataTest="eoExpirationDate"
                 component={Date}
-                validate={[validation.isRequired, validation.isDate]}
-              />
+                validate={[validation.isRequired, validation.isDate]}/>
             </section>
             <section className="product-details">
               <label>Products</label>
@@ -113,8 +106,7 @@ render() {
                   type="checkbox"
                   options={productOptions}
                   component={CheckBoxGroup}
-                  validate={validation.isRequiredArray}
-                />
+                  validate={validation.isRequiredArray}/>
               </div>
             </section>
             <section className="agent-details">
@@ -127,8 +119,7 @@ render() {
                 dataTest="selectedAgent"
                 component={SelectTypeAhead}
                 answers={listOfAgents}
-                onChange={this.handleAddAgent}
-              />
+                onChange={this.handleAddAgent}/>
 
               {/* list of added agents with the ability to check appointed and/or agent of record to apply those attributes */}
               <div>
@@ -138,8 +129,7 @@ render() {
                     primaryAgentCode={initialValues.primaryAgent}
                     component={Agents}
                     agent={agentValue}
-                    handleRemoveAgent={this.handleRemoveAgent}
-                  />
+                    handleRemoveAgent={this.handleRemoveAgent}/>
                 }
               </div>
             </section>
@@ -149,11 +139,13 @@ render() {
               <Button
                 baseClass="secondary"
                 onClick={handleCloseModal}
-                dataTest="modal-cancel">Cancel</Button>
+                dataTest="modal-cancel">Cancel
+              </Button>
               <Button
                 baseClass="primary"
                 type="submit"
-                dataTest="modal-submit">Save</Button>
+                dataTest="modal-submit">Save
+              </Button>
             </div>
           </div>
         </form>
