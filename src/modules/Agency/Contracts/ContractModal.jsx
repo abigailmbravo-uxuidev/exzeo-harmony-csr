@@ -25,10 +25,15 @@ export const renderProducts = ({ fields, meta: { error, submitFailed } }) =>
           component={Input}
           validate={validation.isRequired}
         />
-        <i className="fa fa-file-text" onClick={() => fields.remove(index)} />
+      <i className="fa fa-times-circle" onClick={() => fields.remove(index)} />
       </li>
     )}
     </ul>
+    <div className="add-product">
+      <hr/>
+      <button className="btn-secondary btn btn-sm"><i className="fa fa-plus"/>Product</button>
+      <hr/>
+    </div>
   </div>
 
 export const ContractModal = (props) => {
