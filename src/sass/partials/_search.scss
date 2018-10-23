@@ -423,6 +423,15 @@ main[role="document"] {
       flex-shrink: 1;
       width: 100%;
       padding: 0;
+
+      .results-wrapper {
+          ul {
+              &.property-search-results {
+                  padding: 1rem;
+                  width: 100%;
+              }
+          }
+      }
     }
   }
 }
