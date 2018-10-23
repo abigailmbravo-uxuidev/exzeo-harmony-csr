@@ -303,7 +303,7 @@
                       }
 
                       &.zip {
-                        width: 6rem;
+                        width: 8rem;
                       }
 
                       &.territoryManagerId {
@@ -936,6 +936,44 @@
           }
         }
 
+        .route-content-wrapper {
+          &.new-branch {
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            padding-left: 12rem;
+            background: rgba($warm-gray-03, .75);
+
+            &:before {
+              position: absolute;
+              z-index: -1;
+              top: 5.125rem;
+              left: 1rem;
+              display: flex;
+              align-items: center;
+              width: 11rem;
+              height: 47px;
+              padding-left: $padding*2;
+              content: 'New Branch';
+              color: $warm-gray-12;
+              border-left: 0.25rem solid $bright-blue-darken-04;
+              background-color: $white;
+              box-shadow: $card-box-shadow;
+            }
+
+            .route-content {
+              background: $white;
+            }
+
+            .basic-footer {
+              background: $white;
+            }
+          }
+        }
+
         .modal {
           &.edit-agent,
           &.edit-contact {
@@ -1234,11 +1272,7 @@
                 }
 
                 &.zip {
-                  width: 6rem;
-                }
-
-                &.zip {
-                  min-width: 4rem;
+                  width: 8rem;
                 }
 
                 &:last-child {
@@ -1327,7 +1361,7 @@
                   }
 
                   &.zip {
-                    width: 6rem;
+                    width: 8rem;
                   }
 
                   &:last-child {
