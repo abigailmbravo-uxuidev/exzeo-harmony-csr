@@ -61,6 +61,8 @@ describe('Testing Coverage component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      getAgentListAction() {},
+      getAgencyAction() {},
       actions: {
         agencyActions: {
           getAgents() {},

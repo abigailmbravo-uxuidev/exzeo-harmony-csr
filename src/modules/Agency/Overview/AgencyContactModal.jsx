@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, FormSection } from 'redux-form';
 
-import { updateAgency } from '../../state/actions/agencyActions';
-import { getEditModalInitialValues } from '../../state/selectors/agency.selector';
-
-import Contact from './components/FormGroup/Contact';
+import { updateAgency } from '../../../state/actions/agencyActions';
+import Contact from '../components/FormGroup/Contact';
 
 export class AgencyContactModal extends Component {
   saveAgency = async (data, dispatch, props) => {
@@ -17,8 +15,8 @@ export class AgencyContactModal extends Component {
       agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
       props.updateAgency(agency);
     } else {
-      agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
       agency[section] = data[section];
+      agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
       await props.updateAgency(agency);
     }
     props.closeModal();

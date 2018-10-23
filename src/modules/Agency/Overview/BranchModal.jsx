@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { Select, Radio, Input, validation, Phone } from '@exzeo/core-ui';
 
-import { updateAgency } from '../../state/actions/agencyActions';
+import { updateAgency } from '../../../state/actions/agencyActions';
 
 const statusAnswers = [
   { answer: 'Active', label: 'Active' },
@@ -29,7 +29,7 @@ export class BranchModal extends Component {
     selectedBranch.websiteUrl = data.websiteUrl;
     selectedBranch.mailCommissionChecksToBranch = data.mailCommissionChecksToBranch;
     selectedBranch.mailPolicyDocsToBranch = data.mailPolicyDocsToBranch;
-
+    agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
     await props.updateAgency(agency);
     props.closeModal();
   };
@@ -48,7 +48,7 @@ export class BranchModal extends Component {
           <div className="card">
             <div className="card-header">
               <h4>
-                <i className="fa fa-address-book" /> Add Branch
+                <i className="fa fa-address-book" /> Update Branch
               </h4>
             </div>
             <div className="card-block">
@@ -89,6 +89,7 @@ export class BranchModal extends Component {
                     label="Fax Number"
                     component={Phone}
                     dataTest="faxNumber"
+                    validate={[validation.isPhone]}
                     styleName="faxNumber" />
                 </div>
                 <div className="agency-web-address">

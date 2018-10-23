@@ -23,8 +23,8 @@ function AgentCard({
       </div>
       <div className="contact-details">
         <div className="card-name">
-          <h4 id={agent.licenseNumber} data-test={agent.licenseNumber} onClick={handleClick}>
-            <span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span> | <span className="agent-license">{agent.licenseNumber}</span>
+          <h4 id={agent.licenseNumber} data-test={agent.licenseNumber}>
+            <span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span> | <span className="agent-license">{agent.licenseNumber}</span> <span className="btn btn-link btn-sm" onClick={handleClick}><i className="fa fa-address-book" />Open Agency</span>
           </h4>
 
           <AgencyContactAddress

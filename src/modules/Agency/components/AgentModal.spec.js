@@ -11,14 +11,11 @@ describe('Testing AgentsModal component', () => {
       agencyLicenseArray: [],
       initialValues: {},
       toggleModal: () => () => {},
-      editType: 'Edit',
-      updateAgency() {},
-      updateAgent() {},
-      addAgent() {}
+      handleSave() {},
+      handleSaveAgent() {}
     };
     const wrapper = shallow(<AgentModal {...props} />);
     expect(wrapper.exists()).toBeTruthy();
-    wrapper.instance().update({ agencyLicense: ['5435435'] }, x => x, props);
-    wrapper.instance().add({ agencyLicense: ['5435435'] }, x => x, props);
+    wrapper.instance().handleSave({ agencyLicense: ['5435435'] }, x => x, props);
   });
 });

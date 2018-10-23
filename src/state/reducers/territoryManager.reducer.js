@@ -1,7 +1,8 @@
 import * as types from '../actions/actionTypes';
+
 import initialState from './initialState';
 
-export default function territoryManagerReducer(state = initialState.territoryManagers, action) {
+export default function territoryManagerReducer(state = initialState.territoryManagerState, action) {
   switch (action.type) {
     case types.SET_TERRITORY_MANAGERS:
       return setTerritoryManagers(state, action);

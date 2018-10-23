@@ -41,18 +41,6 @@ describe('Test Agency Actions', () => {
     expect(store.getActions()).toEqual(stateObj);
   });
 
-  it('should call setAgencyAgents', () => {
-    const agencyAgents = [{ id: '1234' }];
-
-    const stateObj = [{
-      type: types.SET_AGENCY_AGENTS,
-      agencyAgents
-    }];
-
-    store.dispatch(agencyActions.setAgencyAgents(agencyAgents));
-
-    expect(store.getActions()).toEqual(stateObj);
-  });
 
   it('should call set agents', () => {
     const agents = [{ id: '1234' }, { id: '4321' }];
@@ -115,14 +103,13 @@ describe('Test Agency Actions', () => {
         agency: agency[0]
       }];
 
-      httpStub.onCall(0).returns(Promise.resolve({ data: { result: agency } }));
+      httpStub.onCall(0).returns(Promise.resolve({ data: { result: agency[0] } }));
       await store.dispatch(agencyActions.getAgency('1234'));
       expect(store.getActions()).toEqual(stateObj);
     });
 
-    it('Should call dispatch on getAgents', async () => {
-      const companyCode = 'HCI';
-      const state = 'FL';
+
+    it('Should call dispatch on getAgentsByAgencyCode', async () => {
       const agents = [{ agentCode: '1234' }];
 
       const stateObj = [{
@@ -131,20 +118,6 @@ describe('Test Agency Actions', () => {
       }];
 
       httpStub.onCall(0).returns(Promise.resolve({ data: { result: agents } }));
-      await store.dispatch(agencyActions.getAgents(companyCode, state));
-      expect(store.getActions()).toEqual(stateObj);
-    });
-
-
-    it('Should call dispatch on getAgentsByAgencyCode', async () => {
-      const agencyAgents = [{ agentCode: '1234' }];
-
-      const stateObj = [{
-        type: types.SET_AGENCY_AGENTS,
-        agencyAgents
-      }];
-
-      httpStub.onCall(0).returns(Promise.resolve({ data: { result: agencyAgents } }));
       await store.dispatch(agencyActions.getAgentsByAgencyCode('1234'));
       expect(store.getActions()).toEqual(stateObj);
     });

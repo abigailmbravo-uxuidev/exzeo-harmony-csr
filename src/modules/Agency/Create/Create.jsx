@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field, FieldArray, formValueSelector, FormSection } from 'redux-form';
-import { validation, Button, SelectTypeAhead, Input } from '@exzeo/core-ui';
+import { validation, Button, SelectTypeAhead } from '@exzeo/core-ui';
 import { Redirect } from 'react-router-dom';
 
-import { getAgency, updateAgency, createAgency, getListOfOrphanedAgents } from '../../../state/actions/agencyActions';
-import { getEditModalInitialValues, getOrphanedAgentsList } from '../../../state/selectors/agency.selector';
+import history from '../../../history';
+import { getAgency, updateAgency, createAgency } from '../../../state/actions/agencyActions';
+import { getOrphanedAgentsList } from '../../../state/selectors/agency.selector';
 import ExistingAgentModal from '../components/ExistingAgentModal';
 import Address from '../components/Address';
 import territoryManagers from '../components/territoryManagers';
 import License from '../components/License';
 import Agent from '../components/FormGroup/Agent';
 import Contact from '../components/FormGroup/Contact';
-
-import Details from './Details';
+import AgencyDetails from '../components/FormGroup/AgencyDetails';
 
 export class Create extends Component {
   state = {
@@ -33,6 +33,7 @@ export class Create extends Component {
     this.setState({ showAddExistingAgentModal: !this.state.showAddExistingAgentModal });
   }
 
+  // TODO : Move to utilities
   handleSameAsMailing = (value, previousValue, allValues) => {
     const { change } = this.props;
     const { mailingAddress } = allValues;
@@ -55,11 +56,14 @@ export class Create extends Component {
 
   handleResetForm = () => {
     this.props.reset();
+    history.push('/agency');
   };
 
+  // TODO : Move to utilities
   applyOrphanedAgent = (data) => {
-    const { change } = this.props;
-    const { selectedAgent } = data;
+    const { change, orphans } = this.props;
+    const { selectedAgentId } = data;
+    const selectedAgent = orphans.filter(a => a._id === selectedAgentId)[0];
     change('agentOfRecord.firstName', selectedAgent.firstName);
     change('agentOfRecord.lastName', selectedAgent.lastName);
     change('agentOfRecord.primaryPhoneNumber', selectedAgent.primaryPhoneNumber);
@@ -92,7 +96,7 @@ export class Create extends Component {
                 {agency && agency.agencyCode && agency.agencyCode !== 'new' && <Redirect replace to={`/agency/${agency.agencyCode}/0/overview`} />}
                 <h3>Details</h3>
                 <section className="agency-details">
-                  <Details />
+                  <AgencyDetails />
                   {/* web address validaiton */}
                 </section>
                 <h3>Address</h3>
@@ -121,12 +125,12 @@ export class Create extends Component {
                       <Address showCounty sectionDisabled={sameAsMailingValue} />
                     </FormSection>
                     <Field
-                      label="Terretory Managers"
+                      label="Territory Managers"
                       name="territoryManagerId"
                       dataTest="territoryManagerId"
                       component={SelectTypeAhead}
-                      valueKey="_id"
-                      labelKey="name"
+                      optionValue="_id"
+                      optionLabel="name"
                       answers={territoryManagers}
                       validate={validation.isRequired} />
                   </div>

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import cloneDeep from 'lodash/cloneDeep';
 import { validation } from '@exzeo/core-ui';
 import Button from '@exzeo/core-ui/lib/Button';
-import AgentsCard from './AgentsCard';
-import AgentDetailModal from './AgentModal';
+
+import AgentModal from '../components/AgentModal';
 import AddExistingAgentModal from '../components/ExistingAgentModal';
+
+import AgentsCard from './AgentsCard';
 import RemoveAgentModal from './RemoveAgentModal';
 
 
@@ -17,13 +17,57 @@ export class Agents extends Component {
     showAgentDetailNewModal: false,
     showRemoveAgentModal: false,
     showAgentOfRecordModal: false,
-    selectedAgent: null
+    selectedAgentCode: null
   };
+
+
+  onHandleEditAgent = async (data) => {
+    const {
+      agency, updateAgent
+    } = this.props;
+    await updateAgent(data, agency.agencyCode);
+    this.closeAgentDetailModal();
+  };
+
+  onHandleSaveAgent = async (data) => {
+    const {
+      agency, addAgent, branchCode
+    } = this.props;
+    data.agencies.push({ agencyCode: agency.agencyCode, branchCode });
+    await addAgent(data, agency.agencyCode);
+    this.closeAgentDetailModal();
+  };
+
+  handleRemoveAgent = async (data) => {
+    const { agency: { agencyCode }, updateAgent } = this.props;
+    data.agencies = data.agencies.filter(a => a.agencyCode !== agencyCode);
+    await updateAgent(data, agencyCode);
+    this.toggleRemoveAgentModal();
+  };
+
+  isInAgencyLicenseArray = () => {
+    return validation.isInArray(this.props.agencyLicenseArray);
+  };
+
+  toggleSwitchAgentOfRecord = (agentCode) => {
+    this.setState({
+      selectedAgentCode: this.state.showAgentOfRecordModal ? null : agentCode,
+      showAgentOfRecordModal: !this.state.showAgentOfRecordModal
+    });
+  }
+
+  handleSwitchAOR = async (data) => {
+    const { agency, updateAgency } = this.props;
+    const submitData = { ...agency };
+    submitData.agentOfRecord = data.selectedAgentCode;
+    await updateAgency(submitData, agency.agencyCode);
+    this.toggleSwitchAgentOfRecord();
+  }
 
   toggleRemoveAgentModal = (activeIndex) => {
     this.setState({
-      showRemoveAgentModal: !!activeIndex,
-      activeIndex: activeIndex || null
+      showRemoveAgentModal: !this.state.showRemoveAgentModal,
+      activeIndex
     });
   };
 
@@ -56,7 +100,7 @@ export class Agents extends Component {
           }
         },
         licenses: [{
-          state: '', license: '', licenseType: '', licenseEffectiveDate: ''
+          state: '', license: '', licenseType: '', licenseEffectiveDate: '', appointed: true
         }]
       }
     });
@@ -71,58 +115,16 @@ export class Agents extends Component {
     });
   };
 
+
   handleAddExistingAgent = async (data) => {
-    const { updateAgent, agency, branchCode } = this.props;
-    data.selectedAgent.agencies.push({ agencyCode: agency.agencyCode, branchCode });
-    await updateAgent(data.selectedAgent, agency.agencyCode);
+    const {
+      updateAgent, agency, branchCode, orphans
+    } = this.props;
+    const selectedAgent = orphans.filter(a => String(a.agentCode) === String(data.selectedAgentCode))[0];
+    selectedAgent.agencies.push({ agencyCode: agency.agencyCode, branchCode });
+    await updateAgent(selectedAgent, agency.agencyCode);
     this.toggleExistingAgentModal();
   };
-
-  onHandleEditAgent = async (data) => {
-    const {
-      agency, updateAgent
-    } = this.props;
-    await updateAgent(data, agency.agencyCode);
-    this.closeAgentDetailModal();
-  };
-
-  onHandleSaveAgent = async (data) => {
-    const {
-      agency, addAgent, branchCode
-    } = this.props;
-    data.agencies.push({ agencyCode: agency.agencyCode, branchCode });
-    data.licenses = [];
-    await addAgent(data, agency.agencyCode);
-    this.closeAgentDetailModal();
-  };
-
-  handleRemoveAgent = async (data) => {
-    const { agency: { agencyCode }, updateAgent } = this.props;
-    data.agencies = data.agencies.filter(a => a.agencyCode !== agencyCode);
-    await updateAgent(data, agencyCode);
-    this.toggleRemoveAgentModal();
-  };
-
-  isInAgencyLicenseArray = () => {
-    return validation.isInArray(this.props.agencyLicenseArray);
-  };
-
-  toggleSwitchAgentOfRecord = (agentIndex) => {
-    const agent = this.props.agents[agentIndex];
-
-    this.setState({
-      selectedAgent: this.state.showAgentOfRecordModal ? null : agent,
-      showAgentOfRecordModal: !this.state.showAgentOfRecordModal
-    });
-  }
-
-  handleSwitchAOR = async (data) => {
-    const { agency, updateAgency } = this.props;
-    const submitData = { ...agency };
-    submitData.agentOfRecord = data.selectedAgent.agentCode;
-    await updateAgency(submitData, agency.agencyCode);
-    this.toggleSwitchAgentOfRecord();
-  }
 
   render() {
     const {
@@ -165,14 +167,14 @@ export class Agents extends Component {
         </div>
 
         {this.state.showAgentDetailEditModal && this.state.agentDetailInitialValues &&
-        <AgentDetailModal
+        <AgentModal
           initialValues={this.state.agentDetailInitialValues}
           isEditing
           handleSaveAgent={this.onHandleEditAgent}
           closeModal={this.closeAgentDetailModal} />
         }
         {this.state.showAgentDetailNewModal && this.state.agentDetailInitialValues &&
-        <AgentDetailModal
+        <AgentModal
           initialValues={this.state.agentDetailInitialValues}
           handleSaveAgent={this.onHandleSaveAgent}
           closeModal={this.closeAgentDetailModal} />
@@ -187,7 +189,7 @@ export class Agents extends Component {
         {this.state.showAgentOfRecordModal &&
         <AddExistingAgentModal
           header="Agent Of Record"
-          initialValues={{ selectedAgent: this.state.selectedAgent._id }}
+          initialValues={{ selectedAgentCode: this.state.selectedAgentCode }}
           listOfAgents={this.props.agentsList}
           onToggleModal={this.toggleSwitchAgentOfRecord}
           handleSelection={this.handleSwitchAOR} />

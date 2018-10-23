@@ -1,16 +1,18 @@
 import React from 'react';
 
-import AgencyModal from '../AgencyModal';
-import AgencyAddressModal from '../AgencyAddressModal';
+import DetailView from '../components/DetailView';
+import ContactView from '../components/ContactView';
+import AddExistingAgentModal from '../components/ExistingAgentModal';
+import AddressView from '../components/AddressView';
 import ContactCard from '../components/ContactCard';
 import AgentCard from '../components/AgentCard';
-import AddExistingAgentModal from '../components/ExistingAgentModal';
-import AgencyContactModal from '../AgencyContactModal';
-import DetailView from '../DetailView';
-import ContactView from '../ContactView';
-import AddressView from '../AddressView';
-import AgentModal from '../AgentModal';
-import BranchModal from '../BranchModal';
+import AgentModal from '../components/AgentModal';
+
+import AgencyAddressModal from './AgencyAddressModal';
+import AgencyContactModal from './AgencyContactModal';
+import AgencyModal from './AgencyModal';
+import BranchModal from './BranchModal';
+
 
 export class Overview extends React.Component {
   state = {
@@ -53,10 +55,18 @@ export class Overview extends React.Component {
   handleSwitchAOR = async (data) => {
     const { agency, updateAgency } = this.props;
     const submitData = { ...agency };
-    submitData.agentOfRecord = data.selectedAgent.agentCode;
+    submitData.agentOfRecord = data.selectedAgentCode;
     await updateAgency(submitData);
     this.onHandleToggleSwitchAgentOfRecordModal(null)();
   }
+
+  onHandleEditAgent = async (data) => {
+    const {
+      agency, updateAgent
+    } = this.props;
+    await updateAgent(data, agency.agencyCode);
+    this.onHandleToggleEditAgentModal();
+  };
 
   render() {
     const {
@@ -106,7 +116,7 @@ export class Overview extends React.Component {
                 <ContactCard contact={agencyBranchData.contact} handleClick={this.onHandleToggleEditContactModal} />
               </section>
               <h3>Agent Of Record</h3>
-              <section name="agentOfRecord">
+              <section name="agentOfRecord" className="agency-aor">
                 {agentOfRecord && agentOfRecord.agentCode && <AgentCard agent={agentOfRecord} handleSecondaryClick={this.onHandleToggleSwitchAgentOfRecordModal} handlePrimaryClick={this.onHandleToggleEditAgentModal} />}
               </section>
             </div>
@@ -122,14 +132,14 @@ export class Overview extends React.Component {
           <AgencyContactModal agency={agency} branchCode={branchCode} header="Edit Officer" section="principal" initialValues={agencyBranchData} closeModal={this.onHandleToggleEditPrincipalModal} />
         }
         {showEditAgentModal &&
-        <AgentModal agencyCode={agency.agencyCode} initialValues={agentOfRecord} closeModal={this.onHandleToggleEditAgentModal} />
+        <AgentModal isEditing agencyCode={agency.agencyCode} initialValues={agentOfRecord} closeModal={this.onHandleToggleEditAgentModal} handleSaveAgent={this.onHandleEditAgent} />
         }
         {this.state.showSwitchAgentOfRecordModal &&
         <AddExistingAgentModal
           header="Agent Of Record"
           initialValues={{ selectedAgent: this.state.selectedAgent._id }}
           listOfAgents={agentsList}
-          onToggleModal={this.onHandleToggleSwitchAgentOfRecordModal}
+          onToggleModal={this.onHandleToggleSwitchAgentOfRecordModal(null)}
           handleSelection={this.handleSwitchAOR} />
         }
       </div>

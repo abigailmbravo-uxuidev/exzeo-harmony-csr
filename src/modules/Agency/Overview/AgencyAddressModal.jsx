@@ -1,26 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field, formValueSelector, FormSection } from 'redux-form';
-import { Input, validation, SelectTypeAhead } from '@exzeo/core-ui';
-import { updateAgency } from '../../state/actions/agencyActions';
-import { getEditModalInitialValues } from '../../state/selectors/agency.selector';
-import Address from './components/Address';
-import territoryManagers from './components/territoryManagers';
+import { validation, SelectTypeAhead } from '@exzeo/core-ui';
 
-const statusAnswers = [
-  { answer: 'Active', label: 'Active' },
-  { answer: 'InActive', label: 'InActive' }
-];
-
-const okToPayAnswers = [
-  { answer: false, label: 'No' },
-  { answer: true, label: 'Yes' }
-];
-
-const taxClassificationAnswers = [
-  { answer: 'LLC', label: 'LLC' },
-  { answer: 'Corporation', label: 'Corporation' }
-];
+import { updateAgency } from '../../../state/actions/agencyActions';
+import Address from '../components/Address';
+import territoryManagers from '../components/territoryManagers';
 
 export class AgencyAddressModal extends Component {
   saveAgency = async (data, dispatch, props) => {
@@ -30,18 +15,19 @@ export class AgencyAddressModal extends Component {
       selectedBranch.physicalAddress = data.physicalAddress;
       selectedBranch.mailingAddress = data.mailingAddress;
       selectedBranch.territoryManagerId = data.territoryManagerId;
+      agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
       props.updateAgency(agency);
     } else {
-      agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
       agency.physicalAddress = data.physicalAddress;
       agency.mailingAddress = data.mailingAddress;
       agency.territoryManagerId = data.territoryManagerId;
+      agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
       await props.updateAgency(agency);
     }
     props.closeModal();
   };
 
-  handleSameAsMailing = (value, previousValue, allValues) => {
+  onHandleSameAsMailing = (value, previousValue, allValues) => {
     const { change } = this.props;
     const { mailingAddress } = allValues;
     if (value) {
@@ -86,15 +72,16 @@ export class AgencyAddressModal extends Component {
                   <h4>Mailing Address</h4>
                   <FormSection name="mailingAddress">
                     <Address
+                      territoryManagers={territoryManagers}
                       sameAsMailingValue={sameAsMailingValue}
                       changeField={change}
-                      mailingAddress />
+                      section="mailingAddress" />
                   </FormSection>
                 </div>
                 <div className="agency-physical-address">
                   <h4>Physical Address
                     <Field
-                      normalize={this.handleSameAsMailing}
+                      normalize={this.onHandleSameAsMailing}
                       name="sameAsMailing"
                       dataTest="sameAsMailing"
                       id="sameAsMailing"
@@ -103,32 +90,24 @@ export class AgencyAddressModal extends Component {
                     <label htmlFor="sameAsMailing">Same as Mailing Address</label>
                   </h4>
                   <FormSection name="physicalAddress">
-                    <Address showCounty sectionDisabled={sameAsMailingValue} />
+                    <Address
+                      territoryManagers={territoryManagers}
+                      section="physicalAddress"
+                      showCounty
+                      changeField={change}
+                      sectionDisabled={sameAsMailingValue} />
                   </FormSection>
                   <Field
-                    label="Terretory Managers"
+                    label="Territory Managers"
                     name="territoryManagerId"
                     dataTest="territoryManagerId"
                     component={SelectTypeAhead}
-                    valueKey="_id"
-                    labelKey="name"
+                    optionValue="_id"
+                    optionLabel="name"
                     answers={territoryManagers}
                     validate={validation.isRequired} />
                 </div>
               </section>
-              {/* <section className="agency-csr">
-                <h4>CSR Contact Information</h4>
-                <CSRFields />
-              </section>
-              <section className="agency-contact">
-                <h4>Contact</h4>
-                <ContactFields />
-              </section>
-              <section className="agency-principal">
-                <h4>Principal</h4>
-                <PrincipalFields />
-              </section>
-              */}
             </div>
             <div className="card-footer">
               <div className="btn-footer">

@@ -1,18 +1,60 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Field } from 'redux-form';
-import { Input, validation } from '@exzeo/core-ui';
+import { Input, validation, SelectTypeAhead } from '@exzeo/core-ui';
+
+import { searchSettingsByCSPAndZip } from '../../../state/actions/zipCodeSettings.actions';
+import { getListOfZipCodes } from '../../../state/selectors/zipCodeSettings.selectors';
 
 class Address extends Component {
   normalizeSameAsMailing = (value) => {
-    const { changeField, mailingAddress, sameAsMailingValue } = this.props;
-    if (!mailingAddress || !sameAsMailingValue) return value;
+    const { changeField, section, sameAsMailingValue } = this.props;
+    if (section === 'physicalAddress' || !sameAsMailingValue) return value;
     changeField('sameAsMailing', false);
     return value;
   };
 
+  filterTerritoryManager = (state, county) => {
+    const { territoryManagers } = this.props;
+    const selectedTerritoryManager = territoryManagers
+      .find((tm) => {
+        const { states } = tm;
+        if (states && states.some((s) => {
+          const { counties } = s;
+          return s.state.includes(state) &&
+          counties && counties.some((c) => {
+            return c.county.includes(county);
+          });
+        })) {
+          return tm;
+        }
+      });
+
+    return selectedTerritoryManager;
+  }
+
+  normalizeZipCode = async (value, pv, av) => {
+    const { section } = this.props;
+    const zipCodes = await this.props.searchSettingsByCSPAndZipAction(value, av[section].state);
+    if (zipCodes.length === 1) {
+      const selectedZip = zipCodes[0];
+      this.props.changeField(`${section}.county`, selectedZip.county);
+      this.props.changeField(`${section}.zip`, selectedZip.zip);
+      this.props.changeField(`${section}.state`, selectedZip.state);
+      const tm = this.filterTerritoryManager(selectedZip.state, selectedZip.county);
+      if (tm) {
+        this.props.changeField('territoryManagerId', tm._id);
+      }
+    } else {
+      this.props.changeField(`${section}.county`, '');
+    }
+    this.normalizeSameAsMailing(value);
+    return value;
+  }
+
   render() {
     const {
-      showCounty, sectionDisabled
+      showCounty, sectionDisabled, listOfZipCodes
     } = this.props;
     return (
       <React.Fragment>
@@ -55,11 +97,14 @@ class Address extends Component {
           <Field
             name="zip"
             label="Zip Code"
-            component={Input}
+            component={SelectTypeAhead}
             styleName="zip"
             dataTest="zip"
+            optionValue="answer"
+            optionLabel="label"
             validate={validation.isRequired}
-            normalize={this.normalizeSameAsMailing}
+            normalize={this.normalizeZipCode}
+            answers={listOfZipCodes}
             disabled={sectionDisabled} />
         </div>
         {showCounty &&
@@ -78,7 +123,14 @@ class Address extends Component {
 
 Address.defaultProps = {
   showCounty: false,
-  sectionDisabled: false
+  sectionDisabled: false,
+  listOfZipCodes: []
 };
 
-export default Address;
+
+const mapStateToProps = state => ({
+  listOfZipCodes: getListOfZipCodes(state)
+});
+
+export default connect(mapStateToProps, { searchSettingsByCSPAndZipAction: searchSettingsByCSPAndZip })(Address);
+

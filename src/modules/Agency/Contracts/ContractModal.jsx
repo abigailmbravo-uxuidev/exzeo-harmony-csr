@@ -38,7 +38,7 @@ export const ContractModal = (props) => {
     handleSubmit,
     initialValues
   } = props;
-console.log(props)
+
   const actionType = initialValues ? 'Edit' : "Add";
   return (
     <div className="modal contract-crud">

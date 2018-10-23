@@ -2,8 +2,15 @@ import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getAgency, getAgentList, getAgentsByAgencyCode, getListOfOrphanedAgents } from '../../state/actions/agencyActions';
+
+import { getAgency,
+  getAgentList,
+  getAgentsByAgencyCode,
+  getListOfOrphanedAgents
+} from '../../state/actions/agencyActions';
+import { searchSettingsByCSPAndZip } from '../../state/actions/zipCodeSettings.actions';
 import { getTerritoryManagers } from '../../state/actions/territoryManagers.actions';
+
 import AgencyHeader from './AgencyHeader';
 import AgencySideNav from './AgencySideNav';
 import AgencyDetailHeader from './DetailHeader';
@@ -13,8 +20,13 @@ import Agents from './Agents';
 import Overview from './Overview';
 import CreateBranch from './CreateBranch';
 
-const CreateRender = props => <Create auth={props.auth} {...props} />;
-const ContractsRender = props => <Contracts auth={props.auth} {...props} />;
+export const CreateRender = props => <Create auth={props.auth} {...props} />;
+export const ContractsRender = props => <Contracts auth={props.auth} {...props} />;
+
+export const CreateBranchRender = branchCode => props =>
+  <CreateBranch branchCode={branchCode} auth={props.auth} {...props} />;
+export const OverviewRender = branchCode => props => <Overview branchCode={branchCode} auth={props.auth} {...props} />;
+export const AgentsRender = branchCode => props => <Agents branchCode={branchCode} auth={props.auth} {...props} />;
 
 export class Agency extends Component {
   componentDidMount() {
@@ -24,14 +36,12 @@ export class Agency extends Component {
       this.props.getAgentsByAgencyCode(agencyCode);
     }
     this.props.getListOfOrphanedAgents();
-    // this.props.getTerritoryManagers('FL');
-
-    // this.props.getAgentList('TTIC', 'FL');
+    this.props.searchSettingsByCSPAndZip('', 'FL');
   }
 
   render() {
     const {
-      agency, location, match: { params: { agencyCode, branchCode }, url }, match
+      agency, location, match: { params: { agencyCode, branchCode } }, match
     } = this.props;
 
     return (
@@ -45,10 +55,10 @@ export class Agency extends Component {
           </aside>
           <div className="content-wrapper">
             <Route exact path="/agency/new/0" render={CreateRender} />
-            <Route exact path={`/agency/${agencyCode}/${branchCode}/overview`} render={props => <Overview branchCode={branchCode} auth={props.auth} {...props} />} />
+            <Route exact path={`/agency/${agencyCode}/${branchCode}/overview`} render={OverviewRender(branchCode)} />
             <Route exact path={`/agency/${agencyCode}/${branchCode}/contracts`} render={ContractsRender} />
-            <Route exact path={`/agency/${agencyCode}/${branchCode}/agents`} render={props => <Agents branchCode={branchCode} auth={props.auth} {...props} />} />
-            <Route exact path={`/agency/${agencyCode}/0/newBranch`} render={props => <CreateBranch branchCode={branchCode} auth={props.auth} {...props} />} />
+            <Route exact path={`/agency/${agencyCode}/${branchCode}/agents`} render={AgentsRender(branchCode)} />
+            <Route exact path={`/agency/${agencyCode}/0/new`} render={CreateBranchRender(branchCode)} />
           </div>
         </main>
       </div>
@@ -61,6 +71,11 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  getAgency, getAgentList, getAgentsByAgencyCode, getListOfOrphanedAgents, getTerritoryManagers
+  getAgency,
+  getAgentList,
+  getAgentsByAgencyCode,
+  getListOfOrphanedAgents,
+  getTerritoryManagers,
+  searchSettingsByCSPAndZip
 })(Agency);
 

@@ -1,5 +1,6 @@
-import { getEditModalInitialValues, getListOfAgents, getAgencyLicenseArray } from './agency.selector';
 import mockAgency from '../../modules/Agency/mockAgency';
+
+import { getEditModalInitialValues, getAgentsList, getAgencyLicenseArray } from './agency.selector';
 
 describe('Testing getEditModalInitialValues', () => {
   it('should test getEditModalInitialValues', () => {
@@ -8,7 +9,7 @@ describe('Testing getEditModalInitialValues', () => {
         agency: mockAgency
       }
     };
-    const result = getEditModalInitialValues(state);
+    const result = getEditModalInitialValues(state, 1);
     expect(result.sameAsMailing).toEqual(true);
   });
 
@@ -27,17 +28,15 @@ describe('Testing getListOfAgents', () => {
   it('should test getListOfAgents', () => {
     const state = {
       agencyState: {
-        agents: [
-          {
-            firstName: 'TestFirst',
-            lastName: 'TestLast',
-            agentCode: 234
-          }
-        ]
+        agents: [{
+          agentCode: 234, displayText: 'TestFirst TestLast', firstName: 'TestFirst', lastName: 'TestLast'
+        }]
       }
     };
-    const result = getListOfAgents(state);
-    const res = [{ answer: 234, label: 'TestFirst TestLast' }];
+    const result = getAgentsList(state);
+    const res = [{
+      agentCode: 234, displayText: 'TestFirst TestLast', firstName: 'TestFirst', lastName: 'TestLast'
+    }];
     expect(result).toEqual(res);
   });
 
@@ -47,27 +46,8 @@ describe('Testing getListOfAgents', () => {
         agents: null
       }
     };
-    const result = getListOfAgents(state);
+    const result = getAgentsList(state);
     expect(result).toEqual([]);
-  });
-});
-
-describe('Testing agencyLicenseArray', () => {
-  it('should test agencyLicenseArray', () => {
-    const state = {
-      agencyState: {
-        agency: {
-          license: [{
-            licenseNumber: 60562,
-            firstName: 'AGNES',
-            lastName: 'BROCKUS'
-          }]
-        }
-      }
-    };
-    const result = getAgencyLicenseArray(state);
-    const res = [60562];
-    expect(result).toEqual(res);
   });
 });
 

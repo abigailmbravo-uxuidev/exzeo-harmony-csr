@@ -6,7 +6,7 @@ import { Button } from '@exzeo/core-ui';
 import License from '../components/License';
 import Address from '../components/Address';
 
-import Details from './Details';
+import AgentDetails from './FormGroup/AgentDetails';
 
 const FORM_NAME = 'AgentDetails';
 
@@ -46,7 +46,7 @@ export class AgentModal extends Component {
             <div className="card-block">
               <section className="agent-details">
                 <h3>Details</h3>
-                <Details isEditing={isEditing} />
+                <AgentDetails isEditing={isEditing} />
               </section>
 
               <section className="agent-mailing">

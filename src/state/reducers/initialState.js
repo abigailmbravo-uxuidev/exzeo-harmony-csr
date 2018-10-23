@@ -46,5 +46,10 @@ export default {
   service: {
     cancelOptions: []
   },
-  territoryManagers: []
+  territoryManagerState: {
+    territoryManagers: []
+  },
+  zipCodeSettingsState: {
+    zipCodeSettings: []
+  }
 };

@@ -1,34 +1,48 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 import { reduxForm, Field } from 'redux-form';
 import { Select } from '@exzeo/core-ui';
 import { connect } from 'react-redux';
 
 import { createBranch } from '../../state/actions/agencyActions';
 import { getBranchesList, getBranchInitialValues } from '../../state/selectors/agency.selector';
-import history from '../../history';
 
-import BranchModal from './BranchModal';
+
+const setLink = (key, agencyCode, branchCode) => {
+  if (agencyCode === 'new') return '#';
+  switch (key) {
+    case 'overview':
+      return `/agency/${agencyCode}/${branchCode}/overview`;
+    case 'agents':
+      return `/agency/${agencyCode}/${branchCode}/agents`;
+    case 'contracts':
+      return `/agency/${agencyCode}/${branchCode}/contracts`;
+    default:
+      return '#';
+  }
+};
+
+const setDisabled = agencyCode => (agencyCode === 'new' ? 'disabled' : '');
 
 const csrLinks = (agencyCode, branchCode) => [{
   key: 'overview',
-  link: `/agency/${agencyCode}/${branchCode}/overview`,
+  link: setLink('overview', agencyCode, branchCode),
   label: 'Overview',
-  styleName: 'overview',
+  styleName: `overview ${setDisabled(agencyCode)}`,
   exact: true
 },
 {
   key: 'agents',
-  link: `/agency/${agencyCode}/${branchCode}/agents`,
+  link: setLink('agents', agencyCode, branchCode),
   label: 'Agents',
-  styleName: 'agents',
+  styleName: `agents ${setDisabled(agencyCode)}`,
   exact: true
 },
 {
   key: 'contracts',
-  link: `/agency/${agencyCode}/${branchCode}/contracts`,
+  link: setLink('contracts', agencyCode, branchCode),
   label: 'Contracts',
-  styleName: 'contracts',
+  styleName: `contracts ${setDisabled(agencyCode)}`,
   exact: true
 },
 {
@@ -46,29 +60,30 @@ const csrLinks = (agencyCode, branchCode) => [{
 }];
 
 export class SideNav extends React.Component {
-  // onHandleNewBranch = async (data, dispatch, props) => {
-  //   const branch = await this.props.createBranch(data, this.props.agencyCode);
-  //   history.push(`/agency/${props.agencyCode}/branch/${branch.branchCode}`);
-  //   this.handleShowBranchModal();
-  // };
+  state = {
+    branchSelectionRoute: null
+  }
 
-  handleBranchSelection =(value) => {
+  handleBranchSelection =(event) => {
+    const { target: { value } } = event;
     const { agencyCode } = this.props;
     if (Number(value) > 0) {
-      history.push(`/agency/${agencyCode}/${value}/overview`);
+      this.setState({ branchSelectionRoute: `/agency/${agencyCode}/${value}/overview` });
     } else {
-      history.push(`/agency/${agencyCode}/0/overview`);
+      this.setState({ branchSelectionRoute: `/agency/${agencyCode}/0/overview` });
     }
     return value;
   }
 
   render() {
     const {
-      agencyCode, branchCode, branchesList
+      agencyCode, branchCode, branchesList, match: { url }
     } = this.props;
 
+    const { branchSelectionRoute } = this.state;
     return (
       <form>
+        {branchSelectionRoute && !branchSelectionRoute.includes(url) && <Redirect replace to={branchSelectionRoute} />}
         <nav className="site-nav">
           <ul>
             {agencyCode !== 'new' &&
@@ -81,13 +96,13 @@ export class SideNav extends React.Component {
                 styleName="flex-child"
                 answers={branchesList}
                 showPlaceholder={false}
-                normalize={(v, pv, av) => this.handleBranchSelection(v)} />
+                onChange={event => this.handleBranchSelection(event)} />
             </li>
             }
             {String(branchCode) === '0' && agencyCode !== 'new' &&
             <li key="newBranch" >
               <NavLink
-                to={`/agency/${agencyCode}/${branchCode}/newBranch`}
+                to={`/agency/${agencyCode}/${branchCode}/new`}
                 tabIndex="0"
                 className="btn btn-primary btn-block btn-small">
                 <i className="fa fa-plus" />Branch

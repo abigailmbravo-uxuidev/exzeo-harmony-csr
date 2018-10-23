@@ -69,14 +69,14 @@ const BranchDetails = (agencyCodeDisabled) => {
         name="secondaryPhoneNumber"
         dataTest="secondaryPhoneNumber"
         component={Phone}
-        validate={[validation.isRequired, validation.isPhone]} />
+        validate={[validation.isPhone]} />
       <Field
         label="Fax"
         styleName="faxNumber"
         name="faxNumber"
         dataTest="faxNumber"
         component={Phone}
-        validate={[validation.isRequired, validation.isPhone]} />
+        validate={[validation.isPhone]} />
       <Field
         label="CSR Contact Email Address"
         styleName="customerServiceEmailAddress"

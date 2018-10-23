@@ -13,6 +13,7 @@ import questions from './questions.reducer';
 import quoteState from './quote.reducer';
 import search from './search.reducer';
 import agencyState from './agencyReducer';
+import zipCodeSettingsState from './zipCodeSettings.reducer';
 
 const rootReducer = combineReducers({
   form: formReducer,
@@ -26,7 +27,8 @@ const rootReducer = combineReducers({
   error,
   quoteState,
   search,
-  agencyState
+  agencyState,
+  zipCodeSettingsState
 });
 
 export default rootReducer;

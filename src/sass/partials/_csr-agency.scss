@@ -237,35 +237,19 @@
                 }
 
                 .primaryPhoneNumber {
-                  grid-column: span 4;
-
-                  &.read {
-                    grid-column: span 2;
-                  }
+                  grid-column: span 2;
                 }
 
                 .secondaryPhoneNumber {
-                  grid-column: span 4;
-
-                  &.read {
-                    grid-column: span 2;
-                  }
+                  grid-column: span 2;
                 }
 
                 .faxNumber {
-                  grid-column: span 4;
-
-                  &.read {
-                    grid-column: span 2;
-                  }
+                  grid-column: span 2;
                 }
 
                 .customerServiceEmailAddress {
-                  grid-column: span 12;
-
-                  &.read {
-                    grid-column: span 6;
-                  }
+                  grid-column: span 6;
                 }
               }
 
@@ -283,31 +267,12 @@
                 .agency-physical-address,
                 .mailing-address,
                 .physical-address {
-                  display: grid;
                   flex-grow: 0;
                   flex-shrink: 0;
                   width: calc(50% - .5rem);
                   margin-bottom: $padding*2;
-                  grid-template-columns: repeat(12, [col-start] 1fr);
-                  grid-gap: $padding*2;
-                  grid-auto-rows: min-content;
-
-                  .form-group {
-                    margin: 0;
-                  }
-
-                  .address,
-                  .address1,
-                  .address2,
-                  .city-state-zip,
-                  .county-territory-manager,
-                  h3,
-                  h4 {
-                    grid-column: span 12;
-                  }
 
                   h4 {
-                    margin: 0;
                     font-weight: $font-weight-normal;
 
                     input[type="checkbox"] {
@@ -319,32 +284,26 @@
                     }
                   }
 
-                  .taxClassification,
-                  .taxId {
-                    grid-column: span 6;
-                  }
-
-                  .city {
-                    grid-column: span 7;
-                  }
-
-                  .state {
-                    grid-column: span 2;
-                  }
-
-                  .zip {
-                    grid-column: span 3;
-                  }
-
                   .city-state-zip,
                   .county-territory-manager {
                     display: flex;
 
                     > div {
-                      margin-right: 3rem;
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      margin-right: $padding;
+
+                      &.city {
+                        flex-grow: 1;
+                        flex-shrink: 1;
+                      }
+
+                      &.state {
+                        width: 4rem;
+                      }
 
                       &.zip {
-                        min-width: 4rem;
+                        width: 8rem;
                       }
 
                       &.territoryManagerId {
@@ -417,8 +376,8 @@
                   flex-grow: 1;
                   flex-shrink: 1;
                   max-width: 60%;
-                  margin-bottom: $padding*2;
                   margin-right: $padding;
+                  margin-bottom: $padding*2;
 
                   .agent-id,
                   .agent-phone {
@@ -522,6 +481,16 @@
                   margin-left: $padding;
                   padding-left: $padding*2;
                   border-left: 1px dotted $warm-gray-03;
+                }
+
+                .card {
+                  width: 100%;
+
+                  .contact-details {
+                    .card-name {
+                      flex-direction: column;
+                    }
+                  }
                 }
               }
 
@@ -967,6 +936,44 @@
           }
         }
 
+        .route-content-wrapper {
+          &.new-branch {
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            padding-left: 12rem;
+            background: rgba($warm-gray-03, .75);
+
+            &:before {
+              position: absolute;
+              z-index: -1;
+              top: 5.125rem;
+              left: 1rem;
+              display: flex;
+              align-items: center;
+              width: 11rem;
+              height: 47px;
+              padding-left: $padding*2;
+              content: 'New Branch';
+              color: $warm-gray-12;
+              border-left: 0.25rem solid $bright-blue-darken-04;
+              background-color: $white;
+              box-shadow: $card-box-shadow;
+            }
+
+            .route-content {
+              background: $white;
+            }
+
+            .basic-footer {
+              background: $white;
+            }
+          }
+        }
+
         .modal {
           &.edit-agent,
           &.edit-contact {
@@ -1173,11 +1180,52 @@
           .branchName {
             grid-column: span 6;
           }
+
+          hr {
+            width: 100%;
+            border-top: 1px dashed mix($bright-blue-darken-02, $green, 80%);
+            border-bottom-width: 0;
+            background: $white;
+            grid-column: span 12;
+          }
+
+          .primaryPhoneNumber {
+            grid-column: span 2;
+          }
+
+          .secondaryPhoneNumber {
+            grid-column: span 2;
+          }
+
+          .faxNumber {
+            grid-column: span 2;
+          }
+
+          .customerServiceEmailAddress {
+            grid-column: span 6;
+          }
+
+          .agency-contact-details {
+            display: flex;
+            grid-column: span 12;
+
+            > div {
+              flex-grow: 0;
+              flex-shrink: 0;
+              width: 9rem;
+              margin-right: $padding*2;
+
+              &:last-child {
+                flex-grow: 1;
+                flex-shrink: 1;
+                margin-right: 0;
+              }
+            }
+          }
         }
 
         .agency-address {
           display: flex;
-          flex-wrap: wrap;
           width: 100%;
 
           > h4 {
@@ -1186,53 +1234,23 @@
 
           .agency-mailing-address,
           .agency-physical-address {
-            display: grid;
             flex-grow: 0;
             flex-shrink: 0;
             width: calc(50% - .5rem);
-            grid-template-columns: repeat(12, [col-start] 1fr);
-            grid-gap: $padding*2;
-            grid-auto-rows: min-content;
-
-            .form-group {
-              margin: 0;
-            }
 
             .address1,
             .address2,
             h3,
             h4 {
-              grid-column: span 12;
+              width: 100%;
             }
 
             h4 {
-              margin: 0;
               font-weight: $font-weight-normal;
 
               input[type="checkbox"] {
                 margin-right: $padding;
               }
-
-              label {
-                margin-bottom: 0;
-              }
-            }
-
-            .taxClassification,
-            .taxId {
-              grid-column: span 6;
-            }
-
-            .city {
-              grid-column: span 7;
-            }
-
-            .state {
-              grid-column: span 2;
-            }
-
-            .zip {
-              grid-column: span 3;
             }
 
             .city-state-zip,
@@ -1240,21 +1258,27 @@
               display: flex;
 
               > div {
+                flex-grow: 0;
+                flex-shrink: 0;
                 margin-right: $padding*2;
 
+                &.city {
+                  flex-grow: 1;
+                  flex-shrink: 1;
+                }
+
+                &.state {
+                  width: 4rem;
+                }
+
                 &.zip {
-                  min-width: 4rem;
+                  width: 8rem;
                 }
 
                 &:last-child {
-                  padding-right: 0;
+                  margin-right: 0;
                 }
               }
-            }
-
-            .county,
-            .territoryManagerId {
-              grid-column: span 6;
             }
           }
 
@@ -1316,15 +1340,40 @@
             }
 
             &.agent-mailing {
-             max-width: 60%;
               flex-grow: 1;
               flex-shrink: 1;
+              max-width: 60%;
               margin-right: $padding;
+
+              .city-state-zip {
+                display: flex;
+
+                > div {
+                  margin-right: $padding;
+
+                  &.city {
+                    flex-grow: 1;
+                    flex-shrink: 1;
+                  }
+
+                  &.state {
+                    width: 4rem;
+                  }
+
+                  &.zip {
+                    width: 8rem;
+                  }
+
+                  &:last-child {
+                    margin-right: 0;
+                  }
+                }
+              }
             }
 
             &.agent-license {
-                flex-grow: 1;
-                flex-shrink: 1;
+              flex-grow: 1;
+              flex-shrink: 1;
               max-width: 40%;
               margin-left: $padding;
               padding-left: $padding*2;
