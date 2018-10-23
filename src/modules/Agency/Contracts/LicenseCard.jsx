@@ -13,15 +13,15 @@ export const LicenseCard = ({ license, editLicense }) => (
           <strong>{license.state} - {license.licenseNumber}</strong> |&nbsp;
           <span>{moment(license.licenseEffectiveDate).format('MM/DD/YYYY')}</span>
         </h4>
-        <div className="license-actions">
-          <button
-            className="btn btn-link btn-sm"
-            onClick={editLicense}
-          >
-          <i className="fa fa-pencil-square" />Edit
-          </button>
-        </div>
       </div>
+    </div>
+    <div className="license-actions">
+      <button
+        className="btn btn-link btn-sm"
+        onClick={editLicense}
+      >
+      <i className="fa fa-pencil-square" />Edit
+      </button>
     </div>
   </div>);
 

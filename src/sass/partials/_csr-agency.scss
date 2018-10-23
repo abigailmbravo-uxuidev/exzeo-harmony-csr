@@ -507,9 +507,11 @@
               &.agency,
               &.agent,
               &.contact,
-              &.contract {
+              &.contract,
+              &.license {
                 .contact-title,
-                .contract-title {
+                .contract-title,
+                .license-title {
                   display: flex;
                   flex-direction: column;
                   flex-grow: 0;
@@ -761,26 +763,30 @@
                 }
               }
 
-              .contract-details {
+              .contract-details,
+              .license-details {
                 display: flex;
                 flex-direction: column;
+                justify-content: center;
                 flex-grow: 1;
                 flex-shrink: 1;
                 margin-left: $padding*2;
 
-                .contract-header {
+                .contract-header,
+                .license-header {
                   display: flex;
                   justify-content: space-between;
                   width: 100%;
 
-                  .contract-csp {
+                  .contract-csp,
+                  .license-csp {
                     font-weight: $font-weight-normal;
                   }
                 }
 
                 .contract-info {
                   display: flex;
-                  margin-bottom: $padding;
+                  margin-bottom: 0;
 
                   .additional-contract-info {
                     display: flex;
@@ -883,7 +889,8 @@
               }
 
               .contact-actions,
-              .contract-actions {
+              .contract-actions,
+              .license-actions {
                 display: flex;
                 align-items: center;
                 flex-grow: 0;
