@@ -12,7 +12,7 @@ describe('Testing Agents component', () => {
       updateAgency() {},
       updateAgent() {},
       addAgent() {},
-      getAgency: x => x,
+      getAgency() {},
       agents: [{ agentCode: '1234', agencies: [] }]
     };
     const wrapper = shallow(<Agents {...props} agency={mockAgency} />);

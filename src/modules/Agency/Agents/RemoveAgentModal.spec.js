@@ -13,7 +13,7 @@ describe('Testing RemoveAgentModal component', () => {
       handleConfirm() {},
       listOfAgents: [],
       initialValues: {},
-      toggleModal: () => x => x,
+      toggleModal() {},
       handleCancel() {}
     };
     const wrapper = shallow(<RemoveAgentModal {...props} />);

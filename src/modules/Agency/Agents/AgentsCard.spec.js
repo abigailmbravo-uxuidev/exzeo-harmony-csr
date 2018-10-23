@@ -31,7 +31,7 @@ describe('Testing AgentsCard component', () => {
 
   it('should render not AOR', () => {
     const props = {
-      getAgency: x => x,
+      getAgency() {},
       handleSwitchAOR() {},
       handleEditAgent() {},
       handleRemoveAgent() {}
