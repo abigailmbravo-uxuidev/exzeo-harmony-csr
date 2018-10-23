@@ -1111,11 +1111,15 @@
             .contract-details {
                 flex-grow: 1;
                 flex-shrink: 1;
+                margin-right: $padding;
+                padding-right: $padding*2;
+                border-right: 1px dotted $warm-gray-03;
             }
             .contract-csp {
                 flex-grow: 0;
                 flex-shrink: 0;
                 width: 20rem;
+                margin-left: $padding;
                 .csp-list {
                     .contract-agent-list {
                         margin: 0;
@@ -1123,6 +1127,53 @@
                         list-style: none;
                         li {
                             display: flex;
+                            align-items: center;
+
+                            > div {
+                                margin-right: $padding;
+                                flex-grow: 1;
+                                flex-shrink: 1;
+
+                                &.state {
+                                    flex-grow: 0;
+                                    flex-shrink: 0;
+                                    width: 6rem;
+                                }
+                            }
+
+                            i {
+                                    margin-top: .75rem;
+                                    color: $bright-blue;
+                                    @include transition(all .2s ease-in-out);
+
+                                    &:hover {
+                                        color: $bright-blue-darken-04;
+                                        cursor: pointer;
+                                    }
+
+                                    &.fa-times-circle {
+                                        color: $red;
+
+                                        &:hover {
+                                            color: $red-darken-02;
+                                        }
+                                    }
+                            }
+                        }
+                    }
+                    .add-product {
+                        display: flex;
+                        align-items: center;
+
+                        hr {
+                            flex-grow: 1;
+                            flex-shrink: 1;
+                            border-width: 0;
+                            border-top: 1px solid $warm-gray-04;
+                        }
+
+                        .btn {
+                            margin: 0 $padding;
                         }
                     }
                 }
