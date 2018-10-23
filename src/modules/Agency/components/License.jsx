@@ -75,6 +75,8 @@ const License = ({ licenseValue, fields, isAgency }) => {
 
 License.propTypes = {};
 
-License.defaultProps = {};
+License.defaultProps = {
+  fields: []
+};
 
 export default License;
