@@ -11,5 +11,8 @@ describe('Testing SideNav component', () => {
     };
     const wrapper = shallow(<SideNav {...props} agency={mockAgency} />);
     expect(wrapper).toBeTruthy();
+    const wi = wrapper.instance();
+    wi.handleBranchSelection({ target: { value: 0 } });
+    wi.handleBranchSelection({ target: { value: 1 } });
   });
 });

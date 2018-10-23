@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+
 import CheckBoxGroup from './CheckBoxGroup';
 
 describe('Test the Input Component', () => {

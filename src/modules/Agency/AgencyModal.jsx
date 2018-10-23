@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, Field, formValueSelector } from 'redux-form';
+import { reduxForm, Field } from 'redux-form';
 import { Select, Radio, Input, Integer, validation, Phone } from '@exzeo/core-ui';
+
 import { updateAgency } from '../../state/actions/agencyActions';
-import { getEditModalInitialValues } from '../../state/selectors/agency.selector';
 
 const statusAnswers = [
   { answer: 'Active', label: 'Active' },
@@ -23,8 +23,8 @@ const taxClassificationAnswers = [
 export class AgencyModal extends Component {
   saveAgency = async (data, dispatch, props) => {
     data.branches = data.branches.filter(b => String(b.branchCode) !== '0');
-    await props.updateAgency(data);
-    props.closeModal();
+    await this.props.updateAgency(data);
+    this.props.closeModal();
   };
 
   render() {
