@@ -37,10 +37,10 @@ export class AdditionalInterestModal extends React.Component {
     this.modalStyle = { flexDirection: 'row' };
   }
 
-  setTopValues = (value, answers) => {
+  setTopValues = (value, answers = []) => {
     const { change } = this.props;
-    const option = answers.find(o => o.id === value);
     if (value) {
+      const option = answers.find(o => o.id === value);
       change('name1', option.AIName1);
       change('name2', option.AIName2);
       change('address1', option.AIAddress1);
