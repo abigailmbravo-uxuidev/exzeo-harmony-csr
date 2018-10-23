@@ -2,7 +2,7 @@ import React from 'react';
 import configureStore from 'redux-mock-store';
 import { shallow } from 'enzyme';
 import moment from 'moment-timezone';
-import GenerateDocsForm  from './GenerateDocsForm';
+import GenerateDocsForm from './GenerateDocsForm';
 
 describe('Testing GenerateDocsForm component', () => {
   const middlewares = [];
@@ -19,7 +19,7 @@ describe('Testing GenerateDocsForm component', () => {
         userProfile: {
           profile: {
             given_name: 'Test',
-            family_name: "Test"
+            family_name: 'Test'
           }
         }
       },
@@ -38,12 +38,12 @@ describe('Testing GenerateDocsForm component', () => {
           }
         }
       }
-    }
+    };
 
     props = {
       policyNumber: '123',
       errorHandler: jest.fn(),
-      startWorkflow: jest.fn(() => Promise.resolve(result)),
+      startWorkflow: jest.fn(() => Promise.resolve(result.result)),
       updateNotes: jest.fn()
     };
 
@@ -57,10 +57,10 @@ describe('Testing GenerateDocsForm component', () => {
   });
 
   it('should test generateDoc', () => {
-    const data =  { documentType: 'policyInvoice', effectiveDate: null };
+    const data = { documentType: 'policyInvoice', effectiveDate: null };
     return instance.generateDoc(data, store.dispatch, instance.props)
       .then(() => {
-        expect(instance.props.startWorkflow).toBeCalledWith('policyInvoiceGenerator', {documentNumber: '123'}, false);
+        expect(instance.props.startWorkflow).toBeCalledWith('policyInvoiceGenerator', { documentNumber: '123' }, false);
         expect(instance.props.updateNotes).not.toHaveBeenCalled();
       });
 

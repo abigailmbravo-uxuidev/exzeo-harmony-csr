@@ -11,6 +11,9 @@ module.exports = function (wallaby) {
     path.join(__dirname, 'node_modules/react-scripts/node_modules');
 
   process.env.REACT_APP_REQUEST_SIZE = '50';
+  process.env.REACT_APP_AUTH0_DOMAIN = 'test';
+  process.env.REACT_APP_AUTH0_CLIENT_ID = 'test';
+  process.env.REACT_APP_AUTH0_PRIMARY_URL = 'test.test';
 
   require('module').Module._initPaths();
 
