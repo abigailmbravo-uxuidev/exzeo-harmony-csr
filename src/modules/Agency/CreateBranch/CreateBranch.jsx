@@ -83,7 +83,7 @@ export class CreateBranch extends Component {
     } = this.props;
 
     return (
-      <div className="route-content-wrapper">
+      <div className="route-content-wrapper new-branch">
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
