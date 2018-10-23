@@ -1,8 +1,10 @@
 import { connect } from 'react-redux';
-import 'react-tagsinput/react-tagsinput.css';
-import Agents from './Agents';
+import 'react-tagsinput/react-tagsinput.css'; // eslint-disable-line
+
 import { updateAgent, addAgent, updateAgency, applyLicenseToAgency } from '../../../state/actions/agencyActions';
 import { getOrphanedAgentsList, getAgentsList } from '../../../state/selectors/agency.selector';
+
+import Agents from './Agents';
 
 const mapStateToProps = state => ({
   agency: state.agencyState.agency,

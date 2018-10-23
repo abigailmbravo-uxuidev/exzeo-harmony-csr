@@ -1,7 +1,6 @@
 import React from 'react';
 import { Field } from 'redux-form';
-import { Input, Phone } from '@exzeo/core-ui/lib/Input';
-import { validation } from '@exzeo/core-ui/lib/InputLifecycle';
+import { Input, Phone, validation } from '@exzeo/core-ui';
 
 export const CSRFields = () => (
   <div className="flex-form">
