@@ -7,7 +7,14 @@ import { Agents } from './Agents';
 
 describe('Testing Agents component', () => {
   it('should render', () => {
-    const props = { getAgency: x => x, agents: [{ agentCode: '1234' }] };
+    const props = {
+      orphans: [{ agentCode: '555', agencies: [] }],
+      updateAgency() {},
+      updateAgent() {},
+      addAgent() {},
+      getAgency: x => x,
+      agents: [{ agentCode: '1234', agencies: [] }]
+    };
     const wrapper = shallow(<Agents {...props} agency={mockAgency} />);
     expect(wrapper.exists()).toBeTruthy();
 
@@ -17,5 +24,12 @@ describe('Testing Agents component', () => {
     wi.openAgentDetailNewModal();
     wi.openAgentDetailEditModal(0);
     wi.toggleExistingAgentModal();
+    wi.onHandleEditAgent(props.agents[0]);
+    wi.onHandleSaveAgent(props.agents[0]);
+    wi.handleRemoveAgent(props.agents[0]);
+    wi.isInAgencyLicenseArray();
+    wi.toggleSwitchAgentOfRecord('1234');
+    wi.handleSwitchAOR({});
+    wi.handleAddExistingAgent({ selectedAgentCode: '555' });
   });
 });
