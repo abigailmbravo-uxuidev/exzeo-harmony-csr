@@ -4,9 +4,55 @@ import { AgentsCard } from './AgentsCard';
 import mockAgency from '../mockAgency';
 
 describe('Testing AgentsCard component', () => {
-  it('should render', () => {
-    const props = { getAgency: x => x };
-    const wrapper = shallow(<AgentsCard {...props} agency={mockAgency} agent={{ mailingAddress: {} }} />);
+  it('should render AOR', () => {
+    const props = {
+      getAgency: x => x,
+      handleSwitchAOR() {},
+      handleEditAgent() {}
+    };
+    const wrapper = shallow(<AgentsCard
+      {...props}
+      agency={mockAgency}
+      agent={{
+        agentCode: mockAgency.agentOfRecord,
+        mailingAddress: {},
+        primaryPhoneNumber: '1234567890',
+        secondaryPhoneNumber: '1234567890',
+        faxNumber: '1234567890',
+        status: 'ACTIVE'
+}} />);
     expect(wrapper.exists()).toBeTruthy();
+
+    wrapper.find('Button').everyWhere((x) => {
+      x.simulate('click');
+      return x;
+    });
+  });
+
+  it('should render not AOR', () => {
+    const props = {
+      getAgency: x => x,
+      handleSwitchAOR() {},
+      handleEditAgent() {},
+      handleRemoveAgent() {}
+    };
+    const wrapper = shallow(<AgentsCard
+      {...props}
+      agency={mockAgency}
+      agent={{
+        emailAddress: 'test@typtap.com',
+        agentCode: mockAgency.agentOfRecord + 1,
+        mailingAddress: { address2: 'test' },
+        primaryPhoneNumber: '1234567890',
+        secondaryPhoneNumber: '1234567890',
+        faxNumber: '1234567890',
+        status: 'ACTIVE'
+}} />);
+    expect(wrapper.exists()).toBeTruthy();
+
+    wrapper.find('Button').everyWhere((x) => {
+      x.simulate('click');
+      return x;
+    });
   });
 });
