@@ -1094,8 +1094,6 @@
       display: flex;
       overflow: hidden;
       align-items: center;
-      flex-grow: 1;
-      flex-shrink: 1;
       justify-content: center;
       max-height: 90%;
 
@@ -1105,6 +1103,20 @@
         flex-grow: 1;
         flex-shrink: 1;
         width: 100%;
+
+        .card-block {
+            width: 100%;
+            display: flex;
+
+            .contract-details {
+                flex-grow: 1;
+                flex-shrink: 1;
+            }
+            .contract-csp {
+                flex-grow: 0;
+                flex-shrink: 0;
+            }
+        }
       }
     }
   }
