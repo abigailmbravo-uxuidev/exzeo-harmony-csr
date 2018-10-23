@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {reduxForm} from 'redux-form';
-import Button from '@exzeo/core-ui/lib/Button'
+import React, { Component } from 'react';
+import { reduxForm } from 'redux-form';
+import Button from '@exzeo/core-ui/lib/Button';
 
 export class RemoveAgentModal extends Component {
   render() {
@@ -19,7 +19,7 @@ export class RemoveAgentModal extends Component {
         <form onSubmit={handleSubmit(handleConfirm)}>
           <div className="card">
             <div className="card-header">
-              <h4><i className="fa fa-remove"/> Remove Agent</h4>
+              <h4><i className="fa fa-remove" /> Remove Agent</h4>
             </div>
             <div className="card-block">
               <section className="agent-details">
@@ -31,14 +31,14 @@ export class RemoveAgentModal extends Component {
                 <Button
                   baseClass="secondary"
                   dataTest="modal-cancel"
-                  onClick={() => handleCancel()}
-                >No</Button>
+                  onClick={() => handleCancel()}>No
+                </Button>
                 <Button
                   baseClass="primary"
                   dataTest="modal-submit"
                   type="submit"
-                  disabled={disabled || submitting}
-                >Yes</Button>
+                  disabled={disabled || submitting}>Yes
+                </Button>
               </div>
             </div>
           </div>
