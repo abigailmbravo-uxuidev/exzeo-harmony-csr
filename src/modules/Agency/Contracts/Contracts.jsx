@@ -92,7 +92,7 @@ export class Contracts extends Component {
                     baseClass="primary"
                     size="small"
                     onClick={this.handleAddLicense}
-                  ><i className="fa fa-plus" /> Contract</Button>
+                  ><i className="fa fa-plus" />Contract</Button>
                   <hr />
                 </div>
               </section>
