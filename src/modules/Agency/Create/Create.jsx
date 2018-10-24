@@ -26,7 +26,7 @@ export class Create extends Component {
       displayText: 'United States of America'
     };
     data.physicalAddress.country = data.mailingAddress.country;
-    await props.createAgency(data);
+    await this.props.createAgency(data);
   };
 
   handleToggleExistingAgentModal = () => {
