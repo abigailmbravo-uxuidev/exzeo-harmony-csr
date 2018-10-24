@@ -3,38 +3,53 @@ import PropTypes from 'prop-types';
 import { reduxForm, FieldArray, Form, Field } from 'redux-form';
 import { Input, Date, Select } from '@exzeo/core-ui/lib/Input';
 import { validation } from '@exzeo/core-ui';
-import CheckBoxGroup from '../CheckBoxGroup';
 
-export const renderProducts = ({ fields, meta: { error, submitFailed } }) =>
-  <div className="csp-list">
-    <ul className="contract-agent-list">
-    {fields.map((member, index) =>
-      <li key={index}>
-        <Field
-          label="State"
-          styleName="state"
-          name={`${member}.state`}
-          dataTest={`state-${index}`}
-          component={Input}
-          validate={validation.isRequired}
-        />
-        <Field
-          label="Product"
-          name={`${member}.product`}
-          dataTest={`product-${index}`}
-          component={Input}
-          validate={validation.isRequired}
-        />
-      <i className="fa fa-times-circle" onClick={() => fields.remove(index)} />
-      </li>
-    )}
-    </ul>
-    <div className="add-product">
-      <hr/>
-      <button className="btn-secondary btn btn-sm"><i className="fa fa-plus"/>Product</button>
-      <hr/>
-    </div>
-  </div>
+export const renderProducts = ({ fields }) => {
+  const states = [
+    { answer: 'FL', label: 'FL' },
+    { answer: 'TX', label: 'TX' }
+  ];
+
+  const productTypes = [
+    { answer: 'HO3', label: 'HO3' },
+    { answer: 'FL3', label: 'FL3' }
+  ];
+  
+  return (
+    <React.Fragment>
+      {fields.map((product, index) =>
+        <div className="license-wrapper" key={product}>
+          <Field
+            label="State"
+            styleName="state"
+            name={`${product}.state`}
+            component={Select}
+            answers={states}
+            dataTest={`state-${index}`}
+            validate={validation.isRequired}
+          />
+          <Field
+            label="Product"
+            styleName="product"
+            name={`${product}.product`}
+            component={Select}
+            answers={productTypes}
+            dataTest={`product-${index}`}
+            validate={validation.isRequired}
+          />
+          {fields.length > 1 &&
+            <i className="fa fa-times-circle" onClick={() => fields.remove(index)} />
+          }
+        </div>
+      )}
+      <div className="add-product">
+        <hr/>
+        <button className="btn-secondary btn btn-sm" onClick={() => fields.push({})}><i className="fa fa-plus"/>Product</button>
+        <hr/>
+      </div>
+    </React.Fragment>
+  )
+};
 
 export const ContractModal = (props) => {
   const {
@@ -76,15 +91,6 @@ export const ContractModal = (props) => {
                 name={`addendum`}
                 dataTest={`addendum`}
                 component={Input}
-                validate={validation.isRequired}
-              />
-              <Field
-                label="EO Expiration Date"
-                styleName="eoExpirationDate"
-                name={`eoExpirationDate`}
-                dataTest={`eoExpirationDate`}
-                component={Input}
-                validate={validation.isRequired}
               />
             </section>
             <section className="contract-csp">
@@ -104,7 +110,14 @@ export const ContractModal = (props) => {
 };
 
 ContractModal.propTypes = {
-
+  closeModal: PropTypes.func.isRequired,
+  saveContract: PropTypes.func.isRequired,
+  initialValues: PropTypes.shape({
+    companyCode: PropTypes.string.isRequired,
+    contractNumber: PropTypes.string.isRequired,
+    addendum: PropTypes.string,
+    stateProducts: PropTypes.array.isRequired
+  })
 };
 
 export default reduxForm({ form: 'ContractModal', enableReinitialize: true })(ContractModal);
