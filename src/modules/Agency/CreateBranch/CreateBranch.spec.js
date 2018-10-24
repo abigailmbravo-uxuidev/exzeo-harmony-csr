@@ -1,14 +1,14 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { Create } from './Create';
+import { CreateBranch } from './CreateBranch';
 
-describe('Testing Create Base component', () => {
+describe('Testing CreateBranch Base component', () => {
   it('should render', () => {
     const props = {
       reset() {},
-      createAgency() {},
       handleSubmit() {},
+      createBranch() { return Promise.resolve({ branchCode: '1' }); },
       licenseValue: '',
       sameAsMailingValue: false,
       submitting: false,
@@ -17,15 +17,14 @@ describe('Testing Create Base component', () => {
       agency: {},
       orphans: [{ _id: '123' }]
     };
-    const wrapper = shallow(<Create {...props} />);
+    const wrapper = shallow(<CreateBranch {...props} />);
     expect(wrapper.exists()).toBeTruthy();
     const wi = wrapper.instance();
     wi.applyOrphanedAgent({ selectedAgentId: '123' });
     wi.handleSameAsMailing(true, false, { mailingAddress: {} });
     wi.handleSameAsMailing(false, true, { mailingAddress: {} });
     wi.handleResetForm();
-    wi.createAgency({
-      agentOfRecord: {},
+    wi.handleCreateBranch({
       mailingAddress: { country: {} },
       physicalAddress: { country: {} }
     });
