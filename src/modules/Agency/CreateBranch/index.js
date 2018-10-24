@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { reduxForm, formValueSelector } from 'redux-form';
 
-import { getAgency, updateAgency, createBranch } from '../../../state/actions/agencyActions';
+import { getAgency, updateAgency, createBranch } from '../../../state/actions/agency.actions';
 import { getOrphanedAgentsList } from '../../../state/selectors/agency.selector';
 
 import CreateBranch from './CreateBranch';

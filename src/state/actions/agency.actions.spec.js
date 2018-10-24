@@ -7,7 +7,7 @@ import MockAdapter from 'axios-mock-adapter';
 import * as serviceRunner from '../../utilities/serviceRunner';
 import mockAgency from '../../modules/Agency/mockAgency';
 
-import * as agencyActions from './agencyActions';
+import * as agencyActions from './agency.actions';
 import * as types from './actionTypes';
 
 describe('Test Agency Actions', () => {

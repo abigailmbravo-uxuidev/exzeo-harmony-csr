@@ -2,7 +2,7 @@
 import * as types from '../actions/actionTypes';
 
 import initialState from './initialState';
-import agencyStateReducer from './agencyReducer';
+import agencyStateReducer from './agency.reducer';
 
 describe('Agency State Reducer', () => {
   it('should call agencyStateReducer SET_AGENCIES', () => {

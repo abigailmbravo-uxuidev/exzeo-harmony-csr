@@ -6,7 +6,7 @@ import { getAgentOfRecord,
   getAgencyBranchData,
   getAgentsList
 } from '../../../state/selectors/agency.selector';
-import { updateAgency, updateAgent } from '../../../state/actions/agencyActions';
+import { updateAgency, updateAgent } from '../../../state/actions/agency.actions';
 
 import Overview from './Overview';
 

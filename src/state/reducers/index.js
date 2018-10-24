@@ -12,7 +12,7 @@ import policyState from './policy.reducer';
 import questions from './questions.reducer';
 import quoteState from './quote.reducer';
 import search from './search.reducer';
-import agencyState from './agencyReducer';
+import agencyState from './agency.reducer';
 import zipCodeSettingsState from './zipCodeSettings.reducer';
 
 const rootReducer = combineReducers({

@@ -5,7 +5,7 @@ import { validation, Button, SelectTypeAhead } from '@exzeo/core-ui';
 import { Redirect } from 'react-router-dom';
 
 import history from '../../../history';
-import { getAgency, updateAgency, createAgency } from '../../../state/actions/agencyActions';
+import { getAgency, updateAgency, createAgency } from '../../../state/actions/agency.actions';
 import { getOrphanedAgentsList } from '../../../state/selectors/agency.selector';
 import ExistingAgentModal from '../components/ExistingAgentModal';
 import Address from '../components/Address';

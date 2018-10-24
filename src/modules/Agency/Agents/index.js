@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import 'react-tagsinput/react-tagsinput.css'; // eslint-disable-line
 
-import { updateAgent, addAgent, updateAgency } from '../../../state/actions/agencyActions';
+import { updateAgent, addAgent, updateAgency } from '../../../state/actions/agency.actions';
 import { getOrphanedAgentsList, getAgentsList } from '../../../state/selectors/agency.selector';
 
 import Agents from './Agents';
