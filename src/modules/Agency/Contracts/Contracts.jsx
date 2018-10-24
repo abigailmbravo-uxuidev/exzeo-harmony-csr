@@ -21,7 +21,10 @@ export class Contracts extends Component {
   };
 
   saveContract = async (data, dispatch, props) => {
-    return console.log('sved')
+    const { agency: { agencyCode }, updateAgency } = this.props
+    const submitData = { agencyCode, contracts: [{ ...data }] };
+    await updateAgency(submitData);
+    this.toggleContract()();
   };
 
   render() {

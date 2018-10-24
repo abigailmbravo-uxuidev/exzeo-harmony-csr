@@ -25,10 +25,6 @@ export const ContractCard = ({ contract, editContract, contractIndex }) => (
             <div>{contract.contractNumber}</div>
           </div>
         </span>
-        <span className="additional-contract-info">
-          <label>EO Exp. Date</label>
-          <div>{moment(contract.eoExpirationDate).format('MM/DD/YYYY')}</div>
-        </span>
       </div>
     </div>
     <div className="contract-actions">
