@@ -7,6 +7,7 @@ import AddExistingAgentModal from '../components/ExistingAgentModal';
 
 import AgentsCard from './AgentsCard';
 import RemoveAgentModal from './RemoveAgentModal';
+import Footer from '../../../components/Common/Footer';
 
 
 export class Agents extends Component {
@@ -133,75 +134,80 @@ export class Agents extends Component {
       orphans
     } = this.props;
     return (
-      <div className="route-content">
-        <div className="scroll">
-          <div className="form-group survey-wrapper" role="group">
-            {agents && agents.map((agent, index) => (
-              <AgentsCard
-                key={agent.agentCode}
-                agency={agency}
-                agent={agent}
-                agentIndex={index}
-                handleSwitchAOR={this.toggleSwitchAgentOfRecord}
-                handleEditAgent={this.openAgentDetailEditModal}
-                handleRemoveAgent={this.toggleRemoveAgentModal} />
-            ))}
-            <div className="agent-actions">
-              <hr />
-              <Button
-                baseClass="primary"
-                size="small"
-                customClass="margin right"
-                dataTest="add-existing-agent"
-                onClick={this.toggleExistingAgentModal}><i className="fa fa-plus" />Existing Agent
-              </Button>
-              <Button
-                baseClass="primary"
-                size="small"
-                dataTest="add-new-agent"
-                onClick={this.openAgentDetailNewModal}><i className="fa fa-plus" />New Agent
-              </Button>
-              <hr />
+      <div className="route-content-wrapper">
+        <div className="route-content">
+          <div className="scroll">
+            <div className="form-group survey-wrapper" role="group">
+              {agents && agents.map((agent, index) => (
+                <AgentsCard
+                  key={agent.agentCode}
+                  agency={agency}
+                  agent={agent}
+                  agentIndex={index}
+                  handleSwitchAOR={this.toggleSwitchAgentOfRecord}
+                  handleEditAgent={this.openAgentDetailEditModal}
+                  handleRemoveAgent={this.toggleRemoveAgentModal} />
+              ))}
+              <div className="agent-actions">
+                <hr />
+                <Button
+                  baseClass="primary"
+                  size="small"
+                  customClass="margin right"
+                  dataTest="add-existing-agent"
+                  onClick={this.toggleExistingAgentModal}><i className="fa fa-plus" />Existing Agent
+                </Button>
+                <Button
+                  baseClass="primary"
+                  size="small"
+                  dataTest="add-new-agent"
+                  onClick={this.openAgentDetailNewModal}><i className="fa fa-plus" />New Agent
+                </Button>
+                <hr />
+              </div>
             </div>
           </div>
-        </div>
 
-        {this.state.showAgentDetailEditModal && this.state.agentDetailInitialValues &&
-        <AgentModal
-          initialValues={this.state.agentDetailInitialValues}
-          isEditing
-          handleSaveAgent={this.onHandleEditAgent}
-          closeModal={this.closeAgentDetailModal} />
-        }
-        {this.state.showAgentDetailNewModal && this.state.agentDetailInitialValues &&
-        <AgentModal
-          initialValues={this.state.agentDetailInitialValues}
-          handleSaveAgent={this.onHandleSaveAgent}
-          closeModal={this.closeAgentDetailModal} />
-        }
-        {this.state.showAddExistingAgentModal &&
+          {this.state.showAgentDetailEditModal && this.state.agentDetailInitialValues &&
+          <AgentModal
+            initialValues={this.state.agentDetailInitialValues}
+            isEditing
+            handleSaveAgent={this.onHandleEditAgent}
+            closeModal={this.closeAgentDetailModal} />
+          }
+          {this.state.showAgentDetailNewModal && this.state.agentDetailInitialValues &&
+          <AgentModal
+            initialValues={this.state.agentDetailInitialValues}
+            handleSaveAgent={this.onHandleSaveAgent}
+            closeModal={this.closeAgentDetailModal} />
+          }
+          {this.state.showAddExistingAgentModal &&
+            <AddExistingAgentModal
+              header="Exisiting Agent"
+              listOfAgents={orphans}
+              onToggleModal={this.toggleExistingAgentModal}
+              handleSelection={this.handleAddExistingAgent} />
+          }
+          {this.state.showAgentOfRecordModal &&
           <AddExistingAgentModal
-            header="Exisiting Agent"
-            listOfAgents={orphans}
-            onToggleModal={this.toggleExistingAgentModal}
-            handleSelection={this.handleAddExistingAgent} />
-        }
-        {this.state.showAgentOfRecordModal &&
-        <AddExistingAgentModal
-          header="Agent Of Record"
-          initialValues={{ selectedAgentCode: this.state.selectedAgentCode }}
-          listOfAgents={this.props.agentsList}
-          onToggleModal={this.toggleSwitchAgentOfRecord}
-          handleSelection={this.handleSwitchAOR} />
-        }
-        {this.state.showRemoveAgentModal &&
-          <RemoveAgentModal
-            agencyName={agency.displayName}
-            initialValues={agents[this.state.activeIndex]}
-            handleCancel={this.toggleRemoveAgentModal}
-            handleConfirm={this.handleRemoveAgent} />
-        }
+            header="Agent Of Record"
+            initialValues={{ selectedAgentCode: this.state.selectedAgentCode }}
+            listOfAgents={this.props.agentsList}
+            onToggleModal={this.toggleSwitchAgentOfRecord}
+            handleSelection={this.handleSwitchAOR} />
+          }
+          {this.state.showRemoveAgentModal &&
+            <RemoveAgentModal
+              agencyName={agency.displayName}
+              initialValues={agents[this.state.activeIndex]}
+              handleCancel={this.toggleRemoveAgentModal}
+              handleConfirm={this.handleRemoveAgent} />
+          }
 
+        </div>
+        <div className="basic-footer">
+          <Footer />
+        </div>
       </div>
     );
   }

@@ -9,21 +9,21 @@ import Address from '../components/Address';
 import License from '../components/License';
 import territoryManagers from '../components/territoryManagers';
 import history from '../../../history';
+import Footer from '../../../components/Common/Footer';
 
 import BranchDetails from './BranchDetails';
 
 export class CreateBranch extends Component {
   state = {
-    showAddExistingAgentModal: false,
-    branchCode: null
+    showAddExistingAgentModal: false
   }
-  createBranch = async (data, dispatch, props) => {
+  handleCreateBranch = async (data, dispatch, props) => {
     data.mailingAddress.country = {
       code: 'USA',
       displayText: 'United States of America'
     };
     data.agentOfRecord = this.props.agency.agentOfRecord;
-    const branch = await props.createBranch(data, this.props.agency.agencyCode);
+    const branch = await this.props.createBranch(data, this.props.agency.agencyCode);
     history.push(`/agency/${this.props.agency.agencyCode}/${branch.branchCode}/overview`);
   };
 
@@ -87,7 +87,7 @@ export class CreateBranch extends Component {
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
-              <form id="createBranch" onSubmit={handleSubmit(this.createBranch)}>
+              <form id="createBranch" onSubmit={handleSubmit(this.handleCreateBranch)}>
                 <h3>Details</h3>
                 <section className="agency-details">
                   <BranchDetails />
@@ -156,8 +156,11 @@ export class CreateBranch extends Component {
           </div>
         </div>
         <div className="basic-footer btn-footer">
-          <Button dataTest="resetButton" baseClass="secondary" onClick={this.handleResetForm}>Cancel</Button>
-          <Button form="createBranch" dataTest="submitButton" baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
+          <Footer />
+          <div className="btn-wrapper">
+            <Button dataTest="resetButton" baseClass="secondary" onClick={this.handleResetForm}>Cancel</Button>
+            <Button form="createBranch" dataTest="submitButton" baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
+          </div>
         </div>
         {this.state.showAddExistingAgentModal &&
         <ExistingAgentModal

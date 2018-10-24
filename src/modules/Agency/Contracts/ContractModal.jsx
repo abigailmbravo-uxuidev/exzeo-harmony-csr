@@ -20,7 +20,7 @@ export const renderProducts = ({ fields }) => {
   return (
     <React.Fragment>
       {fields.map((product, index) =>
-        <div className="license-wrapper" key={product}>
+        <div className="csp-wrapper" key={product}>
           <Field
             label="State"
             styleName="state"

@@ -1,7 +1,11 @@
 import { connect } from 'react-redux';
 
 import territoryManagers from '../components/territoryManagers';
-import { getAgentOfRecord, getEditModalInitialValues, getAgencyBranchData, getAgentsList } from '../../../state/selectors/agency.selector';
+import { getAgentOfRecord,
+  getEditModalInitialValues,
+  getAgencyBranchData,
+  getAgentsList
+} from '../../../state/selectors/agency.selector';
 import { updateAgency, updateAgent } from '../../../state/actions/agencyActions';
 
 import Overview from './Overview';

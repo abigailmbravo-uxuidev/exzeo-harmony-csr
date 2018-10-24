@@ -30,16 +30,15 @@ export class BranchModal extends Component {
     selectedBranch.mailCommissionChecksToBranch = data.mailCommissionChecksToBranch;
     selectedBranch.mailPolicyDocsToBranch = data.mailPolicyDocsToBranch;
     agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
-    await props.updateAgency(agency);
-    props.closeModal();
+    await this.props.updateAgency(agency);
+    this.props.closeModal();
   };
 
   render() {
     const {
       closeModal,
       handleSubmit,
-      submitting,
-      handleBranchSubmit
+      submitting
     } = this.props;
 
     return (

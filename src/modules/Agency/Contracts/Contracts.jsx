@@ -6,6 +6,7 @@ import TaxDetail from './TaxDetails';
 import LicenseCard from './LicenseCard';
 import ContractCard from './ContractCard';
 import ContractModal from './ContractModal';
+import Footer from '../../../components/Common/Footer';
 
 export class Contracts extends Component {
   state = {
@@ -103,6 +104,9 @@ export class Contracts extends Component {
               </section>
             </div>
           </div>
+        </div>
+        <div className="basic-footer">
+          <Footer />
         </div>
       </div>
     );

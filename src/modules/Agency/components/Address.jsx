@@ -6,7 +6,7 @@ import { Input, validation, SelectTypeAhead } from '@exzeo/core-ui';
 import { searchSettingsByCSPAndZip } from '../../../state/actions/zipCodeSettings.actions';
 import { getListOfZipCodes } from '../../../state/selectors/zipCodeSettings.selectors';
 
-class Address extends Component {
+export class Address extends Component {
   normalizeSameAsMailing = (value) => {
     const { changeField, section, sameAsMailingValue } = this.props;
     if (section === 'physicalAddress' || !sameAsMailingValue) return value;

@@ -14,6 +14,7 @@ import License from '../components/License';
 import Agent from '../components/FormGroup/Agent';
 import Contact from '../components/FormGroup/Contact';
 import AgencyDetails from '../components/FormGroup/AgencyDetails';
+import Footer from '../../../components/Common/Footer';
 
 export class Create extends Component {
   state = {
@@ -26,7 +27,7 @@ export class Create extends Component {
       displayText: 'United States of America'
     };
     data.physicalAddress.country = data.mailingAddress.country;
-    await props.createAgency(data);
+    await this.props.createAgency(data);
   };
 
   handleToggleExistingAgentModal = () => {
@@ -167,8 +168,11 @@ export class Create extends Component {
           </div>
         </div>
         <div className="basic-footer btn-footer">
-          <Button dataTest="resetButton" baseClass="secondary" onClick={this.handleResetForm}>Cancel</Button>
-          <Button form="createAgency" dataTest="submitButton" baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
+          <Footer />
+          <div className="btn-wrapper">
+            <Button dataTest="resetButton" baseClass="secondary" onClick={this.handleResetForm}>Cancel</Button>
+            <Button form="createAgency" dataTest="submitButton" baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
+          </div>
         </div>
         {this.state.showAddExistingAgentModal &&
         <ExistingAgentModal

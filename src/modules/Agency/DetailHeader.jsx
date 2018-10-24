@@ -2,7 +2,13 @@ import React from 'react';
 
 const DetailHeader = ({ agency }) => {
   if (!agency || !agency.agencyCode) {
-    return (<div className="detailHeader" />);
+    return (<div className="detailHeader">
+      <section id="agencyDetails" className="agencyDetails" />
+      <section id="agency-name" className="entityName">
+        <h4 className="agency-name">CREATE AGENCY</h4>
+      </section>
+    </div>
+    );
   }
   return (
     <div className="detailHeader">
