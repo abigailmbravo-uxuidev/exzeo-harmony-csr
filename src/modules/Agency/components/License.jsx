@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { Input, Select, Date, validation } from '@exzeo/core-ui';
 
@@ -12,7 +11,7 @@ const typeAnswers = [
   { answer: 'Resident', label: 'Resident' }
 ];
 
-const License = ({ licenseValue, fields, isAgency }) => {
+const License = ({ fields, isAgency }) => {
   return (
     <React.Fragment>
       {fields.map((license, index) => (
@@ -73,10 +72,9 @@ const License = ({ licenseValue, fields, isAgency }) => {
   );
 };
 
-License.propTypes = {};
-
 License.defaultProps = {
-  fields: []
+  fields: [],
+  isAgency: false
 };
 
 export default License;

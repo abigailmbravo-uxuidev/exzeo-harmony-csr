@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import cloneDeep from 'lodash/cloneDeep'
-import Button from '@exzeo/core-ui/lib/Button'
+import cloneDeep from 'lodash/cloneDeep';
+import Button from '@exzeo/core-ui/lib/Button';
 import TaxDetail from './TaxDetails';
 import LicenseCard from './LicenseCard';
 import ContractCard from './ContractCard';
@@ -22,15 +22,15 @@ export class Contracts extends Component {
   };
 
   saveContract = async (data, dispatch, props) => {
-    const { agency: { agencyCode }, updateAgency } = this.props
+    const { agency: { agencyCode }, updateAgency } = this.props;
     const submitData = { agencyCode, contracts: [{ ...data }] };
     await updateAgency(submitData);
     this.toggleContract()();
   };
 
   render() {
-    const { agency, listOfAgents } = this.props;
-    const { activeIndex, showContractModal } = this.state;
+    const { agency } = this.props;
+    const { showContractModal } = this.state;
 
     if (!agency) return <div />;
     return (
@@ -39,8 +39,7 @@ export class Contracts extends Component {
           <ContractModal
             saveContract={this.saveContract}
             closeModal={this.toggleContract}
-            initialValues={this.state.activeContract}
-          />
+            initialValues={this.state.activeContract} />
         }
         <div className="route-content">
           <div className="scroll">
@@ -52,8 +51,7 @@ export class Contracts extends Component {
                   <LicenseCard
                     key={license.licenseNumber}
                     license={license}
-                    editContract={this.toggleContract(license)}
-                  />
+                    editContract={this.toggleContract(license)} />
                 ))}
                 <div className="create-contract">
                   <hr />
@@ -61,8 +59,8 @@ export class Contracts extends Component {
                     baseClass="primary"
                     size="small"
                     onClick={this.toggleContract(null)}
-                    dataTest="addContract"
-                  ><i className="fa fa-plus" /> Contract</Button>
+                    dataTest="addContract"><i className="fa fa-plus" /> Contract
+                  </Button>
                   <hr />
                 </div>
               </section>
@@ -72,8 +70,7 @@ export class Contracts extends Component {
                   <ContractCard
                     key={contract.contractNumber}
                     contract={contract}
-                    editContract={this.toggleContract(contract)}
-                  />
+                    editContract={this.toggleContract(contract)} />
                 ))}
                 <div className="create-contract">
                   <hr />
@@ -81,8 +78,8 @@ export class Contracts extends Component {
                     baseClass="primary"
                     size="small"
                     onClick={this.toggleContract(null)}
-                    dataTest="addContract"
-                  ><i className="fa fa-plus" /> Contract</Button>
+                    dataTest="addContract"><i className="fa fa-plus" /> Contract
+                  </Button>
                   <hr />
                 </div>
               </section>

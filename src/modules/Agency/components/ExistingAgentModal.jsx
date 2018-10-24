@@ -2,11 +2,6 @@ import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import { validation, Button, SelectTypeAhead } from '@exzeo/core-ui';
 
-const radioDefaultAnswers = [
-  { answer: 'true', label: 'Yes' },
-  { answer: 'false', label: 'No' }
-];
-
 export class ExistingAgentModal extends Component {
   render() {
     const {
