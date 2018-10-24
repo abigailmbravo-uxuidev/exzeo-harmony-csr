@@ -320,7 +320,9 @@
         align-self: stretch;
         flex-basis: 240px;
         flex-shrink: 0;
+        flex-grow: 0;
         width: 240px;
+        height: calc(100vh - 8.125rem);
         padding: 0 0 ($padding*2) ($padding*2);
         border-left: dotted 1px $warm-gray-04;
 
