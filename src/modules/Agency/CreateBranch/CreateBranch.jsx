@@ -14,16 +14,15 @@ import BranchDetails from './BranchDetails';
 
 export class CreateBranch extends Component {
   state = {
-    showAddExistingAgentModal: false,
-    branchCode: null
+    showAddExistingAgentModal: false
   }
-  createBranch = async (data, dispatch, props) => {
+  handleCreateBranch = async (data, dispatch, props) => {
     data.mailingAddress.country = {
       code: 'USA',
       displayText: 'United States of America'
     };
     data.agentOfRecord = this.props.agency.agentOfRecord;
-    const branch = await props.createBranch(data, this.props.agency.agencyCode);
+    const branch = await this.props.createBranch(data, this.props.agency.agencyCode);
     history.push(`/agency/${this.props.agency.agencyCode}/${branch.branchCode}/overview`);
   };
 
@@ -87,7 +86,7 @@ export class CreateBranch extends Component {
         <div className="route-content">
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
-              <form id="createBranch" onSubmit={handleSubmit(this.createBranch)}>
+              <form id="createBranch" onSubmit={handleSubmit(this.handleCreateBranch)}>
                 <h3>Details</h3>
                 <section className="agency-details">
                   <BranchDetails />

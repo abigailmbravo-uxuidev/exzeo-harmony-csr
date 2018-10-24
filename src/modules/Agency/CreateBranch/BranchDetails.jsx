@@ -13,7 +13,7 @@ const mailAnswers = [
 ];
 
 
-const BranchDetails = (agencyCodeDisabled) => {
+export const BranchDetails = (agencyCodeDisabled) => {
   return (
     <React.Fragment>
       <Field
