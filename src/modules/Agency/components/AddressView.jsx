@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AddressView = ({ agencyBranchData, territoryManagers }) => {
+export const AddressView = ({ agencyBranchData, territoryManagers }) => {
   return (
     <React.Fragment>
       <div className="physical-address">
