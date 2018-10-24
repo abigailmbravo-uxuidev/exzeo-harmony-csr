@@ -14,11 +14,11 @@ export const renderProducts = ({ fields }) => {
     { answer: 'HO3', label: 'HO3' },
     { answer: 'FL3', label: 'FL3' }
   ];
-  
+
   return (
     <React.Fragment>
       {fields.map((product, index) =>
-        <div className="license-wrapper" key={product}>
+        <div className="csp-wrapper" key={product}>
           <Field
             label="State"
             styleName="state"
