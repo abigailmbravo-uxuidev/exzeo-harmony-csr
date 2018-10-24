@@ -1,9 +1,14 @@
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import sinon from 'sinon';
-import * as types from './actionTypes';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+
 import * as serviceRunner from '../../utilities/serviceRunner';
+import mockAgency from '../../modules/Agency/mockAgency';
+
 import * as agencyActions from './agencyActions';
+import * as types from './actionTypes';
 
 describe('Test Agency Actions', () => {
   const mockStore = configureStore([]);
@@ -131,6 +136,179 @@ describe('Test Agency Actions', () => {
       const agency = { agencyCode: '1234' };
       await store.dispatch(agencyActions.updateAgency(agency));
     });
+
+    it('Should call dispatch on createBranch', async () => {
+      const agency = [{ agencyCode: '1234' }];
+      httpStub.onCall(0).returns(Promise.resolve({ data: { result: agency[0] } }));
+      await store.dispatch(agencyActions.createBranch(mockAgency, mockAgency.agencyCode));
+    });
+  });
+
+  it('should call createAgency', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'agency',
+        method: 'POST',
+        path: 'agencies',
+        data: mockAgency
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+    agencyActions.createAgency(store.dispatch);
+
+    return agencyActions.createAgency(mockAgency)(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.SET_AGENCY);
+      });
+  });
+
+  it('should fail call for createAgency', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'agency',
+        method: 'POST',
+        path: 'agencies',
+        data: mockAgency
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+    agencyActions.createAgency(store.dispatch);
+
+    return agencyActions.createAgency(null)(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
+      });
+  });
+
+  it('should fail call for createBranch', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'agency',
+        method: 'POST',
+        path: `agencies/${mockAgency.agencyCode}/branches`,
+        data: mockAgency
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+    agencyActions.createBranch(store.dispatch);
+
+    return agencyActions.createBranch(null)(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
+      });
+  });
+
+
+  it('should call getListOfOrphanedAgents', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'agency',
+        method: 'GET',
+        path: 'agents?type=orphaned'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+    agencyActions.getListOfOrphanedAgents(store.dispatch);
+
+    return agencyActions.getListOfOrphanedAgents()(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.SET_ORPHANED_AGENTS);
+      });
+  });
+
+  it('should fail updateAgent', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'agency',
+        method: 'PUT',
+        path: 'agents/123',
+        data: { agentCode: 123, agencies: [] }
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+
+    return agencyActions.updateAgent({ agentCode: 123, agencies: [] }, mockAgency.ag)(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
+      });
+  });
+
+
+  it('should call getAgentList', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'agency',
+        method: 'GET',
+        path: 'v1/agents/TTIC/FL'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+    agencyActions.getAgentList(store.dispatch);
+
+    return agencyActions.getAgentList('TTIC', 'FL')(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.SET_AGENTS_LIST);
+      });
   });
 });
 

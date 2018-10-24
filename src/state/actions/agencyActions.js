@@ -1,8 +1,7 @@
-import cloneDeep from 'lodash/cloneDeep';
-import * as types from './actionTypes';
-import * as errorActions from './error.actions';
 import * as serviceRunner from '../../utilities/serviceRunner';
 
+import * as types from './actionTypes';
+import * as errorActions from './error.actions';
 /**
  *
  * @param agencies
@@ -171,7 +170,7 @@ export function addAgent(agentData, agencyCode) {
 export function updateAgent(agentData, agencyCode) {
   return async (dispatch) => {
     try {
-      await saveAgent(agentData, agencyCode);
+      await saveAgent(agentData);
       dispatch(getAgentsByAgencyCode(agencyCode));
       dispatch(getListOfOrphanedAgents());
     } catch (error) {
@@ -320,94 +319,12 @@ export async function addNewAgent(agentData) {
   }
 }
 
-
-// TODO move to utilities
-/**
- *
- * @param data
- * @param agency
- * @returns {Promise<*>}
- */
-export function applyLicenseToAgency(data, agency) {
-  // loop over available licenses to apply to an agent
-  /* nested deep in the agency object:  agency.license[0].agents[0]
-     agent: { agentCode :123, appointed: true, agentOfRecord: true  }
-  */
-  data.agencyLicense.forEach((l) => {
-    const license = agency.license.find(li => li.licenseNumber === l);
-    const selectedAgent = license && license.agent ? license.agent.find(a => a.agentCode === data.agentCode) : null;
-    // this handles new agent objects
-    if (license && license.agent && !selectedAgent) {
-      license.agent.push({
-        agentCode: data.agentCode,
-        appointed: String(data.appointed) === 'true',
-        agentOfRecord: String(data.agentOfRecord) === 'true'
-      });
-      const licenseIndex = agency.license.findIndex(li => li.licenseNumber === l);
-      if (licenseIndex !== -1) {
-        agency.license.splice(licenseIndex, 1, license);
-      }
-    } else if (license && license.agent && selectedAgent) { // this handles existing agent objects
-      const agentIndex = license.agent.findIndex(a => a.agentCode === data.agentCode);
-      selectedAgent.appointed = String(data.appointed) === 'true';
-      selectedAgent.agentOfRecord = String(data.agentOfRecord) === 'true';
-      selectedAgent.agentInfo = data;
-      if (agentIndex !== -1) {
-        license.agent.splice(agentIndex, 1, selectedAgent);
-      }
-      const licenseIndex = agency.license.findIndex(li => li.licenseNumber === l);
-      if (licenseIndex !== -1) {
-        agency.license.splice(licenseIndex, 1, license);
-      }
-    }
-  });
-
-  // any licenses that were not selected in the agencyLicense array need to be removed from the agent array inside the license array on the agency
-  agency.license.filter(l => !data.agencyLicense.includes(l.licenseNumber)).forEach((license) => {
-    const agentIndex = license.agent.findIndex(a => a.agentCode === data.agentCode);
-    if (agentIndex !== -1) {
-      license.agent.splice(agentIndex, 1);
-    }
-  });
-
-  // noinspection JSUnusedLocalSymbols
-  const { createdAt, createdBy, ...selectedAgency } = agency;
-  return selectedAgency;
-}
-
 /**
  *
  * @param formData
  * @param currentAgency
  * @returns {Function}
  */
-export function addAgentToAgency(formData, currentAgency) {
-  return async (dispatch) => {
-    const agency = cloneDeep(currentAgency);
-
-    formData.agencyLicense.forEach((l) => {
-      const license = agency.license.find(li => li.licenseNumber === l);
-      const selectedAgent = license && license.agent ? license.agent.find(a => a.agentCode === formData.agentCode) : null;
-
-      if (license && license.agent && !selectedAgent) {
-        license.agent.push({
-          agentCode: Number(formData.selectedAgent),
-          appointed: String(formData.appointed) === 'true',
-          agentOfRecord: String(formData.agentOfRecord) === 'true'
-        });
-        const licenseIndex = agency.license.findIndex(li => li.licenseNumber === l);
-        if (licenseIndex !== -1) {
-          agency.license.splice(licenseIndex, 1, license);
-        }
-      }
-    });
-
-    // noinspection JSUnusedLocalSymbols
-    const { createdAt, createdBy, ...selectedAgency } = agency;
-    await dispatch(updateAgency(selectedAgency));
-  };
-}
-
 
 export async function fetchOrphanedAgents() {
   try {
