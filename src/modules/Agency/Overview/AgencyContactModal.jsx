@@ -6,20 +6,20 @@ import { updateAgency } from '../../../state/actions/agencyActions';
 import Contact from '../components/FormGroup/Contact';
 
 export class AgencyContactModal extends Component {
-  saveAgency = async (data, dispatch, props) => {
+  onHandleSaveAgency = async (data, dispatch, props) => {
     const { agency, branchCode, section } = this.props;
 
     if (Number(branchCode) > 0) {
       const selectedBranch = agency.branches.filter(b => String(b.branchCode) === String(branchCode));
       selectedBranch[0][section] = data[section];
       agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
-      props.updateAgency(agency);
+      await this.props.updateAgency(agency);
     } else {
       agency[section] = data[section];
       agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
-      await props.updateAgency(agency);
+      await this.props.updateAgency(agency);
     }
-    props.closeModal();
+    this.props.closeModal();
   };
 
   render() {
@@ -33,7 +33,7 @@ export class AgencyContactModal extends Component {
 
     return (
       <div className="modal edit-contact">
-        <form onSubmit={handleSubmit(this.saveAgency)}>
+        <form onSubmit={handleSubmit(this.onHandleSaveAgency)}>
           <div className="card">
             <div className="card-header">
               <h4>

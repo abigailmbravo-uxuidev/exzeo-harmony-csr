@@ -8,23 +8,23 @@ import Address from '../components/Address';
 import territoryManagers from '../components/territoryManagers';
 
 export class AgencyAddressModal extends Component {
-  saveAgency = async (data, dispatch, props) => {
+  onHandleSaveAgency = async (data, dispatch, props) => {
     const { agency, branchCode } = this.props;
-    if (branchCode > 0) {
+    if (Number(branchCode) > 0) {
       const selectedBranch = agency.branches.filter(b => String(b.branchCode === String(branchCode)));
       selectedBranch.physicalAddress = data.physicalAddress;
       selectedBranch.mailingAddress = data.mailingAddress;
       selectedBranch.territoryManagerId = data.territoryManagerId;
       agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
-      props.updateAgency(agency);
+      this.props.updateAgency(agency);
     } else {
       agency.physicalAddress = data.physicalAddress;
       agency.mailingAddress = data.mailingAddress;
       agency.territoryManagerId = data.territoryManagerId;
       agency.branches = agency.branches.filter(b => String(b.branchCode) !== '0');
-      await props.updateAgency(agency);
+      await this.props.updateAgency(agency);
     }
-    props.closeModal();
+    this.props.closeModal();
   };
 
   onHandleSameAsMailing = (value, previousValue, allValues) => {
@@ -50,8 +50,6 @@ export class AgencyAddressModal extends Component {
     const {
       closeModal,
       handleSubmit,
-      initialValues,
-      isEdit,
       sameAsMailingValue,
       submitting,
       change
@@ -59,7 +57,7 @@ export class AgencyAddressModal extends Component {
 
     return (
       <div className="modal agency-crud">
-        <form onSubmit={handleSubmit(this.saveAgency)}>
+        <form onSubmit={handleSubmit(this.onHandleSaveAgency)}>
           <div className="card">
             <div className="card-header">
               <h4>
