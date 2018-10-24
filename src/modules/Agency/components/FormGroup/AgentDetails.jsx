@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { Input, Integer, Phone, Radio, validation } from '@exzeo/core-ui';
 
