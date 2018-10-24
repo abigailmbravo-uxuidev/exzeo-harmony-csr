@@ -6,7 +6,13 @@ import { Select, MultiSelectTypeAhead, DateRange, Button, validation, emptyObjec
 import { REASONS, STATUS_ANSWERS } from '../../../constants/diaries';
 
 class DiariesSearch extends Component {
-  componentDidMount() {
+  
+  /*
+    TODO: redux-form initialize has a bug. We need to check back with this.
+    For now we won't initialize a value for the current user.
+    Link: https://github.com/erikras/redux-form/issues/2818
+    
+    componentDidMount() {
     const {
       assigneeAnswers,
       initialValues,
@@ -16,7 +22,7 @@ class DiariesSearch extends Component {
     const currentUser = assigneeAnswers.find(a => a.answer === userProfile.userId);
 
     initialize({ ...initialValues, assignees: currentUser ? [currentUser] : [] });
-  }
+  }*/
 
   render() {
     const {
