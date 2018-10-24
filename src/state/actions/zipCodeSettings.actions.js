@@ -34,7 +34,7 @@ export function searchSettingsByCSPAndZip(zipCodePartial, state) {
   };
 }
 
-function generateSearchSettingsByCSPAndZipQuery(zipCodePartial, state) {
+export function generateSearchSettingsByCSPAndZipQuery(zipCodePartial, state) {
   const query = `{
         searchSettingsByCSPAndZip(companyCode: "TTIC", state: "${state || ''}", product: "HO3", zipCodePartial: "${zipCodePartial || ''}") {
             county
