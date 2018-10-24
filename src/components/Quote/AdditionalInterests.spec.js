@@ -326,7 +326,7 @@ const quoteData = {
 describe('Testing AdditionalInterests component', () => {
   it('should test connected app', () => {
     const state = {
-      service: {
+      quoteState: {
         quote: quoteData
       }
     };

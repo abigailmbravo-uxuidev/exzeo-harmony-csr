@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Loader } from '@exzeo/core-ui';
+
 import { getNotes } from '../../state/actions/service.actions';
 import * as errorActions from '../../state/actions/error.actions';
 import NoteList from '../Common/NoteList';
@@ -52,11 +53,13 @@ NotesFiles.propTypes = {
   })
 };
 
-const mapStateToProps = state => ({
-  notes: state.service.notes,
-  policy: state.policyState.policy,
-  error: state.error
-});
+const mapStateToProps = (state) => {
+  return {
+    notes: state.service.notes,
+    policy: state.policyState.policy,
+    error: state.error
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   actions: {

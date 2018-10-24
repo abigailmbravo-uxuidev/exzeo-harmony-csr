@@ -1,3 +1,5 @@
+@import "_diaries-aside";
+
 .app-wrapper.csr.policy {
   //main header
   header {
@@ -42,6 +44,7 @@
   }
   //content wrapper
   main {
+    position: relative;
     height: calc(100vh - 8.5rem);
     min-height: calc(100vh - 8.5rem);
 
@@ -264,15 +267,15 @@
                   }
 
                   &.disabled {
-                      .label-segmented {
-                          &.selected {
-                              span {
-                                cursor: not-allowed;
-                                color: $white;
-                                background: rgba($bright-blue-darken-04, .5);
-                              }
-                          }
+                    .label-segmented {
+                      &.selected {
+                        span {
+                          cursor: not-allowed;
+                          color: $white;
+                          background: rgba($bright-blue-darken-04, .5);
+                        }
                       }
+                    }
                   }
                 }
 
@@ -354,9 +357,9 @@
             background: $warm-gray-01;
 
             .endorsement-date-wrapper {
-                width: 14rem;
-                flex-grow: 0;
-                flex-shrink: 0;
+              flex-grow: 0;
+              flex-shrink: 0;
+              width: 14rem;
             }
 
             .btn-secondary {
@@ -407,6 +410,7 @@
           }
         }
         //end underwriting
+        //-----------------------------------------
         .scroll {
           overflow-y: auto;
           flex-grow: 1;
@@ -845,6 +849,8 @@
                 .discountSurcharge {
                   width: 60%;
                   padding: $padding ($padding*1.5);
+                  white-space: normal;
+                  hyphens: auto;
                 }
 
                 .value {
@@ -918,5 +924,62 @@
         }
       }
     }
+    //diaries
+    .open-diaries {
+      position: absolute;
+      right: 0;
+      align-self: stretch;
+      flex-grow: 0;
+      flex-shrink: 0;
+      width: 0;
+      height: calc(100vh - 8.125rem);
+      min-height: calc(100vh - 8.125rem);
+      padding: 0 0 ($padding*2) ($padding*2);
+      border-left: dotted 1px $warm-gray-04;
+      background: $white;
+      @include transition(all 0.1s ease-in-out);
+
+      .open-diaries-header {
+        margin: ($padding*1.5) 0;
+      }
+    }
+
+    &.diary-closed {
+      @include transition(all 0.1s ease-in-out);
+
+      .open-diaries {
+        overflow: hidden;
+        width: 0;
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    &.diary-open {
+      @include transition(all 0.1s ease-in-out);
+
+      .open-diaries {
+        overflow: hidden;
+        width: 240px;
+        @include transition(all 0.1s ease-in-out);
+      }
+
+      .content-wrapper {
+        margin-right: 240px;
+        @include transition(all 0.1s ease-in-out);
+
+        &.endorsement-content-wrapper {
+          margin-right: 3rem;
+        }
+
+        .route-content {
+          .underwriting-validation {
+            margin-right: 3rem;
+          }
+        }
+      }
+    }
+    //end diaries
+    //-----------------------------------------
   }
 }

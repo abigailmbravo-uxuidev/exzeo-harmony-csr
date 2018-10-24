@@ -1,18 +1,21 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+
 import { SearchBar } from './SearchBar';
 
 describe('Test SearchBar component', () => {
   it('renders SearchBar', () => {
     const props = {
+      formProps: {
+        handleSubmit() {},
+        reset() {}
+      },
       agencies: [],
-      handleSubmit() {},
       render() {},
       toggleLoading() {},
       getAgencies() {},
       changeSearchType() {},
       resetSearch() {},
-      reset() {},
       clearAppError() {},
       advancedSearch: true,
       toggleAdvancedSearch() {},

@@ -2,6 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { mount, shallow } from 'enzyme';
+
 import ConnectedApp, { DetailHeader } from './DetailHeader';
 
 const middlewares = [];
@@ -320,13 +321,17 @@ describe('Testing DetailHeader component', () => {
             modelInstanceId: '123',
             model: {
               variables: [
-                { name: 'retrieveQuote',
+                {
+                  name: 'retrieveQuote',
                   value: {
                     result: quoteData
-                  } }, { name: 'getQuoteBeforePageLoop',
-                    value: {
-                      result: quoteData
-                    } }]
+                  }
+                }, {
+                  name: 'getQuoteBeforePageLoop',
+                  value: {
+                    result: quoteData
+                  }
+                }]
             },
             uiQuestions: []
           }
@@ -354,12 +359,11 @@ describe('Testing DetailHeader component', () => {
     };
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
     expect(wrapper.instance().props.quoteData).toEqual(quoteData);
-
   });
 
   it('should test mount', () => {
     const initialState = {
-      service: {
+      quoteState: {
         quote: quoteData
       },
       cg: {
@@ -379,7 +383,7 @@ describe('Testing DetailHeader component', () => {
     const props = {
       actions: {
         quoteStateActions: {
-          getLatestQuote(){ }
+          getLatestQuote() { }
         },
         serviceActions: {
           getQuote() {},
@@ -400,18 +404,12 @@ describe('Testing DetailHeader component', () => {
     };
     const wrapper = mount(
       <Provider store={store}>
-        <DetailHeader {...props} />
-      </Provider>
-    );
+        <ConnectedApp {...props} />
+      </Provider>);
 
     expect(wrapper);
 
-    const shallowWrapper = shallow(<DetailHeader store={store} {...props} />);
-
-    shallowWrapper.instance().selectPolicy();
-
-    const wrapper2 = shallow(<DetailHeader store={store} {...props} />);
+    const wrapper2 = shallow(<ConnectedApp store={store} {...props} />);
     expect(wrapper2).toBeTruthy();
-
   });
 });

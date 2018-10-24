@@ -1,0 +1,2 @@
+export const STANDARD_DATE_FORMAT = 'MM/DD/YYYY';
+export const SECONDARY_DATE_FORMAT = 'YYYY-MM-DD';

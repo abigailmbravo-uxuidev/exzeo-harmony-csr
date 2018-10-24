@@ -1,8 +1,11 @@
 header {
   display: flex;
+  flex-grow: 0;
   flex-shrink: 0;
   justify-content: center;
   width: 100%;
+  height: auto;
+  min-height: auto;
   padding: $padding $padding*2;
   border-bottom: 2px solid $white;
   background: $bright-blue-darken-04;
@@ -30,6 +33,114 @@ header {
       img {
         width: auto;
         height: 62px;
+      }
+    }
+
+    .header-toggle-wrapper {
+      position: relative;
+      display: flex;
+      flex-direction: row-reverse;
+      flex-grow: 1;
+      flex-shrink: 1;
+
+      button {
+        position: relative;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        width: 3.5rem;
+        height: 2.75rem;
+        margin-top: -($padding*2);
+        margin-left: $padding;
+        padding: 0;
+        border-width: 0;
+        @include transition(all 0.2s ease-in-out);
+
+        .diary-btn-wrapper {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: center;
+          border-right: 1px solid $white;
+          border-bottom: 1px solid $white;
+          border-left: 1px solid $white;
+          border-radius: 0 0 $btn-border-radius $btn-border-radius;
+          @include transition(all 0.2s ease-in-out);
+
+          &.panel-closed {
+            background-color: $bright-blue-darken-04;
+
+            > i {
+              color: $white !important;
+
+              > span {
+                color: $bright-blue-darken-04;
+                font-family: $font-family-base;
+              }
+            }
+          }
+
+          &.panel-open {
+            background-color: $white;
+
+            > i {
+              color: $bright-blue-darken-04 !important;
+
+              > span {
+                color: $white;
+                font-family: $font-family-base;
+              }
+            }
+          }
+
+          > i {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 1.5rem;
+            margin-right: 0;
+            font-size: 1.5rem;
+
+            > span {
+              position: absolute;
+              top: 0.25rem;
+            }
+          }
+
+          span {
+            font-size: $font-size-xs;
+
+            i {
+              margin-right: $padding/4;
+            }
+          }
+        }
+
+        &:focus,
+        &:hover {
+          color: $bright-blue;
+
+          .dairy-btn-wrapper {
+            &.panel-closed {
+              > i {
+                color: $white !important;
+              }
+            }
+
+            &.panel-open {
+              > i {
+                color: $bright-blue-darken-04 !important;
+              }
+            }
+          }
+        }
       }
     }
 

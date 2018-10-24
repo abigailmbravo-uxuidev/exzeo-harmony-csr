@@ -24,7 +24,7 @@ const props = {
     cgActions: {
       batchCompleteTask() { return Promise.resolve(); }
     },
-    newNoteActions: {
+    appStateActions: {
       toggleNote() {}
     },
     appStateActions: {

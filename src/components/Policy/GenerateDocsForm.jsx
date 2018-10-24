@@ -49,16 +49,15 @@ export class GenerateDocsForm extends Component {
             component={Select}
             answers={documentTypeAnswers}
             validate={validation.isRequired}
-            dataTest="documentType"
-          />
+            dataTest="documentType" />
 
           <Button
             baseClass="primary"
             size="small"
             customClass="btn-block"
             type="submit"
-            dataTest="doc-submit"
-          >Generate Doc</Button>
+            dataTest="doc-submit">Generate Doc
+          </Button>
         </form>
       </div>
     );

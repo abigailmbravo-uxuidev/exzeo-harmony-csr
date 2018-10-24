@@ -6,12 +6,13 @@ import { resetSearch } from '../../state/actions/search.actions';
 
 import SearchBar from './components/SearchBar';
 import SearchResults from './components/SearchResults';
-import AddressSearch from './Address/index';
-import PolicySearch from './Policy/index';
-import QuoteSearch from './Quote/index';
-import AgencySearch from './Agency/index';
-import AgentSearch from './Agent/index';
-import UserSearch from './User/index';
+import AddressSearch from './Address';
+import PolicySearch from './Policy';
+import QuoteSearch from './Quote';
+import AgencySearch from './Agency';
+import AgentSearch from './Agent';
+import UserSearch from './User';
+import DiariesSearch from './Diaries';
 
 const SEARCH_FORMS = {
   [SEARCH_TYPES.newQuote]: AddressSearch,
@@ -19,7 +20,8 @@ const SEARCH_FORMS = {
   [SEARCH_TYPES.quote]: QuoteSearch,
   [SEARCH_TYPES.agent]: AgentSearch,
   [SEARCH_TYPES.agency]: AgencySearch,
-  [SEARCH_TYPES.user]: UserSearch
+  [SEARCH_TYPES.user]: UserSearch,
+  [SEARCH_TYPES.diaries]: DiariesSearch
 };
 
 export class SearchPage extends Component {
@@ -52,18 +54,28 @@ export class SearchPage extends Component {
         searchConfig: SEARCH_TYPES.policy,
         searchReady: true
       });
-    }
-    if (pathName === '/agency') {
+    } else if (pathName === '/agency') {
       this.setState({
         searchType: SEARCH_TYPES.agency,
         searchConfig: SEARCH_TYPES.agency,
+        searchReady: true
+      });
+    } else if (pathName === '/diaries') {
+      this.setState({
+        searchType: SEARCH_TYPES.diaries,
+        searchConfig: SEARCH_TYPES.diaries,
         searchReady: true
       });
     }
   };
 
   changeSearchType = (searchType) => {
-    this.setState({ searchType, hasSearched: false, advancedSearch: false });
+    this.setState({
+      searchType,
+      searchConfig: searchType,
+      hasSearched: false,
+      advancedSearch: false
+    });
     this.props.resetSearch();
   };
 
@@ -85,26 +97,30 @@ export class SearchPage extends Component {
 
     return (
       <React.Fragment>
+
         <div className={advancedSearch ? 'policy-advanced search' : 'search'}>
-          <SearchBar
-            advancedSearch={advancedSearch}
-            changeSearchType={this.changeSearchType}
-            initialValues={SEARCH_CONFIG[searchConfig].initialValues}
-            onSubmitSuccess={() => this.setHasSearched(true)}
-            searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
-            searchType={searchType}
-            render={({ submitting, handlePagination }) => (
-              <React.Fragment>
-                {searchReady &&
-                  <SearchForm
-                    advancedSearch={advancedSearch}
-                    handlePagination={handlePagination}
-                    hasSearched={hasSearched}
-                    submitting={submitting}
-                    toggleAdvancedSearch={this.toggleAdvancedSearch} />
-                }
-              </React.Fragment>
-            )} />
+          {searchReady &&
+            <SearchBar
+              advancedSearch={advancedSearch}
+              changeSearchType={this.changeSearchType}
+              initialValues={SEARCH_CONFIG[searchConfig].initialValues}
+              onSubmitSuccess={() => this.setHasSearched(true)}
+              searchType={searchType}
+              render={({
+                changeSearchType,
+                handlePagination,
+                formProps
+              }) => (
+                <SearchForm
+                  advancedSearch={advancedSearch}
+                  changeSearchType={changeSearchType}
+                  searchTypeOptions={SEARCH_CONFIG[searchConfig].searchOptions}
+                  handlePagination={handlePagination}
+                  hasSearched={hasSearched}
+                  toggleAdvancedSearch={this.toggleAdvancedSearch}
+                  {...formProps} />
+              )} />
+          }
         </div>
         <main role="document" className={advancedSearch ? 'policy-advanced' : ''}>
           <div className="content-wrapper">

@@ -31,10 +31,10 @@
     background-color: $card-cap-bg;
 
     > h1,
-     > h3,
-     > h4,
-     > h5,
-    > h2 {
+    > h2,
+    > h3,
+    > h4,
+    > h5 {
       margin: 0;
     }
 
@@ -180,8 +180,6 @@
     font-size: $font-size-sm;
     font-weight: $font-weight-normal;
   }
-
-  span {}
 }
 
 .edit-btn {
@@ -264,6 +262,217 @@
                 color: $btn-link-disabled-color;
               }
             }
+          }
+        }
+      }
+    }
+  }
+}
+
+// ADDED FROM DIARIES / REUSABLE CARDS
+ul {
+  &.results {
+    width: 100%;
+    padding: $padding*2;
+
+    &.diary-list {
+      .card {
+        flex-direction: row;
+        flex-grow: 1;
+        flex-shrink: 1;
+        width: 100%;
+        margin: 0 0 $padding;
+
+        &.pastDue {
+          .card-header {
+            .card-status-indicator {
+              background-color: $red-darken-01;
+            }
+
+            .icon-wrapper {
+              i {
+                &.icon-status-indicator {
+                  &:before {
+                    content: '\f0f3';
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        &.dueSoon {
+          .card-header {
+            .card-status-indicator {
+              background-color: $orange-lighten-01;
+            }
+
+            .icon-wrapper {
+              i {
+                &.icon-status-indicator {
+                  &:before {
+                    content: '\f017';
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        &.upComing {
+          .card-header {
+            .card-status-indicator {
+              background-color: $green-darken-02;
+            }
+
+            .icon-wrapper {
+              i {
+                &.icon-status-indicator {
+                  &:before {
+                    content: '\f133';
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        header {
+          &.card-header {
+            display: flex;
+            flex-grow: 0;
+            flex-shrink: 0;
+            width: auto;
+            padding: ($padding/2) ($padding/2) ($padding/2) $padding;
+            border-width: 0;
+            background: $white;
+
+            .card-status-indicator {
+              flex-grow: 0;
+              flex-shrink: 0;
+              width: 8px;
+              background: $warm-gray-04;
+              border-radius: 2px;
+            }
+
+            .icon-wrapper {
+              display: flex;
+              align-items: center;
+              flex-direction: column;
+              justify-content: center;
+              padding: $padding ($padding*3);
+
+              i {
+                font-size: $font-size-h2;
+                color: $bright-blue-darken-04;
+
+                &.icon-status-indicator {
+                  font-size: $font-size-xs;
+                }
+
+                &.fa-bookmark-o {
+                  margin-bottom: $padding/2;
+                }
+              }
+
+              > div {
+                font-size: $font-size-xs;
+                color: $bright-blue-darken-04;
+                font-weight: $font-weight-bold;
+              }
+            }
+          }
+        }
+
+        > div {
+          &.card-body {
+            flex-grow: 1;
+            flex-shrink: 1;
+            width: auto;
+            padding: $padding 0;
+            background: $white;
+
+            h4 {
+              span {
+                font-weight: $font-weight-normal;
+              }
+            }
+
+            ul {
+              margin: 0;
+              padding: 0;
+              list-style: none;
+
+              &.diary-entry-list {
+                li {
+                  padding: ($padding/4) 0;
+                  display: flex;
+                  color: $warm-gray-08;
+                  font-size: $font-size-sm;
+
+                  &.header {
+
+                    background: $warm-gray-02;
+                    font-weight: $font-weight-bold;
+                  }
+
+                  span {
+                    padding-left: $padding;
+
+                    &.due-date {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 5rem;
+                    }
+
+                    &.assignee {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 8rem;
+                    }
+
+                    &.reason {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 8rem;
+                    }
+
+                    &.message {
+                      flex-grow: 1;
+                      flex-shrink: 1;
+                    }
+
+                    &.updated {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 5rem;
+                    }
+
+                    &.updated-by {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 8rem;
+                    }
+
+                    &.action {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 2rem;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        footer {
+          &.card-footer {
+            flex-grow: 0;
+            flex-shrink: 0;
+            width: auto;
+            border-width: 0;
+            background: $white;
           }
         }
       }

@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { Loader } from '@exzeo/core-ui';
-import { WORK_FLOW_DATA, WORK_FLOW_MODEL_NAME } from "../constants/search";
-import { startWorkflow } from '../state/actions/cg.actions';
+
 import { getUIQuestions } from '../state/actions/questions.actions';
 import Header from '../components/Common/Header';
 import Footer from '../components/Common/Footer';
@@ -12,13 +11,12 @@ import Search from '../modules/Search';
 
 export class SearchBase extends Component {
   componentDidMount() {
-    const { startWorkflow, getUIQuestions } = this.props;
-    startWorkflow(WORK_FLOW_MODEL_NAME, WORK_FLOW_DATA);
+    const { getUIQuestions } = this.props;
     getUIQuestions('searchCSR');
   }
 
   render() {
-    const { loading, auth, location } = this.props;
+    const { loading, auth, location, userProfile } = this.props;
     return (
       <div className="app-wrapper csr">
         {loading &&
@@ -28,7 +26,7 @@ export class SearchBase extends Component {
           <title>Harmony - CSR Portal</title>
         </Helmet>
         <Header auth={auth} />
-        <Search pathName={location.pathname}>
+        <Search pathName={location.pathname} userProfile={userProfile} >
           <div className="basic-footer">
             <Footer />
           </div>
@@ -39,17 +37,18 @@ export class SearchBase extends Component {
 }
 
 SearchBase.propTypes = {
-  getUIQuestions: PropTypes.func,
-  startWorkflow: PropTypes.func,
-  auth: PropTypes.object,
-  loading: PropTypes.bool
+  auth: PropTypes.shape().isRequired,
+  loading: PropTypes.bool.isRequired,
+  location: PropTypes.shape().isRequired,
+  getUIQuestions: PropTypes.func.isRequired,
+  userProfile: PropTypes.shape().isRequired
 };
 
 const mapStateToProps = state => ({
-  loading: state.search.loading
+  loading: state.search.loading,
+  userProfile: state.authState.userProfile
 });
 
 export default connect(mapStateToProps, {
-  getUIQuestions,
-  startWorkflow
+  getUIQuestions
 })(SearchBase);

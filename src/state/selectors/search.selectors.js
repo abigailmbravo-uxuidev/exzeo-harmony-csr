@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-const getAgencies = state => state.service.agencies;
+import { getAgencies } from './entity.selectors';
 
 export const getAgenciesForTypeAhead = createSelector(
   [getAgencies],
@@ -11,8 +11,7 @@ export const getAgenciesForTypeAhead = createSelector(
 
     return agencies.map(agency => ({
       label: agency.displayName,
-      answer: agency.agencyCode,
-      value: agency.agencyCode
+      answer: agency.agencyCode
     }));
   }
 );

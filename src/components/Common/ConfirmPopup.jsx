@@ -1,26 +1,26 @@
 import React, { Component } from 'react';
 
 export class ConfirmPopup extends Component {
-
   constructor(props) {
     super(props);
-    this.yes = this.yes.bind(this);
-    this.no = this.no.bind(this);
+    this.handleConfirm = this.handleConfirm.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
 
     this.state = {
       hidden: false
     };
   }
+
   componentWillReceiveProps() {
     this.setState({ hidden: false });
   }
 
-  yes() {
+  handleConfirm() {
     this.props.setBackStep(true, this.props.callback);
     this.setState({ hidden: true });
   }
 
-  no() {
+  handleCancel() {
     this.props.setBackStep(false, this.props.callback);
     this.setState({ hidden: true });
   }
@@ -43,18 +43,16 @@ export class ConfirmPopup extends Component {
               <button
                 className="btn btn-secondary"
                 type="button"
-                onClick={this.yes}
-              >
+                onClick={this.handleConfirm} >
             Yes
-          </button>
+              </button>
               <button
-                tabIndex={'0'}
+                tabIndex="0"
                 className="btn btn-secondary"
                 type="button"
-                onClick={this.no}
-              >
+                onClick={this.handleCancel} >
             No
-          </button>
+              </button>
             </div>
           </div>
         </div>
