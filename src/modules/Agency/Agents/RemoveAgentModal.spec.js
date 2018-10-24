@@ -13,10 +13,15 @@ describe('Testing RemoveAgentModal component', () => {
       handleConfirm() {},
       listOfAgents: [],
       initialValues: {},
-      toggleModal: () => x => x
+      toggleModal() {},
+      handleCancel() {}
     };
     const wrapper = shallow(<RemoveAgentModal {...props} />);
     expect(wrapper.exists()).toBeTruthy();
     wrapper.instance().props.handleConfirm(mockAgency, x => x, props);
+    wrapper.find('Button').everyWhere((x) => {
+      x.simulate('click');
+      return x;
+    });
   });
 });

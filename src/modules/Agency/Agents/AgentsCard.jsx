@@ -60,17 +60,20 @@ export const AgentsCard = ({
         <div className="card-actions">
           {String(agency.agentOfRecord) === String(agent.agentCode) &&
           <Button
+            dataTest="switchAOR"
             baseClass="link"
             size="small"
             onClick={() => handleSwitchAOR(agent.agentCode)}><i className="fa fa-times-circle" />Switch AOR
           </Button>}
           {String(agency.agentOfRecord) !== String(agent.agentCode) &&
           <Button
+            dataTest="removeAgent"
             baseClass="link"
             size="small"
             onClick={() => handleRemoveAgent(agentIndex)}><i className="fa fa-times-circle" />Remove
           </Button>}
           <Button
+            dataTest="editAgent"
             baseClass="link"
             size="small"
             onClick={() => handleEditAgent(agentIndex)}><i className="fa fa-pencil-square" />Edit

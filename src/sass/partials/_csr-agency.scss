@@ -507,9 +507,11 @@
               &.agency,
               &.agent,
               &.contact,
-              &.contract {
+              &.contract,
+              &.license {
                 .contact-title,
-                .contract-title {
+                .contract-title,
+                .license-title {
                   display: flex;
                   flex-direction: column;
                   flex-grow: 0;
@@ -761,26 +763,30 @@
                 }
               }
 
-              .contract-details {
+              .contract-details,
+              .license-details {
                 display: flex;
                 flex-direction: column;
+                justify-content: center;
                 flex-grow: 1;
                 flex-shrink: 1;
                 margin-left: $padding*2;
 
-                .contract-header {
+                .contract-header,
+                .license-header {
                   display: flex;
                   justify-content: space-between;
                   width: 100%;
 
-                  .contract-csp {
+                  .contract-csp,
+                  .license-csp {
                     font-weight: $font-weight-normal;
                   }
                 }
 
                 .contract-info {
                   display: flex;
-                  margin-bottom: $padding;
+                  margin-bottom: 0;
 
                   .additional-contract-info {
                     display: flex;
@@ -883,7 +889,8 @@
               }
 
               .contact-actions,
-              .contract-actions {
+              .contract-actions,
+              .license-actions {
                 display: flex;
                 align-items: center;
                 flex-grow: 0;
@@ -1105,28 +1112,83 @@
         width: 100%;
 
         .card-block {
-            width: 100%;
-            display: flex;
+          display: flex;
+          width: 100%;
 
-            .contract-details {
-                flex-grow: 1;
-                flex-shrink: 1;
-            }
-            .contract-csp {
-                flex-grow: 0;
-                flex-shrink: 0;
-                width: 20rem;
-                .csp-list {
-                    .contract-agent-list {
-                        margin: 0;
-                        padding: 0;
-                        list-style: none;
-                        li {
-                            display: flex;
-                        }
+          .contract-details {
+            flex-grow: 1;
+            flex-shrink: 1;
+            margin-right: $padding;
+            padding-right: $padding*2;
+            border-right: 1px dotted $warm-gray-03;
+          }
+
+          .contract-csp {
+            flex-grow: 0;
+            flex-shrink: 0;
+            width: 20rem;
+            margin-left: $padding;
+
+            .csp-list {
+              .contract-agent-list {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+
+                li {
+                  display: flex;
+                  align-items: center;
+
+                  > div {
+                    flex-grow: 1;
+                    flex-shrink: 1;
+                    margin-right: $padding;
+
+                    &.state {
+                      flex-grow: 0;
+                      flex-shrink: 0;
+                      width: 6rem;
                     }
+                  }
+
+                  i {
+                    margin-top: 0.75rem;
+                    color: $bright-blue;
+                    @include transition(all 0.2s ease-in-out);
+
+                    &:hover {
+                      cursor: pointer;
+                      color: $bright-blue-darken-04;
+                    }
+
+                    &.fa-times-circle {
+                      color: $red;
+
+                      &:hover {
+                        color: $red-darken-02;
+                      }
+                    }
+                  }
                 }
+              }
+
+              .add-product {
+                display: flex;
+                align-items: center;
+
+                hr {
+                  flex-grow: 1;
+                  flex-shrink: 1;
+                  border-width: 0;
+                  border-top: 1px solid $warm-gray-04;
+                }
+
+                .btn {
+                  margin: 0 $padding;
+                }
+              }
             }
+          }
         }
       }
     }

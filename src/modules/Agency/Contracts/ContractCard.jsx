@@ -12,19 +12,11 @@ export const ContractCard = ({ contract, editContract, contractIndex }) => (
         <h4 className="contract-csp">
           <strong>{contract.companyCode}</strong> |&nbsp;
           <span>
-          {contract.stateProducts.map((p, index) => (contract.stateProducts.length === (index + 1) 
-            ? <span key={p.product}>{p.state} &bull; {p.product}</span> 
+          {contract.stateProducts.map((p, index) => (contract.stateProducts.length === (index + 1)
+            ? <span key={p.product}>{p.state} &bull; {p.product}</span>
             : <span key={p.product}>{p.state} &bull; {p.product} | </span>))}
           </span>
         </h4>
-        <div className="contract-actions">
-          <button
-            className="btn btn-link btn-sm"
-            onClick={editContract}
-          >
-          <i className="fa fa-pencil-square" />Edit
-          </button>
-        </div>
       </div>
       <div className="contract-info">
         <span className="additional-contract-info contract">
@@ -34,6 +26,14 @@ export const ContractCard = ({ contract, editContract, contractIndex }) => (
           </div>
         </span>
       </div>
+    </div>
+    <div className="contract-actions">
+      <button
+        className="btn btn-link btn-sm"
+        onClick={editContract}
+      >
+      <i className="fa fa-pencil-square" />Edit
+      </button>
     </div>
   </div>);
 
