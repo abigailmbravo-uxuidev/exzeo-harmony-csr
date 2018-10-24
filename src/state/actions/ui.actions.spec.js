@@ -1,6 +1,6 @@
 import configureStore from 'redux-mock-store';
 import * as types from './actionTypes';
-import * as newNoteActions from './newNote.actions';
+import * as newNoteActions from './ui.actions';
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);

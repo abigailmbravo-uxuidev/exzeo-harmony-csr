@@ -1,5 +1,5 @@
 // import _ from "lodash";
-import { getAnswers } from "./forms";
+import { getAnswers } from './forms';
 
 export const getMortgageeOrderAnswers = (questions, additionalInterests) => {
   const orderAnswers = getAnswers('order', questions);
@@ -18,8 +18,7 @@ export const getMortgageeOrderAnswersForEdit = (questions, additionalInterests) 
 };
 
 export const applyAdditionalInterestRanking = (additionalInterests, sortActive = false) => {
-
-  if(!Array.isArray(additionalInterests)) return;
+  if (!Array.isArray(additionalInterests)) return;
   // add rank for sorting
   additionalInterests.forEach((value) => {
     if (sortActive) {

@@ -609,6 +609,8 @@
                 .discountSurcharge {
                   width: 60%;
                   padding: ($padding*1.5) ($padding*2);
+                  white-space: normal;
+                  hyphens: auto;
                 }
 
                 .value {
@@ -669,22 +671,21 @@
     }
   }
 }
-
 //search cards
 .card {
   &.contact {
     .contact-details {
-        .contact-address {
-          .additional-data {
-            margin-left: $padding;
-            font-size: $font-size-sm;
+      .contact-address {
+        .additional-data {
+          margin-left: $padding;
+          font-size: $font-size-sm;
 
-            label {
-              margin-bottom: 0;
-              font-size: $font-size-xs;
-            }
+          label {
+            margin-bottom: 0;
+            font-size: $font-size-xs;
           }
         }
+      }
     }
   }
 }

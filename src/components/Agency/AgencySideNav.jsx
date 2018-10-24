@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { reduxForm, propTypes } from 'redux-form';
-import * as appStateActions from '../../state/actions/appState.actions';
-import * as cgActions from '../../state/actions/cg.actions';
+
+import { toggleDiary } from '../../state/actions/ui.actions';
 // import NewNoteFileUploader from '../Common/NewNoteFileUploader';
 
 // Example of a possible schema
@@ -33,10 +32,20 @@ const csrLinks = agencyCode => [{
 }];
 
 
-export const SideNav = ({ agencyCode }) => (
-  <nav className="site-nav">
-    <ul>
-      {csrLinks(agencyCode).map((agentLink, index) => (
+export class SideNav extends Component {
+  newDiary = () => {
+    const { toggleDiaryAction, agency } = this.props;
+    toggleDiaryAction({
+      resourceType: 'Agency',
+      id: agency.agencyCode
+    });
+  };
+
+  render() {
+    const { agencyCode } = this.props;
+    return (<nav className="site-nav">
+      <ul>
+        {csrLinks(agencyCode).map((agentLink, index) => (
         agentLink.outside ?
           <li key={index}>
             {/* <a className={agentLink.styleName} href={agentLink.link}> */}
@@ -50,8 +59,14 @@ export const SideNav = ({ agencyCode }) => (
             </span>
           </li>
       ))}
-    </ul>
-  </nav>);
+      </ul>
+      <div className="plus-button-group">
+        <div className="btn btn-round btn-primary btn-lg new-btn"><i className="fa fa-plus" /></div>
+        <button aria-label="open-btn form-newDiary" data-test="newDiary" className="btn btn-primary btn-round btn-lg new-diary-btn" onClick={() => this.newDiary()}><i className="fa fa-bookmark" /><span>NEW DIARY</span></button>
+      </div>
+    </nav>);
+  }
+}
 
 // TODO: Needs to be connected to wherever it's gonnna get nav links from
 SideNav.propTypes = {
@@ -67,11 +82,4 @@ const mapStateToProps = state => ({
   agency: state.service.agency || {}
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: {
-    cgActions: bindActionCreators(cgActions, dispatch),
-    appStateActions: bindActionCreators(appStateActions, dispatch)
-  }
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({ form: 'SideNav' })(SideNav));
+export default connect(mapStateToProps, { toggleDiaryAction: toggleDiary })(reduxForm({ form: 'SideNav' })(SideNav));

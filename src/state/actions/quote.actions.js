@@ -1,5 +1,6 @@
-import * as types from './actionTypes';
 import { startWorkflow } from '../../utilities/choreographer';
+
+import * as types from './actionTypes';
 import * as errorActions from './error.actions';
 
 export function setQuote(quote) {

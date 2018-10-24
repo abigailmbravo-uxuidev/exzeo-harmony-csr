@@ -1,14 +1,16 @@
-export const WORK_FLOW_MODEL_NAME = 'csrQuote';
-export const WORK_FLOW_DATA = {
-  dsUrl: `${process.env.REACT_APP_API_URL}/ds`
-};
-
 export const SEARCH_TYPES = {
   newQuote: 'address',
   quote: 'quote',
   policy: 'policy',
   agent: 'agent',
-  agency: 'agency'
+  agency: 'agency',
+  diaries: 'diaries'
+};
+
+export const SEARCH_FORM = 'SEARCH_BAR';
+
+export const ADDRESS_INITIAL_VALUES = {
+  searchType: SEARCH_TYPES.newQuote
 };
 
 export const POLICY_INITIAL_VALUES = {
@@ -16,9 +18,27 @@ export const POLICY_INITIAL_VALUES = {
   sortBy: 'policyNumber'
 };
 
+export const QUOTE_INITIAL_VALUES = {
+  searchType: SEARCH_TYPES.quote
+};
+
 export const AGENCY_INITIAL_VALUES = {
   searchType: SEARCH_TYPES.agency
 };
+
+export const AGENT_INITIAL_VALUES = {
+  searchType: SEARCH_TYPES.agent
+};
+
+export const DIARY_INITIAL_VALUES = {
+  assignees: [],
+  open: 'true',
+  dateRange: {
+    min: '',
+    max: ''
+  }
+};
+
 
 export const POLICY_SEARCH_OPTIONS = [
   {
@@ -47,13 +67,29 @@ export const AGENCY_SEARCH_OPTIONS = [
 ];
 
 export const SEARCH_CONFIG = {
+  [SEARCH_TYPES.newQuote]: {
+    initialValues: ADDRESS_INITIAL_VALUES,
+    searchOptions: POLICY_SEARCH_OPTIONS
+  },
   [SEARCH_TYPES.policy]: {
     initialValues: POLICY_INITIAL_VALUES,
+    searchOptions: POLICY_SEARCH_OPTIONS
+  },
+  [SEARCH_TYPES.quote]: {
+    initialValues: QUOTE_INITIAL_VALUES,
     searchOptions: POLICY_SEARCH_OPTIONS
   },
   [SEARCH_TYPES.agency]: {
     initialValues: AGENCY_INITIAL_VALUES,
     searchOptions: AGENCY_SEARCH_OPTIONS
+  },
+  [SEARCH_TYPES.agent]: {
+    initialValues: AGENT_INITIAL_VALUES,
+    searchOptions: AGENCY_SEARCH_OPTIONS
+  },
+  [SEARCH_TYPES.diaries]: {
+    initialValues: DIARY_INITIAL_VALUES,
+    searchOptions: []
   }
 };
 
@@ -70,8 +106,6 @@ export const NO_RESULTS_MESSAGES = {
   [SEARCH_TYPES.policy]: 'There are no policies found matching that search criteria. Please try to search again.',
   [SEARCH_TYPES.quote]: 'There are no quotes found matching that search criteria. Please try to search again, or start a new quote.',
   [SEARCH_TYPES.agent]: DEFAULT_NO_RESULTS_MESSAGE,
-  [SEARCH_TYPES.agency]: DEFAULT_NO_RESULTS_MESSAGE
+  [SEARCH_TYPES.agency]: DEFAULT_NO_RESULTS_MESSAGE,
+  [SEARCH_TYPES.diaries]: DEFAULT_NO_RESULTS_MESSAGE
 };
-
-export const STANDARD_DATE_FORMAT = 'MM/DD/YYYY';
-export const SECONDARY_DATE_FORMAT = 'YYYY-MM-DD';

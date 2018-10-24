@@ -1,7 +1,6 @@
 import * as types from '../actions/actionTypes';
-import initialState from './initialState';
 
-// we want this store to rehydrate so we add the rehydrate type to the reducer
+import initialState from './initialState';
 
 export default function quoteStateReducer(state = initialState.quoteState, action) {
   switch (action.type) {

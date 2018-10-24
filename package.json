@@ -13,7 +13,7 @@
     "test:watch": "react-scripts test --env=jsdom"
   },
   "dependencies": {
-    "@exzeo/core-ui": "^0.2.0",
+    "@exzeo/core-ui": "0.3.x",
     "@fortawesome/fontawesome": "~1.0.0",
     "@fortawesome/react-fontawesome": "~0.0.14",
     "@uppy/core": "^0.26.0",
@@ -44,7 +44,7 @@
     "react-redux": "~5.0.6",
     "react-router": "~4.2.0",
     "react-router-dom": "~4.2.2",
-    "react-scripts": "1.1.2",
+    "react-scripts": "1.1.5",
     "react-select": "~1.1.0",
     "react-tooltip": "~3.4.0",
     "redux": "~3.7.2",
@@ -84,6 +84,8 @@
       "src/**/*.{js,jsx}",
       "!src/index.js",
       "!src/routes.js",
+      "!src/modules/Policy/index.js",
+      "!src/components/Authentication.jsx",
       "!src/setupTests.js",
       "!src/Auth.js"
     ],

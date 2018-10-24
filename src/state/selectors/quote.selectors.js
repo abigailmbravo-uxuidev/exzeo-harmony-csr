@@ -1,19 +1,21 @@
 import { createSelector } from 'reselect';
-import sortBy from 'lodash/sortBy';
 import cloneDeep from 'lodash/cloneDeep';
-import { applyAdditionalInterestRanking } from '../../utilities/additionalInterests';
-import { ADDITIONAL_INTERESTS, DEFAULT_ADDITIONAL_INTERESTS_MAP, DISABLED_AI_STATES } from '../../constants/additionalInterests';
+import sortBy from 'lodash/sortBy';
+import { emptyArray } from '@exzeo/core-ui';
 
-const defaultObject = {};
-const defaultArr = [];
-const getQuote = state => (state.quoteState && state.quoteState.quote ? state.quoteState.quote : defaultObject);
-const getAppState = state => state.appState || defaultObject;
-const getCGState = state => state.cg || defaultObject;
+import { applyAdditionalInterestRanking } from '../../utilities/additionalInterests';
+import {
+  ADDITIONAL_INTERESTS,
+  DEFAULT_ADDITIONAL_INTERESTS_MAP,
+  DISABLED_AI_STATES
+} from '../../constants/additionalInterests';
+
+import { getQuote, getAppState, getCGState } from './entity.selectors';
 
 export const getSortedAdditionalInterests = createSelector(
   [getQuote],
   (quoteData) => {
-    if (!quoteData.additionalInterests) return defaultArr;
+    if (!quoteData.additionalInterests) return emptyArray;
 
     const additionalInterests = cloneDeep(quoteData.additionalInterests);
     // mutate copy of additionalInterests from quote and add a rank value
@@ -50,28 +52,28 @@ export const checkQuoteState = createSelector(
   }
 );
 
-export const getQuoteDataFromCgState = createSelector(
-  [getAppState, getCGState],
-  (appState, cgState) => {
-    const taskData = cgState[appState.modelName] && cgState[appState.modelName].data;
+// export const getQuoteDataFromCgState = createSelector(
+//   [getAppState, getCGState],
+//   (appState, cgState) => {
+//     const taskData = cgState[appState.modelName] && cgState[appState.modelName].data;
+//
+//     if (!taskData || !taskData.model || !taskData.model.variables) return {};
+//
+//     const preferredResult = taskData.model.variables.find(variable => variable.name === 'getQuoteBetweenPageLoop');
+//     if (preferredResult && preferredResult.value && preferredResult.value.result) {
+//       return preferredResult.value.result;
+//     }
+//
+//     const backupResult = taskData.model.variables.find(variable => variable.name === 'retrieveQuote');
+//     if (backupResult && backupResult.value && backupResult.value.result) {
+//       return backupResult.value.result;
+//     }
+//
+//     return {};
+//   }
+// );
 
-    if (!taskData || !taskData.model || !taskData.model.variables) return {};
-
-    const preferredResult = taskData.model.variables.find(variable => variable.name === 'getQuoteBetweenPageLoop');
-    if (preferredResult && preferredResult.value && preferredResult.value.result) {
-      return preferredResult.value.result;
-    }
-
-    const backupResult = taskData.model.variables.find(variable => variable.name === 'retrieveQuote');
-    if (backupResult && backupResult.value && backupResult.value.result) {
-      return backupResult.value.result;
-    }
-
-    return {};
-  }
-);
-
-export const getQuoteforCreate = createSelector(
+export const getQuoteForCreate = createSelector(
   [getAppState, getCGState],
   (appState, cgState) => {
     const taskData = cgState[appState.modelName] && cgState[appState.modelName].data;

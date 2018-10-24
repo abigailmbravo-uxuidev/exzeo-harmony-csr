@@ -1,6 +1,8 @@
 import { connect } from 'react-redux';
-import { getAgenciesForTypeAhead } from "../../../state/selectors/search.selectors";
-import PolicySearch from './PolicySearch'
+
+import { getAgenciesForTypeAhead } from '../../../state/selectors/search.selectors';
+
+import PolicySearch from './PolicySearch';
 
 const mapStateToProps = state => ({
   agencyList: getAgenciesForTypeAhead(state),

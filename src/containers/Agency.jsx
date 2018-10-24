@@ -10,22 +10,39 @@ import AgencyDetailHeader from '../components/Agency/DetailHeader';
 import * as appStateActions from '../state/actions/appState.actions';
 import * as serviceActions from '../state/actions/service.actions';
 
-export const Agency = props => (
-  <div className="app-wrapper csr agency">
-    <Helmet><title>{props.agency && props.agency.agencyCode ? `A: ${props.agency.agencyCode}` : 'Harmony - CSR Portal'}</title></Helmet>
-    <AgencyHeader />
-    <AgencyDetailHeader />
-    <main role="document">
-      { !props.agency && <Loader />}
-      <aside className="content-panel-left">
-        <AgencySideNav agencyCode={props.agency ? props.agency.agencyCode : null} />
-      </aside>
-      <div className="content-wrapper">
-        {props.children}
-      </div>
-    </main>
-  </div>
-);
+import { OpenDiariesBar } from '../components/OpenDiariesBar';
+
+export class Agency extends React.Component {
+  state = {
+    showDiaries: false
+  }
+
+  toggleDiariesHandler = () => {
+    this.setState({ showDiaries: !this.state.showDiaries });
+  }
+
+  render() {
+    const { agency, children } = this.props;
+    const { showDiaries } = this.state;
+
+    return (<div className="app-wrapper csr agency">
+      <Helmet><title>{agency && agency.agencyCode ? `A: ${agency.agencyCode}` : 'Harmony - CSR Portal'}</title></Helmet>
+      <AgencyHeader toggleDiaries={this.toggleDiariesHandler} showDiaries={showDiaries} />
+      <AgencyDetailHeader />
+      <main role="document">
+        {!agency && <Loader />}
+        <aside className="content-panel-left">
+          <AgencySideNav agencyCode={agency ? agency.agencyCode : null} />
+        </aside>
+        <div className="content-wrapper">
+          {children}
+        </div>
+        {showDiaries && <OpenDiariesBar resourceType="Agency" resourceId={agency.agencyCode} />}
+      </main>
+    </div>
+    );
+  }
+}
 
 Agency.propTypes = {
   children: PropTypes.oneOfType([
