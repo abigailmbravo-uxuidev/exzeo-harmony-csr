@@ -15,6 +15,8 @@ export const renderProducts = ({ fields }) => {
     { answer: 'FL3', label: 'FL3' }
   ];
   
+  if (fields.length === 0) fields.insert(0, {});
+
   return (
     <React.Fragment>
       {fields.map((product, index) =>
@@ -56,9 +58,15 @@ export const ContractModal = (props) => {
     closeModal,
     saveContract,
     handleSubmit,
-    initialValues
+    initialValues,
+    contractNumbers
   } = props;
 
+  const uniqueContractNumber = value => {
+    return value && contractNumbers.includes(value) && value !== initialValues.contractNumbers
+      ? 'The Contract Number must be unique.' 
+      : undefined;
+  }
   const actionType = initialValues ? 'Edit' : "Add";
   return (
     <div className="modal contract-crud">
@@ -83,7 +91,7 @@ export const ContractModal = (props) => {
                 name={`contractNumber`}
                 dataTest={`contractNumber`}
                 component={Input}
-                validate={validation.isRequired}
+                validate={[validation.isRequired, uniqueContractNumber]}
               />
               <Field
                 label="Addendum"
@@ -109,6 +117,10 @@ export const ContractModal = (props) => {
   );
 };
 
+ContractModal.defaultProps = {
+  contractNumbers: []
+};
+
 ContractModal.propTypes = {
   closeModal: PropTypes.func.isRequired,
   saveContract: PropTypes.func.isRequired,
@@ -116,7 +128,10 @@ ContractModal.propTypes = {
     companyCode: PropTypes.string.isRequired,
     contractNumber: PropTypes.string.isRequired,
     addendum: PropTypes.string,
-    stateProducts: PropTypes.array.isRequired
+    stateProducts: PropTypes.arrayOf(PropTypes.shape({
+      state: PropTypes.string,
+      product: PropTypes.string
+    }))
   })
 };
 

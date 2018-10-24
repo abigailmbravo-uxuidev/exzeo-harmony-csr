@@ -10,26 +10,41 @@ import ContractModal from './ContractModal';
 export class Contracts extends Component {
   state = {
     showContractModal: false,
-    activeContract: null
+    contractIndex: null
   };
 
-  toggleContract = contract => () => {
+  toggleContract = contractIndex => () => {
     this.setState(prevState => ({
       showContractModal: !prevState.showContractModal,
-      activeContract: contract
+      contractIndex
     }));
   };
 
   saveContract = async (data, dispatch, props) => {
-    const { agency: { agencyCode }, updateAgency } = this.props
-    const submitData = { agencyCode, contracts: [{ ...data }] };
-    await updateAgency(submitData);
+    const { agency: { agencyCode, contracts }, updateAgency } = this.props;
+    const { contractIndex } = this.state;
+
+    let newContracts;
+
+    if(contractIndex) {
+      newContracts = contracts.map((item, index) => {
+        if (index === contractIndex) {
+          return { ...data };
+        } else {
+          return item;
+        }
+      });
+    } else {
+      newContracts = [...contracts, { ...data }];
+    }
+
+    await updateAgency({ agencyCode, contracts: newContracts });
     this.toggleContract()();
   };
 
   render() {
     const { agency, listOfAgents } = this.props;
-    const { activeIndex, showContractModal } = this.state;
+    const { contractIndex, showContractModal } = this.state;
 
     if (!agency) return <div />;
     return (
@@ -38,7 +53,8 @@ export class Contracts extends Component {
           <ContractModal
             saveContract={this.saveContract}
             closeModal={this.toggleContract}
-            initialValues={this.state.activeContract}
+            initialValues={agency.contracts[contractIndex]}
+            contractNumbers={agency.contracts.map(c => c.contractNumber)}
           />
         }
         <div className="route-content">
@@ -69,9 +85,9 @@ export class Contracts extends Component {
                 <h3>Contracts</h3>
                 {Array.isArray(agency.contracts) && agency.contracts.map((contract, index) => (
                   <ContractCard
-                    key={contract.contractNumber}
+                    key={`${contract.contractNumber}`}
                     contract={contract}
-                    editContract={this.toggleContract(contract)}
+                    editContract={this.toggleContract(index)}
                   />
                 ))}
                 <div className="create-contract">
