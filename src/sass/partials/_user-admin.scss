@@ -58,7 +58,6 @@
   flex-grow: 1;
   width: 100%;
   margin-bottom: $padding/2;
-  margin-bottom: $padding/2;
   padding: $padding*2;
 
   &.agency-list {
@@ -105,11 +104,12 @@
         @include transition(all 0.2s ease-in-out);
 
         h4.agency {
-            @include transition(all 0.2s ease-in-out);
-            &:hover {
-                cursor: pointer;
-                color: $bright-blue;
-            }
+          @include transition(all 0.2s ease-in-out);
+
+          &:hover {
+            cursor: pointer;
+            color: $bright-blue;
+          }
         }
       }
     }
@@ -119,7 +119,7 @@
     &.agency {
       &.contact {
         flex-direction: row;
-        margin: 0 (-$padding/2) ($padding);
+        margin: 0 0 $padding;
         padding: $padding ($padding*1.5);
 
         > .contact-title {
