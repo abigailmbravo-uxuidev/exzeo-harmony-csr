@@ -12,6 +12,7 @@ import AgencyAddressModal from './AgencyAddressModal';
 import AgencyContactModal from './AgencyContactModal';
 import AgencyModal from './AgencyModal';
 import BranchModal from './BranchModal';
+import Footer from '../../../components/Common/Footer';
 
 
 export class Overview extends React.Component {
@@ -121,6 +122,9 @@ export class Overview extends React.Component {
               </section>
             </div>
           </div>
+        </div>
+        <div className="basic-footer">
+          <Footer />
         </div>
         {showEditDetailsModal && Number(branchCode) === 0 && <AgencyModal initialValues={agency} closeModal={this.onHandleToggleEditDetailsModal} />}
         {showEditDetailsModal && Number(branchCode) > 0 && <BranchModal agency={agency} branchCode={branchCode} initialValues={agencyBranchData} closeModal={this.onHandleToggleEditDetailsModal} />}

@@ -9,6 +9,7 @@ import Address from '../components/Address';
 import License from '../components/License';
 import territoryManagers from '../components/territoryManagers';
 import history from '../../../history';
+import Footer from '../../../components/Common/Footer';
 
 import BranchDetails from './BranchDetails';
 
@@ -155,8 +156,11 @@ export class CreateBranch extends Component {
           </div>
         </div>
         <div className="basic-footer btn-footer">
-          <Button dataTest="resetButton" baseClass="secondary" onClick={this.handleResetForm}>Cancel</Button>
-          <Button form="createBranch" dataTest="submitButton" baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
+          <Footer />
+          <div className="btn-wrapper">
+            <Button dataTest="resetButton" baseClass="secondary" onClick={this.handleResetForm}>Cancel</Button>
+            <Button form="createBranch" dataTest="submitButton" baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
+          </div>
         </div>
         {this.state.showAddExistingAgentModal &&
         <ExistingAgentModal
