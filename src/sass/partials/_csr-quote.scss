@@ -476,6 +476,7 @@
     }
     //diaries
     .open-diaries {
+      overflow-y: auto;
       position: absolute;
       right: 0;
       align-self: stretch;
@@ -521,7 +522,6 @@
       @include transition(all 0.1s ease-in-out);
 
       .open-diaries {
-        overflow: hidden;
         width: 240px;
         @include transition(all 0.1s ease-in-out);
       }
