@@ -1,7 +1,7 @@
 import moment from 'moment-timezone';
+import { normalize } from '@exzeo/core-ui/lib';
 
 import { STANDARD_DATE_FORMAT } from '../constants/dates';
-import { normalize } from '@exzeo/core-ui/lib';
 
 const cancellationStatuses = ['Pending', 'Cancel'];
 /**
@@ -97,4 +97,15 @@ export function getMailingAddress(mailingAddress, policyHolders) {
     address2: mailingAddress.address2,
     csz: getCityStateZip(mailingAddress)
   };
+}
+
+/**
+ * Formatting for currentPremium
+ * @param premium
+ * @returns {string}
+ */
+export function getCurrentPremium(premium) {
+  return premium
+    ? `$ ${normalize.numbers(premium)}`
+    : '--';
 }
