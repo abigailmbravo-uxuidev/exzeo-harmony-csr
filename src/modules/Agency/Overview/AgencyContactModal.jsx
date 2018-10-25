@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, FormSection } from 'redux-form';
 
-import { updateAgency } from '../../../state/actions/agencyActions';
+import { updateAgency } from '../../../state/actions/agency.actions';
 import Contact from '../components/FormGroup/Contact';
 
 export class AgencyContactModal extends Component {

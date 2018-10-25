@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { reduxForm, Field, formValueSelector, FormSection } from 'redux-form';
 import { validation, SelectTypeAhead } from '@exzeo/core-ui';
 
-import { updateAgency } from '../../../state/actions/agencyActions';
+import { updateAgency } from '../../../state/actions/agency.actions';
 import Address from '../components/Address';
 import territoryManagers from '../components/territoryManagers';
 

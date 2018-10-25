@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, FieldArray, Form, Field } from 'redux-form';
-import { Input, Date, Select } from '@exzeo/core-ui/lib/Input';
-import { validation } from '@exzeo/core-ui';
+import { Input, Select, validation } from '@exzeo/core-ui';
 
-export const renderProducts = ({ fields }) => {
+export const RenderProducts = ({ fields }) => {
   const states = [
     { answer: 'FL', label: 'FL' },
     { answer: 'TX', label: 'TX' }
@@ -20,7 +19,7 @@ export const renderProducts = ({ fields }) => {
   return (
     <React.Fragment>
       {fields.map((product, index) =>
-        <div className="csp-wrapper" key={product}>
+        (<div className="csp-wrapper" key={product}>
           <Field
             label="State"
             styleName="state"
@@ -28,8 +27,7 @@ export const renderProducts = ({ fields }) => {
             component={Select}
             answers={states}
             dataTest={`state-${index}`}
-            validate={validation.isRequired}
-          />
+            validate={validation.isRequired} />
           <Field
             label="Product"
             styleName="product"
@@ -37,20 +35,18 @@ export const renderProducts = ({ fields }) => {
             component={Select}
             answers={productTypes}
             dataTest={`product-${index}`}
-            validate={validation.isRequired}
-          />
+            validate={validation.isRequired} />
           {fields.length > 1 &&
             <i className="fa fa-times-circle" onClick={() => fields.remove(index)} />
           }
-        </div>
-      )}
+        </div>))}
       <div className="add-product">
-        <hr/>
-        <button className="btn-secondary btn btn-sm" onClick={() => fields.push({})}><i className="fa fa-plus"/>Product</button>
-        <hr/>
+        <hr />
+        <button className="btn-secondary btn btn-sm" onClick={() => fields.push({})}><i className="fa fa-plus" />Product</button>
+        <hr />
       </div>
     </React.Fragment>
-  )
+  );
 };
 
 export const ContractModal = (props) => {
@@ -80,29 +76,27 @@ export const ContractModal = (props) => {
               <Field
                 label="Company Code"
                 styleName="companyCode"
-                name={`companyCode`}
-                dataTest={`companyCode`}
+                name="companyCode"
+                dataTest="companyCode"
                 component={Input}
-                validate={validation.isRequired}
-              />
+                validate={validation.isRequired} />
               <Field
                 label="Contract"
                 styleName="contractNumber"
-                name={`contractNumber`}
-                dataTest={`contractNumber`}
+                name="contractNumber"
+                dataTest="contractNumber"
                 component={Input}
                 validate={[validation.isRequired, uniqueContractNumber]}
               />
               <Field
                 label="Addendum"
                 styleName="addendum"
-                name={`addendum`}
-                dataTest={`addendum`}
-                component={Input}
-              />
+                name="addendum"
+                dataTest="addendum"
+                component={Input} />
             </section>
             <section className="contract-csp">
-              <FieldArray name="stateProducts" component={renderProducts} />
+              <FieldArray name="stateProducts" component={RenderProducts} />
             </section>
           </div>
           <div className="card-footer">

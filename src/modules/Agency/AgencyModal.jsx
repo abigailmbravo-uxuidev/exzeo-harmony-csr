@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { Select, Radio, Input, Integer, validation, Phone } from '@exzeo/core-ui';
 
-import { updateAgency } from '../../state/actions/agencyActions';
+import { updateAgency } from '../../state/actions/agency.actions';
 
 const statusAnswers = [
   { answer: 'Active', label: 'Active' },

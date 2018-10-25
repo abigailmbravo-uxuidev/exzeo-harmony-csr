@@ -9,5 +9,6 @@ describe('Testing Contracts component', () => {
     const wrapper = shallow(<Contracts {...props} agency={mockAgency} state={{ contractIndex: 0 }} />);
     expect(wrapper.exists()).toBeTruthy();
     const wi = wrapper.instance();
+    wi.saveContract({});
   });
 });

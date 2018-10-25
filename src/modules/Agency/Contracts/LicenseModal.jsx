@@ -1,172 +1,105 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { reduxForm, Field, FieldArray, formValueSelector } from 'redux-form';
-import { Input, Date, SelectTypeAhead, Button, validation } from '@exzeo/core-ui';
+import { reduxForm, FieldArray, Form, Field } from 'redux-form';
+import { Input, Date, Select, validation } from '@exzeo/core-ui';
 
-import CheckBoxGroup from '../CheckBoxGroup';
+export const RenderLicenses = ({ fields }) => {
+  const states = [
+    { answer: 'FL', label: 'FL' },
+    { answer: 'TX', label: 'TX' }
+  ];
 
-import Agents from './Agents';
-
-const FORM_NAME = 'LicenseModal';
-
-export const productOptions = [{ label: 'HO3', value: 'HO3' }, { label: 'AF3', value: 'AF3' }];
-
-export class LicenseModal extends Component {
-handleAddAgent = (e, agentValue) => {
-  const { array } = this.props;
-  e.preventDefault();
-  array.push('agent', agentValue.value);
-};
-
-handleRemoveAgent = (agentIndex) => {
-  const { array } = this.props;
-  array.remove('agent', agentIndex);
-};
-
-render() {
-  const {
-    isEditing,
-    handleSubmit,
-    agentValue,
-    listOfAgents,
-    handleCloseModal,
-    handleSaveLicense,
-    initialValues
-  } = this.props;
+  if (fields.length === 0) fields.insert(0, {});
   return (
-    <div className="modal contract-crud">
+    <React.Fragment>
+    {fields.map((license, index) => (
+        <div className="license-wrapper" key={license}>
+          <Field
+            label="State"
+            styleName="state"
+            name={`${license}.state`}
+            answers={states}
+            component={Select}
+            dataTest={`${license}.state`}
+            validate={validation.isRequired} />
+          <Field
+            label="License Number"
+            styleName="licenseNumber"
+            name={`${license}.licenseNumber`}
+            component={Input}
+            dataTest={`${license}.licenseNumber`}
+            validate={validation.isRequired} />
+          <Field
+            label="Effective Date"
+            styleName="licenseEffectiveDate"
+            name={`${license}.licenseEffectiveDate`}
+            component={Date}
+            dataTest={`${license}.licenseEffectiveDate`}
+            validate={validation.isRequired} />
+          {fields.length > 1 &&
+          <div className="btn-remove-wrapper align-right align-bottom in-grid-layout">
+            <button type="button" className="btn btn-link btn-sm" onClick={() => fields.remove(index)}>
+              <i className="fa fa-times-circle" />REMOVE
+            </button>
+          </div>}
+        </div>
+          ))}
+      <div className="btn-divider-wrapper">
+        <button className="btn btn-secondary btn-sm add-license" type="button" onClick={() => fields.push({})}><i className="fa fa-plus" />License</button>
+      </div>
+    </React.Fragment>
+  );
+};
+
+export const LicenseModal = (props) => {
+  const {
+    closeModal,
+    saveLicense,
+    handleSubmit,
+    initialValues,
+    licenseNumbers
+  } = props;
+
+  const uniqueLicenseNumber = value => {
+    return value && licenseNumbers.includes(value) && value !== initialValues.licenseNumbers
+      ? 'The License Number must be unique.' 
+      : undefined;
+  }
+  const actionType = initialValues ? 'Edit' : "Add";
+  return (
+    <div className="modal license-crud">
       <div className="card">
-        <form onSubmit={handleSubmit(handleSaveLicense)}>
+        <Form noValidate onSubmit={handleSubmit(saveLicense)}>
           <div className="card-header">
-            <h4><i className="fa fa-file" /> {isEditing ? ' Edit' : ' New'} Contract</h4>
+            <h4><i className="fa fa-file" /> {actionType} License</h4>
           </div>
           <div className="card-block">
-            <section className="contract-details">
-              <div className="flex-form">
-                <Field
-                  label="Company Code"
-                  styleName="companyCode"
-                  name="companyCode"
-                  dataTest="companyCode"
-                  component={Input}
-                  validate={validation.isRequired}/>
-                <Field
-                  label="State"
-                  styleName="state"
-                  name="stateLicense"
-                  dataTest="stateLicense"
-                  component={Input}
-                  validate={validation.isRequired}/>
-              </div>
-              <div className="flex-form">
-                <Field
-                  label="License Number"
-                  styleName="licenseNumber"
-                  name="licenseNumber"
-                  dataTest="licenseNumber"
-                  component={Input}
-                  validate={validation.isRequired}/>
-                <Field
-                  label="License Effective Date"
-                  styleName="licenseEffectiveDate"
-                  name="licenseEffectiveDate"
-                  dataTest="licenseEffectiveDate"
-                  component={Date}
-                  validate={[validation.isRequired, validation.isDate]}/>
-              </div>
-              <Field
-                label="Contract"
-                styleName="contract"
-                name="contract"
-                dataTest="contract"
-                component={Input}
-                validate={validation.isRequired}/>
-              <Field
-                label="Addendum"
-                styleName="addendum"
-                name="addendum"
-                dataTest="addendum"
-                component={Input}/>
-              <Field
-                label="EO Expiration Date"
-                styleName="eoExpirationDate"
-                name="eoExpirationDate"
-                dataTest="eoExpirationDate"
-                component={Date}
-                validate={[validation.isRequired, validation.isDate]}/>
-            </section>
-            <section className="product-details">
-              <label>Products</label>
-              <div className="product-wrapper">
-                <Field
-                  name="product"
-                  dataTest="product"
-                  id="product"
-                  type="checkbox"
-                  options={productOptions}
-                  component={CheckBoxGroup}
-                  validate={validation.isRequiredArray}/>
-              </div>
-            </section>
-            <section className="agent-details">
-              {/* Combo box/Tupe ahead component listing all agents that are associated with this agency and are not currently in list below */}
-
-              <Field
-                label="Add Agents"
-                styleName="selectedAgent"
-                name="selectedAgent"
-                dataTest="selectedAgent"
-                component={SelectTypeAhead}
-                answers={listOfAgents}
-                onChange={this.handleAddAgent}/>
-
-              {/* list of added agents with the ability to check appointed and/or agent of record to apply those attributes */}
-              <div>
-                {agentValue.length > 0 &&
-                  <FieldArray
-                    name="agent"
-                    primaryAgentCode={initialValues.primaryAgent}
-                    component={Agents}
-                    agent={agentValue}
-                    handleRemoveAgent={this.handleRemoveAgent}/>
-                }
-              </div>
+            <section className="license-details">
+              <FieldArray name="stateProducts" component={RenderLicenses} />
             </section>
           </div>
           <div className="card-footer">
             <div className="btn-footer">
-              <Button
-                baseClass="secondary"
-                onClick={handleCloseModal}
-                dataTest="modal-cancel">Cancel
-              </Button>
-              <Button
-                baseClass="primary"
-                type="submit"
-                dataTest="modal-submit">Save
-              </Button>
+              <button tabIndex="0" className="btn btn-secondary" type="button" onClick={closeModal()}>Cancel</button>
+              <button tabIndex="0" className="btn btn-primary" type="submit">Save</button>
             </div>
           </div>
-        </form>
+        </Form>
       </div>
     </div>
   );
-}
-}
-
-LicenseModal.propTypes = {
-  initialValues: PropTypes.shape().isRequired
 };
 
-const licenseFormSelector = formValueSelector(FORM_NAME);
-const defaultArray = [];
-const mapStateToProps = state => ({
-  agentValue: licenseFormSelector(state, 'agent') || defaultArray
-});
+LicenseModal.defaultProps = {
+  licenseNumbers: []
+};
 
+LicenseModal.propTypes = {
+  closeModal: PropTypes.func.isRequired,
+  saveLicense: PropTypes.func.isRequired,
+  initialValues: PropTypes.shape({
+    
+  })
+};
 
-export default connect(mapStateToProps)(reduxForm({
-  form: FORM_NAME,
-  enableReinitialize: true
-})(LicenseModal));
+export default reduxForm({ form: 'LicenseModal', enableReinitialize: true })(LicenseModal);

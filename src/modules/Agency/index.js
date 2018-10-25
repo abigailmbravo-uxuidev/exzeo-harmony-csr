@@ -7,7 +7,7 @@ import { getAgency,
   getAgentList,
   getAgentsByAgencyCode,
   getListOfOrphanedAgents
-} from '../../state/actions/agencyActions';
+} from '../../state/actions/agency.actions';
 import { searchSettingsByCSPAndZip } from '../../state/actions/zipCodeSettings.actions';
 import { getTerritoryManagers } from '../../state/actions/territoryManagers.actions';
 

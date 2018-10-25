@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ContactView = ({ agency, agencyBranchData, emailType }) => {
+export const ContactView = ({ agency, agencyBranchData, emailType }) => {
   return (
     <React.Fragment>
       <div className="primaryPhoneNumber read">

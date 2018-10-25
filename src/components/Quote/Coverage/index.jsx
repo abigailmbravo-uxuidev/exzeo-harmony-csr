@@ -15,7 +15,7 @@ import { setAppState } from '../../../state/actions/appState.actions';
 import { setAppError } from '../../../state/actions/error.actions';
 import { getUIQuestions } from '../../../state/actions/questions.actions';
 import { getQuote } from '../../../state/actions/quote.actions';
-import { getAgencies } from '../../../state/actions/agencyActions';
+import { getAgencies } from '../../../state/actions/agency.actions';
 import { checkQuoteState } from '../../../state/selectors/quote.selectors';
 import QuoteBaseConnect from '../../../containers/Quote';
 import Footer from '../../Common/Footer';

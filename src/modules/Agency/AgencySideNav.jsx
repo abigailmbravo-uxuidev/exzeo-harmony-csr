@@ -4,7 +4,7 @@ import { reduxForm, Field } from 'redux-form';
 import { Select } from '@exzeo/core-ui';
 import { connect } from 'react-redux';
 
-import { createBranch } from '../../state/actions/agencyActions';
+import { createBranch } from '../../state/actions/agency.actions';
 import { getBranchesList, getBranchInitialValues } from '../../state/selectors/agency.selector';
 
 

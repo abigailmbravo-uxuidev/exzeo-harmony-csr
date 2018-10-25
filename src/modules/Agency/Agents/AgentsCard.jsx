@@ -63,7 +63,7 @@ export const AgentsCard = ({
             dataTest="switchAOR"
             baseClass="link"
             size="small"
-            onClick={() => handleSwitchAOR(agent.agentCode)}><i className="fa fa-times-circle" />Switch AOR
+            onClick={() => handleSwitchAOR(agent.agentCode)}><i className="fa fa-exchange" />Switch AOR
           </Button>}
           {String(agency.agentOfRecord) !== String(agent.agentCode) &&
           <Button

@@ -1,4 +1,7 @@
 import configureStore from 'redux-mock-store';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+
 import * as types from './actionTypes';
 import * as tmActions from './territoryManagers.actions';
 
@@ -38,5 +41,65 @@ describe('Terrritory Manager Actions', () => {
     store.dispatch(tmActions.setTerritoryManagers(inputProps.territoryManagers));
 
     expect(store.getActions()).toEqual(stateObj);
+  });
+
+  it('should call getTerritoryManagers', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'territory-manager-service',
+        method: 'GET',
+        path: 'territoryManagers/FL'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+    tmActions.getTerritoryManagers(store.dispatch);
+
+    return tmActions.getTerritoryManagers('FL')(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.SET_TERRITORY_MANAGERS);
+      });
+  });
+
+  it('should fail getTerritoryManagers', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'territory-manager-service',
+        method: 'GET',
+        path: 'territoryManagers/FL'
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+    tmActions.getTerritoryManagers(store.dispatch);
+
+    return tmActions.getTerritoryManagers(null)(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
+      });
   });
 });

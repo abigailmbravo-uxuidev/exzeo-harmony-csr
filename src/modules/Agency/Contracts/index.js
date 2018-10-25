@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Contracts from './Contracts';
-import { updateAgency } from '../../../state/actions/agencyActions';
+import { updateAgency } from '../../../state/actions/agency.actions';
 import { getEditModalInitialValues } from '../../../state/selectors/agency.selector';
 
 const mapStateToProps = state => ({

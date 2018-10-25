@@ -1,4 +1,6 @@
 import configureStore from 'redux-mock-store';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 
 import * as types from './actionTypes';
 import * as actions from './zipCodeSettings.actions';
@@ -22,5 +24,65 @@ describe('Zipcode Settings Actions', () => {
     store.dispatch(actions.setZipCodeSettings(inputProps.zipCodeSettings));
 
     expect(store.getActions()).toEqual(stateObj);
+  });
+
+  it('should call searchSettingsByCSPAndZip', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'zipcodesettings',
+        method: 'GET',
+        path: `graphql?query=${actions.generateSearchSettingsByCSPAndZipQuery('33607', 'FL')}`
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+    actions.searchSettingsByCSPAndZip(store.dispatch);
+
+    return actions.searchSettingsByCSPAndZip('33607', 'FL')(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.SET_ZIPCODE_SETTINGS);
+      });
+  });
+
+  it('should fail searchSettingsByCSPAndZip', () => {
+    const mockAdapter = new MockAdapter(axios);
+
+    const initialState = {};
+    const store = mockStore(initialState);
+
+    const axiosOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: `${process.env.REACT_APP_API_URL}/svc`,
+      data: {
+        service: 'zipcodesettings',
+        method: 'GET',
+        path: `graphql?query=${actions.generateSearchSettingsByCSPAndZipQuery('33607', 'FL')}`
+      }
+    };
+
+    mockAdapter.onPost(axiosOptions.url, axiosOptions.data).reply(200, {
+      data: []
+    });
+    actions.searchSettingsByCSPAndZip(store.dispatch);
+
+    return actions.searchSettingsByCSPAndZip(null)(store.dispatch)
+      .then(() => {
+        expect(store.getActions()[0].type).toEqual(types.APP_ERROR);
+      });
   });
 });

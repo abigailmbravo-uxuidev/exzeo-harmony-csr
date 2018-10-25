@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import cloneDeep from 'lodash/cloneDeep'
-import Button from '@exzeo/core-ui/lib/Button'
+import cloneDeep from 'lodash/cloneDeep';
+import Button from '@exzeo/core-ui/lib/Button';
 import TaxDetail from './TaxDetails';
 import LicenseCard from './LicenseCard';
+import LicenseModal from './LicenseModal';
 import ContractCard from './ContractCard';
 import ContractModal from './ContractModal';
 import Footer from '../../../components/Common/Footer';
@@ -16,9 +17,9 @@ export class Contracts extends Component {
     contractIndex: null
   };
 
-  toggleCLicense = licenseIndex => () => {
+  toggleLicense = licenseIndex => () => {
     this.setState(prevState => ({
-      showLicenseModal: !prevState.showContractModal,
+      showLicenseModal: !prevState.showLicenseModal,
       licenseIndex
     }));
   };
@@ -58,7 +59,7 @@ export class Contracts extends Component {
 
   render() {
     const { agency, listOfAgents } = this.props;
-    const { contractIndex, showContractModal } = this.state;
+    const { licenseIndex, showLicenseModal, contractIndex, showContractModal } = this.state;
 
     if (!agency) return <div />;
     return (
@@ -88,17 +89,16 @@ export class Contracts extends Component {
                   <LicenseCard
                     key={license.licenseNumber}
                     license={license}
-                    editContract={this.toggleContract(license)}
-                  />
+                    editContract={this.toggleLicense(license)} />
                 ))}
                 <div className="create-contract">
                   <hr />
                   <Button
                     baseClass="primary"
                     size="small"
-                    onClick={this.toggleContract(null)}
-                    dataTest="addContract"
-                  ><i className="fa fa-plus" /> Contract</Button>
+                    onClick={this.toggleLicense(null)}
+                    dataTest="addLicense"><i className="fa fa-plus" />License
+                  </Button>
                   <hr />
                 </div>
               </section>
@@ -117,8 +117,8 @@ export class Contracts extends Component {
                     baseClass="primary"
                     size="small"
                     onClick={this.toggleContract(null)}
-                    dataTest="addContract"
-                  ><i className="fa fa-plus" /> Contract</Button>
+                    dataTest="addContract"><i className="fa fa-plus" />Contract
+                  </Button>
                   <hr />
                 </div>
               </section>
