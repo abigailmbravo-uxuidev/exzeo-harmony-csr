@@ -1,6 +1,7 @@
 import moment from 'moment-timezone';
 
 import { STANDARD_DATE_FORMAT } from '../constants/dates';
+import { normalize } from '@exzeo/core-ui/lib';
 
 const cancellationStatuses = ['Pending', 'Cancel'];
 /**
@@ -27,6 +28,7 @@ export function getMapQuery(address) {
  * @returns {string}
  */
 export function getCityStateZip(address) {
+  if (!address) return '';
   return `${address.city}, ${address.state} ${address.zip}`;
 }
 
@@ -63,4 +65,36 @@ export function getCancellationDate(summaryLedger, endDate, cancelDate) {
   }
 
   return '';
+}
+
+/**
+ * Format primary policyHolder details
+ * @param policyHolders
+ * @returns {*}
+ */
+export function getPrimaryPolicyHolder(policyHolders) {
+  const primaryPolicyHolder = policyHolders[0];
+  if (!primaryPolicyHolder) return { displayName: '', phone: '' };
+
+  return {
+    displayName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
+    phone: normalize.phone(primaryPolicyHolder.primaryPhoneNumber)
+  };
+}
+
+/**
+ * Format mailing address details
+ * @param mailingAddress
+ * @param policyHolders
+ * @returns {*}
+ */
+export function getMailingAddress(mailingAddress, policyHolders) {
+  const primaryPolicyHolder = policyHolders[0];
+  if (!primaryPolicyHolder) return { address1: '', address2: '', csz: '' };
+
+  return {
+    address1: mailingAddress.address1,
+    address2: mailingAddress.address2,
+    csz: getCityStateZip(mailingAddress)
+  };
 }

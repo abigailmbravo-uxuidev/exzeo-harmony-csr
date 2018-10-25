@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import { Loader } from '@exzeo/core-ui';
 
 import { startWorkflow } from '../../state/actions/cg.actions';
+import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { getQuoteForCreate } from '../../state/selectors/quote.selectors';
 
@@ -35,10 +36,12 @@ export class QuoteLanding extends Component {
 }
 
 const mapStateToProps = state => ({
+  appState: state.appState,
   quoteData: getQuoteForCreate(state)
 });
 
 export default connect(mapStateToProps, {
   startWorkflow,
+  setAppState,
   setAppError
 })(QuoteLanding);
