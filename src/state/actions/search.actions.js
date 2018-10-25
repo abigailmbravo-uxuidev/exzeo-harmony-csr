@@ -581,12 +581,13 @@ export async function fetchDiaries({
   assignees,
   open
 }) {
+  
   const config = {
     service: 'diaries',
     method: 'POST',
     path: '/read',
     data: {
-      assignees,
+      assignees: assignees.length === 0 ? null : assignees,
       dueDateMax,
       dueDateMin,
       open,
