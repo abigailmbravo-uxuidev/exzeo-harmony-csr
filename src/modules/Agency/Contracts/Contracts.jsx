@@ -76,7 +76,7 @@ export class Contracts extends Component {
                     baseClass="primary"
                     size="small"
                     onClick={this.toggleContract(null)}
-                    dataTest="addContract"><i className="fa fa-plus" /> Contract
+                    dataTest="addContract"><i className="fa fa-plus" />Contract
                   </Button>
                   <hr />
                 </div>
@@ -96,7 +96,7 @@ export class Contracts extends Component {
                     baseClass="primary"
                     size="small"
                     onClick={this.toggleContract(null)}
-                    dataTest="addContract"><i className="fa fa-plus" /> Contract
+                    dataTest="addContract"><i className="fa fa-plus" />Contract
                   </Button>
                   <hr />
                 </div>
