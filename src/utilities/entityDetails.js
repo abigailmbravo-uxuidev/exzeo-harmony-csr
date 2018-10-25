@@ -27,9 +27,8 @@ export function getMapQuery(address) {
  * @param {object} address
  * @returns {string}
  */
-export function getCityStateZip(address) {
-  if (!address) return '';
-  return `${address.city}, ${address.state} ${address.zip}`;
+export function getCityStateZip({ city = '', state = '', zip = '' }) {
+  return `${city}, ${state} ${zip}`;
 }
 
 /**
@@ -85,12 +84,10 @@ export function getPrimaryPolicyHolder(policyHolders) {
 /**
  * Format mailing address details
  * @param mailingAddress
- * @param policyHolders
  * @returns {*}
  */
-export function getMailingAddress(mailingAddress, policyHolders) {
-  const primaryPolicyHolder = policyHolders[0];
-  if (!primaryPolicyHolder) return { address1: '', address2: '', csz: '' };
+export function getMailingAddress(mailingAddress) {
+  if (Object.keys(mailingAddress).length === 0) return {};
 
   return {
     address1: mailingAddress.address1,
