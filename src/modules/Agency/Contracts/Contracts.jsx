@@ -10,8 +10,17 @@ import Footer from '../../../components/Common/Footer';
 
 export class Contracts extends Component {
   state = {
+    showLicenseModal: false,
+    licenseIndex: null,
     showContractModal: false,
     contractIndex: null
+  };
+
+  toggleCLicense = licenseIndex => () => {
+    this.setState(prevState => ({
+      showLicenseModal: !prevState.showContractModal,
+      licenseIndex
+    }));
   };
 
   toggleContract = contractIndex => () => {
@@ -19,6 +28,10 @@ export class Contracts extends Component {
       showContractModal: !prevState.showContractModal,
       contractIndex
     }));
+  };
+
+  saveLicense = async (data, dispatch, props) => {
+
   };
 
   saveContract = async (data, dispatch, props) => {
@@ -50,6 +63,13 @@ export class Contracts extends Component {
     if (!agency) return <div />;
     return (
       <div id="agency-contracts" className="agency-contracts">
+        {showLicenseModal &&
+          <LicenseModal
+            saveLicense={this.saveLicense}
+            closeModal={this.toggleLicense}
+            initialValues={agency.contracts[licenseIndex]}
+          />
+        }
         {showContractModal &&
           <ContractModal
             saveContract={this.saveContract}
