@@ -98,7 +98,9 @@ LicenseModal.propTypes = {
   closeModal: PropTypes.func.isRequired,
   saveLicense: PropTypes.func.isRequired,
   initialValues: PropTypes.shape({
-    
+    state: PropTypes.string,
+    licenseNumber: PropTypes.string,
+    licenseEffectiveDate: PropTypes.string
   })
 };
 

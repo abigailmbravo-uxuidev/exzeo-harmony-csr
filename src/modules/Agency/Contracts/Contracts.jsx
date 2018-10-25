@@ -32,7 +32,25 @@ export class Contracts extends Component {
   };
 
   saveLicense = async (data, dispatch, props) => {
+    const { agency: { agencyCode, lincenses }, updateAgency } = this.props;
+    const { licenseIndex } = this.state;
 
+    let newLicenses;
+
+    if(licenseIndex) {
+      newLicenses = contracts.map((item, index) => {
+        if (index === licenseIndex) {
+          return { ...data };
+        } else {
+          return item;
+        }
+      });
+    } else {
+      newLicenses = [...licenses, { ...data }];
+    }
+
+    await updateAgency({ agencyCode, contracts: newLicenses });
+    this.toggleContract()();
   };
 
   saveContract = async (data, dispatch, props) => {
