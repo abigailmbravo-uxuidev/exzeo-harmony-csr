@@ -16,7 +16,9 @@ const mapStateToProps = state => ({
     }]
   },
   sameAsMailingValue: selector(state, 'sameAsMailing'),
-  licenseValue: selector(state, 'licenses')
+  licenseValue: selector(state, 'licenses'),
+  physicalStateValue: selector(state, 'physicalAddress.state'),
+  physicalZipValue: selector(state, 'physicalAddress.zip')
 });
 
 export default connect(mapStateToProps, {
