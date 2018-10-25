@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect';
-import { normalize } from '@exzeo/core-ui';
 import moment from 'moment-timezone';
 
 import * as detailUtils from '../../utilities/entityDetails';
@@ -56,7 +55,7 @@ export const getPolicyDetails = createSelector(
       sourceNumber,
       territory,
       county: physicalAddress.county,
-      currentPremium: `$ ${normalize.numbers(currentPremium)}`,
+      currentPremium: detailUtils.getCurrentPremium(currentPremium),
       effectiveDate: moment.utc(effectiveDate).format(STANDARD_DATE_FORMAT),
       mapURI: `${baseMapUri}${mapQuery}`,
       status: `${status} / ${displayText}`,
@@ -92,7 +91,7 @@ export const getQuoteDetails = createSelector(
       policyHolderMailingAddress: pHMA = {},
       property,
       effectiveDate,
-      rating
+      rating = {}
     } = quote;
 
     const {
@@ -101,15 +100,11 @@ export const getQuoteDetails = createSelector(
       territory
     } = property;
 
-    const currentPremium = (rating && rating.totalPremium)
-      ? normalize.numbers(rating.totalPremium)
-      : '--';
-
     const mapQuery = detailUtils.getMapQuery(physicalAddress);
 
     return {
       constructionType,
-      currentPremium,
+      currentPremium: detailUtils.getCurrentPremium(rating.totalPremium),
       territory,
       county: physicalAddress.county,
       effectiveDate: moment.utc(effectiveDate).format(STANDARD_DATE_FORMAT),
