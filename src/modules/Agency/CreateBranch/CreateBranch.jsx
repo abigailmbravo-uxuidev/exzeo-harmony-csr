@@ -121,7 +121,10 @@ export class CreateBranch extends Component {
                     </h4>
                     <FormSection name="physicalAddress">
                       <Address
+                        section="physicalAddress"
                         showCounty
+                        territoryManagers={territoryManagers}
+                        changeField={change}
                         stateValue={physicalStateValue}
                         zipValue={physicalZipValue}
                         sectionDisabled={sameAsMailingValue} />
