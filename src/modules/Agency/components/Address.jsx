@@ -9,7 +9,9 @@ import { getListOfZipCodes } from '../../../state/selectors/zipCodeSettings.sele
 export class Address extends Component {
   componentDidMount() {
     const { stateValue, zipValue } = this.props;
-    this.props.searchSettingsByCSPAndZipAction(zipValue, stateValue);
+    if (stateValue && zipValue) {
+      this.props.searchSettingsByCSPAndZipAction(zipValue, stateValue);
+    }
   }
   normalizeSameAsMailing = (value) => {
     const { changeField, section, sameAsMailingValue } = this.props;

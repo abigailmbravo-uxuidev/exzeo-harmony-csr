@@ -56,10 +56,11 @@ export class CreateBranch extends Component {
     history.push(`/agency/${this.props.agency.agencyCode}/${this.props.branchCode}/overview`);
   };
 
+  // TODO : Move to utilities
   applyOrphanedAgent = (data) => {
     const { change, orphans } = this.props;
-    const { selectedAgentId } = data;
-    const selectedAgent = orphans.filter(a => a._id === selectedAgentId)[0];
+    const { selectedAgentCode } = data;
+    const selectedAgent = orphans.filter(a => String(a.agentCode) === String(selectedAgentCode))[0];
     change('agentOfRecord.firstName', selectedAgent.firstName);
     change('agentOfRecord.lastName', selectedAgent.lastName);
     change('agentOfRecord.primaryPhoneNumber', selectedAgent.primaryPhoneNumber);
