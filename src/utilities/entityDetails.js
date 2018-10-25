@@ -91,9 +91,9 @@ export function getCancellationDate(summaryLedger, policyStatus, endDate, cancel
 
   const isCanceled = getEntityDetailsDateLabel(displayText, policyStatus) === CANCELLATION_DATE;
 
-  if (cancelDate && isCanceled) {
+  if (isCanceled && cancelDate) {
     return moment.utc(cancelDate).format(STANDARD_DATE_FORMAT);
-  } else if (nonPaymentNoticeDueDate && isCanceled) {
+  } else if (isCanceled && nonPaymentNoticeDueDate) {
     moment.utc(nonPaymentNoticeDueDate).format(STANDARD_DATE_FORMAT);
   }
 
