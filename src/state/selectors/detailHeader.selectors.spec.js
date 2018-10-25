@@ -826,6 +826,7 @@ describe('Detail Header selectors', () => {
     const result = detailSelectors.getPolicyDetails(state);
     expect(result).toEqual({
       cancellation: {
+        dateLabel: 'Cancellation Date',
         cancellationDate: '12/04/2018',
         showReinstatement: false
       },
@@ -837,7 +838,6 @@ describe('Detail Header selectors', () => {
         product: 'HO3 Homeowners'
       },
       effectiveDate: '12/04/2018',
-      dateLabel: 'Cancellation Date',
       mailingAddress: {
         address1: 'TEST MAILING ADDRESS1',
         address2: 'TEST MAILING ADDRESS2',

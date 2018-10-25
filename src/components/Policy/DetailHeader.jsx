@@ -35,8 +35,7 @@ export class DetailHeader extends Component {
     if (!policy || !policy.policyID) return (<div className="detailHeader" />);
 
     const {
-      dateLabel,
-      cancellation: { cancellationDate, showReinstatement },
+      cancellation: { dateLabel, cancellationDate, showReinstatement },
       constructionType,
       county,
       details,
