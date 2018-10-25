@@ -35,7 +35,7 @@ export class DetailHeader extends Component {
     if (!policy || !policy.policyID) return (<div className="detailHeader" />);
 
     const {
-      entityDetailsLabel,
+      dateLabel,
       cancellation: { cancellationDate, showReinstatement },
       constructionType,
       county,
@@ -121,7 +121,7 @@ export class DetailHeader extends Component {
               )} />
 
             <SectionSingle
-              label={entityDetailsLabel}
+              label={dateLabel}
               value={cancellationDate}
               dataTest="cancellationDateDetail"
               className="cancellationDate"

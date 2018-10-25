@@ -837,7 +837,7 @@ describe('Detail Header selectors', () => {
         product: 'HO3 Homeowners'
       },
       effectiveDate: '12/04/2018',
-      entityDetailsLabel: 'Cancellation Date',
+      dateLabel: 'Cancellation Date',
       mailingAddress: {
         address1: 'TEST MAILING ADDRESS1',
         address2: 'TEST MAILING ADDRESS2',
