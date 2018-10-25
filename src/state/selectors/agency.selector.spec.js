@@ -77,11 +77,20 @@ describe('Testing Agency Selectors', () => {
   it('should test getBranchesList', () => {
     const state = {
       agencyState: {
-        agency: { agencyCode: '1234', branches: [{ branchCode: '1', displayName: 'Test' }] }
+        agency: {
+          agencyCode: '1234',
+          branches: [
+            { branchCode: '2', displayName: 'Test 2' },
+            { branchCode: '3', displayName: 'Test 3' },
+            { branchCode: '1', displayName: 'Test 1' }]
+        }
       }
     };
     const result = getBranchesList(state);
-    expect(result).toEqual([{ answer: '1', label: '1: Test' }]);
+    expect(result).toEqual([
+      { answer: '1', branchCode: 1, label: '1: Test 1' },
+      { answer: '2', branchCode: 2, label: '2: Test 2' },
+      { answer: '3', branchCode: 3, label: '3: Test 3' }]);
   });
 
   it('should test getBranchInitialValues', () => {
