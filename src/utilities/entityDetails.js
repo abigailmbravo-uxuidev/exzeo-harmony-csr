@@ -3,7 +3,41 @@ import { normalize } from '@exzeo/core-ui/lib';
 
 import { STANDARD_DATE_FORMAT } from '../constants/dates';
 
-const cancellationStatuses = ['Pending', 'Cancel'];
+const CANCELLATION_DATE = 'Cancellation Date';
+const EXPIRATION_DATE = 'Expiration Date';
+
+const expirationPolicyStatuses = [
+  'Policy Issued',
+  'In Force',
+  'Not In Force'
+];
+
+const expirationBillingStatus = [
+  'No Payment Received',
+  'Full Payment Received',
+  'Over Payment Received',
+  'Partial Payment Received',
+  'Payment Invoice Issued',
+  'Policy Expired'
+];
+
+const canceledPolicyStatuses = [
+  'Cancelled',
+  'Pending Voluntary Cancellation',
+  'Pending Underwriting',
+  'Cancellation',
+  'Pending Underwriting Non-Renewal'
+];
+
+const canceledBillingStatuses = [
+  'Non-Payment Notice Issued',
+  'No Payment Received',
+  'Full Payment Received',
+  'Over Payment Received',
+  'Partial Payment Received',
+  'Payment Invoice Issued',
+  'Non-Payment Cancellation'
+];
 /**
  * Determine product display name based on type
  * @param {string} product
@@ -48,21 +82,30 @@ export function shouldShowReinstatement(status, code) {
  * @param {string} [cancelDate]
  * @returns {string}
  */
-export function getCancellationDate(summaryLedger, endDate, cancelDate) {
-  const { code: billingStatusCode, nonPaymentNoticeDueDate, status } = summaryLedger;
+export function getCancellationDate(summaryLedger, policyStatus, endDate, cancelDate) {
+  const { nonPaymentNoticeDueDate, status: { code, displayText } } = summaryLedger;
 
-  if (endDate && billingStatusCode === 99) {
+  if (endDate && code === 99) {
     return moment.utc(endDate).format(STANDARD_DATE_FORMAT);
   }
 
-  if (Array.isArray(status) && (billingStatusCode > 8 || cancellationStatuses.some(s => status.includes(s)))) {
-    return cancelDate
-      ? moment.utc(cancelDate).format(STANDARD_DATE_FORMAT)
-      : nonPaymentNoticeDueDate
-        ? moment.utc(nonPaymentNoticeDueDate).format(STANDARD_DATE_FORMAT)
-        : '';
+  const isCanceled = getEntityDetailsDateLabel(displayText, policyStatus) === CANCELLATION_DATE;
+
+  if (cancelDate && isCanceled) {
+    return moment.utc(cancelDate).format(STANDARD_DATE_FORMAT);
+  } else if (nonPaymentNoticeDueDate && isCanceled) {
+    moment.utc(nonPaymentNoticeDueDate).format(STANDARD_DATE_FORMAT);
   }
 
+  return '';
+}
+
+export function getEntityDetailsDateLabel(billingStatus, policyStatus) {
+  if (policyStatus === 'Policy Issued' && billingStatus === 'Non-Payment Notice Issued') return CANCELLATION_DATE;
+  else if (expirationPolicyStatuses.some(s => policyStatus.includes(s)) &&
+  expirationBillingStatus.some(s => billingStatus.includes(s))) return EXPIRATION_DATE;
+  else if (canceledPolicyStatuses.some(s => policyStatus.includes(s)) &&
+  canceledBillingStatuses.some(s => billingStatus.includes(s))) return CANCELLATION_DATE;
   return '';
 }
 

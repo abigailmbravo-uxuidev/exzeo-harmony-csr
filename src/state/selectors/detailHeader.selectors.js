@@ -47,9 +47,9 @@ export const getPolicyDetails = createSelector(
     } = property;
 
     const mapQuery = detailUtils.getMapQuery(physicalAddress);
-    const cancellationDate = detailUtils.getCancellationDate(summaryLedger, endDate, cancelDate);
+    const cancellationDate = detailUtils.getCancellationDate(summaryLedger, status, endDate, cancelDate);
     const showReinstatement = detailUtils.shouldShowReinstatement(status, code);
-
+    const entityDetailsLabel = detailUtils.getEntityDetailsDateLabel(displayText, status);
     return {
       constructionType,
       sourceNumber,
@@ -70,6 +70,7 @@ export const getPolicyDetails = createSelector(
         address2: physicalAddress.address2,
         csz: detailUtils.getCityStateZip(physicalAddress)
       },
+      entityDetailsLabel,
       cancellation: {
         cancellationDate,
         showReinstatement
