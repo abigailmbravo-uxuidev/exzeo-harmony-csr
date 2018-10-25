@@ -1,34 +1,28 @@
 import React from 'react';
 import { Field } from 'redux-form';
-import { Input, Select, validation } from '@exzeo/core-ui';
+import { Input, validation } from '@exzeo/core-ui';
 
-const titleAnswers = [
-  { answer: 'officer', label: 'Officer' }
-];
-
-export const Contact = ({ testPrefix }) => (
+export const Contact = ({ section }) => (
   <React.Fragment>
     <div className="contact-name">
-      <Field
+      {section !== 'principal' && <Field
         name="title"
-        dataTest={`${testPrefix}.title`}
+        dataTest={`${section}.title`}
         styleName="title"
         label="Title"
-        component={Select}
-        validate={validation.isRequired}
-        answers={titleAnswers} />
+        component={Input} />}
       <Field
         label="First Name"
         styleName="firstName"
         name="firstName"
-        dataTest={`${testPrefix}.firstName`}
+        dataTest={`${section}.firstName`}
         component={Input}
         validate={validation.isRequired} />
       <Field
         label="Last Name"
         styleName="lastName"
         name="lastName"
-        dataTest={`${testPrefix}.lastName`}
+        dataTest={`${section}.lastName`}
         component={Input}
         validate={validation.isRequired} />
     </div>
@@ -36,7 +30,7 @@ export const Contact = ({ testPrefix }) => (
       label="Email Address"
       styleName="emailAddress"
       name="emailAddress"
-      dataTest={`${testPrefix}.emailAddress`}
+      dataTest={`${section}.emailAddress`}
       component={Input}
       validate={validation.isRequired} />
   </React.Fragment>

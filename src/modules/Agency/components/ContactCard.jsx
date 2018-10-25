@@ -7,7 +7,7 @@ export const ContactCard = ({ contact, handleClick }) => (
     </div>
     <div className="contact-details">
       <div className="card-name">
-        <h4><strong>{`${contact.firstName} ${contact.lastName}`}</strong> | Officer</h4>
+        <h4><strong>{`${contact.firstName} ${contact.lastName}`}</strong>{contact.title ? ` | ${contact.title}` : ''}</h4>
       </div>
       <div className="additional-contacts">
         <ul>

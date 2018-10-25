@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { reduxForm, Field, FieldArray, formValueSelector, FormSection } from 'redux-form';
+import { Field, FieldArray, FormSection } from 'redux-form';
 import { validation, Button, SelectTypeAhead } from '@exzeo/core-ui';
 import { Redirect } from 'react-router-dom';
 
 import history from '../../../history';
-import { getAgency, updateAgency, createAgency } from '../../../state/actions/agency.actions';
-import { getOrphanedAgentsList } from '../../../state/selectors/agency.selector';
 import ExistingAgentModal from '../components/ExistingAgentModal';
 import Address from '../components/Address';
 import territoryManagers from '../components/territoryManagers';
@@ -81,6 +78,8 @@ export class Create extends Component {
       handleSubmit,
       licenseValue,
       sameAsMailingValue,
+      physicalStateValue,
+      physicalZipValue,
       submitting,
       pristine,
       change,
@@ -94,7 +93,9 @@ export class Create extends Component {
           <div className="scroll">
             <div className="form-group survey-wrapper" role="group">
               <form id="createAgency" onSubmit={handleSubmit(this.createAgency)}>
-                {agency && agency.agencyCode && agency.agencyCode !== 'new' && <Redirect replace to={`/agency/${agency.agencyCode}/0/overview`} />}
+                {agency && agency.agencyCode &&
+                  agency.agencyCode !== 'new' &&
+                  <Redirect replace to={`/agency/${agency.agencyCode}/0/overview`} />}
                 <h3>Details</h3>
                 <section className="agency-details">
                   <AgencyDetails />
@@ -106,9 +107,10 @@ export class Create extends Component {
                     <h4>Mailing Address</h4>
                     <FormSection name="mailingAddress">
                       <Address
+                        territoryManagers={territoryManagers}
                         sameAsMailingValue={sameAsMailingValue}
                         changeField={change}
-                        mailingAddress />
+                        section="mailingAddress" />
                     </FormSection>
                   </div>
                   <div className="agency-physical-address">
@@ -123,7 +125,13 @@ export class Create extends Component {
                       <label htmlFor="sameAsMailing">Same as Mailing Address</label>
                     </h4>
                     <FormSection name="physicalAddress">
-                      <Address showCounty sectionDisabled={sameAsMailingValue} />
+                      <Address
+                        territoryManagers={territoryManagers}
+                        section="physicalAddress"
+                        showCounty
+                        stateValue={physicalStateValue}
+                        zipValue={physicalZipValue}
+                        sectionDisabled={sameAsMailingValue} />
                     </FormSection>
                     <Field
                       label="Territory Managers"
@@ -148,7 +156,9 @@ export class Create extends Component {
                     <Contact testPrefix="contact" />
                   </FormSection>
                 </section>
-                <h3>Agent Of Record <button onClick={this.handleToggleExistingAgentModal} className="btn btn-link btn-sm"><i className="fa fa-user" />Use Existing Agent</button></h3>
+                <h3>Agent Of Record
+                  <button onClick={this.handleToggleExistingAgentModal} className="btn btn-link btn-sm"><i className="fa fa-user" />Use Existing Agent</button>
+                </h3>
                 <section className="agency-aor">
                   <div className="agent-of-record">
                     <FormSection name="agentOfRecord">
@@ -170,8 +180,18 @@ export class Create extends Component {
         <div className="basic-footer btn-footer">
           <Footer />
           <div className="btn-wrapper">
-            <Button dataTest="resetButton" baseClass="secondary" onClick={this.handleResetForm}>Cancel</Button>
-            <Button form="createAgency" dataTest="submitButton" baseClass="primary" type="submit" disabled={submitting || pristine}>Save</Button>
+            <Button
+              dataTest="resetButton"
+              baseClass="secondary"
+              onClick={this.handleResetForm}>Cancel
+            </Button>
+            <Button
+              form="createAgency"
+              dataTest="submitButton"
+              baseClass="primary"
+              type="submit"
+              disabled={submitting || pristine}>Save
+            </Button>
           </div>
         </div>
         {this.state.showAddExistingAgentModal &&
@@ -184,24 +204,5 @@ export class Create extends Component {
     );
   }
 }
-const selector = formValueSelector('Create');
-const mapStateToProps = state => ({
-  orphans: getOrphanedAgentsList(state),
-  agency: state.agencyState.agency,
-  initialValues: {
-    mailingAddress: {},
-    physicalAddress: {},
-    licenses: [{
-      state: '', license: '', licenseType: '', licenseEffectiveDate: ''
-    }]
-  },
-  sameAsMailingValue: selector(state, 'sameAsMailing'),
-  licenseValue: selector(state, 'licenses')
-});
 
-export default connect(mapStateToProps, {
-  getAgency, updateAgency, createAgency
-})(reduxForm({
-  form: 'Create',
-  enableReinitialize: true
-})(Create));
+export default Create;

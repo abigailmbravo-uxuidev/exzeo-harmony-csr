@@ -31,7 +31,8 @@ export class AgentModal extends Component {
       handleSubmit,
       isEditing,
       submitting,
-      licenseValue
+      licenseValue,
+      change
     } = this.props;
 
     return (
@@ -53,7 +54,9 @@ export class AgentModal extends Component {
                 <h3>Mailing Address</h3>
                 <FormSection
                   name="mailingAddress">
-                  <Address />
+                  <Address
+                    changeField={change}
+                    section="mailingAddress" />
                 </FormSection>
               </section>
               <section className="agent-license">

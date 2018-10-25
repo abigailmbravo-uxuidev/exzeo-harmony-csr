@@ -76,6 +76,8 @@ export class CreateBranch extends Component {
       handleSubmit,
       licenseValue,
       sameAsMailingValue,
+      physicalStateValue,
+      physicalZipValue,
       submitting,
       pristine,
       change,
@@ -99,9 +101,10 @@ export class CreateBranch extends Component {
                     <h4>Mailing Address</h4>
                     <FormSection name="mailingAddress">
                       <Address
+                        territoryManagers={territoryManagers}
                         sameAsMailingValue={sameAsMailingValue}
                         changeField={change}
-                        mailingAddress />
+                        section="mailingAddress" />
                     </FormSection>
                   </div>
                   <div className="agency-physical-address">
@@ -116,7 +119,11 @@ export class CreateBranch extends Component {
                       <label htmlFor="sameAsMailing">Same as Mailing Address</label>
                     </h4>
                     <FormSection name="physicalAddress">
-                      <Address showCounty sectionDisabled={sameAsMailingValue} />
+                      <Address
+                        showCounty
+                        stateValue={physicalStateValue}
+                        zipValue={physicalZipValue}
+                        sectionDisabled={sameAsMailingValue} />
                     </FormSection>
                     <Field
                       label="Territory Managers"
