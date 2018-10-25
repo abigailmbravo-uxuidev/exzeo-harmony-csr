@@ -64,7 +64,7 @@ export const getPolicyDetails = createSelector(
         policyNumber
       },
       policyHolder: detailUtils.getPrimaryPolicyHolder(policyHolders),
-      mailingAddress: detailUtils.getMailingAddress(pHMA, policyHolders),
+      mailingAddress: detailUtils.getMailingAddress(pHMA),
       propertyAddress: {
         address1: physicalAddress.address1,
         address2: physicalAddress.address2,
@@ -115,7 +115,7 @@ export const getQuoteDetails = createSelector(
         quoteNumber
       },
       policyHolder: detailUtils.getPrimaryPolicyHolder(policyHolders),
-      mailingAddress: detailUtils.getMailingAddress(pHMA, policyHolders),
+      mailingAddress: detailUtils.getMailingAddress(pHMA),
       propertyAddress: {
         address1: physicalAddress.address1,
         address2: physicalAddress.address2,

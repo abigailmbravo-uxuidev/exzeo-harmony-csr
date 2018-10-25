@@ -26,6 +26,6 @@ describe('Test the Authentication Component', () => {
     const wrapper = shallow(<Authentication {...props} />);
 
     expect(wrapper.exists()).toBeTruthy();
-    wrapper.instance().componentDidMount();
+    wrapper.instance().componentWillMount();
   });
 });
