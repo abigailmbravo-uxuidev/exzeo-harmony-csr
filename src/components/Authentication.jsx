@@ -11,7 +11,7 @@ const auth = new Auth();
 
 // TODO: this is the first pass at abstracting out Authentication into a reusable component. Will return
 export class Authentication extends Component {
-  componentDidMount() {
+  componentWillMount() {
     const {
       config,
       setAppErrorAction,
@@ -48,7 +48,8 @@ export class Authentication extends Component {
 
   render() {
     const { userProfile } = this.props;
-    if (auth.isAuthenticated() && !userProfile) {
+    const authenticated = auth.isAuthenticated();
+    if (authenticated && !userProfile) {
       return null;
     }
 
