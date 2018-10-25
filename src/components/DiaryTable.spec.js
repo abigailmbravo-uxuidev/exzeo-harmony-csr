@@ -21,7 +21,7 @@ describe('Testing DetailHeader component', () => {
             state: 'FL',
             product: 'HO3'
           },
-          _id: '5bcf4c8bf7f30c0011668ae2',
+          _id: '1',
           entries: [
             {
               open: true,
@@ -54,7 +54,7 @@ describe('Testing DetailHeader component', () => {
             state: 'FL',
             product: 'HO3'
           },
-          _id: '5bcf4c9ff7f30c0011668ae3',
+          _id: '2',
           entries: [
             {
               open: true,
@@ -105,7 +105,7 @@ describe('Testing DetailHeader component', () => {
             state: 'FL',
             product: 'HO3'
           },
-          _id: '5bcf4cb0f7f30c0011668ae4',
+          _id: '3',
           entries: [
             {
               open: true,
@@ -138,7 +138,7 @@ describe('Testing DetailHeader component', () => {
             state: 'FL',
             product: 'HO3'
           },
-          _id: '5bcf4cd4f7f30c0011668ae5',
+          _id: '4',
           entries: [
             {
               open: true,

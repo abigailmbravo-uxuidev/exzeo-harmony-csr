@@ -1,6 +1,7 @@
 import auth0 from 'auth0-js';
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
+
 import history from './history';
 
 export default class Auth {
@@ -51,23 +52,22 @@ export default class Auth {
 
   handleAuthentication() {
     this.auth0.parseHash(window.location.hash, (err, authResult) => {
-       if (authResult && authResult.accessToken && authResult.idToken) {
-          const payload = jwtDecode(authResult.idToken);
-          // check to see if the user exists in a CSR group
-          if(payload['https://heimdall.security/groups'].some(group => group['isCSR'])) {
-            return axios.get(`${process.env.REACT_APP_API_URL}/mainUserProfile`, {
-              headers: { authorization: `bearer ${authResult.idToken}`}
-            })
-            .then(profile => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        const payload = jwtDecode(authResult.idToken);
+        // check to see if the user exists in a CSR group
+        if (payload['https://heimdall.security/groups'].some(group => group['isCSR'])) {
+          return axios.get(`${process.env.REACT_APP_API_URL}/mainUserProfile`, {
+            headers: { authorization: `bearer ${authResult.idToken}`}
+          })
+            .then((profile) => {
               this.setSession(authResult, profile.data);
               history.replace('/');
             })
-            .catch(error => {
+            .catch((error) => {
               history.replace(`/accessDenied?error=${error}`);
-            });     
-          } else {
-            history.replace(`/accessDenied?error=${'Not Authorized'}`);
-          }
+            });
+        }
+        history.replace(`/accessDenied?error=${'Not Authorized'}`);
       } else if (err) {
         history.replace(`/accessDenied?error=${err.errorDescription}`);
       }
@@ -121,5 +121,4 @@ export default class Auth {
     const payload = jwtDecode(idToken);
     return Math.floor(Date.now() / 1000) < payload.exp;
   }
-
 }
