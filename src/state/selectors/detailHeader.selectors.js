@@ -28,7 +28,7 @@ export const getPolicyDetails = createSelector(
       effectiveDate,
       endDate,
       policyHolders,
-      policyHolderMailingAddress: pHMA,
+      policyHolderMailingAddress: pHMA = {},
       policyNumber,
       product,
       property,
@@ -51,8 +51,6 @@ export const getPolicyDetails = createSelector(
     const cancellationDate = detailUtils.getCancellationDate(summaryLedger, endDate, cancelDate);
     const showReinstatement = detailUtils.shouldShowReinstatement(status, code);
 
-    const primaryPolicyHolder = policyHolders[0];
-
     return {
       constructionType,
       sourceNumber,
@@ -66,15 +64,8 @@ export const getPolicyDetails = createSelector(
         product: detailUtils.getProductName(product),
         policyNumber
       },
-      policyHolder: {
-        displayName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
-        phone: normalize.phone(primaryPolicyHolder.primaryPhoneNumber)
-      },
-      mailingAddress: {
-        address1: pHMA.address1,
-        address2: pHMA.address2,
-        csz: detailUtils.getCityStateZip(pHMA)
-      },
+      policyHolder: detailUtils.getPrimaryPolicyHolder(policyHolders),
+      mailingAddress: detailUtils.getMailingAddress(pHMA, policyHolders),
       propertyAddress: {
         address1: physicalAddress.address1,
         address2: physicalAddress.address2,
@@ -98,13 +89,11 @@ export const getQuoteDetails = createSelector(
       quoteNumber,
       quoteState,
       policyHolders,
-      policyHolderMailingAddress: pHMA,
+      policyHolderMailingAddress: pHMA = {},
       property,
       effectiveDate,
       rating
     } = quote;
-
-    const primaryPolicyHolder = policyHolders[0];
 
     const {
       constructionType,
@@ -130,15 +119,8 @@ export const getQuoteDetails = createSelector(
         product: detailUtils.getProductName(product),
         quoteNumber
       },
-      policyHolder: {
-        displayName: `${primaryPolicyHolder.firstName} ${primaryPolicyHolder.lastName}`,
-        phone: normalize.phone(primaryPolicyHolder.primaryPhoneNumber)
-      },
-      mailingAddress: {
-        address1: pHMA.address1,
-        address2: pHMA.address2,
-        csz: detailUtils.getCityStateZip(pHMA)
-      },
+      policyHolder: detailUtils.getPrimaryPolicyHolder(policyHolders),
+      mailingAddress: detailUtils.getMailingAddress(pHMA, policyHolders),
       propertyAddress: {
         address1: physicalAddress.address1,
         address2: physicalAddress.address2,

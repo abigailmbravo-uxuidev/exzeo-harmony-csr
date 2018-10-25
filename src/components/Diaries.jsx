@@ -36,7 +36,7 @@ const Diaries = ({ diaryLevel, diaries, onToggleDiary }) => {
       <div>
         <ul className="fa-ul">
           {diaries.map(diary => (
-            <li key={diary._id}>
+            <li key={diary.diaryId}>
               <div className="diary-header">
                 <i className={severity.listIconClass} aria-hidden="true" />
                 <span className="diary-due-date">{moment.utc(diary.due).format('MM/DD/YYYY')} </span>
