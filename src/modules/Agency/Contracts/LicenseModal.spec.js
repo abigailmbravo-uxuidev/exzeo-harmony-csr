@@ -9,7 +9,7 @@ describe('Testing ContractsCard component', () => {
 
     const props = {
       array: [],
-      toggleModal() {},
+      closeModal() {},
       handleSubmit() {},
       agentValue: [],
       handleAddAgent() {},
@@ -17,8 +17,5 @@ describe('Testing ContractsCard component', () => {
     };
     const wrapper = shallow(<LicenseModal {...props} />);
     expect(wrapper.exists()).toBeTruthy();
-    const wi = wrapper.instance();
-    wi.handleRemoveAgent(0);
-    wi.handleAddAgent({ preventDefault: x => x }, '');
   });
 });
