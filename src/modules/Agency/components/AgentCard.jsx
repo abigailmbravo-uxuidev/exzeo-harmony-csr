@@ -66,11 +66,13 @@ export const AgentCard = ({ agent, handleSecondaryClick, handlePrimaryClick }) =
     </div>
     <div className="contact-actions">
       <button
+        data-test="switch-aor-agent"
         className="btn btn-link btn-sm"
         onClick={handleSecondaryClick(agent)}>
         <i className="fa fa-exchange" />Switch AOR
       </button>
       <button
+        data-test="edit-agent"
         className="btn btn-link btn-sm"
         onClick={handlePrimaryClick}>
         <i className="fa fa-pencil-square" />Edit

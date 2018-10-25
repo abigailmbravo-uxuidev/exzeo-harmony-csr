@@ -81,7 +81,7 @@ export class AgencyAddressModal extends Component {
                     <Field
                       normalize={this.onHandleSameAsMailing}
                       name="sameAsMailing"
-                      dataTest="sameAsMailing"
+                      data-test="sameAsMailing"
                       id="sameAsMailing"
                       component="input"
                       type="checkbox" />
