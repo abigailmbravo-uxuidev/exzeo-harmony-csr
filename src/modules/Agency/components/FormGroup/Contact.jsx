@@ -1,10 +1,6 @@
 import React from 'react';
 import { Field } from 'redux-form';
-import { Input, Select, validation } from '@exzeo/core-ui';
-
-const titleAnswers = [
-  { answer: 'officer', label: 'Officer' }
-];
+import { Input, validation } from '@exzeo/core-ui';
 
 export const Contact = ({ section }) => (
   <React.Fragment>
@@ -14,9 +10,7 @@ export const Contact = ({ section }) => (
         dataTest={`${section}.title`}
         styleName="title"
         label="Title"
-        component={Select}
-        validate={validation.isRequired}
-        answers={titleAnswers} />}
+        component={Input} />}
       <Field
         label="First Name"
         styleName="firstName"
