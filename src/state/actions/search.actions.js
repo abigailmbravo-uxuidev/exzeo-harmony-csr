@@ -609,7 +609,7 @@ export async function fetchDiaries({
  */
 export function sortDiariesByDate(diaries = []) {
   return diaries.sort((a, b) => {
-    return new Date((b || {}).entries[0].due) - new Date((a || {}).entries[0].due);
+    return new Date((a || {}).entries[0].due) - new Date((b || {}).entries[0].due);
   });
 }
 

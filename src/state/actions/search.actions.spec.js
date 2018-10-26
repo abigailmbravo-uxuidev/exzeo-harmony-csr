@@ -24,10 +24,10 @@ describe('Test search helpers', () => {
       ];
 
       const result = searchActions.sortDiariesByDate(diaries);
-      expect(result[0].id).toEqual('4');
-      expect(result[1].id).toEqual('1');
-      expect(result[2].id).toEqual('3');
-      expect(result[3].id).toEqual('2');
+      expect(result[0].id).toEqual('2');
+      expect(result[1].id).toEqual('3');
+      expect(result[2].id).toEqual('1');
+      expect(result[3].id).toEqual('4');
     });
   });
 });
