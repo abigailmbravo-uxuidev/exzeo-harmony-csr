@@ -581,7 +581,6 @@ export async function fetchDiaries({
   assignees,
   open
 }) {
-  
   const config = {
     service: 'diaries',
     method: 'POST',
@@ -604,17 +603,29 @@ export async function fetchDiaries({
 }
 
 /**
+ * Sort diaries in ascending order by due date
+ * @param diaries
+ * @returns {Array}
+ */
+export function sortDiariesByDate(diaries = []) {
+  return diaries.filter(d => d).sort((a, b) => {
+    return new Date(a.entries[0].due) - new Date(b.entries[0].due);
+  });
+}
+
+/**
  *
  * @param results
  */
 function formatDiaryResults(results) {
+  const sortedResults = sortDiariesByDate(results.result);
+
   return {
-    results: results.result,
-    totalRecords: results.result.length,
-    noResults: !results.result.length
+    results: sortedResults,
+    totalRecords: sortedResults.length,
+    noResults: !sortedResults.length
   };
 }
-
 // THISPR - **** finish ****
 
 /**
