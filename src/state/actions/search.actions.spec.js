@@ -1,10 +1,36 @@
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import sinon from 'sinon';
-import * as types from './actionTypes';
+
 import * as serviceRunner from '../../utilities/serviceRunner';
-import * as searchActions from './search.actions';
 import { SEARCH_TYPES } from '../../constants/search';
+
+import * as types from './actionTypes';
+import * as searchActions from './search.actions';
+
+describe('Test search helpers', () => {
+  describe('should call sortDiariesByDate', () => {
+
+    it('should handle an undefined gracefully', () => {
+      expect(() => searchActions.sortDiariesByDate()).not.toThrow();
+    });
+
+    it('should sort diaries in descending order of due date', () => {
+      const diaries = [
+        { id: '1', entries: [{ due: '10/31/2018' }] },
+        { id: '2', entries: [{ due: '10/31/2017' }] },
+        { id: '3', entries: [{ due: '6/12/2018' }] },
+        { id: '4', entries: [{ due: '1/05/2019' }] }
+      ];
+
+      const result = searchActions.sortDiariesByDate(diaries);
+      expect(result[0].id).toEqual('4');
+      expect(result[1].id).toEqual('1');
+      expect(result[2].id).toEqual('3');
+      expect(result[3].id).toEqual('2');
+    });
+  });
+});
 
 describe('Search Actions', () => {
   const middlewares = [];
