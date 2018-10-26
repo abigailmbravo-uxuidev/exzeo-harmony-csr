@@ -15,6 +15,18 @@ describe('Test search helpers', () => {
       expect(() => searchActions.sortDiariesByDate()).not.toThrow();
     });
 
+    it('should handle sparse array gracefully', () => {
+      const diaries = [
+        undefined,
+        { id: '6', entries: [{ due: '10/31/2018' }] }
+      ];
+
+      const result = searchActions.sortDiariesByDate(diaries);
+      expect(result.length).toEqual(1);
+
+      expect(() => searchActions.sortDiariesByDate(diaries)).not.toThrow();
+    });
+
     it('should sort diaries in descending order of due date', () => {
       const diaries = [
         { id: '1', entries: [{ due: '10/31/2018' }] },

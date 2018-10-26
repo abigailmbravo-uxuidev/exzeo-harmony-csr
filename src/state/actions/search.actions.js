@@ -608,8 +608,8 @@ export async function fetchDiaries({
  * @returns {Array}
  */
 export function sortDiariesByDate(diaries = []) {
-  return diaries.sort((a, b) => {
-    return new Date((a || {}).entries[0].due) - new Date((b || {}).entries[0].due);
+  return diaries.filter(d => d).sort((a, b) => {
+    return new Date(a.entries[0].due) - new Date(b.entries[0].due);
   });
 }
 
