@@ -9,10 +9,16 @@ describe('Test getEntityDetailsDateLabel function for undefined', () => {
 
 describe('Test getEntityDetailsDateLabel function for Cancellation Date', () => {
   describe('Entity Details Test for Non-Payment Cancellation', () => {
-    it('should return Cancellation Date for a Non-Payment Cancellation', () => {
-      const result = entityDetails.getEntityDetailsDateLabel('Non-Payment Notice Issued', 'Policy Issued');
+    it('should return Cancellation Date for a Non-Payment Cancellation for a policy status: In Force', () => {
+      const result = entityDetails.getEntityDetailsDateLabel('Non-Payment Notice Issued', 'In Force');
       expect(result).toEqual('Cancellation Date');
     });
+
+    it(`should return empty string for Cancellation Date for a Non-Payment Cancellation
+     for a policy status: Policy Issued`, () => {
+        const result = entityDetails.getEntityDetailsDateLabel('Non-Payment Notice Issued', 'Policy Issued');
+        expect(result).toEqual('');
+      });
   });
 
   describe('Entity Details Tests for Policy Status: Policy Cancelled', () => {

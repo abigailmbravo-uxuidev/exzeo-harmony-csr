@@ -7,7 +7,7 @@ export const CANCELLATION_DATE = 'Cancellation Date';
 export const EXPIRATION_DATE = 'Expiration Date';
 
 export const isNonPaymentNotice = (billingStatus, policyStatus) =>
-  policyStatus === 'Policy Issued' && billingStatus === 'Non-Payment Notice Issued';
+  policyStatus === 'In Force' && billingStatus === 'Non-Payment Notice Issued';
 
 export const expirationPolicyStatuses = [
   'Policy Issued',
