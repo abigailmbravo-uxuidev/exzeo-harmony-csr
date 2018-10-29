@@ -53,9 +53,9 @@ const License = ({ fields, isAgency }) => {
               name={`${license}.appointed`}
               component="input"
               type="checkbox"
-              styleName="appointed"
+              className="appointed"
               label="Appointed"
-              dataTest={`${license}.appointed`} />
+              data-test={`${license}.appointed`} />
           </div>
           {fields.length > 1 &&
           <div className="btn-remove-wrapper align-right align-bottom in-grid-layout">

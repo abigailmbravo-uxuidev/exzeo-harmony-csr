@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 
 export const ContractCard = ({ contract, editContract, contractIndex }) => (
   <div className="contract card">

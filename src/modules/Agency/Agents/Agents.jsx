@@ -121,7 +121,8 @@ export class Agents extends Component {
     const {
       updateAgent, agency, branchCode, orphans
     } = this.props;
-    const selectedAgent = orphans.filter(a => String(a.agentCode) === String(data.selectedAgentCode))[0];
+    const { selectedAgentCode } = data;
+    const selectedAgent = orphans.filter(a => String(a.agentCode) === String(selectedAgentCode))[0];
     selectedAgent.agencies.push({ agencyCode: agency.agencyCode, branchCode });
     await updateAgent(selectedAgent, agency.agencyCode);
     this.toggleExistingAgentModal();

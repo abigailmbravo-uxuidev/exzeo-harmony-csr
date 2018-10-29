@@ -60,8 +60,8 @@ export class Create extends Component {
   // TODO : Move to utilities
   applyOrphanedAgent = (data) => {
     const { change, orphans } = this.props;
-    const { selectedAgentId } = data;
-    const selectedAgent = orphans.filter(a => a._id === selectedAgentId)[0];
+    const { selectedAgentCode } = data;
+    const selectedAgent = orphans.filter(a => String(a.agentCode) === String(selectedAgentCode))[0];
     change('agentOfRecord.firstName', selectedAgent.firstName);
     change('agentOfRecord.lastName', selectedAgent.lastName);
     change('agentOfRecord.primaryPhoneNumber', selectedAgent.primaryPhoneNumber);
@@ -129,6 +129,7 @@ export class Create extends Component {
                         territoryManagers={territoryManagers}
                         section="physicalAddress"
                         showCounty
+                        changeField={change}
                         stateValue={physicalStateValue}
                         zipValue={physicalZipValue}
                         sectionDisabled={sameAsMailingValue} />

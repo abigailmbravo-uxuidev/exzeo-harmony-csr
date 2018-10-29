@@ -3,50 +3,66 @@ import PropTypes from 'prop-types';
 import { reduxForm, FieldArray, Form, Field } from 'redux-form';
 import { Input, Date, Select, validation } from '@exzeo/core-ui';
 
-export const RenderLicenses = ({ fields }) => {
+export const RenderLicenses = ({ fields, actionType, uniqueLicenseNumber }) => {
   const states = [
     { answer: 'FL', label: 'FL' },
     { answer: 'TX', label: 'TX' }
   ];
 
+  const typeAnswers = [
+    { answer: 'Resident', label: 'Resident' },
+    { answer: 'Non-Resident', label: 'Non-Resident' }
+  ];
+
   if (fields.length === 0) fields.insert(0, {});
   return (
     <React.Fragment>
-    {fields.map((license, index) => (
-        <div className="license-wrapper" key={license}>
-          <Field
-            label="State"
-            styleName="state"
-            name={`${license}.state`}
-            answers={states}
-            component={Select}
-            dataTest={`${license}.state`}
-            validate={validation.isRequired} />
-          <Field
-            label="License Number"
-            styleName="licenseNumber"
-            name={`${license}.licenseNumber`}
-            component={Input}
-            dataTest={`${license}.licenseNumber`}
-            validate={validation.isRequired} />
-          <Field
-            label="Effective Date"
-            styleName="licenseEffectiveDate"
-            name={`${license}.licenseEffectiveDate`}
-            component={Date}
-            dataTest={`${license}.licenseEffectiveDate`}
-            validate={validation.isRequired} />
-          {fields.length > 1 &&
-          <div className="btn-remove-wrapper align-right align-bottom in-grid-layout">
-            <button type="button" className="btn btn-link btn-sm" onClick={() => fields.remove(index)}>
-              <i className="fa fa-times-circle" />REMOVE
-            </button>
-          </div>}
+    {fields.map((license, index) =>
+      <div className="license-wrapper" key={license}>
+        <Field
+          label="State"
+          styleName="state"
+          name={`${license}.state`}
+          answers={states}
+          component={Select}
+          dataTest={`${license}.state`}
+          validate={validation.isRequired} />
+        <Field
+          label="License Number"
+          styleName="licenseNumber"
+          name={`${license}.licenseNumber`}
+          component={Input}
+          dataTest={`${license}.licenseNumber`}
+          validate={[validation.isRequired, uniqueLicenseNumber]} />
+        <Field
+          label="Type"
+          styleName="licenseType"
+          name={`${license}.licenseType`}
+          answers={typeAnswers}
+          component={Select}
+          dataTest={`${license}.licenseType`}
+          validate={validation.isRequired} />
+        <Field
+          label="Effective Date"
+          styleName="licenseEffectiveDate"
+          name={`${license}.licenseEffectiveDate`}
+          component={Date}
+          dataTest={`${license}.licenseEffectiveDate`}
+          validate={validation.isRequired} />
+        {fields.length > 1 &&
+        <div className="btn-remove-wrapper align-right align-bottom in-grid-layout">
+          <button type="button" className="btn btn-link btn-sm" onClick={() => fields.remove(index)}>
+            <i className="fa fa-times-circle" />REMOVE
+          </button>
         </div>
-          ))}
-      <div className="btn-divider-wrapper">
-        <button className="btn btn-secondary btn-sm add-license" type="button" onClick={() => fields.push({})}><i className="fa fa-plus" />License</button>
+        }
       </div>
+    )}
+    {actionType === 'Add' &&
+    <div className="btn-divider-wrapper">
+      <button className="btn btn-secondary btn-sm add-license" type="button" onClick={() => fields.push({})}><i className="fa fa-plus" />License</button>
+    </div>
+    }
     </React.Fragment>
   );
 };
@@ -64,7 +80,7 @@ export const LicenseModal = (props) => {
     return value && licenseNumbers.includes(value) && value !== initialValues.licenseNumbers
       ? 'The License Number must be unique.' 
       : undefined;
-  }
+  };
   const actionType = initialValues ? 'Edit' : "Add";
   return (
     <div className="modal license-crud">
@@ -75,7 +91,7 @@ export const LicenseModal = (props) => {
           </div>
           <div className="card-block">
             <section className="license-details">
-              <FieldArray name="stateProducts" component={RenderLicenses} />
+              <FieldArray name="licenses" actionType={actionType} uniqueLicenseNumber={uniqueLicenseNumber} component={RenderLicenses} />
             </section>
           </div>
           <div className="card-footer">

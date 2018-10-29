@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import isEqual from 'lodash/isEqual';
+import sortBy from 'lodash/sortBy';
 
 const getAgency = state => state.agencyState.agency;
 
@@ -44,10 +45,11 @@ export const getBranchesList = createSelector(
   (agency) => {
     if (!agency || !agency.branches || !Array.isArray(agency.branches)) return [];
     const branches = agency.branches.map(b => ({
+      branchCode: Number(b.branchCode),
       answer: b.branchCode,
       label: `${b.branchCode}: ${b.displayName}`
     }));
-    return branches;
+    return sortBy(branches, b => b.branchCode);
   }
 );
 

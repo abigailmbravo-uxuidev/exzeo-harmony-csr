@@ -62,7 +62,8 @@ export const ContractModal = (props) => {
     return value && contractNumbers.includes(value) && value !== initialValues.contractNumbers
       ? 'The Contract Number must be unique.' 
       : undefined;
-  }
+  };
+  
   const actionType = initialValues ? 'Edit' : "Add";
   return (
     <div className="modal contract-crud">

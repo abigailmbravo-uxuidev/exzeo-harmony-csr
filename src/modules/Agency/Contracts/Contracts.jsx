@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import cloneDeep from 'lodash/cloneDeep';
 import Button from '@exzeo/core-ui/lib/Button';
 import TaxDetail from './TaxDetails';
 import LicenseCard from './LicenseCard';
@@ -32,25 +31,25 @@ export class Contracts extends Component {
   };
 
   saveLicense = async (data, dispatch, props) => {
-    const { agency: { agencyCode, lincenses }, updateAgency } = this.props;
+    const { agency: { agencyCode, licenses }, updateAgency } = this.props;
     const { licenseIndex } = this.state;
-
     let newLicenses;
 
-    if(licenseIndex) {
-      newLicenses = contracts.map((item, index) => {
+    if(licenseIndex || licenseIndex === 0) {
+      newLicenses = licenses.map((item, index) => {
         if (index === licenseIndex) {
-          return { ...data };
+          return { ...data.licenses[0] };
         } else {
           return item;
         }
       });
     } else {
-      newLicenses = [...licenses, { ...data }];
+      
+      newLicenses = [...licenses, ...data.licenses ];
     }
 
-    await updateAgency({ agencyCode, contracts: newLicenses });
-    this.toggleContract()();
+    await updateAgency({ agencyCode, licenses: newLicenses });
+    this.toggleLicense()();
   };
 
   saveContract = async (data, dispatch, props) => {
@@ -59,7 +58,7 @@ export class Contracts extends Component {
 
     let newContracts;
 
-    if(contractIndex) {
+    if(contractIndex >= 0) {
       newContracts = contracts.map((item, index) => {
         if (index === contractIndex) {
           return { ...data };
@@ -76,7 +75,7 @@ export class Contracts extends Component {
   };
 
   render() {
-    const { agency, listOfAgents } = this.props;
+    const { agency } = this.props;
     const { licenseIndex, showLicenseModal, contractIndex, showContractModal } = this.state;
 
     if (!agency) return <div />;
@@ -86,7 +85,8 @@ export class Contracts extends Component {
           <LicenseModal
             saveLicense={this.saveLicense}
             closeModal={this.toggleLicense}
-            initialValues={agency.contracts[licenseIndex]}
+            initialValues={licenseIndex !== null ? { licenses: [agency.licenses[licenseIndex]] } : null}
+            licenseNumbers={agency.licenses.map(l => l.licenseNumber)}
           />
         }
         {showContractModal &&
@@ -107,7 +107,7 @@ export class Contracts extends Component {
                   <LicenseCard
                     key={license.licenseNumber}
                     license={license}
-                    editContract={this.toggleLicense(license)} />
+                    editLicense={this.toggleLicense(index)} />
                 ))}
                 <div className="create-contract">
                   <hr />

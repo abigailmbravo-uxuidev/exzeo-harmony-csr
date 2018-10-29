@@ -1,4 +1,3 @@
-import cloneDeep from 'lodash/cloneDeep';
 import * as types from './actionTypes';
 import * as errorActions from './error.actions';
 import * as serviceRunner from '../../utilities/serviceRunner';
