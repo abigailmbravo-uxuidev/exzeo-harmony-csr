@@ -1209,6 +1209,36 @@
         width: 80%;
         max-height: 90%;
 
+        .card-block {
+          overflow: visible;
+
+          .zip {
+            .TypeAhead {
+              z-index: 20;
+            }
+
+            .react-select__menu {
+              overflow-y: auto;
+              max-height: 9rem;
+
+              .react-select__menu-list {
+                overflow-y: hidden;
+              }
+            }
+          }
+
+          .territoryManagerId {
+            .TypeAhead {
+              z-index: 10;
+            }
+
+            .react-select__menu {
+              overflow-y: auto;
+              max-height: 8rem;
+            }
+          }
+        }
+
         .agency-details {
           display: grid;
           margin-bottom: 0;
