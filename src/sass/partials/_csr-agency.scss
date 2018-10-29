@@ -1504,6 +1504,47 @@
       }
     }
   }
+
+  &.license-crud {
+    form {
+      width: 100%;
+
+      .card {
+        width: 30rem;
+        max-height: 80vh;
+
+        .card-block {
+          .license-details {
+            display: flex;
+            flex-wrap: wrap;
+
+            .form-group {
+              flex-grow: 0;
+              flex-shrink: 0;
+
+              &.state {
+                width: 30%;
+                margin-right: $padding;
+              }
+
+              &.licenseNumber {
+                width: calc(70% - .5rem);
+              }
+
+              &.licenseType {
+                width: calc(60% - .5rem);
+                margin-right: $padding;
+              }
+
+              &.licenseEffectiveDate {
+                width: 40%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 #root {

@@ -24,15 +24,15 @@ export const LicenseModal = (props) => {
 
   const uniqueLicenseNumber = value => {
     return value && licenseNumbers.includes(value) && value !== initialValues.licenseNumbers
-      ? 'The License Number must be unique.' 
+      ? 'The License Number must be unique.'
       : undefined;
   };
 
   const actionType = initialValues ? 'Edit' : "Add";
   return (
     <div className="modal license-crud">
-      <div className="card">
-        <Form noValidate onSubmit={handleSubmit(saveLicense)}>
+      <Form noValidate onSubmit={handleSubmit(saveLicense)}>
+        <div className="card">
           <div className="card-header">
             <h4><i className="fa fa-file" /> {actionType} License</h4>
           </div>
@@ -76,8 +76,8 @@ export const LicenseModal = (props) => {
               <button tabIndex="0" className="btn btn-primary" type="submit">Save</button>
             </div>
           </div>
-        </Form>
-      </div>
+        </div>
+      </Form>
     </div>
   );
 };
