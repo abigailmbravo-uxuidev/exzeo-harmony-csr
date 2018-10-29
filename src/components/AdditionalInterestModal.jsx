@@ -136,6 +136,9 @@ export class AdditionalInterestModal extends React.Component {
 
     return (
       <div className="modal" style={this.modalStyle}>
+        {(submitting || isDeleting) &&
+          <Loader />
+        }
         <form
           id={isEditing ? 'AdditionalInterestEditModal' : 'AdditionalInterestModal'}
           onSubmit={handleSubmit(this.handleFormSubmit)}
