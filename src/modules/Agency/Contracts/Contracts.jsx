@@ -38,14 +38,13 @@ export class Contracts extends Component {
     if(licenseIndex || licenseIndex === 0) {
       newLicenses = licenses.map((item, index) => {
         if (index === licenseIndex) {
-          return { ...data.licenses[0] };
+          return { ...data };
         } else {
           return item;
         }
       });
     } else {
-      
-      newLicenses = [...licenses, ...data.licenses ];
+      newLicenses = [...licenses, { ...data } ];
     }
 
     await updateAgency({ agencyCode, licenses: newLicenses });
@@ -85,7 +84,7 @@ export class Contracts extends Component {
           <LicenseModal
             saveLicense={this.saveLicense}
             closeModal={this.toggleLicense}
-            initialValues={licenseIndex !== null ? { licenses: [agency.licenses[licenseIndex]] } : null}
+            initialValues={agency.licenses[licenseIndex]}
             licenseNumbers={agency.licenses.map(l => l.licenseNumber)}
           />
         }
