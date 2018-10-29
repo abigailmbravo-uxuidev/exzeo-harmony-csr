@@ -9,14 +9,11 @@ import { getAnswers } from '../../utilities/forms';
 import { getMortgageeOrderAnswers } from '../../utilities/additionalInterests';
 import { startWorkflow } from '../../state/actions/cg.actions';
 import { getUIQuestions } from '../../state/actions/questions.actions';
+import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { getQuote } from '../../state/actions/quote.actions';
 import { getBillingOptions, saveBillingInfo } from '../../state/actions/service.actions';
-import {
-  getGroupedAdditionalInterests,
-  getSortedAdditionalInterests,
-  checkQuoteState
-} from '../../state/selectors/quote.selectors';
+import { getGroupedAdditionalInterests, getSortedAdditionalInterests, checkQuoteState } from '../../state/selectors/quote.selectors';
 import QuoteBaseConnect from '../../containers/Quote';
 import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';
@@ -348,6 +345,7 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   startWorkflowAction: startWorkflow,
   getUIQuestionsAction: getUIQuestions,
+  setAppStateAction: setAppState,
   getBillingOptionsAction: getBillingOptions,
   saveBillingInfoAction: saveBillingInfo,
   getQuoteAction: getQuote,
