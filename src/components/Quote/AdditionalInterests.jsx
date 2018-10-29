@@ -306,8 +306,7 @@ export class AdditionalInterests extends Component {
                       key={ai._id}
                       ai={ai}
                       editAI={this.editAI}
-                      toggleAIState={this.deleteAdditionalInterest}
-                    />
+                      toggleAIState={this.deleteAdditionalInterest} />
                   ))}
                 </ul>
               </div>
@@ -320,6 +319,7 @@ export class AdditionalInterests extends Component {
               addAdditionalInterestType={this.state.addAdditionalInterestType}
               completeSubmit={this.onHandleAISubmit}
               hideModal={this.hideAdditionalInterestModal}
+              deleteAdditionalInterest={this.deleteAdditionalInterest}
               initialValues={this.initAdditionalInterestModal()}
               isDeleting={this.state.isDeleting}
               isEditing={this.state.isEditingAI}

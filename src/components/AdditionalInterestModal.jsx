@@ -136,9 +136,6 @@ export class AdditionalInterestModal extends React.Component {
 
     return (
       <div className="modal" style={this.modalStyle}>
-        {(submitting || isDeleting) &&
-          <Loader />
-        }
         <form
           id={isEditing ? 'AdditionalInterestEditModal' : 'AdditionalInterestModal'}
           onSubmit={handleSubmit(this.handleFormSubmit)}
@@ -344,7 +341,7 @@ const mapStateToProps = state => ({
   mortgageeAnswers: getMortgageeAnswers(state),
   premiumFinanceAnswers: getTopPremiumFinanceAnswers(state),
   questions: state.questions,
-  sortedAdditionalInterests: getSortedAdditionalInterests(state),
+  sortedAdditionalInterests: getSortedAdditionalInterests(state)
 });
 
 export default connect(mapStateToProps, {
