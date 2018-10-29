@@ -9,11 +9,14 @@ import { getAnswers } from '../../utilities/forms';
 import { getMortgageeOrderAnswers } from '../../utilities/additionalInterests';
 import { startWorkflow } from '../../state/actions/cg.actions';
 import { getUIQuestions } from '../../state/actions/questions.actions';
-import { setAppState } from '../../state/actions/appState.actions';
 import { setAppError } from '../../state/actions/error.actions';
 import { getQuote } from '../../state/actions/quote.actions';
 import { getBillingOptions, saveBillingInfo } from '../../state/actions/service.actions';
-import { getGroupedAdditionalInterests, getSortedAdditionalInterests, checkQuoteState } from '../../state/selectors/quote.selectors';
+import {
+  getGroupedAdditionalInterests,
+  getSortedAdditionalInterests,
+  checkQuoteState
+} from '../../state/selectors/quote.selectors';
 import QuoteBaseConnect from '../../containers/Quote';
 import AIModal from '../AdditionalInterestModal';
 import Footer from '../Common/Footer';
@@ -106,9 +109,7 @@ export class AdditionalInterests extends Component {
 
 
   addAdditionalInterest = (type) => {
-    const {
-      appState, setAppStateAction, editingDisabled
-    } = this.props;
+    const { editingDisabled } = this.props;
     if (editingDisabled) return;
     // For now, hijacking appState calls with local state where we can.
     this.setState({
@@ -119,7 +120,7 @@ export class AdditionalInterests extends Component {
   };
 
   editAI = (ai) => {
-    const { appState, setAppStateAction, editingDisabled } = this.props;
+    const { editingDisabled } = this.props;
     if (editingDisabled) return;
     // For now, hijacking appState calls with local state where we can.
     this.setState({
@@ -347,7 +348,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   startWorkflowAction: startWorkflow,
   getUIQuestionsAction: getUIQuestions,
-  setAppStateAction: setAppState,
   getBillingOptionsAction: getBillingOptions,
   saveBillingInfoAction: saveBillingInfo,
   getQuoteAction: getQuote,
