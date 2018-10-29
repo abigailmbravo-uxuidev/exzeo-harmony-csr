@@ -305,6 +305,19 @@
 
                       &.zip {
                         width: 8rem;
+
+                        .TypeAhead {
+                          z-index: 20;
+                        }
+
+                        .react-select__menu {
+                          overflow-y: auto;
+                          max-height: 9rem;
+
+                          .react-select__menu-list {
+                            overflow-y: hidden;
+                          }
+                        }
                       }
 
                       &.territoryManagerId {
@@ -320,6 +333,15 @@
                   .county,
                   .territoryManagerId {
                     grid-column: span 6;
+
+                    .TypeAhead {
+                      z-index: 10;
+                    }
+
+                    .react-select__menu {
+                      overflow-y: auto;
+                      max-height: 9rem;
+                    }
                   }
                 }
 
