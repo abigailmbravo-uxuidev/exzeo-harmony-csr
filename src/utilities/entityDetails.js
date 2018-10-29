@@ -27,7 +27,7 @@ export const expirationBillingStatus = [
 export const canceledPolicyStatuses = [
   'Cancelled',
   'Pending Voluntary Cancellation',
-  'Pending Underwriting',
+  'Pending Underwriting Cancellation',
   'Cancellation',
   'Pending Underwriting Non-Renewal'
 ];

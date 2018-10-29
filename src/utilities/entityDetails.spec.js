@@ -147,61 +147,61 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Date', () => 
 
   describe('Entity Details Tests for Policy Status:  Pending Underwriting', () => {
     it(`should return Cancellation Date when Policy
-    Status is Pending Underwriting and Billing Status is Non-Payment Notice Issued`, () => {
+    Status is Pending Underwriting Cancellation and Billing Status is Non-Payment Notice Issued`, () => {
         const result = entityDetails.getEntityDetailsDateLabel(
           'Non-Payment Notice Issued',
-          'Pending Underwriting'
+          'Pending Underwriting Cancellation'
         );
         expect(result).toEqual('Cancellation Date');
       });
 
     it(`should return Cancellation Date when Policy
-    Status is Pending Underwriting and Billing Status is No Payment Received`, () => {
+    Status is Pending Underwriting Cancellation and Billing Status is No Payment Received`, () => {
         const result = entityDetails.getEntityDetailsDateLabel(
           'No Payment Received',
-          'Pending Underwriting'
+          'Pending Underwriting Cancellation'
         );
         expect(result).toEqual('Cancellation Date');
       });
     it(`should return Cancellation Date when Policy
-    Status is Pending Underwriting and Billing Status is Full Payment Received`, () => {
+    Status is Pending Underwriting Cancellation and Billing Status is Full Payment Received`, () => {
         const result = entityDetails.getEntityDetailsDateLabel(
           'Full Payment Received',
-          'Pending Underwriting'
+          'Pending Underwriting Cancellation'
         );
         expect(result).toEqual('Cancellation Date');
       });
     it(`should return Cancellation Date when Policy
-    Status is Pending Underwriting and Billing Status is Over Payment Received`, () => {
+    Status is Pending Underwriting Cancellation and Billing Status is Over Payment Received`, () => {
         const result = entityDetails.getEntityDetailsDateLabel(
           'Over Payment Received',
-          'Pending Underwriting'
+          'Pending Underwriting Cancellation'
         );
         expect(result).toEqual('Cancellation Date');
       });
 
     it(`should return Cancellation Date when Policy
-    Status is Pending Underwriting and Billing Status is Partial Payment Received`, () => {
+    Status is Pending Underwriting Cancellation and Billing Status is Partial Payment Received`, () => {
         const result = entityDetails.getEntityDetailsDateLabel(
           'Partial Payment Received',
-          'Pending Underwriting'
+          'Pending Underwriting Cancellation'
         );
         expect(result).toEqual('Cancellation Date');
       });
 
     it(`should return Cancellation Date when Policy
-    Status is Pending Underwriting and Billing Status is Payment Invoice Issued`, () => {
+    Status is Pending Underwriting Cancellation and Billing Status is Payment Invoice Issued`, () => {
         const result = entityDetails.getEntityDetailsDateLabel(
           'Payment Invoice Issued',
-          'Pending Underwriting'
+          'Pending Underwriting Cancellation'
         );
         expect(result).toEqual('Cancellation Date');
       });
     it(`should return Cancellation Date when Policy
-    Status is Pending Underwriting and Billing Status is Non-Payment Cancellation`, () => {
+    Status is Pending Underwriting Cancellation and Billing Status is Non-Payment Cancellation`, () => {
         const result = entityDetails.getEntityDetailsDateLabel(
           'Non-Payment Cancellation',
-          'Pending Underwriting'
+          'Pending Underwriting Cancellation'
         );
         expect(result).toEqual('Cancellation Date');
       });
