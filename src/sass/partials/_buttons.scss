@@ -151,10 +151,22 @@ input[type="submit"] {
 
   &.btn-alt-light {
     color: $bright-blue-lighten-02;
+    line-height: $headings-line-height;
 
     &:hover {
       text-decoration: none;
       color: $bright-blue-lighten-01;
+    }
+  }
+
+  &.btn-white {
+    margin-left: $padding/2;
+    color: $white;
+    line-height: $headings-line-height;
+
+    &:hover {
+      text-decoration: none;
+      color: $warm-gray-00;
     }
   }
 
