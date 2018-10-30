@@ -58,13 +58,13 @@ export class DetailHeader extends Component {
           className="policyDetails">
           <dd>
             {policy.policyNumber}
-            <a
+            <span
               data-test={sourceNumber}
               id="effective-date"
               title={sourceNumber}
-              className="btn btn-link btn-xs btn-alt-light no-padding">
-              <i className="fa fa-crosshairs" />Source
-            </a>
+              className="btn btn-link btn-white btn-xs no-padding">
+              <i className="fa fa-info-circle" />Source
+            </span>
           </dd>
           <dd>{status}</dd>
         </Details>
@@ -109,11 +109,6 @@ export class DetailHeader extends Component {
               className="constructionType" />
           </div>
           <div className="wrapping-section">
-            <SectionSingle
-              label="Source Number"
-              value={sourceNumber}
-              dataTest="sourceNumberDetail"
-              className="sourceNumber" />
 
             <SectionSingle
               label="Effective Date"

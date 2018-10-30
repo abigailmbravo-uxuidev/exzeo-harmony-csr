@@ -3,7 +3,7 @@ import { normalize } from '@exzeo/core-ui/lib';
 
 import { STANDARD_DATE_FORMAT } from '../constants/dates';
 
-export const CANCELLATION_DATE = 'Cancellation Date';
+export const CANCELLATION_DATE = 'Cancellation Effective Date';
 export const EXPIRATION_DATE = 'Expiration Date';
 
 export const isNonPaymentNotice = (billingStatus, policyStatus) =>
