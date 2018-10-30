@@ -1524,6 +1524,10 @@ ul.list-cards {
               @media (max-width: 1440px) {
                 line-height: 1.02;
               }
+
+              &.status {
+                line-height: 1.02;
+              }
             }
           }
         }

@@ -66,7 +66,7 @@ export class DetailHeader extends Component {
               <i className="fa fa-info-circle" />Source
             </span>
           </dd>
-          <dd>{status}</dd>
+          <dd className="status">{status}</dd>
         </Details>
 
         <Section
