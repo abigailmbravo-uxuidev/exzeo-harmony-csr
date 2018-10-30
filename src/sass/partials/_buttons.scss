@@ -151,6 +151,7 @@ input[type="submit"] {
 
   &.btn-alt-light {
     color: $bright-blue-lighten-02;
+    border-width: 0;
     line-height: $headings-line-height;
 
     &:hover {
@@ -162,6 +163,7 @@ input[type="submit"] {
   &.btn-white {
     margin-left: $padding/2;
     color: $white;
+    border-width: 0;
     line-height: $headings-line-height;
 
     &:hover {
