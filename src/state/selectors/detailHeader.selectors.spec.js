@@ -834,7 +834,6 @@ describe('Detail Header selectors', () => {
       county: 'PALM BEACH',
       currentPremium: '$ 3,055',
       details: {
-        policyNumber: '12-1011068-01',
         product: 'HO3 Homeowners'
       },
       effectiveDate: '12/04/2018',
