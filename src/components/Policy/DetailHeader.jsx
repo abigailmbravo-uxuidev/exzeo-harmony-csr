@@ -56,6 +56,15 @@ export class DetailHeader extends Component {
           data={details}
           dataTest="policyDetails"
           className="policyDetails">
+          <dd>
+            {policy.policyNumber}
+            <a
+              id="effective-date"
+              title={sourceNumber}
+              className="btn btn-link btn-xs btn-alt-light no-padding">
+              <i className="fa fa-crosshairs" />Source
+            </a>
+          </dd>
           <dd>{status}</dd>
         </Details>
 

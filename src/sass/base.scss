@@ -1511,7 +1511,7 @@ ul.list-cards {
             dt {
               letter-spacing: 0.05em;
               color: $yellow-lighten-06;
-              font-size: $font-size-xs;
+              font-size: $font-size-sm;
               font-weight: $font-weight-normal;
             }
 
@@ -1522,7 +1522,7 @@ ul.list-cards {
               text-overflow: ellipsis;
               -webkit-hyphens: auto;
               hyphens: auto;
-              font-size: $font-size-sm;
+              font-size: 14px;
               line-height: $headings-line-height;
               -ms-hyphens: auto;
               @media (max-width: 1440px) {
