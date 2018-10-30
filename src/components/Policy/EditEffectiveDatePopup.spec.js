@@ -22,7 +22,7 @@ describe('Testing BillingEditModal component', () => {
         }
       },
       policyState: {
-        effectiveDateReasons: {},
+        effectiveDateReasons: {}
       },
       service: {
         latestPolicy: {}
@@ -41,6 +41,9 @@ describe('Testing BillingEditModal component', () => {
     };
     const store = mockStore(initialState);
     const props = {
+      effectiveDateReasons: [],
+      pristine: true,
+      submitting: false,
       handleSubmit() {},
       billingOptions: initialState.service.billingOptions,
       fieldValues: {},
@@ -55,5 +58,8 @@ describe('Testing BillingEditModal component', () => {
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
     expect(wrapper.instance().props.fieldValues).toEqual({});
     handleInitialize(initialState);
+
+    const comp = shallow(<EditEffectiveDatePopup {...props} />);
+    expect(comp).toBeTruthy();
   });
 });

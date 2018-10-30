@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, Field } from 'redux-form';
-import { Select, validation } from '@exzeo/core-ui';
+import { reduxForm } from 'redux-form';
 
-import { DEFAULT_SEARCH_PARAMS } from '../../../constants/search';
+import { DEFAULT_SEARCH_PARAMS, SEARCH_FORM } from '../../../constants/search';
 import { getAgencies } from '../../../state/actions/service.actions';
 import { clearAppError } from '../../../state/actions/error.actions';
 import {
@@ -13,12 +12,16 @@ import {
 
 export class SearchBar extends Component {
   componentDidMount() {
-    const { agencies, getAgencies, toggleLoading, initialize, initialValues } = this.props;
+    const {
+      agencies,
+      getAgencies,
+      toggleLoading
+    } = this.props;
+
     toggleLoading(false);
     if (!agencies.length) {
       getAgencies(DEFAULT_SEARCH_PARAMS.companyCode, DEFAULT_SEARCH_PARAMS.state);
     }
-    initialize(initialValues);
   }
 
   handleSearchFormSubmit = async (data, dispatch, props) => {
@@ -27,7 +30,7 @@ export class SearchBar extends Component {
   };
 
   handlePagination = (isNext) => {
-    const { handleSubmit } = this.props;
+    const { formProps: { handleSubmit } } = this.props;
     return handleSubmit((data, dispatch, props) => {
       // submit function is looking for these two added properties to determine if this is an initial submit or pagination submit.
       const submitData = { ...data, isNext, currentPage: props.search.currentPage };
@@ -42,7 +45,7 @@ export class SearchBar extends Component {
   };
 
   clearForm = () => {
-    const { clearAppError, reset } = this.props;
+    const { clearAppError, formProps: { reset } } = this.props;
     reset();
     clearAppError();
     toggleLoading(false);
@@ -50,35 +53,19 @@ export class SearchBar extends Component {
 
   render() {
     const {
-      handleSubmit,
-      searchTypeOptions,
-      submitting
+      formProps
     } = this.props;
 
     return (
       <div id="SearchBar">
-        <form onSubmit={handleSubmit(this.handleSearchFormSubmit)}>
+        <form onSubmit={formProps.handleSubmit(this.handleSearchFormSubmit)}>
           <div className="search-input-wrapper">
 
-            <div className="form-group search-context">
-              <Field
-                name="searchType"
-                dataTest="searchType"
-                label="Search Context"
-                component={Select}
-                id="searchType"
-                validate={validation.isRequired}
-                onChange={this.changeSearchType}
-                answers={searchTypeOptions}
-                showPlaceholder={false}
-                errorHint
-              />
-            </div>
-
-            { // render the correct search form based on searchType (declared in Search/index.js)
+            {// render the correct search form based on searchType (declared in Search/index.js)
               this.props.render({
-              submitting,
-              handlePagination: this.handlePagination
+                changeSearchType: this.changeSearchType,
+                handlePagination: this.handlePagination,
+                formProps
             })}
 
           </div>
@@ -100,6 +87,7 @@ export default connect(mapStateToProps, {
   handleSearchSubmit
 })(reduxForm({
   // 'initialValues' prop is being passed in from parent component based on route/pathName
-  form: 'SEARCH_BAR',
-  enableReinitialize: true
+  form: SEARCH_FORM,
+  enableReinitialize: true,
+  propNamespace: 'formProps'
 })(SearchBar));

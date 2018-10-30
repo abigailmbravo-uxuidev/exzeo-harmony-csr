@@ -1,16 +1,5 @@
+.new-diary-file,
 .new-note-file {
-  position: absolute;
-  z-index: 1000;
-  top: 9rem;
-  right: 2.5rem;
-  bottom: 0;
-  overflow: hidden;
-  width: 40%;
-  min-width: 34rem;
-  background: $white;
-  box-shadow: 0 0 30px 0 rgba($black, .3);
-  @include transition(all 0.1s ease-in-out);
-
   &.minimize {
     top: calc(100vh - 2.4375rem);
 
@@ -107,7 +96,7 @@
           flex-shrink: 0;
 
           &[name='fileType'] {
-              margin-bottom: $padding;
+            margin-bottom: $padding;
           }
         }
 
@@ -126,15 +115,13 @@
         }
 
         > div {
-            flex-grow: 1;
-            flex-shrink: 1;
-            display: flex;
-            flex-direction: column;
-            height: auto;
-            overflow: hidden;
+          display: flex;
+          overflow: hidden;
+          flex-direction: column;
+          flex-grow: 1;
+          flex-shrink: 1;
+          height: auto;
         }
-
-
       }
 
       .note-file-footer-button-group {
@@ -152,6 +139,76 @@
       }
     }
   }
+}
+
+.new-diary-file {
+  position: absolute;
+  z-index: 1000;
+  top: 13rem;
+  bottom: 0;
+  left: 12.5rem;
+  overflow: hidden;
+  width: 40%;
+  min-width: 34rem;
+  background: $white;
+  box-shadow: 0 0 30px 0 rgba($black, .3);
+
+  .mainContainer {
+    form {
+      .content {
+        overflow-y: auto;
+        align-content: flex-start;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        .due,
+        .type {
+          margin-right: $padding*2;
+        }
+
+        .assignee,
+        .type {
+          flex-grow: 0;
+          flex-shrink: 0;
+          width: calc(50% - .5rem);
+        }
+
+        .due {
+          flex-grow: 0;
+          flex-shrink: 0;
+          width: 10rem;
+          margin-bottom: 0;
+        }
+
+        .reason {
+          flex-grow: 0;
+          flex-shrink: 0;
+          width: calc(100% - 11rem);
+          margin-bottom: 0;
+        }
+
+        .text-area-wrapper {
+          height: calc(100vh - 30.75rem);
+          min-height: 10rem;
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+.new-note-file {
+  position: absolute;
+  z-index: 1000;
+  top: 9rem;
+  right: 2.5rem;
+  bottom: 0;
+  overflow: hidden;
+  width: 40%;
+  min-width: 34rem;
+  background: $white;
+  box-shadow: 0 0 30px 0 rgba($black, .3);
+  @include transition(all 0.1s ease-in-out);
 }
 
 .new-note-files {
@@ -238,6 +295,182 @@
 
             &:hover {
               color: $bright-blue-darken-02;
+            }
+          }
+        }
+      }
+    }
+
+    .diaries {
+      >.react-bs-table {
+          table {
+              display: flex;
+              flex-direction: column;
+          }
+          > .react-bs-container-body {
+              > .table-striped {
+                  > tbody {
+                      tr:not(hidden), tr:nth-of-type(even) {
+                          background: $white !important;
+                          border-bottom: 1px dotted $warm-gray-03;
+
+                          &:hover {
+                              background: $white !important;
+                          }
+
+                          > td {
+                              background: $white !important;
+
+                              &:hover {
+                                  background: $white !important;
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+
+
+        > .react-bs-container-header,
+        > .react-bs-container-body {
+          tbody,
+          thead {
+            tr {
+              display: flex;
+
+              td,
+              th {
+                display: flex;
+                flex-grow: 1;
+                flex-shrink: 1;
+                line-height: 1.5;
+
+                &.due-status {
+                  width: 8rem;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+
+                  .status-indicator {
+                      display: flex;
+
+                      span {
+                          min-width: 4px;
+                          min-height: 1rem;
+                          flex-shrink: 0;
+                          flex-grow: 0;
+                          margin-right: $padding/2;
+                          margin-left: -$padding/2;
+                          display: flex;
+                          &.gray {
+                              background: $warm-gray-06;
+                              border-radius: 2px;
+                          }
+                          &.red {
+                              background: $red;
+                              border-radius: 2px;
+                          }
+                          &.yellow {
+                              background: $orange-lighten-01;
+                              border-radius: 2px;
+                          }
+                          &.green {
+                              background: $green-darken-02;
+                              border-radius: 2px;
+                          }
+                          &.status-display {
+                              margin-left: 0;
+                          }
+                      }
+                  }
+                }
+
+                &.due {
+                  width: 5rem;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                }
+
+                &.assignee {
+                  width: 8rem;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                }
+
+                &.reason {
+                  width: 8rem;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                }
+
+                &.message {
+                    white-space: normal;
+                }
+
+                &.updated-at {
+                  width: 5rem;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                }
+
+                &.created-by {
+                  width: 8rem;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                }
+
+                &.action {
+                  overflow: visible;
+                  width: 2rem;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  display: flex;
+                  align-items: flex-start;
+                }
+
+                &.react-bs-table-expand-cell {
+                  order: 1;
+                  width: 2rem;
+                  flex-grow: 0;
+                  flex-shrink: 0;
+                  display: flex;
+                  align-items: flex-start;
+
+                  span {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: $font-size-base;
+                    @include transition(all 0.1s ease-in-out);
+
+                    i {
+                      color: $bright-blue;
+                      font-size: $font-size-base;
+                      @include transition(all 0.1s ease-in-out);
+                    }
+
+                    &:hover {
+                      cursor: pointer;
+                      color: $bright-blue-darken-04;
+
+                      i {
+                        color: $bright-blue-darken-04;
+                      }
+                    }
+                  }
+                }
+
+                .sub-table {
+                    width: 100%;
+                    margin: ($padding*-.5) (4rem + ($padding*-.75)) ($padding*-.5) (8rem + ($padding*-.75));
+
+                    .table-header-wrapper {
+                        display: none;
+                    }
+                    tr:last-child, tr:nth-of-type(even):last-child {
+                        border-bottom-width: 0;
+                    }
+                }
+              }
             }
           }
         }

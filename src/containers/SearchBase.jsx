@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { Loader } from '@exzeo/core-ui';
+
 import { getUIQuestions } from '../state/actions/questions.actions';
 import Header from '../components/Common/Header';
 import Footer from '../components/Common/Footer';
@@ -15,7 +16,9 @@ export class SearchBase extends Component {
   }
 
   render() {
-    const { loading, auth, location } = this.props;
+    const {
+ loading, auth, location, userProfile 
+} = this.props;
     return (
       <div className="app-wrapper csr">
         {loading &&
@@ -25,7 +28,7 @@ export class SearchBase extends Component {
           <title>Harmony - CSR Portal</title>
         </Helmet>
         <Header auth={auth} />
-        <Search pathName={location.pathname}>
+        <Search pathName={location.pathname} userProfile={userProfile} >
           <div className="basic-footer">
             <Footer />
           </div>
@@ -36,13 +39,18 @@ export class SearchBase extends Component {
 }
 
 SearchBase.propTypes = {
-  getUIQuestions: PropTypes.func,
-  auth: PropTypes.object,
-  loading: PropTypes.bool
+  auth: PropTypes.shape().isRequired,
+  loading: PropTypes.bool.isRequired,
+  location: PropTypes.shape().isRequired,
+  getUIQuestions: PropTypes.func.isRequired,
+  userProfile: PropTypes.shape().isRequired
 };
 
 const mapStateToProps = state => ({
-  loading: state.search.loading
+  loading: state.search.loading,
+  userProfile: state.authState.userProfile
 });
 
-export default connect(mapStateToProps, { getUIQuestions })(SearchBase);
+export default connect(mapStateToProps, {
+  getUIQuestions
+})(SearchBase);

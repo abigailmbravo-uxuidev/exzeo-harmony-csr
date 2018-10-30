@@ -1,12 +1,11 @@
 import { createSelector } from 'reselect';
 import sortBy from 'lodash/sortBy';
 import cloneDeep from 'lodash/cloneDeep';
-import { applyAdditionalInterestRanking } from '../../utilities/additionalInterests';
 import orderBy from 'lodash/orderBy';
 
-const getPolicy = state => state.policyState.policy;
-const getPaymentOptions = state => state.policyState.paymentOptions;
-const getPaymentHistory = state => state.policyState.paymentHistory;
+import { applyAdditionalInterestRanking } from '../../utilities/additionalInterests';
+
+import { getPaymentHistory, getPaymentOptions, getPolicy } from './entity.selectors';
 
 export const getCashDescriptionOptions = createSelector(
   [getPaymentOptions],

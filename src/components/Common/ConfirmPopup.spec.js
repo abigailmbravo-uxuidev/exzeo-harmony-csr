@@ -44,7 +44,7 @@ describe('Testing ShareConfirmationModal component', () => {
 
     expect(wrapper.instance().state.hidden).toEqual(false);
 
-    wrapper.instance().yes();
+    wrapper.instance().handleConfirm();
 
     expect(wrapper.instance().state.hidden).toEqual(true);
 
@@ -52,7 +52,7 @@ describe('Testing ShareConfirmationModal component', () => {
 
     expect(wrapper.instance().state.hidden).toEqual(false);
 
-    wrapper.instance().no();
+    wrapper.instance().handleCancel();
     expect(wrapper.instance().state.hidden).toEqual(true);
   });
 });

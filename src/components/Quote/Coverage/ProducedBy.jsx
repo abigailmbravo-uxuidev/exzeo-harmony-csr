@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Select, Date, validation } from '@exzeo/core-ui';
+import { SelectInteger, Date, validation } from '@exzeo/core-ui';
 
 const ProducedBy = ({
   name, sectionId, sectionClass, header, agencies, agents, handleAgencyChange
@@ -15,29 +15,26 @@ const ProducedBy = ({
           validate={[validation.isRequired, validation.isDate, validation.isValidUnderwritingDate]}
           label="Effective Date"
           name="effectiveDate"
-          dataTest="effectiveDate"
-        />
+          dataTest="effectiveDate" />
       </div>
       <div className="flex-child agencyCode">
         <Field
           name="agencyCode"
           label="Agency"
-          component={Select}
+          component={SelectInteger}
           answers={agencies}
           normalize={value => handleAgencyChange(value)}
           validate={validation.isRequired}
-          dataTest="agencyCode"
-        />
+          dataTest="agencyCode" />
       </div>
       <div className="flex-child agentCode">
         <Field
           name="agentCode"
           label="Agent"
-          component={Select}
+          component={SelectInteger}
           answers={agents}
           validate={validation.isRequired}
-          dataTest="agentCode"
-        />
+          dataTest="agentCode" />
       </div>
     </div>
   </section>

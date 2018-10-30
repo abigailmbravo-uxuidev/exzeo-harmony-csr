@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import moment from 'moment-timezone';
-import { Helmet } from 'react-helmet';
 import Loader from '@exzeo/core-ui/lib/Loader';
 
 import { setAppState } from '../../state/actions/appState.actions';
@@ -13,17 +12,20 @@ import { startWorkflow, batchCompleteTask } from '../../state/actions/cg.actions
 
 import EditEffectiveDataPopUp from '../../components/Policy/EditEffectiveDatePopup';
 import ReinstatePolicyPopup from '../../components/Policy/ReinstatePolicyPopup';
-import PolicyDetailHeader from '../../components/Policy/DetailHeader';
-import PolicySideNav from '../../components/Policy/PolicySideNav';
-import PolicyHeader from '../../components/Policy/PolicyHeader';
 import Coverage from '../../components/Policy/Coverage';
 import PolicyHolder from '../../components/Policy/PolicyholderAgent';
 import Billing from '../../components/Policy/MortgageBilling';
 import Notes from '../../components/Policy/NotesFiles';
 import Cancel from '../../components/Policy/Cancel';
 import Endorsements from '../../components/Policy/Endorsements';
+import OpenDiariesBar from '../../components/OpenDiariesBar';
+import App from '../../components/AppWrapper';
+import DiaryPolling from '../../components/DiaryPolling';
 
 export class Policy extends React.Component {
+  state = {
+    showDiaries: false
+  };
   // TODO: next step is to make an 'initialize' action that does all of this. Then this component will only need to know about one action.
   componentDidMount() {
     const {
@@ -72,6 +74,9 @@ export class Policy extends React.Component {
     }
   }
 
+  handleToggleDiaries = () => {
+    this.setState({ showDiaries: !this.state.showDiaries });
+  }
 
   hideEffectiveDatePopUp = () => {
     const { appState, setAppState } = this.props;
@@ -160,44 +165,55 @@ export class Policy extends React.Component {
       initialized
     } = this.props;
 
+    const { showDiaries } = this.state;
+
     return (
       <div className="app-wrapper csr policy">
 
         {(appState.data.submitting || !initialized) &&
           <Loader />
         }
+        <App
+          resourceType="Policy"
+          resourceId={policy.policyNumber}
+          pageTitle={`P: ${policy.policyNumber || ''}`}
+          match={match}
+          onToggleDiaries={this.handleToggleDiaries}
+          showDiaries={showDiaries}
+          render={() => (
+            <React.Fragment>
+              {initialized &&
+                <div className="content-wrapper">
+                  <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} />} />
+                  <Route exact path={`${match.url}/policyholder`} render={props => <PolicyHolder {...props} />} />
+                  <Route exact path={`${match.url}/billing`} render={props => <Billing {...props} />} />
+                  <Route exact path={`${match.url}/notes`} render={props => <Notes {...props} params={match.params} />} />
+                  <Route exact path={`${match.url}/cancel`} render={props => <Cancel {...props} />} />
+                  <Route exact path={`${match.url}/endorsements`} render={props => <Endorsements {...props} params={match.params} />} />
+                </div>
+              }
 
-        <Helmet><title>{policy && policy.policyNumber ? `P: ${policy.policyNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
-        <PolicyHeader />
-        <PolicyDetailHeader />
-        <main role="document">
-          <aside className="content-panel-left">
-            <PolicySideNav match={match} />
-          </aside>
+              {initialized &&
+                <DiaryPolling filter={{ resourceId: policy.policyNumber, resourceType: 'Policy' }} />
+              }
 
-          {initialized &&
-            <div className="content-wrapper">
-              <Route exact path={`${match.url}/coverage`} render={props => <Coverage {...props} />} />
-              <Route exact path={`${match.url}/policyholder`} render={props => <PolicyHolder {...props} />} />
-              <Route exact path={`${match.url}/billing`} render={props => <Billing {...props} />} />
-              <Route exact path={`${match.url}/notes`} render={props => <Notes {...props} params={match.params} />} />
-              <Route exact path={`${match.url}/cancel`} render={props => <Cancel {...props} />} />
-              <Route exact path={`${match.url}/endorsements`} render={props => <Endorsements {...props} params={match.params} />} />
-            </div>
+              {appState.data.showReinstatePolicyPopUp &&
+                <ReinstatePolicyPopup
+                  reinstatePolicySubmit={this.reinstatePolicySubmit}
+                  hideReinstatePolicyModal={this.hideReinstatePolicyPopUp} />
+              }
+
+              {appState.data.showEffectiveDateChangePopUp &&
+              <EditEffectiveDataPopUp
+                changeEffectiveDateSubmit={this.changeEffectiveDate}
+                hideEffectiveDateModal={this.hideEffectiveDatePopUp} />
           }
+              <OpenDiariesBar
+                resourceId={policy.policyNumber}
+                resourceType="Policy" />
+            </React.Fragment>
+        )} />
 
-          {appState.data.showReinstatePolicyPopUp &&
-            <ReinstatePolicyPopup
-              reinstatePolicySubmit={this.reinstatePolicySubmit}
-              hideReinstatePolicyModal={this.hideReinstatePolicyPopUp} />
-          }
-
-          {appState.data.showEffectiveDateChangePopUp &&
-            <EditEffectiveDataPopUp
-              changeEffectiveDateSubmit={this.changeEffectiveDate}
-              hideEffectiveDateModal={this.hideEffectiveDatePopUp} />
-          }
-        </main>
       </div>
     );
   }
@@ -205,6 +221,8 @@ export class Policy extends React.Component {
 
 Policy.propTypes = {
   appState: PropTypes.object,
+  authState: PropTypes.object,
+  fetchDiariesAction: PropTypes.func,
   initialized: PropTypes.bool,
   policy: PropTypes.object,
   summaryLedger: PropTypes.object,
@@ -223,16 +241,17 @@ Policy.propTypes = {
   startWorkflow: PropTypes.func
 };
 
-const mapStateToProps = ({
-  appState, cg, policyState, service
-}) => ({
-  appState,
-  initialized: !!(policyState.policy.policyID && policyState.summaryLedger._id),
-  policy: policyState.policy,
-  summaryLedger: policyState.summaryLedger,
-  tasks: cg,
-  zipCodeSettings: service.getZipcodeSettings
-});
+const mapStateToProps = (state) => {
+  return {
+    appState: state.appState,
+    authState: state.authState,
+    initialized: !!(state.policyState.policy.policyID && state.policyState.summaryLedger._id),
+    policy: state.policyState.policy,
+    summaryLedger: state.policyState.summaryLedger,
+    tasks: state.cg,
+    zipCodeSettings: state.service.getZipcodeSettings
+  };
+};
 
 export default connect(mapStateToProps, {
   batchCompleteTask,

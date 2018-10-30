@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import * as newNoteActions from '../../state/actions/newNote.actions';
+
+import * as uiActions from '../../state/actions/ui.actions';
 import * as serviceActions from '../../state/actions/service.actions';
 import * as cgActions from '../../state/actions/cg.actions';
 import * as errorActions from '../../state/actions/error.actions';
+import { POLICY_RESOURCE_TYPE } from '../../constants/diaries';
+
 import GenerateDocsForm from './GenerateDocsForm';
 
 // Example of a possible schema
@@ -63,9 +66,17 @@ export class SideNav extends React.Component {
     showDocsForm: false
   };
 
+  newDiary = () => {
+    const { actions, policy } = this.props;
+    actions.uiActions.toggleDiary({
+      resourceType: POLICY_RESOURCE_TYPE,
+      resourceId: policy.policyNumber
+    });
+  };
+
   newNote = () => {
     const { actions, policy } = this.props;
-    actions.newNoteActions.toggleNote({
+    actions.uiActions.toggleNote({
       noteType: 'Policy Note',
       documentId: policy.policyNumber,
       sourceNumber: policy.sourceNumber
@@ -88,7 +99,7 @@ export class SideNav extends React.Component {
     return (
       <nav className="site-nav">
         <ul>
-          {csrLinks({ policyNumber: policy.policyNumber }).map((link) => (
+          {csrLinks({ policyNumber: policy.policyNumber }).map(link => (
             <li key={link.key}>
               <span className={link.styleName}>
                 <NavLink to={link.link} activeClassName="active" exact>{link.label}</NavLink>
@@ -97,10 +108,7 @@ export class SideNav extends React.Component {
           ))}
           <hr className="nav-division" />
           <li>
-            <button aria-label="open-btn form-newNote" data-test="newNote" className="btn btn-primary btn-sm btn-block" onClick={() => this.newNote(this.props)}><i className="fa fa-plus" />Note / File</button>
-          </li>
-          <li>
-            <button aria-label="open-btn" className="btn btn-primary btn-sm btn-block" onClick={() => this.generateDoc(this.props)}><i className="fa fa-plus" />Document</button>
+            <button aria-label="open-btn" className="btn btn-primary btn-sm btn-block" onClick={() => this.generateDoc()}><i className="fa fa-plus" />Document</button>
           </li>
           <li className={this.state.showDocsForm ? 'document-panel show' : 'document-panel hidden'}>
             {this.state.showDocsForm &&
@@ -108,11 +116,15 @@ export class SideNav extends React.Component {
                 policyNumber={policy.policyNumber}
                 updateNotes={this.updateNotes(this.props)}
                 startWorkflow={actions.cgActions.startWorkflow}
-                errorHandler={actions.errorActions.setAppError}
-              />
+                errorHandler={actions.errorActions.setAppError} />
             }
           </li>
         </ul>
+        <div className="plus-button-group">
+          <div className="btn btn-round btn-primary btn-lg new-btn"><i className="fa fa-plus" /></div>
+          <button aria-label="open-btn form-newDiary" data-test="newDiary" className="btn btn-primary btn-round btn-lg new-diary-btn" onClick={() => this.newDiary()}><i className="fa fa-bookmark" /><span>NEW DIARY</span></button>
+          <button aria-label="open-btn form-newNote" data-test="newNote" className="btn btn-primary btn-round btn-lg new-note-btn" onClick={() => this.newNote()}><i className="fa fa-pencil" /><span>NEW NOTE</span></button>
+        </div>
       </nav>
     );
   }
@@ -134,7 +146,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: {
     cgActions: bindActionCreators(cgActions, dispatch),
-    newNoteActions: bindActionCreators(newNoteActions, dispatch),
+    uiActions: bindActionCreators(uiActions, dispatch),
     serviceActions: bindActionCreators(serviceActions, dispatch),
     errorActions: bindActionCreators(errorActions, dispatch)
   }

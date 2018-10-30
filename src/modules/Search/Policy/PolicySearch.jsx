@@ -2,13 +2,29 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Field } from 'redux-form';
-import { Input, Select, SelectTypeAhead, Button, normalize, validation } from '@exzeo/core-ui';
+import {
+  Input,
+  Select,
+  SelectTypeAhead,
+  Button,
+  normalize,
+  validation,
+  noop,
+  emptyObject,
+  emptyArray
+} from '@exzeo/core-ui';
 
 import { getAnswers } from '../../../utilities/forms';
-import { STANDARD_DATE_FORMAT } from '../../../constants/search';
+import { STANDARD_DATE_FORMAT } from '../../../constants/dates';
 import Pagination from '../components/Pagination';
 
-const { isAlphaNumeric, isValidChar, isNumberDashOnly, isValidDateFormat } = validation;
+const {
+  isAlphaNumeric,
+  isValidChar,
+  isNumberDashOnly,
+  isValidDateFormat,
+  isRequired
+} = validation;
 
 const isValidDate = isValidDateFormat(STANDARD_DATE_FORMAT);
 
@@ -25,10 +41,25 @@ const PolicySearch = ({
   questions,
   toggleAdvancedSearch,
   handlePagination,
-  search
+  search,
+  changeSearchType,
+  searchTypeOptions
 }) => (
   <React.Fragment>
-    <div className="search-inputs fade-in p">
+    <div className="form-group search-context">
+      <Field
+        name="searchType"
+        dataTest="searchType"
+        label="Search Context"
+        component={Select}
+        id="searchType"
+        validate={isRequired}
+        onChange={changeSearchType}
+        answers={searchTypeOptions}
+        showPlaceholder={false}
+        errorHint />
+    </div>
+    <div className="search-inputs  p">
       <Field
         name="firstName"
         dataTest="firstName"
@@ -37,8 +68,7 @@ const PolicySearch = ({
         component={Input}
         styleName="first-name-search"
         validate={isAlphaNumeric}
-        errorHint
-      />
+        errorHint />
       <Field
         name="lastName"
         dataTest="lastName"
@@ -47,8 +77,7 @@ const PolicySearch = ({
         component={Input}
         styleName="last-name-search"
         validate={isAlphaNumeric}
-        errorHint
-      />
+        errorHint />
       <Field
         name="address"
         dataTest="address"
@@ -57,8 +86,7 @@ const PolicySearch = ({
         component={Input}
         styleName="property-search"
         validate={isValidChar}
-        errorHint
-      />
+        errorHint />
       <Field
         name="policyNumber"
         dataTest="policyNumber"
@@ -67,37 +95,33 @@ const PolicySearch = ({
         component={Input}
         styleName="policy-no-search"
         validate={isNumberDashOnly}
-        errorHint
-      />
+        errorHint />
       <Button
         baseClass="success"
         customClass="multi-input"
         type="submit"
         disabled={submitting}
-        dataTest="submit"
-      ><i className="fa fa-search" />Search
+        dataTest="submit"><i className="fa fa-search" />Search
       </Button>
       <Button
         baseClass="icon"
         customClass="advanced-search-btn"
         size="small"
         dataTest="policy-advanced-search"
-        onClick={toggleAdvancedSearch}
-      >
+        onClick={toggleAdvancedSearch}>
         <i className={classNames(advancedSearch ? 'fa fa-chevron-up' : 'fa fa-chevron-down')} />
       </Button>
     </div>
 
     {advancedSearch &&
-      <div className="advanced-search fade-in">
+      <div className="advanced-search">
         <Field
           name="agencyCode"
           dataTest="agencyCode"
           label="Agency Name"
           component={SelectTypeAhead}
           styleName="agencyCodeSelectField"
-          answers={agencyList}
-        />
+          answers={agencyList} />
         <div className="form-group effectiveDate">
           <Field
             name="effectiveDate"
@@ -107,8 +131,7 @@ const PolicySearch = ({
             placeholder={STANDARD_DATE_FORMAT}
             normalize={normalize.date}
             validate={isValidDate}
-            errorHint
-          />
+            errorHint />
         </div>
         <div className="form-group policy-status">
           <Field
@@ -116,8 +139,7 @@ const PolicySearch = ({
             dataTest="policyStatus"
             label="Policy Status"
             component={Select}
-            answers={getAnswers('policyStatus', questions)}
-          />
+            answers={getAnswers('policyStatus', questions)} />
         </div>
         <Field
           name="sortBy"
@@ -125,8 +147,7 @@ const PolicySearch = ({
           label="Sort By"
           component={Select}
           answers={sortByOptions}
-          showPlaceholder={false}
-        />
+          showPlaceholder={false} />
       </div>
     }
     {!!search.results.length && search.totalPages > 1 &&
@@ -134,29 +155,31 @@ const PolicySearch = ({
         changePageForward={handlePagination(true)}
         changePageBack={handlePagination(false)}
         pageNumber={search.currentPage}
-        totalPages={search.totalPages}
-      />
+        totalPages={search.totalPages} />
     }
   </React.Fragment>
 );
 
 PolicySearch.propTypes = {
-  agencyList: PropTypes.array,
-  submitting: PropTypes.bool,
   advancedSearch: PropTypes.bool.isRequired,
-  questions: PropTypes.object,
-  toggleAdvancedSearch: PropTypes.func.isRequired,
   handlePagination: PropTypes.func.isRequired,
+  toggleAdvancedSearch: PropTypes.func.isRequired,
+  agencyList: PropTypes.array,
+  changeSearchType: PropTypes.func,
+  questions: PropTypes.object,
   search: PropTypes.shape({
     results: PropTypes.array,
     totalPages: PropTypes.number,
     currentPage: PropTypes.number
-  }).isRequired
+  }).isRequired,
+  searchTypeOptions: PropTypes.array,
+  submitting: PropTypes.bool,
 };
 
 PolicySearch.defaultProps = {
-  agencyList: [],
-  questions: {}
+  agencyList: emptyArray,
+  questions: emptyObject,
+  changeSearchType: noop
 };
 
 export default PolicySearch;

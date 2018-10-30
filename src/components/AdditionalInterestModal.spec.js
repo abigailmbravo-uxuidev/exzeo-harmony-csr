@@ -116,6 +116,10 @@ describe('Testing AdditionalInterestModal component', () => {
       change() {},
       handleSubmit() {},
       verify() {},
+      hideModal() {},
+      validAdditionalInterestTypes: [],
+      pristine: true,
+      submitting: false,
       selectedAI: {
         type: 'Mortgagee',
         phoneNumber: '43543543535',
@@ -179,8 +183,8 @@ describe('Testing AdditionalInterestModal component', () => {
     const wrapper = shallow(<AdditionalInterestModal store={store} {...props} />);
     const wi = wrapper.instance();
 
-    wi.setTopValues(true);
-    wi.setTopValues(false);
+    wi.setTopValues('1', [{ id: '1' }]);
+    wi.setTopValues('');
     wi.handleFormSubmit({}, () => {}, props);
   });
 

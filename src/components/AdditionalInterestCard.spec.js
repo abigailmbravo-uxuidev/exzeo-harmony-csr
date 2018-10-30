@@ -6,8 +6,8 @@ import AdditionalInterestCard from './AdditionalInterestCard';
 describe('Test the Payments Component', () => {
   it('Should Render active mortgagee', () => {
     const wrapper = shallow(<AdditionalInterestCard
-      handleClick={function () {}}
-      handleOnEnter={function () {}}
+      editAI={function () {}}
+      toggleAIState={function () {}}
       ai={{
         _id: '332424',
         type: 'Mortgagee',
@@ -20,8 +20,8 @@ describe('Test the Payments Component', () => {
 
   it('Should Render inactive mortgagee', () => {
     const wrapper = shallow(<AdditionalInterestCard
-      handleClick={function () {}}
-      handleOnEnter={function () {}}
+      editAI={function () {}}
+      toggleAIState={function () {}}
       ai={{
         _id: '332424',
         type: 'Mortgagee',

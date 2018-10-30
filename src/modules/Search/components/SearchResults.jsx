@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import DiaryList from '@exzeo/core-ui/lib/List/DiaryList';
 
-
-import handleNewTab from '../../../utilities/handleNewTab';
+import { handleNewTab, handleNewTabClick, handleKeyPress } from '../../../utilities/handleNewTab';
 import { SEARCH_TYPES } from '../../../constants/search';
 
 import NoResults from './NoResults';
@@ -103,13 +103,26 @@ export class SearchResults extends Component {
             <NavLink className="btn btn-primary" to="/agency/new/0" activeClassName="active" target="_blank" exact>+ Agency</NavLink>
           </div>
         }
+
+        {hasSearched && searchType === SEARCH_TYPES.diaries && !!results.length &&
+        <DiaryList
+          handleKeyPress={handleKeyPress}
+          onItemClick={handleNewTabClick}
+          clickable
+          diaries={results} />
+        }
       </div>
     );
   }
 }
 
 SearchResults.propTypes = {
-  searchType: PropTypes.string.isRequired
+  hasSearched: PropTypes.bool.isRequired,
+  searchType: PropTypes.string.isRequired,
+  search: PropTypes.shape({
+    results: PropTypes.array,
+    noResults: PropTypes.bool
+  })
 };
 
 const mapStateToProps = state => ({

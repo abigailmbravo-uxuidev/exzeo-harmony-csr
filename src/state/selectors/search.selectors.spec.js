@@ -30,7 +30,6 @@ describe('Test Search selectors', () => {
         const option = result[0];
         expect(option.label).toEqual(testAgency.displayName);
         expect(option.answer).toEqual(testAgency.agencyCode);
-        expect(option.value).toEqual(testAgency.agencyCode);
     });
   });
 

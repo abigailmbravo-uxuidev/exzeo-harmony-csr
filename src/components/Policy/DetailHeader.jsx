@@ -1,177 +1,155 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import _get from 'lodash/get';
-import moment from 'moment';
+
 import { setAppState } from '../../state/actions/appState.actions';
 import { getEffectiveDateChangeReasons } from '../../state/actions/policy.actions';
-import normalizePhone from '../Form/normalizePhone';
-import normalizeNumbers from '../Form/normalizeNumbers';
-import { POLICY_EXPIRATION_STATUS, BILLING_EXPIRATION_STATUS, REINSTATEMENT_STATUS } from '../../constants/policyStatus';
-
-export const showEffectiveDatePopUp = (props) => {
-  props.setAppState(
-    props.appState.modelName, props.appState.instanceId,
-    { ...props.appState.data, showEffectiveDateChangePopUp: true }
-  );
-};
-
-export const showReinstatePolicyPopUp = (props) => {
-  props.setAppState(
-    props.appState.modelName, props.appState.instanceId,
-    { ...props.appState.data, showReinstatePolicyPopUp: true }
-  );
-};
+import { getPolicyDetails } from '../../state/selectors/detailHeader.selectors';
+import Details from '../DetailMain';
+import Section from '../DetailSection';
+import SectionSingle from '../DetailSectionSingle';
+import MapLink from '../MapLink';
 
 export class DetailHeader extends Component {
   componentDidMount() {
     this.props.getEffectiveDateChangeReasons();
   }
 
-  render() {
-    const { policy, summaryLedger } = this.props;
+  handleEditEffectiveDate = () => {
+    const { setAppState, appState } = this.props;
+    setAppState(
+      appState.modelName, appState.instanceId,
+      { ...appState.data, showEffectiveDateChangePopUp: true }
+    );
+  };
 
+  handleReinstatePolicy = () => {
+    const { setAppState, appState } = this.props;
+    setAppState(
+      appState.modelName, appState.instanceId,
+      { ...appState.data, showReinstatePolicyPopUp: true }
+    );
+  };
+
+  render() {
+    const { policy, policyDetails } = this.props;
     if (!policy || !policy.policyID) return (<div className="detailHeader" />);
 
-    const billingStatusCode = summaryLedger && summaryLedger.status ? summaryLedger.status.code : null;
+    const {
+      cancellation: { dateLabel, cancellationDate, showReinstatement },
+      constructionType,
+      county,
+      details,
+      effectiveDate,
+      mailingAddress,
+      mapURI,
+      policyHolder,
+      currentPremium,
+      propertyAddress,
+      sourceNumber,
+      status,
+      territory
+    } = policyDetails;
 
-    let cancellationDate = '';
+    return (
+      <div className="detailHeader">
+        <Details
+          data={details}
+          dataTest="policyDetails"
+          className="policyDetails">
+          <dd>{status}</dd>
+        </Details>
 
-    if (policy && policy.status && (policy.status.includes('Pending') || policy.status.includes('Cancel') || billingStatusCode > 8) && summaryLedger) {
-      cancellationDate = policy.cancelDate
-        ? moment.utc(policy.cancelDate).format('MM/DD/YYYY')
-        : moment.utc(summaryLedger.nonPaymentNoticeDueDate).format('MM/DD/YYYY');
-    }
-    if (policy && policy.endDate && billingStatusCode === 99) {
-      cancellationDate = moment.utc(policy.endDate).format('MM/DD/YYYY');
-    }
+        <Section
+          label="Policyholder"
+          data={policyHolder}
+          dataTest="policyHolderDetail"
+          className="policyHolder" />
 
-    const loc = policy.property.physicalAddress;
-    const mapQuery = encodeURIComponent(`${loc.address1} ${loc.address2} ${loc.city}, ${loc.state} ${loc.zip}`);
-    const mapUri = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
-    const showReinstatement = policy.status === 'Cancelled' && REINSTATEMENT_STATUS.includes(billingStatusCode);
-    const displayExpirationDate = POLICY_EXPIRATION_STATUS.includes(policy.status) &&
-     BILLING_EXPIRATION_STATUS.includes(billingStatusCode) ? 'Expiration Date' : 'Cancellation Date';
+        <Section
+          label="Mailing Address"
+          data={mailingAddress}
+          dataTest="mailingAddressDetail"
+          className="policyHolderMailingAddress" />
 
-    return (<div className="detailHeader">
-      <section id="policyDetails" className="policyDetails">
-        <dl>
-          <div>
-            <dd>{_get(policy, 'product') === 'HO3' ? `${_get(policy, 'product')} Homeowners` : _get(policy, 'product')}</dd>
-            <dd>{_get(policy, 'policyNumber')}</dd>
-            <dd className="policy-status">{`${_get(policy, 'status')} / ${_get(summaryLedger, 'status.displayText')}`}</dd>
+        <Section
+          label="Property Address"
+          data={propertyAddress}
+          type="Property"
+          className="propertyAddress"
+          render={() => <MapLink mapURI={mapURI} />} />
+
+        <div className="detailHeader-wrapping-sections">
+          <div className="wrapping-section">
+            <SectionSingle
+              label="Property County"
+              value={county}
+              dataTest="countyDetail"
+              className="propertyCounty" />
+
+            <SectionSingle
+              label="Territory"
+              value={territory}
+              dataTest="territoryDetail"
+              className="territory" />
+
+            <SectionSingle
+              label="Construction Type"
+              dataTest="constructionTypeDetail"
+              value={constructionType}
+              className="constructionType" />
           </div>
-        </dl>
-      </section>
-      <section id="policyHolder" className="policyHolder">
-        <dl>
-          <div>
-            <dt>Policyholder</dt>
-            <dd>{`${_get(policy, 'policyHolders[0].firstName')} ${_get(policy, 'policyHolders[0].lastName')}`}</dd>
-            <dd>{normalizePhone(_get(policy, 'policyHolders[0].primaryPhoneNumber'))}</dd>
+          <div className="wrapping-section">
+            <SectionSingle
+              label="Source Number"
+              value={sourceNumber}
+              dataTest="sourceNumberDetail"
+              className="sourceNumber" />
+
+            <SectionSingle
+              label="Effective Date"
+              value={effectiveDate}
+              dataTest="effectiveDateDetail"
+              className="effectiveDate"
+              render={() => (
+                <button
+                  id="effective-date"
+                  className="btn btn-link btn-xs btn-alt-light no-padding"
+                  onClick={this.handleEditEffectiveDate}>
+                  <i className="fa fa-pencil-square" />Edit
+                </button>
+              )} />
+
+            <SectionSingle
+              label={dateLabel}
+              value={cancellationDate}
+              dataTest="cancellationDateDetail"
+              className="cancellationDate"
+              render={() => (showReinstatement &&
+                <button
+                  id="show-reinstate"
+                  className="btn btn-link btn-xs btn-alt-light no-padding"
+                  onClick={this.handleReinstatePolicy}>
+                  <i className="fa fa-thumbs-up" />Reinstate
+                </button>
+              )} />
           </div>
-        </dl>
-      </section>
-      <section id="policyHolderMailingAddress" className="policyHolderMailingAddress">
-        <dl>
-          <div>
-            <dt>Mailing Address</dt>
-            <dd>{_get(policy, 'policyHolderMailingAddress.address1')}</dd>
-            <dd>{_get(policy, 'policyHolderMailingAddress.address2')}</dd>
-            <dd>{`${_get(policy, 'policyHolderMailingAddress.city')}, ${_get(policy, 'policyHolderMailingAddress.state')} ${_get(policy, 'policyHolderMailingAddress.zip')}`}</dd>
-          </div>
-        </dl>
-      </section>
-      <section id="propertyAddress" className="propertyAddress">
-        <dl>
-          <div>
-            <dt>Property Address <a className="btn btn-link btn-xs btn-alt-light no-padding" target="_blank" href={mapUri}><i className="fa fa-map-marker" />Map</a></dt>
-            <dd>{_get(policy, 'property.physicalAddress.address1')}</dd>
-            <dd>{_get(policy, 'property.physicalAddress.address2')}</dd>
-            <dd>{`${_get(policy, 'property.physicalAddress.city')}, ${_get(policy, 'property.physicalAddress.state')} ${_get(policy, 'property.physicalAddress.zip')}`}</dd>
-          </div>
-        </dl>
-      </section>
-      <div className="detailHeader-wrapping-sections">
-        <div className="wrapping-section">
-          <section id="propertyCounty" className="propertyCounty">
-            <dl>
-              <div>
-                <dt>Property County</dt>
-                <dd>{_get(policy, 'property.physicalAddress.county')}</dd>
-              </div>
-            </dl>
-          </section>
-          <section id="territory" className="territory">
-            <dl>
-              <div>
-                <dt>Territory</dt>
-                <dd>{_get(policy, 'property.territory')}</dd>
-              </div>
-            </dl>
-          </section>
-          <section id="constructionType" className="constructionType">
-            <dl>
-              <div>
-                <dt>Construction Type</dt>
-                <dd>{_get(policy, 'property.constructionType')}</dd>
-              </div>
-            </dl>
-          </section>
         </div>
-        <div className="wrapping-section">
-          <section id="sourceNumber" className="sourceNumber">
-            <dl>
-              <div>
-                <dt>Source Number</dt>
-                <dd>{_get(policy, 'sourceNumber')}</dd>
-              </div>
-            </dl>
-          </section>
-          <section id="policyEffectiveDate" className="policyEffectiveDate">
-            <dl>
-              <div>
-                <dt>Effective Date <button id="effective-date" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showEffectiveDatePopUp(this.props)}><i className="fa fa-pencil-square" />Edit</button></dt>
-                <dd>{moment.utc(_get(policy, 'effectiveDate')).format('MM/DD/YYYY')}</dd>
-              </div>
-            </dl>
-          </section>
-          {policy &&
-          <section id="cancellationDate" className="cancellationDate">
-            <dl>
-              <div>
-                <dt>
-                  <span id="cancellationDateLabel">{displayExpirationDate}</span>
-                  {policy && showReinstatement &&
-                    <button id="show-reinstate" className="btn btn-link btn-xs btn-alt-light no-padding" onClick={() => showReinstatePolicyPopUp(this.props)}><i className="fa fa-thumbs-up" />Reinstate</button>
-                  }
-                </dt>
-                <dd>{cancellationDate}</dd>
-              </div>
-            </dl>
-          </section>}
-        </div>
+
+        <SectionSingle
+          label="Current Premium"
+          value={currentPremium}
+          dataTest="premiumDetail"
+          className="premium" />
+
       </div>
-      <section id="premium" className="premium">
-        <dl>
-          <div>
-            <dt>Current Premium</dt>
-            <dd>$ {summaryLedger ? normalizeNumbers(summaryLedger.currentPremium) : '-'}</dd>
-          </div>
-        </dl>
-      </section>
-            </div>);
+    );
   }
 }
-
-DetailHeader.propTypes = {
-  policy: PropTypes.shape()
-};
 
 const mapStateToProps = state => ({
   appState: state.appState,
   policy: state.policyState.policy,
-  summaryLedger: state.policyState.summaryLedger
+  policyDetails: getPolicyDetails(state)
 });
 
 

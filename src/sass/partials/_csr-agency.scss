@@ -1550,6 +1550,12 @@
                   input {
                     margin: 0;
                   }
+                .coverage,
+                .discountSurcharge {
+                  width: 60%;
+                  padding: ($padding*1.5) ($padding*2);
+                  white-space: normal;
+                  hyphens: auto;
                 }
 
                 .form-group {
@@ -1605,8 +1611,7 @@
   }
 }
 
-#root {
-  .app-wrapper.csr {
+.app-wrapper.csr {
     main[role="document"] {
       .content-wrapper {
         .route-content {
@@ -1629,4 +1634,22 @@
       }
     }
   }
+//search cards
+.card {
+  &.contact {
+    .contact-details {
+      .contact-address {
+        .additional-data {
+          margin-left: $padding;
+          font-size: $font-size-sm;
+
+          label {
+            margin-bottom: 0;
+            font-size: $font-size-xs;
+          }
+        }
+      }
+    }
+  }
+}
 }
