@@ -11,7 +11,7 @@ describe('Test the Diaries Component', () => {
       onToggleDiary={x => x}
       diaryLevel="dueSoon"
       diaries={[{
-        _id: '1',
+        diaryId: '1',
         dueDate: '2018-08-24',
         type: 'Billing /Payment',
         reason: 'Receipt Needed',

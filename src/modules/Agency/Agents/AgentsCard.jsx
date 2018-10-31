@@ -86,6 +86,7 @@ export const AgentsCard = ({
         <div className="footer-actions">
           <Button
             baseClass="link"
+            dataTest="agent-book"
             size="small"><i className="fa fa-download" />Agent Book
           </Button>
         </div>

@@ -14,6 +14,7 @@ import quoteState from './quote.reducer';
 import search from './search.reducer';
 import agencyState from './agency.reducer';
 import zipCodeSettingsState from './zipCodeSettings.reducer';
+import territoryManagerState from './territoryManager.reducer';
 import diaries from './diaryReducer';
 
 const rootReducer = combineReducers({
@@ -30,7 +31,8 @@ const rootReducer = combineReducers({
   search,
   agencyState,
   zipCodeSettingsState,
-  diaries
+  diaries,
+  territoryManagerState
 });
 
 export default rootReducer;

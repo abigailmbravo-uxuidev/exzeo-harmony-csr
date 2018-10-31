@@ -8,6 +8,7 @@ import { AgencyContactModal } from './AgencyContactModal';
 describe('Testing AgencyContactModal component', () => {
   it('should test onHandleSaveAgency', () => {
     const props = {
+      section: 'test',
       closeModal() {},
       updateAgency() {},
       agency: mockAgency,
@@ -23,6 +24,7 @@ describe('Testing AgencyContactModal component', () => {
 
   it('should test onHandleSaveAgency branch code 1', () => {
     const props = {
+      section: 'test',
       closeModal() {},
       updateAgency() {},
       agency: mockAgency,

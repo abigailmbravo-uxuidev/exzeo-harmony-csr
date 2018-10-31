@@ -74,6 +74,7 @@ export class AgentModal extends Component {
                   tabIndex="0"
                   className="btn btn-secondary"
                   type="button"
+                  dataTest="cancel-modal"
                   onClick={closeModal}>
                 Cancel
                 </Button>
@@ -81,6 +82,7 @@ export class AgentModal extends Component {
                   tabIndex="0"
                   className="btn btn-primary"
                   type="submit"
+                  dataTest="submit-modal"
                   disabled={submitting}>
                 Save
                 </Button>

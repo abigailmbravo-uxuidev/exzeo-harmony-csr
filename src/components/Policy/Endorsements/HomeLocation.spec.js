@@ -12,7 +12,7 @@ describe('Testing HomeLocation component', () => {
   it('should test app render', () => {
     const store = mockStore();
     const props = {
-      questions: [],
+      questions: {},
       policyState: {},
       policy: {
         policyID: '234',
