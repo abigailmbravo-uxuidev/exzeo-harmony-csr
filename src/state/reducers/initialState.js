@@ -7,10 +7,14 @@ export default {
       submitting: false
     }
   },
+  ui: {},
   cg: {},
   error: {},
+  diaries: [],
   newNote: {},
-  questions: {},
+  questions: {
+    diaryAssignees: []
+  },
   quoteState: {
     quoteId: null,
     update: false,

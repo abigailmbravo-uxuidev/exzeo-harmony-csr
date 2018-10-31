@@ -125,10 +125,8 @@ export class AdditionalInterests extends Component {
     });
   };
 
-  editAdditionalInterest = (ai) => {
-    const {
-      appState, setAppStateAction, editingDisabled
-    } = this.props;
+  editAI = (ai) => {
+    const { appState, setAppStateAction, editingDisabled } = this.props;
     if (editingDisabled) return;
     setAppStateAction(
       MODEL_NAME,
@@ -243,12 +241,6 @@ export class AdditionalInterests extends Component {
     });
   };
 
-  editAIOnEnter = (event, ai) => {
-    if (event.key === 'Enter') {
-      this.editAdditionalInterest(ai);
-    }
-  };
-
   render() {
     const {
       quoteData, groupedAdditionalInterests, sortedAdditionalInterests, editingDisabled, match
@@ -313,8 +305,9 @@ export class AdditionalInterests extends Component {
                     <AdditionalInterestCard
                       key={ai._id}
                       ai={ai}
-                      handleOnEnter={this.editAIOnEnter}
-                      handleClick={this.editAdditionalInterest} />
+                      editAI={this.editAI}
+                      toggleAIState={this.deleteAdditionalInterest}
+                    />
                   ))}
                 </ul>
               </div>
@@ -326,7 +319,6 @@ export class AdditionalInterests extends Component {
               additionalInterests={quoteData.additionalInterests}
               addAdditionalInterestType={this.state.addAdditionalInterestType}
               completeSubmit={this.onHandleAISubmit}
-              deleteAdditionalInterest={this.deleteAdditionalInterest}
               hideModal={this.hideAdditionalInterestModal}
               initialValues={this.initAdditionalInterestModal()}
               isDeleting={this.state.isDeleting}

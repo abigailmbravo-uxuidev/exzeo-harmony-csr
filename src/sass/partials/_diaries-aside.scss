@@ -1,0 +1,131 @@
+.app-wrapper {
+  main {
+    .diaries-dueSoon,
+    .diaries-pastDue,
+    .open-diaries {
+      > h5 {
+        > i.fa {
+          flex-grow: 0;
+          flex-shrink: 0;
+          width: auto;
+        }
+
+        span {
+          flex-grow: 1;
+          flex-shrink: 1;
+          padding-right: ($padding*2.25);
+        }
+      }
+    }
+
+    .open-diaries {
+      section {
+        > h5 {
+          display: flex;
+          align-items: center;
+          color: $warm-gray-08;
+          background: $warm-gray-02;
+          font-size: 14px;
+
+          i.fa {
+            margin: 0 ($padding*2) 0 0;
+            padding: ($padding*2);
+            color: $white;
+          }
+        }
+
+        li {
+          .diary-header {
+            display: flex;
+            align-items: center;
+            color: $warm-gray-08;
+            font-size: $font-size-sm;
+
+            > i {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              height: 1.125rem;
+            }
+
+            .diary-due-datge {
+              font-weight: $font-weight-bold;
+            }
+
+            a.btn-link {
+                color: $bright-blue;
+                i {
+                    color: $bright-blue;
+                    margin-right: $padding;
+                }
+            }
+          }
+
+          .diary-type {
+              color: $warm-gray-08;
+              font-size: $font-size-sm;
+              font-weight: $font-weight-bold;
+          }
+
+          .diary-reason {
+              font-size: $font-size-sm;
+          }
+
+          p {
+              font-size: $font-size-sm;
+          }
+
+          .diary-assignee {}
+        }
+
+        &.diaries-pastDue {
+          > h5 {
+            > i.fa {
+              background-color: $red-darken-01;
+            }
+          }
+
+          li {
+            .diary-header {
+              i {
+                color: $red-darken-01;
+              }
+            }
+          }
+        }
+
+        &.diaries-dueSoon {
+          > h5 {
+            > i.fa {
+              background-color: $orange-lighten-01;
+            }
+          }
+
+          li {
+            .diary-header {
+              i {
+                color: $orange-lighten-01;
+              }
+            }
+          }
+        }
+
+        &.diaries-upcoming {
+          > h5 {
+            > i.fa {
+              background-color: $green-darken-02;
+            }
+          }
+
+          li {
+            .diary-header {
+              i {
+                color: $green-darken-02;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

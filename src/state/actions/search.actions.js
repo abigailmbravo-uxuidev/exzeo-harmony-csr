@@ -1,13 +1,15 @@
-import * as types from './actionTypes';
+import moment from 'moment/moment';
+
 import * as serviceRunner from '../../utilities/serviceRunner';
-import * as errorActions from './error.actions';
-import moment from "moment/moment";
+import { SECONDARY_DATE_FORMAT } from '../../constants/dates';
 import {
   DEFAULT_SEARCH_PARAMS,
   RESULTS_PAGE_SIZE,
-  SEARCH_TYPES,
-  SECONDARY_DATE_FORMAT
-} from "../../constants/search";
+  SEARCH_TYPES
+} from '../../constants/search';
+
+import * as types from './actionTypes';
+import * as errorActions from './error.actions';
 
 
 /**
@@ -23,7 +25,7 @@ export function toggleLoading(loading) {
   return {
     type: types.TOGGLE_LOADING,
     loading
-  }
+  };
 }
 
 /**
@@ -33,7 +35,7 @@ export function toggleLoading(loading) {
 export function resetSearch() {
   return {
     type: types.RESET_SEARCH
-  }
+  };
 }
 
 /**
@@ -129,7 +131,7 @@ export function searchAgents(agentSearchData) {
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
-  }
+  };
 }
 
 /**
@@ -145,7 +147,7 @@ export function searchAgencies(agencySearchData) {
     } catch (error) {
       dispatch(errorActions.setAppError(error));
     }
-  }
+  };
 }
 
 /**
@@ -242,7 +244,7 @@ export async function fetchPolicies({
   resultStart,
   sortBy,
   sortDirection,
-  state,
+  state
 }) {
   const config = {
     service: 'policy-data',
@@ -269,7 +271,9 @@ export async function fetchPolicies({
  * @param {string} licenseNumber
  * @returns {Promise<{}>}
  */
-export async function fetchAgents({ companyCode, state, firstName, lastName, agentCode, address, licenseNumber }) {
+export async function fetchAgents({
+  companyCode, state, firstName, lastName, agentCode, address, licenseNumber
+}) {
   const config = {
     service: 'agency',
     method: 'GET',
@@ -296,7 +300,9 @@ export async function fetchAgents({ companyCode, state, firstName, lastName, age
  * @param {string} phone
  * @returns {Promise<{}>}
  */
-export async function fetchAgencies({ companyCode, state, displayName, agencyCode, address, licenseNumber, fein, phone }) {
+export async function fetchAgencies({
+  companyCode, state, displayName, agencyCode, address, licenseNumber, fein, phone
+}) {
   const config = {
     service: 'agency',
     method: 'GET',
@@ -321,7 +327,7 @@ function formatAddressResults(results) {
     results: results.IndexResult,
     totalRecords: results.TotalCount,
     noResults: !results.TotalCount
-  }
+  };
 }
 
 /**
@@ -338,7 +344,7 @@ function formatQuoteResults(results) {
     results: results.quotes,
     totalRecords: results.totalNumberOfRecords,
     noResults: !results.totalNumberOfRecords
-  }
+  };
 }
 
 /**
@@ -355,7 +361,7 @@ function formatPolicyResults(results) {
     results: results.policies,
     totalRecords: results.totalNumberOfRecords,
     noResults: !results.totalNumberOfRecords
-  }
+  };
 }
 
 /**
@@ -366,10 +372,10 @@ function formatPolicyResults(results) {
 function formatAgentResults(results) {
   const totalRecords = Array.isArray(results) ? results.length : 0;
   return {
-    results: results,
+    results,
     totalRecords,
     noResults: !totalRecords
-  }
+  };
 }
 
 /**
@@ -380,10 +386,10 @@ function formatAgentResults(results) {
 function formatAgencyResults(results) {
   const totalRecords = Array.isArray(results) ? results.length : 0;
   return {
-    results: results,
+    results,
     totalRecords,
     noResults: !totalRecords
-  }
+  };
 }
 
 /**
@@ -400,18 +406,29 @@ export function setPageNumber(currentPage, isNext) {
 }
 
 /**
+ * Format value to put in URI for request.
+ * @param value
+ * @param sub
+ * @returns {string}
+ */
+export function formatForURI(value, sub = '') {
+  const encodedVal = encodeURIComponent(value);
+  return encodedVal !== 'undefined' ? encodedVal : sub;
+}
+
+/**
  * Entry point for AddressSearch form
  * @param {object} data - form data
  * @returns {Function}
  */
 export function handleAddressSearch(data) {
-  return async dispatch => {
+  return async (dispatch) => {
     const taskData = {
-      address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(String(data.address).trim()) : ''),
+      address: formatForURI(String(data.address).trim())
     };
 
     await dispatch(searchAddresses(taskData.address));
-  }
+  };
 }
 
 /**
@@ -420,15 +437,15 @@ export function handleAddressSearch(data) {
  * @returns {Function}
  */
 export function handleQuoteSearch(data) {
-  return async dispatch => {
+  return async (dispatch) => {
     const taskData = {
-      firstName: (encodeURIComponent(data.firstName) !== 'undefined' ? encodeURIComponent(data.firstName) : ''),
-      lastName: (encodeURIComponent(data.lastName) !== 'undefined' ? encodeURIComponent(data.lastName) : ''),
-      address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(String(data.address).trim()) : ''),
-      zip: (encodeURIComponent(data.zip) !== 'undefined' ? encodeURIComponent(data.zip) : ''),
-      quoteNumber: (encodeURIComponent(data.quoteNumber) !== 'undefined' ? encodeURIComponent(data.quoteNumber) : ''),
-      policyNumber: (encodeURIComponent(data.policyNumber) !== 'undefined' ? encodeURIComponent(data.policyNumber) : ''),
-      quoteState: (encodeURIComponent(data.quoteState) !== 'undefined' ? encodeURIComponent(data.quoteState) : ''),
+      firstName: formatForURI(data.firstName),
+      lastName: formatForURI(data.lastName),
+      address: formatForURI(String(data.address).trim()),
+      zip: formatForURI(data.zip),
+      quoteNumber: formatForURI(data.quoteNumber),
+      policyNumber: formatForURI(data.policyNumber),
+      quoteState: formatForURI(data.quoteState),
       currentPage: setPageNumber(data.currentPage, data.isNext),
       companyCode: DEFAULT_SEARCH_PARAMS.companyCode,
       state: DEFAULT_SEARCH_PARAMS.state,
@@ -438,7 +455,7 @@ export function handleQuoteSearch(data) {
     };
 
     await dispatch(searchQuotes(taskData));
-  }
+  };
 }
 
 /**
@@ -447,17 +464,15 @@ export function handleQuoteSearch(data) {
  * @returns {Function}
  */
 export function handlePolicySearch(data) {
-  return async dispatch => {
-    // TODO: update this once the SelectTypeAhead is fixed. Currently is puts the entire 'answer' object in state rather than just the value.
-    const agencyCode = data.agencyCode ? data.agencyCode.answer : '';
+  return async (dispatch) => {
     const taskData = {
-      firstName: (encodeURIComponent(data.firstName) !== 'undefined' ? encodeURIComponent(data.firstName) : ''),
-      lastName: (encodeURIComponent(data.lastName) !== 'undefined' ? encodeURIComponent(data.lastName) : ''),
-      address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(String(data.address).trim()) : ''),
-      policyNumber: (encodeURIComponent(data.policyNumber) !== 'undefined' ? encodeURIComponent(data.policyNumber) : ''),
-      policyStatus: (encodeURIComponent(data.policyStatus) !== 'undefined' ? encodeURIComponent(data.policyStatus) : ''),
-      agencyCode: (encodeURIComponent(agencyCode) !== 'undefined' ? encodeURIComponent(agencyCode) : ''),
-      effectiveDate: (encodeURIComponent(data.effectiveDate) !== 'undefined' ? encodeURIComponent(moment(data.effectiveDate).utc().format(SECONDARY_DATE_FORMAT)) : ''),
+      firstName: formatForURI(data.firstName),
+      lastName: formatForURI(data.lastName),
+      address: formatForURI(String(data.address).trim()),
+      policyNumber: formatForURI(data.policyNumber),
+      policyStatus: formatForURI(data.policyStatus),
+      agencyCode: formatForURI(data.agencyCode),
+      effectiveDate: formatForURI(data.effectiveDate && moment(data.effectiveDate).utc().format(SECONDARY_DATE_FORMAT)),
       currentPage: setPageNumber(data.currentPage, data.isNext),
       sortBy: data.sortBy,
       sortDirection: data.sortBy === 'policyNumber' ? 'desc' : 'asc',
@@ -468,7 +483,7 @@ export function handlePolicySearch(data) {
     };
 
     await dispatch(searchPolicies(taskData));
-  }
+  };
 }
 
 /**
@@ -477,19 +492,19 @@ export function handlePolicySearch(data) {
  * @returns {Function}
  */
 export function handleAgentSearch(data) {
-  return async dispatch => {
+  return async (dispatch) => {
     const taskData = {
-      agentCode: (encodeURIComponent(data.agentCode) !== 'undefined' ? encodeURIComponent(data.agentCode) : ''),
-      firstName: (encodeURIComponent(data.firstName) !== 'undefined' ? encodeURIComponent(data.firstName) : ''),
-      lastName: (encodeURIComponent(data.lastName) !== 'undefined' ? encodeURIComponent(data.lastName) : ''),
-      address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(String(data.address).trim()) : ''),
-      licenseNumber: (encodeURIComponent(data.licenseNumber) !== 'undefined' ? encodeURIComponent(data.licenseNumber) : ''),
+      agentCode: formatForURI(data.agentCode),
+      firstName: formatForURI(data.firstName),
+      lastName: formatForURI(data.lastName),
+      address: formatForURI(String(data.address).trim()),
+      licenseNumber: formatForURI(data.licenseNumber),
       companyCode: DEFAULT_SEARCH_PARAMS.companyCode,
-      state: DEFAULT_SEARCH_PARAMS.state,
+      state: DEFAULT_SEARCH_PARAMS.state
     };
 
     await dispatch(searchAgents(taskData));
-  }
+  };
 }
 
 /**
@@ -498,22 +513,120 @@ export function handleAgentSearch(data) {
  * @returns {Function}
  */
 export function handleAgencySearch(data) {
-  return async dispatch => {
-
+  return async (dispatch) => {
     const taskData = {
-      agencyCode: (encodeURIComponent(data.agencyCode) !== 'undefined' ? encodeURIComponent(data.agencyCode) : ''),
-      displayName: (encodeURIComponent(data.displayName) !== 'undefined' ? encodeURIComponent(data.displayName) : ''),
-      address: (encodeURIComponent(data.address) !== 'undefined' ? encodeURIComponent(String(data.address).trim()) : ''),
-      licenseNumber: (encodeURIComponent(data.licenseNumber) !== 'undefined' ? encodeURIComponent(data.licenseNumber) : ''),
-      fein: (encodeURIComponent(data.fein) !== 'undefined' ? encodeURIComponent(data.fein) : ''),
-      phone: (encodeURIComponent(data.phone) !== 'undefined' ? encodeURIComponent(data.phone) : ''),
+      agencyCode: formatForURI(data.agencyCode),
+      displayName: formatForURI(data.displayName),
+      address: formatForURI(String(data.address).trim()),
+      licenseNumber: formatForURI(data.licenseNumber),
+      fein: formatForURI(data.fein),
+      phone: formatForURI(data.phone),
       companyCode: DEFAULT_SEARCH_PARAMS.companyCode,
       state: DEFAULT_SEARCH_PARAMS.state
     };
 
     await dispatch(searchAgencies(taskData));
+  };
+}
+
+// THISPR - **** finish ****
+/**
+ * Entry point for DiarySearch form
+ * @param data
+ * @returns {Function}
+ */
+export function handleDiariesSearch(data) {
+  return async (dispatch) => {
+    const taskData = {
+      open: data.open === 'true',
+      assignees: data.assignees.map(a => a.answer),
+      reason: data.reason,
+      dueDateMin: data.dateRange.min,
+      dueDateMax: data.dateRange.max
+    };
+
+    await dispatch(searchDiaries(taskData));
+  };
+}
+
+/**
+ *
+ * @param diarySearchData
+ * @returns {Function}
+ */
+export function searchDiaries(diarySearchData) {
+  return async (dispatch) => {
+    try {
+      const results = await fetchDiaries(diarySearchData);
+      dispatch(setSearchResults(formatDiaryResults(results)));
+    } catch (error) {
+      dispatch(errorActions.setAppError(error));
+    }
+  };
+}
+
+/**
+ *
+ * @param reason
+ * @param dueDateMin
+ * @param dueDateMax
+ * @param assignees
+ * @param open
+ * @returns {Promise<void>}
+ */
+export async function fetchDiaries({
+  reason,
+  dueDateMin,
+  dueDateMax,
+  assignees,
+  open
+}) {
+  const config = {
+    service: 'diaries',
+    method: 'POST',
+    path: '/read',
+    data: {
+      assignees: assignees.length === 0 ? null : assignees,
+      dueDateMax,
+      dueDateMin,
+      open,
+      reason
+    }
+  };
+
+  try {
+    const response = await serviceRunner.callService(config);
+    return response && response.data ? response.data : [];
+  } catch (error) {
+    throw error;
   }
 }
+
+/**
+ * Sort diaries in ascending order by due date
+ * @param diaries
+ * @returns {Array}
+ */
+export function sortDiariesByDate(diaries = []) {
+  return diaries.filter(d => d).sort((a, b) => {
+    return new Date(a.entries[0].due) - new Date(b.entries[0].due);
+  });
+}
+
+/**
+ *
+ * @param results
+ */
+function formatDiaryResults(results) {
+  const sortedResults = sortDiariesByDate(results.result);
+
+  return {
+    results: sortedResults,
+    totalRecords: sortedResults.length,
+    noResults: !sortedResults.length
+  };
+}
+// THISPR - **** finish ****
 
 /**
  * Main submit handler for Search. Determine which type of search is being requested and kick it off
@@ -522,7 +635,7 @@ export function handleAgencySearch(data) {
  * @returns {Function}
  */
 export function handleSearchSubmit(data, props) {
-  return async dispatch => {
+  return async (dispatch) => {
     const { searchType } = props;
 
     dispatch(toggleLoading(true));
@@ -538,13 +651,13 @@ export function handleSearchSubmit(data, props) {
 
       if (searchType === SEARCH_TYPES.agency) await dispatch(handleAgencySearch(data));
 
+      if (searchType === SEARCH_TYPES.diaries) await dispatch(handleDiariesSearch(data));
     } catch (error) {
       // 'error' is undefined if we catch here. Making a custom message to handle.
-      dispatch(errorActions.setAppError(error || { message: 'An error has occurred'}))
+      dispatch(errorActions.setAppError(error || { message: 'An error has occurred' }));
     }
 
     dispatch(toggleLoading(false));
-  }
+  };
 }
-
 

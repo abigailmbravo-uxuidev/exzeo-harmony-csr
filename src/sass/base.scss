@@ -206,6 +206,7 @@ html {
                 overflow: hidden;
                 flex-direction: column;
                 flex-grow: 1;
+                flex-shrink: 1;
                 height: auto;
 
                 .main,
@@ -266,6 +267,7 @@ html {
   flex-direction: column;
   flex-shrink: 0;
   width: 100%;
+  height: 100vh;
   min-height: 100vh;
   margin: 0;
   padding: 0;
@@ -284,10 +286,13 @@ main[role="document"] {
   align-items: flex-start;
   flex-direction: row;
   flex-grow: 1;
-  flex-shrink: 0;
+  //flex-shrink: 0;
+  flex-shrink: 1;
   width: 100%;
-  height: calc(100vh - 8.125rem);
-  min-height: calc(100vh - 8.125rem);
+  height: auto;
+  //height: calc(100vh - 8.125rem);
+  //min-height: calc(100vh - 8.125rem);
+  min-height: auto;
   background: $white;
   @include transition(all 0.2s ease-in-out);
 
@@ -385,6 +390,13 @@ main[role="document"] {
     }
   }
 }
+
+.search {
+  &.route-content {
+    //flex-shrink: 1 !important;
+    //flex-grow: 1 !important;
+  }
+}
 //footer
 /*------------------------------------------------------------------------------------*/
 .basic-footer {
@@ -406,7 +418,6 @@ main[role="document"] {
 
     footer {
       align-self: flex-end;
-
     }
   }
 
@@ -424,9 +435,9 @@ main[role="document"] {
         line-height: 1;
 
         &.copyright {
-          padding-right: 1rem;
           flex-grow: 1;
           flex-shrink: 1;
+          padding-right: 1rem;
         }
       }
     }
@@ -451,9 +462,9 @@ main[role="document"] {
     flex-grow: 1;
 
     .route-content {
-      display: flex;
       overflow: hidden;
       flex-grow: 1;
+      flex-shrink: 1;
       height: auto;
 
       .scroll {
@@ -866,7 +877,8 @@ ul.list-cards {
 }
 //Additional Interests
 /*------------------------------------------------------------------------------------*/
-#AddAdditionalInterestPage, .additional-interests {
+#AddAdditionalInterestPage,
+.additional-interests {
   .detail-wrapper {
     flex-direction: column;
   }
@@ -1449,6 +1461,10 @@ ul.list-cards {
 
           &.btn-block {
             margin: 0 ($padding*2) ($padding*2) 0;
+
+            &.btn-branch {
+              margin-bottom: 0;
+            }
           }
         }
 

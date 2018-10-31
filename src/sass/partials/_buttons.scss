@@ -18,7 +18,7 @@ input[type="submit"] {
   font-weight: $btn-font-weight;
   line-height: $btn-line-height;
   @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $btn-border-radius);
-  @include transition(all .2s ease-in-out);
+  @include transition(all 0.2s ease-in-out);
   @include hover-focus {
     text-decoration: none;
   }
@@ -29,6 +29,16 @@ input[type="submit"] {
     &.focus,
     &:focus {
       @include tab-focus();
+    }
+  }
+
+  &.btn-lg {
+    font-size: $font-size-lg;
+
+    &.btn-round {
+      flex-basis: 2.5rem;
+      width: 2.5rem;
+      height: 2.5rem;
     }
   }
 
@@ -54,12 +64,12 @@ input[type="submit"] {
     font-size: $font-size-xs;
 
     i {
-        margin-right: $padding/2;
+      margin-right: $padding/2;
     }
   }
 
   &.no-padding {
-      padding: 0;
+    padding: 0;
   }
 
   &.focus {
@@ -74,6 +84,7 @@ input[type="submit"] {
   }
 
   &.disabled,
+  &.disabled,
   &:disabled {
     cursor: $cursor-disabled;
     opacity: 0.65;
@@ -87,9 +98,9 @@ input[type="submit"] {
 //
 // Alternate buttons
 //
-
 //button mixin: TEXT | BACKGROUND | BORDER
 //@include button-variant($btn-TEXT-color, $btn-BACKGROUND-color, $btn-BORDER-color);
+
 .btn,
 .btn-default,
 button,
@@ -139,12 +150,18 @@ input[type="submit"] {
   }
 
   &.btn-alt-light {
-      color: $bright-blue-lighten-02;
+    color: $bright-blue-lighten-02;
 
-      &:hover {
-          text-decoration: none;
-          color: $bright-blue-lighten-01;
-      }
+    &:hover {
+      text-decoration: none;
+      color: $bright-blue-lighten-01;
+    }
+  }
+
+  &.btn-grid-row {
+    display: flex;
+    margin: 0;
+    padding: 0;
   }
 }
 // Remove all backgrounds
@@ -239,6 +256,7 @@ input[type="submit"] {
     border-color: transparent;
   }
 
+  &.disabled,
   &:disabled {
     @include hover-focus {
       text-decoration: none;
@@ -276,10 +294,8 @@ input[type="submit"] {
     line-height: ($btn-line-height*0.4333);
     @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
     @include button-size($btn-padding-y, ($btn-padding-x*.9), $font-size-base, $btn-border-radius);
-    @include transition(all .2s ease-in-out);
+    @include transition(all 0.2s ease-in-out);
   }
-
-  input[type="file"] {}
 }
 
 .btn-icon {
@@ -316,65 +332,170 @@ input[type="submit"] {
     margin-left: $padding;
   }
 }
+
 .btn-divider-wrapper {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: $padding;
-    position: relative;
-    &:before {
-        content: '';
-        flex-grow: 1;
-        flex-shrink: 1;
-        background: $warm-gray-03;
-        height: 1px;
-        margin-right: $padding;
-    }
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: $padding;
+
+  &:before {
+    flex-grow: 1;
+    flex-shrink: 1;
+    height: 1px;
+    margin-right: $padding;
+    content: '';
+    background: $warm-gray-03;
+  }
+
+  &:after {
+    flex-grow: 1;
+    flex-shrink: 1;
+    height: 1px;
+    margin-left: $padding;
+    content: '';
+    background: $warm-gray-03;
+  }
+
+  &.align-right {
     &:after {
-        content: '';
-        flex-grow: 1;
-        flex-shrink: 1;
-        background: $warm-gray-03;
-        height: 1px;
-        margin-left: $padding;
+      flex-grow: 0;
+      flex-shrink: 0;
+      width: $padding;
     }
+  }
 
-    &.align-right {
-        &:after {
-            width: $padding;
-            flex-grow: 0;
-            flex-shrink: 0;
-        }
-    }
-
-    &.in-grid-layout {
-        grid-column: span 12;
-    }
+  &.in-grid-layout {
+    grid-column: span 12;
+  }
 }
 
 .btn-remove-wrapper {
-    width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+
+  &.align-right {
+    position: absolute;
+    right: $padding*2;
+  }
+
+  &.align-bottom {
+    position: absolute;
+    bottom: -$padding*1.25;
+
+    > .btn {
+      background: $white;
+    }
+  }
+
+  &.in-grid-layout {
+    grid-column: span 12;
+  }
+}
+
+.plus-button-group {
+  position: absolute;
+  bottom: $padding*2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 10rem;
+  height: 4rem;
+  @include transition(all 0.4s ease-in-out);
+
+  .new-btn {
+    z-index: 10;
+    opacity: 1;
+    box-shadow: 0 2px 3px 0 rgba(0,0,0,0.25);
+  }
+
+  button {
+    position: absolute;
+    z-index: 1;
     display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    position: relative;
+    opacity: 0;
+    @include transition(all 0.2s ease-in-out);
 
-    &.align-right {
-        position: absolute;
-        right: $padding*2;
+    &.new-diary-btn {
+      bottom: 0;
     }
 
-    &.align-bottom {
-        position: absolute;
-        bottom: -$padding*1.25;
-        > .btn {
-            background: $white;
+    &.new-note-btn {
+      bottom: 0;
+    }
+
+    span {
+      position: absolute;
+      left: 2.75rem;
+      display: flex;
+      padding: $padding;
+      opacity: 0;
+      border-radius: $btn-border-radius;
+      background-color: $bright-blue-darken-04;
+      box-shadow: 0 3px 0.75rem 0 rgba(0,0,0,0.25);
+      font-size: $font-size-xs;
+      @include transition(all 0.2s ease-in-out);
+    }
+  }
+
+  &:hover {
+    padding: 0;
+    border-width: 0;
+    border-color: transparent;
+    background-color: transparent;
+
+    .new-btn {
+      z-index: 1;
+      opacity: 0;
+    }
+
+    button {
+      z-index: 10;
+      opacity: 1;
+      box-shadow: 0 2px 3px 0 rgba(0,0,0,0.25);
+
+      &:focus {
+        outline: none;
+      }
+
+      &.new-diary-btn {
+        z-index: 9;
+        bottom: 2.875rem;
+        border-color: $bright-blue;
+        background-color: $bright-blue;
+      }
+
+      &.new-note-btn {
+        bottom: 0;
+        border-color: $green;
+        background-color: $green;
+      }
+
+      &:hover {
+        box-shadow: 0 4px 0.75rem 0 rgba(0,0,0,0.25);
+
+        span {
+          opacity: 1;
+          @include transition(all 0.3s 0.2s ease-in-out);
         }
+      }
     }
+  }
+}
 
-
-    &.in-grid-layout {
-        grid-column: span 12;
+.agency {
+  .plus-button-group {
+    &:hover {
+      button {
+        &.new-diary-btn {
+          bottom: 0;
+        }
+      }
     }
+  }
 }

@@ -6,15 +6,30 @@ import { Input, Select, Button, validation } from '@exzeo/core-ui';
 import { getAnswers } from '../../../utilities/forms';
 import Pagination from '../components/Pagination';
 
-const { isAlphaNumeric, isValidChar, isNumberDashOnly } = validation;
+const { isAlphaNumeric, isValidChar, isRequired, isNumberDashOnly } = validation;
 
 const QuoteSearch = ({
   submitting,
   questions,
   handlePagination,
-  search
+  search,
+  changeSearchType,
+  searchTypeOptions
 }) => (
   <React.Fragment>
+    <div className="form-group search-context">
+      <Field
+        name="searchType"
+        dataTest="searchType"
+        label="Search Context"
+        component={Select}
+        id="searchType"
+        validate={isRequired}
+        onChange={changeSearchType}
+        answers={searchTypeOptions}
+        showPlaceholder={false}
+        errorHint />
+    </div>
     <div className="search-inputs fade-in">
       <Field
         name="firstName"
@@ -24,8 +39,7 @@ const QuoteSearch = ({
         component={Input}
         styleName="first-name-search"
         validate={isAlphaNumeric}
-        errorHint
-      />
+        errorHint />
       <Field
         name="lastName"
         dataTest="lastName"
@@ -34,8 +48,7 @@ const QuoteSearch = ({
         component={Input}
         styleName="last-name-search"
         validate={isAlphaNumeric}
-        errorHint
-      />
+        errorHint />
       <Field
         name="address"
         dataTest="address"
@@ -44,8 +57,7 @@ const QuoteSearch = ({
         component={Input}
         styleName="property-search"
         validate={isValidChar}
-        errorHint
-      />
+        errorHint />
       <Field
         name="quoteNumber"
         dataTest="quoteNumber"
@@ -54,16 +66,14 @@ const QuoteSearch = ({
         component={Input}
         styleName="quote-no-search"
         validate={isNumberDashOnly}
-        errorHint
-      />
+        errorHint />
       <div className="form-group quote-state">
         <Field
           name="quoteState"
           dataTest="quoteState"
           label="Quote Status"
           component={Select}
-          answers={getAnswers('quoteState', questions)}
-        />
+          answers={getAnswers('quoteState', questions)} />
       </div>
 
       <Button
@@ -71,8 +81,7 @@ const QuoteSearch = ({
         customClass="multi-input"
         type="submit"
         disabled={submitting}
-        dataTest="submit"
-      ><i className="fa fa-search" />Search
+        dataTest="submit"><i className="fa fa-search" />Search
       </Button>
     </div>
     {!!search.results.length && search.totalPages > 1 &&
@@ -80,8 +89,7 @@ const QuoteSearch = ({
         changePageForward={handlePagination(true)}
         changePageBack={handlePagination(false)}
         pageNumber={search.currentPage}
-        totalPages={search.totalPages}
-      />
+        totalPages={search.totalPages} />
     }
   </React.Fragment>
 );
@@ -94,7 +102,9 @@ QuoteSearch.propTypes = {
     results: PropTypes.array,
     totalPages: PropTypes.number,
     currentPage: PropTypes.number
-  })
+  }),
+  changeSearchType: PropTypes.func,
+  searchTypeOptions: PropTypes.array
 };
 
 QuoteSearch.defaultProps = {

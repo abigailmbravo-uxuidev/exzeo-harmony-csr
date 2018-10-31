@@ -1,11 +1,8 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
-import axios from 'axios';
 import thunk from 'redux-thunk';
-import MockAdapter from 'axios-mock-adapter';
-import { propTypes } from 'redux-form';
-import { mount, shallow } from 'enzyme';
-import * as serviceActions from '../../state/actions/service.actions';
+import { shallow } from 'enzyme';
+
 import NoteUploader, { validate, renderNotes } from './NoteUploader';
 
 describe('Testing NoteUploader component', () => {
@@ -26,7 +23,7 @@ describe('Testing NoteUploader component', () => {
           userProfile: {
             profile: {
               given_name: 'Test',
-              family_name: "Test"
+              family_name: 'Test'
             }
           }
         },
@@ -50,7 +47,8 @@ describe('Testing NoteUploader component', () => {
 
       store = mockStore(initialState);
       wrapper = shallow(<NoteUploader store={store} {...props} />);
-      instance = wrapper.dive().dive().dive().dive().instance();
+      instance = wrapper.dive().dive().dive().dive()
+        .instance();
     });
 
     it('should map state to props', () => {
@@ -59,7 +57,7 @@ describe('Testing NoteUploader component', () => {
 
     it('test minimzeButtonHandler', () => {
       expect(instance.state.minimize).toEqual(false);
-      instance.minimzeButtonHandler();
+      instance.handleMinimize();
       expect(instance.state.minimize).toEqual(true);
     });
 
@@ -70,7 +68,7 @@ describe('Testing NoteUploader component', () => {
       });
 
       instance.props.actions.cgActions.startWorkflow = jest.fn().mockImplementation(() =>
-        Promise.resolve({result: true}));
+        Promise.resolve({ result: true }));
 
       expect(instance.submitNote(formData, store.dispatch, instance.props));
       expect(instance.props.actions.cgActions.startWorkflow).toHaveBeenCalled();
@@ -81,7 +79,7 @@ describe('Testing NoteUploader component', () => {
     it('note should be valid', () => {
       const initialState = {
         authState: {
-          userProfile: {  }
+          userProfile: { }
         },
         appState: {
           data: {
@@ -98,12 +96,13 @@ describe('Testing NoteUploader component', () => {
 
       const store = mockStore(initialState);
       const wrapper = shallow(<NoteUploader store={store} {...props} />);
-      const instance = wrapper.dive().dive().dive().dive().instance();
-      const spy = jest.spyOn(instance, 'closeButtonHandler');
+      const instance = wrapper.dive().dive().dive().dive()
+        .instance();
+      const spy = jest.spyOn(instance, 'handleClose');
 
       instance.componentDidMount();
 
-      expect(instance.closeButtonHandler).toHaveBeenCalled();
+      expect(instance.handleClose).toHaveBeenCalled();
     });
   });
 

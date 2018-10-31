@@ -326,7 +326,7 @@ const quoteData = {
 describe('Testing AdditionalInterests component', () => {
   it('should test connected app', () => {
     const state = {
-      service: {
+      quoteState: {
         quote: quoteData
       }
     };
@@ -372,8 +372,7 @@ describe('Testing AdditionalInterests component', () => {
 
     wi.onHandleAISubmit(quoteData.additionalInterests);
     wi.addAdditionalInterest('Bill Payer');
-    wi.editAdditionalInterest(quoteData.additionalInterests[0]);
+    wi.editAI(quoteData.additionalInterests[0]);
     wi.deleteAdditionalInterest(quoteData.additionalInterests[0]);
-    wi.editAIOnEnter({ key: 'Enter' }, quoteData.additionalInterests[0]);
   });
 });

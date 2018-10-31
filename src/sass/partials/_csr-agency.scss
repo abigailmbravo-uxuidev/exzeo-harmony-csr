@@ -60,6 +60,10 @@
         h4 {
           margin: 0;
           color: $white;
+
+          span {
+              font-weight: $font-weight-normal;
+          }
         }
       }
     }
@@ -166,6 +170,7 @@
 
             section {
               margin-bottom: $padding*2;
+              padding-bottom: $padding*2;
               border-bottom: 1px dashed mix($bright-blue-darken-02, $green, 80%);
 
               &.agency-details {
@@ -304,6 +309,19 @@
 
                       &.zip {
                         width: 8rem;
+
+                        .TypeAhead {
+                          z-index: 20;
+                        }
+
+                        .react-select__menu {
+                          overflow-y: auto;
+                          max-height: 9rem;
+
+                          .react-select__menu-list {
+                            overflow-y: hidden;
+                          }
+                        }
                       }
 
                       &.territoryManagerId {
@@ -319,6 +337,15 @@
                   .county,
                   .territoryManagerId {
                     grid-column: span 6;
+
+                    .TypeAhead {
+                      z-index: 10;
+                    }
+
+                    .react-select__menu {
+                      overflow-y: auto;
+                      max-height: 9rem;
+                    }
                   }
                 }
 
@@ -484,7 +511,8 @@
                 }
 
                 .card {
-                  width: 100%;
+                  flex-grow: 1;
+                  flex-shrink: 1;
 
                   .contact-details {
                     .card-name {
@@ -957,7 +985,7 @@
             &:before {
               position: absolute;
               z-index: -1;
-              top: 5.125rem;
+              top: 0.5rem;
               left: 1rem;
               display: flex;
               align-items: center;
@@ -1096,6 +1124,47 @@
     }
   }
 
+  &.license-crud {
+    form {
+      width: 100%;
+
+      .card {
+        width: 30rem;
+        max-height: 80vh;
+
+        .card-block {
+          .license-details {
+            display: flex;
+            flex-wrap: wrap;
+
+            .form-group {
+              flex-grow: 0;
+              flex-shrink: 0;
+
+              &.state {
+                width: 30%;
+                margin-right: $padding;
+              }
+
+              &.licenseNumber {
+                width: calc(70% - .5rem);
+              }
+
+              &.licenseType {
+                width: calc(60% - .5rem);
+                margin-right: $padding;
+              }
+
+              &.licenseEffectiveDate {
+                width: 40%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   &.contract-crud {
     .card {
       display: flex;
@@ -1206,6 +1275,36 @@
       .card {
         width: 80%;
         max-height: 90%;
+
+        .card-block {
+          overflow: visible;
+
+          .zip {
+            .TypeAhead {
+              z-index: 20;
+            }
+
+            .react-select__menu {
+              overflow-y: auto;
+              max-height: 9rem;
+
+              .react-select__menu-list {
+                overflow-y: hidden;
+              }
+            }
+          }
+
+          .territoryManagerId {
+            .TypeAhead {
+              z-index: 10;
+            }
+
+            .react-select__menu {
+              overflow-y: auto;
+              max-height: 8rem;
+            }
+          }
+        }
 
         .agency-details {
           display: grid;
@@ -1492,6 +1591,12 @@
                   input {
                     margin: 0;
                   }
+                .coverage,
+                .discountSurcharge {
+                  width: 60%;
+                  padding: ($padding*1.5) ($padding*2);
+                  white-space: normal;
+                  hyphens: auto;
                 }
 
                 .form-group {
@@ -1506,8 +1611,7 @@
   }
 }
 
-#root {
-  .app-wrapper.csr {
+.app-wrapper.csr {
     main[role="document"] {
       .content-wrapper {
         .route-content {
@@ -1530,4 +1634,22 @@
       }
     }
   }
+//search cards
+.card {
+  &.contact {
+    .contact-details {
+      .contact-address {
+        .additional-data {
+          margin-left: $padding;
+          font-size: $font-size-sm;
+
+          label {
+            margin-bottom: 0;
+            font-size: $font-size-xs;
+          }
+        }
+      }
+    }
+  }
+}
 }

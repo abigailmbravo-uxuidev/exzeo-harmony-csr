@@ -2,13 +2,13 @@
   position: relative;
   z-index: 10;
   display: flex;
-  overflow: hidden;
+  overflow: visible;
   align-items: flex-start;
   flex-direction: column;
-  flex-grow: 1;
-  flex-shrink: 1;
+  flex-grow: 0;
+  flex-shrink: 0;
   width: 100%;
-  height: 4.75rem;
+  height: auto;
   margin-top: 0;
   margin-bottom: 0;
   @include transition(all 0.2s ease-in-out);
@@ -16,26 +16,26 @@
   #SearchBar {
     position: relative;
     display: flex;
-    overflow: hidden;
+    overflow: visible;
     align-items: flex-start;
     flex-direction: column;
-    flex-grow: 1;
-    flex-shrink: 1;
+    flex-grow: 0;
+    flex-shrink: 0;
     width: 100%;
+    height: auto;
     margin-top: 0;
     margin-bottom: 0;
 
     .advanced-search {
       overflow: hidden;
-      height: 0;
-      @include transition(all 0.2s ease-in-out);
+      height: auto;
     }
 
     > form {
+      overflow: visible;
       width: 100%;
-      height: 4.5rem;
+      height: auto;
       background-color: $warm-gray-08;
-      @include transition(all 0.2s ease-in-out);
 
       .search-input-wrapper {
         display: flex;
@@ -43,11 +43,10 @@
         flex-grow: 1;
         flex-shrink: 1;
         flex-wrap: nowrap;
-        height: 4.75rem;
+        height: auto;
         padding: $padding ($padding*2);
         border-bottom: 2px solid $white;
         background-color: $warm-gray-08;
-        @include transition(all 0.2s ease-in-out);
 
         .search-inputs {
           display: flex;
@@ -56,8 +55,7 @@
 
           .form-group {
             position: relative;
-            align-self: flex-end;
-
+            //align-self: flex-end;
             &.error {
               input {
                 border-width: 2px;
@@ -73,13 +71,119 @@
           }
 
           button {
-            align-self: flex-end;
+            align-self: flex-start;
+            flex-grow: 0;
+            flex-shrink: 0;
+            margin-top: 1.25rem;
+          }
+
+          .input-wrapper {
+            display: flex;
+            flex-grow: 1;
+            flex-shrink: 1;
+            flex-wrap: wrap;
+            margin-top: 1.25rem;
+            flex-grow: 0;
+            flex-shrink: 0;
+          }
+
+          .input-wrapper {
+              display: flex;
+              flex-wrap: wrap;
+              flex-grow: 1;
+              flex-shrink: 1;
           }
         }
 
         .form-group {
           align-items: flex-start;
           margin-bottom: 0;
+          /*Combobox styles*/
+          .Select {
+            height: 2.375rem;
+
+            &.TypeAhead {
+              height: auto;
+              min-height: 2.375rem;
+
+              &:focus {
+                outline: none;
+              }
+
+              .react-select__control {
+                width: 100%;
+                height: auto;
+                min-height: 2.375rem;
+
+                &.react-select__control--is-focused {
+                  border-color: $warm-gray-08;
+                  border-radius: $border-radius $border-radius 0 0;
+                  box-shadow: none;
+                }
+
+                .react-select__value-container {
+                  align-items: flex-start;
+                  justify-content: flex-start;
+                  height: auto;
+                  margin: 0;
+                  padding: 0 0 0 $padding;
+
+                  > div {
+                    display: flex;
+                    margin: 0;
+                    padding: 0;
+
+                    &.react-select__placeholder {
+                      left: $padding;
+                    }
+
+                    &.react-select__single-value {
+                      margin: 0;
+                    }
+
+                    .react-select__input {
+                      width: 100%;
+
+                      input {
+                        height: auto;
+                        line-height: 1;
+                      }
+                    }
+                  }
+
+                  .react-select__multi-value {
+                    width: auto;
+                    margin: $padding/4;
+                    color: $white;
+                    border-radius: $border-radius;
+                    background: $warm-gray-08;
+
+                    .react-select__multi-value__label {
+                      color: $white;
+                    }
+
+                    .react-select__multi-value__remove {
+                      border-radius: 0 $border-radius $border-radius 0;
+                      @include transition(all 0.2s ease-in-out);
+
+                      &:hover {
+                        cursor: pointer;
+                        background: $red-lighten-04;
+                      }
+                    }
+                  }
+                }
+              }
+
+              > div {
+                .react-select__menu {
+                  overflow: hidden;
+                  margin: 0;
+                  border-radius: 0 0 $border-radius $border-radius;
+                }
+              }
+            }
+          }
 
           &.search-context {
             align-self: flex-start;
@@ -172,6 +276,48 @@
             margin-right: $padding;
           }
 
+          &.assignees {
+            flex-grow: 1;
+            flex-shrink: 1;
+            margin-right: $padding;
+            margin-top: $padding;
+          }
+
+          &.reason {
+            flex-grow: 1;
+            flex-shrink: 1;
+            width: 15rem;
+            margin-right: $padding;
+
+            select {
+              width: 100%;
+              height: 2.375rem;
+              background: $white;
+            }
+          }
+
+          &.dateRange {
+            flex-grow: 0;
+            flex-shrink: 0;
+            width: 22.25rem;
+            margin-right: $padding;
+
+            .date-range-inputs {
+              display: flex;
+              width: 100%;
+              line-height: 2.375rem;
+
+              input {
+                width: 10.5rem;
+              }
+
+              span {
+                margin: 0 $padding/2;
+                color: $white;
+              }
+            }
+          }
+
           label {
             margin-bottom: $padding/4;
             color: $yellow-lighten-06;
@@ -191,7 +337,6 @@
         }
 
         input {
-          flex: 1;
           height: 2.375rem;
           padding: ($padding/2) $padding;
           line-height: 1.75;
@@ -216,7 +361,7 @@
             justify-content: center;
             width: 2rem;
             height: 2rem;
-            margin: 0 0 ($padding/2) $padding;
+            margin: ($padding*3) 0 0 $padding;
             padding: 0;
             border-radius: 50%;
             @include button-variant($bright-blue-darken-03, $warm-gray-01, $warm-gray-01);
@@ -271,34 +416,34 @@
 
   &.policy-advanced {
     overflow: visible;
-    height: 9rem;
+    height: auto;
 
     #SearchBar {
       overflow: visible;
-      height: 9rem;
+      height: auto;
 
       > form {
-        height: 9rem;
+        height: auto;
 
         .search-input-wrapper {
           overflow: visible;
           flex-wrap: wrap;
-          height: 9rem;
+          height: auto;
         }
 
         .advanced-search {
           display: flex;
           overflow: visible;
           width: 100%;
-          height: 4.75rem;
-          padding: $padding 10rem $padding 0;
+          height: auto;
+          padding: $padding 10rem 0 0;
           animation-duration: 0.8s;
 
           input {
-            flex: 1;
             -ms-flex-preferred-size: 1.75rem;
             flex-grow: 0;
             flex-shrink: 0;
+            width: 100%;
             height: 2.375rem;
             padding: $padding;
             line-height: 1.75;
@@ -413,8 +558,10 @@
 
 main[role="document"] {
   &.policy-advanced {
-    height: calc(100vh - 12.375rem);
-    min-height: calc(100vh - 12.375rem);
+    //height: calc(100vh - 12.375rem);
+    //min-height: calc(100vh - 12.375rem);
+    height: auto;
+    min-height: auto;
   }
 
   .survey-wrapper {
@@ -425,12 +572,12 @@ main[role="document"] {
       padding: 0;
 
       .results-wrapper {
-          ul {
-              &.property-search-results {
-                  padding: 1rem;
-                  width: 100%;
-              }
+        ul {
+          &.property-search-results {
+            width: 100%;
+            padding: 1rem;
           }
+        }
       }
     }
   }

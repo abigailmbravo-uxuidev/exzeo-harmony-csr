@@ -1,35 +1,64 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Helmet } from 'react-helmet';
 import { Loader } from '@exzeo/core-ui';
 
-import QuoteHeader from '../components/Quote/QuoteHeader';
-import QuoteSideNav from '../components/Quote/QuoteSideNav';
-import QuoteDetailHeader from '../components/Quote/DetailHeader';
 import UnderwritingValidationBarConnect from '../components/Quote/UnderwritingValidationBar';
+import App from '../components/AppWrapper';
+import OpenDiariesBar from '../components//OpenDiariesBar';
+import DiaryPolling from '../components/DiaryPolling';
 
+export class QuoteBase extends React.Component {
+  state = {
+    showDiaries: false
+  };
 
-export const QuoteBase = ({
-  appState, quoteData, match, children
-}) => (
-  <div className="app-wrapper csr quote">
-    <Helmet><title>{quoteData.quoteNumber ? `Q: ${quoteData.quoteNumber}` : 'Harmony - CSR Portal'}</title></Helmet>
-    {/* <NewNoteFileUploader /> */}
-    <QuoteHeader />
-    <QuoteDetailHeader />
-    <main role="document">
-      {(appState.data.submitting || !quoteData._id) && <Loader />}
-      <aside className="content-panel-left">
-        <QuoteSideNav match={match} />
-      </aside>
-      <div className="content-wrapper">
-        {children}
+  handleToggleDiaries = () => {
+    this.setState({ showDiaries: !this.state.showDiaries });
+  };
+
+  render() {
+    const {
+      appState,
+      quoteData,
+      match,
+      children
+    } = this.props;
+
+    const { showDiaries } = this.state;
+
+    return (
+      <div className="app-wrapper csr quote">
+        {(appState.data.submitting || !quoteData._id) && <Loader />}
+        <App
+          resourceType="Quote"
+          resourceId={quoteData._id}
+          pageTitle={`Q: ${quoteData.quoteNumber || ''}`}
+          match={match}
+          onToggleDiaries={this.handleToggleDiaries}
+          showDiaries={showDiaries}
+          render={() => (
+            <React.Fragment>
+              <div className="content-wrapper">
+                {children}
+              </div>
+
+              <UnderwritingValidationBarConnect />
+
+              <OpenDiariesBar
+                  resourceId={quoteData._id}
+                  resourceType="Quote" />
+
+              {(quoteData && quoteData._id) &&
+                <DiaryPolling filter={{ resourceId: quoteData._id, resourceType: 'Quote' }} />
+              }
+
+            </React.Fragment>
+          )} />
       </div>
-      <UnderwritingValidationBarConnect />
-    </main>
-  </div>
-);
+    );
+  }
+}
 
 QuoteBase.propTypes = {
   children: PropTypes.oneOfType([

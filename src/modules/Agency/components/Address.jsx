@@ -34,6 +34,7 @@ export class Address extends Component {
         })) {
           return tm;
         }
+        return null;
       });
 
     return selectedTerritoryManager;

@@ -1,5 +1,6 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
+
 import PolicySearch from './PolicySearch';
 
 describe('Test PolicySearch component', () => {
@@ -18,8 +19,8 @@ describe('Test PolicySearch component', () => {
   });
 
   it('renders an advanced search section when passed advancedSearch prop', () => {
-    const wrapper = shallow(<PolicySearch { ...baseProps } advancedSearch={true} />);
+    const wrapper = shallow(<PolicySearch {...baseProps} advancedSearch />);
     expect(wrapper.find('div.advanced-search')).toHaveLength(1);
-  })
+  });
 });
 

@@ -7,19 +7,20 @@ import authState from './auth.reducer';
 import appState from './appState.reducer';
 import error from './error.reducer';
 import service from './service.reducer';
-import newNote from './newNote.reducer';
+import ui from './ui.reducer';
 import policyState from './policy.reducer';
 import questions from './questions.reducer';
 import quoteState from './quote.reducer';
 import search from './search.reducer';
 import agencyState from './agency.reducer';
 import zipCodeSettingsState from './zipCodeSettings.reducer';
+import diaries from './diaryReducer';
 
 const rootReducer = combineReducers({
   form: formReducer,
   policyState,
   service,
-  newNote,
+  ui,
   cg,
   authState,
   appState,
@@ -28,7 +29,8 @@ const rootReducer = combineReducers({
   quoteState,
   search,
   agencyState,
-  zipCodeSettingsState
+  zipCodeSettingsState,
+  diaries
 });
 
 export default rootReducer;

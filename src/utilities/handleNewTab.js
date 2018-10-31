@@ -1,16 +1,35 @@
-export function handleNewTab(searchData, searchType) {
+export function handleNewTab(resource, type) {
   // new quote
-  if (searchType === 'address') {
-    window.open(`/quote/new/${searchData.physicalAddress.state}/${searchData.id}`, '_blank');
+  if (type === 'address') {
+    window.open(`/quote/new/${resource.physicalAddress.state}/${resource.id}`, '_blank');
     // quote
-  } else if (searchType === 'quote') {
-    window.open(`/quote/${searchData._id}/coverage`, '_blank');
+  } else if (type === 'quote') {
+    window.open(`/quote/${resource._id}/coverage`, '_blank');
     // policy
-  } else if (searchType === 'policy') {
-    window.open(`/policy/${searchData.policyNumber}/coverage`, '_blank');
+  } else if (type === 'policy') {
+    window.open(`/policy/${resource.policyNumber}/coverage`, '_blank');
     // agency
-  } else if (searchType === 'agency' || searchType === 'agent') {
-    window.open(`/agency/${searchData.agencyCode}/0/overview`, '_blank');
+  } else if (type === 'agency' || type === 'agent') {
+    window.open(`/agency/${resource.agencyCode}/0/overview`, '_blank');
+  }
+}
+
+export function handleNewTabClick(resourceId, type) {
+  const formattedType = String(type).toLowerCase();
+  if (formattedType === 'quote') {
+    window.open(`/quote/${resourceId}/coverage`, '_blank');
+    // policy
+  } else if (formattedType === 'policy') {
+    window.open(`/policy/${resourceId}/coverage`, '_blank');
+    // agency
+  } else if (formattedType === 'agency' || formattedType === 'agent') {
+    window.open(`/agency/${resourceId}/staff`, '_blank');
+  }
+}
+
+export function handleKeyPress(event, resourceId, type) {
+  if (event.charCode === 13) {
+    handleNewTabClick(resourceId, type);
   }
 }
 
