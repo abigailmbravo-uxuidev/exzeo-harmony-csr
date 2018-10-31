@@ -1425,6 +1425,20 @@ ul.list-cards {
     &.app-wrapper {
       overflow-y: hidden;
       min-width: $csr-min-width;
+
+      &.agency,
+      &.policy,
+      &.quote {
+        header {
+          div[role="banner"] {
+            > .logo {
+              img {
+                height: 44px;
+              }
+            }
+          }
+        }
+      }
     }
 
     .site-nav {
