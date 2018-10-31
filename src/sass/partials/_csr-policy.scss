@@ -926,9 +926,9 @@
     }
     //diaries
     .open-diaries {
-      overflow-y: auto;
       position: absolute;
       right: 0;
+      overflow-y: auto;
       align-self: stretch;
       flex-grow: 0;
       flex-shrink: 0;
