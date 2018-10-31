@@ -286,12 +286,9 @@ main[role="document"] {
   align-items: flex-start;
   flex-direction: row;
   flex-grow: 1;
-  //flex-shrink: 0;
   flex-shrink: 1;
   width: 100%;
   height: auto;
-  //height: calc(100vh - 8.125rem);
-  //min-height: calc(100vh - 8.125rem);
   min-height: auto;
   background: $white;
   @include transition(all 0.2s ease-in-out);
@@ -388,13 +385,6 @@ main[role="document"] {
     .survey-wrapper {
       padding: $padding*2;
     }
-  }
-}
-
-.search {
-  &.route-content {
-    //flex-shrink: 1 !important;
-    //flex-grow: 1 !important;
   }
 }
 //footer
@@ -1504,6 +1494,10 @@ ul.list-cards {
         margin-right: $padding*2;
         padding: ($padding/2) 0;
 
+        section {
+            padding-top: 1px;
+        }
+
         dl {
           margin-bottom: 0;
 
@@ -1527,11 +1521,11 @@ ul.list-cards {
               line-height: $headings-line-height;
               -ms-hyphens: auto;
               @media (max-width: 1440px) {
-                line-height: 1.02;
+                line-height: 1;
               }
 
-              &.status {
-                line-height: 1.02;
+              &.status, &.agency-name {
+                line-height: 1;
               }
             }
           }
@@ -1580,10 +1574,6 @@ ul.list-cards {
 
                 &.font-size-base {
                   font-size: $font-size-base;
-                }
-
-                &.policy-status {
-                  line-height: 1.02;
                 }
               }
             }
