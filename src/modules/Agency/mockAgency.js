@@ -48,13 +48,20 @@ export default {
   },
   territoryManagerId: '5b7db9f6ff54fd6a5c619eec',
   contracts: [
-    {
+    { 
       companyCode: 'TTIC',
       stateProducts: [
-        {
-          state: 'FL',
-          product: 'HO3'
-        }
+       { state: 'FL', product: 'HO3'},
+       { state: 'FL', product: 'FL3'}
+      ],
+      contractNumber: 'Flood 03 16',
+      addendum: null
+    },
+    { 
+      companyCode: 'ABC',
+      stateProducts: [
+       { state: 'FL', product: 'HO3'},
+       { state: 'FL', product: 'FL3'}
       ],
       contractNumber: 'Flood 03 16',
       addendum: null
@@ -62,10 +69,16 @@ export default {
   ],
   licenses: [
     {
+      state: 'TX',
+      licenseNumber: 'test040b',
+      licenseType: 'Non-Resident',
+      licenseEffectiveDate: '2018-10-27T00:00:00.000Z'
+    },
+    {
+      licenseNumber: 'test040bz',
+      state: 'FL',
       licenseType: 'Resident',
-      licenseEffectiveDate: '2010-12-07T00:00:00.000Z',
-      licenseNumber: 'L070378',
-      state: 'FL'
+      licenseEffectiveDate: '2018-10-27T00:00:00.000Z'
     }
   ],
   branches: [

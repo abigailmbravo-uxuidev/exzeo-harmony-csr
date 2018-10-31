@@ -11,7 +11,7 @@ export const LicenseCard = ({ license, editLicense }) => (
       <div className="license-header">
         <h4 className="license-csp">
           <strong>{license.state} - {license.licenseNumber}</strong> |&nbsp;
-          <span>{moment(license.licenseEffectiveDate).format('MM/DD/YYYY')}</span>
+          <span>{moment.utc(license.licenseEffectiveDate).format('MM/DD/YYYY')}</span>
         </h4>
       </div>
     </div>

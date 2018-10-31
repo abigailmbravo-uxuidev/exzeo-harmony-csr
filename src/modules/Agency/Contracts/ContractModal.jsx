@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { reduxForm, FieldArray, Form, Field } from 'redux-form';
+import { reduxForm, FieldArray, Field } from 'redux-form';
+import { isUnique } from '../utilities/validation';
 import { Input, Select, validation } from '@exzeo/core-ui';
 
 export const RenderProducts = ({ fields }) => {
@@ -54,21 +55,14 @@ export const ContractModal = (props) => {
     closeModal,
     saveContract,
     handleSubmit,
-    initialValues,
-    contractNumbers
+    initialValues
   } = props;
-
-  const uniqueContractNumber = value => {
-    return value && contractNumbers.includes(value) && value !== initialValues.contractNumbers
-      ? 'The Contract Number must be unique.' 
-      : undefined;
-  };
   
   const actionType = initialValues ? 'Edit' : "Add";
   return (
     <div className="modal contract-crud">
       <div className="card">
-        <Form noValidate onSubmit={handleSubmit(saveContract)}>
+        <form noValidate onSubmit={handleSubmit(saveContract)}>
           <div className="card-header">
             <h4><i className="fa fa-file" /> {actionType} Contract</h4>
           </div>
@@ -87,7 +81,7 @@ export const ContractModal = (props) => {
                 name="contractNumber"
                 dataTest="contractNumber"
                 component={Input}
-                validate={[validation.isRequired, uniqueContractNumber]}
+                validate={[validation.isRequired, isUnique]}
               />
               <Field
                 label="Addendum"
@@ -106,7 +100,7 @@ export const ContractModal = (props) => {
               <button tabIndex="0" className="btn btn-primary" type="submit">Save</button>
             </div>
           </div>
-        </Form>
+        </form>
       </div>
     </div>
   );

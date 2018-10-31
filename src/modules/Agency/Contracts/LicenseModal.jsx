@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { reduxForm, Form, Field } from 'redux-form';
+import moment from 'moment';
+import { reduxForm, Field } from 'redux-form';
+import { isUnique } from '../utilities/validation';
 import { Input, Date, Select, validation } from '@exzeo/core-ui';
 
 export const LicenseModal = (props) => {
@@ -8,8 +10,7 @@ export const LicenseModal = (props) => {
     closeModal,
     saveLicense,
     handleSubmit,
-    initialValues,
-    licenseNumbers
+    initialValues
   } = props;
 
   const states = [
@@ -22,17 +23,15 @@ export const LicenseModal = (props) => {
     { answer: 'Non-Resident', label: 'Non-Resident' }
   ];
 
-  const uniqueLicenseNumber = value => {
-    return value && licenseNumbers.includes(value) && value !== initialValues.licenseNumbers
-      ? 'The License Number must be unique.' 
-      : undefined;
+  if (initialValues && initialValues.licenseEffectiveDate) {
+    initialValues.licenseEffectiveDate = moment.utc(initialValues.licenseEffectiveDate).format('YYYY-MM-DD');
   };
 
   const actionType = initialValues ? 'Edit' : "Add";
   return (
     <div className="modal license-crud">
       <div className="card">
-        <Form noValidate onSubmit={handleSubmit(saveLicense)}>
+        <form noValidate onSubmit={handleSubmit(saveLicense)}>
           <div className="card-header">
             <h4><i className="fa fa-file" /> {actionType} License</h4>
           </div>
@@ -52,7 +51,7 @@ export const LicenseModal = (props) => {
                 name="licenseNumber"
                 component={Input}
                 dataTest="licenseNumber"
-                validate={[validation.isRequired, uniqueLicenseNumber]} />
+                validate={[validation.isRequired, isUnique]} />
               <Field
                 label="Type"
                 styleName="licenseType"
@@ -76,7 +75,7 @@ export const LicenseModal = (props) => {
               <button tabIndex="0" className="btn btn-primary" type="submit">Save</button>
             </div>
           </div>
-        </Form>
+        </form>
       </div>
     </div>
   );
@@ -96,4 +95,4 @@ LicenseModal.propTypes = {
   })
 };
 
-export default reduxForm({ form: 'LicenseModal', enableReinitialize: true })(LicenseModal);
+export default reduxForm({ form: 'LicenseModal' })(LicenseModal);

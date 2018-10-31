@@ -30,22 +30,20 @@ export class Contracts extends Component {
     }));
   };
 
+  mergeData = (data, existingArray, index) => {
+    let newArray;
+    if (index !== null && index !== '') {
+      newArray = existingArray.map((item, i) => i === index ? { ...data } : item);
+    } else {
+      newArray = [...existingArray, { ...data } ];
+    }
+    return newArray;
+  };
+
   saveLicense = async (data, dispatch, props) => {
     const { agency: { agencyCode, licenses }, updateAgency } = this.props;
     const { licenseIndex } = this.state;
-    let newLicenses;
-
-    if(licenseIndex || licenseIndex === 0) {
-      newLicenses = licenses.map((item, index) => {
-        if (index === licenseIndex) {
-          return { ...data };
-        } else {
-          return item;
-        }
-      });
-    } else {
-      newLicenses = [...licenses, { ...data } ];
-    }
+    const newLicenses = this.mergeData(data, licenses, licenseIndex);
 
     await updateAgency({ agencyCode, licenses: newLicenses });
     this.toggleLicense()();
@@ -54,20 +52,7 @@ export class Contracts extends Component {
   saveContract = async (data, dispatch, props) => {
     const { agency: { agencyCode, contracts }, updateAgency } = this.props;
     const { contractIndex } = this.state;
-
-    let newContracts;
-
-    if(contractIndex >= 0) {
-      newContracts = contracts.map((item, index) => {
-        if (index === contractIndex) {
-          return { ...data };
-        } else {
-          return item;
-        }
-      });
-    } else {
-      newContracts = [...contracts, { ...data }];
-    }
+    const newContracts = this.mergeData(data, contracts, contractIndex);
 
     await updateAgency({ agencyCode, contracts: newContracts });
     this.toggleContract()();
@@ -123,7 +108,7 @@ export class Contracts extends Component {
                 <h3>Contracts</h3>
                 {Array.isArray(agency.contracts) && agency.contracts.map((contract, index) => (
                   <ContractCard
-                    key={`${contract.contractNumber}`}
+                    key={contract.contractNumber}
                     contract={contract}
                     editContract={this.toggleContract(index)}
                   />
@@ -151,8 +136,7 @@ export class Contracts extends Component {
 }
 
 Contracts.propTypes = {
-  agency: PropTypes.shape(),
-  contractInitialValues: PropTypes.shape()
+  agency: PropTypes.object.isRequired,
 };
 
 export default Contracts;

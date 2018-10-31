@@ -20,7 +20,7 @@ export const ContractCard = ({ contract, editContract, contractIndex }) => (
       <div className="contract-info">
         <span className="additional-contract-info contract">
           <label>Contract</label>
-          <div className="contract-date-wrapper">
+          <div className="contract-number-wrapper">
             <div>{contract.contractNumber}</div>
           </div>
         </span>
