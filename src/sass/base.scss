@@ -1512,11 +1512,11 @@ ul.list-cards {
 
           div {
             dt {
-              letter-spacing: 0.05em;
               color: $yellow-lighten-04;
               font-size: $font-size-sm;
               font-weight: $font-weight-normal;
               line-height: $headings-line-height;
+              -webkit-font-smoothing: antialiased;
             }
 
             dd {
@@ -1528,6 +1528,7 @@ ul.list-cards {
               hyphens: auto;
               font-size: 14px;
               line-height: $headings-line-height;
+              -webkit-font-smoothing: antialiased;
               -ms-hyphens: auto;
               @media (max-width: 1440px) {
                 line-height: 1;
@@ -1581,6 +1582,7 @@ ul.list-cards {
 
               dd {
                 color: $yellow-lighten-04;
+                -webkit-font-smoothing: antialiased;
 
                 &.font-size-base {
                   font-size: $font-size-base;
@@ -1748,4 +1750,8 @@ ul.list-cards {
 
 #uppy_uppy-hidden {
   display: none;
+}
+
+.scroll {
+    scroll-behavior: smooth;
 }
