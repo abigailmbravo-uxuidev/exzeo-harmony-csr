@@ -7,7 +7,6 @@ import Agent from '../components/FormGroup/Agent';
 import Contact from '../components/FormGroup/Contact';
 import Address from '../components/Address';
 import License from '../components/License';
-import territoryManagers from '../components/territoryManagers';
 import history from '../../../history';
 import Footer from '../../../components/Common/Footer';
 
@@ -82,7 +81,8 @@ export class CreateBranch extends Component {
       submitting,
       pristine,
       change,
-      orphans
+      orphans,
+      territoryManagers
     } = this.props;
 
     return (

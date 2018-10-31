@@ -13,6 +13,7 @@ import { Agency,
 describe('Testing Agency Base component', () => {
   it('should render', () => {
     const props = {
+      getTerritoryManagers() {},
       getAgency() {},
       getAgentsByAgencyCode() {},
       getListOfOrphanedAgents() {},
@@ -26,6 +27,7 @@ describe('Testing Agency Base component', () => {
 
   it('should render without agency', () => {
     const props = {
+      getTerritoryManagers() {},
       getAgency() {},
       getAgentsByAgencyCode() {},
       getListOfOrphanedAgents() {},

@@ -5,7 +5,6 @@ import { validation, SelectTypeAhead } from '@exzeo/core-ui';
 
 import { updateAgency } from '../../../state/actions/agency.actions';
 import Address from '../components/Address';
-import territoryManagers from '../components/territoryManagers';
 
 export class AgencyAddressModal extends Component {
   onHandleSaveAgency = async (data, dispatch, props) => {
@@ -52,7 +51,8 @@ export class AgencyAddressModal extends Component {
       handleSubmit,
       sameAsMailingValue,
       submitting,
-      change
+      change,
+      territoryManagers
     } = this.props;
 
     return (
@@ -134,7 +134,8 @@ export class AgencyAddressModal extends Component {
 
 const selector = formValueSelector('AgencyAddressModal');
 const mapStateToProps = state => ({
-  sameAsMailingValue: selector(state, 'sameAsMailing')
+  sameAsMailingValue: selector(state, 'sameAsMailing'),
+  territoryManagers: state.questions.territoryManagers
 });
 
 export default connect(mapStateToProps, {

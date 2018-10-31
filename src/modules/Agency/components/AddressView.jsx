@@ -26,7 +26,8 @@ export const AddressView = ({ agencyBranchData, territoryManagers }) => {
         </div>
         <div className="territoryManagerId flex-col">
           <label>Territory Manager</label>
-          {territoryManagers.filter(t => t._id === agencyBranchData.territoryManagerId)[0].name}
+          {territoryManagers.filter(t => t._id === agencyBranchData.territoryManagerId).length > 0 ?
+           territoryManagers.filter(t => t._id === agencyBranchData.territoryManagerId)[0].name : ''}
         </div>
       </div>
     </React.Fragment>

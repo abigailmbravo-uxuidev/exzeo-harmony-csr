@@ -10,10 +10,11 @@ describe('Testing Create index component', () => {
   it('should render', () => {
     const middlewares = [];
     const mockStore = configureStore(middlewares);
-    const store = mockStore({ agencyState: {} });
+    const store = mockStore({ agencyState: {}, questions: { territoryManagers: [] } });
 
     const props = {
-      agency: mockAgency
+      agency: mockAgency,
+      territoryManagers: []
     };
     const wrapper = shallow(<Create store={store} {...props} />);
     expect(wrapper.exists()).toBeTruthy();

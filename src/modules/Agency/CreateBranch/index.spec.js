@@ -10,9 +10,10 @@ describe('Testing CreateBranch index component', () => {
   it('should render', () => {
     const middlewares = [];
     const mockStore = configureStore(middlewares);
-    const store = mockStore({ agencyState: {} });
+    const store = mockStore({ agencyState: {}, questions: { territoryManagers: [] } });
 
     const props = {
+      territoryManagers: [],
       agency: mockAgency
     };
     const wrapper = shallow(<CreateBranch store={store} {...props} />);

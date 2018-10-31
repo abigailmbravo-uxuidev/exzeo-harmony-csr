@@ -12,7 +12,8 @@ export default {
   error: {},
   diaries: [],
   questions: {
-    diaryAssignees: []
+    diaryAssignees: [],
+    territoryManagers: []
   },
   quoteState: {
     quoteId: null,
@@ -48,9 +49,6 @@ export default {
   },
   service: {
     cancelOptions: []
-  },
-  territoryManagerState: {
-    territoryManagers: []
   },
   zipCodeSettingsState: {
     zipCodeSettings: []

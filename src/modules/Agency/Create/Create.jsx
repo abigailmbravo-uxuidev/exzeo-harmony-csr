@@ -6,7 +6,6 @@ import { Redirect } from 'react-router-dom';
 import history from '../../../history';
 import ExistingAgentModal from '../components/ExistingAgentModal';
 import Address from '../components/Address';
-import territoryManagers from '../components/territoryManagers';
 import License from '../components/License';
 import Agent from '../components/FormGroup/Agent';
 import Contact from '../components/FormGroup/Contact';
@@ -84,7 +83,8 @@ export class Create extends Component {
       pristine,
       change,
       agency,
-      orphans
+      orphans,
+      territoryManagers
     } = this.props;
 
     return (
