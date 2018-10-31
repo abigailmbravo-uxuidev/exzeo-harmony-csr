@@ -192,9 +192,10 @@
   }
 }
 
+.app-wrapper.csr.quote main #AddAdditionalInterestPage .results-wrapper,
 .app-wrapper.csr.policy main .content-wrapper .route-content .form-group section {
   ul {
-    &.additional-interests-list {
+    &.additional-interests-list, &.result-cards {
       li {
         &.card {
           align-items: center;
