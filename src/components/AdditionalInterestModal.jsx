@@ -46,7 +46,7 @@ export class AdditionalInterestModal extends React.Component {
       change('address1', option.AIAddress1);
       change('city', option.AICity);
       change('state', option.AIState);
-      change('zip', option.AIZip);
+      change('zip', String(option.AIZip));
     } else {
       change('name1', '');
       change('name2', '');
