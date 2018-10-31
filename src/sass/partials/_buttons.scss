@@ -176,6 +176,10 @@ input[type="submit"] {
     display: flex;
     margin: 0;
     padding: 0;
+
+    &:hover {
+        text-decoration: none;
+    }
   }
 }
 // Remove all backgrounds

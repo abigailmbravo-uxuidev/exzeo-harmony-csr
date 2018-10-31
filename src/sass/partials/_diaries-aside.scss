@@ -94,7 +94,7 @@
 
           li {
             .diary-header {
-              i {
+              > i {
                 color: $red-darken-01;
               }
             }
@@ -110,7 +110,7 @@
 
           li {
             .diary-header {
-              i {
+             >  i {
                 color: $orange-lighten-01;
               }
             }
@@ -126,7 +126,7 @@
 
           li {
             .diary-header {
-              i {
+             >  i {
                 color: $green-darken-02;
               }
             }
