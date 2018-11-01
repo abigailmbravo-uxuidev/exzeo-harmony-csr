@@ -150,6 +150,8 @@ input[type="submit"] {
   }
 
   &.btn-alt-light {
+    margin-left: $padding/2;
+    padding: 0;
     color: $bright-blue-lighten-02;
     border-width: 0;
     line-height: $headings-line-height;

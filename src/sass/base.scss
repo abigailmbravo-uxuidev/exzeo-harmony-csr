@@ -1517,6 +1517,8 @@ ul.list-cards {
 
           div {
             dt {
+              display: flex;
+              align-items: baseline;
               color: $yellow-lighten-05;
               font-size: $font-size-sm;
               font-weight: $font-weight-normal;
