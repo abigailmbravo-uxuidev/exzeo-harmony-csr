@@ -10,7 +10,7 @@ export function handleNewTab(resource, type) {
     window.open(`/policy/${resource.policyNumber}/coverage`, '_blank');
     // agency
   } else if (type === 'agency' || type === 'agent') {
-    window.open(`/agency/${resource.agencyCode}/staff`, '_blank');
+    window.open(`/agency/${resource.agencyCode}/0/overview`, '_blank');
   }
 }
 

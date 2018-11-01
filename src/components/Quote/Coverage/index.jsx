@@ -9,12 +9,13 @@ import { reduxForm, formValueSelector } from 'redux-form';
 
 import { getAnswers } from '../../../utilities/forms';
 import { setPercentageOfValue } from '../../../utilities/endorsementModel';
-import { getAgencies, getAgentsByAgency, getZipcodeSettings } from '../../../state/actions/service.actions';
+import { getAgentsByAgency, getZipcodeSettings } from '../../../state/actions/service.actions';
 import { batchCompleteTask, startWorkflow } from '../../../state/actions/cg.actions';
 import { setAppState } from '../../../state/actions/appState.actions';
 import { setAppError } from '../../../state/actions/error.actions';
 import { getUIQuestions } from '../../../state/actions/questions.actions';
 import { getQuote } from '../../../state/actions/quote.actions';
+import { getAgencies } from '../../../state/actions/agency.actions';
 import { checkQuoteState } from '../../../state/selectors/quote.selectors';
 import QuoteBaseConnect from '../../../containers/Quote';
 import Footer from '../../Common/Footer';

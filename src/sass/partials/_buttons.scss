@@ -333,6 +333,71 @@ input[type="submit"] {
   }
 }
 
+.btn-divider-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: $padding;
+
+  &:before {
+    flex-grow: 1;
+    flex-shrink: 1;
+    height: 1px;
+    margin-right: $padding;
+    content: '';
+    background: $warm-gray-03;
+  }
+
+  &:after {
+    flex-grow: 1;
+    flex-shrink: 1;
+    height: 1px;
+    margin-left: $padding;
+    content: '';
+    background: $warm-gray-03;
+  }
+
+  &.align-right {
+    &:after {
+      flex-grow: 0;
+      flex-shrink: 0;
+      width: $padding;
+    }
+  }
+
+  &.in-grid-layout {
+    grid-column: span 12;
+  }
+}
+
+.btn-remove-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+
+  &.align-right {
+    position: absolute;
+    right: $padding*2;
+  }
+
+  &.align-bottom {
+    position: absolute;
+    bottom: -$padding*1.25;
+
+    > .btn {
+      background: $white;
+    }
+  }
+
+  &.in-grid-layout {
+    grid-column: span 12;
+  }
+}
+
 .plus-button-group {
   position: absolute;
   bottom: $padding*2;

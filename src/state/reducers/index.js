@@ -12,6 +12,8 @@ import policyState from './policy.reducer';
 import questions from './questions.reducer';
 import quoteState from './quote.reducer';
 import search from './search.reducer';
+import agencyState from './agency.reducer';
+import zipCodeSettingsState from './zipCodeSettings.reducer';
 import diaries from './diaryReducer';
 
 const rootReducer = combineReducers({
@@ -26,6 +28,8 @@ const rootReducer = combineReducers({
   error,
   quoteState,
   search,
+  agencyState,
+  zipCodeSettingsState,
   diaries
 });
 

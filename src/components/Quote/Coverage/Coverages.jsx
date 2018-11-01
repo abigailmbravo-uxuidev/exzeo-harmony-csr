@@ -18,7 +18,9 @@ const sinkholePerilCoverageAnswers = questions => (
 );
 
 const Coverages = ({
-  sectionId, sectionClass, questions,
+  sectionId,
+  sectionClass,
+  questions,
   normalizeDwellingAmount,
   normalizeDwellingDependencies,
   normalizePersonalPropertyPercentage,
