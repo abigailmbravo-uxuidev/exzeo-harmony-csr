@@ -1512,7 +1512,7 @@ ul.list-cards {
 
           div {
             dt {
-              color: $yellow-lighten-04;
+              color: $yellow-lighten-05;
               font-size: $font-size-sm;
               font-weight: $font-weight-normal;
               line-height: $headings-line-height;
@@ -1581,7 +1581,7 @@ ul.list-cards {
               justify-content: space-around;
 
               dd {
-                color: $yellow-lighten-04;
+                color: $yellow-lighten-05;
                 -webkit-font-smoothing: antialiased;
 
                 &.font-size-base {
@@ -1753,5 +1753,5 @@ ul.list-cards {
 }
 
 .scroll {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }

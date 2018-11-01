@@ -60,9 +60,9 @@ export class DetailHeader extends Component {
             {policy.policyNumber}
             <span
               data-test={sourceNumber}
-              id="effective-date"
+              id="source-number"
               title={sourceNumber}
-              className="btn btn-link btn-white btn-xs no-padding">
+              className="btn btn-link btn-white btn-xs no-padding btn-info">
               <i className="fa fa-info-circle" />Source
             </span>
           </dd>
