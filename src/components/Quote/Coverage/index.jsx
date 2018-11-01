@@ -472,7 +472,7 @@ const mapStateToProps = (state) => {
     tasks: state.cg,
     appState: state.appState,
     agents: state.service.agents,
-    agencies: state.service.agencies,
+    agencies: state.agencyState.agencies,
     initialValues: handleInitialize(quoteData, questions),
     quoteData,
     zipCodeSettings: state.service.getZipcodeSettings,
