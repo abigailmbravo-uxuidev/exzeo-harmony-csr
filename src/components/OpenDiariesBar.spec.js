@@ -5,7 +5,13 @@ import { OpenDiariesBar } from './OpenDiariesBar';
 
 describe('Test the OpenDiariesBar Component', () => {
   it('Should Render OpenDiariesBar', () => {
-    const wrapper = shallow(<OpenDiariesBar handleSubmit={x => x} openHandler={x => x} />);
+    const wrapper = shallow(
+      <OpenDiariesBar 
+        handleSubmit={x => x} 
+        openHandler={x => x} 
+        resourceType="Policy"
+      />
+    );
     expect(wrapper.exists()).toBeTruthy();
   });
 });

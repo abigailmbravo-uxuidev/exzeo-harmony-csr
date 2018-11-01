@@ -108,7 +108,7 @@ export class CancelPolicy extends React.Component {
     return options && options.cancelReason ? options.cancelReason.map(reason => ({
       answer: reason,
       label: reason
-    })) : []
+    })) : [];
   };
 
   render() {
