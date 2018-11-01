@@ -50,7 +50,6 @@ export const getPolicyDetails = createSelector(
     const showReinstatement = detailUtils.shouldShowReinstatement(status, code);
     const dateLabel = detailUtils.getEntityDetailsDateLabel(displayText, status);
     const finalPayment = detailUtils.getFinalPaymentDate(summaryLedger, status);
-    console.log(finalPayment);
 
     return {
       constructionType,
