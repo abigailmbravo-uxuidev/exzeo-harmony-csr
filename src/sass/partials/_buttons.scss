@@ -165,10 +165,24 @@ input[type="submit"] {
     color: $white;
     border-width: 0;
     line-height: $headings-line-height;
+    @include transition(all 0.2s ease-in-out);
 
     &:hover {
       text-decoration: none;
-      color: $warm-gray-00;
+      color: $yellow-lighten-05;
+    }
+
+    &.btn-info {
+      .fa-info-circle {
+        color: $bright-blue-lighten-02;
+        @include transition(all 0.2s ease-in-out);
+      }
+
+      &:hover {
+        .fa-info-circle {
+          color: $bright-blue-lighten-01;
+        }
+      }
     }
   }
 
@@ -178,7 +192,7 @@ input[type="submit"] {
     padding: 0;
 
     &:hover {
-        text-decoration: none;
+      text-decoration: none;
     }
   }
 }
