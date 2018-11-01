@@ -202,7 +202,7 @@ export class NoteUploader extends Component {
         this.handleClose();
 
         if(data.openDiary) {
-          actions.uiActions.toggleDiary({ 
+          actions.uiActions.toggleDiary({
             resourceType: resourceType, resourceId: documentId
           });
         };
@@ -228,11 +228,18 @@ export class NoteUploader extends Component {
           {this.props.submitting && <Loader />}
           <Form id="NoteUploader" onSubmit={this.props.handleSubmit(this.submitNote)} noValidate>
             <div className="content">
-              <label>Contact</label>
-              <Field component="select" name="contactType" disabled={!this.contactTypes.length}>
-                {this.contactTypes.map(option => <option aria-label={option} value={option} key={option}>{option}</option>)}
-              </Field>
-              <Field component="input" name="openDiary" type="checkbox" /><label>Create & Open Diary On Save</label>
+              <div className="note-details">
+                <div className="form-group contact">
+                  <label>Contact</label>
+                  <Field component="select" name="contactType" disabled={!this.contactTypes.length}>
+                    {this.contactTypes.map(option => <option aria-label={option} value={option} key={option}>{option}</option>)}
+                  </Field>
+                </div>
+                <div className="form-group diary-checkbox">
+                  <Field component="input" name="openDiary" type="checkbox" />
+                  <label>Create & Open Diary On Save</label>
+                </div>
+              </div>
               <Field name="noteContent" component={renderNotes} label="Note Content" />
               <label>File Type</label>
               <Field component="select" name="fileType" disabled={!this.docTypes.length}>
