@@ -15,7 +15,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
   describe('Entity Details Test for Non-Payment Cancellation', () => {
     it('should return Cancellation Effective Date for a Non-Payment Cancellation for a policy status: In Force', () => {
       const result = entityDetails.getEntityDetailsDateLabel('Non-Payment Notice Issued', 'In Force');
-      expect(result).toEqual('Cancellation Effective Date');
+      expect(result).toEqual(entityDetails.CANCELLATION_DATE);
     });
 
     it(`should return empty string for Cancellation Effective Date for a Non-Payment Cancellation
@@ -32,7 +32,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Non-Payment Notice Issued',
           'Cancelled'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
 
     it(`should return Cancellation Effective Date when Policy
@@ -41,7 +41,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'No Payment Received',
           'Cancelled'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
     it(`should return Cancellation Effective Date when Policy
     Status is Cancelled and Billing Status is Full Payment Received`, () => {
@@ -49,7 +49,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Full Payment Received',
           'Cancelled'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
     it(`should return Cancellation Effective Date when Policy
     Status is Cancelled and Billing Status is Over Payment Received`, () => {
@@ -57,7 +57,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Over Payment Received',
           'Cancelled'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
 
     it(`should return Cancellation Effective Date when Policy
@@ -66,7 +66,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Partial Payment Received',
           'Cancelled'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
 
     it(`should return Cancellation Effective Date when Policy
@@ -75,7 +75,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Payment Invoice Issued',
           'Cancelled'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
     it(`should return Cancellation Effective Date when Policy
     Status is Cancelled and Billing Status is Non-Payment Cancellation`, () => {
@@ -83,7 +83,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Non-Payment Cancellation',
           'Cancelled'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
   });
 
@@ -94,7 +94,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Non-Payment Notice Issued',
           'Pending Voluntary Cancellation'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
 
     it(`should return Cancellation Effective Date when Policy
@@ -103,7 +103,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'No Payment Received',
           'Pending Voluntary Cancellation'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
     it(`should return Cancellation Effective Date when Policy
     Status is Pending Voluntary Cancellation and Billing Status is Full Payment Received`, () => {
@@ -111,7 +111,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Full Payment Received',
           'Pending Voluntary Cancellation'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
     it(`should return Cancellation Effective Date when Policy
     Status is Pending Voluntary Cancellation and Billing Status is Over Payment Received`, () => {
@@ -119,7 +119,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Over Payment Received',
           'Pending Voluntary Cancellation'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
 
     it(`should return Cancellation Effective Date when Policy
@@ -128,7 +128,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Partial Payment Received',
           'Pending Voluntary Cancellation'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
 
     it(`should return Cancellation Effective Date when Policy
@@ -137,7 +137,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Payment Invoice Issued',
           'Pending Voluntary Cancellation'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
     it(`should return Cancellation Effective Date when Policy
     Status is Pending Voluntary Cancellation and Billing Status is Non-Payment Cancellation`, () => {
@@ -145,7 +145,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Non-Payment Cancellation',
           'Pending Voluntary Cancellation'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
   });
 
@@ -156,7 +156,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Non-Payment Notice Issued',
           'Pending Underwriting Cancellation'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
 
     it(`should return Cancellation Effective Date when Policy
@@ -165,7 +165,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'No Payment Received',
           'Pending Underwriting Cancellation'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
     it(`should return Cancellation Effective Date when Policy
     Status is Pending Underwriting Cancellation and Billing Status is Full Payment Received`, () => {
@@ -173,7 +173,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Full Payment Received',
           'Pending Underwriting Cancellation'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
     it(`should return Cancellation Effective Date when Policy
     Status is Pending Underwriting Cancellation and Billing Status is Over Payment Received`, () => {
@@ -181,7 +181,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Over Payment Received',
           'Pending Underwriting Cancellation'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
 
     it(`should return Cancellation Effective Date when Policy
@@ -190,7 +190,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Partial Payment Received',
           'Pending Underwriting Cancellation'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
 
     it(`should return Cancellation Effective Date when Policy
@@ -199,7 +199,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Payment Invoice Issued',
           'Pending Underwriting Cancellation'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
     it(`should return Cancellation Effective Date when Policy
     Status is Pending Underwriting Cancellation and Billing Status is Non-Payment Cancellation`, () => {
@@ -207,7 +207,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Non-Payment Cancellation',
           'Pending Underwriting Cancellation'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
   });
 
@@ -218,7 +218,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Non-Payment Notice Issued',
           'Cancellation'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
 
     it(`should return Cancellation Effective Date when Policy
@@ -227,7 +227,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'No Payment Received',
           'Cancellation'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
     it(`should return Cancellation Effective Date when Policy
     Status is Cancellation and Billing Status is Full Payment Received`, () => {
@@ -235,7 +235,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Full Payment Received',
           'Cancellation'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
     it(`should return Cancellation Effective Date when Policy
     Status is Cancellation and Billing Status is Over Payment Received`, () => {
@@ -243,7 +243,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Over Payment Received',
           'Cancellation'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
 
     it(`should return Cancellation Effective Date when Policy
@@ -252,7 +252,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Partial Payment Received',
           'Cancellation'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
 
     it(`should return Cancellation Effective Date when Policy
@@ -261,7 +261,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Payment Invoice Issued',
           'Cancellation'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
     it(`should return Cancellation Effective Date when Policy
     Status is Cancellation and Billing Status is Non-Payment Cancellation`, () => {
@@ -269,7 +269,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Non-Payment Cancellation',
           'Cancellation'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
   });
 
@@ -280,7 +280,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Non-Payment Notice Issued',
           'Pending Underwriting Non-Renewal'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
 
     it(`should return Cancellation Effective Date when Policy
@@ -289,7 +289,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'No Payment Received',
           'Pending Underwriting Non-Renewal'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
     it(`should return Cancellation Effective Date when Policy
     Status is Pending Underwriting Non-Renewal and Billing Status is Full Payment Received`, () => {
@@ -297,7 +297,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Full Payment Received',
           'Pending Underwriting Non-Renewal'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
     it(`should return Cancellation Effective Date when Policy
     Status is Pending Underwriting Non-Renewal and Billing Status is Over Payment Received`, () => {
@@ -305,7 +305,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Over Payment Received',
           'Pending Underwriting Non-Renewal'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
 
     it(`should return Cancellation Effective Date when Policy
@@ -314,7 +314,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Partial Payment Received',
           'Pending Underwriting Non-Renewal'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
 
     it(`should return Cancellation Effective Date when Policy
@@ -323,7 +323,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Payment Invoice Issued',
           'Pending Underwriting Non-Renewal'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
     it(`should return Cancellation Effective Date when Policy
     Status is Pending Underwriting Non-Renewal and Billing Status is Non-Payment Cancellation`, () => {
@@ -331,7 +331,7 @@ describe('Test getEntityDetailsDateLabel function for Cancellation Effective Dat
           'Non-Payment Cancellation',
           'Pending Underwriting Non-Renewal'
         );
-        expect(result).toEqual('Cancellation Effective Date');
+        expect(result).toEqual(entityDetails.CANCELLATION_DATE);
       });
   });
 });
@@ -344,7 +344,7 @@ describe('Test getEntityDetailsDateLabel function for Expiration Date', () => {
           'No Payment Received',
           'Policy Issued'
         );
-        expect(result).toEqual('Expiration Date');
+        expect(result).toEqual(entityDetails.EXPIRATION_DATE);
       });
 
     it(`should return Expiration Date when Policy
@@ -353,7 +353,7 @@ describe('Test getEntityDetailsDateLabel function for Expiration Date', () => {
           'Full Payment Received',
           'Policy Issued'
         );
-        expect(result).toEqual('Expiration Date');
+        expect(result).toEqual(entityDetails.EXPIRATION_DATE);
       });
 
     it(`should return Expiration Date when Policy
@@ -362,7 +362,7 @@ describe('Test getEntityDetailsDateLabel function for Expiration Date', () => {
           'Over Payment Received',
           'Policy Issued'
         );
-        expect(result).toEqual('Expiration Date');
+        expect(result).toEqual(entityDetails.EXPIRATION_DATE);
       });
 
     it(`should return Expiration Date when Policy
@@ -371,7 +371,7 @@ describe('Test getEntityDetailsDateLabel function for Expiration Date', () => {
           'Partial Payment Received',
           'Policy Issued'
         );
-        expect(result).toEqual('Expiration Date');
+        expect(result).toEqual(entityDetails.EXPIRATION_DATE);
       });
     it(`should return Expiration Date when Policy
       Status is Policy Issued and Billing Status is Payment Invoice Issued`, () => {
@@ -379,7 +379,7 @@ describe('Test getEntityDetailsDateLabel function for Expiration Date', () => {
           'Payment Invoice Issued',
           'Policy Issued'
         );
-        expect(result).toEqual('Expiration Date');
+        expect(result).toEqual(entityDetails.EXPIRATION_DATE);
       });
     it(`should return Expiration Date when Policy
       Status is Policy Issued and Billing Status is Policy Expired`, () => {
@@ -387,7 +387,7 @@ describe('Test getEntityDetailsDateLabel function for Expiration Date', () => {
           'Policy Expired',
           'Policy Issued'
         );
-        expect(result).toEqual('Expiration Date');
+        expect(result).toEqual(entityDetails.EXPIRATION_DATE);
       });
   });
 
@@ -398,7 +398,7 @@ describe('Test getEntityDetailsDateLabel function for Expiration Date', () => {
           'No Payment Received',
           'In Force'
         );
-        expect(result).toEqual('Expiration Date');
+        expect(result).toEqual(entityDetails.EXPIRATION_DATE);
       });
 
     it(`should return Expiration Date when Policy
@@ -407,7 +407,7 @@ describe('Test getEntityDetailsDateLabel function for Expiration Date', () => {
           'Full Payment Received',
           'In Force'
         );
-        expect(result).toEqual('Expiration Date');
+        expect(result).toEqual(entityDetails.EXPIRATION_DATE);
       });
 
     it(`should return Expiration Date when Policy
@@ -416,7 +416,7 @@ describe('Test getEntityDetailsDateLabel function for Expiration Date', () => {
           'Over Payment Received',
           'In Force'
         );
-        expect(result).toEqual('Expiration Date');
+        expect(result).toEqual(entityDetails.EXPIRATION_DATE);
       });
 
     it(`should return Expiration Date when Policy
@@ -425,7 +425,7 @@ describe('Test getEntityDetailsDateLabel function for Expiration Date', () => {
           'Partial Payment Received',
           'In Force'
         );
-        expect(result).toEqual('Expiration Date');
+        expect(result).toEqual(entityDetails.EXPIRATION_DATE);
       });
     it(`should return Expiration Date when Policy
       Status is In Force and Billing Status is Payment Invoice Issued`, () => {
@@ -433,7 +433,7 @@ describe('Test getEntityDetailsDateLabel function for Expiration Date', () => {
           'Payment Invoice Issued',
           'In Force'
         );
-        expect(result).toEqual('Expiration Date');
+        expect(result).toEqual(entityDetails.EXPIRATION_DATE);
       });
     it(`should return Expiration Date when Policy
       Status is In Force and Billing Status is Policy Expired`, () => {
@@ -441,7 +441,7 @@ describe('Test getEntityDetailsDateLabel function for Expiration Date', () => {
           'Policy Expired',
           'In Force'
         );
-        expect(result).toEqual('Expiration Date');
+        expect(result).toEqual(entityDetails.EXPIRATION_DATE);
       });
   });
 
@@ -452,7 +452,7 @@ describe('Test getEntityDetailsDateLabel function for Expiration Date', () => {
           'No Payment Received',
           'Not In Force'
         );
-        expect(result).toEqual('Expiration Date');
+        expect(result).toEqual(entityDetails.EXPIRATION_DATE);
       });
 
     it(`should return Expiration Date when Policy
@@ -461,7 +461,7 @@ describe('Test getEntityDetailsDateLabel function for Expiration Date', () => {
           'Full Payment Received',
           'Not In Force'
         );
-        expect(result).toEqual('Expiration Date');
+        expect(result).toEqual(entityDetails.EXPIRATION_DATE);
       });
 
     it(`should return Expiration Date when Policy
@@ -470,7 +470,7 @@ describe('Test getEntityDetailsDateLabel function for Expiration Date', () => {
           'Over Payment Received',
           'Not In Force'
         );
-        expect(result).toEqual('Expiration Date');
+        expect(result).toEqual(entityDetails.EXPIRATION_DATE);
       });
 
     it(`should return Expiration Date when Policy
@@ -479,7 +479,7 @@ describe('Test getEntityDetailsDateLabel function for Expiration Date', () => {
           'Partial Payment Received',
           'Not In Force'
         );
-        expect(result).toEqual('Expiration Date');
+        expect(result).toEqual(entityDetails.EXPIRATION_DATE);
       });
     it(`should return Expiration Date when Policy
       Status is Not In Force and Billing Status is Payment Invoice Issued`, () => {
@@ -487,7 +487,7 @@ describe('Test getEntityDetailsDateLabel function for Expiration Date', () => {
           'Payment Invoice Issued',
           'Not In Force'
         );
-        expect(result).toEqual('Expiration Date');
+        expect(result).toEqual(entityDetails.EXPIRATION_DATE);
       });
     it(`should return Expiration Date when Policy
       Status is Not In Force and Billing Status is Policy Expired`, () => {
@@ -495,7 +495,7 @@ describe('Test getEntityDetailsDateLabel function for Expiration Date', () => {
           'Policy Expired',
           'Not In Force'
         );
-        expect(result).toEqual('Expiration Date');
+        expect(result).toEqual(entityDetails.EXPIRATION_DATE);
       });
   });
 });

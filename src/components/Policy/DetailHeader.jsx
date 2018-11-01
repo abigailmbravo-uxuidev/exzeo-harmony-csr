@@ -139,8 +139,7 @@ export class DetailHeader extends Component {
                 </button>
               )} />
 
-            {finalPayment &&
-            finalPayment.date && <SectionSingle
+            {finalPayment.date && <SectionSingle
               label={finalPayment.label}
               value={finalPayment.date}
               dataTest="finalPaymentDate"
@@ -159,6 +158,10 @@ export class DetailHeader extends Component {
     );
   }
 }
+
+DetailHeader.defaultProps = {
+  finalPayment: {}
+};
 
 const mapStateToProps = state => ({
   appState: state.appState,

@@ -34,7 +34,7 @@ describe('Testing DetailHeader component', () => {
         submitting: false
       }
     },
-    policyDetails: { cancellation: {}, finalPayment: {} }
+    policyDetails: { cancellation: {}, finalPayment: { date: '10/12/2018', label: 'Date Label' } }
   };
 
   it('should render class', () => {
@@ -79,8 +79,7 @@ describe('Testing DetailHeader component', () => {
     const store = mockStore(initialState);
 
     const wrapper = shallow(<ConnectedApp store={store} {...props} />);
-
-    expect(wrapper.dive());
+    expect(wrapper.instance()).toBeTruthy();
   });
 });
 
