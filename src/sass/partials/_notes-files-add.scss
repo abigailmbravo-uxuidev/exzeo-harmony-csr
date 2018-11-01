@@ -78,6 +78,7 @@
 
     form {
       display: flex;
+      overflow-y: auto;
       flex-direction: column;
       height: 100%;
 
@@ -87,7 +88,7 @@
         overflow-y: hidden;
         flex-direction: column;
         flex-grow: 1;
-        flex-shrink: 1;
+        flex-shrink: 0;
         padding: ($padding*2);
 
         .note-details {
