@@ -27,7 +27,23 @@ describe('Questions State Reducer', () => {
     };
 
     const map = {
+      ...initialState.questions,
       diaryAssignees: inputProps
+    };
+
+    expect(questionsReducer(initialState.questions, action)).toEqual(map);
+  });
+
+  it('should call questionsReducer SET_TERRITORY_MANAGERS', () => {
+    const inputProps = [{ answer: 'test', label: 'Mr Test', type: 'user' }];
+    const action = {
+      type: types.SET_TERRITORY_MANAGERS,
+      territoryManagers: inputProps
+    };
+
+    const map = {
+      ...initialState.questions,
+      territoryManagers: inputProps
     };
 
     expect(questionsReducer(initialState.questions, action)).toEqual(map);

@@ -1001,6 +1001,21 @@ ul.results {
           @include transition(all 0.2s ease-in-out);
         }
 
+        .edit-btn {
+          display: flex;
+          align-items: center;
+          color: $bright-blue;
+          font-size: $font-size-sm;
+          font-weight: $font-weight-bold;
+
+          i {
+            width: auto;
+            margin: 0 ($padding/2) 0 0;
+            color: $bright-blue !important;
+            font-size: $font-size-sm;
+          }
+        }
+
         &:hover {
           z-index: 2;
           transform: scale(1.004);

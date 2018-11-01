@@ -55,6 +55,7 @@ module.exports = function (wallaby) {
 
     setup: () => {
       wallaby.testFramework.configure({
+        testURL: 'http://localhost',
         // as in node_modules/react-scripts/utils/createJestConfig.js
         setupFiles: [require('path').join(wallaby.localProjectDir, './src/setupTests.js'), require('path').join(wallaby.localProjectDir, 'node_modules/react-scripts/config/polyfills.js')],
         moduleNameMapper: {
@@ -63,7 +64,6 @@ module.exports = function (wallaby) {
         }
       });
     },
-
     testFramework: 'jest'
   };
 };

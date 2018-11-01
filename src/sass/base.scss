@@ -867,7 +867,8 @@ ul.list-cards {
 }
 //Additional Interests
 /*------------------------------------------------------------------------------------*/
-#AddAdditionalInterestPage {
+#AddAdditionalInterestPage,
+.additional-interests {
   .detail-wrapper {
     flex-direction: column;
   }
@@ -1464,6 +1465,10 @@ ul.list-cards {
 
           &.btn-block {
             margin: 0 ($padding*2) ($padding*2) 0;
+
+            &.btn-branch {
+              margin-bottom: 0;
+            }
           }
         }
 

@@ -168,6 +168,22 @@
   }
 }
 
+.edit-btn {
+    margin-left: $padding;
+  display: flex;
+  align-items: center;
+  color: $bright-blue;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+
+  i {
+    width: auto;
+    margin: 0 ($padding/2) 0 0;
+    color: $bright-blue;
+    font-size: $font-size-sm;
+  }
+}
+
 .ref-number {
   display: flex;
   align-self: center;
@@ -180,10 +196,6 @@
     font-size: $font-size-sm;
     font-weight: $font-weight-normal;
   }
-}
-
-.edit-btn {
-  margin-left: $padding;
 }
 
 .gradient-bg {

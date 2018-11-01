@@ -82,6 +82,14 @@
             flex-grow: 1;
             flex-shrink: 1;
             flex-wrap: wrap;
+            margin-top: 0;
+          }
+
+          .input-wrapper {
+            display: flex;
+            flex-grow: 1;
+            flex-shrink: 1;
+            flex-wrap: wrap;
           }
         }
 
@@ -103,10 +111,12 @@
               .react-select__control {
                 width: 100%;
                 height: auto;
+                min-height: 2.375rem;
 
                 &.react-select__control--is-focused {
-                  border-color: $bright-blue-darken-04;
+                  border-color: $warm-gray-08;
                   border-radius: $border-radius $border-radius 0 0;
+                  box-shadow: none;
                 }
 
                 .react-select__value-container {
@@ -349,7 +359,7 @@
             justify-content: center;
             width: 2rem;
             height: 2rem;
-            margin: 1.5rem 0 0 $padding;
+            margin: ($padding*3) 0 0 $padding;
             padding: 0;
             border-radius: 50%;
             @include button-variant($bright-blue-darken-03, $warm-gray-01, $warm-gray-01);
@@ -558,6 +568,15 @@ main[role="document"] {
       flex-shrink: 1;
       width: 100%;
       padding: 0;
+
+      .results-wrapper {
+        ul {
+          &.property-search-results {
+            width: 100%;
+            padding: 1rem;
+          }
+        }
+      }
     }
   }
 }
