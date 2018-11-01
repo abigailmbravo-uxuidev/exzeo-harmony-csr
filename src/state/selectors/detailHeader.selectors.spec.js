@@ -826,7 +826,7 @@ describe('Detail Header selectors', () => {
     const result = detailSelectors.getPolicyDetails(state);
     expect(result).toEqual({
       cancellation: {
-        dateLabel: 'Cancellation Date',
+        dateLabel: 'Cancellation Effective Date',
         cancellationDate: '12/04/2018',
         showReinstatement: false
       },
