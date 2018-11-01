@@ -86,17 +86,17 @@ export function shouldShowReinstatement(status, code) {
  * @returns {string}
  */
 export function getCancellationDate(summaryLedger, policyStatus, endDate, cancelDate) {
-  const { nonPaymentNoticeDueDate, status: { code, displayText } } = summaryLedger;
+  const { equityDate, status: { displayText } } = summaryLedger;
 
-  if (endDate && code === 99) {
+  if (displayText === 'Policy Expired' && endDate) {
     return moment.utc(endDate).format(STANDARD_DATE_FORMAT);
   }
 
   const isCanceled = getEntityDetailsDateLabel(displayText, policyStatus) === CANCELLATION_DATE;
   const isNonPaymentCancellation = isNonPaymentNotice(displayText, policyStatus);
 
-  if (isNonPaymentCancellation && nonPaymentNoticeDueDate) {
-    return moment.utc(nonPaymentNoticeDueDate).format(STANDARD_DATE_FORMAT);
+  if (isNonPaymentCancellation && equityDate) {
+    return moment.utc(equityDate).format(STANDARD_DATE_FORMAT);
   } else if (isCanceled && cancelDate) {
     return moment.utc(cancelDate).format(STANDARD_DATE_FORMAT);
   }
