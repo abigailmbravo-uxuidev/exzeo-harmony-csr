@@ -79,7 +79,8 @@ export class SideNav extends React.Component {
     actions.uiActions.toggleNote({
       noteType: 'Policy Note',
       documentId: policy.policyNumber,
-      sourceNumber: policy.sourceNumber
+      sourceNumber: policy.sourceNumber,
+      resourceType: POLICY_RESOURCE_TYPE
     });
   };
 

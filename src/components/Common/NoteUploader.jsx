@@ -167,7 +167,7 @@ export class NoteUploader extends Component {
 
   submitNote = (data, dispatch, props) => {
     const {
-      actions, user, noteType, documentId, sourceId
+      actions, user, noteType, documentId, sourceId, resourceType
     } = props;
 
     const filelist = Object.values(this.uppy.getState().files);
@@ -200,6 +200,12 @@ export class NoteUploader extends Component {
         }
 
         this.handleClose();
+
+        if(data.openDiary) {
+          actions.uiActions.toggleDiary({ 
+            resourceType: resourceType, resourceId: documentId
+          });
+        };
       })
       .catch((err) => {
         actions.errorActions.setAppError({ message: err });
@@ -226,6 +232,7 @@ export class NoteUploader extends Component {
               <Field component="select" name="contactType" disabled={!this.contactTypes.length}>
                 {this.contactTypes.map(option => <option aria-label={option} value={option} key={option}>{option}</option>)}
               </Field>
+              <Field component="input" name="openDiary" type="checkbox" /><label>Create & Open Diary On Save</label>
               <Field name="noteContent" component={renderNotes} label="Note Content" />
               <label>File Type</label>
               <Field component="select" name="fileType" disabled={!this.docTypes.length}>
@@ -252,7 +259,9 @@ export class NoteUploader extends Component {
 
 NoteUploader.propTypes = {
   documentId: PropTypes.string.isRequired,
-  noteType: PropTypes.string.isRequired
+  noteType: PropTypes.string.isRequired,
+  sourceId: PropTypes.string,
+  resourceType: PropTypes.string
 };
 
 const mapStateToProps = state => ({

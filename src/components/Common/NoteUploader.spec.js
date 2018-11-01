@@ -36,7 +36,8 @@ describe('Testing NoteUploader component', () => {
 
       props = {
         documentId: 'testid',
-        noteType: 'Policy Note'
+        noteType: 'Policy Note',
+        resourceType: 'Policy'
       };
 
       formData = {
@@ -91,7 +92,8 @@ describe('Testing NoteUploader component', () => {
 
       const props = {
         documentId: 'testid',
-        noteType: 'Policy Note'
+        noteType: 'Policy Note',
+        resourceType: 'Policy'
       };
 
       const store = mockStore(initialState);

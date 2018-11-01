@@ -30,7 +30,11 @@ export const newDiary = (props) => {
   });
 };
 export const newNote = (props) => {
-  props.actions.uiActions.toggleNote({ noteType: 'Quote Note', documentId: props.quoteData.quoteNumber });
+  props.actions.uiActions.toggleNote({ 
+    noteType: 'Quote Note', 
+    documentId: props.quoteData.quoteNumber,
+    resourceType: QUOTE_RESOURCE_TYPE
+  });
 };
 
 const csrLinks = ({ quoteId }) => {

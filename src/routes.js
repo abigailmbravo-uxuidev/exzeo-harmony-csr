@@ -83,7 +83,8 @@ class Routes extends Component {
           <NoteUploader
             noteType={note.noteType}
             documentId={note.documentId}
-            sourceId={note.sourceNumber} />
+            sourceId={note.sourceNumber}
+            resourceType={note.resourceType} />
         }
         <Router
           getUserConfirmation={(message, callback) => {
