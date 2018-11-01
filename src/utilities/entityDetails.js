@@ -5,6 +5,7 @@ import { STANDARD_DATE_FORMAT } from '../constants/dates';
 
 export const CANCELLATION_DATE = 'Cancellation Effective Date';
 export const EXPIRATION_DATE = 'Expiration Date';
+export const FINAL_PAYMENT_DATE = 'Final Payment Date';
 
 export const isNonPaymentNotice = (billingStatus, policyStatus) =>
   policyStatus === 'In Force' && billingStatus === 'Non-Payment Notice Issued';
@@ -102,6 +103,27 @@ export function getCancellationDate(summaryLedger, policyStatus, endDate, cancel
   }
 
   return '';
+}
+
+/**
+ * Determine final Payment date to display
+ * @param {object} summaryLedger
+ * @param {string} [endDate]
+ * @param {string} [cancelDate]
+ * @returns {string}
+ */
+export function getFinalPaymentDate(summaryLedger, policyStatus) {
+  const { invoiceDueDate, status: { displayText } } = summaryLedger;
+
+  const isNonPaymentCancellation = isNonPaymentNotice(displayText, policyStatus);
+
+  if (isNonPaymentCancellation && invoiceDueDate) {
+    return {
+      date: moment.utc(invoiceDueDate).format(STANDARD_DATE_FORMAT),
+      label: FINAL_PAYMENT_DATE
+    };
+  }
+  return {};
 }
 
 export function getEntityDetailsDateLabel(billingStatus, policyStatus) {

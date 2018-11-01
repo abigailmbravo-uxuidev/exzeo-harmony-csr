@@ -830,6 +830,7 @@ describe('Detail Header selectors', () => {
         cancellationDate: '12/04/2018',
         showReinstatement: false
       },
+      finalPayment: {},
       constructionType: 'SUPERIOR',
       county: 'PALM BEACH',
       currentPremium: '$ 3,055',
