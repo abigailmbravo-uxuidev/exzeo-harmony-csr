@@ -55,6 +55,24 @@
       }
   }
 
+  &.additional-interest {
+      form {
+          height: 90%;
+
+          .card {
+            width: 60rem;
+            height: 90%;
+            max-height: 45rem;
+          }
+      }
+  }
+
+  &.license-crud {
+      .card {
+        width: 40rem;
+      }
+  }
+
   .card {
     display: flex;
     align-content: flex-start;
