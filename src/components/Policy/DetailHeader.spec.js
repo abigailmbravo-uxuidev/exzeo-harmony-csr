@@ -34,7 +34,7 @@ describe('Testing DetailHeader component', () => {
         submitting: false
       }
     },
-    policyDetails: { cancellation: {} }
+    policyDetails: { cancellation: {}, finalPayment: {} }
   };
 
   it('should render class', () => {

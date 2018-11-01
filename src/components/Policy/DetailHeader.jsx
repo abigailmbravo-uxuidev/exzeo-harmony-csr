@@ -36,6 +36,7 @@ export class DetailHeader extends Component {
 
     const {
       cancellation: { dateLabel, cancellationDate, showReinstatement },
+      finalPayment,
       constructionType,
       county,
       details,
@@ -137,6 +138,14 @@ export class DetailHeader extends Component {
                   <i className="fa fa-thumbs-up" />Reinstate
                 </button>
               )} />
+
+            {finalPayment &&
+            finalPayment.date && <SectionSingle
+              label={finalPayment.label}
+              value={finalPayment.date}
+              dataTest="finalPaymentDate"
+              className="finalPaymentDate" />
+              }
           </div>
         </div>
 

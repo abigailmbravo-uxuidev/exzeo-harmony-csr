@@ -552,3 +552,53 @@ describe('Test getCancellationDate', () => {
     expect(result).toEqual(moment(cancelDate).format(STANDARD_DATE_FORMAT));
   });
 });
+
+
+describe('Test getFinalPaymentDate', () => {
+  it('should return end date for a Policy Expired billing status ', () => {
+    const summaryLedger = {
+      equityDate: '2018-10-23T04:00:00.000Z',
+      status: { displayText: 'Policy Expired' }
+    };
+    const policyStatus = 'Not In Force';
+    const endDate = '2019-10-23T04:00:00.000Z';
+    const cancelDate = null;
+
+    const result = entityDetails.getCancellationDate(
+      summaryLedger,
+      policyStatus, endDate, cancelDate
+    );
+
+    expect(result).toEqual(moment(endDate).format(STANDARD_DATE_FORMAT));
+  });
+
+  it('should return invoiceDueDate date for a Non-Payment Notice Issued billing status for a policy: In Force', () => {
+    const summaryLedger = {
+      invoiceDueDate: '2018-10-23T04:00:00.000Z',
+      status: { displayText: 'Non-Payment Notice Issued' }
+    };
+    const policyStatus = 'In Force';
+
+    const result = entityDetails.getFinalPaymentDate(
+      summaryLedger,
+      policyStatus
+    );
+
+    expect(result.date).toEqual(moment(summaryLedger.invoiceDueDate).format(STANDARD_DATE_FORMAT));
+  });
+
+  it('should return no date date for a Non-Payment Notice Issued billing status for a policy: In Force', () => {
+    const summaryLedger = {
+      invoiceDueDate: '2018-10-23T04:00:00.000Z',
+      status: { displayText: 'Non-Payment Notice Issued' }
+    };
+    const policyStatus = 'Not In Force';
+
+    const result = entityDetails.getFinalPaymentDate(
+      summaryLedger,
+      policyStatus
+    );
+
+    expect(result.date).toBeFalsy();
+  });
+});

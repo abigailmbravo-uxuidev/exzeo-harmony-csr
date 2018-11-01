@@ -49,6 +49,9 @@ export const getPolicyDetails = createSelector(
     const cancellationDate = detailUtils.getCancellationDate(summaryLedger, status, endDate, cancelDate);
     const showReinstatement = detailUtils.shouldShowReinstatement(status, code);
     const dateLabel = detailUtils.getEntityDetailsDateLabel(displayText, status);
+    const finalPayment = detailUtils.getFinalPaymentDate(summaryLedger, status);
+    console.log(finalPayment);
+
     return {
       constructionType,
       sourceNumber,
@@ -72,7 +75,8 @@ export const getPolicyDetails = createSelector(
         dateLabel,
         cancellationDate,
         showReinstatement
-      }
+      },
+      finalPayment
     };
   }
 );
