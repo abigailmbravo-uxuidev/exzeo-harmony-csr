@@ -3,7 +3,6 @@ import { Field, FieldArray, FormSection } from 'redux-form';
 import { validation, Button, SelectTypeAhead } from '@exzeo/core-ui';
 import { Redirect } from 'react-router-dom';
 
-import history from '../../../history';
 import ExistingAgentModal from '../components/ExistingAgentModal';
 import Address from '../components/Address';
 import License from '../components/License';
