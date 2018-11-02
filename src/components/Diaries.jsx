@@ -45,11 +45,11 @@ const Diaries = ({ diaryLevel, diaries, onToggleDiary }) => {
                 </a>
               </div>
               <div className="diary-type">{diary.type}</div>
-              <div className="diary-reason">Follow-up | {diary.reason}
+              <div className="diary-reason">{diary.reason}
                 <p>{diary.message}</p>
               </div>
               <div className="diary-assignee">
-                {diary.assignee.userName}
+                {diary.assignee.displayName}
               </div>
             </li>
           ))}
