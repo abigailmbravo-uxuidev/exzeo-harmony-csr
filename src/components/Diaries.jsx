@@ -34,7 +34,7 @@ const Diaries = ({ diaryLevel, diaries, onToggleDiary }) => {
         <i className={severity.iconClass} aria-hidden="true" /><span> {severity.label}</span>
       </h5>
       <div>
-        <ul className="fa-ul">
+        <ul className="fa-ul diary-list">
           {diaries.map(diary => (
             <li key={diary.diaryId}>
               <div className="diary-header">
@@ -45,8 +45,8 @@ const Diaries = ({ diaryLevel, diaries, onToggleDiary }) => {
                 </a>
               </div>
               <div className="diary-type">{diary.type}</div>
-              <div className="diary-reason">{diary.reason}
-                <p>{diary.message}</p>
+              <div className="diary-reason">
+                <p>{diary.reason}: {diary.message}</p>
               </div>
               <div className="diary-assignee">
                 {diary.assignee.displayName}
