@@ -1,13 +1,19 @@
 import { createSelector } from 'reselect';
-import moment from 'moment-timezone';
 import { date } from '@exzeo/core-ui';
 
-import { getDueStatus, groupDiaries } from '../../utilities/diaries';
+import { getDueStatus, groupDiaries, sortDiariesByDate } from '../../utilities/diaries';
 
 import { getDiaries } from './entity.selectors';
 
-export const getFormattedDiaries = createSelector(
+export const getSortedDiariesByDueDate = createSelector(
   [getDiaries],
+  (diaries) => {
+    return sortDiariesByDate(diaries);
+  }
+);
+
+export const getFormattedDiaries = createSelector(
+  [getSortedDiariesByDueDate],
   (diaries) => {
     return diaries.map(d => ({
       diaryId: d._id,
