@@ -53,7 +53,7 @@ export class Create extends Component {
 
   handleResetForm = () => {
     this.props.reset();
-    history.push('/agency');
+    window.close();
   };
 
   // TODO : Move to utilities
