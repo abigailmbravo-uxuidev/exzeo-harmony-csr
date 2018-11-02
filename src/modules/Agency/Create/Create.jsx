@@ -23,6 +23,7 @@ export class Create extends Component {
       displayText: 'United States of America'
     };
     data.physicalAddress.country = data.mailingAddress.country;
+    data.agentOfRecord.mailingAddress = data.mailingAddress;
     await this.props.createAgency(data);
   };
 
