@@ -14,7 +14,7 @@ export const getFormattedDiaries = createSelector(
       resourceType: d.resource.type,
       resourceId: d.resource.id,
       ...d.entries[0],
-      due: moment.utc(d.entries[0].due).format(date.FORMATS.SECONDARY)
+      due: date.formatDate(d.entries[0].due, date.FORMATS.SECONDARY)
     }));
   }
 );
@@ -28,14 +28,14 @@ export const getFormattedAllDiaries = createSelector(
       resourceId: d.resource.id,
       ...d.entries[0],
       diaryHistory: d.entries.slice(1),
-      due: moment.utc(d.entries[0].due).format(date.FORMATS.SECONDARY),
+      due: date.formatDate(d.entries[0].due, date.FORMATS.SECONDARY),
       dueStatus: getDueStatus(d.entries[0].due, d.entries[0].open),
       action: {
         diaryId: d._id,
         resourceType: d.resource.type,
         resourceId: d.resource.id,
         ...d.entries[0],
-        due: moment.utc(d.entries[0].due).format(date.FORMATS.SECONDARY)
+        due: date.formatDate(d.entries[0].due, date.FORMATS.SECONDARY)
       }
     }));
   }
