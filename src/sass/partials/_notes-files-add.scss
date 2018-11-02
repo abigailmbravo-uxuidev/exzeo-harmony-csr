@@ -78,7 +78,6 @@
 
     form {
       display: flex;
-      overflow-y: auto;
       flex-direction: column;
       height: 100%;
 
@@ -88,7 +87,7 @@
         overflow-y: hidden;
         flex-direction: column;
         flex-grow: 1;
-        flex-shrink: 0;
+        flex-shrink: 1;
         padding: ($padding*2);
 
         .note-details {
@@ -433,12 +432,14 @@
                   flex-grow: 0;
                   flex-shrink: 0;
                   width: 8rem;
+                  white-space: normal;
                 }
 
                 &.reason {
                   flex-grow: 0;
                   flex-shrink: 0;
                   width: 8rem;
+                  white-space: normal;
                 }
 
                 &.message {
@@ -455,6 +456,7 @@
                   flex-grow: 0;
                   flex-shrink: 0;
                   width: 8rem;
+                  white-space: normal;
                 }
 
                 &.action {
