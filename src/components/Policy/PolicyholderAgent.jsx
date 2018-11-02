@@ -13,7 +13,7 @@ export class PolicyholderAgent extends Component {
 
     if (policy && policy.companyCode && policy.state && policy.agencyCode) {
       getAgentListAction(policy.companyCode, policy.state);
-      getAgencyAction(policy.companyCode, policy.state, policy.agencyCode);
+      getAgencyAction(policy.agencyCode);
     }
   }
 
