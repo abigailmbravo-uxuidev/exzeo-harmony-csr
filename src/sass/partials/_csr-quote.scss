@@ -559,8 +559,8 @@
 }
 
 .modal.quote-summary {
-  form {
-    max-height: 90%;
+  .card {
+    height: calc(90vh - 130px);
   }
 
   .btn-footer.flex-parent {
