@@ -11,6 +11,7 @@ const mapStateToProps = state => ({
   orphans: getOrphanedAgentsList(state),
   agency: state.agencyState.agency,
   initialValues: {
+    okToPay: false,
     mailingAddress: {},
     physicalAddress: {},
     licenses: [{

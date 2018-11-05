@@ -72,8 +72,10 @@
     justify-content: center;
 
     &.AdditionalInterestModal {
-      height: 90%;
-      max-height: 44rem;
+
+      .card {
+          height: calc(90vh - 150px);
+      }
     }
   }
 }

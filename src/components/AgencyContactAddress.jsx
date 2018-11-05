@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const AgencyContactAddress = ({mailingAddress, status, children}) => {
+const AgencyContactAddress = ({ mailingAddress, status, children }) => {
   return (
     <div className="contact-address">
       {mailingAddress.address1},&nbsp;
@@ -11,8 +11,8 @@ const AgencyContactAddress = ({mailingAddress, status, children}) => {
       {mailingAddress.zip}
       {status &&
       <span className="additional-data status">
-              <label>STATUS:&nbsp;</label>{status}
-            </span>
+        <label>STATUS:&nbsp;</label>{status}
+      </span>
       }
       {children}
     </div>
@@ -25,11 +25,13 @@ AgencyContactAddress.propTypes = {
     address2: PropTypes.string,
     city: PropTypes.string.isRequired,
     state: PropTypes.string.isRequired,
-    zip: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    zip: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired
   }),
   status: PropTypes.string
 };
 
-AgencyContactAddress.defaultProps = {};
+AgencyContactAddress.defaultProps = {
+  mailingAddress: {}
+};
 
 export default AgencyContactAddress;

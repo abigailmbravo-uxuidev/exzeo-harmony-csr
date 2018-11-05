@@ -4,7 +4,10 @@ import { Input, Integer, Radio, Select, Phone, validation, Date } from '@exzeo/c
 
 const statusAnswers = [
   { answer: 'Active', label: 'Active' },
-  { answer: 'InActive', label: 'InActive' }
+  { answer: 'Service Only', label: 'Service Only' },
+  { answer: 'Pending', label: 'Pending' },
+  { answer: 'Cancel', label: 'Cancel' }
+
 ];
 
 const okToPayAnswers = [
@@ -14,7 +17,17 @@ const okToPayAnswers = [
 
 const taxClassificationAnswers = [
   { answer: 'LLC', label: 'LLC' },
-  { answer: 'Corporation', label: 'Corporation' }
+  { answer: 'Corporation', label: 'Corporation' },
+  { answer: 'Individual/Sole Proprietor', label: 'Individual/Sole Proprietor' },
+  { answer: 'Partnership', label: 'Partnership' },
+  { answer: 'Disregarded Entity', label: 'Disregarded Entity' },
+  { answer: 'Tax Exempt', label: 'Tax Exempt' },
+  { answer: 'Other', label: 'Other' },
+  { answer: 'LLC - C', label: 'LLC - C' },
+  { answer: 'LLC - P', label: 'LLC - P' },
+  { answer: 'LLC - S', label: 'LLC - S' },
+  { answer: 'S-Corporation', label: 'S-Corporation' },
+  { answer: 'LLC – I/SP', label: 'LLC – I/SP' }
 ];
 
 const Details = (agencyCodeDisabled) => {
@@ -65,7 +78,6 @@ const Details = (agencyCodeDisabled) => {
         label="Ok to Pay"
         component={Radio}
         segmented
-        validate={validation.isRequired}
         answers={okToPayAnswers} />
       <Field
         label="Web Address"
