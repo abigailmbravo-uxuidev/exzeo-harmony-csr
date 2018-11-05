@@ -51,5 +51,60 @@ export const REASONS = [
 
 export const STATUS_ANSWERS = [
   { answer: 'true', label: 'Open' },
-  { answer: 'false', label: 'Closed'}
+  { answer: 'false', label: 'Closed' }
 ];
+
+export const DIARY_DEFAULTS = {
+  'Additional Interest': {
+    daysFromDueDate: 2, assignee: '', reason: 'Follow-up', bodyPrefix: 'Additional Interest:'
+  },
+  Billing: {
+    daysFromDueDate: 2, assignee: '', reason: 'Billing', bodyPrefix: 'Billing:'
+  },
+  Cancellation: {
+    daysFromDueDate: 7, assignee: '', reason: 'Follow-up', bodyPrefix: 'Cancellation:'
+  },
+  'Coverage Endorsement': {
+    daysFromDueDate: 7, assignee: '', reason: 'Follow-up', bodyPrefix: 'Coverage Endorsement:'
+  },
+  Estate: {
+    daysFromDueDate: -145, assignee: 'Occupancy', reason: 'Estate', bodyPrefix: 'Estate:'
+  },
+  'Follow-up': {
+    daysFromDueDate: 0, assignee: '', reason: 'Follow-up', bodyPrefix: 'Follow-up:'
+  },
+  'Home/Location Endorsement': {
+    daysFromDueDate: 7, assignee: '', reason: 'Follow-up', bodyPrefix: 'Home/Location Endorsement:'
+  },
+  Inspection: {
+    daysFromDueDate: 14, assignee: '', reason: 'Inspection', bodyPrefix: 'Inspection:'
+  },
+  'Mailing Address': {
+    daysFromDueDate: 7, assignee: '', reason: 'Follow-up', bodyPrefix: 'Mailing Address:'
+  },
+  'Needs Security': {
+    daysFromDueDate: 0, assignee: 'Underwriting', reason: 'Needs Security', bodyPrefix: 'Needs Security:'
+  },
+  'New Policy': {
+    daysFromDueDate: 0, assignee: 'New Policy', reason: 'New Policy', bodyPrefix: 'New Policy:'
+  },
+  Occupancy: {
+    daysFromDueDate: 30, assignee: '', reason: 'Occupancy', bodyPrefix: 'Occupancy:'
+  },
+  'Ownership Change': {
+    daysFromDueDate: 0, assignee: 'Occupancy', reason: 'Ownership Change', bodyPrefix: 'Ownership Change:'
+  },
+  'Policyholder Endorsement': {
+    daysFromDueDate: 7, assignee: '', reason: 'Follow-up', bodyPrefix: 'Policyholder Endorsement:'
+  },
+  'Property Address': {
+    daysFromDueDate: 7, assignee: '', reason: 'Follow-up', bodyPrefix: 'Property Address:'
+  },
+  Reinstatement: {
+    daysFromDueDate: 2, assignee: '', reason: 'Reinstatement', bodyPrefix: 'Reinstatement:'
+  },
+  'Wind Mitigation': {
+    daysFromDueDate: 7, assignee: '', reason: 'Follow-up', bodyPrefix: 'Wind Mitigation:'
+  }
+};
+
