@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment-timezone';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { date } from '@exzeo/core-ui';
 
