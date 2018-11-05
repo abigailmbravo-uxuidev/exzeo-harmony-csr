@@ -10,7 +10,7 @@ describe('Test SearchResults component', () => {
   const baseError = {};
 
   it('should render', () => {
-    const wrapper = shallow(<SearchResults search={baseSearch} error={baseError} searchType={SEARCH_TYPES.policy} />);
+    const wrapper = shallow(<SearchResults search={baseSearch} error={baseError} searchType={SEARCH_TYPES.policy} hasSearched />);
     expect(wrapper.exists()).toBeTruthy();
   });
 

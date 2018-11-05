@@ -11,9 +11,9 @@ export default {
   cg: {},
   error: {},
   diaries: [],
-  newNote: {},
   questions: {
-    diaryAssignees: []
+    diaryAssignees: [],
+    territoryManagers: []
   },
   quoteState: {
     quoteId: null,
@@ -31,6 +31,11 @@ export default {
     paymentOptions: [],
     summaryLedger: {}
   },
+  agencyState: {
+    agencies: [],
+    agency: {},
+    agents: []
+  },
   search: {
     loading: false,
     currentPage: 1,
@@ -44,5 +49,8 @@ export default {
   },
   service: {
     cancelOptions: []
+  },
+  zipCodeSettingsState: {
+    zipCodeSettings: []
   }
 };
