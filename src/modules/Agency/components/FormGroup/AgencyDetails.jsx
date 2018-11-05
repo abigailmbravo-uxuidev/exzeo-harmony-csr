@@ -4,7 +4,10 @@ import { Input, Integer, Radio, Select, Phone, validation, Date } from '@exzeo/c
 
 const statusAnswers = [
   { answer: 'Active', label: 'Active' },
-  { answer: 'InActive', label: 'InActive' }
+  { answer: 'Service Only', label: 'Service Only' },
+  { answer: 'Pending', label: 'Pending' },
+  { answer: 'Cancel', label: 'Cancel' }
+
 ];
 
 const okToPayAnswers = [
