@@ -54,10 +54,8 @@ export class Overview extends React.Component {
   }
 
   handleSwitchAOR = async (data) => {
-    const { agency, updateAgency } = this.props;
-    const submitData = { ...agency };
-    submitData.agentOfRecord = data.selectedAgentCode;
-    await updateAgency(submitData);
+    const { agency: { agencyCode }, updateAgency } = this.props;
+    await updateAgency({ agencyCode, agentOfRecord: data.selectedAgentCode });
     this.onHandleToggleSwitchAgentOfRecordModal(null)();
   }
 
