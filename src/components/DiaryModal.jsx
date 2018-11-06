@@ -45,7 +45,7 @@ export class DiaryModal extends Component {
     }
   };
 
-  onHandleDiaryDefaults = (value, prevVal) => {
+  normalizeDiaryType = (value, prevVal) => {
     const { change, user: { userId }, assigneeAnswers } = this.props;
     const defaultData = DIARY_DEFAULTS[value];
 
@@ -89,7 +89,7 @@ export class DiaryModal extends Component {
                 component={Select}
                 answers={TYPES}
                 validate={validation.isRequired}
-                normalize={this.onHandleDiaryDefaults}
+                normalize={this.normalizeDiaryType}
                 dataTest="diaryType" />
               <Field
                 name="assignee.id"

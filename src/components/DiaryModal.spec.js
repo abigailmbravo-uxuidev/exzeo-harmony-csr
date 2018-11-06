@@ -33,9 +33,9 @@ describe('Test DiaryModal component', () => {
 
     wrapper.instance().componentDidMount();
 
-    expect(wrapper.instance().onHandleDiaryDefaults('none')).toEqual('none');
-    expect(wrapper.instance().onHandleDiaryDefaults('additional_interest')).toEqual('additional_interest');
-    expect(wrapper.instance().onHandleDiaryDefaults('estate')).toEqual('estate');
+    expect(wrapper.instance().normalizeDiaryType('none')).toEqual('none');
+    expect(wrapper.instance().normalizeDiaryType('additional_interest')).toEqual('additional_interest');
+    expect(wrapper.instance().normalizeDiaryType('estate')).toEqual('estate');
   });
 });
 
