@@ -277,7 +277,7 @@ export async function fetchAgents({
   const config = {
     service: 'agency',
     method: 'GET',
-    path: `v1/agents/${companyCode}/${state}?firstName=${firstName}&lastName=${lastName}&agentCode=${agentCode}&mailingAddress=${address}&licenseNumber=${licenseNumber}`
+    path: `agents?companyCode=${companyCode}&state=${state}&firstName=${firstName}&lastName=${lastName}&agentCode=${agentCode}&mailingAddress=${address}&licenseNumber=${licenseNumber}`
   };
 
   try {
@@ -306,7 +306,7 @@ export async function fetchAgencies({
   const config = {
     service: 'agency',
     method: 'GET',
-    path: `v1/agencies/${companyCode}/${state}?displayName=${displayName}&agencyCode=${agencyCode}&mailingAddress=${address}&licenseNumber=${licenseNumber}&taxIdNumber=${fein}&primaryPhoneNumber=${phone}`
+    path: `agencies?companyCode=${companyCode}&state=${state}&displayName=${displayName}&agencyCode=${agencyCode}&mailingAddress=${address}&licenseNumber=${licenseNumber}&taxIdNumber=${fein}&primaryPhoneNumber=${phone}`
   };
 
   try {
