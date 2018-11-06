@@ -169,7 +169,7 @@ export class Create extends Component {
                   </div>
                   <div className="agency-license">
                     <FieldArray
-                      name="licenses"
+                      name="agentOfRecord.licenses"
                       component={License}
                       licenseValue={licenseValue}
                       isAgency />
