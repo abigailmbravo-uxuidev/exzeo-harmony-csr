@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { Date, Select, validation, Loader, TextArea } from '@exzeo/core-ui';
+import moment from 'moment';
 
 import { submitDiary } from '../state/actions/diary.actions';
 import { toggleDiary } from '../state/actions/ui.actions';
 import { setAppError } from '../state/actions/error.actions';
 import { getDiaryAssigneeAnswers } from '../state/selectors/questions.selectors';
-import { REASONS, TYPES } from '../constants/diaries';
+import { REASONS, TYPES, DIARY_DEFAULTS } from '../constants/diaries';
 
 export class DiaryModal extends Component {
   state = { minimize: false };
@@ -44,8 +45,26 @@ export class DiaryModal extends Component {
     }
   };
 
+  onHandleDiaryDefaults = (value, prevVal) => {
+    const { change, user: { userId }, assigneeAnswers } = this.props;
+    const defaultData = DIARY_DEFAULTS[value];
+
+    if (!defaultData) return value;
+
+    if (!defaultData.assignee) {
+      change('assignee.id', userId);
+    } else {
+      const selectedAssignee = assigneeAnswers.find(u => String(u.label) === String(defaultData.assignee));
+      change('assignee.id', selectedAssignee.answer);
+    }
+    change('message', defaultData.message);
+    change('reason', defaultData.reason);
+    change('due', moment().utc().add(defaultData.daysFromDueDate, 'd').format('YYYY-MM-DD'));
+    return value;
+  }
+
   render() {
-    const { assigneeAnswers, handleSubmit, submitting, } = this.props;
+    const { assigneeAnswers, handleSubmit, submitting } = this.props;
 
     return (
       <div className={this.state.minimize ? 'new-diary-file minimize' : 'new-diary-file'} >
@@ -70,6 +89,7 @@ export class DiaryModal extends Component {
                 component={Select}
                 answers={TYPES}
                 validate={validation.isRequired}
+                normalize={this.onHandleDiaryDefaults}
                 dataTest="diaryType" />
               <Field
                 name="assignee.id"
@@ -134,6 +154,7 @@ export class DiaryModal extends Component {
 }
 
 DiaryModal.propTypes = {
+  change: PropTypes.func.isRequired,
   assigneeAnswers: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   handleSubmit: PropTypes.func.isRequired,
   setAppErrorAction: PropTypes.func.isRequired,

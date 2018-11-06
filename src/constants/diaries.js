@@ -55,56 +55,56 @@ export const STATUS_ANSWERS = [
 ];
 
 export const DIARY_DEFAULTS = {
-  'Additional Interest': {
-    daysFromDueDate: 2, assignee: '', reason: 'Follow-up', bodyPrefix: 'Additional Interest:'
+  additional_interest: {
+    daysFromDueDate: 2, assignee: '', reason: 'follow_up', message: 'Additional Interest:'
   },
-  Billing: {
-    daysFromDueDate: 2, assignee: '', reason: 'Billing', bodyPrefix: 'Billing:'
+  billing: {
+    daysFromDueDate: 2, assignee: '', reason: 'billing', message: 'Billing:'
   },
-  Cancellation: {
-    daysFromDueDate: 7, assignee: '', reason: 'Follow-up', bodyPrefix: 'Cancellation:'
+  cancellation: {
+    daysFromDueDate: 7, assignee: '', reason: 'follow_up', message: 'Cancellation:'
   },
-  'Coverage Endorsement': {
-    daysFromDueDate: 7, assignee: '', reason: 'Follow-up', bodyPrefix: 'Coverage Endorsement:'
+  coverage_endorsement: {
+    daysFromDueDate: 7, assignee: '', reason: 'follow_up', message: 'Coverage Endorsement:'
   },
-  Estate: {
-    daysFromDueDate: -145, assignee: 'Occupancy', reason: 'Estate', bodyPrefix: 'Estate:'
+  estate: {
+    daysFromDueDate: -145, assignee: 'Occupancy', reason: 'estate', message: 'Estate:'
   },
-  'Follow-up': {
-    daysFromDueDate: 0, assignee: '', reason: 'Follow-up', bodyPrefix: 'Follow-up:'
+  follow_up: {
+    daysFromDueDate: 0, assignee: '', reason: 'follow_up', message: 'Follow-up:'
   },
-  'Home/Location Endorsement': {
-    daysFromDueDate: 7, assignee: '', reason: 'Follow-up', bodyPrefix: 'Home/Location Endorsement:'
+  home_location_endorsement: {
+    daysFromDueDate: 7, assignee: '', reason: 'follow_up', message: 'Home/Location Endorsement:'
   },
-  Inspection: {
-    daysFromDueDate: 14, assignee: '', reason: 'Inspection', bodyPrefix: 'Inspection:'
+  inspection: {
+    daysFromDueDate: 14, assignee: '', reason: 'inspection', message: 'Inspection:'
   },
-  'Mailing Address': {
-    daysFromDueDate: 7, assignee: '', reason: 'Follow-up', bodyPrefix: 'Mailing Address:'
+  mailing_address: {
+    daysFromDueDate: 7, assignee: '', reason: 'follow_up', message: 'Mailing Address:'
   },
-  'Needs Security': {
-    daysFromDueDate: 0, assignee: 'Underwriting', reason: 'Needs Security', bodyPrefix: 'Needs Security:'
+  needs_security: {
+    daysFromDueDate: 0, assignee: 'Underwriting', reason: 'needs_security', message: 'Needs Security:'
   },
-  'New Policy': {
-    daysFromDueDate: 0, assignee: 'New Policy', reason: 'New Policy', bodyPrefix: 'New Policy:'
+  new_policy: {
+    daysFromDueDate: 0, assignee: 'New Policy', reason: 'new_policy', message: 'New Policy:'
   },
-  Occupancy: {
-    daysFromDueDate: 30, assignee: '', reason: 'Occupancy', bodyPrefix: 'Occupancy:'
+  occupancy: {
+    daysFromDueDate: 30, assignee: '', reason: 'occupancy', message: 'Occupancy:'
   },
-  'Ownership Change': {
-    daysFromDueDate: 0, assignee: 'Occupancy', reason: 'Ownership Change', bodyPrefix: 'Ownership Change:'
+  ownership_change: {
+    daysFromDueDate: 0, assignee: 'Occupancy', reason: 'ownership_change', message: 'Ownership Change:'
   },
-  'Policyholder Endorsement': {
-    daysFromDueDate: 7, assignee: '', reason: 'Follow-up', bodyPrefix: 'Policyholder Endorsement:'
+  policyholder_endorsement: {
+    daysFromDueDate: 7, assignee: '', reason: 'follow_up', message: 'Policyholder Endorsement:'
   },
-  'Property Address': {
-    daysFromDueDate: 7, assignee: '', reason: 'Follow-up', bodyPrefix: 'Property Address:'
+  property_address: {
+    daysFromDueDate: 7, assignee: '', reason: 'follow_up', message: 'Property Address:'
   },
-  Reinstatement: {
-    daysFromDueDate: 2, assignee: '', reason: 'Reinstatement', bodyPrefix: 'Reinstatement:'
+  reinstatement: {
+    daysFromDueDate: 2, assignee: '', reason: 'reinstatement', message: 'Reinstatement:'
   },
-  'Wind Mitigation': {
-    daysFromDueDate: 7, assignee: '', reason: 'Follow-up', bodyPrefix: 'Wind Mitigation:'
+  wind_mitigation: {
+    daysFromDueDate: 7, assignee: '', reason: 'follow_up', message: 'Wind Mitigation:'
   }
 };
 
