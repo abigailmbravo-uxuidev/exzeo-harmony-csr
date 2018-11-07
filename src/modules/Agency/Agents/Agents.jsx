@@ -59,9 +59,7 @@ export class Agents extends Component {
 
   handleSwitchAOR = async (data) => {
     const { agency, updateAgency } = this.props;
-    const submitData = { ...agency };
-    submitData.agentOfRecord = data.selectedAgentCode;
-    await updateAgency(submitData, agency.agencyCode);
+    await updateAgency({ agencyCode: agency.agencyCode, agentOfRecord: data.selectedAgentCode });
     this.toggleSwitchAgentOfRecord();
   }
 
