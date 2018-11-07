@@ -14,9 +14,11 @@ const mapStateToProps = state => ({
     okToPay: false,
     mailingAddress: {},
     physicalAddress: {},
-    licenses: [{
-      state: '', license: '', licenseType: '', licenseEffectiveDate: ''
-    }]
+    agentOfRecord: {
+      licenses: [{
+        state: '', license: '', licenseType: '', licenseEffectiveDate: ''
+      }]
+    }
   },
   sameAsMailingValue: selector(state, 'sameAsMailing'),
   licenseValue: selector(state, 'licenses'),
