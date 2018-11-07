@@ -9,13 +9,13 @@ import { reduxForm, formValueSelector } from 'redux-form';
 
 import { getAnswers } from '../../../utilities/forms';
 import { setPercentageOfValue } from '../../../utilities/endorsementModel';
-import { getAgentsByAgency, getZipcodeSettings } from '../../../state/actions/service.actions';
+import { getZipcodeSettings } from '../../../state/actions/service.actions';
 import { batchCompleteTask, startWorkflow } from '../../../state/actions/cg.actions';
 import { setAppState } from '../../../state/actions/appState.actions';
 import { setAppError } from '../../../state/actions/error.actions';
 import { getUIQuestions } from '../../../state/actions/questions.actions';
 import { getQuote } from '../../../state/actions/quote.actions';
-import { getAgencies } from '../../../state/actions/agency.actions';
+import { getAgencies, getAgentsByAgencyCode } from '../../../state/actions/agency.actions';
 import { checkQuoteState } from '../../../state/selectors/quote.selectors';
 import QuoteBaseConnect from '../../../containers/Quote';
 import Footer from '../../Common/Footer';
@@ -221,10 +221,17 @@ export class Coverage extends Component {
 
       if (quoteData && quoteData.property) {
         this.props.getAgencies(quoteData.companyCode, quoteData.state);
-        this.props.getAgentsByAgency(quoteData.companyCode, quoteData.state, quoteData.agencyCode);
+        this.props.getAgentsByAgencyCode(quoteData.agencyCode);
         this.props.getZipcodeSettings(quoteData.companyCode, quoteData.state, quoteData.product, quoteData.property.physicalAddress.zip);
       }
     });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { agents, change } = this.props;
+    if (prevProps && prevProps.agents && (prevProps.agents !== agents)) {
+      if (agents.length === 1) change('agentCode', agents[0].agentCode);
+    }
   }
 
   setPHToggle = () => {
@@ -285,20 +292,7 @@ export class Coverage extends Component {
     return value;
   };
 
-  handleAgencyChange = (agencyCode) => {
-    const { change, getAgentsByAgency } = this.props;
-    const agency = _.find(this.props.agencies, a => String(a.agencyCode) === String(agencyCode));
-    if (agency) {
-      getAgentsByAgency(agency.companyCode, agency.state, agencyCode).then((response) => {
-        if (response.data && response.data.agents && response.data.agents.length === 1) {
-          change('agentCode', response.data.agents[0].agentCode);
-        } else {
-          change('agentCode', '');
-        }
-      });
-    }
-    return agencyCode;
-  };
+  handleAgencyChange = (e, agencyCode) => this.props.getAgentsByAgencyCode(agencyCode);
 
   clearSecondaryPolicyholder = (value) => {
     const { quoteData, change } = this.props;
@@ -468,10 +462,9 @@ const mapStateToProps = (state) => {
   const questions = state.questions;
 
   return {
-    getAgents: state.service.getAgents,
     tasks: state.cg,
     appState: state.appState,
-    agents: state.service.agents,
+    agents: state.agencyState.agents,
     agencies: state.agencyState.agencies,
     initialValues: handleInitialize(quoteData, questions),
     quoteData,
@@ -490,7 +483,7 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   getAgencies,
-  getAgentsByAgency,
+  getAgentsByAgencyCode,
   batchCompleteTask,
   startWorkflow,
   setAppState,
