@@ -3,7 +3,7 @@ import { date } from '@exzeo/core-ui';
 
 import { getDueStatus, groupDiaries, sortDiariesByDate } from '../../utilities/diaries';
 
-import { getDiaries } from './entity.selectors';
+import { getDiaries, getUserProfile } from './entity.selectors';
 
 export const getSortedDiariesByDueDate = createSelector(
   [getDiaries],
@@ -72,5 +72,19 @@ export const getOpenDiaries = createSelector(
 export const getFilteredOpenDiaries = createSelector(
   [getFilterOpenDiariesByResource],
   diaries => groupDiaries(diaries)
+);
+
+export const isPollingPermitted = createSelector(
+  [getUserProfile],
+  (userProfile) => {
+    const { resources } = userProfile;
+    if (!resources) return false;
+
+    const diariesResources = resources.filter((resource) => {
+      const arr = resource.uri.split(':');
+      return arr.includes('Diaries');
+    });
+    return diariesResources.length === 3;
+  }
 );
 
