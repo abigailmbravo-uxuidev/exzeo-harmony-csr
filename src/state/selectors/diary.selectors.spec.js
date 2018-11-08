@@ -191,9 +191,9 @@ describe('Test diary selectors', () => {
 
     it('Should return true if user has ALL THREE Diaries resources', () => {
       state.authState.userProfile.resources = [
-        {"right": "READ","uri": "TTIC:FL:HO3:Diaries:DiariesService:*"},
-        {"right": "INSERT","uri": "TTIC:FL:HO3:Diaries:DiariesService:*"},
-        {"right": "UPDATE","uri": "TTIC:FL:HO3:Diaries:DiariesService:*"}
+        { right: 'READ', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
+        { right: 'INSERT', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
+        { right: 'UPDATE', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' }
       ];
 
       const result = isPollingPermitted(state);
@@ -202,8 +202,8 @@ describe('Test diary selectors', () => {
 
     it('Should return false if user does not have ALL THREE Diaries resources', () => {
       state.authState.userProfile.resources = [
-        {"right": "READ","uri": "TTIC:FL:HO3:Diaries:DiariesService:*"},
-        {"right": "INSERT","uri": "TTIC:FL:HO3:Diaries:DiariesService:*"},
+        { right: 'READ', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' },
+        { right: 'INSERT', uri: 'TTIC:FL:HO3:Diaries:DiariesService:*' }
       ];
 
       const result = isPollingPermitted(state);
