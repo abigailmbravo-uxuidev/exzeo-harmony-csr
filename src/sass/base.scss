@@ -1534,17 +1534,9 @@ ul.list-cards {
               -webkit-hyphens: auto;
               hyphens: auto;
               font-size: 14px;
-              line-height: $headings-line-height;
+              line-height: 1.02;
               -webkit-font-smoothing: antialiased;
               -ms-hyphens: auto;
-              @media (max-width: 1440px) {
-                line-height: 1;
-              }
-
-              &.agency-name,
-              &.status {
-                line-height: 1;
-              }
             }
           }
         }
