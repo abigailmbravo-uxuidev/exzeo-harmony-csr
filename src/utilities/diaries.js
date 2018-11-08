@@ -1,6 +1,8 @@
 import moment from 'moment-timezone';
 import { date } from '@exzeo/core-ui/lib';
 
+import { REASONS } from '../constants/diaries';
+
 /**
  * Is date provided more than one week from current date
  * @param dateString
@@ -30,6 +32,20 @@ const isPastDue = (dateString) => {
 const isWithinOneWeekAway = (dateString) => {
   return moment.utc(dateString)
     .isBetween(date.currentDay(date.FORMATS.SECONDARY), moment.utc().add(7, 'd').format(date.FORMATS.SECONDARY));
+};
+
+/**
+ * format Diary properties
+ * @param entry object
+ * @returns {object}
+ */
+export const formatEntry = (entry) => {
+  const reasonKeyValue = REASONS.find(r => r.answer === entry.reason);
+  const reason = reasonKeyValue ? reasonKeyValue.label : entry.reason;
+  return {
+    ...entry,
+    reason
+  }
 };
 
 /**

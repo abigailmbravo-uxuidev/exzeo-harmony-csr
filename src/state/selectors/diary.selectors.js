@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { date } from '@exzeo/core-ui';
 
-import { getDueStatus, groupDiaries, sortDiariesByDate } from '../../utilities/diaries';
+import { formatEntry, getDueStatus, groupDiaries, sortDiariesByDate } from '../../utilities/diaries';
 
 import { getDiaries, getUserProfile } from './entity.selectors';
 
@@ -28,22 +28,25 @@ export const getFormattedDiaries = createSelector(
 export const getFormattedAllDiaries = createSelector(
   [getDiaries],
   (diaries) => {
-    return diaries.map(d => ({
-      diaryId: d._id,
-      resourceType: d.resource.type,
-      resourceId: d.resource.id,
-      ...d.entries[0],
-      diaryHistory: d.entries.slice(1),
-      due: date.formatDate(d.entries[0].due, date.FORMATS.SECONDARY),
-      dueStatus: getDueStatus(d.entries[0].due, d.entries[0].open),
-      action: {
+    return diaries.map(d => {
+      const entry = formatEntry(d.entries[0]);
+      return ({
         diaryId: d._id,
         resourceType: d.resource.type,
         resourceId: d.resource.id,
-        ...d.entries[0],
-        due: date.formatDate(d.entries[0].due, date.FORMATS.SECONDARY)
-      }
-    }));
+        ...entry,
+        diaryHistory: d.entries.slice(1),
+        due: date.formatDate(d.entries[0].due, date.FORMATS.SECONDARY),
+        dueStatus: getDueStatus(d.entries[0].due, d.entries[0].open),
+        action: {
+          diaryId: d._id,
+          resourceType: d.resource.type,
+          resourceId: d.resource.id,
+          ...d.entries[0],
+          due: date.formatDate(d.entries[0].due, date.FORMATS.SECONDARY)
+        }
+      });
+    });
   }
 );
 
