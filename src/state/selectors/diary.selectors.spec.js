@@ -1,6 +1,6 @@
 import moment from 'moment-timezone';
 
-import { getFormattedDiaries, getOpenDiaries } from './diary.selectors';
+import { getFormattedDiaries, getOpenDiaries, isPollingPermitted } from './diary.selectors';
 
 describe('Test diary selectors', () => {
   describe('Test getFormattedDiaries', () => {
@@ -173,6 +173,41 @@ describe('Test diary selectors', () => {
       expect(result.dueSoon.length).toEqual(1);
       expect(result.pastDue.length).toEqual(1);
       expect(result.upComing.length).toEqual(1);
+    });
+  });
+  describe('Test isPollingPermitted', () => {
+    const state = {
+      authState: {
+        userProfile: {
+          resources: []
+        }
+      }
+
+    };
+    it('Should not throw when authState missing', () => {
+      state.authState = {};
+      expect(() => isPollingPermitted(state)).not.toThrow();
+    });
+
+    it('Should return true if user has ALL THREE Diaries resources', () => {
+      state.authState.userProfile.resources = [
+        {"right": "READ","uri": "TTIC:FL:HO3:Diaries:DiariesService:*"},
+        {"right": "INSERT","uri": "TTIC:FL:HO3:Diaries:DiariesService:*"},
+        {"right": "UPDATE","uri": "TTIC:FL:HO3:Diaries:DiariesService:*"}
+      ];
+
+      const result = isPollingPermitted(state);
+      expect(result).toBeTruthy();
+    });
+
+    it('Should return false if user does not have ALL THREE Diaries resources', () => {
+      state.authState.userProfile.resources = [
+        {"right": "READ","uri": "TTIC:FL:HO3:Diaries:DiariesService:*"},
+        {"right": "INSERT","uri": "TTIC:FL:HO3:Diaries:DiariesService:*"},
+      ];
+
+      const result = isPollingPermitted(state);
+      expect(result).toBeFalsy();
     });
   });
 });
