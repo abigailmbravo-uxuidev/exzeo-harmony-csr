@@ -34,7 +34,7 @@ export class DiaryPolling extends Component {
       if (!document[this.hidden]) {
         this.fetchDiaries();
       }
-    }, 6000);
+    }, 30000);
   };
 
   fetchDiaries = () => {
