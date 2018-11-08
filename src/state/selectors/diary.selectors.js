@@ -78,7 +78,7 @@ export const isPollingPermitted = createSelector(
   [getUserProfile],
   (userProfile) => {
     const { resources } = userProfile;
-    if (!resources) return false;
+    if (!Array.isArray(resources)) return false;
 
     const diariesResources = resources.filter((resource) => {
       const arr = resource.uri.split(':');
