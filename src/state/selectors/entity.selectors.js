@@ -12,7 +12,7 @@ export const getDiaries = state => state.diaries;
 // AGENCY
 export const getAgencies = state => state.service.agencies;
 // AUTH
-export const getUserProfile = state => state.authState.userProfile;
+export const getUserProfile = state => state.authState.userProfile || emptyObject;
 
 // APP-STATE [DEPRECATED]
 export const getAppState = state => state.appState || emptyObject;
