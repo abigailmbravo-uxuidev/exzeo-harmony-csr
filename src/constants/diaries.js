@@ -10,101 +10,58 @@ export const TAGS = [
 
 ];
 
-export const TYPES = [
-  { answer: 'additional_interest', label: 'Additional Interest' },
-  { answer: 'billing', label: 'Billing' },
-  { answer: 'cancellation', label: 'Cancellation' },
-  { answer: 'coverage_endorsement', label: 'Coverage Endorsement' },
-  { answer: 'estate', label: 'Estate' },
-  { answer: 'follow_up', label: 'Follow-up' },
-  { answer: 'home_location_endorsement', label: 'Home/Location Endorsement' },
-  { answer: 'inspection', label: 'Inspection' },
-  { answer: 'mailing_address', label: 'Mailing Address' },
-  { answer: 'needs_security', label: 'Needs Security' },
-  { answer: 'new_policy', label: 'New Policy' },
-  { answer: 'occupancy', label: 'Occupancy' },
-  { answer: 'ownership_change', label: 'Ownership Change' },
-  { answer: 'policyholder_endorsement', label: 'Policyholder Endorsement' },
-  { answer: 'property_address', label: 'Property Address' },
-  { answer: 'reinstatement', label: 'Reinstatement' },
-  { answer: 'wind_mitigation', label: 'Wind Mitigation' }
-];
+export const REASONS = {
+  information_needed: {
+    answer: 'information_needed', label: 'Information Needed', daysFromDueDate: 7, assignee: '', message: 'CSR will indicate what it is in the body of diary and what\'s missing: Ex- "Wind Mit Photos" or "Cancellation Signature" or "App Missing Cov C Reject Form"'
+  },
+  estate: {
+    answer: 'estate', label: 'Estate', daysFromDueDate: -145, assignee: 'Underwriting', message: ''
+  },
+  death_of_only_NI: {
+    answer: 'death_of_only_NI', label: 'Death of Only NI', daysFromDueDate: 0, assignee: 'Processing', message: ''
+  },
+  other: {
+    answer: 'other', label: 'Other', daysFromDueDate: 0, assignee: '', message: ''
+  },
+  exception: {
+    answer: 'exception', label: 'Exception', daysFromDueDate: 10, assignee: '', message: 'Could be an auto-generated diary but those are in future release; we don\'t need the assignee to be "New Policy" we can transfer it by looking at the type.'
+  },
+  new_policy: {
+    answer: 'new_policy', label: 'New Policy', daysFromDueDate: 0, assignee: 'Processing', message: 'Keeping for future system generated (when pol binds, eliminates the email via No reply box)'
+  },
+  occupancy_Letter: {
+    answer: 'occupancy_Letter', label: 'Occupancy Letter', daysFromDueDate: 30, assignee: 'Underwriting', message: ''
+  },
+  ownership_Change: {
+    answer: 'ownership_Change', label: 'Ownership Change', daysFromDueDate: 0, assignee: 'Underwriting', message: ''
+  },
+  renewal_processing: {
+    answer: 'renewal_processing', label: 'Renewal Processing', daysFromDueDate: null, assignee: 'Processing', message: 'Can\'t forget to consider "N/A" or any other reason that we now have, that will be deleted.'
+  },
+  underwriting_condition_letter: {
+    answer: 'underwriting_condition_letter', label: 'Underwriting Condition Letter', daysFromDueDate: 30, assignee: 'Underwriting', message: 'Keeping for future system generated '
+  },
+  underwriting_review: {
+    answer: 'underwriting_review', label: 'Underwriting Review', daysFromDueDate: 2, assignee: '', message: ''
+  },
+  vacanut_unoccupied: {
+    answer: 'vacanut_unoccupied', label: 'Vacant/Unoccupied', daysFromDueDate: 0, assignee: 'Underwriting', message: ''
+  },
+  tenant_occupied: {
+    answer: 'tenant_occupied', label: 'Tenant Occupied', daysFromDueDate: 0, assignee: 'Underwriting', message: ''
+  },
+  refund: {
+    answer: 'refund', label: 'Refund', daysFromDueDate: 7, assignee: '', message: 'CSRs will schedule this to ensure refund makes it out'
+  }
+};
 
-export const REASONS = [
-  { answer: 'none', label: 'N/A' },
-  { answer: 'billing', label: 'Billing' },
-  { answer: 'docusign_exp', label: 'DocuSign Expiring' },
-  { answer: 'estate', label: 'Estate' },
-  { answer: 'follow_up', label: 'Follow-up' },
-  { answer: 'inspection', label: 'Inspection' },
-  { answer: 'needs_security', label: 'Needs Security' },
-  { answer: 'new_policy', label: 'New Policy' },
-  { answer: 'no_response', label: 'No response' },
-  { answer: 'occupancy', label: 'Occupancy' },
-  { answer: 'order_inspection', label: 'Order Inspection' },
-  { answer: 'other', label: 'Other' },
-  { answer: 'ownership_change', label: 'Ownership Change' },
-  { answer: 'reinstatement', label: 'Reinstatement' },
-  { answer: 'underwriting_letter', label: 'Underwriting Condition Letter' },
-  { answer: 'vacant', label: 'Vacant' }
-];
 
 export const STATUS_ANSWERS = [
   { answer: 'true', label: 'Open' },
   { answer: 'false', label: 'Closed' }
 ];
 
-export const DIARY_DEFAULTS = {
-  additional_interest: {
-    daysFromDueDate: 2, assignee: '', reason: 'follow_up', message: 'Additional Interest:'
-  },
-  billing: {
-    daysFromDueDate: 2, assignee: '', reason: 'billing', message: 'Billing:'
-  },
-  cancellation: {
-    daysFromDueDate: 7, assignee: '', reason: 'follow_up', message: 'Cancellation:'
-  },
-  coverage_endorsement: {
-    daysFromDueDate: 7, assignee: '', reason: 'follow_up', message: 'Coverage Endorsement:'
-  },
-  estate: {
-    daysFromDueDate: -145, assignee: 'Occupancy', reason: 'estate', message: 'Estate:'
-  },
-  follow_up: {
-    daysFromDueDate: 0, assignee: '', reason: 'follow_up', message: 'Follow-up:'
-  },
-  home_location_endorsement: {
-    daysFromDueDate: 7, assignee: '', reason: 'follow_up', message: 'Home/Location Endorsement:'
-  },
-  inspection: {
-    daysFromDueDate: 14, assignee: '', reason: 'inspection', message: 'Inspection:'
-  },
-  mailing_address: {
-    daysFromDueDate: 7, assignee: '', reason: 'follow_up', message: 'Mailing Address:'
-  },
-  needs_security: {
-    daysFromDueDate: 0, assignee: 'Underwriting', reason: 'needs_security', message: 'Needs Security:'
-  },
-  new_policy: {
-    daysFromDueDate: 0, assignee: 'New Policy', reason: 'new_policy', message: 'New Policy:'
-  },
-  occupancy: {
-    daysFromDueDate: 30, assignee: '', reason: 'occupancy', message: 'Occupancy:'
-  },
-  ownership_change: {
-    daysFromDueDate: 0, assignee: 'Occupancy', reason: 'ownership_change', message: 'Ownership Change:'
-  },
-  policyholder_endorsement: {
-    daysFromDueDate: 7, assignee: '', reason: 'follow_up', message: 'Policyholder Endorsement:'
-  },
-  property_address: {
-    daysFromDueDate: 7, assignee: '', reason: 'follow_up', message: 'Property Address:'
-  },
-  reinstatement: {
-    daysFromDueDate: 2, assignee: '', reason: 'reinstatement', message: 'Reinstatement:'
-  },
-  wind_mitigation: {
-    daysFromDueDate: 7, assignee: '', reason: 'follow_up', message: 'Wind Mitigation:'
-  }
-};
 
+export const REASONS_LIST = Object.keys(REASONS).map((key) => {
+  return { answer: REASONS[key].answer, label: REASONS[key].label };
+});

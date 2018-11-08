@@ -9,7 +9,7 @@ import { submitDiary } from '../state/actions/diary.actions';
 import { toggleDiary } from '../state/actions/ui.actions';
 import { setAppError } from '../state/actions/error.actions';
 import { getDiaryAssigneeAnswers } from '../state/selectors/questions.selectors';
-import { REASONS, TYPES, DIARY_DEFAULTS } from '../constants/diaries';
+import { REASONS, REASONS_LIST } from '../constants/diaries';
 
 export class DiaryModal extends Component {
   state = { minimize: false };
@@ -45,10 +45,11 @@ export class DiaryModal extends Component {
     }
   };
 
-  normalizeDiaryType = (value, prevVal) => {
+  normalizeDiaryReason = (value, prevVal) => {
     const { change, user: { userId }, assigneeAnswers } = this.props;
-    const defaultData = DIARY_DEFAULTS[value];
+    const defaultData = REASONS[value];
 
+    console.log(defaultData, value);
     if (!defaultData) return value;
 
     if (!defaultData.assignee) {
@@ -59,7 +60,13 @@ export class DiaryModal extends Component {
     }
     change('message', defaultData.message);
     change('reason', defaultData.reason);
-    change('due', moment().utc().add(defaultData.daysFromDueDate, 'd').format('YYYY-MM-DD'));
+
+    if (defaultData.reason === REASONS.renewal_processing) {
+      // need to get next renewal date
+      change('due', moment().utc().add(defaultData.daysFromDueDate, 'd').format('YYYY-MM-DD'));
+    } else {
+      change('due', moment().utc().add(defaultData.daysFromDueDate, 'd').format('YYYY-MM-DD'));
+    }
     return value;
   }
 
@@ -84,14 +91,6 @@ export class DiaryModal extends Component {
           <form id="DiaryModal" onSubmit={handleSubmit(this.submitDiary)} >
             <div className="content">
               <Field
-                name="type"
-                label="Type"
-                component={Select}
-                answers={TYPES}
-                validate={validation.isRequired}
-                normalize={this.normalizeDiaryType}
-                dataTest="diaryType" />
-              <Field
                 name="assignee.id"
                 styleName="assignee"
                 label="Assignee"
@@ -109,8 +108,9 @@ export class DiaryModal extends Component {
                 name="reason"
                 label="Reason"
                 component={Select}
-                answers={REASONS}
+                answers={REASONS_LIST}
                 validate={validation.isRequired}
+                normalize={this.normalizeDiaryReason}
                 dataTest="reason" />
               <Field
                 name="message"
