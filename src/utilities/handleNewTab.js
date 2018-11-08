@@ -9,8 +9,11 @@ export function handleNewTab(resource, type) {
   } else if (type === 'policy') {
     window.open(`/policy/${resource.policyNumber}/coverage`, '_blank');
     // agency
-  } else if (type === 'agency' || type === 'agent') {
+  } else if (type === 'agency') {
     window.open(`/agency/${resource.agencyCode}/0/overview`, '_blank');
+  } else if (type === 'agent' && Array.isArray(resource.agencies) && resource.agencies.length > 0) {
+    const agency = resource.agencies[0];
+    window.open(`/agency/${agency.agencyCode}/0/overview`, '_blank');
   }
 }
 

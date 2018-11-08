@@ -88,6 +88,13 @@
     align-items: center;
     flex-direction: column;
     justify-content: center;
+
+    &.AdditionalInterestModal {
+
+      .card {
+          height: calc(90vh - 150px);
+      }
+    }
   }
 }
 

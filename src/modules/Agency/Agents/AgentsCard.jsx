@@ -4,6 +4,7 @@ import Button from '@exzeo/core-ui/lib/Button';
 
 export const AgentsCard = ({
   agency,
+  agent: { mailingAddress = {} },
   agent,
   agentIndex,
   handleEditAgent,
@@ -21,11 +22,11 @@ export const AgentsCard = ({
         <div className="card-name-content">
           <h4><span className="agent-code">{agent.agentCode}</span> | <span className="agent-name">{`${agent.firstName} ${agent.lastName}`}</span> | <span className="agent-license">{agent.licenseNumber}</span></h4>
           <div className="contact-address">
-            {agent.mailingAddress.address1},&nbsp;
-            {agent.mailingAddress.address2}{agent.mailingAddress.address2 ? ', ' : ' '}
-            {agent.mailingAddress.city},&nbsp;
-            {agent.mailingAddress.state}&nbsp;
-            {agent.mailingAddress.zip}
+            {mailingAddress.address1},&nbsp;
+            {mailingAddress.address2}{mailingAddress.address2 ? ', ' : ' '}
+            {mailingAddress.city},&nbsp;
+            {mailingAddress.state}&nbsp;
+            {mailingAddress.zip}
             {agent.status &&
               <span className="additional-data status"><label>STATUS:&nbsp;</label>{agent.status}</span>
             }
