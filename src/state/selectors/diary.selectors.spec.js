@@ -176,17 +176,16 @@ describe('Test diary selectors', () => {
     });
   });
   describe('Test isPollingPermitted', () => {
-    const state = {
-      authState: {
-        userProfile: {
-          resources: []
-        }
-      }
+    let state = {};
 
-    };
-    it('Should not throw when authState missing', () => {
-      state.authState = {};
-      expect(() => isPollingPermitted(state)).not.toThrow();
+    beforeEach(() => {
+      state = {
+        authState: {
+          userProfile: {
+            resources: []
+          }
+        }
+      };
     });
 
     it('Should return true if user has ALL THREE Diaries resources', () => {
@@ -208,6 +207,11 @@ describe('Test diary selectors', () => {
 
       const result = isPollingPermitted(state);
       expect(result).toBeFalsy();
+    });
+
+    it('Should not throw when authState missing', () => {
+      state.authState = {};
+      expect(() => isPollingPermitted(state)).not.toThrow();
     });
   });
 });
