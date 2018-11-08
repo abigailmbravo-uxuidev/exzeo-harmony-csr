@@ -17,13 +17,17 @@ export const getFormattedDiaries = createSelector(
   (diaries) => {
     if (!Array.isArray(diaries)) return [];
 
-    return diaries.map(d => ({
-      diaryId: d._id,
-      resourceType: d.resource.type,
-      resourceId: d.resource.id,
-      ...d.entries[0],
-      due: date.formatDate(d.entries[0].due, date.FORMATS.SECONDARY)
-    }));
+    return diaries.map((d) => {
+      const entry = formatEntry(d.entries[0]);
+      return {
+        ...entry,
+        diaryId: d._id,
+        resourceType: d.resource.type,
+        resourceId: d.resource.id,
+        createdAt: d.createdAt,
+        due: date.formatDate(d.entries[0].due, date.FORMATS.SECONDARY)
+      };
+    });
   }
 );
 
@@ -32,13 +36,14 @@ export const getDiariesForTable = createSelector(
   (diaries) => {
     if (!Array.isArray(diaries)) return [];
 
-    return diaries.map(d => {
+    return diaries.map((d) => {
       const entry = formatEntry(d.entries[0]);
       return ({
+        ...entry,
         diaryId: d._id,
+        createdAt: d.createdAt,
         resourceType: d.resource.type,
         resourceId: d.resource.id,
-        ...entry,
         diaryHistory: d.entries.slice(1),
         due: date.formatDate(d.entries[0].due, date.FORMATS.SECONDARY),
         dueStatus: getDueStatus(d.entries[0].due, d.entries[0].open),

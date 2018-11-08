@@ -54,7 +54,7 @@ DiaryPolling.propTypes = {
   filter: PropTypes.shape({
     userId: PropTypes.string,
     resourceType: PropTypes.string,
-    resourceId: PropTypes.string
+    resourceId: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)])
   }).isRequired
 };
 
