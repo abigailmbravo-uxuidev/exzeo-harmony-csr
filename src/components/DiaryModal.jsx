@@ -9,7 +9,7 @@ import { submitDiary } from '../state/actions/diary.actions';
 import { toggleDiary } from '../state/actions/ui.actions';
 import { setAppError } from '../state/actions/error.actions';
 import { getDiaryAssigneeAnswers } from '../state/selectors/questions.selectors';
-import { REASONS, REASONS_LIST } from '../constants/diaries';
+import { REASONS, REASONS_DATA } from '../constants/diaries';
 
 export class DiaryModal extends Component {
   state = { minimize: false };
@@ -47,9 +47,8 @@ export class DiaryModal extends Component {
 
   normalizeDiaryReason = (value, prevVal) => {
     const { change, user: { userId }, assigneeAnswers } = this.props;
-    const defaultData = REASONS[value];
+    const defaultData = REASONS_DATA[value];
 
-    console.log(defaultData, value);
     if (!defaultData) return value;
 
     if (!defaultData.assignee) {
@@ -61,7 +60,7 @@ export class DiaryModal extends Component {
     change('message', defaultData.message);
     change('reason', defaultData.reason);
 
-    if (defaultData.reason === REASONS.renewal_processing) {
+    if (defaultData.reason === REASONS_DATA.renewal_processing) {
       // need to get next renewal date
       change('due', moment().utc().add(defaultData.daysFromDueDate, 'd').format('YYYY-MM-DD'));
     } else {
@@ -108,7 +107,7 @@ export class DiaryModal extends Component {
                 name="reason"
                 label="Reason"
                 component={Select}
-                answers={REASONS_LIST}
+                answers={REASONS}
                 validate={validation.isRequired}
                 normalize={this.normalizeDiaryReason}
                 dataTest="reason" />
