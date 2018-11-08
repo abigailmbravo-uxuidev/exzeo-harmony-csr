@@ -84,6 +84,8 @@ export const isPollingPermitted = createSelector(
       const arr = resource.uri.split(':');
       return arr.includes('Diaries');
     });
+
+    // user needs all three Diaries resources to to be able to see them.
     return diariesResources.length === 3;
   }
 );
