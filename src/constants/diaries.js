@@ -10,7 +10,7 @@ export const TAGS = [
 
 ];
 
-export const REASON_DATA = {
+export const REASONS_DATA = {
   information_needed: {
     answer: 'information_needed', label: 'Information Needed', daysFromDueDate: 7, assignee: '', message: 'CSR will indicate what it is in the body of diary and what\'s missing: Ex- "Wind Mit Photos" or "Cancellation Signature" or "App Missing Cov C Reject Form"'
   },
@@ -62,6 +62,6 @@ export const STATUS_ANSWERS = [
 ];
 
 
-export const REASONS = Object.keys(REASON_DATA).map((key) => {
-  return { answer: REASON_DATA[key].answer, label: REASON_DATA[key].label };
+export const REASONS = Object.keys(REASONS_DATA).map((key) => {
+  return { answer: REASONS_DATA[key].answer, label: REASONS_DATA[key].label };
 });
