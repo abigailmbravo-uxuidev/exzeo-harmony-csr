@@ -1,6 +1,11 @@
 import moment from 'moment-timezone';
 
-import { getFormattedDiaries, getOpenDiaries, isPollingPermitted } from './diary.selectors';
+import {
+  getFormattedDiaries,
+  getOpenDiaries,
+  getGroupedOpenDiaries,
+  isPollingPermitted
+} from './diary.selectors';
 
 describe('Test diary selectors', () => {
   describe('Test getFormattedDiaries', () => {
@@ -66,18 +71,16 @@ describe('Test diary selectors', () => {
       ]);
     });
   });
+
   describe('Test getOpenDiaries', () => {
-    it('should return an object if there are no diaries', () => {
+    it('should return an emptyArray if there are no diaries', () => {
       const state = { diaries: [] };
       const result = getOpenDiaries(state);
-      expect(result).toEqual({
-        upComing: [],
-        pastDue: [],
-        dueSoon: [],
-        count: 0
-      });
+      expect(result).toEqual([]);
     });
+  });
 
+  describe('Test getGroupedOpenDiaries', () => {
     it('should return getOpenDiaries diaries', () => {
       const thirtyDaysAway = moment.utc().add(30, 'd').format();
       const fiveDaysAway = moment.utc().add(5, 'd').format();
@@ -169,12 +172,13 @@ describe('Test diary selectors', () => {
           updatedAt: '2018-08-24T18:43:21.940Z'
         }]
       };
-      const result = getOpenDiaries(state);
+      const result = getGroupedOpenDiaries(state);
       expect(result.dueSoon.length).toEqual(1);
       expect(result.pastDue.length).toEqual(1);
       expect(result.upComing.length).toEqual(1);
     });
   });
+
   describe('Test isPollingPermitted', () => {
     let state = {};
 

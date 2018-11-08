@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { toggleDiary } from '../state/actions/ui.actions';
-import { getFilteredOpenDiaries } from '../state/selectors/diary.selectors';
+import { getGroupedOpenDiaries } from '../state/selectors/diary.selectors';
 
 import Diaries from './Diaries';
 
 export class OpenDiariesBar extends React.Component {
   handleOpenDiaries = (selectedDiary) => {
-    const { toggleDiary, resourceId, resourceType } = this.props;
-    toggleDiary({
+    const { toggleDiaryAction, resourceId, resourceType } = this.props;
+    toggleDiaryAction({
       resourceType,
       resourceId,
       selectedDiary
@@ -61,15 +61,17 @@ OpenDiariesBar.defaultProps = {
 
 OpenDiariesBar.propTypes = {
   resourceType: PropTypes.oneOf(['Policy', 'Quote', 'Agency']).isRequired,
-  resourceId: PropTypes.string,
   diaries: PropTypes.object,
-  toggleDiary: PropTypes.func
+  resourceId: PropTypes.string,
+  toggleDiaryAction: PropTypes.func
 };
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    diaries: getFilteredOpenDiaries(state) || []
+    diaries: getGroupedOpenDiaries(state)
   };
 };
 
-export default connect(mapStateToProps, { toggleDiary })(OpenDiariesBar);
+export default connect(mapStateToProps, {
+  toggleDiaryAction: toggleDiary
+})(OpenDiariesBar);
