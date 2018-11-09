@@ -9,7 +9,7 @@ import { REASONS } from '../constants/diaries';
  * @returns {boolean | *}
  */
 export const isUpcoming = (dateString) => {
-  const sevenDaysOut = moment().utc().add(7, 'd');
+  const sevenDaysOut = moment().utc().add(7, 'd').format(date.FORMATS.SECONDARY);
 
   return moment(dateString).isAfter(sevenDaysOut, 'd');
 };
